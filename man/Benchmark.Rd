@@ -10,56 +10,61 @@ Benchmark R6 class
 }
 \examples{
 
-dd <- dplyr::filter(prolfqua_data('data_benchmarkExample'), !is.na(statistic))
-dd <- dd |> dplyr::mutate(avgInt = (c1 + c2)/2)
+dd <- dplyr::filter(prolfqua_data("data_benchmarkExample"), !is.na(statistic))
+dd <- dd |> dplyr::mutate(avgInt = (c1 + c2) / 2)
 ttd <- ionstar_bench_preprocess(dd)
 medpol_benchmark <- make_benchmark(ttd$data,
-benchmark = list(
-list(score = "estimate", desc = TRUE),
-list(score = "statistic", desc = TRUE),
-list(score = "scaled.p.value", desc = TRUE)
-),
-    fcestimate = "estimate",
-    model_description = "med. polish and lm. density",
-    model_name = "prot_med_lm"
+  benchmark = list(
+    list(score = "estimate", desc = TRUE),
+    list(score = "statistic", desc = TRUE),
+    list(score = "scaled.p.value", desc = TRUE)
+  ),
+  fcestimate = "estimate",
+  model_description = "med. polish and lm. density",
+  model_name = "prot_med_lm"
 )
-medpol_benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),
- list(score = "statistic", xlim = c(-3,10) )))
+medpol_benchmark$plot_score_distribution(list(
+  list(score = "estimate", xlim = c(-1, 2)),
+  list(score = "statistic", xlim = c(-3, 10))
+))
 
-#Benchmark$debug("plot_score_distribution")
+# Benchmark$debug("plot_score_distribution")
 benchmark <- make_benchmark(
   ttd$data,
-  toscale =  c("moderated.p.value", "moderated.p.value.adjusted"),
+  toscale = c("moderated.p.value", "moderated.p.value.adjusted"),
   fcestimate = "estimate",
-  benchmark = list(list(score = "estimate", desc = TRUE),
-                   list(score = "statistic", desc = TRUE),
-                   list(score = "scaled.moderated.p.value", desc = TRUE),
-                   list(score = "scaled.moderated.p.value.adjusted", desc = TRUE)
+  benchmark = list(
+    list(score = "estimate", desc = TRUE),
+    list(score = "statistic", desc = TRUE),
+    list(score = "scaled.moderated.p.value", desc = TRUE),
+    list(score = "scaled.moderated.p.value.adjusted", desc = TRUE)
   ),
   FDRvsFDP =
-    list(list(score = "moderated.p.value", desc = FALSE),
-         list(score = "moderated.p.value.adjusted", desc = FALSE)),
+    list(
+      list(score = "moderated.p.value", desc = FALSE),
+      list(score = "moderated.p.value.adjusted", desc = FALSE)
+    ),
   model_description = "protein level measurments, lm model",
   model_name = "prot_lm"
 )
 bb <- benchmark$pAUC_summaries()
 benchmark$complete(FALSE)
 benchmark$smc$summary
-benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),list(score = "statistic", xlim = c(-3,10) )))
+benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1, 2)), list(score = "statistic", xlim = c(-3, 10))))
 benchmark$plot_score_distribution()
 
 bb <- benchmark$get_confusion_FDRvsFDP()
-xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
+xb <- dplyr::filter(bb, contrast == "dilution_(4.5/3)_1.5")
 bb <- benchmark$get_confusion_benchmark()
 benchmark$plot_ROC(xlim = 0.1)
 benchmark$plot_FDPvsTPR()
 benchmark$plot_FDRvsFDP()
-benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
+benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1, 2)), list(score = "statistic", ylim = c(-3, 10))))
 benchmark$complete(FALSE)
 benchmark$missing_contrasts()
 stopifnot(nrow(benchmark$pAUC_summaries()$ftable$content) == 4 * (4 + 1))
 benchmark$complete(TRUE)
-stopifnot(nrow(benchmark$pAUC_summaries()$ftable$content) == 4 * (4+1))
+stopifnot(nrow(benchmark$pAUC_summaries()$ftable$content) == 4 * (4 + 1))
 missum <- benchmark$missing_contrasts()$summary
 stopifnot(nrow(missum) == 4)
 stopifnot(ncol(missum) == 2)

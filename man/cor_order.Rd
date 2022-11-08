@@ -13,7 +13,7 @@ cor_order(dataX)
 Compute correlation matrix
 }
 \examples{
-list <- prolfqua_data('data_correlatedPeptideList')
+list <- prolfqua_data("data_correlatedPeptideList")
 cor_order(data_correlatedPeptideList[[1]])
 }
 \seealso{

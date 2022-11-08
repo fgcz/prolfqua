@@ -20,40 +20,41 @@ Estimate e.g. protein abundance from peptides using MASS:rlm
 }
 \examples{
 
-xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
+xx <- data.frame(expression = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4), samples = rep(letters[1:4], 5))
 
-bb <- rlm_estimate(xx , "expression", "feature", "samples", maxIt = 20)
+bb <- rlm_estimate(xx, "expression", "feature", "samples", maxIt = 20)
 
-xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
+xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4), sampleName = rep(letters[1:4], 5))
 rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
-rlm_estimate(prolfqua_data('data_checksummarizationrobust87'),"log2Area", "peptide_Id", "sampleName")
-rlm_estimate(prolfqua_data('data_checksummarizerobust69'),"log2Area", "peptide_Id", "sampleName")
-res <- vector(100,mode = "list")
+rlm_estimate(prolfqua_data("data_checksummarizationrobust87"), "log2Area", "peptide_Id", "sampleName")
+rlm_estimate(prolfqua_data("data_checksummarizerobust69"), "log2Area", "peptide_Id", "sampleName")
+res <- vector(100, mode = "list")
 for (i in seq_len(100)) {
   xx3 <- xx2
-  xx3$log2Area[sample(1:20,sample(1:15,1))] <- NA
+  xx3$log2Area[sample(1:20, sample(1:15, 1))] <- NA
   res[[i]] <- list(data = xx3, summary = rlm_estimate(xx3, "log2Area", "peptide_Id", "sampleName"))
 }
-rlm_estimate(xx2[xx2$peptide_Id == 'A',],"log2Area", "peptide_Id", "sampleName")
-rlm_estimate(xx2[xx2$sampleName == 'a',],"log2Area", "peptide_Id", "sampleName")
+rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sampleName")
+rlm_estimate(xx2[xx2$sampleName == "a", ], "log2Area", "peptide_Id", "sampleName")
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
-conf$table$hierarchyDepth = 1
+conf$table$hierarchyDepth <- 1
 xnested <- data |>
-  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
+  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+  tidyr::nest()
 
-feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
+feature <- setdiff(conf$table$hierarchy_keys(), conf$table$hierarchy_keys_depth())
 x <- xnested$data[[1]]
 bb <- rlm_estimate(x,
- expression = conf$table$get_response(),
+  expression = conf$table$get_response(),
   feature = feature,
-   samples = conf$table$sampleName)
-
+  samples = conf$table$sampleName
+)
 
 }
 \seealso{

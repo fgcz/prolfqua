@@ -20,12 +20,12 @@ transform long to wide
 }
 \examples{
 
-dd <- prolfqua_data('data_spectronautDIA250_A')
+dd <- prolfqua_data("data_spectronautDIA250_A")
 config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
+analysis <- dd$analysis(dd$data, config)
 res <- tidy_to_wide_config(analysis, config)
 testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
-testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
+testthat::expect_equal(ncol(res$data) - ncol(res$rowdata), nrow(res$annotation))
 res <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
 res <- scale(res$data)
 

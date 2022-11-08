@@ -45,34 +45,40 @@ nrProtein <- 800
 p.value <- runif(nrPep)
 estimate <- rnorm(nrPep)
 avgAbd <- runif(nrPep)
-protein_Id <- sample(1:800, size = nrPep,
-  replace = TRUE, prob = dexp(seq(0,5,length = 800)))
+protein_Id <- sample(1:800,
+  size = nrPep,
+  replace = TRUE, prob = dexp(seq(0, 5, length = 800))
+)
 
 plot(table(table(protein_Id)))
 
-testdata <- data.frame(contrast = "contrast1",
+testdata <- data.frame(
+  contrast = "contrast1",
   protein_Id = protein_Id,
   estimate = estimate,
   pseudo_estimate = estimate,
   p.value = p.value,
-  avgAbd = avgAbd )
+  avgAbd = avgAbd
+)
 
 xx30 <- summary_ROPECA_median_p.scaled(testdata,
-                                    subject_Id = "protein_Id",
-                                    estimate = "estimate",
-                                    p.value = "p.value",
-                                    max.n = 30)
+  subject_Id = "protein_Id",
+  estimate = "estimate",
+  p.value = "p.value",
+  max.n = 30
+)
 
 xx2 <- summary_ROPECA_median_p.scaled(testdata,
-                                    subject_Id = "protein_Id",
-                                    estimate = "estimate",
-                                    p.value = "p.value",
-                                    max.n = 1)
+  subject_Id = "protein_Id",
+  estimate = "estimate",
+  p.value = "p.value",
+  max.n = 1
+)
 
-testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409, tolerance = 1e-4)
+testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE), 0.384409, tolerance = 1e-4)
 testthat::expect_equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)
-testthat::expect_equal(xx2$beta.based.significance[1],0.819, tolerance = 1e-3)
-testthat::expect_equal(xx2$beta.based.significance[2],0.9234362,tolerance = 1e-3)
+testthat::expect_equal(xx2$beta.based.significance[1], 0.819, tolerance = 1e-3)
+testthat::expect_equal(xx2$beta.based.significance[2], 0.9234362, tolerance = 1e-3)
 
 # Uniform distribution
 hist(testdata$p.value)

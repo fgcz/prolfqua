@@ -17,13 +17,13 @@ plot correlation heatmap with annotations
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-config <- old2new(istar$config$clone(deep=TRUE))
+istar <- prolfqua_data("data_ionstar")$filtered()
+config <- old2new(istar$config$clone(deep = TRUE))
 analysis <- istar$data
 
-pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
+pheat_map <- prolfqua::plot_heatmap_cor(analysis, config)
 stopifnot("pheatmap" \%in\% class(pheat_map))
-pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
+pheat_map <- plot_heatmap_cor(analysis, config, R2 = TRUE)
 stopifnot("pheatmap" \%in\% class(pheat_map))
 
 }

@@ -23,14 +23,14 @@ get the difference of two dataset where one is a subset of the other.
 
 
 
-istar <- prolfqua_data('data_ionstar')$Pep()
+istar <- prolfqua_data("data_ionstar")$Pep()
 istar$config <- old2new(istar$config)
 istar_data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-filterPep <- prolfqua:::filter_proteins_by_peptide_count( istar_data ,  istar$config )
+filterPep <- prolfqua:::filter_proteins_by_peptide_count(istar_data, istar$config)
 tmp <- filter_difference(istar_data, filterPep$data, istar$config)
-stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))
-tmp <- filter_difference(filterPep$data, istar_data , istar$config)
-stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))
+stopifnot(nrow(istar_data) - nrow(filterPep$data) == nrow(tmp))
+tmp <- filter_difference(filterPep$data, istar_data, istar$config)
+stopifnot(nrow(istar_data) - nrow(filterPep$data) == nrow(tmp))
 
 }
 \keyword{internal}

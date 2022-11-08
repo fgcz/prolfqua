@@ -22,33 +22,35 @@ Moderate p-value for long table
 \examples{
 
 
-modelSummary_A <- prolfqua_data('data_modellingResult_A')
+modelSummary_A <- prolfqua_data("data_modellingResult_A")
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 factor_levelContrasts <- contrasts_linfct(
   modelSummary_A$modelProtein,
   factor_contrasts,
   subject_Id = "Compound",
-  contrastfun = my_contrast_V2)
+  contrastfun = my_contrast_V2
+)
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 
 plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
-abline(0,1, col = 2)
+abline(0, 1, col = 2)
 
 # updating lmer model
-data_models_interaction <- prolfqua_data('data_models_interaction')
+data_models_interaction <- prolfqua_data("data_models_interaction")
 
 m <- get_complete_model_fit(data_models_interaction$modelProtein)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 
 factor_levelContrasts <- contrasts_linfct(m,
-                                         factor_contrasts,
-                                         subject_Id = "protein_Id")
+  factor_contrasts,
+  subject_Id = "protein_Id"
+)
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
-abline(0,1, col = 2)
+abline(0, 1, col = 2)
 
 }
 \seealso{

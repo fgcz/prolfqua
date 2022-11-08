@@ -10,11 +10,11 @@ UpSet_interaction_missing_stats(data, cf, tr = 2)
 UpSetR plot from interaction_missing_stats
 }
 \examples{
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 stopifnot(nrow(bb$data) == 25780)
-configur <- old2new(bb$config$clone(deep=TRUE))
+configur <- old2new(bb$config$clone(deep = TRUE))
 data <- bb$data
-#debug(UpSet_interaction_missing_stats)
+# debug(UpSet_interaction_missing_stats)
 tmp <- UpSet_interaction_missing_stats(data, configur)
 }
 \seealso{

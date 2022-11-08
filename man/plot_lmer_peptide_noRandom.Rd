@@ -17,10 +17,10 @@ plot peptide intensities per interaction with random effects removed
 \examples{
 
 
-m <- prolfqua_data('data_basicModel_p1807')
+m <- prolfqua_data("data_basicModel_p1807")
 plot_lmer_peptide_noRandom(m)
 
-m <- prolfqua_data('data_interactionModel_p1807')
+m <- prolfqua_data("data_interactionModel_p1807")
 plot_lmer_peptide_noRandom(m)
 }
 \seealso{

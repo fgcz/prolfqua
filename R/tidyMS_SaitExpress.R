@@ -5,15 +5,13 @@
 #' @param id_col column with protein ids/accessions.
 #' @export
 #'
-add_protein_lengths <- function(
-  intdata,
-  fasta,
-  id_col = "protein_Id" ){
-
-  plengths <- data.frame(id = names(fasta) , protein.length = vapply(fasta, stringr::str_length, integer(1)))
+add_protein_lengths <- function(intdata,
+                                fasta,
+                                id_col = "protein_Id") {
+  plengths <- data.frame(id = names(fasta), protein.length = vapply(fasta, stringr::str_length, integer(1)))
   byx <- "id"
   names(byx) <- id_col
-  intdata <- dplyr::left_join(intdata, plengths , by = byx)
+  intdata <- dplyr::left_join(intdata, plengths, by = byx)
   intdata$protein.length[is.na(intdata$protein.length)] <- as.integer(mean(intdata$protein.length, na.rm = TRUE))
   return(intdata)
 }
@@ -31,8 +29,8 @@ add_protein_lengths <- function(
 #' @param CorTCol is it control or TRUE (SaintExpress speach)
 #' @examples
 #'
-#' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#' bb$config <- old2new(config = bb$config$clone( deep = TRUE))
+#' bb <- prolfqua_data("data_IonstarProtein_subsetNorm")
+#' bb$config <- old2new(config = bb$config$clone(deep = TRUE))
 #' xx <- LFQData$new(bb$data, bb$config)
 #' exampleDat <- xx$data |> dplyr::mutate(CorT = dplyr::case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 #' # sample protein lengths
@@ -40,54 +38,57 @@ add_protein_lengths <- function(
 #' tmp <- data.frame(protein_Id = unique(exampleDat$protein_Id))
 #' tmp$proteinLength <- as.integer(runif(nrow(tmp), min = 150, max = 2500))
 #' exampleDat <- dplyr::inner_join(tmp, exampleDat)
-#' #undebug(protein_2localSaint)
-#' res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
-#'                    proteinID = "protein_Id",
-#'                    proteinLength = "proteinLength",
-#'                    IP_name = "raw.file",
-#'                    baitCol = "dilution.",
-#'                    CorTCol = "CorT"
-#'                    )
+#' # undebug(protein_2localSaint)
+#' res <- protein_2localSaint(exampleDat,
+#'   quantcolumn = "medpolish",
+#'   proteinID = "protein_Id",
+#'   proteinLength = "proteinLength",
+#'   IP_name = "raw.file",
+#'   baitCol = "dilution.",
+#'   CorTCol = "CorT"
+#' )
 #'
-#' stopifnot(names(res) == c( "inter", "prey",  "bait"))
-#' if(!Sys.info()["sysname"] == "Darwin") {
+#' stopifnot(names(res) == c("inter", "prey", "bait"))
+#' if (!Sys.info()["sysname"] == "Darwin") {
 #'   data_SAINTe_output <- runSaint(res, filedir = tempdir())
-#'   #usethis::use_data(data_SAINTe_output)
+#'   # usethis::use_data(data_SAINTe_output)
 #' } else {
-#'  testthat::expect_error(runSaint(res, filedir = tempdir()))
+#'   testthat::expect_error(runSaint(res, filedir = tempdir()))
 #' }
 #'
 protein_2localSaint <- function(xx,
                                 quantcolumn = "mq.protein.intensity",
                                 proteinID = "protein_Id",
-                                geneNames  = proteinID,
+                                geneNames = proteinID,
                                 proteinLength = "protein.length",
                                 IP_name = "raw.file",
                                 baitCol = "bait",
-                                CorTCol = "CorT"
-){
-  reqcolumns <- c(quantcolumn,proteinID,geneNames,proteinLength,IP_name,baitCol,CorTCol)
-  if ( !all(reqcolumns %in% colnames(xx)) ) {
-
+                                CorTCol = "CorT") {
+  reqcolumns <- c(quantcolumn, proteinID, geneNames, proteinLength, IP_name, baitCol, CorTCol)
+  if (!all(reqcolumns %in% colnames(xx))) {
     stop("columns not found ", paste0(reqcolumns[which(!reqcolumns %in% colnames(xx))]))
   }
   res <- list()
-  bait <- xx |> dplyr::select(!!!syms(c(IP_name,baitCol,CorTCol)))
+  bait <- xx |> dplyr::select(!!!syms(c(IP_name, baitCol, CorTCol)))
   bait <- dplyr::distinct(bait)
   res$bait <- bait
-  prey <- xx |> dplyr::select(proteinID = !!sym(proteinID),
-                              proteinLength = !!sym(proteinLength),
-                              geneNames = !!sym(geneNames))
+  prey <- xx |> dplyr::select(
+    proteinID = !!sym(proteinID),
+    proteinLength = !!sym(proteinLength),
+    geneNames = !!sym(geneNames)
+  )
   prey <- distinct(prey)
   res$prey <- prey
   inter <- xx |>
-    dplyr::select(!!!syms(c(IP_name,
-                            baitCol,
-                            proteinID ,
-                            quantcolumn))) |>
+    dplyr::select(!!!syms(c(
+      IP_name,
+      baitCol,
+      proteinID,
+      quantcolumn
+    ))) |>
     filter(!!sym(quantcolumn) > 0)
   res$inter <- inter
-  res <- res[c("inter","prey","bait")]
+  res <- res[c("inter", "prey", "bait")]
   return(res)
 }
 
@@ -109,14 +110,14 @@ protein_2localSaint <- function(xx,
 runSaint <- function(si,
                      filedir = getwd(),
                      spc = TRUE,
-                     CLEANUP = TRUE){
-  stopifnot(names(si) == c("inter","prey","bait"))
+                     CLEANUP = TRUE) {
+  stopifnot(names(si) == c("inter", "prey", "bait"))
   paths <- character(3)
   for (i in seq_along(si)) {
-    filen <- file.path(filedir , paste0(names(si)[i],".txt"))
+    filen <- file.path(filedir, paste0(names(si)[i], ".txt"))
     paths[i] <- filen
     message(filen)
-    readr::write_tsv(si[[i]], file = filen , col_names = FALSE)
+    readr::write_tsv(si[[i]], file = filen, col_names = FALSE)
   }
 
   if (Sys.info()["sysname"] == "Windows") {
@@ -127,39 +128,40 @@ runSaint <- function(si,
     }
 
     out <- system2(exeS2,
-                   args = paths,
-                   stdout = TRUE,
-                   stderr = TRUE,
-                   wait = TRUE,
-                   minimized = TRUE)
+      args = paths,
+      stdout = TRUE,
+      stderr = TRUE,
+      wait = TRUE,
+      minimized = TRUE
+    )
   } else if (Sys.info()["sysname"] == "Linux") {
     if (spc) {
-      exeS2 <-  system_file("SaintExpress/bin/Linux64/SAINTexpress-spc",  package = "prolfqua")
+      exeS2 <- system_file("SaintExpress/bin/Linux64/SAINTexpress-spc", package = "prolfqua")
     } else {
-      exeS2 <-  system_file("SaintExpress/bin/Linux64/SAINTexpress-int", package = "prolfqua")
+      exeS2 <- system_file("SaintExpress/bin/Linux64/SAINTexpress-int", package = "prolfqua")
     }
 
     out <- system2(exeS2,
-                   args = paths,
-                   stdout = TRUE,
-                   stderr = TRUE,
-                   wait = TRUE)
+      args = paths,
+      stdout = TRUE,
+      stderr = TRUE,
+      wait = TRUE
+    )
   } else {
-    stop("System",Sys.info()["sysname"] , " not supported.")
+    stop("System", Sys.info()["sysname"], " not supported.")
   }
 
-  message(cat(out,sep = "\n"))
+  message(cat(out, sep = "\n"))
 
   Sys.sleep(2) # needed otherwise the list.txt file can't be deleted
-  listFile <- file.path(getwd(),"list.txt")
+  listFile <- file.path(getwd(), "list.txt")
   res <- read.csv(file = listFile, sep = "\t")
   if (CLEANUP) {
     if (!file.remove(listFile)) {
-      warning( "can't remove " , listFile)
+      warning("can't remove ", listFile)
     }
     file.remove(paths)
   }
-  res <- list(listFile = data.frame(listFile = listFile),  list = res, out = data.frame(out = out))
+  res <- list(listFile = data.frame(listFile = listFile), list = res, out = data.frame(out = out))
   return(res)
 }
-

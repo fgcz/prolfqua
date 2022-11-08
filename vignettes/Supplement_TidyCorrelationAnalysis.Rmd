@@ -27,7 +27,6 @@ knitr::opts_chunk$set(
   fig.width = 10,
   fig.height = 10
 )
-
 ```
 
 
@@ -41,7 +40,6 @@ library(dplyr)
 library(ggplot2)
 library(prolfqua)
 conflicted::conflict_prefer("filter", "dplyr")
-
 ```
 
 
@@ -49,26 +47,26 @@ Next the configuration for Spectronaut is clreated and factor variables are defi
 
 ```{r}
 config <- create_config_Spectronaut_Peptide()
-config$table$factors[["coding"]] = "coding"
-config$table$factors[["sex"]] = "sex"
-config$table$factors[["age"]] = "age"
-config$table$factors[["Sample_id"]] = "Sample.Name"
+config$table$factors[["coding"]] <- "coding"
+config$table$factors[["sex"]] <- "sex"
+config$table$factors[["age"]] <- "age"
+config$table$factors[["Sample_id"]] <- "Sample.Name"
 
 x <- R6_extract_values(config)
-
 ```
 
 
 ```{r include=FALSE, eval=FALSE, echo=FALSE}
 
-specnautconfig <- function(){
+specnautconfig <- function() {
   spectronautDIAData250_config <- prolfqua::create_config_Spectronaut_Peptide(
-    isotopeLabel="Isotope.Label",
-    ident_qValue="EG.Qvalue")
-  spectronautDIAData250_config$table$factors[["coding"]] = "coding"
-  spectronautDIAData250_config$table$factors[["sex"]] = "sex"
-  spectronautDIAData250_config$table$factors[["age"]] = "age"
-  spectronautDIAData250_config$table$factors[["Sample_id"]] = "Sample.Name"
+    isotopeLabel = "Isotope.Label",
+    ident_qValue = "EG.Qvalue"
+  )
+  spectronautDIAData250_config$table$factors[["coding"]] <- "coding"
+  spectronautDIAData250_config$table$factors[["sex"]] <- "sex"
+  spectronautDIAData250_config$table$factors[["age"]] <- "age"
+  spectronautDIAData250_config$table$factors[["Sample_id"]] <- "Sample.Name"
   return(spectronautDIAData250_config)
 }
 config <- specnautconfig()
@@ -81,26 +79,27 @@ config$table$id_vars()
 #'
 
 data <- data_spectronautDIA250_A
-pIDS <- sample(unique(data$data$PG.ProteinAccessions),50)
+pIDS <- sample(unique(data$data$PG.ProteinAccessions), 50)
 
 
 colnames(data$data)
-toremove <- c("EG.TotalQuantity..Settings.",
- "EG.UsedForPeptideQuantity","EG.UsedForProteinGroupQuantity")
+toremove <- c(
+  "EG.TotalQuantity..Settings.",
+  "EG.UsedForPeptideQuantity", "EG.UsedForProteinGroupQuantity"
+)
 
-dataval <- data$data# |> select(-all_of(toremove))
+dataval <- data$data # |> select(-all_of(toremove))
 dataval <- dataval |> dplyr::filter(PG.ProteinAccessions %in% pIDS)
 
 
-setup <- function(data, config){
- res <- setup_analysis(data,config)
- res
+setup <- function(data, config) {
+  res <- setup_analysis(data, config)
+  res
 }
 #'
-data_spectronautDIA250_A <- list(data = dataval, config_f = specnautconfig, analysis=setup )
+data_spectronautDIA250_A <- list(data = dataval, config_f = specnautconfig, analysis = setup)
 data_spectronautDIA250_A$analysis(data_spectronautDIA250_A$data, data_spectronautDIA250_A$config_f())
-#usethis::use_data( data_spectronautDIA250_A , overwrite = TRUE )
-
+# usethis::use_data( data_spectronautDIA250_A , overwrite = TRUE )
 ```
 
 
@@ -114,7 +113,6 @@ longFormat$Isotope.Label <- "Light"
 
 config_tmp <- config$clone(deep = TRUE)
 longNoDecoy <- setup_analysis(longFormat, config)
-
 ```
 
 
@@ -129,7 +127,6 @@ longNoDecoy <- remove_large_QValues(longNoDecoy, config)
 longQSummaries <- summarise_QValues(longNoDecoy, config)
 
 knitr::kable(head(prolfqua::interaction_missing_stats(longQSummaries, config)$data))
-
 ```
 
 
@@ -140,9 +137,9 @@ knitr::kable(prolfqua::hierarchy_counts(longQSummaries, config))
 Then we remove precursors that do not pass the  `qVal_experiment_threshold`, that is we require that in at least one sample a precursor was observed with a QValue lower than that threshold.
 
 ```{r}
-config$parameter$qVal_experiment_threshold 
-qvalFilt <- longQSummaries |> 
-  filter_at( "srm_QValueMin" , all_vars(. < config$parameter$qVal_experiment_threshold )   )
+config$parameter$qVal_experiment_threshold
+qvalFilt <- longQSummaries |>
+  filter_at("srm_QValueMin", all_vars(. < config$parameter$qVal_experiment_threshold))
 prolfqua::hierarchy_counts(qvalFilt, config)
 ```
 
@@ -155,7 +152,6 @@ longQNASummaries <- rank_by_NA(qvalFilt, config)
 longQNASummaries <- longQNASummaries |>
   dplyr::filter(srm_NrNotNAs > 20)
 knitr::kable(prolfqua::hierarchy_counts(longQNASummaries, config))
-
 ```
 
 
@@ -175,8 +171,7 @@ print(res)
 
 ```{r}
 
-qvalFiltV <- prolfqua::filter_proteins_by_peptide_count(longQNASummaries,config)
-
+qvalFiltV <- prolfqua::filter_proteins_by_peptide_count(longQNASummaries, config)
 ```
 
 
@@ -187,19 +182,20 @@ First mark de-correlated transitions using `mark_decorelated`.
 
 ```{r markdecorellated}
 qvalFiltV <- transform_work_intensity(qvalFiltV$data, config, log2)
-xx <- mark_decorelated(qvalFiltV, config, minCorrelation = 0.5 )
+xx <- mark_decorelated(qvalFiltV, config, minCorrelation = 0.5)
 mean(xx$srm_decorelated)
-
 ```
 
 ```{r shownotcorrelated}
-nested <- xx |> group_by_at(config$table$hierarchy_keys_depth()) |> tidyr::nest()
+nested <- xx |>
+  group_by_at(config$table$hierarchy_keys_depth()) |>
+  tidyr::nest()
 
-plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) + 
-  geom_line(aes_string(linetype = "srm_decorelated"), lwd = 0.2) 
-plot_hierarchies_line(nested$data[[2]], nested$protein_Id[[2]], config) + 
+plot_hierarchies_line(nested$data[[1]], nested$protein_Id[[1]], config) +
+  geom_line(aes_string(linetype = "srm_decorelated"), lwd = 0.2)
+plot_hierarchies_line(nested$data[[2]], nested$protein_Id[[2]], config) +
   geom_line(aes_string(linetype = "srm_decorelated"))
-plot_hierarchies_line(nested$data[[3]], nested$protein_Id[[3]], config) + 
+plot_hierarchies_line(nested$data[[3]], nested$protein_Id[[3]], config) +
   geom_line(aes_string(linetype = "srm_decorelated"))
 ```
 
@@ -220,52 +216,55 @@ print(plot_heatmap_cor(qvalFiltCorr, config))
 ```{r rankprec}
 qvalFiltImputed <- impute_correlationBased(qvalFiltCorr, config)
 qvalFiltImputed <- rank_peptide_by_intensity(qvalFiltImputed, config)
-
 ```
 
 
 
 ```{r aggregate}
-mean_na <- function(x, name = FALSE){
-  if(name){return("mean_na")};
-  mean(x,na.rm = TRUE)}
+mean_na <- function(x, name = FALSE) {
+  if (name) {
+    return("mean_na")
+  }
+  mean(x, na.rm = TRUE)
+}
 proteinIntensities <- aggregate_intensity_topN(qvalFiltImputed,
-                                               config,
-                                               .func = mean_na,
-                                               N = 3)$data
-
+  config,
+  .func = mean_na,
+  N = 3
+)$data
 ```
 
 
 ```{r doplottingOFProtein}
 # nest transtions
-xnested <- qvalFiltImputed |> group_by_at(config$table$hierarchy_keys_depth()) |> tidyr::nest()
+xnested <- qvalFiltImputed |>
+  group_by_at(config$table$hierarchy_keys_depth()) |>
+  tidyr::nest()
 
 
-plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1],config)
-plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3],config)
-#plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
+plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[1], config)
+plot_hierarchies_line(xnested$data[[3]], xnested$protein_Id[3], config)
+# plot_hierarchies_line(xnested$data[[4]], xnested$protein_Id[4],config)
 # nest protein quants.
-figs3 <- xnested |> dplyr::mutate(plotlog = purrr::map2(data, UQ(sym(config$table$hierarchy_keys()[1])),plot_hierarchies_line, config))
+figs3 <- xnested |> dplyr::mutate(plotlog = purrr::map2(data, UQ(sym(config$table$hierarchy_keys()[1])), plot_hierarchies_line, config))
 figs3
 
-ff <- proteinIntensities |> 
-  group_by_at(config$table$hierarchy_keys()[1]) |> 
+ff <- proteinIntensities |>
+  group_by_at(config$table$hierarchy_keys()[1]) |>
   tidyr::nest(.key = "topNIntensity")
 
-figs4 <- dplyr::inner_join(figs3,ff, by = config$table$hierarchy_keys()[1])
+figs4 <- dplyr::inner_join(figs3, ff, by = config$table$hierarchy_keys()[1])
 
 plot_hierarchies_add_quantline(figs4$plotlog[[1]], figs4$topNIntensity[[1]], "srm_mean_na_3", config)
 plot_hierarchies_add_quantline(figs4$plotlog[[2]], figs4$topNIntensity[[2]], "srm_mean_na_3", config)
 plot_hierarchies_add_quantline(figs4$plotlog[[3]], figs4$topNIntensity[[3]], "srm_mean_na_3", config)
 
 
-nrPep <- qvalFiltImputed |> 
-  select_at(c(config$table$hierarchy_keys()[1], "nr_peptide_Id_IN_protein_Id")) |> 
+nrPep <- qvalFiltImputed |>
+  select_at(c(config$table$hierarchy_keys()[1], "nr_peptide_Id_IN_protein_Id")) |>
   distinct()
 
 nrPep
-
 ```
 
 The `prolfqua` package is described in [@Wolski2022.06.07.494524].
@@ -277,6 +276,3 @@ sessionInfo()
 ```
 
 # References
-
-
-

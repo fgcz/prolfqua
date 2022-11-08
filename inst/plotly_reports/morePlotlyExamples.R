@@ -2,18 +2,18 @@ library(plotly)
 library(tidyr)
 library(crosstalk)
 m <- tidyr::gather(mtcars, variable, value, -vs)
-#View(m)
+# View(m)
 msd <- highlight_key(m, ~variable)
-#gg <- ggplot(msd, aes(factor(vs), value))  + #geom_jitter(alpha = 0.3)
+# gg <- ggplot(msd, aes(factor(vs), value))  + #geom_jitter(alpha = 0.3)
 #  geom_boxplot()
 
 
 bscols(
   widths = c(11, 11),
   filter_select("id", "Select a variable", msd, ~variable, multiple = FALSE),
-  #ggplotly(gg, dynamicTicks = "y") %>% layout(margin = list(l = 30))
-  #ggplotly(gg, dynamicTicks = "y")# %>% layout(margin = list(l = 30))
-  plot_ly(msd, x = ~vs, y = ~value, type="box") #%>% add_markers(alpha = 0.3)
+  # ggplotly(gg, dynamicTicks = "y") %>% layout(margin = list(l = 30))
+  # ggplotly(gg, dynamicTicks = "y")# %>% layout(margin = list(l = 30))
+  plot_ly(msd, x = ~vs, y = ~value, type = "box") # %>% add_markers(alpha = 0.3)
 )
 
 
@@ -52,7 +52,7 @@ sp <- plot_ly(d, x = ~mpg, y = ~disp) %>%
   add_markers(color = I("black"))
 
 # 'statistical trace types'
-hist <- plot_ly(d, x = ~factor(cyl)) %>%
+hist <- plot_ly(d, x = ~ factor(cyl)) %>%
   add_histogram(color = I("black"))
 box <- plot_ly(d, y = ~disp, color = I("black")) %>%
   add_boxplot(name = " ")
@@ -73,7 +73,9 @@ subplot(sp, box, violin, shareY = TRUE, titleX = TRUE, titleY = TRUE) %>%
 library(plotly)
 
 tx <- highlight_key(txhousing, ~city)
-p1 <- ggplot(tx, aes(date, median, group = city)) + geom_line() + xlab(NULL)
+p1 <- ggplot(tx, aes(date, median, group = city)) +
+  geom_line() +
+  xlab(NULL)
 gg1 <- ggplotly(p1, tooltip = c("city", "date", "median"))
 p2 <- plot_ly(tx, x = ~median, color = I("black")) %>%
   add_histogram(histnorm = "probability density")

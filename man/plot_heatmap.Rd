@@ -11,13 +11,13 @@ plot heatmap with annotations
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- prolfqua_data("data_ionstar")$filtered()
 stopifnot(nrow(istar$data) == 25780)
-config <- old2new(istar$config$clone(deep=TRUE))
+config <- old2new(istar$config$clone(deep = TRUE))
 analysis <- istar$data
 
 plot.new()
-p  <- plot_heatmap(analysis, config)
+p <- plot_heatmap(analysis, config)
 p2 <- plot_heatmap(analysis, config, show_rownames = TRUE)
 plot.new()
 p2

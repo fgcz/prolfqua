@@ -19,11 +19,11 @@ Add Annotation to a data.frame in long format
 for an usage example see run_script lfq_mixed_model_inference
 }
 \examples{
-protein_txt <- system_file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
+protein_txt <- system_file("samples/maxquant_txt/tiny2.zip", package = "prolfqua")
 
-inputAnnotation <- system_file("samples/maxquant_txt/annotation_Ionstar2018_PXD003881.xlsx",package = "prolfqua")
+inputAnnotation <- system_file("samples/maxquant_txt/annotation_Ionstar2018_PXD003881.xlsx", package = "prolfqua")
 startdata <- prolfqua::tidyMQ_ProteinGroups(protein_txt)
-tmp <- add_annotation(startdata,inputAnnotation )
+tmp <- add_annotation(startdata, inputAnnotation)
 stopifnot(ncol(tmp) == ncol(startdata) + 3)
 
 }

@@ -19,8 +19,8 @@ plot Violin plot of sd CV or mean given intensity lower or above median
 \examples{
 
 
-bb1 <- prolfqua_data('data_ionstar')$normalized()
-config <- old2new(bb1$config$clone( deep = TRUE))
+bb1 <- prolfqua_data("data_ionstar")$normalized()
+config <- old2new(bb1$config$clone(deep = TRUE))
 data <- bb1$data
 res <- summarize_stats(data, config)
 plot_stat_violin_median(res, config, stat = "mean")

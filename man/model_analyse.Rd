@@ -17,16 +17,17 @@ used in project p2901
 \examples{
 
 
-ionstar <- prolfqua_data('data_ionstar')$normalized()
+ionstar <- prolfqua_data("data_ionstar")$normalized()
 ionstar$config <- old2new(ionstar$config)
 
-ionstar$data <- ionstar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
+ionstar$data <- ionstar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 10))
 prolfqua::table_factors(ionstar$data, ionstar$config)
 formula_randomPeptide <-
   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
-mr <- model_analyse( ionstar$data,
- formula_randomPeptide,
- subject_Id = ionstar$config$table$hierarchy_keys_depth())
+mr <- model_analyse(ionstar$data,
+  formula_randomPeptide,
+  subject_Id = ionstar$config$table$hierarchy_keys_depth()
+)
 get_complete_model_fit(mr$modelProtein)
 }
 \seealso{

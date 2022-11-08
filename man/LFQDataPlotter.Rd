@@ -10,16 +10,17 @@ Create various visualization of the LFQdata
 }
 \examples{
 
-#library(prolfqua)
-bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
-istar <- LFQData$new(bb1$data, old2new(bb1$config$clone( deep = TRUE)))
+# library(prolfqua)
+bb1 <- prolfqua::prolfqua_data("data_IonstarProtein_subsetNorm")
+istar <- LFQData$new(bb1$data, old2new(bb1$config$clone(deep = TRUE)))
 
 istar$data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 
 lfqdata <- LFQData$new(
- istar$data,
- istar$config)
-#LFQDataPlotter$debug("pca_plotly")
+  istar$data,
+  istar$config
+)
+# LFQDataPlotter$debug("pca_plotly")
 lfqplotter <- lfqdata$get_Plotter()
 graphics.off()
 lfqplotter$heatmap()
@@ -29,8 +30,8 @@ graphics.off()
 lfqplotter$pca()
 lfqplotter$pca_plotly()
 
-#tmp <- lfqplotter$boxplots()
-#tmp$boxplot[[1]]
+# tmp <- lfqplotter$boxplots()
+# tmp$boxplot[[1]]
 lfqplotter$missigness_histogram()
 
 lfqplotter$NA_heatmap()

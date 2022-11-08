@@ -10,51 +10,62 @@ plot contrasts
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$normalized()
-istar$config <- old2new(istar$config )
-istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar <- prolfqua_data("data_ionstar")$normalized()
+istar$config <- old2new(istar$config)
+istar_data <- dplyr::filter(istar$data, protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "Model"
 modelFunction <-
   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
-   model_name = modelName)
+    model_name = modelName
+  )
 pepIntensity <- istar_data
 config <- istar$config
 config$table$hierarchy_keys_depth()
 mod <- build_model(
- pepIntensity,
- modelFunction,
- modelName = modelName,
- subject_Id = config$table$hierarchy_keys_depth())
+  pepIntensity,
+  modelFunction,
+  modelName = modelName,
+  subject_Id = config$table$hierarchy_keys_depth()
+)
 
- #mod$get_coefficients()
+# mod$get_coefficients()
 
- Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a",
-  "dil.e_vs_a" = "dilution.e - dilution.a"
-  ,"dil.e_vs_b" = "dilution.e - dilution.b",
+Contr <- c(
+  "dil.b_vs_a" = "dilution.b - dilution.a",
+  "dil.e_vs_a" = "dilution.e - dilution.a",
+  "dil.e_vs_b" = "dilution.e - dilution.b",
   "dil.c_vs_b" = "dilution.c - dilution.b"
- )
-contrast <- prolfqua::Contrasts$new(mod,
-  Contr)
+)
+contrast <- prolfqua::Contrasts$new(
+  mod,
+  Contr
+)
 tmp <- contrast$get_contrasts()
 
-cp <- ContrastsPlotter$new(tmp ,
- contrast$subject_Id,
-volcano = list(list(score = "FDR", thresh = 0.1)),
-histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                 list(score = "FDR", xlim = c(0,1,0.05))),
-score =list(list(score = "statistic",  thresh = 5)))
+cp <- ContrastsPlotter$new(tmp,
+  contrast$subject_Id,
+  volcano = list(list(score = "FDR", thresh = 0.1)),
+  histogram = list(
+    list(score = "p.value", xlim = c(0, 1, 0.05)),
+    list(score = "FDR", xlim = c(0, 1, 0.05))
+  ),
+  score = list(list(score = "statistic", thresh = 5))
+)
 cp$volcano_plotly()
 
-cp <- ContrastsPlotter$new(tmp ,
- contrast$subject_Id,
-volcano = list(list(score = "FDR", thresh = 0.1)),
-histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                 list(score = "FDR", xlim = c(0,1,0.05))),
-                 fcthresh = NULL,
-score =list(list(score = "statistic", thresh = 5)))
+cp <- ContrastsPlotter$new(tmp,
+  contrast$subject_Id,
+  volcano = list(list(score = "FDR", thresh = 0.1)),
+  histogram = list(
+    list(score = "p.value", xlim = c(0, 1, 0.05)),
+    list(score = "FDR", xlim = c(0, 1, 0.05))
+  ),
+  fcthresh = NULL,
+  score = list(list(score = "statistic", thresh = 5))
+)
 cp$fcthresh
 cp$volcano_plotly()
-p <- cp$score_plot(legend=FALSE)
+p <- cp$score_plot(legend = FALSE)
 cp$score_plotly()
 p <- cp$histogram()
 p <- cp$histogram_estimate()
@@ -64,8 +75,8 @@ respltly <- cp$volcano_plotly()
 
 length(respltly)
 cp$ma_plot()
-cp$ma_plotly(rank=TRUE)
-res  <- cp$barplot_threshold()
+cp$ma_plotly(rank = TRUE)
+res <- cp$barplot_threshold()
 names(res)
 cp$histogram_diff()
 cp$volcano()

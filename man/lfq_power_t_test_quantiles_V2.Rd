@@ -29,18 +29,18 @@ estimate sample sizes
 \examples{
 
 
-#library(ggplot2)
+# library(ggplot2)
 
-bb1 <- prolfqua_data('data_ionstar')$normalized()
-config <- old2new(bb1$config$clone( deep = TRUE))
+bb1 <- prolfqua_data("data_ionstar")$normalized()
+config <- old2new(bb1$config$clone(deep = TRUE))
 data2 <- bb1$data
 stats_res <- summarize_stats(data2, config)
-xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
+xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5, 0.8))
 bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- dplyr::bind_rows(bbb)
 summary <- bbb |>
- dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
- tidyr::spread(delta, N, sep = "=")
+  dplyr::select(-N_exact, -quantiles, -sdtrimmed) |>
+  tidyr::spread(delta, N, sep = "=")
 summary
 }
 \seealso{

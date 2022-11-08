@@ -21,35 +21,32 @@ library(prolfqua)
 conflicted::conflict_prefer("filter", "dplyr")
 
 knitr::opts_chunk$set(
-echo = TRUE,
-message = FALSE,
-warning = FALSE,
-fig.width = 10,
-fig.height = 10
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 10,
+  fig.height = 10
 )
 
 data <- eval(params$data)
 configuration <- eval(params$configuration)
-
 ```
 
 ## Summarize levels
 
 ```{r hierarchy_counts}
 
-x <- hierarchy_counts( data , configuration )
+x <- hierarchy_counts(data, configuration)
 knitr::kable(data.frame(NR = x), caption = "summary")
-
 ```
 
 
 ```{r missingFigIntensityHistorgram, fig.cap="histogram of mean condition intensities per transition"}
 
-#interaction_missing_stats(data, configuration)
-#interaction_missing_stats(data, configuration)
+# interaction_missing_stats(data, configuration)
+# interaction_missing_stats(data, configuration)
 
 missigness_histogram(data, configuration)
-
 ```
 
 

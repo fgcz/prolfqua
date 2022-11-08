@@ -18,7 +18,7 @@ applies contrast computation using lmerTest::contest function
 }
 \examples{
 
-mb <- prolfqua_data('data_basicModel_p1807')
+mb <- prolfqua_data("data_basicModel_p1807")
 summary(mb)
 
 linfct <- linfct_from_model(mb)
@@ -28,14 +28,14 @@ my_contest(mb, linfct$linfct_interactions)
 
 # my_glht(mb, linfct$linfct_factors)
 # my_glht(mb, linfct$linfct_interactions)
-lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
+lmerTest::contest(mb, c(0, 1, 0, 0), joint = FALSE)
 summary(mb)
 
 
-#library(pbkrtest)
-#(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
-#class(fm1)
-#pbkrtest::get_ddf_Lb.lmerMod(fm1)
+# library(pbkrtest)
+# (fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
+# class(fm1)
+# pbkrtest::get_ddf_Lb.lmerMod(fm1)
 
 }
 \seealso{

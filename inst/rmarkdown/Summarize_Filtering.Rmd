@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 dataStart <- params$dataStart
 dataEnd <- params$dataEnd
-
 ```
 
 # Filter missigness
@@ -37,16 +36,16 @@ sumarStart <- dataStart$get_Summariser()
 sumarStart$hierarchy_counts()
 
 prolfqua::table_facade(sumarStart$hierarchy_counts(),
-             caption = "Nr Proteins and peptides before missigness filtering.")
-
+  caption = "Nr Proteins and peptides before missigness filtering."
+)
 ```
 
 
 
 ```{r}
-prolfqua::table_facade( sumarStart$hierarchy_counts_sample("wide"),
-             caption = "NR Proteins and peptides by sample.")
-
+prolfqua::table_facade(sumarStart$hierarchy_counts_sample("wide"),
+  caption = "NR Proteins and peptides by sample."
+)
 ```
 
 ```{r hierarchyCountsSampleBarplot, fig.cap="Number of quantified peptides and proteins per sample."}
@@ -61,10 +60,11 @@ sumarStart$hierarchy_counts_sample("plot")
 # Filtered data
 
 ```{r}
-dataRemoved <- dataStart$filter_difference( dataEnd )
+dataRemoved <- dataStart$filter_difference(dataEnd)
 remSum <- dataRemoved$get_Summariser()
 prolfqua::table_facade(remSum$hierarchy_counts(),
-             caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein" )
+  caption = "Numbers of proteins and peptides after removing sparse peptide quants and filtering for 2 peptides per protein"
+)
 ```
 
 ```{r removedHeatmap}
@@ -81,22 +81,22 @@ print(p)
 
 ```{r}
 prolfqua::table_facade(dataEnd$get_Summariser()$hierarchy_counts(),
-             caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein")
-
+  caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein"
+)
 ```
 
 
 ```{r}
 prolfqua::table_facade(dataEnd$get_Summariser()$hierarchy_counts_sample("wide"),
-             caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein by sample")
-
+  caption = "Numbers of proteins and peptides after filtering for 2 peptides per protein by sample"
+)
 ```
 
 
 \newpage
 
 ```{r createHetmap}
-x <-  dataEnd$get_Plotter()$NA_heatmap()
+x <- dataEnd$get_Plotter()$NA_heatmap()
 ```
 
 
@@ -105,4 +105,3 @@ print(x)
 ```
 
 \clearpage
-

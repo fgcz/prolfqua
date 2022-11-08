@@ -24,21 +24,20 @@ correlation preprocessing
 
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
-config <- bb$config$clone(deep=TRUE)
+config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 data$nr_peptide_Id_IN_protein_Id <- NULL
 
-config$parameter$min_nr_of_notNA  <- 3
-#debug(workflow_correlation_preprocessing_protein_intensities)
+config$parameter$min_nr_of_notNA <- 3
+# debug(workflow_correlation_preprocessing_protein_intensities)
 runLong <- TRUE
-if(runLong){
-res <- workflow_correlation_preprocessing_protein_intensities(data,config)
-names(res)
+if (runLong) {
+  res <- workflow_correlation_preprocessing_protein_intensities(data, config)
+  names(res)
 }
-
 
 }
 \seealso{

@@ -9,9 +9,9 @@ Annotates Data Table
 \examples{
 
 ata <- AnalysisTableAnnotation$new()
-ata$fileName = "rawfile.column"
-ata$hierarchy[["protein"]] = "protein.column"
-ata$factors[["explanatory"]] = "explanatory.column"
+ata$fileName <- "rawfile.column"
+ata$hierarchy[["protein"]] <- "protein.column"
+ata$factors[["explanatory"]] <- "explanatory.column"
 ata$set_response("abundance")
 ata$id_required()
 ata$id_vars()

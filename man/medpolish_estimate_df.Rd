@@ -23,23 +23,25 @@ Median polish estimates of e.g. protein abundances for entire data.frame
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
 
-conf$table$hierarchyDepth = 1
+conf$table$hierarchyDepth <- 1
 xnested <- data |>
-  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
+  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+  tidyr::nest()
 
-feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
+feature <- setdiff(conf$table$hierarchy_keys(), conf$table$hierarchy_keys_depth())
 x <- xnested$data[[1]]
 bb <- medpolish_estimate_df(x,
- expression = conf$table$get_response(),
+  expression = conf$table$get_response(),
   feature = feature,
-   sampleName = conf$table$sampleName)
-prolfqua:::.reestablish_condition(x,bb, conf)
+  sampleName = conf$table$sampleName
+)
+prolfqua:::.reestablish_condition(x, bb, conf)
 
 }
 \seealso{

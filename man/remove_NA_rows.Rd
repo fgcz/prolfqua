@@ -19,13 +19,13 @@ Removes rows with more than thresh NA's from matrix
 }
 \examples{
 
-obj = matrix(rnorm(10*10),ncol=10)
+obj <- matrix(rnorm(10 * 10), ncol = 10)
 dim(obj)
-obj[3,3] = NA
-x1 = remove_NA_rows(obj, thresh=0)
-stopifnot(all(c(9,10)==dim(x1)))
-x2 = remove_NA_rows(obj, thresh=1)
-stopifnot(all(c(10,10)==dim(x2)))
+obj[3, 3] <- NA
+x1 <- remove_NA_rows(obj, thresh = 0)
+stopifnot(all(c(9, 10) == dim(x1)))
+x2 <- remove_NA_rows(obj, thresh = 1)
+stopifnot(all(c(10, 10) == dim(x2)))
 
 }
 \seealso{

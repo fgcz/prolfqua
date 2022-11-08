@@ -17,7 +17,7 @@ Aggregates e.g. protein abundances from peptide abundances
 }
 \examples{
 
-dd <- prolfqua_data('data_ionstar')$filtered()
+dd <- prolfqua_data("data_ionstar")$filtered()
 dd$config <- old2new(dd$config)
 
 config <- dd$config
@@ -32,10 +32,10 @@ names(bbMed$data)
 names(bbRob$data)
 length(bbMed$data$medpolish)
 length(bbRob$data$lmrob)
-plot(bbMed$data$medpolish, bbRob$data$lmrob, log="xy", pch=".")
-abline(0,1, col=2)
+plot(bbMed$data$medpolish, bbRob$data$lmrob, log = "xy", pch = ".")
+abline(0, 1, col = 2)
 plot(bbMed$data$medpolish[1:100], bbRob$data$lmrob[1:100])
-abline(0,1)
+abline(0, 1)
 
 }
 \seealso{

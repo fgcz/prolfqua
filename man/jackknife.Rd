@@ -22,10 +22,13 @@ list of matrices
 Compute jackknive resampling on matrix
 }
 \examples{
-xx <- matrix(rnorm(20), ncol=4)
-cortest <- function(x){print(dim(x));cor(x)}
+xx <- matrix(rnorm(20), ncol = 4)
+cortest <- function(x) {
+  print(dim(x))
+  cor(x)
+}
 jackknife(xx, cortest)
-tmp <- jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
+tmp <- jackknife(xx, cor, use = "pairwise.complete.obs", method = "pearson")
 stopifnot(length(tmp) == 3)
 stopifnot(length(tmp[[2]]) == nrow(xx))
 }

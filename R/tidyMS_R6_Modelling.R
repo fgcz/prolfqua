@@ -1,6 +1,6 @@
 # Creating models from configuration ----
 
-.ehandler = function(e){
+.ehandler <- function(e) {
   warning("WARN :", e)
   # return string here
   as.character(e)
@@ -21,30 +21,34 @@
 #'
 strategy_lmer <- function(modelstr,
                           model_name = "Model",
-                          report_columns = c("statistic",
-                                             "p.value",
-                                             "p.value.adjusted",
-                                             "moderated.p.value",
-                                             "moderated.p.value.adjusted")
-) {
+                          report_columns = c(
+                            "statistic",
+                            "p.value",
+                            "p.value.adjusted",
+                            "moderated.p.value",
+                            "moderated.p.value.adjusted"
+                          )) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, pb , get_formula = FALSE){
+  model_fun <- function(x, pb, get_formula = FALSE) {
     if (get_formula) {
       return(formula)
     }
     if (!missing(pb)) {
       pb$tick()
     }
-    modelTest <- tryCatch( lmerTest::lmer( formula , data = x ),
-                           error = .ehandler)
+    modelTest <- tryCatch(lmerTest::lmer(formula, data = x),
+      error = .ehandler
+    )
     return(modelTest)
   }
-  res <- list(model_fun = model_fun,
-              isSingular = lme4::isSingular,
-              contrast_fun = my_contest,
-              model_name = model_name,
-              report_columns = report_columns,
-              is_mixed = TRUE)
+  res <- list(
+    model_fun = model_fun,
+    isSingular = lme4::isSingular,
+    contrast_fun = my_contest,
+    model_name = model_name,
+    report_columns = report_columns,
+    is_mixed = TRUE
+  )
   return(res)
 }
 
@@ -64,30 +68,34 @@ strategy_lmer <- function(modelstr,
 #' tmp$isSingular
 strategy_lm <- function(modelstr,
                         model_name = "Model",
-                        report_columns = c("statistic",
-                                           "p.value",
-                                           "p.value.adjusted",
-                                           "moderated.p.value",
-                                           "moderated.p.value.adjusted")
-) {
+                        report_columns = c(
+                          "statistic",
+                          "p.value",
+                          "p.value.adjusted",
+                          "moderated.p.value",
+                          "moderated.p.value.adjusted"
+                        )) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE){
+  model_fun <- function(x, pb, get_formula = FALSE) {
     if (get_formula) {
       return(formula)
     }
     if (!missing(pb)) {
       pb$tick()
     }
-    modelTest <- tryCatch(lm( formula , data = x ),
-                          error = .ehandler)
+    modelTest <- tryCatch(lm(formula, data = x),
+      error = .ehandler
+    )
     return(modelTest)
   }
-  res <- list(model_fun = model_fun,
-              isSingular = isSingular_lm,
-              contrast_fun = my_contrast_V2,
-              model_name = model_name,
-              report_columns = report_columns,
-              is_mixed = FALSE)
+  res <- list(
+    model_fun = model_fun,
+    isSingular = isSingular_lm,
+    contrast_fun = my_contrast_V2,
+    model_name = model_name,
+    report_columns = report_columns,
+    is_mixed = FALSE
+  )
   return(res)
 }
 
@@ -109,30 +117,34 @@ strategy_lm <- function(modelstr,
 #' tmp$isSingular
 strategy_rlm <- function(modelstr,
                          model_name = "Model",
-                         report_columns = c("statistic",
-                                            "p.value",
-                                            "p.value.adjusted",
-                                            "moderated.p.value",
-                                            "moderated.p.value.adjusted")
-) {
+                         report_columns = c(
+                           "statistic",
+                           "p.value",
+                           "p.value.adjusted",
+                           "moderated.p.value",
+                           "moderated.p.value.adjusted"
+                         )) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE){
+  model_fun <- function(x, pb, get_formula = FALSE) {
     if (get_formula) {
       return(formula)
     }
     if (!missing(pb)) {
       pb$tick()
     }
-    modelTest <- tryCatch(MASS::rlm( formula , data = x , method = "M" ),
-                          error = .ehandler)
+    modelTest <- tryCatch(MASS::rlm(formula, data = x, method = "M"),
+      error = .ehandler
+    )
     return(modelTest)
   }
-  res <- list(model_fun = model_fun,
-              isSingular = isSingular_lm,
-              contrast_fun = my_contrast_V2,
-              model_name = model_name,
-              report_columns = report_columns,
-              is_mixed = FALSE)
+  res <- list(
+    model_fun = model_fun,
+    isSingular = isSingular_lm,
+    contrast_fun = my_contrast_V2,
+    model_name = model_name,
+    report_columns = report_columns,
+    is_mixed = FALSE
+  )
   return(res)
 }
 
@@ -149,45 +161,49 @@ strategy_rlm <- function(modelstr,
 #' tmp$isSingular
 strategy_glm <- function(modelstr,
                          model_name = "Model",
-                         report_columns = c("statistic",
-                                            "p.value",
-                                            "p.value.adjusted",
-                                            "moderated.p.value",
-                                            "moderated.p.value.adjusted")
-) {
+                         report_columns = c(
+                           "statistic",
+                           "p.value",
+                           "p.value.adjusted",
+                           "moderated.p.value",
+                           "moderated.p.value.adjusted"
+                         )) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE){
+  model_fun <- function(x, pb, get_formula = FALSE) {
     if (get_formula) {
       return(formula)
     }
     if (!missing(pb)) {
       pb$tick()
     }
-    modelTest <- tryCatch(glm( formula ,
-                               data = x ,
-                               family = stats::quasibinomial),
-                          error = .ehandler)
+    modelTest <- tryCatch(
+      glm(formula,
+        data = x,
+        family = stats::quasibinomial
+      ),
+      error = .ehandler
+    )
     return(modelTest)
   }
-  res <- list(model_fun = model_fun,
-              isSingular = isSingular_lm,
-              contrast_fun = my_contrast_V2,
-              model_name = model_name,
-              report_columns = report_columns,
-              is_mixed = FALSE)
+  res <- list(
+    model_fun = model_fun,
+    isSingular = isSingular_lm,
+    contrast_fun = my_contrast_V2,
+    model_name = model_name,
+    report_columns = report_columns,
+    is_mixed = FALSE
+  )
   return(res)
 }
 
 
 
 .likelihood_ratio_test <- function(modelNO, model) {
-  res <- tryCatch(  anova(modelNO,model), error = function(x) NULL)
+  res <- tryCatch(anova(modelNO, model), error = function(x) NULL)
   if (!is.null(res)) {
-    res <- suppressWarnings(broom::tidy(res))[2,"p.value"]
+    res <- suppressWarnings(broom::tidy(res))[2, "p.value"]
     return(as.numeric(res))
-
-  }
-  else{
+  } else {
     return(NA)
   }
 }
@@ -201,7 +217,7 @@ strategy_glm <- function(modelstr,
 #' @family modelling
 #' @export
 #'
-isSingular_lm <- function(m){
+isSingular_lm <- function(m) {
   anyNA <- any(is.na(coefficients(m)))
   if (anyNA) {
     return(TRUE)
@@ -222,9 +238,10 @@ isSingular_lm <- function(m){
 #' @family modelling
 #' @export
 #'
-get_complete_model_fit <- function(modelProteinF){
+get_complete_model_fit <- function(modelProteinF) {
   modelProteinF <- modelProteinF |> dplyr::filter(.data$exists_lmer == TRUE)
-  modelProteinF <- modelProteinF |> dplyr::filter(.data$nrcoeff_not_NA == max(.data$nrcoeff_not_NA)) |>
+  modelProteinF <- modelProteinF |>
+    dplyr::filter(.data$nrcoeff_not_NA == max(.data$nrcoeff_not_NA)) |>
     dplyr::arrange(dplyr::desc(.data$nrcoeff_not_NA))
   modelProteinF <- modelProteinF |> dplyr::filter(df.residual > 1)
   return(modelProteinF)
@@ -241,22 +258,22 @@ get_complete_model_fit <- function(modelProteinF){
 #' @examples
 #'
 #'
-#' ionstar <- prolfqua_data('data_ionstar')$normalized()
+#' ionstar <- prolfqua_data("data_ionstar")$normalized()
 #' ionstar$config <- old2new(ionstar$config)
 #'
-#' ionstar$data <- ionstar$data |> dplyr::filter(protein_Id %in% sample(protein_Id,10))
+#' ionstar$data <- ionstar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 10))
 #' prolfqua::table_factors(ionstar$data, ionstar$config)
 #' formula_randomPeptide <-
 #'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
-#' mr <- model_analyse( ionstar$data,
-#'  formula_randomPeptide,
-#'  subject_Id = ionstar$config$table$hierarchy_keys_depth())
+#' mr <- model_analyse(ionstar$data,
+#'   formula_randomPeptide,
+#'   subject_Id = ionstar$config$table$hierarchy_keys_depth()
+#' )
 #' get_complete_model_fit(mr$modelProtein)
 model_analyse <- function(pepIntensity,
                           modelFunction,
                           subject_Id = "protein_Id",
-                          modelName = "Model")
-{
+                          modelName = "Model") {
   pepIntensity |>
     dplyr::group_by(!!!syms(subject_Id)) |>
     tidyr::nest() -> nestProtein
@@ -268,31 +285,33 @@ model_analyse <- function(pepIntensity,
     dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun, pb = pb))
 
   modelProtein <- modelProtein |>
-    dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.character(x)}))
+    dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x) {
+      !is.character(x)
+    }))
 
   modelProteinF <- modelProtein |>
-    dplyr::filter( !!sym("exists_lmer") == TRUE)
+    dplyr::filter(!!sym("exists_lmer") == TRUE)
   modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), modelFunction$isSingular ))
+    dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), modelFunction$isSingular))
   modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), df.residual ))
+    dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), df.residual))
   modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"sigma" := purrr::map_dbl( !!sym(lmermodel) , sigma))
+    dplyr::mutate(!!"sigma" := purrr::map_dbl(!!sym(lmermodel), sigma))
 
   nrcoeff <- function(x) {
     cc <- coefficients(x)
     if (class(cc) == "numeric") {
       return(length(cc))
-    }else{
+    } else {
       return(ncol(cc[[1]]))
     }
   }
 
-  nrcoeff_not_NA <- function(x){
+  nrcoeff_not_NA <- function(x) {
     cc <- coefficients(x)
     if (class(cc) == "numeric") {
       return(sum(!is.na(cc)))
-    }else{
+    } else {
       return(ncol(cc[[1]]))
     }
   }
@@ -300,13 +319,14 @@ model_analyse <- function(pepIntensity,
   modelProteinF <- modelProteinF |> dplyr::mutate(nrcoef = purrr::map_int(!!sym(lmermodel), nrcoeff))
   modelProteinF <- modelProteinF |> dplyr::mutate(nrcoeff_not_NA = purrr::map_int(!!sym(lmermodel), nrcoeff_not_NA))
 
-  #return(list(modelProtein = modelProtein, modelProteinF = modelProteinF))
+  # return(list(modelProtein = modelProtein, modelProteinF = modelProteinF))
   modelProteinF <- modelProteinF |>
-    dplyr::select_at(c(subject_Id,"isSingular", "df.residual","sigma" ,"nrcoef", "nrcoeff_not_NA") )
+    dplyr::select_at(c(subject_Id, "isSingular", "df.residual", "sigma", "nrcoef", "nrcoeff_not_NA"))
   modelProtein <- dplyr::left_join(modelProtein, modelProteinF)
 
-  return(list(modelProtein = modelProtein,
-              modelName = modelName
+  return(list(
+    modelProtein = modelProtein,
+    modelName = modelName
   ))
 }
 
@@ -319,17 +339,22 @@ model_analyse <- function(pepIntensity,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_interactionModel_p1807')
+#' m <- prolfqua_data("data_interactionModel_p1807")
 #' plot_lmer_peptide_predictions(m)
-plot_lmer_peptide_predictions <- function(m){
+plot_lmer_peptide_predictions <- function(m) {
   data <- m@frame
   data$prediction <- predict(m)
-  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
+  interactionColumns <- intersect(attributes(terms(m))$term.labels, colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
-  gg <- ggplot(data, aes(x = .data$interaction ,
-                         y = .data$transformedIntensity)) + geom_point()
-  gg <- gg + geom_point(aes(x = .data$interaction,
-                            y = .data$prediction), color = 2) + facet_wrap(~peptide_Id)
+  gg <- ggplot(data, aes(
+    x = .data$interaction,
+    y = .data$transformedIntensity
+  )) +
+    geom_point()
+  gg <- gg + geom_point(aes(
+    x = .data$interaction,
+    y = .data$prediction
+  ), color = 2) + facet_wrap(~peptide_Id)
   gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0))
   return(gg)
 }
@@ -345,32 +370,40 @@ plot_lmer_peptide_predictions <- function(m){
 #' @examples
 #'
 #'
-#' m <- prolfqua_data('data_basicModel_p1807')
+#' m <- prolfqua_data("data_basicModel_p1807")
 #' plot_lmer_peptide_noRandom(m)
 #'
-#' m <- prolfqua_data('data_interactionModel_p1807')
+#' m <- prolfqua_data("data_interactionModel_p1807")
 #' plot_lmer_peptide_noRandom(m)
-plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
+plot_lmer_peptide_noRandom <- function(m, legend.position = "none") {
   data <- m@frame
   ran <- lme4::ranef(m)[[1]]
-  randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
-  ran <- tibble::as_tibble(ran,rownames = randeffect)
-  colnames(ran) <- gsub("[()]","",colnames(ran))
+  randeffect <- setdiff(all.vars(terms(formula(m))), all.vars(terms(m)))
+  ran <- tibble::as_tibble(ran, rownames = randeffect)
+  colnames(ran) <- gsub("[()]", "", colnames(ran))
   ran <- dplyr::inner_join(data, ran, by = randeffect)
 
-  ran <- ran |> dplyr::mutate(int_randcorrected  = .data$transformedIntensity  - .data$Intercept)
-  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
-  ran <- make_interaction_column(ran,interactionColumns, sep = ":" )
+  ran <- ran |> dplyr::mutate(int_randcorrected = .data$transformedIntensity - .data$Intercept)
+  interactionColumns <- intersect(attributes(terms(m))$term.labels, colnames(data))
+  ran <- make_interaction_column(ran, interactionColumns, sep = ":")
 
-  meanx <- function(x){mean(x,na.rm = TRUE)}
-  gg <- ggplot(ran,aes(x = .data$interaction,
-                       y = .data$int_randcorrected,
-                       color = .data$peptide_Id)) +
+  meanx <- function(x) {
+    mean(x, na.rm = TRUE)
+  }
+  gg <- ggplot(ran, aes(
+    x = .data$interaction,
+    y = .data$int_randcorrected,
+    color = .data$peptide_Id
+  )) +
     geom_point(position = position_jitterdodge())
-  gg <- gg + stat_summary(fun = meanx, colour = "black", geom = "point",
-                          shape = 12, size = 3,show.legend = FALSE)
-  gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0),
-                   legend.position = legend.position)
+  gg <- gg + stat_summary(
+    fun = meanx, colour = "black", geom = "point",
+    shape = 12, size = 3, show.legend = FALSE
+  )
+  gg <- gg + theme(
+    axis.text.x = element_text(angle = -90, hjust = 0),
+    legend.position = legend.position
+  )
   gg <- gg + geom_boxplot(alpha = 0.1)
 
   return(gg)
@@ -383,19 +416,25 @@ plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- prolfqua_data('data_interactionModel_p1807')
-#' plot_lmer_predicted_interactions(plot_lmer_model_and_data(m,"dumm"),m)
-plot_lmer_predicted_interactions <- function(gg, m){
+#' m <- prolfqua_data("data_interactionModel_p1807")
+#' plot_lmer_predicted_interactions(plot_lmer_model_and_data(m, "dumm"), m)
+plot_lmer_predicted_interactions <- function(gg, m) {
   cm <- .lmer4_coeff_matrix(m)
   xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
-  ystart_end <- data.frame(xend = rownames(cm$mm), ystart = rep(0, nrow(cm$mm)),
-                           yend = cm$mm %*% cm$coeffs)
+  ystart_end <- data.frame(
+    xend = rownames(cm$mm), ystart = rep(0, nrow(cm$mm)),
+    yend = cm$mm %*% cm$coeffs
+  )
   segments <- dplyr::inner_join(xstart_end, ystart_end, by = "xend")
-  gg <- gg + geom_segment(aes(x = .data$xstart,
-                              y = .data$ystart,
-                              xend = .data$xend,
-                              yend = .data$yend),
-                          data = segments, color = "blue", arrow = arrow())
+  gg <- gg + geom_segment(
+    aes(
+      x = .data$xstart,
+      y = .data$ystart,
+      xend = .data$xend,
+      yend = .data$yend
+    ),
+    data = segments, color = "blue", arrow = arrow()
+  )
   return(gg)
 }
 
@@ -405,11 +444,11 @@ plot_lmer_predicted_interactions <- function(gg, m){
 #' @keywords internal
 #' @examples
 #'
-#' m <- prolfqua_data('data_interactionModel_p1807')
-#' plot_lmer_model_and_data(m,"dumm")
+#' m <- prolfqua_data("data_interactionModel_p1807")
+#' plot_lmer_model_and_data(m, "dumm")
 #'
-plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
-  gg <- plot_lmer_peptide_noRandom(m,legend.position = legend.position)
+plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none") {
+  gg <- plot_lmer_peptide_noRandom(m, legend.position = legend.position)
   gg <- plot_lmer_predicted_interactions(gg, m)
   gg <- gg + ggtitle(proteinID)
   gg
@@ -422,49 +461,51 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
 # Generate linear functions -----
 
 # get matrix of indicator coefficients for each interaction
-.lmer4_coeff_matrix <- function(m){
+.lmer4_coeff_matrix <- function(m) {
   data <- NULL
   if ("lm" %in% class(m)) {
     data <- m$model
-  }else{
+  } else {
     # for "lmerModLmerTest"
     data <- m@frame
   }
-  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
+  interactionColumns <- intersect(attributes(terms(m))$term.labels, colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
 
-  if("rlm" %in% class(m)){
-    coeffs <- coefficients(summary(m))[,'Value']
+  if ("rlm" %in% class(m)) {
+    coeffs <- coefficients(summary(m))[, "Value"]
   } else {
-    coeffs <- coefficients(summary(m))[,'Estimate']
+    coeffs <- coefficients(summary(m))[, "Estimate"]
   }
   inter <- unique(data$interaction)
   mm <- matrix(0, nrow = length(inter), ncol = length(coeffs))
   rownames(mm) <- inter
   colnames(mm) <- names(coeffs)
-  mm[,1] <- 1
+  mm[, 1] <- 1
   coefi <- coeffs[-1]
   for (i in seq_along(coefi)) {
     positionIDX <- grep(names(coefi)[i], inter)
-    mm[positionIDX, i + 1 ] <- 1
+    mm[positionIDX, i + 1] <- 1
   }
   return(list(mm = mm, coeffs = coeffs))
 }
 
 
-.get_match_idx <- function(mm, factor_level){
+.get_match_idx <- function(mm, factor_level) {
   ddd <- names_to_matrix(rownames(mm), split = ":")
-  xd <- apply(ddd, 2, function(x, factor_level){x %in% factor_level}, factor_level)
-  idx <- which(apply(xd,1, sum) > 0)
+  xd <- apply(ddd, 2, function(x, factor_level) {
+    x %in% factor_level
+  }, factor_level)
+  idx <- which(apply(xd, 1, sum) > 0)
   return(idx)
 }
 
-.coeff_weights_factor_levels <- function(mm){
-  getCoeffs <- function(factor_level, mm){
+.coeff_weights_factor_levels <- function(mm) {
+  getCoeffs <- function(factor_level, mm) {
     idx <- .get_match_idx(mm, factor_level)
-    x <- as.list(apply(mm[idx,, drop = FALSE],2,mean) )
+    x <- as.list(apply(mm[idx, , drop = FALSE], 2, mean))
     x <- tibble::as_tibble(x)
-    tibble::add_column(x, "factor_level" = factor_level,.before = 1)
+    tibble::add_column(x, "factor_level" = factor_level, .before = 1)
   }
   factor_levels <- unique(unlist(stringr::str_split(rownames(mm), ":")))
   xx <- purrr::map_df(factor_levels, getCoeffs, mm)
@@ -478,38 +519,39 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
 #' @keywords internal
 #' @examples
 #'
-#' m <- prolfqua_data('data_basicModel_p1807')
+#' m <- prolfqua_data("data_basicModel_p1807")
 #' # debug(linfct_from_model)
 #' linfct <- linfct_from_model(m)
 #'
 #' linfct$linfct_factors
 #' linfct$linfct_interactions
 #'
-#' m <- prolfqua_data('data_interactionModel_p1807')
+#' m <- prolfqua_data("data_interactionModel_p1807")
 #' # debug(.coeff_weights_factor_levels)
 #' undebug(linfct_from_model)
 #' linfct <- linfct_from_model(m)
 #'
-#' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
-#'  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
+#' all.equal(
+#'   linfct$linfct_factors["CelltypeCMP/MEP", ],
+#'   apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)), ], 2, mean)
+#' )
 #' linfct$linfct_interactions
 #'
 #' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_from_model(m)
-#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b",5)) )
+#' xx <- data.frame(Y = 1:10, Condition = c(rep("a", 5), rep("b", 5)))
 #' m <- lm(Y ~ Condition, data = xx)
 #' linfct_from_model(m)
-#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b.b",5)) )
+#' xx <- data.frame(Y = 1:10, Condition = c(rep("a", 5), rep("b.b", 5)))
 #' m <- lm(Y ~ Condition, data = xx)
 #' linfct_from_model(m)
-#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("ab",5)) )
+#' xx <- data.frame(Y = 1:10, Condition = c(rep("a", 5), rep("ab", 5)))
 #' m <- lm(Y ~ Condition, data = xx)
 #' linfct_from_model(m)
 #'
-linfct_from_model <- function(m, as_list = TRUE){
-
+linfct_from_model <- function(m, as_list = TRUE) {
   cm <- .lmer4_coeff_matrix(m)
-  cm_mm <- cm$mm[order(rownames(cm$mm)),]
+  cm_mm <- cm$mm[order(rownames(cm$mm)), ]
 
   l_factors <- .coeff_weights_factor_levels(cm_mm)
   linfct_factors <- l_factors |>
@@ -517,13 +559,13 @@ linfct_from_model <- function(m, as_list = TRUE){
     data.matrix()
 
   rownames(linfct_factors) <- l_factors$factor_level
-  linfct_factors <- linfct_factors[order(rownames(linfct_factors)),]
-  res <- list(linfct_factors = linfct_factors , linfct_interactions = cm_mm)
+  linfct_factors <- linfct_factors[order(rownames(linfct_factors)), ]
+  res <- list(linfct_factors = linfct_factors, linfct_interactions = cm_mm)
 
   if (as_list) {
     return(res)
-  }else{
-    do.call( rbind, res)
+  } else {
+    do.call(rbind, res)
   }
 }
 
@@ -536,31 +578,34 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_basicModel_p1807')
-#' linfct <- linfct_from_model(m,as_list = FALSE)
+#' m <- prolfqua_data("data_basicModel_p1807")
+#' linfct <- linfct_from_model(m, as_list = FALSE)
 #' linfct
 #'
-#' Contrasts <- c("CMPvsMEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
-#' "NOvsHU" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
-#' linfct_matrix_contrasts(linfct, Contrasts )
+#' Contrasts <- c(
+#'   "CMPvsMEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
+#'   "NOvsHU" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`"
+#' )
+#' linfct_matrix_contrasts(linfct, Contrasts)
 #'
-linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
+linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")
   make_contrasts <- function(data,
-                             contrasts)
-  {
-    cnams <- setdiff(colnames(data),"interaction")
+                             contrasts) {
+    cnams <- setdiff(colnames(data), "interaction")
     for (i in seq_along(contrasts)) {
-      if (p.message) {message(names(contrasts)[i], "=", contrasts[i],"\n")}
+      if (p.message) {
+        message(names(contrasts)[i], "=", contrasts[i], "\n")
+      }
       data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
     }
     res <- data |> dplyr::select(-one_of(cnams))
     return(res)
   }
 
-  res <- make_contrasts(df, contrasts )
-  res <- tibble::column_to_rownames(res,"interaction")
+  res <- make_contrasts(df, contrasts)
+  res <- tibble::column_to_rownames(res, "interaction")
   res <- t(res)
   return(res)
 }
@@ -571,21 +616,21 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- prolfqua_data('data_basicModel_p1807')
+#' m <- prolfqua_data("data_basicModel_p1807")
 #' m
 #' linfct <- linfct_from_model(m)
 #'
 #' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 #' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 #'
-linfct_all_possible_contrasts <- function(lin_int ){
-  combs <- combn(nrow(lin_int),2)
+linfct_all_possible_contrasts <- function(lin_int) {
+  combs <- combn(nrow(lin_int), 2)
   names <- rownames(lin_int)
   newnames <- rep("", ncol(combs))
-  new_lin_fct <- matrix(NA,  nrow = ncol(combs), ncol = ncol(lin_int))
+  new_lin_fct <- matrix(NA, nrow = ncol(combs), ncol = ncol(lin_int))
   for (i in seq_len(ncol(combs))) {
-    newnames[i] <- paste(names[combs[,i]], collapse = " - ")
-    new_lin_fct[i,] <- lin_int[combs[1,i],] - lin_int[combs[2,i],]
+    newnames[i] <- paste(names[combs[, i]], collapse = " - ")
+    new_lin_fct[i, ] <- lin_int[combs[1, i], ] - lin_int[combs[2, i], ]
   }
   rownames(new_lin_fct) <- newnames
   colnames(new_lin_fct) <- colnames(lin_int)
@@ -598,14 +643,14 @@ linfct_all_possible_contrasts <- function(lin_int ){
 #' @keywords internal
 #' @examples
 #'
-#' m <- prolfqua_data('data_basicModel_p1807')
+#' m <- prolfqua_data("data_basicModel_p1807")
 #' xl <- linfct_factors_contrasts(m)
 #' xl
 #' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_factors_contrasts(m)
-linfct_factors_contrasts <- function(m){
+linfct_factors_contrasts <- function(m) {
   ffac <- attributes(terms(m))$term.labels
-  ffac <- ffac[!grepl(":",ffac)] # remove interactions
+  ffac <- ffac[!grepl(":", ffac)] # remove interactions
   linfct_factors <- linfct_from_model(m)$linfct_factors
 
   factorDepths <- rownames(linfct_factors)
@@ -613,7 +658,7 @@ linfct_factors_contrasts <- function(m){
   for (i in seq_along(ffac)) {
     fac <- ffac[i]
     idx <- grep(fac, factorDepths)
-    linfct_m <- linfct_factors[idx,]
+    linfct_m <- linfct_factors[idx, ]
     res[[i]] <- linfct_all_possible_contrasts(linfct_m)
   }
   res <- do.call(rbind, res)
@@ -629,23 +674,23 @@ linfct_factors_contrasts <- function(m){
 #' @keywords internal
 #' @examples
 #'
-#' mb <- prolfqua_data('data_basicModel_p1807')
+#' mb <- prolfqua_data("data_basicModel_p1807")
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #'
-#' m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+#' m <- prolfqua_data("data_modellingResult_A")$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
-my_glht <- function(model, linfct , sep = TRUE ) {
+my_glht <- function(model, linfct, sep = TRUE) {
   if (!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
-  {
-    warning("USE ONLY WITH LM models ", class(model))
-    if (length(lme4::fixef(model)) != ncol(linfct)) {
-      return(NA) # catch rank defficient
-    }
-  }else{
+    {
+      warning("USE ONLY WITH LM models ", class(model))
+      if (length(lme4::fixef(model)) != ncol(linfct)) {
+        return(NA) # catch rank defficient
+      }
+    } else {
     if (isSingular_lm(model)) {
       return(NA)
     }
@@ -654,7 +699,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
   if (sep) {
     res <- list()
     for (i in seq_len(nrow(linfct))) {
-      x <- multcomp::glht(model, linfct = linfct[i,,drop = FALSE])
+      x <- multcomp::glht(model, linfct = linfct[i, , drop = FALSE])
       RHS <- broom::tidy(confint(x)) |> dplyr::select(-.data$estimate)
 
       RHS$df <- x$df
@@ -665,7 +710,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
     }
     res <- dplyr::bind_rows(res)
     return(res)
-  }else{
+  } else {
     x <- multcomp::glht(model, linfct = linfct)
     RHS <- broom::tidy(confint(x)) |> dplyr::select(-.data$estimate)
     RHS$df <- x$df
@@ -688,7 +733,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #' @keywords internal
 #' @examples
 #'
-#' m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+#' m <- prolfqua_data("data_modellingResult_A")$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast(m, linfct, confint = 0.95)
@@ -698,8 +743,7 @@ my_contrast <- function(m,
                         linfct,
                         coef = coefficients(m),
                         Sigma.hat = vcov(m),
-                        confint = 0.95){
-
+                        confint = 0.95) {
   df <- df.residual(m)
   sigma <- sigma(m)
 
@@ -709,14 +753,13 @@ my_contrast <- function(m,
     std.error <- sqrt(diag(linfct %*% Sigma.hat %*% t(linfct)))
     statistic <- estimate / std.error
 
-    #p.value <- pt(-abs(statistic), df = df) * 2
+    # p.value <- pt(-abs(statistic), df = df) * 2
 
     p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
-    prqt <- -qt((1 - confint)/2, df = df)
-    conf.low <- estimate  - prqt * std.error
+    prqt <- -qt((1 - confint) / 2, df = df)
+    conf.low <- estimate - prqt * std.error
     conf.high <- estimate + prqt * std.error
-
-  }else{
+  } else {
     std.error <- NA
     statistic <- NA
     p.value <- NA
@@ -724,16 +767,18 @@ my_contrast <- function(m,
     conf.high <- NA
   }
 
-  res <- data.frame(lhs = rownames(linfct),
-                    sigma = sigma,
-                    df = df,
-                    estimate = estimate,
-                    std.error = std.error,
-                    statistic = statistic ,
-                    p.value = p.value,
-                    conf.low = conf.low,
-                    conf.high = conf.high,
-                    stringsAsFactors = FALSE)
+  res <- data.frame(
+    lhs = rownames(linfct),
+    sigma = sigma,
+    df = df,
+    estimate = estimate,
+    std.error = std.error,
+    statistic = statistic,
+    p.value = p.value,
+    conf.low = conf.low,
+    conf.high = conf.high,
+    stringsAsFactors = FALSE
+  )
   return(res)
 }
 
@@ -746,20 +791,21 @@ my_contrast <- function(m,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+#' m <- prolfqua_data("data_modellingResult_A")$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' m
 #' my_contrast_V1(m, linfct, confint = 0.95)
 #' my_contrast_V1(m, linfct, confint = 0.99)
-my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
+my_contrast_V1 <- function(incomplete, linfct, confint = 0.95) {
   Sigma.hat <- vcov(incomplete)
   Sigma.hat[is.na(Sigma.hat)] <- 0
   coef <- coefficients(incomplete)
   coef[is.na(coef)] <- 0
   res <- my_contrast(incomplete, linfct,
-                     coef = coef,
-                     Sigma.hat = Sigma.hat,
-                     confint = confint)
+    coef = coef,
+    Sigma.hat = Sigma.hat,
+    confint = confint
+  )
   return(res)
 }
 
@@ -775,42 +821,45 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+#' m <- prolfqua_data("data_modellingResult_A")$modelProtein$linear_model[[1]]
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)
 #'
-my_contrast_V2 <- function(m, linfct,confint = 0.95){
+my_contrast_V2 <- function(m, linfct, confint = 0.95) {
   Sigma.hat <- vcov(m)
 
   coef <- na.omit(coefficients(m))
 
   res <- vector(nrow(linfct), mode = "list")
   for (i in seq_len(nrow(linfct))) {
-    linfct_v <- linfct[i,,drop = FALSE]
+    linfct_v <- linfct[i, , drop = FALSE]
     idx <- which(linfct_v != 0)
     nam <- colnames(linfct_v)[idx]
 
     if (all(nam %in% names(coef))) {
       linfct_v_red <- linfct_v[, nam, drop = FALSE]
-      Sigma.hat_red <- Sigma.hat[nam,nam,drop = FALSE]
+      Sigma.hat_red <- Sigma.hat[nam, nam, drop = FALSE]
       coef_red <- coef[nam]
-      stopifnot(all.equal(colnames(linfct_v_red),colnames(Sigma.hat_red)))
-      stopifnot(all.equal(colnames(linfct_v_red),names(coef_red)))
-      res[[i]] <- my_contrast(m,linfct_v_red,
-                              coef = coef_red,
-                              Sigma.hat = Sigma.hat_red, confint = confint)
-    }else{
-      res[[i]] <-  data.frame(lhs = rownames(linfct_v),
-                              sigma = sigma(m),
-                              df = df.residual(m),
-                              estimate = NA,
-                              std.error = NA,
-                              statistic = NA ,
-                              p.value = NA,
-                              conf.low = NA,
-                              conf.high = NA,
-                              stringsAsFactors = FALSE)
+      stopifnot(all.equal(colnames(linfct_v_red), colnames(Sigma.hat_red)))
+      stopifnot(all.equal(colnames(linfct_v_red), names(coef_red)))
+      res[[i]] <- my_contrast(m, linfct_v_red,
+        coef = coef_red,
+        Sigma.hat = Sigma.hat_red, confint = confint
+      )
+    } else {
+      res[[i]] <- data.frame(
+        lhs = rownames(linfct_v),
+        sigma = sigma(m),
+        df = df.residual(m),
+        estimate = NA,
+        std.error = NA,
+        statistic = NA,
+        p.value = NA,
+        conf.low = NA,
+        conf.high = NA,
+        stringsAsFactors = FALSE
+      )
     }
   }
   res <- dplyr::bind_rows(res)
@@ -826,7 +875,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' @keywords internal
 #' @examples
 #'
-#' mb <- prolfqua_data('data_basicModel_p1807')
+#' mb <- prolfqua_data("data_basicModel_p1807")
 #' summary(mb)
 #'
 #' linfct <- linfct_from_model(mb)
@@ -836,35 +885,38 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #'
 #' # my_glht(mb, linfct$linfct_factors)
 #' # my_glht(mb, linfct$linfct_interactions)
-#' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
+#' lmerTest::contest(mb, c(0, 1, 0, 0), joint = FALSE)
 #' summary(mb)
 #'
 #'
-#' #library(pbkrtest)
-#' #(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
-#' #class(fm1)
-#' #pbkrtest::get_ddf_Lb.lmerMod(fm1)
+#' # library(pbkrtest)
+#' # (fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
+#' # class(fm1)
+#' # pbkrtest::get_ddf_Lb.lmerMod(fm1)
 #'
-my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")){
+my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")) {
   ddf <- match.arg(ddf)
-  if (length(lme4::fixef(model)) != ncol(linfct) ) {
+  if (length(lme4::fixef(model)) != ncol(linfct)) {
     warning("Model is rank deficient!")
     return(NA) # catch rank defficient
-  }else{
+  } else {
     res <- lmerTest::contest(model,
-                             linfct,
-                             joint = FALSE,
-                             confint = TRUE,
-                             ddf = ddf)
+      linfct,
+      joint = FALSE,
+      confint = TRUE,
+      ddf = ddf
+    )
   }
   res <- tibble::as_tibble(res, rownames = "lhs")
   res$sigma <- sigma(model)
-  res <- res |> dplyr::rename(estimate = "Estimate",
-                              std.error = "Std. Error",
-                              statistic = "t value",
-                              p.value = "Pr(>|t|)",
-                              conf.low = "lower",
-                              conf.high = "upper")
+  res <- res |> dplyr::rename(
+    estimate = "Estimate",
+    std.error = "Std. Error",
+    statistic = "t value",
+    p.value = "Pr(>|t|)",
+    conf.low = "lower",
+    conf.high = "upper"
+  )
   return(res)
 }
 
@@ -874,23 +926,22 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' dd <- prolfqua_data('data_factor_levelContrasts')
+#' dd <- prolfqua_data("data_factor_levelContrasts")
 #' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
                                          subject_Id = "protein_Id",
-                                         columns = c("estimate", "p.value","p.value.adjusted"),
-                                         contrast = "lhs"){
-
-  m_spread <- function(longContrasts, subject_Id, column , contrast){
+                                         columns = c("estimate", "p.value", "p.value.adjusted"),
+                                         contrast = "lhs") {
+  m_spread <- function(longContrasts, subject_Id, column, contrast) {
     res <- longContrasts |>
-      dplyr::select_at(c(subject_Id, contrast,  column))
+      dplyr::select_at(c(subject_Id, contrast, column))
     res <- res |> dplyr::mutate(!!contrast := paste0(column, ".", !!sym(contrast)))
-    res <- res |> tidyr::spread(contrast, !!sym(column) )
+    res <- res |> tidyr::spread(contrast, !!sym(column))
     return(res)
   }
   res <- list()
   for (column in columns) {
-    res[[column]] <- m_spread(modelWithInteractionsContrasts, subject_Id,column, contrast)
+    res[[column]] <- m_spread(modelWithInteractionsContrasts, subject_Id, column, contrast)
   }
   res <- res |> reduce(left_join, by = c(subject_Id))
   return(res)
@@ -906,62 +957,64 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' modelSummary_A <- data_modellingResult_A
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #'
-#' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
+#' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #' factor_contrasts
 #' class(factor_contrasts)
-#' factor_levelContrasts <- contrasts_linfct( m,
-#'         factor_contrasts,
-#'         subject_Id = "Compound",
-#'         contrastfun = prolfqua::my_contrast_V2)
+#' factor_levelContrasts <- contrasts_linfct(m,
+#'   factor_contrasts,
+#'   subject_Id = "Compound",
+#'   contrastfun = prolfqua::my_contrast_V2
+#' )
 #'
-#' #usethis::use_data(factor_levelContrasts, overwrite = TRUE)
+#' # usethis::use_data(factor_levelContrasts, overwrite = TRUE)
 #' data(data_models_interaction)
-#' data_models_interaction <- prolfqua_data('data_models_interaction')
+#' data_models_interaction <- prolfqua_data("data_models_interaction")
 #'
 #' m <- get_complete_model_fit(data_models_interaction$modelProtein)
 #' m$linear_model[[1]]
-#' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-#' factor_levelContrasts <- contrasts_linfct( m,
-#'                            factor_contrasts,
-#'                        subject_Id = "protein_Id")
+#' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
+#' factor_levelContrasts <- contrasts_linfct(m,
+#'   factor_contrasts,
+#'   subject_Id = "protein_Id"
+#' )
 #' m$linear_model[[1]]
-#' my_contest(m$linear_model[[1]],factor_contrasts )
+#' my_contest(m$linear_model[[1]], factor_contrasts)
 #'
-#' plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
-#' abline(c(0,1))
-#' plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
+#' plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model)
+#' abline(c(0, 1))
+#' plot(factor_levelContrasts$df.residual.model, factor_levelContrasts$df - factor_levelContrasts$df.residual.model)
 #'
 contrasts_linfct <- function(models,
                              linfct,
-                             subject_Id = "protein_Id" ,
-                             contrastfun = prolfqua::my_contest){
-  #computeGroupAverages
+                             subject_Id = "protein_Id",
+                             contrastfun = prolfqua::my_contest) {
+  # computeGroupAverages
   message("computing contrasts.")
   modelcol <- "linear_model"
   models <- models |> dplyr::filter(.data$exists_lmer == TRUE)
 
   interaction_model_matrix <- models |>
-    dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
+    dplyr::mutate("contrast" := purrr::map(!!sym(modelcol), contrastfun, linfct = linfct))
 
-  mclass <- function(x){
+  mclass <- function(x) {
     class(x)[1]
   }
 
-  interaction_model_matrix <-  interaction_model_matrix |>
+  interaction_model_matrix <- interaction_model_matrix |>
     dplyr::mutate(classC = purrr::map_chr(.data$contrast, mclass)) |>
     dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix |>
-    dplyr::select_at( c(subject_Id, "contrast") ) |>
+    dplyr::select_at(c(subject_Id, "contrast")) |>
     tidyr::unnest_legacy()
 
   # take sigma and df from somewhere else.
   modelInfos <- models |>
     dplyr::select_at(c(subject_Id,
-                       "isSingular",
-                       "sigma.model" = "sigma",
-                       "df.residual.model" = "df.residual" )) |>
-
+      "isSingular",
+      "sigma.model" = "sigma",
+      "df.residual.model" = "df.residual"
+    )) |>
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
   return(ungroup(contrasts))
@@ -976,26 +1029,27 @@ contrasts_linfct <- function(models,
 #' @family modelling
 #' @keywords internal
 #'
-moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, confint = 0.95){
-  sv <- prolfqua::squeezeVarRob(mm$sigma^2, df = mm[[df]],robust = robust)
+moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, confint = 0.95) {
+  sv <- prolfqua::squeezeVarRob(mm$sigma^2, df = mm[[df]], robust = robust)
 
   # pior degrees of freedom are Inf
-  if(all(is.infinite(sv$df.prior))) {
-    sv$df.prior <- mean(mm[[df]]) * nrow(mm)/10
+  if (all(is.infinite(sv$df.prior))) {
+    sv$df.prior <- mean(mm[[df]]) * nrow(mm) / 10
   }
 
   sv <- tibble::as_tibble(sv)
-  sv <- setNames(sv, paste0('moderated.', names(sv)))
+  sv <- setNames(sv, paste0("moderated.", names(sv)))
   mm <- dplyr::bind_cols(mm, sv)
-  mm <- mm |> dplyr::mutate(moderated.statistic  =  .data$statistic * .data$sigma /  sqrt(.data$moderated.var.post))
+  mm <- mm |> dplyr::mutate(moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post))
   mm <- mm |> dplyr::mutate(moderated.df.total = !!sym(df) + .data$moderated.df.prior)
-  mm <- mm |> dplyr::mutate(moderated.p.value = 2*pt( abs(.data$moderated.statistic),
-                                                      df = .data$moderated.df.total, lower.tail = FALSE) )
+  mm <- mm |> dplyr::mutate(moderated.p.value = 2 * pt(abs(.data$moderated.statistic),
+    df = .data$moderated.df.total, lower.tail = FALSE
+  ))
 
-  prqt <- -qt((1 - confint)/2, df = mm$moderated.df.total)
-  mm$moderated.conf.low <- mm[[estimate]]  - prqt * sqrt(mm$moderated.var.post)
+  prqt <- -qt((1 - confint) / 2, df = mm$moderated.df.total)
+  mm$moderated.conf.low <- mm[[estimate]] - prqt * sqrt(mm$moderated.var.post)
   mm$moderated.conf.high <- mm[[estimate]] + prqt * sqrt(mm$moderated.var.post)
-  mm <-  dplyr::ungroup(mm)
+  mm <- dplyr::ungroup(mm)
 
 
   return(mm)
@@ -1010,38 +1064,40 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
 #' @examples
 #'
 #'
-#' modelSummary_A <- prolfqua_data('data_modellingResult_A')
+#' modelSummary_A <- prolfqua_data("data_modellingResult_A")
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #' factor_levelContrasts <- contrasts_linfct(
 #'   modelSummary_A$modelProtein,
 #'   factor_contrasts,
 #'   subject_Id = "Compound",
-#'   contrastfun = my_contrast_V2)
+#'   contrastfun = my_contrast_V2
+#' )
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 #'
 #' plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
-#' abline(0,1, col = 2)
+#' abline(0, 1, col = 2)
 #'
 #' # updating lmer model
-#' data_models_interaction <- prolfqua_data('data_models_interaction')
+#' data_models_interaction <- prolfqua_data("data_models_interaction")
 #'
 #' m <- get_complete_model_fit(data_models_interaction$modelProtein)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #'
 #' factor_levelContrasts <- contrasts_linfct(m,
-#'                                          factor_contrasts,
-#'                                          subject_Id = "protein_Id")
+#'   factor_contrasts,
+#'   subject_Id = "protein_Id"
+#' )
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 #' plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
-#' abline(0,1, col = 2)
+#' abline(0, 1, col = 2)
 #'
-moderated_p_limma_long <- function(mm ,
+moderated_p_limma_long <- function(mm,
                                    group_by_col = "lhs",
                                    estimate = "estimate",
-                                   robust = FALSE){
+                                   robust = FALSE) {
   dfg <- mm |>
     dplyr::group_by_at(group_by_col) |>
     dplyr::group_split()
@@ -1056,35 +1112,31 @@ moderated_p_limma_long <- function(mm ,
 #' @keywords internal
 #' @examples
 #'
-#' bb <- c(runif(1000), rexp(1500,rate=5))
+#' bb <- c(runif(1000), rexp(1500, rate = 5))
 #' length(bb)
 #' bb <- bb[bb < 1]
 #' length(bb)
 #' bb <- bb[1:2000]
 #' hist(bb)
-#' data <- data.frame(contrast = rep(LETTERS[1:5],400), p.value = bb)
+#' data <- data.frame(contrast = rep(LETTERS[1:5], 400), p.value = bb)
 #'
 #' data <- adjust_p_values(data)
 #' Adata <- data |> dplyr::filter(contrast == "A")
-#' stopifnot(all.equal(Adata$p.value.adjusted, p.adjust(Adata$p.value, method="BH")))
+#' stopifnot(all.equal(Adata$p.value.adjusted, p.adjust(Adata$p.value, method = "BH")))
 #' data2 <- adjust_p_values(data, group_by_col = NULL)
-#' stopifnot(all.equal(data2$p.value.adjusted, p.adjust(data2$p.value, method="BH")))
+#' stopifnot(all.equal(data2$p.value.adjusted, p.adjust(data2$p.value, method = "BH")))
 #'
-#'
-adjust_p_values <- function(
-    mm,
-    column = "p.value",
-    group_by_col = "contrast",
-    newname = NULL
-){
+adjust_p_values <- function(mm,
+                            column = "p.value",
+                            group_by_col = "contrast",
+                            newname = NULL) {
   if (is.null(newname)) {
     newname <- paste0(column, ".adjusted")
   }
   dfg <- mm |>
     dplyr::group_by_at(group_by_col)
-  xx <- dplyr::mutate(dfg, !!newname := p.adjust(!!sym(column),method = "BH"))
+  xx <- dplyr::mutate(dfg, !!newname := p.adjust(!!sym(column), method = "BH"))
   return(xx)
-
 }
 
 
@@ -1100,32 +1152,33 @@ adjust_p_values <- function(
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' plot(get_p_values_pbeta(0.1,1:10,10), ylim=c(0,0.1))
-#' plot(get_p_values_pbeta(0.1,1:10,3), ylim=c(0,0.1))
-#' plot(get_p_values_pbeta(0.3,1:30, 3), ylim=c(0,0.1))
-#' abline(h=.05,col = 2)
-#' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30)))
-#' abline(0,1)
-#' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
-#' abline(0,1)
-#' testthat::expect_equal(get_p_values_pbeta(0.3,10, 3),0.216, tolerance = 1e-4)
-#' testthat::expect_equal(get_p_values_pbeta(0,10, 3),0, tolerance = 1e-4)
-#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),1, tolerance = 1e-4)
-#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10), tolerance = 1e-4)
+#' plot(get_p_values_pbeta(0.1, 1:10, 10), ylim = c(0, 0.1))
+#' plot(get_p_values_pbeta(0.1, 1:10, 3), ylim = c(0, 0.1))
+#' plot(get_p_values_pbeta(0.3, 1:30, 3), ylim = c(0, 0.1))
+#' abline(h = .05, col = 2)
+#' plot(seq(0.0, 1.0, length = 30), get_p_values_pbeta(seq(0.0, 1.0, length = 30), rep(10, 30)))
+#' abline(0, 1)
+#' plot(seq(0.0, 1.0, length = 30), get_p_values_pbeta(seq(0.0, 1.0, length = 30), rep(10, 30), 3))
+#' abline(0, 1)
+#' testthat::expect_equal(get_p_values_pbeta(0.3, 10, 3), 0.216, tolerance = 1e-4)
+#' testthat::expect_equal(get_p_values_pbeta(0, 10, 3), 0, tolerance = 1e-4)
+#' testthat::expect_equal(get_p_values_pbeta(1, 10, 3), 1, tolerance = 1e-4)
+#' testthat::expect_equal(get_p_values_pbeta(1, 10, 3), get_p_values_pbeta(1, 3, 10), tolerance = 1e-4)
 #'
 get_p_values_pbeta <- function(median.p.value,
                                n.obs,
-                               max.n = 10){
+                               max.n = 10) {
   n.obs <- pmin(n.obs, max.n)
 
-  shape1 <- (n.obs/2 + 0.5)
-  shape2 <- (n.obs - (n.obs/2 + 0.5) + 1)
+  shape1 <- (n.obs / 2 + 0.5)
+  shape2 <- (n.obs - (n.obs / 2 + 0.5) + 1)
   # n.obs/2 + 0.5
 
   stopifnot(shape1 == shape2)
   res.p.value <- pbeta(median.p.value,
-                       shape1 = shape1,
-                       shape2 = shape2)
+    shape1 = shape1,
+    shape2 = shape2
+  )
   return(res.p.value)
 }
 
@@ -1155,34 +1208,40 @@ get_p_values_pbeta <- function(median.p.value,
 #' p.value <- runif(nrPep)
 #' estimate <- rnorm(nrPep)
 #' avgAbd <- runif(nrPep)
-#' protein_Id <- sample(1:800, size = nrPep,
-#'   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
+#' protein_Id <- sample(1:800,
+#'   size = nrPep,
+#'   replace = TRUE, prob = dexp(seq(0, 5, length = 800))
+#' )
 #'
 #' plot(table(table(protein_Id)))
 #'
-#' testdata <- data.frame(contrast = "contrast1",
+#' testdata <- data.frame(
+#'   contrast = "contrast1",
 #'   protein_Id = protein_Id,
 #'   estimate = estimate,
 #'   pseudo_estimate = estimate,
 #'   p.value = p.value,
-#'   avgAbd = avgAbd )
+#'   avgAbd = avgAbd
+#' )
 #'
 #' xx30 <- summary_ROPECA_median_p.scaled(testdata,
-#'                                     subject_Id = "protein_Id",
-#'                                     estimate = "estimate",
-#'                                     p.value = "p.value",
-#'                                     max.n = 30)
+#'   subject_Id = "protein_Id",
+#'   estimate = "estimate",
+#'   p.value = "p.value",
+#'   max.n = 30
+#' )
 #'
 #' xx2 <- summary_ROPECA_median_p.scaled(testdata,
-#'                                     subject_Id = "protein_Id",
-#'                                     estimate = "estimate",
-#'                                     p.value = "p.value",
-#'                                     max.n = 1)
+#'   subject_Id = "protein_Id",
+#'   estimate = "estimate",
+#'   p.value = "p.value",
+#'   max.n = 1
+#' )
 #'
-#' testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409, tolerance = 1e-4)
+#' testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE), 0.384409, tolerance = 1e-4)
 #' testthat::expect_equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)
-#' testthat::expect_equal(xx2$beta.based.significance[1],0.819, tolerance = 1e-3)
-#' testthat::expect_equal(xx2$beta.based.significance[2],0.9234362,tolerance = 1e-3)
+#' testthat::expect_equal(xx2$beta.based.significance[1], 0.819, tolerance = 1e-3)
+#' testthat::expect_equal(xx2$beta.based.significance[2], 0.9234362, tolerance = 1e-3)
 #'
 #' # Uniform distribution
 #' hist(testdata$p.value)
@@ -1198,23 +1257,22 @@ get_p_values_pbeta <- function(median.p.value,
 #' hist(xx2$beta.based.significance, breaks = 20)
 #' hist(estimate)
 #'
-summary_ROPECA_median_p.scaled <- function(
-    contrasts_data,
-    contrast = "contrast",
-    subject_Id = "protein_Id",
-    estimate = "diff",
-    statistic = "statistic",
-    p.value = "moderated.p.value",
-    max.n = 10){
-
+summary_ROPECA_median_p.scaled <- function(contrasts_data,
+                                           contrast = "contrast",
+                                           subject_Id = "protein_Id",
+                                           estimate = "diff",
+                                           statistic = "statistic",
+                                           p.value = "moderated.p.value",
+                                           max.n = 10) {
   nrpepsPerProt <- contrasts_data |>
     group_by_at(c(subject_Id, contrast)) |>
-    dplyr::summarize(n = dplyr::n() )
+    dplyr::summarize(n = dplyr::n())
 
   contrasts_data <- contrasts_data |>
     dplyr::mutate(
       scaled.p =
-        ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value) , !!sym(p.value) - 1))
+        ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value), !!sym(p.value) - 1)
+    )
 
   summarized.protein <- contrasts_data |>
     group_by_at(c(subject_Id, contrast)) |>
@@ -1224,7 +1282,8 @@ summary_ROPECA_median_p.scaled <- function(
       estimate = median(!!sym(estimate), na.rm = TRUE),
       statistic = median(!!sym(statistic), na.rm = TRUE),
       median.p.scaled = median(.data$scaled.p, na.rm = TRUE),
-      avgAbd = median(.data$avgAbd, na.rm = TRUE))
+      avgAbd = median(.data$avgAbd, na.rm = TRUE)
+    )
 
   summarized.protein <- summarized.protein |>
     dplyr::mutate(median.p.value = 1 - abs(.data$median.p.scaled))
@@ -1235,12 +1294,11 @@ summary_ROPECA_median_p.scaled <- function(
     dplyr::mutate(n.beta = pmin(.data$n_not_na, max.n))
 
   summarized.protein <- dplyr::inner_join(nrpepsPerProt,
-                                          summarized.protein,
-                                          by = c(subject_Id, contrast))
+    summarized.protein,
+    by = c(subject_Id, contrast)
+  )
 
   summarized.protein$isSingular <- FALSE
   # scale it back here.
-  return(ungroup( summarized.protein ))
+  return(ungroup(summarized.protein))
 }
-
-

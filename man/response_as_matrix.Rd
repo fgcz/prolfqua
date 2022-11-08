@@ -12,36 +12,40 @@ Used to apply the median polish function working on matrices to a tidy table
 \examples{
 library(dplyr)
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 configur <- bb$config
 data <- bb$data
 
 xnested <- data |>
- dplyr::group_by_at( configur$table$hierarchy_keys_depth() ) |>
- tidyr::nest()
+  dplyr::group_by_at(configur$table$hierarchy_keys_depth()) |>
+  tidyr::nest()
 x <- xnested$data[[1]]
-nn  <- x |> dplyr::select( setdiff(configur$table$hierarchy_keys() ,  configur$table$hierarchy_keys_depth()) ) |>
- dplyr::distinct() |> nrow()
+nn <- x |>
+  dplyr::select(setdiff(configur$table$hierarchy_keys(), configur$table$hierarchy_keys_depth())) |>
+  dplyr::distinct() |>
+  nrow()
 
-xx <- response_as_matrix(x,configur)
-stopifnot(dim(xx)==c(nn,20))
+xx <- response_as_matrix(x, configur)
+stopifnot(dim(xx) == c(nn, 20))
 
 # change hierarchyDepth ###################
-conf <- configur$clone(deep=TRUE)
-conf$table$hierarchyDepth = 1
+conf <- configur$clone(deep = TRUE)
+conf$table$hierarchyDepth <- 1
 
 xnested <- data |>
- dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
- tidyr::nest()
+  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+  tidyr::nest()
 
 x <- xnested$data[[1]]
-nn  <- x |> dplyr::select( setdiff(configur$table$hierarchy_keys(),  configur$table$hierarchy_keys_depth()) ) |>
- dplyr::distinct() |> nrow()
+nn <- x |>
+  dplyr::select(setdiff(configur$table$hierarchy_keys(), configur$table$hierarchy_keys_depth())) |>
+  dplyr::distinct() |>
+  nrow()
 
-xx <- response_as_matrix(x,conf)
-stopifnot(dim(xx)==c(nn,20))
+xx <- response_as_matrix(x, conf)
+stopifnot(dim(xx) == c(nn, 20))
 
 }
 \keyword{internal}

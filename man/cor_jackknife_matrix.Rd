@@ -22,7 +22,7 @@ Compute correlation matrix with jackknife resampling
 dd <- prolfqua_data("data_correlatedPeptideList")
 
 class(dd[[1]])
-dd[[1]][1,2] <- NA
+dd[[1]][1, 2] <- NA
 cor_jackknife_matrix(dd[[1]])
 
 }

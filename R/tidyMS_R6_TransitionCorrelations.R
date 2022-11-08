@@ -9,14 +9,14 @@
 #' @keywords internal
 #' @family filtering
 #' @examples
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' dd <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
+#' analysis <- dd$analysis(dd$data, config)
 #'
 #'
 #'
 #' res <- remove_large_QValues(analysis, config)
-remove_large_QValues <- function(pdata, config, qValThreshold = config$parameter$qVal_individual_threshold){
+remove_large_QValues <- function(pdata, config, qValThreshold = config$parameter$qVal_individual_threshold) {
   pdata <- pdata |>
     dplyr::filter(!!sym(config$table$ident_qValue) < qValThreshold)
   return(pdata)
@@ -31,17 +31,17 @@ remove_large_QValues <- function(pdata, config, qValThreshold = config$parameter
 #' @family filtering
 #' @examples
 #'
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' dd <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
+#' analysis <- dd$analysis(dd$data, config)
 #'
 #' config$table$get_response()
 #'
-#' res1 <- remove_small_intensities(analysis, config, threshold=1 )
-#' res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
-#' stopifnot(nrow(res1) >  nrow(res1000))
+#' res1 <- remove_small_intensities(analysis, config, threshold = 1)
+#' res1000 <- remove_small_intensities(analysis, config, threshold = 1000)
+#' stopifnot(nrow(res1) > nrow(res1000))
 #'
-remove_small_intensities <- function(pdata, config, threshold = 1){
+remove_small_intensities <- function(pdata, config, threshold = 1) {
   resData <- pdata |> dplyr::filter(!!sym(config$table$get_response()) >= threshold)
   return(resData)
 }
@@ -56,9 +56,9 @@ remove_small_intensities <- function(pdata, config, threshold = 1){
 #' @keywords internal
 #' @examples
 #'
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' dd <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
+#' analysis <- dd$analysis(dd$data, config)
 #' x <- transform_work_intensity(analysis, config, .func = log2)
 #' stopifnot("log2_FG.Quantity" %in% colnames(x))
 #' config <- dd$config_f()
@@ -70,33 +70,37 @@ transform_work_intensity <- function(pdata,
                                      .func,
                                      .funcname = NULL,
                                      intesityNewName = NULL,
-                                     deep = FALSE){
+                                     deep = FALSE) {
   if (deep) {
     config <- config$clone(deep = TRUE)
   }
-  .call <- as.list( match.call() )
+  .call <- as.list(match.call())
 
 
 
   if (is.null(intesityNewName)) {
-    .funcname <- if (is.null(.funcname)) {deparse(.call$.func)}else{.funcname}
+    .funcname <- if (is.null(.funcname)) {
+      deparse(.call$.func)
+    } else {
+      .funcname
+    }
     newcol <- paste(.funcname, config$table$get_response(), sep = "_")
-  }else{
+  } else {
     newcol <- intesityNewName
   }
 
-  #pdata <- pdata |> dplyr::mutate_at(config$table$get_response(),
+  # pdata <- pdata |> dplyr::mutate_at(config$table$get_response(),
   #                                    .funs = funs(!!sym(newcol) := .func(.)))
   pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(config$table$get_response())))
 
   config$table$set_response(newcol)
   message("Column added : ", newcol)
-  config$table$is_response_transformed = TRUE
+  config$table$is_response_transformed <- TRUE
 
   if (deep) {
-    return( list(data = pdata, config = config) )
+    return(list(data = pdata, config = config))
   } else {
-    return( pdata)
+    return(pdata)
   }
 }
 
@@ -119,37 +123,41 @@ transform_work_intensity <- function(pdata,
 #' @param data data
 #' @param config configuration
 #' @examples
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' dd <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
+#' analysis <- dd$analysis(dd$data, config)
 #' res <- summarise_QValues(analysis, config)
 #' stopifnot(c("srm_QValueMin", "srm_QValueNR") %in% colnames(res))
 #' hist(unique(res$srm_QValueMin))
 #' hist(unique(res$srm_QValueNR))
 #'
 summarise_QValues <- function(pdata,
-                             config
-){
+                              config) {
   QValueMin <- "srm_QValueMin"
   QValueNR <- "srm_QValueNR"
 
   precursorIDs <- config$table$hierarchy_keys()
   fileName <- config$table$fileName
-  QValue  <- config$table$ident_qValue
+  QValue <- config$table$ident_qValue
   qVal_minNumber_below_experiment_threshold <- config$parameter$qVal_minNumber_below_experiment_threshold
   qVal_experiment_threshold <- config$parameter$qVal_experiment_threshold
 
-  nthbestQValue <-  function(x,qVal_minNumber_below_experiment_threshold){sort(x)[qVal_minNumber_below_experiment_threshold]}
-  npass <-  function(x,thresh = qVal_experiment_threshold){sum(x < thresh)}
+  nthbestQValue <- function(x, qVal_minNumber_below_experiment_threshold) {
+    sort(x)[qVal_minNumber_below_experiment_threshold]
+  }
+  npass <- function(x, thresh = qVal_experiment_threshold) {
+    sum(x < thresh)
+  }
 
   qValueSummaries <- pdata |>
     dplyr::select(!!!syms(c(fileName, precursorIDs, config$table$ident_qValue))) |>
     dplyr::group_by_at(precursorIDs) |>
-    dplyr::summarise_at(  c( QValue ), .funs = funs(!!QValueMin := nthbestQValue(.,qVal_minNumber_below_experiment_threshold ),
-                                                    !!QValueNR  := npass(., qVal_experiment_threshold)
+    dplyr::summarise_at(c(QValue), .funs = funs(
+      !!QValueMin := nthbestQValue(., qVal_minNumber_below_experiment_threshold),
+      !!QValueNR := npass(., qVal_experiment_threshold)
     ))
   pdata <- dplyr::inner_join(pdata, qValueSummaries, by = c(precursorIDs))
-  message("Columns added :",QValueMin, QValueNR)
+  message("Columns added :", QValueMin, QValueNR)
   return(pdata)
 }
 
@@ -161,31 +169,33 @@ summarise_QValues <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' dd <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
+#' analysis <- dd$analysis(dd$data, config)
 #'
 #' summarize_hierarchy(analysis, config)
 #' res <- filter_byQValue(analysis, config)
 #' summarize_hierarchy(res, config)
 #'
-filter_byQValue <- function(pdata, config){
+filter_byQValue <- function(pdata, config) {
   data_NA <- remove_large_QValues(pdata, config)
   data_NA <- summarise_QValues(data_NA, config)
   data_NA_QVal <- data_NA |>
-    dplyr::filter( !!sym("srm_QValueMin") < config$parameter$qVal_experiment_threshold )
+    dplyr::filter(!!sym("srm_QValueMin") < config$parameter$qVal_experiment_threshold)
 }
 
 
 # Intensities to wide ----
 
-.ExtractMatrix <- function(x, sep = "~lfq~"){
-  idx <- sapply(x,is.numeric)
-  xmat <- as.matrix(x[,idx])
+.ExtractMatrix <- function(x, sep = "~lfq~") {
+  idx <- sapply(x, is.numeric)
+  xmat <- as.matrix(x[, idx])
   idcols <- x |> dplyr::select(which(!idx == TRUE))
   if (ncol(idcols) > 0) {
-    rownames(xmat) <- x |> dplyr::select(which(!idx == TRUE)) |>
-      tidyr::unite(x, sep = sep) |> dplyr::pull(x)
+    rownames(xmat) <- x |>
+      dplyr::select(which(!idx == TRUE)) |>
+      tidyr::unite(x, sep = sep) |>
+      dplyr::pull(x)
   }
   xmat
 }
@@ -197,14 +207,13 @@ filter_byQValue <- function(pdata, config){
 #' @export
 #' @keywords internal
 tidy_to_wide <- function(data,
-                   rowIDs ,
-                   columnLabels ,
-                   value
-){
+                         rowIDs,
+                         columnLabels,
+                         value) {
   wide <- data |>
-    dplyr::select_at(c(rowIDs, columnLabels, value  ))
+    dplyr::select_at(c(rowIDs, columnLabels, value))
   wide <- wide |>
-    tidyr::spread( key= columnLabels , value =  value )
+    tidyr::spread(key = columnLabels, value = value)
   return(wide)
 }
 
@@ -214,34 +223,39 @@ tidy_to_wide <- function(data,
 #' @return list with data, rowdata, and annotation (colData)
 #' @examples
 #'
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' dd <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
+#' analysis <- dd$analysis(dd$data, config)
 #' res <- tidy_to_wide_config(analysis, config)
 #' testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
-#' testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
+#' testthat::expect_equal(ncol(res$data) - ncol(res$rowdata), nrow(res$annotation))
 #' res <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
 #' res <- scale(res$data)
 #'
-tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep="~lfq~"){
+tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep = "~lfq~") {
   if (fileName) {
     newcolname <- config$table$fileName
-  }else{
+  } else {
     newcolname <- config$table$sampleName
   }
 
-  ids <- dplyr::select_at(data,
-                       c( config$table$sampleName, config$table$fileName, config$table$factor_keys())) |>
-    dplyr::distinct() |> dplyr::arrange_at(newcolname)
+  ids <- dplyr::select_at(
+    data,
+    c(config$table$sampleName, config$table$fileName, config$table$factor_keys())
+  ) |>
+    dplyr::distinct() |>
+    dplyr::arrange_at(newcolname)
 
-  res <- tidy_to_wide( data, c(config$table$hierarchy_keys()) ,
-                 newcolname,
-                 value = config$table$get_response() )
+  res <- tidy_to_wide(data, c(config$table$hierarchy_keys()),
+    newcolname,
+    value = config$table$get_response()
+  )
   rowdata <- res |> dplyr::select_at(config$table$hierarchy_keys())
   if (as.matrix) {
-    resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchy_keys())))
+    resMat <- as.matrix(dplyr::select(res, -dplyr::one_of(config$table$hierarchy_keys())))
     names <- rowdata |>
-      tidyr::unite("precursor_id", !!!dplyr::syms(config$table$hierarchy_keys()), sep = sep) |> dplyr::pull()
+      tidyr::unite("precursor_id", !!!dplyr::syms(config$table$hierarchy_keys()), sep = sep) |>
+      dplyr::pull()
     rownames(resMat) <- names
     res <- resMat
   }
@@ -259,23 +273,23 @@ tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALS
 #'
 #' @keywords internal
 #' @examples
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' dd <- prolfqua_data("data_spectronautDIA250_A")
 #' conf <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,conf)
+#' analysis <- dd$analysis(dd$data, conf)
 #' res <- tidy_to_wide_config(analysis, conf, as.matrix = TRUE)
 #'
 #' res <- scale(res$data)
-#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
-#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf,analysis)
+#' xx <- response_matrix_as_tibble(res, "srm_intensityScaled", conf)
+#' xx <- response_matrix_as_tibble(res, "srm_intensityScaled", conf, analysis)
 #' conf$table$get_response() == "srm_intensityScaled"
 #'
-response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
+response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "~lfq~") {
   pdata <- dplyr::bind_cols(
     tibble::tibble("row.names" := rownames(pdata)),
     tibble::as_tibble(pdata)
   )
-  pdata <- tidyr::gather(pdata,key = !!config$table$sampleName, value = !!value, 2:ncol(pdata))
-  pdata <- tidyr::separate(pdata, "row.names",  config$table$hierarchy_keys(), sep = sep)
+  pdata <- tidyr::gather(pdata, key = !!config$table$sampleName, value = !!value, 2:ncol(pdata))
+  pdata <- tidyr::separate(pdata, "row.names", config$table$hierarchy_keys(), sep = sep)
   if (!is.null(data)) {
     pdata <- dplyr::inner_join(data, pdata)
     config$table$set_response(value)
@@ -287,12 +301,11 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #' @keywords internal
 #'
 .get_robscales <- function(data,
-                        dim = 2)
-{
+                           dim = 2) {
   medians <- apply(data, dim, median, na.rm = TRUE)
-  data = sweep(data, dim, medians, "-")
+  data <- sweep(data, dim, medians, "-")
   mads <- apply(data, dim, mad, na.rm = TRUE)
-  return(list( medians = medians, mads = mads ) )
+  return(list(medians = medians, mads = mads))
 }
 
 #' compute median and standard deviation for each sample
@@ -302,10 +315,10 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
+#' conf <- bb$config$clone(deep = TRUE)
 #' sample_analysis <- bb$data
 #' pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
 #' s1 <- get_robscales(pepIntensityNormalized, conf)
@@ -314,8 +327,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #' s2 <- get_robscales(res$data, conf)
 #' abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 #'
-#'
-get_robscales <- function(data, config){
+get_robscales <- function(data, config) {
   data <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
   scales <- .get_robscales(data)
   return(scales)
@@ -328,14 +340,18 @@ get_robscales <- function(data, config){
 #' @keywords internal
 #' @family preprocessing
 #' @export
-robust_scale <- function(data, dim = 2, preserveMean = FALSE){
+robust_scale <- function(data, dim = 2, preserveMean = FALSE) {
   scales <- .get_robscales(data, dim = dim)
-  data = sweep(data, dim, scales$medians, "-")
-  mads <- scales$mads/mean(scales$mads)
-  data = (sweep(data, dim, mads, "/"))
+  data <- sweep(data, dim, scales$medians, "-")
+  mads <- scales$mads / mean(scales$mads)
+  data <- (sweep(data, dim, mads, "/"))
 
   meanmed <- mean(scales$medians)
-  addmean <- if (preserveMean) {meanmed} else {0}
+  addmean <- if (preserveMean) {
+    meanmed
+  } else {
+    0
+  }
 
   return(data + addmean)
 }
@@ -353,28 +369,32 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
+#' conf <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #' res <- apply_to_response_matrix(data, conf, .func = base::scale)
 #' stopifnot("peptide.intensity_base..scale" %in% colnames(res))
 #' stopifnot("peptide.intensity_base..scale" == conf$table$get_response())
-#' conf <- bb$config$clone(deep=TRUE)
+#' conf <- bb$config$clone(deep = TRUE)
 #' conf$table$workIntensity <- "peptide.intensity"
-#' res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
+#' res <- apply_to_response_matrix(data, conf$clone(deep = TRUE), .func = robust_scale)
 #'
 #' # Normalize data using the vsn method from bioconductor
 #'
-#' if( require("vsn")){
-#'  res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
+#' if (require("vsn")) {
+#'   res <- apply_to_response_matrix(data, conf$clone(deep = TRUE), .func = vsn::justvsn)
 #' }
 #'
-apply_to_response_matrix <- function(data, config, .func, .funcname = NULL){
-  .call <- as.list( match.call() )
-  .funcname <- if (is.null(.funcname)) { deparse(.call$.func) } else {.funcname}
-  colname <- make.names( paste( config$table$get_response(), .funcname, sep = "_"))
+apply_to_response_matrix <- function(data, config, .func, .funcname = NULL) {
+  .call <- as.list(match.call())
+  .funcname <- if (is.null(.funcname)) {
+    deparse(.call$.func)
+  } else {
+    .funcname
+  }
+  colname <- make.names(paste(config$table$get_response(), .funcname, sep = "_"))
   mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
   mat <- .func(mat)
   data <- response_matrix_as_tibble(mat, colname, config, data)
@@ -397,10 +417,10 @@ apply_to_response_matrix <- function(data, config, .func, .funcname = NULL){
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
+#' conf <- bb$config$clone(deep = TRUE)
 #' sample_analysis <- bb$data
 #' conf$table$workIntensity <- "peptide.intensity"
 #'
@@ -409,24 +429,27 @@ apply_to_response_matrix <- function(data, config, .func, .funcname = NULL){
 #' res <- scale_with_subset(res, res, conf)
 #' s2 <- get_robscales(res$data, conf)
 #' stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
-scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_scales = TRUE){
-
-  colname <- make.names( paste( config$table$get_response(), "subset_scaled", sep = "_"))
+scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_scales = TRUE) {
+  colname <- make.names(paste(config$table$get_response(), "subset_scaled", sep = "_"))
   subset <- tidy_to_wide_config(subset, config, as.matrix = TRUE)$data
 
 
   scales <- .get_robscales(subset)
   mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
-  mat = sweep(mat, 2, scales$medians, "-")
+  mat <- sweep(mat, 2, scales$medians, "-")
   if (!any(scales$mads == 0)) {
-    mads <- scales$mads/mean(scales$mads)
-    mat = sweep(mat, 2, mads, "/")
+    mads <- scales$mads / mean(scales$mads)
+    mat <- sweep(mat, 2, mads, "/")
   } else {
     warning("SKIPPING scaling step in scale_with_subset function.")
   }
 
   meanmed <- mean(scales$medians)
-  addmean <- if (preserveMean) {meanmed} else {0}
+  addmean <- if (preserveMean) {
+    meanmed
+  } else {
+    0
+  }
   mat <- mat + addmean
   data <- response_matrix_as_tibble(mat, colname, config, data)
   if (get_scales) {
@@ -450,18 +473,17 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
+#' conf <- bb$config$clone(deep = TRUE)
 #' sample_analysis <- bb$data
 #' conf$table$workIntensity <- "peptide.intensity"
 #'
 #' res <- transform_work_intensity(sample_analysis, conf, log2)
 #' res <- scale_with_subset_by_factors(res, res, conf)
 #'
-#'
-scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = FALSE){
+scale_with_subset_by_factors <- function(data, subset, config, preserveMean = FALSE) {
   config <- config$clone(deep = TRUE)
   dl <- group_by(data, across(config$table$factor_keys_depth())) |> nest()
   sl <- group_by(subset, across(config$table$factor_keys_depth())) |> nest()
@@ -473,26 +495,28 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = F
   scales <- vector(mode = "list", N)
 
   for (i in 1:(N - 1)) {
-    tmp <- scale_with_subset(dl$data[[i]], sl$data[[i]] ,
-                             cf$clone(deep = TRUE) ,
-                             preserveMean = TRUE,
-                             get_scales = TRUE)
+    tmp <- scale_with_subset(dl$data[[i]], sl$data[[i]],
+      cf$clone(deep = TRUE),
+      preserveMean = TRUE,
+      get_scales = TRUE
+    )
     res[[i]] <- tmp$data
     scales[[i]] <- tmp$scales
   }
   tmp <- scale_with_subset(dl$data[[N]],
-                           sl$data[[N]],
-                           cf,
-                           preserveMean = TRUE,
-                           get_scales = TRUE)
+    sl$data[[N]],
+    cf,
+    preserveMean = TRUE,
+    get_scales = TRUE
+  )
   res[[N]] <- tmp$data
   scales[[N]] <- tmp$scales
-  #names(scales) <- dl[[1]]
+  # names(scales) <- dl[[1]]
   resb <- dl
   resb$data <- res
-  resb <- dplyr::ungroup( unnest(resb, cols = (names(resb))) )
+  resb <- dplyr::ungroup(unnest(resb, cols = (names(resb))))
   config$table$set_response(cf$table$get_response())
-  return(list(data = resb, config = config, scales = list(mads = unlist(map(scales,"mads")), medians =  unlist(map(scales,"medians")))))
+  return(list(data = resb, config = config, scales = list(mads = unlist(map(scales, "mads")), medians = unlist(map(scales, "medians")))))
 }
 
 #' normalize data by log2 and robust scaling
@@ -505,21 +529,22 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = F
 #' @family preprocessing
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- prolfqua_data("data_ionstar")$filtered()
 #' istar$config <- old2new(istar$config)
 #' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' xx <- normalize_log2_robscale(istar_data, istar$config)
 #' names(xx)
 #' xx$config$table$workIntensity
 #'
-normalize_log2_robscale <- function(pdata, config){
+normalize_log2_robscale <- function(pdata, config) {
   pepConfig <- config$clone(deep = TRUE)
   pepIntensityNormalized <- transform_work_intensity(pdata, pepConfig, log2)
-  pepConfig$table$is_response_transformed = TRUE
+  pepConfig$table$is_response_transformed <- TRUE
 
   pepIntensityNormalized <- apply_to_response_matrix(pepIntensityNormalized,
-                                                   pepConfig,
-                                                   .func = robust_scale)
+    pepConfig,
+    .func = robust_scale
+  )
 
   pepIntensityNormalized <- pepIntensityNormalized |>
     dplyr::rename(transformedIntensity = pepConfig$table$get_response())
@@ -531,18 +556,19 @@ normalize_log2_robscale <- function(pdata, config){
 
 
 # uncorrelation analysis ----
-.findDecorrelated <- function(res, threshold = 0.65){
-  if (is.null(res))
+.findDecorrelated <- function(res, threshold = 0.65) {
+  if (is.null(res)) {
     return(NULL)
+  }
   nrtrans <- ncol(res)
   ids <- rowSums(res < threshold, na.rm = TRUE)
   names(which((nrtrans - 1) == ids))
 }
 
-.decorelatedPly <- function(pdata, corThreshold = 0.7){
+.decorelatedPly <- function(pdata, corThreshold = 0.7) {
   res <- prolfqua::cor_jackknife_matrix(pdata)
-  decorelated <- .findDecorrelated(res,threshold = corThreshold)
-  tibble( row = rownames(res), srm_decorelated = rownames(res) %in% decorelated)
+  decorelated <- .findDecorrelated(res, threshold = corThreshold)
+  tibble(row = rownames(res), srm_decorelated = rownames(res) %in% decorelated)
 }
 
 #' Marks peptides which do not correlate with other peptides of a protein
@@ -559,40 +585,45 @@ normalize_log2_robscale <- function(pdata, config){
 #' @section TODO: do investigate In max(x, na.rm = TRUE) : no non-missing arguments to max; returning -Inf
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot( nrow(bb$data) == 25780)
-#' conf <- old2new(bb$config$clone(deep=TRUE))
+#' bb <- prolfqua_data("data_ionstar")$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
+#' conf <- old2new(bb$config$clone(deep = TRUE))
 #' data <- bb$data
 #'
 #' dataI <- mark_decorelated(data, conf)
 #'
-mark_decorelated <- function(data , config, minCorrelation = 0.7){
-  qvalFiltX <- data |>  dplyr::group_by_at(config$table$hierarchy_keys()[1]) |> tidyr::nest()
+mark_decorelated <- function(data, config, minCorrelation = 0.7) {
+  qvalFiltX <- data |>
+    dplyr::group_by_at(config$table$hierarchy_keys()[1]) |>
+    tidyr::nest()
   qvalFiltX <- qvalFiltX |>
     dplyr::mutate(spreadMatrix = map(data, response_as_matrix, config))
   HLfigs2 <- qvalFiltX |>
-    dplyr::mutate(srmDecor = map(.data$spreadMatrix, .decorelatedPly,  minCorrelation))
+    dplyr::mutate(srmDecor = map(.data$spreadMatrix, .decorelatedPly, minCorrelation))
   unnest_res <- HLfigs2 |>
-    dplyr::select(config$table$hierarchy_keys()[1], "srmDecor") |> tidyr::unnest()
+    dplyr::select(config$table$hierarchy_keys()[1], "srmDecor") |>
+    tidyr::unnest()
   unnest_res <- unnest_res |>
-    tidyr::separate(col = "row",
-                    into = config$table$hierarchy_keys()[-1],
-                    sep = "~lfq~")
-  qvalFiltX <- dplyr::inner_join(x = data, y = unnest_res, by = c(config$table$hierarchy_keys()) )
+    tidyr::separate(
+      col = "row",
+      into = config$table$hierarchy_keys()[-1],
+      sep = "~lfq~"
+    )
+  qvalFiltX <- dplyr::inner_join(x = data, y = unnest_res, by = c(config$table$hierarchy_keys()))
   return(qvalFiltX)
 }
 
 
 # Missing Value imputation ----
 
-simpleImpute <- function(data){
-  m <- apply(data,2, mean, na.rm = TRUE )
-  res <- sweep(data,2,m,"-")
+simpleImpute <- function(data) {
+  m <- apply(data, 2, mean, na.rm = TRUE)
+  res <- sweep(data, 2, m, "-")
   dim(data)
   dim(res)
   resMean <- apply(res, 1, mean, na.rm = TRUE)
-  resid <- matrix(replicate(length(m),resMean), nrow = length(resMean))
-  imp <- sweep(resid,2,m,"+")
+  resid <- matrix(replicate(length(m), resMean), nrow = length(resMean))
+  imp <- sweep(resid, 2, m, "+")
   res <- data
   res[is.na(res)] <- imp[is.na(res)]
   return(res)
@@ -610,43 +641,48 @@ simpleImpute <- function(data){
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- prolfqua_data("data_ionstar")$normalized()
 #' bb$config <- old2new(bb$config)
-#' config <- bb$config$clone(deep=TRUE)
+#' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #' mean(is.na(data$peptide.intensity))
 #' dataI <- impute_correlationBased(data, config)
 #' dim(dataI)
-#' stopifnot(dim(dataI) == c(dim(data)+c(0,1)))
+#' stopifnot(dim(dataI) == c(dim(data) + c(0, 1)))
 #' stopifnot(mean(is.na(dataI$srm_ImputedIntensity)) <= mean(is.na(data$peptide.intensity)))
 #'
-impute_correlationBased <- function(x , config){
+impute_correlationBased <- function(x, config) {
   x <- complete_cases(x, config)
-  nestedX <- x |>  dplyr::group_by_at(config$table$hierarchy_keys_depth()) |> tidyr::nest()
+  nestedX <- x |>
+    dplyr::group_by_at(config$table$hierarchy_keys_depth()) |>
+    tidyr::nest()
   nestedX <- nestedX |> dplyr::mutate(spreadMatrix = map(data, response_as_matrix, config))
 
-  response_matrix_as_tibble <- function(x,config){
+  response_matrix_as_tibble <- function(x, config) {
     x <- dplyr::bind_cols(
       row = rownames(x),
       tibble::as_tibble(x)
     )
-    tidyr::gather(x,key = !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
+    tidyr::gather(x, key = !!config$table$sampleName, value = "srm_ImputedIntensity", 2:ncol(x))
   }
 
   nestedX <- nestedX |> dplyr::mutate(imputed = map(.data$spreadMatrix, simpleImpute))
 
   nestedX <- nestedX |> dplyr::mutate(imputed = map(.data$imputed, response_matrix_as_tibble, config))
-  unnest_res <- nestedX |> dplyr::select(config$table$hierarchy_keys_depth(), "imputed") |> tidyr::unnest(cols = .data$imputed)
-  unnest_res <- unnest_res |> tidyr::separate("row",config$table$hierarchy_keys()[-1], sep = "~lfq~" )
+  unnest_res <- nestedX |>
+    dplyr::select(config$table$hierarchy_keys_depth(), "imputed") |>
+    tidyr::unnest(cols = .data$imputed)
+  unnest_res <- unnest_res |> tidyr::separate("row", config$table$hierarchy_keys()[-1], sep = "~lfq~")
 
   qvalFiltX <- dplyr::inner_join(x, unnest_res,
-                          by = c(config$table$hierarchy_keys(), config$table$sampleName) )
+    by = c(config$table$hierarchy_keys(), config$table$sampleName)
+  )
   config$table$set_response("srm_ImputedIntensity")
   return(qvalFiltX)
 }
 
 
-.make_name_AinB <- function(levelA, levelB, prefix="nr_"){
+.make_name_AinB <- function(levelA, levelB, prefix = "nr_") {
   c_name <- paste(prefix, levelB, "_IN_", levelA, sep = "")
   return(c_name)
 }
@@ -654,11 +690,11 @@ impute_correlationBased <- function(x , config){
 .nr_B_in_A <- function(data,
                        levelA,
                        levelB,
-                       merge = TRUE){
+                       merge = TRUE) {
   namA <- paste(levelA, collapse = "_")
   namB <- paste(levelB, collapse = "_")
   c_name <- .make_name_AinB(namA, namB)
-  if (!c_name %in% colnames(data) ) {
+  if (!c_name %in% colnames(data)) {
     data$c_name <- NULL
   }
   tmp <- data |>
@@ -670,7 +706,7 @@ impute_correlationBased <- function(x , config){
   if (!merge) {
     return(tmp)
   }
-  data <- dplyr::inner_join(data, tmp, by = levelA )
+  data <- dplyr::inner_join(data, tmp, by = levelA)
   message("Column added : ", c_name)
   return(list(data = data, name = c_name))
 }
@@ -683,21 +719,22 @@ impute_correlationBased <- function(x , config){
 #' @keywords internal
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep=TRUE)
+#' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))
 #' hierarchy <- config$table$hierarchy_keys()
 #' res <- nr_B_in_A(data, config)
 #'
 #' res$data |>
-#'   dplyr::select_at(c(config$table$hierarchy_keys_depth(),  res$name)) |>
+#'   dplyr::select_at(c(config$table$hierarchy_keys_depth(), res$name)) |>
 #'   dplyr::distinct() |>
-#'   dplyr::pull() |> table()
+#'   dplyr::pull() |>
+#'   table()
 #'
 #'
-#' bb <- prolfqua_data('data_skylineSRM_HL_A')
+#' bb <- prolfqua_data("data_skylineSRM_HL_A")
 #' config <- old2new(bb$config_f())
 #'
 #' resDataStart <- bb$analysis(bb$data, bb$config_f())
@@ -707,18 +744,18 @@ impute_correlationBased <- function(x , config){
 #' config$table$hierarchyDepth <- 2
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
-#' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#' bb$config <- old2new(bb$config$clone(deep=TRUE))
+#' bb <- prolfqua_data("data_IonstarProtein_subsetNorm")
+#' bb$config <- old2new(bb$config$clone(deep = TRUE))
 #' nr_B_in_A(bb$data, bb$config)
-#' #undebug(nr_B_in_A)
-nr_B_in_A <- function(pdata, config , merge = TRUE){
+#' # undebug(nr_B_in_A)
+nr_B_in_A <- function(pdata, config, merge = TRUE) {
   levelA <- config$table$hkeysDepth()
   levelB <- config$table$hierarchyKeys()[length(levelA) + 1]
   if (is.na(levelB)) {
     warning("here is no B in A")
     return(NULL)
-  }else{
-    .nr_B_in_A(pdata, levelA, levelB , merge = merge)
+  } else {
+    .nr_B_in_A(pdata, levelA, levelB, merge = merge)
   }
 }
 
@@ -729,18 +766,18 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @keywords internal
 #' @family summary
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config$clone(deep=TRUE)
+#' configur <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #'
-#' nr_B_in_A_per_sample(data, configur, nested =FALSE)
-#' bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#' bb$config <- old2new(config = bb$config$clone( deep = TRUE))
-#' nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
+#' nr_B_in_A_per_sample(data, configur, nested = FALSE)
+#' bb <- prolfqua_data("data_IonstarProtein_subsetNorm")
+#' bb$config <- old2new(config = bb$config$clone(deep = TRUE))
+#' nr_B_in_A_per_sample(bb$data, bb$config, nested = FALSE)
 #'
-nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
+nr_B_in_A_per_sample <- function(data, config, nested = TRUE) {
   cf <- config
 
   levelA <- cf$table$hierarchy_keys_depth()
@@ -750,44 +787,58 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   }
   data <- prolfqua::complete_cases(data, cf)
   data <- data |>
-    dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$table$get_response())) ~ 1,
-                                            TRUE ~ 0))
-  pepStats <- data |> group_by_at(c(cf$table$hierarchy_keys_depth(), cf$table$sampleName)) |>
+    dplyr::mutate(presentabsent = case_when(
+      !is.na(!!sym(cf$table$get_response())) ~ 1,
+      TRUE ~ 0
+    ))
+  pepStats <- data |>
+    group_by_at(c(cf$table$hierarchy_keys_depth(), cf$table$sampleName)) |>
     summarize(nrPep = n(), present = sum(.data$presentabsent), .groups = "drop")
 
-  annotColumns <- c(cf$table$fileName,
-                    cf$table$sampleName,
-                    cf$table$hierarchy_keys_depth(),
-                    cf$table$factor_keys_depth(),
-                    cf$table$isotopeLabel)
+  annotColumns <- c(
+    cf$table$fileName,
+    cf$table$sampleName,
+    cf$table$hierarchy_keys_depth(),
+    cf$table$factor_keys_depth(),
+    cf$table$isotopeLabel
+  )
   annotation <- data |>
-    dplyr::select(!!!syms(annotColumns) ) |>
+    dplyr::select(!!!syms(annotColumns)) |>
     distinct()
 
-  res <- inner_join(annotation, pepStats, by = c(cf$table$sampleName, cf$table$hierarchy_keys_depth() ))
-  res <-  if (nested) {res |> group_by_at(cf$table$hierarchy_keys_depth()) |> nest()} else {res}
+  res <- inner_join(annotation, pepStats, by = c(cf$table$sampleName, cf$table$hierarchy_keys_depth()))
+  res <- if (nested) {
+    res |>
+      group_by_at(cf$table$hierarchy_keys_depth()) |>
+      nest()
+  } else {
+    res
+  }
   return(res)
 }
 
 
 # Summarize Intensities by Intensity or NAs ----
 .rankProteinPrecursors <- function(data,
-           config,
-           column = config$table$get_response(),
-           fun = function(x){ mean(x, na.rm = TRUE)},
-           summaryColumn = "srm_meanInt",
-           rankColumn = "srm_meanIntRank",
-           rankFunction = function(x){ min_rank(desc(x)) }
-  ){
+                                   config,
+                                   column = config$table$get_response(),
+                                   fun = function(x) {
+                                     mean(x, na.rm = TRUE)
+                                   },
+                                   summaryColumn = "srm_meanInt",
+                                   rankColumn = "srm_meanIntRank",
+                                   rankFunction = function(x) {
+                                     min_rank(desc(x))
+                                   }) {
   table <- config$table
 
   summaryPerPrecursor <- data |>
     dplyr::group_by(!!!syms(table$hierarchy_keys())) |>
-     dplyr::summarize(!!summaryColumn := fun(!!sym(column)))
+    dplyr::summarize(!!summaryColumn := fun(!!sym(column)))
 
   groupedByProtein <- summaryPerPrecursor |>
-    dplyr::arrange(!!sym( table$hierarchy_keys()[1])) |>
-    dplyr::group_by(!!sym( table$hierarchy_keys()[1]))
+    dplyr::arrange(!!sym(table$hierarchy_keys()[1])) |>
+    dplyr::group_by(!!sym(table$hierarchy_keys()[1]))
   rankedBySummary <- groupedByProtein |>
     dplyr::mutate(!!rankColumn := rankFunction(!!sym(summaryColumn)))
 
@@ -804,26 +855,35 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_spectronautDIA250_A')
+#' bb <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- remove_large_QValues(analysis, config)
-#' #debug(rank_peptide_by_intensity)
-#' res <- rank_peptide_by_intensity(res,config)
-#' X <-res |> dplyr::select(c(config$table$hierarchy_keys(),
-#'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-#' X |> dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1], "srm_meanIntRank"  )))
-rank_peptide_by_intensity <- function(pdata, config){
+#' # debug(rank_peptide_by_intensity)
+#' res <- rank_peptide_by_intensity(res, config)
+#' X <- res |>
+#'   dplyr::select(c(
+#'     config$table$hierarchy_keys(),
+#'     srm_meanInt, srm_meanIntRank
+#'   )) |>
+#'   dplyr::distinct()
+#' X |> dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1], "srm_meanIntRank")))
+rank_peptide_by_intensity <- function(pdata, config) {
   summaryColumn <- "srm_meanInt"
   rankColumn <- "srm_meanIntRank"
-  pdata <- .rankProteinPrecursors(pdata, config, column = config$table$get_response(),
-                               fun = function(x){ mean(x, na.rm = TRUE)},
-                               summaryColumn = summaryColumn,
-                               rankColumn = rankColumn,
-                               rankFunction = function(x){min_rank(desc(x))}
+  pdata <- .rankProteinPrecursors(pdata, config,
+    column = config$table$get_response(),
+    fun = function(x) {
+      mean(x, na.rm = TRUE)
+    },
+    summaryColumn = summaryColumn,
+    rankColumn = rankColumn,
+    rankFunction = function(x) {
+      min_rank(desc(x))
+    }
   )
 
-  message("Columns added : ", summaryColumn, " ",  rankColumn)
+  message("Columns added : ", summaryColumn, " ", rankColumn)
   return(pdata)
 }
 
@@ -840,30 +900,37 @@ rank_peptide_by_intensity <- function(pdata, config){
 #' @keywords internal
 #' @examples
 #'
-#' bb <- prolfqua_data('data_spectronautDIA250_A')
+#' bb <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' res <- remove_large_QValues(analysis, config)
-#' res <- rank_by_NA(res,config)
+#' res <- rank_by_NA(res, config)
 #' colnames(res)
 #' x <- res |>
 #'   dplyr::select(config$table$hierarchy_keys()[1], config$table$hierarchy_keys(TRUE)[1], "srm_NrNotNAs") |>
-#'   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
+#'   dplyr::distinct() |>
+#'   dplyr::summarize(sum(srm_NrNotNAs)) |>
+#'   dplyr::pull()
 #' stopifnot(sum(!is.na(res[[config$table$get_response()[1]]])) == x)
-#' res |> dplyr::select(c(config$table$hierarchy_keys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
-#'  dplyr::distinct() |>
-#'  dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1],"srm_NrNotNARank")))
-rank_by_NA <- function(pdata, config){
+#' res |>
+#'   dplyr::select(c(config$table$hierarchy_keys(), "srm_NrNotNAs", "srm_NrNotNARank")) |>
+#'   dplyr::distinct() |>
+#'   dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1], "srm_NrNotNARank")))
+rank_by_NA <- function(pdata, config) {
   summaryColumn <- "srm_NrNotNAs"
   rankColumn <- "srm_NrNotNARank"
   pdata <- .rankProteinPrecursors(pdata, config,
-                                column = config$table$get_response(),
-                                fun = function(x){sum(!is.na(x))},
-                                summaryColumn = summaryColumn,
-                                rankColumn = rankColumn,
-                                rankFunction = function(x){min_rank(desc(x))}
+    column = config$table$get_response(),
+    fun = function(x) {
+      sum(!is.na(x))
+    },
+    summaryColumn = summaryColumn,
+    rankColumn = rankColumn,
+    rankFunction = function(x) {
+      min_rank(desc(x))
+    }
   )
-  message("Columns added : ", summaryColumn, " ",  rankColumn)
+  message("Columns added : ", summaryColumn, " ", rankColumn)
   return(pdata)
 }
 
@@ -877,43 +944,45 @@ rank_by_NA <- function(pdata, config){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_spectronautDIA250_A')
+#' bb <- prolfqua_data("data_spectronautDIA250_A")
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
-#' config$parameter$min_nr_of_notNA  <- 20
+#' config$parameter$min_nr_of_notNA <- 20
 #' data <- analysis
 #' data <- remove_large_QValues(data, config)
 #' hc <- hierarchy_counts(data, config)
-#' res <- filter_factor_levels_by_missing(data, config,percent = 80)
-#' hc80 <-  hierarchy_counts(res, config)
-#' res <- filter_factor_levels_by_missing(data, config,percent = 60)
+#' res <- filter_factor_levels_by_missing(data, config, percent = 80)
+#' hc80 <- hierarchy_counts(res, config)
+#' res <- filter_factor_levels_by_missing(data, config, percent = 60)
 #' hierarchy_counts(res, config)
-#' hc60 <-  hierarchy_counts(res, config)
+#' hc60 <- hierarchy_counts(res, config)
 #' stopifnot(all(hc60 >= hc80)) # since 80% missing is more stringent than 60%
 #' stopifnot(all(hc >= hc60))
-#' summarize_hierarchy(res,config) |>
-#'  dplyr::filter(!!rlang::sym(paste0(config$table$hierarchy_keys()[2],"_n")) > 1)
+#' summarize_hierarchy(res, config) |>
+#'   dplyr::filter(!!rlang::sym(paste0(config$table$hierarchy_keys()[2], "_n")) > 1)
 #'
 filter_factor_levels_by_missing <- function(pdata,
                                             config,
-                                            percent = 60){
+                                            percent = 60) {
   table <- config$table
-  summaryColumn = "srm_NrNotNAs"
+  summaryColumn <- "srm_NrNotNAs"
   column <- table$get_response()
 
-  pdata <- complete_cases( pdata , config)
-  nrNA = function(x){sum(!is.na(x))}
+  pdata <- complete_cases(pdata, config)
+  nrNA <- function(x) {
+    sum(!is.na(x))
+  }
   summaryPerPrecursor <- pdata |>
-    dplyr::group_by(!!!syms( c(table$hierarchy_keys(), table$factor_keys_depth() ))) |>
-     dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) |>
-    dplyr::mutate(fraction = !!sym(summaryColumn)/!!sym("nr") * 100 ) |>  dplyr::ungroup()
+    dplyr::group_by(!!!syms(c(table$hierarchy_keys(), table$factor_keys_depth()))) |>
+    dplyr::summarize(!!"nr" := n(), !!summaryColumn := nrNA(!!sym(column))) |>
+    dplyr::mutate(fraction = !!sym(summaryColumn) / !!sym("nr") * 100) |>
+    dplyr::ungroup()
 
   summaryPerPrecursorFiltered <- summaryPerPrecursor |> dplyr::filter(.data$fraction > percent)
   summaryPerPrecursorFiltered <- summaryPerPrecursorFiltered |>
-    dplyr::select(c(table$hierarchy_keys())) |> dplyr::distinct()
+    dplyr::select(c(table$hierarchy_keys())) |>
+    dplyr::distinct()
   stopifnot(all(colnames(summaryPerPrecursorFiltered) %in% table$hierarchy_keys()))
   res <- summaryPerPrecursorFiltered |> left_join(pdata)
-  return( dplyr::ungroup(res))
+  return(dplyr::ungroup(res))
 }
-
-

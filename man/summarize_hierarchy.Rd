@@ -27,28 +27,31 @@ E.g compute number of peptides for each protein
 
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
-configur <- bb$config$clone(deep=TRUE)
+configur <- bb$config$clone(deep = TRUE)
 data <- bb$data
 
 summarize_hierarchy(data, configur)
 summarize_hierarchy(data, configur, factors = character())
 
 summarize_hierarchy(data, configur,
- hierarchy = configur$table$hierarchy_keys_depth() )
+  hierarchy = configur$table$hierarchy_keys_depth()
+)
 summarize_hierarchy(data, configur,
- hierarchy = NULL, factors = configur$table$factor_keys_depth() )
-configur$table$hierarchyDepth = 1
+  hierarchy = NULL, factors = configur$table$factor_keys_depth()
+)
+configur$table$hierarchyDepth <- 1
 summarize_hierarchy(data, configur,
- factors = configur$table$factor_keys_depth())
-configur$table$hierarchyDepth = 2
+  factors = configur$table$factor_keys_depth()
+)
+configur$table$hierarchyDepth <- 2
 summarize_hierarchy(data, configur)
-configur$table$hierarchyDepth = 3
-summarize_hierarchy(data, configur )
-configur$table$hierarchyDepth = 4
-summarize_hierarchy(data, configur )
+configur$table$hierarchyDepth <- 3
+summarize_hierarchy(data, configur)
+configur$table$hierarchyDepth <- 4
+summarize_hierarchy(data, configur)
 
 }
 \seealso{

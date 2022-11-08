@@ -18,14 +18,14 @@ Assumes the peptide intensities are correlation assumption
 
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- prolfqua_data("data_ionstar")$normalized()
 bb$config <- old2new(bb$config)
-config <- bb$config$clone(deep=TRUE)
+config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 mean(is.na(data$peptide.intensity))
 dataI <- impute_correlationBased(data, config)
 dim(dataI)
-stopifnot(dim(dataI) == c(dim(data)+c(0,1)))
+stopifnot(dim(dataI) == c(dim(data) + c(0, 1)))
 stopifnot(mean(is.na(dataI$srm_ImputedIntensity)) <= mean(is.na(data$peptide.intensity)))
 
 }

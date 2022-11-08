@@ -10,11 +10,11 @@ keep track of folder paths and create them if needed
 }
 \examples{
 tmp <- ProjectStructure$new("./test_project",
-project_Id  = 3000,
-order_Id = 6200,
-workunit_Id = 23000,
-inputAnnotation = ".",
-inputData = "."
+  project_Id = 3000,
+  order_Id = 6200,
+  workunit_Id = 23000,
+  inputAnnotation = ".",
+  inputData = "."
 )
 tmp$qc_path()
 tmp$modelling_path()

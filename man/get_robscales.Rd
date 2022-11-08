@@ -12,10 +12,10 @@ compute median and standard deviation for each sample
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
-conf <- bb$config$clone(deep=TRUE)
+conf <- bb$config$clone(deep = TRUE)
 sample_analysis <- bb$data
 pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
 s1 <- get_robscales(pepIntensityNormalized, conf)
@@ -23,7 +23,6 @@ s1 <- get_robscales(pepIntensityNormalized, conf)
 res <- scale_with_subset(pepIntensityNormalized, pepIntensityNormalized, conf)
 s2 <- get_robscales(res$data, conf)
 abs(mean(s1$mads) - mean(s2$mads)) < 0.1
-
 
 }
 \seealso{

@@ -17,10 +17,10 @@ pairs_smooth(dataframe, legend = FALSE, ...)
 smoothScatter pairs
 }
 \examples{
-tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
-pairs_smooth(tmp,main="small data", legend=TRUE)
-pairs_smooth(tmp,main="small data", diag.panel=panel_hist)
-pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
+tmp <- matrix(rep((1:100), times = 4) + rnorm(100 * 4, 0, 3), ncol = 4)
+pairs_smooth(tmp, main = "small data", legend = TRUE)
+pairs_smooth(tmp, main = "small data", diag.panel = panel_hist)
+pairs_smooth(tmp, log = "xy", main = "small data", legend = TRUE)
 }
 \seealso{
 also \code{\link{pairs}}

@@ -10,9 +10,9 @@ Limma moderated contrasts
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$normalized()
+istar <- prolfqua_data("data_ionstar")$normalized()
 istar$config <- old2new(istar$config)
-istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar_data <- dplyr::filter(istar$data, protein_Id \%in\% sample(protein_Id, 100))
 pepIntensity <- istar_data
 config <- istar$config$clone(deep = TRUE)
 
@@ -23,12 +23,15 @@ lProt$rename_response("transformedIntensity")
 modelFunction <-
   strategy_lm("transformedIntensity  ~ dilution.")
 mod <- build_model(
- lProt,
- modelFunction)
+  lProt,
+  modelFunction
+)
 
 Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
-contrast <- prolfqua::Contrasts$new(mod,
- Contr)
+contrast <- prolfqua::Contrasts$new(
+  mod,
+  Contr
+)
 contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
 csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
@@ -48,8 +51,6 @@ cp <- contrast$get_Plotter()
 cp$histogram()
 cp$volcano()
 cp$ma_plot()
-
-
 
 }
 \seealso{

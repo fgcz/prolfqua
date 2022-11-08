@@ -27,13 +27,13 @@ plot density distribution or ecdf of sd, mean or cv given intensity below and ab
 
 
 
-bb1 <- prolfqua_data('data_ionstar')$filtered()
-config <- old2new(bb1$config$clone( deep = TRUE))
+bb1 <- prolfqua_data("data_ionstar")$filtered()
+config <- old2new(bb1$config$clone(deep = TRUE))
 data2 <- bb1$data
 res <- summarize_stats(data2, config)
-plot_stat_density_median(res, config,"CV")
-plot_stat_density_median(res, config,"mean")
-plot_stat_density_median(res, config,"sd")
+plot_stat_density_median(res, config, "CV")
+plot_stat_density_median(res, config, "mean")
+plot_stat_density_median(res, config, "sd")
 }
 \seealso{
 Other stats: 

@@ -17,13 +17,15 @@ linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
 linfct_matrix_contrasts
 }
 \examples{
-m <- prolfqua_data('data_basicModel_p1807')
-linfct <- linfct_from_model(m,as_list = FALSE)
+m <- prolfqua_data("data_basicModel_p1807")
+linfct <- linfct_from_model(m, as_list = FALSE)
 linfct
 
-Contrasts <- c("CMPvsMEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
-"NOvsHU" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
-linfct_matrix_contrasts(linfct, Contrasts )
+Contrasts <- c(
+  "CMPvsMEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
+  "NOvsHU" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`"
+)
+linfct_matrix_contrasts(linfct, Contrasts)
 
 }
 \seealso{

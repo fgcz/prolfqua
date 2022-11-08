@@ -27,8 +27,8 @@ While then filtering to only one single condition with four replicates we want t
 Load the data from MaxQuant. In this case here we direclty load protein level data from the proteinGroups.txt file.
 
 ```{r LoadDataAndConfigure}
-datadir <- file.path(find.package("prolfqua") , "samples/maxquant_txt")
-inputMQfile <-  file.path(datadir, "tiny2.zip")
+datadir <- file.path(find.package("prolfqua"), "samples/maxquant_txt")
+inputMQfile <- file.path(datadir, "tiny2.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
 startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
 ```
@@ -61,12 +61,12 @@ You also need to specify the column containing the protein identifiers and the p
 
 ```{r setupAnalysisTableAnnotation}
 atable <- prolfqua::AnalysisTableAnnotation$new()
-atable$fileName = "raw.file"
+atable$fileName <- "raw.file"
 atable$hierarchy[["protein_Id"]] <- c("proteinID")
 atable$hierarchyDepth <- 1
 atable$set_response("mq.protein.intensity")
-atable$factors[["dilution."]] = "sample"
-atable$factors[["Run_ID"]] = "run_ID"
+atable$factors[["dilution."]] <- "sample"
+atable$factors[["Run_ID"]] <- "run_ID"
 atable$factorDepth <- 1
 
 config <- prolfqua::AnalysisConfiguration$new(atable)
@@ -86,7 +86,7 @@ You can convert the data into a data frame in a wide format, where the
 intensities of each sample occupy their columns.
 
 ```{r showHowToWide}
-lfqdata$to_wide()$data[1:3,1:8]
+lfqdata$to_wide()$data[1:3, 1:8]
 ```
 
 ## Visualization of not normalized data
@@ -133,7 +133,7 @@ Other important statistics that can be easily calculated from the object are coe
 
 ```{r PlotCVDistributions}
 stats <- lfqdata$get_Stats()
-prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
+prolfqua::table_facade(stats$stats_quantiles()$wide, paste0("quantile of ", stats$stat))
 ```
 
 
@@ -178,8 +178,8 @@ pl$pairs_smooth()
 
 plots protein heatmap:
 ```{r plotheatmap, fig.cap="Heatmap, Rows - proteins, Columns - samples", fig.align=5, fig.height=5}
-p <- pl$heatmap() 
-p 
+p <- pl$heatmap()
+p
 ```
 
 We can also look at the correlation among the samples or look at a PCA plot.
@@ -214,8 +214,8 @@ TODO(WEW): Please describe the figure.
 ```{r experiment, include = FALSE}
 chsq <- na.omit(stats$statsdf$sd^2)
 plot(density(chsq[chsq < 10]))
-x <- seq(0,50, length = 1000)
-lines(x * median(chsq), dchisq(x, df = 4 ), col = 2)
+x <- seq(0, 50, length = 1000)
+lines(x * median(chsq), dchisq(x, df = 4), col = 2)
 ```
 
 Check for heteroskedasticity. After transformation,
@@ -224,7 +224,7 @@ the standard deviation should be independent of the mean intensity.
 ```{r checkForHeteroskedasticity, fig.cap="Scatter plot of sd vs mean of protein intensity"}
 stdm_trans <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
 stdm_trans
-#gridExtra::grid.arrange(stdm_raw, stdm_trans, nrow=1)
+# gridExtra::grid.arrange(stdm_raw, stdm_trans, nrow=1)
 ```
 
 
@@ -236,9 +236,9 @@ Like this we can estimate how many samples are necessary per group to quantify p
 
 First, we need to filter our data for `dilution.` _a_ only.
 ```{r}
-#startdata <- startdata |> dplyr::filter(sample  == "a")
+# startdata <- startdata |> dplyr::filter(sample  == "a")
 transformedA <- transformed$get_copy()
-transformedA$data <- transformedA$data |> dplyr::filter(dilution.  == "a")
+transformedA$data <- transformedA$data |> dplyr::filter(dilution. == "a")
 stats <- transformedA$get_Stats()
 ```
 
@@ -249,20 +249,18 @@ stats$density(ggstat = "ecdf")
 The table indicates that for this kind of data - if a two-fold change for 90% of all the proteins should be accurately quantified with a power of 0.8 (at 0.05 significance level) one would need to have 10 samples in each group.
 
 ```{r estimateSampleSizes}
-sampleSize <- stats$power_t_test_quantiles() |> 
+sampleSize <- stats$power_t_test_quantiles() |>
   dplyr::filter(dilution. != "All")
 prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
-
 ```
 
 The table summarises visually how many samples are needed for different expected differences (in log2-scale) and different portions of all proteins. 
 
 ```{r fig.cap="Estimated sample sizes for various FC levels and various quantiles of the standard deviation."}
 sampleSize |>
-  ggplot2::ggplot(ggplot2::aes(x = factor(probs) , y = N)) +
+  ggplot2::ggplot(ggplot2::aes(x = factor(probs), y = N)) +
   ggplot2::facet_wrap(~delta) +
   ggplot2::geom_bar(stat = "identity")
-
 ```
 
 It is also possible to get the statistics for each protein in each group. The information includes group size, number of observations, standard deviation, variance, mean.
@@ -275,9 +273,11 @@ You can also estimate the sample size needed to perform differential expression 
 The next figure shows the distribution of needed sample sizes for all proteins with a power of 0.8 at signifiance level 0.05 for a two fold change (delta = 1).
 
 ```{r statsWithN, eval = TRUE}
-x <- stats$power_t_test(delta = 1,power = 0.8, sig.level = 0.05)
-x <- x |> dplyr::filter(dilution. == "a") |> dplyr::arrange(desc(N),protein_Id)
-prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
+x <- stats$power_t_test(delta = 1, power = 0.8, sig.level = 0.05)
+x <- x |>
+  dplyr::filter(dilution. == "a") |>
+  dplyr::arrange(desc(N), protein_Id)
+prolfqua::table_facade(x[1:7, ], caption = "Sample size for each protein")
 ```
 
 
@@ -285,7 +285,7 @@ prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
   ggplot2::geom_histogram() +
   ggplot2::facet_wrap(~delta) +
-  ggplot2::xlim(0,100)
+  ggplot2::xlim(0, 100)
 ```
 
 The `prolfqua` package is described in [@Wolski2022.06.07.494524].
@@ -297,5 +297,3 @@ sessionInfo()
 ```
 
 # References
-
-

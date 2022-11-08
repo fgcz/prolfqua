@@ -23,35 +23,43 @@ run \link{rank_peptide_by_intensity} first
 }
 \examples{
 
-dd <- prolfqua_data('data_ionstar')$filtered()
+dd <- prolfqua_data("data_ionstar")$filtered()
 config <- old2new(dd$config)
 res <- dd$data
-ranked <- rank_peptide_by_intensity(res,config)
+ranked <- rank_peptide_by_intensity(res, config)
 
-mean_f <- function(x, name = FALSE){
- if(name){return("mean")};mean(x, na.rm=TRUE)
- }
-sum_f <- function(x, name =FALSE){
- if(name){return("sum")};sum(x, na.rm = TRUE)
- }
+mean_f <- function(x, name = FALSE) {
+  if (name) {
+    return("mean")
+  }
+  mean(x, na.rm = TRUE)
+}
+sum_f <- function(x, name = FALSE) {
+  if (name) {
+    return("sum")
+  }
+  sum(x, na.rm = TRUE)
+}
 
 resTOPN <- aggregate_intensity_topN(
- ranked,
- config,
- .func = mean_f,
-  N=3)
+  ranked,
+  config,
+  .func = mean_f,
+  N = 3
+)
 
 print(dim(resTOPN$data))
 # stopifnot(dim(resTOPN$data) == c(3260, 8))
-stopifnot( names(resTOPN) \%in\% c("data", "config") )
+stopifnot(names(resTOPN) \%in\% c("data", "config"))
 config$table$get_response()
-#debug(plot_estimate)
+# debug(plot_estimate)
 tmpRob <- plot_estimate(ranked,
- config,
- resTOPN$data,
- resTOPN$config,
- show.legend=TRUE)
-stopifnot( "ggplot" \%in\% class(tmpRob$plots[[4]]) )
+  config,
+  resTOPN$data,
+  resTOPN$config,
+  show.legend = TRUE
+)
+stopifnot("ggplot" \%in\% class(tmpRob$plots[[4]]))
 
 }
 \seealso{

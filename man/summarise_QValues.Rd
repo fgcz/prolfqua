@@ -21,9 +21,9 @@ adds two columns srm_QValueMin - nth smallest qvalue for each precursor
 srm_QValueNR - nr of precursors passing the threshold
 }
 \examples{
-dd <- prolfqua_data('data_spectronautDIA250_A')
+dd <- prolfqua_data("data_spectronautDIA250_A")
 config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
+analysis <- dd$analysis(dd$data, config)
 res <- summarise_QValues(analysis, config)
 stopifnot(c("srm_QValueMin", "srm_QValueNR") \%in\% colnames(res))
 hist(unique(res$srm_QValueMin))

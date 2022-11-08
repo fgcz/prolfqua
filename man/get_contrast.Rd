@@ -17,18 +17,18 @@ Compute fold changes given Contrasts
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 stopifnot(nrow(bb$data) == 25780)
 configur <- old2new(bb$config)
 data <- bb$data
 data <- complete_cases(data, configur)
 
-Contrasts <- c("aVSe" = "dilution.a - dilution.e","aVSb" = "dilution.a - dilution.b" )
+Contrasts <- c("aVSe" = "dilution.a - dilution.e", "aVSb" = "dilution.a - dilution.b")
 message("missigness_impute_factors_interactions : imputed")
-xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
+xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured")
 imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
 
-xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+xx <- missigness_impute_factors_interactions(data, configur, value = "imputed")
 
 imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
 head(imputed)

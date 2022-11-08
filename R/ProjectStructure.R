@@ -1,6 +1,6 @@
-.checkForFile <- function(inputData){
+.checkForFile <- function(inputData) {
   if (!is.null(inputData)) {
-    if ( file.exists(inputData) ) {
+    if (file.exists(inputData)) {
       inputData
     } else {
       stop("File does not exist : ", inputData)
@@ -8,15 +8,15 @@
   }
 }
 
-.dirmaker <- function(path){
+.dirmaker <- function(path) {
   if (!dir.exists(path)) {
     dir.create(path)
   }
   NULL
 }
 
-.dircleaner <- function(path){
-  if (unlink(path , recursive = TRUE) != 0 ) {
+.dircleaner <- function(path) {
+  if (unlink(path, recursive = TRUE) != 0) {
     message("could not clean : ", path)
   }
   NULL
@@ -28,11 +28,11 @@
 #'
 #' @examples
 #' tmp <- ProjectStructure$new("./test_project",
-#' project_Id  = 3000,
-#' order_Id = 6200,
-#' workunit_Id = 23000,
-#' inputAnnotation = ".",
-#' inputData = "."
+#'   project_Id = 3000,
+#'   order_Id = 6200,
+#'   workunit_Id = 23000,
+#'   inputAnnotation = ".",
+#'   inputData = "."
 #' )
 #' tmp$qc_path()
 #' tmp$modelling_path()
@@ -79,25 +79,25 @@ ProjectStructure <-
                           inputAnnotation,
                           inputData,
                           qc_dir = "qc_results",
-                          modelling_dir = "modelling_results"){
-      self$outpath = outpath
-      self$project_Id = project_Id
-      self$order_Id = order_Id
-      self$workunit_Id = workunit_Id
-      self$inputData = .checkForFile(inputData)
-      self$inputAnnotation = .checkForFile(inputAnnotation)
-      self$qc_dir = qc_dir
-      self$modelling_dir = modelling_dir
+                          modelling_dir = "modelling_results") {
+      self$outpath <- outpath
+      self$project_Id <- project_Id
+      self$order_Id <- order_Id
+      self$workunit_Id <- workunit_Id
+      self$inputData <- .checkForFile(inputData)
+      self$inputAnnotation <- .checkForFile(inputAnnotation)
+      self$qc_dir <- qc_dir
+      self$modelling_dir <- modelling_dir
     },
     #' @description
     #' create outpath
-    create_outpath = function(){
+    create_outpath = function() {
       .dirmaker(self$outpath)
     },
     #' @description
     #' create qc dir
     #' @param qc_dir QC directory
-    qc_path = function(qc_dir){
+    qc_path = function(qc_dir) {
       if (!missing(qc_dir)) {
         self$qc_dir <- c(self$qc_dir, qc_dir)
       }
@@ -107,7 +107,7 @@ ProjectStructure <-
     #' @description
     #' create modelling path
     #' @param modelling_dir directory with modelling data
-    modelling_path = function(modelling_dir){
+    modelling_path = function(modelling_dir) {
       if (!missing(modelling_dir)) {
         self$modelling_dir <- c(self$modelling_dir, modelling_dir)
       }
@@ -116,20 +116,17 @@ ProjectStructure <-
     },
     #' @description
     #' create all directories
-    create = function(){
+    create = function() {
       .dirmaker(self$outpath)
-      sapply(self$qc_path(),.dirmaker)
-      sapply(self$modelling_path(),.dirmaker)
+      sapply(self$qc_path(), .dirmaker)
+      sapply(self$modelling_path(), .dirmaker)
       NULL
     },
     #' @description
     #' empty modelling_path and qc_path folder.
-    reset = function(){
+    reset = function() {
       sapply(self$qc_path(), .dircleaner)
       sapply(self$modelling_path(), .dircleaner)
       NULL
     }
-
-  )
-  )
-
+  ))

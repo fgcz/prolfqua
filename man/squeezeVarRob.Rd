@@ -39,7 +39,7 @@ This function squeezes a set of sample variances together by computing empirical
 }
 \examples{
 var <- rexp(1000)
-df <- sample( 3:10, 1000, replace = TRUE)
+df <- sample(3:10, 1000, replace = TRUE)
 tmp <- squeezeVarRob(var, df)
 tmp <- squeezeVarRob(var, df, robust = TRUE)
 

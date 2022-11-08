@@ -19,15 +19,15 @@ Apply correlation filtering and impute missing values
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
-config <- bb$config$clone(deep=TRUE)
+config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 data$nr_peptide_Id_IN_protein_Id <- NULL
 
-config$parameter$min_nr_of_notNA  <- 3
-res <- workflow_corr_filter_impute(data,config)
+config$parameter$min_nr_of_notNA <- 3
+res <- workflow_corr_filter_impute(data, config)
 
 }
 \seealso{

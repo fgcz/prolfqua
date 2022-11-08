@@ -41,15 +41,15 @@ factors (explanatory variables).
 }
 \examples{
 skylineconfig <- create_config_Skyline()
-skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+skylineconfig$table$factors[["Time"]] <- "Sampling.Time.Point"
 skylineconfig$table$factor_keys()
 skylineconfig$table$hierarchy_keys()
 spectronautconfig <- create_config_Spectronaut_Peptide()
 config <- create_config_Spectronaut_Peptide()
-config$table$factors[["coding"]] = "coding"
-config$table$factors[["sex"]] = "sex"
-config$table$factors[["age"]] = "age"
-config$table$factors[["Sample_id"]] = "Sample.Name"
+config$table$factors[["coding"]] <- "coding"
+config$table$factors[["sex"]] <- "sex"
+config$table$factors[["age"]] <- "age"
+config$table$factors[["Sample_id"]] <- "Sample.Name"
 
 tmp <- create_config_MQ_peptide()
 

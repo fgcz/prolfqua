@@ -12,9 +12,9 @@ qVal_individual_threshold and qVal_experiment_threshold
 }
 \examples{
 
-dd <- prolfqua_data('data_spectronautDIA250_A')
+dd <- prolfqua_data("data_spectronautDIA250_A")
 config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
+analysis <- dd$analysis(dd$data, config)
 
 summarize_hierarchy(analysis, config)
 res <- filter_byQValue(analysis, config)

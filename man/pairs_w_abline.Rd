@@ -19,9 +19,9 @@ pairs_w_abline(dataframe, legend = FALSE, pch = ".", ...)
 normal pairs plot with different pch and plus abline
 }
 \examples{
-tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
-pairs_w_abline(tmp,log="xy",main="small data")
-pairs_w_abline(tmp,log="xy",main="small data", legend=TRUE)
+tmp <- matrix(rep((1:100), times = 4) + rnorm(100 * 4, 0, 3), ncol = 4)
+pairs_w_abline(tmp, log = "xy", main = "small data")
+pairs_w_abline(tmp, log = "xy", main = "small data", legend = TRUE)
 }
 \seealso{
 also \code{\link{pairs}}

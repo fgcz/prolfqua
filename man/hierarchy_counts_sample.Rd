@@ -18,9 +18,9 @@ Count distinct elements for each level of hierarchy per sample
 
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
-config <- bb$config$clone(deep=TRUE)
+config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 
 res <- hierarchy_counts_sample(data, config)

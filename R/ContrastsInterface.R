@@ -13,16 +13,24 @@ ContrastsInterface <- R6::R6Class(
   public = list(
     #' @description
     #' get table with sides of the contrast
-    get_contrast_sides = function(){stop("get_contrast_sides not implemented.")},
+    get_contrast_sides = function() {
+      stop("get_contrast_sides not implemented.")
+    },
     #' @description
     #' get table with contrast results (similar to limma topTable function)
-    get_contrasts = function(){stop("get_contrasts not implemented.")},
+    get_contrasts = function() {
+      stop("get_contrasts not implemented.")
+    },
     #' @description
     #' initialize plotter
-    get_Plotter = function(){stop("get_Plotter not implemented.")},
+    get_Plotter = function() {
+      stop("get_Plotter not implemented.")
+    },
     #' @description
     #' create wide representation of data.
-    to_wide = function(){stop("to_wide not implemented.")},
+    to_wide = function() {
+      stop("to_wide not implemented.")
+    },
     #' @description
     #' column description
     column_description = function() {
@@ -46,15 +54,17 @@ ContrastsInterface <- R6::R6Class(
   )
 )
 
-.requiredContrastColumns <- c("contrast",
-                              "diff",
-                              "FDR",
-                              "df",
-                              "sigma",
-                              "statistic",
-                              "p.value",
-                              "conf.low",
-                              "conf.high")
+.requiredContrastColumns <- c(
+  "contrast",
+  "diff",
+  "FDR",
+  "df",
+  "sigma",
+  "statistic",
+  "p.value",
+  "conf.low",
+  "conf.high"
+)
 
 
 
@@ -73,16 +83,18 @@ ContrastsInterface <- R6::R6Class(
 #' @export
 #' @family modelling
 #'
-merge_contrasts_results <- function(prefer, add, modelName = "mergedModel"){
+merge_contrasts_results <- function(prefer, add, modelName = "mergedModel") {
   cA <- prefer$get_contrasts()
   cB <- add$get_contrasts()
 
   stopifnot(length(setdiff(colnames(cA), colnames(cB))) == 0)
 
-  cA <- dplyr::filter(cA,!is.na(.data$statistic))
-  moreID <- setdiff(distinct(select(cB, c(prefer$subject_Id, "contrast"))),
-                    distinct(select(cA, c(add$subject_Id, "contrast"))))
-  more <- inner_join(moreID, cB )
+  cA <- dplyr::filter(cA, !is.na(.data$statistic))
+  moreID <- setdiff(
+    distinct(select(cB, c(prefer$subject_Id, "contrast"))),
+    distinct(select(cA, c(add$subject_Id, "contrast")))
+  )
+  more <- inner_join(moreID, cB)
 
   sameID <- select(cA, c(add$subject_Id, "contrast"))
   same <- inner_join(sameID, cB)
@@ -100,14 +112,14 @@ merge_contrasts_results <- function(prefer, add, modelName = "mergedModel"){
   }
 
   merged$modelName <- factor(merged$modelName,
-                             levels = c(levels(factor(cA$modelName)), addmodelName))
+    levels = c(levels(factor(cA$modelName)), addmodelName)
+  )
 
   merged <- ContrastsTable$new(merged,
-                               subject_Id = prefer$subject_Id,
-                               modelName = paste0(prefermodelName, "_", addmodelName))
+    subject_Id = prefer$subject_Id,
+    modelName = paste0(prefermodelName, "_", addmodelName)
+  )
   more <- ContrastsTable$new(more, subject_Id = prefer$subject_Id, modelName = addmodelName)
-  same <-  ContrastsTable$new(same, subject_Id = prefer$subject_Id, modelName = addmodelName)
+  same <- ContrastsTable$new(same, subject_Id = prefer$subject_Id, modelName = addmodelName)
   return(list(merged = merged, more = more, same = same))
 }
-
-

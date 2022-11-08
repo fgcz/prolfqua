@@ -63,8 +63,8 @@ https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling
 }
 \examples{
 
-bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-bb$config <- old2new(config = bb$config$clone( deep = TRUE))
+bb <- prolfqua_data("data_IonstarProtein_subsetNorm")
+bb$config <- old2new(config = bb$config$clone(deep = TRUE))
 xx <- LFQData$new(bb$data, bb$config)
 exampleDat <- xx$data |> dplyr::mutate(CorT = dplyr::case_when(dilution. == "a" ~ "C", TRUE ~ "T"))
 # sample protein lengths
@@ -72,21 +72,22 @@ exampleDat <- xx$data |> dplyr::mutate(CorT = dplyr::case_when(dilution. == "a" 
 tmp <- data.frame(protein_Id = unique(exampleDat$protein_Id))
 tmp$proteinLength <- as.integer(runif(nrow(tmp), min = 150, max = 2500))
 exampleDat <- dplyr::inner_join(tmp, exampleDat)
-#undebug(protein_2localSaint)
-res <- protein_2localSaint(exampleDat,quantcolumn = "medpolish",
-                   proteinID = "protein_Id",
-                   proteinLength = "proteinLength",
-                   IP_name = "raw.file",
-                   baitCol = "dilution.",
-                   CorTCol = "CorT"
-                   )
+# undebug(protein_2localSaint)
+res <- protein_2localSaint(exampleDat,
+  quantcolumn = "medpolish",
+  proteinID = "protein_Id",
+  proteinLength = "proteinLength",
+  IP_name = "raw.file",
+  baitCol = "dilution.",
+  CorTCol = "CorT"
+)
 
-stopifnot(names(res) == c( "inter", "prey",  "bait"))
-if(!Sys.info()["sysname"] == "Darwin") {
+stopifnot(names(res) == c("inter", "prey", "bait"))
+if (!Sys.info()["sysname"] == "Darwin") {
   data_SAINTe_output <- runSaint(res, filedir = tempdir())
-  #usethis::use_data(data_SAINTe_output)
+  # usethis::use_data(data_SAINTe_output)
 } else {
- testthat::expect_error(runSaint(res, filedir = tempdir()))
+  testthat::expect_error(runSaint(res, filedir = tempdir()))
 }
 
 }

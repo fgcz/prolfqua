@@ -11,19 +11,19 @@ Spreads isotope label heavy and light into two columns
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
-configur <- bb$config$clone(deep=TRUE)
+configur <- bb$config$clone(deep = TRUE)
 data <- bb$data
 
-x<-spread_response_by_IsotopeLabel(data,configur)
+x <- spread_response_by_IsotopeLabel(data, configur)
 
-bb <- prolfqua_data('data_skylineSRM_HL_A')
+bb <- prolfqua_data("data_skylineSRM_HL_A")
 configur <- bb$config_f()
 data <- bb$analysis(bb$data, configur)
 
-bb <- prolfqua_data('data_skylineSRM_HL_A')
+bb <- prolfqua_data("data_skylineSRM_HL_A")
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 x <- spread_response_by_IsotopeLabel(analysis, conf)

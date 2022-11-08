@@ -53,15 +53,16 @@ plot volcano given multiple contrasts
 \examples{
 
 
-show <- prolfqua_data('data_multigroupFC') |>
-   dplyr::filter(Condition  \%in\% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
-prolfqua::multigroup_volcano( show,
-effect="logFC",
-significance = "adj.P.Val",
-contrast="Condition",
-colour=NULL,
-label="Name",
-maxNrOfSignificantText = 300)
+show <- prolfqua_data("data_multigroupFC") |>
+  dplyr::filter(Condition \%in\% c("TTB7_38h_test - TTB7_16h_test", "TTB7_96h_test - TTB7_96h_sys"))
+prolfqua::multigroup_volcano(show,
+  effect = "logFC",
+  significance = "adj.P.Val",
+  contrast = "Condition",
+  colour = NULL,
+  label = "Name",
+  maxNrOfSignificantText = 300
+)
 }
 \seealso{
 Other utilities: 

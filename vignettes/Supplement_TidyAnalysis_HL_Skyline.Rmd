@@ -15,11 +15,11 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-echo = TRUE,
-message = FALSE,
-warning = FALSE,
-fig.width = 10,
-fig.height = 10
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 10,
+  fig.height = 10
 )
 ```
 
@@ -42,11 +42,13 @@ data("data_skylineSRM_HL_A")
 allDataM <- data_skylineSRM_HL_A$data
 
 
-skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label",
-                                            ident_qValue = "annotation_QValue")
+skylineconfig <- create_config_Skyline(
+  isotopeLabel = "Isotope.Label",
+  ident_qValue = "annotation_QValue"
+)
 skylineconfig$table$factors[["treatment_c"]] <- "Condition2"
 skylineconfig$table$factors[["time_c"]] <- "time"
-skylineconfig$table$is_response_transformed = FALSE
+skylineconfig$table$is_response_transformed <- FALSE
 
 resData <- setup_analysis(allDataM, skylineconfig)
 
@@ -56,26 +58,30 @@ tt <- R6_extract_values(skylineconfig)
 ```
 
 ```{r writeYaml, eval=FALSE}
-yaml::write_yaml(tt, file=file.path(outdir,"testSkyline.yml"))
+yaml::write_yaml(tt, file = file.path(outdir, "testSkyline.yml"))
 ```
 
 
 ```{r plotHierarchies, fig.cap="transitions in one plot."}
 proteinIDsymbol <- rlang::sym(skylineconfig$table$hierarchy_keys()[1])
 
-xnested <- resData |> dplyr::group_by(UQ(proteinIDsymbol)) |> tidyr::nest()
-plot_hierarchies_line(xnested$data[[2]],
-                      xnested$protein_Id[[2]],
-                      skylineconfig)
-
+xnested <- resData |>
+  dplyr::group_by(UQ(proteinIDsymbol)) |>
+  tidyr::nest()
+plot_hierarchies_line(
+  xnested$data[[2]],
+  xnested$protein_Id[[2]],
+  skylineconfig
+)
 ```
 
 
 ```{r plotHierarchies2, fig.cap="transitions in separate plot."}
 plot_hierarchies_line(xnested$data[[3]],
-                      xnested$protein_Id[[3]],
-                      skylineconfig,
-                      separate = TRUE)
+  xnested$protein_Id[[3]],
+  skylineconfig,
+  separate = TRUE
+)
 ```
 
 \clearpage
@@ -86,9 +92,11 @@ plot_hierarchies_line(xnested$data[[3]],
 ```{r  printAllproteins, eval=FALSE}
 figs <- xnested |>
   dplyr::mutate(plot = purrr::map2(data, UQ(proteinIDsymbol),
-                            plot_hierarchies_line, skylineconfig, separate = TRUE))
+    plot_hierarchies_line, skylineconfig,
+    separate = TRUE
+  ))
 
-pdf(file.path(outdir,"allProteins.pdf"), width = 10, height = 10)
+pdf(file.path(outdir, "allProteins.pdf"), width = 10, height = 10)
 invisible(lapply(figs$plot[1:3], print))
 dev.off()
 ```
@@ -97,9 +105,10 @@ dev.off()
 
 ```{r renderReports ,eval = FALSE}
 rmarkdown::render("tr_srm_summary_HL.Rmd",
-                  params = list(data=resData, configuration = skylineconfig),
-                  envir = new.env(),
-                  output_file = "SRMReport.pdf")
+  params = list(data = resData, configuration = skylineconfig),
+  envir = new.env(),
+  output_file = "SRMReport.pdf"
+)
 ```
 
 # Computing L to Heavy fold changes
@@ -110,29 +119,29 @@ HLData <- HLData |> dplyr::mutate(log2L_log2H = log2(light_Area) - log2(heavy_Ar
 HLData$Isotope.Label <- "L/H"
 
 skylineconfigHL <- skylineconfig
-skylineconfigHL$table$workIntensity = "log2L_log2H"
-skylineconfigHL$table$is_response_transformed = TRUE
+skylineconfigHL$table$workIntensity <- "log2L_log2H"
+skylineconfigHL$table$is_response_transformed <- TRUE
 skylineconfigHL$table$isotopeLabel
 
-xnested <- HLData |> dplyr::group_by(UQ(proteinIDsymbol)) |> tidyr::nest()
+xnested <- HLData |>
+  dplyr::group_by(UQ(proteinIDsymbol)) |>
+  tidyr::nest()
 skylineconfigHL$table$get_response()
-
 ```
 
 ## Plot heavy to light ratio
 
 ```{r PlotHierarchiesLight}
 plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL)
-HLfigs <- xnested |> dplyr::mutate(plot = purrr::map2(data, UQ(proteinIDsymbol) , plot_hierarchies_line, skylineconfig))
-
+HLfigs <- xnested |> dplyr::mutate(plot = purrr::map2(data, UQ(proteinIDsymbol), plot_hierarchies_line, skylineconfig))
 ```
 
 
 ```{r PlotAllProteins, eval=TRUE}
 
-#pdf(file.path(outdir,"allHLProteins.pdf"), width = 10, height = 10)
+# pdf(file.path(outdir,"allHLProteins.pdf"), width = 10, height = 10)
 invisible(lapply(HLfigs$plot[1:3], print))
-#dev.off()
+# dev.off()
 ```
 
 # Compute a protein level summary
@@ -145,9 +154,8 @@ HLfigs3 <- HLfigs3("nested")
 HLfigs3 <- dplyr::inner_join(HLfigs3$xnested, HLfigs, by = skylineconfigHL$table$hierarchy_keys_depth())
 
 p <- plot_hierarchies_line(xnested$data[[2]], xnested$protein_Id[[2]], skylineconfigHL) |>
-  plot_hierarchies_add_quantline(HLfigs3$medpolish_estimate[[2]],"medpolish", skylineconfigHL)
+  plot_hierarchies_add_quantline(HLfigs3$medpolish_estimate[[2]], "medpolish", skylineconfigHL)
 p
-
 ```
 
 ```{r writeSummaries ,eval=TRUE}
@@ -155,34 +163,30 @@ p
 HLfigs3 <- HLfigs3 |>
   dplyr::mutate(figsMed = purrr::map2(plot, medpolish_estimate, plot_hierarchies_add_quantline, "medpolish", skylineconfig))
 
-#pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)+
+# pdf(file.path(outdir,"allProteinsWithMed.pdf"), width = 10, height = 10)+
 invisible(lapply(HLfigs3$figsMed[2:5], print))
-#dev.off()
+# dev.off()
 ```
 
 # Get Protein intensities
 
 ```{r plotProteinIntensities, fig.cap="Plot protein intensities"}
-prots <- HLfigs3 |> dplyr::select(as.character(proteinIDsymbol),  medpolish_estimate) |> 
+prots <- HLfigs3 |>
+  dplyr::select(as.character(proteinIDsymbol), medpolish_estimate) |>
   tidyr::unnest(cols = "medpolish_estimate")
 
-ggplot2::ggplot(prots, ggplot2::aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
+ggplot2::ggplot(prots, ggplot2::aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c)) +
   ggplot2::geom_point() +
   ggplot2::geom_line() +
   ggplot2::facet_wrap(~protein_Id) +
   ggplot2::theme_classic()
-
 ```
 
 
 ```{r plotProteinIntensitiesFreeY, fig.cap="Plot protein intensities"}
-ggplot2::ggplot(prots, ggplot2::aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c )) +
+ggplot2::ggplot(prots, ggplot2::aes(x = time_c, y = medpolish, group = treatment_c, color = treatment_c)) +
   ggplot2::geom_point() +
   ggplot2::geom_line() +
-  ggplot2::facet_wrap(~protein_Id, scales = "free_y" ) +
+  ggplot2::facet_wrap(~protein_Id, scales = "free_y") +
   ggplot2::theme_classic()
 ```
-
-
-
-

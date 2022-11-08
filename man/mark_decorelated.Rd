@@ -25,9 +25,9 @@ with with a corralation less then minCorrelation to all other peptides
 
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-stopifnot( nrow(bb$data) == 25780)
-conf <- old2new(bb$config$clone(deep=TRUE))
+bb <- prolfqua_data("data_ionstar")$filtered()
+stopifnot(nrow(bb$data) == 25780)
+conf <- old2new(bb$config$clone(deep = TRUE))
 data <- bb$data
 
 dataI <- mark_decorelated(data, conf)

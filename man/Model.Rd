@@ -12,24 +12,26 @@ R6 class representing modelling result
 
 
 
-istar <- prolfqua_data('data_ionstar')$normalized()
+istar <- prolfqua_data("data_ionstar")$normalized()
 istar$config <- old2new(istar$config)
-istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar_data <- dplyr::filter(istar$data, protein_Id \%in\% sample(protein_Id, 100))
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
-   model_name = modelName)
+    model_name = modelName
+  )
 pepIntensity <- istar_data
 config <- istar$config
 config$table$hierarchy_keys_depth()
 mod <- prolfqua::build_model(
- pepIntensity,
- formula_randomPeptide,
- modelName = modelName,
- subject_Id = config$table$hierarchy_keys_depth())
+  pepIntensity,
+  formula_randomPeptide,
+  modelName = modelName,
+  subject_Id = config$table$hierarchy_keys_depth()
+)
 
 mod$modelDF
-aovtable  <- mod$get_anova()
+aovtable <- mod$get_anova()
 mod$get_coefficients()
 mod$coef_histogram()
 mod$coef_volcano()

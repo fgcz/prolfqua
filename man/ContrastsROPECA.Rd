@@ -15,9 +15,9 @@ ROPECA optimizes the reproducibility of statistical testing
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$normalized()
-istar$config <- old2new(istar$config )
-istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar <- prolfqua_data("data_ionstar")$normalized()
+istar$config <- old2new(istar$config)
+istar_data <- dplyr::filter(istar$data, protein_Id \%in\% sample(protein_Id, 100))
 modelFunction <-
   strategy_lm("transformedIntensity  ~ dilution.")
 pepIntensity <- istar_data
@@ -26,29 +26,30 @@ config$table$hierarchyDepth <- 2
 config$table$hierarchy_keys_depth()
 
 mod <- build_model(
- pepIntensity,
- modelFunction,
- subject_Id = config$table$hierarchy_keys_depth())
+  pepIntensity,
+  modelFunction,
+  subject_Id = config$table$hierarchy_keys_depth()
+)
 
- Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a")
+Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a")
 
 
- contr <- prolfqua::Contrasts$new(mod, Contr)
- dim(contr$get_contrasts())
- contrM <- prolfqua::ContrastsModerated$new(contr)
- dim(contrM$get_contrasts())
- contrast <- prolfqua::ContrastsROPECA$new(contrM)
- contrast$get_contrasts()
- #ContrastsROPECA$debug("to_wide")
- contrast <- prolfqua::ContrastsROPECA$new(contr)
- tmp <- contrast$get_contrasts()
- dim(tmp)
- pl <- contrast$get_Plotter()
- contrast$to_wide()
- contrast$get_linfct()
- contrast$get_contrast_sides()
- pl$histogram()
- pl$ma_plot()
+contr <- prolfqua::Contrasts$new(mod, Contr)
+dim(contr$get_contrasts())
+contrM <- prolfqua::ContrastsModerated$new(contr)
+dim(contrM$get_contrasts())
+contrast <- prolfqua::ContrastsROPECA$new(contrM)
+contrast$get_contrasts()
+# ContrastsROPECA$debug("to_wide")
+contrast <- prolfqua::ContrastsROPECA$new(contr)
+tmp <- contrast$get_contrasts()
+dim(tmp)
+pl <- contrast$get_Plotter()
+contrast$to_wide()
+contrast$get_linfct()
+contrast$get_contrast_sides()
+pl$histogram()
+pl$ma_plot()
 
 }
 \seealso{

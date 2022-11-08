@@ -11,15 +11,17 @@
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- old2new(bb$config)
 #' data <- bb$data
 #'
 #' configur$parameter$qVal_individual_threshold <- 0.01
-#' xx <- prolfqua::remove_large_QValues(data,
-#'    configur)
+#' xx <- prolfqua::remove_large_QValues(
+#'   data,
+#'   configur
+#' )
 #' xx <- complete_cases(xx, configur)
 #' x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
 #'
@@ -28,13 +30,15 @@
 #' stopifnot(length(unique(x$protein_Id)) == 162)
 #'
 #' tmp <- interaction_missing_stats(xx, configur,
-#'  factors= character(),
-#'   hierarchy = configur$table$hierarchy_keys()[1])$data
+#'   factors = character(),
+#'   hierarchy = configur$table$hierarchy_keys()[1]
+#' )$data
 #' stopifnot(nrow(tmp) == 162)
 #'
 #' tmp <- interaction_missing_stats(xx, configur,
-#'   hierarchy = configur$table$hierarchy_keys()[1])$data
-#' stopifnot(sum(is.na(tmp$nrMeasured))==0)
+#'   hierarchy = configur$table$hierarchy_keys()[1]
+#' )$data
+#' stopifnot(sum(is.na(tmp$nrMeasured)) == 0)
 #' tmp
 #'
 #' interaction_missing_stats(xx, configur, factors = NULL)
@@ -43,22 +47,27 @@ interaction_missing_stats <- function(pdata,
                                       config,
                                       factors = config$table$factor_keys_depth(),
                                       hierarchy = config$table$hierarchy_keys(),
-                                      workIntensity = config$table$get_response())
-{
+                                      workIntensity = config$table$get_response()) {
   pdata <- complete_cases(pdata, config)
   table <- config$table
-  missingPrec <- pdata |> group_by_at(c(factors,
-                                         hierarchy,
-                                         table$isotopeLabel
+  missingPrec <- pdata |> group_by_at(c(
+    factors,
+    hierarchy,
+    table$isotopeLabel
   ))
   missingPrec <- missingPrec |>
-    dplyr::summarize(nrReplicates = n(),
-                     nrNAs = sum(is.na(!!sym(workIntensity))),
-                     meanArea = mean(!!sym(workIntensity), na.rm = TRUE),
-                     medianArea = median(!!sym(workIntensity), na.rm = TRUE)) |>
-    mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |> dplyr::ungroup()
-  return(list(data = missingPrec,
-              summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea", "medianArea")))
+    dplyr::summarize(
+      nrReplicates = n(),
+      nrNAs = sum(is.na(!!sym(workIntensity))),
+      meanArea = mean(!!sym(workIntensity), na.rm = TRUE),
+      medianArea = median(!!sym(workIntensity), na.rm = TRUE)
+    ) |>
+    mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |>
+    dplyr::ungroup()
+  return(list(
+    data = missingPrec,
+    summaries = c("nrReplicates", "nrNAs", "nrMeasured", "meanArea", "medianArea")
+  ))
 }
 
 #' Compute interaction averages and
@@ -78,7 +87,7 @@ interaction_missing_stats <- function(pdata,
 #' @return function
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- old2new(bb$config)
 #' data <- bb$data
@@ -87,7 +96,7 @@ interaction_missing_stats <- function(pdata,
 #' xx <- prolfqua::remove_large_QValues(data, configur)
 #' xx <- complete_cases(xx, configur)
 #' nrPepTimesDilution <- length(unique(paste0(xx$protein_Id, xx$peptide_Id))) *
-#'     length(unique(xx$dilution.))
+#'   length(unique(xx$dilution.))
 #' tmp <- interaction_missing_stats(xx, configur)
 #' stopifnot(nrow(tmp$data) == nrPepTimesDilution)
 #' fun <- .missigness_impute_interactions(xx, configur)
@@ -102,23 +111,23 @@ interaction_missing_stats <- function(pdata,
 #' missing <- fun("nrMeasured")
 #' stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #'
-#'  meanArea <- fun("mean")
+#' meanArea <- fun("mean")
 #' stopifnot(nrow(meanArea) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
-#'  print(sum(is.na(meanArea$mean.dilution.a)))
-#'  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
+#' print(sum(is.na(meanArea$mean.dilution.a)))
+#' stopifnot(sum(is.na(imputed$mean.imp.dilution.a)) == 0)
 #'
 .missigness_impute_interactions <- function(pdata,
                                             config,
                                             factors = config$table$factor_keys_depth(),
                                             probs = 0.1,
-                                            global = TRUE){
+                                            global = TRUE) {
   mstats <- interaction_missing_stats(pdata, config, factors = factors)
   x_summaries <- mstats$summaries
   mstats <- mstats$data
   mstats <- make_interaction_column(mstats, factors, sep = ":")
 
 
-  lowerMean <- function(meanArea, probs = probs){
+  lowerMean <- function(meanArea, probs = probs) {
     meanAreaNotNA <- na.omit(meanArea)
     small10 <- meanAreaNotNA[meanAreaNotNA < quantile(meanAreaNotNA, probs = probs)]
     meanArea[is.na(meanArea)] <- mean(small10)
@@ -128,79 +137,104 @@ interaction_missing_stats <- function(pdata,
   if (!global) {
     mstats <- mstats |>
       group_by(interaction) |>
-      mutate(imputed = lowerMean(.data$meanArea,probs = probs))
-  }else{
+      mutate(imputed = lowerMean(.data$meanArea, probs = probs))
+  } else {
     mstats <- mstats |>
-      mutate(imputed = lowerMean(.data$meanArea,probs = probs))
-
+      mutate(imputed = lowerMean(.data$meanArea, probs = probs))
   }
 
-  res_fun <- function(value = c("long",
-                                "nrReplicates",
-                                "nrMeasured",
-                                "meanArea",
-                                "imputed",
-                                "allWide",
-                                "all" ),
+  res_fun <- function(value = c(
+                        "long",
+                        "nrReplicates",
+                        "nrMeasured",
+                        "meanArea",
+                        "imputed",
+                        "allWide",
+                        "all"
+                      ),
                       add.prefix = TRUE,
-                      DEBUG = FALSE){
+                      DEBUG = FALSE) {
     value <- match.arg(value)
     if (DEBUG) {
-      return(list(value = value, long = mstats , config = config ))
+      return(list(value = value, long = mstats, config = config))
     }
 
     if (value == "long") {
       return(mstats)
-    }else{
+    } else {
       mstats <- mstats |> dplyr::select(-one_of(factors))
 
       pid <- config$table$hierarchy_keys_depth()
       nrReplicates <- mstats |>
-        dplyr::select( -one_of(c(setdiff(x_summaries,"nrReplicates"),"imputed") )) |>
+        dplyr::select(-one_of(c(setdiff(x_summaries, "nrReplicates"), "imputed"))) |>
         tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") |>
         arrange(!!!syms(pid)) |>
         dplyr::ungroup()
-      nrMeasured <- mstats |> dplyr::select(-one_of(c(setdiff(x_summaries,"nrMeasured"),"imputed" ) )) |>
+      nrMeasured <- mstats |>
+        dplyr::select(-one_of(c(setdiff(x_summaries, "nrMeasured"), "imputed"))) |>
         tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") |>
-        arrange(!!!syms(pid)) |> dplyr::ungroup()
+        arrange(!!!syms(pid)) |>
+        dplyr::ungroup()
 
-      meanArea <- mstats |> dplyr::select(-one_of(c(setdiff(x_summaries,"meanArea"),"imputed" ) )) |>
+      meanArea <- mstats |>
+        dplyr::select(-one_of(c(setdiff(x_summaries, "meanArea"), "imputed"))) |>
         tidyr::spread(interaction, meanArea, sep = ".meanArea.") |>
-        arrange(!!!syms(pid)) |> dplyr::ungroup()
+        arrange(!!!syms(pid)) |>
+        dplyr::ungroup()
 
-      meanAreaImputed <- mstats |> dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) |>
+      meanAreaImputed <- mstats |>
+        dplyr::select(-one_of(setdiff(x_summaries, "imputed"))) |>
         tidyr::spread(interaction, .data$imputed, sep = ".imputed.") |>
-        arrange(!!!syms(pid)) |> dplyr::ungroup()
+        arrange(!!!syms(pid)) |>
+        dplyr::ungroup()
 
-      allTables <- list(meanArea = meanArea,
-                        nrMeasured = nrMeasured,
-                        nrReplicates = nrReplicates,
-                        meanAreaImputed = meanAreaImputed)
+      allTables <- list(
+        meanArea = meanArea,
+        nrMeasured = nrMeasured,
+        nrReplicates = nrReplicates,
+        meanAreaImputed = meanAreaImputed
+      )
 
       if (value == "all") {
         allTables[["long"]] <- mstats
         return(allTables)
-      }else if (value == "allWide") {
+      } else if (value == "allWide") {
         return(purrr::reduce(allTables, inner_join))
-      }else if (value == "nrReplicates") {
-        srepl <- if (add.prefix) {"nrRep."}else{""}
-        colnames(nrReplicates) <- gsub("interaction.nrReplicates.", srepl ,colnames(nrReplicates))
-        nrReplicates <- tibble::add_column( nrReplicates, "value" = value, .before = 1)
+      } else if (value == "nrReplicates") {
+        srepl <- if (add.prefix) {
+          "nrRep."
+        } else {
+          ""
+        }
+        colnames(nrReplicates) <- gsub("interaction.nrReplicates.", srepl, colnames(nrReplicates))
+        nrReplicates <- tibble::add_column(nrReplicates, "value" = value, .before = 1)
         return(nrReplicates)
-      }else if (value == "nrMeasured") {
-        srepl <- if (add.prefix) {"nrMeas."}else{""}
-        colnames(nrMeasured) <- gsub("interaction.nrMeasured.", srepl ,colnames(nrMeasured))
-        nrMeasured <- tibble::add_column( nrMeasured, "value" = value, .before = 1)
+      } else if (value == "nrMeasured") {
+        srepl <- if (add.prefix) {
+          "nrMeas."
+        } else {
+          ""
+        }
+        colnames(nrMeasured) <- gsub("interaction.nrMeasured.", srepl, colnames(nrMeasured))
+        nrMeasured <- tibble::add_column(nrMeasured, "value" = value, .before = 1)
         return(nrMeasured)
-      }else if (value == "meanArea") {
-        srepl <- if (add.prefix) {"mean."}else{""}
-        colnames(meanArea) <- gsub("interaction.meanArea.", srepl ,colnames(meanArea))
-        meanArea <- tibble::add_column( meanArea, "value" = value, .before = 1)
+      } else if (value == "meanArea") {
+        srepl <- if (add.prefix) {
+          "mean."
+        } else {
+          ""
+        }
+        colnames(meanArea) <- gsub("interaction.meanArea.", srepl, colnames(meanArea))
+        meanArea <- tibble::add_column(meanArea, "value" = value, .before = 1)
         return(meanArea)
-      }else if (value == "imputed") {
-        srepl <- if (add.prefix) {"mean.imp."}else{""}
-        colnames(meanAreaImputed) <- gsub("interaction.imputed.", srepl ,colnames(meanAreaImputed))
-        meanAreaImputed <- tibble::add_column( meanAreaImputed, "value" = value, .before = 1)
+      } else if (value == "imputed") {
+        srepl <- if (add.prefix) {
+          "mean.imp."
+        } else {
+          ""
+        }
+        colnames(meanAreaImputed) <- gsub("interaction.imputed.", srepl, colnames(meanAreaImputed))
+        meanAreaImputed <- tibble::add_column(meanAreaImputed, "value" = value, .before = 1)
         return(meanAreaImputed)
       }
     }
@@ -226,7 +260,7 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- old2new(bb$config)
 #' data <- bb$data
@@ -244,23 +278,25 @@ missigness_impute_factors_interactions <-
            probs = 0.03,
            value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed"),
            add.prefix = FALSE,
-           global = TRUE)
-  {
+           global = TRUE) {
     value <- match.arg(value)
     fac_fun <- list()
     fac_fun[["interaction"]] <- .missigness_impute_interactions(
       pdata,
       config,
       probs = probs,
-      global = global)
-    if (config$table$factorDepth > 1 ) { # if 1 only then done
+      global = global
+    )
+    if (config$table$factorDepth > 1) {
+      # if 1 only then done
       for (factor in config$table$factor_keys_depth()) {
         fac_fun[[factor]] <- .missigness_impute_interactions(
           pdata,
           config,
           factors = factor,
           probs = probs,
-          global = global)
+          global = global
+        )
       }
     }
 
@@ -269,14 +305,16 @@ missigness_impute_factors_interactions <-
     for (fun_name in names(fac_fun)) {
       fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix = add.prefix)
     }
-    if(value == "long"){
+    if (value == "long") {
       intfact <- dplyr::bind_rows(fac_res)
     } else {
       intfact <- purrr::reduce(fac_res,
-                               dplyr::inner_join,
-                               by = c(config$table$hierarchy_keys(),
-                                      config$table$isotopeLabel, "value"))
-
+        dplyr::inner_join,
+        by = c(
+          config$table$hierarchy_keys(),
+          config$table$isotopeLabel, "value"
+        )
+      )
     }
     return(dplyr::ungroup(intfact))
   }
@@ -292,52 +330,62 @@ missigness_impute_factors_interactions <-
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- prolfqua_data("data_ionstar")$normalized()
 #'
 #' configur <- old2new(bb$config)
 #' data <- bb$data
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-#' mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
+#' mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea")
 #' mean <- get_contrast(mean, configur$table$hierarchy_keys(), Contrasts)
-#' meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hierarchy_keys_depth())
+#' meanProt <- aggregate_contrast(mean, subject_Id = configur$table$hierarchy_keys_depth())
 #'
-#' imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+#' imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed")
 #' imputed <- get_contrast(imputed, configur$table$hierarchy_keys(), Contrasts)
 #'
-#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hierarchy_keys_depth())
+#' imputedProt <- aggregate_contrast(imputed, subject_Id = configur$table$hierarchy_keys_depth())
 #' plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
-#' abline(c(0,1), col=2, pch = "*")
+#' abline(c(0, 1), col = 2, pch = "*")
 #' dim(meanProt)
 #' sum(is.na(meanProt$estimate_median)) == 0
 #' sum(is.na(imputedProt$estimate_median)) == 0
-#' plot(meanProt$estimate_median - imputedProt$estimate_median )
+#' plot(meanProt$estimate_median - imputedProt$estimate_median)
 #'
-aggregate_contrast <- function(
-  data,
-  subject_Id ,
-  agg_func = list(median = function(x){ stats::median(x, na.rm = TRUE) },
-                   mad = function(x){ stats::mad(x, na.rm = TRUE)} ),
-  contrast = "contrast")
-{
-  grouping_columns <- c(contrast, subject_Id, "group_1_name","group_2_name")
+aggregate_contrast <- function(data,
+                               subject_Id,
+                               agg_func = list(
+                                 median = function(x) {
+                                   stats::median(x, na.rm = TRUE)
+                                 },
+                                 mad = function(x) {
+                                   stats::mad(x, na.rm = TRUE)
+                                 }
+                               ),
+                               contrast = "contrast") {
+  grouping_columns <- c(contrast, subject_Id, "group_1_name", "group_2_name")
   dataG <- data |>
     group_by(!!!syms(grouping_columns))
 
   resN <- dataG |> dplyr::summarise(n = n(), .groups = "drop")
-  resE <- dataG |> dplyr::summarise(across(.data$estimate,
-                                     agg_func
-                                    ), .groups = "drop")
+  resE <- dataG |> dplyr::summarise(across(
+    .data$estimate,
+    agg_func
+  ), .groups = "drop")
   agg_func_c <- agg_func[1]
-  resC <- dataG |> dplyr::summarise(across(all_of(c("group_1", "group_2")),
-                                     agg_func_c,
-                                     .names = "{col}"
-                                     ),
-                              .groups = "drop")
-  res <- Reduce(function(x,y){ dplyr::full_join(x , y , by = grouping_columns)},
-                list(resN,resE,resC) )
+  resC <- dataG |> dplyr::summarise(
+    across(all_of(c("group_1", "group_2")),
+      agg_func_c,
+      .names = "{col}"
+    ),
+    .groups = "drop"
+  )
+  res <- Reduce(
+    function(x, y) {
+      dplyr::full_join(x, y, by = grouping_columns)
+    },
+    list(resN, resE, resC)
+  )
   return(res)
-
 }
 
 .get_sides <- function(contrast) {
@@ -345,7 +393,7 @@ aggregate_contrast <- function(
 
   ast_list <- getAST(rlang::parse_expr(contrast))
   ast_array <- array(as.character(unlist(ast_list)))
-  ast_array <- gsub("`","",ast_array)
+  ast_array <- gsub("`", "", ast_array)
   return(ast_array)
 }
 
@@ -359,44 +407,43 @@ aggregate_contrast <- function(
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
 #' configur <- old2new(bb$config)
 #' data <- bb$data
 #' data <- complete_cases(data, configur)
 #'
-#' Contrasts <- c("aVSe" = "dilution.a - dilution.e","aVSb" = "dilution.a - dilution.b" )
+#' Contrasts <- c("aVSe" = "dilution.a - dilution.e", "aVSb" = "dilution.a - dilution.b")
 #' message("missigness_impute_factors_interactions : imputed")
-#' xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
+#' xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured")
 #' imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
 #'
-#' xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+#' xx <- missigness_impute_factors_interactions(data, configur, value = "imputed")
 #'
 #' imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
 #' head(imputed)
 #'
 get_contrast <- function(data,
                          hierarchy_keys,
-                         contrasts)
-{
-
-
+                         contrasts) {
   for (i in seq_along(contrasts)) {
-    message(names(contrasts)[i], "=", contrasts[i],"\n")
+    message(names(contrasts)[i], "=", contrasts[i], "\n")
     data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
   }
   res <- vector(mode = "list", length(contrasts))
   names(res) <- names(contrasts)
   for (i in seq_along(contrasts)) {
-    sides <- .get_sides(contrasts[i] )
-    sides <- intersect(sides,colnames(data))
+    sides <- .get_sides(contrasts[i])
+    sides <- intersect(sides, colnames(data))
 
-    df  <- dplyr::select(data ,
-                  c( hierarchy_keys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i]))
+    df <- dplyr::select(
+      data,
+      c(hierarchy_keys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i])
+    )
 
     df$group_1_name <- sides[1]
     df$group_2_name <- sides[2]
-    df$contrast <-  names(contrasts)[i]
+    df$contrast <- names(contrasts)[i]
 
     res[[names(contrasts)[i]]] <- df
   }
@@ -426,7 +473,7 @@ get_contrast <- function(data,
 #'
 #'
 #' library(prolfqua)
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- prolfqua_data("data_ionstar")$normalized()
 #' configur <- old2new(bb$config)
 #' data <- bb$data
 #' configur$parameter$qVal_individual_threshold <- 0.01
@@ -434,45 +481,48 @@ get_contrast <- function(data,
 #' data <- complete_cases(data, configur)
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-#' #debug(get_imputed_contrasts)
+#' # debug(get_imputed_contrasts)
 #' res <- get_imputed_contrasts(data, configur, Contrasts)
 #'
 #' config <- configur
 #' contrasts <- Contrasts
-#' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
+#' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed")
 #' imputed <- get_contrast(imputed, config$table$hierarchy_keys(), contrasts)
-#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
+#' imputedProt <- aggregate_contrast(imputed, subject_Id = config$table$hierarchy_keys_depth())
 #'
 get_imputed_contrasts <- function(pepIntensity,
-                                     config,
-                                     Contr,
-                                     present = 1,
-                                     global = TRUE){
+                                  config,
+                                  Contr,
+                                  present = 1,
+                                  global = TRUE) {
   if (!present > 0) {
     stop("At least 1 observation in interaction to infer LOD.")
   }
-  long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
-  LOD <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanArea) |> median(na.rm=TRUE)
+  long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long")
+  LOD <- long |>
+    filter(nrNAs == nrReplicates - present) |>
+    pull(meanArea) |>
+    median(na.rm = TRUE)
 
   long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchy_keys())), interaction)
   long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), LOD, meanArea))
 
   lt <- long
   imp <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = imputed_b)
-  lt <- lt |> mutate(is_missing = ifelse( nrNAs == nrReplicates , 1 , 0) )
+  lt <- lt |> mutate(is_missing = ifelse(nrNAs == nrReplicates, 1, 0))
   nr <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = is_missing)
 
   imputed <- get_contrast(ungroup(imp), config$table$hierarchy_keys(), Contr)
-  nrs <- get_contrast(ungroup(nr),  config$table$hierarchy_keys(), Contr)
+  nrs <- get_contrast(ungroup(nr), config$table$hierarchy_keys(), Contr)
 
-  nrs <- nrs |> select(all_of(c(config$table$hierarchy_keys(),"contrast", "estimate" )))
+  nrs <- nrs |> select(all_of(c(config$table$hierarchy_keys(), "contrast", "estimate")))
   nrs <- nrs |> rename(indic = estimate)
   imputed <- inner_join(imputed, nrs)
   imputed2 <- imputed |> mutate(estimate = ifelse(indic < 0 & estimate < 0, 0, estimate))
   imputed2 <- imputed2 |> mutate(estimate = ifelse(indic > 0 & estimate > 0, 0, estimate))
 
-  imputedProt <- aggregate_contrast(ungroup(imputed2),  subject_Id =  config$table$hierarchy_keys_depth())
-  imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2)/2
+  imputedProt <- aggregate_contrast(ungroup(imputed2), subject_Id = config$table$hierarchy_keys_depth())
+  imputedProt$avgAbd <- (imputedProt$group_1 + imputedProt$group_2) / 2
   imputedProt$group_1_name <- NULL
   imputedProt$group_2_name <- NULL
   imputedProt$group_1 <- NULL
@@ -487,7 +537,7 @@ get_imputed_contrasts <- function(pepIntensity,
 #' @family imputation
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')
+#' bb <- prolfqua_data("data_ionstar")
 #' configur <- old2new(bb$config)
 #' data <- bb$data
 #' xx <- complete_cases(data, configur)
@@ -495,42 +545,43 @@ get_imputed_contrasts <- function(pepIntensity,
 #'
 #' missingPrec <- interaction_missing_stats(xx, configur)
 #'
-#' bx <- prolfqua_data('data_ionstar')$normalized()
+#' bx <- prolfqua_data("data_ionstar")$normalized()
 #' configur <- old2new(bx$config)
 #' data <- bx$data
 #' data <- complete_cases(data, configur)
 #' missingPrecNorm <- interaction_missing_stats(data, configur)
 #'
-#' missigness_histogram(data, configur, showempty=FALSE)
-#' missigness_histogram(data, configur, showempty=TRUE)
+#' missigness_histogram(data, configur, showempty = FALSE)
+#' missigness_histogram(data, configur, showempty = TRUE)
 #'
 missigness_histogram <- function(x,
                                  config,
                                  showempty = FALSE,
                                  factors = config$table$factor_keys_depth(),
-                                 alpha = 0.1){
+                                 alpha = 0.1) {
   table <- config$table
-  missingPrec <- interaction_missing_stats(x, config , factors)$data
+  missingPrec <- interaction_missing_stats(x, config, factors)$data
   missingPrec <- missingPrec |>
-    dplyr::ungroup() |> dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
+    dplyr::ungroup() |>
+    dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
 
   if (showempty) {
     if (config$table$is_response_transformed) {
       missingPrec <- missingPrec |>
         dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea), min(.data$meanArea, na.rm = TRUE) - 1,
-                                        .data$meanArea))
-    }else{
+          .data$meanArea
+        ))
+    } else {
       missingPrec <- missingPrec |>
-        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea),min(.data$meanArea, na.rm = TRUE) - 20,.data$meanArea))
+        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea), min(.data$meanArea, na.rm = TRUE) - 20, .data$meanArea))
     }
-
   }
 
   factors <- table$factor_keys_depth()
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
   meanarea <- paste0("mean_", config$table$get_response())
-  missingPrec <- dplyr::rename(missingPrec, !!sym(meanarea) := .data$meanArea )
+  missingPrec <- dplyr::rename(missingPrec, !!sym(meanarea) := .data$meanArea)
 
   p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
     ggplot2::geom_density(alpha = alpha, position = "identity") +
@@ -551,38 +602,41 @@ missigness_histogram <- function(x,
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config$clone(deep=TRUE))
+#' configur <- old2new(bb$config$clone(deep = TRUE))
 #' data <- bb$data
 #'
-#' res <- missingness_per_condition_cumsum(data,configur)
+#' res <- missingness_per_condition_cumsum(data, configur)
 #' stopifnot("ggplot" %in% class(res$figure))
 #' print(res$figure)
 #' res$data
 missingness_per_condition_cumsum <- function(x,
                                              config,
-                                             factors = config$table$factor_keys_depth()){
+                                             factors = config$table$factor_keys_depth()) {
   table <- config$table
-  missingPrec <- interaction_missing_stats(x, config,factors)$data
+  missingPrec <- interaction_missing_stats(x, config, factors)$data
 
-  xx <- missingPrec |> group_by_at(c(table$isotopeLabel, factors,"nrNAs","nrReplicates")) |>
+  xx <- missingPrec |>
+    group_by_at(c(table$isotopeLabel, factors, "nrNAs", "nrReplicates")) |>
     dplyr::summarize(nrTransitions = n())
 
-  xxcs <- xx |> group_by_at( c(table$isotopeLabel,factors)) |> arrange(.data$nrNAs) |>
+  xxcs <- xx |>
+    group_by_at(c(table$isotopeLabel, factors)) |>
+    arrange(.data$nrNAs) |>
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
-  res <- xxcs  |> dplyr::select(-.data$nrTransitions)
+  res <- xxcs |> dplyr::select(-.data$nrTransitions)
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
-  nudgeval = mean(res$cumulative_sum) * 0.05
+  nudgeval <- mean(res$cumulative_sum) * 0.05
   p <- ggplot(res, aes(x = .data$nrNAs, y = .data$cumulative_sum)) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = .data$cumulative_sum), nudge_y = nudgeval, angle = -45) +
     facet_grid(as.formula(formula))
 
-  res <- res |> tidyr::spread("nrNAs","cumulative_sum")
+  res <- res |> tidyr::spread("nrNAs", "cumulative_sum")
   return(list(data = res, figure = p))
 }
 
@@ -592,37 +646,40 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config$clone(deep=TRUE))
+#' configur <- old2new(bb$config$clone(deep = TRUE))
 #' data <- bb$data
 #'
 #' res <- missingness_per_condition(data, configur)
-#' stopifnot(c(5,8) == dim(res$data))
+#' stopifnot(c(5, 8) == dim(res$data))
 #' stopifnot("ggplot" %in% class(res$figure))
 #' print(res$figure)
 #'
-missingness_per_condition <- function(x, config, factors = config$table$factor_keys_depth()){
+missingness_per_condition <- function(x, config, factors = config$table$factor_keys_depth()) {
   table <- config$table
   missingPrec <- interaction_missing_stats(x, config, factors)$data
-  hierarchyKey <- tail(config$table$hierarchy_keys(),1)
-  hierarchyKey <- paste0("nr_",hierarchyKey)
-  xx <- missingPrec |> group_by_at(c(table$isotopeLabel,
-                                      factors,"nrNAs","nrReplicates")) |>
-    dplyr::summarize( !!sym(hierarchyKey) := n())
+  hierarchyKey <- tail(config$table$hierarchy_keys(), 1)
+  hierarchyKey <- paste0("nr_", hierarchyKey)
+  xx <- missingPrec |>
+    group_by_at(c(
+      table$isotopeLabel,
+      factors, "nrNAs", "nrReplicates"
+    )) |>
+    dplyr::summarize(!!sym(hierarchyKey) := n())
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
-  #message(formula)
+  # message(formula)
 
-  nudgeval = max(xx[[hierarchyKey]]) * 0.05
+  nudgeval <- max(xx[[hierarchyKey]]) * 0.05
 
   p <- ggplot(xx, aes_string(x = "nrNAs", y = hierarchyKey)) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = !!sym(hierarchyKey)), nudge_y = nudgeval, angle = 45) +
     facet_grid(as.formula(formula))
-  xx <- tidyr::spread(xx, "nrNAs",hierarchyKey)
+  xx <- tidyr::spread(xx, "nrNAs", hierarchyKey)
 
-  return(list(data = xx ,figure = p))
+  return(list(data = xx, figure = p))
 }
 
 
@@ -632,21 +689,22 @@ missingness_per_condition <- function(x, config, factors = config$table$factor_k
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config$clone(deep=TRUE))
+#' configur <- old2new(bb$config$clone(deep = TRUE))
 #' data <- bb$data
-#' #debug(UpSet_interaction_missing_stats)
+#' # debug(UpSet_interaction_missing_stats)
 #' tmp <- UpSet_interaction_missing_stats(data, configur)
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::interaction_missing_stats(data, cf)
-  nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$table$hierarchy_keys(),
-                                            names_from = cf$table$factor_keys_depth(),
-                                            values_from = !!rlang::sym("nrMeasured"))
+  nrMiss <- tmp$data |> tidyr::pivot_wider(
+    id_cols = cf$table$hierarchy_keys(),
+    names_from = cf$table$factor_keys_depth(),
+    values_from = !!rlang::sym("nrMeasured")
+  )
 
   hl <- length(cf$table$hierarchy_keys())
-  nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] < tr] <- 0
-  nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] >= tr] <- 1
+  nrMiss[, -(1:hl)][nrMiss[, -(1:hl)] < tr] <- 0
+  nrMiss[, -(1:hl)][nrMiss[, -(1:hl)] >= tr] <- 1
   return(as.data.frame(nrMiss))
 }
-

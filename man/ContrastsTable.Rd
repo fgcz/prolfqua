@@ -10,14 +10,16 @@ holds results when contrasts are added.
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+bb <- prolfqua_data("data_ionstar")$normalized()
 bb$config <- old2new(bb$config)
-configur <- bb$config$clone(deep=TRUE)
+configur <- bb$config$clone(deep = TRUE)
 configur$table$hierarchyDepth <- 2
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)
-Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
-"dilution.c-e" = "dilution.c - dilution.b")
+Contrasts <- c(
+  "dilution.b-a" = "dilution.b - dilution.a",
+  "dilution.c-e" = "dilution.c - dilution.b"
+)
 csi <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
 ctr <- csi$get_contrasts()
 csi$subject_Id

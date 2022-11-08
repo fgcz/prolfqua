@@ -29,15 +29,17 @@ compute missingness statistics per hierarchy and factor level
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 stopifnot(nrow(bb$data) == 25780)
 stopifnot(nrow(bb$data) == 25780)
 configur <- old2new(bb$config)
 data <- bb$data
 
 configur$parameter$qVal_individual_threshold <- 0.01
-xx <- prolfqua::remove_large_QValues(data,
-   configur)
+xx <- prolfqua::remove_large_QValues(
+  data,
+  configur
+)
 xx <- complete_cases(xx, configur)
 x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
 
@@ -46,13 +48,15 @@ stopifnot(sum(is.na(x$meanArea)) == 206)
 stopifnot(length(unique(x$protein_Id)) == 162)
 
 tmp <- interaction_missing_stats(xx, configur,
- factors= character(),
-  hierarchy = configur$table$hierarchy_keys()[1])$data
+  factors = character(),
+  hierarchy = configur$table$hierarchy_keys()[1]
+)$data
 stopifnot(nrow(tmp) == 162)
 
 tmp <- interaction_missing_stats(xx, configur,
-  hierarchy = configur$table$hierarchy_keys()[1])$data
-stopifnot(sum(is.na(tmp$nrMeasured))==0)
+  hierarchy = configur$table$hierarchy_keys()[1]
+)$data
+stopifnot(sum(is.na(tmp$nrMeasured)) == 0)
 tmp
 
 interaction_missing_stats(xx, configur, factors = NULL)

@@ -22,9 +22,9 @@ data.frame
 Remove rows when qVal_individual_threshold is exceeded
 }
 \examples{
-dd <- prolfqua_data('data_spectronautDIA250_A')
+dd <- prolfqua_data("data_spectronautDIA250_A")
 config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
+analysis <- dd$analysis(dd$data, config)
 
 
 

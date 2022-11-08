@@ -17,16 +17,17 @@ Table of distinct factors (sample annotation)
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
-config <- bb$config$clone(deep=TRUE)
+config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 
-xx <- table_factors(data,config )
+xx <- table_factors(data, config)
 xx
-xt <- xx |> dplyr::group_by(!!!rlang::syms(config$table$factor_keys())) |>
- dplyr::summarize(n = dplyr::n())
+xt <- xx |>
+  dplyr::group_by(!!!rlang::syms(config$table$factor_keys())) |>
+  dplyr::summarize(n = dplyr::n())
 stopifnot(all(xt$n == 1))
 
 }

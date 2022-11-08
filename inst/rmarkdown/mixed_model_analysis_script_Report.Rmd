@@ -21,29 +21,30 @@ knitr::opts_chunk$set(echo = FALSE)
 pars <- params$pars
 
 
-makefunction <- function(outpath, subdir,  prefix ) {
+makefunction <- function(outpath, subdir, prefix) {
   outpath <- outpath
   subdir <- subdir
   prefix <- prefix
-  res_func <-  function(..., check=FALSE){
+  res_func <- function(..., check = FALSE) {
     x <- c(...)
     res <- paste(x, collapse = "")
-    res <- file.path(subdir, paste0(prefix,res))
-    fpath <- file.path(outpath, res )
+    res <- file.path(subdir, paste0(prefix, res))
+    fpath <- file.path(outpath, res)
     message(fpath)
-    if (check) {return(file.exists(fpath))}
+    if (check) {
+      return(file.exists(fpath))
+    }
     if (file.exists(fpath)) {
       return(res)
-    }else{
-      stop("File ", file.path(outpath,res) , " does not exist!")
+    } else {
+      stop("File ", file.path(outpath, res), " does not exist!")
     }
   }
   return(res_func)
 }
 
-qcfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$qc_dir , prefix = pars$prefix )
-modfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$modelling_dir , prefix = "" )
-
+qcfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$qc_dir, prefix = pars$prefix)
+modfile <- makefunction(outpath = pars$ps$outpath, subdir = pars$ps$modelling_dir, prefix = "")
 ```
 
 
@@ -75,19 +76,22 @@ table_facade(pars$annotation, "Sample annotations.")
 
 ```{r prepInferenceFigrues,include = FALSE, eval=TRUE}
 if (qcfile("inference_figures.pdf", check = TRUE)) {
-txt_inference_fig <- paste( c("- A [pdf file](", qcfile("inference_figures.pdf"), '){target="_blank"}',
-"visualizing all the peptide and protein intensities (the peptide intensities are $\\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) )."), collapse = "")
+  txt_inference_fig <- paste(c(
+    "- A [pdf file](", qcfile("inference_figures.pdf"), '){target="_blank"}',
+    "visualizing all the peptide and protein intensities (the peptide intensities are $\\log_2$ transformed and [z-scored](https://en.wikipedia.org/wiki/Standard_score) )."
+  ), collapse = "")
 }
 ```
 
 
 
 ```{r prepareBoxplot, include = FALSE}
-if(qcfile("boxplot.pdf", check = TRUE)){
-txt_boxplot_fig <- paste( c("- A [pdf file](", qcfile("boxplot.pdf"), '){target="_blank"}',  
-                       "with box-plots showing the intensity distribution of each protein in all conditions."), collapse = "")
+if (qcfile("boxplot.pdf", check = TRUE)) {
+  txt_boxplot_fig <- paste(c(
+    "- A [pdf file](", qcfile("boxplot.pdf"), '){target="_blank"}',
+    "with box-plots showing the intensity distribution of each protein in all conditions."
+  ), collapse = "")
 }
-
 ```
 
 `r if(file.exists("qc_results/retention_time_plot.png")){' - [Peptide intensity vs RT plot](qc_results/retention_time_plot.png){target="_blank"}'}`
@@ -109,7 +113,6 @@ txt_boxplot_fig <- paste( c("- A [pdf file](", qcfile("boxplot.pdf"), '){target=
 mixed_txt <- "mixed-effects model [see @lmer2015]: "
 fixed_txt <- "linear model: "
 mixed_contrast_txt <- "To compute the p-values and contrasts we used the method `contest` from the the package lmerTest [@lmerTest2017]"
-
 ```
 
 
@@ -123,7 +126,6 @@ Fold changes and p-values for each contrast (see next Table) are computed based 
 ```{r contrasts}
 Contrasts <- data.frame(contrast = names(pars$Contrasts), explicit = as.character(pars$Contrasts))
 table_facade(Contrasts, "Contrasts (vs - versus, gv - given).")
-
 ```
 
 `r if(pars$model$is_mixed) {mixed_contrast_txt}`. All the protein p-Values are adjusted for multiple testing using the Benjamini and Hochberg procedure to obtain the false discovery rate (FDR) [see @BenjaminiHochberg1995].
@@ -139,31 +141,30 @@ anovaXLSX <- "ANOVA_Model"
 anovaPDF <- "ANOVA_p.values_Model.pdf"
 contrastXLSX <- "foldchange_estimates"
 histogramFC <- "contrasts_Histogram_FC_estimate_Model"
-histogramPVal <-   "contrasts_Histogram_p.value_Model"
+histogramPVal <- "contrasts_Histogram_p.value_Model"
 histogramPValAdj <- "contrasts_Histogram_p.value.adjusted_Model"
 volcanoPVal <- "contrasts_Volcano_p.value_Model"
 volcanoAdjModPval <- "contrasts_Volcano_moderated.p.value.adjusted_Model"
 volcanoPValAdj <- "contrasts_Volcano_p.value.adjusted_Model"
 maPlot <- "contrasts_MA_FC_estimate_Model"
-
 ```
 
 
 ```{r alttext2, include =FALSE}
 t1 <- "- __Volcano plot of p-values vs fold change estimate__ ([pdf]("
-t2 <- modfile(volcanoPVal,".pdf")
+t2 <- modfile(volcanoPVal, ".pdf")
 t3 <- "){target='_blank'}; [html]("
-t4 <- modfile(volcanoPVal,".html")
+t4 <- modfile(volcanoPVal, ".html")
 t5 <- "){target='_blank'}) which on the vertical axis shows the protein $-\\log_{10}(p-value)$ versus the the log2 fold changes on the horizontal axis."
-volcanoPValue <- paste(c(t1,t2,t3,t4,t5), collapse = "")
+volcanoPValue <- paste(c(t1, t2, t3, t4, t5), collapse = "")
 
 if (!pars$model$is_mixed) {
   t1 <- "- __Volcano plot of adjusted moderated p-values vs fold change estimate__ ([pdf]("
-  t2 <- modfile(volcanoAdjModPval,".pdf")
+  t2 <- modfile(volcanoAdjModPval, ".pdf")
   t3 <- "){target='_blank'}; [html]("
-  t4 <- modfile(volcanoAdjModPval,".html")
+  t4 <- modfile(volcanoAdjModPval, ".html")
   t5 <- "){target='_blank'}) which on the vertical axis shows the protein $-\\log_{10}(p-value)$ versus the the log2 fold changes on the horizontal axis."
-  volcanoModeratedAdjustedPValue <- paste(c(t1,t2,t3,t4,t5), collapse = "")
+  volcanoModeratedAdjustedPValue <- paste(c(t1, t2, t3, t4, t5), collapse = "")
 }
 ```
 

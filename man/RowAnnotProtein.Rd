@@ -10,11 +10,11 @@ Decorates LFQData with a row annotation and some protein specific functions.
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- prolfqua_data("data_ionstar")$filtered()
 istar$config <- old2new(istar$config)
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
-pannot <- RowAnnotProtein$new( lfqdata )
+pannot <- RowAnnotProtein$new(lfqdata)
 
 pannot$annotateREV()
 pannot$annotateCON()

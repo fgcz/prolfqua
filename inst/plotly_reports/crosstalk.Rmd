@@ -15,21 +15,22 @@ knitr::opts_chunk$set(echo = TRUE)
 library(plotly)
 library(crosstalk)
 
-d1 <- data.frame(id = letters, x = rnorm(length(letters)), y=runif(length(letters)))
-d2 <- data.frame(id = sample(letters, 1000, replace = TRUE), xx = rnorm(1000), yy=runif(1000)) %>% arrange(id)
+d1 <- data.frame(id = letters, x = rnorm(length(letters)), y = runif(length(letters)))
+d2 <- data.frame(id = sample(letters, 1000, replace = TRUE), xx = rnorm(1000), yy = runif(1000)) %>% arrange(id)
 head(d2)
 
-prot <-SharedData$new(d1,key = "id",group = "ex1")
-pep <- SharedData$new(d2,key= "id", group= "ex1")
+prot <- SharedData$new(d1, key = "id", group = "ex1")
+pep <- SharedData$new(d2, key = "id", group = "ex1")
 
-p1 <- ggplot(prot, aes(x = x,y = y)) + geom_point()
-p2 <- ggplot(pep, aes(x = xx, y= yy)) + geom_point()
+p1 <- ggplot(prot, aes(x = x, y = y)) +
+  geom_point()
+p2 <- ggplot(pep, aes(x = xx, y = yy)) +
+  geom_point()
 
-pp1 <- ggplotly(p1) %>% add_markers(alpha=0.5) 
+pp1 <- ggplotly(p1) %>% add_markers(alpha = 0.5)
 pp2 <- ggplotly(p2)
 
-bscols(pp1,pp2)
-
+bscols(pp1, pp2)
 ```
 
 
@@ -37,7 +38,7 @@ bscols(pp1,pp2)
 
 library(leaflet)
 library(d3scatter)
-shared_quakes <- SharedData$new(quakes[sample(nrow(quakes), 100),])
+shared_quakes <- SharedData$new(quakes[sample(nrow(quakes), 100), ])
 bscols(
   leaflet(shared_quakes, width = "100%", height = 300) %>%
     addTiles() %>%

@@ -11,8 +11,8 @@ Make model plot with title - protein Name.
 }
 \examples{
 
-m <- prolfqua_data('data_interactionModel_p1807')
-plot_lmer_model_and_data(m,"dumm")
+m <- prolfqua_data("data_interactionModel_p1807")
+plot_lmer_model_and_data(m, "dumm")
 
 }
 \seealso{

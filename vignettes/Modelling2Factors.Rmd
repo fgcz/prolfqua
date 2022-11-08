@@ -44,17 +44,20 @@ formula_Batches <-
   prolfqua::strategy_lm("transformedIntensity ~ condition_ * batch_ ")
 
 # specify model definition
-Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
-               "p2370 - p2691" = "batch_p2370 - batch_p2691",
-               "Glucose_vs_Ethanol_gv_p2370" = "`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`",
-               "Glucose_vs_Ethanol_gv_p2691" = "`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`",
-               "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`")
+Contrasts <- c(
+  "Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
+  "p2370 - p2691" = "batch_p2370 - batch_p2691",
+  "Glucose_vs_Ethanol_gv_p2370" = "`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`",
+  "Glucose_vs_Ethanol_gv_p2691" = "`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`",
+  "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"
+)
 ```
 
 
 ```{r buildModel}
 mod <- prolfqua::build_model(pMerged$data, formula_Batches,
-  subject_Id = pMerged$config$table$hierarchy_keys() )
+  subject_Id = pMerged$config$table$hierarchy_keys()
+)
 ```
 
 
@@ -68,11 +71,15 @@ Examine proteins with a significant interaction between the two factors treatmen
 
 ```{r anovaAnalysis}
 ANOVA <- mod$get_anova()
-ANOVA |> dplyr::filter(factor == "condition_:batch_") |> dplyr::arrange(FDR.Pr..F.) |> head(5)
-protIntSig <- ANOVA |> dplyr::filter(factor == "condition_:batch_") |>
+ANOVA |>
+  dplyr::filter(factor == "condition_:batch_") |>
+  dplyr::arrange(FDR.Pr..F.) |>
+  head(5)
+protIntSig <- ANOVA |>
+  dplyr::filter(factor == "condition_:batch_") |>
   dplyr::filter(FDR.Pr..F. < 0.05)
-protInt <-  pMerged$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
+protInt <- pMerged$get_copy()
+protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id, ]
 ```
 
 These proteins (here the top five) can easily be visualized using the `boxplot` function from the `plotter` objects in prolfqua
@@ -122,11 +129,11 @@ plot$FDR
 
 ```{r visualiseSomeProteins, fig.cap="Heatmap for proteins that are quantified only in one condition."}
 
-sigInteraction <- mergedContrasts$contrast_result |> 
+sigInteraction <- mergedContrasts$contrast_result |>
   dplyr::filter(contrast == "Interaction" & FDR < 0.2)
 
-protInt <-  pMerged$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
+protInt <- pMerged$get_copy()
+protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id, ]
 
 protInt$get_Plotter()$raster()
 
@@ -146,5 +153,3 @@ sessionInfo()
 ```
 
 # References
-
-

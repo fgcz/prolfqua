@@ -16,7 +16,7 @@ summarise_missing_contrasts
 }
 \examples{
 
-ttd <- ionstar_bench_preprocess(prolfqua_data('data_benchmarkExample'))
+ttd <- ionstar_bench_preprocess(prolfqua_data("data_benchmarkExample"))
 x <- .summarise_missing_contrasts(ttd$data)
 x2 <- tibble::as_tibble(x$summary)
 }

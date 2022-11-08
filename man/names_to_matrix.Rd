@@ -18,8 +18,8 @@ matrix
 splits names and creates a matrix
 }
 \examples{
-dat = c("bla_ra0/2_run0","bla_ra1/2_run0","bla_ra2/2_run0")
-names_to_matrix(dat,split="\\\\_|\\\\/")
+dat <- c("bla_ra0/2_run0", "bla_ra1/2_run0", "bla_ra2/2_run0")
+names_to_matrix(dat, split = "\\\\_|\\\\/")
 }
 \seealso{
 Other utilities: 

@@ -10,7 +10,7 @@ plot_hierarchies_add_quantline(p, data, aes_y, configuration)
 Add protein estimate to plot of peptide intensities
 }
 \examples{
-#todo
+# todo
 }
 \seealso{
 Other aggregation: 

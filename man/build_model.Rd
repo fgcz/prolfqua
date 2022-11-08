@@ -33,14 +33,15 @@ Build protein models from data
 }
 \examples{
 # library(tidyverse)
-D <- prolfqua_data('data_ionstar')$normalized()
+D <- prolfqua_data("data_ionstar")$normalized()
 D$config <- old2new(D$config)
-D$data <- dplyr::filter(D$data ,protein_Id \%in\% sample(protein_Id, 100))
+D$data <- dplyr::filter(D$data, protein_Id \%in\% sample(protein_Id, 100))
 
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)",
-   model_name = modelName)
+    model_name = modelName
+  )
 
 
 pepIntensity <- D$data
@@ -49,15 +50,17 @@ config <- D$config
 
 
 mod <- prolfqua:::build_model(
- pepIntensity,
- formula_randomPeptide,
- modelName = modelName,
- subject_Id = config$table$hierarchy_keys_depth())
+  pepIntensity,
+  formula_randomPeptide,
+  modelName = modelName,
+  subject_Id = config$table$hierarchy_keys_depth()
+)
 
 mod <- prolfqua:::build_model(
- LFQData$new(pepIntensity, config),
- formula_randomPeptide,
- modelName = modelName)
+  LFQData$new(pepIntensity, config),
+  formula_randomPeptide,
+  modelName = modelName
+)
 model_summary(mod)
 
 }

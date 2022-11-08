@@ -28,7 +28,7 @@ Compute theoretical sample sizes from factor level standard deviations
 }
 \examples{
 
-bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
+bb1 <- prolfqua::prolfqua_data("data_IonstarProtein_subsetNorm")
 
 
 ldata <- LFQData$new(bb1$data, old2new(bb1$config))

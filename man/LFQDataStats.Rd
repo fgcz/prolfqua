@@ -14,9 +14,8 @@ compute stdv, mean and CV per peptide or protein and condition.
 \examples{
 
 # study variance of not normalized data
-#source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
-runallfuncs <- function(x){
-
+# source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
+runallfuncs <- function(x) {
   stopifnot("data.frame" \%in\% class(x$stats()))
   stopifnot(c("long", "wide") \%in\% names(x$stats_quantiles()))
   stopifnot("ggplot" \%in\% class(x$density()))
@@ -26,23 +25,23 @@ runallfuncs <- function(x){
   stopifnot("ggplot" \%in\% class(x$violin()))
   stopifnot("ggplot" \%in\% class(x$violin_median()))
   stopifnot("ggplot" \%in\% class(x$stdv_vs_mean(size = 400)))
-  if(!x$lfq$is_transformed()){
+  if (!x$lfq$is_transformed()) {
     stopifnot(is.null(x$power_t_test()))
     stopifnot(is.null(x$power_t_test_quantiles()))
   }
 }
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- prolfqua_data("data_ionstar")$filtered()
 istar$config <- old2new(istar$config)
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqstats <- lfqdata$get_Stats()
 lfqstats$violin()
 runallfuncs(lfqstats)
-x<-lfqstats
+x <- lfqstats
 
-#study variance of normalized data
+# study variance of normalized data
 
-istar <- prolfqua_data('data_ionstar')$normalized()
+istar <- prolfqua_data("data_ionstar")$normalized()
 istar$config <- old2new(istar$config)
 istar$config$table$is_response_transformed
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
@@ -51,9 +50,9 @@ lfqdata$is_transformed(TRUE)
 lfqstats <- lfqdata$get_Stats()
 runallfuncs(lfqstats)
 
-#Slightly different dataset
+# Slightly different dataset
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep = TRUE)

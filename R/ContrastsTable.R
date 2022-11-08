@@ -7,14 +7,16 @@
 #' @family modelling
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' bb <- prolfqua_data("data_ionstar")$normalized()
 #' bb$config <- old2new(bb$config)
-#' configur <- bb$config$clone(deep=TRUE)
+#' configur <- bb$config$clone(deep = TRUE)
 #' configur$table$hierarchyDepth <- 2
 #' data <- bb$data
 #' lfqdata <- LFQData$new(data, configur)
-#' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
-#' "dilution.c-e" = "dilution.c - dilution.b")
+#' Contrasts <- c(
+#'   "dilution.b-a" = "dilution.b - dilution.a",
+#'   "dilution.c-e" = "dilution.c - dilution.b"
+#' )
 #' csi <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
 #' ctr <- csi$get_contrasts()
 #' csi$subject_Id
@@ -42,20 +44,19 @@ ContrastsTable <- R6::R6Class(
     #' @param modelName default ContrastTable
     initialize = function(contrastsdf,
                           subject_Id = "protein_Id",
-                          modelName = "ContrastTable"
-    ){
-      self$contrast_result = contrastsdf
-      self$subject_Id = subject_Id
-      self$modelName = modelName
+                          modelName = "ContrastTable") {
+      self$contrast_result <- contrastsdf
+      self$subject_Id <- subject_Id
+      self$modelName <- modelName
     },
     #' @description
     #' return sides of contrast
     #' @return data.frame
-    get_contrast_sides = function(){
+    get_contrast_sides = function() {
       NULL
     },
     #' @description not implemented
-    get_linfct = function(){
+    get_linfct = function() {
       NULL
     },
 
@@ -64,7 +65,7 @@ ContrastsTable <- R6::R6Class(
     #' @seealso \code{\link{summary_ROPECA_median_p.scaled}}
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
-    get_contrasts = function(all = FALSE){
+    get_contrasts = function(all = FALSE) {
       self$contrast_result
     },
     #' @description
@@ -73,31 +74,36 @@ ContrastsTable <- R6::R6Class(
     #' @param FDRthreshold fdr threshold
     #' @return \code{\link{ContrastsPlotter}}
     #'
-    get_Plotter = function(FCthreshold = 1, FDRthreshold = 0.1){
+    get_Plotter = function(FCthreshold = 1, FDRthreshold = 0.1) {
       res <- ContrastsPlotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = FCthreshold,
-        volcano = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                       list(score = "FDR", thresh = FDRthreshold)),
-        histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                         list(score = "FDR", xlim = c(0,1,0.05))),
+        volcano = list(
+          list(score = "p.value", xlim = c(0, 1, 0.05)),
+          list(score = "FDR", thresh = FDRthreshold)
+        ),
+        histogram = list(
+          list(score = "p.value", xlim = c(0, 1, 0.05)),
+          list(score = "FDR", xlim = c(0, 1, 0.05))
+        ),
         modelName = "modelName",
         diff = "diff",
-        contrast = "contrast")
+        contrast = "contrast"
+      )
       return(res)
     },
     #' @description convert to wide format
     #' @param columns value column default beta.based.significance
     #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR")){
+    to_wide = function(columns = c("p.value", "FDR")) {
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                     subject_Id = self$subject_Id,
-                                                     columns = c("diff", columns),
-                                                     contrast = 'contrast')
+        subject_Id = self$subject_Id,
+        columns = c("diff", columns),
+        contrast = "contrast"
+      )
       return(contrasts_wide)
     }
   )
 )
-

@@ -13,9 +13,9 @@ tidyMQ_ProteinGroups(MQProteinGroups)
 extract intensities and annotations from MQ proteinGroups.txt
 }
 \examples{
-protein_txt <- system_file("samples/maxquant_txt/tiny2.zip",package = "prolfqua")
-protein_txt <- read.csv(unz(protein_txt,"proteinGroups.txt"), header=TRUE, stringsAsFactors = FALSE, sep="\t")
-mq_proteins <-tidyMQ_ProteinGroups(protein_txt)
+protein_txt <- system_file("samples/maxquant_txt/tiny2.zip", package = "prolfqua")
+protein_txt <- read.csv(unz(protein_txt, "proteinGroups.txt"), header = TRUE, stringsAsFactors = FALSE, sep = "\t")
+mq_proteins <- tidyMQ_ProteinGroups(protein_txt)
 
 }
 \seealso{

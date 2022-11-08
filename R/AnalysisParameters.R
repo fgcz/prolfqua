@@ -8,7 +8,7 @@ AnalysisParameters <- R6::R6Class(
   "AnalysisParameters",
   public = list(
     #' @field qVal_individual_threshold qValue threshold for sample
-    qVal_individual_threshold  = 0.05,
+    qVal_individual_threshold = 0.05,
     #' @field qVal_experiment_threshold qValue threshold for dataset
     qVal_experiment_threshold = 0.01,
     #' @field qVal_minNumber_below_experiment_threshold how many samples need to meet qVal_experiment_threshold
@@ -21,4 +21,3 @@ AnalysisParameters <- R6::R6Class(
     min_peptides_protein = 2
   )
 )
-

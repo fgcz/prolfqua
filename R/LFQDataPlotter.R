@@ -7,16 +7,17 @@
 #' @import dplyr
 #' @examples
 #'
-#' #library(prolfqua)
-#' bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
-#' istar <- LFQData$new(bb1$data, old2new(bb1$config$clone( deep = TRUE)))
+#' # library(prolfqua)
+#' bb1 <- prolfqua::prolfqua_data("data_IonstarProtein_subsetNorm")
+#' istar <- LFQData$new(bb1$data, old2new(bb1$config$clone(deep = TRUE)))
 #'
 #' istar$data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #'
 #' lfqdata <- LFQData$new(
-#'  istar$data,
-#'  istar$config)
-#' #LFQDataPlotter$debug("pca_plotly")
+#'   istar$data,
+#'   istar$config
+#' )
+#' # LFQDataPlotter$debug("pca_plotly")
 #' lfqplotter <- lfqdata$get_Plotter()
 #' graphics.off()
 #' lfqplotter$heatmap()
@@ -26,8 +27,8 @@
 #' lfqplotter$pca()
 #' lfqplotter$pca_plotly()
 #'
-#' #tmp <- lfqplotter$boxplots()
-#' #tmp$boxplot[[1]]
+#' # tmp <- lfqplotter$boxplots()
+#' # tmp$boxplot[[1]]
 #' lfqplotter$missigness_histogram()
 #'
 #' lfqplotter$NA_heatmap()
@@ -53,9 +54,9 @@ LFQDataPlotter <- R6::R6Class(
     #' create LFQDataPlotter
     #' @param lfqdata LFQData
     #' @param prefix will be prepended to outputs written
-    initialize = function(lfqdata, prefix = "ms_"){
-      self$lfq = lfqdata
-      self$prefix = prefix
+    initialize = function(lfqdata, prefix = "ms_") {
+      self$lfq <- lfqdata
+      self$prefix <- prefix
       self$lfq$data <- na.omit(self$lfq$data)
     },
 
@@ -65,15 +66,16 @@ LFQDataPlotter <- R6::R6Class(
     #' @param not_na TRUE arrange by number of NA's, FALSE by arrange by intensity
     #' @param rownames show rownames (default FALSE - do not show.)
     #' @return ggplot
-    raster = function(arrange = c("mean", "var") ,
+    raster = function(arrange = c("mean", "var"),
                       not_na = FALSE,
-                      rownames = FALSE ){
+                      rownames = FALSE) {
       arrange <- match.arg(arrange)
       fig <- prolfqua::plot_raster(self$lfq$data,
-                                   self$lfq$config,
-                                   arrange = arrange,
-                                   not_na = not_na,
-                                   show_rownames = rownames)
+        self$lfq$config,
+        arrange = arrange,
+        not_na = not_na,
+        show_rownames = rownames
+      )
       return(fig)
     },
     #' @description
@@ -91,11 +93,12 @@ LFQDataPlotter <- R6::R6Class(
     #' @param na_fraction max fraction of NA's per row
     #' @param rownames show rownames (default FALSE - do not show.)
     #' @return pheatmap
-    heatmap = function(na_fraction = 0.3, rownames = FALSE){
+    heatmap = function(na_fraction = 0.3, rownames = FALSE) {
       fig <- prolfqua::plot_heatmap(self$lfq$data,
-                                    self$lfq$config,
-                                    na_fraction = na_fraction,
-                                    show_rownames = rownames)
+        self$lfq$config,
+        na_fraction = na_fraction,
+        show_rownames = rownames
+      )
       return(fig)
     },
     #' @description
@@ -108,7 +111,7 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' @return pheatmap
     #'
-    heatmap_cor = function(){
+    heatmap_cor = function() {
       fig <- prolfqua::plot_heatmap_cor(self$lfq$data, self$lfq$config)
       return(fig)
     },
@@ -121,7 +124,7 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' @param add_txt show sample names
     #' @return ggplot
-    pca = function(add_txt = TRUE){
+    pca = function(add_txt = TRUE) {
       fig <- prolfqua::plot_pca(self$lfq$data, self$lfq$config, add_txt = add_txt)
       return(fig)
     },
@@ -129,48 +132,48 @@ LFQDataPlotter <- R6::R6Class(
     #' pca plot
     #' @param add_txt show sample names
     #' @return plotly
-    pca_plotly = function(add_txt = FALSE){
+    pca_plotly = function(add_txt = FALSE) {
       fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$config$table$sampleName)
       return(fig)
     },
     #' @description
     #' boxplots for all proteins
     #' @return tibble with column boxplots containing ggplot objects
-    boxplots = function(){
+    boxplots = function() {
       bb <- prolfqua::plot_hierarchies_boxplot_df(self$lfq$data, self$lfq$config)
       return(bb)
     },
     #' @description
     #' histogram of intensities given number of missing in conditions
     #' @return ggplot
-    missigness_histogram = function(){
+    missigness_histogram = function() {
       prolfqua::missigness_histogram(self$lfq$data, self$lfq$config)
     },
 
     #' @description
     #' heatmap of features with missing values
     #' @return ggplot
-    NA_heatmap = function(){
+    NA_heatmap = function() {
       prolfqua::plot_NA_heatmap(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' density distribution of intensities
     #' @param legend show legend TRUE, FALSE do not show.
     #' @return ggplot
-    intensity_distribution_density = function(legend = TRUE){
+    intensity_distribution_density = function(legend = TRUE) {
       prolfqua::plot_intensity_distribution_density(self$lfq$data, self$lfq$config, legend = legend)
     },
     #' @description
     #' Violinplot showing distribution of intensities in all samples
     #' @return ggplot
-    intensity_distribution_violin = function(){
+    intensity_distribution_violin = function() {
       prolfqua::plot_intensity_distribution_violin(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' pairsplot of intensities
     #' @param max maximal number of samples to show
     #' @return NULL
-    pairs_smooth = function(max=10){
+    pairs_smooth = function(max = 10) {
       dataTransformed <- self$lfq$data
       config <- self$lfq$config
       samples <- dplyr::select(self$lfq$data, config$table$sampleName) |>
@@ -180,16 +183,16 @@ LFQDataPlotter <- R6::R6Class(
         limit <- samples |> sample(max)
         ldata <- dataTransformed |>
           dplyr::filter(!!sym(config$table$sampleName) %in% limit)
-        prolfqua::pairs_smooth( prolfqua::tidy_to_wide_config(ldata, config, as.matrix = TRUE)$data )
-      }else{
-        prolfqua::pairs_smooth( prolfqua::tidy_to_wide_config(dataTransformed, config, as.matrix = TRUE)$data )
+        prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(ldata, config, as.matrix = TRUE)$data)
+      } else {
+        prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(dataTransformed, config, as.matrix = TRUE)$data)
       }
       NULL
     },
     #' @description
     #' plot of sample correlations
     #' @return NULL
-    sample_correlation = function(){
+    sample_correlation = function() {
       prolfqua::plot_sample_correlation(self$lfq$data, self$lfq$config)
     },
     #' @description
@@ -198,8 +201,8 @@ LFQDataPlotter <- R6::R6Class(
     #' @param width fig width
     #' @param height fig height
     #'
-    write_boxplots = function(path_qc, width = 6, height = 6){
-      fpath <- file.path(path_qc,paste0(self$prefix, "boxplot.pdf"))
+    write_boxplots = function(path_qc, width = 6, height = 6) {
+      fpath <- file.path(path_qc, paste0(self$prefix, "boxplot.pdf"))
       message("generating boxplots")
       bb <- self$boxplots()
 
@@ -207,7 +210,10 @@ LFQDataPlotter <- R6::R6Class(
       pb <- progress::progress_bar$new(total = length(bb$boxplot))
 
       pdf(fpath, width = width, height = height)
-      lapply(bb$boxplot, function(x){pb$tick(); print(x)})
+      lapply(bb$boxplot, function(x) {
+        pb$tick()
+        print(x)
+      })
       dev.off()
     },
     #' @description
@@ -219,12 +225,14 @@ LFQDataPlotter <- R6::R6Class(
     #' @return path the file was written to.
     write_pltly = function(fig,
                            path_qc,
-                           fig_name){
-      fname <- paste0(self$prefix, fig_name,".html")
+                           fig_name) {
+      fname <- paste0(self$prefix, fig_name, ".html")
       html_path <- file.path(".", path_qc, fname)
       message("writing ", html_path)
-      htmlwidgets::saveWidget(widget = fig,
-                              file = fname )
+      htmlwidgets::saveWidget(
+        widget = fig,
+        file = fname
+      )
       file.rename(fname, html_path)
       self$file_paths_html[[fig_name]] <- html_path
       invisible(html_path)
@@ -240,13 +248,14 @@ LFQDataPlotter <- R6::R6Class(
     write_pdf = function(fig,
                          path_qc,
                          fig_name,
-                         width=7 , height=7 ){
-      fpath <- file.path(path_qc,paste0(self$prefix,fig_name,".pdf"))
+                         width = 7, height = 7) {
+      fpath <- file.path(path_qc, paste0(self$prefix, fig_name, ".pdf"))
       message("writing ", fpath)
       graphics.off()
       pdf(fpath,
-          width = width,
-          height = height)
+        width = width,
+        height = height
+      )
       print(fig)
       graphics.off()
       self$file_paths_pdf[[fig_name]] <- fpath
@@ -256,22 +265,27 @@ LFQDataPlotter <- R6::R6Class(
     #' write heatmaps and pca plots to files
     #' @param path_qc path to write to
     #'
-    write = function(path_qc){
-
+    write = function(path_qc) {
       self$write_pdf(self$heatmap_cor(),
-                     path_qc,
-                     "intensities_heatmap_correlation",
-                     width = 10, height = 10)
+        path_qc,
+        "intensities_heatmap_correlation",
+        width = 10, height = 10
+      )
       self$write_pdf(self$heatmap(),
-                     path_qc,
-                     "intensities_heatmap",
-                     width = 10, height = 10)
-      self$write_pdf(self$pca(),
-                     path_qc,
-                     "intensities_PCA")
-      self$write_pltly(self$pca_plotly(),
-                       path_qc,
-                       "intensities_PCA")
-
+        path_qc,
+        "intensities_heatmap",
+        width = 10, height = 10
+      )
+      self$write_pdf(
+        self$pca(),
+        path_qc,
+        "intensities_PCA"
+      )
+      self$write_pltly(
+        self$pca_plotly(),
+        path_qc,
+        "intensities_PCA"
+      )
     }
-  ))
+  )
+)

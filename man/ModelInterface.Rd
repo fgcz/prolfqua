@@ -19,7 +19,6 @@ testthat::expect_error(mi$coef_volcano())
 testthat::expect_error(mi$coef_pairs())
 testthat::expect_error(mi$anova_histogram())
 
-
 }
 \section{Methods}{
 \subsection{Public methods}{

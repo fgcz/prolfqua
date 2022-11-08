@@ -21,7 +21,7 @@ AnalysisConfiguration <- R6::R6Class(
     #' create AnalysisConfiguration
     #' @param analysisTableAnnotation instance of AnalysisTableAnnotation
     #' @param analysisParameter instance of AnalysisParameter
-    initialize = function(analysisTableAnnotation, analysisParameter = AnalysisParameters$new()){
+    initialize = function(analysisTableAnnotation, analysisParameter = AnalysisParameters$new()) {
       self$table <- analysisTableAnnotation
       self$parameter <- analysisParameter
     }
@@ -37,20 +37,22 @@ AnalysisConfiguration <- R6::R6Class(
 #' @family configuration
 #' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
+#' conf <- bb$config$clone(deep = TRUE)
 #' analysis <- bb$data
 #'
-#' make_reduced_hierarchy_config(conf,
-#'  "testintensity",
-#'  conf$table$hierarchy[1:2])
+#' make_reduced_hierarchy_config(
+#'   conf,
+#'   "testintensity",
+#'   conf$table$hierarchy[1:2]
+#' )
 #'
-make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
+make_reduced_hierarchy_config <- function(config, workIntensity, hierarchy) {
   newConfig <- config$clone(deep = TRUE)
-  newConfig$table$hierarchy = hierarchy
-  newConfig$table$workIntensity = workIntensity
+  newConfig$table$hierarchy <- hierarchy
+  newConfig$table$workIntensity <- workIntensity
   return(newConfig)
 }
 
@@ -59,30 +61,34 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' @keywords internal
 #' @family configuration
 #' @examples
-#' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
+#' xx <- data.frame(A = c("a", "a", "a"), B = c("d", "d", "e"))
 #' # debug(make_interaction_column)
-#' x <- make_interaction_column(xx, c("B","A"))
+#' x <- make_interaction_column(xx, c("B", "A"))
 #' x <- make_interaction_column(xx, c("A"))
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep=TRUE)
+#' config <- bb$config$clone(deep = TRUE)
 #' analysis <- bb$data
 #'
 #' config$table$factor_keys()
 #' config$table$factorDepth <- 1
-#' make_interaction_column(analysis,
-#'    config$table$factor_keys_depth())
+#' make_interaction_column(
+#'   analysis,
+#'   config$table$factor_keys_depth()
+#' )
 #'
-make_interaction_column <- function(data, columns, sep="."){
+make_interaction_column <- function(data, columns, sep = ".") {
   intr <- dplyr::select(data, columns)
   intr <- purrr::map_dfc(intr, factor)
   names(columns) <- columns
-  newlev <- purrr::map2(columns, intr, function(x,y){paste0(x,levels(y))})
+  newlev <- purrr::map2(columns, intr, function(x, y) {
+    paste0(x, levels(y))
+  })
   intr <- purrr::map2_dfc(columns, intr, paste0)
-  intr <- purrr::map2_dfc(intr , newlev, forcats::fct_relevel)
+  intr <- purrr::map2_dfc(intr, newlev, forcats::fct_relevel)
 
-  colnames(intr) <- paste0("interaction_",columns)
+  colnames(intr) <- paste0("interaction_", columns)
   colname <- "interaction"
   data <- data |> dplyr::mutate(!!colname := interaction(intr, sep = sep))
   return(data)
@@ -95,14 +101,14 @@ make_interaction_column <- function(data, columns, sep="."){
 #' @keywords internal
 #' @family configuration
 #' @export
-R6_extract_values <- function(r6class){
+R6_extract_values <- function(r6class) {
   tmp <- sapply(r6class, class)
-  slots <- tmp[ !tmp %in% c("environment", "function")]
+  slots <- tmp[!tmp %in% c("environment", "function")]
   res <- list()
   for (i in names(slots)) {
     if ("R6" %in% class(r6class[[i]])) {
-      res[[i]]  <- R6_extract_values(r6class[[i]])
-    }else{
+      res[[i]] <- R6_extract_values(r6class[[i]])
+    } else {
       res[[i]] <- r6class[[i]]
     }
   }
@@ -123,25 +129,27 @@ R6_extract_values <- function(r6class){
 #' @family configuration
 #' @examples
 #'
-#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
-#'  ident_qValue = "Detection.Q.Value")
-#' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+#' skylineconfig <- create_config_Skyline(
+#'   isotopeLabel = "Isotope.Label.Type",
+#'   ident_qValue = "Detection.Q.Value"
+#' )
+#' skylineconfig$table$factors[["Time"]] <- "Sampling.Time.Point"
 #'
-#' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
+#' sample_analysis <- setup_analysis(prolfqua_data("data_skylinePRMSample_A")$data, skylineconfig)
 #'
-setup_analysis <- function(data, configuration, cc = TRUE ){
+setup_analysis <- function(data, configuration, cc = TRUE) {
   configuration <- configuration$clone(deep = TRUE)
   table <- configuration$table
   for (i in seq_along(table$hierarchy))
   {
-    data <- tidyr::unite(data, UQ(sym(table$hierarchy_keys()[i])), table$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
+    data <- tidyr::unite(data, UQ(sym(table$hierarchy_keys()[i])), table$hierarchy[[i]], remove = FALSE, sep = configuration$sep)
   }
-  data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchy_keys() )))
+  data <- dplyr::select(data, -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchy_keys())))
 
   for (i in seq_along(table$factors))
   {
-    if ( length(table$factors[[i]]) > 1) {
-      data <- tidyr::unite(data, UQ(sym(table$factor_keys()[i])), table$factors[[i]],remove = FALSE, sep = configuration$sep)
+    if (length(table$factors[[i]]) > 1) {
+      data <- tidyr::unite(data, UQ(sym(table$factor_keys()[i])), table$factors[[i]], remove = FALSE, sep = configuration$sep)
     } else {
       newname <- table$factor_keys()[i]
       data <- dplyr::mutate(data, !!newname := !!sym(table$factors[[i]]))
@@ -150,12 +158,16 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 
   sampleName <- table$sampleName
 
-  if (!sampleName  %in% names(data)) {
+  if (!sampleName %in% names(data)) {
     message("creating sampleName")
 
-    data <- data |>  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) |>
-      dplyr::select(sampleName, table$fileName) |> dplyr::distinct() |>
-      dplyr::mutate_at(sampleName, function(x){ x <- make.unique( x, sep = configuration$sep )}) |>
+    data <- data |>
+      tidyr::unite(UQ(sym(sampleName)), unique(unlist(table$factors)), remove = TRUE, sep = configuration$sep) |>
+      dplyr::select(sampleName, table$fileName) |>
+      dplyr::distinct() |>
+      dplyr::mutate_at(sampleName, function(x) {
+        x <- make.unique(x, sep = configuration$sep)
+      }) |>
       dplyr::inner_join(data, by = table$fileName)
   } else {
     message(sampleName, " already exists")
@@ -170,12 +182,12 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
     data[[configuration$table$isotopeLabel]] <- "light"
   }
 
-  data <- data |> dplyr::select(c(configuration$table$id_vars(),configuration$table$value_vars()))
+  data <- data |> dplyr::select(c(configuration$table$id_vars(), configuration$table$value_vars()))
 
   if (cc) {
-    data <- complete_cases( data , configuration)
+    data <- complete_cases(data, configuration)
   }
-  return( data )
+  return(data)
 }
 
 #' Separates hierarchy columns into starting columns
@@ -188,18 +200,18 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 #' @family configuration
 #' @keywords internal
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' dt <- separate_hierarchy(bb$data, bb$config)
-#' setdiff(colnames(dt) ,colnames(bb$data))
+#' setdiff(colnames(dt), colnames(bb$data))
 #' stopifnot(ncol(dt) >= ncol(bb$data))
 #'
-separate_hierarchy <- function(data, config){
+separate_hierarchy <- function(data, config) {
   for (hkey in config$table$hierarchy_keys_depth()) {
     if (length(config$table$hierarchy[[hkey]]) == 1 && hkey == config$table$hierarchy[[hkey]]) {
 
-    }else {
-      data <- data |> tidyr::separate( hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
+    } else {
+      data <- data |> tidyr::separate(hkey, config$table$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
     }
   }
   return(data)
@@ -215,7 +227,7 @@ separate_hierarchy <- function(data, config){
 #' @keywords internal
 #' @family configuration
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' dt <- separate_factors(bb$data, bb$config)
 #' setdiff(colnames(dt), colnames(bb$data))
@@ -223,7 +235,7 @@ separate_hierarchy <- function(data, config){
 #'
 separate_factors <- function(data, config) {
   for (fkey in config$table$factor_keys()) {
-    data <- data |> tidyr::separate( fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
+    data <- data |> tidyr::separate(fkey, config$table$factors[[fkey]], sep = config$sep, remove = FALSE)
   }
   return(data)
 }
@@ -241,11 +253,11 @@ separate_factors <- function(data, config) {
 #' @family configuration
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #'
 #' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep=TRUE)
+#' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #'
 #' xx <- complete_cases(data, config)
@@ -253,7 +265,7 @@ separate_factors <- function(data, config) {
 #'
 complete_cases <- function(pdata, config) {
   message("completing cases")
-  fkeys <- c(config$table$fileName,config$table$sampleName, config$table$factor_keys())
+  fkeys <- c(config$table$fileName, config$table$sampleName, config$table$factor_keys())
   hkeys <- c(config$table$isotopeLabel, config$table$hierarchy_keys())
   res <- tidyr::complete(
     pdata,
@@ -272,10 +284,13 @@ complete_cases <- function(pdata, config) {
 #' @keywords internal
 #' @family configuration
 #'
-sample_subset <- function(size, pdata, config){
+sample_subset <- function(size, pdata, config) {
   hk <- config$table$hierarchy_keys_depth()
-  message("Sampling ", size, paste(hk, collapse = "," ) )
-  hkdf <- pdata |> select(all_of(hk)) |> distinct() |> sample_n(size = size)
+  message("Sampling ", size, paste(hk, collapse = ","))
+  hkdf <- pdata |>
+    select(all_of(hk)) |>
+    distinct() |>
+    sample_n(size = size)
   sdata <- inner_join(hkdf, pdata)
   return(sdata)
 }
@@ -294,20 +309,22 @@ sample_subset <- function(size, pdata, config){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep=TRUE)
+#' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #'
-#' xx <- table_factors(data,config )
+#' xx <- table_factors(data, config)
 #' xx
-#' xt <- xx |> dplyr::group_by(!!!rlang::syms(config$table$factor_keys())) |>
-#'  dplyr::summarize(n = dplyr::n())
+#' xt <- xx |>
+#'   dplyr::group_by(!!!rlang::syms(config$table$factor_keys())) |>
+#'   dplyr::summarize(n = dplyr::n())
 #' stopifnot(all(xt$n == 1))
 #'
-table_factors <- function(pdata, configuration){
-  factorsTab <- pdata |> dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factor_keys())) |>
+table_factors <- function(pdata, configuration) {
+  factorsTab <- pdata |>
+    dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factor_keys())) |>
     dplyr::distinct() |>
     arrange(!!sym(configuration$table$sampleName))
   return(factorsTab)
@@ -327,24 +344,24 @@ table_factors <- function(pdata, configuration){
 #' @family summary
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep=TRUE)
+#' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #'
 #' x <- hierarchy_counts(data, config)
 #' x$protein_Id
 #' stopifnot(ncol(x) == length(config$table$hierarchy_keys()) + 1)
 #' # select non existing protein
-#' data <- data |> dplyr::filter( protein_Id == "XYZ")
+#' data <- data |> dplyr::filter(protein_Id == "XYZ")
 #' tmp <- hierarchy_counts(data, config)
 #' stopifnot(nrow(tmp) == 0)
-hierarchy_counts <- function(pdata, config){
+hierarchy_counts <- function(pdata, config) {
   hierarchy <- config$table$hierarchy_keys()
   res <- pdata |>
     dplyr::group_by_at(config$table$isotopeLabel) |>
-    dplyr::summarise_at( hierarchy, n_distinct )
+    dplyr::summarise_at(hierarchy, n_distinct)
 
   return(res)
 }
@@ -361,9 +378,9 @@ hierarchy_counts <- function(pdata, config){
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
-#' config <- bb$config$clone(deep=TRUE)
+#' config <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #'
 #' res <- hierarchy_counts_sample(data, config)
@@ -371,29 +388,33 @@ hierarchy_counts <- function(pdata, config){
 #' res("long")
 #' res("plot")
 hierarchy_counts_sample <- function(pdata,
-                                    configuration)
-{
+                                    configuration) {
   hierarchy <- configuration$table$hierarchy_keys()
-  summary <- pdata |> dplyr::filter(!is.na(!!sym(configuration$table$get_response() ))) |>
+  summary <- pdata |>
+    dplyr::filter(!is.na(!!sym(configuration$table$get_response()))) |>
     dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) |>
-    dplyr::summarise_at( hierarchy, n_distinct )
+    dplyr::summarise_at(hierarchy, n_distinct)
 
-  res <- function(value = c("wide", "long", "plot")){
+  res <- function(value = c("wide", "long", "plot")) {
     value <- match.arg(value)
     if (value == "wide") {
       return(summary)
-    }else{
-      long <- summary |> tidyr::gather("key",
-                                       "nr",-dplyr::one_of(configuration$table$isotopeLabel,
-                                                           configuration$table$sampleName))
+    } else {
+      long <- summary |> tidyr::gather(
+        "key",
+        "nr", -dplyr::one_of(
+          configuration$table$isotopeLabel,
+          configuration$table$sampleName
+        )
+      )
       if (value == "long") {
         return(long)
-      }else if (value == "plot") {
+      } else if (value == "plot") {
         nudgeval <- mean(long$nr) * 0.05
         # TODO(WEW) check potential problem with sampleName
         ggplot2::ggplot(long, aes(x = !!sym(configuration$table$sampleName), y = .data$nr)) +
           ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
-          ggplot2::facet_wrap( ~ key, scales = "free_y", ncol = 1) +
+          ggplot2::facet_wrap(~key, scales = "free_y", ncol = 1) +
           ggplot2::geom_text(aes(label = .data$nr), nudge_y = nudgeval, angle = 45) +
           ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
       }
@@ -420,40 +441,47 @@ hierarchy_counts_sample <- function(pdata,
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config$clone(deep=TRUE)
+#' configur <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #'
 #' summarize_hierarchy(data, configur)
 #' summarize_hierarchy(data, configur, factors = character())
 #'
 #' summarize_hierarchy(data, configur,
-#'  hierarchy = configur$table$hierarchy_keys_depth() )
+#'   hierarchy = configur$table$hierarchy_keys_depth()
+#' )
 #' summarize_hierarchy(data, configur,
-#'  hierarchy = NULL, factors = configur$table$factor_keys_depth() )
-#' configur$table$hierarchyDepth = 1
+#'   hierarchy = NULL, factors = configur$table$factor_keys_depth()
+#' )
+#' configur$table$hierarchyDepth <- 1
 #' summarize_hierarchy(data, configur,
-#'  factors = configur$table$factor_keys_depth())
-#' configur$table$hierarchyDepth = 2
+#'   factors = configur$table$factor_keys_depth()
+#' )
+#' configur$table$hierarchyDepth <- 2
 #' summarize_hierarchy(data, configur)
-#' configur$table$hierarchyDepth = 3
-#' summarize_hierarchy(data, configur )
-#' configur$table$hierarchyDepth = 4
-#' summarize_hierarchy(data, configur )
+#' configur$table$hierarchyDepth <- 3
+#' summarize_hierarchy(data, configur)
+#' configur$table$hierarchyDepth <- 4
+#' summarize_hierarchy(data, configur)
 #'
 summarize_hierarchy <- function(pdata,
                                 config,
                                 hierarchy = config$table$hierarchy_keys_depth(),
-                                factors = character())
-{
-  all_hierarchy <- c(config$table$isotopeLabel, config$table$hierarchy_keys() )
+                                factors = character()) {
+  all_hierarchy <- c(config$table$isotopeLabel, config$table$hierarchy_keys())
 
-  precursor <- pdata |> dplyr::select(factors, all_hierarchy) |> dplyr::distinct()
-  x3 <- precursor |> dplyr::group_by_at(c(factors, hierarchy)) |>
-    dplyr::summarize_at( setdiff(all_hierarchy, hierarchy),
-                         list( n = dplyr::n_distinct))
+  precursor <- pdata |>
+    dplyr::select(factors, all_hierarchy) |>
+    dplyr::distinct()
+  x3 <- precursor |>
+    dplyr::group_by_at(c(factors, hierarchy)) |>
+    dplyr::summarize_at(
+      setdiff(all_hierarchy, hierarchy),
+      list(n = dplyr::n_distinct)
+    )
   return(x3)
 }
 
@@ -467,34 +495,32 @@ summarize_hierarchy <- function(pdata,
 #' @family configuration
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' bb <- prolfqua_data("data_ionstar")$filtered()
 #' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config$clone(deep=TRUE)
+#' configur <- bb$config$clone(deep = TRUE)
 #' data <- bb$data
 #'
-#' x<-spread_response_by_IsotopeLabel(data,configur)
+#' x <- spread_response_by_IsotopeLabel(data, configur)
 #'
-#' bb <- prolfqua_data('data_skylineSRM_HL_A')
+#' bb <- prolfqua_data("data_skylineSRM_HL_A")
 #' configur <- bb$config_f()
 #' data <- bb$analysis(bb$data, configur)
 #'
-#' bb <- prolfqua_data('data_skylineSRM_HL_A')
+#' bb <- prolfqua_data("data_skylineSRM_HL_A")
 #' conf <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' x <- spread_response_by_IsotopeLabel(analysis, conf)
 #'
-spread_response_by_IsotopeLabel <- function(resData, config){
+spread_response_by_IsotopeLabel <- function(resData, config) {
   table <- config$table
   id_vars <- table$id_vars()
-  resData2 <- resData |> dplyr::select(c(id_vars, table$value_vars()) )
-  resData2 <- resData2 |> tidyr::gather(key = "variable", value = "value", -dplyr::all_of(id_vars)  )
-  resData2 <- resData2 |>  tidyr::unite("temp", table$isotopeLabel, .data$variable )
-  HLData <- resData2 |> tidyr::spread(.data$temp,.data$value)
+  resData2 <- resData |> dplyr::select(c(id_vars, table$value_vars()))
+  resData2 <- resData2 |> tidyr::gather(key = "variable", value = "value", -dplyr::all_of(id_vars))
+  resData2 <- resData2 |> tidyr::unite("temp", table$isotopeLabel, .data$variable)
+  HLData <- resData2 |> tidyr::spread(.data$temp, .data$value)
   invisible(HLData)
 }
 
 
 # Computing protein Intensity summaries ---
-
-

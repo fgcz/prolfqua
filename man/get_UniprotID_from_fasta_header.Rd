@@ -19,11 +19,11 @@ Extracts uniprot ID
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-tmp <- prolfqua::separate_hierarchy(bb$data,old2new( bb$config))
+bb <- prolfqua_data("data_ionstar")$filtered()
+tmp <- prolfqua::separate_hierarchy(bb$data, old2new(bb$config))
 tmp$UniprotID <- NULL
 tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
-stopifnot("UniprotID" \%in\%  colnames(tmp))
+stopifnot("UniprotID" \%in\% colnames(tmp))
 
 }
 \seealso{

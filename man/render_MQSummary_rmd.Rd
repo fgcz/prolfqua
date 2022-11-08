@@ -37,15 +37,16 @@ render_MQSummary_rmd(
 render MQ Summary.
 }
 \examples{
-bb <- prolfqua_data('data_skylinePRMSample_A')
+bb <- prolfqua_data("data_skylinePRMSample_A")
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 projectConfig <- list(workunit_Id = "xx", project_Id = "xy", order_Id = "z")
-if(FALSE){
-render_MQSummary_rmd(analysis,
-  config ,
-  projectConfig,
-  workdir= tempdir()) # tempdir(check = FALSE))
+if (FALSE) {
+  render_MQSummary_rmd(analysis,
+    config,
+    projectConfig,
+    workdir = tempdir()
+  ) # tempdir(check = FALSE))
 }
 }
 \seealso{

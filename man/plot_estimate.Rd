@@ -20,7 +20,7 @@ Plot feature data and result of aggregation
 }
 \examples{
 
-dd <- prolfqua_data('data_ionstar')$filtered()
+dd <- prolfqua_data("data_ionstar")$filtered()
 
 config <- old2new(dd$config)
 data <- dd$data
@@ -37,7 +37,6 @@ tmpRob <- plot_estimate(data, config, bbRob$data, bbRob$config)
 stopifnot("ggplot" \%in\% class(tmpRob$plots[[1]]))
 stopifnot("ggplot" \%in\% class(tmpRob$plots[[2]]))
 tmpRob$plots[[3]]
-
 
 }
 \seealso{

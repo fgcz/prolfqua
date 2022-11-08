@@ -19,15 +19,15 @@ Remove rows when intensity lower then threshold
 }
 \examples{
 
-dd <- prolfqua_data('data_spectronautDIA250_A')
+dd <- prolfqua_data("data_spectronautDIA250_A")
 config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
+analysis <- dd$analysis(dd$data, config)
 
 config$table$get_response()
 
-res1 <- remove_small_intensities(analysis, config, threshold=1 )
-res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
-stopifnot(nrow(res1) >  nrow(res1000))
+res1 <- remove_small_intensities(analysis, config, threshold = 1)
+res1000 <- remove_small_intensities(analysis, config, threshold = 1000)
+stopifnot(nrow(res1) > nrow(res1000))
 
 }
 \seealso{

@@ -18,7 +18,7 @@ Summarizes the intensities within hierarchy
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 stopifnot(nrow(bb$data) == 25780)
 config <- old2new(bb$config$clone(deep = TRUE))
 data <- bb$data

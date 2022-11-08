@@ -20,15 +20,16 @@ summarizes results producced with jackknife
 Compute correlation matrix with jack
 }
 \examples{
-dataX <- matrix(rnorm(20), ncol=4)
-rownames(dataX)<- paste("R",seq_len(nrow(dataX)),sep="")
-colnames(dataX)<- paste("C",seq_len(ncol(dataX)),sep="")
-tmp <- jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
+dataX <- matrix(rnorm(20), ncol = 4)
+rownames(dataX) <- paste("R", seq_len(nrow(dataX)), sep = "")
+colnames(dataX) <- paste("C", seq_len(ncol(dataX)), sep = "")
+tmp <- jackknife(dataX, cor, use = "pairwise.complete.obs", method = "pearson")
 res <- jackknife_matrix(dataX, cor)
 res
-stopifnot(dim(res) == c(4,4))
-res <- jackknife_matrix(dataX, cor, method="spearman")
-stopifnot(dim(res) == c(4,4))
+stopifnot(dim(res) == c(4, 4))
+res <- jackknife_matrix(dataX, cor, method = "spearman")
+stopifnot(dim(res) == c(4, 4))
+
 }
 \seealso{
 jackknife

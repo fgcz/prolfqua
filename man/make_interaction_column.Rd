@@ -10,20 +10,22 @@ make_interaction_column(data, columns, sep = ".")
 create interaction column from factors
 }
 \examples{
-xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
+xx <- data.frame(A = c("a", "a", "a"), B = c("d", "d", "e"))
 # debug(make_interaction_column)
-x <- make_interaction_column(xx, c("B","A"))
+x <- make_interaction_column(xx, c("B", "A"))
 x <- make_interaction_column(xx, c("A"))
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
-config <- bb$config$clone(deep=TRUE)
+config <- bb$config$clone(deep = TRUE)
 analysis <- bb$data
 
 config$table$factor_keys()
 config$table$factorDepth <- 1
-make_interaction_column(analysis,
-   config$table$factor_keys_depth())
+make_interaction_column(
+  analysis,
+  config$table$factor_keys_depth()
+)
 
 }
 \seealso{

@@ -72,16 +72,14 @@ We run a set of functions implemented in the R package _[prolfqua](https://githu
 ```{r samples, eval=TRUE}
 
 tab <- data.frame(table(grp2$RES$lfqData$factors()[[grp2$RES$lfqData$config$table$factor_keys_depth()]]))
-colnames(tab) <- c("Group","# samples")
+colnames(tab) <- c("Group", "# samples")
 knitr::kable(tab, caption = "Nr of samples in each group.")
-
 ```
 
 Table \@ref(tab:samples) shows the number of samples in each group while Table \@ref(tab:annotation) shows the names of the files assigned to the group.
 
 ```{r annotation, eval=TRUE}
 knitr::kable(grp2$RES$lfqData$factors(), caption = "LC-MS raw file annotation table. The content of the sampleName column is used as a short form to plot labels. The group to which a sample is assigned to is shown in the column group.")
-
 ```
 
 
@@ -113,7 +111,6 @@ The density plot (Figure \@ref(fig:violinPlot)) displays the protein abundance d
 pl <- grp2$RES$lfqData$get_Plotter()
 pl$intensity_distribution_density()
 hm <- SEP$lfqdata_transformed$get_Plotter()$heatmap()
-
 ```
 
 
@@ -135,8 +132,7 @@ p2 <- pl$missigness_histogram()
 sr <- grp2$RES$lfqData$get_Summariser()
 p1 <- sr$plot_missingness_per_group()
 
-gridExtra::grid.arrange(p1 , p2, nrow = 1)
-
+gridExtra::grid.arrange(p1, p2, nrow = 1)
 ```
 
 Figure \@ref(fig:distributionRaw) shows the distributions of raw protein intensity values for each sample. Ideally the violins should look  similar, that is have the same shape and span the same intensity range.
@@ -144,25 +140,25 @@ Figure \@ref(fig:distributionRaw) shows the distributions of raw protein intensi
 (ref:distributionRaw) Violin plots for quantifiable protein intensities, The y-axis is $\log_{10}$ transformed.
 
 ```{r distributionRaw, fig.width=8, fig.height=5, fig.cap="(ref:distributionRaw)", eval= TRUE}
-pl$intensity_distribution_violin() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
-
+pl$intensity_distribution_violin() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
 Figure \@ref(fig:scaling) shows the $\log_2$ fold change of the average sample intensity versus the mean average intensity of all samples. The samples average intensity value should not deviate more than 5 times from the average of all samples (linear scale).
 
 ```{r scaling, dpi=300, fig.height=6, fig.cap="Average intensity in sample vs average intensity in all samples. red line - critical fold change.", eval= TRUE}
-xb <- grp2$RES$lfqData$data |> 
+xb <- grp2$RES$lfqData$data |>
   dplyr::group_by(!!sym(grp2$RES$lfqData$config$table$sampleName)) |>
   dplyr::summarize(median = median(!!sym(grp2$RES$lfqData$config$table$get_response())))
 
 bb <- xb$median
 names(bb) <- xb$sampleName
-par(mar = c(10,6,3,6))
-barplot(sort(abs(log2(bb)))  - mean(log2(bb)) ,
-        horiz = F,las = 2, main = "median", cex.names = 0.6, ylab = "sample avg. - total avg. (log2 intensities)", ylim = c(-log2(8),log2(8)))
-abline(h = c(-log2(5),log2(5)), col = 2)
-x <- seq(-3 ,3 ,by = 1)
-axis(4,x,round(2^abs(x),digits = 1))
+par(mar = c(10, 6, 3, 6))
+barplot(sort(abs(log2(bb))) - mean(log2(bb)),
+  horiz = F, las = 2, main = "median", cex.names = 0.6, ylab = "sample avg. - total avg. (log2 intensities)", ylim = c(-log2(8), log2(8))
+)
+abline(h = c(-log2(5), log2(5)), col = 2)
+x <- seq(-3, 3, by = 1)
+axis(4, x, round(2^abs(x), digits = 1))
 mtext("linear scale", side = 4, line = 2)
 ```
 
@@ -173,15 +169,16 @@ Figure \@ref(fig:normalized) shows the normalized values. Normalization is appli
 
 ```{r normalization, results = 'asis'}
 if (grp2$pop$transform == "robscale") {
-  cat("To do this the z-score of the $\\log_2$ transformed intensities is computed.",
-      "Because we need to estimate the protein fold-changes on the original scale, we have to multiply the $z$-score by the average standard deviation of all the $N$ samples in the experiment.",
-  "After normalization all samples have an equal mean and variance and a similar distribution.")
+  cat(
+    "To do this the z-score of the $\\log_2$ transformed intensities is computed.",
+    "Because we need to estimate the protein fold-changes on the original scale, we have to multiply the $z$-score by the average standard deviation of all the $N$ samples in the experiment.",
+    "After normalization all samples have an equal mean and variance and a similar distribution."
+  )
 } else if (grp2$pop$transform == "vsn") {
   cat("To do this the variance stabilizing normalization (vsn) was applied [@HuberVSN2002].")
 } else if (grp2$pop$transform == "none") {
   cat("However, in some circumstances it is advisable not to normalize the data, e.g. in case of affinity purification experiments, or when the requirements of sufficient similarity among samples are not met.")
 }
-
 ```
 
 
@@ -204,8 +201,7 @@ p1 <- stR$violin()
 
 st <- grp2$RES$transformedlfqData$get_Stats()
 p2 <- st$violin()
-gridExtra::grid.arrange(p1,p2, nrow = 1)
-
+gridExtra::grid.arrange(p1, p2, nrow = 1)
 ```
 
 ```{r, eval=TRUE}
@@ -213,14 +209,13 @@ resR <- stR$stats_quantiles()
 res <- st$stats_quantiles()
 
 C <- dplyr::bind_rows(
-CV = resR$wide  |> dplyr::filter(probs == 0.5),
-sd = res$wide |> dplyr::filter(probs == 0.5))
-C <- C |> dplyr::mutate( what = c("CV","sd"), .before = 1 )
+  CV = resR$wide |> dplyr::filter(probs == 0.5),
+  sd = res$wide |> dplyr::filter(probs == 0.5)
+)
+C <- C |> dplyr::mutate(what = c("CV", "sd"), .before = 1)
 
 C$probs <- NULL
-knitr::kable(C, caption = 'Median (prob 0.5) of coefficient of variation (CV) and standard deviation (sd)')
-
-
+knitr::kable(C, caption = "Median (prob 0.5) of coefficient of variation (CV) and standard deviation (sd)")
 ```
 
 
@@ -294,8 +289,7 @@ When testing the differential expression of many proteins, the p-value does not 
 cpl <- grp2$RES$contrMerged$get_Plotter(FCthreshold = grp2$pop$Diffthreshold, FDRthreshold = grp2$pop$FDRthreshold)
 p1 <- cpl$histogram_diff()
 p2 <- cpl$histogram()$p.value
-gridExtra::grid.arrange(p1,p2)
-
+gridExtra::grid.arrange(p1, p2)
 ```
 
 
@@ -305,14 +299,12 @@ Figure \@ref(fig:volcanoplot) plots the $-\log_{10}(FDR)$ against the difference
 
 ```{r volcanoplot, fig.width=8, fig.height=5, fig.cap="(ref:volcanoplot)", eval=TRUE}
 cpl$volcano_plotly()$FDR
-
 ```
 
 (ref:MAPlot) MA plot: x - axis: mean normalized protein intensity, y - axis: difference between the groups.
 
 ```{r MAPlot, fig.width=8, fig.height=5,  fig.cap="(ref:MAPlot)", eval=TRUE}
 cpl$ma_plotly(fc = GRP2$pop$Diffthreshold)
-
 ```
 
 Table \@ref(tab:nrsignificant) summarizes the number of significant calls with FDR < `r grp2$pop$FDRthreshold` and difference > `r grp2$pop$Diffthreshold`, while \@ref(tab:top20table) lists the 20 proteins with the smallest FDR.
@@ -321,17 +313,16 @@ Table \@ref(tab:nrsignificant) summarizes the number of significant calls with F
 ```{r nrsignificant, results="markup", eval=TRUE}
 ctdata <- grp2$RES$contrMerged$get_contrasts()
 
-x <- data.frame(table(abs(ctdata$diff) >  grp2$pop$Diffthreshold  & ctdata$FDR < grp2$pop$FDRthreshold))
+x <- data.frame(table(abs(ctdata$diff) > grp2$pop$Diffthreshold & ctdata$FDR < grp2$pop$FDRthreshold))
 
 if (length(x$Var1) == 2) {
-  x$Var1 <- c("Not Significant" , "Significant")
+  x$Var1 <- c("Not Significant", "Significant")
 } else {
   x$Var1 <- c("Not Significant")
 }
-names(x)[names(x) == 'Var1'] <- ''
-mycap <- paste0("Number of not significant and significant proteins with difference > ", grp2$pop$Diffthreshold, " and FDR < ", grp2$pop$FDRthreshold, "."  )
+names(x)[names(x) == "Var1"] <- ""
+mycap <- paste0("Number of not significant and significant proteins with difference > ", grp2$pop$Diffthreshold, " and FDR < ", grp2$pop$FDRthreshold, ".")
 knitr::kable(x, caption = mycap)
-
 ```
 
 
@@ -340,26 +331,34 @@ knitr::kable(x, caption = mycap)
 
 proteinID <- grp2$RES$contrMerged$subject_Id
 top20 <- ctdata |>
-  dplyr::select( !!sym(proteinID ),
-                 diff = .data$diff,
-                 .data$conf.low,
-                 .data$conf.high,
-                 .data$FDR ) |>
+  dplyr::select(!!sym(proteinID),
+    diff = .data$diff,
+    .data$conf.low,
+    .data$conf.high,
+    .data$FDR
+  ) |>
   dplyr::arrange(.data$FDR) |>
   head(20)
 
 top20confint <- ggplot2::ggplot(
-  top20, ggplot2::aes(x = !!sym(proteinID), y = .data$diff,
-                      ymin = .data$conf.low, ymax = .data$conf.high)) +
-  ggplot2::geom_hline( yintercept = 0, color = 'red' ) +
-  ggplot2::geom_linerange() + ggplot2::geom_point() +
-  ggplot2::coord_flip() + ggplot2::theme_minimal()
+  top20, ggplot2::aes(
+    x = !!sym(proteinID), y = .data$diff,
+    ymin = .data$conf.low, ymax = .data$conf.high
+  )
+) +
+  ggplot2::geom_hline(yintercept = 0, color = "red") +
+  ggplot2::geom_linerange() +
+  ggplot2::geom_point() +
+  ggplot2::coord_flip() +
+  ggplot2::theme_minimal()
 
-tablecap <- paste("Top 20 proteins sorted by smallest FDR.", 
-                 "diff - difference among roups,",
-                 "conf.low - lower confidence interval,",
-                 "conf.high - higher confidence interval,",
-                 "FDR - false discovery rate.")
+tablecap <- paste(
+  "Top 20 proteins sorted by smallest FDR.",
+  "diff - difference among roups,",
+  "conf.low - lower confidence interval,",
+  "conf.high - higher confidence interval,",
+  "FDR - false discovery rate."
+)
 
 
 knitr::kable(top20, caption = tablecap)
@@ -369,7 +368,7 @@ knitr::kable(top20, caption = tablecap)
 ```{r prepareHeatmap}
 
 significant <- ctdata |>
-  dplyr::filter(.data$FDR < grp2$pop$FDRthreshold & abs(.data$diff) > grp2$pop$Diffthreshold )
+  dplyr::filter(.data$FDR < grp2$pop$FDRthreshold & abs(.data$diff) > grp2$pop$Diffthreshold)
 
 signif <- grp2$RES$transformedlfqData$get_copy()
 signif <- signif$get_subset(significant)
@@ -378,17 +377,16 @@ showSignificant <- TRUE
 if (nrow(signif$data) > 0) {
   sigheat <- signif$get_Plotter()$raster(rownames = TRUE)
 } else {
-  showSignificant <- FALSE 
+  showSignificant <- FALSE
 }
 
 nrb <- 0
-
 ```
 
 
 ```{r getBoxplots, eval = showSignificant}
 
-pl <-  signif$get_Plotter()
+pl <- signif$get_Plotter()
 bp <- pl$boxplots()$boxplot
 nrb <- min(length(bp), 6)
 bp <- bp[seq_len(nrb)]
@@ -397,9 +395,10 @@ bp <- bp[seq_len(nrb)]
 
 ```{r makeText, eval = showSignificant, results = 'asis'}
 
-cat(paste("Furthermore, figure \\@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$pop$FDRthreshold ," and diff > ",  grp2$pop$Diffthreshold, ".") ,
-paste("Figure \\@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins."))
-
+cat(
+  paste("Furthermore, figure \\@ref(fig:siproteins) shows a heatmap of proteins with the FDR < ", grp2$pop$FDRthreshold, " and diff > ", grp2$pop$Diffthreshold, "."),
+  paste("Figure \\@ref(fig:boxplot) shows the boxplots of ", nrb, " significant proteins.")
+)
 ```
 
 (ref:siproteins) Heatmap showing proteins with FDR < `r grp2$pop$FDRthreshold` and diff > `r  grp2$pop$Diffthreshold`.
@@ -412,27 +411,23 @@ sigheat
 (ref:boxplot) Boxplot of `r nrb` significant proteins. Each dot shows the intensity of a protein observed in a sample.
 
 ```{r boxplot, fig.cap="(ref:boxplot)", eval = showSignificant}
-gridExtra::grid.arrange(grobs = bp, ncol = 3) 
+gridExtra::grid.arrange(grobs = bp, ncol = 3)
 ```
 
 
 
 ```{r}
 plotMissing <- nrow(grp2$RES$contrMore$get_contrasts()) > 1
-
-
 ```
 
 ```{r makeimputedProt, eval = plotMissing}
 imputed_Average <- grp2$RES$transformedlfqData$get_subset(grp2$RES$contrMore$get_contrasts())
 heatmapImp <- imputed_Average$get_Plotter()$raster(rownames = TRUE)
-
 ```
 
 ```{r makeTextImputed, eval = plotMissing, results = 'asis' }
 
 cat(paste("Figure \\@ref(fig:imputedProt) shows proteins for which we use group mean imputation to estimate differences among groups, because there are too few observations."))
-
 ```
 
 (ref:imputedProt) Proteins for which fold changes were inferred by imputing the group average.
@@ -484,4 +479,3 @@ pander::pander(sessionInfo())
 - diff - it is the difference between the two groups. This difference in some cases can be interpreted as log2 FC, e.g. in case of label free quantification, and when the data is log2 transformed and the scaling preserve the variance. In other cases, e.g. TMT where ratio compression can be observed or when using other data transformations, the interpretation is not possible.
 - FDR - false discovery rate
 - p-value - probability of type I error.
-

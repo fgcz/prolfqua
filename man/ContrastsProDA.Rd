@@ -10,23 +10,27 @@ ContrastsProDA Wrapper to results produced by proDA
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$normalized()
-istar$config <- old2new(istar$config )
-istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 10))
+istar <- prolfqua_data("data_ionstar")$normalized()
+istar$config <- old2new(istar$config)
+istar_data <- dplyr::filter(istar$data, protein_Id \%in\% sample(protein_Id, 10))
 lfd <- LFQData$new(istar_data, istar$config)
 se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
 
-fit <- proDA::proDA(se, design = ~ dilution. - 1,data_is_log_transformed = TRUE)
+fit <- proDA::proDA(se, design = ~ dilution. - 1, data_is_log_transformed = TRUE)
 contr <- list()
 
-contrasts <- c("dilution_(9/7.5)_1.2" = "dilution.e - dilution.d",
-               "dilution_(7.5/6)_1.25" = "dilution.d - dilution.c")
+contrasts <- c(
+  "dilution_(9/7.5)_1.2" = "dilution.e - dilution.d",
+  "dilution_(7.5/6)_1.25" = "dilution.d - dilution.c"
+)
 contr[["dilution_(9/7.5)_1.2"]] <- data.frame(
   contrast = "dilution_(9/7.5)_1.2",
-  proDA::test_diff(fit, contrast = "dilution.e - dilution.d"))
+  proDA::test_diff(fit, contrast = "dilution.e - dilution.d")
+)
 contr[["dilution_(7.5/6)_1.25"]] <- data.frame(
   contrast = "dilution_(7.5/6)_1.25",
-  proDA::test_diff(fit, contrast = "dilution.d - dilution.c"))
+  proDA::test_diff(fit, contrast = "dilution.d - dilution.c")
+)
 
 bb <- dplyr::bind_rows(contr)
 cproDA <- ContrastsProDA$new(bb, contrasts = contrasts, subject_Id = "name")

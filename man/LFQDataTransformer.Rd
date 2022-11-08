@@ -10,7 +10,7 @@ Decorate LFQData with Methods for transforming Intensities
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
+istar <- prolfqua_data("data_ionstar")$filtered()
 istar$config <- old2new(istar$config)
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
@@ -55,12 +55,11 @@ lfqTransCheck$log2()
 lfqTransCheck$get_scales()
 lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
 
-if(require("vsn")){
- res <- lfqTrans$intensity_matrix( .func = vsn::justvsn)
- res$lfq$get_Plotter()$intensity_distribution_density()
- res$get_scales()
+if (require("vsn")) {
+  res <- lfqTrans$intensity_matrix(.func = vsn::justvsn)
+  res$lfq$get_Plotter()$intensity_distribution_density()
+  res$get_scales()
 }
-
 
 }
 \section{Public fields}{

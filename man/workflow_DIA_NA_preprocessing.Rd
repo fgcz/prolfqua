@@ -25,18 +25,18 @@ filter QVAlues and NA's and factor information
 }
 \examples{
 
-rm(list=ls())
-bb <- prolfqua_data('data_ionstar')$filtered()
+rm(list = ls())
+bb <- prolfqua_data("data_ionstar")$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
-config <- bb$config$clone(deep=TRUE)
+config <- bb$config$clone(deep = TRUE)
 data <- bb$data
 data$nr_peptide_Id_IN_protein_Id <- NULL
 
 hierarchy_counts(data, config)
 tmp <- workflow_DIA_NA_preprocessing(data, config)
 hierarchy_counts(tmp$data, config)
-tmp <- workflow_DIA_NA_preprocessing(data, config, percent=70)
+tmp <- workflow_DIA_NA_preprocessing(data, config, percent = 70)
 hierarchy_counts(tmp$data, config)
 stopifnot(FALSE == (dplyr::is_grouped_df(tmp$data)))
 

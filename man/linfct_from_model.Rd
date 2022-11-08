@@ -14,31 +14,33 @@ get linfct from model
 }
 \examples{
 
-m <- prolfqua_data('data_basicModel_p1807')
+m <- prolfqua_data("data_basicModel_p1807")
 # debug(linfct_from_model)
 linfct <- linfct_from_model(m)
 
 linfct$linfct_factors
 linfct$linfct_interactions
 
-m <- prolfqua_data('data_interactionModel_p1807')
+m <- prolfqua_data("data_interactionModel_p1807")
 # debug(.coeff_weights_factor_levels)
 undebug(linfct_from_model)
 linfct <- linfct_from_model(m)
 
-all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
- apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
+all.equal(
+  linfct$linfct_factors["CelltypeCMP/MEP", ],
+  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)), ], 2, mean)
+)
 linfct$linfct_interactions
 
 m <- lm(Petal.Width ~ Species, data = iris)
 linfct_from_model(m)
-xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b",5)) )
+xx <- data.frame(Y = 1:10, Condition = c(rep("a", 5), rep("b", 5)))
 m <- lm(Y ~ Condition, data = xx)
 linfct_from_model(m)
-xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b.b",5)) )
+xx <- data.frame(Y = 1:10, Condition = c(rep("a", 5), rep("b.b", 5)))
 m <- lm(Y ~ Condition, data = xx)
 linfct_from_model(m)
-xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("ab",5)) )
+xx <- data.frame(Y = 1:10, Condition = c(rep("a", 5), rep("ab", 5)))
 m <- lm(Y ~ Condition, data = xx)
 linfct_from_model(m)
 
