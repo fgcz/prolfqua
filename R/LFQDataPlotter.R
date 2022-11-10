@@ -1,5 +1,4 @@
-
-# LFQDataPlotter ----
+#' LFQDataPlotter ----
 #' Create various visualization of the LFQdata
 #' @export
 #'
