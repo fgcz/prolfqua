@@ -915,12 +915,11 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #'         contrastfun = prolfqua::my_contrast_V2)
 #'
 #' #usethis::use_data(factor_levelContrasts, overwrite = TRUE)
-#' data(data_models_interaction)
 #' data_models_interaction <- prolfqua_data('data_models_interaction')
-#'
 #' m <- get_complete_model_fit(data_models_interaction$modelProtein)
-#' m$linear_model[[1]]
-#' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
+#' data_interact_model <- m$linear_model[[1]]
+#' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]] )
+#'
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'                            factor_contrasts,
 #'                        subject_Id = "protein_Id")
