@@ -10,6 +10,9 @@ The R package contains functions for analyzing mass spectrometry based experimen
 This package is developed at the [FGCZ](http://fgcz.ch/).
 The package documentation including vignettes can be accessed at https://fgcz.github.io/prolfqua/index.html
 
+`prolfqua` makes easy things easy while remaining fully hackable.
+
+
 # How to install prolfqua?
 
 Requirements : A Windows|Linux|MacOSX platform with R (>= 4.1) installed.
