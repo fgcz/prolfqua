@@ -876,6 +876,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' @examples
 #' dd <- prolfqua_data('data_factor_levelContrasts')
 #' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
+#'
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
                                          subject_Id = "protein_Id",
                                          columns = c("estimate", "p.value","p.value.adjusted"),
