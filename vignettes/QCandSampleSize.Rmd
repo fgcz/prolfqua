@@ -68,10 +68,6 @@ old.theme <- ggplot2::theme_set(ggplot2::theme_classic())
 
 \clearpage
 
-# Purpose
-In this vignette we demonstrate how `prolfqua` and its functions can be used to generate structured reports e.g. for a standard service application workflow.
-Here, we again will use the ionstar benchmark data to show how one can easily generate diagnostic plots and estimate a meaningful sample size for a given expected observable difference in mean for protein intensities.
-
 # Introduction
 
 - Workunit: `r local_project_conf$workunit_Id`

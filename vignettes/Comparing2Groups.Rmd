@@ -21,7 +21,8 @@ conflicted::conflict_prefer("filter", "dplyr")
 
 
 # Purpose
-In this vignette we demonstrate how two conditions or groups can be compared and statistically evaluated. We will again use the Ionstar dataset processed with MaxQuant as LFQ experiment with MBR option. After some standard preprocessing we compare in the end the replicates with the different dilutions with each other. The output of such a two group comparison is usually a difference in the mean intensities for quantified proteins (log2 fold-change) along with some statistical parameters such as a p-value or a FDR. 
+
+This vignette demonstrates how two conditions, e.g., treatment vs. control, can be compared and the differences statistically tested. We will again use the Ionstar dataset as an example of an LFQ experiment. This dataset was preprocessed with the MaxQuant software. After first examining the data using QC plots and then normalizing the data, we compare groups of replicates with the different dilutions. The output of the comparison is the difference in the mean intensities for quantified proteins (log2 fold-change) in each group, along with statistical parameters such as degrees of freedom, standard errors, p-value and the FDR. 
 
 # Loading protein abundances from MaxQuant proteinGroups.txt
 

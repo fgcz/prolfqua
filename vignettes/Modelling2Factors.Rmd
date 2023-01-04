@@ -154,11 +154,34 @@ hm
 
 The `prolfqua` package is described in [@Wolski2022.06.07.494524].
 
+# Testing interaction computation
+
+```{r eval=FALSE}
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/spider_wolff_gorb_2013.csv"
+filename <- "spider_wolff_gorb_2013.csv"
+downloader::download(url, filename)
+spider <- read.csv(filename, skip = 1)
+XA <- lm(friction ~ type * leg, data = spider)
+summary(XA)
+
+head(spider)
+spider <- spider |> tidyr::unite(legtype , leg, type, remove = FALSE)
+XF <- lm(friction ~ legtype - 1, data = spider)
+
+summary(glht(XF, linfct = rbind(i1 = c(1, -1, -1, 1 ,0, 0, 0, 0))))
+summary(glht(XF, linfct = rbind(i1 = c(1, -1, 0, 0, -1, 1, 0, 0 ))))
+summary(glht(XF, linfct = rbind(i1 = c(1, -1, 0, 0,  0, 0, -1, 1  ))))
+
+```
+
+
 # Session Info
 
 ```{r}
 sessionInfo()
 ```
+
+
 
 # References
 
