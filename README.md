@@ -184,6 +184,7 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 - [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/)
 - [Bayesian essentials with R - R package](https://CRAN.R-project.org/package=bayess)
 - [Contrasts in R - an example vignette by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
+- [Interactions and Contrasts PH525x series](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html)
 
 # R packages to compute contrasts from linear models
 
