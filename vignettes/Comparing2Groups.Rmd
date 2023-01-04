@@ -33,8 +33,6 @@ library(prolfqua)
 Specify the path to the MaxQuant `proteinGroups.txt` file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a tidy table
 
 ```{r LoadDataAndConfigure}
-# ToDo_WeW: in the tiny data there is NO protein that is missing in one condition
-# we should have some proteins in (5-10)
 
 datadir <- file.path(find.package("prolfqua") , "samples/maxquant_txt")
 inputMQfile <-  file.path(datadir, "tiny2.zip")
@@ -299,8 +297,6 @@ dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 Use this method if there proteins with no observations in one of the groups. With the `ContrastsSimpleImpute` function, we can estimate difference in mean for proteins that are not observed in one group or condition. For this we are using the average expression at percentile 0.05 of the group where the protein is not quantified. 
 
 ```{r computeMissing, eval=TRUE}
-# ToDo_WeW: in the tiny data there is NO protein that is missing in one condition
-# we should have some proteins in (5-10)
 mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
 colnames(mC$get_contrasts())
 

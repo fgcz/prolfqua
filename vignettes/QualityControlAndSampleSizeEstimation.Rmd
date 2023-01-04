@@ -211,14 +211,6 @@ plots density of the standard deviation
 stats$density_median()
 ```
 
-TODO(WEW): Please describe the figure.
-
-```{r experiment, include = FALSE}
-chsq <- na.omit(stats$statsdf$sd^2)
-plot(density(chsq[chsq < 10]))
-x <- seq(0,50, length = 1000)
-lines(x * median(chsq), dchisq(x, df = 4 ), col = 2)
-```
 
 Check for heteroskedasticity. After transformation,
 the standard deviation should be independent of the mean intensity.
