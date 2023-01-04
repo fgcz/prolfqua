@@ -18,9 +18,11 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 # Purpose
-In this vignette we demonstrate how several descriptive statistics or diagnostic quality control plots can be generated for a dataset. For this, a proteinGroups file from the MaxQuant software is read and the "prolfqua specific" configuration is set up.
-Afterwards a first look into the data, is transformed and normalized and some useful plots are illustrated for the full dataset. 
-While then filtering to only one single condition with four replicates we want to estimate how many samples are necessairy to properly quantify a two-fold change for 90% of all the proteins with a power of 0.8.
+
+This vignette demonstrates how the package can be used to create descriptive statistics or quality control plots for a dataset. First, we read a "proteinGroups.txt" file from the MaxQuant software, and next, we specify a prolfqua configuration.
+Afterward, the data is transformed and normalized, and plots describing the data are generated. Finally, we estimate how many samples are necessary to properly quantify a two-fold change for $90%$ of all the proteins with a power of $0.8$.
+
+
 
 # Loading data
 
