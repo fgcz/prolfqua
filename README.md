@@ -179,15 +179,16 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
 #  Relevant background information
 
-- [Contrasts in R by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
 - [R Companion](https://rcompanion.org/rcompanion/h_01.html)
 - [Extending the Linear Model with R](http://www.maths.bath.ac.uk/~jjf23/ELM/)
 - [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/)
 - [Bayesian essentials with R - R package](https://CRAN.R-project.org/package=bayess)
 - [Contrasts in R - an example vignette by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
+- [Interactions and Contrasts PH525x series](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html)
 
 # R packages to compute contrasts from linear models
 
+= [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/)
 - [emmeans](https://CRAN.R-project.org/package=emmeans) Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.
 - [lmerTest](https://CRAN.R-project.org/package=lmerTest) computes contrast for [lme4](https://CRAN.R-project.org/package=lme4) models
 - [multcomp](https://CRAN.R-project.org/package=multcomp) computes contrast for linear models and adjusts p-values (multiple comparison)
