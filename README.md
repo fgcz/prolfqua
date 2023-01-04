@@ -179,7 +179,6 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
 #  Relevant background information
 
-- [Contrasts in R by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
 - [R Companion](https://rcompanion.org/rcompanion/h_01.html)
 - [Extending the Linear Model with R](http://www.maths.bath.ac.uk/~jjf23/ELM/)
 - [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/)
