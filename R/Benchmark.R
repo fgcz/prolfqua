@@ -195,9 +195,7 @@ do_confusion_c <- function(
   ftable <- list(content = summaryS,
                  caption = paste0("AUC, and pAUC at 0.1 and 0.2 FPR for ", model_description),
                  digits = 2)
-  # TODO replace melt
   sumd <- tidyr::pivot_longer(summaryS, cols = matches("^AUC|^pAUC"), names_to = "AUC")
-  #sumd <- reshape2::melt(summaryS)
   barp <- ggplot(sumd, aes(x = !!sym(contrast) , y = .data$value,
                            color = NULL ,
                            fill = .data$what)) +
