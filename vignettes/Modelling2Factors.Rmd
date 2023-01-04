@@ -21,8 +21,12 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 # Purpose
-In this vignette we demonstrate how to integrate more than one factor into the linear models. Here, we show how to model the data with two factors plus the interaction thereof. The underlying dataset is generated in a course that is held on a yearly base. The context is that yeast is in one condition grown on glucose and in the other condition yeast is grown on glycerol and ethanol. Here we are looking into the results of two different coursess where of course different people in the wetlab and here even with different LC-MS instruments are involved. It is therefore important to include the batch variable for these two _similar_ datasets. 
-For demonstration purposes we are also modelling the interaction between the two explanatory variables _batch_ and _condition_. In this case, having a significant interaction term would mean the protein is expressed more in the Glucose condition in one batch while the same protein is more abundant in the Ethanol condition in the other batch.
+
+This vignette demonstrates how to integrate more than one factor into the linear models. Here, we show how to model the data with two factors plus the interaction thereof. The underlying dataset is generated in a course that is held on a yearly base. The context is that yeast is, in one condition, grown on glucose, and in the other condition, yeast is grown on glycerol and ethanol. Here we are looking into the results of two different batches,  where different people performed the wet-lab work, and even different LC-MS instruments were involved. It is, therefore, essential to model the batch variable for these two _similar_ datasets. 
+We are also modeling the interaction between the two explanatory variables _batch_ and _condition_for demonstration purposes. In this case, having a significant interaction term would mean the protein is expressed more in the Glucose condition in one batch. In contrast, the same protein is more abundant in the Ethanol condition in the other batch.
+
+
+An in depth introduction to modelling and testing interactions can be found [here](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html).
 
 # Model Fitting
 
