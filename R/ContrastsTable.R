@@ -15,7 +15,7 @@
 #' lfqdata <- LFQData$new(data, configur)
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
 #' "dilution.c-e" = "dilution.c - dilution.b")
-#' csi <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
+#' csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
 #' ctr <- csi$get_contrasts()
 #' csi$subject_Id
 #' xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")

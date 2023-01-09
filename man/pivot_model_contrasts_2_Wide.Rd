@@ -21,12 +21,12 @@ tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
 }
 \seealso{
 Other modelling: 
+\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSAINTexpress}},
-\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

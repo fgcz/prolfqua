@@ -1,4 +1,4 @@
-# ContrastsSimpleImpute----
+# ContrastsMissing----
 #' Compute contrasts with group mean imputation
 #'
 #' If there are no observations in one of the groups for some of the proteins,
@@ -12,8 +12,8 @@
 #' @family modelling
 #' @export
 #'
-ContrastsSimpleImpute <- R6::R6Class(
-  "ContrastsSimpleImpute",
+ContrastsMissing <- R6::R6Class(
+  "ContrastsMissing",
   inherit = ContrastsInterface,
   private = list(
     method = "V1"

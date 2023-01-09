@@ -31,7 +31,7 @@ contrast <- prolfqua::Contrasts$new(mod,
  Contr)
 contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
-csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
+csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 
 
 merged <- merge_contrasts_results(contrast, csi)
@@ -56,11 +56,11 @@ cp$ma_plot()
 \code{\link{moderated_p_limma_long}}
 
 Other modelling: 
+\code{\link{ContrastsMissing}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSAINTexpress}},
-\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

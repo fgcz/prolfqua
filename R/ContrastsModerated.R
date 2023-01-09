@@ -27,7 +27,7 @@
 #'  Contr)
 #' contrast <- ContrastsModerated$new(contrast)
 #' bb <- contrast$get_contrasts()
-#' csi <- ContrastsSimpleImpute$new(lProt, contrasts = Contr)
+#' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 #'
 #'
 #' merged <- merge_contrasts_results(contrast, csi)

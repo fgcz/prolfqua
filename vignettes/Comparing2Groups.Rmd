@@ -294,10 +294,10 @@ dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 
 # Contrasts with missing value imputation
 
-Use this method if there proteins with no observations in one of the groups. With the `ContrastsSimpleImpute` function, we can estimate difference in mean for proteins that are not observed in one group or condition. For this we are using the average expression at percentile 0.05 of the group where the protein is not quantified. 
+Use this method if there proteins with no observations in one of the groups. With the `ContrastsMissing` function, we can estimate difference in mean for proteins that are not observed in one group or condition. For this we are using the average expression at percentile 0.05 of the group where the protein is not quantified. 
 
 ```{r computeMissing, eval=TRUE}
-mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
+mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = Contrasts)
 colnames(mC$get_contrasts())
 
 ```

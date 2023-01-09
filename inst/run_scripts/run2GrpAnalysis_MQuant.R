@@ -98,7 +98,7 @@ GRP2$Contrast <- Contrasts
 
 contr <- prolfqua::Contrasts$new(mod, Contrasts)
 conrM <- ContrastsModerated$new(contr, modelName = "Linear_Model_Moderated")
-mC <- ContrastsSimpleImpute$new(lfqdata = transformed, contrasts = Contrasts)
+mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = Contrasts)
 conMI <- ContrastsModerated$new(mC, modelName = "Imputed_Data")
 
 res <- prolfqua::merge_contrasts_results(conrM, conMI)

@@ -18,7 +18,7 @@ data <- bb$data
 lfqdata <- LFQData$new(data, configur)
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
 "dilution.c-e" = "dilution.c - dilution.b")
-csi <- ContrastsSimpleImpute$new(lfqdata, contrasts = Contrasts)
+csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
 ctr <- csi$get_contrasts()
 csi$subject_Id
 xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")
@@ -33,12 +33,12 @@ stopifnot(ncol(xcx$to_wide()) == 8)
 \code{\link{summary_ROPECA_median_p.scaled}}
 
 Other modelling: 
+\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSAINTexpress}},
-\code{\link{ContrastsSimpleImpute}},
 \code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},

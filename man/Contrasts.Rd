@@ -38,12 +38,12 @@ stopifnot(dim(contrastX$to_wide()) == c(160,7))
 }
 \seealso{
 Other modelling: 
+\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSAINTexpress}},
-\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},

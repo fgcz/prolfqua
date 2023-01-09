@@ -57,12 +57,12 @@ Other MaxQuant:
 \code{\link{tidyMQ_ProteinGroups}()}
 
 Other modelling: 
+\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsSAINTexpress}},
-\code{\link{ContrastsSimpleImpute}},
 \code{\link{ContrastsTable}},
 \code{\link{Contrasts}},
 \code{\link{LR_test}()},
