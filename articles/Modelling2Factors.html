@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -106,7 +106,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2022-10-30</h4>
+            <h4 data-toc-skip class="date">2023-01-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/../vignettes/Modelling2Factors.Rmd" class="external-link"><code>../vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="hidden name"><code>Modelling2Factors.Rmd</code></div>
@@ -118,21 +118,23 @@ Wolski</h4>
 <div class="section level2">
 <h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
 </h2>
-<p>In this vignette we demonstrate how to integrate more than one factor
-into the linear models. Here, we show how to model the data with two
-factors plus the interaction thereof. The underlying dataset is
-generated in a course that is held on a yearly base. The context is that
-yeast is in one condition grown on glucose and in the other condition
-yeast is grown on glycerol and ethanol. Here we are looking into the
-results of two different coursess where of course different people in
-the wetlab and here even with different LC-MS instruments are involved.
-It is therefore important to include the batch variable for these two
-<em>similar</em> datasets. For demonstration purposes we are also
-modelling the interaction between the two explanatory variables
-<em>batch</em> and <em>condition</em>. In this case, having a
-significant interaction term would mean the protein is expressed more in
-the Glucose condition in one batch while the same protein is more
-abundant in the Ethanol condition in the other batch.</p>
+<p>This vignette demonstrates how to integrate more than one factor into
+the linear models. Here, we show how to model the data with two factors
+plus the interaction thereof. The underlying dataset is generated in a
+course that is held on a yearly base. The context is that yeast is, in
+one condition, grown on glucose, and in the other condition, yeast is
+grown on glycerol and ethanol. Here we are looking into the results of
+two different batches, where different people performed the wet-lab
+work, and even different LC-MS instruments were involved. It is,
+therefore, essential to model the batch variable for these two
+<em>similar</em> datasets. We are also modeling the interaction between
+the two explanatory variables <em>batch</em> and _condition_for
+demonstration purposes. In this case, having a significant interaction
+term would mean the protein is expressed more in the Glucose condition
+in one batch. In contrast, the same protein is more abundant in the
+Ethanol condition in the other batch.</p>
+<p>An in depth introduction to modelling and testing interactions can be
+found <a href="http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html" class="external-link">here</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="model-fitting">Model Fitting<a class="anchor" aria-label="anchor" href="#model-fitting"></a>
@@ -142,7 +144,8 @@ created we refer you to the prolfquabenchmark vignettes. Interesting
 here is the definition of the model. If interaction shall be included in
 the model a <em>asterix</em> should be used while if no interaction
 should be taken into account a <em>plus</em> should be used in the model
-definition.</p>
+definition. Also we can directly specify what comparisons we are
+interested in by specifying the respective contrasts.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflict_prefer.html" class="external-link">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></span>
 <span></span>
@@ -183,21 +186,27 @@ definition.</p>
 <span>               <span class="st">"Glucose_vs_Ethanol_gv_p2370"</span> <span class="op">=</span> <span class="st">"`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`"</span>,</span>
 <span>               <span class="st">"Glucose_vs_Ethanol_gv_p2691"</span> <span class="op">=</span> <span class="st">"`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`"</span>,</span>
 <span>               <span class="st">"Interaction"</span> <span class="op">=</span> <span class="st">"`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"</span><span class="op">)</span></span></code></pre></div>
+<p>We are then building our model as we specified it before for each
+protein.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">pMerged</span><span class="op">$</span><span class="va">data</span>, <span class="va">formula_Batches</span>,</span>
 <span>  subject_Id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
+<p>Now, we can visualize the effect of our factors that are specified in
+the model. This indicates in an elegant way what factors are the most
+important ones.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">plot</span></span></code></pre></div>
 <div class="figure">
-<img src="Modelling2Factors_files/figure-html/anovaPvaluePlots-1.png" alt="p-value distributions for ANOVA analysis." width="700"><p class="caption">
-p-value distributions for ANOVA analysis.
+<img src="Modelling2Factors_files/figure-html/anovaPvaluePlots-1.png" alt="Distributions of all p-values from the ANOVA analysis." width="700"><p class="caption">
+Distributions of all p-values from the ANOVA analysis.
 </p>
 </div>
 <div class="section level3">
 <h3 id="anova">ANOVA<a class="anchor" aria-label="anchor" href="#anova"></a>
 </h3>
-<p>Examine proteins with a significant interaction between the two
-factors treatment and batch.</p>
+<p>To examine proteins with a significant interaction between the two
+factors treatment and batch filtering for the factor
+<code>condition_:batch_</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ANOVA</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">ANOVA</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
@@ -215,14 +224,15 @@ factors treatment and batch.</p>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">FDR.Pr..F.</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="va">protInt</span> <span class="op">&lt;-</span>  <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">protIntSig</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span></span></code></pre></div>
-<p>These proteins (here the top five) can easily be visualized using the
+<p>These proteins can easily be visualized using the
 <code>boxplot</code> function from the <code>plotter</code> objects in
 prolfqua</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span>plotlist <span class="op">=</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">boxplot</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Modelling2Factors_files/figure-html/unnamed-chunk-1-1.png" alt="Proteins with FDR &lt; 0.05 for condition batch interaction in ANOVA." width="700"><p class="caption">
-Proteins with FDR &lt; 0.05 for condition batch interaction in ANOVA.
+<img src="Modelling2Factors_files/figure-html/unnamed-chunk-1-1.png" alt="Proteins with FDR &lt; 0.05 for the interaction in the factors condition and batch in an ANOVA." width="700"><p class="caption">
+Proteins with FDR &lt; 0.05 for the interaction in the factors condition
+and batch in an ANOVA.
 </p>
 </div>
 </div>
@@ -230,56 +240,89 @@ Proteins with FDR &lt; 0.05 for condition batch interaction in ANOVA.
 <div class="section level2">
 <h2 id="compute-and-analyse-with-the-specified-contrasts">Compute and analyse with the specified contrasts<a class="anchor" aria-label="anchor" href="#compute-and-analyse-with-the-specified-contrasts"></a>
 </h2>
+<p>Next, we want to calculate the statistical results for our group
+comparisons that have been specified in our contrast definition. Here we
+are using the moderated statistics which implements the concept of
+pooled variance for all proteins.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contrasts</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>These results can be visualized with e.g a <code>volcano</code> or a
+<code>MA</code> plot.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plotter</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">plotter</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $FDR</span></span></code></pre>
-<p><img src="Modelling2Factors_files/figure-html/visualiseResults-1.png" width="700"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<span><span class="va">plotter</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FDR</span></span></code></pre></div>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/visualiseResults-1.png" alt="Volcano and MA plot for result visualisation" width="700"><p class="caption">
+Volcano and MA plot for result visualisation
+</p>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plotter</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Modelling2Factors_files/figure-html/visualiseResults-2.png" width="700"></p>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/visualiseResults-2.png" alt="Volcano and MA plot for result visualisation" width="700"><p class="caption">
+Volcano and MA plot for result visualisation
+</p>
+</div>
 <div class="section level3">
 <h3 id="analyse-contrasts-with-missing-data-imputation">Analyse contrasts with missing data imputation<a class="anchor" aria-label="anchor" href="#analyse-contrasts-with-missing-data-imputation"></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>Still using the approach above, we can only estimate group averages
+in case there is at least one measurement for each protein in each
+group/condition. In the case of missing data for one condition, we can
+use the <code>ContrastsMissing</code> function where the 10th percentile
+expression of all proteins is used for the estimate of the missing
+condition.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">factor_keys_depth</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "condition_" "batch_"</span></span></code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsSimpleImpute.html">ContrastsSimpleImpute</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">Contrasts</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">Contrasts</span><span class="op">)</span></span>
 <span><span class="va">contrdfSimple</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pl</span><span class="op">$</span><span class="fu">histogram_diff</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-1.png" width="700"></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $p.value</span></span></code></pre>
-<p><img src="Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-2.png" width="700"></p>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## $FDR</span></span></code></pre>
-<p><img src="Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-3.png" width="700"></p>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-1.png" alt="Volcano and MA plot for result visualisation for the group average model" width="700"><p class="caption">
+Volcano and MA plot for result visualisation for the group average model
+</p>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FDR</span></span></code></pre></div>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-2.png" alt="Volcano and MA plot for result visualisation for the group average model" width="700"><p class="caption">
+Volcano and MA plot for result visualisation for the group average model
+</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="merge-nonimputed-and-imputed-data-">Merge nonimputed and imputed data.<a class="anchor" aria-label="anchor" href="#merge-nonimputed-and-imputed-data-"></a>
 </h3>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<p>For the moderated model, we can only get results if we have enough
+valid data points. With the group average model we can get group
+estimates for all proteins. Therefore, we are merging the statistics for
+both approaches while we are preferring the values of the moderated
+model. Also these results can again be visualized in a
+<code>volcano</code> plot.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 1695   13</span></span></code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 2500   13</span></span></code></pre>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrSimple</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span></span>
 <span><span class="va">cM</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">cM</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">plot</span><span class="op">$</span><span class="va">FDR</span></span></code></pre></div>
-<p><img src="Modelling2Factors_files/figure-html/doGroupAverageImputation-1.png" width="700"></p>
+<div class="figure">
+<img src="Modelling2Factors_files/figure-html/doGroupAverageImputation-1.png" alt="Volcano plot of moderated (black) and impuation (light green) model" width="700"><p class="caption">
+Volcano plot of moderated (black) and impuation (light green) model
+</p>
+</div>
 <div class="section level4">
 <h4 id="look-at-proteins-with-significant-interaction-term-">Look at Proteins with significant interaction term.<a class="anchor" aria-label="anchor" href="#look-at-proteins-with-significant-interaction-term-"></a>
 </h4>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sigInteraction</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="va">contrast_result</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">==</span> <span class="st">"Interaction"</span> <span class="op">&amp;</span> <span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span></span>
@@ -288,13 +331,14 @@ Proteins with FDR &lt; 0.05 for condition batch interaction in ANOVA.
 <span></span>
 <span><span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">raster</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Modelling2Factors_files/figure-html/visualiseSomeProteins-1.png" alt="Heatmap for proteins that are quantified only in one condition." width="700"><p class="caption">
-Heatmap for proteins that are quantified only in one condition.
+<img src="Modelling2Factors_files/figure-html/visualiseSomeProteins-1.png" alt="Heatmap for proteins that show a FDR &lt; 0.2 for the contrast interaction." width="700"><p class="caption">
+Heatmap for proteins that show a FDR &lt; 0.2 for the contrast
+interaction.
 </p>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hm</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hm</span></span></code></pre></div>
 <div class="figure">
 <img src="Modelling2Factors_files/figure-html/interactionHeatmap-1.png" alt="Proteinheatmap for proteins with significant Interactions" width="700"><p class="caption">
@@ -306,13 +350,32 @@ Proteinheatmap for proteins with significant Interactions
 </div>
 </div>
 <div class="section level2">
+<h2 id="testing-interaction-computation">Testing interaction computation<a class="anchor" aria-label="anchor" href="#testing-interaction-computation"></a>
+</h2>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/spider_wolff_gorb_2013.csv"</span></span>
+<span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"spider_wolff_gorb_2013.csv"</span></span>
+<span><span class="fu">downloader</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/downloader/man/download.html" class="external-link">download</a></span><span class="op">(</span><span class="va">url</span>, <span class="va">filename</span><span class="op">)</span></span>
+<span><span class="va">spider</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">filename</span>, skip <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">XA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">friction</span> <span class="op">~</span> <span class="va">type</span> <span class="op">*</span> <span class="va">leg</span>, data <span class="op">=</span> <span class="va">spider</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">XA</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spider</span><span class="op">)</span></span>
+<span><span class="va">spider</span> <span class="op">&lt;-</span> <span class="va">spider</span> <span class="op">|&gt;</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">unite</a></span><span class="op">(</span><span class="va">legtype</span> , <span class="va">leg</span>, <span class="va">type</span>, remove <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">XF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">friction</span> <span class="op">~</span> <span class="va">legtype</span> <span class="op">-</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">spider</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">glht</span><span class="op">(</span><span class="va">XF</span>, linfct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span>i1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span> ,<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">glht</span><span class="op">(</span><span class="va">XF</span>, linfct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span>i1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span> <span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">glht</span><span class="op">(</span><span class="va">XF</span>, linfct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span>i1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>,  <span class="fl">0</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
 <span><span class="co">## Platform: aarch64-apple-darwin20 (64-bit)</span></span>
-<span><span class="co">## Running under: macOS Monterey 12.6</span></span>
+<span><span class="co">## Running under: macOS Ventura 13.0.1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRblas.0.dylib</span></span>
@@ -325,28 +388,28 @@ Proteinheatmap for proteins with significant Interactions
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] httr_1.4.4         sass_0.4.2         tidyr_1.2.1        jsonlite_1.8.2    </span></span>
-<span><span class="co">##  [5] viridisLite_0.4.1  carData_3.0-5      bslib_0.4.0        assertthat_0.2.1  </span></span>
+<span><span class="co">##  [1] httr_1.4.4         sass_0.4.4         tidyr_1.2.1        jsonlite_1.8.4    </span></span>
+<span><span class="co">##  [5] viridisLite_0.4.1  carData_3.0-5      bslib_0.4.2        assertthat_0.2.1  </span></span>
 <span><span class="co">##  [9] conflicted_1.1.0   highr_0.9          vipor_0.4.5        yaml_2.3.6        </span></span>
-<span><span class="co">## [13] progress_1.2.2     ggrepel_0.9.1      pillar_1.8.1       backports_1.4.1   </span></span>
-<span><span class="co">## [17] glue_1.6.2         digest_0.6.30      RColorBrewer_1.1-3 ggsignif_0.6.4    </span></span>
-<span><span class="co">## [21] colorspace_2.0-3   cowplot_1.1.1      htmltools_0.5.3    pkgconfig_2.0.3   </span></span>
-<span><span class="co">## [25] pheatmap_1.0.12    broom_1.0.1        purrr_0.3.5        scales_1.2.1      </span></span>
+<span><span class="co">## [13] progress_1.2.2     ggrepel_0.9.2      pillar_1.8.1       backports_1.4.1   </span></span>
+<span><span class="co">## [17] glue_1.6.2         digest_0.6.31      RColorBrewer_1.1-3 ggsignif_0.6.4    </span></span>
+<span><span class="co">## [21] colorspace_2.0-3   cowplot_1.1.1      htmltools_0.5.4    pkgconfig_2.0.3   </span></span>
+<span><span class="co">## [25] pheatmap_1.0.12    broom_1.0.2        purrr_0.3.5        scales_1.2.1      </span></span>
 <span><span class="co">## [29] tibble_3.1.8       generics_0.1.3     farver_2.1.1       car_3.1-1         </span></span>
-<span><span class="co">## [33] ggplot2_3.3.6      ellipsis_0.3.2     ggpubr_0.4.0       cachem_1.0.6      </span></span>
+<span><span class="co">## [33] ggplot2_3.4.0      ellipsis_0.3.2     ggpubr_0.5.0       cachem_1.0.6      </span></span>
 <span><span class="co">## [37] withr_2.5.0        lazyeval_0.2.2     cli_3.4.1          magrittr_2.0.3    </span></span>
-<span><span class="co">## [41] crayon_1.5.2       memoise_2.0.1      evaluate_0.17      fs_1.5.2          </span></span>
-<span><span class="co">## [45] fansi_1.0.3        MASS_7.3-58.1      rstatix_0.7.0      forcats_0.5.2     </span></span>
-<span><span class="co">## [49] beeswarm_0.4.0     textshaping_0.3.6  tools_4.2.1        data.table_1.14.4 </span></span>
-<span><span class="co">## [53] prettyunits_1.1.1  hms_1.1.2          lifecycle_1.0.3    stringr_1.4.1     </span></span>
-<span><span class="co">## [57] plotly_4.10.0      munsell_0.5.0      compiler_4.2.1     pkgdown_2.0.6     </span></span>
-<span><span class="co">## [61] jquerylib_0.1.4    systemfonts_1.0.4  prolfqua_1.0.0     rlang_1.0.6       </span></span>
-<span><span class="co">## [65] grid_4.2.1         htmlwidgets_1.5.4  labeling_0.4.2     rmarkdown_2.17    </span></span>
+<span><span class="co">## [41] crayon_1.5.2       memoise_2.0.1      evaluate_0.19      fs_1.5.2          </span></span>
+<span><span class="co">## [45] fansi_1.0.3        MASS_7.3-58.1      rstatix_0.7.1      forcats_0.5.2     </span></span>
+<span><span class="co">## [49] beeswarm_0.4.0     textshaping_0.3.6  tools_4.2.1        data.table_1.14.6 </span></span>
+<span><span class="co">## [53] prettyunits_1.1.1  hms_1.1.2          lifecycle_1.0.3    stringr_1.5.0     </span></span>
+<span><span class="co">## [57] plotly_4.10.1      munsell_0.5.0      compiler_4.2.1     pkgdown_2.0.6     </span></span>
+<span><span class="co">## [61] jquerylib_0.1.4    systemfonts_1.0.4  prolfqua_1.1.0     rlang_1.0.6       </span></span>
+<span><span class="co">## [65] grid_4.2.1         htmlwidgets_1.6.0  labeling_0.4.2     rmarkdown_2.19    </span></span>
 <span><span class="co">## [69] gtable_0.3.1       abind_1.4-5        DBI_1.1.3          R6_2.5.1          </span></span>
-<span><span class="co">## [73] gridExtra_2.3      knitr_1.40         dplyr_1.0.10       fastmap_1.1.0     </span></span>
-<span><span class="co">## [77] utf8_1.2.2         rprojroot_2.0.3    ragg_1.2.3         desc_1.4.2        </span></span>
-<span><span class="co">## [81] stringi_1.7.8      ggbeeswarm_0.6.0   Rcpp_1.0.9         vctrs_0.4.2       </span></span>
-<span><span class="co">## [85] tidyselect_1.2.0   xfun_0.34</span></span></code></pre>
+<span><span class="co">## [73] gridExtra_2.3      knitr_1.41         dplyr_1.0.10       fastmap_1.1.0     </span></span>
+<span><span class="co">## [77] utf8_1.2.2         rprojroot_2.0.3    ragg_1.2.4         desc_1.4.2        </span></span>
+<span><span class="co">## [81] stringi_1.7.8      ggbeeswarm_0.7.1   Rcpp_1.0.9         vctrs_0.5.1       </span></span>
+<span><span class="co">## [85] tidyselect_1.2.0   xfun_0.35</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

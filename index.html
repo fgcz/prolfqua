@@ -43,7 +43,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -117,7 +117,8 @@
 <div class="section level1">
 <div class="page-header"><h1 id="prolfqua---a-r-package-for-proteomics-differential-expression-analysis">prolfqua - a R package for Proteomics Differential Expression Analysis<a class="anchor" aria-label="anchor" href="#prolfqua---a-r-package-for-proteomics-differential-expression-analysis"></a>
 </h1></div>
-<p>The R package contains functions for analyzing mass spectrometry based experiments. This package is developed at the <a href="http://fgcz.ch/" class="external-link">FGCZ</a>.</p>
+<p>The R package contains functions for analyzing mass spectrometry based experiments. This package is developed at the <a href="http://fgcz.ch/" class="external-link">FGCZ</a>. The package documentation including vignettes can be accessed at <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link uri">https://fgcz.github.io/prolfqua/index.html</a></p>
+<p><code>prolfqua</code> makes easy things easy while remaining fully hackable.</p>
 </div>
 <div class="section level1">
 <h1 id="how-to-install-prolfqua">How to install prolfqua?<a class="anchor" aria-label="anchor" href="#how-to-install-prolfqua"></a>
@@ -143,6 +144,44 @@
 <li>Read the pkgdown generate website <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link uri">https://fgcz.github.io/prolfqua/index.html</a>
 </li>
 </ul>
+<p>Or run the following example code:</p>
+<pre><code><span><span class="va">R.version.string</span>; <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"prolfqua"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## read MQ peptide.txt and annotation table</span></span>
+<span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="reference/tidyMQ_Peptides.html">tidyMQ_Peptides</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>  <span class="st">"samples/maxquant_txt/tiny2.zip"</span>, package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">annot</span> <span class="op">&lt;-</span> <span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_xlsx</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
+<span>  <span class="st">"samples/maxquant_txt/annotation_Ionstar2018_PXD003881.xlsx"</span>, package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">annot</span>, <span class="va">startdata</span>, by <span class="op">=</span> <span class="st">"raw.file"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## create MaxQuant configuration</span></span>
+<span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="reference/concrete_AnalysisConfiguration.html">create_config_MQ_peptide</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## specify explanatory variable</span></span>
+<span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">'dilution.'</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="st">"sample"</span></span>
+<span></span>
+<span><span class="co">## create R6 object</span></span>
+<span><span class="va">lfqpep</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">startdata</span>, <span class="va">config</span>, setup <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co">## remove observation with 0 intensity and filter for 2 peptides per protein</span></span>
+<span><span class="va">lfqpep</span><span class="op">$</span><span class="fu">remove_small_intensities</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## transform intensities</span></span>
+<span><span class="va">lfqpep</span> <span class="op">&lt;-</span> <span class="va">lfqpep</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span>
+<span><span class="va">lfqpep</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"log_peptide_abundance"</span><span class="op">)</span></span>
+<span><span class="va">agr</span> <span class="op">&lt;-</span> <span class="va">lfqpep</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">lfqpro</span> <span class="op">&lt;-</span> <span class="va">agr</span><span class="op">$</span><span class="fu">medpolish</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">lfqpro</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"log_protein_abundance"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot Figure 3 panels A-D</span></span>
+<span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">lfqpep</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">panelA</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
+<span><span class="va">panelB</span> <span class="op">&lt;-</span> <span class="va">agr</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">54</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span></span>
+<span><span class="va">panelC</span> <span class="op">&lt;-</span> <span class="va">lfqpro</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">violin</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"C"</span><span class="op">)</span></span>
+<span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">lfqpro</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">panelD</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">54</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"D"</span><span class="op">)</span></span>
+<span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">panelA</span>, <span class="va">panelB</span>, <span class="va">panelC</span>, <span class="va">panelD</span><span class="op">)</span></span></code></pre>
 <p>Detailed documentation with R code:</p>
 <ul>
 <li><a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html" class="external-link">Comparing two Conditions</a></li>
@@ -206,25 +245,18 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 <h1 id="relevant-background-information">Relevant background information<a class="anchor" aria-label="anchor" href="#relevant-background-information"></a>
 </h1>
 <ul>
-<li><a href="https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html" class="external-link">Contrasts in R by Rose Maier</a></li>
 <li><a href="https://rcompanion.org/rcompanion/h_01.html" class="external-link">R Companion</a></li>
 <li><a href="http://www.maths.bath.ac.uk/~jjf23/ELM/" class="external-link">Extending the Linear Model with R</a></li>
 <li><a href="http://www.stat.columbia.edu/~gelman/book/" class="external-link">Bayesian Data Analysis</a></li>
 <li><a href="https://CRAN.R-project.org/package=bayess" class="external-link">Bayesian essentials with R - R package</a></li>
 <li><a href="https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html" class="external-link">Contrasts in R - an example vignette by Rose Maier</a></li>
+<li><a href="http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html" class="external-link">Interactions and Contrasts PH525x series</a></li>
 </ul>
 </div>
 <div class="section level1">
 <h1 id="r-packages-to-compute-contrasts-from-linear-models">R packages to compute contrasts from linear models<a class="anchor" aria-label="anchor" href="#r-packages-to-compute-contrasts-from-linear-models"></a>
 </h1>
-<ul>
-<li>
-<a href="https://CRAN.R-project.org/package=emmeans" class="external-link">emmeans</a> Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.</li>
-<li>
-<a href="https://CRAN.R-project.org/package=lmerTest" class="external-link">lmerTest</a> computes contrast for <a href="https://CRAN.R-project.org/package=lme4" class="external-link">lme4</a> models</li>
-<li>
-<a href="https://CRAN.R-project.org/package=multcomp" class="external-link">multcomp</a> computes contrast for linear models and adjusts p-values (multiple comparison)</li>
-</ul>
+<p>= <a href="https://vincentarelbundock.github.io/marginaleffects/" class="external-link">marginaleffects</a> - <a href="https://CRAN.R-project.org/package=emmeans" class="external-link">emmeans</a> Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models. - <a href="https://CRAN.R-project.org/package=lmerTest" class="external-link">lmerTest</a> computes contrast for <a href="https://CRAN.R-project.org/package=lme4" class="external-link">lme4</a> models - <a href="https://CRAN.R-project.org/package=multcomp" class="external-link">multcomp</a> computes contrast for linear models and adjusts p-values (multiple comparison)</p>
 </div>
 <div class="section level1">
 <h1 id="future-interesting-topics-or-packages-to-look-at">Future interesting topics or packages to look at<a class="anchor" aria-label="anchor" href="#future-interesting-topics-or-packages-to-look-at"></a>

@@ -70,6 +70,9 @@
     <loc>/reference/ContrastsInterface.html</loc>
   </url>
   <url>
+    <loc>/reference/ContrastsMissing.html</loc>
+  </url>
+  <url>
     <loc>/reference/ContrastsModerated.html</loc>
   </url>
   <url>
@@ -80,9 +83,6 @@
   </url>
   <url>
     <loc>/reference/ContrastsROPECA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ContrastsSimpleImpute.html</loc>
   </url>
   <url>
     <loc>/reference/ContrastsTable.html</loc>
@@ -172,9 +172,6 @@
     <loc>/reference/contrasts_linfct.html</loc>
   </url>
   <url>
-    <loc>/reference/contrasts_linfct_deprec.html</loc>
-  </url>
-  <url>
     <loc>/reference/copy_SAINTe_doc.html</loc>
   </url>
   <url>
@@ -242,6 +239,12 @@
   </url>
   <url>
     <loc>/reference/data_spectronautDIA250_A.html</loc>
+  </url>
+  <url>
+    <loc>/reference/diann_output_to_peptide.html</loc>
+  </url>
+  <url>
+    <loc>/reference/diann_read_output.html</loc>
   </url>
   <url>
     <loc>/reference/dot-get_robscales.html</loc>
