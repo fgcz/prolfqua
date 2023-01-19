@@ -4,7 +4,6 @@
 #' @description
 #' Analysis Configuration
 #'
-#' @keywords internal
 #' @family configuration
 #' @export
 #'
