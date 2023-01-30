@@ -25,6 +25,7 @@ list(score = "scaled.p.value", desc = TRUE)
 )
 medpol_benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),
  list(score = "statistic", xlim = c(-3,10) )))
+medpol_benchmark$get_confusion_benchmark()
 
 #Benchmark$debug("plot_score_distribution")
 benchmark <- make_benchmark(
@@ -42,17 +43,23 @@ benchmark <- make_benchmark(
   model_description = "protein level measurments, lm model",
   model_name = "prot_lm"
 )
+
 bb <- benchmark$pAUC_summaries()
 benchmark$complete(FALSE)
 benchmark$smc$summary
 benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),list(score = "statistic", xlim = c(-3,10) )))
 benchmark$plot_score_distribution()
 
+
 bb <- benchmark$get_confusion_FDRvsFDP()
 xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
 bb <- benchmark$get_confusion_benchmark()
+
+
 benchmark$plot_ROC(xlim = 0.1)
+benchmark$plot_precision_recall()
 benchmark$plot_FDPvsTPR()
+
 benchmark$plot_FDRvsFDP()
 benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
 benchmark$complete(FALSE)
@@ -73,6 +80,7 @@ Other benchmarking:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{ionstar_bench_preprocess}()},
 \code{\link{make_benchmark}()},
+\code{\link{ms_bench_add_scores}()},
 \code{\link{ms_bench_auc}()}
 }
 \concept{benchmarking}
@@ -130,6 +138,7 @@ Other benchmarking:
 \item \href{#method-Benchmark-plot_FDRvsFDP}{\code{Benchmark$plot_FDRvsFDP()}}
 \item \href{#method-Benchmark-plot_score_distribution}{\code{Benchmark$plot_score_distribution()}}
 \item \href{#method-Benchmark-plot_scatter}{\code{Benchmark$plot_scatter()}}
+\item \href{#method-Benchmark-plot_precision_recall}{\code{Benchmark$plot_precision_recall()}}
 \item \href{#method-Benchmark-clone}{\code{Benchmark$clone()}}
 }
 }
@@ -392,6 +401,26 @@ plot intensity vs scores
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{score}}{the distribution of which scores to plot (list)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+ggplot
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Benchmark-plot_precision_recall"></a>}}
+\if{latex}{\out{\hypertarget{method-Benchmark-plot_precision_recall}{}}}
+\subsection{Method \code{plot_precision_recall()}}{
+plot precision vs recall
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_precision_recall(precision_lim = 0.7, recall_lim = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{xlim}}{limit x axis}
 }
 \if{html}{\out{</div>}}
 }

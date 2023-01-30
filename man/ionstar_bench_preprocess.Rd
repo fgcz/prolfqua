@@ -19,6 +19,7 @@ Other benchmarking:
 \code{\link{Benchmark}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{make_benchmark}()},
+\code{\link{ms_bench_add_scores}()},
 \code{\link{ms_bench_auc}()}
 }
 \concept{benchmarking}

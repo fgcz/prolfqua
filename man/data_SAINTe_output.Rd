@@ -37,6 +37,7 @@ Other data:
 \code{\link{data_skylinePRMSample_A}},
 \code{\link{data_skylineSRM_HL_A}},
 \code{\link{data_spectronautDIA250_A}},
+\code{\link{data_test_confusion_matrix_scores}},
 \code{\link{prolfqua_data}()}
 }
 \concept{data}

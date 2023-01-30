@@ -17,21 +17,31 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 }
 
 
-# adds FDR, TPR and FDP to data.
-# @param data
-# @param TP_col column name of TP (TRUE, FALSE)
-# @param arrangeby - by which column to sort.
-# @param desc  descending or ascending.
-# FDP - false discovery proportion (Q in Benjamini Hochberg table)
-# FPR - false positive rate
-# TPR - true positive rate
-# TP_hits - true positives
-#
-.ms_bench_add_FPRTPR <- function(data,
-                                 TP_col = "TP",
-                                 arrangeby = "diff",
-                                 desc = TRUE,
-                                 subject_Id = "protein_Id") {
+#' adds FDR, TPR and FDP to data.
+#'
+#' @param data a dataframe with TP_col indicating if the row is a true positive hit
+#' @param TP_col column name of TP (TRUE, FALSE)
+#' @param arrangeby - by which column to sort.
+#' @param desc  descending or ascending.
+#' @export
+#' @family benchmarking
+#' @keywords internal
+#' @returns data.frame with the following columns added
+#' FDP - false discovery proportion (Q in Benjamini Hochberg table)
+#' FPR - false positive rate
+#' TPR - true positive rate
+#' TP_hits - true positives
+#' @examples
+#' dd <- prolfqua_data('data_test_confusion_matrix_scores')
+#' xd <- ms_bench_add_scores(dd, arrangeby = "estimate")
+#' plot(xd$TPR,xd$PREC, type="l")
+#' plot(1- xd$PREC, xd$FDP)
+#'
+ms_bench_add_scores <- function(data,
+                                TP_col = "TP",
+                                arrangeby = "diff",
+                                desc = TRUE,
+                                subject_Id = "protein_Id") {
   #data <- est
 
   data <- if (!desc) {
@@ -47,16 +57,19 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
   data$T_ <- sum(data$TP)
 
   data <- mutate(data,
-    R = seq_len(dplyr::n())
-    , FDP = dplyr::cummean(!.data$TP)
-    , TP_hits = cumsum(.data$TP)
-    , FN_hits = .data$T_ - .data$TP_hits
-    , FP_hits = cumsum(!.data$TP)
-    , TN_hits = .data$F_ - .data$FP_hits
-    , FPR = .data$FP_hits / .data$F_
-    , TPR  = .data$TP_hits / .data$T_
-    , ACC = (.data$TP_hits + .data$TN_hits) / (.data$T_ + .data$F_)
-    , FDP_ = .data$FDP * 1/max(.data$FDP)
+                 R = seq_len(dplyr::n())
+                 , FDP = dplyr::cummean(!.data$TP)
+                 , TP_hits = cumsum(.data$TP)
+                 , FN_hits = .data$T_ - .data$TP_hits
+                 , FP_hits = cumsum(!.data$TP)
+                 , TN_hits = .data$F_ - .data$FP_hits
+                 , PREC = .data$TP_hits / ( .data$TP_hits + .data$FP_hits ) # or just 1 - FDP
+                 , FPR = .data$FP_hits / .data$F_
+
+                 , TPR  = .data$TP_hits / .data$T_ # also known as recall REC
+
+                 , ACC = (.data$TP_hits + .data$TN_hits) / (.data$T_ + .data$F_)
+                 , FDP_ = .data$FDP * 1/max(.data$FDP) # rescaled FDP.
   ) |> ungroup()
   return(data)
 }
@@ -94,7 +107,7 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
       scaled.p = paste0("scaled.", scale)
       data <-
         data |> dplyr::mutate(!!scaled.p := ifelse(!!sym(fcestimate) > 0,
-                                                    1 - !!sym(scale) , !!sym(scale) - 1))
+                                                   1 - !!sym(scale) , !!sym(scale) - 1))
       return(data)
     }
 
@@ -121,11 +134,11 @@ do_confusion <-
     for (arrange in arrangeby) {
       score <- arrange$score
       res[[score]] <-
-        .ms_bench_add_FPRTPR(est,
-                             TP_col = "TP",
-                             arrangeby = score,
-                             desc = arrange$desc,
-                             subject_Id = subject_Id)
+        ms_bench_add_scores(est,
+                            TP_col = "TP",
+                            arrangeby = score,
+                            desc = arrange$desc,
+                            subject_Id = subject_Id)
     }
     all <- bind_rows(res)
     return(all)
@@ -139,8 +152,8 @@ do_confusion_c <- function(
     subject_Id = "protein_Id") {
 
   txx <- data |> group_by_at(contrast) |> nest()
-  out <- vector(mode="list", length = length(txx$data))
-  for(i in 1:length(txx$data)) {
+  out <- vector(mode = "list", length = length(txx$data))
+  for (i in 1:length(txx$data)) {
     out[[i]] <- do_confusion(
       txx$data[[i]],
       arrangeby = arrangeby,
@@ -177,11 +190,23 @@ do_confusion_c <- function(
     p2 <-
       ggplot(pStats , aes(x = .data$FPR, y = .data$TPR, color = .data$what)) +
       geom_path()  +
-      xlim(0, xlim = fpr_lim) +
+      xlim(0, fpr_lim) +
       facet_wrap( as.formula(paste0("~",contrast )) )
 
-    rocp = p2
+    invisible(p2)
   }
+
+.plot_precision_recall <-
+  function(pStats, precision_lim = 0.7, recall_lim = 1,  contrast = "contrast"){
+    p2 <- ggplot(pStats, aes(x = .data$TPR, y = .data$PREC, color = .data$what)) +
+      geom_path() +
+      xlim(0, recall_lim) +
+      ylim(precision_lim, 1) +
+      facet_wrap( as.formula(paste0("~",contrast )) ) +
+      labs( y = "Precision [TP/(TP + FP)] or (1 - FDP)", x = "Recall (TPR) [TP/(TP + FN)]")
+    invisible(p2)
+  }
+
 
 .partial_AUC_summary <- function(pStats, model_description = "mixed effects model",
                                  contrast = "contrast"){
@@ -240,7 +265,7 @@ do_confusion_c <- function(
 # plot score distributions by species
 .plot_score_distribution <- function(data,
                                      score = list(list(score = "diff",xlim = c(-1,2) ),
-                                                 list(score = "statistic", xlim = c(-3,10) )),
+                                                  list(score = "statistic", xlim = c(-3,10) )),
                                      contrast = "contrast",
                                      species = "species" ,
                                      annot = "peptide level statistics density"){
@@ -284,6 +309,7 @@ do_confusion_c <- function(
 #' )
 #' medpol_benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),
 #'  list(score = "statistic", xlim = c(-3,10) )))
+#' medpol_benchmark$get_confusion_benchmark()
 #'
 #' #Benchmark$debug("plot_score_distribution")
 #' benchmark <- make_benchmark(
@@ -301,17 +327,23 @@ do_confusion_c <- function(
 #'   model_description = "protein level measurments, lm model",
 #'   model_name = "prot_lm"
 #' )
+#'
 #' bb <- benchmark$pAUC_summaries()
 #' benchmark$complete(FALSE)
 #' benchmark$smc$summary
 #' benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),list(score = "statistic", xlim = c(-3,10) )))
 #' benchmark$plot_score_distribution()
 #'
+#'
 #' bb <- benchmark$get_confusion_FDRvsFDP()
 #' xb <- dplyr::filter(bb, contrast ==  "dilution_(4.5/3)_1.5")
 #' bb <- benchmark$get_confusion_benchmark()
+#'
+#'
 #' benchmark$plot_ROC(xlim = 0.1)
+#' benchmark$plot_precision_recall()
 #' benchmark$plot_FDPvsTPR()
+#'
 #' benchmark$plot_FDRvsFDP()
 #' benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
 #' benchmark$complete(FALSE)
@@ -476,6 +508,7 @@ Benchmark <-
       #' @description
       #' plot FDP vs TPR
       #' @param xlim limit x axis
+      #'
       plot_FDPvsTPR = function(xlim = 0.5){
         confusion <- self$get_confusion_benchmark()
 
@@ -555,7 +588,7 @@ Benchmark <-
       #' @param score the distribution of which scores to plot (list)
       #' @return ggplot
       plot_score_distribution = function(score) {
-        if(missing(score)){
+        if (missing(score)) {
           score = self$benchmark
 
         }
@@ -570,7 +603,7 @@ Benchmark <-
       #' @param score the distribution of which scores to plot (list)
       #' @return ggplot
       plot_scatter = function(score) {
-        if(missing(score)){
+        if (missing(score)) {
           score = self$benchmark
         }
         x <- self$data()
@@ -587,11 +620,24 @@ Benchmark <-
             if (!is.null(ylim)) {ggplot2::ylim(ylim)} else {NULL}
         }
         fig <- ggpubr::ggarrange(plotlist = plots,
-                         nrow = 1,
-                         common.legend = TRUE,
-                         legend = "bottom")
+                                 nrow = 1,
+                                 common.legend = TRUE,
+                                 legend = "bottom")
         fig <- ggpubr::annotate_figure(fig, bottom = ggpubr::text_grob(self$model_typ , size = 10))
         return(fig)
+      },
+      #' @description
+      #' plot precision vs recall
+      #' @param xlim limit x axis
+      #' @return ggplot
+      plot_precision_recall = function(precision_lim = 0.7, recall_lim = 1) {
+        confusion <- self$get_confusion_benchmark()
+        vissum <- .plot_precision_recall(
+          confusion,
+          precision_lim = precision_lim,
+          recall_lim = recall_lim,
+          contrast = self$contrast)
+        return(vissum)
       }
 
     ))
@@ -639,6 +685,6 @@ make_benchmark <- function(prpr,
                        model_description = model_description,
                        model_name = model_name,
                        hierarchy = hierarchy,
-                       summarizeNA=summarizeNA)
+                       summarizeNA = summarizeNA)
   return(res)
 }

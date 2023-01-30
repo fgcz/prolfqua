@@ -21,7 +21,8 @@ Other benchmarking:
 \code{\link{Benchmark}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{ionstar_bench_preprocess}()},
-\code{\link{make_benchmark}()}
+\code{\link{make_benchmark}()},
+\code{\link{ms_bench_add_scores}()}
 }
 \concept{benchmarking}
 \keyword{internal}

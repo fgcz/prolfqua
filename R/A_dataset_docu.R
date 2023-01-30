@@ -256,6 +256,11 @@ NULL
 
 # #@usage data_multigroupFC <- prolfqua_data("data_multigroupFC")
 
+#' example data for check of scores produced based on confusion matrix
+#' @family data
+#' @docType data
+#' @keywords internal
+'data_test_confusion_matrix_scores'
 
 # data_skylinePRMSample_A <- skylinePRMSampleData_A
 # usethis::use_data(data_skylinePRMSample_A,compress = TRUE, overwrite = TRUE)

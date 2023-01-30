@@ -10,7 +10,7 @@ output:
     toc: yes
     toc_depth: 2
 params:
-  configuration:  !r quote(prolfqua::prolfqua_data('data_ionstar')$filtered()$config$clone(deep=TRUE))
+  configuration: !r quote(prolfqua::prolfqua_data('data_ionstar')$filtered()$config$clone(deep=TRUE))
   project_conf: NULL
   data: !r quote(prolfqua::prolfqua_data('data_ionstar')$filtered()$data)
   plot_density: TRUE
@@ -49,7 +49,12 @@ data <- eval(params$data)
 
 local_project_conf <- params$project_conf
 local_config <- eval(params$configuration)
-local_config <- prolfqua::old2new(local_config)
+if (!is.null(local_config$table$is_intensity_transformed)) {
+  local_config <- prolfqua::old2new(local_config)
+}
+
+
+
 
 if (is.null(local_project_conf)) {
   local_project_conf <- list()
