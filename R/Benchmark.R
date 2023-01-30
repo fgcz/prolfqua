@@ -175,14 +175,6 @@ do_confusion_c <- function(
   return(xx)
 }
 
-.plot_FDPvsTPR <- function(pStats, xlim, contrast = "contrast"){
-  p1 <-
-    ggplot(pStats , ggplot2::aes(x = .data$FDP, y = .data$TPR, color = .data$what)) +
-    ggplot2::geom_path()  +
-    ggplot2::labs(tag = "C") + xlim(0, xlim) +
-    ggplot2::facet_wrap(as.formula(paste0("~",contrast )))
-  return(p1)
-}
 
 # Visualizes data frame with columns FPR, TPR, FDP
 .plot_ROC <-
@@ -342,7 +334,6 @@ do_confusion_c <- function(
 #'
 #' benchmark$plot_ROC(xlim = 0.1)
 #' benchmark$plot_precision_recall()
-#' benchmark$plot_FDPvsTPR()
 #'
 #' benchmark$plot_FDRvsFDP()
 #' benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
@@ -506,18 +497,6 @@ Benchmark <-
         return(n)
       },
       #' @description
-      #' plot FDP vs TPR
-      #' @param xlim limit x axis
-      #'
-      plot_FDPvsTPR = function(xlim = 0.5){
-        confusion <- self$get_confusion_benchmark()
-
-        p <- .plot_FDPvsTPR(confusion,
-                            xlim = xlim,
-                            contrast = self$contrast)
-        return(p)
-      },
-      #' @description
       #' plot FDR summaries
       #' @param xlim limit x axis
       #' @return ggplot
@@ -628,7 +607,8 @@ Benchmark <-
       },
       #' @description
       #' plot precision vs recall
-      #' @param xlim limit x axis
+      #' @param precision_lim limit shown precision from
+      #' @param recall_lim limit shown recall to
       #' @return ggplot
       plot_precision_recall = function(precision_lim = 0.7, recall_lim = 1) {
         confusion <- self$get_confusion_benchmark()

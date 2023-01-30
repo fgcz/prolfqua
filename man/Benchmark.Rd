@@ -58,7 +58,6 @@ bb <- benchmark$get_confusion_benchmark()
 
 benchmark$plot_ROC(xlim = 0.1)
 benchmark$plot_precision_recall()
-benchmark$plot_FDPvsTPR()
 
 benchmark$plot_FDRvsFDP()
 benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
@@ -129,7 +128,6 @@ Other benchmarking:
 \item \href{#method-Benchmark-.get_confusion}{\code{Benchmark$.get_confusion()}}
 \item \href{#method-Benchmark-get_confusion_benchmark}{\code{Benchmark$get_confusion_benchmark()}}
 \item \href{#method-Benchmark-n_confusion_benchmark}{\code{Benchmark$n_confusion_benchmark()}}
-\item \href{#method-Benchmark-plot_FDPvsTPR}{\code{Benchmark$plot_FDPvsTPR()}}
 \item \href{#method-Benchmark-plot_ROC}{\code{Benchmark$plot_ROC()}}
 \item \href{#method-Benchmark-pAUC_summaries}{\code{Benchmark$pAUC_summaries()}}
 \item \href{#method-Benchmark-pAUC}{\code{Benchmark$pAUC()}}
@@ -279,23 +277,6 @@ nr of elements used to determine ROC curve
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Benchmark-plot_FDPvsTPR"></a>}}
-\if{latex}{\out{\hypertarget{method-Benchmark-plot_FDPvsTPR}{}}}
-\subsection{Method \code{plot_FDPvsTPR()}}{
-plot FDP vs TPR
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Benchmark$plot_FDPvsTPR(xlim = 0.5)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{xlim}}{limit x axis}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Benchmark-plot_ROC"></a>}}
 \if{latex}{\out{\hypertarget{method-Benchmark-plot_ROC}{}}}
 \subsection{Method \code{plot_ROC()}}{
@@ -420,7 +401,9 @@ plot precision vs recall
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{xlim}}{limit x axis}
+\item{\code{precision_lim}}{limit shown precision from}
+
+\item{\code{recall_lim}}{limit shown recall to}
 }
 \if{html}{\out{</div>}}
 }
