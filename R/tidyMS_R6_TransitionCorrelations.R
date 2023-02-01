@@ -562,16 +562,23 @@ normalize_log2_robscale <- function(pdata, config){
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' stopifnot( nrow(bb$data) == 25780)
 #' conf <- old2new(bb$config$clone(deep=TRUE))
-#' data <- bb$data
-#'
+#' data <- bb$data |> dplyr::ungroup()
+#' dim(data)
 #' dataI <- mark_decorelated(data, conf)
 #'
 mark_decorelated <- function(data , config, minCorrelation = 0.7){
   qvalFiltX <- data |>  dplyr::group_by_at(config$table$hierarchy_keys()[1]) |> tidyr::nest()
   qvalFiltX <- qvalFiltX |>
     dplyr::mutate(spreadMatrix = map(data, response_as_matrix, config))
-  HLfigs2 <- qvalFiltX |>
-    dplyr::mutate(srmDecor = map(.data$spreadMatrix, .decorelatedPly,  minCorrelation))
+  #HLfigs2 <- qvalFiltX |>
+  #  dplyr::mutate(srmDecor = map(.data$spreadMatrix, .decorelatedPly,  minCorrelation))
+  HLfigs2 <- qvalFiltX
+  HLfigs2$srmDecor <- vector(mode = "list", length = nrow(qvalFiltX))
+  for (i in seq_len(nrow(qvalFiltX))) {
+    HLfigs2$srmDecor[[i]] <- .decorelatedPly(qvalFiltX$spreadMatrix[[i]], minCorrelation)
+    message(i)
+  }
+
   unnest_res <- HLfigs2 |>
     dplyr::select(config$table$hierarchy_keys()[1], "srmDecor") |> tidyr::unnest()
   unnest_res <- unnest_res |>

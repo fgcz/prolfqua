@@ -282,7 +282,6 @@ jackknife <- function(xdata, .method, ... ) {
 #' stopifnot(dim(res) == c(4,4))
 #' res <- jackknife_matrix(dataX, cor, method="spearman")
 #' stopifnot(dim(res) == c(4,4))
-
 jackknife_matrix <- function(dataX, distmethod , ... ){
   if (is.null(colnames(dataX))) {
     colnames(dataX) <- paste("C", seq_len(ncol(dataX)), sep = "")
