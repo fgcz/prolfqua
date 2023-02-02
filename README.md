@@ -188,7 +188,7 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
 # R packages to compute contrasts from linear and other models
 
-- [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/)
+- [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/) Compute and plot predictions, slopes, marginal means, and comparisons (contrasts, risk ratios, odds ratios, etc.) for over 70 classes of statistical models in R.
 - [emmeans](https://CRAN.R-project.org/package=emmeans) Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.
 - [lmerTest](https://CRAN.R-project.org/package=lmerTest) computes contrast for [lme4](https://CRAN.R-project.org/package=lme4) models
 - [multcomp](https://CRAN.R-project.org/package=multcomp) computes contrast for linear models and adjusts p-values (multiple comparison)
