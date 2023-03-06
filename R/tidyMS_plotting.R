@@ -480,7 +480,7 @@ plot_NA_heatmap <- function(data,
   res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
-  stopifnot(annot[[config$table$sampleName]] == colnames(res))
+  stopifnot(annot[[config$table$sampleName]] %in% colnames(res))
 
   factors <- dplyr::select_at(annot, config$table$factor_keys())
   factors <- as.data.frame(factors)
