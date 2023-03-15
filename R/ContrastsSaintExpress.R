@@ -1,7 +1,7 @@
-# ContrastsSaintExpress ----
+# ContrastsSAINTexpress ----
 #' Wrapper to results produced by SAINTexpress
 #'
-#' SAINT express writes
+#' SAINTexpress writes
 #'
 #'
 #'
