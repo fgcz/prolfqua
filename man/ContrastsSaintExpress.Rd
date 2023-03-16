@@ -9,7 +9,7 @@ Wrapper to results produced by SAINTexpress
 Wrapper to results produced by SAINTexpress
 }
 \details{
-SAINT express writes
+SAINTexpress writes
 }
 \examples{
 seout <- prolfqua_data("data_SAINTe_output")
