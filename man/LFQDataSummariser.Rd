@@ -25,7 +25,7 @@ sum$missingness_per_group()
 sum$missingness_per_group_cumsum()
 sum$plot_missingness_per_group()
 sum$plot_missingness_per_group_cumsum()
-
+sum$upset_interaction_missing_stats()
 }
 \seealso{
 Other LFQData: 
@@ -53,6 +53,7 @@ Other LFQData:
 \item \href{#method-LFQDataSummariser-hierarchy_counts_sample}{\code{LFQDataSummariser$hierarchy_counts_sample()}}
 \item \href{#method-LFQDataSummariser-plot_hierarchy_counts_sample}{\code{LFQDataSummariser$plot_hierarchy_counts_sample()}}
 \item \href{#method-LFQDataSummariser-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
+\item \href{#method-LFQDataSummariser-upset_interaction_missing_stats}{\code{LFQDataSummariser$upset_interaction_missing_stats()}}
 \item \href{#method-LFQDataSummariser-missingness_per_group}{\code{LFQDataSummariser$missingness_per_group()}}
 \item \href{#method-LFQDataSummariser-missingness_per_group_cumsum}{\code{LFQDataSummariser$missingness_per_group_cumsum()}}
 \item \href{#method-LFQDataSummariser-plot_missingness_per_group}{\code{LFQDataSummariser$plot_missingness_per_group()}}
@@ -130,6 +131,23 @@ missing per condition and protein
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$interaction_missing_stats()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataSummariser-upset_interaction_missing_stats"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataSummariser-upset_interaction_missing_stats}{}}}
+\subsection{Method \code{upset_interaction_missing_stats()}}{
+upset plot with missing information per protein and condition
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$upset_interaction_missing_stats(tr = 2)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tr}}{if less than tr observations in condition then missing}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-missingness_per_group"></a>}}

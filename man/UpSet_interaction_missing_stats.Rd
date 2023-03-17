@@ -6,6 +6,9 @@
 \usage{
 UpSet_interaction_missing_stats(data, cf, tr = 2)
 }
+\arguments{
+\item{tr}{if less than tr observations in condition then missing}
+}
 \description{
 UpSetR plot from interaction_missing_stats
 }
@@ -15,12 +18,14 @@ stopifnot(nrow(bb$data) == 25780)
 configur <- old2new(bb$config$clone(deep=TRUE))
 data <- bb$data
 #debug(UpSet_interaction_missing_stats)
-tmp <- UpSet_interaction_missing_stats(data, configur)
+pups <- UpSet_interaction_missing_stats(data, configur)
+#UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 }
 \seealso{
 Other plotting: 
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{UpSet_missing_stats}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
@@ -39,6 +44,7 @@ Other plotting:
 \code{\link{plot_sample_correlation}()}
 
 Other imputation: 
+\code{\link{UpSet_missing_stats}()},
 \code{\link{aggregate_contrast}()},
 \code{\link{get_contrast}()},
 \code{\link{missigness_histogram}()},

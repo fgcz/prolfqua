@@ -21,7 +21,7 @@
 #' sum$missingness_per_group_cumsum()
 #' sum$plot_missingness_per_group()
 #' sum$plot_missingness_per_group_cumsum()
-#'
+#' sum$upset_interaction_missing_stats()
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
   public = list(
@@ -57,6 +57,14 @@ LFQDataSummariser <- R6::R6Class(
     #' missing per condition and protein
     interaction_missing_stats = function(){
       prolfqua::interaction_missing_stats(self$lfq$data, self$lfq$config)
+    },
+    #' @description
+    #' upset plot with missing information per protein and condition
+    #' @param tr if less than tr observations in condition then missing
+    upset_interaction_missing_stats = function(tr = 2){
+      pups <- UpSet_interaction_missing_stats(self$lfq$data,  self$lfq$config, tr = tr)
+      res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
+      invisible(res)
     },
     #' @description
     #' missing stats per condition

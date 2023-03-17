@@ -64,6 +64,7 @@ Other plotting:
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{UpSet_interaction_missing_stats}()},
+\code{\link{UpSet_missing_stats}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},

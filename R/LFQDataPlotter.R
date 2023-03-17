@@ -35,6 +35,7 @@
 #' lfqplotter$pairs_smooth()
 #' lfqplotter$sample_correlation()
 #' lfqplotter$raster()
+#' lfqplotter$upset_missing()
 #' prolfqua::plot_sample_correlation(istar$data, istar$config)
 #'
 LFQDataPlotter <- R6::R6Class(
@@ -190,6 +191,11 @@ LFQDataPlotter <- R6::R6Class(
     #' @return NULL
     sample_correlation = function(){
       prolfqua::plot_sample_correlation(self$lfq$data, self$lfq$config)
+    },
+    UpSet_missing = function(){
+      pups <- prolfqua::UpSet_missing_stats(self$lfq$data, self$lfq$config)
+      res <- UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
+      invisible(res)
     },
     #' @description
     #' write boxplots to file

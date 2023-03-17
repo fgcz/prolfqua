@@ -47,6 +47,7 @@ dim(long)
 \seealso{
 Other imputation: 
 \code{\link{UpSet_interaction_missing_stats}()},
+\code{\link{UpSet_missing_stats}()},
 \code{\link{aggregate_contrast}()},
 \code{\link{get_contrast}()},
 \code{\link{missigness_histogram}()},
