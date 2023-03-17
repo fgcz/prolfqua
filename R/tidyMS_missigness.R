@@ -627,6 +627,7 @@ missingness_per_condition <- function(x, config, factors = config$table$factor_k
 
 
 #' UpSetR plot from interaction_missing_stats
+#'
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -637,7 +638,9 @@ missingness_per_condition <- function(x, config, factors = config$table$factor_k
 #' configur <- old2new(bb$config$clone(deep=TRUE))
 #' data <- bb$data
 #' #debug(UpSet_interaction_missing_stats)
-#' tmp <- UpSet_interaction_missing_stats(data, configur)
+#' pups <- UpSet_interaction_missing_stats(data, configur)
+#' pups
+#' #UpSetR::upset(pups, order.by = "freq")
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::interaction_missing_stats(data, cf)
   nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$table$hierarchy_keys(),
@@ -648,5 +651,28 @@ UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] < tr] <- 0
   nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] >= tr] <- 1
   return(as.data.frame(nrMiss))
+}
+
+#' UpSetR plot for all samples
+#'
+#' @export
+#' @keywords internal
+#' @family plotting
+#' @family imputation
+#' @examples
+#' bb <- prolfqua_data('data_ionstar')$filtered()
+#' stopifnot(nrow(bb$data) == 25780)
+#' configur <- old2new(bb$config$clone(deep=TRUE))
+#' data <- bb$data
+#' pups <- UpSet_missing_stats(data, configur)
+#' UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
+UpSet_missing_stats <- function(data, config){
+  data <- data |> dplyr::mutate(isThere = as.numeric(!is.na(!!rlang::sym(config$table$get_response()))))
+  pups2 <- data |> tidyr::pivot_wider(id_cols = config$table$hierarchy_keys(),
+                                      names_from = config$table$sampleName,
+                                      values_from = !!rlang::sym("isThere"))
+  #colnames(pups2) <- make.names(colnames(pups2))
+  res <- list(data = as.data.frame(pups2), nsets = ncol(pups2) - length(config$table$hierarchy_keys()) )
+  return(res)
 }
 
