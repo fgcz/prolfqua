@@ -52,6 +52,7 @@ Imports:
     stringr,
     tidyr,
     tibble,
+    UpSetR,
     yaml,
     writexl
 Suggests:

@@ -42,6 +42,7 @@ lfqplotter$intensity_distribution_violin()
 lfqplotter$pairs_smooth()
 lfqplotter$sample_correlation()
 lfqplotter$raster()
+lfqplotter$upset_missing()
 prolfqua::plot_sample_correlation(istar$data, istar$config)
 
 }
@@ -90,6 +91,7 @@ Other LFQData:
 \item \href{#method-LFQDataPlotter-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
 \item \href{#method-LFQDataPlotter-pairs_smooth}{\code{LFQDataPlotter$pairs_smooth()}}
 \item \href{#method-LFQDataPlotter-sample_correlation}{\code{LFQDataPlotter$sample_correlation()}}
+\item \href{#method-LFQDataPlotter-upset_missing}{\code{LFQDataPlotter$upset_missing()}}
 \item \href{#method-LFQDataPlotter-write_boxplots}{\code{LFQDataPlotter$write_boxplots()}}
 \item \href{#method-LFQDataPlotter-write_pltly}{\code{LFQDataPlotter$write_pltly()}}
 \item \href{#method-LFQDataPlotter-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
@@ -335,6 +337,19 @@ plot of sample correlations
 
 \subsection{Returns}{
 NULL
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataPlotter-upset_missing"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-upset_missing}{}}}
+\subsection{Method \code{upset_missing()}}{
+upset plot based on presence absence information
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$upset_missing()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+plot
 }
 }
 \if{html}{\out{<hr>}}

@@ -653,7 +653,7 @@ UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   return(list(data = as.data.frame(nrMiss), nsets = ncol(nrMiss) - length(cf$table$hierarchy_keys())))
 }
 
-#' UpSetR plot for all samples
+#' prepare dataframe for UpSetR plot for all samples
 #'
 #' @export
 #' @keywords internal

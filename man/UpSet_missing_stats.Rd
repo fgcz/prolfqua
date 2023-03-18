@@ -2,12 +2,12 @@
 % Please edit documentation in R/tidyMS_missigness.R
 \name{UpSet_missing_stats}
 \alias{UpSet_missing_stats}
-\title{UpSetR plot for all samples}
+\title{prepare dataframe for UpSetR plot for all samples}
 \usage{
 UpSet_missing_stats(data, config)
 }
 \description{
-UpSetR plot for all samples
+prepare dataframe for UpSetR plot for all samples
 }
 \examples{
 bb <- prolfqua_data('data_ionstar')$filtered()

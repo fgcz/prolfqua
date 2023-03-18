@@ -16,12 +16,15 @@
 #' sum$hierarchy_counts_sample("wide")
 #' sum$hierarchy_counts_sample("long")
 #' sum$plot_hierarchy_counts_sample()
-#' sum$interaction_missing_stats()
+#' tmp <- sum$interaction_missing_stats()
+#' head(tmp)
+#'
 #' sum$missingness_per_group()
 #' sum$missingness_per_group_cumsum()
 #' sum$plot_missingness_per_group()
 #' sum$plot_missingness_per_group_cumsum()
 #' sum$upset_interaction_missing_stats()
+
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
   public = list(
@@ -64,7 +67,7 @@ LFQDataSummariser <- R6::R6Class(
     upset_interaction_missing_stats = function(tr = 2){
       pups <- UpSet_interaction_missing_stats(self$lfq$data,  self$lfq$config, tr = tr)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
-      invisible(res)
+      return(res)
     },
     #' @description
     #' missing stats per condition

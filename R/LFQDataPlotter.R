@@ -192,10 +192,13 @@ LFQDataPlotter <- R6::R6Class(
     sample_correlation = function(){
       prolfqua::plot_sample_correlation(self$lfq$data, self$lfq$config)
     },
-    UpSet_missing = function(){
+    #' @description
+    #' upset plot based on presence absence information
+    #' @return plot
+    upset_missing = function(){
       pups <- prolfqua::UpSet_missing_stats(self$lfq$data, self$lfq$config)
       res <- UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
-      invisible(res)
+      return(res)
     },
     #' @description
     #' write boxplots to file
