@@ -33,17 +33,17 @@ diann_read_output <- function(path, nrPeptides = 2, Q.Value = 0.01){
     return(PG)
   }
 
-  filter_PG <- function(PG, nrPeptides = 2, Q.Value = 0.01){
-    PG <- PG |> dplyr::filter(nrPeptides >= nrPeptides)
+  filter_PG <- function(PG, nrPeptides_min = 2, Q.Value = 0.01){
+    PG <- PG |> dplyr::filter(.data$nrPeptides >= nrPeptides_min)
     PG <- PG |> dplyr::filter(.data$Lib.PG.Q.Value < Q.Value)
     PG <- PG |> dplyr::filter(.data$PG.Q.Value < Q.Value)
   }
 
   ## use internal functions
-  report <- readr::read_tsv(path)
+  report <- readr::read_tsv(path, show_col_types = FALSE)
   rNR <- add_nr_pep(report)
   PG <- select_PG(rNR$report)
-  PG2 <- filter_PG(PG, nrPeptides = nrPeptides, Q.Value = Q.Value)
+  PG2 <- filter_PG(PG, nrPeptides_min = nrPeptides, Q.Value = Q.Value)
   report2 <- inner_join(PG2, report)
   return(report2)
 }
