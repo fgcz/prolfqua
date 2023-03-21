@@ -25,6 +25,8 @@
 #' sum$plot_missingness_per_group_cumsum()
 #' sum$upset_interaction_missing_stats()
 
+
+
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
   public = list(
