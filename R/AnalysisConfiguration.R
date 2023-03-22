@@ -137,6 +137,12 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   }
   data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchy_keys() )))
 
+  if ( length(table$factors) == 0) {
+    stop("No factors (explanatory variables) specified in the AnalysisTableConfiguration.\n",
+            'Pleases use table$factors["Condition"] = "columnName".\n',
+         'where Condition is the new name of the variable and\n',
+         'columnName is the name of the column containing the varible.')
+  }
   for (i in seq_along(table$factors))
   {
     if ( length(table$factors[[i]]) > 1) {
