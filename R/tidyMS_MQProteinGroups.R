@@ -52,7 +52,9 @@ tidyMQ_ProteinGroups <- function(MQProteinGroups) {
     dplyr::mutate(raw.file = gsub("lfq.intensity.","",.data$raw.file))
 
   pintCount <- pintMSCount |>
-    tidyr::gather(key = "raw.file", value = "mq.protein.ms.ms.count", starts_with("ms.ms.count.")) |>
+    tidyr::gather(key = "raw.file",
+                  value = "mq.protein.ms.ms.count",
+                  starts_with("ms.ms.count.")) |>
     dplyr::mutate(raw.file = gsub("ms.ms.count.","",.data$raw.file))
 
 
