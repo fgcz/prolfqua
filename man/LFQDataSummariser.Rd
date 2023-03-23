@@ -28,6 +28,8 @@ sum$missingness_per_group_cumsum()
 sum$plot_missingness_per_group()
 sum$plot_missingness_per_group_cumsum()
 sum$upset_interaction_missing_stats()
+sum$percentage_abundance()
+
 }
 \seealso{
 Other LFQData: 
@@ -60,6 +62,7 @@ Other LFQData:
 \item \href{#method-LFQDataSummariser-missingness_per_group_cumsum}{\code{LFQDataSummariser$missingness_per_group_cumsum()}}
 \item \href{#method-LFQDataSummariser-plot_missingness_per_group}{\code{LFQDataSummariser$plot_missingness_per_group()}}
 \item \href{#method-LFQDataSummariser-plot_missingness_per_group_cumsum}{\code{LFQDataSummariser$plot_missingness_per_group_cumsum()}}
+\item \href{#method-LFQDataSummariser-percentage_abundance}{\code{LFQDataSummariser$percentage_abundance()}}
 \item \href{#method-LFQDataSummariser-clone}{\code{LFQDataSummariser$clone()}}
 }
 }
@@ -195,6 +198,27 @@ barplot with cumulative sum of features with 1,2, etc missing in condition
 
 \subsection{Returns}{
 ggplot
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataSummariser-percentage_abundance"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataSummariser-percentage_abundance}{}}}
+\subsection{Method \code{percentage_abundance()}}{
+Does roll up to highest hierarchy and
+Computes the percent abundance of proteins overall and within each group
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$percentage_abundance(N = 1000)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{N}}{default 1000}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data frame
 }
 }
 \if{html}{\out{<hr>}}

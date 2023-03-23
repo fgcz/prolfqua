@@ -24,9 +24,8 @@
 #' sum$plot_missingness_per_group()
 #' sum$plot_missingness_per_group_cumsum()
 #' sum$upset_interaction_missing_stats()
-
-
-
+#' sum$percentage_abundance()
+#'
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
   public = list(
@@ -92,6 +91,41 @@ LFQDataSummariser <- R6::R6Class(
     #' @return ggplot
     plot_missingness_per_group_cumsum = function(){
       prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
+    },
+    #' @description
+    #' Does roll up to highest hierarchy and
+    #' Computes the percent abundance of proteins overall and within each group
+    #' @param N default 1000
+    #' @return data frame
+    percentage_abundance = function(N = 1000){
+      # roll up to protein intensities
+      if (self$lfq$is_transformed()) {
+        warning("The abundances are transformed.\n Since this function sums up
+                protein abundances,\n it is best to use untransformed data.")
+      }
+
+      ag <- self$lfq$get_Aggregator()
+      bb <- ag$sum_topN(N = N)
+      bb$rename_response("totalIntensity")
+      # compute protein level summaries
+      dall <- interaction_missing_stats(bb$data, bb$config, factors = NULL)
+      dfac <- interaction_missing_stats(bb$data, bb$config)
+      xd <- setdiff(colnames(dfac$data), colnames(dall$data))
+      for (i in xd) {
+        dall$data[[i]] <- "ALL"
+      }
+      all <- dplyr::bind_rows(dfac$data, dall$data)
+      nested <- all |> dplyr::group_by(!!rlang::sym(lfqdata$config$table$factor_keys_depth())) |> tidyr::nest()
+      for (i in seq_len(nrow(nested))) {
+        nested$data[[i]] <- nested$data[[i]] |>
+          dplyr::arrange(.data$meanArea) |>
+          dplyr::mutate(id = dplyr::row_number()) |>
+          dplyr::mutate(abundance_percent = meanArea/sum(meanArea)*100 ) |>
+          dplyr::mutate(abundance_percent_cumulative = cumsum(abundance_percent)) |>
+          dplyr::mutate(percent_prot = id / max(id) * 100)
+      }
+      res <- tidyr::unnest(nested, cols = "data")
+      return(res)
     }
   )
 )
