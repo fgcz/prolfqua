@@ -18,7 +18,7 @@ Other LFQData:
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
 \code{\link{LFQData}},
-\code{\link{RowAnnotProtein}}
+\code{\link{ProteinAnnotation}}
 }
 \concept{LFQData}
 \section{Public fields}{

@@ -35,6 +35,6 @@ Other LFQData:
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataWriter}},
 \code{\link{LFQData}},
-\code{\link{RowAnnotProtein}}
+\code{\link{ProteinAnnotation}}
 }
 \concept{LFQData}

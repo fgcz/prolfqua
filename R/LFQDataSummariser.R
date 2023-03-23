@@ -115,7 +115,7 @@ LFQDataSummariser <- R6::R6Class(
         dall$data[[i]] <- "ALL"
       }
       all <- dplyr::bind_rows(dfac$data, dall$data)
-      nested <- all |> dplyr::group_by(!!rlang::sym(lfqdata$config$table$factor_keys_depth())) |> tidyr::nest()
+      nested <- all |> dplyr::group_by(!!rlang::sym(self$lfq$config$table$factor_keys_depth())) |> tidyr::nest()
       for (i in seq_len(nrow(nested))) {
         nested$data[[i]] <- nested$data[[i]] |>
           dplyr::arrange(.data$meanArea) |>

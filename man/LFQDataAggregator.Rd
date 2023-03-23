@@ -55,7 +55,7 @@ Other LFQData:
 \code{\link{LFQDataToSummarizedExperiment}()},
 \code{\link{LFQDataWriter}},
 \code{\link{LFQData}},
-\code{\link{RowAnnotProtein}}
+\code{\link{ProteinAnnotation}}
 }
 \concept{LFQData}
 \section{Public fields}{
