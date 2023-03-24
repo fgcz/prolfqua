@@ -99,14 +99,21 @@ LFQDataSummariser <- R6::R6Class(
     #' @return data frame
     percentage_abundance = function(N = 1000){
       # roll up to protein intensities
+
       if (self$lfq$is_transformed()) {
         warning("The abundances are transformed.\n Since this function sums up
                 protein abundances,\n it is best to use untransformed data.")
       }
 
-      ag <- self$lfq$get_Aggregator()
-      bb <- ag$sum_topN(N = N)
-      bb$rename_response("totalIntensity")
+      ag <- try(self$lfq$get_Aggregator())
+      if (class(ag) == "try-error") {
+        bb <- self$lfq$get_copy()
+        bb$rename_response("totalIntensity")
+      } else{
+        bb <- ag$sum_topN(N = N)
+        bb$rename_response("totalIntensity")
+      }
+
       # compute protein level summaries
       dall <- interaction_missing_stats(bb$data, bb$config, factors = NULL)
       dfac <- interaction_missing_stats(bb$data, bb$config)

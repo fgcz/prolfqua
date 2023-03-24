@@ -46,6 +46,8 @@ Other LFQData:
 \item{\code{description}}{name of column containing descriptions}
 
 \item{\code{ids}}{vector with columns containing addition IDs}
+
+\item{\code{nr_peptides}}{name of columns with the number of peptides}
 }
 \if{html}{\out{</div>}}
 }
@@ -66,7 +68,13 @@ Other LFQData:
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$new(lfqdata, row_annot, description = NULL, ids = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$new(
+  lfqdata,
+  row_annot,
+  description = NULL,
+  ids = NULL,
+  nr_peptides = "nr_peptides"
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
