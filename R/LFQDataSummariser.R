@@ -106,7 +106,7 @@ LFQDataSummariser <- R6::R6Class(
       }
 
       ag <- try(self$lfq$get_Aggregator())
-      if (class(ag) == "try-error") {
+      if (class(ag)[1] == "try-error") {
         bb <- self$lfq$get_copy()
         bb$rename_response("totalIntensity")
       } else{
