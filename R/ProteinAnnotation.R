@@ -37,6 +37,7 @@ ProteinAnnotation <-
                 #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hierarchy_keys_depth()}
                 #' @param description name of column with description
                 #' @param ids names of columns with additional ID's
+                #' @param nr_peptides additional peptides
                 initialize = function(lfqdata,
                                       row_annot,
                                       description = NULL,
