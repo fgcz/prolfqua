@@ -64,7 +64,8 @@ diann_output_to_peptide <- function(report2){
   dplyr::summarize(Peptide.Quantity = sum(.data$Precursor.Quantity, na.rm = TRUE),
                    Peptide.Normalised = sum(.data$Precursor.Normalised, na.rm = TRUE),
                    Peptide.Translated = sum(.data$Precursor.Translated, na.rm = TRUE),
-                   Peptide.Ms1.Translated = sum(.data$Ms1.Translated, na.rm = TRUE)
+                   Peptide.Ms1.Translated = sum(.data$Ms1.Translated, na.rm = TRUE),
+                   PEP = min(.data$PEP, na.rm = TRUE)
                    ,.groups = "drop")
   return(peptide)
 
