@@ -4,7 +4,14 @@
 \alias{tidy_FragPipe_combined_protein}
 \title{read combined_protein.tsv file for FragPipe Version 16 or newer}
 \usage{
-tidy_FragPipe_combined_protein(combprot, as_list = FALSE)
+tidy_FragPipe_combined_protein(
+  combprot,
+  as_list = FALSE,
+  spcnames = c("Total Spectral Count", "Unique Spectral Count", "Razor Spectral Count"),
+  intnames = c("Total Intensity", "Unique Intensity", "Razor Intensity"),
+  maxlfqnames = c("MaxLFQ Total Intensity", "MaxLFQ Unique Intensity",
+    "MaxLFQ Razor Intensity")
+)
 }
 \arguments{
 \item{combprot}{path to combined_protein.tsv file}

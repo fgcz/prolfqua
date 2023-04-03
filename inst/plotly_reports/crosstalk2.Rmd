@@ -6,6 +6,8 @@ output:
    social: menu
    source_code: embed
    theme: cerulean
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -28,9 +30,6 @@ df2 <- data.frame(car = structure(c(1L, 2L, 1L, 2L), .Label = c("benz", "bmw"), 
 
 ```
 
-#
-
-##
 
 ### Filters
 

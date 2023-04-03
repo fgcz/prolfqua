@@ -18,17 +18,6 @@ library(readr)
 
 ```{r Make dataset}
 rm(list=ls())
-#prot <- read_csv("d:/Dropbox/DataAnalysis/p2244_Adult_childrenAnalysis/results/DIA_Qex2_ChildrenDataset_Spectronaut_Library_NAFiltering_NrPep1_withControls_2G/LinearModelP_Values.txt")
-#pep <- readr::read_csv("d:/Dropbox/DataAnalysis/p2244_Adult_childrenAnalysis/results/DIA_Qex2_ChildrenDataset_Spectronaut_Library_NAFiltering_NrPep1_withControls_2G/PEPTIDE_P_VALUES.txt")
-
-# prot <- read_csv("d:/Dropbox/DataAnalysis/p2244_Adult_childrenAnalysis/results/DIA_Qex2_AdultDataset_Spectronaut_Library_NAFiltering_NrPep1_withControls_2G/LinearModelP_Values.txt")
-# pep <- readr::read_csv("d:/Dropbox/DataAnalysis/p2244_Adult_childrenAnalysis/results/DIA_Qex2_AdultDataset_Spectronaut_Library_NAFiltering_NrPep1_withControls_2G/PEPTIDE_P_VALUES.txt")
-#
-# prot <- prot %>% dplyr::rename(prot=protein_Id, fc = estimate, pval=p.value)
-# prot <- prot %>%filter(lhs == "NR - c") %>% select(-rhs)
-# pep <- pep %>% dplyr::rename(prot=protein_Id, fc = estimate, pval=p.value)
-# pep <- pep %>% tidyr::unite("prot_pep", prot,modPeptide_Id,remove=FALSE )
-# peptide <- pep %>%filter(lhs == "NR - c") %>% select(-rhs)
 
 prot <- data.frame(prot = rep(c("A","B","C"),2),
                    comparison = c(rep("X-Y",3), c(rep("Y-Z",3))),

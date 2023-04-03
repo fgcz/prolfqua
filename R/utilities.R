@@ -594,7 +594,8 @@ volcano_plotly <- function(.data,
                            xintercept = c(-2,2),
                            yintercept = 0.1,
                            minsignificance = 1e-4,
-                           title_size = 25
+                           title_size = 25,
+                           group = "BB"
 
 )
 {
@@ -605,7 +606,7 @@ volcano_plotly <- function(.data,
 
   makeshared <- function(x, proteinID = "Prey") {
     crosstalk::SharedData$new(x, as.formula( paste0("~", proteinID) ) ,
-                              group = "Choose protein")
+                              group = group)
   }
   xx <- dplyr::mutate( xx,
                        shared_data = purrr::map( data,

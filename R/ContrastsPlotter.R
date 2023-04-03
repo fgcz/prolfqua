@@ -222,13 +222,13 @@ ContrastsPlotter <- R6::R6Class(
     ma_plot = function(fc, colour, legend = TRUE, rank = TRUE){
       if ( missing(fc))
         fc <- self$fcthresh
-      if(missing(colour)){
+      if (missing(colour)) {
         colour <- self$modelName
       }
       contrastDF <- self$contrastDF
       if (!is.null(contrastDF[[self$avg.abundance]])) {
         # pdf version
-        if(rank){
+        if (rank) {
           rankcol <- paste0("rank_", self$avg.abundance)
 
           contrastDF <- contrastDF |>

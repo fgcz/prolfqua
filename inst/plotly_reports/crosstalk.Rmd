@@ -3,6 +3,8 @@ title: "Crosstalk"
 author: "Witold Wolski"
 date: "21 September 2018"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -16,11 +18,12 @@ library(plotly)
 library(crosstalk)
 
 d1 <- data.frame(id = letters, x = rnorm(length(letters)), y=runif(length(letters)))
-d2 <- data.frame(id = sample(letters, 1000, replace = TRUE), xx = rnorm(1000), yy=runif(1000)) %>% arrange(id)
-head(d2)
+d2 <- data.frame(id = sample(letters, 1000, replace = TRUE), xx = rnorm(1000), yy = runif(1000)) %>% arrange(id)
 
-prot <-SharedData$new(d1,key = "id",group = "ex1")
-pep <- SharedData$new(d2,key= "id", group= "ex1")
+
+prot <- SharedData$new(d1,key = "id",group = "ex1")
+pep <- SharedData$new(d2,key = "id", group = "ex1")
+
 
 p1 <- ggplot(prot, aes(x = x,y = y)) + geom_point()
 p2 <- ggplot(pep, aes(x = xx, y= yy)) + geom_point()
@@ -32,16 +35,21 @@ bscols(pp1,pp2)
 
 ```
 
-
 ```{r}
+library(plotly)
+library(crosstalk)
+rm(list = ls())
+d1 <- data.frame(id = letters, x = rnorm(length(letters)), y=runif(length(letters)))
+d1shared <- SharedData$new(d1,key = ~id ,group = "ex1")
+d1table <- DT::datatable(d1shared, extensions="Scroller", style="bootstrap", class="compact", width="100%",
+    options=list(deferRender=TRUE, scrollY=300, scroller=TRUE))
 
-library(leaflet)
-library(d3scatter)
-shared_quakes <- SharedData$new(quakes[sample(nrow(quakes), 100),])
-bscols(
-  leaflet(shared_quakes, width = "100%", height = 300) %>%
-    addTiles() %>%
-    addMarkers(),
-  d3scatter(shared_quakes, ~depth, ~mag, width = "100%", height = 300)
-)
+p1plot <- ggplot(d1shared, aes(x = x,y = y)) + geom_point()
+pp1plot_p <- ggplotly(p1plot) 
+#pp1plot_p <- plotly::plot_ly(d1shared, x = ~x ,y = ~y) |> add_markers() |> highlight("plotly_click")
+#pp2plot_p <- plotly::plot_ly(d1shared, x = ~x ,y = ~y) 
+bscols(d1table,pp1plot_p)
+
+
 ```
+

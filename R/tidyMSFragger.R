@@ -43,23 +43,23 @@ tidy_FragPipe_MSstats_csv <- function(file){
 #' prot <- tidy_FragPipe_combined_protein_deprec(prottsv)
 #' stopifnot( dim(prot) ==c(19980,27))
 tidy_FragPipe_combined_protein_deprec <- function(
-  combprot, intnames = c("total.intensity",
-                         "unique.intensity",
-                         "razor.intensity",
+    combprot, intnames = c("total.intensity",
+                           "unique.intensity",
+                           "razor.intensity",
 
-                         "total.ion.count",
-                         "unique.ion.count",
-                         "razor.ion.count",
+                           "total.ion.count",
+                           "unique.ion.count",
+                           "razor.ion.count",
 
-                         "total.spectral.count",
-                         "unique.spectral.count",
-                         "razor.spectral.count"),
-  protIDcol = "protein.group",
-  subgroup = "subgroup",
-  as_list = FALSE) {
+                           "total.spectral.count",
+                           "unique.spectral.count",
+                           "razor.spectral.count"),
+    protIDcol = "protein.group",
+    subgroup = "subgroup",
+    as_list = FALSE) {
   if (is.character(combprot) && file.exists(combprot)) {
     Cprotein <- as_tibble(read.csv(combprot,
-                                  header = TRUE, sep = "\t", stringsAsFactors = FALSE))
+                                   header = TRUE, sep = "\t", stringsAsFactors = FALSE))
 
   } else if ("tbl_df" %in% class(combprot)) {
     Cprotein <- combprot
@@ -108,24 +108,26 @@ tidy_FragPipe_combined_protein_deprec <- function(
 #' @keywords internal
 #' @family FragPipe
 tidy_FragPipe_combined_protein <- function(
-  combprot,
-  as_list = FALSE
+    combprot,
+    as_list = FALSE,
+    spcnames = c("Total Spectral Count",
+                 "Unique Spectral Count",
+                 "Razor Spectral Count"),
+    intnames = c("Total Intensity",
+                 "Unique Intensity",
+                 "Razor Intensity"),
+    maxlfqnames = c("MaxLFQ Total Intensity",
+                    "MaxLFQ Unique Intensity",
+                    "MaxLFQ Razor Intensity")
 ) {
-  spcnames = c("Total Spectral Count",
-               "Unique Spectral Count",
-               "Razor Spectral Count")
-  intnames = c("Total Intensity",
-               "Unique Intensity",
-               "Razor Intensity")
-  maxlfqnames = c("Maxlfq Total Intensity",
-                  "Maxlfq Unique Intensity",
-                  "Maxlfq Razor Intensity")
-
   protIDcol = "Protein"
-
   if (is.character(combprot) && file.exists(combprot)) {
-    Cprotein <- as_tibble(read.csv(combprot,
-                                   header = TRUE, sep = "\t", stringsAsFactors = FALSE, check.names = FALSE))
+    Cprotein <- as_tibble(
+      read.csv(combprot,
+               header = TRUE,
+               sep = "\t",
+               stringsAsFactors = FALSE,
+               check.names = FALSE))
 
   } else if ("tbl_df" %in% class(combprot)) {
     Cprotein <- combprot
@@ -133,14 +135,17 @@ tidy_FragPipe_combined_protein <- function(
     stop(class(combprot), " not supported.")
   }
 
-  cnam <- gsub("Total Razor ", "Total ",
-               gsub("Unique Razor ","Unique ",
-                    gsub(" Intensity$"," Razor Intensity",
-                         gsub(" Spectral Count$"," Razor Spectral Count",colnames(Cprotein))
-                    )
-               )
+  cnam <- gsub(
+    "Total Razor ", "Total ",
+    gsub(
+      "Unique Razor ","Unique ",
+      gsub(
+        " Intensity$"," Razor Intensity",
+        gsub(
+          " Spectral Count$"," Razor Spectral Count",colnames(Cprotein))
+      )
+    )
   )
-
   ### start processing
   cnam <- cnam
   colnames(Cprotein) <- cnam
@@ -168,7 +173,7 @@ tidy_FragPipe_combined_protein <- function(
     res[[c(intnames, spcnames)[i]]] <- extractDataLong(Cprotein, what = c(intnames, spcnames)[i], butNot = "maxlfq" )
   }
 
-  if (sum(grepl(".maxlfq.", colnames(Cprotein))) > 0) {
+  if (sum(grepl(".MaxLFQ.", colnames(Cprotein))) > 0) {
     res_maxlfq <- vector( mode = "list", length(maxlfqnames))
     names(res_maxlfq)  <- maxlfqnames
     for (i in seq_along(maxlfqnames)) {
@@ -182,8 +187,11 @@ tidy_FragPipe_combined_protein <- function(
     return( res )
   }
 
-  merged <- Reduce( inner_join , res )
-  merged <- inner_join( annot, merged )
+  sql_inner_join <- function(x, y){
+    inner_join(x,y, multiple = "all")
+  }
+  merged <- Reduce( sql_inner_join , res )
+  merged <- inner_join( annot, merged , multiple = "all")
   colnames(merged) <- tolower(make.names(colnames(merged)))
   return( merged )
 }

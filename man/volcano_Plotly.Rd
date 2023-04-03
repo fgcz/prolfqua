@@ -15,7 +15,8 @@ volcano_plotly(
   xintercept = c(-2, 2),
   yintercept = 0.1,
   minsignificance = 1e-04,
-  title_size = 25
+  title_size = 25,
+  group = "BB"
 )
 }
 \arguments{
