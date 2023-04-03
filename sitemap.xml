@@ -136,13 +136,16 @@
     <loc>/reference/ProjectStructure.html</loc>
   </url>
   <url>
+    <loc>/reference/ProteinAnnotation.html</loc>
+  </url>
+  <url>
     <loc>/reference/R6_extract_values.html</loc>
   </url>
   <url>
-    <loc>/reference/RowAnnotProtein.html</loc>
+    <loc>/reference/UpSet_interaction_missing_stats.html</loc>
   </url>
   <url>
-    <loc>/reference/UpSet_interaction_missing_stats.html</loc>
+    <loc>/reference/UpSet_missing_stats.html</loc>
   </url>
   <url>
     <loc>/reference/add_annotation.html</loc>
@@ -239,6 +242,9 @@
   </url>
   <url>
     <loc>/reference/data_spectronautDIA250_A.html</loc>
+  </url>
+  <url>
+    <loc>/reference/data_test_confusion_matrix_scores.html</loc>
   </url>
   <url>
     <loc>/reference/diann_output_to_peptide.html</loc>
@@ -395,6 +401,9 @@
   </url>
   <url>
     <loc>/reference/moderated_p_limma_long.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ms_bench_add_scores.html</loc>
   </url>
   <url>
     <loc>/reference/ms_bench_auc.html</loc>

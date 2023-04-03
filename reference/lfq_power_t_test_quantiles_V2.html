@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -146,7 +146,7 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats_quantiles</a></span><span class="op">(</span><span class="va">stats_res</span>, <span class="va">config</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bbb</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles_V2</span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">long</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">bbb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">bbb</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bbb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">bbb</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">summary</span> <span class="op">&lt;-</span> <span class="va">bbb</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span> <span class="op">-</span><span class="va">N_exact</span>, <span class="op">-</span><span class="va">quantiles</span>, <span class="op">-</span><span class="va">sdtrimmed</span> <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">spread</a></span><span class="op">(</span><span class="va">delta</span>, <span class="va">N</span>, sep <span class="op">=</span> <span class="st">"="</span><span class="op">)</span></span></span>

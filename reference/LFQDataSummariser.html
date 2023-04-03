@@ -18,7 +18,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <code><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment</a>()</code>,
 <code><a href="LFQDataWriter.html">LFQDataWriter</a></code>,
 <code><a href="LFQData.html">LFQData</a></code>,
-<code><a href="RowAnnotProtein.html">RowAnnotProtein</a></code></p></div>
+<code><a href="ProteinAnnotation.html">ProteinAnnotation</a></code></p></div>
     </div>
     <div id="public-fields">
     <h2>Public fields</h2>
@@ -119,10 +119,12 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <li><p><a href="#method-LFQDataSummariser-hierarchy_counts_sample"><code>LFQDataSummariser$hierarchy_counts_sample()</code></a></p></li>
 <li><p><a href="#method-LFQDataSummariser-plot_hierarchy_counts_sample"><code>LFQDataSummariser$plot_hierarchy_counts_sample()</code></a></p></li>
 <li><p><a href="#method-LFQDataSummariser-interaction_missing_stats"><code>LFQDataSummariser$interaction_missing_stats()</code></a></p></li>
+<li><p><a href="#method-LFQDataSummariser-upset_interaction_missing_stats"><code>LFQDataSummariser$upset_interaction_missing_stats()</code></a></p></li>
 <li><p><a href="#method-LFQDataSummariser-missingness_per_group"><code>LFQDataSummariser$missingness_per_group()</code></a></p></li>
 <li><p><a href="#method-LFQDataSummariser-missingness_per_group_cumsum"><code>LFQDataSummariser$missingness_per_group_cumsum()</code></a></p></li>
 <li><p><a href="#method-LFQDataSummariser-plot_missingness_per_group"><code>LFQDataSummariser$plot_missingness_per_group()</code></a></p></li>
 <li><p><a href="#method-LFQDataSummariser-plot_missingness_per_group_cumsum"><code>LFQDataSummariser$plot_missingness_per_group_cumsum()</code></a></p></li>
+<li><p><a href="#method-LFQDataSummariser-percentage_abundance"><code>LFQDataSummariser$percentage_abundance()</code></a></p></li>
 <li><p><a href="#method-LFQDataSummariser-clone"><code>LFQDataSummariser$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-LFQDataSummariser-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -188,10 +190,26 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 </div>
 
 
+</div><p></p><hr><a id="method-LFQDataSummariser-upset_interaction_missing_stats"></a><div class="section">
+<h3 id="method-upset-interaction-missing-stats-">Method <code>upset_interaction_missing_stats()</code><a class="anchor" aria-label="anchor" href="#method-upset-interaction-missing-stats-"></a></h3>
+<p>upset plot with missing information per protein and condition</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">upset_interaction_missing_stats</span><span class="op">(</span>tr <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>tr</code></dt>
+<dd><p>if less than tr observations in condition then missing</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
 </div><p></p><hr><a id="method-LFQDataSummariser-missingness_per_group"></a><div class="section">
 <h3 id="method-missingness-per-group-">Method <code>missingness_per_group()</code><a class="anchor" aria-label="anchor" href="#method-missingness-per-group-"></a></h3>
 <p>missing stats per condition</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">missingness_per_group</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -199,7 +217,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 </div><p></p><hr><a id="method-LFQDataSummariser-missingness_per_group_cumsum"></a><div class="section">
 <h3 id="method-missingness-per-group-cumsum-">Method <code>missingness_per_group_cumsum()</code><a class="anchor" aria-label="anchor" href="#method-missingness-per-group-cumsum-"></a></h3>
 <p>missing stats per condition as cumulative sum</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">missingness_per_group_cumsum</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -207,7 +225,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 </div><p></p><hr><a id="method-LFQDataSummariser-plot_missingness_per_group"></a><div class="section">
 <h3 id="method-plot-missingness-per-group-">Method <code>plot_missingness_per_group()</code><a class="anchor" aria-label="anchor" href="#method-plot-missingness-per-group-"></a></h3>
 <p>barplot with number of features with 1,2, etc missing in condition</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">plot_missingness_per_group</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -219,7 +237,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 </div><p></p><hr><a id="method-LFQDataSummariser-plot_missingness_per_group_cumsum"></a><div class="section">
 <h3 id="method-plot-missingness-per-group-cumsum-">Method <code>plot_missingness_per_group_cumsum()</code><a class="anchor" aria-label="anchor" href="#method-plot-missingness-per-group-cumsum-"></a></h3>
 <p>barplot with cumulative sum of features with 1,2, etc missing in condition</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">plot_missingness_per_group_cumsum</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -228,15 +246,36 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <p>ggplot</p>
 </div>
 
+</div><p></p><hr><a id="method-LFQDataSummariser-percentage_abundance"></a><div class="section">
+<h3 id="method-percentage-abundance-">Method <code>percentage_abundance()</code><a class="anchor" aria-label="anchor" href="#method-percentage-abundance-"></a></h3>
+<p>Does roll up to highest hierarchy and
+Computes the percent abundance of proteins overall and within each group</p><div class="section">
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">percentage_abundance</span><span class="op">(</span>N <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>N</code></dt>
+<dd><p>default 1000</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p>data frame</p>
+</div>
+
 </div><p></p><hr><a id="method-LFQDataSummariser-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -267,9 +306,11 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lfq: LFQData, R6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     missingness_per_group: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     missingness_per_group_cumsum: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     percentage_abundance: function (N = 1000) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     plot_hierarchy_counts_sample: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     plot_missingness_per_group: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     plot_missingness_per_group_cumsum: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     upset_interaction_missing_stats: function (tr = 2) </span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   isotope protein_Id peptide_Id</span>
@@ -318,8 +359,9 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 30 more rows</span></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">plot_hierarchy_counts_sample</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="LFQDataSummariser-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">sum</span><span class="op">$</span><span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4,040 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    dilution. protein_Id    pepti…¹ isotope nrRep…² nrNAs meanA…³ media…⁴ nrMea…⁵</span>
@@ -340,6 +382,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <span class="r-out co"><span class="r-pr">#&gt;</span> $summaries</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "nrReplicates" "nrNAs"        "nrMeasured"   "meanArea"     "medianArea"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">missingness_per_group</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 8</span></span>
@@ -370,6 +413,31 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> isotope ~ dilution.</span>
 <span class="r-plt img"><img src="LFQDataSummariser-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">upset_interaction_missing_stats</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-plt img"><img src="LFQDataSummariser-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">percentage_abundance</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Columns added : srm_meanInt srm_meanIntRank</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 372 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   dilution. [6]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    dilution. prote…¹ isotope nrRep…² nrNAs meanA…³ media…⁴ nrMea…⁵    id abund…⁶</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> a         sp|P0A… light         4     0  3.16<span style="color: #949494;">e</span>6  2.01<span style="color: #949494;">e</span>6       4     1 0.001<span style="text-decoration: underline;">48</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> a         sp|P77… light         4     0  4.30<span style="color: #949494;">e</span>6  4.30<span style="color: #949494;">e</span>6       4     2 0.002<span style="text-decoration: underline;">00</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a         sp|Q6Z… light         4     0  4.43<span style="color: #949494;">e</span>6  4.48<span style="color: #949494;">e</span>6       4     3 0.002<span style="text-decoration: underline;">07</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> a         sp|Q9Y… light         4     0  4.48<span style="color: #949494;">e</span>6  4.25<span style="color: #949494;">e</span>6       4     4 0.002<span style="text-decoration: underline;">09</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> a         sp|P0A… light         4     0  6.03<span style="color: #949494;">e</span>6  6.67<span style="color: #949494;">e</span>6       4     5 0.002<span style="text-decoration: underline;">81</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> a         sp|Q9Y… light         4     0  1.04<span style="color: #949494;">e</span>7  6.67<span style="color: #949494;">e</span>6       4     6 0.004<span style="text-decoration: underline;">83</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> a         sp|P69… light         4     0  1.54<span style="color: #949494;">e</span>7  1.30<span style="color: #949494;">e</span>7       4     7 0.007<span style="text-decoration: underline;">20</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> a         sp|P0A… light         4     0  2.15<span style="color: #949494;">e</span>7  2.14<span style="color: #949494;">e</span>7       4     8 0.010<span style="text-decoration: underline;">0</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a         sp|P48… light         4     0  2.31<span style="color: #949494;">e</span>7  2.28<span style="color: #949494;">e</span>7       4     9 0.010<span style="text-decoration: underline;">8</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a         sp|Q9H… light         4     0  2.37<span style="color: #949494;">e</span>7  2.40<span style="color: #949494;">e</span>7       4    10 0.011<span style="text-decoration: underline;">1</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 362 more rows, 2 more variables: abundance_percent_cumulative &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   percent_prot &lt;dbl&gt;, and abbreviated variable names ¹​protein_Id,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​nrReplicates, ³​meanArea, ⁴​medianArea, ⁵​nrMeasured, ⁶​abundance_percent</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

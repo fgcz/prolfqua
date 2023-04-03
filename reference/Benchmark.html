@@ -18,7 +18,7 @@ Benchmark R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -95,6 +95,7 @@ Benchmark R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="ionstar_bench_preprocess.html">ionstar_bench_preprocess</a>()</code>,
 <code><a href="make_benchmark.html">make_benchmark</a>()</code>,
+<code><a href="ms_bench_add_scores.html">ms_bench_add_scores</a>()</code>,
 <code><a href="ms_bench_auc.html">ms_bench_auc</a>()</code></p></div>
     </div>
     <div id="public-fields">
@@ -174,7 +175,6 @@ Benchmark R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
 <li><p><a href="#method-Benchmark-.get_confusion"><code>Benchmark$.get_confusion()</code></a></p></li>
 <li><p><a href="#method-Benchmark-get_confusion_benchmark"><code>Benchmark$get_confusion_benchmark()</code></a></p></li>
 <li><p><a href="#method-Benchmark-n_confusion_benchmark"><code>Benchmark$n_confusion_benchmark()</code></a></p></li>
-<li><p><a href="#method-Benchmark-plot_FDPvsTPR"><code>Benchmark$plot_FDPvsTPR()</code></a></p></li>
 <li><p><a href="#method-Benchmark-plot_ROC"><code>Benchmark$plot_ROC()</code></a></p></li>
 <li><p><a href="#method-Benchmark-pAUC_summaries"><code>Benchmark$pAUC_summaries()</code></a></p></li>
 <li><p><a href="#method-Benchmark-pAUC"><code>Benchmark$pAUC()</code></a></p></li>
@@ -183,6 +183,7 @@ Benchmark R6 class"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
 <li><p><a href="#method-Benchmark-plot_FDRvsFDP"><code>Benchmark$plot_FDRvsFDP()</code></a></p></li>
 <li><p><a href="#method-Benchmark-plot_score_distribution"><code>Benchmark$plot_score_distribution()</code></a></p></li>
 <li><p><a href="#method-Benchmark-plot_scatter"><code>Benchmark$plot_scatter()</code></a></p></li>
+<li><p><a href="#method-Benchmark-plot_precision_recall"><code>Benchmark$plot_precision_recall()</code></a></p></li>
 <li><p><a href="#method-Benchmark-clone"><code>Benchmark$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-Benchmark-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -335,31 +336,15 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div>
 
 
-</div><p></p><hr><a id="method-Benchmark-plot_FDPvsTPR"></a><div class="section">
-<h3 id="method-plot-fdpvstpr-">Method <code>plot_FDPvsTPR()</code><a class="anchor" aria-label="anchor" href="#method-plot-fdpvstpr-"></a></h3>
-<p>plot FDP vs TPR</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">plot_FDPvsTPR</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>xlim</code></dt>
-<dd><p>limit x axis</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
 </div><p></p><hr><a id="method-Benchmark-plot_ROC"></a><div class="section">
 <h3 id="method-plot-roc-">Method <code>plot_ROC()</code><a class="anchor" aria-label="anchor" href="#method-plot-roc-"></a></h3>
 <p>plot FDR summaries</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">plot_ROC</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>xlim</code></dt>
 <dd><p>limit x axis</p></dd>
 
@@ -374,7 +359,7 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div><p></p><hr><a id="method-Benchmark-pAUC_summaries"></a><div class="section">
 <h3 id="method-pauc-summaries-">Method <code>pAUC_summaries()</code><a class="anchor" aria-label="anchor" href="#method-pauc-summaries-"></a></h3>
 <p>AUC summaries</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">pAUC_summaries</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -382,7 +367,7 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div><p></p><hr><a id="method-Benchmark-pAUC"></a><div class="section">
 <h3 id="method-pauc-">Method <code>pAUC()</code><a class="anchor" aria-label="anchor" href="#method-pauc-"></a></h3>
 <p>AUC summaries as table</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">pAUC</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -390,7 +375,7 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div><p></p><hr><a id="method-Benchmark-get_confusion_FDRvsFDP"></a><div class="section">
 <h3 id="method-get-confusion-fdrvsfdp-">Method <code>get_confusion_FDRvsFDP()</code><a class="anchor" aria-label="anchor" href="#method-get-confusion-fdrvsfdp-"></a></h3>
 <p>FDR vs FDP data</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">get_confusion_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -398,7 +383,7 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div><p></p><hr><a id="method-Benchmark-n_confusion_FDRvsFDP"></a><div class="section">
 <h3 id="method-n-confusion-fdrvsfdp-">Method <code>n_confusion_FDRvsFDP()</code><a class="anchor" aria-label="anchor" href="#method-n-confusion-fdrvsfdp-"></a></h3>
 <p>nr of elements used to determine ROC curve</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">n_confusion_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -406,7 +391,7 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div><p></p><hr><a id="method-Benchmark-plot_FDRvsFDP"></a><div class="section">
 <h3 id="method-plot-fdrvsfdp-">Method <code>plot_FDRvsFDP()</code><a class="anchor" aria-label="anchor" href="#method-plot-fdrvsfdp-"></a></h3>
 <p>plot FDR vs FDP data</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">plot_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -418,12 +403,12 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div><p></p><hr><a id="method-Benchmark-plot_score_distribution"></a><div class="section">
 <h3 id="method-plot-score-distribution-">Method <code>plot_score_distribution()</code><a class="anchor" aria-label="anchor" href="#method-plot-score-distribution-"></a></h3>
 <p>plot distributions of scores</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">plot_score_distribution</span><span class="op">(</span><span class="va">score</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>score</code></dt>
 <dd><p>the distribution of which scores to plot (list)</p></dd>
 
@@ -438,12 +423,12 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div><p></p><hr><a id="method-Benchmark-plot_scatter"></a><div class="section">
 <h3 id="method-plot-scatter-">Method <code>plot_scatter()</code><a class="anchor" aria-label="anchor" href="#method-plot-scatter-"></a></h3>
 <p>plot intensity vs scores</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">plot_scatter</span><span class="op">(</span><span class="va">score</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>score</code></dt>
 <dd><p>the distribution of which scores to plot (list)</p></dd>
 
@@ -452,6 +437,30 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 </div>
 <div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p>ggplot</p>
+</div>
+
+</div><p></p><hr><a id="method-Benchmark-plot_precision_recall"></a><div class="section">
+<h3 id="method-plot-precision-recall-">Method <code>plot_precision_recall()</code><a class="anchor" aria-label="anchor" href="#method-plot-precision-recall-"></a></h3>
+<p>plot precision vs recall</p><div class="section">
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Benchmark</span><span class="op">$</span><span class="fu">plot_precision_recall</span><span class="op">(</span>precision_lim <span class="op">=</span> <span class="fl">0.7</span>, recall_lim <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>precision_lim</code></dt>
+<dd><p>limit shown precision from</p></dd>
+
+
+<dt><code>recall_lim</code></dt>
+<dd><p>limit shown recall to</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>ggplot</p>
 </div>
 
@@ -501,6 +510,23 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Picking joint bandwidth of 0.37</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 172 rows containing non-finite values (`stat_density_ridges()`).</span>
 <span class="r-plt img"><img src="Benchmark-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">medpol_benchmark</span><span class="op">$</span><span class="fu">get_confusion_benchmark</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 97,398 × 19</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein…¹ score…² TP    what     F_    T_     R   FDP TP_hits FN_hits FP_hits</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp|P0AB6…    2.94 TRUE  esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     1 0           1    <span style="text-decoration: underline;">2</span>392       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp|P1302…    2.30 TRUE  esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     2 0           2    <span style="text-decoration: underline;">2</span>391       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp|P0ADG…    2.10 TRUE  esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     3 0           3    <span style="text-decoration: underline;">2</span>390       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp|Q1571…    1.87 FALSE esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     4 0.25        3    <span style="text-decoration: underline;">2</span>390       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp|P1645…    1.70 TRUE  esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     5 0.2         4    <span style="text-decoration: underline;">2</span>389       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp|Q9UBP…    1.63 FALSE esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     6 0.333       4    <span style="text-decoration: underline;">2</span>389       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp|P7611…    1.60 TRUE  esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     7 0.286       5    <span style="text-decoration: underline;">2</span>388       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp|P4264…    1.51 TRUE  esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     8 0.25        6    <span style="text-decoration: underline;">2</span>387       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp|P3215…    1.50 TRUE  esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393     9 0.222       7    <span style="text-decoration: underline;">2</span>386       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp|O9476…    1.45 FALSE esti… <span style="text-decoration: underline;">13</span>840  <span style="text-decoration: underline;">2</span>393    10 0.3         7    <span style="text-decoration: underline;">2</span>386       3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 97,388 more rows, 8 more variables: TN_hits &lt;int&gt;, PREC &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FPR &lt;dbl&gt;, TPR &lt;dbl&gt;, ACC &lt;dbl&gt;, FDP_ &lt;dbl&gt;, model_name &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   contrast &lt;chr&gt;, and abbreviated variable names ¹​protein_Id, ²​scorecol</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#Benchmark$debug("plot_score_distribution")</span></span></span>
 <span class="r-in"><span><span class="va">benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_benchmark.html">make_benchmark</a></span><span class="op">(</span></span></span>
@@ -520,6 +546,7 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> moderated.p.value</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> moderated.p.value.adjusted</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">benchmark</span><span class="op">$</span><span class="fu">pAUC_summaries</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">benchmark</span><span class="op">$</span><span class="fu">complete</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">benchmark</span><span class="op">$</span><span class="va">smc</span><span class="op">$</span><span class="va">summary</span></span></span>
@@ -546,15 +573,19 @@ If true only proteins for which all contrasts are determinable are examined.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Picking joint bandwidth of 0.0426</span>
 <span class="r-plt img"><img src="Benchmark-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">benchmark</span><span class="op">$</span><span class="fu">get_confusion_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xb</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">bb</span>, <span class="va">contrast</span> <span class="op">==</span>  <span class="st">"dilution_(4.5/3)_1.5"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">benchmark</span><span class="op">$</span><span class="fu">get_confusion_benchmark</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">benchmark</span><span class="op">$</span><span class="fu">plot_ROC</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 12784 rows containing missing values (`geom_path()`).</span>
 <span class="r-plt img"><img src="Benchmark-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">benchmark</span><span class="op">$</span><span class="fu">plot_FDPvsTPR</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 11788 rows containing missing values (`geom_path()`).</span>
+<span class="r-in"><span><span class="va">benchmark</span><span class="op">$</span><span class="fu">plot_precision_recall</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 13479 rows containing missing values (`geom_path()`).</span>
 <span class="r-plt img"><img src="Benchmark-5.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">benchmark</span><span class="op">$</span><span class="fu">plot_FDRvsFDP</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="Benchmark-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">benchmark</span><span class="op">$</span><span class="fu">plot_scatter</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"estimate"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span> <span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"statistic"</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>,<span class="fl">10</span><span class="op">)</span> <span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>

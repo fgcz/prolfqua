@@ -21,7 +21,7 @@ https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling"><!--
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -186,7 +186,11 @@ https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling</p>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>protein_Id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">exampleDat</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">proteinLength</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">150</span>, max <span class="op">=</span> <span class="fl">2500</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">exampleDat</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="va">exampleDat</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "protein_Id"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Each row in `x` is expected to match at most 1 row in `y`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row 1 of `x` matches multiple rows.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> If multiple matches are expected, set `multiple = "all"` to silence this</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   warning.</span>
 <span class="r-in"><span><span class="co">#undebug(protein_2localSaint)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">protein_2localSaint</span><span class="op">(</span><span class="va">exampleDat</span>,quantcolumn <span class="op">=</span> <span class="st">"medpolish"</span>,</span></span>
 <span class="r-in"><span>                   proteinID <span class="op">=</span> <span class="st">"protein_Id"</span>,</span></span>
@@ -203,9 +207,9 @@ https://fgcz-intranet.uzh.ch/tiki-index.php?page=WG_APMSnProximityLabeling</p>
 <span class="r-in"><span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
 <span class="r-in"><span> <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="fu">runSaint</span><span class="op">(</span><span class="va">res</span>, filedir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpySlHwJ/inter.txt</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpySlHwJ/prey.txt</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpySlHwJ/bait.txt</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpdtzTfM/inter.txt</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpdtzTfM/prey.txt</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpdtzTfM/bait.txt</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
