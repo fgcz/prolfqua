@@ -576,7 +576,6 @@ mark_decorelated <- function(data , config, minCorrelation = 0.7){
   HLfigs2$srmDecor <- vector(mode = "list", length = nrow(qvalFiltX))
   for (i in seq_len(nrow(qvalFiltX))) {
     HLfigs2$srmDecor[[i]] <- .decorelatedPly(qvalFiltX$spreadMatrix[[i]], minCorrelation)
-    message(i)
   }
 
   unnest_res <- HLfigs2 |>
