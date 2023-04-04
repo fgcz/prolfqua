@@ -48,8 +48,8 @@ interaction_missing_stats <- function(pdata,
   pdata <- complete_cases(pdata, config)
   table <- config$table
   missingPrec <- pdata |> group_by_at(c(factors,
-                                         hierarchy,
-                                         table$isotopeLabel
+                                        hierarchy,
+                                        table$isotopeLabel
   ))
   missingPrec <- missingPrec |>
     dplyr::summarize(nrReplicates = n(),
@@ -314,11 +314,11 @@ missigness_impute_factors_interactions <-
 #' plot(meanProt$estimate_median - imputedProt$estimate_median )
 #'
 aggregate_contrast <- function(
-  data,
-  subject_Id ,
-  agg_func = list(median = function(x){ stats::median(x, na.rm = TRUE) },
-                   mad = function(x){ stats::mad(x, na.rm = TRUE)} ),
-  contrast = "contrast")
+    data,
+    subject_Id ,
+    agg_func = list(median = function(x){ stats::median(x, na.rm = TRUE) },
+                    mad = function(x){ stats::mad(x, na.rm = TRUE)} ),
+    contrast = "contrast")
 {
   grouping_columns <- c(contrast, subject_Id, "group_1_name","group_2_name")
   dataG <- data |>
@@ -326,14 +326,14 @@ aggregate_contrast <- function(
 
   resN <- dataG |> dplyr::summarise(n = n(), .groups = "drop")
   resE <- dataG |> dplyr::summarise(across(.data$estimate,
-                                     agg_func
-                                    ), .groups = "drop")
+                                           agg_func
+  ), .groups = "drop")
   agg_func_c <- agg_func[1]
   resC <- dataG |> dplyr::summarise(across(all_of(c("group_1", "group_2")),
-                                     agg_func_c,
-                                     .names = "{col}"
-                                     ),
-                              .groups = "drop")
+                                           agg_func_c,
+                                           .names = "{col}"
+  ),
+  .groups = "drop")
   res <- Reduce(function(x,y){ dplyr::full_join(x , y , by = grouping_columns)},
                 list(resN,resE,resC) )
   return(res)
@@ -392,7 +392,7 @@ get_contrast <- function(data,
     sides <- intersect(sides,colnames(data))
 
     df  <- dplyr::select(data ,
-                  c( hierarchy_keys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i]))
+                         c( hierarchy_keys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i]))
 
     df$group_1_name <- sides[1]
     df$group_2_name <- sides[2]
@@ -444,10 +444,10 @@ get_contrast <- function(data,
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
 #'
 get_imputed_contrasts <- function(pepIntensity,
-                                     config,
-                                     Contr,
-                                     present = 1,
-                                     global = TRUE){
+                                  config,
+                                  Contr,
+                                  present = 1,
+                                  global = TRUE){
   if (!present > 0) {
     stop("At least 1 observation in interaction to infer LOD.")
   }
@@ -608,7 +608,7 @@ missingness_per_condition <- function(x, config, factors = config$table$factor_k
   hierarchyKey <- tail(config$table$hierarchy_keys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
   xx <- missingPrec |> group_by_at(c(table$isotopeLabel,
-                                      factors,"nrNAs","nrReplicates")) |>
+                                     factors,"nrNAs","nrReplicates")) |>
     dplyr::summarize( !!sym(hierarchyKey) := n())
 
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
@@ -644,8 +644,8 @@ missingness_per_condition <- function(x, config, factors = config$table$factor_k
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::interaction_missing_stats(data, cf)
   nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$table$hierarchy_keys(),
-                                            names_from = cf$table$factor_keys_depth(),
-                                            values_from = !!rlang::sym("nrMeasured"))
+                                           names_from = cf$table$factor_keys_depth(),
+                                           values_from = !!rlang::sym("nrMeasured"))
 
   hl <- length(cf$table$hierarchy_keys())
   nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] < tr] <- 0
@@ -667,7 +667,13 @@ UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
 #' pups <- UpSet_missing_stats(data, configur)
 #' #UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
 UpSet_missing_stats <- function(data, config){
-  data <- data |> dplyr::mutate(isThere = as.numeric(!is.na(!!rlang::sym(config$table$get_response()))))
+  responseName <- config$table$get_response()
+  data <- data |> dplyr::mutate(isThere =
+                                  dplyr::case_when(
+                                    !is.na(!!rlang::sym(responseName)) ~ 1,
+                                    TRUE ~ 0
+                                  )
+  )
   pups2 <- data |> tidyr::pivot_wider(id_cols = config$table$hierarchy_keys(),
                                       names_from = config$table$sampleName,
                                       values_from = !!rlang::sym("isThere"))
