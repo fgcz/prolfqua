@@ -55,6 +55,8 @@ Other configuration:
 
 \item{\code{opt_mz}}{optional column with mz information}
 
+\item{\code{nr_children}}{optional column containing for instance the number of peptides}
+
 \item{\code{workIntensity}}{column which contains the intensities}
 
 \item{\code{is_response_transformed}}{are the intensities transformed for constant variance}

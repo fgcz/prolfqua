@@ -203,9 +203,13 @@ tidy_to_wide <- function(data,
 ){
   wide <- data |>
     dplyr::select_at(c(rowIDs, columnLabels, value  ))
-  wide <- wide |>
-    tidyr::spread( key= columnLabels , value =  value )
-  return(wide)
+  wide_spread <- wide |>
+    tidyr::spread(key = columnLabels, value = value)
+  #wide_pivot <- wide |>
+  #  tidyr::pivot_wider( names_from = all_of(columnLabels) , values_from =  all_of(value) )
+
+  #message("I AM BEING USED: spread")
+  return(wide_spread)
 }
 
 #' transform long to wide
@@ -221,6 +225,10 @@ tidy_to_wide <- function(data,
 #' testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 #' testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
 #' res <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
+#' dim(res$data) == c(823,  45)
+#' dim(res$annotation) == c(45,  6)
+#' dim(res$rowdata) == c(823, 4)
+#'
 #' res <- scale(res$data)
 #'
 tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep="~lfq~"){
@@ -231,17 +239,17 @@ tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALS
   }
 
   ids <- dplyr::select_at(data,
-                       c( config$table$sampleName, config$table$fileName, config$table$factor_keys())) |>
+                       c( config$table$sampleName, config$table$fileName, config$table$factor_keys(),config$table$isotopeLabel)) |>
     dplyr::distinct() |> dplyr::arrange_at(newcolname)
 
-  res <- tidy_to_wide( data, c(config$table$hierarchy_keys()) ,
+  res <- tidy_to_wide( data, c(config$table$hierarchy_keys(),config$table$isotopeLabel) ,
                  newcolname,
                  value = config$table$get_response() )
-  rowdata <- res |> dplyr::select_at(config$table$hierarchy_keys())
+  rowdata <- res |> dplyr::select(all_of(c(config$table$hierarchy_keys(),config$table$isotopeLabel)))
   if (as.matrix) {
-    resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(config$table$hierarchy_keys())))
+    resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(c(config$table$hierarchy_keys(),config$table$isotopeLabel))))
     names <- rowdata |>
-      tidyr::unite("precursor_id", !!!dplyr::syms(config$table$hierarchy_keys()), sep = sep) |> dplyr::pull()
+      tidyr::unite("newID", !!!dplyr::syms(c(config$table$hierarchy_keys(), config$table$isotopeLabel)), sep = sep) |> dplyr::pull("newID")
     rownames(resMat) <- names
     res <- resMat
   }
@@ -705,8 +713,11 @@ impute_correlationBased <- function(x , config){
 #'
 #' bb <- prolfqua_data('data_skylineSRM_HL_A')
 #' config <- old2new(bb$config_f())
+#' data <- bb$data
+#' data$Area[data$Area == 0] <- NA
+#' analysis <- setup_analysis(data, config)
+#' resDataStart <- bb$analysis(bb$data, config)
 #'
-#' resDataStart <- bb$analysis(bb$data, bb$config_f())
 #'
 #' nr_B_in_A(resDataStart, config)
 #' nr_B_in_A(resDataStart, config, merge = FALSE)

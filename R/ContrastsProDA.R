@@ -8,6 +8,7 @@
 #' istar$config <- old2new(istar$config )
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 10))
 #' lfd <- LFQData$new(istar_data, istar$config)
+#' #debug(prolfqua::LFQDataToSummarizedExperiment)
 #' se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
 #'
 #' fit <- proDA::proDA(se, design = ~ dilution. - 1,data_is_log_transformed = TRUE)

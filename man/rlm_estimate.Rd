@@ -4,12 +4,12 @@
 \alias{rlm_estimate}
 \title{Estimate e.g. protein abundance from peptides using MASS:rlm}
 \usage{
-rlm_estimate(pdata, expression, feature, samples, maxIt = 20)
+rlm_estimate(pdata, response, feature, samples, maxIt = 20)
 }
 \arguments{
 \item{pdata}{data}
 
-\item{expression}{intensities}
+\item{response}{intensities}
 
 \item{feature}{e.g. peptideIDs.}
 
@@ -20,9 +20,9 @@ Estimate e.g. protein abundance from peptides using MASS:rlm
 }
 \examples{
 
-xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
+xx <- data.frame(response = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
 
-bb <- rlm_estimate(xx , "expression", "feature", "samples", maxIt = 20)
+bb <- rlm_estimate(xx , "response", "feature", "samples", maxIt = 20)
 
 xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
 rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
@@ -50,7 +50,7 @@ xnested <- data |>
 feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 x <- xnested$data[[1]]
 bb <- rlm_estimate(x,
- expression = conf$table$get_response(),
+ response = conf$table$get_response(),
   feature = feature,
    samples = conf$table$sampleName)
 

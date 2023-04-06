@@ -17,6 +17,7 @@ pivot model contrasts matrix to wide format produced by `contrasts_linfct` and .
 \examples{
 dd <- prolfqua_data('data_factor_levelContrasts')
 tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
+stopifnot(all(dim(tmp) == c(30,16)))
 
 }
 \seealso{

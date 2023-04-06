@@ -876,6 +876,7 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' @examples
 #' dd <- prolfqua_data('data_factor_levelContrasts')
 #' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
+#' stopifnot(all(dim(tmp) == c(30,16)))
 #'
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
                                          subject_Id = "protein_Id",
@@ -884,9 +885,9 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 
   m_spread <- function(longContrasts, subject_Id, column , contrast){
     res <- longContrasts |>
-      dplyr::select_at(c(subject_Id, contrast,  column))
+      dplyr::select(all_of(c(subject_Id, contrast,  column)))
     res <- res |> dplyr::mutate(!!contrast := paste0(column, ".", !!sym(contrast)))
-    res <- res |> tidyr::spread(contrast, !!sym(column) )
+    res <- res |> tidyr::pivot_wider(names_from = contrast, values_from = column)
     return(res)
   }
   res <- list()

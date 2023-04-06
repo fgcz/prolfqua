@@ -27,6 +27,10 @@ res <- tidy_to_wide_config(analysis, config)
 testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
 res <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
+dim(res$data) == c(823,  45)
+dim(res$annotation) == c(45,  6)
+dim(res$rowdata) == c(823, 4)
+
 res <- scale(res$data)
 
 }

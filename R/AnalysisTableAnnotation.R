@@ -43,7 +43,8 @@ AnalysisTableAnnotation <- R6::R6Class(
     opt_rt  = character(),
     #' @field opt_mz optional column with mz information
     opt_mz = character(),
-
+    #' @field nr_children optional column containing for instance the number of peptides
+    nr_children = character(),
 
     #' @field workIntensity column which contains the intensities
     workIntensity = NULL, # could be list with names and functions

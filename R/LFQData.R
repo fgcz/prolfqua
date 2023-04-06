@@ -298,7 +298,6 @@ LFQData <- R6::R6Class(
 #'    tmp <- LFQDataToSummarizedExperiment(lfqdata)
 #' }
 #'
-
 LFQDataToSummarizedExperiment <- function(lfqdata){
   if (requireNamespace("SummarizedExperiment")) {
     wide <- lfqdata$to_wide(as.matrix = TRUE)

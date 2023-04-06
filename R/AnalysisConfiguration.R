@@ -131,12 +131,15 @@ R6_extract_values <- function(r6class){
 setup_analysis <- function(data, configuration, cc = TRUE ){
   configuration <- configuration$clone(deep = TRUE)
   table <- configuration$table
+
+  # extract hierarchy columns
   for (i in seq_along(table$hierarchy))
   {
     data <- tidyr::unite(data, UQ(sym(table$hierarchy_keys()[i])), table$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
   }
   data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(table$hierarchy), table$hierarchy_keys() )))
 
+  # extract factors
   if ( length(table$factors) == 0) {
     stop("No factors (explanatory variables) specified in the AnalysisTableConfiguration.\n",
             'Pleases use table$factors["Condition"] = "columnName".\n',
@@ -156,9 +159,8 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   sampleName <- table$sampleName
 
   if (!sampleName  %in% names(data)) {
-    message("creating sampleName")
-
-    data <- data |>  tidyr::unite( UQ(sym( sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) |>
+    message("creating sampleName from factor columns")
+    data <- data |>  tidyr::unite( UQ(sym(sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) |>
       dplyr::select(sampleName, table$fileName) |> dplyr::distinct() |>
       dplyr::mutate_at(sampleName, function(x){ x <- make.unique( x, sep = configuration$sep )}) |>
       dplyr::inner_join(data, by = table$fileName)
@@ -169,13 +171,16 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   data <- data |> dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factor_keys())))
 
   # Make implicit NA's explicit
-
   if (!configuration$table$isotopeLabel %in% colnames(data)) {
     warning("no isotopeLabel column specified in the data, adding column automatically and setting to 'light'.")
     data[[configuration$table$isotopeLabel]] <- "light"
   }
 
   data <- data |> dplyr::select(c(configuration$table$id_vars(),configuration$table$value_vars()))
+
+  tmp <- prolfqua::tidy_to_wide_config(data, configuration)
+  message("nr rows and nr columns")
+  message(paste(dim(tmp$data),collapse = ", "))
 
   if (cc) {
     data <- complete_cases( data , configuration)

@@ -202,9 +202,9 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y,  configuration){
 ){
   table <- config$table
   xx <- data |>  dplyr::select(c(table$sampleName,
-                                  table$factor_keys(),
-                                  table$fileName,
-                                  table$isotopeLabel)) |> dplyr::distinct()
+                                 table$factor_keys(),
+                                 table$fileName,
+                                 table$isotopeLabel)) |> dplyr::distinct()
   res <- dplyr::inner_join(xx,medpolishRes, by = table$sampleName)
   res
 }
@@ -240,12 +240,13 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName" ){
   res
 }
 
-.extractInt <- function(pdata, expression, feature, sampleName ){
+.extractInt <- function(pdata, response, feature, sampleName ){
   pdata <- pdata |>
-    dplyr::select_at( c( sampleName,
-                         feature,
-                         expression) ) |>
-    tidyr::spread(key = sampleName , value = expression) |> .ExtractMatrix()
+    dplyr::select( all_of(c( sampleName,
+                             feature,
+                             response) )) |>
+    tidyr::pivot_wider(names_from = all_of(sampleName) , values_from = all_of(response)) |>
+    .ExtractMatrix()
   return(pdata)
 }
 
@@ -291,7 +292,8 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName" ){
 #'
 response_as_matrix <- function(pdata, config ){
   table <- config$table
-  .extractInt(pdata, table$get_response(),
+  .extractInt(pdata,
+              table$get_response(),
               setdiff(table$hierarchy_keys(), table$hierarchy_keys_depth()),
               table$sampleName)
 }
@@ -300,7 +302,7 @@ response_as_matrix <- function(pdata, config ){
 #'
 #' @seealso \code{\link{medpolish_estimate}}
 #' @param pdata data.frame
-#' @param expression column name with intensities
+#' @param response column name with intensities
 #' @param feature column name e.g. peptide ids
 #' @param samples column name e.g. sampleName
 #' @return data.frame
@@ -323,17 +325,17 @@ response_as_matrix <- function(pdata, config ){
 #' feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- medpolish_estimate_df(x,
-#'  expression = conf$table$get_response(),
+#'  response = conf$table$get_response(),
 #'   feature = feature,
 #'    sampleName = conf$table$sampleName)
 #' prolfqua:::.reestablish_condition(x,bb, conf)
 #'
-medpolish_estimate_df <- function(pdata, expression, feature, sampleName  ){
+medpolish_estimate_df <- function(pdata, response, feature, sampleName  ){
   bb <- .extractInt(pdata,
-    expression = expression,
-     feature = feature,
-      sampleName =  sampleName)
-   medpolish_estimate(bb, sampleName = sampleName)
+                    response = response,
+                    feature = feature,
+                    sampleName =  sampleName)
+  medpolish_estimate(bb, sampleName = sampleName)
 }
 
 
@@ -368,22 +370,22 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
 
   feature <- setdiff(config$table$hierarchy_keys(),  config$table$hierarchy_keys_depth())
   res <- medpolish_estimate_df(pdata,
-                 expression = config$table$get_response(),
-                 feature = feature,
-                 sampleName = config$table$sampleName)
+                               response = config$table$get_response(),
+                               feature = feature,
+                               sampleName = config$table$sampleName)
   return(res)
 }
 
 
-.rlm_estimate <- function(pdata, expression, feature , samples = "samples", maxIt = 20) {
-  data <- pdata |> select_at(c(samples, feature, expression)) |> na.omit()
-  ##If there is only one 1 peptide for all samples return expression of that peptide
-  expname <- paste0("mean.",expression)
+.rlm_estimate <- function(pdata, response, feature , samples = "samples", maxIt = 20) {
+  data <- pdata |> select_at(c(samples, feature, response)) |> na.omit()
+  ##If there is only one 1 peptide for all samples return response of that peptide
+  expname <- paste0("mean.",response)
 
   if (length(unique(data[[feature]])) == 1L) {
-    data$lmrob <- data[[expression]]
+    data$lmrob <- data[[response]]
     data$weights <- 1
-    data <- rename(data,  !!expname := !!sym(expression))
+    data <- rename(data,  !!expname := !!sym(response))
     data <- data |> select(-!!sym(feature))
     return(data)
   }
@@ -391,8 +393,8 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
   ## model-matrix breaks on factors with 1 level so make vector of ones (will be intercept)
   if (length(unique(data[[samples]])) == 1L) {
     data <- data |> group_by_at(samples) |>
-      summarize(lmrob = mean(!!sym(expression)),
-                !!expname := mean(!!sym(expression)), .groups = "drop")
+      summarize(lmrob = mean(!!sym(response)),
+                !!expname := mean(!!sym(response)), .groups = "drop")
     data$weights <- 1
     return(data)
   }
@@ -406,7 +408,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
   ## check with base lm if singular values are present.
   ## if so, these coefficients will be zero, remove this column from model matrix
   ## rinse and repeat on reduced model-matrix untill no singular values are present
-  y <- data[[expression]]
+  y <- data[[response]]
   repeat {
     fit = .lm.fit(X,y)
     id = fit$coefficients != 0
@@ -424,7 +426,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
     sumdata <- data |>
       select(-!!sym(feature)) |>
       group_by_at(samples) |>
-      dplyr::summarize(!!expname := mean(!!sym(expression)),
+      dplyr::summarize(!!expname := mean(!!sym(response)),
                        weights = 1 / mean(residuals^2), .groups = "drop")
     if (any(is.infinite(sumdata$weights) | is.na(sumdata$weights) | sumdata$weights > 10e6)) {
       sumdata$weights = 1
@@ -438,8 +440,8 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
     sumdata <- data |>
       select(-!!sym(feature)) |>
       group_by_at(samples) |>
-      dplyr::summarize(!!expname := mean(!!sym(expression)),
-                       lmrob = mean(!!sym(expression)),
+      dplyr::summarize(!!expname := mean(!!sym(response)),
+                       lmrob = mean(!!sym(response)),
                        .groups = "drop")
     sumdata$weights <- 1
     res <- sumdata
@@ -456,16 +458,16 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
 #' @keywords internal
 #' @family aggregation
 #' @param pdata data
-#' @param expression intensities
+#' @param response intensities
 #' @param feature e.g. peptideIDs.
 #' @param sample e.g. sampleName
 #' @importFrom MASS rlm
 #' @export
 #' @examples
 #'
-#' xx <- data.frame(expression = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
+#' xx <- data.frame(response = rnorm(20,0,10), feature = rep(LETTERS[1:5],4), samples= rep(letters[1:4],5))
 #'
-#' bb <- rlm_estimate(xx , "expression", "feature", "samples", maxIt = 20)
+#' bb <- rlm_estimate(xx , "response", "feature", "samples", maxIt = 20)
 #'
 #' xx2 <- data.frame(log2Area = rnorm(20,0,10), peptide_Id = rep(LETTERS[1:5],4), sampleName = rep(letters[1:4],5))
 #' rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
@@ -493,15 +495,15 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
 #' feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- rlm_estimate(x,
-#'  expression = conf$table$get_response(),
+#'  response = conf$table$get_response(),
 #'   feature = feature,
 #'    samples = conf$table$sampleName)
 #'
 #'
-rlm_estimate <- function(pdata, expression, feature , samples, maxIt = 20) {
+rlm_estimate <- function(pdata, response, feature , samples, maxIt = 20) {
   pdata <- unite(pdata, "feature", all_of(feature))
 
-  res <- .rlm_estimate(pdata, expression, feature = "feature", samples, maxIt = maxIt)
+  res <- .rlm_estimate(pdata, response, feature = "feature", samples, maxIt = maxIt)
   return(res)
 }
 
@@ -534,10 +536,10 @@ rlm_estimate_dfconfig <- function(pdata, config, name= FALSE){
   if (name) {return("lmrob")}
 
   feature <- setdiff(config$table$hierarchy_keys(),  config$table$hierarchy_keys_depth())
-  rlm_estimate(pdata, expression = config$table$get_response(),
-                  feature = feature,
-                  samples = config$table$sampleName
-                  , maxIt = 20)
+  rlm_estimate(pdata, response = config$table$get_response(),
+               feature = feature,
+               samples = config$table$sampleName
+               , maxIt = 20)
 }
 
 #' Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
@@ -561,6 +563,7 @@ old2new <- function(config) {
   ata$ident_qValue <- config$table$ident_qValue
   ata$sampleName <- config$table$sampleName
   ata$isotopeLabel <- config$table$isotopeLabel
+  ata$fileName <- config$table$fileName
   config <- AnalysisConfiguration$new(ata)
   return(config)
 }
@@ -874,8 +877,8 @@ intensity_summary_by_hkeys <- function(data, config, func)
 #'
 medpolish_protein_estimates <- function(data, config){
   protintensity <- prolfqua::intensity_summary_by_hkeys(data ,
-                                                          config,
-                                                          medpolish_estimate)
+                                                        config,
+                                                        medpolish_estimate)
   return(protintensity)
 }
 

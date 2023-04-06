@@ -32,8 +32,11 @@ res$data |>
 
 bb <- prolfqua_data('data_skylineSRM_HL_A')
 config <- old2new(bb$config_f())
+data <- bb$data
+data$Area[data$Area == 0] <- NA
+analysis <- setup_analysis(data, config)
+resDataStart <- bb$analysis(bb$data, config)
 
-resDataStart <- bb$analysis(bb$data, bb$config_f())
 
 nr_B_in_A(resDataStart, config)
 nr_B_in_A(resDataStart, config, merge = FALSE)

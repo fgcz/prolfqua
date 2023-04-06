@@ -582,7 +582,7 @@ missingness_per_condition_cumsum <- function(x,
     geom_text(aes(label = .data$cumulative_sum), nudge_y = nudgeval, angle = -45) +
     facet_grid(as.formula(formula))
 
-  res <- res |> tidyr::spread("nrNAs","cumulative_sum")
+  res <- res |> tidyr::pivot_wider(names_from = "nrNAs", values_from = "cumulative_sum")
   return(list(data = res, figure = p))
 }
 
@@ -667,6 +667,7 @@ UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
 #' pups <- UpSet_missing_stats(data, configur)
 #' #UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
 UpSet_missing_stats <- function(data, config){
+  data <- prolfqua::complete_cases(data, config)
   responseName <- config$table$get_response()
   data <- data |> dplyr::mutate(isThere =
                                   dplyr::case_when(

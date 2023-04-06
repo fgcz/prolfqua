@@ -4,12 +4,12 @@
 \alias{medpolish_estimate_df}
 \title{Median polish estimates of e.g. protein abundances for entire data.frame}
 \usage{
-medpolish_estimate_df(pdata, expression, feature, sampleName)
+medpolish_estimate_df(pdata, response, feature, sampleName)
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{expression}{column name with intensities}
+\item{response}{column name with intensities}
 
 \item{feature}{column name e.g. peptide ids}
 
@@ -36,7 +36,7 @@ xnested <- data |>
 feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 x <- xnested$data[[1]]
 bb <- medpolish_estimate_df(x,
- expression = conf$table$get_response(),
+ response = conf$table$get_response(),
   feature = feature,
    sampleName = conf$table$sampleName)
 prolfqua:::.reestablish_condition(x,bb, conf)
