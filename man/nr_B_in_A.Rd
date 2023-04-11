@@ -35,6 +35,7 @@ config <- old2new(bb$config_f())
 data <- bb$data
 data$Area[data$Area == 0] <- NA
 analysis <- setup_analysis(data, config)
+
 resDataStart <- bb$analysis(bb$data, config)
 
 
