@@ -50,10 +50,9 @@ https://github.com/fgcz/prolfqua/issues
 
 # How to get started
 
+- See our article at the [Journal of Proteome Research](https://pubs.acs.org/doi/full/10.1021)
 - See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
 - Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube or [slides](https://f1000research.com/slides/9-1476).
-- See our article at [bioRxiv](https://www.biorxiv.org/content/10.1101/2022.06.07.494524v1)
-which describes our package.
 - Read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
 
 Or run the following example code:
@@ -112,20 +111,24 @@ Example QC and sample size report
 
 # How to cite?
 
-Please do reference the [prolfqua article at biorxiv.org](https://www.biorxiv.org/content/10.1101/2022.06.07.494524v1)
+Please do reference the [prolfqua article at Journal of Proteome Research](https://pubs.acs.org/doi/full/10.1021)
 
 ```
-@article {Wolski2022.06.07.494524,
-	author = {Wolski, Witold Eryk and Nanni, Paolo and Grossmann, Jonas and d{\textquoteright}Errico, Maria and Schlapbach, Ralph and Panse, Christian},
-	title = {prolfqua: A Comprehensive R-package for Proteomics Differential Expression Analysis},
-	elocation-id = {2022.06.07.494524},
-	year = {2022},
-	doi = {10.1101/2022.06.07.494524},
-	publisher = {Cold Spring Harbor Laboratory},
-	URL = {https://www.biorxiv.org/content/early/2022/06/09/2022.06.07.494524},
-	eprint = {https://www.biorxiv.org/content/early/2022/06/09/2022.06.07.494524.full.pdf},
-	journal = {bioRxiv}
+
+@article{prolfquawolski2023,
+author = {Wolski, Witold E. and Nanni, Paolo and Grossmann, Jonas and d’Errico, Maria and Schlapbach, Ralph and Panse, Christian},
+title = {prolfqua: A Comprehensive R-Package for Proteomics Differential Expression Analysis},
+journal = {Journal of Proteome Research},
+volume = {4},
+number = {22},
+pages = {1092–1104},
+year = {2023},
+doi = {10.1021/acs.jproteome.2c00441},
+    note = {PMID: 36939687},
+URL = {https://doi.org/10.1021/acs.jproteome.2c00441},
+eprint = {https://doi.org/10.1021/acs.jproteome.2c00441}
 }
+
 ```
 
 ## Motivation
