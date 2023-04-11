@@ -203,9 +203,10 @@ tidy_to_wide <- function(data,
 ){
   wide <- data |>
     dplyr::select_at(c(rowIDs, columnLabels, value  ))
+
   wide_spread <- wide |>
     tidyr::spread(key = columnLabels, value = value)
-  #wide_pivot <- wide |>
+  # wide_pivot <- wide |>
   #  tidyr::pivot_wider( names_from = all_of(columnLabels) , values_from =  all_of(value) )
 
   #message("I AM BEING USED: spread")
@@ -238,8 +239,8 @@ tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALS
     newcolname <- config$table$sampleName
   }
 
-  ids <- dplyr::select_at(data,
-                       c( config$table$sampleName, config$table$fileName, config$table$factor_keys(),config$table$isotopeLabel)) |>
+  ids <- dplyr::select(data,
+                       all_of(c( config$table$sampleName, config$table$fileName, config$table$factor_keys(), config$table$isotopeLabel))) |>
     dplyr::distinct() |> dplyr::arrange_at(newcolname)
 
   res <- tidy_to_wide( data, c(config$table$hierarchy_keys(),config$table$isotopeLabel) ,
@@ -716,6 +717,7 @@ impute_correlationBased <- function(x , config){
 #' data <- bb$data
 #' data$Area[data$Area == 0] <- NA
 #' analysis <- setup_analysis(data, config)
+#'
 #' resDataStart <- bb$analysis(bb$data, config)
 #'
 #'
