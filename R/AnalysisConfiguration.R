@@ -171,13 +171,23 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   data <- data |> dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factor_keys())))
 
   # Make implicit NA's explicit
-  if (!configuration$table$isotopeLabel %in% colnames(data)) {
+  if (!table$isotopeLabel %in% colnames(data)) {
     warning("no isotopeLabel column specified in the data, adding column automatically and setting to 'light'.")
-    data[[configuration$table$isotopeLabel]] <- "light"
+    data[[table$isotopeLabel]] <- "light"
   }
 
-  data <- data |> dplyr::select(c(configuration$table$id_vars(),configuration$table$value_vars()))
+  # TODO add better warning....
+  data <- data |> dplyr::select(c(table$id_vars(),table$value_vars()))
 
+  txd <- data |> group_by(across(c(table$fileName, table$hierarchy_keys(), table$isotopeLabel))) |>
+    summarize(n = n())
+  if (length(table(txd$n)) > 1) {
+    str <- paste("There is more than ONE observations for each : ", paste( table$hierarchy_keys(), collapse = ", "), ",\n",
+    "and sample : ", table$sampleName, "; (filename) : ", table$fileName, "\n")
+    warning(str)
+    warning("Please inspect the returned dataframe. Check for rows where n > 1\n e.g. res |> dplyr::filter(n > 1)")
+    return(txd)
+  }
   tmp <- prolfqua::tidy_to_wide_config(data, configuration)
   message("nr rows and nr columns")
   message(paste(dim(tmp$data),collapse = ", "))
