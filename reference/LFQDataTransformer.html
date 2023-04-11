@@ -316,6 +316,8 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : asinh_peptide.intensity</span>
 <span class="r-in"><span><span class="va">mads1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">intensity_matrix</span><span class="op">(</span><span class="va">robust_scale</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15880 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`</span>
 <span class="r-in"><span><span class="va">mads2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -330,6 +332,8 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span><span class="va">before</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqTrans</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> data is : TRUE</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15880 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`</span>
 <span class="r-in"><span><span class="va">after</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">before</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">after</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1e-8</span><span class="op">)</span></span></span>
@@ -367,6 +371,8 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15880 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>

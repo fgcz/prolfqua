@@ -118,13 +118,19 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_spectronautDIA250_A'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">conf</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>,<span class="va">conf</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from factor columns</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> nr rows and nr columns</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 823, 50</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="tidy_to_wide_config.html">tidy_to_wide_config</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">conf</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">response_matrix_as_tibble</span><span class="op">(</span><span class="va">res</span>,<span class="st">"srm_intensityScaled"</span>, <span class="va">conf</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 4 pieces. Additional pieces discarded in 37035 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">response_matrix_as_tibble</span><span class="op">(</span><span class="va">res</span>,<span class="st">"srm_intensityScaled"</span>, <span class="va">conf</span>,<span class="va">analysis</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 4 pieces. Additional pieces discarded in 37035 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, protein_Id, peptide_Id, modPeptide_Id,</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> precursor_Id)`</span>
 <span class="r-in"><span><span class="va">conf</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span> <span class="st">"srm_intensityScaled"</span></span></span>

@@ -106,7 +106,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2023-04-03</h4>
+            <h4 data-toc-skip class="date">2023-04-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/vignettes/Modelling2Factors.Rmd" class="external-link"><code>vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="hidden name"><code>Modelling2Factors.Rmd</code></div>
@@ -155,27 +155,27 @@ interested in by specifying the respective contrasts.</p>
 <span><span class="va">pMerged</span> <span class="op">&lt;-</span> <span class="va">data_Yeast2Factor</span></span>
 <span><span class="va">pMerged</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">Run_ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">pMerged</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">Run_ID</span><span class="op">)</span></span>
 <span><span class="va">pMerged</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 18 × 4</span></span></span>
-<span><span class="co">##    sampleName       condition_ batch_ Run_ID</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> Ethanol~p2370~06 Ethanol    p2370       6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> Ethanol~p2370~08 Ethanol    p2370       8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> Ethanol~p2370~09 Ethanol    p2370       9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> Ethanol~p2370~12 Ethanol    p2370      12</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> Ethanol~p2691~03 Ethanol    p2691       3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> Ethanol~p2691~06 Ethanol    p2691       6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> Ethanol~p2691~09 Ethanol    p2691       9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Ethanol~p2691~10 Ethanol    p2691      10</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> Ethanol~p2691~12 Ethanol    p2691      12</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> Glucose~p2370~02 Glucose    p2370       2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> Glucose~p2370~04 Glucose    p2370       4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> Glucose~p2370~07 Glucose    p2370       7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> Glucose~p2370~10 Glucose    p2370      10</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> Glucose~p2370~11 Glucose    p2370      11</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> Glucose~p2691~04 Glucose    p2691       4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">16</span> Glucose~p2691~05 Glucose    p2691       5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">17</span> Glucose~p2691~08 Glucose    p2691       8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">18</span> Glucose~p2691~11 Glucose    p2691      11</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 18 × 5</span></span></span>
+<span><span class="co">##    raw.file                        sampleName       condition_ batch_ Run_ID</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 20170314_06_ge3                 Ethanol~p2370~06 Ethanol    p2370       6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 20170314_08_ge1                 Ethanol~p2370~08 Ethanol    p2370       8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 20170314_09_ge2_rep             Ethanol~p2370~09 Ethanol    p2370       9</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 20170314_12_ge4                 Ethanol~p2370~12 Ethanol    p2370      12</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 20180313_03_ge4_ls_180314100836 Ethanol~p2691~03 Ethanol    p2691       3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 20180313_06_ge1_ap              Ethanol~p2691~06 Ethanol    p2691       6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 20180313_09_ge3_cw              Ethanol~p2691~09 Ethanol    p2691       9</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 20180313_10_ge2_zf              Ethanol~p2691~10 Ethanol    p2691      10</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 20180313_12_ge1_jtk             Ethanol~p2691~12 Ethanol    p2691      12</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> 20170314_02_g3_rep              Glucose~p2370~02 Glucose    p2370       2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> 20170314_04_g4                  Glucose~p2370~04 Glucose    p2370       4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> 20170314_07_g1_a                Glucose~p2370~07 Glucose    p2370       7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> 20170314_10_g1_b                Glucose~p2370~10 Glucose    p2370      10</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> 20170314_11_g2                  Glucose~p2370~11 Glucose    p2370      11</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> 20180313_04_g3_sw_180314112243  Glucose~p2691~04 Glucose    p2691       4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> 20180313_05_g2_mb               Glucose~p2691~05 Glucose    p2691       5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">17</span> 20180313_08_g4_cm               Glucose~p2691~08 Glucose    p2691       8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">18</span> 20180313_11_g1_ap               Glucose~p2691~11 Glucose    p2691      11</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula_Batches</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"transformedIntensity ~ condition_ * batch_ "</span><span class="op">)</span></span>
