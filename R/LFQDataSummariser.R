@@ -122,13 +122,13 @@ LFQDataSummariser <- R6::R6Class(
         dall$data[[i]] <- "ALL"
       }
       all <- dplyr::bind_rows(dfac$data, dall$data)
-      nested <- all |> dplyr::group_by(!!rlang::sym(self$lfq$config$table$factor_keys_depth())) |> tidyr::nest()
+      nested <- all |> dplyr::group_by(!!!rlang::syms(self$lfq$config$table$factor_keys_depth())) |> tidyr::nest()
       for (i in seq_len(nrow(nested))) {
         nested$data[[i]] <- nested$data[[i]] |>
           dplyr::arrange(.data$meanArea) |>
           dplyr::mutate(id = dplyr::row_number()) |>
-          dplyr::mutate(abundance_percent = meanArea/sum(meanArea)*100 ) |>
-          dplyr::mutate(abundance_percent_cumulative = cumsum(abundance_percent)) |>
+          dplyr::mutate(abundance_percent = meanArea/sum(meanArea, na.rm = TRUE)*100 ) |>
+          dplyr::mutate(abundance_percent_cumulative = cumsum(ifelse(is.na(abundance_percent), 0, abundance_percent)) + abundance_percent*0) |>
           dplyr::mutate(percent_prot = id / max(id) * 100)
       }
       res <- tidyr::unnest(nested, cols = "data")
