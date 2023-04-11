@@ -152,7 +152,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
       data <- tidyr::unite(data, UQ(sym(table$factor_keys()[i])), table$factors[[i]],remove = FALSE, sep = configuration$sep)
     } else {
       newname <- table$factor_keys()[i]
-      data <- dplyr::mutate(data, !!newname := !!sym(table$factors[[i]]))
+      data <- dplyr::mutate(data, !!newname := as.character(!!sym(table$factors[[i]])))
     }
   }
 
