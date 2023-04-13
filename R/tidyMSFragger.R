@@ -197,3 +197,44 @@ tidy_FragPipe_combined_protein <- function(
 }
 
 
+#' read psm.tsv produced by FragPipe and convert into long format
+#' @export
+#' @param psm_file path to psm.tsv file
+#' @param purity_threshold purity threshold default = 0.5
+#' @param PeptideProphetProb default 0.9
+#'
+tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetProb = 0.9){
+  psm <- readr::read_tsv("../inst/extdata/FragPipe19_GUI_TMT10/psm.tsv")
+
+  x <- which(colnames(psm) == "Quan Usage")
+  colnamesQuan <- colnames(psm)[(x + 1):ncol(psm)]
+  psm_relevant <- psm |> dplyr::select(
+    dplyr::all_of(
+      c(c("Spectrum",
+          "Spectrum File",
+          "Peptide",
+          "Modified Peptide",
+          "Charge",
+          "Intensity",
+          "Purity",
+          "Protein",
+          "Protein Description",
+          "PeptideProphet Probability",
+          "Protein Description",
+          "Retention",
+          "Calibrated Observed Mass",
+          "Charge"),
+        colnamesQuan) ))
+
+  psm_long <- psm_relevant |> tidyr::pivot_longer( tidyselect::all_of(colnamesQuan), values_to = "abundance", names_to = "channel")
+  psm_long <- dplyr::filter(psm_long, abundance > 0)
+
+  nrPeptides <- psm_long |>
+    dplyr::select(Protein, Peptide) |> distinct() |> group_by(Protein) |> summarize(nrPeptides = n())
+  psm_long <- dplyr::inner_join(nrPeptides, psm_long, by = "Protein", multiple = "all")
+  psm_long <- dplyr::filter(psm_long, Purity > purity_threshold & `PeptideProphet Probability` > PeptideProphetProb)
+  return(psm_long)
+}
+
+
+
