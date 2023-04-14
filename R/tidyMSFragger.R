@@ -204,7 +204,7 @@ tidy_FragPipe_combined_protein <- function(
 #' @param PeptideProphetProb default 0.9
 #'
 tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetProb = 0.9){
-  psm <- readr::read_tsv("../inst/extdata/FragPipe19_GUI_TMT10/psm.tsv")
+  psm <- readr::read_tsv(psm_file)
 
   x <- which(colnames(psm) == "Quan Usage")
   colnamesQuan <- colnames(psm)[(x + 1):ncol(psm)]
@@ -232,7 +232,8 @@ tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetPr
   nrPeptides <- psm_long |>
     dplyr::select(Protein, Peptide) |> distinct() |> group_by(Protein) |> summarize(nrPeptides = n())
   psm_long <- dplyr::inner_join(nrPeptides, psm_long, by = "Protein", multiple = "all")
-  psm_long <- dplyr::filter(psm_long, Purity > purity_threshold & `PeptideProphet Probability` > PeptideProphetProb)
+  colnames(psm_long) <- make.names(colnames(psm_long))
+  psm_long <- dplyr::filter(psm_long, Purity > purity_threshold & PeptideProphet.Probability > PeptideProphetProb)
   return(psm_long)
 }
 
