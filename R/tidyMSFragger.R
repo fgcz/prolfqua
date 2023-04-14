@@ -223,6 +223,7 @@ tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetPr
           "Protein Description",
           "Retention",
           "Calibrated Observed Mass",
+          "Assigned Modifications",
           "Charge"),
         colnamesQuan) ))
 
