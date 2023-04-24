@@ -179,7 +179,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   # TODO add better warning....
   data <- data |> dplyr::select(c(table$id_vars(),table$value_vars()))
 
-  txd <- data |> group_by(across(c(table$fileName, table$hierarchy_keys(), table$isotopeLabel))) |>
+  txd <- data |> group_by(!!!syms(c(table$fileName, table$hierarchy_keys(), table$isotopeLabel))) |>
     summarize(n = n())
   if (length(table(txd$n)) > 1) {
     str <- paste("There is more than ONE observations for each : ", paste( table$hierarchy_keys(), collapse = ", "), ",\n",
@@ -188,9 +188,9 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
     warning("Please inspect the returned dataframe. Check for rows where n > 1\n e.g. res |> dplyr::filter(n > 1)")
     return(txd)
   }
-  tmp <- prolfqua::tidy_to_wide_config(data, configuration)
-  message("nr rows and nr columns")
-  message(paste(dim(tmp$data),collapse = ", "))
+  #tmp <- prolfqua::tidy_to_wide_config(data, configuration)
+  #message("nr rows and nr columns")
+  #message(paste(dim(tmp$data),collapse = ", "))
 
   if (cc) {
     data <- complete_cases( data , configuration)
