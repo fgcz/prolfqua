@@ -12,17 +12,20 @@ Decorates LFQData with a row annotation and some protein specific functions.
 
 istar <- prolfqua_data('data_ionstar')$filtered()
 istar$config <- old2new(istar$config)
-data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+data <- istar$data #|> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 pannot <- ProteinAnnotation$new( lfqdata )
 
 pannot$annotate_decoys()
 pannot$annotate_contaminants()
 
-pannot$nr_clean()
+stopifnot(pannot$nr_clean(contaminants = FALSE) == 163)
+stopifnot(pannot$nr_clean(contaminants = TRUE) == 158)
+stopifnot(nrow(pannot$clean(contaminants = FALSE)) == 163)
+stopifnot(nrow(pannot$clean(contaminants = TRUE)) == 158)
 dd <- pannot$clean()
 tmp <- lfqdata$get_subset(dd)
-tmp$complete_cases()
+stopifnot(tmp$hierarchy_counts()$protein_Id == 158)
 
 }
 \seealso{
@@ -131,21 +134,39 @@ annotate contaminants
 \if{html}{\out{<a id="method-ProteinAnnotation-nr_clean"></a>}}
 \if{latex}{\out{\hypertarget{method-ProteinAnnotation-nr_clean}{}}}
 \subsection{Method \code{nr_clean()}}{
-return number of cleans
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$nr_clean()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$nr_clean(contaminants = TRUE, decoys = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{contaminants}}{remove contaminants}
+
+\item{\code{decoys}}{remove decoys
+return number of cleans}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ProteinAnnotation-clean"></a>}}
 \if{latex}{\out{\hypertarget{method-ProteinAnnotation-clean}{}}}
 \subsection{Method \code{clean()}}{
-remove REV and CON sequences
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$clean()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$clean(contaminants = TRUE, decoys = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{contaminants}}{remove contaminants}
+
+\item{\code{decoys}}{remove decoys
+remove REV and CON sequences}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ProteinAnnotation-clone"></a>}}
