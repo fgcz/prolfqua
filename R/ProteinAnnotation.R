@@ -7,17 +7,20 @@
 #'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' istar$config <- old2new(istar$config)
-#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data #|> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' pannot <- ProteinAnnotation$new( lfqdata )
 #'
 #' pannot$annotate_decoys()
 #' pannot$annotate_contaminants()
 #'
-#' pannot$nr_clean()
+#' stopifnot(pannot$nr_clean(contaminants = FALSE) == 163)
+#' stopifnot(pannot$nr_clean(contaminants = TRUE) == 158)
+#' stopifnot(nrow(pannot$clean(contaminants = FALSE)) == 163)
+#' stopifnot(nrow(pannot$clean(contaminants = TRUE)) == 158)
 #' dd <- pannot$clean()
 #' tmp <- lfqdata$get_subset(dd)
-#' tmp$complete_cases()
+#' stopifnot(tmp$hierarchy_counts()$protein_Id == 158)
 #'
 ProteinAnnotation <-
   R6::R6Class("ProteinAnnotation",
@@ -72,18 +75,42 @@ ProteinAnnotation <-
                   return(sum(self$row_annot$CON))
                 },
                 #' @description
+                #' @param contaminants remove contaminants
+                #' @param decoys remove decoys
                 #' return number of cleans
-                nr_clean = function(){
-                  if (!("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
-                  if (!("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }
-                  return(sum(!self$row_annot$REV & !self$row_annot$CON))
+                nr_clean = function(contaminants = TRUE, decoys = TRUE){
+
+                  if (decoys && !("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
+                  if (contaminants & !("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }
+
+                  res <- if (decoys && contaminants) {
+                    sum(!self$row_annot$REV & !self$row_annot$CON)
+                  } else if (contaminants) {
+                    sum(!self$row_annot$CON)
+                  } else if (decoys) {
+                    sum(!self$row_annot$REV)
+                  } else {
+                    nrow(self$row_annot)
+                  }
+                  return(res)
                 },
                 #' @description
+                #' @param contaminants remove contaminants
+                #' @param decoys remove decoys
                 #' remove REV and CON sequences
-                clean = function(){
-                  if (!("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
-                  if (!("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }
-                  return(filter(self$row_annot , !self$row_annot$REV & !self$row_annot$CON) )
+                clean = function(contaminants = TRUE, decoys = TRUE){
+                  if (contaminants && !("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
+                  if (decoys && !("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }
+                  res <- if (decoys && contaminants) {
+                    filter(self$row_annot , !self$row_annot$REV & !self$row_annot$CON )
+                  } else if (contaminants) {
+                    filter(self$row_annot , !self$row_annot$CON)
+                  } else if (decoys) {
+                    filter(self$row_annot , !self$row_annot$REV )
+                  } else {
+                    self$row_annot
+                  }
+                  return(res)
                 }
 
               )
