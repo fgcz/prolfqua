@@ -472,8 +472,8 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 #'
 scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = FALSE){
   config <- config$clone(deep = TRUE)
-  dl <- group_by(data, across(config$table$factor_keys_depth())) |> nest()
-  sl <- group_by(subset, across(config$table$factor_keys_depth())) |> nest()
+  dl <- group_by(data, !!!syms(config$table$factor_keys_depth())) |> nest()
+  sl <- group_by(subset, !!!syms(config$table$factor_keys_depth())) |> nest()
   cf <- config$clone(deep = TRUE)
   cf$table$factors <- NULL
   cf$table$factorDepth <- 0
