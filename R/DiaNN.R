@@ -9,7 +9,7 @@ diann_read_output <- function(path, nrPeptides = 2, Q.Value = 0.01){
     nrPEP <- report |>
       dplyr::select(all_of(c("Protein.Group", "Stripped.Sequence"))) |>
       dplyr::distinct() |>
-      dplyr::group_by(across("Protein.Group")) |>
+      dplyr::group_by(!!sym("Protein.Group")) |>
       dplyr::summarize(nrPeptides = dplyr::n())
     report <- dplyr::inner_join(report, nrPEP)
     return(list(nrPEP = nrPEP, report = report))
@@ -55,7 +55,7 @@ diann_read_output <- function(path, nrPeptides = 2, Q.Value = 0.01){
 #'
 diann_output_to_peptide <- function(report2){
   peptide <- report2 |>
-  dplyr::group_by(across(c("raw.file",
+  dplyr::group_by(!!!syms(c("raw.file",
                            "Protein.Group",
                            "Protein.Names",
                            "PG.Quantity",
