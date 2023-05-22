@@ -33,7 +33,6 @@ library(prolfqua)
 Specify the path to the MaxQuant `proteinGroups.txt` file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a tidy table
 
 ```{r LoadDataAndConfigure}
-
 datadir <- file.path(find.package("prolfqua") , "samples/maxquant_txt")
 inputMQfile <-  file.path(datadir, "tiny2.zip")
 inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")

@@ -69,7 +69,7 @@ ms_bench_add_scores <- function(data,
                  , TPR  = .data$TP_hits / .data$T_ # also known as recall REC
 
                  , ACC = (.data$TP_hits + .data$TN_hits) / (.data$T_ + .data$F_)
-                 , FDP_ = .data$FDP * 1/max(.data$FDP) # rescaled FDP.
+                 , FDP_ = .data$FDP * 1/.data$FDP[dplyr::n()] # rescaled FDP.
   ) |> ungroup()
   return(data)
 }

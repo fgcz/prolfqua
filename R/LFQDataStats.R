@@ -13,6 +13,7 @@
 #' runallfuncs <- function(x){
 #'
 #'   stopifnot("data.frame" %in% class(x$stats()))
+#'   stopifnot("data.frame" %in% class(x$stats_wide()))
 #'   stopifnot(c("long", "wide") %in% names(x$stats_quantiles()))
 #'   stopifnot("ggplot" %in% class(x$density()))
 #'   stopifnot("ggplot" %in% class(x$density_median()))
@@ -31,6 +32,7 @@
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
+#' lfqstats$stats_wide()
 #' lfqstats$violin()
 #' runallfuncs(lfqstats)
 #' x<-lfqstats
@@ -55,11 +57,16 @@
 #' analysis <- bb$data
 #'
 #' lfqdata <- LFQData$new(analysis, config)
+#'
 #' # estimates statistics for all samples
 #' lfqstats <- lfqdata$get_Stats(stats = "all")
+#' lfqstats$stats_wide()
 #' runallfuncs(lfqstats)
 #' lfqstats <- lfqdata$get_Stats(stats = "everything")
+#' lfqstats$stats_wide()
+#'
 #' runallfuncs(lfqstats)
+#'
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
   public = list(
@@ -95,6 +102,16 @@ LFQDataStats <- R6::R6Class(
     #' @return data.frame with computed statistics
     stats = function(){
       self$statsdf
+    },
+    #' @description
+    #' access data.frame with statistics in wide format
+    #' @return data.frame with computed statistics in wide format
+    stats_wide = function(){
+      res <- tidyr::pivot_wider(
+        self$statsdf,id_cols = self$lfq$config$table$hierarchy_keys() ,
+        names_from = self$lfq$config$table$factor_keys_depth(),
+        values_from = tidyselect::any_of( c("n", "not_na", "sd", "var", "mean", "CV")))
+      return(res)
     },
     #' @description
     #' Determine CV or sd for the quantiles

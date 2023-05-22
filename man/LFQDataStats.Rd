@@ -18,6 +18,7 @@ compute stdv, mean and CV per peptide or protein and condition.
 runallfuncs <- function(x){
 
   stopifnot("data.frame" \%in\% class(x$stats()))
+  stopifnot("data.frame" \%in\% class(x$stats_wide()))
   stopifnot(c("long", "wide") \%in\% names(x$stats_quantiles()))
   stopifnot("ggplot" \%in\% class(x$density()))
   stopifnot("ggplot" \%in\% class(x$density_median()))
@@ -36,6 +37,7 @@ istar$config <- old2new(istar$config)
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqstats <- lfqdata$get_Stats()
+lfqstats$stats_wide()
 lfqstats$violin()
 runallfuncs(lfqstats)
 x<-lfqstats
@@ -60,11 +62,16 @@ config <- bb$config$clone(deep = TRUE)
 analysis <- bb$data
 
 lfqdata <- LFQData$new(analysis, config)
+
 # estimates statistics for all samples
 lfqstats <- lfqdata$get_Stats(stats = "all")
+lfqstats$stats_wide()
 runallfuncs(lfqstats)
 lfqstats <- lfqdata$get_Stats(stats = "everything")
+lfqstats$stats_wide()
+
 runallfuncs(lfqstats)
+
 }
 \seealso{
 Other LFQData: 
@@ -93,6 +100,7 @@ Other LFQData:
 \itemize{
 \item \href{#method-LFQDataStats-new}{\code{LFQDataStats$new()}}
 \item \href{#method-LFQDataStats-stats}{\code{LFQDataStats$stats()}}
+\item \href{#method-LFQDataStats-stats_wide}{\code{LFQDataStats$stats_wide()}}
 \item \href{#method-LFQDataStats-stats_quantiles}{\code{LFQDataStats$stats_quantiles()}}
 \item \href{#method-LFQDataStats-density}{\code{LFQDataStats$density()}}
 \item \href{#method-LFQDataStats-density_median}{\code{LFQDataStats$density_median()}}
@@ -134,6 +142,19 @@ access data.frame with statistics
 
 \subsection{Returns}{
 data.frame with computed statistics
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataStats-stats_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataStats-stats_wide}{}}}
+\subsection{Method \code{stats_wide()}}{
+access data.frame with statistics in wide format
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats_wide()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame with computed statistics in wide format
 }
 }
 \if{html}{\out{<hr>}}
