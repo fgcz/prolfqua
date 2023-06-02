@@ -96,7 +96,7 @@ LFQData <- R6::R6Class(
     #' get subset of data
     #' @param x data frame with columns containing subject_Id
     get_subset = function(x){
-      x <- select(x, all_of(self$subject_Id())) |> distinct()
+      x <- select(x, any_of(self$subject_Id())) |> distinct()
       subset <- inner_join(x, self$data)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },

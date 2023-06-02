@@ -74,7 +74,7 @@ ProteinAnnotation <-
                                     TRUE ~ FALSE))
                   return(sum(self$row_annot$CON))
                 },
-                #' @description
+                #' @description get number of neither contaminants nor decoys
                 #' @param contaminants remove contaminants
                 #' @param decoys remove decoys
                 #' return number of cleans
@@ -94,10 +94,10 @@ ProteinAnnotation <-
                   }
                   return(res)
                 },
-                #' @description
+                #' @description remove REV and CON sequences
                 #' @param contaminants remove contaminants
                 #' @param decoys remove decoys
-                #' remove REV and CON sequences
+                #'
                 clean = function(contaminants = TRUE, decoys = TRUE){
                   if (contaminants && !("REV" %in% colnames(self$row_annot)) ) { stop("annotate REV") }
                   if (decoys && !("CON" %in% colnames(self$row_annot)) ) { stop("annotate CON") }

@@ -27,6 +27,7 @@ res <- summarize_stats(data, config)
 plot_stat_violin(res, config, stat = "mean")
 plot_stat_violin(res, config, stat = "sd")
 plot_stat_violin(res, config, stat = "CV")
+
 }
 \seealso{
 Other stats: 
