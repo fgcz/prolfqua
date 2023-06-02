@@ -134,6 +134,7 @@ annotate contaminants
 \if{html}{\out{<a id="method-ProteinAnnotation-nr_clean"></a>}}
 \if{latex}{\out{\hypertarget{method-ProteinAnnotation-nr_clean}{}}}
 \subsection{Method \code{nr_clean()}}{
+get number of neither contaminants nor decoys
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$nr_clean(contaminants = TRUE, decoys = TRUE)}\if{html}{\out{</div>}}
 }
@@ -153,6 +154,7 @@ return number of cleans}
 \if{html}{\out{<a id="method-ProteinAnnotation-clean"></a>}}
 \if{latex}{\out{\hypertarget{method-ProteinAnnotation-clean}{}}}
 \subsection{Method \code{clean()}}{
+remove REV and CON sequences
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$clean(contaminants = TRUE, decoys = TRUE)}\if{html}{\out{</div>}}
 }
@@ -162,8 +164,7 @@ return number of cleans}
 \describe{
 \item{\code{contaminants}}{remove contaminants}
 
-\item{\code{decoys}}{remove decoys
-remove REV and CON sequences}
+\item{\code{decoys}}{remove decoys}
 }
 \if{html}{\out{</div>}}
 }

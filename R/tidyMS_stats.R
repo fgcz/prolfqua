@@ -543,9 +543,11 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' plot_stat_violin(res, config, stat = "mean")
 #' plot_stat_violin(res, config, stat = "sd")
 #' plot_stat_violin(res, config, stat = "CV")
+#'
 plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
   stat <- match.arg(stat)
-  p <- ggplot(pdata, aes_string(x = config$table$factor_keys()[1], y = stat  )) +
+  pdata <- pdata |> tidyr::unite("groups", config$table$factor_keys_depth())
+  p <- ggplot(pdata, aes_string(x = "groups", y = stat  )) +
     geom_violin() + ggplot2::stat_summary(fun.y = median,
                                           geom = "point", size = 1, color = "black")
 
