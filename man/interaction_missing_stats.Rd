@@ -42,7 +42,7 @@ xx <- complete_cases(xx, configur)
 x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
 
 stopifnot(nrow(x) == 5540)
-stopifnot(sum(is.na(x$meanArea)) == 206)
+stopifnot(sum(is.na(x$meanAbundance)) == 206)
 stopifnot(length(unique(x$protein_Id)) == 162)
 
 tmp <- interaction_missing_stats(xx, configur,

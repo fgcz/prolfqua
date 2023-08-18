@@ -28,7 +28,7 @@ configur <- old2new(bb$config)
 data <- bb$data
 
 Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
+mean <- missigness_impute_factors_interactions(data, configur, value = "meanAbundance" )
 mean <- get_contrast(mean, configur$table$hierarchy_keys(), Contrasts)
 meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hierarchy_keys_depth())
 

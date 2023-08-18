@@ -9,7 +9,7 @@ missigness_impute_factors_interactions(
   pdata,
   config,
   probs = 0.03,
-  value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed"),
+  value = c("long", "nrReplicates", "nrMeasured", "meanAbundance", "imputed"),
   add.prefix = FALSE,
   global = TRUE
 )

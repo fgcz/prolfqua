@@ -26,7 +26,7 @@ impute data using mean of lowest 0.1 (default)}
 }
 \value{
 function with parameter `value`
-`c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all")`
+`c("long", "nrReplicates", "nrMeasured", "meanAbundance", "imputed", "allWide", "all")`
 
 function
 }
@@ -59,9 +59,9 @@ stopifnot(nrow(imputed) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 missing <- fun("nrMeasured")
 stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 
- meanArea <- fun("mean")
-stopifnot(nrow(meanArea) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
- print(sum(is.na(meanArea$mean.dilution.a)))
+ meanAbundance <- fun("mean")
+stopifnot(nrow(meanAbundance) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
+ print(sum(is.na(meanAbundance$mean.dilution.a)))
  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
 
 }
