@@ -35,7 +35,7 @@ AnalysisTableAnnotation <- R6::R6Class(
     isotopeLabel = "isotopeLabel",
     # do you want to model charge sequence etc?
     #' @field ident_qValue column name with identification QValues (smaller better)
-    ident_qValue = character(),
+    ident_qValue = "qValue",
     #' @field ident_Score column with identification score (lager better)
     ident_Score = character(),
 
