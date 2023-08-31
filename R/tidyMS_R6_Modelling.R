@@ -487,7 +487,6 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
 #'
 #' m <- prolfqua_data('data_interactionModel_p1807')
 #' # debug(.coeff_weights_factor_levels)
-#' undebug(linfct_from_model)
 #' linfct <- linfct_from_model(m)
 #'
 #' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,

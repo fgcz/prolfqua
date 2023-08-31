@@ -24,7 +24,7 @@
 #' x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
 #'
 #' stopifnot(nrow(x) == 5540)
-#' stopifnot(sum(is.na(x$meanArea)) == 206)
+#' stopifnot(sum(is.na(x$meanAbundance)) == 206)
 #' stopifnot(length(unique(x$protein_Id)) == 162)
 #'
 #' tmp <- interaction_missing_stats(xx, configur,
@@ -54,11 +54,11 @@ interaction_missing_stats <- function(pdata,
   missingPrec <- missingPrec |>
     dplyr::summarize(nrReplicates = n(),
                      nrNAs = sum(is.na(!!sym(workIntensity))),
-                     meanArea = mean(!!sym(workIntensity), na.rm = TRUE),
-                     medianArea = median(!!sym(workIntensity), na.rm = TRUE)) |>
+                     meanAbundance = mean(!!sym(workIntensity), na.rm = TRUE),
+                     medianAbundance = median(!!sym(workIntensity), na.rm = TRUE)) |>
     mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |> dplyr::ungroup()
   return(list(data = missingPrec,
-              summaries = c("nrReplicates","nrNAs","nrMeasured","meanArea", "medianArea")))
+              summaries = c("nrReplicates","nrNAs","nrMeasured","meanAbundance", "medianAbundance")))
 }
 
 #' Compute interaction averages and
@@ -72,7 +72,7 @@ interaction_missing_stats <- function(pdata,
 #' @param probs quantile to take average from (default 0.1)
 #' @param global global min value
 #' @return function with parameter `value`
-#' `c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed", "allWide", "all")`
+#' `c("long", "nrReplicates", "nrMeasured", "meanAbundance", "imputed", "allWide", "all")`
 #' @export
 #' @keywords internal
 #' @return function
@@ -102,9 +102,9 @@ interaction_missing_stats <- function(pdata,
 #' missing <- fun("nrMeasured")
 #' stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #'
-#'  meanArea <- fun("mean")
-#' stopifnot(nrow(meanArea) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
-#'  print(sum(is.na(meanArea$mean.dilution.a)))
+#'  meanAbundance <- fun("mean")
+#' stopifnot(nrow(meanAbundance) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
+#'  print(sum(is.na(meanAbundance$mean.dilution.a)))
 #'  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
 #'
 .missigness_impute_interactions <- function(pdata,
@@ -118,27 +118,27 @@ interaction_missing_stats <- function(pdata,
   mstats <- make_interaction_column(mstats, factors, sep = ":")
 
 
-  lowerMean <- function(meanArea, probs = probs){
-    meanAreaNotNA <- na.omit(meanArea)
-    small10 <- meanAreaNotNA[meanAreaNotNA < quantile(meanAreaNotNA, probs = probs)]
-    meanArea[is.na(meanArea)] <- mean(small10)
-    return(meanArea)
+  lowerMean <- function(meanAbundance, probs = probs){
+    meanAbundanceNotNA <- na.omit(meanAbundance)
+    small10 <- meanAbundanceNotNA[meanAbundanceNotNA < quantile(meanAbundanceNotNA, probs = probs)]
+    meanAbundance[is.na(meanAbundance)] <- mean(small10)
+    return(meanAbundance)
   }
 
   if (!global) {
     mstats <- mstats |>
       group_by(interaction) |>
-      mutate(imputed = lowerMean(.data$meanArea,probs = probs))
+      mutate(imputed = lowerMean(.data$meanAbundance,probs = probs))
   }else{
     mstats <- mstats |>
-      mutate(imputed = lowerMean(.data$meanArea,probs = probs))
+      mutate(imputed = lowerMean(.data$meanAbundance,probs = probs))
 
   }
 
   res_fun <- function(value = c("long",
                                 "nrReplicates",
                                 "nrMeasured",
-                                "meanArea",
+                                "meanAbundance",
                                 "imputed",
                                 "allWide",
                                 "all" ),
@@ -164,18 +164,18 @@ interaction_missing_stats <- function(pdata,
         tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") |>
         arrange(!!!syms(pid)) |> dplyr::ungroup()
 
-      meanArea <- mstats |> dplyr::select(-one_of(c(setdiff(x_summaries,"meanArea"),"imputed" ) )) |>
-        tidyr::spread(interaction, meanArea, sep = ".meanArea.") |>
+      meanAbundance <- mstats |> dplyr::select(-one_of(c(setdiff(x_summaries,"meanAbundance"),"imputed" ) )) |>
+        tidyr::spread(interaction, meanAbundance, sep = ".meanAbundance.") |>
         arrange(!!!syms(pid)) |> dplyr::ungroup()
 
-      meanAreaImputed <- mstats |> dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) |>
+      meanAbundanceImputed <- mstats |> dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) |>
         tidyr::spread(interaction, .data$imputed, sep = ".imputed.") |>
         arrange(!!!syms(pid)) |> dplyr::ungroup()
 
-      allTables <- list(meanArea = meanArea,
+      allTables <- list(meanAbundance = meanAbundance,
                         nrMeasured = nrMeasured,
                         nrReplicates = nrReplicates,
-                        meanAreaImputed = meanAreaImputed)
+                        meanAbundanceImputed = meanAbundanceImputed)
 
       if (value == "all") {
         allTables[["long"]] <- mstats
@@ -192,16 +192,16 @@ interaction_missing_stats <- function(pdata,
         colnames(nrMeasured) <- gsub("interaction.nrMeasured.", srepl ,colnames(nrMeasured))
         nrMeasured <- tibble::add_column( nrMeasured, "value" = value, .before = 1)
         return(nrMeasured)
-      }else if (value == "meanArea") {
+      }else if (value == "meanAbundance") {
         srepl <- if (add.prefix) {"mean."}else{""}
-        colnames(meanArea) <- gsub("interaction.meanArea.", srepl ,colnames(meanArea))
-        meanArea <- tibble::add_column( meanArea, "value" = value, .before = 1)
-        return(meanArea)
+        colnames(meanAbundance) <- gsub("interaction.meanAbundance.", srepl ,colnames(meanAbundance))
+        meanAbundance <- tibble::add_column( meanAbundance, "value" = value, .before = 1)
+        return(meanAbundance)
       }else if (value == "imputed") {
         srepl <- if (add.prefix) {"mean.imp."}else{""}
-        colnames(meanAreaImputed) <- gsub("interaction.imputed.", srepl ,colnames(meanAreaImputed))
-        meanAreaImputed <- tibble::add_column( meanAreaImputed, "value" = value, .before = 1)
-        return(meanAreaImputed)
+        colnames(meanAbundanceImputed) <- gsub("interaction.imputed.", srepl ,colnames(meanAbundanceImputed))
+        meanAbundanceImputed <- tibble::add_column( meanAbundanceImputed, "value" = value, .before = 1)
+        return(meanAbundanceImputed)
       }
     }
   }
@@ -242,7 +242,7 @@ missigness_impute_factors_interactions <-
   function(pdata,
            config,
            probs = 0.03,
-           value = c("long", "nrReplicates", "nrMeasured", "meanArea", "imputed"),
+           value = c("long", "nrReplicates", "nrMeasured", "meanAbundance", "imputed"),
            add.prefix = FALSE,
            global = TRUE)
   {
@@ -298,7 +298,7 @@ missigness_impute_factors_interactions <-
 #' data <- bb$data
 #'
 #' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-#' mean <- missigness_impute_factors_interactions(data, configur, value = "meanArea" )
+#' mean <- missigness_impute_factors_interactions(data, configur, value = "meanAbundance" )
 #' mean <- get_contrast(mean, configur$table$hierarchy_keys(), Contrasts)
 #' meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hierarchy_keys_depth())
 #'
@@ -452,10 +452,10 @@ get_imputed_contrasts <- function(pepIntensity,
     stop("At least 1 observation in interaction to infer LOD.")
   }
   long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
-  LOD <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanArea) |> median(na.rm=TRUE)
+  LOD <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanAbundance) |> median(na.rm=TRUE)
 
   long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchy_keys())), interaction)
-  long <- long |> mutate(imputed_b = ifelse(is.na(meanArea), LOD, meanArea))
+  long <- long |> mutate(imputed_b = ifelse(is.na(meanAbundance), LOD, meanAbundance))
 
   lt <- long
   imp <- lt |> pivot_wider(id_cols = config$table$hierarchy_keys(), names_from = interaction, values_from = imputed_b)
@@ -517,11 +517,11 @@ missigness_histogram <- function(x,
   if (showempty) {
     if (config$table$is_response_transformed) {
       missingPrec <- missingPrec |>
-        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea), min(.data$meanArea, na.rm = TRUE) - 1,
-                                        .data$meanArea))
+        dplyr::mutate(meanAbundance = ifelse(is.na(.data$meanAbundance), min(.data$meanAbundance, na.rm = TRUE) - 1,
+                                        .data$meanAbundance))
     }else{
       missingPrec <- missingPrec |>
-        dplyr::mutate(meanArea = ifelse(is.na(.data$meanArea),min(.data$meanArea, na.rm = TRUE) - 20,.data$meanArea))
+        dplyr::mutate(meanAbundance = ifelse(is.na(.data$meanAbundance),min(.data$meanAbundance, na.rm = TRUE) - 20,.data$meanAbundance))
     }
 
   }
@@ -529,10 +529,10 @@ missigness_histogram <- function(x,
   factors <- table$factor_keys_depth()
   formula <- paste(table$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
-  meanarea <- paste0("mean_", config$table$get_response())
-  missingPrec <- dplyr::rename(missingPrec, !!sym(meanarea) := .data$meanArea )
+  meanAbundance <- paste0("mean_", config$table$get_response())
+  missingPrec <- dplyr::rename(missingPrec, !!sym(meanAbundance) := .data$meanAbundance )
 
-  p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanarea), fill = .data$nrNAs, colour = .data$nrNAs)) +
+  p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanAbundance), fill = .data$nrNAs, colour = .data$nrNAs)) +
     ggplot2::geom_density(alpha = alpha, position = "identity") +
     ggplot2::facet_grid(as.formula(formula)) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
