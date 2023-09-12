@@ -128,6 +128,7 @@ R6_extract_values <- function(r6class){
 #'
 #' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 #'
+
 setup_analysis <- function(data, configuration, cc = TRUE ){
   configuration <- configuration$clone(deep = TRUE)
   table <- configuration$table
@@ -171,10 +172,15 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   data <- data |> dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factor_keys())))
 
   # Make implicit NA's explicit
-  if (!table$isotopeLabel %in% colnames(data)) {
+  if (!(table$isotopeLabel %in% colnames(data))) {
     warning("no isotopeLabel column specified in the data, adding column automatically and setting to 'light'.")
     data[[table$isotopeLabel]] <- "light"
   }
+  if(!(table$ident_qValue %in%  colnames(data))){
+    warning("no qValue column specified in the data. Creating column and setting qValues to 0.")
+    data[[table$ident_qValue]] <- 0
+  }
+
 
   # TODO add better warning....
   data <- data |> dplyr::select(c(table$id_vars(),table$value_vars()))
@@ -195,6 +201,8 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   if (cc) {
     data <- complete_cases( data , configuration)
   }
+
+
   return( data )
 }
 
