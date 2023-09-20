@@ -17,7 +17,7 @@
 #'
 get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id") {
   map <- df |> dplyr::select(dplyr::all_of(idcolumn)) |> distinct() |>
-    dplyr::filter(grepl(pattern = "^sp\\||^tr\\|", !!sym(idcolumn))) |>
+    dplyr::filter(grepl(pattern = "^[a-z]{2,7}\\||", !!sym(idcolumn))) |>
     tidyr::separate(col = !!sym(idcolumn),
                     sep = "_",
                     into = c("begin",
