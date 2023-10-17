@@ -50,7 +50,7 @@ https://github.com/fgcz/prolfqua/issues
 
 # How to get started
 
-- See our article at the [Journal of Proteome Research](https://pubs.acs.org/doi/full/10.1021)
+- See our article at the [Journal of Proteome Research](https://pubmed.ncbi.nlm.nih.gov/36939687/)
 - See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
 - Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube or [slides](https://f1000research.com/slides/9-1476).
 - Read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
