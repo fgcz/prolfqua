@@ -18,7 +18,7 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -321,21 +321,21 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
 <span class="r-in"><span><span class="va">xcx</span> <span class="op">&lt;-</span> <span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ctr</span>, subject_Id <span class="op">=</span> <span class="va">csi</span><span class="op">$</span><span class="va">subject_Id</span>, modelName <span class="op">=</span> <span class="st">"TableTest"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,578 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName   contr…¹ prote…² pepti…³   diff avgAbd    df sigma std.e…⁴ stati…⁵</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> groupAvera… diluti… CON__P… VHKECC…  0     -<span style="color: #BB0000;">1.72</span>      1 0.332   0.259   0    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> groupAvera… diluti… sp|O15… AYLQQLR  4.13   0.345     1 0.332   0.259  15.9  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> groupAvera… diluti… sp|O60… SKPVFS… -<span style="color: #BB0000;">2.48</span>  -<span style="color: #BB0000;">0.477</span>     1 0.332   0.259  -<span style="color: #BB0000;">9.57</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> groupAvera… diluti… sp|O60… AAIQSQ… -<span style="color: #BB0000;">0.176</span>  0.118     1 0.332   0.259  -<span style="color: #BB0000;">0.677</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> groupAvera… diluti… sp|O60… KYVLDD… -<span style="color: #BB0000;">0.258</span> -<span style="color: #BB0000;">2.72</span>      1 0.332   0.259  -<span style="color: #BB0000;">0.996</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> groupAvera… diluti… sp|O75… IYFLLVR  0     -<span style="color: #BB0000;">2.38</span>      1 0.332   0.259   0    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> groupAvera… diluti… sp|O95… VTNTTP…  0     -<span style="color: #BB0000;">1.72</span>      1 0.332   0.259   0    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> groupAvera… diluti… sp|P00… PMYSNP…  0     -<span style="color: #BB0000;">1.79</span>      1 0.332   0.259   0    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> groupAvera… diluti… sp|P04… LLEESI… -<span style="color: #BB0000;">0.557</span> -<span style="color: #BB0000;">1.83</span>      1 0.332   0.259  -<span style="color: #BB0000;">2.15</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> groupAvera… diluti… sp|P0A… AAELAG… -<span style="color: #BB0000;">0.478</span> -<span style="color: #BB0000;">0.886</span>     1 0.332   0.259  -<span style="color: #BB0000;">1.85</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2,568 more rows, 4 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, FDR &lt;dbl&gt;, and abbreviated variable names ¹​contrast,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​protein_Id, ³​peptide_Id, ⁴​std.error, ⁵​statistic</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName  contrast protein_Id peptide_Id   diff avgAbd    df sigma std.error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> groupAver… dilutio… CON__P027… VHKECCHGD…  0     -<span style="color: #BB0000;">1.72</span>      1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> groupAver… dilutio… sp|O15145… AYLQQLR     4.13   0.345     1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> groupAver… dilutio… sp|O60220… SKPVFSESL… -<span style="color: #BB0000;">2.48</span>  -<span style="color: #BB0000;">0.477</span>     1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> groupAver… dilutio… sp|O60645… AAIQSQLDG… -<span style="color: #BB0000;">0.176</span>  0.118     1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> groupAver… dilutio… sp|O60645… KYVLDDLIV… -<span style="color: #BB0000;">0.258</span> -<span style="color: #BB0000;">2.72</span>      1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> groupAver… dilutio… sp|O75436… IYFLLVR     0     -<span style="color: #BB0000;">2.38</span>      1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> groupAver… dilutio… sp|O95361… VTNTTPWEH…  0     -<span style="color: #BB0000;">1.72</span>      1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> groupAver… dilutio… sp|P00505… PMYSNPPLN…  0     -<span style="color: #BB0000;">1.79</span>      1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> groupAver… dilutio… sp|P04150… LLEESIANL… -<span style="color: #BB0000;">0.557</span> -<span style="color: #BB0000;">1.83</span>      1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> groupAver… dilutio… sp|P0ACB7… AAELAGNDT… -<span style="color: #BB0000;">0.478</span> -<span style="color: #BB0000;">0.886</span>     1 0.332     0.259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2,568 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
 <span class="r-plt img"><img src="ContrastsTable-1.png" alt="" width="700" height="433"></span>
@@ -361,7 +361,7 @@ holds results when contrasts are added."><!-- mathjax --><script src="https://cd
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

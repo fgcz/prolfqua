@@ -18,7 +18,7 @@ Estimate contrasts using Wald Test"><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -433,12 +433,14 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 3 warnings in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, modelFunction$model_fun, pb =</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   pb)`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 17: `protein_Id = "sp|O95361|TRI16_HUMAN~598~O95361"`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `value[[3L]]()`:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> WARN :Error: number of levels of each grouping factor must be &lt; number of observations (problems: sampleName)</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 13: `protein_Id = "sp|O60220|TIM8A_HUMAN~391~O60220"`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `checkConv()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> unable to evaluate scaled gradient</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 2 remaining warnings.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="model_summary.html">model_summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
@@ -471,21 +473,21 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 320 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [2]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    model…¹ prote…² contr…³    diff     FDR std.e…⁴    df stati…⁵ conf.…⁶ conf.…⁷</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> WaldTe… sp|P21… dil.a_… -<span style="color: #BB0000;">0.097</span><span style="color: #BB0000; text-decoration: underline;">5</span> 5.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.055<span style="text-decoration: underline;">9</span> 263.   -<span style="color: #BB0000;">1.74</span>  -<span style="color: #BB0000;">0.208</span>   0.012<span style="text-decoration: underline;">7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> WaldTe… sp|P21… dil.e_…  0.029<span style="text-decoration: underline;">1</span> 8.49<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.056<span style="text-decoration: underline;">1</span> 263.    0.518 -<span style="color: #BB0000;">0.081</span><span style="color: #BB0000; text-decoration: underline;">4</span>  0.140 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> WaldTe… sp|Q9N… dil.a_…  0.305  5.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.164   11.4   1.86  -<span style="color: #BB0000;">0.054</span><span style="color: #BB0000; text-decoration: underline;">0</span>  0.663 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> WaldTe… sp|Q9N… dil.e_…  0.336  3.10<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.178   11.6   1.89  -<span style="color: #BB0000;">0.052</span><span style="color: #BB0000; text-decoration: underline;">0</span>  0.725 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> WaldTe… sp|O43… dil.a_… -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">5</span> 9.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.127   12.3  -<span style="color: #BB0000;">0.193</span> -<span style="color: #BB0000;">0.300</span>   0.252 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> WaldTe… sp|O43… dil.e_… -<span style="color: #BB0000;">0.022</span><span style="color: #BB0000; text-decoration: underline;">8</span> 9.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.136   16.7  -<span style="color: #BB0000;">0.167</span> -<span style="color: #BB0000;">0.311</span>   0.265 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> WaldTe… sp|P0A… dil.a_… -<span style="color: #BB0000;">0.926</span>  4.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.274   18.0  -<span style="color: #BB0000;">3.38</span>  -<span style="color: #BB0000;">1.50</span>   -<span style="color: #BB0000;">0.351</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> WaldTe… sp|P0A… dil.e_…  0.846  4.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.204   18.0   4.16   0.418   1.27  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> WaldTe… sp|P0A… dil.a_… -<span style="color: #BB0000;">0.997</span>  1.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.200   27.0  -<span style="color: #BB0000;">4.99</span>  -<span style="color: #BB0000;">1.41</span>   -<span style="color: #BB0000;">0.587</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> WaldTe… sp|P0A… dil.e_…  0.790  2.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  0.156   27.0   5.06   0.470   1.11  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 310 more rows, 3 more variables: p.value &lt;dbl&gt;, sigma &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   avgAbd &lt;dbl&gt;, and abbreviated variable names ¹​modelName, ²​protein_Id,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ³​contrast, ⁴​std.error, ⁵​statistic, ⁶​conf.low, ⁷​conf.high</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName protein_Id       contrast    diff     FDR std.error    df statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> WaldTest  sp|P21589|5NTD_… dil.a_v… -<span style="color: #BB0000;">0.097</span><span style="color: #BB0000; text-decoration: underline;">5</span> 5.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.055<span style="text-decoration: underline;">9</span> 263.     -<span style="color: #BB0000;">1.74</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> WaldTest  sp|P21589|5NTD_… dil.e_v…  0.029<span style="text-decoration: underline;">1</span> 8.49<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.056<span style="text-decoration: underline;">1</span> 263.      0.518</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> WaldTest  sp|Q9NZM3|ITSN2… dil.a_v…  0.305  5.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.164   11.4     1.86 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> WaldTest  sp|Q9NZM3|ITSN2… dil.e_v…  0.336  3.10<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.178   11.6     1.89 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> WaldTest  sp|O43660|PLRG1… dil.a_v… -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">5</span> 9.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.127   12.3    -<span style="color: #BB0000;">0.193</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> WaldTest  sp|O43660|PLRG1… dil.e_v… -<span style="color: #BB0000;">0.022</span><span style="color: #BB0000; text-decoration: underline;">8</span> 9.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.136   16.7    -<span style="color: #BB0000;">0.167</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> WaldTest  sp|P0AG78|SUBI_… dil.a_v… -<span style="color: #BB0000;">0.926</span>  4.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>    0.274   18.0    -<span style="color: #BB0000;">3.38</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> WaldTest  sp|P0AG78|SUBI_… dil.e_v…  0.846  4.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    0.204   18.0     4.16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> WaldTest  sp|P0A908|MIPA_… dil.a_v… -<span style="color: #BB0000;">0.997</span>  1.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    0.200   27.0    -<span style="color: #BB0000;">4.99</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> WaldTest  sp|P0A908|MIPA_… dil.e_v…  0.790  2.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>    0.156   27.0     5.06 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 310 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">contrastX</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   contrast   group_1    group_2   </span>
@@ -534,7 +536,7 @@ creates Contrast_Plotter</p><div class="section">
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

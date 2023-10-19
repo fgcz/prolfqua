@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -106,7 +106,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2023-04-11</h4>
+            <h4 data-toc-skip class="date">2023-10-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/vignettes/QualityControlAndSampleSizeEstimation.Rmd" class="external-link"><code>vignettes/QualityControlAndSampleSizeEstimation.Rmd</code></a></small>
       <div class="hidden name"><code>QualityControlAndSampleSizeEstimation.Rmd</code></div>
@@ -145,18 +145,17 @@ the samples.</p>
 <code class="sourceCode R"><span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">annotation</span>, <span class="va">startdata</span>, by <span class="op">=</span> <span class="st">"raw.file"</span><span class="op">)</span></span>
 <span><span class="va">startdata</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 14</span></span></span>
-<span><span class="co">##   raw.file   run_ID date  sample prote…¹ major…² nr.pe…³ fasta…⁴ prote…⁵ prote…⁶</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> b03_02_15… 02     1503… b      sp|Q14… sp|Q14…       8 sp|Q14…    <span style="text-decoration: underline;">2</span>835   22.1 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> b03_02_15… 02     1503… b      sp|Q9N… sp|Q9N…       4 sp|Q9N…    <span style="text-decoration: underline;">4</span>547    5.17</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> b03_02_15… 02     1503… b      sp|Q14… sp|Q14…       1 sp|Q14…    <span style="text-decoration: underline;">2</span>809    2.35</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> b03_02_15… 02     1503… b      sp|O60… sp|O60…      11 sp|O60…     430   68.3 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> b03_02_15… 02     1503… b      sp|Q9Y… sp|Q9Y…       4 sp|Q9Y…    <span style="text-decoration: underline;">4</span>887   10.6 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> b03_02_15… 02     1503… b      sp|Q99… sp|Q99…       3 sp|Q99…    <span style="text-decoration: underline;">3</span>940    8.33</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 4 more variables: proteinID &lt;chr&gt;, mq.protein.intensity &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   mq.protein.lfq.intensity &lt;dbl&gt;, mq.protein.ms.ms.count &lt;int&gt;, and</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   abbreviated variable names ¹​protein.ids, ²​majority.protein.ids,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   ³​nr.peptides, ⁴​fasta.headers, ⁵​protein.group.id, ⁶​protein.score</span></span></span></code></pre>
+<span><span class="co">##   raw.file      run_ID date  sample protein.ids majority.protein.ids nr.peptides</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> b03_02_15030… 02     1503… b      sp|Q14527|… sp|Q14527|HLTF_HUMAN           8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> b03_02_15030… 02     1503… b      sp|Q9NZW5|… sp|Q9NZW5|MPP6_HUMAN           4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> b03_02_15030… 02     1503… b      sp|Q14149|… sp|Q14149|MORC3_HUM…           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> b03_02_15030… 02     1503… b      sp|O60832|… sp|O60832|DKC1_HUMAN          11</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> b03_02_15030… 02     1503… b      sp|Q9Y5B0|… sp|Q9Y5B0|CTDP1_HUM…           4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> b03_02_15030… 02     1503… b      sp|Q99584|… sp|Q99584|S10AD_HUM…           3</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 7 more variables: fasta.headers &lt;chr&gt;, protein.group.id &lt;int&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   protein.score &lt;dbl&gt;, proteinID &lt;chr&gt;, mq.protein.intensity &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   mq.protein.lfq.intensity &lt;dbl&gt;, mq.protein.ms.ms.count &lt;int&gt;</span></span></span></code></pre>
 <p>First, we want to remove all proteins identified only by a single
 peptide.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -854,40 +853,43 @@ for all the proteins.
 </h2>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R version 4.2.1 (2022-06-23)</span></span>
+<pre><code><span><span class="co">## R version 4.3.0 (2023-04-21)</span></span>
 <span><span class="co">## Platform: aarch64-apple-darwin20 (64-bit)</span></span>
-<span><span class="co">## Running under: macOS Ventura 13.2.1</span></span>
+<span><span class="co">## Running under: macOS Ventura 13.4.1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRblas.0.dylib</span></span>
-<span><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib</span></span>
+<span><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib </span></span>
+<span><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## time zone: Europe/Zurich</span></span>
+<span><span class="co">## tzcode source: internal</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## attached base packages:</span></span>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] ggrepel_0.9.3      Rcpp_1.0.10        lattice_0.20-45    tidyr_1.3.0       </span></span>
-<span><span class="co">##  [5] rprojroot_2.0.3    conflicted_1.2.0   digest_0.6.31      utf8_1.2.3        </span></span>
-<span><span class="co">##  [9] R6_2.5.1           cellranger_1.1.0   evaluate_0.20      httr_1.4.5        </span></span>
-<span><span class="co">## [13] ggplot2_3.4.1      highr_0.10         pillar_1.8.1       rlang_1.0.6       </span></span>
-<span><span class="co">## [17] lazyeval_0.2.2     readxl_1.4.2       prolfqua_1.1.2     data.table_1.14.8 </span></span>
-<span><span class="co">## [21] jquerylib_0.1.4    Matrix_1.5-1       rmarkdown_2.20     pkgdown_2.0.6     </span></span>
-<span><span class="co">## [25] textshaping_0.3.6  desc_1.4.2         labeling_0.4.2     splines_4.2.1     </span></span>
-<span><span class="co">## [29] stringr_1.5.0      htmlwidgets_1.6.1  pheatmap_1.0.12    munsell_0.5.0     </span></span>
-<span><span class="co">## [33] compiler_4.2.1     xfun_0.37          pkgconfig_2.0.3    systemfonts_1.0.4 </span></span>
-<span><span class="co">## [37] mgcv_1.8-41        htmltools_0.5.4    tidyselect_1.2.0   tibble_3.1.8      </span></span>
-<span><span class="co">## [41] gridExtra_2.3      fansi_1.0.4        viridisLite_0.4.1  dplyr_1.1.0       </span></span>
-<span><span class="co">## [45] withr_2.5.0        MASS_7.3-58.1      grid_4.2.1         nlme_3.1-160      </span></span>
-<span><span class="co">## [49] jsonlite_1.8.4     gtable_0.3.1       lifecycle_1.0.3    magrittr_2.0.3    </span></span>
-<span><span class="co">## [53] scales_1.2.1       KernSmooth_2.23-20 cli_3.6.0          stringi_1.7.12    </span></span>
-<span><span class="co">## [57] cachem_1.0.7       farver_2.1.1       fs_1.6.1           bslib_0.4.2       </span></span>
-<span><span class="co">## [61] ragg_1.2.4         generics_0.1.3     vctrs_0.5.2        RColorBrewer_1.1-3</span></span>
-<span><span class="co">## [65] tools_4.2.1        forcats_1.0.0      glue_1.6.2         purrr_1.0.1       </span></span>
-<span><span class="co">## [69] fastmap_1.1.1      yaml_2.3.7         colorspace_2.1-0   memoise_2.0.1     </span></span>
-<span><span class="co">## [73] plotly_4.10.1      knitr_1.42         sass_0.4.5</span></span></code></pre>
+<span><span class="co">##  [1] gtable_0.3.4       xfun_0.40          bslib_0.5.1        ggplot2_3.4.4     </span></span>
+<span><span class="co">##  [5] htmlwidgets_1.6.2  ggrepel_0.9.3      lattice_0.21-8     vctrs_0.6.4       </span></span>
+<span><span class="co">##  [9] tools_4.3.0        generics_0.1.3     tibble_3.2.1       fansi_1.0.5       </span></span>
+<span><span class="co">## [13] pkgconfig_2.0.3    KernSmooth_2.23-20 Matrix_1.6-1       pheatmap_1.0.12   </span></span>
+<span><span class="co">## [17] data.table_1.14.8  RColorBrewer_1.1-3 desc_1.4.2         readxl_1.4.2      </span></span>
+<span><span class="co">## [21] lifecycle_1.0.3    prolfqua_1.1.3     compiler_4.3.0     farver_2.1.1      </span></span>
+<span><span class="co">## [25] stringr_1.5.0      textshaping_0.3.6  munsell_0.5.0      htmltools_0.5.6   </span></span>
+<span><span class="co">## [29] sass_0.4.7         yaml_2.3.7         lazyeval_0.2.2     plotly_4.10.1     </span></span>
+<span><span class="co">## [33] pillar_1.9.0       pkgdown_2.0.7      jquerylib_0.1.4    tidyr_1.3.0       </span></span>
+<span><span class="co">## [37] MASS_7.3-58.4      cachem_1.0.8       nlme_3.1-162       tidyselect_1.2.0  </span></span>
+<span><span class="co">## [41] conflicted_1.2.0   digest_0.6.33      stringi_1.7.12     dplyr_1.1.3       </span></span>
+<span><span class="co">## [45] purrr_1.0.2        splines_4.3.0      labeling_0.4.3     forcats_1.0.0     </span></span>
+<span><span class="co">## [49] rprojroot_2.0.3    fastmap_1.1.1      grid_4.3.0         colorspace_2.1-0  </span></span>
+<span><span class="co">## [53] cli_3.6.1          magrittr_2.0.3     utf8_1.2.3         withr_2.5.1       </span></span>
+<span><span class="co">## [57] scales_1.2.1       rmarkdown_2.25     httr_1.4.7         gridExtra_2.3     </span></span>
+<span><span class="co">## [61] cellranger_1.1.0   ragg_1.2.5         memoise_2.0.1      evaluate_0.21     </span></span>
+<span><span class="co">## [65] knitr_1.44         viridisLite_0.4.2  mgcv_1.8-42        rlang_1.1.1       </span></span>
+<span><span class="co">## [69] Rcpp_1.0.11        glue_1.6.2         jsonlite_1.8.7     R6_2.5.1          </span></span>
+<span><span class="co">## [73] systemfonts_1.0.4  fs_1.6.3</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -920,7 +922,7 @@ Expression Analysis.”</span> <em>bioRxiv</em>. <a href="https://doi.org/10.110
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
