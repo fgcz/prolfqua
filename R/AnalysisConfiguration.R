@@ -143,7 +143,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
   # extract factors
   if ( length(table$factors) == 0) {
     stop("No factors (explanatory variables) specified in the AnalysisTableConfiguration.\n",
-            'Pleases use table$factors["Condition"] = "columnName".\n',
+         'Pleases use table$factors["Condition"] = "columnName".\n',
          'where Condition is the new name of the variable and\n',
          'columnName is the name of the column containing the varible.')
   }
@@ -159,13 +159,18 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 
   sampleName <- table$sampleName
 
-  if (!sampleName  %in% names(data)) {
+  if (FALSE & !sampleName  %in% names(data)) {
     message("creating sampleName from factor columns")
-    data <- data |>  tidyr::unite( UQ(sym(sampleName)) , unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) |>
+    data <- data |>  tidyr::unite(
+      UQ(sym(sampleName)) ,
+      unique(unlist(table$factors)), remove = TRUE , sep = configuration$sep) |>
       dplyr::select(sampleName, table$fileName) |> dplyr::distinct() |>
       dplyr::mutate_at(sampleName, function(x){ x <- make.unique( x, sep = configuration$sep )}) |>
       dplyr::inner_join(data, by = table$fileName)
-  } else {
+  } else if (!sampleName  %in% names(data)) {
+    message("creating sampleName from fileName column")
+    data[[table$sampleName]] <- tools::file_path_sans_ext( basename(data[[table$fileName]]) )
+  }else {
     message(sampleName, " already exists")
   }
 
@@ -176,11 +181,10 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
     warning("no isotopeLabel column specified in the data, adding column automatically and setting to 'light'.")
     data[[table$isotopeLabel]] <- "light"
   }
-  if(!(table$ident_qValue %in%  colnames(data))){
+  if (!(table$ident_qValue %in%  colnames(data))) {
     warning("no qValue column specified in the data. Creating column and setting qValues to 0.")
     data[[table$ident_qValue]] <- 0
   }
-
 
   # TODO add better warning....
   data <- data |> dplyr::select(c(table$id_vars(),table$value_vars()))
@@ -189,7 +193,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
     summarize(n = n())
   if (length(table(txd$n)) > 1) {
     str <- paste("There is more than ONE observations for each : ", paste( table$hierarchy_keys(), collapse = ", "), ",\n",
-    "and sample : ", table$sampleName, "; (filename) : ", table$fileName, "\n")
+                 "and sample : ", table$sampleName, "; (filename) : ", table$fileName, "\n")
     warning(str)
     warning("Please inspect the returned dataframe. Check for rows where n > 1\n e.g. res |> dplyr::filter(n > 1)")
     return(txd)
