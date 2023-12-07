@@ -421,12 +421,12 @@ hierarchy_counts_sample <- function(pdata,
       if (value == "long") {
         return(long)
       }else if (value == "plot") {
-        nudgeval <- mean(long$nr) * 0.05
+        nudgeval <-  -mean(long$nr) * 0.05
         # TODO(WEW) check potential problem with sampleName
         ggplot2::ggplot(long, aes(x = !!sym(configuration$table$sampleName), y = .data$nr)) +
           ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
           ggplot2::facet_wrap( ~ key, scales = "free_y", ncol = 1) +
-          ggplot2::geom_text(aes(label = .data$nr), nudge_y = nudgeval, angle = 45) +
+          ggplot2::geom_text(aes(label = .data$nr), nudge_y = nudgeval, angle = 65) +
           ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
       }
     }

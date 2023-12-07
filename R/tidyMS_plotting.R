@@ -540,7 +540,6 @@ plot_NA_heatmap <- function(data,
 #' stopifnot(nrow(istar$data) == 25780)
 #' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
-#'
 #' tmp <- plot_pca(analysis, config, add_txt= TRUE)
 #'
 #' print(tmp)
@@ -552,7 +551,9 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
   ff <- na.omit(wide$data)
   ff <- t(ff)
-  xx <- as_tibble(prcomp(ff)$x, rownames = config$table$sampleName)
+  pca_result <- prcomp(ff)
+  xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
+  variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
   xx <- inner_join(wide$annotation, xx)
 
 
@@ -570,6 +571,8 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   x <- ggplot(xx, aes(x = .data$PC1, y = .data$PC2,
                       color = !!sym(config$table$factor_keys()[1]),
                       text = !!sym(config$table$sampleName))) +
+    labs(x = paste0("PC1 (", round(variance_explained[1]), "% variance)"),
+         y = paste0("PC2 (", round(variance_explained[2]), "% variance)")) +
     point +
     if (add_txt) {text}
 
@@ -579,3 +582,43 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
   return(x)
 }
 
+#' plot screeplot
+#' @export
+#' @keywords internal
+#' @family plotting
+#' @examples
+#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' stopifnot(nrow(istar$data) == 25780)
+#' config <- old2new(istar$config$clone(deep=TRUE))
+#' analysis <- istar$data
+#' #debug(plot_pca)
+#' tmp <- plot_screeplot(analysis, config, threshold_pc= NULL)
+#' print(tmp)
+#' tmp <- plot_screeplot(analysis, config, threshold_pc= 1)
+#' print(tmp)
+#' tmp <- plot_screeplot(analysis, config, nr_PC = 4, threshold_pc = NULL)
+#' print(tmp)
+plot_screeplot <- function(data , config, threshold_pc = 1, nr_PC = NULL) {
+  wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
+  ff <- na.omit(wide$data)
+  ff <- t(ff)
+  pca_result <- prcomp(ff)
+  variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
+  xx <- data.frame(PC = paste("PC", 1:length(variance_explained), sep = "_"), percent_variance_explained = variance_explained)
+  xx$PC <- factor(xx$PC, levels = xx$PC)
+
+  if (!is.null(threshold_pc)) {
+    xx <- xx |> dplyr::filter(percent_variance_explained > threshold_pc)
+  }
+  if (!is.null(nr_PC)) {
+    minRow <- min(nr_PC, nrow(xx))
+    xx <- xx[1:minRow,]
+  }
+  nudgeval = -2
+  pl <- ggplot2::ggplot(xx, ggplot2::aes(x = PC, y = percent_variance_explained )) +
+    ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
+    ggplot2::geom_text(aes(label = round(.data$percent_variance_explained)), nudge_y = nudgeval, angle = 65) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
+
+  invisible(pl)
+}

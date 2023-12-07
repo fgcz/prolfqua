@@ -17,7 +17,6 @@ istar <- prolfqua_data('data_ionstar')$filtered()
 stopifnot(nrow(istar$data) == 25780)
 config <- old2new(istar$config$clone(deep=TRUE))
 analysis <- istar$data
-
 tmp <- plot_pca(analysis, config, add_txt= TRUE)
 
 print(tmp)
@@ -46,7 +45,8 @@ Other plotting:
 \code{\link{plot_hierarchies_line}()},
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+\code{\link{plot_sample_correlation}()},
+\code{\link{plot_screeplot}()}
 }
 \concept{plotting}
 \keyword{internal}

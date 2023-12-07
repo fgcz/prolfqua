@@ -45,7 +45,8 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+\code{\link{plot_sample_correlation}()},
+\code{\link{plot_screeplot}()}
 }
 \concept{plotting}
 \keyword{internal}

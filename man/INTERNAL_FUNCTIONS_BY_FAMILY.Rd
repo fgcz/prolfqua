@@ -120,7 +120,8 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+\code{\link{plot_sample_correlation}()},
+\code{\link{plot_screeplot}()}
 
 Other preprocessing: 
 \code{\link{apply_to_response_matrix}()},

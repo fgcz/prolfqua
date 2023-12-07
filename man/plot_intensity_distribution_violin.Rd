@@ -61,7 +61,8 @@ Other plotting:
 \code{\link{plot_hierarchies_line}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+\code{\link{plot_sample_correlation}()},
+\code{\link{plot_screeplot}()}
 
 Other plotting: 
 \code{\link{ContrastsPlotter}},
@@ -82,7 +83,8 @@ Other plotting:
 \code{\link{plot_hierarchies_line}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+\code{\link{plot_sample_correlation}()},
+\code{\link{plot_screeplot}()}
 }
 \concept{plotting}
 \keyword{internal}
