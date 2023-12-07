@@ -229,7 +229,7 @@ tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetPr
 
   psm_long <- psm_relevant |> tidyr::pivot_longer( tidyselect::all_of(colnamesQuan), values_to = "abundance", names_to = "channel")
   if (!is.null(abundance_threshold)) {
-    psm_long <- dplyr::filter(psm_long, abundance > Abundance_threshold)
+    psm_long <- dplyr::filter(psm_long, abundance > abundance_threshold)
   }
 
   nrPeptides <- psm_long |>
