@@ -203,7 +203,7 @@ tidy_FragPipe_combined_protein <- function(
 #' @param purity_threshold purity threshold default = 0.5
 #' @param PeptideProphetProb default 0.9
 #'
-tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetProb = 0.9){
+tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetProb = 0.9, abundance_threshold = 0){
   psm <- readr::read_tsv(psm_file)
 
   x <- which(colnames(psm) == "Quan Usage")
@@ -228,7 +228,9 @@ tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetPr
         colnamesQuan) ))
 
   psm_long <- psm_relevant |> tidyr::pivot_longer( tidyselect::all_of(colnamesQuan), values_to = "abundance", names_to = "channel")
-  psm_long <- dplyr::filter(psm_long, abundance > 0)
+  if (!is.null(abundance_threshold)) {
+    psm_long <- dplyr::filter(psm_long, abundance > Abundance_threshold)
+  }
 
   nrPeptides <- psm_long |>
     dplyr::select(Protein, Peptide) |> distinct() |> group_by(Protein) |> summarize(nrPeptides = n())
