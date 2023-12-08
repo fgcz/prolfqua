@@ -206,6 +206,11 @@ tidy_FragPipe_combined_protein <- function(
 tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetProb = 0.9, abundance_threshold = 0){
   psm <- readr::read_tsv(psm_file)
 
+  if (!"Purity" %in% colnames(psm) ) {
+    warning("no Purity column in psm file!")
+    psm <- psm |> mutate(Purity = 1, .before = "Quan Usage")
+  }
+
   x <- which(colnames(psm) == "Quan Usage")
   colnamesQuan <- colnames(psm)[(x + 1):ncol(psm)]
   psm_relevant <- psm |> dplyr::select(
