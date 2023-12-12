@@ -4,7 +4,7 @@
 \alias{plot_pca}
 \title{plot PCA}
 \usage{
-plot_pca(data, config, add_txt = FALSE, plotly = FALSE)
+plot_pca(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE)
 }
 \description{
 plot PCA
@@ -21,6 +21,10 @@ tmp <- plot_pca(analysis, config, add_txt= TRUE)
 
 print(tmp)
 tmp <- plot_pca(analysis, config, add_txt= FALSE)
+print(tmp)
+tmp <- plot_pca(analysis, config, PC = c(1,2))
+print(tmp)
+tmp <- plot_pca(analysis, config, PC = c(2,3))
 print(tmp)
 plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 

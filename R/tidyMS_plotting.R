@@ -370,13 +370,13 @@ plot_heatmap <- function(data,
   } else {
 
     res <- tryCatch(pheatmap::pheatmap(resdata,
-                              cluster_rows  = FALSE,
-                              scale = "row",
-                              annotation_col = factors,
-                              show_rownames = show_rownames,
-                              border_color = NA,
-                              silent = TRUE,
-                              ... = ...), error = .ehandler)
+                                       cluster_rows  = FALSE,
+                                       scale = "row",
+                                       annotation_col = factors,
+                                       show_rownames = show_rownames,
+                                       border_color = NA,
+                                       silent = TRUE,
+                                       ... = ...), error = .ehandler)
 
 
   }
@@ -545,9 +545,15 @@ plot_NA_heatmap <- function(data,
 #' print(tmp)
 #' tmp <- plot_pca(analysis, config, add_txt= FALSE)
 #' print(tmp)
+#' tmp <- plot_pca(analysis, config, PC = c(1,2))
+#' print(tmp)
+#' tmp <- plot_pca(analysis, config, PC = c(2,3))
+#' print(tmp)
 #' plotly::ggplotly(tmp, tooltip = config$table$sampleName)
 #'
-plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
+plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE){
+  stopifnot(length(PC) == 2)
+
   wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
   ff <- na.omit(wide$data)
   ff <- t(ff)
@@ -568,14 +574,15 @@ plot_pca <- function(data , config, add_txt = FALSE, plotly = FALSE){
                     nudge_x = 0.25,
                     nudge_y = 0.25 )
 
-  x <- ggplot(xx, aes(x = .data$PC1, y = .data$PC2,
-                      color = !!sym(config$table$factor_keys()[1]),
-                      text = !!sym(config$table$sampleName))) +
-    labs(x = paste0("PC1 (", round(variance_explained[1]), "% variance)"),
-         y = paste0("PC2 (", round(variance_explained[2]), "% variance)")) +
-    point +
-    if (add_txt) {text}
-
+    PCx <- paste0("PC", PC[1])
+    PCy <- paste0("PC", PC[2])
+    x <- ggplot(xx, aes(x = !!sym(PCx), y = !!sym(PCy),
+                        color = !!sym(config$table$factor_keys()[1]),
+                        text = !!sym(config$table$sampleName))) +
+      labs(x = paste0("PC1 (", round(variance_explained[PC[1]]), "% variance)"),
+           y = paste0("PC2 (", round(variance_explained[PC[2]]), "% variance)")) +
+      point +
+      if (add_txt) {text}
   if (!is.na(sh)) {
     x <- x +  ggplot2::scale_shape_manual(values = seq_along(unique(xx[[sh]])))
   }
