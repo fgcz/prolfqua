@@ -121,15 +121,15 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' @param add_txt show sample names
     #' @return ggplot
-    pca = function(add_txt = TRUE){
-      fig <- prolfqua::plot_pca(self$lfq$data, self$lfq$config, add_txt = add_txt)
+    pca = function(PC = c(1,2), add_txt = TRUE){
+      fig <- prolfqua::plot_pca(self$lfq$data, self$lfq$config, PC = PC,add_txt = add_txt)
       return(fig)
     },
     #' @description
     #' pca plot
     #' @param add_txt show sample names
     #' @return plotly
-    pca_plotly = function(add_txt = FALSE){
+    pca_plotly = function(PC = c(1,2), add_txt = FALSE){
       fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$config$table$sampleName)
       return(fig)
     },

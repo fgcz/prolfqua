@@ -200,7 +200,7 @@ PCA plot
 
 A PCA is applied and the first and second principal component are shown.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(add_txt = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -220,7 +220,7 @@ ggplot
 \subsection{Method \code{pca_plotly()}}{
 pca plot
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly(add_txt = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly(PC = c(1, 2), add_txt = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

@@ -579,8 +579,8 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
     x <- ggplot(xx, aes(x = !!sym(PCx), y = !!sym(PCy),
                         color = !!sym(config$table$factor_keys()[1]),
                         text = !!sym(config$table$sampleName))) +
-      labs(x = paste0("PC1 (", round(variance_explained[PC[1]]), "% variance)"),
-           y = paste0("PC2 (", round(variance_explained[PC[2]]), "% variance)")) +
+      labs(x = paste0(PCx," (", round(variance_explained[PC[1]]), "% variance)"),
+           y = paste0(PCy," (", round(variance_explained[PC[2]]), "% variance)")) +
       point +
       if (add_txt) {text}
   if (!is.na(sh)) {
