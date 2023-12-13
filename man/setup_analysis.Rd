@@ -4,7 +4,7 @@
 \alias{setup_analysis}
 \title{Setup a tidy table compatible with a \code{\link{AnalysisConfiguration}}}
 \usage{
-setup_analysis(data, configuration, cc = TRUE)
+setup_analysis(data, configuration, cc = TRUE, from_factors = FALSE)
 }
 \arguments{
 \item{data}{data.frame}

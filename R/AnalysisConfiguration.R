@@ -129,7 +129,7 @@ R6_extract_values <- function(r6class){
 #' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 #'
 
-setup_analysis <- function(data, configuration, cc = TRUE ){
+setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE){
   configuration <- configuration$clone(deep = TRUE)
   table <- configuration$table
 
@@ -159,7 +159,7 @@ setup_analysis <- function(data, configuration, cc = TRUE ){
 
   sampleName <- table$sampleName
 
-  if (FALSE & !sampleName  %in% names(data)) {
+  if (from_factors & !sampleName  %in% names(data)) {
     message("creating sampleName from factor columns")
     data <- data |>  tidyr::unite(
       UQ(sym(sampleName)) ,

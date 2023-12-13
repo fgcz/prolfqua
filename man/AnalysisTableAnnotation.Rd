@@ -43,7 +43,7 @@ Other configuration:
 \describe{
 \item{\code{fileName}}{column name of column containing raw file names}
 
-\item{\code{sampleName}}{(will be generated from factors)}
+\item{\code{sampleName}}{(will be generated from factors or fileName)}
 
 \item{\code{isotopeLabel}}{which column contains the isotope label (e.g. heavy or light), Gor light only if LFQ.}
 

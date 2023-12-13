@@ -28,7 +28,7 @@ AnalysisTableAnnotation <- R6::R6Class(
 
     #' @field fileName column name of column containing raw file names
     fileName = NULL,
-    #' @field sampleName (will be generated from factors)
+    #' @field sampleName (will be generated from factors or fileName)
     sampleName = "sampleName",
 
     #' @field isotopeLabel which column contains the isotope label (e.g. heavy or light), Gor light only if LFQ.
