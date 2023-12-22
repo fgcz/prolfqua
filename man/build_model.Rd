@@ -76,6 +76,7 @@ Other modelling:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
+\code{\link{contrasts_fisher_exact}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},

@@ -52,6 +52,7 @@ Other modelling:
 \code{\link{LR_test}()},
 \code{\link{Model}},
 \code{\link{build_model}()},
+\code{\link{contrasts_fisher_exact}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},

@@ -213,10 +213,6 @@ isSingular_lm <- function(m){
   }
 }
 
-
-
-
-
 #' retrieve complete model.
 #' @keywords internal
 #' @family modelling
@@ -229,7 +225,6 @@ get_complete_model_fit <- function(modelProteinF){
   modelProteinF <- modelProteinF |> dplyr::filter(df.residual > 1)
   return(modelProteinF)
 }
-
 
 #' analyses lmer4 and lm models created using help function `strategy_lm` or `strategy_lmer`
 #'
@@ -1242,5 +1237,79 @@ summary_ROPECA_median_p.scaled <- function(
   # scale it back here.
   return(ungroup( summarized.protein ))
 }
+
+
+#' Fishers exact test on a datframe
+#' @export
+#' @family modelling
+#' @keywords internal
+#' @examples
+#' Nprot <- 1000
+#' condA <- 8
+#' condB <- 8
+#' observedA <- sample(0:8, Nprot, replace = TRUE)
+#' observedB <- sample(0:8, Nprot, replace = TRUE)
+#' xb <- data.frame(observedA = observedA, observedB = observedB)
+#'
+#' xb$samplesA <- condA
+#' xb$samplesB <- condB
+#' proteinID <- unique(stringi::stri_rand_strings(Nprot + 20,5))[1:Nprot]
+#' xb$proteinID <- proteinID
+#' xlater <- xb
+#' res <- contrasts_fisher_exact(xlater)
+#'
+contrasts_fisher_exact <- function(xb,
+observedA = "observedA",
+observedB = "observedB",
+samplesA = "samplesA",
+samplesB = "samplesB"
+) {
+  relativeRisk <- function(observedA, observedB, samplesA, samplesB) {
+    rr <- (observedA/(observedA + observedB))/(samplesA/(samplesA + samplesB))
+    return(rr)
+  }
+  odsRatio <- function(observedA, observedB, samplesA, samplesB) {
+    rr <- (observedA/observedB)/(samplesA/samplesB)
+    return(rr)
+  }
+  apply_fischer <- function(proteinID,observedA, observedB, samplesA, samplesB){
+    mat <- matrix(c(observedA, samplesA - observedA,
+                    observedB,samplesB - observedB), nrow = 2)
+    fisher_result <- fisher.test(mat)
+    return(data.frame(proteinID =  proteinID,
+                      p_value = fisher_result$p.value,
+                      OdsRatio = (fisher_result$estimate),
+                      conf.lower = (fisher_result$conf.int[1]),
+                      conf.higher = (fisher_result$conf.int[2]))
+    )
+  }
+
+  xb$OdsRatioM <- odsRatio(
+    observedA = xb[["observedA"]],
+    observedB = xb[["observedB"]],
+    samplesA = xb[["samplesA"]],
+    samplesB = xb[["samplesB"]])
+  xb$relativeRiskM <- relativeRisk(
+    observedA = xb[["observedA"]],
+    observedB = xb[["observedB"]],
+    samplesA = xb[["samplesA"]],
+    samplesB = xb[["samplesB"]])
+
+  res <- vector(mode = "list", length(nrow(xb)))
+
+  for (i in seq(nrow(xb))) {
+    res[[i]] <- apply_fischer(
+      xb[["proteinID"]][i],
+      xb[["observedA"]][i],
+      xb[["observedB"]][i],
+      xb[["samplesA"]][i],
+      xb[["samplesB"]][i] )
+  }
+
+  result <- dplyr::bind_rows(res)
+  xx <- dplyr::inner_join(xb , result, by = c("proteinID" = "proteinID"))
+  return(xx)
+}
+
 
 
