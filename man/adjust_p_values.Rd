@@ -8,7 +8,7 @@ adjust_p_values(
   mm,
   column = "p.value",
   group_by_col = "contrast",
-  newname = NULL
+  newname = "FDR"
 )
 }
 \description{
@@ -24,11 +24,11 @@ bb <- bb[1:2000]
 hist(bb)
 data <- data.frame(contrast = rep(LETTERS[1:5],400), p.value = bb)
 
-data <- adjust_p_values(data)
-Adata <- data |> dplyr::filter(contrast == "A")
-stopifnot(all.equal(Adata$p.value.adjusted, p.adjust(Adata$p.value, method="BH")))
+dataX <- adjust_p_values(data)
+Adata <- dataX |> dplyr::filter(contrast == "A")
+stopifnot(all.equal(Adata$FDR, p.adjust(Adata$p.value, method="BH")))
 data2 <- adjust_p_values(data, group_by_col = NULL)
-stopifnot(all.equal(data2$p.value.adjusted, p.adjust(data2$p.value, method="BH")))
+stopifnot(all.equal(data2$FDR, p.adjust(data2$p.value, method="BH")))
 
 
 }

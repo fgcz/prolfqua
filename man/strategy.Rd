@@ -31,6 +31,7 @@ strategy_rlm(
 strategy_glm(
   modelstr,
   model_name = "Model",
+  test = "Chisq",
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
     "moderated.p.value.adjusted")
 )
@@ -83,6 +84,7 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{build_model}()},
 \code{\link{contrasts_fisher_exact}()},
+\code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},
@@ -122,6 +124,7 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{build_model}()},
 \code{\link{contrasts_fisher_exact}()},
+\code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},
@@ -161,6 +164,7 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{build_model}()},
 \code{\link{contrasts_fisher_exact}()},
+\code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},
@@ -200,6 +204,7 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{build_model}()},
 \code{\link{contrasts_fisher_exact}()},
+\code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},

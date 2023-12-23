@@ -6,24 +6,24 @@
 \usage{
 build_model(
   data,
-  modelFunction,
+  model_strategy,
   subject_Id = if ("LFQData" \%in\% class(data)) {
      data$subject_Id()
  } else {
     
     "protein_Id"
  },
-  modelName = modelFunction$model_name
+  modelName = model_strategy$model_name
 )
 }
 \arguments{
 \item{data}{data - a data frame}
 
-\item{modelFunction}{model function}
-
 \item{subject_Id}{grouping variable}
 
 \item{modelName}{model name}
+
+\item{modelFunction}{model function}
 }
 \value{
 a object of class \code{\link{Model}}
@@ -53,6 +53,7 @@ mod <- prolfqua:::build_model(
  formula_randomPeptide,
  modelName = modelName,
  subject_Id = config$table$hierarchy_keys_depth())
+mod$get_anova()
 
 mod <- prolfqua:::build_model(
  LFQData$new(pepIntensity, config),
@@ -77,6 +78,7 @@ Other modelling:
 \code{\link{LR_test}()},
 \code{\link{Model}},
 \code{\link{contrasts_fisher_exact}()},
+\code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},

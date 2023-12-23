@@ -51,6 +51,7 @@ Other modelling:
 \code{\link{LR_test}()},
 \code{\link{build_model}()},
 \code{\link{contrasts_fisher_exact}()},
+\code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},
@@ -90,7 +91,9 @@ Other modelling:
 
 \item{\code{subject_Id}}{e.g. protein_Id}
 
-\item{\code{modelFunction}}{function to create the models}
+\item{\code{model_strategy}}{function to create the models}
+
+\item{\code{anova_df}}{function to compute anova}
 
 \item{\code{p.adjust}}{function to adjust p-values}
 }
@@ -120,7 +123,7 @@ initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$new(
   modelDF,
-  modelFunction,
+  model_strategy,
   modelName,
   subject_Id = "protein_Id",
   p.adjust = prolfqua::adjust_p_values
@@ -132,7 +135,7 @@ initialize
 \describe{
 \item{\code{modelDF}}{dataframe with modelling results}
 
-\item{\code{modelFunction}}{modelFunction see \code{\link{strategy_lmer}}}
+\item{\code{model_strategy}}{model_strategy see \code{\link{strategy_lmer}}}
 
 \item{\code{modelName}}{name of model}
 
@@ -218,7 +221,7 @@ pairs-plot of coefficients
 \subsection{Method \code{anova_histogram()}}{
 histogram of ANOVA results
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$anova_histogram(what = c("Pr..F.", "FDR.Pr..F."))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$anova_histogram(what = c("p.value", "FDR"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
