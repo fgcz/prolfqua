@@ -32,7 +32,6 @@
 #' mod$anova_histogram()
 #'
 Model <- R6::R6Class(
-
   "Model",
   inherit = ModelInterface,
   public = list(
@@ -42,25 +41,27 @@ Model <- R6::R6Class(
     modelName = character(),
     #' @field subject_Id e.g. protein_Id
     subject_Id = character(),
-    #' @field modelFunction function to create the models
-    modelFunction = NULL,
+    #' @field model_strategy function to create the models
+    model_strategy = NULL,
+    #' @field anova_df function to compute anova
+    anova_df = NULL,
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
     #' @description
     #' initialize
     #' @param modelDF dataframe with modelling results
-    #' @param modelFunction modelFunction see \code{\link{strategy_lmer}}
+    #' @param model_strategy model_strategy see \code{\link{strategy_lmer}}
     #' @param modelName name of model
     #' @param subject_Id subject column name
     #' @param p.adjust method to adjust p-values
     #'
     initialize = function(modelDF,
-                          modelFunction,
+                          model_strategy,
                           modelName,
                           subject_Id = "protein_Id",
                           p.adjust = prolfqua::adjust_p_values){
       self$modelDF = modelDF
-      self$modelFunction = modelFunction
+      self$model_strategy = model_strategy
       self$modelName = modelName
       self$subject_Id = subject_Id
       self$p.adjust = p.adjust
@@ -88,30 +89,23 @@ Model <- R6::R6Class(
     get_anova = function(){
       lmermodel <- "linear_model"
       modelProteinF <- get_complete_model_fit(self$modelDF)
-      # ANOVA
-      .anova_df <- function(x){
-        x <- anova(x, test = "F")
-        colnames(x) <- make.names(colnames(x))
-        x <- data.frame(factor = rownames(x), x)
-        return(x)
-      }
 
-      Model_Anova <- modelProteinF |> dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),  .anova_df ))
+      Model_Anova <- modelProteinF |>
+        dplyr::mutate(!!"Anova_model" := purrr::map( !!sym(lmermodel),
+                                                     self$model_strategy$anova_df$fun ))
 
       Model_Anova <- Model_Anova |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Anova_model"), isSingular, nrcoef)
       Model_Anova <- tidyr::unnest_legacy(Model_Anova)
 
-
-
       Model_Anova <- Model_Anova |> dplyr::filter(factor != "Residuals")
       Model_Anova <- Model_Anova |> dplyr::filter(factor != "NULL")
 
       Model_Anova <- self$p.adjust(Model_Anova,
-                                   column = "Pr..F.",
-                                   group_by_col = "factor",
-                                   newname = "FDR.Pr..F.")
-      #tidyr::unnest(cols = "Anova_model")
+                                   column = self$model_strategy$anova_df$col_pval,
+                                   group_by_col = "factor")
+
+      Model_Anova <- Model_Anova |> dplyr::rename(p.value = !!sym(self$model_strategy$anova_df$col_pva))
       return(dplyr::ungroup(Model_Anova))
     },
 
@@ -171,7 +165,7 @@ Model <- R6::R6Class(
     #' @description
     #' histogram of ANOVA results
     #' @param what show either "Pr..F." or "FDR.Pr..F."
-    anova_histogram = function(what=c("Pr..F.", "FDR.Pr..F.")){
+    anova_histogram = function(what=c("p.value", "FDR")){
       ## Anova_p.values
       what <- match.arg(what)
       Model_Anova <- self$get_anova()

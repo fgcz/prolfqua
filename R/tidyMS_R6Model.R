@@ -44,8 +44,8 @@ LR_test <- function(modelProteinF,
                            dplyr::select(modelProteinF_Int, !!sym(subject_Id), "linear_model") , by = subject_Id)
 
   reg <- reg |> dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym("linear_model.x"),
-                                                                         !!sym("linear_model.y"),
-                                                                         .likelihood_ratio_test ))
+                                                                        !!sym("linear_model.y"),
+                                                                        .likelihood_ratio_test ))
   likelihood_ratio_test_result <- reg |>
     dplyr::select(!!sym(subject_Id), .data$modelComparisonLikelihoodRatioTest) |>
     tidyr::unnest(cols = c("modelComparisonLikelihoodRatioTest"))
@@ -108,6 +108,7 @@ LR_test <- function(modelProteinF,
 #'  formula_randomPeptide,
 #'  modelName = modelName,
 #'  subject_Id = config$table$hierarchy_keys_depth())
+#' mod$get_anova()
 #'
 #' mod <- prolfqua:::build_model(
 #'  LFQData$new(pepIntensity, config),
@@ -116,17 +117,17 @@ LR_test <- function(modelProteinF,
 #' model_summary(mod)
 #'
 build_model <- function(data,
-                        modelFunction,
+                        model_strategy,
                         subject_Id = if ("LFQData" %in% class(data)) {data$subject_Id()} else {"protein_Id"},
-                        modelName = modelFunction$model_name){
+                        modelName = model_strategy$model_name){
 
   dataX <- if ("LFQData" %in% class(data)) { data$data }else{ data }
   modellingResult <- model_analyse(dataX,
-    modelFunction,
-    modelName = modelName,
-    subject_Id = subject_Id)
+                                   model_strategy,
+                                   modelName = modelName,
+                                   subject_Id = subject_Id)
   return( Model$new(modelDF = modellingResult$modelProtein,
-                    modelFunction = modelFunction,
+                    model_strategy = model_strategy,
                     modelName = modellingResult$modelName,
                     subject_Id = subject_Id))
 }

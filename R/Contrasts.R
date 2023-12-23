@@ -66,7 +66,7 @@ Contrasts <- R6::R6Class(
     ){
       self$models = model$modelDF
       self$contrasts = contrasts
-      self$contrastfun = model$modelFunction$contrast_fun
+      self$contrastfun = model$model_strategy$contrast_fun
       self$modelName =  modelName
       self$subject_Id = model$subject_Id
       self$p.adjust = p.adjust
@@ -141,8 +141,7 @@ Contrasts <- R6::R6Class(
 
         contrast_result <- self$p.adjust(contrast_result,
                                          column = "p.value",
-                                         group_by_col = "contrast",
-                                         newname = "FDR")
+                                         group_by_col = "contrast")
         contrast_result <- contrast_result |> relocate("FDR", .after="diff")
         contrast_result <- mutate(contrast_result, modelName = self$modelName, .before = 1)
         self$contrast_result <- contrast_result

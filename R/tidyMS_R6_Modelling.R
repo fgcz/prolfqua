@@ -35,8 +35,8 @@ strategy_lmer <- function(modelstr,
     if (!missing(pb)) {
       pb$tick()
     }
-    modelTest <- tryCatch( lmerTest::lmer( formula , data = x ),
-                           error = .ehandler)
+    modelTest <- tryCatch(lmerTest::lmer(formula , data = x ),
+                          error = .ehandler)
     return(modelTest)
   }
   res <- list(model_fun = model_fun,
@@ -44,6 +44,7 @@ strategy_lmer <- function(modelstr,
               contrast_fun = my_contest,
               model_name = model_name,
               report_columns = report_columns,
+              anova_df = get_anova_df(test = "F"),
               is_mixed = TRUE)
   return(res)
 }
@@ -87,6 +88,7 @@ strategy_lm <- function(modelstr,
               contrast_fun = my_contrast_V2,
               model_name = model_name,
               report_columns = report_columns,
+              anova_df = get_anova_df(test = "F"),
               is_mixed = FALSE)
   return(res)
 }
@@ -132,6 +134,7 @@ strategy_rlm <- function(modelstr,
               contrast_fun = my_contrast_V2,
               model_name = model_name,
               report_columns = report_columns,
+              anova_df = get_anova_df(test = "F"),
               is_mixed = FALSE)
   return(res)
 }
@@ -149,6 +152,7 @@ strategy_rlm <- function(modelstr,
 #' tmp$isSingular
 strategy_glm <- function(modelstr,
                          model_name = "Model",
+                         test = "Chisq",
                          report_columns = c("statistic",
                                             "p.value",
                                             "p.value.adjusted",
@@ -174,8 +178,29 @@ strategy_glm <- function(modelstr,
               contrast_fun = my_contrast_V2,
               model_name = model_name,
               report_columns = report_columns,
+              anova_df = get_anova_df(test=test),
               is_mixed = FALSE)
   return(res)
+}
+
+#' anova returning dataframe
+#' @keywords internal
+#' @family modelling
+#' @export
+#' @examples
+#' x <- get_anova_df(test = "F")
+#' x <- get_anova_df(test = "Chisq")
+get_anova_df <- function(test = "F"){
+  res <- function(x){
+    x <- anova(x, test = test)
+    colnames(x) <- make.names(colnames(x))
+    x <- data.frame(factor = rownames(x), x)
+    return(x)
+  }
+  return(list(fun = res,
+              col_pval = paste0("Pr..",substr(test,1,3),"."),
+              col_fdr = paste0("FDR.Pr..",substr(test,1,3),".")))
+
 }
 
 
@@ -248,7 +273,7 @@ get_complete_model_fit <- function(modelProteinF){
 #'  subject_Id = ionstar$config$table$hierarchy_keys_depth())
 #' get_complete_model_fit(mr$modelProtein)
 model_analyse <- function(pepIntensity,
-                          modelFunction,
+                          model_strategy,
                           subject_Id = "protein_Id",
                           modelName = "Model")
 {
@@ -260,7 +285,7 @@ model_analyse <- function(pepIntensity,
 
   pb <- progress::progress_bar$new(total = nrow(nestProtein))
   modelProtein <- nestProtein |>
-    dplyr::mutate(!!lmermodel := purrr::map(data, modelFunction$model_fun, pb = pb))
+    dplyr::mutate(!!lmermodel := purrr::map(data, model_strategy$model_fun, pb = pb))
 
   modelProtein <- modelProtein |>
     dplyr::mutate(!!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x){!is.character(x)}))
@@ -268,7 +293,7 @@ model_analyse <- function(pepIntensity,
   modelProteinF <- modelProtein |>
     dplyr::filter( !!sym("exists_lmer") == TRUE)
   modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), modelFunction$isSingular ))
+    dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), model_strategy$isSingular ))
   modelProteinF <- modelProteinF |>
     dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), df.residual ))
   modelProteinF <- modelProteinF |>
@@ -1059,27 +1084,23 @@ moderated_p_limma_long <- function(mm ,
 #' hist(bb)
 #' data <- data.frame(contrast = rep(LETTERS[1:5],400), p.value = bb)
 #'
-#' data <- adjust_p_values(data)
-#' Adata <- data |> dplyr::filter(contrast == "A")
-#' stopifnot(all.equal(Adata$p.value.adjusted, p.adjust(Adata$p.value, method="BH")))
+#' dataX <- adjust_p_values(data)
+#' Adata <- dataX |> dplyr::filter(contrast == "A")
+#' stopifnot(all.equal(Adata$FDR, p.adjust(Adata$p.value, method="BH")))
 #' data2 <- adjust_p_values(data, group_by_col = NULL)
-#' stopifnot(all.equal(data2$p.value.adjusted, p.adjust(data2$p.value, method="BH")))
+#' stopifnot(all.equal(data2$FDR, p.adjust(data2$p.value, method="BH")))
 #'
 #'
 adjust_p_values <- function(
     mm,
     column = "p.value",
     group_by_col = "contrast",
-    newname = NULL
+    newname = "FDR"
 ){
-  if (is.null(newname)) {
-    newname <- paste0(column, ".adjusted")
-  }
   dfg <- mm |>
     dplyr::group_by_at(group_by_col)
   xx <- dplyr::mutate(dfg, !!newname := p.adjust(!!sym(column),method = "BH"))
   return(xx)
-
 }
 
 
@@ -1258,11 +1279,12 @@ summary_ROPECA_median_p.scaled <- function(
 #' xlater <- xb
 #' res <- contrasts_fisher_exact(xlater)
 #'
-contrasts_fisher_exact <- function(xb,
-observedA = "observedA",
-observedB = "observedB",
-samplesA = "samplesA",
-samplesB = "samplesB"
+contrasts_fisher_exact <- function(
+    xb,
+    observedA = "observedA",
+    observedB = "observedB",
+    samplesA = "samplesA",
+    samplesB = "samplesB"
 ) {
   relativeRisk <- function(observedA, observedB, samplesA, samplesB) {
     rr <- (observedA/(observedA + observedB))/(samplesA/(samplesA + samplesB))
