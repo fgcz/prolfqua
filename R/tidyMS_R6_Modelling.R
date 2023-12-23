@@ -144,6 +144,8 @@ strategy_rlm <- function(modelstr,
 #' @rdname strategy
 #' @param modelstr model formula
 #' @param model_name name of model
+#' @param family either binomial or quasibinomial
+#' @param multiplier for tuning default is 1.
 #' @param report_columns columns to report
 #' @family modelling
 #' @examples
@@ -153,6 +155,9 @@ strategy_rlm <- function(modelstr,
 strategy_glm <- function(modelstr,
                          model_name = "Model",
                          test = "Chisq",
+                         family = stats::binomial,
+                         multiplier = 1,
+                         offset = 1,
                          report_columns = c("statistic",
                                             "p.value",
                                             "p.value.adjusted",
@@ -167,9 +172,14 @@ strategy_glm <- function(modelstr,
     if (!missing(pb)) {
       pb$tick()
     }
+    # to avoid perfect separation (hack)
+    tt <- ftable(formula, x)
+    tt <- tt * multiplier + offset
+    DFT <- as.data.frame(tt)
     modelTest <- tryCatch(glm( formula ,
-                               data = x ,
-                               family = stats::quasibinomial),
+                               data = DFT ,
+                               weights = Freq,
+                               family = family),
                           error = .ehandler)
     return(modelTest)
   }

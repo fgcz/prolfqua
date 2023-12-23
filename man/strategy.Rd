@@ -32,6 +32,9 @@ strategy_glm(
   modelstr,
   model_name = "Model",
   test = "Chisq",
+  family = stats::binomial,
+  multiplier = 1,
+  offset = 1,
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
     "moderated.p.value.adjusted")
 )
@@ -42,6 +45,10 @@ strategy_glm(
 \item{model_name}{name of model}
 
 \item{report_columns}{columns to report}
+
+\item{family}{either binomial or quasibinomial}
+
+\item{multiplier}{for tuning default is 1.}
 }
 \value{
 list with model function, contrast computation function etc.
