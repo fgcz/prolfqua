@@ -172,6 +172,9 @@
     <loc>/reference/concrete_AnalysisConfiguration.html</loc>
   </url>
   <url>
+    <loc>/reference/contrasts_fisher_exact.html</loc>
+  </url>
+  <url>
     <loc>/reference/contrasts_linfct.html</loc>
   </url>
   <url>
@@ -278,6 +281,9 @@
   </url>
   <url>
     <loc>/reference/get_UniprotID_from_fasta_header.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_anova_df.html</loc>
   </url>
   <url>
     <loc>/reference/get_complete_model_fit.html</loc>
@@ -506,6 +512,9 @@
   </url>
   <url>
     <loc>/reference/plot_sample_correlation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/plot_screeplot.html</loc>
   </url>
   <url>
     <loc>/reference/plot_stat_density.html</loc>

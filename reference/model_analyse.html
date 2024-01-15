@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">model_analyse</span><span class="op">(</span></span>
 <span>  <span class="va">pepIntensity</span>,</span>
-<span>  <span class="va">modelFunction</span>,</span>
+<span>  <span class="va">model_strategy</span>,</span>
 <span>  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
 <span>  modelName <span class="op">=</span> <span class="st">"Model"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -110,6 +110,8 @@
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="build_model.html">build_model</a>()</code>,
+<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact</a>()</code>,
+<code><a href="get_anova_df.html">get_anova_df</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
 <code><a href="get_imputed_contrasts.html">get_imputed_contrasts</a>()</code>,
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta</a>()</code>,
@@ -173,21 +175,20 @@
 <span class="r-in"><span><span class="va">mr</span> <span class="op">&lt;-</span> <span class="fu">model_analyse</span><span class="op">(</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">data</span>,</span></span>
 <span class="r-in"><span> <span class="va">formula_randomPeptide</span>,</span></span>
 <span class="r-in"><span> subject_Id <span class="op">=</span> <span class="va">ionstar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">mr</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [8]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id      data     linear_model exists_lmer isSingular df.residual sigma</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sp|Q99985|SEM3… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        TRUE                33 0.247</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sp|Q03001|DYST… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              538 0.297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sp|Q9UBI1|COMD… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               33 0.155</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sp|P0AED0|USPA… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               71 0.438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sp|P08238|HS90… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              797 0.261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sp|O75937|DNJC… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               70 0.324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CON__P02769~18… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              620 0.385</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sp|P46782|RS5_… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               83 0.594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sp|Q9H2G2|SLK_… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE               86 0.690</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sp|P07951|TPM2… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              362 0.468</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> sp|P46087|NOP2… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              253 0.249</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> sp|P68133|ACTS… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              328 1.02 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> sp|P49327|FAS_… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE             <span style="text-decoration: underline;">1</span>476 0.302</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> sp|P49327|FAS_… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE             <span style="text-decoration: underline;">1</span>476 0.302</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> sp|P15144|AMPN… <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lmrMdLmT&gt;</span>   TRUE        FALSE              600 0.348</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: nrcoef &lt;int&gt;, nrcoeff_not_NA &lt;int&gt;</span></span>
 </code></pre></div>
     </div>

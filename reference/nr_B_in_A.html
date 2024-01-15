@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -128,11 +128,11 @@
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="va">Area</span><span class="op">[</span><span class="va">data</span><span class="op">$</span><span class="va">Area</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from factor columns</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">resDataStart</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from factor columns</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -142,16 +142,16 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5,715 × 12</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Replicate.Name         sampleName treatment_c time_c Isotope.Label protein_Id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 04_S172853_lowG_p06_d… lowG~p06   lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 04_S172853_lowG_p06_d… 04_S17285… lowG        p06    heavy         sp|O95477…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5,705 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: peptide_Id &lt;chr&gt;, precursor_Id &lt;chr&gt;, fragment_Id &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Area &lt;dbl&gt;, annotation_QValue &lt;dbl&gt;, nr_peptide_Id_IN_protein_Id &lt;int&gt;</span></span>
