@@ -188,7 +188,7 @@ strategy_glm <- function(modelstr,
               contrast_fun = my_contrast_V2,
               model_name = model_name,
               report_columns = report_columns,
-              anova_df = get_anova_df(test=test),
+              anova_df = get_anova_df(test = test),
               is_mixed = FALSE)
   return(res)
 }

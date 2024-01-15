@@ -233,7 +233,7 @@ mod <- prolfqua::build_model(
 In this plot we can see what factors in our model are mostly responsible for the adjusted p-values calculated from an analysis of variance.
 
 ```{r showANOVA, fig.cap="Distribtuion of adjusted p-values (FDR)"}
-mod$anova_histogram("FDR.Pr..F.")
+mod$anova_histogram("FDR")
 ```
 
 One also look what proteins do show different abundances in any of our five dilutions by looking at the FDR values of the analysis of variane.
@@ -242,7 +242,7 @@ One also look what proteins do show different abundances in any of our five dilu
 aovtable <- mod$get_anova()
 head(aovtable)
 dim(aovtable)
-xx <- aovtable |> dplyr::filter(FDR.Pr..F. < 0.2)
+xx <- aovtable |> dplyr::filter(FDR < 0.2)
 signif <- transformed$get_copy()
 signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
 hmSig <- signif$get_Plotter()$heatmap()
