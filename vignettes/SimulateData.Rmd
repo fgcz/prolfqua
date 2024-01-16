@@ -1,0 +1,140 @@
+---
+title: "Simulate Peptide level Data"
+author: "Witold E. Wolski"
+date: "`r Sys.Date()`"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Simulate Peptide level Data} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+
+editor_options: 
+  chunk_output_type: console
+bibliography:
+  - prolfqua.bib
+---
+
+
+## Dimulate data
+
+```{r}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+library(tidyverse)
+
+```
+
+
+For proteins:
+- the proteins have a FC either equal 1, 0. or -1, 10% have 1 80% have 0 and 10% have -1.
+
+What we however are measuring are peptide spectrum matches. Let's assume we observing peptides.
+
+For peptides:
+
+- The transformed protein abundances have a log normal distribution with `meanlog = log(20)`, and `sd = log(1.2)`.
+- The number of peptides per protein follow a geometric distribution, $N_{pep} \sim Geo(p)$ with $p = 0.3$
+- The peptide abundances of a protein have log normal distribution with `meanlog = log(proteinabundance)` and `sd = log(1.2)`
+- The log2 intensities of a peptide within a group follow a normal distribution distribution  $I_{pep} \sim LogNormal(\mu,\sigma) $, where $\mu$ is the peptide abundance and $\sigma$
+
+
+```{r}
+peptideAbundances <- prolfqua::sim_lfq_data()
+```
+
+
+# Analyse simulated data with prolfqua
+
+```{r}
+library(prolfqua)
+
+atable <- AnalysisTableAnnotation$new()
+atable$sampleName = "sample"
+atable$factors["group_"] = "group"
+atable$hierarchy[["protein_Id"]] = "proteinID"
+atable$hierarchy[["peptide_Id"]] = "peptideID"
+atable$set_response("abundance")
+
+config <- AnalysisConfiguration$new(atable)
+adata <- setup_analysis(peptideAbundances, config)
+
+lfqdata <- prolfqua::LFQData$new(adata, config)
+lfqdata$is_transformed(TRUE)
+
+lfqdata$remove_small_intensities(threshold = 1)
+lfqdata$filter_proteins_by_peptide_count()
+
+lfqdata$factors()
+```
+
+```{r}
+pl <- lfqdata$get_Plotter()
+lfqdata$hierarchy_counts()
+lfqdata$config$table$hierarchy_keys_depth()
+
+pl$heatmap()
+```
+
+
+
+```{r}
+pl$intensity_distribution_density()
+```
+
+
+# Fit peptide model
+
+```{r}
+formula_Condition <-  strategy_lm("abundance ~ group_")
+lfqdata$config$table$hierarchyDepth  <- 2
+
+# specify model definition
+modelName  <- "Model"
+Contrasts <- c("B_over_Ctrl" = "group_B - group_Ctrl",
+               "A_over_Ctrl" = "group_A - group_Ctrl")
+lfqdata$subject_Id()
+
+mod <- prolfqua::build_model(
+  lfqdata,
+  formula_Condition)
+aovtable <- mod$get_anova()
+mod$anova_histogram()
+
+xx <- aovtable |> dplyr::filter(FDR < 0.05)
+signif <- lfqdata$get_copy()
+signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
+hmSig <- signif$get_Plotter()$heatmap()
+hmSig
+
+```
+
+# Aggregate data
+
+```{r}
+lfqdata$config$table$hierarchyDepth <- 1
+ag <- lfqdata$get_Aggregator()
+ag$medpolish()
+protData <- ag$lfq_agg
+```
+
+```{r}
+protData$response()
+formula_Condition <-  strategy_lm("medpolish ~ group_")
+
+mod <- prolfqua::build_model(
+  protData,
+  formula_Condition)
+
+contr <- prolfqua::Contrasts$new(mod, Contrasts)
+v1 <- contr$get_Plotter()$volcano()
+v1$FDR
+
+ctr <- contr$get_contrasts()
+
+```
+
+
+
+
+
+
+
