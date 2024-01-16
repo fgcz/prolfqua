@@ -106,13 +106,14 @@ compute_pooled <- function(x, method = c("V1","V2")){
   x <- x |> dplyr::filter(.data$not_na > 1)
 
   res <- func(x)
-  if(is.na(res$mean)) {
+  if (is.na(res$mean)) {
     res$mean <- meanAll
   }
   res$meanAll <- meanAll
   res$not_na <- not_na
   return(res)
 }
+
 #' pooled variance
 #' @export
 #' @rdname pooled_var
