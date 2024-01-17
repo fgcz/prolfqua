@@ -12,22 +12,15 @@ plot heatmap of NA values
 \examples{
 
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-config <- old2new(istar$config$clone(deep=TRUE))
-analysis <- istar$data
 istar <- sim_lfq_data_config()
 config <- istar$config
 analysis <- istar$data
 
 
 tmp <- plot_NA_heatmap(analysis, config)
-print(tmp)
-xx <- plot_NA_heatmap(analysis, config, distance = "euclidean")
-print(xx)
-dev.off()
-print(xx)
-names(xx)
-
+stopifnot(class(tmp) == "pheatmap")
+tmp <- plot_NA_heatmap(analysis, config, distance = "euclidean")
+stopifnot(class(tmp) == "pheatmap")
 
 
 }

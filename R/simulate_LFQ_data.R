@@ -106,12 +106,15 @@ add_missing <- function(x){
   missing_prop <- pnorm(x, mean = mean(x), sd = sd(x))
   # sample TRUE or FALSE with propability in missing_prop
   samplemiss <- function(missing_prop) {
-    sample(c(TRUE, FALSE), size = 1, replace = TRUE, prob = c(1 - missing_prop, missing_prop))
+    mp <- c((1 - missing_prop)*0.2, missing_prop*3)
+    mp <- mp / sum(mp)
+    sample(c(TRUE, FALSE), size = 1, replace = TRUE, prob = mp)
   }
 
   missing_values <- sapply(missing_prop, samplemiss)
   # Introduce missing values into the vector x
   x[missing_values] <- NA
+  return(x)
 }
 
 

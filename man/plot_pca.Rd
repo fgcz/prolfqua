@@ -13,9 +13,9 @@ plot PCA
 
 
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(istar$data) == 25780)
-config <- old2new(istar$config$clone(deep=TRUE))
+
+istar <- sim_lfq_data_config()
+config <- istar$config
 analysis <- istar$data
 tmp <- plot_pca(analysis, config, add_txt= TRUE)
 
@@ -26,7 +26,7 @@ tmp <- plot_pca(analysis, config, PC = c(1,2))
 print(tmp)
 tmp <- plot_pca(analysis, config, PC = c(2,3))
 print(tmp)
-plotly::ggplotly(tmp, tooltip = config$table$sampleName)
+
 
 }
 \seealso{
