@@ -4,11 +4,8 @@
 \alias{sim_lfq_data_config}
 \title{Simulate data with config}
 \usage{
-sim_lfq_data_config(Nprot = 10)
+sim_lfq_data_config(Nprot = 10, with_missing = TRUE)
 }
 \description{
 Simulate data with config
-}
-\examples{
-sim_lfq_data_config()
 }

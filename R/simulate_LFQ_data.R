@@ -5,11 +5,15 @@
 #' @param fc D - down regulation N - matrix,  U -  regulation
 #' @param prop proportion of down (D), up (U) and not regulated (N)
 #' @examples
-#' debug(sim_lfq_data)
 #' res <- sim_lfq_data()
-#' debug(sim_lfq_data)
 #' sim_lfq_data(Nprot = 10)
 #'
+#' dd <- sim_lfq_data()
+#' dd$abundance <- add_missing(dd$abundance)
+#'
+#' sim_lfq_data_config()
+#' sim_lfq_data_config(with_missing = FALSE)
+
 sim_lfq_data <- function(
     Nprot = 20,
     N = 4,
@@ -50,7 +54,7 @@ sim_lfq_data <- function(
     # add regulation to group A.
     groupMean <- paste0("mean_", name)
     groupSize <- paste0("N_", name)
-    prot <- prot |> dplyr::mutate(!! groupMean := FC, !!groupSize := N)
+    prot <- prot |> dplyr::mutate(!!groupMean := FC, !!groupSize := N)
   }
 
   # add row for each protein
@@ -93,12 +97,36 @@ sim_lfq_data <- function(
   return(peptideAbundances)
 }
 
+#' add missing values to x vector based on the values of x
+#' @export
+#' @param x vector of intensities
+#'
+#'
+add_missing <- function(x){
+  missing_prop <- pnorm(x, mean = mean(x), sd = sd(x))
+  # sample TRUE or FALSE with propability in missing_prop
+  samplemiss <- function(missing_prop) {
+    sample(c(TRUE, FALSE), size = 1, replace = TRUE, prob = c(1 - missing_prop, missing_prop))
+  }
+
+  missing_values <- sapply(missing_prop, samplemiss)
+  # Introduce missing values into the vector x
+  x[missing_values] <- NA
+}
+
+
 #' Simulate data with config
 #' @export
 #' @examples
-#' sim_lfq_data_config()
-sim_lfq_data_config <- function(Nprot = 10){
+#'
+sim_lfq_data_config <- function(Nprot = 10, with_missing = TRUE){
   data <- sim_lfq_data(Nprot = Nprot)
+  if (with_missing) {
+    data$abundance <- add_missing(data$abundance)
+  }
+  data$isotopeLabel <- "light"
+  data$qValue <- 0
+
   atable <- AnalysisTableAnnotation$new()
   atable$sampleName = "sample"
   atable$factors["group_"] = "group"

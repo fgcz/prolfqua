@@ -464,6 +464,10 @@ plot_raster <- function(data,
 #' istar <- prolfqua_data('data_ionstar')$filtered()
 #' config <- old2new(istar$config$clone(deep=TRUE))
 #' analysis <- istar$data
+#' istar <- sim_lfq_data_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#'
 #'
 #' tmp <- plot_NA_heatmap(analysis, config)
 #' print(tmp)
@@ -473,7 +477,7 @@ plot_raster <- function(data,
 #' print(xx)
 #' names(xx)
 #'
-#' istar <- sim_lfq_data_config()
+#'
 #'
 plot_NA_heatmap <- function(data,
                             config,

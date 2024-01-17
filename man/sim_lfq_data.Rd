@@ -27,9 +27,12 @@ sim_lfq_data(
 simulate peptide level data with two groups
 }
 \examples{
-debug(sim_lfq_data)
 res <- sim_lfq_data()
-debug(sim_lfq_data)
 sim_lfq_data(Nprot = 10)
 
+dd <- sim_lfq_data()
+dd$abundance <- add_missing(dd$abundance)
+
+sim_lfq_data_config()
+sim_lfq_data_config(with_missing = FALSE)
 }

@@ -15,6 +15,10 @@ plot heatmap of NA values
 istar <- prolfqua_data('data_ionstar')$filtered()
 config <- old2new(istar$config$clone(deep=TRUE))
 analysis <- istar$data
+istar <- sim_lfq_data_config()
+config <- istar$config
+analysis <- istar$data
+
 
 tmp <- plot_NA_heatmap(analysis, config)
 print(tmp)
@@ -24,7 +28,7 @@ dev.off()
 print(xx)
 names(xx)
 
-istar <- sim_lfq_data_config()
+
 
 }
 \seealso{
