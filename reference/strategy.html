@@ -48,6 +48,9 @@ The strategy contains functions to fit the model but also compute the contrasts 
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
     </li>
     <li>
+      <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
+    </li>
+    <li>
       <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
@@ -319,7 +322,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lmer</span><span class="op">(</span><span class="st">"Intensity ~ condition + (1|peptide_Id)"</span>, model_name <span class="op">=</span> <span class="st">"random_example"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition + (1 | peptide_Id)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2a5d5d2e0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2baf30da0&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, tol = 1e-04) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -327,13 +330,13 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span>     theta &lt;- getME(x, "theta")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     any(theta[lwr == 0] &lt; tol)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x164cadbb8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x16e53ba78&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:lme4&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2b38c7af8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2bac33e78&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function(m){</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   anyNA &lt;- any(is.na(coefficients(m)))</span>
@@ -350,7 +353,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2b3a02ef0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2d9879418&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function(m){</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   anyNA &lt;- any(is.na(coefficients(m)))</span>
@@ -367,7 +370,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_glm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2a89e5e40&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x2d9a63240&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function(m){</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   anyNA &lt;- any(is.na(coefficients(m)))</span>

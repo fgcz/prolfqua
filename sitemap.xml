@@ -28,6 +28,9 @@
     <loc>/articles/QualityControlAndSampleSizeEstimation.html</loc>
   </url>
   <url>
+    <loc>/articles/SimulateData.html</loc>
+  </url>
+  <url>
     <loc>/articles/Supplement_TidyAnalysis_HL_Skyline.html</loc>
   </url>
   <url>
@@ -149,6 +152,9 @@
   </url>
   <url>
     <loc>/reference/add_annotation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/add_missing.html</loc>
   </url>
   <url>
     <loc>/reference/adjust_p_values.html</loc>
@@ -593,6 +599,12 @@
   </url>
   <url>
     <loc>/reference/setup_analysis.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sim_lfq_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sim_lfq_data_config.html</loc>
   </url>
   <url>
     <loc>/reference/spread_response_by_IsotopeLabel.html</loc>

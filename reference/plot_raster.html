@@ -47,6 +47,9 @@
       <a href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a>
     </li>
     <li>
+      <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
+    </li>
+    <li>
       <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
     </li>
     <li>
@@ -152,8 +155,8 @@
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> null device </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_png </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       2 </span>
 <span class="r-in"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu">plot_raster</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, show_rownames<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rs</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">plot_raster</span><span class="op">(</span><span class="va">analysis</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, <span class="va">config</span><span class="op">)</span></span></span>
