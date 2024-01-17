@@ -29,5 +29,7 @@ simulate peptide level data with two groups
 \examples{
 debug(sim_lfq_data)
 res <- sim_lfq_data()
+debug(sim_lfq_data)
+sim_lfq_data(Nprot = 10)
 
 }

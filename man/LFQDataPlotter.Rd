@@ -206,6 +206,8 @@ A PCA is applied and the first and second principal component are shown.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{PC}}{default c(1,2) - first and second principal component}
+
 \item{\code{add_txt}}{show sample names}
 }
 \if{html}{\out{</div>}}
@@ -226,6 +228,8 @@ pca plot
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{PC}}{default c(1,2) - first and second principal component}
+
 \item{\code{add_txt}}{show sample names}
 }
 \if{html}{\out{</div>}}

@@ -473,6 +473,8 @@ plot_raster <- function(data,
 #' print(xx)
 #' names(xx)
 #'
+#' istar <- sim_lfq_data_config()
+#'
 plot_NA_heatmap <- function(data,
                             config,
                             limitrows = 10000,

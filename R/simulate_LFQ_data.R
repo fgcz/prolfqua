@@ -7,6 +7,8 @@
 #' @examples
 #' debug(sim_lfq_data)
 #' res <- sim_lfq_data()
+#' debug(sim_lfq_data)
+#' sim_lfq_data(Nprot = 10)
 #'
 sim_lfq_data <- function(
     Nprot = 20,
@@ -33,7 +35,6 @@ sim_lfq_data <- function(
   )
 
   for (i in seq_along(fc)) {
-
     name <- names(fc)[i]
     fcx <- fc[[i]]
     propx <- prop[[i]]
@@ -44,12 +45,12 @@ sim_lfq_data <- function(
       propx["N"] <- 100 - sum(propx)
     }
 
-    FC = rep(fcx, propx / 100 * Nprot)
+    FC = rep(fcx, ceiling(propx / 100 * Nprot)) |> head(n = Nprot)
 
     # add regulation to group A.
     groupMean <- paste0("mean_", name)
     groupSize <- paste0("N_", name)
-    prot <- prot |> dplyr::mutate(!! groupMean := 0 + FC, !!groupSize := N)
+    prot <- prot |> dplyr::mutate(!! groupMean := FC, !!groupSize := N)
   }
 
   # add row for each protein
@@ -90,4 +91,22 @@ sim_lfq_data <- function(
   peptideAbundances <- peptideAbudances |>
     tidyr::unite("sample", group, Replicate, remove =  FALSE)
   return(peptideAbundances)
+}
+
+#' Simulate data with config
+#' @export
+#' @examples
+#' sim_lfq_data_config()
+sim_lfq_data_config <- function(Nprot = 10){
+  data <- sim_lfq_data(Nprot = Nprot)
+  atable <- AnalysisTableAnnotation$new()
+  atable$sampleName = "sample"
+  atable$factors["group_"] = "group"
+  atable$hierarchy[["protein_Id"]] = "proteinID"
+  atable$hierarchy[["peptide_Id"]] = "peptideID"
+  atable$set_response("abundance")
+
+  config <- AnalysisConfiguration$new(atable)
+  adata <- setup_analysis(data, config)
+  return(list(data = adata, config = config))
 }

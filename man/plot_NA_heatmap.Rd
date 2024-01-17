@@ -24,6 +24,8 @@ dev.off()
 print(xx)
 names(xx)
 
+istar <- sim_lfq_data_config()
+
 }
 \seealso{
 Other plotting: 
