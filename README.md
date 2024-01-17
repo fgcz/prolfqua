@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/Modelling2R6/graph/badge.svg?token=NP7IPP323C)](https://codecov.io/gh/fgcz/prolfqua)
 [![bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2022.06.07.494524-ligtgreen)](https://www.biorxiv.org/content/early/2022/06/09/2022.06.07.494524)
 
-<img src="man/figures/imgfile.png" width="200">
+<img src="man/figures/imgfile.png" width="200"> 
 
 # prolfqua - a comparehensive R package for Proteomics Differential Expression Analysis
 
@@ -11,7 +11,6 @@ This package is developed at the [FGCZ](http://fgcz.ch/).
 The package documentation including vignettes can be accessed at https://fgcz.github.io/prolfqua/index.html
 
 `prolfqua` makes easy things easy while remaining fully hackable.
-
 
 # How to install prolfqua?
 
@@ -50,6 +49,9 @@ https://github.com/fgcz/prolfqua/issues
 
 # How to get started
 
+[![SIB in-silico talk](https://img.youtube.com/vi/acDiXq2xbOw/1.jpg)](https://www.youtube.com/watch?v=acDiXq2xbOw)
+
+- Watch the [silico talks](https://www.sib.swiss/in-silico-talks/prolfqua-a-comprehensive-r-package-for-protein-differential-expression-analysis)
 - See our article at the [Journal of Proteome Research](https://pubmed.ncbi.nlm.nih.gov/36939687/)
 - See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
 - Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube or [slides](https://f1000research.com/slides/9-1476).
