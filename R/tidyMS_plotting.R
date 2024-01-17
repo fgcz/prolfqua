@@ -461,17 +461,16 @@ plot_raster <- function(data,
 #' @examples
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#' istar <- sim_lfq_data_config()
+#' config <- istar$config
 #' analysis <- istar$data
 #'
+#'
 #' tmp <- plot_NA_heatmap(analysis, config)
-#' print(tmp)
-#' xx <- plot_NA_heatmap(analysis, config, distance = "euclidean")
-#' print(xx)
-#' dev.off()
-#' print(xx)
-#' names(xx)
+#' stopifnot(class(tmp) == "pheatmap")
+#' tmp <- plot_NA_heatmap(analysis, config, distance = "euclidean")
+#' stopifnot(class(tmp) == "pheatmap")
+#'
 #'
 plot_NA_heatmap <- function(data,
                             config,
@@ -501,13 +500,6 @@ plot_NA_heatmap <- function(data,
       res
     }
 
-    # not showing row dendrogram trick
-    #resclust <- pheatmap::pheatmap(res,
-    #                               scale = "none",
-    #                               silent = TRUE,
-    #                               clustering_distance_cols = distance,
-    #                               clustering_distance_rows = distance)
-
     gg <- stats::hclust( stats::dist( res, method = distance ))
     resclust <- pheatmap::pheatmap(res[gg$order,],
                                    cluster_rows  = FALSE,
@@ -536,9 +528,9 @@ plot_NA_heatmap <- function(data,
 #'
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(istar$data) == 25780)
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#'
+#' istar <- sim_lfq_data_config()
+#' config <- istar$config
 #' analysis <- istar$data
 #' tmp <- plot_pca(analysis, config, add_txt= TRUE)
 #'
@@ -549,7 +541,7 @@ plot_NA_heatmap <- function(data,
 #' print(tmp)
 #' tmp <- plot_pca(analysis, config, PC = c(2,3))
 #' print(tmp)
-#' plotly::ggplotly(tmp, tooltip = config$table$sampleName)
+#'
 #'
 plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE){
   stopifnot(length(PC) == 2)
@@ -559,6 +551,10 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
   ff <- t(ff)
   pca_result <- prcomp(ff)
   xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
+  if (max(PC) > ncol(xx)) {
+    warning("nr of PCs: ", ncol(xx), "\n")
+    return(NULL)
+    }
   variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
   xx <- inner_join(wide$annotation, xx)
 

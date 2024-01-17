@@ -18,8 +18,4 @@ test_that("my_contrast_V2 works",{
   }
   linfct_contrasts <- linfct_factors_contrasts(data_lm_models_to_test$lm_complete)
 
-  for (model in data_lm_models_to_test) {
-    print(my_contrast_V2(model, linfct_contrasts))
-  }
-
 })
