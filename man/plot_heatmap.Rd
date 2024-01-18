@@ -16,7 +16,7 @@ plot heatmap with annotations
 }
 \examples{
 
-istar <- sim_lfq_data_config()
+istar <- sim_lfq_data_protein_config()
 config <- istar$config
 analysis <- istar$data
 

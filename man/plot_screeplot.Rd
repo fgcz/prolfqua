@@ -10,11 +10,9 @@ plot_screeplot(data, config, threshold_pc = 1, nr_PC = NULL)
 plot screeplot
 }
 \examples{
-istar <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(istar$data) == 25780)
-config <- old2new(istar$config$clone(deep=TRUE))
+istar <- sim_lfq_data_protein_config(with_missing = FALSE)
+config <- istar$config
 analysis <- istar$data
-#debug(plot_pca)
 tmp <- plot_screeplot(analysis, config, threshold_pc= NULL)
 print(tmp)
 tmp <- plot_screeplot(analysis, config, threshold_pc= 1)

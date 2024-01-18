@@ -23,18 +23,19 @@ visualize intensity distributions
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(istar$data) == 25780)
-config <- old2new(istar$config$clone(deep=TRUE))
+istar <-sim_lfq_data_peptide_config()
+
+config <- istar$config
 analysis <- istar$data
 
 plot_intensity_distribution_violin(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)
 plot_intensity_distribution_violin(analysis, config)
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(istar$data) == 25780)
-config <- old2new(istar$config$clone(deep=TRUE))
+
+istar <-sim_lfq_data_peptide_config()
+
+config <- istar$config
 analysis <- istar$data
 plot_intensity_distribution_density(analysis, config)
 analysis <- transform_work_intensity(analysis, config, log2)

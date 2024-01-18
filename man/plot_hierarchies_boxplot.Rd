@@ -30,35 +30,6 @@ plot peptides by factors and it's levels.
 \examples{
 
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(istar$data) == 25780)
-conf <- old2new(istar$config$clone(deep=TRUE))
-analysis <- istar$data
-conf$table$hierarchyDepth
-conf$table$hierarchy_keys_depth()
-
-xnested <- analysis |>
- dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
-
-#debug(plot_hierarchies_boxplot)
-p <- plot_hierarchies_boxplot(xnested$data[[3]],
- xnested$protein_Id[[3]],
-  conf,
-  facet_grid_on =  tail(conf$table$hierarchy_keys(),1))
-stopifnot("ggplot" \%in\% class(p))
-
-p <- plot_hierarchies_boxplot(xnested$data[[3]],
- xnested$protein_Id[[3]],
-  conf )
-stopifnot("ggplot" \%in\% class(p))
-
-p <- plot_hierarchies_boxplot(
- xnested$data[[3]],
- xnested$protein_Id[[3]],
-  conf,
-   beeswarm = FALSE )
-stopifnot("ggplot" \%in\% class(p))
-
 bb <- prolfqua_data('data_skylineSRM_HL_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, config)
@@ -69,11 +40,8 @@ res$boxplot[[1]]
 hierarchy = config$table$hierarchy_keys_depth()
 xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE)
-p
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)
-p
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
-p
 
 }
 \keyword{internal}

@@ -14,19 +14,18 @@ plot PCA
 
 
 
-istar <- sim_lfq_data_config()
+istar <- sim_lfq_data_protein_config(with_missing = FALSE)
 config <- istar$config
 analysis <- istar$data
 tmp <- plot_pca(analysis, config, add_txt= TRUE)
-
-print(tmp)
+stopifnot("ggplot" \%in\% class(tmp) )
 tmp <- plot_pca(analysis, config, add_txt= FALSE)
-print(tmp)
+stopifnot("ggplot" \%in\% class(tmp) )
+tmp
 tmp <- plot_pca(analysis, config, PC = c(1,2))
-print(tmp)
-tmp <- plot_pca(analysis, config, PC = c(2,3))
-print(tmp)
-
+stopifnot("ggplot" \%in\% class(tmp) )
+tmp <- plot_pca(analysis, config, PC = c(2,40))
+stopifnot(is.null(tmp))
 
 }
 \seealso{

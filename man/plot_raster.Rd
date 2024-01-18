@@ -29,7 +29,7 @@ plot heatmap without any clustering (use to show NA's)
 }
 \examples{
 
-istar <- sim_lfq_data_config()
+istar <- sim_lfq_data_protein_config()
 config <- istar$config
 analysis <- istar$data
 rs <- plot_raster(analysis, config, show_rownames=FALSE)

@@ -9,9 +9,9 @@
 #' @family plotting
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(istar$data) == 25780)
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#' istar <-sim_lfq_data_peptide_config()
+#'
+#' config <- istar$config
 #' analysis <- istar$data
 #'
 #' plot_intensity_distribution_violin(analysis, config)
@@ -38,9 +38,10 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @family plotting
 #' @rdname plot_intensity_distribution_violin
 #' @examples
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(istar$data) == 25780)
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#'
+#' istar <-sim_lfq_data_peptide_config()
+#'
+#' config <- istar$config
 #' analysis <- istar$data
 #' plot_intensity_distribution_density(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
@@ -69,20 +70,21 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
 #' @rdname plot_sample_correlation
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(istar$data) == 25780)
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#' istar <-sim_lfq_data_peptide_config()
+#'
+#' config <- istar$config
 #' analysis <- istar$data
 #'
 #' analysis <- remove_small_intensities(analysis, config)
 #' analysis <- transform_work_intensity(analysis, config, log2)
 #' mm <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
 #' class(plot_sample_correlation(analysis, config))
+#' plot_sample_correlation(analysis, config)
 plot_sample_correlation <- function(pdata, config){
   matrix <- tidy_to_wide_config(pdata, config, as.matrix = TRUE)$data
   M <- cor(matrix, use = "pairwise.complete.obs")
   if (nrow(M) > 12) {
-    corrplot::corrplot.mixed(M,upper = "ellipse",
+    res <- corrplot::corrplot.mixed(M,upper = "ellipse",
                              lower = "pie",
                              diag = "u",
                              tl.cex = .6,
@@ -90,7 +92,7 @@ plot_sample_correlation <- function(pdata, config){
                              tl.col = "black",
                              mar = c(2,5,5,2))
   } else{
-    corrplot::corrplot.mixed(M,upper = "ellipse",
+    res <- corrplot::corrplot.mixed(M,upper = "ellipse",
                              lower = "number",
                              lower.col = "black",
                              tl.cex = .6,
@@ -101,7 +103,7 @@ plot_sample_correlation <- function(pdata, config){
                              mar = c(2,5,5,2))
 
   }
-  invisible(M)
+  invisible(res)
 }
 
 #' plot peptides by factors and it's levels.
@@ -117,35 +119,6 @@ plot_sample_correlation <- function(pdata, config){
 #' @examples
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(istar$data) == 25780)
-#' conf <- old2new(istar$config$clone(deep=TRUE))
-#' analysis <- istar$data
-#' conf$table$hierarchyDepth
-#' conf$table$hierarchy_keys_depth()
-#'
-#' xnested <- analysis |>
-#'  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
-#'
-#' #debug(plot_hierarchies_boxplot)
-#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
-#'  xnested$protein_Id[[3]],
-#'   conf,
-#'   facet_grid_on =  tail(conf$table$hierarchy_keys(),1))
-#' stopifnot("ggplot" %in% class(p))
-#'
-#' p <- plot_hierarchies_boxplot(xnested$data[[3]],
-#'  xnested$protein_Id[[3]],
-#'   conf )
-#' stopifnot("ggplot" %in% class(p))
-#'
-#' p <- plot_hierarchies_boxplot(
-#'  xnested$data[[3]],
-#'  xnested$protein_Id[[3]],
-#'   conf,
-#'    beeswarm = FALSE )
-#' stopifnot("ggplot" %in% class(p))
-#'
 #' bb <- prolfqua_data('data_skylineSRM_HL_A')
 #' config <- bb$config_f()
 #' analysis <- bb$analysis(bb$data, config)
@@ -156,11 +129,8 @@ plot_sample_correlation <- function(pdata, config){
 #' hierarchy = config$table$hierarchy_keys_depth()
 #' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE)
-#' p
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)
-#' p
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
-#' p
 #'
 plot_hierarchies_boxplot <- function(pdata,
                                      title,
@@ -207,13 +177,8 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#'  #iostar <- prolfqua_data('data_ionstar')$filtered()
-#'  #iostar$config <- old2new(iostar$config)
-#'  #iostar$data <- iostar$data |>
-#'  #  dplyr::filter(protein_Id %in% sample(protein_Id, 2))
-#'  #unique(iostar$data$protein_Id)
 #'
-#'  istar <- sim_lfq_data_config()
+#'  istar <- sim_lfq_data_peptide_config()
 #'  config <- istar$config
 #'  analysis <- istar$data
 #'  analysis <- analysis |>
@@ -227,23 +192,17 @@ plot_hierarchies_boxplot <- function(pdata,
 #'                                     config$table$hierarchy_keys()[1],
 #'                                     facet_grid_on = config$table$hierarchy_keys()[2])
 #'  res$boxplot[[1]]
+#'  res$boxplot[[2]]
 #'
-#'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'  iostar <- LFQData$new(bb$data, old2new(bb$config))
-#'
+#'  iostar <- sim_lfq_data_protein_config()
 #'  iostar$data <- iostar$data |>
-#'    dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#'    dplyr::filter(protein_Id %in% sample(protein_Id, 4))
 #'  unique(iostar$data$protein_Id)
 #'
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
 #'  res$boxplot[[1]]
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
 #'                                     iostar$config$table$hierarchy_keys()[1])
-#'  res$boxplot[[1]]
-#'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-#'                                     iostar$config$table$hierarchy_keys()[1],
-#'                                     facet_grid_on = iostar$config$table$hierarchy_keys()[2])
-#'  res$boxplot[[1]]
 plot_hierarchies_boxplot_df <- function(pdata,
                                         config,
                                         hierarchy = config$table$hierarchy_keys_depth(),
@@ -334,7 +293,7 @@ plot_heatmap_cor <- function(data,
 #' @family plotting
 #' @examples
 #'
-#' istar <- sim_lfq_data_config()
+#' istar <- sim_lfq_data_protein_config()
 #' config <- istar$config
 #' analysis <- istar$data
 #'
@@ -402,7 +361,7 @@ plot_heatmap <- function(data,
 #' @export
 #' @examples
 #'
-#' istar <- sim_lfq_data_config()
+#' istar <- sim_lfq_data_protein_config()
 #' config <- istar$config
 #' analysis <- istar$data
 #' rs <- plot_raster(analysis, config, show_rownames=FALSE)
@@ -470,7 +429,7 @@ plot_raster <- function(data,
 #' @examples
 #'
 #'
-#' istar <- sim_lfq_data_config()
+#' istar <- sim_lfq_data_peptide_config()
 #' config <- istar$config
 #' analysis <- istar$data
 #'
@@ -538,19 +497,18 @@ plot_NA_heatmap <- function(data,
 #'
 #'
 #'
-#' istar <- sim_lfq_data_config()
+#' istar <- sim_lfq_data_protein_config(with_missing = FALSE)
 #' config <- istar$config
 #' analysis <- istar$data
 #' tmp <- plot_pca(analysis, config, add_txt= TRUE)
-#'
-#' print(tmp)
+#' stopifnot("ggplot" %in% class(tmp) )
 #' tmp <- plot_pca(analysis, config, add_txt= FALSE)
-#' print(tmp)
+#' stopifnot("ggplot" %in% class(tmp) )
+#' tmp
 #' tmp <- plot_pca(analysis, config, PC = c(1,2))
-#' print(tmp)
-#' tmp <- plot_pca(analysis, config, PC = c(2,3))
-#' print(tmp)
-#'
+#' stopifnot("ggplot" %in% class(tmp) )
+#' tmp <- plot_pca(analysis, config, PC = c(2,40))
+#' stopifnot(is.null(tmp))
 #'
 plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE){
   stopifnot(length(PC) == 2)
@@ -599,11 +557,9 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
 #' @keywords internal
 #' @family plotting
 #' @examples
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(istar$data) == 25780)
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#' istar <- sim_lfq_data_protein_config(with_missing = FALSE)
+#' config <- istar$config
 #' analysis <- istar$data
-#' #debug(plot_pca)
 #' tmp <- plot_screeplot(analysis, config, threshold_pc= NULL)
 #' print(tmp)
 #' tmp <- plot_screeplot(analysis, config, threshold_pc= 1)
