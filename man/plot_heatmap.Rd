@@ -6,21 +6,25 @@
 \usage{
 plot_heatmap(data, config, na_fraction = 0.4, show_rownames = FALSE, ...)
 }
+\arguments{
+\item{na_fraction}{fraction of NA values per row}
+
+\item{show_rownames}{if TRUE shows row names, default FALSE}
+}
 \description{
 plot heatmap with annotations
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(istar$data) == 25780)
-config <- old2new(istar$config$clone(deep=TRUE))
+istar <- sim_lfq_data_config()
+config <- istar$config
 analysis <- istar$data
 
-plot.new()
+
 p  <- plot_heatmap(analysis, config)
+stopifnot(class(p) == "pheatmap")
 p2 <- plot_heatmap(analysis, config, show_rownames = TRUE)
-plot.new()
-p2
+stopifnot(class(p) == "pheatmap")
 
 }
 \seealso{

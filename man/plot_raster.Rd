@@ -28,17 +28,19 @@ plot_raster(
 plot heatmap without any clustering (use to show NA's)
 }
 \examples{
- bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
- new <- list(config = bb$config$clone( deep = TRUE), data = bb$data)
-istar <- LFQData$new(new$data, new$config)
-config <- old2new(istar$config$clone(deep=TRUE))
+
+istar <- sim_lfq_data_config()
+config <- istar$config
 analysis <- istar$data
-dev.off()
 rs <- plot_raster(analysis, config, show_rownames=FALSE)
-print(rs)
-plot_raster(analysis[1,], config)
-plot_raster(analysis, config, "var")
-plot_raster(analysis, config, show_rownames = TRUE)
+stopifnot(class(rs) == "pheatmap")
+rs <- plot_raster(analysis[1,], config)
+stopifnot(is.null(rs))
+rs <- plot_raster(analysis, config, "var")
+stopifnot(class(rs) == "pheatmap")
+rs <- plot_raster(analysis, config, show_rownames = TRUE)
+stopifnot(class(rs) == "pheatmap")
+
 }
 \seealso{
 Other plotting: 

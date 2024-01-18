@@ -25,19 +25,25 @@ generates peptide level plots for all Proteins
 }
 \examples{
 
- iostar <- prolfqua_data('data_ionstar')$filtered()
- iostar$config <- old2new(iostar$config)
- iostar$data <- iostar$data |>
-   dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
- unique(iostar$data$protein_Id)
+ #iostar <- prolfqua_data('data_ionstar')$filtered()
+ #iostar$config <- old2new(iostar$config)
+ #iostar$data <- iostar$data |>
+ #  dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
+ #unique(iostar$data$protein_Id)
 
- res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
+ istar <- sim_lfq_data_config()
+ config <- istar$config
+ analysis <- istar$data
+ analysis <- analysis |>
+   dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
+
+ res <- plot_hierarchies_boxplot_df(analysis,config)
  res$boxplot[[1]]
- res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,iostar$config$table$hierarchy_keys()[1])
+ res <- plot_hierarchies_boxplot_df(analysis,config,config$table$hierarchy_keys()[1])
  res$boxplot[[1]]
- res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-                                    iostar$config$table$hierarchy_keys()[1],
-                                    facet_grid_on = iostar$config$table$hierarchy_keys()[2])
+ res <- plot_hierarchies_boxplot_df(analysis,config,
+                                    config$table$hierarchy_keys()[1],
+                                    facet_grid_on = config$table$hierarchy_keys()[2])
  res$boxplot[[1]]
 
  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')

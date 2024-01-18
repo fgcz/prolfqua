@@ -207,19 +207,25 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#'  iostar <- prolfqua_data('data_ionstar')$filtered()
-#'  iostar$config <- old2new(iostar$config)
-#'  iostar$data <- iostar$data |>
-#'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
-#'  unique(iostar$data$protein_Id)
+#'  #iostar <- prolfqua_data('data_ionstar')$filtered()
+#'  #iostar$config <- old2new(iostar$config)
+#'  #iostar$data <- iostar$data |>
+#'  #  dplyr::filter(protein_Id %in% sample(protein_Id, 2))
+#'  #unique(iostar$data$protein_Id)
 #'
-#'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
+#'  istar <- sim_lfq_data_config()
+#'  config <- istar$config
+#'  analysis <- istar$data
+#'  analysis <- analysis |>
+#'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
+#'
+#'  res <- plot_hierarchies_boxplot_df(analysis,config)
 #'  res$boxplot[[1]]
-#'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,iostar$config$table$hierarchy_keys()[1])
+#'  res <- plot_hierarchies_boxplot_df(analysis,config,config$table$hierarchy_keys()[1])
 #'  res$boxplot[[1]]
-#'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-#'                                     iostar$config$table$hierarchy_keys()[1],
-#'                                     facet_grid_on = iostar$config$table$hierarchy_keys()[2])
+#'  res <- plot_hierarchies_boxplot_df(analysis,config,
+#'                                     config$table$hierarchy_keys()[1],
+#'                                     facet_grid_on = config$table$hierarchy_keys()[2])
 #'  res$boxplot[[1]]
 #'
 #'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
@@ -266,8 +272,8 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @family plotting
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#' istar <- sim_lfq_data_config()
+#' config <- istar$config
 #' analysis <- istar$data
 #'
 #' pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
@@ -322,20 +328,21 @@ plot_heatmap_cor <- function(data,
 #' plot heatmap with annotations
 #'
 #' @export
+#' @param na_fraction fraction of NA values per row
+#' @param show_rownames if TRUE shows row names, default FALSE
 #' @keywords internal
 #' @family plotting
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(istar$data) == 25780)
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#' istar <- sim_lfq_data_config()
+#' config <- istar$config
 #' analysis <- istar$data
 #'
-#' plot.new()
+#'
 #' p  <- plot_heatmap(analysis, config)
+#' stopifnot(class(p) == "pheatmap")
 #' p2 <- plot_heatmap(analysis, config, show_rownames = TRUE)
-#' plot.new()
-#' p2
+#' stopifnot(class(p) == "pheatmap")
 #'
 plot_heatmap <- function(data,
                          config,
@@ -394,17 +401,19 @@ plot_heatmap <- function(data,
 #' @family plotting
 #' @export
 #' @examples
-#'  bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
-#'  new <- list(config = bb$config$clone( deep = TRUE), data = bb$data)
-#' istar <- LFQData$new(new$data, new$config)
-#' config <- old2new(istar$config$clone(deep=TRUE))
+#'
+#' istar <- sim_lfq_data_config()
+#' config <- istar$config
 #' analysis <- istar$data
-#' dev.off()
 #' rs <- plot_raster(analysis, config, show_rownames=FALSE)
-#' print(rs)
-#' plot_raster(analysis[1,], config)
-#' plot_raster(analysis, config, "var")
-#' plot_raster(analysis, config, show_rownames = TRUE)
+#' stopifnot(class(rs) == "pheatmap")
+#' rs <- plot_raster(analysis[1,], config)
+#' stopifnot(is.null(rs))
+#' rs <- plot_raster(analysis, config, "var")
+#' stopifnot(class(rs) == "pheatmap")
+#' rs <- plot_raster(analysis, config, show_rownames = TRUE)
+#' stopifnot(class(rs) == "pheatmap")
+#'
 plot_raster <- function(data,
                         config,
                         arrange = c("mean", "var"),

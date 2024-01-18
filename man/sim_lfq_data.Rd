@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_lfq_data}
 \alias{sim_lfq_data}
-\title{simulate peptide level data with two groups}
+\title{simulate protein level data with two groups}
 \usage{
 sim_lfq_data(
   Nprot = 20,
@@ -10,8 +10,9 @@ sim_lfq_data(
   fc = list(A = c(D = -2, U = 2, N = 0), B = c(D = 1, U = -4)),
   prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20)),
   mean_prot = 20,
-  sd = 1.2,
-  probability_of_success = 0.3
+  sdlog = log(1.2),
+  probability_of_success = 0.3,
+  PEPTIDE = FALSE
 )
 }
 \arguments{
@@ -24,15 +25,10 @@ sim_lfq_data(
 \item{prop}{proportion of down (D), up (U) and not regulated (N)}
 }
 \description{
-simulate peptide level data with two groups
+simulate protein level data with two groups
 }
 \examples{
-res <- sim_lfq_data()
+
 sim_lfq_data(Nprot = 10)
-
-dd <- sim_lfq_data()
-dd$abundance <- add_missing(dd$abundance)
-
-sim_lfq_data_config()
-sim_lfq_data_config(with_missing = FALSE)
+res <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE)
 }

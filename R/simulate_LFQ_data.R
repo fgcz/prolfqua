@@ -1,27 +1,22 @@
-#' simulate peptide level data with two groups
+#' simulate protein level data with two groups
 #' @export
 #' @param Nprot number of porteins
 #' @param N group size
 #' @param fc D - down regulation N - matrix,  U -  regulation
 #' @param prop proportion of down (D), up (U) and not regulated (N)
 #' @examples
-#' res <- sim_lfq_data()
+#'
 #' sim_lfq_data(Nprot = 10)
-#'
-#' dd <- sim_lfq_data()
-#' dd$abundance <- add_missing(dd$abundance)
-#'
-#' sim_lfq_data_config()
-#' sim_lfq_data_config(with_missing = FALSE)
-
+#' res <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE)
 sim_lfq_data <- function(
     Nprot = 20,
     N = 4,
     fc = list(A = c(D = -2,  U = 2, N = 0), B = c(D = 1, U = -4)),
     prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20)),
     mean_prot = 20,
-    sd = 1.2,
-    probability_of_success = 0.3
+    sdlog = log(1.2),
+    probability_of_success = 0.3,
+    PEPTIDE = FALSE
 ) {
 
   proteins <- stringi::stri_rand_strings(Nprot, 6)
@@ -32,7 +27,7 @@ sim_lfq_data <- function(
   prot <- data.frame(
     proteinID = proteins,
     nrPeptides = nrpeptides,
-    average_prot_abundance = rlnorm(Nprot,log(20),sdlog = log(sd)),
+    average_prot_abundance = rlnorm(Nprot,log(20),sdlog = sdlog),
     mean_Ctrl = 0,
     N_Ctrl = N,
     sd = 1
@@ -57,10 +52,16 @@ sim_lfq_data <- function(
     prot <- prot |> dplyr::mutate(!!groupMean := FC, !!groupSize := N)
   }
 
-  # add row for each protein
-  peptide_df <- prot |> tidyr::uncount( nrPeptides )
-  # create peptide ids
-  peptide_df$peptideID <- stringi::stri_rand_strings(sum(prot$nrPeptides), 8)
+  if (PEPTIDE) {
+
+    # add row for each protein
+    peptide_df <- prot |> tidyr::uncount( nrPeptides )
+    # create peptide ids
+    peptide_df$peptideID <- stringi::stri_rand_strings(sum(prot$nrPeptides), 8)
+  } else {
+    peptide_df <- prot
+  }
+
 
   # transform into long format
   peptide_df2 <- peptide_df |> tidyr::pivot_longer(cols = tidyselect::starts_with(c("mean", "N_")),
@@ -68,21 +69,29 @@ sim_lfq_data <- function(
   peptide_df2 <-  peptide_df2 |> tidyr::separate(group, c("what", "group"))
   peptide_df2 <- peptide_df2 |> tidyr::pivot_wider(names_from = "what", values_from = mean)
 
-  peptide_df2$avg_peptide_abd <-
-    with(peptide_df2,
-         rlnorm(nrow(peptide_df2),
-                meanlog = log(average_prot_abundance - mean),
-                sdlog = log(sd)))
-
   sample_from_normal <- function(mean, sd, n) {
     rnorm(n, mean, sd)
   }
-
   nrpep <- nrow(peptide_df2)
   sampled_data <- matrix(nrow = nrpep, ncol = N)
-  colnames(sampled_data) <- c("V1","V2","V3","V4")
-  for (i in seq_len(nrpep)) {
-    sampled_data[i,] <- sample_from_normal(peptide_df2$avg_peptide_abd[i], peptide_df2$sd[1], peptide_df2$N[i])
+  colnames(sampled_data) <- paste0("V", 1:ncol(sampled_data))
+
+  peptide_df2$average_prot_abundance <- peptide_df2$average_prot_abundance - peptide_df2$mean
+
+  if (PEPTIDE) {
+    peptide_df2$avg_peptide_abd <-
+      with(peptide_df2,
+           rlnorm(nrow(peptide_df2),
+                  meanlog = log(average_prot_abundance),
+                  sdlog = sdlog))
+    for (i in seq_len(nrpep)) {
+      sampled_data[i,] <- sample_from_normal(peptide_df2$avg_peptide_abd[i], peptide_df2$sd[1], peptide_df2$N[i])
+    }
+
+  } else {
+    for (i in seq_len(nrpep)) {
+      sampled_data[i,] <- sample_from_normal(peptide_df2$average_prot_abundance[i], peptide_df2$sd[1], peptide_df2$N[i])
+    }
   }
 
   x <- dplyr::bind_cols(peptide_df2,sampled_data)
@@ -96,6 +105,7 @@ sim_lfq_data <- function(
     tidyr::unite("sample", group, Replicate, remove =  FALSE)
   return(peptideAbundances)
 }
+
 
 #' add missing values to x vector based on the values of x
 #' @export
@@ -122,8 +132,8 @@ add_missing <- function(x){
 #' @export
 #' @examples
 #'
-sim_lfq_data_config <- function(Nprot = 10, with_missing = TRUE){
-  data <- sim_lfq_data(Nprot = Nprot)
+sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE){
+  data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE)
   if (with_missing) {
     data$abundance <- add_missing(data$abundance)
   }
@@ -141,3 +151,23 @@ sim_lfq_data_config <- function(Nprot = 10, with_missing = TRUE){
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
 }
+
+sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE){
+  data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
+  if (with_missing) {
+    data$abundance <- add_missing(data$abundance)
+  }
+  data$isotopeLabel <- "light"
+  data$qValue <- 0
+
+  atable <- AnalysisTableAnnotation$new()
+  atable$sampleName = "sample"
+  atable$factors["group_"] = "group"
+  atable$hierarchy[["protein_Id"]] = "proteinID"
+  atable$set_response("abundance")
+
+  config <- AnalysisConfiguration$new(atable)
+  adata <- setup_analysis(data, config)
+  return(list(data = adata, config = config))
+}
+

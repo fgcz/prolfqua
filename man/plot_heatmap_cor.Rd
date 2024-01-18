@@ -17,8 +17,8 @@ plot correlation heatmap with annotations
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-config <- old2new(istar$config$clone(deep=TRUE))
+istar <- sim_lfq_data_config()
+config <- istar$config
 analysis <- istar$data
 
 pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
