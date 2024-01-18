@@ -272,7 +272,7 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' @family plotting
 #' @examples
 #'
-#' istar <- sim_lfq_data_config()
+#' istar <- sim_lfq_data_protein_config()
 #' config <- istar$config
 #' analysis <- istar$data
 #'

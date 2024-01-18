@@ -151,7 +151,10 @@ sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE){
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
 }
-
+#' Simulate data with config
+#' @export
+#' @examples
+#'
 sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE){
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
   if (with_missing) {
