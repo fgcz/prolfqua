@@ -346,21 +346,19 @@ aggregate_contrast <- function(
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config)
-#' data <- bb$data
-#' data <- complete_cases(data, configur)
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#' data <- complete_cases(analysis, config)
 #'
-#' Contrasts <- c("aVSe" = "dilution.a - dilution.e","aVSb" = "dilution.a - dilution.b" )
+#' Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
 #' message("missigness_impute_factors_interactions : imputed")
-#' xx <- missigness_impute_factors_interactions(data, configur, value = "nrMeasured" )
-#' imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
+#' xx <- missigness_impute_factors_interactions(data, config, value = "nrMeasured" )
+#' imputed <- get_contrast(xx, config$table$hierarchy_keys(), Contrasts)
 #'
-#' xx <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
+#' xx <- missigness_impute_factors_interactions(data, config, value = "imputed" )
 #'
-#' imputed <- get_contrast(xx, configur$table$hierarchy_keys(), Contrasts)
-#' head(imputed)
+#' imputed <- get_contrast(xx, config$table$hierarchy_keys(), Contrasts)
 #'
 get_contrast <- function(data,
                          hierarchy_keys,
@@ -412,19 +410,18 @@ get_contrast <- function(data,
 #' @examples
 #'
 #'
-#' library(prolfqua)
-#' bb <- prolfqua_data('data_ionstar')$normalized()
-#' configur <- old2new(bb$config)
-#' data <- bb$data
-#' configur$parameter$qVal_individual_threshold <- 0.01
-#' data <- prolfqua::remove_large_QValues(data, configur)
-#' data <- complete_cases(data, configur)
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#' data <- complete_cases(analysis, config)
+#' config$parameter$qVal_individual_threshold <- 0.01
+#' data <- prolfqua::remove_large_QValues(data, config)
+#' data <- complete_cases(data, config)
 #'
-#' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-#' #debug(get_imputed_contrasts)
-#' res <- get_imputed_contrasts(data, configur, Contrasts)
+#' Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
+#' res <- get_imputed_contrasts(data, config, Contrasts)
 #'
-#' config <- configur
+#' config <- config
 #' contrasts <- Contrasts
 #' imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
 #' imputed <- get_contrast(imputed, config$table$hierarchy_keys(), contrasts)
