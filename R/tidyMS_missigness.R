@@ -11,33 +11,25 @@
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config)
-#' data <- bb$data
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
 #'
-#' configur$parameter$qVal_individual_threshold <- 0.01
-#' xx <- prolfqua::remove_large_QValues(data,
-#'    configur)
-#' xx <- complete_cases(xx, configur)
-#' x <- interaction_missing_stats(xx, configur)$data |> dplyr::arrange(desc(nrNAs))
+#' config$parameter$qVal_individual_threshold <- 0.01
+#' xx <- prolfqua::remove_large_QValues(analysis,
+#'    config)
+#' xx <- complete_cases(xx, config)
+#' x <- interaction_missing_stats(xx, config)$data |> dplyr::arrange(desc(nrNAs))
 #'
-#' stopifnot(nrow(x) == 5540)
-#' stopifnot(sum(is.na(x$meanAbundance)) == 206)
-#' stopifnot(length(unique(x$protein_Id)) == 162)
-#'
-#' tmp <- interaction_missing_stats(xx, configur,
+#' tmp <- interaction_missing_stats(xx, config,
 #'  factors= character(),
-#'   hierarchy = configur$table$hierarchy_keys()[1])$data
-#' stopifnot(nrow(tmp) == 162)
+#'   hierarchy = config$table$hierarchy_keys()[1])$data
 #'
-#' tmp <- interaction_missing_stats(xx, configur,
-#'   hierarchy = configur$table$hierarchy_keys()[1])$data
+#' tmp <- interaction_missing_stats(xx, config,
+#'   hierarchy = config$table$hierarchy_keys()[1])$data
 #' stopifnot(sum(is.na(tmp$nrMeasured))==0)
-#' tmp
 #'
-#' interaction_missing_stats(xx, configur, factors = NULL)
+#' tmp <- interaction_missing_stats(xx, config, factors = NULL)
 #'
 interaction_missing_stats <- function(pdata,
                                       config,
@@ -78,22 +70,19 @@ interaction_missing_stats <- function(pdata,
 #' @return function
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config)
-#' data <- bb$data
-#' configur$parameter$qVal_individual_threshold <- 0.01
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#' config$parameter$qVal_individual_threshold <- 0.01
 #'
-#' xx <- prolfqua::remove_large_QValues(data, configur)
-#' xx <- complete_cases(xx, configur)
+#' xx <- prolfqua::remove_large_QValues(analysis, config)
+#' xx <- complete_cases(xx, config)
 #' nrPepTimesDilution <- length(unique(paste0(xx$protein_Id, xx$peptide_Id))) *
 #'     length(unique(xx$dilution.))
-#' tmp <- interaction_missing_stats(xx, configur)
-#' stopifnot(nrow(tmp$data) == nrPepTimesDilution)
-#' fun <- .missigness_impute_interactions(xx, configur)
+#' tmp <- interaction_missing_stats(xx, config)
+#' fun <- .missigness_impute_interactions(xx, config)
 #'
 #' long <- fun("long")
-#' nrow(long) == nrPepTimesDilution
 #' alldata <- fun("all")
 #' stopifnot(length(names(alldata)) == 5)
 #'
@@ -104,8 +93,7 @@ interaction_missing_stats <- function(pdata,
 #'
 #'  meanAbundance <- fun("mean")
 #' stopifnot(nrow(meanAbundance) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
-#'  print(sum(is.na(meanAbundance$mean.dilution.a)))
-#'  stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
+#'  stopifnot(sum(is.na(imputed$mean.imp.group_A))==0)
 #'
 .missigness_impute_interactions <- function(pdata,
                                             config,
@@ -226,17 +214,16 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config)
-#' data <- bb$data
-#' xx <- complete_cases(data, configur)
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
 #'
-#' res <- missigness_impute_factors_interactions(xx, configur)
-#' res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
-#' res <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
-#' long <- missigness_impute_factors_interactions(xx, configur, value = "long")
-#' dim(long)
+#' xx <- complete_cases(analysis, config)
+#'
+#' res <- missigness_impute_factors_interactions(xx, config)
+#' res <- missigness_impute_factors_interactions(xx, config, value = "imputed")
+#' res <- missigness_impute_factors_interactions(xx, config, value = "nrMeasured")
+#' long <- missigness_impute_factors_interactions(xx, config, value = "long")
 #'
 missigness_impute_factors_interactions <-
   function(pdata,
@@ -269,7 +256,7 @@ missigness_impute_factors_interactions <-
     for (fun_name in names(fac_fun)) {
       fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix = add.prefix)
     }
-    if(value == "long"){
+    if (value == "long") {
       intfact <- dplyr::bind_rows(fac_res)
     } else {
       intfact <- purrr::reduce(fac_res,
@@ -292,26 +279,26 @@ missigness_impute_factors_interactions <-
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
 #'
-#' configur <- old2new(bb$config)
-#' data <- bb$data
+#' Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
+#' mean <- missigness_impute_factors_interactions(analysis, config, value = "meanAbundance" )
+#' mean <- get_contrast(mean, config$table$hierarchy_keys(), Contrasts)
+#' meanProt <- aggregate_contrast(mean,  subject_Id =  config$table$hierarchy_keys_depth())
 #'
-#' Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-#' mean <- missigness_impute_factors_interactions(data, configur, value = "meanAbundance" )
-#' mean <- get_contrast(mean, configur$table$hierarchy_keys(), Contrasts)
-#' meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hierarchy_keys_depth())
+#' imputed <- missigness_impute_factors_interactions(analysis, config, value = "imputed" )
+#' imputed <- get_contrast(imputed, config$table$hierarchy_keys(), Contrasts)
 #'
-#' imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
-#' imputed <- get_contrast(imputed, configur$table$hierarchy_keys(), Contrasts)
-#'
-#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hierarchy_keys_depth())
+#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
+#' if(FALSE){
 #' plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
 #' abline(c(0,1), col=2, pch = "*")
-#' dim(meanProt)
-#' sum(is.na(meanProt$estimate_median)) == 0
-#' sum(is.na(imputedProt$estimate_median)) == 0
 #' plot(meanProt$estimate_median - imputedProt$estimate_median )
+#' }
+#' stopifnot(sum(is.na(meanProt$estimate_median)) == 0)
+#' stopifnot(sum(is.na(imputedProt$estimate_median)) == 0)
 #'
 aggregate_contrast <- function(
     data,

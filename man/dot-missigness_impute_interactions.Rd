@@ -35,22 +35,19 @@ used in Acetylation project p2916
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(bb$data) == 25780)
-configur <- old2new(bb$config)
-data <- bb$data
-configur$parameter$qVal_individual_threshold <- 0.01
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
+config$parameter$qVal_individual_threshold <- 0.01
 
-xx <- prolfqua::remove_large_QValues(data, configur)
-xx <- complete_cases(xx, configur)
+xx <- prolfqua::remove_large_QValues(analysis, config)
+xx <- complete_cases(xx, config)
 nrPepTimesDilution <- length(unique(paste0(xx$protein_Id, xx$peptide_Id))) *
     length(unique(xx$dilution.))
-tmp <- interaction_missing_stats(xx, configur)
-stopifnot(nrow(tmp$data) == nrPepTimesDilution)
-fun <- .missigness_impute_interactions(xx, configur)
+tmp <- interaction_missing_stats(xx, config)
+fun <- .missigness_impute_interactions(xx, config)
 
 long <- fun("long")
-nrow(long) == nrPepTimesDilution
 alldata <- fun("all")
 stopifnot(length(names(alldata)) == 5)
 
@@ -61,8 +58,7 @@ stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 
  meanAbundance <- fun("mean")
 stopifnot(nrow(meanAbundance) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
- print(sum(is.na(meanAbundance$mean.dilution.a)))
- stopifnot(sum(is.na(imputed$mean.imp.dilution.a))==0)
+ stopifnot(sum(is.na(imputed$mean.imp.group_A))==0)
 
 }
 \keyword{internal}

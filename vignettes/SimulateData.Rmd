@@ -37,7 +37,7 @@ For peptides:
 
 
 ```{r}
-peptideAbundances <- prolfqua::sim_lfq_data()
+peptideAbundances <- prolfqua::sim_lfq_data(PEPTIDE = TRUE)
 ```
 
 

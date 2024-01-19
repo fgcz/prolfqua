@@ -22,26 +22,26 @@ Compute fold changes given Contrasts
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
 
-configur <- old2new(bb$config)
-data <- bb$data
+Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
+mean <- missigness_impute_factors_interactions(analysis, config, value = "meanAbundance" )
+mean <- get_contrast(mean, config$table$hierarchy_keys(), Contrasts)
+meanProt <- aggregate_contrast(mean,  subject_Id =  config$table$hierarchy_keys_depth())
 
-Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-mean <- missigness_impute_factors_interactions(data, configur, value = "meanAbundance" )
-mean <- get_contrast(mean, configur$table$hierarchy_keys(), Contrasts)
-meanProt <- aggregate_contrast(mean,  subject_Id =  configur$table$hierarchy_keys_depth())
+imputed <- missigness_impute_factors_interactions(analysis, config, value = "imputed" )
+imputed <- get_contrast(imputed, config$table$hierarchy_keys(), Contrasts)
 
-imputed <- missigness_impute_factors_interactions(data, configur, value = "imputed" )
-imputed <- get_contrast(imputed, configur$table$hierarchy_keys(), Contrasts)
-
-imputedProt <- aggregate_contrast(imputed,  subject_Id =  configur$table$hierarchy_keys_depth())
+imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
+if(FALSE){
 plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
 abline(c(0,1), col=2, pch = "*")
-dim(meanProt)
-sum(is.na(meanProt$estimate_median)) == 0
-sum(is.na(imputedProt$estimate_median)) == 0
 plot(meanProt$estimate_median - imputedProt$estimate_median )
+}
+stopifnot(sum(is.na(meanProt$estimate_median)) == 0)
+stopifnot(sum(is.na(imputedProt$estimate_median)) == 0)
 
 }
 \seealso{

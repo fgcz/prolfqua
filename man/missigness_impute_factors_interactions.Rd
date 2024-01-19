@@ -31,17 +31,16 @@ should generalize at some stage
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(bb$data) == 25780)
-configur <- old2new(bb$config)
-data <- bb$data
-xx <- complete_cases(data, configur)
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
 
-res <- missigness_impute_factors_interactions(xx, configur)
-res <- missigness_impute_factors_interactions(xx, configur, value = "imputed")
-res <- missigness_impute_factors_interactions(xx, configur, value = "nrMeasured")
-long <- missigness_impute_factors_interactions(xx, configur, value = "long")
-dim(long)
+xx <- complete_cases(analysis, config)
+
+res <- missigness_impute_factors_interactions(xx, config)
+res <- missigness_impute_factors_interactions(xx, config, value = "imputed")
+res <- missigness_impute_factors_interactions(xx, config, value = "nrMeasured")
+long <- missigness_impute_factors_interactions(xx, config, value = "long")
 
 }
 \seealso{
