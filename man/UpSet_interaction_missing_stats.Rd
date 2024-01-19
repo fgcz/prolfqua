@@ -13,13 +13,15 @@ UpSet_interaction_missing_stats(data, cf, tr = 2)
 UpSetR plot from interaction_missing_stats
 }
 \examples{
-bb <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(bb$data) == 25780)
-configur <- old2new(bb$config$clone(deep=TRUE))
-data <- bb$data
-#debug(UpSet_interaction_missing_stats)
-pups <- UpSet_interaction_missing_stats(data, configur)
-#UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
+
+pups <- UpSet_interaction_missing_stats(data, config)
+stopifnot(ncol(pups$data) == 5)
+\dontrun{
+  UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
+}
 }
 \seealso{
 Other plotting: 

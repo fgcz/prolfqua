@@ -14,15 +14,15 @@ missingness_per_condition(
 Summarize missing in condtion as barplot
 }
 \examples{
-bb <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(bb$data) == 25780)
-configur <- old2new(bb$config$clone(deep=TRUE))
-data <- bb$data
 
-res <- missingness_per_condition(data, configur)
-stopifnot(c(5,8) == dim(res$data))
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
+
+res <- missingness_per_condition(analysis, config)
 stopifnot("ggplot" \%in\% class(res$figure))
-print(res$figure)
+
+stopifnot(ncol(res$data) >= 5)
 
 }
 \seealso{

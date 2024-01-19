@@ -35,7 +35,7 @@ imputed <- missigness_impute_factors_interactions(analysis, config, value = "imp
 imputed <- get_contrast(imputed, config$table$hierarchy_keys(), Contrasts)
 
 imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
-if(FALSE){
+\dontrun{
 plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
 abline(c(0,1), col=2, pch = "*")
 plot(meanProt$estimate_median - imputedProt$estimate_median )

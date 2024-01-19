@@ -16,15 +16,14 @@ cumulative sums of missing
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(bb$data) == 25780)
-configur <- old2new(bb$config$clone(deep=TRUE))
-data <- bb$data
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
 
-res <- missingness_per_condition_cumsum(data,configur)
+res <- missingness_per_condition_cumsum(analysis,config)
 stopifnot("ggplot" \%in\% class(res$figure))
-print(res$figure)
-res$data
+stopifnot(ncol(res$data) >= 6)
+
 }
 \seealso{
 Other plotting: 

@@ -25,19 +25,18 @@ peptide fold change is computed based on the average of intensities in the condi
 \examples{
 
 
-library(prolfqua)
-bb <- prolfqua_data('data_ionstar')$normalized()
-configur <- old2new(bb$config)
-data <- bb$data
-configur$parameter$qVal_individual_threshold <- 0.01
-data <- prolfqua::remove_large_QValues(data, configur)
-data <- complete_cases(data, configur)
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
+data <- complete_cases(analysis, config)
+config$parameter$qVal_individual_threshold <- 0.01
+data <- prolfqua::remove_large_QValues(data, config)
+data <- complete_cases(data, config)
 
-Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a", "dilution.c-e" = "dilution.c - dilution.e")
-#debug(get_imputed_contrasts)
-res <- get_imputed_contrasts(data, configur, Contrasts)
+Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
+res <- get_imputed_contrasts(data, config, Contrasts)
 
-config <- configur
+config <- config
 contrasts <- Contrasts
 imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )
 imputed <- get_contrast(imputed, config$table$hierarchy_keys(), contrasts)

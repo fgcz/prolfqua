@@ -17,22 +17,16 @@ Histogram summarizing missigness
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')
-configur <- old2new(bb$config)
-data <- bb$data
-xx <- complete_cases(data, configur)
-missigness_histogram(xx, configur)
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
+xx <- complete_cases(data, config)
+pl <- missigness_histogram(xx, config)
 
-missingPrec <- interaction_missing_stats(xx, configur)
-
-bx <- prolfqua_data('data_ionstar')$normalized()
-configur <- old2new(bx$config)
-data <- bx$data
-data <- complete_cases(data, configur)
-missingPrecNorm <- interaction_missing_stats(data, configur)
-
-missigness_histogram(data, configur, showempty=FALSE)
-missigness_histogram(data, configur, showempty=TRUE)
+pl <- missigness_histogram(data, config, showempty=FALSE)
+stopifnot("ggplot" \%in\% class(pl))
+pl <- missigness_histogram(data, config, showempty=TRUE)
+stopifnot("ggplot" \%in\% class(pl))
 
 }
 \seealso{

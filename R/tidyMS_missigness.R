@@ -292,7 +292,7 @@ missigness_impute_factors_interactions <-
 #' imputed <- get_contrast(imputed, config$table$hierarchy_keys(), Contrasts)
 #'
 #' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
-#' if(FALSE){
+#' \dontrun{
 #' plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
 #' abline(c(0,1), col=2, pch = "*")
 #' plot(meanProt$estimate_median - imputedProt$estimate_median )
@@ -471,22 +471,16 @@ get_imputed_contrasts <- function(pepIntensity,
 #' @family imputation
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')
-#' configur <- old2new(bb$config)
-#' data <- bb$data
-#' xx <- complete_cases(data, configur)
-#' missigness_histogram(xx, configur)
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#' xx <- complete_cases(data, config)
+#' pl <- missigness_histogram(xx, config)
 #'
-#' missingPrec <- interaction_missing_stats(xx, configur)
-#'
-#' bx <- prolfqua_data('data_ionstar')$normalized()
-#' configur <- old2new(bx$config)
-#' data <- bx$data
-#' data <- complete_cases(data, configur)
-#' missingPrecNorm <- interaction_missing_stats(data, configur)
-#'
-#' missigness_histogram(data, configur, showempty=FALSE)
-#' missigness_histogram(data, configur, showempty=TRUE)
+#' pl <- missigness_histogram(data, config, showempty=FALSE)
+#' stopifnot("ggplot" %in% class(pl))
+#' pl <- missigness_histogram(data, config, showempty=TRUE)
+#' stopifnot("ggplot" %in% class(pl))
 #'
 missigness_histogram <- function(x,
                                  config,
@@ -535,15 +529,14 @@ missigness_histogram <- function(x,
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config$clone(deep=TRUE))
-#' data <- bb$data
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
 #'
-#' res <- missingness_per_condition_cumsum(data,configur)
+#' res <- missingness_per_condition_cumsum(analysis,config)
 #' stopifnot("ggplot" %in% class(res$figure))
-#' print(res$figure)
-#' res$data
+#' stopifnot(ncol(res$data) >= 6)
+#'
 missingness_per_condition_cumsum <- function(x,
                                              config,
                                              factors = config$table$factor_keys_depth()){
@@ -576,15 +569,15 @@ missingness_per_condition_cumsum <- function(x,
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config$clone(deep=TRUE))
-#' data <- bb$data
 #'
-#' res <- missingness_per_condition(data, configur)
-#' stopifnot(c(5,8) == dim(res$data))
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#'
+#' res <- missingness_per_condition(analysis, config)
 #' stopifnot("ggplot" %in% class(res$figure))
-#' print(res$figure)
+#'
+#' stopifnot(ncol(res$data) >= 5)
 #'
 missingness_per_condition <- function(x, config, factors = config$table$factor_keys_depth()){
   table <- config$table
@@ -618,13 +611,15 @@ missingness_per_condition <- function(x, config, factors = config$table$factor_k
 #' @family imputation
 #' @param tr if less than tr observations in condition then missing
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config$clone(deep=TRUE))
-#' data <- bb$data
-#' #debug(UpSet_interaction_missing_stats)
-#' pups <- UpSet_interaction_missing_stats(data, configur)
-#' #UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#'
+#' pups <- UpSet_interaction_missing_stats(data, config)
+#' stopifnot(ncol(pups$data) == 5)
+#' \dontrun{
+#'   UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
+#' }
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::interaction_missing_stats(data, cf)
   nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$table$hierarchy_keys(),
@@ -644,12 +639,13 @@ UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
 #' @family plotting
 #' @family imputation
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- old2new(bb$config$clone(deep=TRUE))
-#' data <- bb$data
-#' pups <- UpSet_missing_stats(data, configur)
-#' #UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#' pups <- UpSet_missing_stats(analysis, config)
+#' \dontrun{
+#' UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
+#' }
 UpSet_missing_stats <- function(data, config){
   data <- prolfqua::complete_cases(data, config)
   responseName <- config$table$get_response()
