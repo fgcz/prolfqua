@@ -5,59 +5,50 @@
 #' @family plotting
 #' @examples
 #'
-#' istar <- sim_lfq_data_peptide_config()
+#' istar <- sim_lfq_data_peptide_config(Nprot = 100)
 #' modelName <- "Model"
-#' head(istar$data)
 #' modelFunction <-
 #'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)",
 #'    model_name = modelName)
 #' pepIntensity <- istar$data
 #' config <- istar$config
-#' config$table$hierarchy_keys_depth()
-#' mod <- build_model(
-#'  pepIntensity,
-#'  modelFunction,
-#'  modelName = modelName,
-#'  subject_Id = config$table$hierarchy_keys_depth())
 #'
-#'  #mod$get_coefficients()
+#' mod <- build_model(
+#'   pepIntensity,
+#'   modelFunction,
+#'   modelName = modelName,
+#'   subject_Id = config$table$hierarchy_keys_depth())
 #'
 #'  Contr <- c("group_A_vs_Ctrl" = "group_A - group_Ctrl",
 #'  "group_B_vs_Ctrl" = "group_B - group_Ctrl"
 #'  )
 #' contrast <- prolfqua::Contrasts$new(mod,
 #'   Contr)
-#' tmp <- contrast$get_contrasts()
-#'
-#' cp <- ContrastsPlotter$new(tmp ,
-#'  contrast$subject_Id,
-#' volcano = list(list(score = "FDR", thresh = 0.1)),
-#' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
+#' contr <- contrast$get_contrasts()
+#' cp <- ContrastsPlotter$new(contr,
+#'   contrast$subject_Id,
+#'   volcano = list(list(score = "FDR", thresh = 0.1)),
+#'   histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
 #'                  list(score = "FDR", xlim = c(0,1,0.05))),
-#' score =list(list(score = "statistic",  thresh = 5)))
+#'   score =list(list(score = "statistic",  thresh = 5))
+#'   )
 #'
-#' cp <- ContrastsPlotter$new(tmp ,
-#'  contrast$subject_Id,
-#' volcano = list(list(score = "FDR", thresh = 0.1)),
-#' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-#'                  list(score = "FDR", xlim = c(0,1,0.05))),
-#'                  fcthresh = c(-1,1),
-#' score =list(list(score = "statistic", thresh = 5)))
-#' cp$fcthresh
-#' cp$volcano_plotly()
-#' p <- cp$score_plot(legend=FALSE)
-#' cp$score_plotly()
+#' stopifnot("plotly" %in% class(cp$volcano_plotly()$FDR))
+#' stopifnot("ggplot" %in% class(cp$score_plot(legend=FALSE)$statistic))
 #' p <- cp$histogram()
+#' stopifnot("ggplot" %in% class(p$FDR))
+#' stopifnot("ggplot" %in% class(p$p.value))
 #' p <- cp$histogram_estimate()
+#' stopifnot("ggplot" %in% class(p))
 #' res <- cp$volcano()
+#' stopifnot("ggplot" %in% class(res$FDR))
 #' respltly <- cp$volcano_plotly()
-#'
-#' cp$ma_plot()
-#' cp$ma_plotly(rank=TRUE)
+#' stopifnot("plotly" %in% class(respltly$FDR))
+#' stopifnot("ggplot" %in%  class(cp$ma_plot()))
+#' stopifnot("plotly" %in%   class(cp$ma_plotly(rank=TRUE)))
 #' res  <- cp$barplot_threshold()
-#' names(res)
-#' cp$histogram_diff()
-#' cp$volcano()
+#' stopifnot("ggplot" %in% class(res$FDR$plot))
+#' stopifnot("ggplot" %in%  class(cp$histogram_diff()))
 #'
 ContrastsPlotter <- R6::R6Class(
   "ContrastsPlotter",
