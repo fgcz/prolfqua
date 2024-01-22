@@ -110,7 +110,7 @@ ContrastsMissing <- R6::R6Class(
 
           result_sd_zero <- result[result$n == 0, ]
           resultnot_zero <- result[result$n > 0,]
-          meandf <- resultnot_zero |> summarize(n = 1, df = 1, sd = mean(sd, na.rm=TRUE), sdT = mean(sdT, na.rm = TRUE))
+          meandf <- resultnot_zero |> summarize(n = 1, df = 1, sd = mean(sd, na.rm = TRUE), sdT = mean(sdT, na.rm = TRUE))
 
           meandf$sd <-  ifelse(meandf$sd > 0, meandf$sd, self$minsd)
           meandf$sdT <-  ifelse(meandf$sdT > 0, meandf$sdT, self$minsd)

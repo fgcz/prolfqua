@@ -219,6 +219,8 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
 #' @family configuration
 #' @keywords internal
 #' @examples
+#'
+#'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' bb$config <- old2new(bb$config)
 #' dt <- separate_hierarchy(bb$data, bb$config)

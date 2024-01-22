@@ -1,3 +1,13 @@
+.generate_random_string <- function(N, str_length) {
+  random_string <- vector(mode = "character", length = N)
+  digits <- 0:9
+  for (i in seq_len(N)) {
+    random_string[i] <- paste0(sample(digits, str_length, replace = TRUE), collapse = "")
+  }
+  return(random_string)
+}
+
+
 #' simulate protein level data with two groups
 #' @export
 #' @param Nprot number of porteins
@@ -19,13 +29,16 @@ sim_lfq_data <- function(
     PEPTIDE = FALSE
 ) {
 
+
   proteins <- stringi::stri_rand_strings(Nprot, 6)
+  idtype2 <- .generate_random_string(Nprot, 4)
   # simulate number of peptides per protein
   nrpeptides <- rgeom(n = Nprot, probability_of_success) + 1
 
 
   prot <- data.frame(
     proteinID = proteins,
+    idtype2 = idtype2,
     nrPeptides = nrpeptides,
     average_prot_abundance = rlnorm(Nprot,log(20),sdlog = sdlog),
     mean_Ctrl = 0,
@@ -128,11 +141,17 @@ add_missing <- function(x){
 }
 
 
-#' Simulate data with config
+#' Simulate data, protein and peptide, with config
+#' @param description Nprot number of proteins
+#' @param with_missing add missing values, default TRUE
+#' @param seed seed for reproducibility, if NULL no seed is set.
 #' @export
 #' @examples
 #'
-sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE){
+sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, seed = 1234){
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE)
   if (with_missing) {
     data$abundance <- add_missing(data$abundance)
@@ -143,7 +162,7 @@ sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE){
   atable <- AnalysisTableAnnotation$new()
   atable$sampleName = "sample"
   atable$factors["group_"] = "group"
-  atable$hierarchy[["protein_Id"]] = "proteinID"
+  atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   atable$hierarchy[["peptide_Id"]] = "peptideID"
   atable$set_response("abundance")
 
@@ -151,11 +170,17 @@ sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE){
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
 }
-#' Simulate data with config
+#' Simulate data, protein, with config
+#' @param description Nprot number of proteins
+#' @param with_missing add missing values, default TRUE
+#' @param seed seed for reproducibility, if NULL no seed is set.
 #' @export
 #' @examples
 #'
-sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE){
+sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, seed = 1234){
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
   if (with_missing) {
     data$abundance <- add_missing(data$abundance)
@@ -166,7 +191,7 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE){
   atable <- AnalysisTableAnnotation$new()
   atable$sampleName = "sample"
   atable$factors["group_"] = "group"
-  atable$hierarchy[["protein_Id"]] = "proteinID"
+  atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   atable$set_response("abundance")
 
   config <- AnalysisConfiguration$new(atable)

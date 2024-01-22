@@ -15,6 +15,8 @@ separate_hierarchy(data, config)
 Separates hierarchy columns into starting columns
 }
 \examples{
+
+
 bb <- prolfqua_data('data_ionstar')$filtered()
 bb$config <- old2new(bb$config)
 dt <- separate_hierarchy(bb$data, bb$config)

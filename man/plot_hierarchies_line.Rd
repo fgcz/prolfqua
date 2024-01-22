@@ -27,16 +27,14 @@ Plot peptide intensities of protein as a function of the sample and factor
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
-conf <- bb$config
-analysis <- bb$data
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+analysis <- istar$data
 
 xnested <- analysis |>
- dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
+ dplyr::group_by_at(config$table$hierarchy_keys_depth()) |> tidyr::nest()
 
-prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],conf )
+prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],config )
 
 bb <- prolfqua_data('data_skylineSRM_HL_A')
 conf <- bb$config_f()
