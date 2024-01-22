@@ -2,10 +2,17 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_lfq_data_protein_config}
 \alias{sim_lfq_data_protein_config}
-\title{Simulate data with config}
+\title{Simulate data, protein, with config}
 \usage{
-sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE)
+sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, seed = 1234)
+}
+\arguments{
+\item{with_missing}{add missing values, default TRUE}
+
+\item{seed}{seed for reproducibility, if NULL no seed is set.}
+
+\item{description}{Nprot number of proteins}
 }
 \description{
-Simulate data with config
+Simulate data, protein, with config
 }

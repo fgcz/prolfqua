@@ -38,7 +38,6 @@
 #' histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
 #'                  list(score = "FDR", xlim = c(0,1,0.05))),
 #' score =list(list(score = "statistic",  thresh = 5)))
-#' cp$volcano_plotly()
 #'
 #' cp <- ContrastsPlotter$new(tmp ,
 #'  contrast$subject_Id,
@@ -57,7 +56,6 @@
 #' res <- cp$volcano()
 #' respltly <- cp$volcano_plotly()
 #'
-#' length(respltly)
 #' cp$ma_plot()
 #' cp$ma_plotly(rank=TRUE)
 #' res  <- cp$barplot_threshold()
@@ -170,7 +168,7 @@ ContrastsPlotter <- R6::R6Class(
     volcano = function(colour,
                        legend = TRUE,
                        scales = c("fixed","free","free_x","free_y")){
-      if(missing(colour)){
+      if (missing(colour)) {
         colour <- self$modelName
       }
       scales <- match.arg(scales)
@@ -190,7 +188,7 @@ ContrastsPlotter <- R6::R6Class(
     volcano_plotly = function(colour,
                               legend = TRUE,
                               scales = c("fixed","free","free_x","free_y")){
-      if(missing(colour)){
+      if (missing(colour)) {
         colour <- self$modelName
       }
       scales <- match.arg(scales)
@@ -271,11 +269,11 @@ ContrastsPlotter <- R6::R6Class(
       # html version
       if (missing(fc))
         fc <- self$fcthresh
-      if(missing(colour))
+      if (missing(colour))
         colour <- self$modelName
       contrastDF  <- self$contrastDF
       if (!is.null(contrastDF[[self$avg.abundance]])) {
-        if(rank){
+        if (rank) {
           rankcol <- paste0("rank_", self$avg.abundance)
           contrastDF <- contrastDF |>
             dplyr::group_by(!!sym(self$contrast)) |>
@@ -322,7 +320,7 @@ ContrastsPlotter <- R6::R6Class(
       if (!missing(scorespec)) {
         self$score_spec[[scorespec$score]] <- scorespec
       }
-      if(missing(colour))
+      if (missing(colour))
         colour <- self$modelName
       res <- list()
       if (length(self$score_spec) > 0) {
@@ -346,7 +344,7 @@ ContrastsPlotter <- R6::R6Class(
       if (!missing(scorespec)) {
         self$score_spec[[scorespec$score]] <- scorespec
       }
-      if(missing(colour))
+      if (missing(colour))
         colour <- self$modelName
       contrastDF <- self$contrastDF |> plotly::highlight_key( ~subject_Id )
       res <- private$.score_plot(
@@ -438,7 +436,7 @@ ContrastsPlotter <- R6::R6Class(
         geom_point(alpha = 0.5) +
         scale_colour_manual(values = c("black", "green")) +
         facet_wrap(vars(!!sym(contrast)))
-      if(FALSE){ ylab("log fold change (M)") + xlab("mean log intensities (A)") } else { NULL }
+      if (FALSE) { ylab("log fold change (M)") + xlab("mean log intensities (A)") } else { NULL }
       if ( is.numeric(fc) ) {
         p <- p + geom_hline(yintercept = c(-fc, fc), linetype = "dashed", colour = "red")
       }

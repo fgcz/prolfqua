@@ -43,7 +43,6 @@ volcano = list(list(score = "FDR", thresh = 0.1)),
 histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))),
 score =list(list(score = "statistic",  thresh = 5)))
-cp$volcano_plotly()
 
 cp <- ContrastsPlotter$new(tmp ,
  contrast$subject_Id,
@@ -62,7 +61,6 @@ p <- cp$histogram_estimate()
 res <- cp$volcano()
 respltly <- cp$volcano_plotly()
 
-length(respltly)
 cp$ma_plot()
 cp$ma_plotly(rank=TRUE)
 res  <- cp$barplot_threshold()
