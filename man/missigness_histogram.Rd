@@ -20,12 +20,12 @@ Histogram summarizing missigness
 istar <- sim_lfq_data_peptide_config()
 config <- istar$config
 analysis <- istar$data
-xx <- complete_cases(data, config)
+xx <- complete_cases(analysis, config)
 pl <- missigness_histogram(xx, config)
 
-pl <- missigness_histogram(data, config, showempty=FALSE)
+pl <- missigness_histogram(analysis, config, showempty=FALSE)
 stopifnot("ggplot" \%in\% class(pl))
-pl <- missigness_histogram(data, config, showempty=TRUE)
+pl <- missigness_histogram(analysis, config, showempty=TRUE)
 stopifnot("ggplot" \%in\% class(pl))
 
 }

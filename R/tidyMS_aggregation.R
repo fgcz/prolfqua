@@ -637,23 +637,20 @@ estimate_intensity <- function(data, config, .func)
 #' @export
 #' @examples
 #'
-#' dd <- prolfqua_data('data_ionstar')$filtered()
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
 #'
-#' config <- old2new(dd$config)
-#' data <- dd$data
-#'
-#' data <- prolfqua::transform_work_intensity(data, config, log2)
-#' bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
-#' tmpMed <- plot_estimate(data, config, bbMed$data, bbMed$config)
+#' analysis <- prolfqua::transform_work_intensity(analysis, config, log2)
+#' bbMed <- estimate_intensity(analysis, config, .func = medpolish_estimate_dfconfig)
+#' tmpMed <- plot_estimate(analysis, config, bbMed$data, bbMed$config)
 #' stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))
 #' stopifnot("ggplot" %in% class(tmpMed$plots[[2]]))
-#' tmpMed$plots[[3]]
 #'
-#' bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)
-#' tmpRob <- plot_estimate(data, config, bbRob$data, bbRob$config)
+#' bbRob <- estimate_intensity(analysis, config, .func = rlm_estimate_dfconfig)
+#' tmpRob <- plot_estimate(analysis, config, bbRob$data, bbRob$config)
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[1]]))
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[2]]))
-#' tmpRob$plots[[3]]
 #'
 #'
 plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend= FALSE ){
