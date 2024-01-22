@@ -17,7 +17,7 @@ istar <- sim_lfq_data_peptide_config()
 config <- istar$config
 analysis <- istar$data
 
-pups <- UpSet_interaction_missing_stats(data, config)
+pups <- UpSet_interaction_missing_stats(analysis, config)
 stopifnot(ncol(pups$data) == 5)
 \dontrun{
   UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
