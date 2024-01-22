@@ -10,14 +10,13 @@ plot contrasts
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$normalized()
-istar$config <- old2new(istar$config )
-istar_data <- dplyr::filter(istar$data ,protein_Id \%in\% sample(protein_Id, 100))
+istar <- sim_lfq_data_peptide_config()
 modelName <- "Model"
+head(istar$data)
 modelFunction <-
-  strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
+  strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)",
    model_name = modelName)
-pepIntensity <- istar_data
+pepIntensity <- istar$data
 config <- istar$config
 config$table$hierarchy_keys_depth()
 mod <- build_model(
@@ -28,10 +27,8 @@ mod <- build_model(
 
  #mod$get_coefficients()
 
- Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a",
-  "dil.e_vs_a" = "dilution.e - dilution.a"
-  ,"dil.e_vs_b" = "dilution.e - dilution.b",
-  "dil.c_vs_b" = "dilution.c - dilution.b"
+ Contr <- c("group_A_vs_Ctrl" = "group_A - group_Ctrl",
+ "group_B_vs_Ctrl" = "group_B - group_Ctrl"
  )
 contrast <- prolfqua::Contrasts$new(mod,
   Contr)
@@ -49,7 +46,7 @@ cp <- ContrastsPlotter$new(tmp ,
 volcano = list(list(score = "FDR", thresh = 0.1)),
 histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))),
-                 fcthresh = NULL,
+                 fcthresh = c(-1,1),
 score =list(list(score = "statistic", thresh = 5)))
 cp$fcthresh
 cp$volcano_plotly()
@@ -57,7 +54,6 @@ p <- cp$score_plot(legend=FALSE)
 cp$score_plotly()
 p <- cp$histogram()
 p <- cp$histogram_estimate()
-
 res <- cp$volcano()
 respltly <- cp$volcano_plotly()
 
@@ -67,6 +63,7 @@ res  <- cp$barplot_threshold()
 names(res)
 cp$histogram_diff()
 cp$volcano()
+
 }
 \seealso{
 Other modelling: 
