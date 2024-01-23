@@ -265,7 +265,8 @@ volcano plots (fold change vs FDR)
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$volcano(
   colour,
   legend = TRUE,
-  scales = c("fixed", "free", "free_x", "free_y")
+  scales = c("fixed", "free", "free_x", "free_y"),
+  min_score = 1e-04
 )}\if{html}{\out{</div>}}
 }
 
@@ -290,7 +291,8 @@ plotly volcano plots
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$volcano_plotly(
   colour,
   legend = TRUE,
-  scales = c("fixed", "free", "free_x", "free_y")
+  scales = c("fixed", "free", "free_x", "free_y"),
+  min_score = 1e-04
 )}\if{html}{\out{</div>}}
 }
 

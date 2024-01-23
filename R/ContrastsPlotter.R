@@ -1,5 +1,6 @@
 # ContrastsPlotter ----
 #' plot contrasts
+#'
 #' @export
 #' @family modelling
 #' @family plotting
@@ -156,7 +157,7 @@ ContrastsPlotter <- R6::R6Class(
     volcano = function(colour,
                        legend = TRUE,
                        scales = c("fixed","free","free_x","free_y"),
-                       minscore = 0.0001){
+                       min_score = 0.0001){
       if (missing(colour)) {
         colour <- self$modelName
       }
@@ -166,7 +167,7 @@ ContrastsPlotter <- R6::R6Class(
                               colour = colour,
                               legend = legend,
                               scales = scales,
-                              minscore = minscore)
+                              min_score = min_score)
       return(fig)
     },
     #' @description
@@ -178,7 +179,7 @@ ContrastsPlotter <- R6::R6Class(
     volcano_plotly = function(colour,
                               legend = TRUE,
                               scales = c("fixed","free","free_x","free_y"),
-                              minscore = 0.0001){
+                              min_score = 0.0001){
       if (missing(colour)) {
         colour <- self$modelName
       }
@@ -189,7 +190,7 @@ ContrastsPlotter <- R6::R6Class(
                               legend = legend,
                               scales = scales,
                               plotly = TRUE,
-                              minscore = minscore)
+                              min_score = min_score)
       return(res)
     },
     #' @description
