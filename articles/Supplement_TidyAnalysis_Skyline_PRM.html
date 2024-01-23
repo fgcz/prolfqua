@@ -109,7 +109,7 @@
                         <h4 data-toc-skip class="author">Functional
 Genomics Center Zurich</h4>
             
-            <h4 data-toc-skip class="date">17 January, 2024</h4>
+            <h4 data-toc-skip class="date">23 January, 2024</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/vignettes/Supplement_TidyAnalysis_Skyline_PRM.Rmd" class="external-link"><code>vignettes/Supplement_TidyAnalysis_Skyline_PRM.Rmd</code></a></small>
       <div class="hidden name"><code>Supplement_TidyAnalysis_Skyline_PRM.Rmd</code></div>
@@ -280,7 +280,7 @@ CiRT peptides (S. Parker 2015 MCP).</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">pdf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"allProteinsOnePlot.pdf"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="va">proteinIntensity</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"ProteinQuants.tsv"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">write_tsv</span><span class="op">(</span><span class="va">proteinIntensity</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"ProteinQuants.tsv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">protRez3</span> <span class="op">&lt;-</span></span>

@@ -604,7 +604,10 @@
     <loc>/reference/sim_lfq_data.html</loc>
   </url>
   <url>
-    <loc>/reference/sim_lfq_data_config.html</loc>
+    <loc>/reference/sim_lfq_data_peptide_config.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sim_lfq_data_protein_config.html</loc>
   </url>
   <url>
     <loc>/reference/spread_response_by_IsotopeLabel.html</loc>

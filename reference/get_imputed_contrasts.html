@@ -166,32 +166,34 @@ peptide fold change is computed based on the average of intensities in the condi
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua" class="external-link">prolfqua</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">configur</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_individual_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.01</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="remove_large_QValues.html">remove_large_QValues</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> sample already exists</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span></span></span>
+<span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_individual_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.01</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="remove_large_QValues.html">remove_large_QValues</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dilution.b-a"</span> <span class="op">=</span> <span class="st">"dilution.b - dilution.a"</span>, <span class="st">"dilution.c-e"</span> <span class="op">=</span> <span class="st">"dilution.c - dilution.e"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#debug(get_imputed_contrasts)</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">get_imputed_contrasts</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>, <span class="va">Contrasts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dilution.b-a"</span> <span class="op">=</span> <span class="st">"group_A - group_B"</span>, <span class="st">"dilution.c-e"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">get_imputed_contrasts</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, <span class="va">Contrasts</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=dilution.c - dilution.e</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=dilution.c - dilution.e</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=group_A - group_B</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=group_A - group_Ctrl</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=group_A - group_B</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=group_A - group_Ctrl</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">configur</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">config</span></span></span>
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="va">Contrasts</span></span></span>
 <span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="missigness_impute_factors_interactions.html">missigness_impute_factors_interactions</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, value <span class="op">=</span> <span class="st">"imputed"</span> <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_contrast.html">get_contrast</a></span><span class="op">(</span><span class="va">imputed</span>, <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">contrasts</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=dilution.b - dilution.a</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=dilution.c - dilution.e</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=group_A - group_B</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=group_A - group_Ctrl</span>
 <span class="r-in"><span><span class="va">imputedProt</span> <span class="op">&lt;-</span> <span class="fu"><a href="aggregate_contrast.html">aggregate_contrast</a></span><span class="op">(</span><span class="va">imputed</span>,  subject_Id <span class="op">=</span>  <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
