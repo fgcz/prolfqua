@@ -6,23 +6,20 @@
 #' @family modelling
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
-#' istar$config <- old2new(istar$config)
-#' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
-#' pepIntensity <- istar_data
-#' config <- istar$config$clone(deep = TRUE)
+#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' protIntensity <- istar$data
+#' config <- istar$config
 #'
 #'
-#' ld <- LFQData$new(pepIntensity, config)
-#' lProt <- ld$get_Aggregator()$medpolish()
+#' lProt <- LFQData$new(protIntensity, config)
 #' lProt$rename_response("transformedIntensity")
 #' modelFunction <-
-#'   strategy_lm("transformedIntensity  ~ dilution.")
+#'   strategy_lm("transformedIntensity  ~ group_")
 #' mod <- build_model(
 #'  lProt,
 #'  modelFunction)
 #'
-#' Contr <- c("dil.b_vs_a" = "dilution.a - dilution.b")
+#' Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 #' contrast <- prolfqua::Contrasts$new(mod,
 #'  Contr)
 #' contrast <- ContrastsModerated$new(contrast)
@@ -33,15 +30,18 @@
 #' merged <- merge_contrasts_results(contrast, csi)
 #'
 #' merged$more$get_contrasts() |> dim()
-#' merged$merged$get_contrasts() |> dim()
-#' merged$same$get_contrasts() |> dim()
+#' stopifnot(all(dim(merged$merged$get_contrasts() == c(50,13))))
+#' stopifnot(all(dim(merged$same$get_contrasts()) == c(50,13)))
 #'
 #' cs <- contrast$get_contrast_sides()
 #' cslf <- contrast$get_linfct()
 #' ctr <- contrast$get_contrasts()
 #' ctrwide <- contrast$to_wide()
 #' cp <- contrast$get_Plotter()
-#' cp$histogram()
+#'
+#' print(cp$histogram()$p.value, vp=NULL)
+#' print(cp$histogram()$FDR, vp = NULL)
+#'
 #' cp$volcano()
 #' cp$ma_plot()
 #'
