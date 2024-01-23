@@ -155,7 +155,8 @@ ContrastsPlotter <- R6::R6Class(
     #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
     volcano = function(colour,
                        legend = TRUE,
-                       scales = c("fixed","free","free_x","free_y")){
+                       scales = c("fixed","free","free_x","free_y"),
+                       minscore = 0.0001){
       if (missing(colour)) {
         colour <- self$modelName
       }
@@ -164,7 +165,8 @@ ContrastsPlotter <- R6::R6Class(
                               self$volcano_spec,
                               colour = colour,
                               legend = legend,
-                              scales = scales )
+                              scales = scales,
+                              minscore = minscore)
       return(fig)
     },
     #' @description
@@ -175,7 +177,8 @@ ContrastsPlotter <- R6::R6Class(
     #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
     volcano_plotly = function(colour,
                               legend = TRUE,
-                              scales = c("fixed","free","free_x","free_y")){
+                              scales = c("fixed","free","free_x","free_y"),
+                              minscore = 0.0001){
       if (missing(colour)) {
         colour <- self$modelName
       }
@@ -185,7 +188,8 @@ ContrastsPlotter <- R6::R6Class(
                               colour = colour,
                               legend = legend,
                               scales = scales,
-                              plotly = TRUE)
+                              plotly = TRUE,
+                              minscore = minscore)
       return(res)
     },
     #' @description

@@ -109,7 +109,6 @@ R6_extract_values <- function(r6class){
 }
 
 
-
 #' Setup a tidy table compatible with a \code{\link{AnalysisConfiguration}}
 #'
 #' Extracts columns relevant for a configuration from a data frame
