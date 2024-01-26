@@ -11,8 +11,9 @@
 #' lfqdata <- LFQData$new(
 #'  istar$data,
 #'  istar$config)
-#' #LFQDataPlotter$debug("pca_plotly")
+#' #LFQDataPlotter$debug("boxplots")
 #' lfqplotter <- lfqdata$get_Plotter()
+#'
 #' stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
 #' stopifnot(class(lfqplotter$heatmap_cor()) == "pheatmap")
 #' stopifnot("ggplot" %in% class(lfqplotter$pca()))
@@ -136,14 +137,15 @@ LFQDataPlotter <- R6::R6Class(
     #' @param facet enable facet wrap if hierarchy_depth less then hierarchy lenght.
     #' @return tibble with column boxplots containing ggplot objects
     boxplots = function(facet = TRUE){
-      if (config$table$hierarchy_depth < length(config$table$hierarchy) && facet) {
+      config <- self$lfq$config
+      if (config$table$hierarchyDepth < length(config$table$hierarchy) && facet) {
         bb <- prolfqua::plot_hierarchies_boxplot_df(
-          self$lfq$data, self$lfq$config,
+          self$lfq$data, config,
           hierarchy = config$table$hierarchy_keys_depth(),
-          facet_grid_on = config$table$hierarchy_keys()[config$table$hierarchy_depth])
+          facet_grid_on = config$table$hierarchy_keys()[config$table$hierarchyDepth + 1])
 
       } else {
-        bb <- prolfqua::plot_hierarchies_boxplot_df(self$lfq$data, self$lfq$config,
+        bb <- prolfqua::plot_hierarchies_boxplot_df(self$lfq$data, config,
                                                     hierarchy = config$table$hierarchy_keys_depth(),
                                                     facet_grid_on = NULL)
 

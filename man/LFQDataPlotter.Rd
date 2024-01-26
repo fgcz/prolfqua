@@ -18,8 +18,9 @@ istar <- sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(
  istar$data,
  istar$config)
-#LFQDataPlotter$debug("pca_plotly")
+#LFQDataPlotter$debug("boxplots")
 lfqplotter <- lfqdata$get_Plotter()
+
 stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
 stopifnot(class(lfqplotter$heatmap_cor()) == "pheatmap")
 stopifnot("ggplot" \%in\% class(lfqplotter$pca()))
