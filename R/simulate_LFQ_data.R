@@ -147,7 +147,9 @@ add_missing <- function(x){
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @export
 #' @examples
-#'
+#' x <- sim_lfq_data_peptide_config()
+#' stopifnot("data.frame" %in% class(x$data))
+#' stopifnot("AnalysisConfiguration" %in% class(x$config))
 sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, seed = 1234){
   if (!is.null(seed)) {
     set.seed(seed)
@@ -176,6 +178,9 @@ sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, seed = 
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @export
 #' @examples
+#' x <- sim_lfq_data_protein_config()
+#' stopifnot("data.frame" %in% class(x$data))
+#' stopifnot("AnalysisConfiguration" %in% class(x$config))
 #'
 sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, seed = 1234){
   if (!is.null(seed)) {

@@ -16,3 +16,8 @@ sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, seed = 1234)
 \description{
 Simulate data, protein and peptide, with config
 }
+\examples{
+x <- sim_lfq_data_peptide_config()
+stopifnot("data.frame" \%in\% class(x$data))
+stopifnot("AnalysisConfiguration" \%in\% class(x$config))
+}

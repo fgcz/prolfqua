@@ -240,9 +240,16 @@ plotly
 \subsection{Method \code{boxplots()}}{
 boxplots for all proteins
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$boxplots()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$boxplots(facet = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{facet}}{enable facet wrap if hierarchy_depth less then hierarchy lenght.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 tibble with column boxplots containing ggplot objects
 }

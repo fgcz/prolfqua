@@ -154,6 +154,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @param colour column name with color information default modelName
     #' @param legend default TRUE
     #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
+    #' @param min_score replace p.values or FDR's smaller then min_score with min_score (default 0.0001).
     volcano = function(colour,
                        legend = TRUE,
                        scales = c("fixed","free","free_x","free_y"),
@@ -176,6 +177,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @return list of ggplots
     #' @param legend default TRUE
     #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
+    #' @param min_score replace p.values or FDR's smaller then min_score with min_score (default 0.0001).
     volcano_plotly = function(colour,
                               legend = TRUE,
                               scales = c("fixed","free","free_x","free_y"),

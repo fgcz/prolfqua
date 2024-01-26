@@ -133,9 +133,21 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' boxplots for all proteins
+    #' @param facet enable facet wrap if hierarchy_depth less then hierarchy lenght.
     #' @return tibble with column boxplots containing ggplot objects
-    boxplots = function(){
-      bb <- prolfqua::plot_hierarchies_boxplot_df(self$lfq$data, self$lfq$config)
+    boxplots = function(facet = TRUE){
+      if (config$table$hierarchy_depth < length(config$table$hierarchy) && facet) {
+        bb <- prolfqua::plot_hierarchies_boxplot_df(
+          self$lfq$data, self$lfq$config,
+          hierarchy = config$table$hierarchy_keys_depth(),
+          facet_grid_on = config$table$hierarchy_keys()[config$table$hierarchy_depth])
+
+      } else {
+        bb <- prolfqua::plot_hierarchies_boxplot_df(self$lfq$data, self$lfq$config,
+                                                    hierarchy = config$table$hierarchy_keys_depth(),
+                                                    facet_grid_on = NULL)
+
+      }
       return(bb)
     },
     #' @description
