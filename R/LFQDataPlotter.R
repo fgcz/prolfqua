@@ -215,11 +215,15 @@ LFQDataPlotter <- R6::R6Class(
     #' @description
     #' write boxplots to file
     #' @param path_qc path to write to
+    #' @param filename file to write into
     #' @param width fig width
     #' @param height fig height
     #'
-    write_boxplots = function(path_qc, width = 6, height = 6){
-      fpath <- file.path(path_qc,paste0(self$prefix, "boxplot.pdf"))
+    write_boxplots = function(path_qc, filename = NULL, width = 6, height = 6){
+      if (is.null(filename)) {
+        filename = self$prefix
+      }
+      fpath <- file.path(path_qc,paste0(filename, "boxplot.pdf"))
       message("generating boxplots")
       bb <- self$boxplots()
 

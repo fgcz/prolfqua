@@ -366,13 +366,15 @@ plot
 \subsection{Method \code{write_boxplots()}}{
 write boxplots to file
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_boxplots(path_qc, width = 6, height = 6)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_boxplots(path_qc, filename = NULL, width = 6, height = 6)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{path_qc}}{path to write to}
+
+\item{\code{filename}}{file to write into}
 
 \item{\code{width}}{fig width}
 
