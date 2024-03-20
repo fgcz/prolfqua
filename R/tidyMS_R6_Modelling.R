@@ -946,20 +946,6 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #'         contrastfun = prolfqua::my_contrast_V2)
 #'
 #' #usethis::use_data(factor_levelContrasts, overwrite = TRUE)
-#' data_models_interaction <- prolfqua_data('data_models_interaction')
-#' m <- get_complete_model_fit(data_models_interaction$modelProtein)
-#' data_interact_model <- m$linear_model[[1]]
-#' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]] )
-#'
-#' factor_levelContrasts <- contrasts_linfct( m,
-#'                            factor_contrasts,
-#'                        subject_Id = "protein_Id")
-#' m$linear_model[[1]]
-#' my_contest(m$linear_model[[1]],factor_contrasts )
-#'
-#' plot(factor_levelContrasts$df, factor_levelContrasts$df.residual.model )
-#' abline(c(0,1))
-#' plot(factor_levelContrasts$df.residual.model , factor_levelContrasts$df - factor_levelContrasts$df.residual.model )
 #'
 contrasts_linfct <- function(models,
                              linfct,
@@ -1055,19 +1041,6 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
 #' abline(0,1, col = 2)
 #'
 #' # updating lmer model
-#' data_models_interaction <- prolfqua_data('data_models_interaction')
-#'
-#' m <- get_complete_model_fit(data_models_interaction$modelProtein)
-#' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
-#'
-#' factor_levelContrasts <- contrasts_linfct(m,
-#'                                          factor_contrasts,
-#'                                          subject_Id = "protein_Id")
-#'
-#' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-#' plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
-#' abline(0,1, col = 2)
-#'
 moderated_p_limma_long <- function(mm ,
                                    group_by_col = "lhs",
                                    estimate = "estimate",

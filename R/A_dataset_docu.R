@@ -212,17 +212,6 @@ NULL
 
 
 
-#data_models_interaction <- models_interaction
-#usethis::use_data(data_models_interaction,compress = TRUE, overwrite = TRUE)
-#file.remove("data/models_interaction.rda")
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_models_interaction'
-
-# #@usage data_models_interaction <- prolfqua_data("data_models_interaction")
 
 
 # data_multigroupFC <- multigroupFCDATA
