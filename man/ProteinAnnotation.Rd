@@ -30,13 +30,13 @@ stopifnot(tmp$hierarchy_counts()$protein_Id == 158)
 }
 \seealso{
 Other LFQData: 
+\code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQDataWriter}},
-\code{\link{LFQData}}
+\code{\link{LFQDataWriter}}
 }
 \concept{LFQData}
 \section{Public fields}{

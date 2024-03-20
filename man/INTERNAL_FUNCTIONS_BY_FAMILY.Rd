@@ -11,16 +11,16 @@ Other aggregation:
 \code{\link{aggregate_intensity_topN}()},
 \code{\link{estimate_intensity}()},
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_estimate_dfconfig}()},
-\code{\link{medpolish_estimate_df}()},
 \code{\link{medpolish_estimate}()},
+\code{\link{medpolish_estimate_df}()},
+\code{\link{medpolish_estimate_dfconfig}()},
 \code{\link{medpolish_protein_estimates}()},
 \code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
-\code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{rlm_estimate_dfconfig}()},
-\code{\link{rlm_estimate}()}
+\code{\link{plot_hierarchies_line_df}()},
+\code{\link{rlm_estimate}()},
+\code{\link{rlm_estimate_dfconfig}()}
 
 Other benchmarking: 
 \code{\link{Benchmark}},
@@ -58,14 +58,13 @@ Other MaxQuant:
 \code{\link{tidyMQ_ProteinGroups}()}
 
 Other modelling: 
+\code{\link{Contrasts}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
 \code{\link{build_model}()},
@@ -82,12 +81,12 @@ Other modelling:
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{moderated_p_limma}()},
+\code{\link{moderated_p_limma_long}()},
 \code{\link{my_contest}()},
+\code{\link{my_contrast}()},
 \code{\link{my_contrast_V1}()},
 \code{\link{my_contrast_V2}()},
-\code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_model_and_data}()},
@@ -100,8 +99,8 @@ Other modelling:
 Other FragPipe: 
 \code{\link{FragPipe}},
 \code{\link{tidy_FragPipe_MSstats_csv}()},
-\code{\link{tidy_FragPipe_combined_protein_deprec}()},
-\code{\link{tidy_FragPipe_combined_protein}()}
+\code{\link{tidy_FragPipe_combined_protein}()},
+\code{\link{tidy_FragPipe_combined_protein_deprec}()}
 
 Other plotting: 
 \code{\link{ContrastsPlotter}},
@@ -109,16 +108,16 @@ Other plotting:
 \code{\link{UpSet_missing_stats}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
-\code{\link{missingness_per_condition_cumsum}()},
 \code{\link{missingness_per_condition}()},
+\code{\link{missingness_per_condition_cumsum}()},
 \code{\link{plot_NA_heatmap}()},
 \code{\link{plot_estimate}()},
-\code{\link{plot_heatmap_cor}()},
 \code{\link{plot_heatmap}()},
+\code{\link{plot_heatmap_cor}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_boxplot_df}()},
-\code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_hierarchies_line}()},
+\code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
@@ -131,24 +130,24 @@ Other preprocessing:
 \code{\link{get_robscales}()},
 \code{\link{normalize_log2_robscale}()},
 \code{\link{robust_scale}()},
-\code{\link{scale_with_subset_by_factors}()},
-\code{\link{scale_with_subset}()}
+\code{\link{scale_with_subset}()},
+\code{\link{scale_with_subset_by_factors}()}
 
 Other stats: 
 \code{\link{lfq_power_t_test_proteins}()},
-\code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{lfq_power_t_test_quantiles}()},
-\code{\link{plot_stat_density_median}()},
+\code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{plot_stat_density}()},
-\code{\link{plot_stat_violin_median}()},
+\code{\link{plot_stat_density_median}()},
 \code{\link{plot_stat_violin}()},
+\code{\link{plot_stat_violin_median}()},
 \code{\link{plot_stdv_vs_mean}()},
 \code{\link{pooled_V2}()},
 \code{\link{summarize_stats}()}
 
 Other summary: 
-\code{\link{hierarchy_counts_sample}()},
 \code{\link{hierarchy_counts}()},
+\code{\link{hierarchy_counts_sample}()},
 \code{\link{nr_B_in_A_per_sample}()},
 \code{\link{summarize_hierarchy}()}
 

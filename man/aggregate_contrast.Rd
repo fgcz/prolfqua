@@ -51,8 +51,8 @@ Other imputation:
 \code{\link{get_contrast}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missigness_impute_factors_interactions}()},
-\code{\link{missingness_per_condition_cumsum}()},
-\code{\link{missingness_per_condition}()}
+\code{\link{missingness_per_condition}()},
+\code{\link{missingness_per_condition_cumsum}()}
 }
 \concept{imputation}
 \keyword{internal}

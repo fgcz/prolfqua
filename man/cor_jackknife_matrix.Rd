@@ -29,8 +29,8 @@ cor_jackknife_matrix(dd[[1]])
 \seealso{
 Other transitioncorrlation: 
 \code{\link{cor_order}()},
-\code{\link{jackknife_matrix}()},
-\code{\link{jackknife}()}
+\code{\link{jackknife}()},
+\code{\link{jackknife_matrix}()}
 }
 \concept{transitioncorrlation}
 \keyword{internal}

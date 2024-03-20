@@ -19,8 +19,8 @@ cor_order(data_correlatedPeptideList[[1]])
 \seealso{
 Other transitioncorrlation: 
 \code{\link{cor_jackknife_matrix}()},
-\code{\link{jackknife_matrix}()},
-\code{\link{jackknife}()}
+\code{\link{jackknife}()},
+\code{\link{jackknife_matrix}()}
 }
 \concept{transitioncorrlation}
 \keyword{internal}

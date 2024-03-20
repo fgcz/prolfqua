@@ -12,12 +12,12 @@ Write LFQData, or provide outputs for writing.
 \code{\link{LFQData}}
 
 Other LFQData: 
+\code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQData}},
 \code{\link{ProteinAnnotation}}
 }
 \concept{LFQData}

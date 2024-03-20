@@ -33,12 +33,12 @@ sum$percentage_abundance()
 }
 \seealso{
 Other LFQData: 
+\code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataToSummarizedExperiment}()},
 \code{\link{LFQDataWriter}},
-\code{\link{LFQData}},
 \code{\link{ProteinAnnotation}}
 }
 \concept{LFQData}

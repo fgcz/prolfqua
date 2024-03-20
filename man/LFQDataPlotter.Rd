@@ -49,12 +49,12 @@ stopifnot(class(prolfqua::plot_sample_correlation(istar$data, istar$config)) == 
 \code{\link{plot_pca}}
 
 Other LFQData: 
+\code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
 \code{\link{LFQDataWriter}},
-\code{\link{LFQData}},
 \code{\link{ProteinAnnotation}}
 }
 \concept{LFQData}
