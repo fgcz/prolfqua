@@ -26,6 +26,7 @@ Other data:
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_correlatedPeptideList}},
 \code{\link{data_factor_levelContrasts}},
+\code{\link{data_interactionModel_p1807}},
 \code{\link{data_ionstar}},
 \code{\link{data_models_interaction}},
 \code{\link{data_multigroupFC}},

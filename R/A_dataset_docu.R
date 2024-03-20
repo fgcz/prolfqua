@@ -189,6 +189,11 @@ NULL
 # #@usage data_factor_levelContrasts <- prolfqua_data("data_factor_levelContrasts")
 
 
+#' example data for check
+#' @family data
+#' @docType data
+#' @keywords internal
+'data_interactionModel_p1807'
 
 # #@usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
 
