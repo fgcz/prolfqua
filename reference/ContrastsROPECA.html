@@ -102,13 +102,12 @@ ROPECA reproducibility-optimization method"><!-- mathjax --><script src="https:/
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled</a></code></p>
 <p>Other modelling: 
+<code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
-<code>ContrastsSAINTexpress</code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
-<code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
@@ -126,12 +125,12 @@ ROPECA reproducibility-optimization method"><!-- mathjax --><script src="https:/
 <code><a href="merge_contrasts_results.html">merge_contrasts_results</a>()</code>,
 <code><a href="model_analyse.html">model_analyse</a>()</code>,
 <code><a href="model_summary.html">model_summary</a>()</code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long</a>()</code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma</a>()</code>,
+<code><a href="moderated_p_limma_long.html">moderated_p_limma_long</a>()</code>,
 <code><a href="my_contest.html">my_contest</a>()</code>,
+<code><a href="my_contrast.html">my_contrast</a>()</code>,
 <code><a href="my_contrast_V1.html">my_contrast_V1</a>()</code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2</a>()</code>,
-<code><a href="my_contrast.html">my_contrast</a>()</code>,
 <code><a href="my_glht.html">my_glht</a>()</code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide</a>()</code>,
 <code><a href="plot_lmer_model_and_data.html">plot_lmer_model_and_data</a>()</code>,
@@ -347,7 +346,7 @@ ROPECA reproducibility-optimization method"><!-- mathjax --><script src="https:/
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   pb)`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 29: `protein_Id = "CON__P02769~18~NA"`, `peptide_Id =</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 29: `protein_Id = "CON__P02769~18~NA"` and `peptide_Id =</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   "VHKECCHGDLLECADDR"`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `value[[3L]]()`:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
@@ -420,15 +419,16 @@ ROPECA reproducibility-optimization method"><!-- mathjax --><script src="https:/
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dil.b_vs_a dilution.b dilution.a</span>
 <span class="r-in"><span> <span class="va">pl</span><span class="op">$</span><span class="fu">histogram</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $beta.based.significance</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (`stat_bin()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing non-finite outside the scale range (`stat_bin()`).</span>
 <span class="r-plt img"><img src="ContrastsROPECA-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $FDR.beta.based.significance</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (`stat_bin()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing non-finite outside the scale range (`stat_bin()`).</span>
 <span class="r-plt img"><img src="ContrastsROPECA-2.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span> <span class="va">pl</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (`geom_point()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_point()`).</span>
 <span class="r-plt img"><img src="ContrastsROPECA-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

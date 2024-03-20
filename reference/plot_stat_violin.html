@@ -112,10 +112,10 @@
     <div class="dont-index"><p>Other stats: 
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="lfq_power_t_test_proteins.html">lfq_power_t_test_proteins</a>()</code>,
-<code><a href="lfq_power_t_test_quantiles_V2.html">lfq_power_t_test_quantiles_V2</a>()</code>,
 <code><a href="lfq_power_t_test_quantiles.html">lfq_power_t_test_quantiles</a>()</code>,
-<code><a href="plot_stat_density_median.html">plot_stat_density_median</a>()</code>,
+<code><a href="lfq_power_t_test_quantiles_V2.html">lfq_power_t_test_quantiles_V2</a>()</code>,
 <code><a href="plot_stat_density.html">plot_stat_density</a>()</code>,
+<code><a href="plot_stat_density_median.html">plot_stat_density_median</a>()</code>,
 <code><a href="plot_stat_violin_median.html">plot_stat_violin_median</a>()</code>,
 <code><a href="plot_stdv_vs_mean.html">plot_stdv_vs_mean</a>()</code>,
 <code><a href="pooled_var.html">pooled_V2</a>()</code>,
@@ -135,16 +135,22 @@
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">config</span>, stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 368 rows containing non-finite values (`stat_ydensity()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 368 rows containing non-finite values (`stat_summary()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 368 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_ydensity()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 368 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_summary()`).</span>
 <span class="r-plt img"><img src="plot_stat_violin-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">config</span>, stat <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 846 rows containing non-finite values (`stat_ydensity()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 846 rows containing non-finite values (`stat_summary()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 846 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_ydensity()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 846 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_summary()`).</span>
 <span class="r-plt img"><img src="plot_stat_violin-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">config</span>, stat <span class="op">=</span> <span class="st">"CV"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 846 rows containing non-finite values (`stat_ydensity()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 846 rows containing non-finite values (`stat_summary()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 846 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_ydensity()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 846 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_summary()`).</span>
 <span class="r-plt img"><img src="plot_stat_violin-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

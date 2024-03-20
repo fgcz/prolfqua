@@ -125,15 +125,15 @@
 <code><a href="UpSet_missing_stats.html">UpSet_missing_stats</a>()</code>,
 <code><a href="medpolish_estimate_df.html">medpolish_estimate_df</a>()</code>,
 <code><a href="missigness_histogram.html">missigness_histogram</a>()</code>,
-<code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a>()</code>,
 <code><a href="missingness_per_condition.html">missingness_per_condition</a>()</code>,
+<code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum</a>()</code>,
 <code><a href="plot_NA_heatmap.html">plot_NA_heatmap</a>()</code>,
 <code><a href="plot_estimate.html">plot_estimate</a>()</code>,
-<code><a href="plot_heatmap_cor.html">plot_heatmap_cor</a>()</code>,
 <code><a href="plot_heatmap.html">plot_heatmap</a>()</code>,
+<code><a href="plot_heatmap_cor.html">plot_heatmap_cor</a>()</code>,
 <code><a href="plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline</a>()</code>,
-<code><a href="plot_hierarchies_line_df.html">plot_hierarchies_line_df</a>()</code>,
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line</a>()</code>,
+<code><a href="plot_hierarchies_line_df.html">plot_hierarchies_line_df</a>()</code>,
 <code><a href="plot_intensity_distribution_violin.html">plot_intensity_distribution_violin</a>()</code>,
 <code><a href="plot_pca.html">plot_pca</a>()</code>,
 <code><a href="plot_raster.html">plot_raster</a>()</code>,
@@ -155,20 +155,26 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">analysis</span>,<span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing non-finite values (`stat_boxplot()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing missing values (`position_quasirandom()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_boxplot()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`position_quasirandom()`).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">analysis</span>,<span class="va">config</span>,<span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing non-finite values (`stat_boxplot()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing missing values (`position_quasirandom()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_boxplot()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`position_quasirandom()`).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">analysis</span>,<span class="va">config</span>,</span></span>
 <span class="r-in"><span>                                    <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>                                    facet_grid_on <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing non-finite values (`stat_boxplot()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing missing values (`position_quasirandom()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_boxplot()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 8 rows containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`position_quasirandom()`).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-4.png" alt="" width="700" height="433"></span>
@@ -183,8 +189,9 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing non-finite values (`stat_boxplot()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 rows containing missing values (`position_quasirandom()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing non-finite outside the scale range (`stat_boxplot()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`position_quasirandom()`).</span>
 <span class="r-plt img"><img src="plot_hierarchies_boxplot_df-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span> <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plot_hierarchies_boxplot_df</span><span class="op">(</span><span class="va">iostar</span><span class="op">$</span><span class="va">data</span>,<span class="va">iostar</span><span class="op">$</span><span class="va">config</span>,</span></span>
 <span class="r-in"><span>                                    <span class="va">iostar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
