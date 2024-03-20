@@ -48,7 +48,7 @@ interaction_missing_stats <- function(pdata,
                      nrNAs = sum(is.na(!!sym(workIntensity))),
                      meanAbundance = mean(!!sym(workIntensity), na.rm = TRUE),
                      medianAbundance = median(!!sym(workIntensity), na.rm = TRUE)) |>
-    mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |> dplyr::ungroup()
+    dplyr::mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |> dplyr::ungroup()
   return(list(data = missingPrec,
               summaries = c("nrReplicates","nrNAs","nrMeasured","meanAbundance", "medianAbundance")))
 }
@@ -116,10 +116,10 @@ interaction_missing_stats <- function(pdata,
   if (!global) {
     mstats <- mstats |>
       group_by(interaction) |>
-      mutate(imputed = lowerMean(.data$meanAbundance,probs = probs))
+      dplyr::mutate(imputed = lowerMean(.data$meanAbundance,probs = probs))
   }else{
     mstats <- mstats |>
-      mutate(imputed = lowerMean(.data$meanAbundance,probs = probs))
+      dplyr::mutate(imputed = lowerMean(.data$meanAbundance,probs = probs))
 
   }
 
