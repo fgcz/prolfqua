@@ -29,10 +29,10 @@ plot_stat_violin_median(res, config, stat = "mean")
 Other stats: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{lfq_power_t_test_proteins}()},
-\code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{lfq_power_t_test_quantiles}()},
-\code{\link{plot_stat_density_median}()},
+\code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{plot_stat_density}()},
+\code{\link{plot_stat_density_median}()},
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stdv_vs_mean}()},
 \code{\link{pooled_V2}()},

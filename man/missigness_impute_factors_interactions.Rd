@@ -50,8 +50,8 @@ Other imputation:
 \code{\link{aggregate_contrast}()},
 \code{\link{get_contrast}()},
 \code{\link{missigness_histogram}()},
-\code{\link{missingness_per_condition_cumsum}()},
-\code{\link{missingness_per_condition}()}
+\code{\link{missingness_per_condition}()},
+\code{\link{missingness_per_condition_cumsum}()}
 }
 \concept{imputation}
 \keyword{internal}

@@ -53,14 +53,13 @@ abline(0,1, col = 2)
 }
 \seealso{
 Other modelling: 
+\code{\link{Contrasts}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsSAINTexpress}},
 \code{\link{ContrastsTable}},
-\code{\link{Contrasts}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
@@ -80,9 +79,9 @@ Other modelling:
 \code{\link{model_summary}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{my_contest}()},
+\code{\link{my_contrast}()},
 \code{\link{my_contrast_V1}()},
 \code{\link{my_contrast_V2}()},
-\code{\link{my_contrast}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_model_and_data}()},

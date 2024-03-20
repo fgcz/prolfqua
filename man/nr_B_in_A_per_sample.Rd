@@ -25,8 +25,8 @@ nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
 \seealso{
 Other summary: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{hierarchy_counts_sample}()},
 \code{\link{hierarchy_counts}()},
+\code{\link{hierarchy_counts_sample}()},
 \code{\link{summarize_hierarchy}()}
 }
 \concept{summary}

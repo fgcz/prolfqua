@@ -16,8 +16,8 @@ sanitize entries in the Bioreplicate and Condition columns
 Other FragPipe: 
 \code{\link{FragPipe}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{tidy_FragPipe_combined_protein_deprec}()},
-\code{\link{tidy_FragPipe_combined_protein}()}
+\code{\link{tidy_FragPipe_combined_protein}()},
+\code{\link{tidy_FragPipe_combined_protein_deprec}()}
 }
 \concept{FragPipe}
 \keyword{internal}
