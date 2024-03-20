@@ -179,15 +179,6 @@ NULL
 # #@usage data_factor_levelContrasts <- prolfqua_data("data_factor_levelContrasts")
 
 
-# data_interactionModel_p1807 <- interactionModel_p1807
-# usethis::use_data(data_interactionModel_p1807, compress = TRUE, overwrite = TRUE)
-# file.remove("data/interactionModel_p1807.rda")
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_interactionModel_p1807'
 
 # #@usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
 
@@ -205,30 +196,9 @@ NULL
 # #@usage data_ionstar <- prolfqua_data("data_ionstar")
 
 
-#data_lm_models_to_test <- lm_models_to_test
-#usethis::use_data(data_lm_models_to_test, compress = TRUE, overwrite = TRUE)
-#file.remove("data/lm_models_to_test.rda")
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_lm_models_to_test'
-
-# #@usage data_lm_models_to_test <- prolfqua_data("data_lm_models_to_test")
 
 
-# data_modellingResult_A <- modellingResult_A
-# usethis::use_data(data_modellingResult_A, compress = TRUE, overwrite = TRUE)
-# file.remove("data/modellingResult_A.rda")
 
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_modellingResult_A'
-
-# #@usage data_modellingResult_A <- prolfqua_data("data_modellingResult_A")
 
 
 #data_models_interaction <- models_interaction
