@@ -27,6 +27,7 @@ Other data:
 \code{\link{data_correlatedPeptideList}},
 \code{\link{data_factor_levelContrasts}},
 \code{\link{data_ionstar}},
+\code{\link{data_modellingResult_A}},
 \code{\link{data_multigroupFC}},
 \code{\link{data_skylinePRMSample_A}},
 \code{\link{data_skylineSRM_HL_A}},
