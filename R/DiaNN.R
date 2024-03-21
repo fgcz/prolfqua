@@ -1,7 +1,7 @@
 #' read DiaNN diann-output.tsv file
 #'
 #' filter for 2 peptides per protein, and for Q.Value < 0.01 (default)
-#'
+#' @import data.table
 #' @export
 #'
 diann_read_output <- function(path, nrPeptides = 2, Q.Value = 0.01){
@@ -44,7 +44,16 @@ diann_read_output <- function(path, nrPeptides = 2, Q.Value = 0.01){
   rNR <- add_nr_pep(report)
   PG <- select_PG(rNR$report)
   PG2 <- filter_PG(PG, nrPeptides_min = nrPeptides, Q.Value = Q.Value)
-  report2 <- inner_join(PG2, report)
+  PG2 <- PG2 |> dplyr::select(c("File.Name", "Protein.Group", "Protein.Names", "nrPeptides"))
+
+  #setDT(PG2)
+  #setDT(report)
+
+  # Perform inner join
+  #report2 <- PG2[report, on = c("File.Name", "Protein.Group", "Protein.Names"), nomatch = 0] |> as_tibble()
+  report2 <- dplyr::inner_join(dtplyr::lazy_dt(PG2), dtplyr::lazy_dt(report),
+                               by = c("File.Name", "Protein.Group", "Protein.Names")) |>
+    dplyr::as_tibble()
   return(report2)
 }
 
