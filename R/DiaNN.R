@@ -11,7 +11,11 @@ diann_read_output <- function(path, nrPeptides = 2, Q.Value = 0.01){
       dplyr::distinct() |>
       dplyr::group_by(!!sym("Protein.Group")) |>
       dplyr::summarize(nrPeptides = dplyr::n())
-    report <- dplyr::inner_join(report, nrPEP)
+    report <- dplyr::inner_join(
+      dtplyr::lazy_dt(report), dtplyr::lazy_dt(nrPEP),
+      by = "Protein.Group") |>
+      dplyr::as_tibble()
+
     return(list(nrPEP = nrPEP, report = report))
   }
 
@@ -64,18 +68,18 @@ diann_read_output <- function(path, nrPeptides = 2, Q.Value = 0.01){
 #'
 diann_output_to_peptide <- function(report2){
   peptide <- report2 |>
-  dplyr::group_by(!!!syms(c("raw.file",
-                           "Protein.Group",
-                           "Protein.Names",
-                           "PG.Quantity",
-                           "nrPeptides",
-                           "Stripped.Sequence" ) )) |>
-  dplyr::summarize(Peptide.Quantity = sum(.data$Precursor.Quantity, na.rm = TRUE),
-                   Peptide.Normalised = sum(.data$Precursor.Normalised, na.rm = TRUE),
-                   Peptide.Translated = sum(.data$Precursor.Translated, na.rm = TRUE),
-                   Peptide.Ms1.Translated = sum(.data$Ms1.Translated, na.rm = TRUE),
-                   PEP = min(.data$PEP, na.rm = TRUE)
-                   ,.groups = "drop")
+    dplyr::group_by(!!!syms(c("raw.file",
+                              "Protein.Group",
+                              "Protein.Names",
+                              "PG.Quantity",
+                              "nrPeptides",
+                              "Stripped.Sequence" ) )) |>
+    dplyr::summarize(Peptide.Quantity = sum(.data$Precursor.Quantity, na.rm = TRUE),
+                     Peptide.Normalised = sum(.data$Precursor.Normalised, na.rm = TRUE),
+                     Peptide.Translated = sum(.data$Precursor.Translated, na.rm = TRUE),
+                     Peptide.Ms1.Translated = sum(.data$Ms1.Translated, na.rm = TRUE),
+                     PEP = min(.data$PEP, na.rm = TRUE)
+                     ,.groups = "drop")
   return(peptide)
 
 }
