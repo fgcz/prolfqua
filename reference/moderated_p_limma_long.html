@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -48,21 +48,6 @@
     </li>
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -171,21 +156,6 @@
 <span class="r-plt img"><img src="moderated_p_limma_long-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># updating lmer model</span></span></span>
-<span class="r-in"><span><span class="va">data_models_interaction</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_models_interaction'</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">data_models_interaction</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="contrasts_linfct.html">contrasts_linfct</a></span><span class="op">(</span><span class="va">m</span>,</span></span>
-<span class="r-in"><span>                                         <span class="va">factor_contrasts</span>,</span></span>
-<span class="r-in"><span>                                         subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> computing contrasts.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mmm</span> <span class="op">&lt;-</span> <span class="fu">moderated_p_limma_long</span><span class="op">(</span><span class="va">factor_levelContrasts</span>, group_by_col <span class="op">=</span> <span class="st">"lhs"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mmm</span><span class="op">$</span><span class="va">p.value</span>, <span class="va">mmm</span><span class="op">$</span><span class="va">moderated.p.value</span>, log <span class="op">=</span> <span class="st">"xy"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="moderated_p_limma_long-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -48,21 +48,6 @@
     </li>
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_TidyAnalysis_HL_Skyline.html">Supplement - Data preprocessing of SRM Heavy Light data</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_TidyAnalysis_Skyline_PRM.html">Supplement - Data preprocessing for PRM</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_TidyCorrelationAnalysis.html">Supplement - Filter precursors or fragments based on correlation</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_srm_summary.html">Supplement - Summarize SRM Peptide Level Measurements</a>
-    </li>
-    <li>
-      <a href="../articles/Supplement_srm_summary_HL.html">Supplement - Summarize heavy light Peptide Level Measurements</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -103,19 +88,26 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">copy_mixed_model_analysis_script</span><span class="op">(</span>workdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/fgcz_formatting/fgcz_header.html to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/fgcz_header.html</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/fgcz_formatting/fgcz_footer.html to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/fgcz_footer.html</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/fgcz_formatting/fgcz.css to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/fgcz.css</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/fgcz_formatting/fgcz_banner.png to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/fgcz_banner.png</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/rmarkdown/mixed_model_analysis_script_Report.Rmd to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/mixed_model_analysis_script_Report.Rmd</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/rmarkdown/bibliography.bib to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/bibliography.bib</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> your working directory now should contain:  6 new files :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/fgcz_header.html"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/fgcz_footer.html"                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/fgcz.css"                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/fgcz_banner.png"                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/mixed_model_analysis_script_Report.Rmd"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "/var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//Rtmp5yFi6K/bibliography.bib"                      </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/fgcz_formatting/fgcz_header.html to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_header.html</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_header.html</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/inst/fgcz_formatting/fgcz_header.html  to  /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_header.html</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/fgcz_formatting/fgcz_footer.html to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_footer.html</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_footer.html</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/inst/fgcz_formatting/fgcz_footer.html  to  /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_footer.html</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/fgcz_formatting/fgcz.css to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz.css</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz.css</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/inst/fgcz_formatting/fgcz.css  to  /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz.css</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/fgcz_formatting/fgcz_banner.png to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_banner.png</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_banner.png</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/inst/fgcz_formatting/fgcz_banner.png  to  /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/fgcz_banner.png</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/rmarkdown/mixed_model_analysis_script_Report.Rmd to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/mixed_model_analysis_script_Report.Rmd</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/mixed_model_analysis_script_Report.Rmd</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/inst/rmarkdown/mixed_model_analysis_script_Report.Rmd  to  /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/mixed_model_analysis_script_Report.Rmd</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> copy /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/rmarkdown/bibliography.bib to /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/bibliography.bib</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/bibliography.bib</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>could not copy script file. /Users/witoldwolski/__checkout/proLFQuaPackageBuildScripts/test_build_prolfqua/prolfqua/inst/rmarkdown/bibliography.bib  to  /var/folders/5v/30q3lqxs6_b88gc005sg2t7c0000gn/T//RtmpbSIeLg/bibliography.bib</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> your working directory now should contain:  0 new files :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>
     </div>
   </div>

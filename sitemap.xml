@@ -31,21 +31,6 @@
     <loc>/articles/SimulateData.html</loc>
   </url>
   <url>
-    <loc>/articles/Supplement_TidyAnalysis_HL_Skyline.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Supplement_TidyAnalysis_Skyline_PRM.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Supplement_TidyCorrelationAnalysis.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Supplement_srm_summary.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Supplement_srm_summary_HL.html</loc>
-  </url>
-  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -233,9 +218,6 @@
   </url>
   <url>
     <loc>/reference/data_modellingResult_A.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_models_interaction.html</loc>
   </url>
   <url>
     <loc>/reference/data_multigroupFC.html</loc>
