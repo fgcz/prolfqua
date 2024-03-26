@@ -203,7 +203,7 @@ tidy_FragPipe_combined_protein <- function(
 #' @param purity_threshold purity threshold default = 0.5
 #' @param PeptideProphetProb default 0.9
 #'
-tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetProb = 0.9, abundance_threshold = 0){
+tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetProb = 0.9, abundance_threshold = 0, column_before_quants = "Quan Usage"){
   psm <- readr::read_tsv(psm_file)
 
   if (!"Purity" %in% colnames(psm) ) {
@@ -211,7 +211,7 @@ tidy_FragPipe_psm <- function(psm_file, purity_threshold = 0.5, PeptideProphetPr
     psm <- psm |> mutate(Purity = 1, .before = "Quan Usage")
   }
 
-  x <- which(colnames(psm) == "Quan Usage")
+  x <- which(colnames(psm) == column_before_quants)
   colnamesQuan <- colnames(psm)[(x + 1):ncol(psm)]
   psm_relevant <- psm |> dplyr::select(
     dplyr::all_of(
