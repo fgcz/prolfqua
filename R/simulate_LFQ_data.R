@@ -39,7 +39,7 @@ sim_lfq_data <- function(
   prot <- data.frame(
     proteinID = proteins,
     idtype2 = idtype2,
-    nrPeptides = nrpeptides,
+    nr_peptides = nrpeptides,
     average_prot_abundance = rlnorm(Nprot,log(20),sdlog = sdlog),
     mean_Ctrl = 0,
     N_Ctrl = N,
@@ -68,9 +68,9 @@ sim_lfq_data <- function(
   if (PEPTIDE) {
 
     # add row for each protein
-    peptide_df <- prot |> tidyr::uncount( nrPeptides )
+    peptide_df <- prot |> tidyr::uncount( nr_peptides )
     # create peptide ids
-    peptide_df$peptideID <- stringi::stri_rand_strings(sum(prot$nrPeptides), 8)
+    peptide_df$peptideID <- stringi::stri_rand_strings(sum(prot$nr_peptides), 8)
   } else {
     peptide_df <- prot
   }
@@ -195,6 +195,7 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, seed = 
 
   atable <- AnalysisTableAnnotation$new()
   atable$sampleName = "sample"
+  atable$nr_children = "nr_peptides"
   atable$factors["group_"] = "group"
   atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   atable$set_response("abundance")

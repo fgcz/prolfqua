@@ -576,25 +576,21 @@ old2new <- function(config) {
 #' @export
 #' @examples
 #'
-#' dd <- prolfqua_data('data_ionstar')$filtered()
-#' dd$config <- old2new(dd$config)
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
 #'
 #' config <- dd$config
 #' data <- dd$data
 #'
 #' data <- prolfqua::transform_work_intensity(data, config, log2)
-#' colnames(data)
 #' bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
-#'
 #' bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)
-#' names(bbMed$data)
-#' names(bbRob$data)
+#' nrow(bbMed$data)
+#' nrow(bbRob$data)
 #' length(bbMed$data$medpolish)
 #' length(bbRob$data$lmrob)
-#' plot(bbMed$data$medpolish, bbRob$data$lmrob, log="xy", pch=".")
+#' xt <- dplyr::inner_join(bbMed$data, bbRob$data)
+#' plot(xt$medpolish, xt$lmrob, log="xy", pch="*")
 #' abline(0,1, col=2)
-#' plot(bbMed$data$medpolish[1:100], bbRob$data$lmrob[1:100])
-#' abline(0,1)
 #'
 estimate_intensity <- function(data, config, .func)
 {
@@ -602,7 +598,8 @@ estimate_intensity <- function(data, config, .func)
   config <- config$clone(deep = TRUE)
 
   xnested <- data |> group_by_at(config$table$hierarchy_keys_depth()) |> nest()
-
+  nr_children <- data |> group_by_at(config$table$hierarchy_keys_depth()) |>
+    summarize(!!config$table$nr_children := n())
   pb <- progress::progress_bar$new(total = nrow(xnested))
   message("starting aggregation")
 
@@ -613,15 +610,16 @@ estimate_intensity <- function(data, config, .func)
     res[[i]] <- .reestablish_condition(xnested$data[[i]], aggr , config)
   }
   xnested[[makeName]] <- res
-  newconfig <- make_reduced_hierarchy_config(config,
-                                             workIntensity = .func(name = TRUE),
-                                             hierarchy = config$table$hierarchy_keys_depth(names = FALSE))
+  newconfig <- make_reduced_hierarchy_config(
+    config,
+    workIntensity = .func(name = TRUE),
+    hierarchy = config$table$hierarchy_keys_depth(names = FALSE))
 
   unnested <- xnested |>
     dplyr::select_at(c(config$table$hierarchy_keys_depth(), makeName)) |>
     tidyr::unnest(cols = makeName) |>
     dplyr::ungroup()
-
+  unnested <- dplyr::inner_join(nr_children, unnested)
   return(list(data = unnested, config = newconfig))
 }
 

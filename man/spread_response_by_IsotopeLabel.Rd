@@ -11,9 +11,7 @@ Spreads isotope label heavy and light into two columns
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
+bb <- prolfqua::sim_lfq_data_peptide_config()
 configur <- bb$config$clone(deep=TRUE)
 data <- bb$data
 

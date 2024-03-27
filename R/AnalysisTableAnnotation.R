@@ -44,7 +44,7 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' @field opt_mz optional column with mz information
     opt_mz = character(),
     #' @field nr_children optional column containing for instance the number of peptides
-    nr_children = character(),
+    nr_children = "nr_children",
 
     #' @field workIntensity column which contains the intensities
     workIntensity = NULL, # could be list with names and functions
@@ -161,7 +161,7 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
     value_vars = function(){
       "Columns containing values"
-      valueVars <- c( self$get_response(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt)
+      valueVars <- c( self$get_response(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt, self$nr_children)
       return(valueVars)
     },
     #' @description

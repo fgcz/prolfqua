@@ -12,9 +12,8 @@ Decorates LFQData with methods to aggregate protein intensities
 aggregates intensities
 }
 \examples{
-
-istar <- prolfqua_data('data_ionstar')$filtered()
-istar$config <- old2new(istar$config)
+istar <-  prolfqua::sim_lfq_data_peptide_config()
+istar$config <- istar$config
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 
@@ -25,22 +24,21 @@ lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
 
 lfqAggregator$medpolish()
 pmed <- lfqAggregator$plot()
-pmed$plots[[2]]
+pmed$plots[[1]]
 lfqAggregator$lmrob()
 prob <- lfqAggregator$plot()
-prob$plots[[2]]
+prob$plots[[1]]
 
 lfqCopy <- lfqdata$clone()
 lfqCopy$is_transformed()
 lfqAggregator <- LFQDataAggregator$new(lfqCopy, "protein")
 lfqAggregator$sum_topN()
 pSum <- lfqAggregator$plot()
-pSum$plots[[2]]
+pSum$plots[[1]]
 
 lfqAggregator$mean_topN()
 pMean <- lfqAggregator$plot()
-pMean$plots[[2]]
-# lfqAggregator$write_plots(".")
+pMean$plots[[1]]
 protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 protPlotter$heatmap()
 \dontrun{

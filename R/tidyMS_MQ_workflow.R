@@ -9,15 +9,10 @@
 #' @family preprocessing
 #' @examples
 #'
-#'
-#'
-#' istar <- prolfqua_data('data_ionstar')$Pep()
-#' istar$config <- old2new(istar$config)
-#' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' filterPep <- prolfqua::filter_proteins_by_peptide_count( istar_data ,  istar$config )
-#'  x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
+#' istar <- prolfqua::sim_lfq_data_peptide_config()
+#' filterPep <- prolfqua::filter_proteins_by_peptide_count( istar$data ,  istar$config )
+#' x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
 #' stopifnot(x$peptide_Id_n >= istar$config$parameter$min_peptides_protein)
-#'
 #'
 filter_proteins_by_peptide_count <-
   function(pdata,
@@ -38,6 +33,7 @@ filter_proteins_by_peptide_count <-
 
 
 #' get the difference of two dataset where one is a subset of the other.
+#'
 #' @param x data.frame
 #' @param y data.frame
 #' @param config AnlysisConfiguration
@@ -48,10 +44,9 @@ filter_proteins_by_peptide_count <-
 #' @examples
 #'
 #'
-#'
-#' istar <- prolfqua_data('data_ionstar')$Pep()
-#' istar$config <- old2new(istar$config)
-#' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' istar <- prolfqua::sim_lfq_data_peptide_config()
+#' istar$config <- istar$config
+#' istar_data <- istar$data
 #' filterPep <- prolfqua:::filter_proteins_by_peptide_count( istar_data ,  istar$config )
 #' tmp <- filter_difference(istar_data, filterPep$data, istar$config)
 #' stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))

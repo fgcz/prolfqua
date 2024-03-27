@@ -22,7 +22,6 @@ and create new columns e.g. sampleName column etc.
 skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
 skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-
 sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 
 }

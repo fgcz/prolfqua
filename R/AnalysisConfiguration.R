@@ -124,7 +124,6 @@ R6_extract_values <- function(r6class){
 #' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
 #'  ident_qValue = "Detection.Q.Value")
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
-#'
 #' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE){
@@ -176,12 +175,18 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
 
   # Make implicit NA's explicit
   if (!(table$isotopeLabel %in% colnames(data))) {
-    warning("no isotopeLabel column specified in the data, adding column automatically and setting to 'light'.")
+    warning("no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'.")
     data[[table$isotopeLabel]] <- "light"
   }
   if (!(table$ident_qValue %in%  colnames(data))) {
-    warning("no qValue column specified in the data. Creating column and setting qValues to 0.")
+    warning("no qValue column specified in the data. Creating column qValue and setting qValues to 0.")
     data[[table$ident_qValue]] <- 0
+  }
+
+  # Make implicit NA's explicit
+  if (!(table$nr_children %in% colnames(data))) {
+    warning("no nr_children column specified in the data, adding column nr_children and setting to 1.")
+    data[[table$nr_children]] <- 1
   }
 
   # TODO add better warning....
@@ -357,9 +362,8 @@ table_factors <- function(pdata, configuration){
 #' @family summary
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
+#'
 #' config <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'
@@ -367,8 +371,8 @@ table_factors <- function(pdata, configuration){
 #' x$protein_Id
 #' stopifnot(ncol(x) == length(config$table$hierarchy_keys()) + 1)
 #' # select non existing protein
-#' data <- data |> dplyr::filter( protein_Id == "XYZ")
-#' tmp <- hierarchy_counts(data, config)
+#' data0 <- data |> dplyr::filter( protein_Id == "XYZ")
+#' tmp <- hierarchy_counts(data0, config)
 #' stopifnot(nrow(tmp) == 0)
 hierarchy_counts <- function(pdata, config){
   hierarchy <- config$table$hierarchy_keys()
@@ -497,9 +501,7 @@ summarize_hierarchy <- function(pdata,
 #' @family configuration
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
 #' configur <- bb$config$clone(deep=TRUE)
 #' data <- bb$data
 #'

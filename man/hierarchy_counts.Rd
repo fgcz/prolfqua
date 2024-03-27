@@ -16,9 +16,8 @@ E.g. number of proteins, peptides, precursors in the dataset
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
+bb <- prolfqua::sim_lfq_data_peptide_config()
+
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
 
@@ -26,8 +25,8 @@ x <- hierarchy_counts(data, config)
 x$protein_Id
 stopifnot(ncol(x) == length(config$table$hierarchy_keys()) + 1)
 # select non existing protein
-data <- data |> dplyr::filter( protein_Id == "XYZ")
-tmp <- hierarchy_counts(data, config)
+data0 <- data |> dplyr::filter( protein_Id == "XYZ")
+tmp <- hierarchy_counts(data0, config)
 stopifnot(nrow(tmp) == 0)
 }
 \seealso{

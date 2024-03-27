@@ -96,12 +96,6 @@ Other modelling:
 \code{\link{strategy_lmer}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 
-Other FragPipe: 
-\code{\link{FragPipe}},
-\code{\link{tidy_FragPipe_MSstats_csv}()},
-\code{\link{tidy_FragPipe_combined_protein}()},
-\code{\link{tidy_FragPipe_combined_protein_deprec}()}
-
 Other plotting: 
 \code{\link{ContrastsPlotter}},
 \code{\link{UpSet_interaction_missing_stats}()},
