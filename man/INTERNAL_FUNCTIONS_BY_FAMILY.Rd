@@ -51,12 +51,6 @@ Other deprecated:
 \code{\link{workflow_DIA_NA_preprocessing}()},
 \code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 
-Other MaxQuant: 
-\code{\link{MaxQuant}},
-\code{\link{tidyMQ_Evidence}()},
-\code{\link{tidyMQ_Peptides}()},
-\code{\link{tidyMQ_ProteinGroups}()}
-
 Other modelling: 
 \code{\link{Contrasts}},
 \code{\link{ContrastsMissing}},
