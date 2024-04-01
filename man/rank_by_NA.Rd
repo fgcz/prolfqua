@@ -19,7 +19,7 @@ Ranks peptides/precursors of a protein by NAs (adds new column .NARank)
 }
 \examples{
 
-bb <- prolfqua_data('data_spectronautDIA250_A')
+bb <- prolfqua::prolfqua_data('data_spectronautDIA250_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
 res <- remove_large_QValues(analysis, config)

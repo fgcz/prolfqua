@@ -33,92 +33,14 @@ library(prolfqua)
 Specify the path to the MaxQuant `proteinGroups.txt` file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a tidy table
 
 ```{r LoadDataAndConfigure}
-datadir <- file.path(find.package("prolfqua") , "samples/maxquant_txt")
-inputMQfile <-  file.path(datadir, "tiny2.zip")
-inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
-startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
-```
-
-
-Read the sample annotation. The sample annotation must contain the `raw.file` name and the explanatory variables of your experiment, e.g. treatment, timepoint, genetic background, or other `factors` which you would like to check for confounding effects.
-
-
-```{r readAnnotation}
-annotation <- readxl::read_xlsx(inputAnnotation)
-head(annotation)
-```
-
-Merge the annotation with quantitative data using `inner_join` joining by `raw.file`.
-
-```{r addAnnotationToData}
-startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
-
-```
-
-We remove all proteins identified only by a single peptide.
-
-```{r filterForAtLeastTwoPeptides}
-startdata <- dplyr::filter(startdata, nr.peptides > 1)
-```
-
-Then you need to _tell_ `prolfqua` which columns in the data frame contain what information. You do it using the `AnalysisTableAnnotation` class.
-
-```{r setupConfigs}
-atable <- AnalysisTableAnnotation$new()
-```
-
-The `AnalysisTableAnnotation` has the following fields that always need to be populated:
-
-- fileName
-- hierarchy
-- factors
-- workingIntensity
-
-
-The `fileName` is the column with the raw file names, however for labelled TMT experiments, it can be used to hold the name of the TMT channel.
-
-```{r specifyRawFile}
-atable$fileName = "raw.file"
-```
-
-The `hierarchy` field describes the structure of the MS data e.g, 
-
-- protein 
-- peptides
-- modified peptides
-- precursor
-
-In case of the MQ proteinGroups file we have the data already on protein level.
-
-```{r specifyProteinID}
-atable$hierarchy[["protein_Id"]] <- c("proteinID")
-
-```
-
-In addition you need to describe the `factors` of the analysis, i.e, the column containing the explanatory variables. 
-By setting the `factorDepth` variable to $1$ we include here only the "dilution." variable into the modelling.
-
-```{r specifyFactors}
-atable$factors[["dilution."]] = "sample"
-```
-
-We also need to specify the column containing the protein abundances.
-
-```{r specifyIntensity}
-atable$set_response("mq.protein.intensity")
-```
-
-Finally we create the `AnalysisConfiguration` which needs the `AnalysisTableAnnotation` we just created and the `AnalysisParameters`. 
-
-```{r createAnalysisConfig}
-config <- AnalysisConfiguration$new(atable)
-adata <- setup_analysis(startdata, config)
+xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100)
+xx
 ```
 
 Create the `LFQData` class instance and remove zeros from data (MaxQuant encodes missing values with zero).
 
 ```{r removeSmallIntensities}
-lfqdata <- prolfqua::LFQData$new(adata, config)
+lfqdata <- prolfqua::LFQData$new(xx$data, xx$config)
 lfqdata$remove_small_intensities()
 lfqdata$factors()
 ```
@@ -208,15 +130,19 @@ p
 
 For fitting linear models to the transformed intensities for all our proteins we have to first specify the model function and define the contrasts that we want to calculate.
 
+```{r lookatfactors}
+transformed$factors()
+
+```
+
+
 ```{r defineModelAndContrasts}
-transformed$config$table$get_response()
-formula_Condition <-  strategy_lm("transformedIntensity ~ dilution.")
+formula_Condition <-  strategy_lm("transformedIntensity ~ group_")
 
 # specify model definition
 modelName  <- "Model"
-unique(transformed$data$dilution.)
-Contrasts <- c("dila - dilb" = "dilution.a - dilution.b",
-"AvsC" = "dilution.a - dilution.c")
+Contrasts <- c("AvsC" = "group_A - group_Ctrl",
+"BvsC" = "group_B - group_Ctrl")
 
 ```
 

@@ -16,7 +16,7 @@ Compute nr of B per A
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$filtered()
+bb <- prolfqua::prolfqua_data('data_ionstar')$filtered()
 bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 config <- bb$config$clone(deep=TRUE)
@@ -30,7 +30,7 @@ res$data |>
   dplyr::pull() |> table()
 
 
-bb <- prolfqua_data('data_skylineSRM_HL_A')
+bb <- prolfqua::prolfqua_data('data_skylineSRM_HL_A')
 config <- old2new(bb$config_f())
 data <- bb$data
 data$Area[data$Area == 0] <- NA
@@ -44,7 +44,7 @@ nr_B_in_A(resDataStart, config, merge = FALSE)
 config$table$hierarchyDepth <- 2
 nr_B_in_A(resDataStart, config, merge = FALSE)
 
-bb <- prolfqua_data('data_IonstarProtein_subsetNorm')
+bb <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
 bb$config <- old2new(bb$config$clone(deep=TRUE))
 nr_B_in_A(bb$data, bb$config)
 #undebug(nr_B_in_A)

@@ -47,9 +47,7 @@ Other configuration:
 
 Other deprecated: 
 \code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_estimates}()},
-\code{\link{workflow_DIA_NA_preprocessing}()},
-\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
+\code{\link{medpolish_protein_estimates}()}
 
 Other modelling: 
 \code{\link{Contrasts}},
@@ -154,11 +152,6 @@ Other utilities:
 Other vignetteHelpers: 
 \code{\link{render_MQSummary_rmd}()},
 \code{\link{render_SummarizeFiltering_rmd}()}
-
-Other workflows: 
-\code{\link{workflow_DIA_NA_preprocessing}()},
-\code{\link{workflow_corr_filter_impute}()},
-\code{\link{workflow_correlation_preprocessing_protein_intensities}()}
 }
 \concept{FragPipe}
 \concept{MaxQuant}

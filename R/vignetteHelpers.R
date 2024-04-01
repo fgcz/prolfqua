@@ -1,4 +1,8 @@
-.find.package.file <- function(packagename, file){
+#' find file stored in package
+#' @export
+#' @examples
+#' find_package_file("prolfqua","extdata/medata.csv")
+find_package_file <- function(packagename, file){
 
   src_script <- file.path(find.package(packagename) , file )
   if (!file.exists(src_script)) {

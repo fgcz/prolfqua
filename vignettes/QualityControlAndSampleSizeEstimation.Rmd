@@ -26,62 +26,16 @@ Afterward, the data is transformed and normalized, and plots describing the data
 
 # Loading data
 
-Load the data from MaxQuant. In this case here we direclty load protein level data from the proteinGroups.txt file.
-
-```{r LoadDataAndConfigure}
-datadir <- file.path(find.package("prolfqua") , "samples/maxquant_txt")
-inputMQfile <-  file.path(datadir, "tiny2.zip")
-inputAnnotation <- file.path(datadir, "annotation_Ionstar2018_PXD003881.xlsx")
-startdata <- prolfqua::tidyMQ_ProteinGroups(inputMQfile)
-```
-
-Read the annotation with the meta information that is associated with the samples.
-
-```{r readAnnotation}
-annotation <- readxl::read_xlsx(inputAnnotation)
-```
+Generate Simulated data. To learn how to create prolfqua LFQData objects see the vignette: creating configurations.
 
 
-```{r joinAnnoAndData}
-startdata <- dplyr::inner_join(annotation, startdata, by = "raw.file")
-startdata |> head()
-```
-
-First, we want to remove all proteins identified only by a single peptide.
-
-```{r filterForOnePeptide}
-startdata <- startdata |> dplyr::filter(nr.peptides > 1)
-```
-
-
-We need to _tell_ `prolfqua` which columns in the table contain what information. This is done using the `AnalysisTableAnnotation` class.
-
-The `hierarchy` describes the structure of the MS data. In this case we have only protein level measurements and therefore `hierarchyDepht` is equal to $1$.
-In addition you need to describe the factors of the analysis, i.e, the column containing the explanatory variables which in this benchmark dataset is the dilution specified as sample in the annotation table.
-You also need to specify the column containing the protein identifiers and the protein intensities.
-
-
-```{r setupAnalysisTableAnnotation}
-atable <- prolfqua::AnalysisTableAnnotation$new()
-atable$fileName = "raw.file"
-atable$hierarchy[["protein_Id"]] <- c("proteinID")
-atable$hierarchyDepth <- 1
-atable$set_response("mq.protein.intensity")
-atable$factors[["dilution."]] = "sample"
-atable$factors[["Run_ID"]] = "run_ID"
-atable$factorDepth <- 1
-
-config <- prolfqua::AnalysisConfiguration$new(atable)
-
-adata <- prolfqua::setup_analysis(startdata, config)
-```
-
-
-Further steps are the creation of the LFQData class instance and the usual standard preprocessing such as the removal of zeros from data.
 
 ```{r filterdata}
-lfqdata <- prolfqua::LFQData$new(adata, config)
+simdata <- prolfqua::sim_lfq_data_peptide_config()
+lfqdata <- LFQData$new(simdata$data,simdata$config)
+
 lfqdata$remove_small_intensities()
+
 ```
 
 You can convert the data into a data frame in a wide format, where the
@@ -224,15 +178,14 @@ stdm_trans
 
 ## Estimate sample size
 
-For the sample size estimation we will now focus on only one condition and the different bio-reps from the _a_ dilution.
+For the sample size estimation we will now focus on only one condition and the different bio-reps from the _a_ group
 In this condition all samples have the same concentration and we want to check variability within this group. 
 Like this we can estimate how many samples are necessary per group to quantify properly a two-fold change (delta of 1) for 90% of all the proteins with a power of 0.8 and significance level of 0.05.
 
-First, we need to filter our data for `dilution.` _a_ only.
+First, we need to filter our data for `group_` _A_ only.
 ```{r}
-#startdata <- startdata |> dplyr::filter(sample  == "a")
 transformedA <- transformed$get_copy()
-transformedA$data <- transformedA$data |> dplyr::filter(dilution.  == "a")
+transformedA$data <- transformedA$data |> dplyr::filter(group_  == "A")
 stats <- transformedA$get_Stats()
 ```
 
@@ -244,7 +197,7 @@ The table indicates that for this kind of data - if a two-fold change for 90% of
 
 ```{r estimateSampleSizes}
 sampleSize <- stats$power_t_test_quantiles() |> 
-  dplyr::filter(dilution. != "All")
+  dplyr::filter(group_ != "All")
 prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
 
 ```
@@ -270,7 +223,7 @@ The next figure shows the distribution of needed sample sizes for all proteins w
 
 ```{r statsWithN, eval = TRUE}
 x <- stats$power_t_test(delta = 1,power = 0.8, sig.level = 0.05)
-x <- x |> dplyr::filter(dilution. == "a") |> dplyr::arrange(desc(N),protein_Id)
+x <- x |> dplyr::filter(group_ == "A") |> dplyr::arrange(desc(N),protein_Id)
 prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 ```
 
