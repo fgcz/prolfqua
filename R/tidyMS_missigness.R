@@ -144,19 +144,19 @@ interaction_missing_stats <- function(pdata,
 
       pid <- config$table$hierarchy_keys_depth()
       nrReplicates <- mstats |>
-        dplyr::select( -one_of(c(setdiff(x_summaries,"nrReplicates"),"imputed") )) |>
+        dplyr::select( -one_of(c(base::setdiff(x_summaries,"nrReplicates"),"imputed") )) |>
         tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") |>
         arrange(!!!syms(pid)) |>
         dplyr::ungroup()
-      nrMeasured <- mstats |> dplyr::select(-one_of(c(setdiff(x_summaries,"nrMeasured"),"imputed" ) )) |>
+      nrMeasured <- mstats |> dplyr::select(-one_of(c(base::setdiff(x_summaries,"nrMeasured"),"imputed" ) )) |>
         tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") |>
         arrange(!!!syms(pid)) |> dplyr::ungroup()
 
-      meanAbundance <- mstats |> dplyr::select(-one_of(c(setdiff(x_summaries,"meanAbundance"),"imputed" ) )) |>
+      meanAbundance <- mstats |> dplyr::select(-one_of(c(base::setdiff(x_summaries,"meanAbundance"),"imputed" ) )) |>
         tidyr::spread(interaction, meanAbundance, sep = ".meanAbundance.") |>
         arrange(!!!syms(pid)) |> dplyr::ungroup()
 
-      meanAbundanceImputed <- mstats |> dplyr::select(-one_of(setdiff(x_summaries,"imputed" ) )) |>
+      meanAbundanceImputed <- mstats |> dplyr::select(-one_of(base::setdiff(x_summaries,"imputed" ) )) |>
         tidyr::spread(interaction, .data$imputed, sep = ".imputed.") |>
         arrange(!!!syms(pid)) |> dplyr::ungroup()
 

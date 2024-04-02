@@ -267,7 +267,8 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName" ){
 #'  dplyr::group_by_at( configur$table$hierarchy_keys_depth() ) |>
 #'  tidyr::nest()
 #' x <- xnested$data[[1]]
-#' nn  <- x |> dplyr::select( setdiff(configur$table$hierarchy_keys() ,  configur$table$hierarchy_keys_depth()) ) |>
+#' nn  <- x |> dplyr::select( base::setdiff(configur$table$hierarchy_keys() ,
+#'   configur$table$hierarchy_keys_depth()) ) |>
 #'  dplyr::distinct() |> nrow()
 #'
 #' xx <- response_as_matrix(x,configur)
@@ -282,7 +283,8 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName" ){
 #'  tidyr::nest()
 #'
 #' x <- xnested$data[[1]]
-#' nn  <- x |> dplyr::select( setdiff(configur$table$hierarchy_keys(),  configur$table$hierarchy_keys_depth()) ) |>
+#' nn  <- x |> dplyr::select( base::setdiff(configur$table$hierarchy_keys(),
+#'   configur$table$hierarchy_keys_depth()) ) |>
 #'  dplyr::distinct() |> nrow()
 #'
 #' xx <- response_as_matrix(x,conf)
@@ -292,7 +294,7 @@ response_as_matrix <- function(pdata, config ){
   table <- config$table
   .extractInt(pdata,
               table$get_response(),
-              setdiff(table$hierarchy_keys(), table$hierarchy_keys_depth()),
+              base::setdiff(table$hierarchy_keys(), table$hierarchy_keys_depth()),
               table$sampleName)
 }
 
@@ -320,7 +322,8 @@ response_as_matrix <- function(pdata, config ){
 #' xnested <- data |>
 #'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
 #'
-#' feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
+#' feature <- base::setdiff(conf$table$hierarchy_keys(),
+#'   conf$table$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- medpolish_estimate_df(x,
 #'  response = conf$table$get_response(),
@@ -356,7 +359,7 @@ medpolish_estimate_df <- function(pdata, response, feature, sampleName  ){
 #' xnested <- data |>
 #'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
 #'
-#' feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
+#' feature <- base::setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- medpolish_estimate_dfconfig(x,conf)
 #' prolfqua:::.reestablish_condition(x,bb, conf)
@@ -366,7 +369,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
     return("medpolish")
   }
 
-  feature <- setdiff(config$table$hierarchy_keys(),  config$table$hierarchy_keys_depth())
+  feature <- base::setdiff(config$table$hierarchy_keys(),  config$table$hierarchy_keys_depth())
   res <- medpolish_estimate_df(pdata,
                                response = config$table$get_response(),
                                feature = feature,
@@ -490,7 +493,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name=FALSE){
 #' xnested <- data |>
 #'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
 #'
-#' feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
+#' feature <- base::setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- rlm_estimate(x,
 #'  response = conf$table$get_response(),
@@ -524,7 +527,7 @@ rlm_estimate <- function(pdata, response, feature , samples, maxIt = 20) {
 #' xnested <- data |>
 #'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
 #'
-#' feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
+#' feature <- base::setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- rlm_estimate_dfconfig(x, conf)
 #'
@@ -533,7 +536,7 @@ rlm_estimate <- function(pdata, response, feature , samples, maxIt = 20) {
 rlm_estimate_dfconfig <- function(pdata, config, name= FALSE){
   if (name) {return("lmrob")}
 
-  feature <- setdiff(config$table$hierarchy_keys(),  config$table$hierarchy_keys_depth())
+  feature <- base::setdiff(config$table$hierarchy_keys(),  config$table$hierarchy_keys_depth())
   rlm_estimate(pdata, response = config$table$get_response(),
                feature = feature,
                samples = config$table$sampleName

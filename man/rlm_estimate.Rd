@@ -47,7 +47,7 @@ conf$table$hierarchyDepth = 1
 xnested <- data |>
   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
 
-feature <- setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
+feature <- base::setdiff(conf$table$hierarchy_keys(),  conf$table$hierarchy_keys_depth())
 x <- xnested$data[[1]]
 bb <- rlm_estimate(x,
  response = conf$table$get_response(),

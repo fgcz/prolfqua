@@ -22,7 +22,8 @@ xnested <- data |>
  dplyr::group_by_at( configur$table$hierarchy_keys_depth() ) |>
  tidyr::nest()
 x <- xnested$data[[1]]
-nn  <- x |> dplyr::select( setdiff(configur$table$hierarchy_keys() ,  configur$table$hierarchy_keys_depth()) ) |>
+nn  <- x |> dplyr::select( base::setdiff(configur$table$hierarchy_keys() ,
+  configur$table$hierarchy_keys_depth()) ) |>
  dplyr::distinct() |> nrow()
 
 xx <- response_as_matrix(x,configur)
@@ -37,7 +38,8 @@ xnested <- data |>
  tidyr::nest()
 
 x <- xnested$data[[1]]
-nn  <- x |> dplyr::select( setdiff(configur$table$hierarchy_keys(),  configur$table$hierarchy_keys_depth()) ) |>
+nn  <- x |> dplyr::select( base::setdiff(configur$table$hierarchy_keys(),
+  configur$table$hierarchy_keys_depth()) ) |>
  dplyr::distinct() |> nrow()
 
 xx <- response_as_matrix(x,conf)

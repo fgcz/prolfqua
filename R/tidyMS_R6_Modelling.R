@@ -383,7 +383,7 @@ plot_lmer_peptide_predictions <- function(m){
 plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
   data <- m@frame
   ran <- lme4::ranef(m)[[1]]
-  randeffect <- setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
+  randeffect <- base::setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
   ran <- tibble::as_tibble(ran,rownames = randeffect)
   colnames(ran) <- gsub("[()]","",colnames(ran))
   ran <- dplyr::inner_join(data, ran, by = randeffect)
@@ -579,7 +579,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
   make_contrasts <- function(data,
                              contrasts)
   {
-    cnams <- setdiff(colnames(data),"interaction")
+    cnams <- base::setdiff(colnames(data),"interaction")
     for (i in seq_along(contrasts)) {
       if (p.message) {message(names(contrasts)[i], "=", contrasts[i],"\n")}
       data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))

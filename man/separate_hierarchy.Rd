@@ -20,7 +20,7 @@ Separates hierarchy columns into starting columns
 bb <- prolfqua_data('data_ionstar')$filtered()
 bb$config <- old2new(bb$config)
 dt <- separate_hierarchy(bb$data, bb$config)
-setdiff(colnames(dt) ,colnames(bb$data))
+base::setdiff(colnames(dt) ,colnames(bb$data))
 stopifnot(ncol(dt) >= ncol(bb$data))
 
 }

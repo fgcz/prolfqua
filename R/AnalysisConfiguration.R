@@ -228,7 +228,7 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' bb$config <- old2new(bb$config)
 #' dt <- separate_hierarchy(bb$data, bb$config)
-#' setdiff(colnames(dt) ,colnames(bb$data))
+#' base::setdiff(colnames(dt) ,colnames(bb$data))
 #' stopifnot(ncol(dt) >= ncol(bb$data))
 #'
 separate_hierarchy <- function(data, config){
@@ -255,7 +255,7 @@ separate_hierarchy <- function(data, config){
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' bb$config <- old2new(bb$config)
 #' dt <- separate_factors(bb$data, bb$config)
-#' setdiff(colnames(dt), colnames(bb$data))
+#' base::setdiff(colnames(dt), colnames(bb$data))
 #' stopifnot(ncol(bb$data) < ncol(dt))
 #'
 separate_factors <- function(data, config) {
@@ -486,7 +486,7 @@ summarize_hierarchy <- function(pdata,
 
   precursor <- pdata |> dplyr::select(factors, all_hierarchy) |> dplyr::distinct()
   x3 <- precursor |> dplyr::group_by_at(c(factors, hierarchy)) |>
-    dplyr::summarize_at( setdiff(all_hierarchy, hierarchy),
+    dplyr::summarize_at( base::setdiff(all_hierarchy, hierarchy),
                          list( n = dplyr::n_distinct))
   return(x3)
 }
