@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -121,6 +121,7 @@
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>,<span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no nr_children column specified in the data, adding column nr_children and setting to 1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">transform_work_intensity</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, .func <span class="op">=</span> <span class="va">log2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_FG.Quantity</span>

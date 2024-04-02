@@ -76,9 +76,6 @@
     <loc>/reference/ContrastsTable.html</loc>
   </url>
   <url>
-    <loc>/reference/FragPipe.html</loc>
-  </url>
-  <url>
     <loc>/reference/INTERNAL_FUNCTIONS_BY_FAMILY.html</loc>
   </url>
   <url>
@@ -109,9 +106,6 @@
     <loc>/reference/LR_test.html</loc>
   </url>
   <url>
-    <loc>/reference/MaxQuant.html</loc>
-  </url>
-  <url>
     <loc>/reference/Model.html</loc>
   </url>
   <url>
@@ -134,9 +128,6 @@
   </url>
   <url>
     <loc>/reference/UpSet_missing_stats.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_annotation.html</loc>
   </url>
   <url>
     <loc>/reference/add_missing.html</loc>
@@ -235,12 +226,6 @@
     <loc>/reference/data_test_confusion_matrix_scores.html</loc>
   </url>
   <url>
-    <loc>/reference/diann_output_to_peptide.html</loc>
-  </url>
-  <url>
-    <loc>/reference/diann_read_output.html</loc>
-  </url>
-  <url>
     <loc>/reference/dot-get_robscales.html</loc>
   </url>
   <url>
@@ -259,10 +244,10 @@
     <loc>/reference/filter_difference.html</loc>
   </url>
   <url>
-    <loc>/reference/filter_factor_levels_by_missing.html</loc>
+    <loc>/reference/filter_proteins_by_peptide_count.html</loc>
   </url>
   <url>
-    <loc>/reference/filter_proteins_by_peptide_count.html</loc>
+    <loc>/reference/find_package_file.html</loc>
   </url>
   <url>
     <loc>/reference/get_UniprotID_from_fasta_header.html</loc>
@@ -290,9 +275,6 @@
   </url>
   <url>
     <loc>/reference/hierarchy_counts_sample.html</loc>
-  </url>
-  <url>
-    <loc>/reference/impute_correlationBased.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
@@ -347,9 +329,6 @@
   </url>
   <url>
     <loc>/reference/make_reduced_hierarchy_config.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mark_decorelated.html</loc>
   </url>
   <url>
     <loc>/reference/matrix_to_tibble.html</loc>
@@ -607,34 +586,10 @@
     <loc>/reference/summary_ROPECA_median_p.scaled.html</loc>
   </url>
   <url>
-    <loc>/reference/system_file.html</loc>
-  </url>
-  <url>
     <loc>/reference/table_facade.html</loc>
   </url>
   <url>
     <loc>/reference/table_factors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidyMQ_Evidence.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidyMQ_Peptides.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidyMQ_ProteinGroups.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidy_FragPipe_MSstats_csv.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidy_FragPipe_combined_protein.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidy_FragPipe_combined_protein_deprec.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tidy_FragPipe_psm.html</loc>
   </url>
   <url>
     <loc>/reference/tidy_to_wide.html</loc>
@@ -644,14 +599,5 @@
   </url>
   <url>
     <loc>/reference/transform_work_intensity.html</loc>
-  </url>
-  <url>
-    <loc>/reference/workflow_DIA_NA_preprocessing.html</loc>
-  </url>
-  <url>
-    <loc>/reference/workflow_corr_filter_impute.html</loc>
-  </url>
-  <url>
-    <loc>/reference/workflow_correlation_preprocessing_protein_intensities.html</loc>
   </url>
 </urlset>
