@@ -11,4 +11,6 @@ find file stored in package
 }
 \examples{
 find_package_file("prolfqua","extdata/medata.csv")
+
 }
+\keyword{internal}

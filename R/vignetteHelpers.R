@@ -1,7 +1,9 @@
 #' find file stored in package
 #' @export
+#' @keywords internal
 #' @examples
 #' find_package_file("prolfqua","extdata/medata.csv")
+#'
 find_package_file <- function(packagename, file){
 
   src_script <- file.path(find.package(packagename) , file )
@@ -17,8 +19,10 @@ find_package_file <- function(packagename, file){
 
 }
 
-
-.scriptCopyHelperVec <-
+#' copy script files and other from a package to workdir
+#' @export
+#' @keywords internal
+scriptCopyHelperVec <-
   function(runscripts,
            workdir = getwd(),
            packagename = "prolfqua") {
@@ -49,35 +53,6 @@ find_package_file <- function(packagename, file){
     return(res)
   }
 
-#' copy all files need to run mixed model analysis.
-#' @param workdir directory where to copy file - default is current working directory.
-#' @keywords internal
-#' @export
-#' @examples
-#' copy_mixed_model_analysis_script(workdir = tempdir())
-copy_mixed_model_analysis_script <- function(workdir = getwd()){
-  runscripts <- c("fgcz_formatting/fgcz_header.html",
-                  "fgcz_formatting/fgcz_footer.html",
-                  "fgcz_formatting/fgcz.css",
-                  "fgcz_formatting/fgcz_banner.png",
-                  "rmarkdown/mixed_model_analysis_script_Report.Rmd",
-                  "rmarkdown/bibliography.bib"
-                  )
-  .scriptCopyHelperVec(runscripts, workdir = workdir)
-}
-
-
-
-#' copy SAINTexpress doc file
-#' @param workdir directory where to copy file - default is current working directory.
-#' @keywords internal
-#' @export
-#' @examples
-#' copy_SAINTe_doc(workdir = tempdir())
-copy_SAINTe_doc <- function(workdir = getwd()){
-  runscripts <- c("SaintExpress/SAINTexpress-manual.docx")
-  .scriptCopyHelperVec(runscripts, workdir = workdir)
-}
 
 .run_markdown_with_params <-
   function(params,
@@ -87,7 +62,7 @@ copy_SAINTe_doc <- function(workdir = getwd()){
            workdir = tempdir(),
            packagename = "prolfqua",
            format = "pdf") {
-    res <- .scriptCopyHelperVec(markdown_path,
+    res <- prolfqua::scriptCopyHelperVec(markdown_path,
                                 workdir = workdir,
                                 packagename = packagename)
     dist_file_path <-
@@ -168,27 +143,3 @@ render_MQSummary_rmd <-
 
 
 
-#' render Filtering Summary.
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#'
-#' @family vignetteHelpers
-#' @keywords internal
-#'
-#' @export
-#'
-render_SummarizeFiltering_rmd <-
-  function(results,
-           dest_path = ".",
-           dest_file_name = "Summarize_Filtering.pdf",
-           workdir = tempdir())
-  {
-    dist_file_path <- .run_markdown_with_params(
-      results,
-      markdown_path = "rmarkdown/Summarize_Filtering.Rmd",
-      dest_path = dest_path,
-      dest_file_name = dest_file_name,
-      workdir = workdir,
-      packagename = "prolfqua"
-    )
-  }

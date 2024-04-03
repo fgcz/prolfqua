@@ -50,8 +50,7 @@ render_MQSummary_rmd(analysis,
 }
 \seealso{
 Other vignetteHelpers: 
-\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{render_SummarizeFiltering_rmd}()}
+\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}}
 }
 \concept{vignetteHelpers}
 \keyword{internal}

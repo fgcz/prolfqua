@@ -150,8 +150,7 @@ Other utilities:
 \code{\link{table_facade}()}
 
 Other vignetteHelpers: 
-\code{\link{render_MQSummary_rmd}()},
-\code{\link{render_SummarizeFiltering_rmd}()}
+\code{\link{render_MQSummary_rmd}()}
 }
 \concept{FragPipe}
 \concept{MaxQuant}

@@ -33,9 +33,7 @@ Generate Simulated data. To learn how to create prolfqua LFQData objects see the
 ```{r filterdata}
 simdata <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- prolfqua::LFQData$new(simdata$data,simdata$config)
-
 lfqdata$remove_small_intensities()
-
 ```
 
 You can convert the data into a data frame in a wide format, where the
