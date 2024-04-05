@@ -4,24 +4,23 @@
 #' @family modelling
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
-#' istar$config <- old2new(istar$config )
-#' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 10))
+#' istar <- prolfqua::sim_lfq_data_peptide_config()
+#' istar$config <- istar$config
+#' istar_data <- istar$data
 #' lfd <- LFQData$new(istar_data, istar$config)
-#' #debug(prolfqua::LFQDataToSummarizedExperiment)
 #' se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
 #'
-#' fit <- proDA::proDA(se, design = ~ dilution. - 1,data_is_log_transformed = TRUE)
+#' fit <- proDA::proDA(se, design = ~ group_ - 1, data_is_log_transformed = TRUE)
 #' contr <- list()
 #'
-#' contrasts <- c("dilution_(9/7.5)_1.2" = "dilution.e - dilution.d",
-#'                "dilution_(7.5/6)_1.25" = "dilution.d - dilution.c")
-#' contr[["dilution_(9/7.5)_1.2"]] <- data.frame(
-#'   contrast = "dilution_(9/7.5)_1.2",
-#'   proDA::test_diff(fit, contrast = "dilution.e - dilution.d"))
-#' contr[["dilution_(7.5/6)_1.25"]] <- data.frame(
-#'   contrast = "dilution_(7.5/6)_1.25",
-#'   proDA::test_diff(fit, contrast = "dilution.d - dilution.c"))
+#' contrasts <- c("group_AvsCtrl" = "group_A - group_Ctrl",
+#'                "group_BvsCtrl" = "group_B - group_Ctrl")
+#' contr[["group_AvsCtrl"]] <- data.frame(
+#'   contrast = "group_AvsCtrl",
+#'   proDA::test_diff(fit, contrast = "group_A - group_Ctrl"))
+#' contr[["group_BvsCtrl"]] <- data.frame(
+#'   contrast = "group_BvsCtrl",
+#'   proDA::test_diff(fit, contrast = "group_B - group_Ctrl"))
 #'
 #' bb <- dplyr::bind_rows(contr)
 #' cproDA <- ContrastsProDA$new(bb, contrasts = contrasts, subject_Id = "name")

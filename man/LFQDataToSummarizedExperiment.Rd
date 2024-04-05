@@ -17,9 +17,9 @@ For compatibility with Bioconductor
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')
-istar$config <- old2new(istar$config)
-data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+istar <- prolfqua::sim_lfq_data_peptide_config()
+istar$config <- (istar$config)
+data <- istar$data
 lfqdata <- LFQData$new(data, istar$config)
 lfqdata$to_wide()
 if(require("SummarizedExperiment")){

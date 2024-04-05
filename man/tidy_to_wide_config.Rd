@@ -28,9 +28,9 @@ res <- tidy_to_wide_config(data, config)
 testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
 res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-dim(res$data) == c(28,  12)
-dim(res$annotation) == c(12,  3)
-dim(res$rowdata) == c(28, 3)
+stopifnot(all(dim(res$data) == c(28,  12))
+stopifnot(all(dim(res$annotation) == c(12,  4)))
+stopifnot(all(dim(res$rowdata) == c(28, 3)))
 
 res <- scale(res$data)
 tidy_to_wide_config(data, config,  value = config$table$nr_children)
@@ -41,6 +41,8 @@ xt$data$nr_children
 #xt$config$table$is_response_transformed <- TRUE
 res <- xt$get_Aggregator()
 x <- res$medpolish()
+towide <- tidy_to_wide_config(x$data, x$config,  value = x$config$table$nr_children)
+
 dd <- prolfqua::sim_lfq_data_protein_config()
 dd$config$table$nr_children
 dd$data

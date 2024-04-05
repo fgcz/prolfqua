@@ -169,9 +169,18 @@ LFQData <- R6::R6Class(
     #' @description
     #' converts the data to wide
     #' @param as.matrix return as data.frame or matrix
+    #' @param value either response or nr chidren
     #' @return list with data, annotation, and configuration
-    to_wide = function(as.matrix = FALSE){
-      wide <- prolfqua::tidy_to_wide_config(self$data, self$config, as.matrix = as.matrix)
+    to_wide = function(as.matrix = FALSE, value = c("response", "nr_children")){
+      value <- match.arg(value)
+      if (value == "response") {
+        wide <- prolfqua::tidy_to_wide_config(self$data, self$config, as.matrix = as.matrix)
+      } else {
+        wide <- prolfqua::tidy_to_wide_config(
+          self$data, self$config,
+          as.matrix = as.matrix,
+          value = self$config$table$nr_children)
+      }
       wide$config <- self$config$clone(deep = TRUE)
       return(wide)
     },
@@ -275,9 +284,6 @@ LFQData <- R6::R6Class(
 )
 
 
-
-
-
 #' converts LFQData object to SummarizedExperiment
 #'
 #' For compatibility with Bioconductor
@@ -287,9 +293,9 @@ LFQData <- R6::R6Class(
 #' @export
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')
-#' istar$config <- old2new(istar$config)
-#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' istar <- prolfqua::sim_lfq_data_peptide_config()
+#' istar$config <- (istar$config)
+#' data <- istar$data
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$to_wide()
 #' if(require("SummarizedExperiment")){
@@ -299,10 +305,14 @@ LFQData <- R6::R6Class(
 LFQDataToSummarizedExperiment <- function(lfqdata){
   if (requireNamespace("SummarizedExperiment")) {
     wide <- lfqdata$to_wide(as.matrix = TRUE)
+    nr_children <- lfqdata$to_wide(as.matrix = TRUE, value = "nr_children")
     ann <- data.frame(wide$annotation)
     rownames(ann) <- wide$annotation[[lfqdata$config$table$sampleName]]
-    se <- SummarizedExperiment::SummarizedExperiment(S4Vectors::SimpleList(LFQ = wide$data), colData = ann,
-                                                     rowData = wide$rowdata)
+    se <- SummarizedExperiment::SummarizedExperiment(S4Vectors::SimpleList(
+      LFQ = wide$data,
+      nr_children = nr_children$data),
+      colData = ann,
+      rowData = wide$rowdata)
     return(se)
   }
 }
