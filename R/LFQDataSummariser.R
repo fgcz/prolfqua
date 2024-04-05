@@ -16,6 +16,7 @@
 #' sum$hierarchy_counts_sample("wide")
 #' sum$hierarchy_counts_sample("long")
 #' sum$plot_hierarchy_counts_sample()
+#' sum$plot_hierarchy_counts_sample()
 #' tmp <- sum$interaction_missing_stats()
 #'
 #' sum$missingness_per_group()
@@ -44,16 +45,20 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' number of elements at each level in every sample
     #' @param value wide - wide format, long - long format, plot - ggplot
-    hierarchy_counts_sample = function(value=c("wide","long")){
+    #' @param nr_children get summary for 1,2 or more number of children
+    hierarchy_counts_sample = function(value=c("wide","long"), nr_children = 1){
       value <- match.arg(value)
-      fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
+      fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config,
+                                               nr_children = nr_children)
       return(fun(value))
     },
     #' @description
     #' barplot showing number of elements at each level in every sample
     #' @param value wide - wide format, long - long format, plot - ggplot
-    plot_hierarchy_counts_sample = function(){
-      fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config)
+    #' @param nr_children get summary for 1,2 or more number of children
+    plot_hierarchy_counts_sample = function(nr_children = 1){
+      fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config,
+                                               nr_children = nr_children)
       return(fun("plot"))
     },
     #' @description

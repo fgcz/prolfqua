@@ -47,7 +47,7 @@ peptideAbundances <- prolfqua::sim_lfq_data(PEPTIDE = TRUE)
 library(prolfqua)
 
 atable <- AnalysisTableAnnotation$new()
-atable$sampleName = "sample"
+atable$fileName = "sample"
 atable$factors["group_"] = "group"
 atable$hierarchy[["protein_Id"]] = "proteinID"
 atable$hierarchy[["peptide_Id"]] = "peptideID"

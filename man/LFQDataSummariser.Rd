@@ -20,6 +20,7 @@ sum$hierarchy_counts()
 sum$hierarchy_counts_sample("wide")
 sum$hierarchy_counts_sample("long")
 sum$plot_hierarchy_counts_sample()
+sum$plot_hierarchy_counts_sample()
 tmp <- sum$interaction_missing_stats()
 
 sum$missingness_per_group()
@@ -98,13 +99,18 @@ summarize hierarchy
 \subsection{Method \code{hierarchy_counts_sample()}}{
 number of elements at each level in every sample
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts_sample(value = c("wide", "long"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts_sample(
+  value = c("wide", "long"),
+  nr_children = 1
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
+
+\item{\code{nr_children}}{get summary for 1,2 or more number of children}
 }
 \if{html}{\out{</div>}}
 }
@@ -115,12 +121,14 @@ number of elements at each level in every sample
 \subsection{Method \code{plot_hierarchy_counts_sample()}}{
 barplot showing number of elements at each level in every sample
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_hierarchy_counts_sample()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_hierarchy_counts_sample(nr_children = 1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{nr_children}}{get summary for 1,2 or more number of children}
+
 \item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
 }
 \if{html}{\out{</div>}}

@@ -28,7 +28,7 @@ res <- tidy_to_wide_config(data, config)
 testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
 res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-stopifnot(all(dim(res$data) == c(28,  12))
+stopifnot(all(dim(res$data) == c(28,  12)))
 stopifnot(all(dim(res$annotation) == c(12,  4)))
 stopifnot(all(dim(res$rowdata) == c(28, 3)))
 
