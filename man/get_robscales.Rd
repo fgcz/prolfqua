@@ -12,10 +12,8 @@ compute median and standard deviation for each sample
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
-conf <- bb$config$clone(deep=TRUE)
+bb <- prolfqua::sim_lfq_data_peptide_config()
+conf <- bb$config
 sample_analysis <- bb$data
 pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
 s1 <- get_robscales(pepIntensityNormalized, conf)

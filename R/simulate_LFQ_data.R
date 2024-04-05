@@ -125,7 +125,7 @@ sim_lfq_data <- function(
 #' @param x vector of intensities
 #'
 #'
-add_missing <- function(x){
+which_missing <- function(x){
   missing_prop <- pnorm(x, mean = mean(x), sd = sd(x))
   # sample TRUE or FALSE with propability in missing_prop
   samplemiss <- function(missing_prop) {
@@ -136,8 +136,8 @@ add_missing <- function(x){
 
   missing_values <- sapply(missing_prop, samplemiss)
   # Introduce missing values into the vector x
-  x[missing_values] <- NA
-  return(x)
+  #x[missing_values] <- NA
+  return(missing_values)
 }
 
 
@@ -147,6 +147,7 @@ add_missing <- function(x){
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @export
 #' @examples
+#' undebug(sim_lfq_data_peptide_config)
 #' x <- sim_lfq_data_peptide_config()
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
@@ -156,13 +157,15 @@ sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, seed = 
   }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE)
   if (with_missing) {
-    data$abundance <- add_missing(data$abundance)
+    not_missing <- !which_missing(data$abundance)
+    data <- data[not_missing,]
   }
   data$isotopeLabel <- "light"
   data$qValue <- 0
 
   atable <- AnalysisTableAnnotation$new()
-  atable$sampleName = "sample"
+  atable$fileName = "sample"
+
   atable$factors["group_"] = "group"
   atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   atable$hierarchy[["peptide_Id"]] = "peptideID"
@@ -188,13 +191,13 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, seed = 
   }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
   if (with_missing) {
-    data$abundance <- add_missing(data$abundance)
+    data <- data[!which_missing(data$abundance),]
   }
   data$isotopeLabel <- "light"
   data$qValue <- 0
 
   atable <- AnalysisTableAnnotation$new()
-  atable$sampleName = "sample"
+  atable$fileName = "sample"
   atable$nr_children = "nr_peptides"
   atable$factors["group_"] = "group"
   atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")

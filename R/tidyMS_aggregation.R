@@ -580,10 +580,8 @@ old2new <- function(config) {
 #' @examples
 #'
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
-#'
 #' config <- dd$config
 #' data <- dd$data
-#'
 #' data <- prolfqua::transform_work_intensity(data, config, log2)
 #' bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
 #' bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)
@@ -601,8 +599,6 @@ estimate_intensity <- function(data, config, .func)
   config <- config$clone(deep = TRUE)
 
   xnested <- data |> group_by_at(config$table$hierarchy_keys_depth()) |> nest()
-  nr_children <- data |> group_by_at(config$table$hierarchy_keys_depth()) |>
-    summarize(!!config$table$nr_children := n())
   pb <- progress::progress_bar$new(total = nrow(xnested))
   message("starting aggregation")
 
@@ -622,8 +618,29 @@ estimate_intensity <- function(data, config, .func)
     dplyr::select_at(c(config$table$hierarchy_keys_depth(), makeName)) |>
     tidyr::unnest(cols = makeName) |>
     dplyr::ungroup()
-  unnested <- dplyr::inner_join(nr_children, unnested)
+
+  new_child = paste0("nr_",config$table$hierarchy_keys_depth())
+  res_nr_children <- nr_obs(data, config, new_child = new_child)
+  unnested <- inner_join(unnested, res_nr_children, by = c(config$table$hierarchy_keys_depth(), config$table$fileName))
+  newconfig$table$nr_children = new_child
   return(list(data = unnested, config = newconfig))
+}
+
+#' Aggregates e.g. protein abundances from peptide abundances
+#'
+#' @export
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' dd$data <- na.omit(dd$data)
+#' xd <- nr_obs(dd$data, dd$config)
+#'
+#' #xd |> head()
+#'
+#' xd$nr_children |> table()
+nr_obs <- function(data, config, new_child = config$table$nr_children){
+  nr_children <- data |> group_by(!!!rlang::syms(c(config$table$hierarchy_keys_depth(), config$table$fileName))) |>
+    summarize(!!new_child := sum(!!sym(config$table$nr_children), na.rm = TRUE))
+  return(nr_children)
 }
 
 #' Plot feature data and result of aggregation
@@ -696,8 +713,8 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend= 
 #' @keywords internal
 #' @examples
 #'
-#' dd <- prolfqua_data('data_ionstar')$filtered()
-#' config <- old2new(dd$config)
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- dd$config
 #' res <- dd$data
 #' ranked <- rank_peptide_by_intensity(res,config)
 #'
@@ -748,6 +765,13 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
     config,
     workIntensity = newcol,
     hierarchy = config$table$hierarchy[seq_len(config$table$hierarchyDepth)])
+
+  new_child_name <- paste0("nr_", config$table$hierarchy_keys_depth() )
+  res_nr_children <- nr_obs(pdata, config, new_child = new_child_name)
+  sumTopInt <- inner_join(
+    sumTopInt, res_nr_children,
+    by = c(config$table$fileName, config$table$hierarchy_keys_depth()))
+  newconfig$table$nr_children = new_child_name
   return(list(data = sumTopInt, config = newconfig))
 }
 

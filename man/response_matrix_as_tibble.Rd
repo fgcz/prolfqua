@@ -21,14 +21,14 @@ response_matrix_as_tibble(pdata, value, config, data = NULL, sep = "~lfq~")
 Takes matrix of responses and converts into tibble
 }
 \examples{
-dd <- prolfqua_data('data_spectronautDIA250_A')
-conf <- dd$config_f()
-analysis <- dd$analysis(dd$data,conf)
-res <- tidy_to_wide_config(analysis, conf, as.matrix = TRUE)
+dd <- prolfqua::sim_lfq_data_peptide_config()
+data <- dd$data
+conf <- dd$config
+res <- tidy_to_wide_config(data, conf, as.matrix = TRUE)
 
 res <- scale(res$data)
 xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
-xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf,analysis)
+xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf, data)
 conf$table$get_response() == "srm_intensityScaled"
 
 }

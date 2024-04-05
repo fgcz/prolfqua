@@ -129,6 +129,8 @@ R6_extract_values <- function(r6class){
 setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE){
   configuration <- configuration$clone(deep = TRUE)
   table <- configuration$table
+  if (is.null(table$fileName)) { stop("fileName column is not specified in configuration.")}
+  if (!table$fileName %in% colnames(data)) { stop("File name column :" , table$fileName , ", is missing in data.")}
 
   # extract hierarchy columns
   for (i in seq_along(table$hierarchy))
@@ -194,7 +196,7 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
 
   txd <- data |> group_by(!!!syms(c(table$fileName, table$hierarchy_keys(), table$isotopeLabel))) |>
     summarize(n = n())
-  if (length(table(txd$n)) > 1) {
+  if (any(txd$n > 1)) {
     str <- paste("There is more than ONE observations for each : ", paste( table$hierarchy_keys(), collapse = ", "), ",\n",
                  "and sample : ", table$sampleName, "; (filename) : ", table$fileName, "\n")
     warning(str)
@@ -204,12 +206,9 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
   #tmp <- prolfqua::tidy_to_wide_config(data, configuration)
   #message("nr rows and nr columns")
   #message(paste(dim(tmp$data),collapse = ", "))
-
   if (cc) {
     data <- complete_cases( data , configuration)
   }
-
-
   return( data )
 }
 

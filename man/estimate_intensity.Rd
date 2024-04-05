@@ -18,10 +18,8 @@ Aggregates e.g. protein abundances from peptide abundances
 \examples{
 
 dd <- prolfqua::sim_lfq_data_peptide_config()
-
 config <- dd$config
 data <- dd$data
-
 data <- prolfqua::transform_work_intensity(data, config, log2)
 bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
 bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)

@@ -219,20 +219,38 @@ tidy_to_wide <- function(data,
 #' @return list with data, rowdata, and annotation (colData)
 #' @examples
 #'
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
-#' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
-#' res <- tidy_to_wide_config(analysis, config)
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- dd$config
+#' data <- dd$data
+#' res <- tidy_to_wide_config(data, config)
 #' testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 #' testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
-#' res <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
-#' dim(res$data) == c(823,  45)
-#' dim(res$annotation) == c(45,  6)
-#' dim(res$rowdata) == c(823, 4)
+#' res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
+#' dim(res$data) == c(28,  12)
+#' dim(res$annotation) == c(12,  3)
+#' dim(res$rowdata) == c(28, 3)
 #'
 #' res <- scale(res$data)
+#' tidy_to_wide_config(data, config,  value = config$table$nr_children)
 #'
-tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALSE, sep="~lfq~"){
+#'
+#' xt <- prolfqua::LFQData$new(dd$data, dd$config)
+#' xt$data$nr_children
+#' #xt$config$table$is_response_transformed <- TRUE
+#' res <- xt$get_Aggregator()
+#' x <- res$medpolish()
+#' dd <- prolfqua::sim_lfq_data_protein_config()
+#' dd$config$table$nr_children
+#' dd$data
+#' xt <- tidy_to_wide_config(dd$data, dd$config,  value = dd$config$table$nr_children)
+#' xt$data
+#'
+tidy_to_wide_config <- function(data, config,
+                                as.matrix = FALSE,
+                                fileName = FALSE,
+                                sep="~lfq~",
+                                value = config$table$get_response()
+                                ){
   if (fileName) {
     newcolname <- config$table$fileName
   }else{
@@ -245,7 +263,7 @@ tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALS
 
   res <- tidy_to_wide( data, c(config$table$hierarchy_keys(),config$table$isotopeLabel) ,
                  newcolname,
-                 value = config$table$get_response() )
+                 value = value )
   rowdata <- res |> dplyr::select(all_of(c(config$table$hierarchy_keys(),config$table$isotopeLabel)))
   if (as.matrix) {
     resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(c(config$table$hierarchy_keys(),config$table$isotopeLabel))))
@@ -268,14 +286,14 @@ tidy_to_wide_config <- function(data, config, as.matrix = FALSE, fileName = FALS
 #'
 #' @keywords internal
 #' @examples
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
-#' conf <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,conf)
-#' res <- tidy_to_wide_config(analysis, conf, as.matrix = TRUE)
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' data <- dd$data
+#' conf <- dd$config
+#' res <- tidy_to_wide_config(data, conf, as.matrix = TRUE)
 #'
 #' res <- scale(res$data)
 #' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
-#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf,analysis)
+#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf, data)
 #' conf$table$get_response() == "srm_intensityScaled"
 #'
 response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "~lfq~"){
@@ -311,10 +329,8 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
+#' conf <- bb$config
 #' sample_analysis <- bb$data
 #' pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
 #' s1 <- get_robscales(pepIntensityNormalized, conf)

@@ -23,8 +23,8 @@ run \link{rank_peptide_by_intensity} first
 }
 \examples{
 
-dd <- prolfqua_data('data_ionstar')$filtered()
-config <- old2new(dd$config)
+dd <- prolfqua::sim_lfq_data_peptide_config()
+config <- dd$config
 res <- dd$data
 ranked <- rank_peptide_by_intensity(res,config)
 

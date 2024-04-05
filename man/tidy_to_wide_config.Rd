@@ -9,7 +9,8 @@ tidy_to_wide_config(
   config,
   as.matrix = FALSE,
   fileName = FALSE,
-  sep = "~lfq~"
+  sep = "~lfq~",
+  value = config$table$get_response()
 )
 }
 \value{
@@ -20,18 +21,31 @@ transform long to wide
 }
 \examples{
 
-dd <- prolfqua_data('data_spectronautDIA250_A')
-config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
-res <- tidy_to_wide_config(analysis, config)
+dd <- prolfqua::sim_lfq_data_peptide_config()
+config <- dd$config
+data <- dd$data
+res <- tidy_to_wide_config(data, config)
 testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
-res <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
-dim(res$data) == c(823,  45)
-dim(res$annotation) == c(45,  6)
-dim(res$rowdata) == c(823, 4)
+res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
+dim(res$data) == c(28,  12)
+dim(res$annotation) == c(12,  3)
+dim(res$rowdata) == c(28, 3)
 
 res <- scale(res$data)
+tidy_to_wide_config(data, config,  value = config$table$nr_children)
+
+
+xt <- prolfqua::LFQData$new(dd$data, dd$config)
+xt$data$nr_children
+#xt$config$table$is_response_transformed <- TRUE
+res <- xt$get_Aggregator()
+x <- res$medpolish()
+dd <- prolfqua::sim_lfq_data_protein_config()
+dd$config$table$nr_children
+dd$data
+xt <- tidy_to_wide_config(dd$data, dd$config,  value = dd$config$table$nr_children)
+xt$data
 
 }
 \keyword{internal}

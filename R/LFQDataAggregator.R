@@ -39,6 +39,7 @@
 #' \dontrun{
 #' lfqAggregator$write_plots(tempdir())
 #' }
+#'
 LFQDataAggregator <- R6::R6Class(
   "LFQDataAggregator",
   public = list(
@@ -75,8 +76,8 @@ LFQDataAggregator <- R6::R6Class(
       if (!self$lfq$is_transformed()) {
         warning("You did not transform the intensities.",
                 "medpolish works best with already variance stabilized intensities.",
-                "Use LFQData$get_Transformer to transform the data.",
-                self$lfq$config$table$workIntensity,)
+                "Use LFQData$get_Transformer to transform the data :",
+                self$lfq$config$table$workIntensity)
       }
       res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = medpolish_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
@@ -95,6 +96,7 @@ LFQDataAggregator <- R6::R6Class(
       }
 
       res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = rlm_estimate_dfconfig)
+      res <-
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },

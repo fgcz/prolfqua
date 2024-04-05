@@ -44,6 +44,7 @@ protPlotter$heatmap()
 \dontrun{
 lfqAggregator$write_plots(tempdir())
 }
+
 }
 \seealso{
 Other LFQData: 
