@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2024-04-02</h4>
+            <h4 data-toc-skip class="date">2024-04-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/vignettes/CreatingConfigurations.Rmd" class="external-link"><code>vignettes/CreatingConfigurations.Rmd</code></a></small>
       <div class="hidden name"><code>CreatingConfigurations.Rmd</code></div>
@@ -202,12 +202,12 @@ prolfqua functions know which columns to use.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 12</span></span></span>
 <span><span class="co">##   proteinID idtype2 average_prot_abundance    sd peptideID sample  group  mean</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> FaSRyY    5476                      23.8     1 FSH5NWNJ  Ctrl_V1 Ctrl      0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> FaSRyY    5476                      23.8     1 FSH5NWNJ  Ctrl_V2 Ctrl      0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> FaSRyY    5476                      23.8     1 FSH5NWNJ  Ctrl_V3 Ctrl      0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> FaSRyY    5476                      23.8     1 FSH5NWNJ  Ctrl_V4 Ctrl      0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> FaSRyY    5476                      25.8     1 FSH5NWNJ  A_V1    A        -<span style="color: #BB0000;">2</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> FaSRyY    5476                      25.8     1 FSH5NWNJ  A_V2    A        -<span style="color: #BB0000;">2</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> ZBOoHG    7184                      21.8     1 kiM4K1wK  Ctrl_V1 Ctrl      0</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> ZBOoHG    7184                      21.8     1 kiM4K1wK  Ctrl_V2 Ctrl      0</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> ZBOoHG    7184                      21.8     1 kiM4K1wK  Ctrl_V3 Ctrl      0</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> ZBOoHG    7184                      21.8     1 kiM4K1wK  Ctrl_V4 Ctrl      0</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> ZBOoHG    7184                      23.8     1 kiM4K1wK  A_V1    A        -<span style="color: #BB0000;">2</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> ZBOoHG    7184                      23.8     1 kiM4K1wK  A_V2    A        -<span style="color: #BB0000;">2</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 4 more variables: N &lt;dbl&gt;, avg_peptide_abd &lt;dbl&gt;, Replicate &lt;chr&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   abundance &lt;dbl&gt;</span></span></span></code></pre>
 <p>We create a Table annotation object and start annotating the data we
@@ -245,26 +245,26 @@ the data and configuration.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 20 × 3</span></span></span>
 <span><span class="co">##    proteinID isotopeLabel_n peptideID_n</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 0aFXGK                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 1kZ6Ic                 1           5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 4AJAKb                 1           5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> BHwI6r                 1           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> BmAemj                 1           1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> DHHc0r                 1           1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> FaSRyY                 1           7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> FkQcya                 1           1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> Hi54sG                 1           8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> OBlEk1                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> P8LLuN                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> PjcxOO                 1           8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> UhTBjw                 1           4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> WYfjeB                 1           4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> bNdyO6                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">16</span> hKfHrb                 1           4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">17</span> hhnMjB                 1           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">18</span> pJQcOs                 1           4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">19</span> swr8WM                 1           5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">20</span> yrii8x                 1           8</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 5R7Ack                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 6m9jjf                 1           2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 6uNdaa                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> C9AiIF                 1           2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> DqTEeT                 1           2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> E800f3                 1           2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> IGB4fa                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> Jt8V86                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> RMVyEp                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> S2UlFn                 1           2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> S2lBcU                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> S2vfdM                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> YQR8xI                 1           2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> ZBOoHG                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> ZRmnxA                 1           2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> hkFiuY                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">17</span> ltVy0w                 1           1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">18</span> rP9ndE                 1           5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">19</span> y6wjin                 1           3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">20</span> yITVQR                 1           1</span></span></code></pre>
 <p>Now the analysis_data object is ready to generate the
 <code>LFQData</code> class instance. This object is the start for
 further analysis.</p>
@@ -309,7 +309,7 @@ Shown are how many precursors or proteins are found in each sample
 <span><span class="co">##  [1] plotly_4.10.4      sass_0.4.8         utf8_1.2.4         generics_0.1.3    </span></span>
 <span><span class="co">##  [5] tidyr_1.3.1        stringi_1.8.3      digest_0.6.34      magrittr_2.0.3    </span></span>
 <span><span class="co">##  [9] evaluate_0.23      grid_4.3.2         RColorBrewer_1.1-3 fastmap_1.1.1     </span></span>
-<span><span class="co">## [13] jsonlite_1.8.8     ggrepel_0.9.5      prolfqua_1.2.1     conflicted_1.2.0  </span></span>
+<span><span class="co">## [13] jsonlite_1.8.8     ggrepel_0.9.5      prolfqua_1.2.2     conflicted_1.2.0  </span></span>
 <span><span class="co">## [17] gridExtra_2.3      httr_1.4.7         purrr_1.0.2        fansi_1.0.6       </span></span>
 <span><span class="co">## [21] viridisLite_0.4.2  scales_1.3.0       lazyeval_0.2.2     textshaping_0.3.7 </span></span>
 <span><span class="co">## [25] jquerylib_0.1.4    cli_3.6.2          rlang_1.1.3        munsell_0.5.0     </span></span>

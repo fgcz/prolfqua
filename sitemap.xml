@@ -130,9 +130,6 @@
     <loc>/reference/UpSet_missing_stats.html</loc>
   </url>
   <url>
-    <loc>/reference/add_missing.html</loc>
-  </url>
-  <url>
     <loc>/reference/adjust_p_values.html</loc>
   </url>
   <url>
@@ -158,12 +155,6 @@
   </url>
   <url>
     <loc>/reference/contrasts_linfct.html</loc>
-  </url>
-  <url>
-    <loc>/reference/copy_SAINTe_doc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/copy_mixed_model_analysis_script.html</loc>
   </url>
   <url>
     <loc>/reference/cor_jackknife_matrix.html</loc>
@@ -409,6 +400,9 @@
     <loc>/reference/nr_B_in_A_per_sample.html</loc>
   </url>
   <url>
+    <loc>/reference/nr_obs.html</loc>
+  </url>
+  <url>
     <loc>/reference/old2new.html</loc>
   </url>
   <url>
@@ -520,9 +514,6 @@
     <loc>/reference/render_MQSummary_rmd.html</loc>
   </url>
   <url>
-    <loc>/reference/render_SummarizeFiltering_rmd.html</loc>
-  </url>
-  <url>
     <loc>/reference/response_as_matrix.html</loc>
   </url>
   <url>
@@ -545,6 +536,9 @@
   </url>
   <url>
     <loc>/reference/scale_with_subset_by_factors.html</loc>
+  </url>
+  <url>
+    <loc>/reference/scriptCopyHelperVec.html</loc>
   </url>
   <url>
     <loc>/reference/separate_factors.html</loc>
@@ -599,5 +593,8 @@
   </url>
   <url>
     <loc>/reference/transform_work_intensity.html</loc>
+  </url>
+  <url>
+    <loc>/reference/which_missing.html</loc>
   </url>
 </urlset>

@@ -18,7 +18,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
       </span>
     </div>
 
@@ -304,7 +304,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : asinh_peptide.intensity</span>
 <span class="r-in"><span><span class="va">mads1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">intensity_matrix</span><span class="op">(</span><span class="va">robust_scale</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15340 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15520 rows [1, 2, 3, 4, 5, 6,</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`</span>
 <span class="r-in"><span><span class="va">mads2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span></span></span>
@@ -320,7 +320,7 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span><span class="va">before</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqTrans</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> data is : TRUE</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15340 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15520 rows [1, 2, 3, 4, 5, 6,</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`</span>
 <span class="r-in"><span><span class="va">after</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -337,19 +337,19 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span><span class="va">lfqTransCheck</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.87601 25.39594 25.21058 25.27664 24.97819 24.85143 25.27027 25.25710 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.72115 25.15540 25.16233 25.17072 24.83373 24.76536 25.13049 25.13891 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.01122 24.81465 24.90621 25.24238 24.87049 24.73168 25.13356 25.19464 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.90253 24.72028 24.84177 25.19270 24.82138 24.70535 25.06052 25.17819 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.84513 24.77444 25.10206 25.22317 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.72917 24.72036 25.11136 25.13985 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.292025 2.283226 2.220957 2.259977 2.361526 2.342777 2.235155 2.364101 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.238950 2.243746 2.196464 2.227671 2.212583 2.312846 2.220689 2.214160 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.372837 2.360052 2.298817 2.349524 2.292583 2.210835 2.253849 2.333221 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.275791 2.302519 2.222436 2.234537 2.171028 2.127855 2.126487 2.265475 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.292379 2.265091 2.231205 2.212036 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.142237 2.196353 2.162166 2.148171 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">lfqTransCheck</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="LFQDataTransformer-2.png" alt="" width="700" height="433"></span>
@@ -359,24 +359,24 @@ Decorate LFQData with Methods for transforming Intensities"><!-- mathjax --><scr
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15340 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15520 rows [1, 2, 3, 4, 5, 6,</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.02684 25.15231 25.02760 25.10185 25.00835 25.04586 25.05419 25.08876 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.89048 24.92424 24.96236 25.00745 24.85800 24.95805 24.91216 24.97514 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.09123 25.07226 25.07183 25.04881 25.02002 24.97617 24.98376 25.04552 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.97357 24.98283 25.01958 25.00426 24.94905 24.94866 24.90674 25.02897 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.06786 25.00265 24.98791 25.09202 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24.94858 24.95029 24.99417 25.00696 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     a~20     a~21     b~02     b~09     b~12     b~19 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.292025 2.283226 2.220957 2.259977 2.361526 2.342777 2.235155 2.364101 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.238950 2.243746 2.196464 2.227671 2.212583 2.312846 2.220689 2.214160 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     c~03     c~08     c~13     c~18     d~04     d~07     d~14     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.372837 2.360052 2.298817 2.349524 2.292583 2.210835 2.253849 2.333221 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.275791 2.302519 2.222436 2.234537 2.171028 2.127855 2.126487 2.265475 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     e~05     e~06     e~15     e~16 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.292379 2.265091 2.231205 2.212036 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.142237 2.196353 2.162166 2.148171 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bmbolstad/preprocessCore" class="external-link">"preprocessCore"</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">quant</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">{</span></span></span>

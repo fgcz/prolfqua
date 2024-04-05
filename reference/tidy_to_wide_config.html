@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
       </span>
     </div>
 
@@ -80,7 +80,8 @@
 <span>  <span class="va">config</span>,</span>
 <span>  as.matrix <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  fileName <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  sep <span class="op">=</span> <span class="st">"~lfq~"</span></span>
+<span>  sep <span class="op">=</span> <span class="st">"~lfq~"</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -94,24 +95,135 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_spectronautDIA250_A'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="fu">config_f</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="fu">analysis</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>,<span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no nr_children column specified in the data, adding column nr_children and setting to 1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span> , <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">annotation</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">823</span>,  <span class="fl">45</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE TRUE</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">annotation</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">45</span>,  <span class="fl">6</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  TRUE FALSE</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">823</span>, <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  TRUE FALSE</span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>,  <span class="fl">12</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">annotation</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>,  <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>,  value <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 15</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  peptide_Id isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087 ITLb4x1q   light            1    <span style="color: #BB0000;">NA</span>     1     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0EfVhX~0087 ahQLlQY7   light            1     1     1     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 0EfVhX~0087 dJkdz7so   light           <span style="color: #BB0000;">NA</span>     1     1    <span style="color: #BB0000;">NA</span>     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 7cbcrd~5725 D5dQ4nKk   light            1     1     1     1    <span style="color: #BB0000;">NA</span>     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 9VUkAq~4703 eIC06D7g   light            1     1     1     1     1    <span style="color: #BB0000;">NA</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> BEJI92~5282 HBkZvdhT   light            1     1    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> BEJI92~5282 qQ1GK8Un   light            1     1     1     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CGzoYe~2147 mjHSHhoe   light            1     1     1     1    <span style="color: #BB0000;">NA</span>     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> DoWup2~5896 KVUnZ6oZ   light            1     1     1     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Fl4JiV~8625 GsUIOl6Q   light            1     1     1    <span style="color: #BB0000;">NA</span>     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 18 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: B_V4 &lt;dbl&gt;, Ctrl_V1 &lt;dbl&gt;, Ctrl_V2 &lt;dbl&gt;, Ctrl_V3 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Ctrl_V4 &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $annotation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName sample  group_ isotopeLabel</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A_V1       A_V1    A      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A_V2       A_V2    A      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A_V3       A_V3    A      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A_V4       A_V4    A      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> B_V1       B_V1    B      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> B_V2       B_V2    B      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> B_V3       B_V3    B      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> B_V4       B_V4    B      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Ctrl_V1    Ctrl_V1 Ctrl   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Ctrl_V2    Ctrl_V2 Ctrl   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Ctrl_V3    Ctrl_V3 Ctrl   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Ctrl_V4    Ctrl_V4 Ctrl   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rowdata</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  peptide_Id isotopeLabel</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087 ITLb4x1q   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0EfVhX~0087 ahQLlQY7   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 0EfVhX~0087 dJkdz7so   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 7cbcrd~5725 D5dQ4nKk   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 9VUkAq~4703 eIC06D7g   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> BEJI92~5282 HBkZvdhT   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> BEJI92~5282 qQ1GK8Un   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CGzoYe~2147 mjHSHhoe   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> DoWup2~5896 KVUnZ6oZ   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Fl4JiV~8625 GsUIOl6Q   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 18 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">xt</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">nr_children</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  1  1 NA  1  1  1  1  1  1  1  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [26] NA  1 NA NA  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [51]  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1 NA  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [76]  1  1  1  1  1  1  1  1 NA  1  1 NA  1  1 NA  1  1  1 NA  1 NA  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [101]  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1 NA  1  1  1 NA  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [126]  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [151]  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [176]  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [201]  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [226]  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1 NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [251]  1  1  1 NA  1  1  1  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [276]  1  1  1  1  1 NA  1  1 NA  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [301]  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1 NA  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [326]  1  1  1  1  1 NA  1  1  1  1  1</span>
+<span class="r-in"><span><span class="co">#xt$config$table$is_response_transformed &lt;- TRUE</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">xt</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="fu">medpolish</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>You did not transform the intensities.medpolish works best with already variance stabilized intensities.Use LFQData$get_Transformer to transform the data :abundance</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
+<span class="r-in"><span><span class="va">towide</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">data</span>, <span class="va">x</span><span class="op">$</span><span class="va">config</span>,  value <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">nr_children</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "nr_peptides"</span>
+<span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 120 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sample sampleName group_ isotopeLabel protein_Id abundance qValue nr_peptides</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A_V1   A_V1       A      light        0EfVhX~00…      20.1      0           3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A_V1   A_V1       A      light        7cbcrd~57…      22.0      0           1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A_V1   A_V1       A      light        9VUkAq~47…      19.8      0           1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A_V1   A_V1       A      light        BEJI92~52…      21.2      0           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> A_V1   A_V1       A      light        CGzoYe~21…      29.4      0           1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> A_V1   A_V1       A      light        DoWup2~58…      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> A_V1   A_V1       A      light        Fl4JiV~86…      20.1      0           4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> A_V1   A_V1       A      light        HvIpHG~90…      21.7      0           2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> A_V1   A_V1       A      light        JcKVfU~96…      34.5      0           7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> A_V1   A_V1       A      light        SGIVBl~57…      23.9      0           6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 110 more rows</span></span>
+<span class="r-in"><span><span class="va">xt</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span>,  value <span class="op">=</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xt</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087 light            3     3    <span style="color: #BB0000;">NA</span>     3     3     3     3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7cbcrd~5725 light            1     1     1     1    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     1    <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 9VUkAq~4703 light            1     1     1     1     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282 light            2    <span style="color: #BB0000;">NA</span>     2     2     2     2     2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CGzoYe~2147 light            1     1     1     1     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> DoWup2~5896 light           <span style="color: #BB0000;">NA</span>     1     1     1     1     1    <span style="color: #BB0000;">NA</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625 light            4     4    <span style="color: #BB0000;">NA</span>     4     4     4     4     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079 light            2     2    <span style="color: #BB0000;">NA</span>     2     2     2     2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653 light            7     7     7     7     7     7     7     7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782 light            6     6     6     6     6     6    <span style="color: #BB0000;">NA</span>     6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: Ctrl_V1 &lt;dbl&gt;, Ctrl_V2 &lt;dbl&gt;, Ctrl_V3 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Ctrl_V4 &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

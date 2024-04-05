@@ -18,7 +18,7 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
       </span>
     </div>
 
@@ -142,13 +142,20 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <h3 id="method-hierarchy-counts-sample-">Method <code><a href="hierarchy_counts_sample.html">hierarchy_counts_sample()</a></code><a class="anchor" aria-label="anchor" href="#method-hierarchy-counts-sample-"></a></h3>
 <p>number of elements at each level in every sample</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">hierarchy_counts_sample</span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wide"</span>, <span class="st">"long"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">hierarchy_counts_sample</span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wide"</span>, <span class="st">"long"</span><span class="op">)</span>,</span>
+<span>  nr_children <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>value</code></dt>
 <dd><p>wide - wide format, long - long format, plot - ggplot</p></dd>
+
+
+<dt><code>nr_children</code></dt>
+<dd><p>get summary for 1,2 or more number of children</p></dd>
 
 
 </dl><p></p></div>
@@ -158,12 +165,16 @@ Summarize LFQData"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
 <h3 id="method-plot-hierarchy-counts-sample-">Method <code>plot_hierarchy_counts_sample()</code><a class="anchor" aria-label="anchor" href="#method-plot-hierarchy-counts-sample-"></a></h3>
 <p>barplot showing number of elements at each level in every sample</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">plot_hierarchy_counts_sample</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataSummariser</span><span class="op">$</span><span class="fu">plot_hierarchy_counts_sample</span><span class="op">(</span>nr_children <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>value</code></dt>
+<p></p><div class="arguments"><dl><dt><code>nr_children</code></dt>
+<dd><p>get summary for 1,2 or more number of children</p></dd>
+
+
+<dt><code>value</code></dt>
 <dd><p>wide - wide format, long - long format, plot - ggplot</p></dd>
 
 
@@ -277,10 +288,13 @@ Computes the percent abundance of proteins overall and within each group</p><div
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua" class="external-link">prolfqua</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no nr_children column specified in the data, adding column nr_children and setting to 1.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sum</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sum</span></span></span>
@@ -288,145 +302,114 @@ Computes the percent abundance of proteins overall and within each group</p><div
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Public:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     clone: function (deep = FALSE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_counts: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_counts_sample: function (value = c("wide", "long")) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_counts_sample: function (value = c("wide", "long"), nr_children = 1) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (lfqdata) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     interaction_missing_stats: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     lfq: LFQData, R6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     missingness_per_group: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     missingness_per_group_cumsum: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     percentage_abundance: function (N = 1000) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     plot_hierarchy_counts_sample: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     plot_hierarchy_counts_sample: function (nr_children = 1) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     plot_missingness_per_group: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     plot_missingness_per_group_cumsum: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     upset_interaction_missing_stats: function (tr = 2) </span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   isotope protein_Id peptide_Id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> light           64        689</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   isotopeLabel protein_Id peptide_Id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> light                10         28</span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">hierarchy_counts_sample</span><span class="op">(</span><span class="st">"wide"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   isotope [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    isotope sampleName protein_Id peptide_Id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> light   a~10               62        586</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> light   a~11               60        571</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> light   a~20               61        563</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> light   a~21               62        556</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> light   b~02               60        593</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> light   b~09               61        577</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> light   b~12               62        593</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> light   b~19               62        553</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> light   c~03               61        585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> light   c~08               63        577</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> light   c~13               61        566</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> light   c~18               62        560</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> light   d~04               61        590</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> light   d~07               63        581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> light   d~14               62        576</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> light   d~17               59        567</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> light   e~05               60        584</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> light   e~06               60        580</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> light   e~15               63        569</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> light   e~16               60        564</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   isotopeLabel [1]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    isotopeLabel sampleName protein_Id peptide_Id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> light        A_V1               10         23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> light        A_V2               10         26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> light        A_V3               10         25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> light        A_V4               10         23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> light        B_V1                8         26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> light        B_V2                9         26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> light        B_V3               10         27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> light        B_V4               10         26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> light        Ctrl_V1            10         24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> light        Ctrl_V2            10         25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> light        Ctrl_V3             9         24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> light        Ctrl_V4            10         25</span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">hierarchy_counts_sample</span><span class="op">(</span><span class="st">"long"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 40 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   isotope [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    isotope sampleName key           nr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> light   a~10       protein_Id    62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> light   a~11       protein_Id    60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> light   a~20       protein_Id    61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> light   a~21       protein_Id    62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> light   b~02       protein_Id    60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> light   b~09       protein_Id    61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> light   b~12       protein_Id    62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> light   b~19       protein_Id    62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> light   c~03       protein_Id    61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> light   c~08       protein_Id    63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 30 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   isotopeLabel [1]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    isotopeLabel sampleName key           nr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> light        A_V1       protein_Id    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> light        A_V2       protein_Id    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> light        A_V3       protein_Id    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> light        A_V4       protein_Id    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> light        B_V1       protein_Id     8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> light        B_V2       protein_Id     9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> light        B_V3       protein_Id    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> light        B_V4       protein_Id    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> light        Ctrl_V1    protein_Id    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> light        Ctrl_V2    protein_Id    10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">plot_hierarchy_counts_sample</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="LFQDataSummariser-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">plot_hierarchy_counts_sample</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="LFQDataSummariser-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">sum</span><span class="op">$</span><span class="fu">interaction_missing_stats</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,560 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    dilution. protein_Id      peptide_Id isotope nrReplicates nrNAs meanAbundance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> a         CON__P34955~32… AALTIDEK   light              4     0      51<span style="text-decoration: underline;">749</span>500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> a         CON__P34955~32… DFHVDEQTT… light              4     0     224<span style="text-decoration: underline;">912</span>500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a         CON__P34955~32… GKWEKPFEMK light              4     0     114<span style="text-decoration: underline;">729</span>750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> a         CON__P34955~32… HTTERDFHV… light              4     0     154<span style="text-decoration: underline;">849</span>750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> a         CON__P34955~32… KYASSANLH… light              4     0      92<span style="text-decoration: underline;">415</span>250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> a         CON__P34955~32… LGMFDLHYC… light              4     3       9<span style="text-decoration: underline;">756</span>800</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> a         CON__P34955~32… LQQLEDKLN… light              4     0     405<span style="text-decoration: underline;">185</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> a         CON__P34955~32… LSISETYDLK light              4     0     176<span style="text-decoration: underline;">582</span>500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a         CON__P34955~32… LVDTFLEDVK light              4     0     415<span style="text-decoration: underline;">310</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a         CON__P34955~32… NLYHSEAFS… light              4     0      78<span style="text-decoration: underline;">999</span>750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3,550 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: medianAbundance &lt;dbl&gt;, nrMeasured &lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $summaries</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "nrReplicates"    "nrNAs"           "nrMeasured"      "meanAbundance"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "medianAbundance"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">missingness_per_group</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   isotope, dilution. [5]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   isotope dilution. nrReplicates   `0`   `1`   `2`   `3`   `4`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> light   a                    4   506    59    54    55    38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> light   b                    4   508    80    42    50    32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> light   c                    4   500    77    42    60    33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> light   d                    4   508    79    42    47    36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> light   e                    4   501    73    56    49    33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   isotopeLabel, group_ [3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   isotopeLabel group_ nrReplicates   `0`   `1`   `2`   `3`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> light        A                 4    19     5     2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> light        B                 4    21     7    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> light        Ctrl              4    17     8     3    <span style="color: #BB0000;">NA</span></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">missingness_per_group_cumsum</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> isotope ~ dilution.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   isotope, dilution. [5]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   isotope dilution. nrReplicates   `0`   `1`   `2`   `3`   `4`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> light   a                    4   506   565   619   674   712</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> light   b                    4   508   588   630   680   712</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> light   c                    4   500   577   619   679   712</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> light   d                    4   508   587   629   676   712</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> light   e                    4   501   574   630   679   712</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> isotopeLabel ~ group_</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   isotopeLabel, group_ [3]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   isotopeLabel group_ nrReplicates   `0`   `1`   `2`   `3`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> light        A                 4    19    24    26    28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> light        B                 4    21    28    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> light        Ctrl              4    17    25    28    <span style="color: #BB0000;">NA</span></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">plot_missingness_per_group</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-plt img"><img src="LFQDataSummariser-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="LFQDataSummariser-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">plot_missingness_per_group_cumsum</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> isotope ~ dilution.</span>
-<span class="r-plt img"><img src="LFQDataSummariser-3.png" alt="" width="700" height="433"></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> isotopeLabel ~ group_</span>
+<span class="r-plt img"><img src="LFQDataSummariser-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">upset_interaction_missing_stats</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-plt img"><img src="LFQDataSummariser-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="LFQDataSummariser-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">sum</span><span class="op">$</span><span class="fu">percentage_abundance</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Columns added : srm_meanInt srm_meanIntRank</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 384 × 12</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   dilution. [6]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    dilution. protein_Id isotope nrReplicates nrNAs meanAbundance medianAbundance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> a         sp|P07711… light              4     0       1<span style="text-decoration: underline;">188</span>650               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> a         sp|Q9UBT7… light              4     0       2<span style="text-decoration: underline;">240</span>850         2<span style="text-decoration: underline;">047</span>000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> a         sp|Q8WW01… light              4     0       2<span style="text-decoration: underline;">618</span>825         2<span style="text-decoration: underline;">590</span>700</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> a         sp|Q96T58… light              4     0       3<span style="text-decoration: underline;">302</span>050         2<span style="text-decoration: underline;">586</span>250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> a         sp|P0AGJ9… light              4     0       6<span style="text-decoration: underline;">031</span>775         6<span style="text-decoration: underline;">672</span>550</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> a         sp|Q8WX92… light              4     0       6<span style="text-decoration: underline;">679</span>325         8<span style="text-decoration: underline;">426</span>150</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> a         sp|P10909… light              4     0       7<span style="text-decoration: underline;">981</span>750         7<span style="text-decoration: underline;">959</span>950</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> a         sp|P02924… light              4     0      10<span style="text-decoration: underline;">228</span>850         8<span style="text-decoration: underline;">685</span>150</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> a         sp|P0ACW6… light              4     0      13<span style="text-decoration: underline;">717</span>750        14<span style="text-decoration: underline;">291</span>500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> a         sp|Q14146… light              4     0      13<span style="text-decoration: underline;">970</span>900        13<span style="text-decoration: underline;">335</span>750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 374 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: nrMeasured &lt;int&gt;, id &lt;int&gt;, abundance_percent &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abundance_percent_cumulative &lt;dbl&gt;, percent_prot &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 40 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   group_ [4]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    group_ protein_Id  isotopeLabel nrReplicates nrNAs meanAbundance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A      9VUkAq~4703 light                   4     0          18.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A      DoWup2~5896 light                   4     0          23.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A      CGzoYe~2147 light                   4     0          24.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A      HvIpHG~9079 light                   4     0          28.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> A      7cbcrd~5725 light                   4     0          29.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> A      BEJI92~5282 light                   4     0          32.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> A      0EfVhX~0087 light                   4     0          47.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> A      Fl4JiV~8625 light                   4     0          63.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> A      SGIVBl~5782 light                   4     0         132. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> A      JcKVfU~9653 light                   4     0         228. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 30 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: medianAbundance &lt;dbl&gt;, nrMeasured &lt;int&gt;, id &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abundance_percent &lt;dbl&gt;, abundance_percent_cumulative &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   percent_prot &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
