@@ -6,12 +6,10 @@
 #' @examples
 #'
 #' # Fitting mixed effects model to peptide data
-#' istar <- prolfqua_data('data_ionstar')$normalized()
-#' istar$config <- old2new(istar$config)
-#' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 20))
+#' istar <- prolfqua::sim_lfq_data_peptide_config()
 #'
 #' modelFunction <-
-#' strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)")
+#' strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
 #'
 #' config <- istar$config
 #' config$table$hierarchy_keys_depth()
@@ -19,17 +17,18 @@
 #' mod <- build_model(
 #'  istar$data,
 #'  modelFunction,
-#'  subject_Id = config$table$hierarchy_keys_depth())
+#'  subject_Id = config$table$hierarchy_keys_depth()
+#'  )
 #'
 #' prolfqua::model_summary(mod)
-#'  Contr <- c("dil.a_vs_b" = "dilution.a - dilution.b",
-#'     "dil.e_vs_b" = "dilution.e - dilution.b" )
+#'  Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
+#'     "dil.e_vs_b" = "group_A - group_Ctrl" )
 #' #Contrasts$debug("get_contrasts")
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' contrastX$get_contrasts()
 #' contrastX$get_contrast_sides()
 #' contrastX$column_description()
-#' stopifnot(dim(contrastX$to_wide()) == c(160,7))
+#'
 Contrasts <- R6::R6Class(
   "Contrast",
   inherit = ContrastsInterface,

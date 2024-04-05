@@ -4,7 +4,7 @@
 \alias{hierarchy_counts_sample}
 \title{Count distinct elements for each level of hierarchy per sample}
 \usage{
-hierarchy_counts_sample(pdata, configuration)
+hierarchy_counts_sample(pdata, configuration, nr_children = 1)
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -16,14 +16,26 @@ Count distinct elements for each level of hierarchy per sample
 }
 \examples{
 
+bb <- prolfqua::sim_lfq_data_peptide_config()
 
-
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-config <- bb$config$clone(deep=TRUE)
+config <- bb$config
 data <- bb$data
-
 res <- hierarchy_counts_sample(data, config)
+res()
+res("long")
+res("plot")
+
+res <- hierarchy_counts_sample(data, config, nr_children = 2)
+res()
+res("long")
+res("plot")
+
+bb <- prolfqua::sim_lfq_data_protein_config()
+res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 2)
+res()
+res("long")
+res("plot")
+res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 1)
 res()
 res("long")
 res("plot")

@@ -5,10 +5,10 @@
 #' @export
 #' @family LFQData
 #' @examples
+#' library(prolfqua)
+#' istar <- prolfqua::sim_lfq_data_peptide_config()
 #'
-#' istar <- prolfqua_data('data_ionstar')
-#' istar$config <- old2new(istar$config)
-#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' data <- istar$data
 #' lfqdata <- LFQData$new(data, istar$config)
 #' sum <- lfqdata$get_Summariser()
 #' sum
@@ -17,7 +17,6 @@
 #' sum$hierarchy_counts_sample("long")
 #' sum$plot_hierarchy_counts_sample()
 #' tmp <- sum$interaction_missing_stats()
-#' head(tmp)
 #'
 #' sum$missingness_per_group()
 #' sum$missingness_per_group_cumsum()

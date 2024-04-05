@@ -5,18 +5,15 @@
 #' find_package_file("prolfqua","extdata/medata.csv")
 #'
 find_package_file <- function(packagename, file){
-
   src_script <- file.path(find.package(packagename) , file )
   if (!file.exists(src_script)) {
     src_script <- file.path(find.package(packagename) , "inst" , file)
   }
-
   if (file.exists(src_script)) {
     return(src_script)
   }else{
     return(NULL)
   }
-
 }
 
 #' copy script files and other from a package to workdir
@@ -37,7 +34,6 @@ scriptCopyHelperVec <-
           warning(paste("could not copy script file.", dest_script, sep = " "))
         }
       }
-
       if (!file.copy(src_script , dest_script, overwrite = TRUE)) {
         warning(paste("could not copy script file.", src_script, " to ", dest_script, sep = " "))
       } else{

@@ -393,24 +393,38 @@ hierarchy_counts <- function(pdata, config){
 #' @family summary
 #' @examples
 #'
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
 #'
-#'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' config <- bb$config$clone(deep=TRUE)
+#' config <- bb$config
 #' data <- bb$data
-#'
 #' res <- hierarchy_counts_sample(data, config)
 #' res()
 #' res("long")
 #' res("plot")
-hierarchy_counts_sample <- function(pdata,
-                                    configuration)
-{
+#'
+#' res <- hierarchy_counts_sample(data, config, nr_children = 2)
+#' res()
+#' res("long")
+#' res("plot")
+#'
+#' bb <- prolfqua::sim_lfq_data_protein_config()
+#' res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 2)
+#' res()
+#' res("long")
+#' res("plot")
+#' res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 1)
+#' res()
+#' res("long")
+#' res("plot")
+hierarchy_counts_sample <- function(
+    pdata,
+    configuration,
+    nr_children = 1) {
   hierarchy <- configuration$table$hierarchy_keys()
-  summary <- pdata |> dplyr::filter(!is.na(!!sym(configuration$table$get_response() ))) |>
+  summary <- pdata |> dplyr::filter(!is.na(!!rlang::sym(configuration$table$get_response() )),
+                                    !!rlang::sym(configuration$table$nr_children ) >= .env$nr_children) |>
     dplyr::group_by_at(c(configuration$table$isotopeLabel, configuration$table$sampleName)) |>
-    dplyr::summarise_at( hierarchy, n_distinct )
+    dplyr::summarise_at( hierarchy, dplyr::n_distinct )
 
   res <- function(value = c("wide", "long", "plot")){
     value <- match.arg(value)
@@ -422,13 +436,14 @@ hierarchy_counts_sample <- function(pdata,
                                                            configuration$table$sampleName))
       if (value == "long") {
         return(long)
-      }else if (value == "plot") {
+      }else if (value == "plot" & nrow(long) > 0) {
+
         nudgeval <-  -mean(long$nr) * 0.05
         # TODO(WEW) check potential problem with sampleName
-        ggplot2::ggplot(long, aes(x = !!sym(configuration$table$sampleName), y = .data$nr)) +
+        ggplot2::ggplot(long, ggplot2::aes(x = !!rlang::sym(configuration$table$sampleName), y = .data$nr)) +
           ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
           ggplot2::facet_wrap( ~ key, scales = "free_y", ncol = 1) +
-          ggplot2::geom_text(aes(label = .data$nr), nudge_y = nudgeval, angle = 65) +
+          ggplot2::geom_text(ggplot2::aes(label = .data$nr), nudge_y = nudgeval, angle = 65) +
           ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
       }
     }
