@@ -89,7 +89,7 @@ ContrastsMissing <- R6::R6Class(
       # extract contrast sides
       tt <- self$contrasts[grep("-",self$contrasts)]
       tt <- tibble(contrast = names(tt) , rhs = tt)
-      tt <- tt |> mutate(rhs = gsub("[` ]","",rhs)) |>
+      tt <- tt |> dplyr::mutate(rhs = gsub("[` ]","",rhs)) |>
         tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
       return(tt)
     },
