@@ -9,7 +9,7 @@
 #' istar <- sim_lfq_data_peptide_config(Nprot = 100)
 #' modelName <- "Model"
 #' modelFunction <-
-#'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)",
+#'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1|sample)",
 #'    model_name = modelName)
 #' pepIntensity <- istar$data
 #' config <- istar$config

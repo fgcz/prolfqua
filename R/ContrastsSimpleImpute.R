@@ -11,6 +11,18 @@
 #'
 #' @family modelling
 #' @export
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' protIntensity <- istar$data
+#' config <- istar$config
+#'
+#'
+#' lProt <- LFQData$new(protIntensity, config)
+#' lProt$rename_response("transformedIntensity")
+#'
+#' Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
+#' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
+#' res <- csi$get_contrasts()
 #'
 ContrastsMissing <- R6::R6Class(
   "ContrastsMissing",

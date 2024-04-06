@@ -11,11 +11,11 @@
 #' @family modelling
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
+#' istar <- istar <- prolfqua::sim_lfq_data_peptide_config(Nprot=50)
 #' istar$config <- old2new(istar$config )
-#' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
+#' istar_data <- istar$data
 #' modelFunction <-
-#'   strategy_lm("transformedIntensity  ~ dilution.")
+#'   strategy_lm("abundance  ~ group_")
 #' pepIntensity <- istar_data
 #' config <- istar$config$clone(deep = TRUE)
 #' config$table$hierarchyDepth <- 2
@@ -26,7 +26,7 @@
 #'  modelFunction,
 #'  subject_Id = config$table$hierarchy_keys_depth())
 #'
-#'  Contr <- c("dil.b_vs_a" = "dilution.b - dilution.a")
+#'  Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
 #'
 #'
 #'  contr <- prolfqua::Contrasts$new(mod, Contr)
@@ -35,7 +35,6 @@
 #'  dim(contrM$get_contrasts())
 #'  contrast <- prolfqua::ContrastsROPECA$new(contrM)
 #'  contrast$get_contrasts()
-#'  #ContrastsROPECA$debug("to_wide")
 #'  contrast <- prolfqua::ContrastsROPECA$new(contr)
 #'  tmp <- contrast$get_contrasts()
 #'  dim(tmp)

@@ -398,23 +398,27 @@ hierarchy_counts <- function(pdata, config){
 #' data <- bb$data
 #' res <- hierarchy_counts_sample(data, config)
 #' res()
-#' res("long")
+#' x <- res("long")
 #' res("plot")
 #'
 #' res <- hierarchy_counts_sample(data, config, nr_children = 2)
 #' res()
-#' res("long")
+#' x2 <- res("long")
 #' res("plot")
-#'
 #' bb <- prolfqua::sim_lfq_data_protein_config()
 #' res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 2)
-#' res()
+#' x1 <- res()
 #' res("long")
 #' res("plot")
 #' res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 1)
-#' res()
+#' x2 <- res()
 #' res("long")
 #' res("plot")
+#' dplyr::inner_join(x1,
+#'  x2,
+#'  by =  c("isotopeLabel","sampleName"),
+#'  suffix =c("2","1"))
+#'
 hierarchy_counts_sample <- function(
     pdata,
     configuration,
