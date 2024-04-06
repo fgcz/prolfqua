@@ -10,22 +10,17 @@ Decorates LFQData with a row annotation and some protein specific functions.
 }
 \examples{
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-istar$config <- old2new(istar$config)
-data <- istar$data #|> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+istar <-prolfqua::sim_lfq_data_peptide_config()
+data <- istar$data
+
+
 lfqdata <- LFQData$new(data, istar$config)
 pannot <- ProteinAnnotation$new( lfqdata )
-
 pannot$annotate_decoys()
 pannot$annotate_contaminants()
-
-stopifnot(pannot$nr_clean(contaminants = FALSE) == 163)
-stopifnot(pannot$nr_clean(contaminants = TRUE) == 158)
-stopifnot(nrow(pannot$clean(contaminants = FALSE)) == 163)
-stopifnot(nrow(pannot$clean(contaminants = TRUE)) == 158)
 dd <- pannot$clean()
 tmp <- lfqdata$get_subset(dd)
-stopifnot(tmp$hierarchy_counts()$protein_Id == 158)
+
 
 }
 \seealso{

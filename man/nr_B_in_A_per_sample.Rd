@@ -10,15 +10,10 @@ nr_B_in_A_per_sample(data, config, nested = TRUE)
 how many peptides per protein in each sample
 }
 \examples{
-bb <- prolfqua::prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
-configur <- bb$config$clone(deep=TRUE)
-data <- bb$data
-
-nr_B_in_A_per_sample(data, configur, nested =FALSE)
-bb <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
-bb$config <- old2new(config = bb$config$clone( deep = TRUE))
+debug(nr_B_in_A_per_sample)
+bb <- prolfqua::sim_lfq_data_peptide_config()
+nr_B_in_A_per_sample(bb$data, bb$config, nested =FALSE)
+bb <- prolfqua::sim_lfq_data_protein_config()
 nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
 
 }

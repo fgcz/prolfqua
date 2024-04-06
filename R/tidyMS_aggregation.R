@@ -620,28 +620,14 @@ estimate_intensity <- function(data, config, .func)
     dplyr::ungroup()
 
   new_child = paste0("nr_",config$table$hierarchy_keys_depth())
-  res_nr_children <- nr_obs(data, config, new_child = new_child)
+  res_nr_children <- nr_obs_sample(data, config, new_child = new_child)
   unnested <- inner_join(unnested, res_nr_children, by = c(config$table$hierarchy_keys_depth(), config$table$fileName))
   newconfig$table$nr_children = new_child
   return(list(data = unnested, config = newconfig))
 }
 
-#' Aggregates e.g. protein abundances from peptide abundances
-#'
-#' @export
-#' @examples
-#' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' dd$data <- na.omit(dd$data)
-#' xd <- nr_obs(dd$data, dd$config)
-#'
-#' #xd |> head()
-#'
-#' xd$nr_children |> table()
-nr_obs <- function(data, config, new_child = config$table$nr_children){
-  nr_children <- data |> group_by(!!!rlang::syms(c(config$table$hierarchy_keys_depth(), config$table$fileName))) |>
-    summarize(!!new_child := sum(!!sym(config$table$nr_children), na.rm = TRUE))
-  return(nr_children)
-}
+
+
 
 #' Plot feature data and result of aggregation
 #'
@@ -767,7 +753,7 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
     hierarchy = config$table$hierarchy[seq_len(config$table$hierarchyDepth)])
 
   new_child_name <- paste0("nr_", config$table$hierarchy_keys_depth() )
-  res_nr_children <- nr_obs(pdata, config, new_child = new_child_name)
+  res_nr_children <- nr_obs_sample(pdata, config, new_child = new_child_name)
   sumTopInt <- inner_join(
     sumTopInt, res_nr_children,
     by = c(config$table$fileName, config$table$hierarchy_keys_depth()))

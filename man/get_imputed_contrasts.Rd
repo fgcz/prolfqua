@@ -29,13 +29,9 @@ istar <- sim_lfq_data_peptide_config()
 config <- istar$config
 analysis <- istar$data
 data <- complete_cases(analysis, config)
-config$parameter$qVal_individual_threshold <- 0.01
-data <- prolfqua::remove_large_QValues(data, config)
-data <- complete_cases(data, config)
 
 Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
 res <- get_imputed_contrasts(data, config, Contrasts)
-
 config <- config
 contrasts <- Contrasts
 imputed <- missigness_impute_factors_interactions(data, config, value = "imputed" )

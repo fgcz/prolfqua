@@ -645,18 +645,14 @@ nr_B_in_A <- function(pdata, config , merge = TRUE){
 #' @keywords internal
 #' @family summary
 #' @examples
-#' bb <- prolfqua::prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config$clone(deep=TRUE)
-#' data <- bb$data
-#'
-#' nr_B_in_A_per_sample(data, configur, nested =FALSE)
-#' bb <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
-#' bb$config <- old2new(config = bb$config$clone( deep = TRUE))
+#' debug(nr_B_in_A_per_sample)
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
+#' nr_B_in_A_per_sample(bb$data, bb$config, nested =FALSE)
+#' bb <- prolfqua::sim_lfq_data_protein_config()
 #' nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
 #'
 nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
+  #TODO wew check for deprecation since not used.
   cf <- config
 
   levelA <- cf$table$hierarchy_keys_depth()
@@ -685,6 +681,58 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   return(res)
 }
 
+
+
+#' Aggregates e.g. protein abundances from peptide abundances
+#'
+#' @export
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' dd$data <- na.omit(dd$data)
+#' xd <- nr_obs_sample(dd$data, dd$config)
+#' xd
+#' xd$nr_children |> table()
+#'
+#'
+#' dp <- prolfqua::sim_lfq_data_protein_config()
+#' xp <- nr_obs_sample(dp$data, dp$config)
+#' xp$nr_peptides |> table()
+#'
+nr_obs_sample <- function(data, config, new_child = config$table$nr_children){
+  data <- na.omit(data)
+  nr_children <- data |>
+    group_by(!!!rlang::syms(c(config$table$hierarchy_keys_depth(), config$table$fileName))) |>
+    summarize(!!new_child := sum(!!sym(config$table$nr_children), na.rm = TRUE), .groups = "drop")
+  return(nr_children)
+}
+
+#' Aggregates e.g. protein abundances from peptide abundances
+#'
+#' @export
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#'
+#' xd <- nr_obs_hierarchy(dd$data, dd$config)
+#' xd
+#' dp <- prolfqua::sim_lfq_data_protein_config()
+#' debug(nr_obs_hierarchy)
+#' nr_obs_sample(dp$data, dp$config)
+#' xd <- nr_obs_hierarchy(dp$data, dp$config)
+#'
+#'
+nr_obs_hierarchy <- function(data, config, from_children = TRUE , name_nr_child = "nr_child_exp"){
+  tb <- config$table
+  if (!from_children & (tb$hierarchyDepth < length(tb$hierarchy_keys())) ) {
+    xq <- data |> tidyr::select(tb$hierarchy_keys()) |>
+      distinct() |>
+      dplyr::group_by(!!sym(tb$hierarchy_keys_depth())) |>
+      dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
+  } else {
+    xz <- nr_obs_sample(data,config)
+    xz <- x |> group_by(!!sym(tb$hierarchy_keys_depth())) |>
+      summarize(!!name_nr_child := max(!!sym(tb$nr_children)), .groups = "drop")
+  }
+}
 
 
 # Summarize Intensities by Intensity or NAs ----
