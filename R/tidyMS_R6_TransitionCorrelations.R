@@ -709,28 +709,37 @@ nr_obs_sample <- function(data, config, new_child = config$table$nr_children){
 #' Aggregates e.g. protein abundances from peptide abundances
 #'
 #' @export
+#' @param data tidy data
+#' @param config prolfqua config
+#' @param from_children compute from existing child stats
+#' @param name_nr_child how to name column
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #'
-#' xd <- nr_obs_hierarchy(dd$data, dd$config)
+#' xd <- nr_obs_experiment(dd$data, dd$config)
 #' xd
+#' xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
+#' xd
+#'
 #' dp <- prolfqua::sim_lfq_data_protein_config()
-#' debug(nr_obs_hierarchy)
-#' nr_obs_sample(dp$data, dp$config)
-#' xd <- nr_obs_hierarchy(dp$data, dp$config)
+#' undebug(nr_obs_experiment)
+#' nr_obs_experiment(dp$data, dp$config)
+#' nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
 #'
-#'
-nr_obs_hierarchy <- function(data, config, from_children = TRUE , name_nr_child = "nr_child_exp"){
+nr_obs_experiment <- function(data, config, from_children = TRUE,
+                              name_nr_child = "nr_child_exp"){
   tb <- config$table
   if (!from_children & (tb$hierarchyDepth < length(tb$hierarchy_keys())) ) {
-    xq <- data |> tidyr::select(tb$hierarchy_keys()) |>
+    xq <- data |> dplyr::select(tb$hierarchy_keys()) |>
       distinct() |>
       dplyr::group_by(!!sym(tb$hierarchy_keys_depth())) |>
       dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
+    return(xq)
   } else {
     xz <- nr_obs_sample(data,config)
-    xz <- x |> group_by(!!sym(tb$hierarchy_keys_depth())) |>
+    xz <- xz |> group_by(!!sym(tb$hierarchy_keys_depth())) |>
       summarize(!!name_nr_child := max(!!sym(tb$nr_children)), .groups = "drop")
+    return(xz)
   }
 }
 

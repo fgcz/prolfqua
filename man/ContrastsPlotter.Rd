@@ -144,6 +144,8 @@ Other plotting:
 \item{\code{fcthresh}}{fold change threshold}
 
 \item{\code{avg.abundance}}{name of column containing avg abundance values.}
+
+\item{\code{avg.abundance}}{name of column containing avg abundance values.}
 }
 \if{html}{\out{</div>}}
 }
@@ -181,7 +183,8 @@ create Crontrast_Plotter
   modelName = "modelName",
   diff = "diff",
   contrast = "contrast",
-  avg.abundance = "avgAbd"
+  avg.abundance = "avgAbd",
+  protein_annot = NULL
 )}\if{html}{\out{</div>}}
 }
 

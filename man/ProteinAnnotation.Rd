@@ -11,16 +11,13 @@ Decorates LFQData with a row annotation and some protein specific functions.
 \examples{
 
 istar <-prolfqua::sim_lfq_data_peptide_config()
-data <- istar$data
-
-
-lfqdata <- LFQData$new(data, istar$config)
+lfqdata <- LFQData$new(istar$data, istar$config)
 pannot <- ProteinAnnotation$new( lfqdata )
 pannot$annotate_decoys()
 pannot$annotate_contaminants()
 dd <- pannot$clean()
 tmp <- lfqdata$get_subset(dd)
-
+pannot$row_annot
 
 }
 \seealso{

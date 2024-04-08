@@ -6,16 +6,13 @@
 #' @examples
 #'
 #' istar <-prolfqua::sim_lfq_data_peptide_config()
-#' data <- istar$data
-#'
-#'
-#' lfqdata <- LFQData$new(data, istar$config)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
 #' pannot <- ProteinAnnotation$new( lfqdata )
 #' pannot$annotate_decoys()
 #' pannot$annotate_contaminants()
 #' dd <- pannot$clean()
 #' tmp <- lfqdata$get_subset(dd)
-#'
+#' pannot$row_annot
 #'
 ProteinAnnotation <-
   R6::R6Class("ProteinAnnotation",
@@ -49,8 +46,12 @@ ProteinAnnotation <-
                   } else {
                     self$row_annot <- distinct(select(lfqdata$data, self$pID))
                   }
-
-
+                  if (!self$nr_peptides %in% colnames(row_annot) ) {
+                    self$row_annot <- inner_join(
+                      self$row_annot,
+                      nr_obs_experiment(lfqdata$data, lfqdata$config, name_nr_child = self$nr_peptides),
+                      by = self$pID)
+                  }
                 },
                 #' @description
                 #' annotate rev sequences

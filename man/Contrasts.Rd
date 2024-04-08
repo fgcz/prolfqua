@@ -97,6 +97,8 @@ Other modelling:
 \item{\code{contrast_result}}{data frame containing results of contrast computation}
 
 \item{\code{global}}{use a global linear function (determined by get_linfct)}
+
+\item{\code{protein_annot}}{holds protein annotation}
 }
 \if{html}{\out{</div>}}
 }

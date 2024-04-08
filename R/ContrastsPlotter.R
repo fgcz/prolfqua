@@ -76,6 +76,8 @@ ContrastsPlotter <- R6::R6Class(
     fcthresh = 1,
     #' @field avg.abundance name of column containing avg abundance values.
     avg.abundance = character(),
+    #' @field avg.abundance name of column containing avg abundance values.
+    protein_annot = NULL,
     #' @description
     #' create Crontrast_Plotter
     #' @param contrastDF frame with contrast data
@@ -98,7 +100,8 @@ ContrastsPlotter <- R6::R6Class(
                           modelName = "modelName",
                           diff = "diff",
                           contrast = "contrast",
-                          avg.abundance = "avgAbd"
+                          avg.abundance = "avgAbd",
+                          protein_annot = NULL
     ){
       self$contrastDF <- tidyr::unite(
         contrastDF,
@@ -113,6 +116,7 @@ ContrastsPlotter <- R6::R6Class(
       self$fcthresh = fcthresh
       self$contrast = contrast
       self$avg.abundance = avg.abundance
+      self$protein_annot = protein_annot
     },
     #' @description
     #' plot histogram of selected scores (e.g. p-value, FDR, t-statistics)

@@ -49,6 +49,8 @@ Contrasts <- R6::R6Class(
     contrast_result = NULL,
     #' @field global use a global linear function (determined by get_linfct)
     global = TRUE,
+    #' @field protein_annot holds protein annotation
+    protein_annot = NULL,
     #' @description
     #' initialize
     #' create Contrast

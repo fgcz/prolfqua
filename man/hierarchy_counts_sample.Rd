@@ -20,15 +20,16 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 
 config <- bb$config
 data <- bb$data
-res <- hierarchy_counts_sample(data, config)
+res <- hierarchy_counts_sample(data, config, nr_children = 1)
 res()
 x <- res("long")
 res("plot")
-
+# filters on peptide level
 res <- hierarchy_counts_sample(data, config, nr_children = 2)
 res()
 x2 <- res("long")
 res("plot")
+# filters on protein level based on peptide count
 bb <- prolfqua::sim_lfq_data_protein_config()
 res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 2)
 x1 <- res()
@@ -38,10 +39,17 @@ res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 1)
 x2 <- res()
 res("long")
 res("plot")
-dplyr::inner_join(x1,
- x2,
- by =  c("isotopeLabel","sampleName"),
- suffix =c("2","1"))
+x1$nr_children <- 2
+x2$nr_children <- 1
+xl <- dplyr::bind_rows(x1, x2)
+
+
+
+
+xl$nr_children |> table()
+nudgeval <-  -mean(xl$protein_Id) * 0.05
+ggplot(xl, aes(x = sampleName, y = protein_Id, fill = as.character(nr_children)) ) +
+ geom_bar(stat = "identity", position = position_dodge())
 
 }
 \seealso{
