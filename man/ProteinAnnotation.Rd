@@ -42,7 +42,7 @@ Other LFQData:
 
 \item{\code{ids}}{vector with columns containing addition IDs}
 
-\item{\code{nr_peptides}}{name of columns with the number of peptides}
+\item{\code{nr_children}}{name of columns with the number of peptides}
 }
 \if{html}{\out{</div>}}
 }
@@ -68,7 +68,7 @@ initialize
   row_annot,
   description = NULL,
   ids = NULL,
-  nr_peptides = "nr_peptides"
+  nr_children = "nr_peptides"
 )}\if{html}{\out{</div>}}
 }
 

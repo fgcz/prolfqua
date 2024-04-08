@@ -25,8 +25,8 @@ ProteinAnnotation <-
                 description = "description",
                 #' @field ids vector with columns containing addition IDs
                 ids = character(),
-                #' @field nr_peptides name of columns with the number of peptides
-                nr_peptides = character(),
+                #' @field nr_children name of columns with the number of peptides
+                nr_children = character(),
                 #' @description initialize
                 #' @param lfqdata data frame from \code{\link{setup_analysis}}
                 #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hierarchy_keys_depth()}
@@ -37,8 +37,9 @@ ProteinAnnotation <-
                                       row_annot,
                                       description = NULL,
                                       ids = NULL,
-                                      nr_peptides = "nr_peptides"){
+                                      nr_children = "nr_peptides"){
                   self$pID = lfqdata$config$table$hierarchy_keys_depth()[1]
+                  self$nr_children = nr_children
                   if (!missing(row_annot)) {
                     stopifnot(self$pID %in% colnames(row_annot))
                     row_annot <- dplyr::filter(row_annot, !!sym(self$pID) %in% lfqdata$data[[self$pID]] )
@@ -46,10 +47,10 @@ ProteinAnnotation <-
                   } else {
                     self$row_annot <- distinct(select(lfqdata$data, self$pID))
                   }
-                  if (!self$nr_peptides %in% colnames(row_annot) ) {
+                  if (!self$nr_children %in% colnames(row_annot) ) {
                     self$row_annot <- inner_join(
                       self$row_annot,
-                      nr_obs_experiment(lfqdata$data, lfqdata$config, name_nr_child = self$nr_peptides),
+                      nr_obs_experiment(lfqdata$data, lfqdata$config, name_nr_child = self$nr_children),
                       by = self$pID)
                   }
                 },
