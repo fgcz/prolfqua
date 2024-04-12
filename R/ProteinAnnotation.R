@@ -23,16 +23,17 @@ ProteinAnnotation <-
                 pID = character(),
                 #' @field description name of column containing descriptions
                 description = "description",
-                #' @field ids vector with columns containing addition IDs
-                ids = character(),
+                #' @field cleaned_ids vector with columns containing addition IDs
+                cleaned_ids = character(),
                 #' @field nr_children name of columns with the number of peptides
                 nr_children = character(),
                 #' @description initialize
                 #' @param lfqdata data frame from \code{\link{setup_analysis}}
                 #' @param row_annot data frame with row annotation. Must have columns matching \code{config$table$hierarchy_keys_depth()}
                 #' @param description name of column with description
-                #' @param ids names of columns with additional ID's
+                #' @param ids names of columns with cleaned Ids
                 #' @param nr_peptides additional peptides
+                #' @param nr_children column with the number of children
                 initialize = function(lfqdata,
                                       row_annot,
                                       description = NULL,
@@ -40,14 +41,21 @@ ProteinAnnotation <-
                                       nr_children = "nr_peptides"){
                   self$pID = lfqdata$config$table$hierarchy_keys_depth()[1]
                   self$nr_children = nr_children
-                  if (!missing(row_annot)) {
+                  if ( !is.null(ids)) {self$cleaned_ids = ids} else {self$cleaned_ids = self$pID}
+                  if ( !is.null(description)) {self$description = description} else {self$description = self$pID}
+                  if ( !missing(row_annot)) {
                     stopifnot(self$pID %in% colnames(row_annot))
                     row_annot <- dplyr::filter(row_annot, !!sym(self$pID) %in% lfqdata$data[[self$pID]] )
                     self$row_annot <- row_annot
                   } else {
                     self$row_annot <- distinct(select(lfqdata$data, self$pID))
                   }
+
+                  stopifnot(self$cleaned_ids %in% colnames(self$row_annot))
+                  stopifnot(self$description %in% colnames(self$row_annot))
+
                   if (!self$nr_children %in% colnames(row_annot) ) {
+                    warning("no nr_children column specified, computing using nr_obs_experiment function")
                     self$row_annot <- inner_join(
                       self$row_annot,
                       nr_obs_experiment(lfqdata$data, lfqdata$config, name_nr_child = self$nr_children),

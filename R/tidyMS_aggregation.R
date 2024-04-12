@@ -752,7 +752,7 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
     workIntensity = newcol,
     hierarchy = config$table$hierarchy[seq_len(config$table$hierarchyDepth)])
 
-  new_child_name <- paste0("nr_", config$table$hierarchy_keys_depth() )
+  new_child_name <- paste(c("nr", config$table$hierarchy_keys_depth()), collapse = "_" )
   res_nr_children <- nr_obs_sample(pdata, config, new_child = new_child_name)
   sumTopInt <- inner_join(
     sumTopInt, res_nr_children,

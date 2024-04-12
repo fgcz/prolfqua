@@ -145,7 +145,7 @@ Other plotting:
 
 \item{\code{avg.abundance}}{name of column containing avg abundance values.}
 
-\item{\code{avg.abundance}}{name of column containing avg abundance values.}
+\item{\code{protein_annot}}{protein annotation}
 }
 \if{html}{\out{</div>}}
 }
@@ -210,6 +210,8 @@ create Crontrast_Plotter
 \item{\code{contrast}}{contrast column}
 
 \item{\code{avg.abundance}}{name of column with average abundance}
+
+\item{\code{protein_annot}}{add protein annotation (optional)}
 }
 \if{html}{\out{</div>}}
 }

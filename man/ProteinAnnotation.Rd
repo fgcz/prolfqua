@@ -40,7 +40,7 @@ Other LFQData:
 
 \item{\code{description}}{name of column containing descriptions}
 
-\item{\code{ids}}{vector with columns containing addition IDs}
+\item{\code{cleaned_ids}}{vector with columns containing addition IDs}
 
 \item{\code{nr_children}}{name of columns with the number of peptides}
 }
@@ -81,7 +81,9 @@ initialize
 
 \item{\code{description}}{name of column with description}
 
-\item{\code{ids}}{names of columns with additional ID's}
+\item{\code{ids}}{names of columns with cleaned Ids}
+
+\item{\code{nr_children}}{column with the number of children}
 
 \item{\code{nr_peptides}}{additional peptides}
 }

@@ -76,7 +76,7 @@ ContrastsPlotter <- R6::R6Class(
     fcthresh = 1,
     #' @field avg.abundance name of column containing avg abundance values.
     avg.abundance = character(),
-    #' @field avg.abundance name of column containing avg abundance values.
+    #' @field protein_annot protein annotation
     protein_annot = NULL,
     #' @description
     #' create Crontrast_Plotter
@@ -90,6 +90,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @param diff fold change (difference) diff column
     #' @param contrast contrast column
     #' @param avg.abundance name of column with average abundance
+    #' @param protein_annot add protein annotation (optional)
     initialize = function(contrastDF,
                           subject_Id,
                           volcano = list(list(score = "FDR", thresh = 0.1)),
