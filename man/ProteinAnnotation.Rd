@@ -65,7 +65,7 @@ initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ProteinAnnotation$new(
   lfqdata,
-  row_annot,
+  row_annot = NULL,
   description = NULL,
   ids = NULL,
   nr_children = "nr_peptides"

@@ -35,7 +35,7 @@ ProteinAnnotation <-
                 #' @param nr_peptides additional peptides
                 #' @param nr_children column with the number of children
                 initialize = function(lfqdata,
-                                      row_annot,
+                                      row_annot = NULL,
                                       description = NULL,
                                       ids = NULL,
                                       nr_children = "nr_peptides"){
@@ -43,7 +43,7 @@ ProteinAnnotation <-
                   self$nr_children = nr_children
                   if ( !is.null(ids)) {self$cleaned_ids = ids} else {self$cleaned_ids = self$pID}
                   if ( !is.null(description)) {self$description = description} else {self$description = self$pID}
-                  if ( !missing(row_annot)) {
+                  if ( !is.null(row_annot)) {
                     stopifnot(self$pID %in% colnames(row_annot))
                     row_annot <- dplyr::filter(row_annot, !!sym(self$pID) %in% lfqdata$data[[self$pID]] )
                     self$row_annot <- row_annot
