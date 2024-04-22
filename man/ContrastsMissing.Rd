@@ -28,6 +28,8 @@ lProt$rename_response("transformedIntensity")
 
 Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 csi <- ContrastsMissing$new(lProt, contrasts = Contr)
+csi$get_contrast_sides()
+
 res <- csi$get_contrasts()
 
 }

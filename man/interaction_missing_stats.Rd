@@ -38,16 +38,16 @@ xx <- prolfqua::remove_large_QValues(analysis,
    config)
 xx <- complete_cases(xx, config)
 x <- interaction_missing_stats(xx, config)$data |> dplyr::arrange(desc(nrNAs))
-
+nrow(x)
 tmp <- interaction_missing_stats(xx, config,
  factors= character(),
   hierarchy = config$table$hierarchy_keys()[1])$data
-
+stopifnot(nrow(tmp) == 10)
 tmp <- interaction_missing_stats(xx, config,
   hierarchy = config$table$hierarchy_keys()[1])$data
+stopifnot(nrow(tmp) == length(unique(xx$protein_Id))* length(unique(xx$group_)))
 stopifnot(sum(is.na(tmp$nrMeasured))==0)
 
 tmp <- interaction_missing_stats(xx, config, factors = NULL)
-
 }
 \keyword{internal}

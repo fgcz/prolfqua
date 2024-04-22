@@ -20,23 +20,24 @@
 #'    config)
 #' xx <- complete_cases(xx, config)
 #' x <- interaction_missing_stats(xx, config)$data |> dplyr::arrange(desc(nrNAs))
-#'
+#' nrow(x)
 #' tmp <- interaction_missing_stats(xx, config,
 #'  factors= character(),
 #'   hierarchy = config$table$hierarchy_keys()[1])$data
-#'
+#' stopifnot(nrow(tmp) == 10)
 #' tmp <- interaction_missing_stats(xx, config,
 #'   hierarchy = config$table$hierarchy_keys()[1])$data
+#' stopifnot(nrow(tmp) == length(unique(xx$protein_Id))* length(unique(xx$group_)))
 #' stopifnot(sum(is.na(tmp$nrMeasured))==0)
 #'
 #' tmp <- interaction_missing_stats(xx, config, factors = NULL)
-#'
 interaction_missing_stats <- function(pdata,
                                       config,
                                       factors = config$table$factor_keys_depth(),
                                       hierarchy = config$table$hierarchy_keys(),
                                       workIntensity = config$table$get_response())
 {
+  warning(">>>> deprecated! <<<<")
   pdata <- complete_cases(pdata, config)
   table <- config$table
   missingPrec <- pdata |> group_by_at(c(factors,
@@ -70,28 +71,23 @@ interaction_missing_stats <- function(pdata,
 #' @return function
 #' @examples
 #'
-#' istar <- sim_lfq_data_peptide_config()
+#' istar <- sim_lfq_data_peptide_config(Nprot = 20,weight_missing = 2)
 #' config <- istar$config
 #' analysis <- istar$data
-#' config$parameter$qVal_individual_threshold <- 0.01
-#'
-#' xx <- prolfqua::remove_large_QValues(analysis, config)
-#' xx <- complete_cases(xx, config)
+#' xx <- complete_cases(analysis, config)
 #' nrPepTimesDilution <- length(unique(paste0(xx$protein_Id, xx$peptide_Id))) *
-#'     length(unique(xx$dilution.))
-#' tmp <- interaction_missing_stats(xx, config)
-#' fun <- .missigness_impute_interactions(xx, config)
-#'
-#' long <- fun("long")
-#' alldata <- fun("all")
+#'     length(unique(xx$group_))
+#' funx <- .missigness_impute_interactions(xx, config)
+#' long <- funx("long")
+#' alldata <- funx("all")
 #' stopifnot(length(names(alldata)) == 5)
 #'
-#' imputed <- fun("imputed")
+#' imputed <- funx("imputed")
 #' stopifnot(nrow(imputed) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
-#' missing <- fun("nrMeasured")
+#' missing <- funx("nrMeasured")
 #' stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #'
-#'  meanAbundance <- fun("mean")
+#'  meanAbundance <- funx("mean")
 #' stopifnot(nrow(meanAbundance) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 #'  stopifnot(sum(is.na(imputed$mean.imp.group_A))==0)
 #'
@@ -104,7 +100,6 @@ interaction_missing_stats <- function(pdata,
   x_summaries <- mstats$summaries
   mstats <- mstats$data
   mstats <- make_interaction_column(mstats, factors, sep = ":")
-
 
   lowerMean <- function(meanAbundance, probs = probs){
     meanAbundanceNotNA <- na.omit(meanAbundance)
@@ -120,7 +115,6 @@ interaction_missing_stats <- function(pdata,
   }else{
     mstats <- mstats |>
       dplyr::mutate(imputed = lowerMean(.data$meanAbundance,probs = probs))
-
   }
 
   res_fun <- function(value = c("long",
@@ -146,19 +140,19 @@ interaction_missing_stats <- function(pdata,
       nrReplicates <- mstats |>
         dplyr::select( -one_of(c(base::setdiff(x_summaries,"nrReplicates"),"imputed") )) |>
         tidyr::spread(interaction, nrReplicates, sep = ".nrReplicates.") |>
-        arrange(!!!syms(pid)) |>
+        dplyr::arrange(!!!syms(pid)) |>
         dplyr::ungroup()
       nrMeasured <- mstats |> dplyr::select(-one_of(c(base::setdiff(x_summaries,"nrMeasured"),"imputed" ) )) |>
         tidyr::spread(interaction, nrMeasured, sep = ".nrMeasured.") |>
-        arrange(!!!syms(pid)) |> dplyr::ungroup()
+        dplyr::arrange(!!!syms(pid)) |> dplyr::ungroup()
 
       meanAbundance <- mstats |> dplyr::select(-one_of(c(base::setdiff(x_summaries,"meanAbundance"),"imputed" ) )) |>
         tidyr::spread(interaction, meanAbundance, sep = ".meanAbundance.") |>
-        arrange(!!!syms(pid)) |> dplyr::ungroup()
+        dplyr::arrange(!!!syms(pid)) |> dplyr::ungroup()
 
       meanAbundanceImputed <- mstats |> dplyr::select(-one_of(base::setdiff(x_summaries,"imputed" ) )) |>
         tidyr::spread(interaction, .data$imputed, sep = ".imputed.") |>
-        arrange(!!!syms(pid)) |> dplyr::ungroup()
+        dplyr::arrange(!!!syms(pid)) |> dplyr::ungroup()
 
       allTables <- list(meanAbundance = meanAbundance,
                         nrMeasured = nrMeasured,
@@ -214,59 +208,60 @@ interaction_missing_stats <- function(pdata,
 #' @family imputation
 #' @examples
 #'
-#' istar <- sim_lfq_data_peptide_config()
+#' istar <- sim_lfq_data_peptide_config(weight_missing = 2)
 #' config <- istar$config
 #' analysis <- istar$data
 #'
 #' xx <- complete_cases(analysis, config)
-#'
 #' res <- missigness_impute_factors_interactions(xx, config)
 #' res <- missigness_impute_factors_interactions(xx, config, value = "imputed")
 #' res <- missigness_impute_factors_interactions(xx, config, value = "nrMeasured")
+#' #debug(missigness_impute_factors_interactions)
 #' long <- missigness_impute_factors_interactions(xx, config, value = "long")
-#'
-missigness_impute_factors_interactions <-
-  function(pdata,
-           config,
-           probs = 0.03,
-           value = c("long", "nrReplicates", "nrMeasured", "meanAbundance", "imputed"),
-           add.prefix = FALSE,
-           global = TRUE)
-  {
-    value <- match.arg(value)
-    fac_fun <- list()
-    fac_fun[["interaction"]] <- .missigness_impute_interactions(
-      pdata,
-      config,
-      probs = probs,
-      global = global)
-    if (config$table$factorDepth > 1 ) { # if 1 only then done
-      for (factor in config$table$factor_keys_depth()) {
-        fac_fun[[factor]] <- .missigness_impute_interactions(
-          pdata,
-          config,
-          factors = factor,
-          probs = probs,
-          global = global)
-      }
+#' head(long)
+#' plot(long$meanAbundance, long$imputed)
+missigness_impute_factors_interactions <- function(
+    pdata,
+    config,
+    probs = 0.03,
+    value = c("long", "nrReplicates", "nrMeasured", "meanAbundance", "imputed"),
+    add.prefix = FALSE,
+    global = TRUE)
+{
+  value <- match.arg(value)
+  fac_fun <- list()
+  fac_fun[["interaction"]] <- .missigness_impute_interactions(
+    pdata,
+    config,
+    probs = probs,
+    global = global)
+  if (config$table$factorDepth > 1 ) { # if 1 only then done
+    for (factor in config$table$factor_keys_depth()) {
+      fac_fun[[factor]] <- .missigness_impute_interactions(
+        pdata,
+        config,
+        factors = factor,
+        probs = probs,
+        global = global)
     }
-
-    fac_res <- vector(mode = "list", length = length(fac_fun))
-    names(fac_res) <- names(fac_fun)
-    for (fun_name in names(fac_fun)) {
-      fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix = add.prefix)
-    }
-    if (value == "long") {
-      intfact <- dplyr::bind_rows(fac_res)
-    } else {
-      intfact <- purrr::reduce(fac_res,
-                               dplyr::inner_join,
-                               by = c(config$table$hierarchy_keys(),
-                                      config$table$isotopeLabel, "value"))
-
-    }
-    return(dplyr::ungroup(intfact))
   }
+
+  fac_res <- vector(mode = "list", length = length(fac_fun))
+  names(fac_res) <- names(fac_fun)
+  for (fun_name in names(fac_fun)) {
+    fac_res[[fun_name]] <- fac_fun[[fun_name]](value, add.prefix = add.prefix)
+  }
+  if (value == "long") {
+    intfact <- dplyr::bind_rows(fac_res)
+  } else {
+    intfact <- purrr::reduce(fac_res,
+                             dplyr::inner_join,
+                             by = c(config$table$hierarchy_keys(),
+                                    config$table$isotopeLabel, "value"))
+
+  }
+  return(dplyr::ungroup(intfact))
+}
 
 
 
@@ -364,8 +359,6 @@ get_contrast <- function(data,
                          hierarchy_keys,
                          contrasts)
 {
-
-
   for (i in seq_along(contrasts)) {
     message(names(contrasts)[i], "=", contrasts[i],"\n")
     data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
@@ -386,7 +379,6 @@ get_contrast <- function(data,
     res[[names(contrasts)[i]]] <- df
   }
   res <- dplyr::bind_rows(res)
-
   return(dplyr::ungroup(res))
 }
 
@@ -432,6 +424,7 @@ get_imputed_contrasts <- function(pepIntensity,
     stop("At least 1 observation in interaction to infer LOD.")
   }
   long <- missigness_impute_factors_interactions(pepIntensity, config, value = "long" )
+  # determine limit of detection
   LOD <- long |> filter(nrNAs == nrReplicates - present) |> pull(meanAbundance) |> median(na.rm=TRUE)
 
   long <- tidyr::complete(long, tidyr::nesting(!!!syms(config$table$hierarchy_keys())), interaction)
@@ -492,7 +485,7 @@ missigness_histogram <- function(x,
     if (config$table$is_response_transformed) {
       missingPrec <- missingPrec |>
         dplyr::mutate(meanAbundance = ifelse(is.na(.data$meanAbundance), min(.data$meanAbundance, na.rm = TRUE) - 1,
-                                        .data$meanAbundance))
+                                             .data$meanAbundance))
     }else{
       missingPrec <- missingPrec |>
         dplyr::mutate(meanAbundance = ifelse(is.na(.data$meanAbundance),min(.data$meanAbundance, na.rm = TRUE) - 20,.data$meanAbundance))

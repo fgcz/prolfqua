@@ -4,7 +4,7 @@
 \alias{plot_stat_violin_median}
 \title{plot Violin plot of sd CV or mean given intensity lower or above median}
 \usage{
-plot_stat_violin_median(pdata, config, stat = c("CV", "mean", "sd"))
+plot_stat_violin_median(pdata, config, stat = c("CV", "meanAbundance", "sd"))
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -19,11 +19,11 @@ plot Violin plot of sd CV or mean given intensity lower or above median
 \examples{
 
 
-bb1 <- prolfqua_data('data_ionstar')$normalized()
-config <- old2new(bb1$config$clone( deep = TRUE))
+bb1 <- prolfqua::sim_lfq_data_peptide_config()
+config <- bb1$config
 data <- bb1$data
 res <- summarize_stats(data, config)
-plot_stat_violin_median(res, config, stat = "mean")
+plot_stat_violin_median(res, config, stat = "meanAbundance")
 }
 \seealso{
 Other stats: 

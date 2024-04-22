@@ -123,13 +123,13 @@ sim_lfq_data <- function(
 #' add missing values to x vector based on the values of x
 #' @export
 #' @param x vector of intensities
+#' @param weight_missing greater weight more missing
 #'
-#'
-which_missing <- function(x){
+which_missing <- function(x, weight_missing = 0.2){
   missing_prop <- pnorm(x, mean = mean(x), sd = sd(x))
   # sample TRUE or FALSE with propability in missing_prop
   samplemiss <- function(missing_prop) {
-    mp <- c((1 - missing_prop)*0.2, missing_prop*3)
+    mp <- c((1 - missing_prop)*weight_missing, missing_prop*3)
     mp <- mp / sum(mp)
     sample(c(TRUE, FALSE), size = 1, replace = TRUE, prob = mp)
   }
@@ -151,13 +151,13 @@ which_missing <- function(x){
 #' x <- sim_lfq_data_peptide_config()
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
-sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, seed = 1234){
+sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, weight_missing = 0.2, seed = 1234){
   if (!is.null(seed)) {
     set.seed(seed)
   }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE)
   if (with_missing) {
-    not_missing <- !which_missing(data$abundance)
+    not_missing <- !which_missing(data$abundance, weight_missing = weight_missing)
     data <- data[not_missing,]
   }
   data$isotopeLabel <- "light"
@@ -185,13 +185,13 @@ sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, seed = 
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
 #'
-sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, seed = 1234){
+sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_missing = 0.2, seed = 1234){
   if (!is.null(seed)) {
     set.seed(seed)
   }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
   if (with_missing) {
-    data <- data[!which_missing(data$abundance),]
+    data <- data[!which_missing(data$abundance,weight_missing = weight_missing),]
   }
   data$isotopeLabel <- "light"
   data$qValue <- 0

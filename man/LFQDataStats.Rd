@@ -40,7 +40,7 @@ lfqstats <- lfqdata$get_Stats()
 lfqstats$stats_wide()
 lfqstats$violin()
 runallfuncs(lfqstats)
-x<-lfqstats
+x <- lfqstats
 
 #study variance of normalized data
 

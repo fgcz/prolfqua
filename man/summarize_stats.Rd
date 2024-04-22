@@ -40,48 +40,38 @@ summarize stats output (compute quantiles)
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
-config <- old2new(bb$config)
+bb <- prolfqua::sim_lfq_data_protein_config()
+config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats(data, config)
-d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-#CON__P02769~18~NA VHKECCHGDLLECADDR
-d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
 
 
 
-bb <- prolfqua_data('data_ionstar')$normalized()
-config <- old2new(bb$config)
-data <- bb$data
+bb <- prolfqua::sim_lfq_data_protein_config()
 
-res1 <- summarize_stats_all(data, config)
-d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-#CON__P02769~18~NA VHKECCHGDLLECADDR
-d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-res1 |> dplyr::filter(dilution. == "pooled")
+res1 <- summarize_stats_all(bb$data, bb$config)
+
+stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
 
 library(ggplot2)
-bb1 <- prolfqua_data('data_ionstar')$filtered()
-config <- old2new(bb1$config$clone( deep = TRUE))
+bb1 <- prolfqua::sim_lfq_data_peptide_config()
+config <- bb1$config
 data <- bb1$data
 stats_res <- summarize_stats(data, config)
-summarize_stats_quantiles(stats_res, config)
-summarize_stats_quantiles(stats_res, config, stats = "CV")
-stats_res
-bb <- prolfqua_data('data_ionstar')$normalized()
-config <- old2new(bb$config$clone(deep = TRUE))
+sq <- summarize_stats_quantiles(stats_res, config)
+sq <- summarize_stats_quantiles(stats_res, config, stats = "CV")
+bb <- prolfqua::sim_lfq_data_peptide_config()
+config <- bb$config
 data <- bb$data
 config$table$get_response()
 stats_res <- summarize_stats(data, config)
-summarize_stats_quantiles(stats_res, config)
-summarize_stats_quantiles(stats_res, config, stats = "sd")
+sq <- summarize_stats_quantiles(stats_res, config)
+sq <- summarize_stats_quantiles(stats_res, config, stats = "sd")
 
 stats_res <- summarize_stats(data, config)
 xx <- summarize_stats_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
-ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = dilution.)) + geom_line() + geom_point()
+ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_line() + geom_point()
 
 
 }

@@ -27,33 +27,32 @@ https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1
 }
 \examples{
 
-x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
-x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
+x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
+x <- data.frame(nrMeasured =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), meanAbundance = c(-1.94,-1.46,-1.87,-1.45) )
 prolfqua:::pooled_V2(na.omit(x))
 prolfqua:::pooled_V1(na.omit(x))
 x <- x[1,, drop=FALSE]
 x
 na.omit(x)
 prolfqua:::pooled_V2(na.omit(x))
-x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
-x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
+x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
+x <- data.frame(nrMeasured =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), meanAbundance = c(-1.94,-1.46,-1.87,-1.45) )
 compute_pooled(x)
 compute_pooled(x, method = "V2")
 #debug(compute_pooled)
 y <- data.frame(dilution.=c("a","b","c"),
-     n = c(4,4,4), not_na = c(0,0,1), sd =c(NA,NA,NA),
-     var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
+     nrReplicates = c(4,4,4), nrMeasured = c(0,0,1), sd =c(NA,NA,NA),
+     var = c(NA,NA,NA),meanAbundance = c(NaN,NaN,NaN))
 compute_pooled(y)
-yb <- y |> dplyr::filter(not_na > 1)
+yb <- y |> dplyr::filter(nrMeasured > 1)
 
-
-bb <- prolfqua_data('data_ionstar')$normalized()
-config <- old2new(bb$config)
+bb <- prolfqua::sim_lfq_data_peptide_config()
+config <- bb$config
 data <- bb$data
 
 res1 <- summarize_stats(data, config)
 pv <- poolvar(res1, config)
-stopifnot(nrow(pv) == nrow(res1)/5)
+stopifnot(nrow(pv) == nrow(res1)/3)
 
 }
 \seealso{

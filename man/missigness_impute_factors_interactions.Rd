@@ -31,17 +31,18 @@ should generalize at some stage
 }
 \examples{
 
-istar <- sim_lfq_data_peptide_config()
+istar <- sim_lfq_data_peptide_config(weight_missing = 2)
 config <- istar$config
 analysis <- istar$data
 
 xx <- complete_cases(analysis, config)
-
 res <- missigness_impute_factors_interactions(xx, config)
 res <- missigness_impute_factors_interactions(xx, config, value = "imputed")
 res <- missigness_impute_factors_interactions(xx, config, value = "nrMeasured")
+#debug(missigness_impute_factors_interactions)
 long <- missigness_impute_factors_interactions(xx, config, value = "long")
-
+head(long)
+plot(long$meanAbundance, long$imputed)
 }
 \seealso{
 Other imputation: 

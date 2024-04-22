@@ -4,7 +4,12 @@
 \alias{sim_lfq_data_protein_config}
 \title{Simulate data, protein, with config}
 \usage{
-sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, seed = 1234)
+sim_lfq_data_protein_config(
+  Nprot = 10,
+  with_missing = TRUE,
+  weight_missing = 0.2,
+  seed = 1234
+)
 }
 \arguments{
 \item{with_missing}{add missing values, default TRUE}

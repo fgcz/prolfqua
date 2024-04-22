@@ -4,8 +4,8 @@
 #' @return data.frame
 #' @examples
 #'
-#' x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
-#' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
+#' x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
+#' x <- data.frame(nrMeasured =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), meanAbundance = c(-1.94,-1.46,-1.87,-1.45) )
 #' prolfqua:::pooled_V2(na.omit(x))
 #' prolfqua:::pooled_V1(na.omit(x))
 #' x <- x[1,, drop=FALSE]
@@ -14,9 +14,9 @@
 #' prolfqua:::pooled_V2(na.omit(x))
 pooled_V2 <- function(x){
 
-  n <- x$not_na
+  n <- x$nrMeasured
   sample.var <- x$var
-  sample.mean <- x$mean
+  sample.mean <- x$meanAbundance
   pool.n <- sum(n)
 
   pool.mean <- sum(n * sample.mean)/pool.n
@@ -44,9 +44,9 @@ pooled_V2 <- function(x){
 #' @rdname pooled_var
 #' @param x data.frame
 pooled_V1 <- function(x){
-  n <- x$not_na
+  n <- x$nrMeasured
   sample.var <- x$var
-  sample.mean <- x$mean
+  sample.mean <- x$meanAbundance
   pool.n <- sum(n)
 
   n.groups <- length(sample.var)
@@ -83,34 +83,34 @@ pooled_V1 <- function(x){
 #' @family stats
 #'
 #' @examples
-#' x <- data.frame(not_na =c(1,2,2), var = c(3,4,4), mean = c(3,3,3))
-#' x <- data.frame(not_na =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), mean = c(-1.94,-1.46,-1.87,-1.45) )
+#' x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
+#' x <- data.frame(nrMeasured =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), meanAbundance = c(-1.94,-1.46,-1.87,-1.45) )
 #' compute_pooled(x)
 #' compute_pooled(x, method = "V2")
 #' #debug(compute_pooled)
 #' y <- data.frame(dilution.=c("a","b","c"),
-#'      n = c(4,4,4), not_na = c(0,0,1), sd =c(NA,NA,NA),
-#'      var = c(NA,NA,NA),mean = c(NaN,NaN,NaN))
+#'      nrReplicates = c(4,4,4), nrMeasured = c(0,0,1), sd =c(NA,NA,NA),
+#'      var = c(NA,NA,NA),meanAbundance = c(NaN,NaN,NaN))
 #' compute_pooled(y)
-#' yb <- y |> dplyr::filter(not_na > 1)
+#' yb <- y |> dplyr::filter(nrMeasured > 1)
 compute_pooled <- function(x, method = c("V1","V2")){
   method <- match.arg(method)
-  xm <- x |> dplyr::filter(.data$not_na > 0)
-  meanAll <- sum(xm$mean * xm$not_na)/sum(xm$not_na)
-  not_na  = sum(xm$not_na)
+  xm <- x |> dplyr::filter(.data$nrMeasured > 0)
+  meanAll <- sum(xm$meanAbundance * xm$nrMeasured)/sum(xm$nrMeasured)
+  nrMeasured  = sum(xm$nrMeasured)
 
   func <- pooled_V1
   if (method == "V2") {
     func <- pooled_V2
   }
-  x <- x |> dplyr::filter(.data$not_na > 1)
+  x <- x |> dplyr::filter(.data$nrMeasured > 1)
 
   res <- func(x)
   if (is.na(res$mean)) {
     res$mean <- meanAll
   }
   res$meanAll <- meanAll
-  res$not_na <- not_na
+  res$nrMeasured <- nrMeasured
   return(res)
 }
 
@@ -121,14 +121,13 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #' @family stats
 #' @examples
 #'
-#'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
-#' config <- old2new(bb$config)
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb$config
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config)
 #' pv <- poolvar(res1, config)
-#' stopifnot(nrow(pv) == nrow(res1)/5)
+#' stopifnot(nrow(pv) == nrow(res1)/3)
 #'
 poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
@@ -157,31 +156,30 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
-#' config <- old2new(bb$config)
+#' bb <- prolfqua::sim_lfq_data_protein_config()
+#' config <- bb$config
 #' data <- bb$data
 #'
 #' res1 <- summarize_stats(data, config)
-#' d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-#' d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-#' #CON__P02769~18~NA VHKECCHGDLLECADDR
-#' d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
 #'
 summarize_stats <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$get_response())
   hierarchyFactor <- pdata |>
     dplyr::group_by(!!!syms( c(config$table$hierarchy_keys(), config$table$factor_keys_depth()) )) |>
-    dplyr::summarize(n = dplyr::n(),
-                     not_na = sum(!is.na(!!intsym)),
+    dplyr::summarize(nrReplicates = dplyr::n(),
+                     nrMeasured = sum(!is.na(!!intsym)),
+                     nrNAs = sum(is.na(!!intsym)),
                      sd = stats::sd(!!intsym, na.rm = TRUE),
                      var = stats::var(!!intsym, na.rm = TRUE),
-                     mean = mean(!!intsym, na.rm = TRUE),.groups = "drop_last") |>  dplyr::ungroup()
+                     meanAbundance = mean(!!intsym, na.rm = TRUE),
+                     medianAbundance = median(!!intsym, na.rm = TRUE),
+                     .groups = "drop_last") |>  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor |>
     dplyr::mutate(dplyr::across(config$table$factor_keys_depth(), as.character))
   if (config$table$is_response_transformed == FALSE) {
-    hierarchyFactor |> dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
+    hierarchyFactor |> dplyr::mutate(CV = sd/meanAbundance * 100) -> hierarchyFactor
   }
   return(ungroup(hierarchyFactor))
 }
@@ -198,32 +196,29 @@ summarize_stats <- function(pdata, config){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$normalized()
-#' config <- old2new(bb$config)
-#' data <- bb$data
+#' bb <- prolfqua::sim_lfq_data_protein_config()
 #'
-#' res1 <- summarize_stats_all(data, config)
-#' d <- res1 |> dplyr::filter(protein_Id == "CON__P01030~9~NA" & peptide_Id  == "AELADQAASWLTR")
-#' d <- res1 |> dplyr::filter(protein_Id == "CON__Q3SZR3~50~NA" & peptide_Id  == "EHFVDLLLSK")
-#' #CON__P02769~18~NA VHKECCHGDLLECADDR
-#' d <- res1 |> dplyr::filter(protein_Id == "CON__P02769~18~NA" & peptide_Id  == "VHKECCHGDLLECADDR")
-#' res1 |> dplyr::filter(dilution. == "pooled")
+#' res1 <- summarize_stats_all(bb$data, bb$config)
+#'
+#' stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
 #'
 summarize_stats_all <- function(pdata, config){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$get_response())
   hierarchy <- pdata |>
     dplyr::group_by(!!!syms( config$table$hierarchy_keys() )) |>
-    dplyr::summarize(n = dplyr::n(),
-                     not_na = sum(!is.na(!!intsym)),
+    dplyr::summarize(nrReplicates = dplyr::n(),
+                     nrMeasured = sum(!is.na(!!intsym)),
                      sd = sd(!!intsym,na.rm = TRUE),
                      var = sd(!!intsym,na.rm = TRUE),
-                     mean = mean(!!intsym,na.rm = TRUE))
+                     meanAbundance = mean(!!intsym,na.rm = TRUE),
+                     medianAbundance = median(!!intsym, na.rm = TRUE),
+                     .groups = "drop_last") |> dplyr::ungroup()
 
   hierarchy <- dplyr::mutate(hierarchy, !!config$table$factor_keys()[1] := "All")
   hierarchyFactor <- hierarchy
   if (config$table$is_response_transformed == FALSE) {
-    hierarchyFactor |> dplyr::mutate(CV = sd/mean * 100) -> hierarchyFactor
+    hierarchyFactor |> dplyr::mutate(CV = sd/meanAbundance * 100) -> hierarchyFactor
   }
   return(ungroup(hierarchyFactor))
 }
@@ -239,24 +234,23 @@ summarize_stats_all <- function(pdata, config){
 #' @family stats
 #' @examples
 #' library(ggplot2)
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
-#' config <- old2new(bb1$config$clone( deep = TRUE))
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb1$config
 #' data <- bb1$data
 #' stats_res <- summarize_stats(data, config)
-#' summarize_stats_quantiles(stats_res, config)
-#' summarize_stats_quantiles(stats_res, config, stats = "CV")
-#'stats_res
-#' bb <- prolfqua_data('data_ionstar')$normalized()
-#' config <- old2new(bb$config$clone(deep = TRUE))
+#' sq <- summarize_stats_quantiles(stats_res, config)
+#' sq <- summarize_stats_quantiles(stats_res, config, stats = "CV")
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb$config
 #' data <- bb$data
 #' config$table$get_response()
 #' stats_res <- summarize_stats(data, config)
-#' summarize_stats_quantiles(stats_res, config)
-#' summarize_stats_quantiles(stats_res, config, stats = "sd")
+#' sq <- summarize_stats_quantiles(stats_res, config)
+#' sq <- summarize_stats_quantiles(stats_res, config, stats = "sd")
 #'
 #' stats_res <- summarize_stats(data, config)
 #' xx <- summarize_stats_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
-#' ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = dilution.)) + geom_line() + geom_point()
+#' ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_line() + geom_point()
 #'
 #'
 summarize_stats_quantiles <- function(stats_res,
@@ -324,10 +318,10 @@ summarize_stats_quantiles <- function(stats_res,
 #' @examples
 #'
 #'
-#' #library(ggplot2)
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
-#' config <- old2new(bb1$config$clone( deep = TRUE))
+#'
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb1$config
 #' data2 <- bb1$data
 #' stats_res <- summarize_stats(data2, config)
 #' xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
@@ -336,7 +330,7 @@ summarize_stats_quantiles <- function(stats_res,
 #' summary <- bbb |>
 #'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
 #'  tidyr::spread(delta, N, sep = "=")
-#' summary
+#'
 lfq_power_t_test_quantiles_V2 <-
   function(quantile_sd,
            delta = c(0.59,1,2),
@@ -371,14 +365,13 @@ lfq_power_t_test_quantiles_V2 <-
 #' @family stats
 #' @examples
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
-#' config <- old2new(bb1$config$clone( deep = TRUE))
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb1$config
 #' data2 <- bb1$data
 #'
 #' res <- lfq_power_t_test_quantiles(data2, config)
 #' res$summary
 #' stats_res <- summarize_stats(data2, config)
-#' unique(stats_res$dilution.)
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
 #'
@@ -434,13 +427,10 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' @family stats
 #' @examples
 #'
-#' bb1 <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #'
-#'
-#' ldata <- LFQData$new(bb1$data, old2new(bb1$config))
-#' ldata <- ldata$get_sample(20)
+#' ldata <- LFQData$new(bb1$data, bb1$config)
 #' stats_res <- summarize_stats(ldata$data, ldata$config)
-#'
 #' bb <- lfq_power_t_test_proteins(stats_res)
 #'
 lfq_power_t_test_proteins <- function(stats_res,
@@ -478,16 +468,16 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' @examples
 #'
 #'
-#' bb1 <-prolfqua_data('data_ionstar')$filtered()
-#' config <-  old2new(bb1$config$clone( deep = TRUE))
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#' config <-  bb1$config
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
-#' plot_stat_density(res, config, stat = "mean")
+#' plot_stat_density(res, config, stat = "meanAbundance")
 #' plot_stat_density(res, config, stat = "sd")
 #' plot_stat_density(res, config, stat = "CV")
 plot_stat_density <- function(pdata,
                               config,
-                              stat = c("CV","mean","sd"),
+                              stat = c("CV","meanAbundance","sd"),
                               ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
@@ -508,18 +498,22 @@ plot_stat_density <- function(pdata,
 #'
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
-#' config <- old2new(bb1$config$clone( deep = TRUE))
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb1$config
 #' data2 <- bb1$data
 #' res <- summarize_stats(data2, config)
-#' plot_stat_density_median(res, config,"CV")
-#' plot_stat_density_median(res, config,"mean")
-#' plot_stat_density_median(res, config,"sd")
-plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), ggstat = c("density", "ecdf")){
+#' plot_stat_density_median(res, config, "CV")
+#' plot_stat_density_median(res, config, "meanAbundance")
+#' plot_stat_density_median(res, config, "sd")
+plot_stat_density_median <- function(
+    pdata,
+    config,
+    stat = c("CV","meanAbundance","sd"),
+    ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
   pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
-  res <- pdata |> dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) -> top50
+  res <- pdata |> dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = "top")) +
     geom_line(stat = ggstat) + facet_wrap(config$table$factor_keys()[1])
   return(p)
@@ -536,16 +530,16 @@ plot_stat_density_median <- function(pdata, config, stat = c("CV","mean","sd"), 
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
-#' config <- old2new(bb1$config$clone( deep = TRUE))
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb1$config
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
 #' res <- summarize_stats(data, config)
-#' plot_stat_violin(res, config, stat = "mean")
+#' plot_stat_violin(res, config, stat = "meanAbundance")
 #' plot_stat_violin(res, config, stat = "sd")
 #' plot_stat_violin(res, config, stat = "CV")
 #'
-plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
+plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd")){
   stat <- match.arg(stat)
   pdata <- pdata |> tidyr::unite("groups", config$table$factor_keys_depth())
   p <- ggplot(pdata, aes_string(x = "groups", y = stat  )) +
@@ -565,12 +559,12 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "mean", "sd")){
 #' @examples
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$normalized()
-#' config <- old2new(bb1$config$clone( deep = TRUE))
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb1$config
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
-#' plot_stat_violin_median(res, config, stat = "mean")
-plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")){
+#' plot_stat_violin_median(res, config, stat = "meanAbundance")
+plot_stat_violin_median <- function(pdata, config , stat = c("CV", "meanAbundance", "sd")){
   median.quartile <- function(x){
     out <- quantile(x, probs = c(0.25,0.5,0.75))
     names(out) <- c("ymin","y","ymax")
@@ -579,7 +573,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
   pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
 
   res <- pdata |>
-    dplyr::mutate(top = ifelse(mean > median(mean, na.rm = TRUE),"top 50","bottom 50")) ->
+    dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE),"top 50","bottom 50")) ->
     top50
 
   p <- ggplot(top50, aes_string(x = config$table$factor_keys()[1], y = stat)) +
@@ -602,8 +596,8 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "mean", "sd")
 #'
 #'
 #'
-#' bb1 <- prolfqua_data('data_ionstar')$filtered()
-#' config <- old2new(bb1$config$clone( deep = TRUE))
+#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#' config <- bb1$config
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
 #'
@@ -624,11 +618,11 @@ plot_stdv_vs_mean <- function(pdata, config, size=2000){
   size <- min(size, min(summary$n))
 
   pdata <- pdata |>
-    group_by_at(config$table$factor_keys_depth()) |>
-    sample_n(size = size) |>
-    ungroup()
+    dplyr::group_by_at(config$table$factor_keys_depth()) |>
+    dplyr::sample_n(size = size) |>
+    dplyr::ungroup()
 
-  p <- ggplot(pdata, aes(x = mean, y = sd)) +
+  p <- ggplot(pdata, aes(x = meanAbundance, y = sd)) +
     geom_point() +
     geom_smooth(method = "loess") +
     facet_wrap(config$table$factor_keys_depth(), nrow = 1) +

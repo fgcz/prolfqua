@@ -87,34 +87,29 @@ LR_test <- function(modelProteinF,
 #'
 #' @export
 #' @examples
-#' # library(tidyverse)
-#' D <- prolfqua_data('data_ionstar')$normalized()
-#' D$config <- old2new(D$config)
-#' D$data <- dplyr::filter(D$data ,protein_Id %in% sample(protein_Id, 100))
-#'
+#' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
+#' D$data$abundance |> is.na() |> sum()
+#' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
+#' D$data$abundance |> is.na() |> sum()
 #' modelName <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
-#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id) + (1 | sampleName)",
+#'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sampleName)",
 #'    model_name = modelName)
 #'
 #'
-#' pepIntensity <- D$data
-#' config <- D$config
-#'
-#'
-#'
-#' mod <- prolfqua:::build_model(
-#'  pepIntensity,
+#' mod <- prolfqua::build_model(
+#'  D$data,
 #'  formula_randomPeptide,
 #'  modelName = modelName,
-#'  subject_Id = config$table$hierarchy_keys_depth())
-#' mod$get_anova()
+#'  subject_Id = D$config$table$hierarchy_keys_depth())
+#' aovtable <- mod$get_anova()
 #'
-#' mod <- prolfqua:::build_model(
-#'  LFQData$new(pepIntensity, config),
+#' mod <- prolfqua::build_model(
+#'  LFQData$new(D$data, D$config),
 #'  formula_randomPeptide,
 #'  modelName = modelName)
 #' model_summary(mod)
+#'
 #'
 build_model <- function(data,
                         model_strategy,

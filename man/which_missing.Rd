@@ -4,10 +4,12 @@
 \alias{which_missing}
 \title{add missing values to x vector based on the values of x}
 \usage{
-which_missing(x)
+which_missing(x, weight_missing = 0.2)
 }
 \arguments{
 \item{x}{vector of intensities}
+
+\item{weight_missing}{greater weight more missing}
 }
 \description{
 add missing values to x vector based on the values of x

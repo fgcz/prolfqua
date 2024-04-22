@@ -62,13 +62,10 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' # debug(make_interaction_column)
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep=TRUE)
+#' bb <- prolfqua::sim_lfq_data_protein_config()
+#' config <- bb$config
 #' analysis <- bb$data
 #'
-#' config$table$factor_keys()
 #' config$table$factorDepth <- 1
 #' make_interaction_column(analysis,
 #'    config$table$factor_keys_depth())

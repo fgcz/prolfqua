@@ -22,6 +22,8 @@
 #'
 #' Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 #' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
+#' csi$get_contrast_sides()
+#'
 #' res <- csi$get_contrasts()
 #'
 ContrastsMissing <- R6::R6Class(
@@ -120,8 +122,8 @@ ContrastsMissing <- R6::R6Class(
 
           result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hierarchy_keys_depth())
 
-          result_sd_zero <- result[result$n == 0, ]
-          resultnot_zero <- result[result$n > 0,]
+          result_sd_zero <- result[result$nrMeasured == 0, ]
+          resultnot_zero <- result[result$nrMeasured > 0,]
           meandf <- resultnot_zero |> summarize(n = 1, df = 1, sd = mean(sd, na.rm = TRUE), sdT = mean(sdT, na.rm = TRUE))
 
           meandf$sd <-  ifelse(meandf$sd > 0, meandf$sd, self$minsd)
@@ -144,7 +146,7 @@ ContrastsMissing <- R6::R6Class(
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
 
           if (!all) {
-            result <- select(result, -all_of( c("isSingular", "not_na" , "mean" ,"n.groups", "n", "meanAll") ) )
+            result <- select(result, -all_of( c("isSingular", "nrMeasured" , "mean" ,"n.groups", "n", "meanAll") ) )
           }
 
         }

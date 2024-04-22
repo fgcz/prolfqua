@@ -35,28 +35,23 @@ used in Acetylation project p2916
 }
 \examples{
 
-istar <- sim_lfq_data_peptide_config()
+istar <- sim_lfq_data_peptide_config(Nprot = 20,weight_missing = 2)
 config <- istar$config
 analysis <- istar$data
-config$parameter$qVal_individual_threshold <- 0.01
-
-xx <- prolfqua::remove_large_QValues(analysis, config)
-xx <- complete_cases(xx, config)
+xx <- complete_cases(analysis, config)
 nrPepTimesDilution <- length(unique(paste0(xx$protein_Id, xx$peptide_Id))) *
-    length(unique(xx$dilution.))
-tmp <- interaction_missing_stats(xx, config)
-fun <- .missigness_impute_interactions(xx, config)
-
-long <- fun("long")
-alldata <- fun("all")
+    length(unique(xx$group_))
+funx <- .missigness_impute_interactions(xx, config)
+long <- funx("long")
+alldata <- funx("all")
 stopifnot(length(names(alldata)) == 5)
 
-imputed <- fun("imputed")
+imputed <- funx("imputed")
 stopifnot(nrow(imputed) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
-missing <- fun("nrMeasured")
+missing <- funx("nrMeasured")
 stopifnot(nrow(missing) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
 
- meanAbundance <- fun("mean")
+ meanAbundance <- funx("mean")
 stopifnot(nrow(meanAbundance) == length(unique(paste0(xx$protein_Id, xx$peptide_Id))))
  stopifnot(sum(is.na(imputed$mean.imp.group_A))==0)
 

@@ -4,7 +4,7 @@
 \alias{plot_stat_violin}
 \title{plot Violin plot of sd CV or mean}
 \usage{
-plot_stat_violin(pdata, config, stat = c("CV", "mean", "sd"))
+plot_stat_violin(pdata, config, stat = c("CV", "meanAbundance", "sd"))
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -19,12 +19,12 @@ plot Violin plot of sd CV or mean
 \examples{
 
 
-bb1 <- prolfqua_data('data_ionstar')$filtered()
-config <- old2new(bb1$config$clone( deep = TRUE))
+bb1 <- prolfqua::sim_lfq_data_peptide_config()
+config <- bb1$config
 data <- bb1$data
 res <- summarize_stats(data, config)
 res <- summarize_stats(data, config)
-plot_stat_violin(res, config, stat = "mean")
+plot_stat_violin(res, config, stat = "meanAbundance")
 plot_stat_violin(res, config, stat = "sd")
 plot_stat_violin(res, config, stat = "CV")
 

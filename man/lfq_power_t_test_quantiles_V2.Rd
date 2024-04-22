@@ -29,10 +29,10 @@ estimate sample sizes
 \examples{
 
 
-#library(ggplot2)
 
-bb1 <- prolfqua_data('data_ionstar')$normalized()
-config <- old2new(bb1$config$clone( deep = TRUE))
+
+bb1 <- prolfqua::sim_lfq_data_peptide_config()
+config <- bb1$config
 data2 <- bb1$data
 stats_res <- summarize_stats(data2, config)
 xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
@@ -41,7 +41,7 @@ bbb <- dplyr::bind_rows(bbb)
 summary <- bbb |>
  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
  tidyr::spread(delta, N, sep = "=")
-summary
+
 }
 \seealso{
 Other stats: 

@@ -20,8 +20,8 @@ plot stddev vs mean to asses stability of variance
 
 
 
-bb1 <- prolfqua_data('data_ionstar')$filtered()
-config <- old2new(bb1$config$clone( deep = TRUE))
+bb1 <- prolfqua::sim_lfq_data_peptide_config()
+config <- bb1$config
 data <- bb1$data
 res <- summarize_stats(data, config)
 
