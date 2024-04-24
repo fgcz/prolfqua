@@ -46,19 +46,6 @@ ContrastsInterface <- R6::R6Class(
   )
 )
 
-.requiredContrastColumns <- c("contrast",
-                              "diff",
-                              "FDR",
-                              "df",
-                              "sigma",
-                              "statistic",
-                              "p.value",
-                              "conf.low",
-                              "conf.high")
-
-
-
-
 
 
 
@@ -77,7 +64,9 @@ merge_contrasts_results <- function(prefer, add, modelName = "mergedModel"){
   cA <- prefer$get_contrasts()
   cB <- add$get_contrasts()
 
-  stopifnot(length(setdiff(colnames(cA), colnames(cB))) == 0)
+  if (length(colnames(cA)) < length(colnames(cB))) {
+    cB <- dplyr::select(cB, colnames(cA))
+  }
 
   cA <- dplyr::filter(cA,!is.na(.data$statistic))
   moreID <- setdiff(distinct(select(cB, c(prefer$subject_Id, "contrast"))),

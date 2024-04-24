@@ -30,7 +30,8 @@ contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
 csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 
-
+contrast$get_contrasts() |> dim()
+(xx <- csi$get_contrasts())   |> dim()
 merged <- merge_contrasts_results(contrast, csi)
 
 merged$more$get_contrasts() |> dim()

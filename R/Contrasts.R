@@ -157,7 +157,7 @@ Contrasts <- R6::R6Class(
         self$contrast_result
       }
 
-      stopifnot(all(.requiredContrastColumns %in% colnames(res)))
+      stopifnot(all(super$column_description()$column_name %in% colnames(res)))
       return(res)
 
     },

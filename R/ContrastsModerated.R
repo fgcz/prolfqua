@@ -26,7 +26,8 @@
 #' bb <- contrast$get_contrasts()
 #' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 #'
-#'
+#' contrast$get_contrasts() |> dim()
+#' (xx <- csi$get_contrasts())   |> dim()
 #' merged <- merge_contrasts_results(contrast, csi)
 #'
 #' merged$more$get_contrasts() |> dim()
@@ -125,7 +126,7 @@ ContrastsModerated <- R6::R6Class(
         mname <- paste0(contrast_result$modelName,"_moderated")
       }
       contrast_result$modelName <- mname
-      stopifnot(all(.requiredContrastColumns %in% colnames(contrast_result)))
+      stopifnot(all(super$column_description()$column_name %in% colnames(contrast_result)))
 
       return(contrast_result)
     },

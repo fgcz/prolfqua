@@ -1,3 +1,4 @@
+
 # ContrastsMissing----
 #' Compute contrasts with group mean imputation
 #'
@@ -12,7 +13,9 @@
 #' @family modelling
 #' @export
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' Nprot <- 120
+#' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot,weight_missing = .4)
+#' istar$data$abundance |> is.na() |> sum()
 #' protIntensity <- istar$data
 #' config <- istar$config
 #'
@@ -21,11 +24,16 @@
 #' lProt$rename_response("transformedIntensity")
 #'
 #' Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
+#' #ContrastsMissing$debug("get_contrasts")
 #' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 #' csi$get_contrast_sides()
 #'
 #' res <- csi$get_contrasts()
-#'
+#' stopifnot(nrow(res) ==  (protIntensity$protein_Id |> unique() |> length()))
+#' res$contrast |> table()
+#' stopifnot((res$p.value |> is.na() |> sum()) == 0)
+#' plot(res$diff, -log10(res$p.value), pch = ".")
+#' csi$column_description()
 ContrastsMissing <- R6::R6Class(
   "ContrastsMissing",
   inherit = ContrastsInterface,
@@ -60,29 +68,18 @@ ContrastsMissing <- R6::R6Class(
     #' @param confint confidence interval
     #' @param p.adjust method for p-value adjustment - default Benjamini Hochberg
     #' @param modelName default "groupAverage"
-    #' @param method internal default V1
-    #' @param global default TRUE use all or per condition data to impute from
-    #' @param present in at most how many samples the protein should be observed
-    #' @param minsd if sd can not be infered, what is the prior sd?
     initialize = function(lfqdata,
                           contrasts,
                           confint = 0.95,
                           p.adjust = prolfqua::adjust_p_values,
-                          modelName = "groupAverage",
-                          method = "V1",
-                          global = TRUE,
-                          present = 1,
-                          minsd = 1){
+                          modelName = "groupAverage"
+                          ){
       self$subject_Id = lfqdata$config$table$hierarchy_keys_depth()
       self$contrasts = contrasts
       self$modelName = modelName
       self$lfqdata = lfqdata
       self$confint = confint
       self$p.adjust = p.adjust
-      private$method = method
-      self$global  = global
-      self$present = present
-      self$minsd = minsd
     },
     #' @description
     #' get contrasts sides
@@ -103,60 +100,16 @@ ContrastsMissing <- R6::R6Class(
         if (self$lfqdata$config$table$hierarchyDepth < length(self$lfqdata$config$table$hierarchy_keys())) {
           stop("hierarchy depth < hierarchy_keys(). Please aggregate first.")
         } else {
-
-          result = get_imputed_contrasts(
-            self$lfqdata$data,
-            self$lfqdata$config,
-            self$contrasts,
-            present = self$present,
-            global = self$global)
-
-          # compute statistics using pooled variance
-          result$isSingular <- TRUE
-          result <- select(result , -all_of(c("n","estimate_mad")))
-
-          var = summarize_stats(self$lfqdata$data, self$lfqdata$config)
-
-          pooled <- poolvar(var, self$lfqdata$config, method = self$method)
-          pooled <- dplyr::select(pooled ,-all_of(c(self$lfqdata$config$table$factor_keys_depth()[1],"var")))
-
-          result <- dplyr::inner_join(result, pooled, by = self$lfqdata$config$table$hierarchy_keys_depth())
-
-          result_sd_zero <- result[result$nrMeasured == 0, ]
-          resultnot_zero <- result[result$nrMeasured > 0,]
-          meandf <- resultnot_zero |> summarize(n = 1, df = 1, sd = mean(sd, na.rm = TRUE), sdT = mean(sdT, na.rm = TRUE))
-
-          meandf$sd <-  ifelse(meandf$sd > 0, meandf$sd, self$minsd)
-          meandf$sdT <-  ifelse(meandf$sdT > 0, meandf$sdT, self$minsd)
-
-          result_sd_zero$df <- 1
-          result_sd_zero$sd <- meandf$sd
-          result_sd_zero$sdT <- meandf$sdT
-          result <- bind_rows(result_sd_zero, resultnot_zero)
-
-          result <- result |> mutate(sd = ifelse(sd > 0 , sd, meandf$sd))
-          result <- result |> mutate(sdT = ifelse(sdT > 0 , sdT, meandf$sdT))
-
-          result <- dplyr::mutate(result, statistic = .data$estimate_median / .data$sdT,
-                                  p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
-
-          prqt <- -qt((1 - self$confint)/2, df = result$df)
-          result$conf.low <- result$estimate_median  - prqt * (result$sdT)
-          result$conf.high <- result$estimate_median + prqt * (result$sdT)
+          mh1 <- prolfqua::MissingHelpers$new(self$lfqdata$data, self$lfqdata$config, prob = 0.5, weighted = TRUE)
+          result <- mh1$get_contrasts(Contrasts = self$contrasts, confint = self$confint, all = all)
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
-
-          if (!all) {
-            result <- select(result, -all_of( c("isSingular", "nrMeasured" , "mean" ,"n.groups", "n", "meanAll") ) )
-          }
-
         }
-
-        result <- result |> rename(diff = estimate_median, sigma = sd, std.error = sdT )
+        result <- result |> rename(diff = estimate, sigma = sd, std.error = sdT )
         result <- mutate(result, modelName = self$modelName, .before = 1)
         self$contrast_result <- ungroup(result)
       }
       res <- self$contrast_result
-      stopifnot(all(.requiredContrastColumns %in% colnames(res)))
+      stopifnot(all(names(super$column_description()$column_name) %in% colnames(res)))
       invisible(res)
     },
     #' @description

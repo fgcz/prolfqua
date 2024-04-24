@@ -18,7 +18,9 @@ The variance of a protein is estimated using the pooled variance
 of all observations of all groups.
 }
 \examples{
-istar <- sim_lfq_data_protein_config(Nprot = 50)
+Nprot <- 120
+istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot,weight_missing = .4)
+istar$data$abundance |> is.na() |> sum()
 protIntensity <- istar$data
 config <- istar$config
 
@@ -27,11 +29,16 @@ lProt <- LFQData$new(protIntensity, config)
 lProt$rename_response("transformedIntensity")
 
 Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
+#ContrastsMissing$debug("get_contrasts")
 csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 csi$get_contrast_sides()
 
 res <- csi$get_contrasts()
-
+stopifnot(nrow(res) ==  (protIntensity$protein_Id |> unique() |> length()))
+res$contrast |> table()
+stopifnot((res$p.value |> is.na() |> sum()) == 0)
+plot(res$diff, -log10(res$p.value), pch = ".")
+csi$column_description()
 }
 \seealso{
 Other modelling: 
@@ -131,11 +138,7 @@ initialize
   contrasts,
   confint = 0.95,
   p.adjust = prolfqua::adjust_p_values,
-  modelName = "groupAverage",
-  method = "V1",
-  global = TRUE,
-  present = 1,
-  minsd = 1
+  modelName = "groupAverage"
 )}\if{html}{\out{</div>}}
 }
 
@@ -151,14 +154,6 @@ initialize
 \item{\code{p.adjust}}{method for p-value adjustment - default Benjamini Hochberg}
 
 \item{\code{modelName}}{default "groupAverage"}
-
-\item{\code{method}}{internal default V1}
-
-\item{\code{global}}{default TRUE use all or per condition data to impute from}
-
-\item{\code{present}}{in at most how many samples the protein should be observed}
-
-\item{\code{minsd}}{if sd can not be infered, what is the prior sd?}
 }
 \if{html}{\out{</div>}}
 }
