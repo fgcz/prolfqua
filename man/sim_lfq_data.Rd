@@ -29,6 +29,7 @@ simulate protein level data with two groups
 }
 \examples{
 
-sim_lfq_data(Nprot = 10)
+res <- sim_lfq_data(Nprot = 10)
 res <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE)
+
 }

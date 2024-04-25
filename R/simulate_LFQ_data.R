@@ -16,8 +16,10 @@
 #' @param prop proportion of down (D), up (U) and not regulated (N)
 #' @examples
 #'
-#' sim_lfq_data(Nprot = 10)
+#' res <- sim_lfq_data(Nprot = 10)
 #' res <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE)
+#'
+
 sim_lfq_data <- function(
     Nprot = 20,
     N = 4,
@@ -207,4 +209,47 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
 }
+
+
+#' Simulate data, protein, with config with 2 factros Treatment and Background
+#' @param description Nprot number of proteins
+#' @param with_missing add missing values, default TRUE
+#' @param seed seed for reproducibility, if NULL no seed is set.
+#' @export
+#' @examples
+#' x <- sim_lfq_data_protein_2Factor_config()
+#' stopifnot("data.frame" %in% class(x$data))
+#' stopifnot("AnalysisConfiguration" %in% class(x$config))
+#'
+sim_lfq_data_protein_2Factor_config <- function(Nprot = 10,
+                                                with_missing = TRUE,
+                                                weight_missing = 0.2,
+                                                seed = 1234){
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
+  res <- sim_lfq_data(Nprot = 10, PEPTIDE = FALSE,
+                      fc = list(A = c(D = -2,  U = 2, N = 0), B = c(D = 1, U = -4), C = c(D = -1, U = -4)),
+                      prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20), C = c(D = 15, U = 25)))
+  res <- res |> mutate(Treatment = case_when(group %in% c("Ctrl", "A") ~ "A", TRUE ~ "B"))
+  res <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
+  if (with_missing) {
+    data <- data[!which_missing(data$abundance,weight_missing = weight_missing),]
+  }
+  data$isotopeLabel <- "light"
+  data$qValue <- 0
+
+  atable <- AnalysisTableAnnotation$new()
+  atable$fileName = "sample"
+  atable$nr_children = "nr_peptides"
+  atable$factors["Treatment"] = "Treatment"
+  atable$factors["Background"] = "Background"
+  atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
+  atable$set_response("abundance")
+
+  config <- AnalysisConfiguration$new(atable)
+  adata <- setup_analysis(data, config)
+  return(list(data = adata, config = config))
+}
+
 

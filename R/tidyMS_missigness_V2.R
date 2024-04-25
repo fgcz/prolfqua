@@ -45,7 +45,7 @@ MissingHelpers <- R6::R6Class(
     get_stats = function(){
       if (is.null(self$stats)) {
         self$stats = prolfqua::summarize_stats(self$data, self$config)
-        self$stats = prolfqua::make_interaction_column(self$stats, columns = self$config$table$factor_keys_depth())
+        self$stats = prolfqua::make_interaction_column(self$stats, columns = self$config$table$factor_keys_depth(), sep = ":")
       }
       return(self$stats)
     },
