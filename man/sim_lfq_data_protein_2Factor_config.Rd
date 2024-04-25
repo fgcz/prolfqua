@@ -22,6 +22,7 @@ sim_lfq_data_protein_2Factor_config(
 Simulate data, protein, with config with 2 factros Treatment and Background
 }
 \examples{
+undebug(sim_lfq_data_protein_2Factor_config)
 x <- sim_lfq_data_protein_2Factor_config()
 stopifnot("data.frame" \%in\% class(x$data))
 stopifnot("AnalysisConfiguration" \%in\% class(x$config))

@@ -162,11 +162,28 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #'
 #' res1 <- summarize_stats(data, config)
 #'
-summarize_stats <- function(pdata, config){
+#' res2 <- prolfqua::sim_lfq_data_protein_2Factor_config()
+#' res2$config$table$factorDepth <- 2
+#' stats <- summarize_stats(res2$data, res2$config)
+#' stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys_depth(), sep = ":")
+#' stopifnot(nrow(stats) == 40)
+#'
+#' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[1])
+#' stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys()[1], sep = ":")
+#' stopifnot(nrow(stats) == 20)
+#' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[2])
+#' stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys()[2], sep = ":")
+#' stopifnot(nrow(stats) == 20)
+#'
+#' stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
+#' stopifnot(nrow(stats) == 10)
+#'
+summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys_depth()){
+  print(factor_key)
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$get_response())
   hierarchyFactor <- pdata |>
-    dplyr::group_by(!!!syms( c(config$table$hierarchy_keys(), config$table$factor_keys_depth()) )) |>
+    dplyr::group_by(!!!syms( c(config$table$hierarchy_keys(), factor_key) )) |>
     dplyr::summarize(nrReplicates = dplyr::n(),
                      nrMeasured = sum(!is.na(!!intsym)),
                      nrNAs = sum(is.na(!!intsym)),
@@ -177,12 +194,45 @@ summarize_stats <- function(pdata, config){
                      .groups = "drop_last") |>  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor |>
-    dplyr::mutate(dplyr::across(config$table$factor_keys_depth(), as.character))
+    dplyr::mutate(dplyr::across(all_of(factor_key), as.character))
   if (config$table$is_response_transformed == FALSE) {
-    hierarchyFactor |> dplyr::mutate(CV = sd/meanAbundance * 100) -> hierarchyFactor
+    hierarchyFactor <- hierarchyFactor |> dplyr::mutate(CV = sd/meanAbundance * 100)
+  }
+  if (is.null(factor_key)) {
+    hierarchyFactor <- dplyr::mutate(hierarchyFactor, !!config$table$factor_keys()[1] := "All")
   }
   return(ungroup(hierarchyFactor))
 }
+
+
+#' compute var sd etc for all factor levels
+#'
+#' @export
+#' @examples
+#' # example code
+#' res2 <- prolfqua::sim_lfq_data_protein_2Factor_config()
+#' xx <- summarize_stats_factors(res2$data, res2$config)
+#' stopifnot(nrow(xx) == 80)
+#'
+summarize_stats_factors <- function(pdata, config){
+  fac_res <- list()
+  stats <- summarize_stats(
+    pdata,
+    config)
+  fac_res[["interaction"]] <- prolfqua::make_interaction_column(stats, columns = config$table$factor_keys_depth(),sep = ":")
+
+  if (config$table$factorDepth > 1 ) { # if 1 only then done
+    for (factor in config$table$factor_keys_depth()) {
+      stats <- summarize_stats(
+        pdata,
+        config,factor_key = factor)
+      fac_res[[factor]]  <- prolfqua::make_interaction_column(stats, columns = factor, sep = ":")
+    }
+  }
+  intfact <- dplyr::bind_rows(fac_res)
+  return(intfact)
+}
+
 
 #' Compute mean, sd, and CV for e.g. Peptides, or proteins, for all samples.
 #'
@@ -201,27 +251,12 @@ summarize_stats <- function(pdata, config){
 #' res1 <- summarize_stats_all(bb$data, bb$config)
 #'
 #' stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
-#'
-summarize_stats_all <- function(pdata, config){
-  pdata <- complete_cases(pdata, config)
-  intsym <- sym(config$table$get_response())
-  hierarchy <- pdata |>
-    dplyr::group_by(!!!syms( config$table$hierarchy_keys() )) |>
-    dplyr::summarize(nrReplicates = dplyr::n(),
-                     nrMeasured = sum(!is.na(!!intsym)),
-                     sd = sd(!!intsym,na.rm = TRUE),
-                     var = sd(!!intsym,na.rm = TRUE),
-                     meanAbundance = mean(!!intsym,na.rm = TRUE),
-                     medianAbundance = median(!!intsym, na.rm = TRUE),
-                     .groups = "drop_last") |> dplyr::ungroup()
-
-  hierarchy <- dplyr::mutate(hierarchy, !!config$table$factor_keys()[1] := "All")
-  hierarchyFactor <- hierarchy
-  if (config$table$is_response_transformed == FALSE) {
-    hierarchyFactor |> dplyr::mutate(CV = sd/meanAbundance * 100) -> hierarchyFactor
-  }
-  return(ungroup(hierarchyFactor))
+#' res2 <- prolfqua::sim_lfq_data_protein_2Factor_config()
+#' resSt <- summarize_stats_all(res2$data, res2$config)
+summarize_stats_all <- function(pdata, config) {
+  summarize_stats(pdata, config, factor_key = NULL)
 }
+
 
 #' summarize stats output (compute quantiles)
 #' @param stats_res result of running `summarize_stats`
@@ -247,7 +282,6 @@ summarize_stats_all <- function(pdata, config){
 #' stats_res <- summarize_stats(data, config)
 #' sq <- summarize_stats_quantiles(stats_res, config)
 #' sq <- summarize_stats_quantiles(stats_res, config, stats = "sd")
-#'
 #' stats_res <- summarize_stats(data, config)
 #' xx <- summarize_stats_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
 #' ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_line() + geom_point()

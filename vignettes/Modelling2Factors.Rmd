@@ -110,11 +110,23 @@ Still using the approach above, we can only estimate group averages in case ther
 
 ```{r prepareForGroupAverageImputation, fig.cap="Volcano and MA plot for result visualisation for the group average model"}
 pMerged$config$table$factor_keys_depth()
+
+debug(prolfqua:::get_impute_contrasts_V1)
+prolfqua:::get_impute_contrasts_V1(pMerged,Contrasts)
+
+mh <- MissingHelpers$new(pMerged$data, pMerged$config)
+mh <- mh$get_stats()
+mh$interaction |> table()
+
+ContrastsMissing$debug("get_contrasts")
+
 contrSimple <- prolfqua::ContrastsMissing$new(pMerged, Contrasts)
 contrdfSimple <- contrSimple$get_contrasts()
 pl <- contrSimple$get_Plotter()
 pl$histogram_diff()
 pl$volcano()$FDR
+
+
 ```
 
 ## Merge nonimputed and imputed data.

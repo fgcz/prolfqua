@@ -24,16 +24,38 @@
 #' lProt$rename_response("transformedIntensity")
 #'
 #' Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
-#' #ContrastsMissing$debug("get_contrasts")
 #' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 #' csi$get_contrast_sides()
 #'
 #' res <- csi$get_contrasts()
+#'
 #' stopifnot(nrow(res) ==  (protIntensity$protein_Id |> unique() |> length()))
 #' res$contrast |> table()
 #' stopifnot((res$p.value |> is.na() |> sum()) == 0)
 #' plot(res$diff, -log10(res$p.value), pch = ".")
 #' csi$column_description()
+#' x<- csi$get_Plotter()
+#' p <- x$volcano()
+#' pdf(file = NULL)
+#' print(p)
+#' dev.off()
+#'
+#' dd <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = 100,weight_missing = 0.1)
+#'
+#' Contrasts <- c("c1" = "TreatmentA - TreatmentB",
+#'                "C2" = "BackgroundX- BackgroundZ",
+#'                "c3" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
+#'                "c4" = "`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`"
+#'                )
+#' lProt <- LFQData$new(dd$data, dd$config)
+#' lProt$rename_response("transformedIntensity")
+#'
+#' csi <- ContrastsMissing$new(lProt, contrasts = Contrasts)
+#' res <- csi$get_contrasts()
+#' pl <- csi$get_Plotter()
+#' pdf(file = NULL)
+#' pl$volcano()
+#' dev.off()
 ContrastsMissing <- R6::R6Class(
   "ContrastsMissing",
   inherit = ContrastsInterface,

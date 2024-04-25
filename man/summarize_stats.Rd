@@ -6,7 +6,7 @@
 \alias{summarize_stats_quantiles}
 \title{Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.}
 \usage{
-summarize_stats(pdata, config)
+summarize_stats(pdata, config, factor_key = config$table$factor_keys_depth())
 
 summarize_stats_all(pdata, config)
 
@@ -46,6 +46,22 @@ data <- bb$data
 
 res1 <- summarize_stats(data, config)
 
+res2 <- prolfqua::sim_lfq_data_protein_2Factor_config()
+res2$config$table$factorDepth <- 2
+stats <- summarize_stats(res2$data, res2$config)
+stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys_depth(), sep = ":")
+stopifnot(nrow(stats) == 40)
+
+stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[1])
+stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys()[1], sep = ":")
+stopifnot(nrow(stats) == 20)
+stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[2])
+stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys()[2], sep = ":")
+stopifnot(nrow(stats) == 20)
+
+stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
+stopifnot(nrow(stats) == 10)
+
 
 
 bb <- prolfqua::sim_lfq_data_protein_config()
@@ -53,7 +69,8 @@ bb <- prolfqua::sim_lfq_data_protein_config()
 res1 <- summarize_stats_all(bb$data, bb$config)
 
 stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
-
+res2 <- prolfqua::sim_lfq_data_protein_2Factor_config()
+resSt <- summarize_stats_all(res2$data, res2$config)
 library(ggplot2)
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 config <- bb1$config
@@ -68,7 +85,6 @@ config$table$get_response()
 stats_res <- summarize_stats(data, config)
 sq <- summarize_stats_quantiles(stats_res, config)
 sq <- summarize_stats_quantiles(stats_res, config, stats = "sd")
-
 stats_res <- summarize_stats(data, config)
 xx <- summarize_stats_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
 ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_line() + geom_point()

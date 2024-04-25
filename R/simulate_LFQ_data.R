@@ -217,6 +217,7 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @export
 #' @examples
+#' undebug(sim_lfq_data_protein_2Factor_config)
 #' x <- sim_lfq_data_protein_2Factor_config()
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
@@ -228,11 +229,11 @@ sim_lfq_data_protein_2Factor_config <- function(Nprot = 10,
   if (!is.null(seed)) {
     set.seed(seed)
   }
-  res <- sim_lfq_data(Nprot = 10, PEPTIDE = FALSE,
+  res <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE,
                       fc = list(A = c(D = -2,  U = 2, N = 0), B = c(D = 1, U = -4), C = c(D = -1, U = -4)),
                       prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20), C = c(D = 15, U = 25)))
   res <- res |> mutate(Treatment = case_when(group %in% c("Ctrl", "A") ~ "A", TRUE ~ "B"))
-  res <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
+  data <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
   if (with_missing) {
     data <- data[!which_missing(data$abundance,weight_missing = weight_missing),]
   }
@@ -244,6 +245,7 @@ sim_lfq_data_protein_2Factor_config <- function(Nprot = 10,
   atable$nr_children = "nr_peptides"
   atable$factors["Treatment"] = "Treatment"
   atable$factors["Background"] = "Background"
+  atable$factorDepth <- 2
   atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   atable$set_response("abundance")
 

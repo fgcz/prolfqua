@@ -20,8 +20,20 @@ mh$get_LOD()
 mh$impute_weighted_lod()
 mh$impute_lod()
 mh$get_poolvar()
-mh$get_contrast_estimates(Contrasts)
+bb <- mh$get_contrast_estimates(Contrasts)
 mh$get_contrasts(Contrasts)
+
+dd <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = 100,weight_missing = 0.1)
+
+Contrasts <- c("c1" = "TreatmentA - TreatmentB",
+               "C2" = "BackgroundX- BackgroundZ",
+               "c3" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
+               "c4" = "`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`"
+               )
+mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
+mh$get_stats()$interaction |> table()
+mh$get_contrast_estimates(Contrasts)
+
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -131,10 +143,18 @@ initialize
 \if{html}{\out{<a id="method-MissingHelpers-get_contrast_estimates"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-get_contrast_estimates}{}}}
 \subsection{Method \code{get_contrast_estimates()}}{
+get contrast estimates
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_contrast_estimates(Contrasts)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{Contrasts}}{named array with contrasts}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MissingHelpers-get_contrasts"></a>}}

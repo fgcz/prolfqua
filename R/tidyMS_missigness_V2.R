@@ -12,8 +12,20 @@
 #' mh$impute_weighted_lod()
 #' mh$impute_lod()
 #' mh$get_poolvar()
-#' mh$get_contrast_estimates(Contrasts)
+#' bb <- mh$get_contrast_estimates(Contrasts)
 #' mh$get_contrasts(Contrasts)
+#'
+#' dd <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = 100,weight_missing = 0.1)
+#'
+#' Contrasts <- c("c1" = "TreatmentA - TreatmentB",
+#'                "C2" = "BackgroundX- BackgroundZ",
+#'                "c3" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
+#'                "c4" = "`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`"
+#'                )
+#' mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
+#' mh$get_stats()$interaction |> table()
+#' mh$get_contrast_estimates(Contrasts)
+#'
 MissingHelpers <- R6::R6Class(
   "MissingHelpers",
 
@@ -44,8 +56,7 @@ MissingHelpers <- R6::R6Class(
     },
     get_stats = function(){
       if (is.null(self$stats)) {
-        self$stats = prolfqua::summarize_stats(self$data, self$config)
-        self$stats = prolfqua::make_interaction_column(self$stats, columns = self$config$table$factor_keys_depth(), sep = ":")
+        self$stats = prolfqua::summarize_stats_factors(self$data, self$config)
       }
       return(self$stats)
     },
@@ -90,6 +101,9 @@ MissingHelpers <- R6::R6Class(
       pooled <- pooled |> mutate(df = ifelse(df == 0, 1, df))
       return(pooled)
     },
+    #' @description
+    #' get contrast estimates
+    #' @param Contrasts named array with contrasts
     get_contrast_estimates = function(
       Contrasts
     ){
