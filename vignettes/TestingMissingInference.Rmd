@@ -27,9 +27,9 @@ imputed2 <- mh2$get_contrasts(Contrasts = Contrasts)
 plot(imputed$estimate, imputed2$estimate)
 abline(0 , 1 , col=2 , lwd=2)
 
-
-plot( imputed$estimate, -log10(imputed$FDR), pch = "*" )
-points(imputed2$estimate, -log10(imputed2$FDR), col = 2, pch = "x")
+mh1$get_LOD()
+plot( imputed$estimate, -log10(imputed$p.value), pch = "*" )
+points(imputed2$estimate, -log10(imputed2$p.value), col = 2, pch = "x")
 
 ```
 
@@ -41,42 +41,13 @@ points(imputed2$estimate, -log10(imputed2$FDR), col = 2, pch = "x")
 
 
 
-```{r currentImpl}
-library(prolfqua)
-
-#dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
-#dd$data$abundance |> is.na() |> sum()
-
-protIntensity <- dd$data
-config <- dd$config
-lProt <- LFQData$new(protIntensity, config)
-lProt$rename_response("transformedIntensity")
-csi <- ContrastsMissing$new(lProt, contrasts = Contrasts)
-csi$get_contrast_sides()
-xd <- csi$get_contrasts()
-
-
-xxd <- inner_join(xd,imputed2, by = c("contrast", "protein_Id"), suffix = c(".old",".new"))
-plot(xxd$diff, xxd$estimate)
-
-dev <- xxd |> dplyr::filter(abs(FDR.old - FDR.new) > 0) 
-plot(xxd$p.value.old, xxd$p.value.new)
-plot(xxd$diff, xxd$estimate)
-
-xxd2 <- inner_join(xd,imputed, by = c("contrast", "protein_Id"))
-plot(xxd2$diff, xxd2$estimate)
-
-plot(xxd2$FDR.x, xxd2$FDR.y)
-hist(xxd2$p.value.x)
-hist(xxd2$p.value.y)
-
-```
 
 
 ```{r}
+lProt <-prolfqua::LFQData$new(dd$data,dd$config)
 xx <- prolfqua:::get_impute_contrasts_V1(lProt, Contrasts, all = TRUE)
 
-dim(xx)
+
 xx <- xx |> arrange(contrast, protein_Id)
 imputed2 <- imputed2 |> arrange(contrast, protein_Id)
 plot(xx$estimate_median, imputed2$estimate)
@@ -100,7 +71,7 @@ Model with missing data
 ```{r lmModel}
 modelName <- "f_condtion_r_peptide"
 formula_Protein <-
-  strategy_lm("abundance  ~ group_",
+  prolfqua::strategy_lm("abundance  ~ group_",
               model_name = modelName)
 
 
@@ -116,7 +87,7 @@ mod$modelDF$nrcoeff_not_NA |> table()
 mod$modelDF$isSingular |> table()
 mod$modelDF |> nrow()
 mod$get_anova()
-model_summary(mod)
+prolfqua::model_summary(mod)
 
 maxcoef <- max(mod$modelDF$nrcoeff_not_NA, na.rm = TRUE)
 goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, exists_lmer == TRUE, nrcoeff_not_NA == maxcoef)
@@ -137,7 +108,8 @@ Model with lod imputation
 
 ```{r lmod2}
 loddata <- dd$data
-loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), LOD, abundance))
+
+loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), mh1$get_LOD(), abundance))
 modI <- prolfqua::build_model(
   loddata,
   formula_Protein,
@@ -164,6 +136,5 @@ m <- (modI$modelDF$linear_model[[1]])
 df.residual(m)
 sigma(m)
 vcov(m)
-
 
 ```
