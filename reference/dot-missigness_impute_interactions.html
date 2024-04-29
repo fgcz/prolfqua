@@ -19,7 +19,7 @@ impute data using mean of lowest 0.1 (default) — .missigness_impute_interactio
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -51,6 +51,9 @@ impute data using mean of lowest 0.1 (default) — .missigness_impute_interactio
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
     </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
+    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/wolski/prolfqua/" class="external-link">
@@ -69,7 +72,7 @@ impute data using mean of lowest 0.1 (default) — .missigness_impute_interactio
     <div class="page-header">
     <h1>Compute interaction averages and
 impute data using mean of lowest 0.1 (default)</h1>
-    <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/tidyMS_missigness.R" class="external-link"><code>R/tidyMS_missigness.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/DEPRECATED.R" class="external-link"><code>R/DEPRECATED.R</code></a></small>
     <div class="hidden name"><code>dot-missigness_impute_interactions.Rd</code></div>
     </div>
 
@@ -123,35 +126,30 @@ impute data using mean of lowest 0.1 (default)</h1>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">20</span>,weight_missing <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no nr_children column specified in the data, adding column nr_children and setting to 1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span></span></span>
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_individual_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.01</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="remove_large_QValues.html">remove_large_QValues</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">nrPepTimesDilution</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">protein_Id</span>, <span class="va">xx</span><span class="op">$</span><span class="va">peptide_Id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">dilution.</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `dilution.`.</span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="interaction_missing_stats.html">interaction_missing_stats</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">group_</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">funx</span> <span class="op">&lt;-</span> <span class="fu">.missigness_impute_interactions</span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deprecated</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>&gt;&gt;&gt;&gt; deprecated! &lt;&lt;&lt;&lt;</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="va">fun</span> <span class="op">&lt;-</span> <span class="fu">.missigness_impute_interactions</span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu">fun</span><span class="op">(</span><span class="st">"long"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">alldata</span> <span class="op">&lt;-</span> <span class="fu">fun</span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu">funx</span><span class="op">(</span><span class="st">"long"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">alldata</span> <span class="op">&lt;-</span> <span class="fu">funx</span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">alldata</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu">fun</span><span class="op">(</span><span class="st">"imputed"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu">funx</span><span class="op">(</span><span class="st">"imputed"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">imputed</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">protein_Id</span>, <span class="va">xx</span><span class="op">$</span><span class="va">peptide_Id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">missing</span> <span class="op">&lt;-</span> <span class="fu">fun</span><span class="op">(</span><span class="st">"nrMeasured"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">missing</span> <span class="op">&lt;-</span> <span class="fu">funx</span><span class="op">(</span><span class="st">"nrMeasured"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">missing</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">protein_Id</span>, <span class="va">xx</span><span class="op">$</span><span class="va">peptide_Id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="va">meanAbundance</span> <span class="op">&lt;-</span> <span class="fu">fun</span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">meanAbundance</span> <span class="op">&lt;-</span> <span class="fu">funx</span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">meanAbundance</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">protein_Id</span>, <span class="va">xx</span><span class="op">$</span><span class="va">peptide_Id</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">imputed</span><span class="op">$</span><span class="va">mean.imp.group_A</span><span class="op">)</span><span class="op">)</span><span class="op">==</span><span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

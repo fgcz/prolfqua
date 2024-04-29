@@ -18,7 +18,7 @@ Compute contrasts with group mean imputation"><!-- mathjax --><script src="https
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -49,6 +49,9 @@ Compute contrasts with group mean imputation"><!-- mathjax --><script src="https
     </li>
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
+    </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -198,11 +201,7 @@ of all observations of all groups.</p>
 <span>  <span class="va">contrasts</span>,</span>
 <span>  confint <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
-<span>  modelName <span class="op">=</span> <span class="st">"groupAverage"</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"V1"</span>,</span>
-<span>  global <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  present <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  minsd <span class="op">=</span> <span class="fl">1</span></span>
+<span>  modelName <span class="op">=</span> <span class="st">"groupAverage"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -226,22 +225,6 @@ of all observations of all groups.</p>
 
 <dt><code>modelName</code></dt>
 <dd><p>default "groupAverage"</p></dd>
-
-
-<dt><code>method</code></dt>
-<dd><p>internal default V1</p></dd>
-
-
-<dt><code>global</code></dt>
-<dd><p>default TRUE use all or per condition data to impute from</p></dd>
-
-
-<dt><code>present</code></dt>
-<dd><p>in at most how many samples the protein should be observed</p></dd>
-
-
-<dt><code>minsd</code></dt>
-<dd><p>if sd can not be infered, what is the prior sd?</p></dd>
 
 
 </dl><p></p></div>
@@ -323,6 +306,127 @@ of all observations of all groups.</p>
 
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">Nprot</span> <span class="op">&lt;-</span> <span class="fl">120</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="va">Nprot</span>,weight_missing <span class="op">=</span> <span class="fl">.4</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">abundance</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 283</span>
+<span class="r-in"><span><span class="va">protIntensity</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">lProt</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">protIntensity</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lProt</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"transformedIntensity"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Contr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dil.b_vs_a"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">csi</span> <span class="op">&lt;-</span> <span class="va">ContrastsMissing</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, contrasts <span class="op">=</span> <span class="va">Contr</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast   group_1 group_2   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dil.b_vs_a group_A group_Ctrl</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">csi</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group_"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span> <span class="op">==</span>  <span class="op">(</span><span class="va">protIntensity</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">contrast</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> dil.b_vs_a </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        120 </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">p.value</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">diff</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span>, pch <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="ContrastsMissing-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="fu">column_description</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           column_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> modelName   modelName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> contrast     contrast</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> avgAbd         avgAbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> diff             diff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FDR               FDR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic   statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> std.error   std.error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> df                 df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p.value       p.value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conf.low     conf.low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conf.high   conf.high</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma           sigma</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                            description</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> modelName                                                                                type of model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> contrast                                                      name of difference e.g. group1_vs_group2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> avgAbd                                                  mean abundance value of protein in all samples</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> diff                                                                       difference among conditions</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> FDR                                                                               false discovery rate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic                                                                                 t-statistics</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> std.error                                                                               standard error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> df                                                                                  degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p.value                                                                                        p-value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conf.low                                                         lower value of 95 confidence interval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> conf.high                                                         high value of 95 confidence interval</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sigma     residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).</span>
+<span class="r-in"><span><span class="va">x</span><span class="op">&lt;-</span> <span class="va">csi</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">pdf</a></span><span class="op">(</span>file <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $FDR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pdf </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2 </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_2Factor_config.html">sim_lfq_data_protein_2Factor_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>,weight_missing <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"c1"</span> <span class="op">=</span> <span class="st">"TreatmentA - TreatmentB"</span>,</span></span>
+<span class="r-in"><span>               <span class="st">"C2"</span> <span class="op">=</span> <span class="st">"BackgroundX- BackgroundZ"</span>,</span></span>
+<span class="r-in"><span>               <span class="st">"c3"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`"</span>,</span></span>
+<span class="r-in"><span>               <span class="st">"c4"</span> <span class="op">=</span> <span class="st">"`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`"</span></span></span>
+<span class="r-in"><span>               <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lProt</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lProt</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"transformedIntensity"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">csi</span> <span class="op">&lt;-</span> <span class="va">ContrastsMissing</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, contrasts <span class="op">=</span> <span class="va">Contrasts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">csi</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Treatment"  "Background"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Treatment"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Background"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c1=TreatmentA - TreatmentB</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> C2=BackgroundX- BackgroundZ</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c3=`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c4=`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c1=TreatmentA - TreatmentB</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> C2=BackgroundX- BackgroundZ</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c3=`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c4=`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c1=TreatmentA - TreatmentB</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> C2=BackgroundX- BackgroundZ</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c3=`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> c4=`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`</span>
+<span class="r-in"><span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">csi</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html" class="external-link">pdf</a></span><span class="op">(</span>file <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pl</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $FDR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pdf </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2 </span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

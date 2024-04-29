@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -49,6 +49,9 @@
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
     </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
+    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/wolski/prolfqua/" class="external-link">
@@ -75,7 +78,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sim_lfq_data_protein_config</span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sim_lfq_data_protein_config</span><span class="op">(</span></span>
+<span>  Nprot <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  weight_missing <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">1234</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">

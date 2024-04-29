@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -67,6 +67,9 @@
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
     </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -95,7 +98,7 @@ Estimation</h1>
                         <h4 data-toc-skip class="author">Witold
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">05 April, 2024</h4>
+            <h4 data-toc-skip class="date">29 April, 2024</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/vignettes/QCandSampleSize.Rmd" class="external-link"><code>vignettes/QCandSampleSize.Rmd</code></a></small>
       <div class="hidden name"><code>QCandSampleSize.Rmd</code></div>
@@ -189,6 +192,8 @@ plotted the distribution of the peptide intensities in the samples
 coefficient of variation CV for all peptides in the samples (Figure
 @ref(fig:intensityDistribution)). Table @ref(tab:printTable) summarises
 the CV.</p>
+<pre><code><span><span class="co">## [1] "dilution."</span></span>
+<span><span class="co">## NULL</span></span></code></pre>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/plotDistributions-1.png" alt="Density plot of peptide level Coefficient of Variations (CV)." width="768"><p class="caption">
 Density plot of peptide level Coefficient of Variations (CV).
@@ -296,6 +301,8 @@ Pairsplot - scatterplot of samples.
 <pre><code><span><span class="co">## NULL</span></span></code></pre>
 <p>(ref:sdviolinplots) Visualization of peptide standard deviations. A)
 all. B) - for low (bottom 50) and high intensity (top 50).</p>
+<pre><code><span><span class="co">## [1] "dilution."</span></span>
+<span><span class="co">## NULL</span></span></code></pre>
 <div class="figure" style="text-align: center">
 <img src="QCandSampleSize_files/figure-html/sdviolinplots-1.png" alt="(ref:sdviolinplots)" width="768"><p class="caption">
 (ref:sdviolinplots)

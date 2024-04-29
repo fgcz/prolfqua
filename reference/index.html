@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -48,6 +48,9 @@
     </li>
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
+    </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -163,6 +166,10 @@ Create various visualization of the LFQdata</p></td>
         </td>
         <td><p>Likelihood ratio test</p></td>
       </tr><tr><td>
+          <p><code><a href="MissingHelpers.html">MissingHelpers</a></code> </p>
+        </td>
+        <td><p>compute group mean by LOD</p></td>
+      </tr><tr><td>
           <p><code><a href="Model.html">Model</a></code> </p>
         </td>
         <td><p>R6 class representing modelling result</p></td>
@@ -203,7 +210,11 @@ Create various visualization of the LFQdata</p></td>
         </td>
         <td><p>Merge contrast results coming from two different model.</p></td>
       </tr><tr><td>
-          <p><code><a href="nr_obs.html">nr_obs()</a></code> </p>
+          <p><code><a href="nr_obs_experiment.html">nr_obs_experiment()</a></code> </p>
+        </td>
+        <td><p>Aggregates e.g. protein abundances from peptide abundances</p></td>
+      </tr><tr><td>
+          <p><code><a href="nr_obs_sample.html">nr_obs_sample()</a></code> </p>
         </td>
         <td><p>Aggregates e.g. protein abundances from peptide abundances</p></td>
       </tr><tr><td>
@@ -224,6 +235,10 @@ prolfqua 0.5</p></td>
         </td>
         <td><p>Simulate data, protein and peptide, with config</p></td>
       </tr><tr><td>
+          <p><code><a href="sim_lfq_data_protein_2Factor_config.html">sim_lfq_data_protein_2Factor_config()</a></code> </p>
+        </td>
+        <td><p>Simulate data, protein, with config with 2 factros Treatment and Background</p></td>
+      </tr><tr><td>
           <p><code><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config()</a></code> </p>
         </td>
         <td><p>Simulate data, protein, with config</p></td>
@@ -235,6 +250,10 @@ prolfqua 0.5</p></td>
           <p><code><a href="strategy.html">strategy_lmer()</a></code> <code><a href="strategy.html">strategy_lm()</a></code> <code><a href="strategy.html">strategy_rlm()</a></code> <code><a href="strategy.html">strategy_glm()</a></code> </p>
         </td>
         <td><p>Create custom lmer model</p></td>
+      </tr><tr><td>
+          <p><code><a href="summarize_stats_factors.html">summarize_stats_factors()</a></code> </p>
+        </td>
+        <td><p>compute var sd etc for all factor levels</p></td>
       </tr><tr><td>
           <p><code><a href="which_missing.html">which_missing()</a></code> </p>
         </td>

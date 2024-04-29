@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -48,6 +48,9 @@
     </li>
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
+    </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -125,26 +128,34 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb1</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">normalized</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="old2new.html">old2new</a></span><span class="op">(</span><span class="va">bb1</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span> deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb1</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no nr_children column specified in the data, adding column nr_children and setting to 1.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">config</span></span></span>
 <span class="r-in"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Intensities are not transformed yet.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group_"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">summary</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   quantile probs        sd FC=2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      50%   0.5 0.1964909    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      60%   0.6 0.2398376    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      70%   0.7 0.2951539    3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      80%   0.8 0.3731692    4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      90%   0.9 0.5566183    6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      50%   0.5 0.8606778   13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      60%   0.6 1.0041074   17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      70%   0.7 1.0808016   20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      80%   0.8 1.2819172   27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      90%   0.9 1.4827429   36</span>
 <span class="r-in"><span><span class="va">stats_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats</a></span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group_"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">stats_res</span><span class="op">$</span><span class="va">dilution.</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "a" "b" "c" "d" "e"</span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span>, delta <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Intensities are not transformed yet.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group_"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">lfq_power_t_test_quantiles</span><span class="op">(</span><span class="va">data2</span>, <span class="va">config</span>, delta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Intensities are not transformed yet.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group_"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

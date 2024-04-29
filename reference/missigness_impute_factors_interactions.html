@@ -20,7 +20,7 @@ should generalize at some stage"><!-- mathjax --><script src="https://cdnjs.clou
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -52,6 +52,9 @@ should generalize at some stage"><!-- mathjax --><script src="https://cdnjs.clou
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
     </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
+    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/wolski/prolfqua/" class="external-link">
@@ -70,7 +73,7 @@ should generalize at some stage"><!-- mathjax --><script src="https://cdnjs.clou
     <div class="page-header">
     <h1>compute per group averages and impute values
 should generalize at some stage</h1>
-    <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/tidyMS_missigness.R" class="external-link"><code>R/tidyMS_missigness.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/DEPRECATED.R" class="external-link"><code>R/DEPRECATED.R</code></a></small>
     <div class="hidden name"><code>missigness_impute_factors_interactions.Rd</code></div>
     </div>
 
@@ -127,7 +130,7 @@ should generalize at some stage</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>weight_missing <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no nr_children column specified in the data, adding column nr_children and setting to 1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
@@ -136,16 +139,41 @@ should generalize at some stage</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">missigness_impute_factors_interactions</span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> !!!! deprecated !!!!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deprecated</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>&gt;&gt;&gt;&gt; deprecated! &lt;&lt;&lt;&lt;</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">missigness_impute_factors_interactions</span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span>, value <span class="op">=</span> <span class="st">"imputed"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> !!!! deprecated !!!!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deprecated</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>&gt;&gt;&gt;&gt; deprecated! &lt;&lt;&lt;&lt;</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">missigness_impute_factors_interactions</span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span>, value <span class="op">=</span> <span class="st">"nrMeasured"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> !!!! deprecated !!!!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deprecated</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>&gt;&gt;&gt;&gt; deprecated! &lt;&lt;&lt;&lt;</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span><span class="co">#debug(missigness_impute_factors_interactions)</span></span></span>
 <span class="r-in"><span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu">missigness_impute_factors_interactions</span><span class="op">(</span><span class="va">xx</span>, <span class="va">config</span>, value <span class="op">=</span> <span class="st">"long"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> !!!! deprecated !!!!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deprecated</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>&gt;&gt;&gt;&gt; deprecated! &lt;&lt;&lt;&lt;</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">long</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   group_ protein_Id  peptide_Id isotopeLabel nrReplicates nrNAs meanAbundance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A      0EfVhX~0087 ITLb4x1q   light                   4     4         <span style="color: #BB0000;">NaN</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> A      0EfVhX~0087 ahQLlQY7   light                   4     0          25.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> A      0EfVhX~0087 dJkdz7so   light                   4     4         <span style="color: #BB0000;">NaN</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> A      7cbcrd~5725 D5dQ4nKk   light                   4     2          29.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> A      9VUkAq~4703 eIC06D7g   light                   4     4         <span style="color: #BB0000;">NaN</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> A      BEJI92~5282 HBkZvdhT   light                   4     3          19.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: medianAbundance &lt;dbl&gt;, nrMeasured &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   interaction &lt;fct&gt;, imputed &lt;dbl&gt;</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">long</span><span class="op">$</span><span class="va">meanAbundance</span>, <span class="va">long</span><span class="op">$</span><span class="va">imputed</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="missigness_impute_factors_interactions-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </div>

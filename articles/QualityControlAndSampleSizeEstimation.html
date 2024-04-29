@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -67,6 +67,9 @@
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
     </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -94,7 +97,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2024-04-05</h4>
+            <h4 data-toc-skip class="date">2024-04-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/vignettes/QualityControlAndSampleSizeEstimation.Rmd" class="external-link"><code>vignettes/QualityControlAndSampleSizeEstimation.Rmd</code></a></small>
       <div class="hidden name"><code>QualityControlAndSampleSizeEstimation.Rmd</code></div>
@@ -197,8 +200,11 @@ Intensity distribution of proteins depending on # of missing values
 <p>Other important statistics that can be easily calculated from the
 object are coefficient of variation, means and standard deviations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span> <span class="va">stats</span><span class="op">$</span><span class="fu">stats_quantiles</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">wide</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"quantile of "</span>,<span class="va">stats</span><span class="op">$</span><span class="va">stat</span> <span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "group_"</span></span>
+<span><span class="co">## NULL</span></span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span> <span class="va">stats</span><span class="op">$</span><span class="fu">stats_quantiles</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">wide</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"quantile of "</span>,<span class="va">stats</span><span class="op">$</span><span class="va">stat</span> <span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>quantile of CV</caption>
 <thead><tr class="header">
@@ -246,7 +252,7 @@ object are coefficient of variation, means and standard deviations.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">density_median</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="QualityControlAndSampleSizeEstimation_files/figure-html/cvDistr-1.png" alt="Distribution of CV's" width="700"><p class="caption">
@@ -255,7 +261,7 @@ Distribution of CV’s
 </div>
 <p>In the next figure we show the dependency of the standard deviation
 with respect to the mean intensitiy of the proteins.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stdm_raw</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">stdv_vs_mean</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -272,14 +278,14 @@ Scatter plot of standard deviation vs mean
 z-scaling. The <span class="math inline">\(log_2\)</span> stabilizes the
 variance, while the z-scaling removes systematic differences from the
 samples.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lt</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">transformed</span> <span class="op">&lt;-</span> <span class="va">lt</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span>
 <span><span class="va">transformed</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">is_response_transformed</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
 <p>Again we want to look into the distribution of the intensities in our
 samples after normalization.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pl</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -289,7 +295,7 @@ Normalized intensities.
 </div>
 <p>plots matrix scatter plot in the upper right matrix and some
 statistics in the lower left matrix.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">pairs_smooth</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="QualityControlAndSampleSizeEstimation_files/figure-html/plotScatterMatrix-1.png" alt="Scatterplot matrix" width="700"><p class="caption">
@@ -298,7 +304,7 @@ Scatterplot matrix
 </div>
 <pre><code><span><span class="co">## NULL</span></span></code></pre>
 <p>plots protein heatmap:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span> </span>
 <span><span class="va">p</span> </span></code></pre></div>
 <div class="figure" style="text-align: 5">
@@ -308,16 +314,16 @@ Heatmap, Rows - proteins, Columns - samples
 </div>
 <p>We can also look at the correlation among the samples or look at a
 PCA plot.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hc</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">heatmap_cor</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hc</span></span></code></pre></div>
 <div class="figure" style="text-align: 5">
 <img src="QualityControlAndSampleSizeEstimation_files/figure-html/plotHeatmapCor-1.png" alt="Heatmap based on sample correlations, Rows - samples, Columns - samples" width="700"><p class="caption">
 Heatmap based on sample correlations, Rows - samples, Columns - samples
 </p>
 </div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">pca</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: 5">
 <img src="QualityControlAndSampleSizeEstimation_files/figure-html/doPCA-1.png" alt="Principal component analysis for all samples" width="700"><p class="caption">
@@ -325,9 +331,12 @@ Principal component analysis for all samples
 </p>
 </div>
 <p>prints the standard deviations:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">stats</span><span class="op">$</span><span class="fu">stats_quantiles</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">wide</span>, <span class="st">"Standard deviations"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "group_"</span></span>
+<span><span class="co">## NULL</span></span></code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">stats</span><span class="op">$</span><span class="fu">stats_quantiles</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">wide</span>, <span class="st">"Standard deviations"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Standard deviations</caption>
 <thead><tr class="header">
@@ -376,7 +385,7 @@ Principal component analysis for all samples
 </tbody>
 </table>
 <p>plots density of the standard deviation</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">density_median</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="QualityControlAndSampleSizeEstimation_files/figure-html/sddensity-1.png" alt="Density of the standard deviation" width="700"><p class="caption">
@@ -385,7 +394,7 @@ Density of the standard deviation
 </div>
 <p>Check for heteroskedasticity. After transformation, the standard
 deviation should be independent of the mean intensity.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stdm_trans</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">stdv_vs_mean</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">stdm_trans</span></span></code></pre></div>
 <div class="figure">
@@ -393,7 +402,7 @@ deviation should be independent of the mean intensity.</p>
 Scatter plot of sd vs mean of protein intensity
 </p>
 </div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#gridExtra::grid.arrange(stdm_raw, stdm_trans, nrow=1)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -408,11 +417,13 @@ samples are necessary per group to quantify properly a two-fold change
 significance level of 0.05.</p>
 <p>First, we need to filter our data for <code>group_</code> <em>A</em>
 only.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">transformedA</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">transformedA</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">transformedA</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_</span>  <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span>
 <span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="va">transformedA</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## [1] "group_"</span></span>
+<span><span class="co">## NULL</span></span></code></pre>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">density</span><span class="op">(</span>ggstat <span class="op">=</span> <span class="st">"ecdf"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-2-1.png" alt="Empirical cumulative density function of the standard deviation for all the proteins in the dataset." width="700"><p class="caption">
@@ -424,7 +435,7 @@ the proteins in the dataset.
 for 90% of all the proteins should be accurately quantified with a power
 of 0.8 (at 0.05 significance level) one would need to have 10 samples in
 each group.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sampleSize</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">power_t_test_quantiles</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_</span> <span class="op">!=</span> <span class="st">"All"</span><span class="op">)</span></span>
 <span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">sampleSize</span>, <span class="st">"Sample sizes. delta - Effect size, N - samplesize"</span><span class="op">)</span></span></code></pre></div>
@@ -580,7 +591,7 @@ each group.</p>
 <p>The table summarises visually how many samples are needed for
 different expected differences (in log2-scale) and different portions of
 all proteins.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sampleSize</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">probs</span><span class="op">)</span> , y <span class="op">=</span> <span class="va">N</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">delta</span><span class="op">)</span> <span class="op">+</span></span>
@@ -594,50 +605,55 @@ the standard deviation.
 <p>It is also possible to get the statistics for each protein in each
 group. The information includes group size, number of observations,
 standard deviation, variance, mean.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">stats</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
-<span><span class="co">##   protein_Id  peptide_Id group_     n not_na      sd        var  mean</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~0087 ITLb4x1q   A          4      3 0.154   0.023<span style="text-decoration: underline;">6</span>      4.19</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0EfVhX~0087 ahQLlQY7   A          4      4 0.062<span style="text-decoration: underline;">0</span>  0.003<span style="text-decoration: underline;">85</span>     4.74</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0EfVhX~0087 dJkdz7so   A          4      2 0.182   0.033<span style="text-decoration: underline;">0</span>      3.97</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> 7cbcrd~5725 D5dQ4nKk   A          4      4 0.050<span style="text-decoration: underline;">9</span>  0.002<span style="text-decoration: underline;">59</span>     4.96</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> 9VUkAq~4703 eIC06D7g   A          4      4 0.094<span style="text-decoration: underline;">6</span>  0.008<span style="text-decoration: underline;">95</span>     4.16</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> BEJI92~5282 HBkZvdhT   A          4      2 0.003<span style="text-decoration: underline;">05</span> 0.000<span style="text-decoration: underline;">009</span>29  4.25</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co">##   protein_Id  peptide_Id group_ nrReplicates nrMeasured nrNAs      sd        var</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~0087 ITLb4x1q   A                 4          3     1 0.154   0.023<span style="text-decoration: underline;">6</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0EfVhX~0087 ahQLlQY7   A                 4          4     0 0.062<span style="text-decoration: underline;">0</span>  0.003<span style="text-decoration: underline;">85</span>   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0EfVhX~0087 dJkdz7so   A                 4          2     2 0.182   0.033<span style="text-decoration: underline;">0</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> 7cbcrd~5725 D5dQ4nKk   A                 4          4     0 0.050<span style="text-decoration: underline;">9</span>  0.002<span style="text-decoration: underline;">59</span>   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> 9VUkAq~4703 eIC06D7g   A                 4          4     0 0.094<span style="text-decoration: underline;">6</span>  0.008<span style="text-decoration: underline;">95</span>   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> BEJI92~5282 HBkZvdhT   A                 4          2     2 0.003<span style="text-decoration: underline;">05</span> 0.000<span style="text-decoration: underline;">009</span>29</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: meanAbundance &lt;dbl&gt;, medianAbundance &lt;dbl&gt;</span></span></span></code></pre>
 <p>You can also estimate the sample size needed to perform differential
 expression analysis for each protein, given the <code>power</code>,
 <code>delta</code>, and <code>sig.level</code>. The next figure shows
 the distribution of needed sample sizes for all proteins with a power of
 0.8 at signifiance level 0.05 for a two fold change (delta = 1).</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">power_t_test</span><span class="op">(</span>delta <span class="op">=</span> <span class="fl">1</span>,power <span class="op">=</span> <span class="fl">0.8</span>, sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span>,<span class="va">protein_Id</span><span class="op">)</span></span>
 <span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span>,<span class="op">]</span>, caption <span class="op">=</span> <span class="st">"Sample size for each protein"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Sample size for each protein</caption>
 <colgroup>
-<col width="13%">
+<col width="9%">
+<col width="8%">
+<col width="5%">
+<col width="10%">
+<col width="8%">
+<col width="4%">
+<col width="7%">
+<col width="7%">
+<col width="10%">
 <col width="12%">
-<col width="8%">
-<col width="3%">
-<col width="8%">
-<col width="11%">
-<col width="11%">
-<col width="10%">
-<col width="6%">
-<col width="10%">
-<col width="3%">
+<col width="4%">
+<col width="7%">
+<col width="2%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">protein_Id</th>
 <th align="left">peptide_Id</th>
 <th align="left">group_</th>
-<th align="right">n</th>
-<th align="right">not_na</th>
+<th align="right">nrReplicates</th>
+<th align="right">nrMeasured</th>
+<th align="right">nrNAs</th>
 <th align="right">sd</th>
 <th align="right">var</th>
-<th align="right">mean</th>
+<th align="right">meanAbundance</th>
+<th align="right">medianAbundance</th>
 <th align="right">delta</th>
 <th align="right">N_exact</th>
 <th align="right">N</th>
@@ -649,8 +665,10 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">2</td>
+<td align="right">2</td>
 <td align="right">0.1816806</td>
 <td align="right">0.0330078</td>
+<td align="right">3.971469</td>
 <td align="right">3.971469</td>
 <td align="right">1</td>
 <td align="right">2.023422</td>
@@ -662,9 +680,11 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">3</td>
+<td align="right">1</td>
 <td align="right">0.2392614</td>
 <td align="right">0.0572460</td>
 <td align="right">4.094835</td>
+<td align="right">3.997946</td>
 <td align="right">1</td>
 <td align="right">2.344670</td>
 <td align="right">3</td>
@@ -675,9 +695,11 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">4</td>
+<td align="right">0</td>
 <td align="right">0.1871014</td>
 <td align="right">0.0350069</td>
 <td align="right">5.482917</td>
+<td align="right">5.406550</td>
 <td align="right">1</td>
 <td align="right">2.050429</td>
 <td align="right">3</td>
@@ -688,9 +710,11 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">3</td>
+<td align="right">1</td>
 <td align="right">0.1535287</td>
 <td align="right">0.0235710</td>
 <td align="right">4.190351</td>
+<td align="right">4.178250</td>
 <td align="right">1</td>
 <td align="right">1.892113</td>
 <td align="right">2</td>
@@ -701,9 +725,11 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">4</td>
+<td align="right">0</td>
 <td align="right">0.0620097</td>
 <td align="right">0.0038452</td>
 <td align="right">4.742744</td>
+<td align="right">4.735435</td>
 <td align="right">1</td>
 <td align="right">1.533666</td>
 <td align="right">2</td>
@@ -714,9 +740,11 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">4</td>
+<td align="right">0</td>
 <td align="right">0.0508679</td>
 <td align="right">0.0025875</td>
 <td align="right">4.956022</td>
+<td align="right">4.964554</td>
 <td align="right">1</td>
 <td align="right">1.500024</td>
 <td align="right">2</td>
@@ -727,16 +755,18 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">4</td>
+<td align="right">0</td>
 <td align="right">0.0945821</td>
 <td align="right">0.0089458</td>
 <td align="right">4.159728</td>
+<td align="right">4.182873</td>
 <td align="right">1</td>
 <td align="right">1.654299</td>
 <td align="right">2</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">N</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">delta</span><span class="op">)</span> <span class="op">+</span></span>
@@ -753,11 +783,11 @@ for all the proteins.
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.3.2 (2023-10-31)</span></span>
 <span><span class="co">## Platform: aarch64-apple-darwin20 (64-bit)</span></span>
-<span><span class="co">## Running under: macOS Sonoma 14.2.1</span></span>
+<span><span class="co">## Running under: macOS Sonoma 14.4.1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib </span></span>
@@ -778,7 +808,7 @@ for all the proteins.
 <span><span class="co">##  [9] tools_4.3.2        generics_0.1.3     tibble_3.2.1       fansi_1.0.6       </span></span>
 <span><span class="co">## [13] highr_0.10         pkgconfig_2.0.3    pheatmap_1.0.12    Matrix_1.6-5      </span></span>
 <span><span class="co">## [17] KernSmooth_2.23-22 data.table_1.15.2  RColorBrewer_1.1-3 desc_1.4.3        </span></span>
-<span><span class="co">## [21] lifecycle_1.0.4    prolfqua_1.2.2     compiler_4.3.2     farver_2.1.1      </span></span>
+<span><span class="co">## [21] lifecycle_1.0.4    prolfqua_1.2.3     compiler_4.3.2     farver_2.1.1      </span></span>
 <span><span class="co">## [25] stringr_1.5.1      textshaping_0.3.7  munsell_0.5.0      htmltools_0.5.7   </span></span>
 <span><span class="co">## [29] sass_0.4.8         yaml_2.3.8         lazyeval_0.2.2     plotly_4.10.4     </span></span>
 <span><span class="co">## [33] pillar_1.9.0       pkgdown_2.0.7      jquerylib_0.1.4    tidyr_1.3.1       </span></span>

@@ -18,7 +18,7 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -49,6 +49,9 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
     </li>
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
+    </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -319,13 +322,16 @@ Limma moderated contrasts"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-in"><span><span class="va">csi</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, contrasts <span class="op">=</span> <span class="va">Contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50 13</span>
+<span class="r-in"><span><span class="op">(</span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">csi</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>   <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group_"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50 20</span>
 <span class="r-in"><span><span class="va">merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span><span class="va">contrast</span>, <span class="va">csi</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-in"><span></span></span>

@@ -18,7 +18,7 @@ peptide fold change is computed based on the average of intensities in the condi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -50,6 +50,9 @@ peptide fold change is computed based on the average of intensities in the condi
     <li>
       <a href="../articles/SimulateData.html">Simulate Peptide level Data</a>
     </li>
+    <li>
+      <a href="../articles/TestingMissingInference.html">Impute</a>
+    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/wolski/prolfqua/" class="external-link">
@@ -67,7 +70,7 @@ peptide fold change is computed based on the average of intensities in the condi
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>compute contrasts based on peptide fold changes</h1>
-    <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/tidyMS_missigness.R" class="external-link"><code>R/tidyMS_missigness.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/DEPRECATED.R" class="external-link"><code>R/DEPRECATED.R</code></a></small>
     <div class="hidden name"><code>get_imputed_contrasts.Rd</code></div>
     </div>
 
@@ -77,7 +80,7 @@ peptide fold change is computed based on the average of intensities in the condi
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_imputed_contrasts</span><span class="op">(</span><span class="va">pepIntensity</span>, <span class="va">config</span>, <span class="va">Contr</span>, present <span class="op">=</span> <span class="fl">1</span>, global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_imputed_contrasts</span><span class="op">(</span><span class="va">pepIntensity</span>, <span class="va">config</span>, <span class="va">Contr</span>, present <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -158,23 +161,26 @@ peptide fold change is computed based on the average of intensities in the condi
 <span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">parameter</span><span class="op">$</span><span class="va">qVal_individual_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.01</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="remove_large_QValues.html">remove_large_QValues</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="complete_cases.html">complete_cases</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dilution.b-a"</span> <span class="op">=</span> <span class="st">"group_A - group_B"</span>, <span class="st">"dilution.c-e"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#debug(get_imputed_contrasts)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">get_imputed_contrasts</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, <span class="va">Contrasts</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> !!!!deprecated!!!!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> !!!! deprecated !!!!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deprecated</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>&gt;&gt;&gt;&gt; deprecated! &lt;&lt;&lt;&lt;</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=group_A - group_B</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=group_A - group_Ctrl</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=group_A - group_B</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.c-e=group_A - group_Ctrl</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">config</span></span></span>
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="va">Contrasts</span></span></span>
 <span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="missigness_impute_factors_interactions.html">missigness_impute_factors_interactions</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, value <span class="op">=</span> <span class="st">"imputed"</span> <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> !!!! deprecated !!!!</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> deprecated</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>&gt;&gt;&gt;&gt; deprecated! &lt;&lt;&lt;&lt;</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_contrast.html">get_contrast</a></span><span class="op">(</span><span class="va">imputed</span>, <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">contrasts</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dilution.b-a=group_A - group_B</span>
