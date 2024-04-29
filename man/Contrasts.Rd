@@ -28,8 +28,9 @@ mod <- build_model(
 prolfqua::model_summary(mod)
  Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
     "dil.e_vs_b" = "group_A - group_Ctrl" )
-#Contrasts$debug("get_contrasts")
+#prolfqua::Contrasts$debug("get_contrasts")
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
+contrastX$get_linfct(global=FALSE)
 contrastX$get_contrasts()
 contrastX$get_contrast_sides()
 contrastX$column_description()
@@ -132,7 +133,7 @@ create Contrast
   model,
   contrasts,
   p.adjust = prolfqua::adjust_p_values,
-  global = TRUE,
+  global = FALSE,
   modelName = "WaldTest"
 )}\if{html}{\out{</div>}}
 }

@@ -20,7 +20,7 @@ modelSummary_A <- data_modellingResult_A
 m <- get_complete_model_fit(modelSummary_A$modelProtein)
 
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-factor_contrasts
+class(factor_contrasts)
 class(factor_contrasts)
 factor_levelContrasts <- contrasts_linfct( m,
         factor_contrasts,

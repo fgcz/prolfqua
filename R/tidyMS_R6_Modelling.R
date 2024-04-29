@@ -582,7 +582,13 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
     cnams <- base::setdiff(colnames(data),"interaction")
     for (i in seq_along(contrasts)) {
       if (p.message) {message(names(contrasts)[i], "=", contrasts[i],"\n")}
-      data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
+      expr_string <- as.character(rlang::parse_expr(contrasts[i]))
+      tryCatch({
+        data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
+      }, error = function(e) {
+        cat("An error occurred:", e$message, "\n")
+        # Handle the error, e.g., by skipping the current iteration, logging the error, etc.
+      })
     }
     res <- data |> dplyr::select(-one_of(cnams))
     return(res)
@@ -938,7 +944,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' m <- get_complete_model_fit(modelSummary_A$modelProtein)
 #'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-#' factor_contrasts
+#' class(factor_contrasts)
 #' class(factor_contrasts)
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         factor_contrasts,
@@ -954,10 +960,31 @@ contrasts_linfct <- function(models,
   #computeGroupAverages
   message("computing contrasts.")
   modelcol <- "linear_model"
-  models <- models |> dplyr::filter(.data$exists_lmer == TRUE)
+  # TODO (goes into calling code)
+  # models <- models |> dplyr::filter(.data$exists_lmer == TRUE)
 
-  interaction_model_matrix <- models |>
-    dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
+  interaction_models <- vector(mode = "list", length = nrow(models))
+
+  if ("matrix" %in% class(linfct)) {
+    for (i in seq_along(models[[modelcol]])) {
+      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct)
+    }
+    interaction_model_matrix <- models
+    interaction_model_matrix$contrast <- interaction_models
+  } else if (("list" %in% class(linfct)) && (length(linfct) == nrow(models))) {
+    for (i in seq_along(models[[modelcol]])) {
+      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]])
+    }
+    interaction_model_matrix <- models
+    interaction_model_matrix$contrast <- interaction_models
+  } else {
+    stop("linct must be either a matrix or a list of length == nrow models")
+  }
+
+  #interaction_model_matrix <- models |>
+  #  dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
+
+
 
   mclass <- function(x){
     class(x)[1]

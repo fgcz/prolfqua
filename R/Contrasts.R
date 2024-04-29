@@ -23,8 +23,9 @@
 #' prolfqua::model_summary(mod)
 #'  Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
 #'     "dil.e_vs_b" = "group_A - group_Ctrl" )
-#' #Contrasts$debug("get_contrasts")
+#' #prolfqua::Contrasts$debug("get_contrasts")
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
+#' contrastX$get_linfct(global=FALSE)
 #' contrastX$get_contrasts()
 #' contrastX$get_contrast_sides()
 #' contrastX$column_description()
@@ -62,10 +63,10 @@ Contrasts <- R6::R6Class(
     initialize = function(model,
                           contrasts,
                           p.adjust = prolfqua::adjust_p_values,
-                          global = TRUE,
+                          global = FALSE,
                           modelName = "WaldTest"
     ){
-      self$models = model$modelDF
+      self$models = model$modelDF |> dplyr::filter(exists_lmer == TRUE)
       self$contrasts = contrasts
       self$contrastfun = model$model_strategy$contrast_fun
       self$modelName =  modelName
@@ -90,22 +91,26 @@ Contrasts <- R6::R6Class(
       linfct <- function(model, contrast){
         linfct <- linfct_from_model(model, as_list = FALSE)
         linfct <- unique(linfct) # needed for single factor models
-        namtmp <- paste0("avg_",names(self$contrasts))
-        tmp <- paste0("(", gsub(" - ", " + ", self$contrasts), ")/2")
-        names(tmp) <- namtmp
-        cntrasts <- c(self$contrasts, tmp)
-        linfct_A <- linfct_matrix_contrasts(linfct, cntrasts)
+        # namtmp <- paste0("avg_",names(self$contrasts))
+        # tmp <- paste0("(", gsub(" - ", " + ", self$contrasts), ")/2")
+        # names(tmp) <- namtmp
+        # cntrasts <- c(self$contrasts, tmp)
+        linfct_A <- linfct_matrix_contrasts(linfct, contrast)
         return( linfct_A )
       }
       if (global) {
-        models <- self$models |> dplyr::filter(exists_lmer == TRUE)
-        model <- get_complete_model_fit(models)$linear_model[[1]]
+
+        model <- get_complete_model_fit(self$models)$linear_model[[1]]
         res <- linfct( model, self$contrasts )
         return( res )
+
       }else{
-        linfct <- purrr::map(self$models$linear_model,
-                             linfct, contrast = self$contrast)
-        return(linfct)
+
+        res <- vector(mode = "list", nrow(self$models))
+        for (i in seq_along(self$models$linear_model)) {
+          res[[i]] <- linfct(self$models$linear_model[[i]], contrast = self$contrasts)
+        }
+        return(res)
       }
     },
     #' @description
@@ -120,12 +125,13 @@ Contrasts <- R6::R6Class(
         linfct <- self$get_linfct(global = self$global)
         #contrast_sides <- self$get_contrast_sides()
         message("compute contrasts:")
+        # TODO (goes into calling code)
         contrast_result <- contrasts_linfct(
           self$models,
           linfct,
           subject_Id = self$subject_Id,
-          contrastfun = self$contrastfun ) |>
-          ungroup()
+          contrastfun = self$contrastfun )
+        contrast_result <- ungroup(contrast_result)
 
         contrast_result <- dplyr::rename(contrast_result, contrast = lhs, diff = estimate)
 

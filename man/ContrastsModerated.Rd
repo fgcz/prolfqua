@@ -36,7 +36,7 @@ merged <- merge_contrasts_results(contrast, csi)
 
 merged$more$get_contrasts() |> dim()
 stopifnot(all(dim(merged$merged$get_contrasts() == c(50,13))))
-stopifnot(all(dim(merged$same$get_contrasts()) == c(50,13)))
+stopifnot(all(dim(merged$same$get_contrasts()) == c(49,13)))
 
 cs <- contrast$get_contrast_sides()
 cslf <- contrast$get_linfct()

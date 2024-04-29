@@ -1,0 +1,9 @@
+raw.file,condition,replicate
+glucose_r1,glucose,1
+glucose_r2,glucose,2
+Psfilm_r1,Psfilm,1
+Psfilm_r2,Psfilm,2
+Psfilm_r3,Psfilm,3
+Psfoam_r1,Psfoam,1
+Psfoam_r2,Psfoam,2
+Psfoam_r3,Psfoam,3
