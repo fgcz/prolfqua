@@ -17,14 +17,27 @@ linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
 linfct_matrix_contrasts
 }
 \examples{
-m <- prolfqua_data('data_basicModel_p1807')
-linfct <- linfct_from_model(m,as_list = FALSE)
-linfct
 
-Contrasts <- c("CMPvsMEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
-"NOvsHU" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
-linfct_matrix_contrasts(linfct, Contrasts )
+m <- make_model( " ~ Treatment + Background")
+Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
+    "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
+    "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
+    "IntoflintoB" = "`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`",
+    "IntoflintoX" = "`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`",
+    "IntoflintoZ" = "`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`",
+    "interactXZ" = "IntoflintoX - IntoflintoZ",
+    "interactAB" = "IntoflintoA - IntoflintoB"
+     )
+linfct <- linfct_from_model(m, as_list = FALSE)
+x<- linfct_matrix_contrasts(linfct, Contr )
+stopifnot(sum(x["interactXZ",]) ==0 )
+stopifnot(sum(x["interactAB",]) ==0 )
 
+m <- make_model( " ~ Treatment * Background")
+linfct <- linfct_from_model(m, as_list = FALSE)
+x<- linfct_matrix_contrasts(linfct, Contr )
+stopifnot(sum(x["interactXZ",]) ==1 )
+stopifnot(sum(x["interactAB",]) ==1 )
 }
 \seealso{
 Other modelling: 

@@ -17,9 +17,8 @@ my_contrast_V1(incomplete, linfct, confint = 0.95)
 handles incomplete models by setting coefficients to 0
 }
 \examples{
-m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+m <- make_model( " ~ Treatment + Background")
 linfct <- linfct_from_model(m)$linfct_factors
-m
 my_contrast_V1(m, linfct, confint = 0.95)
 my_contrast_V1(m, linfct, confint = 0.99)
 }

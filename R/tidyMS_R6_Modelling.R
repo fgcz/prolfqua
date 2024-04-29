@@ -556,6 +556,21 @@ linfct_from_model <- function(m, as_list = TRUE){
   }
 }
 
+#' make interaction model for examples
+#' @export
+#' @example path.R
+make_model <- function(model = " ~ Treatment * Background"){
+  istar <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = 1,with_missing = FALSE)
+  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  modelFunction <- strategy_lm(paste0(istar$response(), model))
+  mod <- build_model(
+    istar,
+    modelFunction)
+  return(mod$modelDF$linear_model[[1]])
+}
+
+
+
 #' linfct_matrix_contrasts
 #' @export
 #' @param linfct linear functions as created by linfct_from_model
@@ -565,14 +580,27 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_basicModel_p1807')
-#' linfct <- linfct_from_model(m,as_list = FALSE)
-#' linfct
 #'
-#' Contrasts <- c("CMPvsMEP - HSC" = "`CelltypeCMP/MEP` - `CelltypeHSC`",
-#' "NOvsHU" = "`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`")
-#' linfct_matrix_contrasts(linfct, Contrasts )
+#' m <- make_model( " ~ Treatment + Background")
+#' Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
+#'     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
+#'     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
+#'     "IntoflintoB" = "`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`",
+#'     "IntoflintoX" = "`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`",
+#'     "IntoflintoZ" = "`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`",
+#'     "interactXZ" = "IntoflintoX - IntoflintoZ",
+#'     "interactAB" = "IntoflintoA - IntoflintoB"
+#'      )
+#' linfct <- linfct_from_model(m, as_list = FALSE)
+#' x<- linfct_matrix_contrasts(linfct, Contr )
+#' stopifnot(sum(x["interactXZ",]) ==0 )
+#' stopifnot(sum(x["interactAB",]) ==0 )
 #'
+#' m <- make_model( " ~ Treatment * Background")
+#' linfct <- linfct_from_model(m, as_list = FALSE)
+#' x<- linfct_matrix_contrasts(linfct, Contr )
+#' stopifnot(sum(x["interactXZ",]) ==1 )
+#' stopifnot(sum(x["interactAB",]) ==1 )
 linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")
@@ -606,10 +634,8 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- prolfqua_data('data_basicModel_p1807')
-#' m
+#' m <- make_model( " ~ Treatment * Background")
 #' linfct <- linfct_from_model(m)
-#'
 #' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 #' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 #'
@@ -633,9 +659,8 @@ linfct_all_possible_contrasts <- function(lin_int ){
 #' @keywords internal
 #' @examples
 #'
-#' m <- prolfqua_data('data_basicModel_p1807')
+#' m <- make_model( " ~ Treatment * Background")
 #' xl <- linfct_factors_contrasts(m)
-#' xl
 #' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_factors_contrasts(m)
 linfct_factors_contrasts <- function(m){
@@ -664,12 +689,12 @@ linfct_factors_contrasts <- function(m){
 #' @keywords internal
 #' @examples
 #'
-#' mb <- prolfqua_data('data_basicModel_p1807')
+#' mb <- make_model( " ~ Treatment * Background")
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #'
-#' m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+#' m <-  make_model( " ~ Treatment + Background")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
@@ -723,7 +748,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #' @keywords internal
 #' @examples
 #'
-#' m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+#' m <-  make_model( " ~ Treatment + Background")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast(m, linfct, confint = 0.95)
@@ -781,9 +806,8 @@ my_contrast <- function(m,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+#' m <- make_model( " ~ Treatment + Background")
 #' linfct <- linfct_from_model(m)$linfct_factors
-#' m
 #' my_contrast_V1(m, linfct, confint = 0.95)
 #' my_contrast_V1(m, linfct, confint = 0.99)
 my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
@@ -810,7 +834,7 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_modellingResult_A')$modelProtein$linear_model[[1]]
+#' m <- make_model( " ~ Treatment + Background")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)
