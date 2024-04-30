@@ -10,7 +10,7 @@ linfct_all_possible_contrasts(lin_int)
 create all possible contrasts
 }
 \examples{
-m <- make_model( " ~ Treatment * Background")
+m <- make_model( "interaction")
 linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)

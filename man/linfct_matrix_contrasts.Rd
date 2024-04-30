@@ -18,7 +18,7 @@ linfct_matrix_contrasts
 }
 \examples{
 
-m <- make_model( " ~ Treatment + Background")
+m <- make_model( "factors")
 Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
@@ -33,7 +33,7 @@ x<- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==0 )
 stopifnot(sum(x["interactAB",]) ==0 )
 
-m <- make_model( " ~ Treatment * Background")
+m <- make_model( "interaction")
 linfct <- linfct_from_model(m, as_list = FALSE)
 x<- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==1 )

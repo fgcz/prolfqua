@@ -28,7 +28,7 @@ compute contrasts for full models
 }
 \examples{
 
-m <-  make_model( " ~ Treatment + Background")
+m <-  make_model( "factors")
 linfct <- linfct_from_model(m)$linfct_factors
 my_glht(m, linfct)
 my_contrast(m, linfct, confint = 0.95)

@@ -11,12 +11,12 @@ apply multcomp::glht method to linfct
 }
 \examples{
 
-mb <- make_model( " ~ Treatment * Background")
+mb <- make_model( "interaction")
 linfct <- linfct_from_model(mb)
 names(linfct)
 my_glht(mb, linfct$linfct_factors)
 
-m <-  make_model( " ~ Treatment + Background")
+m <-  make_model( "factors")
 linfct <- linfct_from_model(m)$linfct_factors
 my_glht(m, linfct)
 

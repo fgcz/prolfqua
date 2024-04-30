@@ -17,7 +17,7 @@ my_contrast_V1(incomplete, linfct, confint = 0.95)
 handles incomplete models by setting coefficients to 0
 }
 \examples{
-m <- make_model( " ~ Treatment + Background")
+m <- make_model( "factors")
 linfct <- linfct_from_model(m)$linfct_factors
 my_contrast_V1(m, linfct, confint = 0.95)
 my_contrast_V1(m, linfct, confint = 0.99)

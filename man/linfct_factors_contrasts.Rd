@@ -11,7 +11,7 @@ create contrasts between factor levels
 }
 \examples{
 
-m <- make_model( " ~ Treatment * Background")
+m <- make_model( "interaction")
 xl <- linfct_factors_contrasts(m)
 m <- lm(Petal.Width ~ Species, data = iris)
 linfct_factors_contrasts(m)

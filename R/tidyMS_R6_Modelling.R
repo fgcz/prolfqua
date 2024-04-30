@@ -603,7 +603,7 @@ make_model <- function(model = c("factors", "interaction")){
 #' @keywords internal
 #' @examples
 #'
-#' m <- make_model( " ~ Treatment + Background")
+#' m <- make_model( "factors")
 #' Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
 #'     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
 #'     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
@@ -618,7 +618,7 @@ make_model <- function(model = c("factors", "interaction")){
 #' stopifnot(sum(x["interactXZ",]) ==0 )
 #' stopifnot(sum(x["interactAB",]) ==0 )
 #'
-#' m <- make_model( " ~ Treatment * Background")
+#' m <- make_model( "interaction")
 #' linfct <- linfct_from_model(m, as_list = FALSE)
 #' x<- linfct_matrix_contrasts(linfct, Contr )
 #' stopifnot(sum(x["interactXZ",]) ==1 )
@@ -656,7 +656,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- make_model( " ~ Treatment * Background")
+#' m <- make_model( "interaction")
 #' linfct <- linfct_from_model(m)
 #' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 #' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
@@ -681,7 +681,7 @@ linfct_all_possible_contrasts <- function(lin_int ){
 #' @keywords internal
 #' @examples
 #'
-#' m <- make_model( " ~ Treatment * Background")
+#' m <- make_model( "interaction")
 #' xl <- linfct_factors_contrasts(m)
 #' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_factors_contrasts(m)
@@ -711,12 +711,12 @@ linfct_factors_contrasts <- function(m){
 #' @keywords internal
 #' @examples
 #'
-#' mb <- make_model( " ~ Treatment * Background")
+#' mb <- make_model( "interaction")
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #'
-#' m <-  make_model( " ~ Treatment + Background")
+#' m <-  make_model( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
@@ -770,7 +770,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #' @keywords internal
 #' @examples
 #'
-#' m <-  make_model( " ~ Treatment + Background")
+#' m <-  make_model( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast(m, linfct, confint = 0.95)
@@ -828,7 +828,7 @@ my_contrast <- function(m,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- make_model( " ~ Treatment + Background")
+#' m <- make_model( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V1(m, linfct, confint = 0.95)
 #' my_contrast_V1(m, linfct, confint = 0.99)
@@ -856,7 +856,7 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- make_model( " ~ Treatment + Background")
+#' m <- make_model( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)

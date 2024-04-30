@@ -17,7 +17,7 @@ my_contrast_V2(m, linfct, confint = 0.95)
 only keeps non NA coefficients.
 }
 \examples{
-m <- make_model( " ~ Treatment + Background")
+m <- make_model( "factors")
 linfct <- linfct_from_model(m)$linfct_factors
 my_contrast_V2(m, linfct, confint = 0.95)
 my_contrast_V2(m, linfct, confint = 0.99)
