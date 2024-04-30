@@ -567,9 +567,9 @@ linfct_from_model <- function(m, as_list = TRUE){
 build_models <- function(model = c("factors", "interaction"), Nprot = 10, with_missing = TRUE, weight_missing = 1) {
   model <- match.arg(model)
   model <- if (model == "factors") {
-     "~ Treatment * Background"
+     "~ Treatment + Background"
   } else {
-    "~ Treatment + Background"
+    "~ Treatment * Background"
   }
   istar <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = Nprot, with_missing = with_missing, weight_missing = weight_missing)
   istar <- prolfqua::LFQData$new(istar$data,istar$config)
@@ -984,8 +984,6 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' @export
 #' @keywords internal
 #' @examples
-#' #data("data_modellingResult_A")
-#' #modelSummary_A <- data_modellingResult_A
 #' modelSummary_A <- build_models()
 #' m <- get_complete_model_fit(modelSummary_A$modelDF)
 #'

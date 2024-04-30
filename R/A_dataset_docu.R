@@ -76,16 +76,6 @@ NULL
 "data_SAINTe_output"
 
 
-#' Model for debugging
-#' @family data
-#' @keywords internal
-#' @docType data
-#' @format a linear model
-"data_modellingResult_A"
-
-# #@usage data_modellingResult_A <- prolfqua_data("data_modellingResult_A")
-
-
 
 #' Model for debugging
 #' @family data

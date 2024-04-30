@@ -15,8 +15,6 @@ contrasts_linfct(
 used in p2621, p2109
 }
 \examples{
-#data("data_modellingResult_A")
-#modelSummary_A <- data_modellingResult_A
 modelSummary_A <- build_models()
 m <- get_complete_model_fit(modelSummary_A$modelDF)
 
