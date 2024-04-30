@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.4</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@
 <span class="r-in"><span><span class="va">istar_data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">normalize_log2_robscale</span><span class="op">(</span><span class="va">istar_data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_peptide.intensity</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15020 rows [1, 2, 3, 4, 5, 6,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 15500 rows [1, 2, 3, 4, 5, 6,</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span></span></span>

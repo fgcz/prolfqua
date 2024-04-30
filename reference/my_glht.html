@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.4</span>
       </span>
     </div>
 
@@ -126,35 +126,36 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_basicModel_p1807'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mb</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_model.html">make_model</a></span><span class="op">(</span> <span class="st">" ~ Treatment * Background"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">mb</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "linfct_factors"      "linfct_interactions"</span>
 <span class="r-in"><span><span class="fu">my_glht</span><span class="op">(</span><span class="va">mb</span>, <span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>USE ONLY WITH LM models lmerModLmerTest</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast          null.value estimate std.error statistic adj.p.value conf.low</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CelltypeCMP/MEP            0   -<span style="color: #BB0000;">0.663</span>     0.343     -<span style="color: #BB0000;">1.93</span>      0.053<span style="text-decoration: underline;">5</span>    -<span style="color: #BB0000;">1.34</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CelltypeHSC                0   -<span style="color: #BB0000;">0.529</span>     0.343     -<span style="color: #BB0000;">1.54</span>      0.123     -<span style="color: #BB0000;">1.20</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> class_therapyc.NO          0   -<span style="color: #BB0000;">0.535</span>     0.344     -<span style="color: #BB0000;">1.55</span>      0.120     -<span style="color: #BB0000;">1.21</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> class_therapyp.HU          0   -<span style="color: #BB0000;">0.635</span>     0.344     -<span style="color: #BB0000;">1.84</span>      0.065<span style="text-decoration: underline;">3</span>    -<span style="color: #BB0000;">1.31</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> class_therapyp.NO          0   -<span style="color: #BB0000;">0.618</span>     0.344     -<span style="color: #BB0000;">1.80</span>      0.072<span style="text-decoration: underline;">4</span>    -<span style="color: #BB0000;">1.29</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: conf.high &lt;dbl&gt;, df &lt;dbl&gt;, sigma &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast    null.value estimate std.error statistic adj.p.value conf.low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> BackgroundX          0     18.6     0.322      57.8    4.44<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>     17.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> BackgroundZ          0     18.2     0.322      56.4    6.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>     17.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> TreatmentA           0     18.8     0.322      58.2    4.44<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>     18.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> TreatmentB           0     18.1     0.322      56.1    6.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>     17.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: conf.high &lt;dbl&gt;, df &lt;int&gt;, sigma &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_modellingResult_A'</span><span class="op">)</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span>  <span class="fu"><a href="make_model.html">make_model</a></span><span class="op">(</span> <span class="st">" ~ Treatment + Background"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">$</span><span class="va">linfct_factors</span></span></span>
 <span class="r-in"><span><span class="fu">my_glht</span><span class="op">(</span><span class="va">m</span>, <span class="va">linfct</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast         null.value estimate std.error statistic adj.p.value conf.low</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> InterventionCTRL          0     3.38     0.128      26.3           0     3.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> InterventionINT           0     3.34     0.137      24.3           0     3.07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> MortalityM0               0     3.43     0.110      31.2           0     3.21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> MortalityM1               0     3.30     0.159      20.8           0     2.98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> NRSNRS_3                  0     3.40     0.162      21.0           0     3.08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> NRSNRS_4                  0     3.23     0.160      20.2           0     2.92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> NRSNRS_5                  0     3.45     0.160      21.6           0     3.14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast    null.value estimate std.error statistic adj.p.value conf.low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> BackgroundX          0     18.6     0.551      33.8    4.62<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span>     17.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> BackgroundZ          0     18.2     0.551      33.0    6.29<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span>     17.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> TreatmentA           0     18.8     0.551      34.1    4.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span>     17.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> TreatmentB           0     18.1     0.551      32.8    6.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span>     16.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: conf.high &lt;dbl&gt;, df &lt;int&gt;, sigma &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

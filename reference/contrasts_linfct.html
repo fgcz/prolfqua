@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.4</span>
       </span>
     </div>
 
@@ -94,19 +94,8 @@
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">modelSummary_A</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span> <span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">factor_contrasts</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    (Intercept) MortalityM1 InterventionINT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM0 - MortalityM1                    0          -1               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL - InterventionINT           0           0              -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3 - NRSNRS_4                          0           0               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3 - NRSNRS_5                          0           0               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_4 - NRSNRS_5                          0           0               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    NRSNRS_4 NRSNRS_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM0 - MortalityM1                 0        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL - InterventionINT        0        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3 - NRSNRS_4                      -1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3 - NRSNRS_5                       0       -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_4 - NRSNRS_5                       1       -1</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">factor_contrasts</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix" "array" </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">factor_contrasts</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix" "array" </span>
 <span class="r-in"><span><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu">contrasts_linfct</span><span class="op">(</span> <span class="va">m</span>,</span></span>

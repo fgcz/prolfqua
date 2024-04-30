@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.4</span>
       </span>
     </div>
 
@@ -139,41 +139,33 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_basicModel_p1807'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span>,as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">linfct</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeCMP/MEP                             1         0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeHSC                                 1         0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO                           1         1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU                           1         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO                           1         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP           1         1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeHSC               1         1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP           1         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC               1         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP           1         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC               1         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   class_therapyp.NO CelltypeHSC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeCMP/MEP                           0.3333333         0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeHSC                               0.3333333         1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO                         0.0000000         0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU                         0.0000000         0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO                         1.0000000         0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP         0.0000000         0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeHSC             0.0000000         1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP         0.0000000         0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC             0.0000000         1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP         1.0000000         0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC             1.0000000         1.0</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_model.html">make_model</a></span><span class="op">(</span> <span class="st">" ~ Treatment + Background"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-in"><span><span class="va">Contr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TreatmentA_vs_B"</span> <span class="op">=</span> <span class="st">"TreatmentA - TreatmentB"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"BackgroundX_vs_Z"</span> <span class="op">=</span> <span class="st">"BackgroundX - BackgroundZ"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"IntoflintoA"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"IntoflintoB"</span> <span class="op">=</span> <span class="st">"`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"IntoflintoX"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"IntoflintoZ"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"interactXZ"</span> <span class="op">=</span> <span class="st">"IntoflintoX - IntoflintoZ"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"interactAB"</span> <span class="op">=</span> <span class="st">"IntoflintoA - IntoflintoB"</span></span></span>
+<span class="r-in"><span>     <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span>, as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span><span class="op">&lt;-</span> <span class="fu">linfct_matrix_contrasts</span><span class="op">(</span><span class="va">linfct</span>, <span class="va">Contr</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"interactXZ"</span>,<span class="op">]</span><span class="op">)</span> <span class="op">==</span><span class="fl">0</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"interactAB"</span>,<span class="op">]</span><span class="op">)</span> <span class="op">==</span><span class="fl">0</span> <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CMPvsMEP - HSC"</span> <span class="op">=</span> <span class="st">"`CelltypeCMP/MEP` - `CelltypeHSC`"</span>,</span></span>
-<span class="r-in"><span><span class="st">"NOvsHU"</span> <span class="op">=</span> <span class="st">"`class_therapyc.NO:CelltypeCMP/MEP` - `class_therapyp.HU:CelltypeCMP/MEP`"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">linfct_matrix_contrasts</span><span class="op">(</span><span class="va">linfct</span>, <span class="va">Contrasts</span> <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept) class_therapyc.NO class_therapyp.NO CelltypeHSC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CMPvsMEP - HSC           0                 0                 0          -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NOvsHU                   0                 1                 0           0</span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_model.html">make_model</a></span><span class="op">(</span> <span class="st">" ~ Treatment * Background"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span>, as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span><span class="op">&lt;-</span> <span class="fu">linfct_matrix_contrasts</span><span class="op">(</span><span class="va">linfct</span>, <span class="va">Contr</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"interactXZ"</span>,<span class="op">]</span><span class="op">)</span> <span class="op">==</span><span class="fl">1</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"interactAB"</span>,<span class="op">]</span><span class="op">)</span> <span class="op">==</span><span class="fl">1</span> <span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>

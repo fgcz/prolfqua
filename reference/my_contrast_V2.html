@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.4</span>
       </span>
     </div>
 
@@ -139,42 +139,33 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_modellingResult_A'</span><span class="op">)</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="make_model.html">make_model</a></span><span class="op">(</span> <span class="st">" ~ Treatment + Background"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">$</span><span class="va">linfct_factors</span></span></span>
 <span class="r-in"><span><span class="fu">my_contrast_V2</span><span class="op">(</span><span class="va">m</span>, <span class="va">linfct</span>, confint <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                               lhs     sigma  df estimate std.error statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL InterventionCTRL 0.9867255 115 3.381898 0.1283747  26.34396</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionINT   InterventionINT 0.9867255 115 3.343456 0.1373261  24.34684</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM0           MortalityM0 0.9867255 115 3.426428 0.1097702  31.21457</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM1           MortalityM1 0.9867255 115 3.298926 0.1588808  20.76353</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3                 NRSNRS_3 0.9867255 115 3.404597 0.1619077  21.02801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_4                 NRSNRS_4 0.9867255 115 3.231769 0.1596257  20.24591</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_5                 NRSNRS_5 0.9867255 115 3.451666 0.1595214  21.63763</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       p.value conf.low conf.high</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL 1.535612e-50 3.127613  3.636184</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionINT  3.386937e-47 3.071440  3.615473</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM0      5.590555e-58 3.208995  3.643862</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM1      1.039621e-40 2.984214  3.613639</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3         3.276337e-41 3.083889  3.725305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_4         1.021351e-39 2.915581  3.547957</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_5         2.363770e-42 3.135685  3.767647</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     lhs    sigma df estimate std.error statistic      p.value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundX BackgroundX 1.557675 13 18.63959 0.5507212  33.84577 4.612815e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundZ BackgroundZ 1.557675 13 18.19440 0.5507212  33.03740 6.294815e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentA   TreatmentA 1.557675 13 18.75377 0.5507212  34.05311 4.264271e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentB   TreatmentB 1.557675 13 18.08021 0.5507212  32.83007 6.825487e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             conf.low conf.high</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundX 17.44983  19.82935</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundZ 17.00464  19.38416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentA  17.56401  19.94353</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentB  16.89045  19.26998</span>
 <span class="r-in"><span><span class="fu">my_contrast_V2</span><span class="op">(</span><span class="va">m</span>, <span class="va">linfct</span>, confint <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                               lhs     sigma  df estimate std.error statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL InterventionCTRL 0.9867255 115 3.381898 0.1283747  26.34396</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionINT   InterventionINT 0.9867255 115 3.343456 0.1373261  24.34684</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM0           MortalityM0 0.9867255 115 3.426428 0.1097702  31.21457</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM1           MortalityM1 0.9867255 115 3.298926 0.1588808  20.76353</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3                 NRSNRS_3 0.9867255 115 3.404597 0.1619077  21.02801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_4                 NRSNRS_4 0.9867255 115 3.231769 0.1596257  20.24591</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_5                 NRSNRS_5 0.9867255 115 3.451666 0.1595214  21.63763</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       p.value conf.low conf.high</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionCTRL 1.535612e-50 3.045652  3.718145</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> InterventionINT  3.386937e-47 2.983764  3.703149</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM0      5.590555e-58 3.138912  3.713945</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MortalityM1      1.039621e-40 2.882776  3.715076</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_3         3.276337e-41 2.980519  3.828675</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_4         1.021351e-39 2.813668  3.649870</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NRSNRS_5         2.363770e-42 3.033838  3.869494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     lhs    sigma df estimate std.error statistic      p.value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundX BackgroundX 1.557675 13 18.63959 0.5507212  33.84577 4.612815e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundZ BackgroundZ 1.557675 13 18.19440 0.5507212  33.03740 6.294815e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentA   TreatmentA 1.557675 13 18.75377 0.5507212  34.05311 4.264271e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentB   TreatmentB 1.557675 13 18.08021 0.5507212  32.83007 6.825487e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             conf.low conf.high</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundX 16.98066  20.29851</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundZ 16.53547  19.85332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentA  17.09485  20.41269</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentB  16.42129  19.73914</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
