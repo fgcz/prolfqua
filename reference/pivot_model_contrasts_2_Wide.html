@@ -100,6 +100,7 @@
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="build_model.html">build_model</a>()</code>,
+<code><a href="build_models.html">build_models</a>()</code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact</a>()</code>,
 <code><a href="get_anova_df.html">get_anova_df</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
@@ -110,6 +111,7 @@
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a>()</code>,
 <code><a href="linfct_from_model.html">linfct_from_model</a>()</code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a>()</code>,
+<code><a href="make_model.html">make_model</a>()</code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results</a>()</code>,
 <code><a href="model_analyse.html">model_analyse</a>()</code>,
 <code><a href="model_summary.html">model_summary</a>()</code>,
@@ -130,10 +132,10 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_factor_levelContrasts'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">pivot_model_contrasts_2_Wide</span><span class="op">(</span><span class="va">dd</span>, subject_Id <span class="op">=</span> <span class="st">"Compound"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>,<span class="fl">16</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># this function is used by the contrast classes to implement the to wide method</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </div>

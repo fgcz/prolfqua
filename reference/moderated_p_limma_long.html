@@ -110,6 +110,7 @@
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="build_model.html">build_model</a>()</code>,
+<code><a href="build_models.html">build_models</a>()</code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact</a>()</code>,
 <code><a href="get_anova_df.html">get_anova_df</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
@@ -120,6 +121,7 @@
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a>()</code>,
 <code><a href="linfct_from_model.html">linfct_from_model</a>()</code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a>()</code>,
+<code><a href="make_model.html">make_model</a>()</code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results</a>()</code>,
 <code><a href="model_analyse.html">model_analyse</a>()</code>,
 <code><a href="model_summary.html">model_summary</a>()</code>,
@@ -141,24 +143,21 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">modelSummary_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_modellingResult_A'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">modelSummary_A</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_models.html">build_models</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="contrasts_linfct.html">contrasts_linfct</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">modelSummary_A</span><span class="op">$</span><span class="va">modelProtein</span>,</span></span>
+<span class="r-in"><span>  <span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span>,</span></span>
 <span class="r-in"><span>  <span class="va">factor_contrasts</span>,</span></span>
-<span class="r-in"><span>  subject_Id <span class="op">=</span> <span class="st">"Compound"</span>,</span></span>
+<span class="r-in"><span>  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span></span>
 <span class="r-in"><span>  contrastfun <span class="op">=</span> <span class="va">my_contrast_V2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing contrasts.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mmm</span> <span class="op">&lt;-</span> <span class="fu">moderated_p_limma_long</span><span class="op">(</span><span class="va">factor_levelContrasts</span>, group_by_col <span class="op">=</span> <span class="st">"lhs"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mmm</span><span class="op">$</span><span class="va">p.value</span>, <span class="va">mmm</span><span class="op">$</span><span class="va">moderated.p.value</span>, log <span class="op">=</span> <span class="st">"xy"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="moderated_p_limma_long-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># updating lmer model</span></span></span>
 </code></pre></div>
     </div>
   </div>

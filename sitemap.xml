@@ -151,6 +151,9 @@
     <loc>/reference/build_model.html</loc>
   </url>
   <url>
+    <loc>/reference/build_models.html</loc>
+  </url>
+  <url>
     <loc>/reference/complete_cases.html</loc>
   </url>
   <url>
@@ -196,16 +199,10 @@
     <loc>/reference/data_correlatedPeptideList.html</loc>
   </url>
   <url>
-    <loc>/reference/data_factor_levelContrasts.html</loc>
-  </url>
-  <url>
     <loc>/reference/data_interactionModel_p1807.html</loc>
   </url>
   <url>
     <loc>/reference/data_ionstar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_modellingResult_A.html</loc>
   </url>
   <url>
     <loc>/reference/data_multigroupFC.html</loc>

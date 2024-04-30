@@ -89,22 +89,19 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"data_modellingResult_A"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modelSummary_A</span> <span class="op">&lt;-</span> <span class="va">data_modellingResult_A</span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">modelSummary_A</span><span class="op">$</span><span class="va">modelProtein</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">modelSummary_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_models.html">build_models</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">modelSummary_A</span><span class="op">$</span><span class="va">modelDF</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span> <span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">factor_contrasts</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix" "array" </span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">factor_contrasts</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix" "array" </span>
 <span class="r-in"><span><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu">contrasts_linfct</span><span class="op">(</span> <span class="va">m</span>,</span></span>
 <span class="r-in"><span>        <span class="va">factor_contrasts</span>,</span></span>
-<span class="r-in"><span>        subject_Id <span class="op">=</span> <span class="st">"Compound"</span>,</span></span>
+<span class="r-in"><span>        subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span></span>
 <span class="r-in"><span>        contrastfun <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="my_contrast_V2.html">my_contrast_V2</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing contrasts.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#usethis::use_data(factor_levelContrasts, overwrite = TRUE)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
