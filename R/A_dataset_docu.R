@@ -176,17 +176,6 @@ NULL
 # #@usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 
 
-# data_factor_levelContrasts <- factor_levelContrasts
-# usethis::use_data(data_factor_levelContrasts, compress = TRUE, overwrite = TRUE)
-# file.remove("data/factor_levelContrasts.rda")
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_factor_levelContrasts'
-
-# #@usage data_factor_levelContrasts <- prolfqua_data("data_factor_levelContrasts")
 
 
 #' example data for check

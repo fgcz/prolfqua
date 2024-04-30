@@ -15,9 +15,8 @@ pivot_model_contrasts_2_Wide(
 pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
 }
 \examples{
-dd <- prolfqua_data('data_factor_levelContrasts')
-tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
-stopifnot(all(dim(tmp) == c(30,16)))
+
+# this function is used by the contrast classes to implement the to wide method
 
 }
 \seealso{
@@ -33,6 +32,7 @@ Other modelling:
 \code{\link{LR_test}()},
 \code{\link{Model}},
 \code{\link{build_model}()},
+\code{\link{build_models}()},
 \code{\link{contrasts_fisher_exact}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -43,6 +43,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{make_model}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},

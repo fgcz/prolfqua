@@ -21,22 +21,17 @@ Moderate p-value for long table
 }
 \examples{
 
-
-modelSummary_A <- prolfqua_data('data_modellingResult_A')
-m <- get_complete_model_fit(modelSummary_A$modelProtein)
+mod <- build_models()
+m <- get_complete_model_fit(mod$modelDF)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 factor_levelContrasts <- contrasts_linfct(
-  modelSummary_A$modelProtein,
+  mod$modelDF,
   factor_contrasts,
-  subject_Id = "Compound",
+  subject_Id = "protein_Id",
   contrastfun = my_contrast_V2)
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 
-plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
-abline(0,1, col = 2)
-
-# updating lmer model
 }
 \seealso{
 Other modelling: 
@@ -51,6 +46,7 @@ Other modelling:
 \code{\link{LR_test}()},
 \code{\link{Model}},
 \code{\link{build_model}()},
+\code{\link{build_models}()},
 \code{\link{contrasts_fisher_exact}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -61,6 +57,7 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{make_model}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},

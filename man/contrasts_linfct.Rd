@@ -15,19 +15,17 @@ contrasts_linfct(
 used in p2621, p2109
 }
 \examples{
-data("data_modellingResult_A")
-modelSummary_A <- data_modellingResult_A
-m <- get_complete_model_fit(modelSummary_A$modelProtein)
+#data("data_modellingResult_A")
+#modelSummary_A <- data_modellingResult_A
+modelSummary_A <- build_models()
+m <- get_complete_model_fit(modelSummary_A$modelDF)
 
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-class(factor_contrasts)
-class(factor_contrasts)
 factor_levelContrasts <- contrasts_linfct( m,
         factor_contrasts,
-        subject_Id = "Compound",
+        subject_Id = "protein_Id",
         contrastfun = prolfqua::my_contrast_V2)
 
-#usethis::use_data(factor_levelContrasts, overwrite = TRUE)
 
 }
 \keyword{internal}

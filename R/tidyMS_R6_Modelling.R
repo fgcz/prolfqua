@@ -556,16 +556,38 @@ linfct_from_model <- function(m, as_list = TRUE){
   }
 }
 
-#' make interaction model for examples
+#' build dataframe with models for testing
+#' @family modelling
 #' @export
-#' @example path.R
-make_model <- function(model = " ~ Treatment * Background"){
-  istar <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = 1,with_missing = FALSE)
+#' @keywords internal
+#' @example
+#' mod <- build_models(model = " ~ Treatment * Background", weight_missing = 1)
+#' stopifnot(dim(mod$modelDF) == c(10,9))
+#'
+build_models <- function(model = c("factors", "interaction"), Nprot = 10, with_missing = TRUE, weight_missing = 1) {
+  model <- match.arg(model)
+  model <- if (model == "factors") {
+     "~ Treatment * Background"
+  } else {
+    "~ Treatment + Background"
+  }
+  istar <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = Nprot, with_missing = with_missing, weight_missing = weight_missing)
   istar <- prolfqua::LFQData$new(istar$data,istar$config)
   modelFunction <- strategy_lm(paste0(istar$response(), model))
   mod <- build_model(
     istar,
     modelFunction)
+  return(mod)
+}
+
+#' make interaction model for examples
+#' @family modelling
+#' @export
+#' @keywords internal
+#' @example path.R
+#' m <- make_model()
+make_model <- function(model = c("factors", "interaction")){
+  mod <- build_models(model = model, Nprot = 1, with_missing = FALSE)
   return(mod$modelDF$linear_model[[1]])
 }
 
@@ -933,9 +955,8 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' dd <- prolfqua_data('data_factor_levelContrasts')
-#' tmp <- pivot_model_contrasts_2_Wide(dd, subject_Id = "Compound")
-#' stopifnot(all(dim(tmp) == c(30,16)))
+#'
+#' # this function is used by the contrast classes to implement the to wide method
 #'
 pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
                                          subject_Id = "protein_Id",
@@ -963,19 +984,17 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' @export
 #' @keywords internal
 #' @examples
-#' data("data_modellingResult_A")
-#' modelSummary_A <- data_modellingResult_A
-#' m <- get_complete_model_fit(modelSummary_A$modelProtein)
+#' #data("data_modellingResult_A")
+#' #modelSummary_A <- data_modellingResult_A
+#' modelSummary_A <- build_models()
+#' m <- get_complete_model_fit(modelSummary_A$modelDF)
 #'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
-#' class(factor_contrasts)
-#' class(factor_contrasts)
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         factor_contrasts,
-#'         subject_Id = "Compound",
+#'         subject_Id = "protein_Id",
 #'         contrastfun = prolfqua::my_contrast_V2)
 #'
-#' #usethis::use_data(factor_levelContrasts, overwrite = TRUE)
 #'
 contrasts_linfct <- function(models,
                              linfct,
@@ -1007,8 +1026,6 @@ contrasts_linfct <- function(models,
 
   #interaction_model_matrix <- models |>
   #  dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
-
-
 
   mclass <- function(x){
     class(x)[1]
@@ -1047,7 +1064,7 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
   sv <- prolfqua::squeezeVarRob(mm$sigma^2, df = mm[[df]],robust = robust)
 
   # pior degrees of freedom are Inf
-  if(all(is.infinite(sv$df.prior))) {
+  if (all(is.infinite(sv$df.prior))) {
     sv$df.prior <- mean(mm[[df]]) * nrow(mm)/10
   }
 
@@ -1076,22 +1093,17 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
 #' @keywords internal
 #' @examples
 #'
-#'
-#' modelSummary_A <- prolfqua_data('data_modellingResult_A')
-#' m <- get_complete_model_fit(modelSummary_A$modelProtein)
+#' mod <- build_models()
+#' m <- get_complete_model_fit(mod$modelDF)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #' factor_levelContrasts <- contrasts_linfct(
-#'   modelSummary_A$modelProtein,
+#'   mod$modelDF,
 #'   factor_contrasts,
-#'   subject_Id = "Compound",
+#'   subject_Id = "protein_Id",
 #'   contrastfun = my_contrast_V2)
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 #'
-#' plot(mmm$p.value, mmm$moderated.p.value, log = "xy")
-#' abline(0,1, col = 2)
-#'
-#' # updating lmer model
 moderated_p_limma_long <- function(mm ,
                                    group_by_col = "lhs",
                                    estimate = "estimate",
