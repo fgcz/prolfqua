@@ -62,9 +62,19 @@ The strategy contains functions to fit the model but also compute the contrasts 
 }
 \examples{
 
-tmp <- strategy_lmer("Intensity ~ condition + (1|peptide_Id)", model_name = "random_example")
-tmp$model_fun(get_formula = TRUE)
-tmp$isSingular
+istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
+istar <- prolfqua::LFQData$new(istar$data,istar$config)
+istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
+dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
+istar$factors()
+modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ", model_name = "random_example")
+mod <- build_model(
+ istar,
+ modelFunction)
+sum(mod$modelDF$exists_lmer)
+sum(mod$modelDF$isSingular, na.rm=TRUE)
+
+
 
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)

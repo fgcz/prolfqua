@@ -162,7 +162,7 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #'
 #' res1 <- summarize_stats(data, config)
 #'
-#' res2 <- prolfqua::sim_lfq_data_protein_2Factor_config()
+#' res2 <- prolfqua::sim_lfq_data_2Factor_config()
 #' res2$config$table$factorDepth <- 2
 #' stats <- summarize_stats(res2$data, res2$config)
 #' stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys_depth(), sep = ":")
@@ -210,7 +210,7 @@ summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys
 #' @export
 #' @examples
 #' # example code
-#' res2 <- prolfqua::sim_lfq_data_protein_2Factor_config()
+#' res2 <- prolfqua::sim_lfq_data_2Factor_config()
 #' xx <- summarize_stats_factors(res2$data, res2$config)
 #' stopifnot(nrow(xx) == 80)
 #'
@@ -251,7 +251,7 @@ summarize_stats_factors <- function(pdata, config){
 #' res1 <- summarize_stats_all(bb$data, bb$config)
 #'
 #' stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
-#' res2 <- prolfqua::sim_lfq_data_protein_2Factor_config()
+#' res2 <- prolfqua::sim_lfq_data_2Factor_config()
 #' resSt <- summarize_stats_all(res2$data, res2$config)
 summarize_stats_all <- function(pdata, config) {
   summarize_stats(pdata, config, factor_key = NULL)

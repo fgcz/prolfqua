@@ -1,3 +1,39 @@
+#' build dataframe with models for testing
+#' @family modelling
+#' @export
+#' @keywords internal
+#' @example
+#' mod <- build_models(model = " ~ Treatment * Background", weight_missing = 1)
+#' stopifnot(dim(mod$modelDF) == c(10,9))
+#'
+build_models <- function(model = c("factors", "interaction"), Nprot = 10, with_missing = TRUE, weight_missing = 1) {
+  model <- match.arg(model)
+  model <- if (model == "factors") {
+    "~ Treatment + Background"
+  } else {
+    "~ Treatment * Background"
+  }
+  istar <- prolfqua::sim_lfq_data_2Factor_config(Nprot = Nprot, with_missing = with_missing, weight_missing = weight_missing)
+  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  modelFunction <- strategy_lm(paste0(istar$response(), model))
+  mod <- build_model(
+    istar,
+    modelFunction)
+  return(mod)
+}
+
+#' make interaction model for examples
+#' @family modelling
+#' @export
+#' @keywords internal
+#' @example path.R
+#' m <- make_model()
+make_model <- function(model = c("factors", "interaction")){
+  mod <- build_models(model = model, Nprot = 1, with_missing = FALSE)
+  return(mod$modelDF$linear_model[[1]])
+}
+
+
 # Creating models from configuration ----
 
 .ehandler = function(e){
@@ -15,9 +51,17 @@
 #' @family modelling
 #' @examples
 #'
-#' tmp <- strategy_lmer("Intensity ~ condition + (1|peptide_Id)", model_name = "random_example")
-#' tmp$model_fun(get_formula = TRUE)
-#' tmp$isSingular
+#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
+#' istar <- prolfqua::LFQData$new(istar$data,istar$config)
+#' istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
+#' dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
+#' istar$factors()
+#' modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ", model_name = "random_example")
+#' mod <- build_model(
+#'  istar,
+#'  modelFunction)
+#' sum(mod$modelDF$exists_lmer)
+#' sum(mod$modelDF$isSingular, na.rm=TRUE)
 #'
 strategy_lmer <- function(modelstr,
                           model_name = "Model",
@@ -60,6 +104,8 @@ strategy_lmer <- function(modelstr,
 #' @family modelling
 #' @return list with model function, contrast computation function etc.
 #' @examples
+#'
+#'
 #' tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
@@ -556,40 +602,6 @@ linfct_from_model <- function(m, as_list = TRUE){
   }
 }
 
-#' build dataframe with models for testing
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @example
-#' mod <- build_models(model = " ~ Treatment * Background", weight_missing = 1)
-#' stopifnot(dim(mod$modelDF) == c(10,9))
-#'
-build_models <- function(model = c("factors", "interaction"), Nprot = 10, with_missing = TRUE, weight_missing = 1) {
-  model <- match.arg(model)
-  model <- if (model == "factors") {
-     "~ Treatment + Background"
-  } else {
-    "~ Treatment * Background"
-  }
-  istar <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = Nprot, with_missing = with_missing, weight_missing = weight_missing)
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
-  modelFunction <- strategy_lm(paste0(istar$response(), model))
-  mod <- build_model(
-    istar,
-    modelFunction)
-  return(mod)
-}
-
-#' make interaction model for examples
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @example path.R
-#' m <- make_model()
-make_model <- function(model = c("factors", "interaction")){
-  mod <- build_models(model = model, Nprot = 1, with_missing = FALSE)
-  return(mod$modelDF$linear_model[[1]])
-}
 
 
 

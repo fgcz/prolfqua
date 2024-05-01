@@ -23,7 +23,7 @@ mh$get_poolvar()
 bb <- mh$get_contrast_estimates(Contrasts)
 mh$get_contrasts(Contrasts)
 
-dd <- prolfqua::sim_lfq_data_protein_2Factor_config(Nprot = 100,weight_missing = 0.1)
+dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
 
 Contrasts <- c("c1" = "TreatmentA - TreatmentB",
                "C2" = "BackgroundX- BackgroundZ",
