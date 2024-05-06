@@ -49,16 +49,12 @@ res1 <- summarize_stats(data, config)
 res2 <- prolfqua::sim_lfq_data_2Factor_config()
 res2$config$table$factorDepth <- 2
 stats <- summarize_stats(res2$data, res2$config)
-stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys_depth(), sep = ":")
 stopifnot(nrow(stats) == 40)
 
 stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[1])
-stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys()[1], sep = ":")
 stopifnot(nrow(stats) == 20)
 stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[2])
-stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys()[2], sep = ":")
 stopifnot(nrow(stats) == 20)
-
 stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
 stopifnot(nrow(stats) == 10)
 

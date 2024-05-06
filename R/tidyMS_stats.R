@@ -165,16 +165,12 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' res2 <- prolfqua::sim_lfq_data_2Factor_config()
 #' res2$config$table$factorDepth <- 2
 #' stats <- summarize_stats(res2$data, res2$config)
-#' stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys_depth(), sep = ":")
 #' stopifnot(nrow(stats) == 40)
 #'
 #' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[1])
-#' stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys()[1], sep = ":")
 #' stopifnot(nrow(stats) == 20)
 #' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[2])
-#' stats <- prolfqua::make_interaction_column(stats, columns = res2$config$table$factor_keys()[2], sep = ":")
 #' stopifnot(nrow(stats) == 20)
-#'
 #' stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
 #' stopifnot(nrow(stats) == 10)
 #'
@@ -201,7 +197,13 @@ summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys
   if (is.null(factor_key)) {
     hierarchyFactor <- dplyr::mutate(hierarchyFactor, !!config$table$factor_keys()[1] := "All")
   }
-  return(ungroup(hierarchyFactor))
+  hierarchyFactor <- ungroup(hierarchyFactor)
+  if (!is.null(factor_key)) {
+    hierarchyFactor <- prolfqua::make_interaction_column(hierarchyFactor, columns = factor_key, sep = ":")
+  } else{
+    hierarchyFactor$interaction <- "All"
+  }
+  return(hierarchyFactor)
 }
 
 
@@ -213,20 +215,20 @@ summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys
 #' res2 <- prolfqua::sim_lfq_data_2Factor_config()
 #' xx <- summarize_stats_factors(res2$data, res2$config)
 #' stopifnot(nrow(xx) == 80)
-#'
+#' stopifnot( length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
 summarize_stats_factors <- function(pdata, config){
   fac_res <- list()
   stats <- summarize_stats(
     pdata,
     config)
-  fac_res[["interaction"]] <- prolfqua::make_interaction_column(stats, columns = config$table$factor_keys_depth(),sep = ":")
+  fac_res[["interaction"]] <- stats
 
   if (config$table$factorDepth > 1 ) { # if 1 only then done
     for (factor in config$table$factor_keys_depth()) {
       stats <- summarize_stats(
         pdata,
         config,factor_key = factor)
-      fac_res[[factor]]  <- prolfqua::make_interaction_column(stats, columns = factor, sep = ":")
+      fac_res[[factor]]  <- stats
     }
   }
   intfact <- dplyr::bind_rows(fac_res)

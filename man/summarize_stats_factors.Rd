@@ -14,5 +14,5 @@ compute var sd etc for all factor levels
 res2 <- prolfqua::sim_lfq_data_2Factor_config()
 xx <- summarize_stats_factors(res2$data, res2$config)
 stopifnot(nrow(xx) == 80)
-
+stopifnot( length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
 }

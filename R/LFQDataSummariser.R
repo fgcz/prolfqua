@@ -5,7 +5,6 @@
 #' @export
 #' @family LFQData
 #' @examples
-#' library(prolfqua)
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #'
 #' data <- istar$data
@@ -25,7 +24,6 @@
 #' sum$plot_missingness_per_group_cumsum()
 #' sum$upset_interaction_missing_stats()
 #' sum$percentage_abundance()
-#'
 LFQDataSummariser <- R6::R6Class(
   "LFQDataSummariser",
   public = list(
@@ -64,7 +62,9 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' missing per condition and protein
     interaction_missing_stats = function(){
-      prolfqua::interaction_missing_stats(self$lfq$data, self$lfq$config)
+      x1 <- prolfqua::interaction_missing_stats(self$lfq$data, self$lfq$config)
+      x2 <- prolfqua::summarize_stats_factors(self$lfq$data, self$lfq$config)
+      return(x2)
     },
     #' @description
     #' upset plot with missing information per protein and condition
@@ -99,34 +99,16 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' Does roll up to highest hierarchy and
     #' Computes the percent abundance of proteins overall and within each group
-    #' @param N default 1000
     #' @return data frame
-    percentage_abundance = function(N = 1000){
+    percentage_abundance = function(){
       # roll up to protein intensities
-
-      if (self$lfq$is_transformed()) {
-        warning("The abundances are transformed.\n Since this function sums up
-                protein abundances,\n it is best to use untransformed data.")
-      }
-
-      ag <- try(self$lfq$get_Aggregator())
-      if (class(ag)[1] == "try-error") {
-        bb <- self$lfq$get_copy()
-        bb$rename_response("totalIntensity")
-      } else{
-        bb <- ag$sum_topN(N = N)
-        bb$rename_response("totalIntensity")
-      }
-
       # compute protein level summaries
-      dall <- interaction_missing_stats(bb$data, bb$config, factors = NULL)
-      dfac <- interaction_missing_stats(bb$data, bb$config)
-      xd <- setdiff(colnames(dfac$data), colnames(dall$data))
-      for (i in xd) {
-        dall$data[[i]] <- "ALL"
-      }
-      all <- dplyr::bind_rows(dfac$data, dall$data)
-      nested <- all |> dplyr::group_by(!!!rlang::syms(self$lfq$config$table$factor_keys_depth())) |> tidyr::nest()
+
+      dall <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
+      dfac <- prolfqua::summarize_stats_factors(self$lfq$data, self$lfq$config)
+
+      all <- dplyr::bind_rows(dfac, dall)
+      nested <- all |> dplyr::group_by(!!sym("interaction")) |> tidyr::nest()
       for (i in seq_len(nrow(nested))) {
         nested$data[[i]] <- nested$data[[i]] |>
           dplyr::arrange(.data$meanAbundance) |>
@@ -138,5 +120,6 @@ LFQDataSummariser <- R6::R6Class(
       res <- tidyr::unnest(nested, cols = "data")
       return(res)
     }
+
   )
 )
