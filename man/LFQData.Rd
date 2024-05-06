@@ -11,7 +11,7 @@ LFQData R6 class
 \examples{
 
 istar <- sim_lfq_data_peptide_config()
-LFQData$debug("omit_NA")
+#LFQData$debug("omit_NA")
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$filter_proteins_by_peptide_count()
 tmp <- lfqdata$to_wide()
@@ -31,13 +31,7 @@ stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
 f2 <- lfqdata$omit_NA(factorDepth = 0)
 stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
-f2n <-  lfqdata$omit_NA2(factorDepth = 1)
-f2n$hierarchy_counts()
 
-# A tibble: 1 × 3
-# isotopeLabel protein_Id peptide_Id
-# <chr>             <int>      <int>
-# 1 light                 3         11
 lfqdata$response()
 lfqdata$rename_response("peptide.intensity")
 lfqdata$response()

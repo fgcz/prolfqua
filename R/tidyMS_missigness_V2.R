@@ -144,11 +144,6 @@ MissingHelpers <- R6::R6Class(
       imputed2 <- imputed |> mutate(estimate = ifelse(.data$indic < 0 & .data$estimate < 0, 0, .data$estimate))
       imputed2 <- imputed2 |> mutate(estimate = ifelse(.data$indic > 0 & .data$estimate > 0, 0, .data$estimate))
 
-      if (FALSE) {
-        imputed2 <- prolfqua::aggregate_contrast(
-          ungroup(imputed2),
-          subject_Id =  self$config$table$hierarchy_keys_depth())
-      }
       return(imputed2)
     },
 

@@ -1,3 +1,61 @@
+#' Compute fold changes given Contrasts
+#'
+#' @keywords internal
+#' @family imputation
+#' @export
+#'
+#' @examples
+#'
+#'
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#'
+#' Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
+#' mean <- missigness_impute_factors_interactions(analysis, config, value = "meanAbundance" )
+#' mean <- get_contrast(mean, config$table$hierarchy_keys(), Contrasts)
+#' meanProt <- aggregate_contrast(mean,  subject_Id =  config$table$hierarchy_keys_depth())
+#'
+#' imputed <- missigness_impute_factors_interactions(analysis, config, value = "imputed" )
+#' imputed <- get_contrast(imputed, config$table$hierarchy_keys(), Contrasts)
+#'
+#' imputedProt <- aggregate_contrast(imputed,  subject_Id =  config$table$hierarchy_keys_depth())
+#' \dontrun{
+#' plot(imputedProt$group_1 - imputedProt$group_2, imputedProt$estimate_median)
+#' abline(c(0,1), col=2, pch = "*")
+#' plot(meanProt$estimate_median - imputedProt$estimate_median )
+#' }
+#' stopifnot(sum(is.na(meanProt$estimate_median)) == 0)
+#' stopifnot(sum(is.na(imputedProt$estimate_median)) == 0)
+#'
+aggregate_contrast <- function(
+    data,
+    subject_Id ,
+    agg_func = list(median = function(x){ stats::median(x, na.rm = TRUE) },
+                    mad = function(x){ stats::mad(x, na.rm = TRUE)} ),
+    contrast = "contrast")
+{
+  grouping_columns <- c(contrast, subject_Id, "group_1_name","group_2_name")
+  dataG <- data |>
+    group_by(!!!syms(grouping_columns))
+
+  resN <- dataG |> dplyr::summarise(nr_children = n(), .groups = "drop")
+  resE <- dataG |> dplyr::summarise(across(.data$estimate,
+                                           agg_func
+  ), .groups = "drop")
+  agg_func_c <- agg_func[1]
+  resC <- dataG |> dplyr::summarise(across(all_of(c("group_1", "group_2")),
+                                           agg_func_c,
+                                           .names = "{col}"
+  ),
+  .groups = "drop")
+  res <- Reduce(function(x,y){ dplyr::full_join(x , y , by = grouping_columns)},
+                list(resN,resE,resC) )
+  return(res)
+
+}
+
+
 get_impute_contrasts_V1 <- function(
     lfqdata, contrasts,
     method = "V1",

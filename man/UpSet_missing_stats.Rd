@@ -43,10 +43,8 @@ Other plotting:
 
 Other imputation: 
 \code{\link{UpSet_interaction_missing_stats}()},
-\code{\link{aggregate_contrast}()},
 \code{\link{get_contrast}()},
 \code{\link{missigness_histogram}()},
-\code{\link{missigness_impute_factors_interactions}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{missingness_per_condition_cumsum}()}
 }

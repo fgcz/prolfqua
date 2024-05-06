@@ -29,7 +29,6 @@ Other modelling:
 \code{\link{build_models}()},
 \code{\link{contrasts_fisher_exact}()},
 \code{\link{get_complete_model_fit}()},
-\code{\link{get_imputed_contrasts}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{isSingular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
