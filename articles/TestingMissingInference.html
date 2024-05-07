@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Impute • prolfqua</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -106,119 +106,52 @@
     
 <p>alternatively use</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## ── <span style="font-weight: bold;">Attaching core tidyverse packages</span> ──────────────────────── tidyverse 2.0.0 ──</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr    </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">readr    </span> 2.1.5</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">forcats  </span> 1.0.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">stringr  </span> 1.5.1</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2  </span> 3.5.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble   </span> 3.2.1</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">lubridate</span> 1.9.3     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr    </span> 1.3.1</span></span>
-<span><span class="co">## <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr    </span> 1.0.2     </span></span>
-<span><span class="co">## ── <span style="font-weight: bold;">Conflicts</span> ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
-<span><span class="co">## <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span> masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
-<span><span class="co">## <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>    masks <span style="color: #0000BB;">stats</span>::lag()</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Use the conflicted package (<span style="color: #0000BB; font-style: italic;">&lt;http://conflicted.r-lib.org/&gt;</span>) to force all conflicts to become errors</span></span></code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>,weight_missing <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## creating sampleName from fileName column</span></span>
-<span><span class="co">## completing cases</span></span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## creating sampleName from fileName column</span></span></code></pre>
+<pre><code><span><span class="co">## completing cases</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dd</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">abundance</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 552</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dilution.b-a"</span> <span class="op">=</span> <span class="st">"group_A - group_B"</span>, <span class="st">"dilution.c-e"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span>
 <span><span class="va">mh1</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/MissingHelpers.html">MissingHelpers</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span>, prob <span class="op">=</span> <span class="fl">0.5</span>,weighted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">imputed</span> <span class="op">&lt;-</span> <span class="va">mh1</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span>Contrasts <span class="op">=</span> <span class="va">Contrasts</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "group_"</span></span></code></pre>
-<pre><code><span><span class="co">## completing cases</span></span>
-<span><span class="co">## dilution.b-a=group_A - group_B</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.b-a=group_A - group_B</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.b-a=group_A - group_B</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## completing cases</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.b-a=group_A - group_B</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.b-a=group_A - group_B</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.b-a=group_A - group_B</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mh2</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/MissingHelpers.html">MissingHelpers</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span>, prob <span class="op">=</span> <span class="fl">0.5</span>,weighted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">imputed2</span> <span class="op">&lt;-</span> <span class="va">mh2</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span>Contrasts <span class="op">=</span> <span class="va">Contrasts</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "group_"</span></span></code></pre>
-<pre><code><span><span class="co">## completing cases</span></span>
-<span><span class="co">## dilution.b-a=group_A - group_B</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.b-a=group_A - group_B</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.b-a=group_A - group_B</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## completing cases</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.b-a=group_A - group_B</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.b-a=group_A - group_B</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.b-a=group_A - group_B</span></span></code></pre>
+<pre><code><span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">imputed</span><span class="op">$</span><span class="va">estimate</span>, <span class="va">imputed2</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fl">0</span> , <span class="fl">1</span> , col<span class="op">=</span><span class="fl">2</span> , lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="TestingMissingInference_files/figure-html/lookAtSummarizeStats-1.png" width="700"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mh1</span><span class="op">$</span><span class="fu">get_LOD</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      50% </span></span>
 <span><span class="co">## 18.13636</span></span></code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span> <span class="va">imputed</span><span class="op">$</span><span class="va">estimate</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">imputed</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span>, pch <span class="op">=</span> <span class="st">"*"</span> <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">imputed2</span><span class="op">$</span><span class="va">estimate</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">imputed2</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span>, col <span class="op">=</span> <span class="fl">2</span>, pch <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="TestingMissingInference_files/figure-html/lookAtSummarizeStats-2.png" width="700"></p>
 <div class="section level2">
-<h2 id="look-at-current-implementation">Look at current implementation<a class="anchor" aria-label="anchor" href="#look-at-current-implementation"></a>
-</h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lProt</span> <span class="op">&lt;-</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>,<span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
-<span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">get_impute_contrasts_V1</span><span class="op">(</span><span class="va">lProt</span>, <span class="va">Contrasts</span>, all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## !!!!deprecated!!!!</span></span></code></pre>
-<pre><code><span><span class="co">## !!!! deprecated !!!!</span></span></code></pre>
-<pre><code><span><span class="co">## deprecated</span></span></code></pre>
-<pre><code><span><span class="co">## Warning in interaction_missing_stats(pdata, config, factors = factors): &gt;&gt;&gt;&gt;</span></span>
-<span><span class="co">## deprecated! &lt;&lt;&lt;&lt;</span></span></code></pre>
-<pre><code><span><span class="co">## completing cases</span></span></code></pre>
-<pre><code><span><span class="co">## dilution.b-a=group_A - group_B</span></span></code></pre>
-<pre><code><span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
-<pre><code><span><span class="co">## dilution.b-a=group_A - group_B</span></span></code></pre>
-<pre><code><span><span class="co">## dilution.c-e=group_A - group_Ctrl</span></span></code></pre>
-<pre><code><span><span class="co">## Joining with `by = join_by(protein_Id, contrast)`</span></span></code></pre>
-<pre><code><span><span class="co">## [1] "group_"</span></span></code></pre>
-<pre><code><span><span class="co">## completing cases</span></span></code></pre>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">xx</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">contrast</span>, <span class="va">protein_Id</span><span class="op">)</span></span>
-<span><span class="va">imputed2</span> <span class="op">&lt;-</span> <span class="va">imputed2</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">contrast</span>, <span class="va">protein_Id</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">estimate_median</span>, <span class="va">imputed2</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TestingMissingInference_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">p.value</span>, <span class="va">imputed2</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TestingMissingInference_files/figure-html/unnamed-chunk-1-2.png" width="700"></p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">df</span>, <span class="va">imputed2</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TestingMissingInference_files/figure-html/unnamed-chunk-1-3.png" width="700"></p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">sd</span> <span class="op">-</span> <span class="va">imputed2</span><span class="op">$</span><span class="va">sd</span><span class="op">)</span></span></code></pre></div>
-<p><img src="TestingMissingInference_files/figure-html/unnamed-chunk-1-4.png" width="700"></p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">sdT</span> <span class="op">-</span>  <span class="va">imputed2</span><span class="op">$</span><span class="va">sdT</span><span class="op">)</span> <span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span></span>
-<span><span class="va">xx</span><span class="op">$</span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  1  2  3  4  5  6  7  8  9 </span></span>
-<span><span class="co">## 60 22 18 20 14 20 16 10 20</span></span></code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">imputed2</span><span class="op">$</span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  1  2  3  4  5  6  7  8  9 </span></span>
-<span><span class="co">## 60 22 18 20 14 20 16 10 20</span></span></code></pre>
-</div>
-<div class="section level2">
 <h2 id="modelling-with-linear-models">modelling with linear models<a class="anchor" aria-label="anchor" href="#modelling-with-linear-models"></a>
 </h2>
 <p>Model with missing data</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"f_condtion_r_peptide"</span></span>
 <span><span class="va">formula_Protein</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"abundance  ~ group_"</span>,</span>
@@ -239,7 +172,7 @@
 <span><span class="co">## <span style="color: #BBBB00;">!</span> WARN :Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></span>
 <span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 10 remaining warnings.</span></span></code></pre>
 <pre><code><span><span class="co">## Joining with `by = join_by(protein_Id)`</span></span></code></pre>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 100 × 9</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># Groups:   protein_Id [100]</span></span></span>
@@ -257,20 +190,20 @@
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> 7zeekV~7127 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lm&gt;</span>         TRUE        FALSE                6 1.06 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 90 more rows</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nrcoef &lt;int&gt;, nrcoeff_not_NA &lt;int&gt;</span></span></span></code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nrcoeff_not_NA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  2  3 </span></span>
 <span><span class="co">## 15 74</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">isSingular</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## FALSE  TRUE </span></span>
 <span><span class="co">##    69    20</span></span></code></pre>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 100</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 69 × 10</span></span></span>
 <span><span class="co">##    protein_Id  isSingular nrcoef factor    Df Sum.Sq Mean.Sq F.value  p.value</span></span>
@@ -287,7 +220,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> At886V~1021 FALSE           3 group_     2 46.3    23.2    49.4   0.001<span style="text-decoration: underline;">51</span> </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 59 more rows</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: FDR &lt;dbl&gt;</span></span></span></code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/model_summary.html">model_summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $exists</span></span>
 <span><span class="co">## </span></span>
@@ -298,26 +231,26 @@
 <span><span class="co">## </span></span>
 <span><span class="co">## FALSE  TRUE </span></span>
 <span><span class="co">##    69    20</span></span></code></pre>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">maxcoef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nrcoeff_not_NA</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">goodmods</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">isSingular</span> <span class="op">==</span> <span class="cn">FALSE</span>, <span class="va">exists_lmer</span> <span class="op">==</span> <span class="cn">TRUE</span>, <span class="va">nrcoeff_not_NA</span> <span class="op">==</span> <span class="va">maxcoef</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">goodmods</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 61  9</span></span></code></pre>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">goodmods</span><span class="op">$</span><span class="va">linear_model</span>, <span class="va">vcov</span><span class="op">)</span></span>
 <span><span class="va">nr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">nrow</span><span class="op">)</span></span>
 <span><span class="va">nr</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## nr</span></span>
 <span><span class="co">##  3 </span></span>
 <span><span class="co">## 61</span></span></code></pre>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">xx</span>, <span class="va">ncol</span><span class="op">)</span></span>
 <span><span class="va">nr</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## nr</span></span>
 <span><span class="co">##  3 </span></span>
 <span><span class="co">## 61</span></span></code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sum_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span><span class="va">`+`</span>, <span class="va">xx</span><span class="op">)</span></span>
 <span><span class="va">sum_matrix</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##             (Intercept)    group_B group_Ctrl</span></span>
@@ -325,7 +258,7 @@
 <span><span class="co">## group_B      -0.4317112  0.7569259  0.4317112</span></span>
 <span><span class="co">## group_Ctrl   -0.4317112  0.4317112  0.8485382</span></span></code></pre>
 <p>Model with lod imputation</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loddata</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">data</span></span>
 <span></span>
 <span><span class="va">loddata</span> <span class="op">&lt;-</span> <span class="va">loddata</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>abundance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">abundance</span><span class="op">)</span>, <span class="va">mh1</span><span class="op">$</span><span class="fu">get_LOD</span><span class="op">(</span><span class="op">)</span>, <span class="va">abundance</span><span class="op">)</span><span class="op">)</span></span>
@@ -335,20 +268,20 @@
 <span>  modelName <span class="op">=</span> <span class="va">modelName</span>,</span>
 <span>  subject_Id <span class="op">=</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Joining with `by = join_by(protein_Id)`</span></span></code></pre>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">modI</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nrcoeff_not_NA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   3 </span></span>
 <span><span class="co">## 100</span></span></code></pre>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">modI</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">isSingular</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## FALSE </span></span>
 <span><span class="co">##   100</span></span></code></pre>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">modI</span><span class="op">$</span><span class="va">modelDF</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 100</span></span></code></pre>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">allModels</span> <span class="op">&lt;-</span> <span class="va">modI</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">linear_model</span></span>
 <span></span>
 <span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">allModels</span>, <span class="va">vcov</span><span class="op">)</span></span>
@@ -358,14 +291,14 @@
 <span><span class="co">## (Intercept)   0.4759103 -0.4759103 -0.4759103</span></span>
 <span><span class="co">## group_B      -0.4759103  0.9518206  0.4759103</span></span>
 <span><span class="co">## group_Ctrl   -0.4759103  0.4759103  0.9518206</span></span></code></pre>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">modI</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html" class="external-link">df.residual</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 9</span></span></code></pre>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 1.222678</span></span></code></pre>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##             (Intercept)    group_B group_Ctrl</span></span>
 <span><span class="co">## (Intercept)   0.3737352 -0.3737352 -0.3737352</span></span>
@@ -391,7 +324,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

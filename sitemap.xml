@@ -139,9 +139,6 @@
     <loc>/reference/adjust_p_values.html</loc>
   </url>
   <url>
-    <loc>/reference/aggregate_contrast.html</loc>
-  </url>
-  <url>
     <loc>/reference/aggregate_intensity_topN.html</loc>
   </url>
   <url>
@@ -223,9 +220,6 @@
     <loc>/reference/dot-get_robscales.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-missigness_impute_interactions.html</loc>
-  </url>
-  <url>
     <loc>/reference/dot-summarise_missing_contrasts.html</loc>
   </url>
   <url>
@@ -254,9 +248,6 @@
   </url>
   <url>
     <loc>/reference/get_contrast.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_imputed_contrasts.html</loc>
   </url>
   <url>
     <loc>/reference/get_p_values_pbeta.html</loc>
@@ -347,9 +338,6 @@
   </url>
   <url>
     <loc>/reference/missigness_histogram.html</loc>
-  </url>
-  <url>
-    <loc>/reference/missigness_impute_factors_interactions.html</loc>
   </url>
   <url>
     <loc>/reference/missingness_per_condition.html</loc>
@@ -562,10 +550,10 @@
     <loc>/reference/sim_lfq_data.html</loc>
   </url>
   <url>
-    <loc>/reference/sim_lfq_data_peptide_config.html</loc>
+    <loc>/reference/sim_lfq_data_2Factor_config.html</loc>
   </url>
   <url>
-    <loc>/reference/sim_lfq_data_protein_2Factor_config.html</loc>
+    <loc>/reference/sim_lfq_data_peptide_config.html</loc>
   </url>
   <url>
     <loc>/reference/sim_lfq_data_protein_config.html</loc>
