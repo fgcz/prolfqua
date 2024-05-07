@@ -32,9 +32,9 @@ runallfuncs <- function(x){
     stopifnot(is.null(x$power_t_test_quantiles()))
   }
 }
-istar <- prolfqua_data('data_ionstar')$filtered()
-istar$config <- old2new(istar$config)
-data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+bb <- prolfqua::sim_lfq_data_peptide_config()
+istar$config <- bb$config
+data <-bb$data
 lfqdata <- LFQData$new(data, istar$config)
 lfqstats <- lfqdata$get_Stats()
 lfqstats$stats_wide()
@@ -44,10 +44,7 @@ x <- lfqstats
 
 #study variance of normalized data
 
-istar <- prolfqua_data('data_ionstar')$normalized()
-istar$config <- old2new(istar$config)
-istar$config$table$is_response_transformed
-data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+
 lfqdata <- LFQData$new(data, istar$config)
 lfqdata$is_transformed(TRUE)
 lfqstats <- lfqdata$get_Stats()
@@ -55,13 +52,6 @@ runallfuncs(lfqstats)
 
 #Slightly different dataset
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
-config <- bb$config$clone(deep = TRUE)
-analysis <- bb$data
-
-lfqdata <- LFQData$new(analysis, config)
 
 # estimates statistics for all samples
 lfqstats <- lfqdata$get_Stats(stats = "all")

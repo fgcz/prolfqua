@@ -187,7 +187,7 @@ summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys
                      var = stats::var(!!intsym, na.rm = TRUE),
                      meanAbundance = mean(!!intsym, na.rm = TRUE),
                      medianAbundance = median(!!intsym, na.rm = TRUE),
-                     .groups = "drop_last") |>  dplyr::ungroup()
+                     .groups = "drop") |>  dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor |>
     dplyr::mutate(dplyr::across(all_of(factor_key), as.character))

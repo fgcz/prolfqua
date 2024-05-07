@@ -27,9 +27,9 @@
 #'     stopifnot(is.null(x$power_t_test_quantiles()))
 #'   }
 #' }
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' istar$config <- old2new(istar$config)
-#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
+#' istar$config <- bb$config
+#' data <-bb$data
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
 #' lfqstats$stats_wide()
@@ -39,10 +39,7 @@
 #'
 #' #study variance of normalized data
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
-#' istar$config <- old2new(istar$config)
-#' istar$config$table$is_response_transformed
-#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#'
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$is_transformed(TRUE)
 #' lfqstats <- lfqdata$get_Stats()
@@ -50,13 +47,6 @@
 #'
 #' #Slightly different dataset
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep = TRUE)
-#' analysis <- bb$data
-#'
-#' lfqdata <- LFQData$new(analysis, config)
 #'
 #' # estimates statistics for all samples
 #' lfqstats <- lfqdata$get_Stats(stats = "all")
@@ -110,7 +100,7 @@ LFQDataStats <- R6::R6Class(
       res <- tidyr::pivot_wider(
         self$statsdf,id_cols = self$lfq$config$table$hierarchy_keys() ,
         names_from = self$lfq$config$table$factor_keys_depth(),
-        values_from = tidyselect::any_of( c("n", "not_na", "sd", "var", "mean", "CV")))
+        values_from = tidyselect::any_of( c("nrReplicates", "nrMeasured", "sd", "var", "meanAbundance","medianAbundance", "CV")))
       return(res)
     },
     #' @description
