@@ -231,7 +231,7 @@ creates Contrast_Plotter
 \subsection{Method \code{to_wide()}}{
 convert to wide format
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$to_wide(columns = c("p.value", "FDR"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$to_wide(columns = c("p.value", "FDR", "statistic"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

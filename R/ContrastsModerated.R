@@ -158,7 +158,7 @@ ContrastsModerated <- R6::R6Class(
     #' convert to wide format
     #' @param columns value column default moderated.p.value
     #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR")){
+    to_wide = function(columns = c("p.value", "FDR", "statistic")){
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
                                                      subject_Id = self$subject_Id,

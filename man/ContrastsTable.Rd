@@ -202,7 +202,7 @@ get \code{\link{ContrastsPlotter}}
 \subsection{Method \code{to_wide()}}{
 convert to wide format
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$to_wide(columns = c("p.value", "FDR"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$to_wide(columns = c("p.value", "FDR", "statistic"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

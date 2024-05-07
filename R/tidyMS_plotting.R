@@ -85,22 +85,22 @@ plot_sample_correlation <- function(pdata, config){
   M <- cor(matrix, use = "pairwise.complete.obs")
   if (nrow(M) > 12) {
     res <- corrplot::corrplot.mixed(M,upper = "ellipse",
-                             lower = "pie",
-                             diag = "u",
-                             tl.cex = .6,
-                             tl.pos = "lt",
-                             tl.col = "black",
-                             mar = c(2,5,5,2))
+                                    lower = "pie",
+                                    diag = "u",
+                                    tl.cex = .6,
+                                    tl.pos = "lt",
+                                    tl.col = "black",
+                                    mar = c(2,5,5,2))
   } else{
     res <- corrplot::corrplot.mixed(M,upper = "ellipse",
-                             lower = "number",
-                             lower.col = "black",
-                             tl.cex = .6,
-                             number.cex = .7,
-                             diag = "u",
-                             tl.pos = "lt",
-                             tl.col = "black",
-                             mar = c(2,5,5,2))
+                                    lower = "number",
+                                    lower.col = "black",
+                                    tl.cex = .6,
+                                    number.cex = .7,
+                                    diag = "u",
+                                    tl.pos = "lt",
+                                    tl.col = "black",
+                                    mar = c(2,5,5,2))
 
   }
   invisible(res)
@@ -323,31 +323,30 @@ plot_heatmap <- function(data,
 
   if (nrow(resdataf) >= 3) {
     gg <- stats::hclust( stats::dist( resdataf ))
-    res <- pheatmap::pheatmap(resdataf[gg$order,],
-                              cluster_rows  = FALSE,
-                              scale = "row",
-                              annotation_col = factors,
-                              show_rownames = show_rownames,
-                              border_color = NA,
-                              silent = TRUE,
-                              ... = ...)
-
-
+    res <- pheatmap::pheatmap(
+      resdataf[gg$order,],
+      cluster_rows  = FALSE,
+      scale = "row",
+      annotation_col = factors,
+      show_rownames = show_rownames,
+      border_color = NA,
+      silent = TRUE,
+      ... = ...)
   } else {
-
-    res <- tryCatch(pheatmap::pheatmap(resdata,
-                                       cluster_rows  = FALSE,
-                                       scale = "row",
-                                       annotation_col = factors,
-                                       show_rownames = show_rownames,
-                                       border_color = NA,
-                                       silent = TRUE,
-                                       ... = ...), error = .ehandler)
-
-
+    res <- tryCatch(
+      pheatmap::pheatmap(
+        resdata,
+        cluster_rows  = FALSE,
+        scale = "row",
+        annotation_col = factors,
+        show_rownames = show_rownames,
+        border_color = NA,
+        silent = TRUE,
+        ... = ...), error = .ehandler)
   }
   invisible(res)
 }
+
 
 #' plot heatmap without any clustering (use to show NA's)
 #' @param data dataframe
@@ -521,7 +520,7 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
   if (max(PC) > ncol(xx)) {
     warning("nr of PCs: ", ncol(xx), "\n")
     return(NULL)
-    }
+  }
   variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
   xx <- inner_join(wide$annotation, xx)
 
@@ -537,15 +536,15 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
                     nudge_x = 0.25,
                     nudge_y = 0.25 )
 
-    PCx <- paste0("PC", PC[1])
-    PCy <- paste0("PC", PC[2])
-    x <- ggplot(xx, aes(x = !!sym(PCx), y = !!sym(PCy),
-                        color = !!sym(config$table$factor_keys()[1]),
-                        text = !!sym(config$table$sampleName))) +
-      labs(x = paste0(PCx," (", round(variance_explained[PC[1]]), "% variance)"),
-           y = paste0(PCy," (", round(variance_explained[PC[2]]), "% variance)")) +
-      point +
-      if (add_txt) {text}
+  PCx <- paste0("PC", PC[1])
+  PCy <- paste0("PC", PC[2])
+  x <- ggplot(xx, aes(x = !!sym(PCx), y = !!sym(PCy),
+                      color = !!sym(config$table$factor_keys()[1]),
+                      text = !!sym(config$table$sampleName))) +
+    labs(x = paste0(PCx," (", round(variance_explained[PC[1]]), "% variance)"),
+         y = paste0(PCy," (", round(variance_explained[PC[2]]), "% variance)")) +
+    point +
+    if (add_txt) {text}
   if (!is.na(sh)) {
     x <- x +  ggplot2::scale_shape_manual(values = seq_along(unique(xx[[sh]])))
   }
