@@ -14,8 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 alternatively use
 
 ```{r lookAtSummarizeStats}
-library(tidyverse)
-
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 dd$data$abundance |> is.na() |> sum()
 
@@ -35,33 +33,6 @@ points(imputed2$estimate, -log10(imputed2$p.value), col = 2, pch = "x")
 
 
 
-
-## Look at current implementation
-
-
-
-
-
-
-```{r}
-lProt <-prolfqua::LFQData$new(dd$data,dd$config)
-xx <- prolfqua:::get_impute_contrasts_V1(lProt, Contrasts, all = TRUE)
-
-
-xx <- xx |> arrange(contrast, protein_Id)
-imputed2 <- imputed2 |> arrange(contrast, protein_Id)
-plot(xx$estimate_median, imputed2$estimate)
-
-plot(xx$p.value, imputed2$p.value)
-plot(xx$df, imputed2$df)
-
-plot(xx$sd - imputed2$sd)
-tt <- which(abs(xx$sdT -  imputed2$sdT) >0)
-xx$df |> table()
-imputed2$df |> table()
-
-
-```
 
 ## modelling with linear models
 

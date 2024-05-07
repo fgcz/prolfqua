@@ -121,8 +121,7 @@ LFQDataAggregator <- R6::R6Class(
         sum(x, na.rm = TRUE)}
 
       private$.topN(N = N, .func = sum_f)
-    }
-    ,
+    },
     #' @description
     #' creates aggreation plots
     #' @param show.legend default FALSE

@@ -748,7 +748,7 @@ nr_obs_experiment <- function(data, config, from_children = TRUE,
 .rankProteinPrecursors <- function(data,
                                    config,
                                    column = config$table$get_response(),
-                                   fun = function(x){ mean(x, na.rm = TRUE)},
+                                   fun = function(x){ sum(x, na.rm = TRUE)},
                                    summaryColumn = "srm_meanInt",
                                    rankColumn = "srm_meanIntRank",
                                    rankFunction = function(x){ min_rank(desc(x)) }
