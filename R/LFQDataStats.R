@@ -32,7 +32,7 @@
 #' data <-bb$data
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqstats <- lfqdata$get_Stats()
-#' lfqstats$stats_wide()
+#' stopifnot(ncol(lfqstats$stats_wide()) == 30)
 #' lfqstats$violin()
 #' runallfuncs(lfqstats)
 #' x <- lfqstats
@@ -43,6 +43,7 @@
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$is_transformed(TRUE)
 #' lfqstats <- lfqdata$get_Stats()
+#' stopifnot(ncol(lfqstats$stats_wide()) == 26)
 #' runallfuncs(lfqstats)
 #'
 #' #Slightly different dataset
@@ -50,11 +51,10 @@
 #'
 #' # estimates statistics for all samples
 #' lfqstats <- lfqdata$get_Stats(stats = "all")
-#' lfqstats$stats_wide()
+#' stopifnot(ncol(lfqstats$stats_wide()) == 8)
 #' runallfuncs(lfqstats)
-#' lfqstats <- lfqdata$get_Stats(stats = "everything")
-#' lfqstats$stats_wide()
-#'
+#' lfqstats <- lfqdata$get_Stats(stats = "interaction")
+#' stopifnot(ncol(lfqstats$stats_wide()) == 20)
 #' runallfuncs(lfqstats)
 #'
 LFQDataStats <- R6::R6Class(

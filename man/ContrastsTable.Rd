@@ -10,15 +10,14 @@ holds results when contrasts are added.
 }
 \examples{
 
-bb <- prolfqua_data('data_ionstar')$normalized()
-bb$config <- old2new(bb$config)
+bb <-prolfqua::sim_lfq_data_peptide_config()
 configur <- bb$config$clone(deep=TRUE)
 configur$table$hierarchyDepth <- 2
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)
-Contrasts <- c("dilution.b-a" = "dilution.b - dilution.a",
-"dilution.c-e" = "dilution.c - dilution.b")
-#ContrastsMissing$debug("get_contrasts")
+lfqdata$factors()
+Contrasts <- c("aC" = "group_A - group_Ctrl",
+"bC" = "group_A - group_Ctrl")
 csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
 ctr <- csi$get_contrasts()
 csi$subject_Id
@@ -27,7 +26,7 @@ xcx$get_contrasts()
 xcx$get_Plotter()$volcano()
 stopifnot(is.null(xcx$get_contrast_sides()))
 stopifnot(is.null(xcx$get_linfct()))
-stopifnot(ncol(xcx$to_wide()) == 8)
+stopifnot(ncol(xcx$to_wide()) == 10)
 
 }
 \seealso{
