@@ -36,7 +36,7 @@ MissingHelpers <- R6::R6Class(
     config = NULL,
     #' @field prob quantile of groups with one observed value to estimate LOD
     prob = 0.5,
-    #' @field keep stats which might be time consuming to compute
+    #' @field stats data.frame with group statistics
     stats = NULL,
     #' @field weighted should we weight the LOD
     weighted = TRUE,
@@ -54,29 +54,45 @@ MissingHelpers <- R6::R6Class(
       self$prob = prob
       self$weighted = weighted
     },
+    #' @description
+    #' get data.frame with statistics
+    #' @return data.frame
     get_stats = function(){
       if (is.null(self$stats)) {
         self$stats = prolfqua::summarize_stats_factors(self$data, self$config)
       }
       return(self$stats)
     },
+    #' @description
+    #' determine limit of detection
+    #' computes quantile of abundances in groups with a single observation
+    #' @return integer LOD
     get_LOD = function(){
       LOD <- self$get_stats() |> dplyr::filter(nrMeasured == 1) |>
         dplyr::summarize(LOD = quantile(meanAbundance, probs = self$prob ,na.rm = TRUE)) |>
         pull()
       return(LOD)
     },
+    #' @description
+    #' compute group averages using weighted lod
+    #'
     impute_weighted_lod = function(){
       toimp <- self$get_stats()
       toimp$meanAbundanceZero <- ifelse(is.na(toimp$meanAbundance), 0, toimp$meanAbundance)
       impDat <- toimp |> mutate(meanAbundanceImp = (.data$nrMeasured * .data$meanAbundanceZero + .data$nrNAs * self$get_LOD()) / .data$nrReplicates  )
       return(impDat)
     },
+    #' @description
+    #' if group average absent substitute with LOD
+    #'
     impute_lod = function(){
       toimp <- self$get_stats()
       toimp$meanAbundanceImp <- ifelse(is.na(toimp$meanAbundance), self$get_LOD(), toimp$meanAbundance)
       return(toimp)
     },
+    #' @description
+    #' compute pooled var per protein
+    #' @param prob prob of sd from proteins where it can be computed
     get_poolvar = function(prob = 0.75) {
       if (self$weighted) {
         impDat <- self$impute_weighted_lod()
@@ -105,7 +121,7 @@ MissingHelpers <- R6::R6Class(
     #' get contrast estimates
     #' @param Contrasts named array with contrasts
     get_contrast_estimates = function(
-      Contrasts
+    Contrasts
     ){
       if (self$weighted) {
         lt <- self$impute_weighted_lod()
@@ -146,7 +162,11 @@ MissingHelpers <- R6::R6Class(
 
       return(imputed2)
     },
-
+    #' @description
+    #' compute contrasts
+    #' @param Contrasts vector with contrasts
+    #' @param confint compute confint
+    #' @param all return all columns, default FALSE
     get_contrasts = function(Contrasts, confint = 0.95, all = FALSE) {
       imputed <- self$get_contrast_estimates(Contrasts = Contrasts)
       pooled <- self$get_poolvar()

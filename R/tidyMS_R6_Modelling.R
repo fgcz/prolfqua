@@ -2,7 +2,7 @@
 #' @family modelling
 #' @export
 #' @keywords internal
-#' @example
+#' @examples
 #' mod <- build_models(model = " ~ Treatment * Background", weight_missing = 1)
 #' stopifnot(dim(mod$modelDF) == c(10,9))
 #'
@@ -26,7 +26,7 @@ build_models <- function(model = c("factors", "interaction"), Nprot = 10, with_m
 #' @family modelling
 #' @export
 #' @keywords internal
-#' @example path.R
+#' @examples
 #' m <- make_model()
 make_model <- function(model = c("factors", "interaction")){
   mod <- build_models(model = model, Nprot = 1, with_missing = FALSE)

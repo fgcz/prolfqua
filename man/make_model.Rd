@@ -9,6 +9,9 @@ make_model(model = c("factors", "interaction"))
 \description{
 make interaction model for examples
 }
+\examples{
+m <- make_model()
+}
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},

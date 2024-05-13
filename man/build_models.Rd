@@ -14,6 +14,11 @@ build_models(
 \description{
 build dataframe with models for testing
 }
+\examples{
+mod <- build_models(model = " ~ Treatment * Background", weight_missing = 1)
+stopifnot(dim(mod$modelDF) == c(10,9))
+
+}
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},

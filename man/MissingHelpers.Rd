@@ -44,16 +44,9 @@ mh$get_contrast_estimates(Contrasts)
 
 \item{\code{prob}}{quantile of groups with one observed value to estimate LOD}
 
-\item{\code{keep}}{stats which might be time consuming to compute}
+\item{\code{stats}}{data.frame with group statistics}
 
 \item{\code{weighted}}{should we weight the LOD}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{keep}}{stats which might be time consuming to compute}
 }
 \if{html}{\out{</div>}}
 }
@@ -98,24 +91,34 @@ initialize
 \if{html}{\out{<a id="method-MissingHelpers-get_stats"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-get_stats}{}}}
 \subsection{Method \code{get_stats()}}{
+get data.frame with statistics
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_stats()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MissingHelpers-get_LOD"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-get_LOD}{}}}
 \subsection{Method \code{get_LOD()}}{
+determine limit of detection
+computes quantile of abundances in groups with a single observation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_LOD()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+integer LOD
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MissingHelpers-impute_weighted_lod"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-impute_weighted_lod}{}}}
 \subsection{Method \code{impute_weighted_lod()}}{
+compute group averages using weighted lod
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$impute_weighted_lod()}\if{html}{\out{</div>}}
 }
@@ -125,6 +128,7 @@ initialize
 \if{html}{\out{<a id="method-MissingHelpers-impute_lod"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-impute_lod}{}}}
 \subsection{Method \code{impute_lod()}}{
+if group average absent substitute with LOD
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$impute_lod()}\if{html}{\out{</div>}}
 }
@@ -134,10 +138,18 @@ initialize
 \if{html}{\out{<a id="method-MissingHelpers-get_poolvar"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-get_poolvar}{}}}
 \subsection{Method \code{get_poolvar()}}{
+compute pooled var per protein
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_poolvar(prob = 0.75)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{prob}}{prob of sd from proteins where it can be computed}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MissingHelpers-get_contrast_estimates"></a>}}
@@ -160,10 +172,22 @@ get contrast estimates
 \if{html}{\out{<a id="method-MissingHelpers-get_contrasts"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
+compute contrasts
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_contrasts(Contrasts, confint = 0.95, all = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{Contrasts}}{vector with contrasts}
+
+\item{\code{confint}}{compute confint}
+
+\item{\code{all}}{return all columns, default FALSE}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MissingHelpers-clone"></a>}}
