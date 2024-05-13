@@ -28,9 +28,10 @@
 #'   }
 #' }
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' istar$config <- bb$config
-#' data <-bb$data
-#' lfqdata <- LFQData$new(data, istar$config)
+#'
+#'
+#'
+#' lfqdata <- LFQData$new(bb$data, bb$config)
 #' lfqstats <- lfqdata$get_Stats()
 #' stopifnot(ncol(lfqstats$stats_wide()) == 30)
 #' lfqstats$violin()
@@ -40,7 +41,7 @@
 #' #study variance of normalized data
 #'
 #'
-#' lfqdata <- LFQData$new(data, istar$config)
+#' lfqdata <- LFQData$new(bb$data, bb$config)
 #' lfqdata$is_transformed(TRUE)
 #' lfqstats <- lfqdata$get_Stats()
 #' stopifnot(ncol(lfqstats$stats_wide()) == 26)
