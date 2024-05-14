@@ -102,7 +102,7 @@ MissingHelpers <- R6::R6Class(
       pooled <- prolfqua::poolvar(impDat, self$config, method = "V1")
       pooled <- dplyr::select(pooled ,-all_of(c(self$config$table$factor_keys_depth()[1],"var")))
 
-      pooled_zero <- pooled[pooled$df > 0,]
+      pooled_zero <- pooled[pooled$df > 0 & pooled$sd > 0,]
       meandf <- pooled_zero |> summarize(
         n = 1, df = 1,
         sd = quantile(sd, prob = prob, na.rm = TRUE),
