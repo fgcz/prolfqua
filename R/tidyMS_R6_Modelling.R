@@ -3,7 +3,7 @@
 #' @export
 #' @keywords internal
 #' @examples
-#' mod <- build_models(model = " ~ Treatment * Background", weight_missing = 1)
+#' mod <- build_models(model = "interaction", weight_missing = 1)
 #' stopifnot(dim(mod$modelDF) == c(10,9))
 #'
 build_models <- function(model = c("factors", "interaction"), Nprot = 10, with_missing = TRUE, weight_missing = 1) {

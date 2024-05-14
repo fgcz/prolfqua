@@ -7,11 +7,11 @@
 #' Contrasts <- c("group.b-a" = "group_A - group_B", "group.a-ctrl" = "group_A - group_Ctrl")
 #' dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 #' mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
-#' mh$get_stats()
-#' mh$get_LOD()
-#' mh$impute_weighted_lod()
-#' mh$impute_lod()
-#' mh$get_poolvar()
+#' xx <- mh$get_stats()
+#' xx <- mh$get_LOD()
+#' xx <- mh$impute_weighted_lod()
+#' xx <- mh$impute_lod()
+#' xx <- mh$get_poolvar()
 #' bb <- mh$get_contrast_estimates(Contrasts)
 #' mh$get_contrasts(Contrasts)
 #'
@@ -112,8 +112,8 @@ MissingHelpers <- R6::R6Class(
       meandf$sd <-  ifelse(meandf$sd > 0, meandf$sd, minsd)
       meandf$sdT <-  ifelse(meandf$sdT > 0, meandf$sdT, minsd)
 
-      pooled <- pooled |> mutate(sd = ifelse(is.na(sd) ,meandf$sd, sd))
-      pooled <- pooled |> mutate(sdT = ifelse(is.na(sdT) , meandf$sdT, sdT ))
+      pooled <- pooled |> mutate(sd = ifelse(is.na(sd) | sd == 0 ,meandf$sd, sd))
+      pooled <- pooled |> mutate(sdT = ifelse(is.na(sdT) | sdT == 0, meandf$sdT, sdT ))
       pooled <- pooled |> mutate(df = ifelse(df == 0, 1, df))
       return(pooled)
     },
