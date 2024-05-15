@@ -25,15 +25,41 @@ mod <- build_model(
  subject_Id = config$table$hierarchy_keys_depth()
  )
 
+ref_lfc <- data.frame(
+`(Intercept)` = c(0, 0, 0),
+group_B = c(0, 1, 0),
+group_Ctrl = c(-1, -1, 1),
+row.names = c("groupA_vs_Ctrl", "dil.e_vs_b", "dil.ctrl_vs_b")
+)
 prolfqua::model_summary(mod)
- Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
-    "dil.e_vs_b" = "group_A - group_Ctrl" )
-#prolfqua::Contrasts$debug("get_contrasts")
+Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
+    "dil.e_vs_b" = "group_B - group_Ctrl",
+    "dil.ctrl_vs_b" = "group_Ctrl - group_A"
+     )
+#prolfqua::Contrasts$debug("get_linfct")
+#debug(prolfqua:::.linfct)
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
-contrastX$get_linfct(global=FALSE)
-contrastX$get_contrasts()
-contrastX$get_contrast_sides()
-contrastX$column_description()
+y <- contrastX$get_linfct(avg = FALSE)
+stopifnot(all(ref_lfc == y))
+t <- contrastX$get_linfct(global=FALSE)
+
+x <- contrastX$get_contrasts()
+stopifnot(all(x$p.value < 1 & x$p.value >0))
+stopifnot(all(x$avgAbd >0))
+stopifnot(all(x$FDR >0 & x$FDR < 1))
+
+x <- contrastX$get_contrast_sides()
+xd <- contrastX$column_description()
+modelFunction <-
+strategy_lm("abundance  ~ group_")
+mod <- build_model(
+ istar$data,
+ modelFunction,
+ subject_Id = config$table$hierarchy_keys_depth()
+ )
+contrastX <- prolfqua::Contrasts$new(mod, Contr)
+y <- contrastX$get_linfct(avg = FALSE)
+stopifnot(all(ref_lfc == y))
 
 }
 \seealso{
@@ -171,13 +197,15 @@ get both sides of contrasts
 \subsection{Method \code{get_linfct()}}{
 get linear functions from contrasts
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_linfct(global = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Contrasts$get_linfct(global = TRUE, avg = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{global}}{logical TRUE - get the a linear functions for all models, FALSE - linear function for each model}
+
+\item{\code{avg}}{logical TRUE - get also linfct for averages}
 }
 \if{html}{\out{</div>}}
 }

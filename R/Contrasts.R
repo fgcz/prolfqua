@@ -1,3 +1,19 @@
+#'
+#'
+#'
+.linfct <- function(model, contrast, avg = TRUE){
+  linfct <- linfct_from_model(model, as_list = FALSE)
+  linfct <- unique(linfct) # needed for single factor models
+  if (avg) {
+    namtmp <- paste0("avg_",names(contrast))
+    cntr_avg <- paste0("(", gsub(" - ", " + ", contrast), ")/2")
+    names(cntr_avg) <- namtmp
+    contrast <- c(contrast, cntr_avg)
+  }
+  linfct_A <- linfct_matrix_contrasts(linfct, contrast)
+  return( linfct_A )
+}
+
 # Contrasts -----
 
 #' Estimate contrasts using Wald Test
@@ -20,15 +36,41 @@
 #'  subject_Id = config$table$hierarchy_keys_depth()
 #'  )
 #'
+#' ref_lfc <- data.frame(
+#' `(Intercept)` = c(0, 0, 0),
+#' group_B = c(0, 1, 0),
+#' group_Ctrl = c(-1, -1, 1),
+#' row.names = c("groupA_vs_Ctrl", "dil.e_vs_b", "dil.ctrl_vs_b")
+#' )
 #' prolfqua::model_summary(mod)
-#'  Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
-#'     "dil.e_vs_b" = "group_A - group_Ctrl" )
-#' #prolfqua::Contrasts$debug("get_contrasts")
+#' Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
+#'     "dil.e_vs_b" = "group_B - group_Ctrl",
+#'     "dil.ctrl_vs_b" = "group_Ctrl - group_A"
+#'      )
+#' #prolfqua::Contrasts$debug("get_linfct")
+#' #debug(prolfqua:::.linfct)
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
-#' contrastX$get_linfct(global=FALSE)
-#' contrastX$get_contrasts()
-#' contrastX$get_contrast_sides()
-#' contrastX$column_description()
+#' y <- contrastX$get_linfct(avg = FALSE)
+#' stopifnot(all(ref_lfc == y))
+#' t <- contrastX$get_linfct(global=FALSE)
+#'
+#' x <- contrastX$get_contrasts()
+#' stopifnot(all(x$p.value < 1 & x$p.value >0))
+#' stopifnot(all(x$avgAbd >0))
+#' stopifnot(all(x$FDR >0 & x$FDR < 1))
+#'
+#' x <- contrastX$get_contrast_sides()
+#' xd <- contrastX$column_description()
+#' modelFunction <-
+#' strategy_lm("abundance  ~ group_")
+#' mod <- build_model(
+#'  istar$data,
+#'  modelFunction,
+#'  subject_Id = config$table$hierarchy_keys_depth()
+#'  )
+#' contrastX <- prolfqua::Contrasts$new(mod, Contr)
+#' y <- contrastX$get_linfct(avg = FALSE)
+#' stopifnot(all(ref_lfc == y))
 #'
 Contrasts <- R6::R6Class(
   "Contrast",
@@ -87,28 +129,19 @@ Contrasts <- R6::R6Class(
     #' @description
     #' get linear functions from contrasts
     #' @param global logical TRUE - get the a linear functions for all models, FALSE - linear function for each model
-    get_linfct = function(global = TRUE){
-      linfct <- function(model, contrast){
-        linfct <- linfct_from_model(model, as_list = FALSE)
-        linfct <- unique(linfct) # needed for single factor models
-        # namtmp <- paste0("avg_",names(self$contrasts))
-        # tmp <- paste0("(", gsub(" - ", " + ", self$contrasts), ")/2")
-        # names(tmp) <- namtmp
-        # cntrasts <- c(self$contrasts, tmp)
-        linfct_A <- linfct_matrix_contrasts(linfct, contrast)
-        return( linfct_A )
-      }
+    #' @param avg logical TRUE - get also linfct for averages
+    get_linfct = function(global = TRUE, avg = TRUE){
       if (global) {
 
         model <- get_complete_model_fit(self$models)$linear_model[[1]]
-        res <- linfct( model, self$contrasts )
+        res <- .linfct( model, self$contrasts, avg = avg )
         return( res )
 
       }else{
 
         res <- vector(mode = "list", nrow(self$models))
         for (i in seq_along(self$models$linear_model)) {
-          res[[i]] <- linfct(self$models$linear_model[[i]], contrast = self$contrasts)
+          res[[i]] <- .linfct(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
         }
         return(res)
       }
