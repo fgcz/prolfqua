@@ -5,7 +5,7 @@
 \title{build lmer model from simulated data}
 \usage{
 sim_build_models_lmer(
-  model = c("factors", "interaction"),
+  model = c("parallel2", "parallel3", "factors", "interaction"),
   Nprot = 10,
   with_missing = TRUE,
   weight_missing = 1
@@ -16,8 +16,14 @@ build lmer model from simulated data
 }
 \examples{
 undebug(sim_build_models_lmer)
-mod <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
-stopifnot(dim(mod$modelDF) == c(10,9))
+modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
+stopifnot(sum(modi$modelDF$exists_lmer) == 6)
+mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
+stopifnot(sum(mod2$modelDF$exists_lmer) == 6)
+mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
+stopifnot(sum(mod4$modelDF$exists_lmer) == 6)
+modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
+stopifnot(sum(modf$modelDF$exists_lmer) == 6)
 
 }
 \seealso{

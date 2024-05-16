@@ -4,15 +4,23 @@
 \alias{sim_make_model_lm}
 \title{make interaction model for examples}
 \usage{
-sim_make_model_lm(model = c("factors", "interaction"))
+sim_make_model_lm(
+  model = c("parallel2", "parallel3", "factors", "interaction")
+)
 }
 \description{
 make interaction model for examples
 }
 \examples{
 m <- sim_make_model_lm()
-m <- sim_make_model_lm("interaction")
-
+mi <- sim_make_model_lm("interaction")
+length(coef(mi)) == 4
+mf <- sim_make_model_lm("factors")
+length(coef(mf)) = 3
+m2 <- sim_make_model_lm("parallel2")
+length(coef(m2)) == 2
+m3 <- sim_make_model_lm("parallel3")
+length(coef(m3)) == 3
 }
 \seealso{
 Other modelling: 

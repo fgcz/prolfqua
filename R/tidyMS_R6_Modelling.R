@@ -384,7 +384,14 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 
 # Generate linear functions -----
 
-# get matrix of indicator coefficients for each interaction
+#' get matrix of indicator coefficients for each interaction
+#' @examples
+#' m <- sim_make_model_lm("interaction")
+#' coef(m)
+#' prolfqua:::.lmer4_coeff_matrix(m)
+#' m <- sim_make_model_lm("factors")
+#' m
+#' prolfqua:::.lmer4_coeff_matrix(m)
 .lmer4_coeff_matrix <- function(m){
   data <- NULL
   if ("lm" %in% class(m)) {
@@ -443,20 +450,21 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 #' @keywords internal
 #' @examples
 #'
-#' m <- prolfqua_data('data_basicModel_p1807')
-#' # debug(linfct_from_model)
-#' linfct <- linfct_from_model(m)
+#' m <- sim_make_model_lm()
+#' linfct <- linfct_from_model(m, as_list = TRUE)
 #'
 #' linfct$linfct_factors
 #' linfct$linfct_interactions
-#'
-#' m <- prolfqua_data('data_interactionModel_p1807')
-#' # debug(.coeff_weights_factor_levels)
+#' lf <- matrix(
+#' c(1, 1, 1, 1, 0.5, 0.5, 0, 1, 0, 1, 0.5, 0.5),
+#' nrow = 4,
+#' byrow = FALSE,
+#' dimnames = list(c("BackgroundX", "BackgroundZ", "TreatmentA", "TreatmentB"),
+#'                 c("(Intercept)", "TreatmentB", "BackgroundZ"))
+#' )
+#' stopifnot(lf == linfct$linfct_factors)
+#' m <- sim_make_model_lm("interaction")
 #' linfct <- linfct_from_model(m)
-#'
-#' all.equal(linfct$linfct_factors["CelltypeCMP/MEP",] ,
-#'  apply(linfct$linfct_interactions[grep("CelltypeCMP/MEP", rownames(linfct$linfct_interactions)),],2, mean))
-#' linfct$linfct_interactions
 #'
 #' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_from_model(m)
@@ -471,7 +479,6 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 #' linfct_from_model(m)
 #'
 linfct_from_model <- function(m, as_list = TRUE){
-
   cm <- .lmer4_coeff_matrix(m)
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
 

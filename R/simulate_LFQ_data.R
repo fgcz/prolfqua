@@ -266,24 +266,37 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
 #' @export
 #' @keywords internal
 #' @examples
-#' mod <- sim_build_models_lm(model = "interaction", weight_missing = 1)
+#' modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
 #' stopifnot(dim(mod$modelDF) == c(10,9))
+#' mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
+#' mod$modelDF$linear_model[[1]]
+#' mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
+#' modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 #'
-sim_build_models_lm <- function(model = c("factors", "interaction"),
+sim_build_models_lm <- function(model = c("parallel2","parallel3","factors", "interaction"),
                          Nprot = 10,
                          with_missing = TRUE,
                          weight_missing = 1) {
   model <- match.arg(model)
-  model <- if (model == "factors") {
-    "~ Treatment + Background"
-  } else {
-    "~ Treatment * Background"
-  }
+  if (model != "parallel3") {
   istar <- prolfqua::sim_lfq_data_2Factor_config(
     Nprot = Nprot,
     with_missing = with_missing,
     weight_missing = weight_missing)
+  } else {
+    istar <- prolfqua::sim_lfq_data_protein_config()
+  }
   istar <- prolfqua::LFQData$new(istar$data,istar$config)
+
+  model <- if (model == "factors") {
+    "~ Treatment + Background"
+  } else if (model == "interaction") {
+    "~ Treatment * Background"
+  } else if (model == "parallel2") {
+    "~ Treatment"
+  } else if (model == "parallel3") {
+    "~ group_"
+  } else {NULL}
   modelFunction <- strategy_lm(paste0(istar$response(), model))
   mod <- build_model(
     istar,
@@ -297,25 +310,40 @@ sim_build_models_lm <- function(model = c("factors", "interaction"),
 #' @keywords internal
 #' @examples
 #' undebug(sim_build_models_lmer)
-#' mod <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
-#' stopifnot(dim(mod$modelDF) == c(10,9))
+#' modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
+#' stopifnot(sum(modi$modelDF$exists_lmer) == 6)
+#' mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
+#' stopifnot(sum(mod2$modelDF$exists_lmer) == 6)
+#' mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
+#' stopifnot(sum(mod4$modelDF$exists_lmer) == 6)
+#' modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
+#' stopifnot(sum(modf$modelDF$exists_lmer) == 6)
 #'
-sim_build_models_lmer <- function(model = c("factors", "interaction"),
+sim_build_models_lmer <- function(model = c("parallel2", "parallel3","factors", "interaction"),
                             Nprot = 10,
                             with_missing = TRUE,
                             weight_missing = 1) {
   model <- match.arg(model)
+  if (model != "parallel3") {
+     istar <- prolfqua::sim_lfq_data_2Factor_config(
+       Nprot = Nprot,
+       with_missing = with_missing,
+       PEPTIDE = TRUE,
+       weight_missing = weight_missing)
+   } else {
+    istar <- prolfqua::sim_lfq_data_peptide_config()
+  }
+  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+
   model <- if (model == "factors") {
     "~ Treatment + Background + (1|peptide_Id) + (1|sampleName)"
-  } else {
+  } else if (model == "interaction") {
     "~ Treatment * Background + (1|peptide_Id) + (1|sampleName)"
-  }
-  istar <- prolfqua::sim_lfq_data_2Factor_config(
-    Nprot = Nprot,
-    with_missing = with_missing,
-    PEPTIDE = TRUE,
-    weight_missing = weight_missing)
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  } else if (model == "parallel2") {
+    "~ Treatment + (1|peptide_Id) + (1|sampleName)"
+  } else if (model == "parallel3") {
+    "~ group_ + (1|peptide_Id) + (1|sampleName)"
+  } else {NULL}
   modelFunction <- strategy_lmer(paste0(istar$response(), model))
   mod <- build_model(
     istar,
@@ -330,9 +358,16 @@ sim_build_models_lmer <- function(model = c("factors", "interaction"),
 #' @keywords internal
 #' @examples
 #' m <- sim_make_model_lm()
-#' m <- sim_make_model_lm("interaction")
-#'
-sim_make_model_lm <- function(model = c("factors", "interaction")){
+#' mi <- sim_make_model_lm("interaction")
+#' length(coef(mi)) == 4
+#' mf <- sim_make_model_lm("factors")
+#' length(coef(mf)) = 3
+#' m2 <- sim_make_model_lm("parallel2")
+#' length(coef(m2)) == 2
+#' m3 <- sim_make_model_lm("parallel3")
+#' length(coef(m3)) == 3
+sim_make_model_lm <- function(model = c("parallel2", "parallel3","factors", "interaction")){
+  model <- match.arg(model)
   mod <- sim_build_models_lm(model = model, Nprot = 1, with_missing = FALSE)
   return(mod$modelDF$linear_model[[1]])
 }
@@ -347,7 +382,9 @@ sim_make_model_lm <- function(model = c("factors", "interaction")){
 #' mf <- sim_make_model_lmer("factors")
 #' mf <- sim_make_model_lmer("interaction")
 #'
-sim_make_model_lmer <- function(model = c("factors", "interaction"), singular = FALSE){
+sim_make_model_lmer <- function(model = c("parallel2", "parallel3","factors", "interaction"),
+                                singular = FALSE){
+  model <- match.arg(model)
   mod <- sim_build_models_lmer(model = model, Nprot = 10, with_missing = FALSE)
   m <- mod$modelDF |> dplyr::filter(isSingular == isSingular) |> dplyr::pull(linear_model)
   return(m[[1]])

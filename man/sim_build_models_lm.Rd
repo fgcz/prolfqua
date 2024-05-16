@@ -5,7 +5,7 @@
 \title{build dataframe with models for testing}
 \usage{
 sim_build_models_lm(
-  model = c("factors", "interaction"),
+  model = c("parallel2", "parallel3", "factors", "interaction"),
   Nprot = 10,
   with_missing = TRUE,
   weight_missing = 1
@@ -15,8 +15,12 @@ sim_build_models_lm(
 build dataframe with models for testing
 }
 \examples{
-mod <- sim_build_models_lm(model = "interaction", weight_missing = 1)
+modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
 stopifnot(dim(mod$modelDF) == c(10,9))
+mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
+mod$modelDF$linear_model[[1]]
+mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
+modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 
 }
 \seealso{

@@ -4,7 +4,10 @@
 \alias{sim_make_model_lmer}
 \title{make interaction model for examples}
 \usage{
-sim_make_model_lmer(model = c("factors", "interaction"), singular = FALSE)
+sim_make_model_lmer(
+  model = c("parallel2", "parallel3", "factors", "interaction"),
+  singular = FALSE
+)
 }
 \description{
 make interaction model for examples
