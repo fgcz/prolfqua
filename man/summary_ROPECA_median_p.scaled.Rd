@@ -102,7 +102,6 @@ Other modelling:
 \code{\link{LR_test}()},
 \code{\link{Model}},
 \code{\link{build_model}()},
-\code{\link{build_models}()},
 \code{\link{contrasts_fisher_exact}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -112,7 +111,6 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{make_model}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},
@@ -124,10 +122,11 @@ Other modelling:
 \code{\link{my_contrast_V2}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
-\code{\link{plot_lmer_predicted_interactions}()},
+\code{\link{sim_build_models_lm}()},
+\code{\link{sim_build_models_lmer}()},
+\code{\link{sim_make_model_lm}()},
+\code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_lmer}()}
 }
 \concept{modelling}

@@ -1,38 +1,3 @@
-#' build dataframe with models for testing
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examples
-#' mod <- build_models(model = "interaction", weight_missing = 1)
-#' stopifnot(dim(mod$modelDF) == c(10,9))
-#'
-build_models <- function(model = c("factors", "interaction"), Nprot = 10, with_missing = TRUE, weight_missing = 1) {
-  model <- match.arg(model)
-  model <- if (model == "factors") {
-    "~ Treatment + Background"
-  } else {
-    "~ Treatment * Background"
-  }
-  istar <- prolfqua::sim_lfq_data_2Factor_config(Nprot = Nprot, with_missing = with_missing, weight_missing = weight_missing)
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
-  modelFunction <- strategy_lm(paste0(istar$response(), model))
-  mod <- build_model(
-    istar,
-    modelFunction)
-  return(mod)
-}
-
-#' make interaction model for examples
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examples
-#' m <- make_model()
-make_model <- function(model = c("factors", "interaction")){
-  mod <- build_models(model = model, Nprot = 1, with_missing = FALSE)
-  return(mod$modelDF$linear_model[[1]])
-}
-
 
 # Creating models from configuration ----
 
@@ -294,11 +259,14 @@ isSingular_lm <- function(m){
   }
 }
 
-#' retrieve complete model.
+#' retrieve complete models.
 #' @keywords internal
 #' @family modelling
 #' @export
-#'
+#' @examples
+#' x <- sim_build_models_lmer(model = "factors", Nprot = 10)
+#' cfits <- get_complete_model_fit(x$modelDF)
+#' stopifnot(nrow(cfits) == 6)
 get_complete_model_fit <- function(modelProteinF){
   modelProteinF <- modelProteinF |> dplyr::filter(.data$exists_lmer == TRUE)
   modelProteinF <- modelProteinF |> dplyr::filter(.data$nrcoeff_not_NA == max(.data$nrcoeff_not_NA)) |>
@@ -316,18 +284,14 @@ get_complete_model_fit <- function(modelProteinF){
 #' @keywords internal
 #' @examples
 #'
-#'
-#' ionstar <- prolfqua_data('data_ionstar')$normalized()
-#' ionstar$config <- old2new(ionstar$config)
-#'
-#' ionstar$data <- ionstar$data |> dplyr::filter(protein_Id %in% sample(protein_Id,10))
-#' prolfqua::table_factors(ionstar$data, ionstar$config)
+#' x <- sim_lfq_data_peptide_config()
 #' formula_randomPeptide <-
-#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
-#' mr <- model_analyse( ionstar$data,
+#'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)")
+#' mr <- model_analyse( x$data,
 #'  formula_randomPeptide,
-#'  subject_Id = ionstar$config$table$hierarchy_keys_depth())
-#' get_complete_model_fit(mr$modelProtein)
+#'  subject_Id = x$config$table$hierarchy_keys_depth())
+#' stopifnot(nrow(get_complete_model_fit(mr$modelProtein)) == 6)
+#'
 model_analyse <- function(pepIntensity,
                           model_strategy,
                           subject_Id = "protein_Id",
@@ -395,101 +359,24 @@ model_analyse <- function(pepIntensity,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- prolfqua_data('data_interactionModel_p1807')
-#' plot_lmer_peptide_predictions(m)
-plot_lmer_peptide_predictions <- function(m){
+#' # m <- prolfqua_data('data_interactionModel_p1807')
+#' m <- sim_make_model_lmer()
+#' plot_lmer_peptide_predictions(m, intensity = "abundance")
+#' m <- sim_make_model_lmer("interaction")
+#' plot_lmer_peptide_predictions(m, intensity = "abundance")
+plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
   data <- m@frame
   data$prediction <- predict(m)
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
   gg <- ggplot(data, aes(x = .data$interaction ,
-                         y = .data$transformedIntensity)) + geom_point()
+                         y = !!sym(intensity))) + geom_point()
   gg <- gg + geom_point(aes(x = .data$interaction,
                             y = .data$prediction), color = 2) + facet_wrap(~peptide_Id)
   gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0))
   return(gg)
 }
 
-
-#' plot peptide intensities per interaction with random effects removed
-#'
-#' @param m model
-#' @param legend.position none
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#'
-#' m <- prolfqua_data('data_basicModel_p1807')
-#' plot_lmer_peptide_noRandom(m)
-#'
-#' m <- prolfqua_data('data_interactionModel_p1807')
-#' plot_lmer_peptide_noRandom(m)
-plot_lmer_peptide_noRandom <- function(m,legend.position = "none"){
-  data <- m@frame
-  ran <- lme4::ranef(m)[[1]]
-  randeffect <- base::setdiff(all.vars( terms(formula(m)) ) , all.vars(terms(m)))
-  ran <- tibble::as_tibble(ran,rownames = randeffect)
-  colnames(ran) <- gsub("[()]","",colnames(ran))
-  ran <- dplyr::inner_join(data, ran, by = randeffect)
-
-  ran <- ran |> dplyr::mutate(int_randcorrected  = .data$transformedIntensity  - .data$Intercept)
-  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
-  ran <- make_interaction_column(ran,interactionColumns, sep = ":" )
-
-  meanx <- function(x){mean(x,na.rm = TRUE)}
-  gg <- ggplot(ran,aes(x = .data$interaction,
-                       y = .data$int_randcorrected,
-                       color = .data$peptide_Id)) +
-    geom_point(position = position_jitterdodge())
-  gg <- gg + stat_summary(fun = meanx, colour = "black", geom = "point",
-                          shape = 12, size = 3,show.legend = FALSE)
-  gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0),
-                   legend.position = legend.position)
-  gg <- gg + geom_boxplot(alpha = 0.1)
-
-  return(gg)
-}
-
-
-
-#' Add predicted values for each interaction
-#' @export
-#' @keywords internal
-#' @family modelling
-#' @examples
-#' m <- prolfqua_data('data_interactionModel_p1807')
-#' plot_lmer_predicted_interactions(plot_lmer_model_and_data(m,"dumm"),m)
-plot_lmer_predicted_interactions <- function(gg, m){
-  cm <- .lmer4_coeff_matrix(m)
-  xstart_end <- data.frame(xstart = rownames(cm$mm), xend = rownames(cm$mm))
-  ystart_end <- data.frame(xend = rownames(cm$mm), ystart = rep(0, nrow(cm$mm)),
-                           yend = cm$mm %*% cm$coeffs)
-  segments <- dplyr::inner_join(xstart_end, ystart_end, by = "xend")
-  gg <- gg + geom_segment(aes(x = .data$xstart,
-                              y = .data$ystart,
-                              xend = .data$xend,
-                              yend = .data$yend),
-                          data = segments, color = "blue", arrow = arrow())
-  return(gg)
-}
-
-#' Make model plot with title - protein Name.
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#'
-#' m <- prolfqua_data('data_interactionModel_p1807')
-#' plot_lmer_model_and_data(m,"dumm")
-#'
-plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
-  gg <- plot_lmer_peptide_noRandom(m,legend.position = legend.position)
-  gg <- plot_lmer_predicted_interactions(gg, m)
-  gg <- gg + ggtitle(proteinID)
-  gg
-}
 
 
 
@@ -509,7 +396,7 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
 
-  if("rlm" %in% class(m)){
+  if ("rlm" %in% class(m)) {
     coeffs <- coefficients(summary(m))[,'Value']
   } else {
     coeffs <- coefficients(summary(m))[,'Estimate']
@@ -998,7 +885,7 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' @export
 #' @keywords internal
 #' @examples
-#' modelSummary_A <- build_models()
+#' modelSummary_A <- sim_build_models_lm()
 #' m <- get_complete_model_fit(modelSummary_A$modelDF)
 #'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
@@ -1105,7 +992,7 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
 #' @keywords internal
 #' @examples
 #'
-#' mod <- build_models()
+#' mod <- sim_build_models_lm()
 #' m <- get_complete_model_fit(mod$modelDF)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #' factor_levelContrasts <- contrasts_linfct(

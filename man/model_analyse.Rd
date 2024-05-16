@@ -16,18 +16,14 @@ used in project p2901
 }
 \examples{
 
-
-ionstar <- prolfqua_data('data_ionstar')$normalized()
-ionstar$config <- old2new(ionstar$config)
-
-ionstar$data <- ionstar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id,10))
-prolfqua::table_factors(ionstar$data, ionstar$config)
+x <- sim_lfq_data_peptide_config()
 formula_randomPeptide <-
-  strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)")
-mr <- model_analyse( ionstar$data,
+  strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)")
+mr <- model_analyse( x$data,
  formula_randomPeptide,
- subject_Id = ionstar$config$table$hierarchy_keys_depth())
-get_complete_model_fit(mr$modelProtein)
+ subject_Id = x$config$table$hierarchy_keys_depth())
+stopifnot(nrow(get_complete_model_fit(mr$modelProtein)) == 6)
+
 }
 \seealso{
 Other modelling: 
@@ -42,7 +38,6 @@ Other modelling:
 \code{\link{LR_test}()},
 \code{\link{Model}},
 \code{\link{build_model}()},
-\code{\link{build_models}()},
 \code{\link{contrasts_fisher_exact}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -52,7 +47,6 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{make_model}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_summary}()},
 \code{\link{moderated_p_limma}()},
@@ -63,10 +57,11 @@ Other modelling:
 \code{\link{my_contrast_V2}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_model_and_data}()},
-\code{\link{plot_lmer_peptide_noRandom}()},
 \code{\link{plot_lmer_peptide_predictions}()},
-\code{\link{plot_lmer_predicted_interactions}()},
+\code{\link{sim_build_models_lm}()},
+\code{\link{sim_build_models_lmer}()},
+\code{\link{sim_make_model_lm}()},
+\code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_lmer}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }

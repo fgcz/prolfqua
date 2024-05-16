@@ -28,5 +28,5 @@ dim(x$data)
 stopifnot("data.frame" \%in\% class(x$data))
 stopifnot("AnalysisConfiguration" \%in\% class(x$config))
 x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
-dim(x$data)
+head(x$data)
 }

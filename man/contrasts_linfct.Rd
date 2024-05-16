@@ -15,7 +15,7 @@ contrasts_linfct(
 used in p2621, p2109
 }
 \examples{
-modelSummary_A <- build_models()
+modelSummary_A <- sim_build_models_lm()
 m <- get_complete_model_fit(modelSummary_A$modelDF)
 
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])

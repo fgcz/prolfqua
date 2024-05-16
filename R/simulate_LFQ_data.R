@@ -149,7 +149,7 @@ which_missing <- function(x, weight_missing = 0.2){
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @export
 #' @examples
-#' undebug(sim_lfq_data_peptide_config)
+#'
 #' x <- sim_lfq_data_peptide_config()
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
@@ -222,13 +222,13 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
 #' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
-#' dim(x$data)
+#' head(x$data)
 sim_lfq_data_2Factor_config <- function(Nprot = 10,
-                                                with_missing = TRUE,
-                                                weight_missing = 0.2,
-                                                PEPTIDE = FALSE,
-                                                seed = 1234
-                                                ){
+                                        with_missing = TRUE,
+                                        weight_missing = 0.2,
+                                        PEPTIDE = FALSE,
+                                        seed = 1234
+){
   if (!is.null(seed)) {
     set.seed(seed)
   }
@@ -252,7 +252,7 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
 
   atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   if (PEPTIDE) {
-    atable$hierarchy[["peptpide_Id"]] = c("peptideID")
+    atable$hierarchy[["peptide_Id"]] = c("peptideID")
   }
   atable$set_response("abundance")
 
@@ -261,4 +261,94 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
   return(list(data = adata, config = config))
 }
 
+#' build dataframe with models for testing
+#' @family modelling
+#' @export
+#' @keywords internal
+#' @examples
+#' mod <- sim_build_models_lm(model = "interaction", weight_missing = 1)
+#' stopifnot(dim(mod$modelDF) == c(10,9))
+#'
+sim_build_models_lm <- function(model = c("factors", "interaction"),
+                         Nprot = 10,
+                         with_missing = TRUE,
+                         weight_missing = 1) {
+  model <- match.arg(model)
+  model <- if (model == "factors") {
+    "~ Treatment + Background"
+  } else {
+    "~ Treatment * Background"
+  }
+  istar <- prolfqua::sim_lfq_data_2Factor_config(
+    Nprot = Nprot,
+    with_missing = with_missing,
+    weight_missing = weight_missing)
+  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  modelFunction <- strategy_lm(paste0(istar$response(), model))
+  mod <- build_model(
+    istar,
+    modelFunction)
+  return(mod)
+}
 
+#' build lmer model from simulated data
+#' @family modelling
+#' @export
+#' @keywords internal
+#' @examples
+#' undebug(sim_build_models_lmer)
+#' mod <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
+#' stopifnot(dim(mod$modelDF) == c(10,9))
+#'
+sim_build_models_lmer <- function(model = c("factors", "interaction"),
+                            Nprot = 10,
+                            with_missing = TRUE,
+                            weight_missing = 1) {
+  model <- match.arg(model)
+  model <- if (model == "factors") {
+    "~ Treatment + Background + (1|peptide_Id) + (1|sampleName)"
+  } else {
+    "~ Treatment * Background + (1|peptide_Id) + (1|sampleName)"
+  }
+  istar <- prolfqua::sim_lfq_data_2Factor_config(
+    Nprot = Nprot,
+    with_missing = with_missing,
+    PEPTIDE = TRUE,
+    weight_missing = weight_missing)
+  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  modelFunction <- strategy_lmer(paste0(istar$response(), model))
+  mod <- build_model(
+    istar,
+    modelFunction)
+  return(mod)
+}
+
+
+#' make interaction model for examples
+#' @family modelling
+#' @export
+#' @keywords internal
+#' @examples
+#' m <- sim_make_model_lm()
+#' m <- sim_make_model_lm("interaction")
+#'
+sim_make_model_lm <- function(model = c("factors", "interaction")){
+  mod <- sim_build_models_lm(model = model, Nprot = 1, with_missing = FALSE)
+  return(mod$modelDF$linear_model[[1]])
+}
+
+
+#' make interaction model for examples
+#' @family modelling
+#' @export
+#' @keywords internal
+#' @examples
+#' debug(sim_make_model_lmer)
+#' mf <- sim_make_model_lmer("factors")
+#' mf <- sim_make_model_lmer("interaction")
+#'
+sim_make_model_lmer <- function(model = c("factors", "interaction"), singular = FALSE){
+  mod <- sim_build_models_lmer(model = model, Nprot = 10, with_missing = FALSE)
+  m <- mod$modelDF |> dplyr::filter(isSingular == isSingular) |> dplyr::pull(linear_model)
+  return(m[[1]])
+}

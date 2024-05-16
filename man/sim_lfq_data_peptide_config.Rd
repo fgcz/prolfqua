@@ -22,7 +22,7 @@ sim_lfq_data_peptide_config(
 Simulate data, protein and peptide, with config
 }
 \examples{
-undebug(sim_lfq_data_peptide_config)
+
 x <- sim_lfq_data_peptide_config()
 stopifnot("data.frame" \%in\% class(x$data))
 stopifnot("AnalysisConfiguration" \%in\% class(x$config))
