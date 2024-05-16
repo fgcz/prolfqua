@@ -14,7 +14,7 @@ get linfct from model
 }
 \examples{
 
-m <- sim_make_model_lm()
+m <- sim_make_model_lm("factors")
 linfct <- linfct_from_model(m, as_list = TRUE)
 
 linfct$linfct_factors

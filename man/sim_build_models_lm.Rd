@@ -16,9 +16,9 @@ build dataframe with models for testing
 }
 \examples{
 modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
-stopifnot(dim(mod$modelDF) == c(10,9))
+stopifnot(dim(modi$modelDF) == c(10,9))
 mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
-mod$modelDF$linear_model[[1]]
+mod2$modelDF$linear_model[[1]]
 mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 

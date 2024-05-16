@@ -30,11 +30,10 @@ Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
      )
 linfct <- linfct_from_model(m, as_list = FALSE)
 x <- linfct_matrix_contrasts(linfct, Contr )
-stopifnot(sum(x["interactXZ",]) ==0 )
-stopifnot(sum(x["interactAB",]) ==0 )
+stopifnot(sum(x["interactXZ",]) == 0 )
+stopifnot(sum(x["interactAB",]) == 0 )
 
 m <- sim_make_model_lm( "interaction")
-debug(prolfqua:::.lmer4_coeff_matrix)
 linfct <- linfct_from_model(m, as_list = FALSE)
 x <- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==1 )

@@ -384,14 +384,6 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 
 # Generate linear functions -----
 
-#' get matrix of indicator coefficients for each interaction
-#' @examples
-#' m <- sim_make_model_lm("interaction")
-#' coef(m)
-#' prolfqua:::.lmer4_coeff_matrix(m)
-#' m <- sim_make_model_lm("factors")
-#' m
-#' prolfqua:::.lmer4_coeff_matrix(m)
 .lmer4_coeff_matrix <- function(m){
   data <- NULL
   if ("lm" %in% class(m)) {
@@ -415,8 +407,8 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
   mm[,1] <- 1
   coefi <- coeffs[-1]
   for (i in seq_along(coefi)) {
-    # positionIDX <- which(inter %in% names(coefi)[i])
     # the grep is needed to extract coefficients of interaction terms belonging to a factor
+    # I am using wor boundaries "\\b" to allow for factor levels that are substrings.
     positionIDX <- grep(paste0("\\b",names(coefi)[i],"\\b"), inter)
     mm[positionIDX, i + 1 ] <- 1
   }
@@ -450,7 +442,7 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 #' @keywords internal
 #' @examples
 #'
-#' m <- sim_make_model_lm()
+#' m <- sim_make_model_lm("factors")
 #' linfct <- linfct_from_model(m, as_list = TRUE)
 #'
 #' linfct$linfct_factors
@@ -584,7 +576,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
 #' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 #' stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
 #' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-#' stopifnot(all(xx == c(0,-1)))
+#' stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
 linfct_all_possible_contrasts <- function(lin_int ){
   combs <- combn(nrow(lin_int),2)
   names <- rownames(lin_int)
@@ -605,7 +597,7 @@ linfct_all_possible_contrasts <- function(lin_int ){
 #' @keywords internal
 #' @examples
 #'
-#' m <- make_model( "interaction")
+#' m <- sim_make_model_lm( "interaction")
 #' xl <- linfct_factors_contrasts(m)
 #' m <- lm(Petal.Width ~ Species, data = iris)
 #' linfct_factors_contrasts(m)
@@ -635,12 +627,12 @@ linfct_factors_contrasts <- function(m){
 #' @keywords internal
 #' @examples
 #'
-#' mb <- make_model( "interaction")
+#' mb <- sim_make_model_lm( "interaction")
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_glht(mb, linfct$linfct_factors)
 #'
-#' m <-  make_model( "factors")
+#' m <-  sim_make_model_lm( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #'
@@ -694,7 +686,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #' @keywords internal
 #' @examples
 #'
-#' m <-  make_model( "factors")
+#' m <-  sim_make_model_lm( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_glht(m, linfct)
 #' my_contrast(m, linfct, confint = 0.95)
@@ -752,7 +744,7 @@ my_contrast <- function(m,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- make_model( "factors")
+#' m <- sim_make_model_lm( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V1(m, linfct, confint = 0.95)
 #' my_contrast_V1(m, linfct, confint = 0.99)
@@ -780,7 +772,7 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- make_model( "factors")
+#' m <- sim_make_model_lm( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)

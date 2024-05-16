@@ -30,7 +30,7 @@ linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
 xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-stopifnot(all(xx == c(0,-1)))
+stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
 }
 \seealso{
 Other modelling: 

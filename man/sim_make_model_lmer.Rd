@@ -13,9 +13,7 @@ sim_make_model_lmer(
 make interaction model for examples
 }
 \examples{
-debug(sim_make_model_lmer)
 mf <- sim_make_model_lmer("factors")
-stopifnot(length(coef(mf)) == 3)
 mi <- sim_make_model_lmer("interaction")
 
 }

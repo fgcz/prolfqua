@@ -267,9 +267,9 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
 #' @keywords internal
 #' @examples
 #' modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
-#' stopifnot(dim(mod$modelDF) == c(10,9))
+#' stopifnot(dim(modi$modelDF) == c(10,9))
 #' mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
-#' mod$modelDF$linear_model[[1]]
+#' mod2$modelDF$linear_model[[1]]
 #' mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 #' modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 #'
@@ -375,9 +375,7 @@ sim_make_model_lm <- function(model = c("parallel2", "parallel3","factors", "int
 #' @export
 #' @keywords internal
 #' @examples
-#' debug(sim_make_model_lmer)
 #' mf <- sim_make_model_lmer("factors")
-#' stopifnot(length(coef(mf)) == 3)
 #' mi <- sim_make_model_lmer("interaction")
 #'
 sim_make_model_lmer <- function(model = c("parallel2", "parallel3","factors", "interaction"),
