@@ -521,8 +521,9 @@ plot_lmer_model_and_data <- function(m, proteinID, legend.position = "none"){
   mm[,1] <- 1
   coefi <- coeffs[-1]
   for (i in seq_along(coefi)) {
-    positionIDX <- which(inter %in% names(coefi)[i])
-    # positionIDX <- grep(names(coefi)[i], inter)
+    # positionIDX <- which(inter %in% names(coefi)[i])
+    # the grep is needed to extract coefficients of interaction terms belonging to a factor
+    positionIDX <- grep(names(coefi)[i], inter)
     mm[positionIDX, i + 1 ] <- 1
   }
   return(list(mm = mm, coeffs = coeffs))
