@@ -14,13 +14,10 @@ make interaction model for examples
 \examples{
 m <- sim_make_model_lm()
 mi <- sim_make_model_lm("interaction")
-length(coef(mi)) == 4
-mf <- sim_make_model_lm("factors")
-length(coef(mf)) = 3
-m2 <- sim_make_model_lm("parallel2")
-length(coef(m2)) == 2
-m3 <- sim_make_model_lm("parallel3")
-length(coef(m3)) == 3
+stopifnot(length(coefficients(summary(mi))[,"Estimate"]) == 4)
+mf <- sim_make_model_lmer("factors")
+m2 <- sim_make_model_lmer("parallel2")
+m3 <- sim_make_model_lmer("parallel3")
 }
 \seealso{
 Other modelling: 

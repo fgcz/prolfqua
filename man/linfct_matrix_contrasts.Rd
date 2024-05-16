@@ -18,7 +18,7 @@ linfct_matrix_contrasts
 }
 \examples{
 
-m <- make_model( "factors")
+m <- sim_make_model_lm( "factors")
 Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
@@ -29,13 +29,14 @@ Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
     "interactAB" = "IntoflintoA - IntoflintoB"
      )
 linfct <- linfct_from_model(m, as_list = FALSE)
-x<- linfct_matrix_contrasts(linfct, Contr )
+x <- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==0 )
 stopifnot(sum(x["interactAB",]) ==0 )
 
-m <- make_model( "interaction")
+m <- sim_make_model_lm( "interaction")
+debug(prolfqua:::.lmer4_coeff_matrix)
 linfct <- linfct_from_model(m, as_list = FALSE)
-x<- linfct_matrix_contrasts(linfct, Contr )
+x <- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==1 )
 stopifnot(sum(x["interactAB",]) ==1 )
 }

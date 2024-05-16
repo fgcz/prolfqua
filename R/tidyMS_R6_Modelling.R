@@ -417,7 +417,7 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
   for (i in seq_along(coefi)) {
     # positionIDX <- which(inter %in% names(coefi)[i])
     # the grep is needed to extract coefficients of interaction terms belonging to a factor
-    positionIDX <- grep(names(coefi)[i], inter)
+    positionIDX <- grep(paste0("\\b",names(coefi)[i],"\\b"), inter)
     mm[positionIDX, i + 1 ] <- 1
   }
   return(list(mm = mm, coeffs = coeffs))
@@ -511,7 +511,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' @keywords internal
 #' @examples
 #'
-#' m <- make_model( "factors")
+#' m <- sim_make_model_lm( "factors")
 #' Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
 #'     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
 #'     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
@@ -522,13 +522,13 @@ linfct_from_model <- function(m, as_list = TRUE){
 #'     "interactAB" = "IntoflintoA - IntoflintoB"
 #'      )
 #' linfct <- linfct_from_model(m, as_list = FALSE)
-#' x<- linfct_matrix_contrasts(linfct, Contr )
-#' stopifnot(sum(x["interactXZ",]) ==0 )
-#' stopifnot(sum(x["interactAB",]) ==0 )
+#' x <- linfct_matrix_contrasts(linfct, Contr )
+#' stopifnot(sum(x["interactXZ",]) == 0 )
+#' stopifnot(sum(x["interactAB",]) == 0 )
 #'
-#' m <- make_model( "interaction")
+#' m <- sim_make_model_lm( "interaction")
 #' linfct <- linfct_from_model(m, as_list = FALSE)
-#' x<- linfct_matrix_contrasts(linfct, Contr )
+#' x <- linfct_matrix_contrasts(linfct, Contr )
 #' stopifnot(sum(x["interactXZ",]) ==1 )
 #' stopifnot(sum(x["interactAB",]) ==1 )
 linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
@@ -564,11 +564,27 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
 #' @keywords internal
 #' @family modelling
 #' @examples
-#' m <- make_model( "interaction")
+#' m <- sim_make_model_lm( "interaction")
 #' linfct <- linfct_from_model(m)
 #' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 #' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' m <- sim_make_model_lm( "factor")
+#' linfct <- linfct_from_model(m)
+#' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
+#' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' m <- sim_make_model_lm( "parallel2")
+#' linfct <- linfct_from_model(m)
+#' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
+#' stopifnot(all(xl == c(0,-1)))
+#' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' stopifnot(all(xx == c(0,-1)))
 #'
+#' m <- sim_make_model_lm( "parallel3")
+#' linfct <- linfct_from_model(m)
+#' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
+#' stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
+#' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' stopifnot(all(xx == c(0,-1)))
 linfct_all_possible_contrasts <- function(lin_int ){
   combs <- combn(nrow(lin_int),2)
   names <- rownames(lin_int)

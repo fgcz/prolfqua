@@ -10,11 +10,27 @@ linfct_all_possible_contrasts(lin_int)
 create all possible contrasts
 }
 \examples{
-m <- make_model( "interaction")
+m <- sim_make_model_lm( "interaction")
 linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+m <- sim_make_model_lm( "factor")
+linfct <- linfct_from_model(m)
+xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
+xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+m <- sim_make_model_lm( "parallel2")
+linfct <- linfct_from_model(m)
+xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
+stopifnot(all(xl == c(0,-1)))
+xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+stopifnot(all(xx == c(0,-1)))
 
+m <- sim_make_model_lm( "parallel3")
+linfct <- linfct_from_model(m)
+xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
+stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
+xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+stopifnot(all(xx == c(0,-1)))
 }
 \seealso{
 Other modelling: 
