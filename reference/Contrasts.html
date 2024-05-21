@@ -93,7 +93,6 @@ Estimate contrasts using Wald Test"><!-- mathjax --><script src="https://cdnjs.c
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="build_model.html">build_model</a>()</code>,
-<code><a href="build_models.html">build_models</a>()</code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact</a>()</code>,
 <code><a href="get_anova_df.html">get_anova_df</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
@@ -103,7 +102,6 @@ Estimate contrasts using Wald Test"><!-- mathjax --><script src="https://cdnjs.c
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a>()</code>,
 <code><a href="linfct_from_model.html">linfct_from_model</a>()</code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a>()</code>,
-<code><a href="make_model.html">make_model</a>()</code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results</a>()</code>,
 <code><a href="model_analyse.html">model_analyse</a>()</code>,
 <code><a href="model_summary.html">model_summary</a>()</code>,
@@ -115,10 +113,11 @@ Estimate contrasts using Wald Test"><!-- mathjax --><script src="https://cdnjs.c
 <code><a href="my_contrast_V2.html">my_contrast_V2</a>()</code>,
 <code><a href="my_glht.html">my_glht</a>()</code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide</a>()</code>,
-<code><a href="plot_lmer_model_and_data.html">plot_lmer_model_and_data</a>()</code>,
-<code><a href="plot_lmer_peptide_noRandom.html">plot_lmer_peptide_noRandom</a>()</code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions</a>()</code>,
-<code><a href="plot_lmer_predicted_interactions.html">plot_lmer_predicted_interactions</a>()</code>,
+<code><a href="sim_build_models_lm.html">sim_build_models_lm</a>()</code>,
+<code><a href="sim_build_models_lmer.html">sim_build_models_lmer</a>()</code>,
+<code><a href="sim_make_model_lm.html">sim_make_model_lm</a>()</code>,
+<code><a href="sim_make_model_lmer.html">sim_make_model_lmer</a>()</code>,
 <code><a href="strategy.html">strategy_lmer</a>()</code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled</a>()</code></p></div>
     </div>
@@ -231,13 +230,17 @@ create Contrast</p><div class="section">
 <h3 id="method-get-linfct-">Method <code>get_linfct()</code><a class="anchor" aria-label="anchor" href="#method-get-linfct-"></a></h3>
 <p>get linear functions from contrasts</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Contrasts</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Contrasts</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span>global <span class="op">=</span> <span class="cn">TRUE</span>, avg <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>global</code></dt>
 <dd><p>logical TRUE - get the a linear functions for all models, FALSE - linear function for each model</p></dd>
+
+
+<dt><code>avg</code></dt>
+<dd><p>logical TRUE - get also linfct for averages</p></dd>
 
 
 </dl><p></p></div>
@@ -292,7 +295,7 @@ creates Contrast_Plotter</p><div class="section">
 <h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
 <p>convert to wide format</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Contrasts</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Contrasts</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span>, <span class="st">"statistic"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -364,6 +367,12 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ref_lfc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>`(Intercept)` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>group_B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>group_Ctrl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"groupA_vs_Ctrl"</span>, <span class="st">"dil.e_vs_b"</span>, <span class="st">"dil.ctrl_vs_b"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="model_summary.html">model_summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $exists</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -375,97 +384,39 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> FALSE  TRUE </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1     5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span> <span class="va">Contr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"groupA_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"dil.e_vs_b"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#prolfqua::Contrasts$debug("get_contrasts")</span></span></span>
+<span class="r-in"><span><span class="va">Contr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"groupA_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"dil.e_vs_b"</span> <span class="op">=</span> <span class="st">"group_B - group_Ctrl"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"dil.ctrl_vs_b"</span> <span class="op">=</span> <span class="st">"group_Ctrl - group_A"</span></span></span>
+<span class="r-in"><span>     <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#prolfqua::Contrasts$debug("get_linfct")</span></span></span>
+<span class="r-in"><span><span class="co">#debug(prolfqua:::.linfct)</span></span></span>
 <span class="r-in"><span><span class="va">contrastX</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">Contrasts</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contr</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">contrastX</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span>global<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept) group_B group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> groupA_vs_Ctrl           0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dil.e_vs_b               0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept) group_B group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> groupA_vs_Ctrl           0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dil.e_vs_b               0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept) group_B group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> groupA_vs_Ctrl           0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dil.e_vs_b               0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept) group_B group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> groupA_vs_Ctrl           0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dil.e_vs_b               0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept) group_B group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> groupA_vs_Ctrl           0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dil.e_vs_b               0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                (Intercept) group_B group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> groupA_vs_Ctrl           0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dil.e_vs_b               0       0         -1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="va">contrastX</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">contrastX</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span>avg <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">ref_lfc</span> <span class="op">==</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">t</span> <span class="op">&lt;-</span> <span class="va">contrastX</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span>global<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">contrastX</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> compute contrasts:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> computing contrasts.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [2]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName protein_Id  contrast         diff     FDR std.error    df statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> WaldTest  0EfVhX~0087 groupA_vs_Ctrl  0.367 7.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>      1.12 24.0      0.326</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> WaldTest  0EfVhX~0087 dil.e_vs_b      0.367 7.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>      1.12 24.0      0.326</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> WaldTest  BEJI92~5282 groupA_vs_Ctrl  4.27  3.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>      1.16  5.79     3.68 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> WaldTest  BEJI92~5282 dil.e_vs_b      4.27  3.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>      1.16  5.79     3.68 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> WaldTest  Fl4JiV~8625 groupA_vs_Ctrl -<span style="color: #BB0000;">0.476</span> 7.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>      1.31 34.6     -<span style="color: #BB0000;">0.363</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> WaldTest  Fl4JiV~8625 dil.e_vs_b     -<span style="color: #BB0000;">0.476</span> 7.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>      1.31 34.6     -<span style="color: #BB0000;">0.363</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> WaldTest  HvIpHG~9079 groupA_vs_Ctrl -<span style="color: #BB0000;">5.44</span>  8.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>      1.11 17.0     -<span style="color: #BB0000;">4.90</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> WaldTest  HvIpHG~9079 dil.e_vs_b     -<span style="color: #BB0000;">5.44</span>  8.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>      1.11 17.0     -<span style="color: #BB0000;">4.90</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> WaldTest  JcKVfU~9653 groupA_vs_Ctrl -<span style="color: #BB0000;">2.14</span>  2.32<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>      1.34 75.0     -<span style="color: #BB0000;">1.59</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> WaldTest  JcKVfU~9653 dil.e_vs_b     -<span style="color: #BB0000;">2.14</span>  2.32<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>      1.34 75.0     -<span style="color: #BB0000;">1.59</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> WaldTest  SGIVBl~5782 groupA_vs_Ctrl  0.444 7.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>      1.26 56.1      0.352</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> WaldTest  SGIVBl~5782 dil.e_vs_b      0.444 7.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>      1.26 56.1      0.352</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span>
-<span class="r-in"><span><span class="va">contrastX</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast       group_1 group_2   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> groupA_vs_Ctrl group_A group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> dil.e_vs_b     group_A group_Ctrl</span>
-<span class="r-in"><span><span class="va">contrastX</span><span class="op">$</span><span class="fu">column_description</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           column_name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> modelName   modelName</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> contrast     contrast</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> avgAbd         avgAbd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> diff             diff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FDR               FDR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> statistic   statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> std.error   std.error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> df                 df</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p.value       p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> conf.low     conf.low</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> conf.high   conf.high</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sigma           sigma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                            description</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> modelName                                                                                type of model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> contrast                                                      name of difference e.g. group1_vs_group2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> avgAbd                                                  mean abundance value of protein in all samples</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> diff                                                                       difference among conditions</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FDR                                                                               false discovery rate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> statistic                                                                                 t-statistics</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> std.error                                                                               standard error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> df                                                                                  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p.value                                                                                        p-value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> conf.low                                                         lower value of 95 confidence interval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> conf.high                                                         high value of 95 confidence interval</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sigma     residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">p.value</span> <span class="op">&lt;</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">x</span><span class="op">$</span><span class="va">p.value</span> <span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">avgAbd</span> <span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">FDR</span> <span class="op">&gt;</span><span class="fl">0</span> <span class="op">&amp;</span> <span class="va">x</span><span class="op">$</span><span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">contrastX</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xd</span> <span class="op">&lt;-</span> <span class="va">contrastX</span><span class="op">$</span><span class="fu">column_description</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modelFunction</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"abundance  ~ group_"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_model.html">build_model</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span> <span class="va">modelFunction</span>,</span></span>
+<span class="r-in"><span> subject_Id <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-in"><span><span class="va">contrastX</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">Contrasts</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contr</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">contrastX</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span>avg <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">ref_lfc</span> <span class="op">==</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

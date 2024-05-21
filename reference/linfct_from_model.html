@@ -101,7 +101,6 @@
 <code><a href="LR_test.html">LR_test</a>()</code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="build_model.html">build_model</a>()</code>,
-<code><a href="build_models.html">build_models</a>()</code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact</a>()</code>,
 <code><a href="get_anova_df.html">get_anova_df</a>()</code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit</a>()</code>,
@@ -110,7 +109,6 @@
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts</a>()</code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a>()</code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a>()</code>,
-<code><a href="make_model.html">make_model</a>()</code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results</a>()</code>,
 <code><a href="model_analyse.html">model_analyse</a>()</code>,
 <code><a href="model_summary.html">model_summary</a>()</code>,
@@ -122,10 +120,11 @@
 <code><a href="my_contrast_V2.html">my_contrast_V2</a>()</code>,
 <code><a href="my_glht.html">my_glht</a>()</code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide</a>()</code>,
-<code><a href="plot_lmer_model_and_data.html">plot_lmer_model_and_data</a>()</code>,
-<code><a href="plot_lmer_peptide_noRandom.html">plot_lmer_peptide_noRandom</a>()</code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions</a>()</code>,
-<code><a href="plot_lmer_predicted_interactions.html">plot_lmer_predicted_interactions</a>()</code>,
+<code><a href="sim_build_models_lm.html">sim_build_models_lm</a>()</code>,
+<code><a href="sim_build_models_lmer.html">sim_build_models_lmer</a>()</code>,
+<code><a href="sim_make_model_lm.html">sim_make_model_lm</a>()</code>,
+<code><a href="sim_make_model_lmer.html">sim_make_model_lmer</a>()</code>,
 <code><a href="strategy.html">strategy_lmer</a>()</code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled</a>()</code></p></div>
     </div>
@@ -133,55 +132,37 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_basicModel_p1807'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># debug(linfct_from_model)</span></span></span>
-<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_make_model_lm.html">sim_make_model_lm</a></span><span class="op">(</span><span class="st">"factors"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span>, as_list <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   (Intercept) class_therapyc.NO class_therapyp.NO CelltypeHSC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeCMP/MEP             1         0.3333333         0.3333333         0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CelltypeHSC                 1         0.3333333         0.3333333         1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO           1         1.0000000         0.0000000         0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU           1         0.0000000         0.0000000         0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO           1         0.0000000         1.0000000         0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             (Intercept) TreatmentB BackgroundZ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundX           1        0.5         0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> BackgroundZ           1        0.5         1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentA            1        0.0         0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentB            1        1.0         0.5</span>
 <span class="r-in"><span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP           1                 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeHSC               1                 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP           1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC               1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP           1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC               1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   class_therapyp.NO CelltypeHSC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP                 0           0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeHSC                     0           1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP                 0           0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC                     0           1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP                 1           0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC                     1           1</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_interactionModel_p1807'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># debug(.coeff_weights_factor_levels)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        (Intercept) TreatmentB BackgroundZ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentA:BackgroundX           1          0           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentA:BackgroundZ           1          0           1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentB:BackgroundX           1          1           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TreatmentB:BackgroundZ           1          1           1</span>
+<span class="r-in"><span><span class="va">lf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>nrow <span class="op">=</span> <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>byrow <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BackgroundX"</span>, <span class="st">"BackgroundZ"</span>, <span class="st">"TreatmentA"</span>, <span class="st">"TreatmentB"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"(Intercept)"</span>, <span class="st">"TreatmentB"</span>, <span class="st">"BackgroundZ"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">lf</span> <span class="op">==</span> <span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_make_model_lm.html">sim_make_model_lm</a></span><span class="op">(</span><span class="st">"interaction"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span><span class="op">[</span><span class="st">"CelltypeCMP/MEP"</span>,<span class="op">]</span> ,</span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"CelltypeCMP/MEP"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span>,<span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   (Intercept) class_therapyc.NO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP           1                 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeHSC               1                 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP           1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC               1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP           1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC               1                 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                   class_therapyp.NO CelltypeHSC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeCMP/MEP                 0           0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyc.NO:CelltypeHSC                     0           1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeCMP/MEP                 0           0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.HU:CelltypeHSC                     0           1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeCMP/MEP                 1           0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class_therapyp.NO:CelltypeHSC                     1           1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">linfct_from_model</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>

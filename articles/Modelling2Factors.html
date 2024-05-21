@@ -97,7 +97,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2024-05-07</h4>
+            <h4 data-toc-skip class="date">2024-05-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/vignettes/Modelling2Factors.Rmd" class="external-link"><code>vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="hidden name"><code>Modelling2Factors.Rmd</code></div>
@@ -130,6 +130,7 @@ found <a href="http://genomicsclass.github.io/book/pages/interactions_and_contra
 <div class="section level2">
 <h2 id="model-fitting">Model Fitting<a class="anchor" aria-label="anchor" href="#model-fitting"></a>
 </h2>
+<p>TODO: use simulated dataset for vignette.</p>
 <p>For more details how the dataset <code>data_Yeast2Factor</code> was
 created we refer you to the prolfquabenchmark vignettes. Interesting
 here is the definition of the model. If interaction shall be included in
@@ -140,43 +141,44 @@ interested in by specifying the respective contrasts.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflict_prefer.html" class="external-link">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data_Yeast2Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">"data_Yeast2Factor"</span><span class="op">)</span></span>
-<span><span class="va">data_Yeast2Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data_Yeast2Factor</span><span class="op">$</span><span class="va">data</span>, <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/old2new.html">old2new</a></span><span class="op">(</span><span class="va">data_Yeast2Factor</span><span class="op">$</span><span class="va">config</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#data_Yeast2Factor &lt;- prolfqua::prolfqua_data("data_Yeast2Factor")</span></span>
+<span><span class="va">data_2Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2Factor_config</a></span><span class="op">(</span></span>
+<span>  Nprot <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  weight_missing <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">data_2Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data_2Factor</span><span class="op">$</span><span class="va">data</span>, <span class="va">data_2Factor</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pMerged</span> <span class="op">&lt;-</span> <span class="va">data_Yeast2Factor</span></span>
-<span><span class="va">pMerged</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">Run_ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">pMerged</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">Run_ID</span><span class="op">)</span></span>
+<span><span class="va">pMerged</span> <span class="op">&lt;-</span> <span class="va">data_2Factor</span></span>
 <span><span class="va">pMerged</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 18 × 5</span></span></span>
-<span><span class="co">##    raw.file                        sampleName       condition_ batch_ Run_ID</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 20170314_06_ge3                 Ethanol~p2370~06 Ethanol    p2370       6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 20170314_08_ge1                 Ethanol~p2370~08 Ethanol    p2370       8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 20170314_09_ge2_rep             Ethanol~p2370~09 Ethanol    p2370       9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 20170314_12_ge4                 Ethanol~p2370~12 Ethanol    p2370      12</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 20180313_03_ge4_ls_180314100836 Ethanol~p2691~03 Ethanol    p2691       3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 20180313_06_ge1_ap              Ethanol~p2691~06 Ethanol    p2691       6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 20180313_09_ge3_cw              Ethanol~p2691~09 Ethanol    p2691       9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 20180313_10_ge2_zf              Ethanol~p2691~10 Ethanol    p2691      10</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 20180313_12_ge1_jtk             Ethanol~p2691~12 Ethanol    p2691      12</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> 20170314_02_g3_rep              Glucose~p2370~02 Glucose    p2370       2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> 20170314_04_g4                  Glucose~p2370~04 Glucose    p2370       4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> 20170314_07_g1_a                Glucose~p2370~07 Glucose    p2370       7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> 20170314_10_g1_b                Glucose~p2370~10 Glucose    p2370      10</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> 20170314_11_g2                  Glucose~p2370~11 Glucose    p2370      11</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> 20180313_04_g3_sw_180314112243  Glucose~p2691~04 Glucose    p2691       4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">16</span> 20180313_05_g2_mb               Glucose~p2691~05 Glucose    p2691       5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">17</span> 20180313_08_g4_cm               Glucose~p2691~08 Glucose    p2691       8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">18</span> 20180313_11_g1_ap               Glucose~p2691~11 Glucose    p2691      11</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 16 × 4</span></span></span>
+<span><span class="co">##    sample  sampleName Treatment Background</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A_V1    A_V1       A         X         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A_V2    A_V2       A         X         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A_V3    A_V3       A         X         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A_V4    A_V4       A         X         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> B_V1    B_V1       B         X         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> B_V2    B_V2       B         X         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> B_V3    B_V3       B         X         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> B_V4    B_V4       B         X         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C_V1    C_V1       B         Z         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> C_V2    C_V2       B         Z         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> C_V3    C_V3       B         Z         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> C_V4    C_V4       B         Z         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> Ctrl_V1 Ctrl_V1    A         Z         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> Ctrl_V2 Ctrl_V2    A         Z         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> Ctrl_V3 Ctrl_V3    A         Z         </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> Ctrl_V4 Ctrl_V4    A         Z</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula_Batches</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"transformedIntensity ~ condition_ * batch_ "</span><span class="op">)</span></span>
+<span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"abundance ~ Treatment * Background "</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># specify model definition</span></span>
-<span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Glucose - Ethanol"</span> <span class="op">=</span> <span class="st">"condition_Glucose - condition_Ethanol"</span>,</span>
-<span>               <span class="st">"p2370 - p2691"</span> <span class="op">=</span> <span class="st">"batch_p2370 - batch_p2691"</span>,</span>
-<span>               <span class="st">"Glucose_vs_Ethanol_gv_p2370"</span> <span class="op">=</span> <span class="st">"`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`"</span>,</span>
-<span>               <span class="st">"Glucose_vs_Ethanol_gv_p2691"</span> <span class="op">=</span> <span class="st">"`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`"</span>,</span>
-<span>               <span class="st">"Interaction"</span> <span class="op">=</span> <span class="st">"`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TA - TB"</span> <span class="op">=</span> <span class="st">"TreatmentA - TreatmentB"</span>,</span>
+<span>               <span class="st">"BX - BY"</span> <span class="op">=</span> <span class="st">"BackgroundX - BackgroundZ"</span>,</span>
+<span>               <span class="st">"AvsB_gv_BackgroundX"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`"</span>,</span>
+<span>               <span class="st">"AvsB_gv_BackgroundZ"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`"</span>,</span>
+<span>               <span class="st">"Interaction"</span> <span class="op">=</span> <span class="st">"AvsB_gv_BackgroundX - AvsB_gv_BackgroundZ"</span><span class="op">)</span></span></code></pre></div>
 <p>We are then building our model as we specified it before for each
 protein.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -200,21 +202,21 @@ factors treatment and batch filtering for the factor
 <code>condition_:batch_</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ANOVA</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">ANOVA</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">FDR</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">ANOVA</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"Treatment:Background"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">FDR</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 10</span></span></span>
-<span><span class="co">##   protein_Id       isSingular nrcoef factor    Df Sum.Sq Mean.Sq F.value p.value</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> sp|P36095|VPS24… FALSE           4 condi…     1  11.0    11.0     79.0 9.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> sp|Q12159|YRA1_… FALSE           4 condi…     1   4.86    4.86    33.9 4.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> sp|P09624|DLDH_… FALSE           4 condi…     1   1.40    1.40    27.5 1.24<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> sp|Q08225|DPP3_… FALSE           4 condi…     1   3.59    3.59    24.2 2.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> sp|P32783|MCES_… FALSE           4 condi…     1   7.90    7.90    37.4 4.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
+<span><span class="co">##   protein_Id  isSingular nrcoef factor         Df Sum.Sq Mean.Sq F.value p.value</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> OyVSi8~0269 FALSE           4 Treatment:…     1   28.7    28.7    52.8 1.61<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> PP9CBP~7083 FALSE           4 Treatment:…     1   20.3    20.3    60.2 2.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0YSKpy~7538 FALSE           4 Treatment:…     1   28.1    28.1    24.9 3.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> 7cbcrd~3909 FALSE           4 Treatment:…     1   43.6    43.6    24.8 3.20<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> 7QuTub~7020 FALSE           4 Treatment:…     1   39.8    39.8    29.0 1.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: FDR &lt;dbl&gt;</span></span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">protIntSig</span> <span class="op">&lt;-</span> <span class="va">ANOVA</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"condition_:batch_"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">protIntSig</span> <span class="op">&lt;-</span> <span class="va">ANOVA</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">factor</span> <span class="op">==</span> <span class="st">"Treatment:Background"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="va">protInt</span> <span class="op">&lt;-</span>  <span class="va">pMerged</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">protIntSig</span><span class="op">$</span><span class="va">protein_Id</span>,<span class="op">]</span></span></code></pre></div>
+<span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">protInt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">protIntSig</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>,<span class="op">]</span></span></code></pre></div>
 <p>These proteins can easily be visualized using the
 <code>boxplot</code> function from the <code>plotter</code> objects in
 prolfqua</p>
@@ -267,9 +269,9 @@ condition.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">Contrasts</span><span class="op">)</span></span>
 <span><span class="va">contrdfSimple</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] "condition_" "batch_"    </span></span>
-<span><span class="co">## [1] "condition_"</span></span>
-<span><span class="co">## [1] "batch_"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "Treatment"  "Background"</span></span>
+<span><span class="co">## [1] "Treatment"</span></span>
+<span><span class="co">## [1] "Background"</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pl</span><span class="op">$</span><span class="fu">histogram_diff</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -297,10 +299,10 @@ model. Also these results can again be visualized in a
 <code>volcano</code> plot.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1641   13</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 757  13</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 2500   20</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 980  20</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrSimple</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span></span>
 <span><span class="va">cM</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
@@ -337,9 +339,53 @@ interaction.
 Proteinheatmap for proteins with significant Interactions
 </p>
 </div>
-<p>The <code>prolfqua</code> package is described in <span class="citation">(Wolski et al. 2022)</span>.</p>
 </div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="alternative-model-specification">Alternative model specification<a class="anchor" aria-label="anchor" href="#alternative-model-specification"></a>
+</h2>
+<p>We compute the same contrasts as above but using only on factor and
+subgroups “A_X”, “A_Z”, “B_X”, “B_Z”.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_1Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2Factor_config</a></span><span class="op">(</span></span>
+<span>  Nprot <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  weight_missing <span class="op">=</span> <span class="fl">2</span>, TWO <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">data_1Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data_1Factor</span><span class="op">$</span><span class="va">data</span>, <span class="va">data_1Factor</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
+<span><span class="va">data_1Factor</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Group</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## A_X A_Z B_X B_Z </span></span>
+<span><span class="co">##   4   4   4   4</span></span></code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_1Factor</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "abundance"</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">formula_Batches</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"abundance ~ Group"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># specify model definition</span></span>
+<span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TA - TB"</span> <span class="op">=</span> <span class="st">"(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2"</span>,</span>
+<span>               <span class="st">"BX - BY"</span> <span class="op">=</span> <span class="st">"(GroupA_X + GroupB_X)/2 - (GroupA_Z + GroupB_Z)/2"</span>,</span>
+<span>               <span class="st">"AvsB_gv_BackgroundX"</span> <span class="op">=</span> <span class="st">"GroupA_X - GroupB_X"</span>,</span>
+<span>               <span class="st">"AvsB_gv_BackgroundZ"</span> <span class="op">=</span> <span class="st">"GroupA_Z - GroupB_Z"</span>,</span>
+<span>               <span class="st">"Interaction"</span> <span class="op">=</span> <span class="st">"AvsB_gv_BackgroundX - AvsB_gv_BackgroundZ"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">data_1Factor</span><span class="op">$</span><span class="va">data</span>, <span class="va">formula_Batches</span>,</span>
+<span>  subject_Id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contrasts</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">contrdfONE</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>We now compare the contrasts computed from the model with two factors
+with those obtained from the model with one factor.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">contrdf</span> , <span class="va">contrdfONE</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"protein_Id"</span>,<span class="st">"contrast"</span><span class="op">)</span>, suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".TWO"</span>,<span class="st">".ONE"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">diff.ONE</span>, <span class="va">xx</span><span class="op">$</span><span class="va">diff.TWO</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">statistic.ONE</span>, <span class="va">xx</span><span class="op">$</span><span class="va">statistic.TWO</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">FDR.ONE</span>, <span class="va">xx</span><span class="op">$</span><span class="va">FDR.TWO</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">p.value.ONE</span>, <span class="va">xx</span><span class="op">$</span><span class="va">p.value.TWO</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Modelling2Factors_files/figure-html/compare1Fand2Fresults-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="testing-interaction-computation">Testing interaction computation<a class="anchor" aria-label="anchor" href="#testing-interaction-computation"></a>
@@ -348,7 +394,7 @@ Proteinheatmap for proteins with significant Interactions
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.3.2 (2023-10-31)</span></span>
 <span><span class="co">## Platform: aarch64-apple-darwin20 (64-bit)</span></span>
@@ -391,16 +437,8 @@ Proteinheatmap for proteins with significant Interactions
 <span><span class="co">## [81] systemfonts_1.0.6  fs_1.6.4</span></span></code></pre>
 </div>
 <div class="section level2">
-<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Wolski2022.06.07.494524" class="csl-entry">
-Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
-Schlapbach, and Christian Panse. 2022. <span>“Prolfqua: A Comprehensive
-<span class="nocase">R-package</span> for Proteomics Differential
-Expression Analysis.”</span> <em>bioRxiv</em>. <a href="https://doi.org/10.1101/2022.06.07.494524" class="external-link">https://doi.org/10.1101/2022.06.07.494524</a>.
-</div>
-</div>
 </div>
   </div>
 

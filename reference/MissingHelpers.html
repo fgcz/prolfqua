@@ -98,20 +98,12 @@ compute group mean by LOD"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <dd><p>quantile of groups with one observed value to estimate LOD</p></dd>
 
 
-<dt><code>keep</code></dt>
-<dd><p>stats which might be time consuming to compute</p></dd>
+<dt><code>stats</code></dt>
+<dd><p>data.frame with group statistics</p></dd>
 
 
 <dt><code>weighted</code></dt>
 <dd><p>should we weight the LOD</p></dd>
-
-
-</dl><p></p></div>
-    </div>
-    <div id="active-bindings">
-    <h2>Active bindings</h2>
-    <p></p><div class="r6-active-bindings"><dl><dt><code>keep</code></dt>
-<dd><p>stats which might be time consuming to compute</p></dd>
 
 
 </dl><p></p></div>
@@ -161,26 +153,32 @@ compute group mean by LOD"><!-- mathjax --><script src="https://cdnjs.cloudflare
 
 </div><p></p><hr><a id="method-MissingHelpers-get_stats"></a><div class="section">
 <h3 id="method-get-stats-">Method <code>get_stats()</code><a class="anchor" aria-label="anchor" href="#method-get-stats-"></a></h3>
-
-<div class="section">
+<p>get data.frame with statistics</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">get_stats</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>data.frame</p>
+</div>
 
 </div><p></p><hr><a id="method-MissingHelpers-get_LOD"></a><div class="section">
 <h3 id="method-get-lod-">Method <code>get_LOD()</code><a class="anchor" aria-label="anchor" href="#method-get-lod-"></a></h3>
-
-<div class="section">
+<p>determine limit of detection
+computes quantile of abundances in groups with a single observation</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">get_LOD</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>integer LOD</p>
+</div>
 
 </div><p></p><hr><a id="method-MissingHelpers-impute_weighted_lod"></a><div class="section">
 <h3 id="method-impute-weighted-lod-">Method <code>impute_weighted_lod()</code><a class="anchor" aria-label="anchor" href="#method-impute-weighted-lod-"></a></h3>
-
-<div class="section">
+<p>compute group averages using weighted lod</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">impute_weighted_lod</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -188,8 +186,7 @@ compute group mean by LOD"><!-- mathjax --><script src="https://cdnjs.cloudflare
 
 </div><p></p><hr><a id="method-MissingHelpers-impute_lod"></a><div class="section">
 <h3 id="method-impute-lod-">Method <code>impute_lod()</code><a class="anchor" aria-label="anchor" href="#method-impute-lod-"></a></h3>
-
-<div class="section">
+<p>if group average absent substitute with LOD</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">impute_lod</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -197,12 +194,19 @@ compute group mean by LOD"><!-- mathjax --><script src="https://cdnjs.cloudflare
 
 </div><p></p><hr><a id="method-MissingHelpers-get_poolvar"></a><div class="section">
 <h3 id="method-get-poolvar-">Method <code>get_poolvar()</code><a class="anchor" aria-label="anchor" href="#method-get-poolvar-"></a></h3>
-
-<div class="section">
+<p>compute pooled var per protein</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">get_poolvar</span><span class="op">(</span>prob <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>prob</code></dt>
+<dd><p>prob of sd from proteins where it can be computed</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-MissingHelpers-get_contrast_estimates"></a><div class="section">
 <h3 id="method-get-contrast-estimates-">Method <code>get_contrast_estimates()</code><a class="anchor" aria-label="anchor" href="#method-get-contrast-estimates-"></a></h3>
@@ -212,7 +216,7 @@ compute group mean by LOD"><!-- mathjax --><script src="https://cdnjs.cloudflare
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>Contrasts</code></dt>
 <dd><p>named array with contrasts</p></dd>
 
@@ -222,12 +226,27 @@ compute group mean by LOD"><!-- mathjax --><script src="https://cdnjs.cloudflare
 
 </div><p></p><hr><a id="method-MissingHelpers-get_contrasts"></a><div class="section">
 <h3 id="method-get-contrasts-">Method <code>get_contrasts()</code><a class="anchor" aria-label="anchor" href="#method-get-contrasts-"></a></h3>
-
-<div class="section">
+<p>compute contrasts</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="va">Contrasts</span>, confint <span class="op">=</span> <span class="fl">0.95</span>, all <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>Contrasts</code></dt>
+<dd><p>vector with contrasts</p></dd>
+
+
+<dt><code>confint</code></dt>
+<dd><p>compute confint</p></dd>
+
+
+<dt><code>all</code></dt>
+<dd><p>return all columns, default FALSE</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-MissingHelpers-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
@@ -237,7 +256,7 @@ compute group mean by LOD"><!-- mathjax --><script src="https://cdnjs.cloudflare
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -256,76 +275,13 @@ compute group mean by LOD"><!-- mathjax --><script src="https://cdnjs.cloudflare
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">mh</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span>, prob <span class="op">=</span> <span class="fl">0.8</span>,weighted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">mh</span><span class="op">$</span><span class="fu">get_stats</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">get_stats</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "group_"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 300 × 11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  group_ nrReplicates nrMeasured nrNAs     sd     var meanAbundance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~3967 A                 4          4     0  1.43   2.05            22.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0EfVhX~3967 B                 4          4     0  0.965  0.930           19.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 0EfVhX~3967 Ctrl              4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               20.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 0YSKpy~2865 A                 4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               18.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 0YSKpy~2865 B                 4          0     4 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NaN</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 0YSKpy~2865 Ctrl              4          2     2  1.55   2.41            18.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 0m5WN4~6025 A                 4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               17.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 0m5WN4~6025 B                 4          3     1  0.615  0.378           24.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 0m5WN4~6025 Ctrl              4          3     1  0.145  0.021<span style="text-decoration: underline;">1</span>          20.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 3QLHfm~8938 A                 4          3     1  1.05   1.10            22.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 290 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: medianAbundance &lt;dbl&gt;, CV &lt;dbl&gt;, interaction &lt;fct&gt;</span></span>
-<span class="r-in"><span><span class="va">mh</span><span class="op">$</span><span class="fu">get_LOD</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      80% </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19.97677 </span>
-<span class="r-in"><span><span class="va">mh</span><span class="op">$</span><span class="fu">impute_weighted_lod</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 300 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  group_ nrReplicates nrMeasured nrNAs     sd     var meanAbundance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~3967 A                 4          4     0  1.43   2.05            22.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0EfVhX~3967 B                 4          4     0  0.965  0.930           19.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 0EfVhX~3967 Ctrl              4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               20.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 0YSKpy~2865 A                 4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               18.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 0YSKpy~2865 B                 4          0     4 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NaN</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 0YSKpy~2865 Ctrl              4          2     2  1.55   2.41            18.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 0m5WN4~6025 A                 4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               17.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 0m5WN4~6025 B                 4          3     1  0.615  0.378           24.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 0m5WN4~6025 Ctrl              4          3     1  0.145  0.021<span style="text-decoration: underline;">1</span>          20.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 3QLHfm~8938 A                 4          3     1  1.05   1.10            22.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 290 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: medianAbundance &lt;dbl&gt;, CV &lt;dbl&gt;, interaction &lt;fct&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   meanAbundanceZero &lt;dbl&gt;, meanAbundanceImp &lt;dbl&gt;</span></span>
-<span class="r-in"><span><span class="va">mh</span><span class="op">$</span><span class="fu">impute_lod</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 300 × 12</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  group_ nrReplicates nrMeasured nrNAs     sd     var meanAbundance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~3967 A                 4          4     0  1.43   2.05            22.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0EfVhX~3967 B                 4          4     0  0.965  0.930           19.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 0EfVhX~3967 Ctrl              4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               20.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 0YSKpy~2865 A                 4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               18.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 0YSKpy~2865 B                 4          0     4 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NaN</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 0YSKpy~2865 Ctrl              4          2     2  1.55   2.41            18.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 0m5WN4~6025 A                 4          1     3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>               17.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 0m5WN4~6025 B                 4          3     1  0.615  0.378           24.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 0m5WN4~6025 Ctrl              4          3     1  0.145  0.021<span style="text-decoration: underline;">1</span>          20.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 3QLHfm~8938 A                 4          3     1  1.05   1.10            22.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 290 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: medianAbundance &lt;dbl&gt;, CV &lt;dbl&gt;, interaction &lt;fct&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   meanAbundanceImp &lt;dbl&gt;</span></span>
-<span class="r-in"><span><span class="va">mh</span><span class="op">$</span><span class="fu">get_poolvar</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  n.groups     n    df    sd   sdT  mean meanAll nrMeasured</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~3967        2     8     6 1.22  0.864  20.6    20.6          9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0YSKpy~2865        1     2     1 1.55  1.55   18.5    18.4          3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 0m5WN4~6025        2     6     4 0.447 0.365  22.1    21.5          7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 3QLHfm~8938        3    10     7 0.923 0.715  22.6    22.6         10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 3QYop0~7543        3    10     7 0.808 0.626  22.9    22.9         10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 76k03k~7094        3    11     8 1.09  0.803  24.8    24.8         11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 7QuTub~1867        2     8     6 0.644 0.455  23.3    23.2          9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 7cbcrd~7351        3    12     9 0.889 0.629  24.9    24.9         12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 7soopj~5352        2     5     3 0.920 0.823  20.0    20.0          5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 7zeekV~7127        3     9     6 1.06  0.864  20.9    20.9          9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 90 more rows</span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">get_LOD</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">impute_weighted_lod</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">impute_lod</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">get_poolvar</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">get_contrast_estimates</span><span class="op">(</span><span class="va">Contrasts</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> group.b-a=group_A - group_B</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> group.a-ctrl=group_A - group_Ctrl</span>

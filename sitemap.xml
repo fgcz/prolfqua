@@ -148,9 +148,6 @@
     <loc>/reference/build_model.html</loc>
   </url>
   <url>
-    <loc>/reference/build_models.html</loc>
-  </url>
-  <url>
     <loc>/reference/complete_cases.html</loc>
   </url>
   <url>
@@ -173,9 +170,6 @@
   </url>
   <url>
     <loc>/reference/data_SAINTe_output.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_Yeast2Factor.html</loc>
   </url>
   <url>
     <loc>/reference/data_basicModel_p1807.html</loc>
@@ -313,9 +307,6 @@
     <loc>/reference/make_interaction_column.html</loc>
   </url>
   <url>
-    <loc>/reference/make_model.html</loc>
-  </url>
-  <url>
     <loc>/reference/make_reduced_hierarchy_config.html</loc>
   </url>
   <url>
@@ -448,16 +439,7 @@
     <loc>/reference/plot_intensity_distribution_violin.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_lmer_model_and_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_lmer_peptide_noRandom.html</loc>
-  </url>
-  <url>
     <loc>/reference/plot_lmer_peptide_predictions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_lmer_predicted_interactions.html</loc>
   </url>
   <url>
     <loc>/reference/plot_pca.html</loc>
@@ -547,6 +529,12 @@
     <loc>/reference/setup_analysis.html</loc>
   </url>
   <url>
+    <loc>/reference/sim_build_models_lm.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sim_build_models_lmer.html</loc>
+  </url>
+  <url>
     <loc>/reference/sim_lfq_data.html</loc>
   </url>
   <url>
@@ -557,6 +545,12 @@
   </url>
   <url>
     <loc>/reference/sim_lfq_data_protein_config.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sim_make_model_lm.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sim_make_model_lmer.html</loc>
   </url>
   <url>
     <loc>/reference/spread_response_by_IsotopeLabel.html</loc>
