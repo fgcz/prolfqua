@@ -223,11 +223,14 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
 #' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
 #' head(x$data)
+#' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = FALSE)
+#' x$data$Group |> table()
 sim_lfq_data_2Factor_config <- function(Nprot = 10,
                                         with_missing = TRUE,
                                         weight_missing = 0.2,
                                         PEPTIDE = FALSE,
-                                        seed = 1234
+                                        seed = 1234,
+                                        TWO = TRUE
 ){
   if (!is.null(seed)) {
     set.seed(seed)
@@ -240,16 +243,22 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
   if (with_missing) {
     data <- data[!which_missing(data$abundance,weight_missing = weight_missing),]
   }
+
   data$isotopeLabel <- "light"
   data$qValue <- 0
-
   atable <- AnalysisTableAnnotation$new()
   atable$fileName = "sample"
   atable$nr_children = "nr_peptides"
-  atable$factors["Treatment"] = "Treatment"
-  atable$factors["Background"] = "Background"
-  atable$factorDepth <- 2
 
+  if (TWO) {
+    atable$factors["Treatment"] = "Treatment"
+    atable$factors["Background"] = "Background"
+    atable$factorDepth <- 2
+  } else {
+    data <- data |> tidyr::unite(Group, c("Treatment", "Background"))
+    atable$factors["Group"] = "Group"
+    atable$factorDepth <- 1
+  }
   atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   if (PEPTIDE) {
     atable$hierarchy[["peptide_Id"]] = c("peptideID")

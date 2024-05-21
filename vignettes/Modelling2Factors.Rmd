@@ -38,23 +38,25 @@ Interesting here is the definition of the model. If interaction shall be include
 ```{r specifyModel}
 conflicted::conflict_prefer("filter", "dplyr")
 
-data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
-data_Yeast2Factor <- prolfqua::LFQData$new(data_Yeast2Factor$data, prolfqua::old2new(data_Yeast2Factor$config))
+#data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
+data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(
+  Nprot = 200,
+  with_missing = TRUE,
+  weight_missing = 2)
+data_2Factor <- prolfqua::LFQData$new(data_2Factor$data, data_2Factor$config)
 
-pMerged <- data_Yeast2Factor
-pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
+pMerged <- data_2Factor
 pMerged$factors()
 
-
 formula_Batches <-
-  prolfqua::strategy_lm("transformedIntensity ~ condition_ * batch_ ")
+  prolfqua::strategy_lm("abundance ~ Treatment * Background ")
 
 # specify model definition
-Contrasts <- c("Glucose - Ethanol" = "condition_Glucose - condition_Ethanol",
-               "p2370 - p2691" = "batch_p2370 - batch_p2691",
-               "Glucose_vs_Ethanol_gv_p2370" = "`condition_Glucose:batch_p2370` - `condition_Ethanol:batch_p2370`",
-               "Glucose_vs_Ethanol_gv_p2691" = "`condition_Glucose:batch_p2691` - `condition_Ethanol:batch_p2691`",
-               "Interaction" = "`Glucose_vs_Ethanol_gv_p2370` - `Glucose_vs_Ethanol_gv_p2691`")
+Contrasts <- c("TA - TB" = "TreatmentA - TreatmentB",
+               "BX - BY" = "BackgroundX - BackgroundZ",
+               "AvsB_gv_BackgroundX" = "`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`",
+               "AvsB_gv_BackgroundZ" = "`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`",
+               "Interaction" = "AvsB_gv_BackgroundX - AvsB_gv_BackgroundZ")
 ```
 
 We are then building our model as we specified it before for each protein.
@@ -76,11 +78,12 @@ To examine proteins with a significant interaction between the two factors treat
 
 ```{r anovaAnalysis}
 ANOVA <- mod$get_anova()
-ANOVA |> dplyr::filter(factor == "condition_:batch_") |> dplyr::arrange(FDR) |> head(5)
-protIntSig <- ANOVA |> dplyr::filter(factor == "condition_:batch_") |>
-  dplyr::filter(FDR < 0.05)
+ANOVA |> dplyr::filter(factor == "Treatment:Background") |> dplyr::arrange(FDR) |> head(5)
+protIntSig <- ANOVA |> dplyr::filter(factor == "Treatment:Background") |>
+  dplyr::filter(FDR < 0.01)
 protInt <-  pMerged$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id,]
+protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id[1:6],]
+
 ```
 
 These proteins can easily be visualized using the `boxplot` function from the `plotter` objects in prolfqua
@@ -157,11 +160,56 @@ hm
 
 
 
-# Alternative model specification - Computing contrasts and interactions from subgroups.
+# Alternative model specification 
+
+We compute the same contrasts as above but using only on factor and subgroups "A_X", "A_Z", "B_X", "B_Z".
+
+```{r}
+data_1Factor <- prolfqua::sim_lfq_data_2Factor_config(
+  Nprot = 200,
+  with_missing = TRUE,
+  weight_missing = 2, TWO = FALSE)
+data_1Factor <- prolfqua::LFQData$new(data_1Factor$data, data_1Factor$config)
+data_1Factor$factors()$Group |> table()
 
 
+data_1Factor$response()
+
+formula_Batches <-
+  prolfqua::strategy_lm("abundance ~ Group")
+
+# specify model definition
+Contrasts <- c("TA - TB" = "(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2",
+               "BX - BY" = "(GroupA_X + GroupB_X)/2 - (GroupA_Z + GroupB_Z)/2",
+               "AvsB_gv_BackgroundX" = "GroupA_X - GroupB_X",
+               "AvsB_gv_BackgroundZ" = "GroupA_Z - GroupB_Z",
+               "Interaction" = "AvsB_gv_BackgroundX - AvsB_gv_BackgroundZ")
+
+```
+
+```{r}
+mod <- prolfqua::build_model(data_Yeast1Factor$data, formula_Batches,
+  subject_Id = pMerged$config$table$hierarchy_keys() )
+
+```
 
 
+```{r}
+contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
+contrdfONE <- contr$get_contrasts()
+```
+
+We now compare the contrasts computed from the model with two factors with those obtained from the model with one factor.
+
+```{r}
+xx <- dplyr::inner_join(contrdf , contrdfONE, by = c("protein_Id","contrast"), suffix = c(".TWO",".ONE"))
+par(mfrow = c(2,2))
+plot(xx$diff.ONE, xx$diff.TWO)
+plot(xx$statistic.ONE, xx$statistic.TWO)
+plot(xx$FDR.ONE, xx$FDR.TWO)
+plot(xx$p.value.ONE, xx$p.value.TWO)
+
+```
 
 
 # Testing interaction computation

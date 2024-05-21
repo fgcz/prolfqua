@@ -266,11 +266,11 @@ NULL
 
 # #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
 
-#' example of 2 Factor data
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_Yeast2Factor'
+# example of 2 Factor data
+# @family data
+# @docType data
+# @keywords internal
+#'data_Yeast2Factor'
 
 # #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
 

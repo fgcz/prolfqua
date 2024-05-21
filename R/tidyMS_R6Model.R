@@ -8,22 +8,25 @@
 #' @param subject_Id subject id typically Assession or protein_Id
 #' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
-#' data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
-#' pMerged <- LFQData$new(data_Yeast2Factor$data, prolfqua::old2new(data_Yeast2Factor$config))
+#' data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(
+#'  Nprot = 200,
+#'  with_missing = TRUE,
+#'  weight_missing = 2)
 #'
-#' pMerged$data$Run_ID <- as.numeric(pMerged$data$Run_ID)
+#' pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
+#'
 #' pMerged$config$table$get_response()
 #' pMerged$factors()
 #'
 #' formula_condition_and_Batches <-
-#'   prolfqua::strategy_lm("transformedIntensity ~ condition_ + batch_")
+#'   prolfqua::strategy_lm("abundance ~ Treatment + Background")
 #' modCB <- prolfqua::build_model(
 #'   pMerged$data,
 #'   formula_condition_and_Batches,
 #'   subject_Id = pMerged$config$table$hierarchy_keys() )
 #'
 #' formula_condition <-
-#'   prolfqua::strategy_lm("transformedIntensity ~ condition_")
+#'   prolfqua::strategy_lm("abundance ~ Treatment")
 #' modC <- prolfqua::build_model(
 #'   pMerged$data,
 #'   formula_condition,
