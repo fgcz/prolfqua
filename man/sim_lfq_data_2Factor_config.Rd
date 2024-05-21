@@ -9,7 +9,8 @@ sim_lfq_data_2Factor_config(
   with_missing = TRUE,
   weight_missing = 0.2,
   PEPTIDE = FALSE,
-  seed = 1234
+  seed = 1234,
+  TWO = TRUE
 )
 }
 \arguments{
@@ -29,4 +30,6 @@ stopifnot("data.frame" \%in\% class(x$data))
 stopifnot("AnalysisConfiguration" \%in\% class(x$config))
 x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
 head(x$data)
+x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = FALSE)
+x$data$Group |> table()
 }

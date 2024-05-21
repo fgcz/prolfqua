@@ -26,10 +26,8 @@ mod <- build_model(
 Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 contrast <- prolfqua::Contrasts$new(mod,
  Contr)
- contrast$get_linfct()
 contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
-
 csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 
 contrast$get_contrasts() |> dim()
