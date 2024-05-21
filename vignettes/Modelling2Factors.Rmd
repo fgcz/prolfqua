@@ -164,7 +164,7 @@ hm
 
 We compute the same contrasts as above but using only on factor and subgroups "A_X", "A_Z", "B_X", "B_Z".
 
-```{r}
+```{r sim1factordata}
 data_1Factor <- prolfqua::sim_lfq_data_2Factor_config(
   Nprot = 200,
   with_missing = TRUE,
@@ -187,21 +187,21 @@ Contrasts <- c("TA - TB" = "(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2",
 
 ```
 
-```{r}
-mod <- prolfqua::build_model(data_Yeast1Factor$data, formula_Batches,
+```{r buildModel1factor}
+mod <- prolfqua::build_model(data_Factor$data, formula_Batches,
   subject_Id = pMerged$config$table$hierarchy_keys() )
 
 ```
 
 
-```{r}
+```{r moderateContrasts}
 contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
 contrdfONE <- contr$get_contrasts()
 ```
 
 We now compare the contrasts computed from the model with two factors with those obtained from the model with one factor.
 
-```{r}
+```{r compare1Fand2Fresults}
 xx <- dplyr::inner_join(contrdf , contrdfONE, by = c("protein_Id","contrast"), suffix = c(".TWO",".ONE"))
 par(mfrow = c(2,2))
 plot(xx$diff.ONE, xx$diff.TWO)
@@ -214,7 +214,7 @@ plot(xx$p.value.ONE, xx$p.value.TWO)
 
 # Testing interaction computation
 
-```{r eval=FALSE, include = FALSE}
+```{r multcomptest,eval=FALSE, include = FALSE}
 
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/spider_wolff_gorb_2013.csv"
 filename <- "spider_wolff_gorb_2013.csv"
