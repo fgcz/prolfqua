@@ -188,7 +188,7 @@ Contrasts <- c("TA - TB" = "(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2",
 ```
 
 ```{r buildModel1factor}
-mod <- prolfqua::build_model(data_Factor$data, formula_Batches,
+mod <- prolfqua::build_model(data_1Factor$data, formula_Batches,
   subject_Id = pMerged$config$table$hierarchy_keys() )
 
 ```
