@@ -211,6 +211,9 @@ plot(xx$p.value.ONE, xx$p.value.TWO)
 
 ```
 
+# Likelihood ratio Test for models with more factors
+
+TODO. Introduce Likelihood ratio test
 
 # Testing interaction computation
 
