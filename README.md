@@ -83,6 +83,30 @@ panelC <- lfqpro$get_Stats()$violin() + ggplot2::labs(tag = "C")
 pl <- lfqpro$get_Plotter()
 panelD <- pl$boxplots()$boxplot[[1]] + ggplot2::labs(tag = "D")
 ggpubr::ggarrange(panelA, panelB, panelC, panelD)
+```
+
+
+```{r}
+## specify model
+modelFunction <-
+ strategy_lm("log_protein_abundance  ~ group_")
+
+## fit models to lfqpro data
+mod <- build_model(
+ lfqpro,
+ modelFunction
+)
+
+## specify contrasts
+Contr <- c("AvsCtrl" = "group_A - group_Ctrl",
+     "BvsCtrl" = "group_B - group_Ctrl",
+     "BvsA" = "group_B - group_A"
+      )
+      
+## determine contrasts and plot
+contrastX <- prolfqua::Contrasts$new(mod, Contr)
+pl <- contrastX$get_Plotter()
+pl$volcano()
 
 ```
 
