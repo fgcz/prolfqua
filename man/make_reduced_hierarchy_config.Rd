@@ -20,16 +20,13 @@ AnalysisConfiguration with reduced hieararchy
 Make reduced hierarchy configuration
 }
 \examples{
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
-conf <- bb$config$clone(deep=TRUE)
-analysis <- bb$data
+bb <- prolfqua::sim_lfq_data_peptide_config()
 
-make_reduced_hierarchy_config(conf,
+red <- make_reduced_hierarchy_config(bb$config,
  "testintensity",
- conf$table$hierarchy[1:2])
-
+ bb$config$table$hierarchy[1])
+stopifnot(red$table$get_response() == "testintensity")
+stopifnot(length(red$table$hierarchy) == 1)
 }
 \seealso{
 Other configuration: 

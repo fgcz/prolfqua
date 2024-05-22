@@ -97,8 +97,7 @@ names_to_matrix <- function(names,split="\\||\\_")
 #' @examples
 #'
 #'
-#' show <- prolfqua_data('data_multigroupFC') |>
-#'    dplyr::filter(Condition  %in% c("TTB7_38h_test - TTB7_16h_test","TTB7_96h_test - TTB7_96h_sys") )
+#' show <- data.frame(logFC = rnorm(100, 0, 1), adj.P.Val = runif(100,0,1), Condition = sample(c("a","b")), colour = "forward", Name = paste0("n", 1:100))
 #' prolfqua::multigroup_volcano( show,
 #' effect="logFC",
 #' significance = "adj.P.Val",

@@ -176,15 +176,6 @@ NULL
 
 
 
-# data_multigroupFC <- multigroupFCDATA
-# usethis::use_data(data_multigroupFC,compress = TRUE, overwrite = TRUE)
-# file.remove("data/multigroupFCDATA.rda")
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_multigroupFC'
 
 # #@usage data_multigroupFC <- prolfqua_data("data_multigroupFC")
 

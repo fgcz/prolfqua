@@ -36,16 +36,13 @@ AnalysisConfiguration <- R6::R6Class(
 #' @family configuration
 #' @return AnalysisConfiguration with reduced hieararchy
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
-#' analysis <- bb$data
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
 #'
-#' make_reduced_hierarchy_config(conf,
+#' red <- make_reduced_hierarchy_config(bb$config,
 #'  "testintensity",
-#'  conf$table$hierarchy[1:2])
-#'
+#'  bb$config$table$hierarchy[1])
+#' stopifnot(red$table$get_response() == "testintensity")
+#' stopifnot(length(red$table$hierarchy) == 1)
 make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
   newConfig <- config$clone(deep = TRUE)
   newConfig$table$hierarchy = hierarchy
@@ -59,7 +56,6 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' @family configuration
 #' @examples
 #' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
-#' # debug(make_interaction_column)
 #' x <- make_interaction_column(xx, c("B","A"))
 #' x <- make_interaction_column(xx, c("A"))
 #' bb <- prolfqua::sim_lfq_data_protein_config()

@@ -129,30 +129,16 @@ plot_hierarchies_line <- function(res,
 #' @examples
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
-#'
-#' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 20))
-#' config <-  old2new(istar$config)
+#' istar <- sim_lfq_data_peptide_config()
 #'
 #' config$table$is_response_transformed <- FALSE
-#' #debug(plot_hierarchies_line_df)
-#' res <- plot_hierarchies_line_df(istar_data, config)
-#'
+#' res <- plot_hierarchies_line_df(istar$data, istar$config)
+#' res[[1]]
 #' config$table$is_response_transformed <- TRUE
-#' res <- plot_hierarchies_line_df(istar_data, config)
-#'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 20))
-#' config <-  old2new(istar$config)
-#' res <- plot_hierarchies_line_df(istar_data, config)
-#' config$table$is_response_transformed
-#' config$table$is_response_transformed <- TRUE
-#' res <- plot_hierarchies_line_df(istar_data, config)
-#' config$table$is_response_transformed
+#' res <- plot_hierarchies_line_df(istar$data, istar$config)
+#' res[[2]]
 #'
 #' #TODO make it work for other hiearachy levels.
-#' config$table$hierarchyDepth = 2
-#' #res <- plot_hierarchies_line_df(resDataStart, config)
 #'
 plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE){
   factor_level <- config$table$factorDepth
@@ -771,17 +757,13 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
-#' config <- old2new(bb$config$clone(deep = TRUE))
+#' bb <-sim_lfq_data_peptide_config()
 #' data <- bb$data
+#' config <- bb$config
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
-#'
 #' res <- x("unnest")
 #' res$data |> dim()
 #'
-#' config <- old2new(bb$config$clone(deep = TRUE))
-#' config$table$hierarchyDepth <- 1
 #'
 #' x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 #' dd <- x(value = "plot")
@@ -792,7 +774,7 @@ aggregate_intensity_topN <- function(pdata , config, .func, N = 3){
 #' # example how to add peptide count information
 #' tmp <- summarize_hierarchy(data, config)
 #' tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hierarchy_keys_depth())
-#'
+#' tmp
 intensity_summary_by_hkeys <- function(data, config, func)
 {
   x <- as.list( match.call() )

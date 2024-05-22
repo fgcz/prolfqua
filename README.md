@@ -107,7 +107,7 @@ Contr <- c("AvsCtrl" = "group_A - group_Ctrl",
 ## determine contrasts and plot
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 pl <- contrastX$get_Plotter()
-pl$volcano()
+pl$volcano()$FDR
 
 ```
 

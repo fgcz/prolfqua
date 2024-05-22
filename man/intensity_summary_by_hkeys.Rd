@@ -18,17 +18,13 @@ Summarizes the intensities within hierarchy
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-stopifnot(nrow(bb$data) == 25780)
-config <- old2new(bb$config$clone(deep = TRUE))
+bb <-sim_lfq_data_peptide_config()
 data <- bb$data
+config <- bb$config
 x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
-
 res <- x("unnest")
 res$data |> dim()
 
-config <- old2new(bb$config$clone(deep = TRUE))
-config$table$hierarchyDepth <- 1
 
 x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)
 dd <- x(value = "plot")
@@ -39,7 +35,7 @@ dd$plot[[2]]
 # example how to add peptide count information
 tmp <- summarize_hierarchy(data, config)
 tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hierarchy_keys_depth())
-
+tmp
 }
 \seealso{
 Other aggregation: 

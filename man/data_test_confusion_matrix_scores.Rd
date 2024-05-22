@@ -24,7 +24,6 @@ Other data:
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_correlatedPeptideList}},
 \code{\link{data_ionstar}},
-\code{\link{data_multigroupFC}},
 \code{\link{data_skylinePRMSample_A}},
 \code{\link{data_skylineSRM_HL_A}},
 \code{\link{data_spectronautDIA250_A}},
