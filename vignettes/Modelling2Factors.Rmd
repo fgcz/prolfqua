@@ -22,18 +22,24 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 # Purpose
 
-This vignette demonstrates how to integrate more than one factor into the linear models. Here, we show how to model the data with two factors plus the interaction thereof. The underlying dataset is generated in a course that is held on a yearly base. The context is that yeast is, in one condition, grown on glucose, and in the other condition, yeast is grown on glycerol and ethanol. Here we are looking into the results of two different batches,  where different people performed the wet-lab work, and even different LC-MS instruments were involved. It is, therefore, essential to model the batch variable for these two _similar_ datasets. 
-We are also modeling the interaction between the two explanatory variables _batch_ and _condition_for demonstration purposes. In this case, having a significant interaction term would mean the protein is expressed more in the Glucose condition in one batch. In contrast, the same protein is more abundant in the Ethanol condition in the other batch.
+In this tutorial, we delve into the concept of using multiple factors, also known as explanatory variables, to model the observed variance in your data. We will demonstrate this by modeling data with two factors and their interaction. 
 
+Examples of data where two explanatory variables are needed to explain the variance in the data are for instance:
+- Two cell lines (X) and (Z), for each of which we measured a control condition (A) and a treatment condition (B).
+- An experiment where samples from a control condition (A) and treatment condition (B) were measured in two batches, X and Y, and there is a batch effect we must account for.
+- A combination of treatments A and B results in factors such as FA with levels placeboA and A and FB with levels placeboB and B.
 
-An in depth introduction to modelling and testing interactions can be found [here](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html).
+Let's assume that the underlying dataset is generated in a course held annually. The context is that yeast is grown on glucose in one condition (A), and in the other condition (B), yeast is grown on glycerol and ethanol. Here, we are looking into the results of two different batches (X and Z), where other people performed the wet lab work, and even different LC-MS instruments were involved. It is, therefore, essential to model the batch variable for these two _similar_ datasets.
+
+We are also modeling the interaction between the two explanatory variables _batch_ and _condition_ for demonstration purposes. In this case, having a significant interaction term would mean the protein is expressed more in the Glucose condition in one batch. In contrast, the same protein is more abundant in the Ethanol condition in the other batch.
+
+An in depth introduction to modelling and testing interactions using linear models can be found [here](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html).
 
 # Model Fitting
 
-TODO: use simulated dataset for vignette.
-
-For more details how the dataset `data_Yeast2Factor` was created we refer you to the prolfquabenchmark vignettes.
+We use simulated data generated using the function `sim_lfq_data_2Factor_config`.
 Interesting here is the definition of the model. If interaction shall be included in the model a _asterix_ should be used while if no interaction should be taken into account a _plus_ should be used in the model definition. Also we can directly specify what comparisons we are interested in by specifying the respective contrasts.
+
 
 ```{r specifyModel}
 conflicted::conflict_prefer("filter", "dplyr")
@@ -162,7 +168,10 @@ hm
 
 # Alternative model specification 
 
-We compute the same contrasts as above but using only on factor and subgroups "A_X", "A_Z", "B_X", "B_Z".
+We compute the same contrasts as above but using only one factor and subgroups "A_X", "A_Z", "B_X", "B_Z".
+
+
+We start by simulating the data.
 
 ```{r sim1factordata}
 data_1Factor <- prolfqua::sim_lfq_data_2Factor_config(
@@ -170,11 +179,21 @@ data_1Factor <- prolfqua::sim_lfq_data_2Factor_config(
   with_missing = TRUE,
   weight_missing = 2, TWO = FALSE)
 data_1Factor <- prolfqua::LFQData$new(data_1Factor$data, data_1Factor$config)
-data_1Factor$factors()$Group |> table()
 
 
 data_1Factor$response()
 
+```
+
+Instead of two factors we now have one factor `Group` with four levels `r data_1Factor$factors()$Group |> table()`.
+
+```{r}
+knitr::kable(data_1Factor$factors())
+```
+
+We specify the model formula and the same contrasts as for the two factor model but using only one factor and the subgroups.
+
+```{r}
 formula_Batches <-
   prolfqua::strategy_lm("abundance ~ Group")
 
@@ -199,7 +218,7 @@ contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts
 contrdfONE <- contr$get_contrasts()
 ```
 
-We now compare the contrasts computed from the model with two factors with those obtained from the model with one factor.
+We now compare the contrasts computed from the model with two factors with those obtained from the model with one factor. We can see that the contrast estimates for difference, t-statistics, p.value and FDR are the same.
 
 ```{r compare1Fand2Fresults}
 xx <- dplyr::inner_join(contrdf , contrdfONE, by = c("protein_Id","contrast"), suffix = c(".TWO",".ONE"))
@@ -213,7 +232,8 @@ plot(xx$p.value.ONE, xx$p.value.TWO)
 
 # Likelihood ratio Test for models with more factors
 
-TODO. Introduce Likelihood ratio test
+In cases where you have more then one factor possibly explaining the variance in your data, you can use the likelihood ratio test, to examine which factor to include into the statistical model. For more details see the `LR_test` function documentation and example code. (To open the documentation run `?LR_test` in the R console.)
+
 
 # Testing interaction computation
 
