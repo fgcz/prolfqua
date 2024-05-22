@@ -86,6 +86,8 @@ ggpubr::ggarrange(panelA, panelB, panelC, panelD)
 
 ```
 
+![image](https://github.com/fgcz/prolfqua/assets/1926513/4d5bb64b-6e45-4d00-b029-f08995ac3127)
+
 
 ```{r}
 ## specify model
@@ -110,6 +112,8 @@ pl <- contrastX$get_Plotter()
 pl$volcano()
 
 ```
+
+![image](https://github.com/fgcz/prolfqua/assets/1926513/4ae8634b-ce6c-4fa2-8e42-c8bc64a12821)
 
 
 Detailed documentation with R code:
