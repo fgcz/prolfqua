@@ -83,6 +83,7 @@ panelC <- lfqpro$get_Stats()$violin() + ggplot2::labs(tag = "C")
 pl <- lfqpro$get_Plotter()
 panelD <- pl$boxplots()$boxplot[[1]] + ggplot2::labs(tag = "D")
 ggpubr::ggarrange(panelA, panelB, panelC, panelD)
+
 ```
 
 
