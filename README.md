@@ -59,27 +59,13 @@ https://github.com/fgcz/prolfqua/issues
 
 Or run the following example code:
 
-```
+```{r}
 R.version.string; packageVersion("prolfqua")
 
 ## read MQ peptide.txt and annotation table
-startdata <- prolfqua::tidyMQ_Peptides(system.file(
-  "samples/maxquant_txt/tiny2.zip", package = "prolfqua"))
-annot <- readxl::read_xlsx(system.file(
-  "samples/maxquant_txt/annotation_Ionstar2018_PXD003881.xlsx", package = "prolfqua"))
-startdata <- dplyr::inner_join(annot, startdata, by = "raw.file")
+startdata <- sim_lfq_data_peptide_config()
+lfqpep <- LFQData$new(startdata$data, startdata$config)
 
-## create MaxQuant configuration
-config <- prolfqua::create_config_MQ_peptide()
-
-## specify explanatory variable
-config$table$factors[['dilution.']] = "sample"
-
-## create R6 object
-lfqpep <- prolfqua::LFQData$new(startdata, config, setup = TRUE) 
-
-## remove observation with 0 intensity and filter for 2 peptides per protein
-lfqpep$remove_small_intensities()$filter_proteins_by_peptide_count()
 
 ## transform intensities
 lfqpep <- lfqpep$get_Transformer()$log2()$robscale()$lfq
@@ -92,10 +78,10 @@ lfqpro$rename_response("log_protein_abundance")
 pl <- lfqpep$get_Plotter()
 panelA <- pl$intensity_distribution_density() +
   ggplot2::labs(tag = "A") + ggplot2::theme(legend.position = "none")
-panelB <- agr$plot()$plots[[54]] + ggplot2::labs(tag = "B")
+panelB <- agr$plot()$plots[[1]] + ggplot2::labs(tag = "B")
 panelC <- lfqpro$get_Stats()$violin() + ggplot2::labs(tag = "C")
 pl <- lfqpro$get_Plotter()
-panelD <- pl$boxplots()$boxplot[[54]] + ggplot2::labs(tag = "D")
+panelD <- pl$boxplots()$boxplot[[1]] + ggplot2::labs(tag = "D")
 ggpubr::ggarrange(panelA, panelB, panelC, panelD)
 
 ```
