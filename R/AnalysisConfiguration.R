@@ -217,8 +217,7 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
+#' bb <- sim_lfq_data_protein_config()
 #' dt <- separate_hierarchy(bb$data, bb$config)
 #' base::setdiff(colnames(dt) ,colnames(bb$data))
 #' stopifnot(ncol(dt) >= ncol(bb$data))
@@ -244,8 +243,7 @@ separate_hierarchy <- function(data, config){
 #' @keywords internal
 #' @family configuration
 #' @examples
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
+#' bb <- sim_lfq_data_protein_config()
 #' dt <- separate_factors(bb$data, bb$config)
 #' base::setdiff(colnames(dt), colnames(bb$data))
 #' stopifnot(ncol(bb$data) < ncol(dt))
@@ -270,15 +268,10 @@ separate_factors <- function(data, config) {
 #' @family configuration
 #' @examples
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
+#' bb <- sim_lfq_data_protein_config()
 #'
-#' stopifnot(nrow(bb$data) == 25780)
-#' config <- bb$config$clone(deep=TRUE)
-#' data <- bb$data
-#'
-#' xx <- complete_cases(data, config)
-#' stopifnot(nrow(data) <= nrow(xx))
+#' xx <- complete_cases(bb$data, bb$config)
+#' stopifnot(nrow(bb$data) <= nrow(xx))
 #'
 complete_cases <- function(pdata, config) {
   message("completing cases")
@@ -462,12 +455,9 @@ hierarchy_counts_sample <- function(
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
-#' configur <- bb$config$clone(deep=TRUE)
+#' bb <- sim_lfq_data_peptide_config()
 #' data <- bb$data
-#'
+#' configur <- bb$config
 #' summarize_hierarchy(data, configur)
 #' summarize_hierarchy(data, configur, factors = character())
 #'

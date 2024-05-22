@@ -15,8 +15,7 @@ separate_factors(data, config)
 Separates factor columns into starting columns
 }
 \examples{
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
+bb <- sim_lfq_data_protein_config()
 dt <- separate_factors(bb$data, bb$config)
 base::setdiff(colnames(dt), colnames(bb$data))
 stopifnot(ncol(bb$data) < ncol(dt))

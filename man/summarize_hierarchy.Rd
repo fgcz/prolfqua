@@ -27,12 +27,9 @@ E.g compute number of peptides for each protein
 
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
-configur <- bb$config$clone(deep=TRUE)
+bb <- sim_lfq_data_peptide_config()
 data <- bb$data
-
+configur <- bb$config
 summarize_hierarchy(data, configur)
 summarize_hierarchy(data, configur, factors = character())
 
