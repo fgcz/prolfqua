@@ -59,9 +59,6 @@ NULL
 #' @name PACKAGE_DATA
 NULL
 
-# data_basicModel_p1807 <- prolfqua::basicModel_p1807
-# usethis::use_data(data_basicModel_p1807, compress = TRUE, overwrite = TRUE)
-# file.remove("data/basicModel_p1807.rda")
 
 #' SAINT express output
 #'
@@ -77,14 +74,7 @@ NULL
 
 
 
-#' Model for debugging
-#' @family data
-#' @keywords internal
-#' @docType data
-#' @format a linear model
-"data_basicModel_p1807"
 
-# #@usage data_basicModel_p1807 <- prolfqua_data("data_basicModel_p1807")
 
 # data_benchmarkExample <- prolfqua::benchmarkDataExample
 # usethis::use_data(data_benchmarkExample, compress = TRUE, overwrite = TRUE)
@@ -166,13 +156,6 @@ NULL
 # #@usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 
 
-
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-'data_interactionModel_p1807'
 
 # #@usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
 

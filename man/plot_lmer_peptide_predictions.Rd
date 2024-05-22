@@ -10,7 +10,6 @@ plot_lmer_peptide_predictions(m, intensity = "abundance")
 Plot prdictions
 }
 \examples{
-# m <- prolfqua_data('data_interactionModel_p1807')
 m <- sim_make_model_lmer()
 plot_lmer_peptide_predictions(m, intensity = "abundance")
 m <- sim_make_model_lmer("interaction")

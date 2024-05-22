@@ -359,7 +359,6 @@ model_analyse <- function(pepIntensity,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' # m <- prolfqua_data('data_interactionModel_p1807')
 #' m <- sim_make_model_lmer()
 #' plot_lmer_peptide_predictions(m, intensity = "abundance")
 #' m <- sim_make_model_lmer("interaction")
@@ -823,24 +822,20 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 #' @keywords internal
 #' @examples
 #'
-#' mb <- prolfqua_data('data_basicModel_p1807')
+#' mb <- sim_make_model_lmer("interaction")
 #' summary(mb)
 #'
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
 #' my_contest(mb, linfct$linfct_factors)
 #' my_contest(mb, linfct$linfct_interactions)
-#'
-#' # my_glht(mb, linfct$linfct_factors)
-#' # my_glht(mb, linfct$linfct_interactions)
+#' if(require(multcomp)){
+#' my_glht(mb, linfct$linfct_factors)
+#' my_glht(mb, linfct$linfct_interactions)
+#' }
+#' length(mb@beta)
 #' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 #' summary(mb)
-#'
-#'
-#' #library(pbkrtest)
-#' #(fm1 <- lme4::lmer(Reaction ~ Days + (Days | Subject), sleepstudy))
-#' #class(fm1)
-#' #pbkrtest::get_ddf_Lb.lmerMod(fm1)
 #'
 my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")){
   ddf <- match.arg(ddf)
