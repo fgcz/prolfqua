@@ -109,35 +109,45 @@ Wolski</h4>
 <div class="section level2">
 <h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
 </h2>
-<p>This vignette demonstrates how to integrate more than one factor into
-the linear models. Here, we show how to model the data with two factors
-plus the interaction thereof. The underlying dataset is generated in a
-course that is held on a yearly base. The context is that yeast is, in
-one condition, grown on glucose, and in the other condition, yeast is
-grown on glycerol and ethanol. Here we are looking into the results of
-two different batches, where different people performed the wet-lab
+<p>In this tutorial, we delve into the concept of using multiple
+factors, also known as explanatory variables, to model the observed
+variance in your data. We will demonstrate this by modeling data with
+two factors and their interaction.</p>
+<p>Examples of data where two explanatory variables are needed to
+explain the variance in the data are for instance: - Two cell lines (X)
+and (Z), for each of which we measured a control condition (A) and a
+treatment condition (B). - An experiment where samples from a control
+condition (A) and treatment condition (B) were measured in two batches,
+X and Y, and there is a batch effect we must account for. - A
+combination of treatments A and B results in factors such as FA with
+levels placeboA and A and FB with levels placeboB and B.</p>
+<p>Let’s assume that the underlying dataset is generated in a course
+held annually. The context is that yeast is grown on glucose in one
+condition (A), and in the other condition (B), yeast is grown on
+glycerol and ethanol. Here, we are looking into the results of two
+different batches (X and Z), where other people performed the wet lab
 work, and even different LC-MS instruments were involved. It is,
 therefore, essential to model the batch variable for these two
-<em>similar</em> datasets. We are also modeling the interaction between
-the two explanatory variables <em>batch</em> and _condition_for
-demonstration purposes. In this case, having a significant interaction
-term would mean the protein is expressed more in the Glucose condition
-in one batch. In contrast, the same protein is more abundant in the
-Ethanol condition in the other batch.</p>
-<p>An in depth introduction to modelling and testing interactions can be
-found <a href="http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html" class="external-link">here</a>.</p>
+<em>similar</em> datasets.</p>
+<p>We are also modeling the interaction between the two explanatory
+variables <em>batch</em> and <em>condition</em> for demonstration
+purposes. In this case, having a significant interaction term would mean
+the protein is expressed more in the Glucose condition in one batch. In
+contrast, the same protein is more abundant in the Ethanol condition in
+the other batch.</p>
+<p>An in depth introduction to modelling and testing interactions using
+linear models can be found <a href="http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html" class="external-link">here</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="model-fitting">Model Fitting<a class="anchor" aria-label="anchor" href="#model-fitting"></a>
 </h2>
-<p>TODO: use simulated dataset for vignette.</p>
-<p>For more details how the dataset <code>data_Yeast2Factor</code> was
-created we refer you to the prolfquabenchmark vignettes. Interesting
-here is the definition of the model. If interaction shall be included in
-the model a <em>asterix</em> should be used while if no interaction
-should be taken into account a <em>plus</em> should be used in the model
-definition. Also we can directly specify what comparisons we are
-interested in by specifying the respective contrasts.</p>
+<p>We use simulated data generated using the function
+<code>sim_lfq_data_2Factor_config</code>. Interesting here is the
+definition of the model. If interaction shall be included in the model a
+<em>asterix</em> should be used while if no interaction should be taken
+into account a <em>plus</em> should be used in the model definition.
+Also we can directly specify what comparisons we are interested in by
+specifying the respective contrasts.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflict_prefer.html" class="external-link">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span><span class="op">)</span></span>
 <span></span>
@@ -345,22 +355,115 @@ Proteinheatmap for proteins with significant Interactions
 <div class="section level2">
 <h2 id="alternative-model-specification">Alternative model specification<a class="anchor" aria-label="anchor" href="#alternative-model-specification"></a>
 </h2>
-<p>We compute the same contrasts as above but using only on factor and
+<p>We compute the same contrasts as above but using only one factor and
 subgroups “A_X”, “A_Z”, “B_X”, “B_Z”.</p>
+<p>We start by simulating the data.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_1Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2Factor_config</a></span><span class="op">(</span></span>
 <span>  Nprot <span class="op">=</span> <span class="fl">200</span>,</span>
 <span>  with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  weight_missing <span class="op">=</span> <span class="fl">2</span>, TWO <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">data_1Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data_1Factor</span><span class="op">$</span><span class="va">data</span>, <span class="va">data_1Factor</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
-<span><span class="va">data_1Factor</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Group</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## A_X A_Z B_X B_Z </span></span>
-<span><span class="co">##   4   4   4   4</span></span></code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_1Factor</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span></span>
+<span></span>
+<span><span class="va">data_1Factor</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "abundance"</span></span></code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<p>Instead of two factors we now have one factor <code>Group</code> with
+four levels 4, 4, 4, 4.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">data_1Factor</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">sample</th>
+<th align="left">sampleName</th>
+<th align="left">Group</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">A_V1</td>
+<td align="left">A_V1</td>
+<td align="left">A_X</td>
+</tr>
+<tr class="even">
+<td align="left">A_V2</td>
+<td align="left">A_V2</td>
+<td align="left">A_X</td>
+</tr>
+<tr class="odd">
+<td align="left">A_V3</td>
+<td align="left">A_V3</td>
+<td align="left">A_X</td>
+</tr>
+<tr class="even">
+<td align="left">A_V4</td>
+<td align="left">A_V4</td>
+<td align="left">A_X</td>
+</tr>
+<tr class="odd">
+<td align="left">B_V1</td>
+<td align="left">B_V1</td>
+<td align="left">B_X</td>
+</tr>
+<tr class="even">
+<td align="left">B_V2</td>
+<td align="left">B_V2</td>
+<td align="left">B_X</td>
+</tr>
+<tr class="odd">
+<td align="left">B_V3</td>
+<td align="left">B_V3</td>
+<td align="left">B_X</td>
+</tr>
+<tr class="even">
+<td align="left">B_V4</td>
+<td align="left">B_V4</td>
+<td align="left">B_X</td>
+</tr>
+<tr class="odd">
+<td align="left">C_V1</td>
+<td align="left">C_V1</td>
+<td align="left">B_Z</td>
+</tr>
+<tr class="even">
+<td align="left">C_V2</td>
+<td align="left">C_V2</td>
+<td align="left">B_Z</td>
+</tr>
+<tr class="odd">
+<td align="left">C_V3</td>
+<td align="left">C_V3</td>
+<td align="left">B_Z</td>
+</tr>
+<tr class="even">
+<td align="left">C_V4</td>
+<td align="left">C_V4</td>
+<td align="left">B_Z</td>
+</tr>
+<tr class="odd">
+<td align="left">Ctrl_V1</td>
+<td align="left">Ctrl_V1</td>
+<td align="left">A_Z</td>
+</tr>
+<tr class="even">
+<td align="left">Ctrl_V2</td>
+<td align="left">Ctrl_V2</td>
+<td align="left">A_Z</td>
+</tr>
+<tr class="odd">
+<td align="left">Ctrl_V3</td>
+<td align="left">Ctrl_V3</td>
+<td align="left">A_Z</td>
+</tr>
+<tr class="even">
+<td align="left">Ctrl_V4</td>
+<td align="left">Ctrl_V4</td>
+<td align="left">A_Z</td>
+</tr>
+</tbody>
+</table>
+<p>We specify the model formula and the same contrasts as for the two
+factor model but using only one factor and the subgroups.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">formula_Batches</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"abundance ~ Group"</span><span class="op">)</span></span>
 <span></span>
@@ -370,15 +473,17 @@ subgroups “A_X”, “A_Z”, “B_X”, “B_Z”.</p>
 <span>               <span class="st">"AvsB_gv_BackgroundX"</span> <span class="op">=</span> <span class="st">"GroupA_X - GroupB_X"</span>,</span>
 <span>               <span class="st">"AvsB_gv_BackgroundZ"</span> <span class="op">=</span> <span class="st">"GroupA_Z - GroupB_Z"</span>,</span>
 <span>               <span class="st">"Interaction"</span> <span class="op">=</span> <span class="st">"AvsB_gv_BackgroundX - AvsB_gv_BackgroundZ"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">data_1Factor</span><span class="op">$</span><span class="va">data</span>, <span class="va">formula_Batches</span>,</span>
 <span>  subject_Id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contrasts</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">contrdfONE</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>We now compare the contrasts computed from the model with two factors
-with those obtained from the model with one factor.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+with those obtained from the model with one factor. We can see that the
+contrast estimates for difference, t-statistics, p.value and FDR are the
+same.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">contrdf</span> , <span class="va">contrdfONE</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"protein_Id"</span>,<span class="st">"contrast"</span><span class="op">)</span>, suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".TWO"</span>,<span class="st">".ONE"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xx</span><span class="op">$</span><span class="va">diff.ONE</span>, <span class="va">xx</span><span class="op">$</span><span class="va">diff.TWO</span><span class="op">)</span></span>
@@ -390,7 +495,11 @@ with those obtained from the model with one factor.</p>
 <div class="section level2">
 <h2 id="likelihood-ratio-test-for-models-with-more-factors">Likelihood ratio Test for models with more factors<a class="anchor" aria-label="anchor" href="#likelihood-ratio-test-for-models-with-more-factors"></a>
 </h2>
-<p>TODO. Introduce Likelihood ratio test</p>
+<p>In cases where you have more then one factor possibly explaining the
+variance in your data, you can use the likelihood ratio test, to examine
+which factor to include into the statistical model. For more details see
+the <code>LR_test</code> function documentation and example code. (To
+open the documentation run <code><a href="../reference/LR_test.html">?LR_test</a></code> in the R console.)</p>
 </div>
 <div class="section level2">
 <h2 id="testing-interaction-computation">Testing interaction computation<a class="anchor" aria-label="anchor" href="#testing-interaction-computation"></a>
@@ -399,7 +508,7 @@ with those obtained from the model with one factor.</p>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.3.2 (2023-10-31)</span></span>
 <span><span class="co">## Platform: aarch64-apple-darwin20 (64-bit)</span></span>
