@@ -380,16 +380,15 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE){
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
-#' conf <- bb$config$clone(deep=TRUE)
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #' data <- bb$data
+#' conf <- bb$config
 #' res <- apply_to_response_matrix(data, conf, .func = base::scale)
-#' stopifnot("peptide.intensity_base..scale" %in% colnames(res))
-#' stopifnot("peptide.intensity_base..scale" == conf$table$get_response())
+#'
+#' stopifnot("abundance_base..scale" %in% colnames(res))
+#' stopifnot("abundance_base..scale" == conf$table$get_response())
 #' conf <- bb$config$clone(deep=TRUE)
-#' conf$table$workIntensity <- "peptide.intensity"
+#' conf$table$workIntensity <- "abundance"
 #' res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 #'
 #' # Normalize data using the vsn method from bioconductor
@@ -424,12 +423,9 @@ apply_to_response_matrix <- function(data, config, .func, .funcname = NULL){
 #'
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
+#' bb <-sim_lfq_data_peptide_config(Nprot = 100)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
-#' conf$table$workIntensity <- "peptide.intensity"
 #'
 #' res <- transform_work_intensity(sample_analysis, conf, log2)
 #' s1 <- get_robscales(res, conf)
@@ -477,12 +473,9 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 #' @examples
 #'
 #'
-#' bb <- prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #' conf <- bb$config$clone(deep=TRUE)
 #' sample_analysis <- bb$data
-#' conf$table$workIntensity <- "peptide.intensity"
 #'
 #' res <- transform_work_intensity(sample_analysis, conf, log2)
 #' res <- scale_with_subset_by_factors(res, res, conf)
@@ -532,11 +525,8 @@ scale_with_subset_by_factors <-  function(data, subset, config, preserveMean = F
 #' @family preprocessing
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' istar$config <- old2new(istar$config)
-#' istar_data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' xx <- normalize_log2_robscale(istar_data, istar$config)
-#' names(xx)
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' xx <- normalize_log2_robscale(bb$data, bb$config)
 #' xx$config$table$workIntensity
 #'
 normalize_log2_robscale <- function(pdata, config){
@@ -595,11 +585,9 @@ normalize_log2_robscale <- function(pdata, config){
 #' @keywords internal
 #' @examples
 #'
-#' bb <- prolfqua::prolfqua_data('data_ionstar')$filtered()
-#' bb$config <- old2new(bb$config)
-#' stopifnot(nrow(bb$data) == 25780)
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #' config <- bb$config$clone(deep=TRUE)
-#' data <- bb$data |> dplyr::select(-all_of("nr_peptide_Id_IN_protein_Id"))
+#' data <- bb$data
 #' hierarchy <- config$table$hierarchy_keys()
 #' res <- nr_B_in_A(data, config)
 #'
@@ -617,16 +605,11 @@ normalize_log2_robscale <- function(pdata, config){
 #'
 #' resDataStart <- bb$analysis(bb$data, config)
 #'
-#'
 #' nr_B_in_A(resDataStart, config)
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #' config$table$hierarchyDepth <- 2
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
-#' bb <- prolfqua::prolfqua_data('data_IonstarProtein_subsetNorm')
-#' bb$config <- old2new(bb$config$clone(deep=TRUE))
-#' nr_B_in_A(bb$data, bb$config)
-#' #undebug(nr_B_in_A)
 nr_B_in_A <- function(pdata, config , merge = TRUE){
   levelA <- config$table$hkeysDepth()
   levelB <- config$table$hierarchyKeys()[length(levelA) + 1]

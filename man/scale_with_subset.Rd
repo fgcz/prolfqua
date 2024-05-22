@@ -30,12 +30,9 @@ this should reduce the overall variance.
 
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
+bb <-sim_lfq_data_peptide_config(Nprot = 100)
 conf <- bb$config$clone(deep=TRUE)
 sample_analysis <- bb$data
-conf$table$workIntensity <- "peptide.intensity"
 
 res <- transform_work_intensity(sample_analysis, conf, log2)
 s1 <- get_robscales(res, conf)

@@ -21,16 +21,15 @@ Apply function requiring a matrix to tidy table
 \examples{
 
 
-bb <- prolfqua_data('data_ionstar')$filtered()
-bb$config <- old2new(bb$config)
-stopifnot(nrow(bb$data) == 25780)
-conf <- bb$config$clone(deep=TRUE)
+bb <- sim_lfq_data_peptide_config(Nprot = 100)
 data <- bb$data
+conf <- bb$config
 res <- apply_to_response_matrix(data, conf, .func = base::scale)
-stopifnot("peptide.intensity_base..scale" \%in\% colnames(res))
-stopifnot("peptide.intensity_base..scale" == conf$table$get_response())
+
+stopifnot("abundance_base..scale" \%in\% colnames(res))
+stopifnot("abundance_base..scale" == conf$table$get_response())
 conf <- bb$config$clone(deep=TRUE)
-conf$table$workIntensity <- "peptide.intensity"
+conf$table$workIntensity <- "abundance"
 res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 
 # Normalize data using the vsn method from bioconductor
