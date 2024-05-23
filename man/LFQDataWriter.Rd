@@ -17,8 +17,7 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{ProteinAnnotation}}
+\code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
 \section{Public fields}{

@@ -36,8 +36,7 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQDataWriter}},
-\code{\link{ProteinAnnotation}}
+\code{\link{LFQDataWriter}}
 }
 \concept{LFQData}
 \section{Public fields}{

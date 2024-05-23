@@ -64,8 +64,7 @@ Other LFQData:
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQDataWriter}},
-\code{\link{ProteinAnnotation}}
+\code{\link{LFQDataWriter}}
 }
 \concept{LFQData}
 \section{Public fields}{

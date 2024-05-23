@@ -34,7 +34,6 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataWriter}},
-\code{\link{ProteinAnnotation}}
+\code{\link{LFQDataWriter}}
 }
 \concept{LFQData}
