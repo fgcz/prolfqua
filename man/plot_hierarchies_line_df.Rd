@@ -19,7 +19,7 @@ Generates peptide level plots for all proteins
 
 istar <- sim_lfq_data_peptide_config()
 
-config$table$is_response_transformed <- FALSE
+istar$config$table$is_response_transformed <- FALSE
 res <- plot_hierarchies_line_df(istar$data, istar$config)
 res[[1]]
 config$table$is_response_transformed <- TRUE
