@@ -105,7 +105,7 @@ LFQData <- R6::R6Class(
       return(self$config$table$hierarchy_keys_depth())
     },
     #' @description
-    #' is data trasfromed
+    #' is data transformed
     #' @param is_transformed logical
     #' @return logical
     is_transformed = function(is_transformed){

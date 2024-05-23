@@ -9,10 +9,9 @@
 #' istar_data <- istar$data
 #' lfd <- LFQData$new(istar_data, istar$config)
 #' se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
-#'
+#' if(require(proDA)){
 #' fit <- proDA::proDA(se, design = ~ group_ - 1, data_is_log_transformed = TRUE)
 #' contr <- list()
-#'
 #' contrasts <- c("group_AvsCtrl" = "group_A - group_Ctrl",
 #'                "group_BvsCtrl" = "group_B - group_Ctrl")
 #' contr[["group_AvsCtrl"]] <- data.frame(
@@ -31,6 +30,7 @@
 #' tmp <- cproDA$get_Plotter()
 #' tmp$volcano()$pval
 #' tmp$volcano()$adj_pval
+#' }
 #'
 ContrastsProDA <- R6::R6Class(
   "ContrastsProDA",

@@ -196,7 +196,7 @@ get subject ID columns
 \if{html}{\out{<a id="method-LFQData-is_transformed"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-is_transformed}{}}}
 \subsection{Method \code{is_transformed()}}{
-is data trasfromed
+is data transformed
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$is_transformed(is_transformed)}\if{html}{\out{</div>}}
 }
