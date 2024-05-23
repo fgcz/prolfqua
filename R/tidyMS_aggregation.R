@@ -134,7 +134,7 @@ plot_hierarchies_line <- function(res,
 #' istar$config$table$is_response_transformed <- FALSE
 #' res <- plot_hierarchies_line_df(istar$data, istar$config)
 #' res[[1]]
-#' config$table$is_response_transformed <- TRUE
+#' istar$config$table$is_response_transformed <- TRUE
 #' res <- plot_hierarchies_line_df(istar$data, istar$config)
 #' res[[2]]
 #'
