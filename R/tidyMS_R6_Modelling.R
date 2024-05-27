@@ -535,7 +535,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
       tryCatch({
         data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
       }, error = function(e) {
-        warning("Error:", e$message, "\n")
+        warning("Warn 'linfct_matrix_contrasts':", e$message, "\n")
         # Handle the error, e.g., by skipping the current iteration, logging the error, etc.
       })
     }
