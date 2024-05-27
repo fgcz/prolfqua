@@ -128,7 +128,7 @@ transform_work_intensity <- function(pdata,
 #' hist(unique(res$srm_QValueNR))
 #'
 summarise_QValues <- function(pdata,
-                             config
+                              config
 ){
   QValueMin <- "srm_QValueMin"
   QValueNR <- "srm_QValueNR"
@@ -197,9 +197,9 @@ filter_byQValue <- function(pdata, config){
 #' @export
 #' @keywords internal
 tidy_to_wide <- function(data,
-                   rowIDs ,
-                   columnLabels ,
-                   value
+                         rowIDs ,
+                         columnLabels ,
+                         value
 ){
   wide <- data |>
     dplyr::select_at(c(rowIDs, columnLabels, value  ))
@@ -252,7 +252,7 @@ tidy_to_wide_config <- function(data, config,
                                 fileName = FALSE,
                                 sep="~lfq~",
                                 value = config$table$get_response()
-                                ){
+){
   if (fileName) {
     newcolname <- config$table$fileName
   }else{
@@ -264,8 +264,8 @@ tidy_to_wide_config <- function(data, config,
     dplyr::distinct() |> dplyr::arrange_at(newcolname)
 
   res <- tidy_to_wide( data, c(config$table$hierarchy_keys(),config$table$isotopeLabel) ,
-                 newcolname,
-                 value = value )
+                       newcolname,
+                       value = value )
   rowdata <- res |> dplyr::select(all_of(c(config$table$hierarchy_keys(),config$table$isotopeLabel)))
   if (as.matrix) {
     resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(c(config$table$hierarchy_keys(),config$table$isotopeLabel))))
@@ -316,7 +316,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #' @keywords internal
 #'
 .get_robscales <- function(data,
-                        dim = 2)
+                           dim = 2)
 {
   medians <- apply(data, dim, median, na.rm = TRUE)
   data = sweep(data, dim, medians, "-")
@@ -535,8 +535,8 @@ normalize_log2_robscale <- function(pdata, config){
   pepConfig$table$is_response_transformed = TRUE
 
   pepIntensityNormalized <- apply_to_response_matrix(pepIntensityNormalized,
-                                                   pepConfig,
-                                                   .func = robust_scale)
+                                                     pepConfig,
+                                                     .func = robust_scale)
 
   pepIntensityNormalized <- pepIntensityNormalized |>
     dplyr::rename(transformedIntensity = pepConfig$table$get_response())
@@ -694,35 +694,43 @@ nr_obs_sample <- function(data, config, new_child = config$table$nr_children){
 #' @export
 #' @param data tidy data
 #' @param config prolfqua config
-#' @param from_children compute from existing child stats
+#' @param from_children TRUE compute from nr_children column, FALSE - do not use nr_children column
 #' @param name_nr_child how to name column
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #'
-#' xd <- nr_obs_experiment(dd$data, dd$config)
-#' xd
+#'
 #' xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
-#' xd
+#' xd <- nr_obs_experiment(dd$data, dd$config, from_children = TRUE)
 #'
 #' dp <- prolfqua::sim_lfq_data_protein_config()
-#' undebug(nr_obs_experiment)
 #' nr_obs_experiment(dp$data, dp$config)
 #' nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
 #'
-nr_obs_experiment <- function(data, config, from_children = TRUE,
+#'
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' dd$config$table$hierarchyDepth <- 2
+#' xpep <- nr_obs_experiment(dd$data,dd$config)
+#' xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)
+nr_obs_experiment <- function(data, config,
+                              from_children = TRUE,
                               name_nr_child = "nr_child_exp"){
   tb <- config$table
-  if (!from_children & (tb$hierarchyDepth < length(tb$hierarchy_keys())) ) {
-    xq <- data |> dplyr::select(tb$hierarchy_keys()) |>
+  hkeys <- tb$hierarchy_keys()
+  hkeysd <- tb$hierarchy_keys_depth()
+  nr_children <- tb$nr_children
+    if (from_children ) {
+
+    xz <- nr_obs_sample(data,config)
+    xz <- xz |> group_by(!!!syms(hkeysd)) |>
+      dplyr::summarize(!!name_nr_child := max(!!sym(nr_children)), .groups = "drop")
+    return(xz)
+  } else {
+    xq <- data |> dplyr::select(hkeys) |>
       distinct() |>
-      dplyr::group_by(!!sym(tb$hierarchy_keys_depth())) |>
+      dplyr::group_by(!!!syms(hkeysd)) |>
       dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
     return(xq)
-  } else {
-    xz <- nr_obs_sample(data,config)
-    xz <- xz |> group_by(!!sym(tb$hierarchy_keys_depth())) |>
-      summarize(!!name_nr_child := max(!!sym(tb$nr_children)), .groups = "drop")
-    return(xz)
   }
 }
 

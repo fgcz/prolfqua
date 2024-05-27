@@ -16,7 +16,7 @@ nr_obs_experiment(
 
 \item{config}{prolfqua config}
 
-\item{from_children}{compute from existing child stats}
+\item{from_children}{TRUE compute from nr_children column, FALSE - do not use nr_children column}
 
 \item{name_nr_child}{how to name column}
 }
@@ -26,14 +26,17 @@ Aggregates e.g. protein abundances from peptide abundances
 \examples{
 dd <- prolfqua::sim_lfq_data_peptide_config()
 
-xd <- nr_obs_experiment(dd$data, dd$config)
-xd
+
 xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
-xd
+xd <- nr_obs_experiment(dd$data, dd$config, from_children = TRUE)
 
 dp <- prolfqua::sim_lfq_data_protein_config()
-undebug(nr_obs_experiment)
 nr_obs_experiment(dp$data, dp$config)
 nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
 
+
+dd <- prolfqua::sim_lfq_data_peptide_config()
+dd$config$table$hierarchyDepth <- 2
+xpep <- nr_obs_experiment(dd$data,dd$config)
+xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)
 }
