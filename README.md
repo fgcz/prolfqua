@@ -58,8 +58,11 @@ https://github.com/fgcz/prolfqua/issues
 - Read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
 
 
-How to generate an LFQData object for your protein quantification data an annotation file is described in the:
-[CreatingConfigurations vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
+How to build a LFQData object for a table with protein or peptide quantification results and an annotation file with the explanatory variables 
+is described in the: [CreatingConfigurations vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
+
+
+
 
 Or run the following example code:
 
