@@ -121,12 +121,6 @@
     <loc>/reference/PACKAGE_DATA.html</loc>
   </url>
   <url>
-    <loc>/reference/ProjectStructure.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ProteinAnnotation.html</loc>
-  </url>
-  <url>
     <loc>/reference/R6_extract_values.html</loc>
   </url>
   <url>
@@ -188,9 +182,6 @@
   </url>
   <url>
     <loc>/reference/data_ionstar.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_multigroupFC.html</loc>
   </url>
   <url>
     <loc>/reference/data_skylinePRMSample_A.html</loc>

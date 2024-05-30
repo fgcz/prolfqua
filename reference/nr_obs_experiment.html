@@ -97,7 +97,7 @@
 
 
 <dt>from_children</dt>
-<dd><p>compute from existing child stats</p></dd>
+<dd><p>TRUE compute from nr_children column, FALSE - do not use nr_children column</p></dd>
 
 
 <dt>name_nr_child</dt>
@@ -112,42 +112,13 @@
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no nr_children column specified in the data, adding column nr_children and setting to 1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">xd</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_experiment</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">xd</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  nr_child_exp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087            3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7cbcrd~5725            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 9VUkAq~4703            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CGzoYe~2147            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> DoWup2~5896            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653            7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782            6</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">xd</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_experiment</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span>, from_children <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">xd</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  nr_child_exp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087            3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7cbcrd~5725            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 9VUkAq~4703            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CGzoYe~2147            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> DoWup2~5896            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653            7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782            6</span>
+<span class="r-in"><span><span class="va">xd</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_experiment</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span>, from_children <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/debug.html" class="external-link">undebug</a></span><span class="op">(</span><span class="va">nr_obs_experiment</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>argument is not being debugged</span>
 <span class="r-in"><span><span class="fu">nr_obs_experiment</span><span class="op">(</span><span class="va">dp</span><span class="op">$</span><span class="va">data</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  nr_child_exp</span>
@@ -165,18 +136,26 @@
 <span class="r-in"><span><span class="fu">nr_obs_experiment</span><span class="op">(</span><span class="va">dp</span><span class="op">$</span><span class="va">data</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span>, from_children <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  nr_child_exp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087            3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7cbcrd~5725            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 9VUkAq~4703            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CGzoYe~2147            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> DoWup2~5896            1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653            7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782            1</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no nr_children column specified in the data, adding column nr_children and setting to 1.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="va">xpep</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_experiment</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>,<span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xpep</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_experiment</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>,<span class="va">dd</span><span class="op">$</span><span class="va">config</span>, from_children <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
