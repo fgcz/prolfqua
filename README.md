@@ -57,6 +57,10 @@ https://github.com/fgcz/prolfqua/issues
 - Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube or [slides](https://f1000research.com/slides/9-1476).
 - Read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
 
+
+How to generate an LFQData object for your protein quantification data an annotation file is described in the:
+[CreatingConfigurations vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
+
 Or run the following example code:
 
 ```{r}
