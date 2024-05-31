@@ -49,7 +49,7 @@ https://github.com/fgcz/prolfqua/issues
 
 # How to get started
 
-How to build a `LFQData` object from a table with protein or peptide quantification results, and an table with sample annotation  
+How to build a `LFQData` object from a table with protein or peptide quantification results, and a table with sample annotation  
 is described in more detail here the: [CreatingConfigurations vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
 
 Once you have created an `LFQData` you can use prolfqua like this.
