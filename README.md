@@ -49,15 +49,10 @@ https://github.com/fgcz/prolfqua/issues
 
 # How to get started
 
-[![SIB in-silico talk](https://img.youtube.com/vi/acDiXq2xbOw/1.jpg)](https://www.youtube.com/watch?v=acDiXq2xbOw)
+How to build a `LFQData` object from a table with protein or peptide quantification results, and a table with sample annotation  
+is described in more detail here the: [CreatingConfigurations vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
 
-- Watch the [silico talks](https://www.sib.swiss/in-silico-talks/prolfqua-a-comprehensive-r-package-for-protein-differential-expression-analysis)
-- See our article at the [Journal of Proteome Research](https://pubmed.ncbi.nlm.nih.gov/36939687/)
-- See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
-- Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube or [slides](https://f1000research.com/slides/9-1476).
-- Read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
-
-Or run the following example code:
+Once you have created an `LFQData` you can use prolfqua like this.
 
 ```{r}
 R.version.string; packageVersion("prolfqua")
@@ -116,7 +111,16 @@ pl$volcano()$FDR
 ![image](https://github.com/fgcz/prolfqua/assets/1926513/4ae8634b-ce6c-4fa2-8e42-c8bc64a12821)
 
 
-Detailed documentation with R code:
+[![SIB in-silico talk](https://img.youtube.com/vi/acDiXq2xbOw/1.jpg)](https://www.youtube.com/watch?v=acDiXq2xbOw)
+
+- Watch the [silico talks](https://www.sib.swiss/in-silico-talks/prolfqua-a-comprehensive-r-package-for-protein-differential-expression-analysis)
+- See our article at the [Journal of Proteome Research](https://pubmed.ncbi.nlm.nih.gov/36939687/)
+- See [Bioconductor 2021 Conference poster](https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html). 
+- Watch the lightning (8 min) talk at [EuroBioc2020](https://www.youtube.com/watch?v=jOXU4X7nV9I&t) on YouTube or [slides](https://f1000research.com/slides/9-1476).
+- Read the pkgdown generate website https://fgcz.github.io/prolfqua/index.html
+
+
+# Detailed documentation with R code:
 
 - [Comparing two Conditions](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html)
 - [QC and protein wise sample size estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
