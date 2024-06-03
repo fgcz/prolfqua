@@ -522,6 +522,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' x <- linfct_matrix_contrasts(linfct, Contr )
 #' stopifnot(sum(x["interactXZ",]) ==1 )
 #' stopifnot(sum(x["interactAB",]) ==1 )
+#'
 linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")

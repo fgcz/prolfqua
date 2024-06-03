@@ -128,15 +128,17 @@ plot_sample_correlation <- function(pdata, config){
 #'
 #' hierarchy = config$table$hierarchy_keys_depth()
 #' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
-#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE)
+#' #debug(plot_hierarchies_boxplot)
+#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE, show_mean=TRUE)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
-#'
+#' p
 plot_hierarchies_boxplot <- function(pdata,
                                      title,
                                      config,
                                      facet_grid_on = NULL ,
                                      beeswarm = TRUE,
+                                     show_mean = TRUE,
                                      pb){
   if (!missing(pb)) { pb$tick() }
 
@@ -159,6 +161,13 @@ plot_hierarchies_boxplot <- function(pdata,
   if ( beeswarm ) {
     #p <- p + geom_point()
     p <- p + ggbeeswarm::geom_quasirandom(aes_string( color = color) , dodge.width = 0.7 )
+  }
+  if (show_mean) {
+    p <- p + stat_summary(fun = mean, geom = "point", position = position_dodge(0.7),
+                          size = 3, shape = 4)
+    p <- p + stat_summary(fun = mean, geom = "text", aes(label = round(after_stat(y), 2)), position = position_dodge(0.7),
+                          vjust = -1,
+                          size = 3)
   }
   if (!is.null( facet_grid_on ) && (facet_grid_on %in% colnames(pdata))) {
     p <- p + facet_grid( formula(paste0("~", facet_grid_on ) ))

@@ -38,6 +38,7 @@ linfct <- linfct_from_model(m, as_list = FALSE)
 x <- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==1 )
 stopifnot(sum(x["interactAB",]) ==1 )
+
 }
 \seealso{
 Other modelling: 
