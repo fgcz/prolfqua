@@ -51,6 +51,40 @@ https://github.com/fgcz/prolfqua/issues
 
 How to build a `LFQData` object from a table with protein or peptide quantification results, and a table with sample annotation is described in more detail here the: [CreatingConfigurations vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
 
+A minimal example for a table with protein abudances is:
+
+```{r}
+#Table with abundances
+df <- data.frame(protein_Id = c("tr|A|HUMAN","tr|B|HUMAN","tr|C|HUMAN","tr|D|HUMAN"),
+                 Intensity_A = c(100,10000,10,NA),
+                 Intensity_B = c(NA, 9000, 20, 100),
+                 Intensity_C = c(200,8000,NA,150),
+                 Intensity_D = c(130,11000, 50, 50))
+# Table with sample annotation
+annot <- data.frame(Sample = c("Intensity_A", "Intensity_B", "Intensity_C", "Intensity_D"), Group = c("A","A","B","C"))
+
+# convert into long format
+table_long <- tidyr::pivot_longer(df, starts_with("Intensity_"),names_to = "Sample", values_to = "Intensity")
+
+table_long <- dplyr::inner_join(annot, table_long)
+
+# create TableAnnotation and AnalysisConfiguration
+
+atable <- prolfqua::AnalysisTableAnnotation$new()
+atable$fileName = "Sample"
+atable$workIntensity = "Intensity"
+atable$hierarchy[["protein_Id"]]    <-  "protein_Id"
+atable$factors[["Group"]] <- "Group"
+
+config <- prolfqua::AnalysisConfiguration$new(atable)
+
+# Build LFQData object
+analysis_data <- prolfqua::setup_analysis(table_long, config)
+lfqdata <- prolfqua::LFQData$new(analysis_data, config)
+lfqdata$hierarchy_counts()
+
+```
+
 
 
 
