@@ -163,7 +163,7 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
     message("creating sampleName from fileName column")
     data[[table$sampleName]] <- tools::file_path_sans_ext( basename(data[[table$fileName]]) )
   }else {
-    message(sampleName, " already exists")
+    message("column sampleName already exists, using :", sampleName)
   }
 
   data <- data |> dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(table$factors), table$factor_keys())))

@@ -126,6 +126,8 @@ sim_lfq_data <- function(
 #' @export
 #' @param x vector of intensities
 #' @param weight_missing greater weight more missing
+#' @examples
+#' which_missing(2**rnorm(10,2,0.4))
 #'
 which_missing <- function(x, weight_missing = 0.2){
   missing_prop <- pnorm(x, mean = mean(x), sd = sd(x))
@@ -153,14 +155,21 @@ which_missing <- function(x, weight_missing = 0.2){
 #' x <- sim_lfq_data_peptide_config()
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
-sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, weight_missing = 0.2, seed = 1234){
+sim_lfq_data_peptide_config <- function(
+    Nprot = 10,
+    with_missing = TRUE,
+    weight_missing = 0.2,
+    seed = 1234){
   if (!is.null(seed)) {
     set.seed(seed)
   }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE)
+
+  not_missing <- !which_missing(data$abundance, weight_missing = weight_missing)
+  # data <- data[not_missing,]
+  data$nr_children <- as.numeric(not_missing)
   if (with_missing) {
-    not_missing <- !which_missing(data$abundance, weight_missing = weight_missing)
-    data <- data[not_missing,]
+    data <- data[data$nr_children > 0,]
   }
   data$isotopeLabel <- "light"
   data$qValue <- 0
@@ -183,18 +192,23 @@ sim_lfq_data_peptide_config <- function(Nprot = 10, with_missing = TRUE, weight_
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @export
 #' @examples
+#'
 #' x <- sim_lfq_data_protein_config()
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
-#'
+#' x <- sim_lfq_data_protein_config(with_missing = FALSE)
+#' stopifnot(sum(is.na(x$data$abundance)) == 0)
 sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_missing = 0.2, seed = 1234){
   if (!is.null(seed)) {
     set.seed(seed)
   }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
+
+  data$nr_peptides[which_missing(data$abundance,weight_missing = weight_missing)] <- 0
   if (with_missing) {
-    data <- data[!which_missing(data$abundance,weight_missing = weight_missing),]
+    data <- data[data$nr_peptides > 0,]
   }
+
   data$isotopeLabel <- "light"
   data$qValue <- 0
 
@@ -215,6 +229,7 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_
 #' @param description Nprot number of proteins
 #' @param with_missing add missing values, default TRUE
 #' @param seed seed for reproducibility, if NULL no seed is set.
+#' @param TWO use two factors for modellin
 #' @export
 #' @examples
 #' x <- sim_lfq_data_2Factor_config(PEPTIDE= FALSE)
@@ -222,6 +237,7 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
 #' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
+#'
 #' head(x$data)
 #' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = FALSE)
 #' x$data$Group |> table()
@@ -240,8 +256,13 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
                       prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20), C = c(D = 15, U = 25)))
   res <- res |> mutate(Treatment = case_when(group %in% c("Ctrl", "A") ~ "A", TRUE ~ "B"))
   data <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
+
+  if (is.null(data$nr_peptides)) {
+    data$nr_peptides <- 1
+  }
+  data$nr_peptides[which_missing(data$abundance,weight_missing = weight_missing)] <- 0
   if (with_missing) {
-    data <- data[!which_missing(data$abundance,weight_missing = weight_missing),]
+    data <- data[data$nr_peptides > 0,]
   }
 
   data$isotopeLabel <- "light"
@@ -283,15 +304,15 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
 #' modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 #'
 sim_build_models_lm <- function(model = c("parallel2","parallel3","factors", "interaction"),
-                         Nprot = 10,
-                         with_missing = TRUE,
-                         weight_missing = 1) {
+                                Nprot = 10,
+                                with_missing = TRUE,
+                                weight_missing = 1) {
   model <- match.arg(model)
   if (model != "parallel3") {
-  istar <- prolfqua::sim_lfq_data_2Factor_config(
-    Nprot = Nprot,
-    with_missing = with_missing,
-    weight_missing = weight_missing)
+    istar <- prolfqua::sim_lfq_data_2Factor_config(
+      Nprot = Nprot,
+      with_missing = with_missing,
+      weight_missing = weight_missing)
   } else {
     istar <- prolfqua::sim_lfq_data_protein_config()
   }
@@ -329,17 +350,17 @@ sim_build_models_lm <- function(model = c("parallel2","parallel3","factors", "in
 #' stopifnot(sum(modf$modelDF$exists_lmer) == 6)
 #'
 sim_build_models_lmer <- function(model = c("parallel2", "parallel3","factors", "interaction"),
-                            Nprot = 10,
-                            with_missing = TRUE,
-                            weight_missing = 1) {
+                                  Nprot = 10,
+                                  with_missing = TRUE,
+                                  weight_missing = 1) {
   model <- match.arg(model)
   if (model != "parallel3") {
-     istar <- prolfqua::sim_lfq_data_2Factor_config(
-       Nprot = Nprot,
-       with_missing = with_missing,
-       PEPTIDE = TRUE,
-       weight_missing = weight_missing)
-   } else {
+    istar <- prolfqua::sim_lfq_data_2Factor_config(
+      Nprot = Nprot,
+      with_missing = with_missing,
+      PEPTIDE = TRUE,
+      weight_missing = weight_missing)
+  } else {
     istar <- prolfqua::sim_lfq_data_peptide_config()
   }
   istar <- prolfqua::LFQData$new(istar$data,istar$config)

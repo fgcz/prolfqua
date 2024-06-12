@@ -14,3 +14,7 @@ which_missing(x, weight_missing = 0.2)
 \description{
 add missing values to x vector based on the values of x
 }
+\examples{
+which_missing(2**rnorm(10,2,0.4))
+
+}

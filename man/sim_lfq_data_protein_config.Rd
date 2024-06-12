@@ -22,8 +22,10 @@ sim_lfq_data_protein_config(
 Simulate data, protein, with config
 }
 \examples{
+
 x <- sim_lfq_data_protein_config()
 stopifnot("data.frame" \%in\% class(x$data))
 stopifnot("AnalysisConfiguration" \%in\% class(x$config))
-
+x <- sim_lfq_data_protein_config(with_missing = FALSE)
+stopifnot(sum(is.na(x$data$abundance)) == 0)
 }

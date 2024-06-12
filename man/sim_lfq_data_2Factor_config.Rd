@@ -18,6 +18,8 @@ sim_lfq_data_2Factor_config(
 
 \item{seed}{seed for reproducibility, if NULL no seed is set.}
 
+\item{TWO}{use two factors for modellin}
+
 \item{description}{Nprot number of proteins}
 }
 \description{
@@ -29,6 +31,7 @@ dim(x$data)
 stopifnot("data.frame" \%in\% class(x$data))
 stopifnot("AnalysisConfiguration" \%in\% class(x$config))
 x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
+
 head(x$data)
 x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = FALSE)
 x$data$Group |> table()
