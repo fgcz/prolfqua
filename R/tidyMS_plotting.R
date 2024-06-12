@@ -128,7 +128,7 @@ plot_sample_correlation <- function(pdata, config){
 #'
 #' hierarchy = config$table$hierarchy_keys_depth()
 #' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
-#' #debug(plot_hierarchies_boxplot)
+#' undebug(plot_hierarchies_boxplot)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE, show_mean=TRUE)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
@@ -146,6 +146,8 @@ plot_hierarchies_boxplot <- function(pdata,
   lil <- length(unique(pdata[[isotopeLabel]]))
 
   pdata <- prolfqua::make_interaction_column( pdata , c(config$table$factor_keys_depth()))
+  pdata$size <- ifelse(pdata[[config$table$nr_children]] == 0, 2, pdata[[config$table$nr_children]])
+  pdata[[config$table$nr_children]] <- as.factor(pdata[[config$table$nr_children]])
   color <- if (lil > 1) {isotopeLabel} else {NULL}
   p <- ggplot(pdata, aes_string(x = "interaction",
                                 y = config$table$get_response(),
@@ -159,13 +161,24 @@ plot_hierarchies_boxplot <- function(pdata,
   }
   p <- p + geom_boxplot()
   if ( beeswarm ) {
-    #p <- p + geom_point()
-    p <- p + ggbeeswarm::geom_quasirandom(aes_string( color = color) , dodge.width = 0.7 )
+
+    if (length(levels(pdata[[config$table$nr_children]])) > 1 ) {
+      shape_values <- c(4, rep(16, length(levels(pdata[[config$table$nr_children]])) - 1))
+    } else {
+      shape_values <- 16
+    }
+    p <- p + ggbeeswarm::geom_quasirandom(aes_string(
+      color = color,
+      size = "size",
+      shape = config$table$nr_children) , dodge.width = 0.7 ) +
+      scale_shape_manual(values = shape_values) +
+      scale_size_continuous(range = range(pdata$size, na.rm= TRUE))
   }
   if (show_mean) {
     p <- p + stat_summary(fun = mean, geom = "point", position = position_dodge(0.7),
-                          size = 3, shape = 4)
-    p <- p + stat_summary(fun = mean, geom = "text", aes(label = round(after_stat(y), 2)), position = position_dodge(0.7),
+                          size = 3, shape = 3)
+    p <- p + stat_summary(fun = mean, geom = "text", aes(label = round(after_stat(y), 2)),
+                          position = position_dodge(0.7),
                           vjust = -1,
                           size = 3)
   }
@@ -186,7 +199,8 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @keywords internal
 #' @examples
 #'
-#'
+#'  istar <- sim_lfq_data_peptide_config(with_missing = FALSE)
+#'  res <- plot_hierarchies_boxplot_df(istar$data,istar$config)
 #'  istar <- sim_lfq_data_peptide_config()
 #'  config <- istar$config
 #'  analysis <- istar$data

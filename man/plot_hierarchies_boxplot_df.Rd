@@ -25,7 +25,8 @@ generates peptide level plots for all Proteins
 }
 \examples{
 
-
+ istar <- sim_lfq_data_peptide_config(with_missing = FALSE)
+ res <- plot_hierarchies_boxplot_df(istar$data,istar$config)
  istar <- sim_lfq_data_peptide_config()
  config <- istar$config
  analysis <- istar$data
