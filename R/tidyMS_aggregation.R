@@ -639,7 +639,11 @@ estimate_intensity <- function(data, config, .func)
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[2]]))
 #'
 #'
-plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend= FALSE ){
+plot_estimate <- function(data,
+                          config,
+                          data_aggr,
+                          config_reduced,
+                          show.legend = FALSE ){
   hierarchy_ID <- "hierarchy_ID"
   xnested <- data |> group_by(!!!syms(config$table$hierarchy_keys_depth())) |> nest()
   xnested <- xnested |> tidyr::unite(hierarchy_ID , !!!syms(config$table$hierarchy_keys_depth()))

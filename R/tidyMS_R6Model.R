@@ -130,6 +130,10 @@ build_model <- function(data,
                     subject_Id = subject_Id))
 }
 
+
+
+
+
 #' Summarize modelling and error reporting
 #' @param mod model table see \code{\link{build_model}}
 #' @keywords internal

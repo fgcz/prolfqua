@@ -292,10 +292,11 @@ get_complete_model_fit <- function(modelProteinF){
 #'  subject_Id = x$config$table$hierarchy_keys_depth())
 #' stopifnot(nrow(get_complete_model_fit(mr$modelProtein)) == 6)
 #'
-model_analyse <- function(pepIntensity,
-                          model_strategy,
-                          subject_Id = "protein_Id",
-                          modelName = "Model")
+model_analyse <- function(
+    pepIntensity,
+    model_strategy,
+    subject_Id = "protein_Id",
+    modelName = "Model")
 {
   pepIntensity |>
     dplyr::group_by(!!!syms(subject_Id)) |>

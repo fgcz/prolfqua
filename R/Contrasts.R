@@ -140,7 +140,9 @@ Contrasts <- R6::R6Class(
       }else{
 
         res <- vector(mode = "list", nrow(self$models))
+        pb <- progress::progress_bar$new(total = length(self$models$linear_model))
         for (i in seq_along(self$models$linear_model)) {
+          pb$tick()
           res[[i]] <- .linfct(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
         }
         return(res)

@@ -183,14 +183,16 @@ LFQData
 \if{html}{\out{<a id="method-LFQDataAggregator-plot"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataAggregator-plot}{}}}
 \subsection{Method \code{plot()}}{
-creates aggreation plots
+creates aggregation plots
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataAggregator$plot(show.legend = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataAggregator$plot(subset = NULL, show.legend = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{subset}}{create plots for a subset of the data only, e.g. proteins with more then 2 peptides.}
+
 \item{\code{show.legend}}{default FALSE}
 }
 \if{html}{\out{</div>}}
@@ -207,6 +209,7 @@ writes plots to folder
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataAggregator$write_plots(
   qcpath,
+  subset = NULL,
   show.legend = FALSE,
   width = 6,
   height = 6

@@ -123,31 +123,39 @@ LFQDataAggregator <- R6::R6Class(
       private$.topN(N = N, .func = sum_f)
     },
     #' @description
-    #' creates aggreation plots
+    #' creates aggregation plots
+    #' @param subset create plots for a subset of the data only, e.g. proteins with more then 2 peptides.
     #' @param show.legend default FALSE
     #' @return data.frame
     #'
-    plot = function(show.legend = FALSE){
+    plot = function(subset = NULL, show.legend = FALSE){
       if (is.null(self$lfq_agg)) {
         stop("please aggregate the data first")
+      }
+
+      if (!is.null(subset)) {
+        lfqagg <- self$lfq_agg$get_subset(subset)
+      }else {
+        lfqagg <- self$lfq_agg
       }
       df <- prolfqua::plot_estimate(
         self$lfq$data,
         self$lfq$config,
-        self$lfq_agg$data,
-        self$lfq_agg$config,
+        lfqagg$data,
+        lfqagg$config,
         show.legend = show.legend)
       invisible(df)
     },
     #' @description
     #' writes plots to folder
+    #'
     #' @param qcpath qcpath
     #' @param show.legend legend
     #' @param width figure width
     #' @param height figure height
     #' @return file path
-    write_plots = function(qcpath, show.legend = FALSE, width = 6, height = 6){
-      pl <- self$plot()
+    write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6){
+      pl <- self$plot(subset)
       pb <- progress::progress_bar$new(total = nrow(pl))
       filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
       pdf(filepath , width = width, height = height)
