@@ -673,12 +673,13 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' dd$data <- na.omit(dd$data)
 #' xd <- nr_obs_sample(dd$data, dd$config)
-#' xd
 #' xd$nr_children |> table()
-#'
+#' # xd |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_children)
 #'
 #' dp <- prolfqua::sim_lfq_data_protein_config()
 #' xp <- nr_obs_sample(dp$data, dp$config)
+#' # xp
+#' # xp |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_peptides)
 #' xp$nr_peptides |> table()
 #'
 nr_obs_sample <- function(data, config, new_child = config$table$nr_children){
@@ -702,7 +703,7 @@ nr_obs_sample <- function(data, config, new_child = config$table$nr_children){
 #'
 #' xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
 #' xd <- nr_obs_experiment(dd$data, dd$config, from_children = TRUE)
-#'
+#' stopifnot(min(xd$nr_child_exp) == 1)
 #' dp <- prolfqua::sim_lfq_data_protein_config()
 #' nr_obs_experiment(dp$data, dp$config)
 #' nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
@@ -711,7 +712,10 @@ nr_obs_sample <- function(data, config, new_child = config$table$nr_children){
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' dd$config$table$hierarchyDepth <- 2
 #' xpep <- nr_obs_experiment(dd$data,dd$config)
+#' stopifnot(all(xpep$nr_child_exp == 1))
 #' xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)
+#' stopifnot(all(xpep$nr_child_exp == 1))
+#'
 nr_obs_experiment <- function(data, config,
                               from_children = TRUE,
                               name_nr_child = "nr_child_exp"){

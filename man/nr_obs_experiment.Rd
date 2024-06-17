@@ -29,7 +29,7 @@ dd <- prolfqua::sim_lfq_data_peptide_config()
 
 xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
 xd <- nr_obs_experiment(dd$data, dd$config, from_children = TRUE)
-
+stopifnot(min(xd$nr_child_exp) == 1)
 dp <- prolfqua::sim_lfq_data_protein_config()
 nr_obs_experiment(dp$data, dp$config)
 nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
@@ -38,5 +38,8 @@ nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
 dd <- prolfqua::sim_lfq_data_peptide_config()
 dd$config$table$hierarchyDepth <- 2
 xpep <- nr_obs_experiment(dd$data,dd$config)
+stopifnot(all(xpep$nr_child_exp == 1))
 xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)
+stopifnot(all(xpep$nr_child_exp == 1))
+
 }

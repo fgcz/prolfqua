@@ -18,8 +18,8 @@
 #'
 #' res <- sim_lfq_data(Nprot = 10)
 #' res <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE)
+#' res <- sim_lfq_data(Nprot = 10, N=4)
 #'
-
 sim_lfq_data <- function(
     Nprot = 20,
     N = 4,
@@ -197,13 +197,24 @@ sim_lfq_data_peptide_config <- function(
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
 #' x <- sim_lfq_data_protein_config(with_missing = FALSE)
+#'
 #' stopifnot(sum(is.na(x$data$abundance)) == 0)
-sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_missing = 0.2, seed = 1234){
+#' # debug(sim_lfq_data_protein_config)
+#' xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
+#' stopifnot(length(xp$config$table$factors) == 2)
+#' stopifnot(nrow(xp$data) == nrow(x$data))
+sim_lfq_data_protein_config <- function(Nprot = 10,
+                                        with_missing = TRUE,
+                                        weight_missing = 0.2, seed = 1234, paired = FALSE){
   if (!is.null(seed)) {
     set.seed(seed)
   }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
-
+  if (paired) {
+    annot <- data |> select(sample, group) |> distinct()
+    annot <- annot |> group_by(group) |> mutate(subject = row_number()) |> ungroup() |> mutate(subject = paste0("P", subject))
+    data <- inner_join(annot , data ,by = c("group", "sample"))
+  }
   data$nr_peptides[which_missing(data$abundance,weight_missing = weight_missing)] <- 0
   if (with_missing) {
     data <- data[data$nr_peptides > 0,]
@@ -216,6 +227,7 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_
   atable$fileName = "sample"
   atable$nr_children = "nr_peptides"
   atable$factors["group_"] = "group"
+  if (paired) {atable$factors["subject_"] = "subject"}
   atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   atable$set_response("abundance")
 
@@ -239,7 +251,7 @@ sim_lfq_data_protein_config <- function(Nprot = 10, with_missing = TRUE, weight_
 #' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
 #'
 #' head(x$data)
-#' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = FALSE)
+#' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = TRUE)
 #' x$data$Group |> table()
 sim_lfq_data_2Factor_config <- function(Nprot = 10,
                                         with_missing = TRUE,

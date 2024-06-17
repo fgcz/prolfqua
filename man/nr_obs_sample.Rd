@@ -13,12 +13,13 @@ Aggregates e.g. protein abundances from peptide abundances
 dd <- prolfqua::sim_lfq_data_peptide_config()
 dd$data <- na.omit(dd$data)
 xd <- nr_obs_sample(dd$data, dd$config)
-xd
 xd$nr_children |> table()
-
+xd |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_children)
 
 dp <- prolfqua::sim_lfq_data_protein_config()
 xp <- nr_obs_sample(dp$data, dp$config)
+xp
+xp |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_peptides)
 xp$nr_peptides |> table()
 
 }

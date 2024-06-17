@@ -8,7 +8,8 @@ sim_lfq_data_protein_config(
   Nprot = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
-  seed = 1234
+  seed = 1234,
+  paired = FALSE
 )
 }
 \arguments{
@@ -27,5 +28,10 @@ x <- sim_lfq_data_protein_config()
 stopifnot("data.frame" \%in\% class(x$data))
 stopifnot("AnalysisConfiguration" \%in\% class(x$config))
 x <- sim_lfq_data_protein_config(with_missing = FALSE)
+
 stopifnot(sum(is.na(x$data$abundance)) == 0)
+# debug(sim_lfq_data_protein_config)
+xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
+length(xp$config$table$factors) == 2
+stopifnot(nrow(xp$data) == nrow(x$data))
 }

@@ -33,6 +33,6 @@ stopifnot("AnalysisConfiguration" \%in\% class(x$config))
 x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
 
 head(x$data)
-x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = FALSE)
+x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = TRUE)
 x$data$Group |> table()
 }
