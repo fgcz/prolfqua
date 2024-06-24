@@ -175,7 +175,6 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' stopifnot(nrow(stats) == 10)
 #'
 summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys_depth()){
-  print(factor_key)
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$get_response())
   hierarchyFactor <- pdata |>
