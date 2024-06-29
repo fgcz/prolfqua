@@ -85,9 +85,6 @@ lfqdata$hierarchy_counts()
 
 ```
 
-
-
-
 Once you have created an `LFQData` you can use prolfqua like this.
 
 ```{r}
