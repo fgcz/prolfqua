@@ -210,23 +210,6 @@ To use `prolfqua` knowledge of the R regression model infrastructure is of advan
 
 
 
-## Running R-scripts
-
-Generate QC report from bat file.
-First add `<prolfqua_path>/win` to your path variable. Then you can generate a QC report from a maxquant QC by running.
-
-
-```
-lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip
-```
-
-
-```
-Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
-Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip
-```
-
-
 # Related resources
 
 - [proDA](https://www.bioconductor.org/packages/release/bioc/html/proDA.html)
