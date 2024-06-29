@@ -158,6 +158,8 @@ pl$volcano()$FDR
 
 # Detailed documentation with R code:
 
+Document's explaining how to run an analysis with prolfqua are at github.io [https://fgcz.github.io/prolfqua/index.html](https://fgcz.github.io/prolfqua/index.html).
+
 - [Comparing two Conditions](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html)
 - [QC and protein wise sample size estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 - [Analysing factorial designs](https://fgcz.github.io/prolfqua/articles/Modelling2Factors.html)
@@ -165,6 +167,13 @@ pl$volcano()$FDR
 Example QC and sample size report
 
 - [QC and sample size Report](https://fgcz.github.io/prolfqua/articles/QCandSampleSize.html)
+
+# Releated projects
+
+- prolfquabenchmark - a package to document the performance of prolfqua, MSstats, msqrob, and proda. See documentation: [https://prolfqua.github.io/prolfquabenchmark/]
+- prolfquapp: Generating Dynamic DEA Reports with the prolfqua R Package [https://github.com/prolfqua/prolfquapp](https://github.com/prolfqua/prolfquapp)
+- prophosqua - (scripts for the analysis of phospho experiments) [https://github.com/prolfqua/prophosqua](https://github.com/prolfqua/prophosqua)
+
 
 # How to cite?
 
