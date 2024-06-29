@@ -93,7 +93,7 @@ Once you have created an `LFQData` you can use prolfqua like this.
 ```{r}
 R.version.string; packageVersion("prolfqua")
 
-## read MQ peptide.txt and annotation table
+## here we simulate peptide level data
 startdata <- sim_lfq_data_peptide_config()
 lfqpep <- LFQData$new(startdata$data, startdata$config)
 
