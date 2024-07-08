@@ -18,10 +18,10 @@ Requirements : A Windows|Linux|MacOSX platform with R (>= 4.1) installed.
 
 
 We recommend to install the package using the latest [release](https://github.com/fgcz/prolfqua/releases)
-Download the `prolfqua_X.Y.Z.tar.gz` from the [github release page](https://github.com/fgcz/prolfqua/releases). and then execute:
+Download the `prolfqua_X.Y.Z.tar.gz` from the [github release page](https://github.com/fgcz/prolfqua/releases) into your working directory. and then execute:
 
 ```
-install.packages("prolfqua_X.Y.Z.tar.gz",repos = NULL, type="source")
+install.packages("./prolfqua_X.Y.Z.tar.gz",repos = NULL, type="source")
 ```
 
 
