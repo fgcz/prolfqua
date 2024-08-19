@@ -202,6 +202,8 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
   if (cc) {
     data <- complete_cases( data , configuration)
   }
+  message("completing cases done")
+  message("setup done")
   return( data )
 }
 

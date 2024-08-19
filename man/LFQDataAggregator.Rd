@@ -221,6 +221,8 @@ writes plots to folder
 \describe{
 \item{\code{qcpath}}{qcpath}
 
+\item{\code{subset}}{write plots only for some}
+
 \item{\code{show.legend}}{legend}
 
 \item{\code{width}}{figure width}

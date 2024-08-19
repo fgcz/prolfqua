@@ -150,6 +150,7 @@ LFQDataAggregator <- R6::R6Class(
     #' writes plots to folder
     #'
     #' @param qcpath qcpath
+    #' @param subset write plots only for some
     #' @param show.legend legend
     #' @param width figure width
     #' @param height figure height
