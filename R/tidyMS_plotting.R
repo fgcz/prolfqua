@@ -540,7 +540,7 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
   ff <- t(ff)
   pca_result <- prcomp(ff)
   xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
-  if (max(PC) > ncol(xx)) {
+  if (max(PC) > (ncol(xx)-1)) {
     warning("nr of PCs: ", ncol(xx), "\n")
     return(NULL)
   }
