@@ -4,14 +4,14 @@
 \alias{pairs_smooth}
 \title{smoothScatter pairs}
 \usage{
-pairs_smooth(dataframe, legend = FALSE, ...)
+pairs_smooth(data, legend = FALSE, ...)
 }
 \arguments{
-\item{dataframe}{data matrix or data.frame as normally passed to pairs}
-
 \item{legend}{add legend to plots}
 
 \item{...}{params usually passed to pairs}
+
+\item{dataframe}{data matrix or data.frame as normally passed to pairs}
 }
 \description{
 smoothScatter pairs
