@@ -75,15 +75,22 @@ LFQDataStats <- R6::R6Class(
       stats <- match.arg(stats)
       self$lfq = lfqdata
       self$stat <- if (!self$lfq$is_transformed()) {"CV"} else {"sd"}
+
+      tb <- table_factors_size(lfqdata$data,lfqdata$config )
+      fd <- config$table$factor_keys_depth()
+      if ( all(tb$n == 1) ) {
+        fd <- head(fd, n = length(fd) - 1)
+      }
+
       if (stats == "interaction" ) {
-        self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
+        self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config, factor_key = fd)
       } else if (stats == "all" ) {
         self$statsdf <-
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
       } else if (stats == "everything" ) {
 
         self$statsdf <- bind_rows(
-          prolfqua::summarize_stats(self$lfq$data, self$lfq$config),
+          prolfqua::summarize_stats(self$lfq$data, self$lfq$config, factor_key = fd),
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
         )
       }

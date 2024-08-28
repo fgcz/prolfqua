@@ -42,7 +42,8 @@ Other configuration:
 \code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{table_factors}()}
+\code{\link{table_factors}()},
+\code{\link{table_factors_size}()}
 }
 \concept{configuration}
 \keyword{internal}

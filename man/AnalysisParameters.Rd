@@ -21,7 +21,8 @@ Other configuration:
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
 \code{\link{spread_response_by_IsotopeLabel}()},
-\code{\link{table_factors}()}
+\code{\link{table_factors}()},
+\code{\link{table_factors_size}()}
 }
 \concept{configuration}
 \section{Public fields}{

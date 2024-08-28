@@ -329,12 +329,62 @@ sample_subset <- function(size, pdata, config){
 #' stopifnot(all(xt$n == 4))
 #'
 table_factors <- function(pdata, configuration){
-  factorsTab <- pdata |> dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factor_keys())) |>
+  factorsTab <- pdata |>
+    dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factor_keys())) |>
     dplyr::distinct() |>
     arrange(!!sym(configuration$table$sampleName))
   return(factorsTab)
 }
 
+#' Table of distinct factors (sample annotation)
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
+#' @export
+#' @keywords internal
+#' @family configuration
+#' @examples
+#'
+#'
+#' istar <- sim_lfq_data_peptide_config()
+#'
+#'
+#' xx <- table_factors(istar$data,istar$config )
+#' xx
+#' xt <- xx |> dplyr::group_by(!!!rlang::syms(istar$config$table$factor_keys())) |>
+#'  dplyr::summarize(n = dplyr::n())
+#' xt
+#' stopifnot(all(xt$n == 4))
+#'
+table_factors <- function(pdata, configuration){
+  factorsTab <- pdata |>
+    dplyr::select(c(configuration$table$fileName, configuration$table$sampleName, configuration$table$factor_keys())) |>
+    dplyr::distinct() |>
+    arrange(!!sym(configuration$table$sampleName))
+  return(factorsTab)
+}
+
+#' Table of distinct factors (sample annotation)
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#'
+#' @export
+#' @keywords internal
+#' @family configuration
+#' @examples
+#'
+#'
+#' istar <- sim_lfq_data_peptide_config()
+#'
+#'
+#' xx <- table_factors_size(istar$data,istar$config )
+#' stopifnot(all(xt$n == 4))
+#'
+table_factors_size <- function(pdata, configuration){
+  xx <- table_factors(pdata, configuration)
+  xx <- xx |> dplyr::group_by(dplyr::across(configuration$table$factor_keys_depth())) |> dplyr::summarize(n = dplyr::n())
+  return(xx)
+}
 
 # Functions - summarize hierarchies
 
