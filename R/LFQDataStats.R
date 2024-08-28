@@ -77,7 +77,7 @@ LFQDataStats <- R6::R6Class(
       self$stat <- if (!self$lfq$is_transformed()) {"CV"} else {"sd"}
 
       tb <- table_factors_size(lfqdata$data,lfqdata$config )
-      fd <- config$table$factor_keys_depth()
+      fd <- lfqdata$config$table$factor_keys_depth()
       if ( all(tb$n == 1) ) {
         fd <- head(fd, n = length(fd) - 1)
       }
