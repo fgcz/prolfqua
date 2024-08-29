@@ -67,6 +67,8 @@ LFQDataStats <- R6::R6Class(
     stat = "CV",
     #' @field statsdf frame with statistics.
     statsdf = NULL,
+    #' @field factor_keys_depth factor columns
+    factor_keys_depth = character(),
     #' @description
     #' create analyse variances and CV
     #' @param lfqdata LFQData object
@@ -77,20 +79,20 @@ LFQDataStats <- R6::R6Class(
       self$stat <- if (!self$lfq$is_transformed()) {"CV"} else {"sd"}
 
       tb <- table_factors_size(lfqdata$data,lfqdata$config )
-      fd <- lfqdata$config$table$factor_keys_depth()
+      self$factor_keys_depth <- lfqdata$config$table$factor_keys_depth()
       if ( all(tb$n == 1) ) {
-        fd <- head(fd, n = length(fd) - 1)
+        self$factor_keys_depth <- head(self$factor_keys_depth, n = length(self$factor_keys_depth) - 1)
       }
 
       if (stats == "interaction" ) {
-        self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config, factor_key = fd)
+        self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config, factor_key = self$factor_keys_depth)
       } else if (stats == "all" ) {
         self$statsdf <-
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
       } else if (stats == "everything" ) {
 
         self$statsdf <- bind_rows(
-          prolfqua::summarize_stats(self$lfq$data, self$lfq$config, factor_key = fd),
+          prolfqua::summarize_stats(self$lfq$data, self$lfq$config, factor_key = self$factor_keys_depth),
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
         )
       }
@@ -107,7 +109,7 @@ LFQDataStats <- R6::R6Class(
     stats_wide = function(){
       res <- tidyr::pivot_wider(
         self$statsdf,id_cols = self$lfq$config$table$hierarchy_keys() ,
-        names_from = self$lfq$config$table$factor_keys_depth(),
+        names_from = self$factor_keys_depth,
         values_from = tidyselect::any_of( c("nrReplicates", "nrMeasured", "sd", "var", "meanAbundance","medianAbundance", "CV")))
       return(res)
     },
