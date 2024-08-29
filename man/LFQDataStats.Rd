@@ -82,8 +82,6 @@ Other LFQData:
 \item{\code{stat}}{either CV or sd (if is_transformed)}
 
 \item{\code{statsdf}}{frame with statistics.}
-
-\item{\code{factor_keys_depth}}{factor columns}
 }
 \if{html}{\out{</div>}}
 }

@@ -67,32 +67,29 @@ LFQDataStats <- R6::R6Class(
     stat = "CV",
     #' @field statsdf frame with statistics.
     statsdf = NULL,
-    #' @field factor_keys_depth factor columns
-    factor_keys_depth = character(),
     #' @description
     #' create analyse variances and CV
     #' @param lfqdata LFQData object
     #' @param stats if interaction - within group stats, if all then overall CV, if pooled - then pooled variance using grouping information (t.b.d.)
     initialize = function(lfqdata, stats = c("everything", "interaction", "all")){
       stats <- match.arg(stats)
-      self$lfq = lfqdata
+      self$lfq = lfqdata$clone(deep = TRUE)
       self$stat <- if (!self$lfq$is_transformed()) {"CV"} else {"sd"}
 
       tb <- table_factors_size(lfqdata$data,lfqdata$config )
-      self$factor_keys_depth <- lfqdata$config$table$factor_keys_depth()
       if ( all(tb$n == 1) ) {
-        self$factor_keys_depth <- head(self$factor_keys_depth, n = length(self$factor_keys_depth) - 1)
+        self$lfq$config$table$factorDepth <- self$lfq$config$table$factorDepth - 1
       }
 
       if (stats == "interaction" ) {
-        self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config, factor_key = self$factor_keys_depth)
+        self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
       } else if (stats == "all" ) {
         self$statsdf <-
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
       } else if (stats == "everything" ) {
 
         self$statsdf <- bind_rows(
-          prolfqua::summarize_stats(self$lfq$data, self$lfq$config, factor_key = self$factor_keys_depth),
+          prolfqua::summarize_stats(self$lfq$data, self$lfq$config),
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
         )
       }
@@ -109,8 +106,15 @@ LFQDataStats <- R6::R6Class(
     stats_wide = function(){
       res <- tidyr::pivot_wider(
         self$statsdf,id_cols = self$lfq$config$table$hierarchy_keys() ,
-        names_from = self$factor_keys_depth,
-        values_from = tidyselect::any_of( c("nrReplicates", "nrMeasured", "sd", "var", "meanAbundance","medianAbundance", "CV")))
+        names_from = self$lfq$config$table$factor_keys_depth(),
+        values_from = tidyselect::any_of(
+          c("nrReplicates",
+            "nrMeasured",
+            "sd",
+            "var",
+            "meanAbundance",
+            "medianAbundance",
+            "CV")))
       return(res)
     },
     #' @description
