@@ -460,7 +460,11 @@ panel_cor <- function(x, y, digits = 2, ...)
 #' pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
 pairs_smooth <- function(data, legend = FALSE, ...) {
-
+  non_na_counts <- apply(data, 2, function(x) sum(!is.na(x)))
+  min_col <- which(non_na_counts < 2)
+  if(length(min_col) >= 1){
+    data <- data[, -min_col, drop = FALSE]
+  }
   pairs(
     data,
     upper.panel = function(x, y) {
