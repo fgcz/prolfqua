@@ -592,6 +592,7 @@ estimate_intensity <- function(data, config, .func)
       aggr <- .func(xnested$data[[i]], config)
       res[[i]] <- .reestablish_condition(xnested$data[[i]], aggr , config)
     }
+    return(res)
   }
 
   res <- loopOverNested(xnested, .func = .func , config = config)
