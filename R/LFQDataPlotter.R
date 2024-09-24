@@ -12,13 +12,13 @@
 #'  istar$data,
 #'  istar$config)
 #' #LFQDataPlotter$debug("boxplots")
+#' LFQDataPlotter$debug("pairs_smooth")
 #' lfqplotter <- lfqdata$get_Plotter()
 #'
 #' stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
 #' stopifnot(class(lfqplotter$heatmap_cor()) == "pheatmap")
 #' stopifnot("ggplot" %in% class(lfqplotter$pca()))
 #' stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
-#'
 #' tmp <- lfqplotter$boxplots()
 #' stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
 #' stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))

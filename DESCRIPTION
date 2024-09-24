@@ -67,7 +67,7 @@ Suggests:
     SummarizedExperiment,
     proDA,
     vsn
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(r6 = TRUE)
 Depends: 
     R (>= 4.1)

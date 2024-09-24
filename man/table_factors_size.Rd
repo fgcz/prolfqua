@@ -21,7 +21,7 @@ istar <- sim_lfq_data_peptide_config()
 
 
 xx <- table_factors_size(istar$data,istar$config )
-stopifnot(all(xt$n == 4))
+stopifnot(all(xx$n == 4))
 
 }
 \seealso{

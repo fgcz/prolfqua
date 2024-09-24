@@ -378,7 +378,7 @@ table_factors <- function(pdata, configuration){
 #'
 #'
 #' xx <- table_factors_size(istar$data,istar$config )
-#' stopifnot(all(xt$n == 4))
+#' stopifnot(all(xx$n == 4))
 #'
 table_factors_size <- function(pdata, configuration){
   xx <- table_factors(pdata, configuration)
