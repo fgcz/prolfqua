@@ -581,15 +581,21 @@ estimate_intensity <- function(data, config, .func)
   config <- config$clone(deep = TRUE)
 
   xnested <- data |> group_by_at(config$table$hierarchy_keys_depth()) |> nest()
-  pb <- progress::progress_bar$new(total = nrow(xnested))
-  message("starting aggregation")
 
-  res <- vector( mode = "list" , length = nrow(xnested) )
-  for (i in seq_len(nrow(xnested))) {
-    pb$tick()
-    aggr <- .func(xnested$data[[i]], config)
-    res[[i]] <- .reestablish_condition(xnested$data[[i]], aggr , config)
+
+  loopOverNested <- function (xnested,  .func, config) {
+    pb <- progress::progress_bar$new(total = nrow(xnested))
+    message("starting aggregation")
+    res <- vector( mode = "list" , length = nrow(xnested) )
+    for (i in seq_len(nrow(xnested))) {
+      pb$tick()
+      aggr <- .func(xnested$data[[i]], config)
+      res[[i]] <- .reestablish_condition(xnested$data[[i]], aggr , config)
+    }
   }
+
+  res <- loopOverNested(xnested, .func = .func , config = config)
+
   xnested[[makeName]] <- res
   newconfig <- make_reduced_hierarchy_config(
     config,
