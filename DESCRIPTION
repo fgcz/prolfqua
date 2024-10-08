@@ -1,11 +1,15 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 1.2.5
+Version: 0.0.4
 Authors@R: c(person("Witold", "Wolski",
         email = c("wew@fgcz.ethz.ch", "wewolski@gmail.com"),
         role = c("aut", "cre"),
-        comment = c(ORCID = "0000-0002-6468-120X")))
+        comment = c(ORCID = "0000-0002-6468-120X")),
+        person("Jonas", "Grossmann",
+            role = "aut"),
+        person("Leonardo", "Schwarz",
+            role = "aut"))
 Description: The prolfqua package integrates essential steps
     of the mass spectrometry based label free quantification data
     analysis workflow: quality control, data normalization, protein aggregation,
