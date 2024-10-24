@@ -42,12 +42,12 @@ jobs:
             path: files.txt
             if-no-files-found: warn
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
             name: prolfqua CI Rcheck directory
             path: check/prolfqua.Rcheck
             if-no-files-found: warn
-#      - uses: actions/upload-artifact@v2
+#      - uses: actions/upload-artifact@v3
 #        with:
 #            name: R_LIBS_SITE directory
 #            path: /home/runner/work/_temp/Library/
