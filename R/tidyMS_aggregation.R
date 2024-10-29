@@ -608,7 +608,7 @@ estimate_intensity <- function(data, config, .func)
     tidyr::unnest(cols = makeName) |>
     dplyr::ungroup()
 
-  new_child = paste0("nr_",config$table$hierarchy_keys_depth())
+  new_child = paste0("nr_",tail(config$table$hierarchy_keys_depth(),1))
   res_nr_children <- nr_obs_sample(data, config, new_child = new_child)
   unnested <- inner_join(unnested, res_nr_children, by = c(config$table$hierarchy_keys_depth(), config$table$fileName))
   newconfig$table$nr_children = new_child
