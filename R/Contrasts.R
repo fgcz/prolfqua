@@ -47,7 +47,7 @@
 #'     "dil.e_vs_b" = "group_B - group_Ctrl",
 #'     "dil.ctrl_vs_b" = "group_Ctrl - group_A"
 #'      )
-#' #prolfqua::Contrasts$debug("get_linfct")
+#' # prolfqua::Contrasts$debug("get_linfct")
 #' #debug(prolfqua:::.linfct)
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' y <- contrastX$get_linfct(avg = FALSE)
@@ -138,12 +138,19 @@ Contrasts <- R6::R6Class(
         return( res )
 
       }else{
-
         res <- vector(mode = "list", nrow(self$models))
         pb <- progress::progress_bar$new(total = length(self$models$linear_model))
+
+        model <- get_complete_model_fit(self$models)$linear_model[[1]]
+        compmodel <- .linfct( model, self$contrasts, avg = avg )
+
+        mcoef <- max(self$models$nrcoeff_not_NA)
+
         for (i in seq_along(self$models$linear_model)) {
           pb$tick()
-          res[[i]] <- .linfct(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
+          res[[i]] <-  if (self$models$nrcoeff_not_NA[[i]] == mcoef) { compmodel } else {
+            .linfct(self$models$linear_model[[i]],
+                    contrast = self$contrasts, avg = avg)}
         }
         return(res)
       }

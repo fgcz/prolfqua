@@ -36,7 +36,7 @@ Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
     "dil.e_vs_b" = "group_B - group_Ctrl",
     "dil.ctrl_vs_b" = "group_Ctrl - group_A"
      )
-#prolfqua::Contrasts$debug("get_linfct")
+# prolfqua::Contrasts$debug("get_linfct")
 #debug(prolfqua:::.linfct)
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 y <- contrastX$get_linfct(avg = FALSE)

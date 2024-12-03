@@ -141,7 +141,7 @@ LFQData <- R6::R6Class(
     #' @param factorDepth you control for nrNA per condition or experiment etc. e.g. factorDepth = 0  then per experiment
     #' @return LFQData with NA omitted.
     #'
-    omit_NA = function(nrNA = 0, factorDepth = NULL){
+    omit_NA = function(nrNA = 0, factorDepth = NULL) {
       if (is.null(factorDepth)) {
         missing <- prolfqua::summarize_stats_factors(self$data, self$config)
       } else {

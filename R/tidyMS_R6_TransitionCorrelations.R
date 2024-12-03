@@ -672,6 +672,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' dd$data <- na.omit(dd$data)
+#'
 #' xd <- nr_obs_sample(dd$data, dd$config)
 #' xd$nr_children |> table()
 #' # xd |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_children)
@@ -683,7 +684,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 #' xp$nr_peptides |> table()
 #'
 nr_obs_sample <- function(data, config, new_child = config$table$nr_children){
-  data <- na.omit(data)
+  data <- data[!is.na(data[[config$table$get_response()]]),]
   nr_children <- data |>
     group_by(!!!rlang::syms(c(config$table$hierarchy_keys_depth(), config$table$fileName))) |>
     summarize(!!new_child := sum(!!sym(config$table$nr_children), na.rm = TRUE), .groups = "drop")
