@@ -19,7 +19,7 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">prolfqua</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.6</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -53,7 +53,7 @@
       <a href="articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a>
     </li>
     <li>
-      <a href="articles/CreatingConfigurations.html">Creating prolfqua Configurations</a>
+      <a href="articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a>
     </li>
     <li>
       <a href="articles/Modelling2Factors.html">Modelling dataset with two Factors</a>
@@ -77,7 +77,7 @@
 <li>
   <a href="https://github.com/wolski/prolfqua/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -88,7 +88,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="contents col-md-9">
@@ -105,8 +105,8 @@
 <h1 id="how-to-install-prolfqua">How to install prolfqua?<a class="anchor" aria-label="anchor" href="#how-to-install-prolfqua"></a>
 </h1>
 <p>Requirements : A Windows|Linux|MacOSX platform with R (&gt;= 4.1) installed.</p>
-<p>We recommend to install the package using the latest <a href="https://github.com/fgcz/prolfqua/releases" class="external-link">release</a> Download the <code>prolfqua_X.Y.Z.tar.gz</code> from the <a href="https://github.com/fgcz/prolfqua/releases" class="external-link">github release page</a>. and then execute:</p>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"prolfqua_X.Y.Z.tar.gz"</span>,repos <span class="op">=</span> <span class="cn">NULL</span>, type<span class="op">=</span><span class="st">"source"</span><span class="op">)</span></span></code></pre>
+<p>We recommend to install the package using the latest <a href="https://github.com/fgcz/prolfqua/releases" class="external-link">release</a> Download the <code>prolfqua_X.Y.Z.tar.gz</code> from the <a href="https://github.com/fgcz/prolfqua/releases" class="external-link">github release page</a> into your working directory. and then execute:</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"./prolfqua_X.Y.Z.tar.gz"</span>,repos <span class="op">=</span> <span class="cn">NULL</span>, type<span class="op">=</span><span class="st">"source"</span><span class="op">)</span></span></code></pre>
 <p>To install the package without vignettes from github you can execute in R.</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'fgcz/prolfqua'</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
@@ -118,22 +118,40 @@
 <div class="section level1">
 <h1 id="how-to-get-started">How to get started<a class="anchor" aria-label="anchor" href="#how-to-get-started"></a>
 </h1>
-<p><a href="https://www.youtube.com/watch?v=acDiXq2xbOw" class="external-link"><img src="https://img.youtube.com/vi/acDiXq2xbOw/1.jpg" alt="SIB in-silico talk"></a></p>
-<ul>
-<li>Watch the <a href="https://www.sib.swiss/in-silico-talks/prolfqua-a-comprehensive-r-package-for-protein-differential-expression-analysis" class="external-link">silico talks</a>
-</li>
-<li>See our article at the <a href="https://pubmed.ncbi.nlm.nih.gov/36939687/" class="external-link">Journal of Proteome Research</a>
-</li>
-<li>See <a href="https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html" class="external-link">Bioconductor 2021 Conference poster</a>.</li>
-<li>Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t" class="external-link">EuroBioc2020</a> on YouTube or <a href="https://f1000research.com/slides/9-1476" class="external-link">slides</a>.</li>
-<li>Read the pkgdown generate website <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link uri">https://fgcz.github.io/prolfqua/index.html</a>
-</li>
-</ul>
-<p>How to generate an LFQData object for your protein quantification data an annotation file is described in the: <a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html" class="external-link">CreatingConfigurations vignette</a></p>
-<p>Or run the following example code:</p>
+<p>How to build a <code>LFQData</code> object from a table with protein or peptide quantification results, and a table with sample annotation is described in more detail here the: <a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html" class="external-link">CreatingConfigurations vignette</a></p>
+<p>A minimal example for a table with protein abudances is:</p>
+<pre class="{r}"><code><span><span class="co">#Table with abundances</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>protein_Id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tr|A|HUMAN"</span>,<span class="st">"tr|B|HUMAN"</span>,<span class="st">"tr|C|HUMAN"</span>,<span class="st">"tr|D|HUMAN"</span><span class="op">)</span>,</span>
+<span>                 Intensity_A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>,<span class="fl">10000</span>,<span class="fl">10</span>,<span class="cn">NA</span><span class="op">)</span>,</span>
+<span>                 Intensity_B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">9000</span>, <span class="fl">20</span>, <span class="fl">100</span><span class="op">)</span>,</span>
+<span>                 Intensity_C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>,<span class="fl">8000</span>,<span class="cn">NA</span>,<span class="fl">150</span><span class="op">)</span>,</span>
+<span>                 Intensity_D <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">130</span>,<span class="fl">11000</span>, <span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Table with sample annotation</span></span>
+<span><span class="va">annot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Intensity_A"</span>, <span class="st">"Intensity_B"</span>, <span class="st">"Intensity_C"</span>, <span class="st">"Intensity_D"</span><span class="op">)</span>, Group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># convert into long format</span></span>
+<span><span class="va">table_long</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"Intensity_"</span><span class="op">)</span>,names_to <span class="op">=</span> <span class="st">"Sample"</span>, values_to <span class="op">=</span> <span class="st">"Intensity"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">table_long</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">annot</span>, <span class="va">table_long</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create TableAnnotation and AnalysisConfiguration</span></span>
+<span></span>
+<span><span class="va">atable</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="reference/AnalysisTableAnnotation.html">AnalysisTableAnnotation</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"Sample"</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">workIntensity</span> <span class="op">=</span> <span class="st">"Intensity"</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein_Id"</span><span class="op">]</span><span class="op">]</span>    <span class="op">&lt;-</span>  <span class="st">"protein_Id"</span></span>
+<span><span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Group"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Group"</span></span>
+<span></span>
+<span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Build LFQData object</span></span>
+<span><span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">table_long</span>, <span class="va">config</span><span class="op">)</span></span>
+<span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">analysis_data</span>, <span class="va">config</span><span class="op">)</span></span>
+<span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>Once you have created an <code>LFQData</code> you can use prolfqua like this.</p>
 <pre class="{r}"><code><span><span class="va">R.version.string</span>; <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html" class="external-link">packageVersion</a></span><span class="op">(</span><span class="st">"prolfqua"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## read MQ peptide.txt and annotation table</span></span>
+<span><span class="co">## here we simulate peptide level data</span></span>
 <span><span class="va">startdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">lfqpep</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">startdata</span><span class="op">$</span><span class="va">data</span>, <span class="va">startdata</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
 <span></span>
@@ -172,7 +190,7 @@
 <span>     <span class="st">"BvsCtrl"</span> <span class="op">=</span> <span class="st">"group_B - group_Ctrl"</span>,</span>
 <span>     <span class="st">"BvsA"</span> <span class="op">=</span> <span class="st">"group_B - group_A"</span></span>
 <span>      <span class="op">)</span></span>
-<span>      </span>
+<span></span>
 <span><span class="co">## determine contrasts and plot</span></span>
 <span><span class="va">contrastX</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contr</span><span class="op">)</span></span>
 <span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrastX</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
@@ -180,7 +198,22 @@
 <div class="figure">
 <img src="https://github.com/fgcz/prolfqua/assets/1926513/4ae8634b-ce6c-4fa2-8e42-c8bc64a12821" alt=""><p class="caption">image</p>
 </div>
-<p>Detailed documentation with R code:</p>
+<p><a href="https://www.youtube.com/watch?v=acDiXq2xbOw" class="external-link"><img src="https://img.youtube.com/vi/acDiXq2xbOw/1.jpg" alt="SIB in-silico talk"></a></p>
+<ul>
+<li>Watch the <a href="https://www.sib.swiss/in-silico-talks/prolfqua-a-comprehensive-r-package-for-protein-differential-expression-analysis" class="external-link">silico talks</a>
+</li>
+<li>See our article at the <a href="https://pubmed.ncbi.nlm.nih.gov/36939687/" class="external-link">Journal of Proteome Research</a>
+</li>
+<li>See <a href="https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html" class="external-link">Bioconductor 2021 Conference poster</a>.</li>
+<li>Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t" class="external-link">EuroBioc2020</a> on YouTube or <a href="https://f1000research.com/slides/9-1476" class="external-link">slides</a>.</li>
+<li>Read the pkgdown generate website <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link uri">https://fgcz.github.io/prolfqua/index.html</a>
+</li>
+</ul>
+</div>
+<div class="section level1">
+<h1 id="detailed-documentation-with-r-code">Detailed documentation with R code:<a class="anchor" aria-label="anchor" href="#detailed-documentation-with-r-code"></a>
+</h1>
+<p>Document’s explaining how to run an analysis with prolfqua are at github.io <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link">https://fgcz.github.io/prolfqua/index.html</a>.</p>
 <ul>
 <li><a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html" class="external-link">Comparing two Conditions</a></li>
 <li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html" class="external-link">QC and protein wise sample size estimation</a></li>
@@ -189,6 +222,17 @@
 <p>Example QC and sample size report</p>
 <ul>
 <li><a href="https://fgcz.github.io/prolfqua/articles/QCandSampleSize.html" class="external-link">QC and sample size Report</a></li>
+</ul>
+</div>
+<div class="section level1">
+<h1 id="releated-projects">Releated projects<a class="anchor" aria-label="anchor" href="#releated-projects"></a>
+</h1>
+<ul>
+<li>prolfquabenchmark - a package to document the performance of prolfqua, MSstats, msqrob, and proda. See documentation: [<a href="https://prolfqua.github.io/prolfquabenchmark/" class="external-link uri">https://prolfqua.github.io/prolfquabenchmark/</a>]</li>
+<li>prolfquapp: Generating Dynamic DEA Reports with the prolfqua R Package <a href="https://github.com/prolfqua/prolfquapp" class="external-link">https://github.com/prolfqua/prolfquapp</a>
+</li>
+<li>prophosqua - (scripts for the analysis of phospho experiments) <a href="https://github.com/prolfqua/prophosqua" class="external-link">https://github.com/prolfqua/prophosqua</a>
+</li>
 </ul>
 </div>
 <div class="section level1">
@@ -220,14 +264,6 @@ eprint = {https://doi.org/10.1021/acs.jproteome.2c00441}
 <p>The use of R’s formula interface does not limit <em>prolfqua</em> to the output provided by the R modelling infrastructure. <em>prolfqua</em> also implements p-value moderations, as in the limma publication or computing probabilities of differential regulation, as suggested in the ROPECA publication. Moreover, the design decision to use the R formula interface allowed us to integrate Bayesian regression models provided by the r-package <em>brms</em>. Because of that, we can benchmark all those methods: linear models, mixed effect models, p-value moderation, ROPECA as well as Bayesian regression models within the same framework, which enabled us to evaluate the practical relevance of these methods.</p>
 <p>Last but not least <em>prolfqua</em> supports the LFQ data analysis workflow, e.g. computing coefficients of Variations (CV) for peptide and proteins, sample size estimation, visualization and summarization of missing data and intensity distributions, multivariate analysis of the data, etc. It also implements various protein intensity summarization and inference methods, e.g. top 3, or Tukeys median polish etc. Last but not least, ANOVA analysis or model selection using the likelihood ratio test for thousand of proteins can be performed.</p>
 <p>To use <code>prolfqua</code> knowledge of the R regression model infrastructure is of advantage. Acknowledging, the complexity of the formula interface, we provide an MSstats emulator, where the model specification is generated based on the annotation file structure.</p>
-</div>
-<div class="section level2">
-<h2 id="running-r-scripts">Running R-scripts<a class="anchor" aria-label="anchor" href="#running-r-scripts"></a>
-</h2>
-<p>Generate QC report from bat file. First add <code>&lt;prolfqua_path&gt;/win</code> to your path variable. Then you can generate a QC report from a maxquant QC by running.</p>
-<pre><code>lfq_MQ_SampleSizeReport.bat .\data\1296877_QC.zip</code></pre>
-<pre><code>Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R --help
-Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Downloads/1330043.zip</code></pre>
 </div>
 </div>
 <div class="section level1">
@@ -368,16 +404,16 @@ Rscript ~/__checkouts/R/prolfqua/inst/run_scripts/lfq_MQ_SampleSizeReport.R ~/Do
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
