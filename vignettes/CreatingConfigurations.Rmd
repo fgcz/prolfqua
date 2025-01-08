@@ -1,10 +1,10 @@
 ---
-title: "Creating prolfqua Configurations"
+title: "Getting Started, Data Import, Creating prolfqua Configurations"
 author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Creating prolfqua Configurations} 
+  %\VignetteIndexEntry{Getting Started, Data Import, Creating prolfqua Configurations} 
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 bibliography:

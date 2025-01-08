@@ -67,6 +67,7 @@ Other plotting:
 \code{\link{plot_estimate}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
+\code{\link{plot_heatmap_cor_iheatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line}()},
 \code{\link{plot_hierarchies_line_df}()},

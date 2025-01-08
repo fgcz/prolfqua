@@ -301,6 +301,60 @@ plot_heatmap_cor <- function(data,
   invisible(res)
 }
 
+
+#' plot correlation heatmap with annotations
+#'
+#' @export
+#' @keywords internal
+#' @family plotting
+#' @examples
+#'
+#' istar <- sim_lfq_data_protein_config()
+#' config <- istar$config
+#' analysis <- istar$data
+#'
+#' pheat_map <- plot_heatmap_cor_iheatmap( analysis, config )
+#' stopifnot("IheatmapHorizontal" %in% class(pheat_map))
+#' pheat_map <- plot_heatmap_cor_iheatmap( analysis, config, R2 = TRUE )
+#' stopifnot("IheatmapHorizontal" %in% class(pheat_map))
+#'
+plot_heatmap_cor_iheatmap <- function(data,
+                                      config,
+                                      R2 = FALSE,
+                                      color = colorRampPalette(c("white", "red"))(1024),
+                                      ...){
+
+  # Transform the data to a wide format using the provided function
+  res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
+  annot <- res$annotation
+  res <- res$data
+
+  # Calculate the correlation matrix
+  cres <- cor(res, use = "pairwise.complete.obs")
+  if (R2) {
+    cres <- cres^2
+  }
+
+  # Prepare factors for annotation
+  factors <- dplyr::select_at(annot, config$table$factor_keys())
+  factors <- as.data.frame(factors)
+  rownames(factors) <- annot[[config$table$sampleName]]
+
+  # Perform hierarchical clustering
+  gg <- stats::hclust(stats::dist(cres))
+  ordered_cres <- cres[gg$order, gg$order]
+
+  # Create the heatmap using iheatmapr
+  hm <- iheatmapr::iheatmap(ordered_cres,
+                 cluster_rows = "hclust",
+                 cluster_cols = "hclust",
+                 col_annotation = factors,
+                 colors = color,
+                 scale = "none",
+                 name = ifelse(R2, "R^2", "correlation"))
+  invisible(hm)
+}
+
 .ehandler = function(e){
   warning("WARN :", e)
   # return string here
