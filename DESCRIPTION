@@ -39,6 +39,7 @@ Imports:
     ggridges,
     ggpubr,
     htmlwidgets,
+    iheatmap,
     lme4,
     lmerTest,
     MASS,

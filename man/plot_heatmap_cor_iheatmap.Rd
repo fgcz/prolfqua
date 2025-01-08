@@ -22,10 +22,9 @@ config <- istar$config
 analysis <- istar$data
 
 pheat_map <- plot_heatmap_cor_iheatmap( analysis, config )
-debug(plot_heatmap_cor_iheatmap)
-stopifnot("pheatmap" \%in\% class(pheat_map))
+stopifnot("IheatmapHorizontal" \%in\% class(pheat_map))
 pheat_map <- plot_heatmap_cor_iheatmap( analysis, config, R2 = TRUE )
-stopifnot("pheatmap" \%in\% class(pheat_map))
+stopifnot("IheatmapHorizontal" \%in\% class(pheat_map))
 
 }
 \seealso{
