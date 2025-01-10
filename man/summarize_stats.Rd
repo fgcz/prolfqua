@@ -57,7 +57,7 @@ stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$
 stopifnot(nrow(stats) == 20)
 stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
 stopifnot(nrow(stats) == 10)
-
+# TODO (WEW) add test when there is one level per group.
 
 
 bb <- prolfqua::sim_lfq_data_protein_config()

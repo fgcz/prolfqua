@@ -173,7 +173,7 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' stopifnot(nrow(stats) == 20)
 #' stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
 #' stopifnot(nrow(stats) == 10)
-#'
+#' # TODO (WEW) add test when there is one level per group.
 summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys_depth()){
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$table$get_response())
@@ -193,11 +193,11 @@ summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys
   if (config$table$is_response_transformed == FALSE) {
     hierarchyFactor <- hierarchyFactor |> dplyr::mutate(CV = sd/meanAbundance * 100)
   }
-  if (is.null(factor_key)) {
+  if (is.null(factor_key) || length(factor_key) == 0) {
     hierarchyFactor <- dplyr::mutate(hierarchyFactor, !!config$table$factor_keys()[1] := "All")
   }
   hierarchyFactor <- ungroup(hierarchyFactor)
-  if (!is.null(factor_key)) {
+  if (length(factor_key) > 0 && !is.null(factor_key)) {
     hierarchyFactor <- prolfqua::make_interaction_column(hierarchyFactor, columns = factor_key, sep = ":")
   } else{
     hierarchyFactor$interaction <- "All"

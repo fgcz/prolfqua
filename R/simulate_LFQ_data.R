@@ -159,11 +159,11 @@ sim_lfq_data_peptide_config <- function(
     Nprot = 10,
     with_missing = TRUE,
     weight_missing = 0.2,
-    seed = 1234){
+    seed = 1234, N = 4){
   if (!is.null(seed)) {
     set.seed(seed)
   }
-  data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE)
+  data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE, N = N)
 
   not_missing <- !which_missing(data$abundance, weight_missing = weight_missing)
   # data <- data[not_missing,]

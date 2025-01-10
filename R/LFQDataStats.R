@@ -32,6 +32,7 @@
 #'
 #'
 #' lfqdata <- LFQData$new(bb$data, bb$config)
+#' # LFQDataStats$debug("violin")
 #' lfqstats <- lfqdata$get_Stats()
 #' stopifnot(ncol(lfqstats$stats_wide()) == 30)
 #' lfqstats$violin()
@@ -58,6 +59,17 @@
 #' stopifnot(ncol(lfqstats$stats_wide()) == 20)
 #' runallfuncs(lfqstats)
 #'
+#' # Group size 1
+#' bb <- prolfqua::sim_lfq_data_peptide_config(N=1)
+#' table_factors_size(bb$data,bb$config )
+#' lfqdata <- LFQData$new(bb$data, bb$config)
+#' # LFQDataStats$debug("initialize")
+#' lfqstats <- lfqdata$get_Stats()
+#'
+#' # stopifnot(ncol(lfqstats$stats_wide()) == 30)
+#' lfqstats$violin()
+#' runallfuncs(lfqstats)
+
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
   public = list(
@@ -78,7 +90,11 @@ LFQDataStats <- R6::R6Class(
 
       tb <- table_factors_size(lfqdata$data,lfqdata$config )
       if ( all(tb$n == 1) ) {
-        self$lfq$config$table$factorDepth <- self$lfq$config$table$factorDepth - 1
+        if(self$lfq$config$table$factorDepth > 1){
+          self$lfq$config$table$factorDepth <- self$lfq$config$table$factorDepth - 1
+        } else {
+          stats = "all"
+        }
       }
 
       if (stats == "interaction" ) {

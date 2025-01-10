@@ -8,7 +8,8 @@ sim_lfq_data_peptide_config(
   Nprot = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
-  seed = 1234
+  seed = 1234,
+  N = 4
 )
 }
 \arguments{
