@@ -19,7 +19,7 @@ lfqdata <- LFQData$new(
  istar$data,
  istar$config)
 #LFQDataPlotter$debug("boxplots")
-LFQDataPlotter$debug("pairs_smooth")
+# LFQDataPlotter$debug("pairs_smooth")
 lfqplotter <- lfqdata$get_Plotter()
 
 stopifnot(class(lfqplotter$heatmap()) == "pheatmap")

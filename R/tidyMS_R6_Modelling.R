@@ -912,7 +912,7 @@ contrasts_linfct <- function(models,
                              subject_Id = "protein_Id" ,
                              contrastfun = prolfqua::my_contest){
   #computeGroupAverages
-  message("computing contrasts.")
+  message("contrasts_linfct")
   modelcol <- "linear_model"
   # TODO (goes into calling code)
   # models <- models |> dplyr::filter(.data$exists_lmer == TRUE)
