@@ -920,14 +920,20 @@ contrasts_linfct <- function(models,
   interaction_models <- vector(mode = "list", length = nrow(models))
 
   if ("matrix" %in% class(linfct)) {
+    pb <- progress::progress_bar$new(total = length(models[[modelcol]]))
     for (i in seq_along(models[[modelcol]])) {
       interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct)
+      pb$tick()
     }
     interaction_model_matrix <- models
     interaction_model_matrix$contrast <- interaction_models
   } else if (("list" %in% class(linfct)) && (length(linfct) == nrow(models))) {
+    pb <- progress::progress_bar$new(total = length(models[[modelcol]]))
+
     for (i in seq_along(models[[modelcol]])) {
+
       interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]])
+      pb$tick()
     }
     interaction_model_matrix <- models
     interaction_model_matrix$contrast <- interaction_models
