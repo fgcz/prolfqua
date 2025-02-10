@@ -36,13 +36,13 @@ jobs:
         shell: Rscript {0}
       - name: List files in home directory
         run: find $R_LIBS_SITE -type f > files.txt
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
             name: files
             path: files.txt
             if-no-files-found: warn
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
             name: prolfqua CI Rcheck directory
             path: check/prolfqua.Rcheck
