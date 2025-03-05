@@ -204,6 +204,52 @@ strategy_glm <- function(modelstr,
   return(res)
 }
 
+#' Firth's Bias-Reduced Logistic Regression
+#' @export
+#' @rdname strategy
+#' @param modelstr model formula
+#' @param model_name name of model
+#' @param report_columns columns to report
+#' @family modelling
+#' @examples
+#' tmp <- strategy_logistf("Intensity ~ condition", model_name = "parallel design")
+#' tmp$model_fun(get_formula = TRUE)
+#' tmp$isSingular
+strategy_logistf <- function(modelstr,
+                         model_name = "logistf",
+                         report_columns = c("statistic",
+                                            "p.value",
+                                            "p.value.adjusted",
+                                            "moderated.p.value",
+                                            "moderated.p.value.adjusted")
+) {
+  formula <- as.formula(modelstr)
+  model_fun <- function(x, pb, get_formula = FALSE){
+    if (get_formula) {
+      return(formula)
+    }
+    if (!missing(pb)) {
+      pb$tick()
+    }
+    # to avoid perfect separation (hack)
+    tt <- ftable(formula, x)
+    DFT <- as.data.frame(tt)
+    modelTest <- tryCatch(logistf::logistf( formula ,
+                               data = DFT ),
+                          error = .ehandler)
+    return(modelTest)
+  }
+  res <- list(model_fun = model_fun,
+              isSingular = isSingular_lm,
+              contrast_fun = my_contrast_V2,
+              model_name = model_name,
+              report_columns = report_columns,
+              anova_df = get_anova_df(test = test),
+              is_mixed = FALSE)
+  return(res)
+}
+
+
 #' anova returning dataframe
 #' @keywords internal
 #' @family modelling

@@ -42,6 +42,7 @@ Imports:
     iheatmapr,
     lme4,
     lmerTest,
+    logistf,
     MASS,
     multcomp,
     pheatmap,
