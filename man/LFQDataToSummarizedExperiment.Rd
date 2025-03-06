@@ -31,6 +31,7 @@ if(require("SummarizedExperiment")){
 Other LFQData: 
 \code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
+\code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},

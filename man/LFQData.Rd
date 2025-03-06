@@ -60,6 +60,7 @@ stopifnot("data.frame" \%in\% class(lw$get_long()))
 \seealso{
 Other LFQData: 
 \code{\link{LFQDataAggregator}},
+\code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},

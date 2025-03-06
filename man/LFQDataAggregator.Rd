@@ -49,6 +49,7 @@ lfqAggregator$write_plots(tempdir())
 \seealso{
 Other LFQData: 
 \code{\link{LFQData}},
+\code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},

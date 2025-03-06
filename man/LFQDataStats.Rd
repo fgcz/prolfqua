@@ -79,6 +79,7 @@ runallfuncs(lfqstats)
 Other LFQData: 
 \code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
+\code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},

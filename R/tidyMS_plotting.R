@@ -610,14 +610,15 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
     ff <- t(ff)
     pca_result <- prcomp(ff)
     xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
-    if (max(PC) > (ncol(xx) - 1)) {
-      warning("nr of PCs: ", ncol(xx), "\n")
-      return(NULL)
-    }
+
     variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
   }
-  xx <- inner_join(wide$annotation, xx)
+  if (max(PC) > (ncol(xx) - 1)) {
+    warning("nr of PCs: ", ncol(xx), "\n")
+    return(NULL)
+  }
 
+  xx <- inner_join(wide$annotation, xx)
 
   sh <- config$table$factor_keys()[2]
   point <- (if (!is.na(sh)) {

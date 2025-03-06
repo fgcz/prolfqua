@@ -51,6 +51,7 @@ stopifnot(class(prolfqua::plot_sample_correlation(istar$data, istar$config)) == 
 Other LFQData: 
 \code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
+\code{\link{LFQDataImp}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},

@@ -14,6 +14,7 @@ Write LFQData, or provide outputs for writing.
 Other LFQData: 
 \code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
+\code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
