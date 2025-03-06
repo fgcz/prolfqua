@@ -4,7 +4,15 @@
 \alias{plot_pca}
 \title{plot PCA}
 \usage{
-plot_pca(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE)
+plot_pca(
+  data,
+  config,
+  PC = c(1, 2),
+  add_txt = FALSE,
+  plotly = FALSE,
+  nipals = TRUE,
+  nudge = 0.1
+)
 }
 \description{
 plot PCA
@@ -12,20 +20,23 @@ plot PCA
 \examples{
 
 
-
-
-istar <- sim_lfq_data_protein_config(with_missing = FALSE)
+istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 30)
 config <- istar$config
 analysis <- istar$data
-tmp <- plot_pca(analysis, config, add_txt= TRUE)
+tmp <- plot_pca(analysis, config, add_txt= TRUE, nipals = FALSE)
+print(tmp)
+tmp <- plot_pca(analysis, config, add_txt= TRUE, nipals=TRUE, nudge = 0.01)
+print(tmp)
+
 stopifnot("ggplot" \%in\% class(tmp) )
 tmp <- plot_pca(analysis, config, add_txt= FALSE)
 stopifnot("ggplot" \%in\% class(tmp) )
-tmp
+#tmp
 tmp <- plot_pca(analysis, config, PC = c(1,2))
 stopifnot("ggplot" \%in\% class(tmp) )
 tmp <- plot_pca(analysis, config, PC = c(2,40))
-stopifnot(is.null(tmp))
+print(tmp)
+#stopifnot(is.null(tmp))
 
 }
 \seealso{

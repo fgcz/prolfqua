@@ -215,13 +215,15 @@ strategy_glm <- function(modelstr,
 #' tmp <- strategy_logistf("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
-strategy_logistf <- function(modelstr,
-                         model_name = "logistf",
-                         report_columns = c("statistic",
-                                            "p.value",
-                                            "p.value.adjusted",
-                                            "moderated.p.value",
-                                            "moderated.p.value.adjusted")
+strategy_logistf <- function(
+    modelstr,
+    model_name = "logistf",
+    report_columns = c("statistic",
+                       "p.value",
+                       "p.value.adjusted",
+                       "moderated.p.value",
+                       "moderated.p.value.adjusted"),
+    test = "Chisq"
 ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, pb, get_formula = FALSE){
@@ -235,7 +237,7 @@ strategy_logistf <- function(modelstr,
     tt <- ftable(formula, x)
     DFT <- as.data.frame(tt)
     modelTest <- tryCatch(logistf::logistf( formula ,
-                               data = DFT ),
+                                            data = DFT ),
                           error = .ehandler)
     return(modelTest)
   }

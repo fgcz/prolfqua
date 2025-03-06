@@ -44,7 +44,8 @@ strategy_logistf(
   modelstr,
   model_name = "logistf",
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted")
+    "moderated.p.value.adjusted"),
+  test = "Chisq"
 )
 }
 \arguments{

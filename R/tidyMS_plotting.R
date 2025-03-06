@@ -346,12 +346,12 @@ plot_heatmap_cor_iheatmap <- function(data,
 
   # Create the heatmap using iheatmapr
   hm <- iheatmapr::iheatmap(ordered_cres,
-                 cluster_rows = "hclust",
-                 cluster_cols = "hclust",
-                 col_annotation = factors,
-                 colors = color,
-                 scale = "none",
-                 name = ifelse(R2, "R^2", "correlation"))
+                            cluster_rows = "hclust",
+                            cluster_cols = "hclust",
+                            col_annotation = factors,
+                            colors = color,
+                            scale = "none",
+                            name = ifelse(R2, "R^2", "correlation"))
   invisible(hm)
 }
 
@@ -563,7 +563,6 @@ plot_NA_heatmap <- function(data,
 }
 
 
-
 #' plot PCA
 #' @export
 #' @keywords internal
@@ -571,34 +570,52 @@ plot_NA_heatmap <- function(data,
 #' @examples
 #'
 #'
-#'
-#'
-#' istar <- sim_lfq_data_protein_config(with_missing = FALSE)
+#' istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 30)
 #' config <- istar$config
 #' analysis <- istar$data
-#' tmp <- plot_pca(analysis, config, add_txt= TRUE)
+#' tmp <- plot_pca(analysis, config, add_txt= TRUE, nipals = FALSE)
+#' print(tmp)
+#' tmp <- plot_pca(analysis, config, add_txt= TRUE, nipals=TRUE, nudge = 0.01)
+#' print(tmp)
+#'
 #' stopifnot("ggplot" %in% class(tmp) )
 #' tmp <- plot_pca(analysis, config, add_txt= FALSE)
 #' stopifnot("ggplot" %in% class(tmp) )
-#' tmp
+#' #tmp
 #' tmp <- plot_pca(analysis, config, PC = c(1,2))
 #' stopifnot("ggplot" %in% class(tmp) )
 #' tmp <- plot_pca(analysis, config, PC = c(2,40))
-#' stopifnot(is.null(tmp))
+#' print(tmp)
+#' #stopifnot(is.null(tmp))
 #'
-plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE){
+plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE, nipals = TRUE, nudge = 0.1){
   stopifnot(length(PC) == 2)
 
   wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
-  ff <- na.omit(wide$data)
-  ff <- t(ff)
-  pca_result <- prcomp(ff)
-  xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
-  if (max(PC) > (ncol(xx)-1)) {
-    warning("nr of PCs: ", ncol(xx), "\n")
-    return(NULL)
+  has_missing <- any(is.na(wide$data))
+
+  if (has_missing && nipals) {
+    data_matrix <- t(wide$data)
+    ncomp <- min(nrow(data_matrix) - 1, ncol(data_matrix))
+    nipals_result <- nipals::nipals(data_matrix, ncomp = ncomp, center = TRUE, scale = FALSE)
+    order_nip <- order(nipals_result$eig, decreasing = TRUE )
+    xx <- as_tibble(nipals_result$scores[,order_nip], rownames = config$table$sampleName)
+    eig <- nipals_result$eig[order_nip]
+    variance_explained <- eig / sum(eig) * 100
+  } else {
+    ff <- na.omit(wide$data)
+    warning("removing rows with missing values from the data; before :" ,
+            nrow(wide$data), " afterwards :", nrow(ff))
+
+    ff <- t(ff)
+    pca_result <- prcomp(ff)
+    xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
+    if (max(PC) > (ncol(xx) - 1)) {
+      warning("nr of PCs: ", ncol(xx), "\n")
+      return(NULL)
+    }
+    variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
   }
-  variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
   xx <- inner_join(wide$annotation, xx)
 
 
@@ -610,8 +627,8 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
   })
 
   text <- geom_text(aes(label = !!sym(config$table$sampleName)),check_overlap = TRUE,
-                    nudge_x = 0.25,
-                    nudge_y = 0.25 )
+                    nudge_x = nudge,
+                    nudge_y = nudge )
 
   PCx <- paste0("PC", PC[1])
   PCy <- paste0("PC", PC[2])
