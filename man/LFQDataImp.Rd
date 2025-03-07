@@ -37,10 +37,18 @@ Other LFQData:
 \if{html}{\out{<a id="method-LFQDataImp-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataImp-new}{}}}
 \subsection{Method \code{new()}}{
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataImp$new(lfq, prefix = "protein")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfq}}{lfqdata}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataImp-clone"></a>}}

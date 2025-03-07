@@ -5,12 +5,14 @@
 #' @export
 #' @family LFQData
 #'
-#' @examples
 LFQDataImp <- R6::R6Class(
   "LFQDataImp",
   public = list(
     #' @field lfq LFQData
     lfq = NULL,
+    #' @description
+    #' initialize
+    #' @param lfq lfqdata
     initialize = function(lfq, prefix = "protein"){
       self$lfq = lfq$clone(deep = TRUE)
       self$prefix = prefix

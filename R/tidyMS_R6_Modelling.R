@@ -54,7 +54,9 @@ strategy_lmer <- function(modelstr,
               model_name = model_name,
               report_columns = report_columns,
               anova_df = get_anova_df(test = "F"),
-              is_mixed = TRUE)
+              is_mixed = TRUE,
+              df_residual = stats::df.residual,
+              sigma = stats::sigma)
   return(res)
 }
 
@@ -100,7 +102,9 @@ strategy_lm <- function(modelstr,
               model_name = model_name,
               report_columns = report_columns,
               anova_df = get_anova_df(test = "F"),
-              is_mixed = FALSE)
+              is_mixed = FALSE,
+              df_residual = stats::df.residual,
+              sigma = stats::sigma)
   return(res)
 }
 
@@ -146,7 +150,9 @@ strategy_rlm <- function(modelstr,
               model_name = model_name,
               report_columns = report_columns,
               anova_df = get_anova_df(test = "F"),
-              is_mixed = FALSE)
+              is_mixed = FALSE,
+              df_residual = stats::df.residual,
+              sigma = stats::sigma)
   return(res)
 }
 
@@ -204,6 +210,9 @@ strategy_glm <- function(modelstr,
   return(res)
 }
 
+
+
+
 #' Firth's Bias-Reduced Logistic Regression
 #' @export
 #' @rdname strategy
@@ -237,17 +246,42 @@ strategy_logistf <- function(
     tt <- ftable(formula, x)
     DFT <- as.data.frame(tt)
     modelTest <- tryCatch(logistf::logistf( formula ,
-                                            data = DFT ),
+                                            data = DFT,
+                                            weights = Freq ),
                           error = .ehandler)
     return(modelTest)
   }
+  df_residual_logistf = function(m) {
+    n <- m$n                          # Number of observations
+    p <- length(m$coefficients)       # Number of estimated parameters
+    df_residual <- n - p
+    return(df_residual)
+  }
+  isSingular_logistf = function(m)
+  {
+    anyNA <- any(is.na(coefficients(m)))
+    if (anyNA) {
+      return(TRUE)
+    } else {
+      if (df_residual_logistf(m) >= 2) {
+        return(FALSE)
+      }
+      return(TRUE)
+    }
+
+  }
+  sigma_logistf = function(m){
+    return(1)
+  }
   res <- list(model_fun = model_fun,
-              isSingular = isSingular_lm,
+              isSingular = isSingular_logistf,
               contrast_fun = my_contrast_V2,
               model_name = model_name,
               report_columns = report_columns,
               anova_df = get_anova_df(test = test),
-              is_mixed = FALSE)
+              is_mixed = FALSE,
+              df_residual = df_residual_logistf,
+              sigma = sigma_logistf)
   return(res)
 }
 
@@ -364,9 +398,9 @@ model_analyse <- function(
   modelProteinF <- modelProteinF |>
     dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), model_strategy$isSingular ))
   modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), df.residual ))
+    dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), model_strategy$df_residual ))
   modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"sigma" := purrr::map_dbl( !!sym(lmermodel) , sigma))
+    dplyr::mutate(!!"sigma" := purrr::map_dbl( !!sym(lmermodel) , model_strategy$sigma))
 
   nrcoeff <- function(x) {
     cc <- coefficients(x)
@@ -426,8 +460,26 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 }
 
 
-
-
+.logistf_coeff_matrix <- function(m){
+  #data <- NULL
+  data <- m$model
+  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
+  data <- make_interaction_column(data, interactionColumns, sep = ":")
+  coeffs <- coef(m)
+  inter <- unique(data$interaction)
+  mm <- matrix(0, nrow = length(inter), ncol = length(coeffs))
+  rownames(mm) <- inter
+  colnames(mm) <- names(coeffs)
+  mm[,1] <- 1
+  coefi <- coeffs[-1]
+  for (i in seq_along(coefi)) {
+    # the grep is needed to extract coefficients of interaction terms belonging to a factor
+    # I am using word boundaries "\\b" to allow for factor levels that are substrings.
+    positionIDX <- grep(paste0("\\b",names(coefi)[i],"\\b"), inter)
+    mm[positionIDX, i + 1 ] <- 1
+  }
+  return(list(mm = mm, coeffs = coeffs))
+}
 
 
 # Generate linear functions -----
@@ -456,7 +508,7 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
   coefi <- coeffs[-1]
   for (i in seq_along(coefi)) {
     # the grep is needed to extract coefficients of interaction terms belonging to a factor
-    # I am using wor boundaries "\\b" to allow for factor levels that are substrings.
+    # I am using word boundaries "\\b" to allow for factor levels that are substrings.
     positionIDX <- grep(paste0("\\b",names(coefi)[i],"\\b"), inter)
     mm[positionIDX, i + 1 ] <- 1
   }
@@ -519,7 +571,11 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 #' linfct_from_model(m)
 #'
 linfct_from_model <- function(m, as_list = TRUE){
-  cm <- .lmer4_coeff_matrix(m)
+  if ("logistf" %in% class(m)) {
+    cm <- .logistf_coeff_matrix(m)
+  } else{
+    cm <- .lmer4_coeff_matrix(m)
+  }
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
 
   l_factors <- .coeff_weights_factor_levels(cm_mm)
@@ -723,6 +779,63 @@ my_glht <- function(model, linfct , sep = TRUE ) {
   }
 }
 
+
+#' compute contrast from logistf
+#' @param m linear model generated using lm
+#' @param linfct linear function
+#' @param coef use default
+#' @param use default
+#' @param confint which confidence interval to determine
+#'
+#' @export
+#' @keywords internal
+#' @family modelling
+#' @examples
+#' set.seed(123)
+#' dat <- data.frame(
+#'   binresp = rbinom(100, 1, 0.5),
+#' group   = factor(sample(c("A", "B"), 100, replace = TRUE))
+#' )
+#' m <- logistf::logistf(binresp ~ group, data = dat)
+#' print("Model Coefficients:")
+#' print(coef(m))
+#' contrast_matrix <- matrix(c(0, 1), nrow = 1,
+#' dimnames = list("groupB_vs_A", NULL))
+#' contrast_result <- my_contrast_logistf(m, contrast_matrix)
+#' contrast_matrix <- linfct_from_model(m)$linfct_factors
+#'
+#' my_contrast_V2(m, contrast_matrix,confint = 0.95, f.contrast = my_contrast_logistf)
+#'
+my_contrast_logistf <- function(m,
+                                linfct,
+                                coef = coefficients(m),
+                                Sigma.hat = vcov(m),
+                                confint = 0.95){
+  estimate <- linfct %*% coef
+  # Compute standard errors for the contrasts
+  std.error <- sqrt(diag(linfct %*% Sigma.hat %*% t(linfct)))
+  # Compute z statistics (since under asymptotic theory, contrasts are approximately normal)
+  z.value <- estimate / std.error
+  # Two-tailed p-values from the normal distribution
+  p.value <- 2 * pnorm(-abs(z.value))
+  # Compute the critical z value for the desired confidence interval
+  zcrit <- qnorm(1 - (1 - confint)/2)
+  # Confidence intervals for the contrasts
+  conf.low <- estimate - zcrit * std.error
+  conf.high <- estimate + zcrit * std.error
+  # Return the results in a data.frame. Note that we no longer include sigma or df.
+  res <- data.frame(lhs       = rownames(linfct),
+                    estimate  = estimate,
+                    std.error = std.error,
+                    z         = z.value,
+                    p.value   = p.value,
+                    conf.low  = conf.low,
+                    conf.high = conf.high,
+                    stringsAsFactors = FALSE)
+  return(res)
+}
+
+
 #' compute contrasts for full models
 #' @param m linear model generated using lm
 #' @param linfct linear function
@@ -821,12 +934,12 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' m <- sim_make_model_lm( "factors")
+#' m <- sim_make_model_lm("factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)
 #'
-my_contrast_V2 <- function(m, linfct,confint = 0.95){
+my_contrast_V2 <- function(m, linfct,confint = 0.95, f.contrast = my_contrast){
   Sigma.hat <- vcov(m)
 
   coef <- na.omit(coefficients(m))
@@ -843,9 +956,9 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
       coef_red <- coef[nam]
       stopifnot(all.equal(colnames(linfct_v_red),colnames(Sigma.hat_red)))
       stopifnot(all.equal(colnames(linfct_v_red),names(coef_red)))
-      res[[i]] <- my_contrast(m,linfct_v_red,
-                              coef = coef_red,
-                              Sigma.hat = Sigma.hat_red, confint = confint)
+      res[[i]] <- f.contrast(m,linfct_v_red,
+                           coef = coef_red,
+                           Sigma.hat = Sigma.hat_red, confint = confint)
     }else{
       res[[i]] <-  data.frame(lhs = rownames(linfct_v),
                               sigma = sigma(m),

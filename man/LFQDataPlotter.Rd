@@ -197,7 +197,7 @@ PCA plot
 
 A PCA is applied and the first and second principal component are shown.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, nipals = TRUE, nudge = 0.1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -206,6 +206,10 @@ A PCA is applied and the first and second principal component are shown.
 \item{\code{PC}}{default c(1,2) - first and second principal component}
 
 \item{\code{add_txt}}{show sample names}
+
+\item{\code{nipals}}{default TRUE (use nipals if data is missing else na.omit)}
+
+\item{\code{nudge}}{default 0.1 nudge point lables}
 }
 \if{html}{\out{</div>}}
 }
