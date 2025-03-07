@@ -46,7 +46,6 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_contrast_V1}()},
 \code{\link{my_contrast_V2}()},
-\code{\link{my_contrast_logistf}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{sim_build_models_lm}()},

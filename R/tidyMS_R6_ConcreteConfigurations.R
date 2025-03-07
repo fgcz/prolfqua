@@ -1,3 +1,31 @@
+#' read minimal yaml to reconstruct configuration
+#' @export
+#' @examples
+#'
+#' DEAconfig <- create_config_Skyline()
+#' configList <- prolfqua::R6_extract_values(DEAconfig)
+#' stopifnot(class(configList) == "list")
+#' config <- list_to_R6_prolfqua_config(configList)
+#' all.equal(prolfqua::R6_extract_values(config), configList)
+#' config$parameter$min_nr_of_notNA <- 4
+#' all.equal(prolfqua::R6_extract_values(config), configList)
+list_to_R6_prolfqua_config <- function(dd){
+  atable <- AnalysisTableAnnotation$new()
+  for (i in names(dd$table)) {
+    atable[[i]] <- dd$table[[i]]
+  }
+
+  anaparam <- AnalysisParameters$new()
+  for (i in names(dd$parameter)) {
+    anaparam[[i]] <- dd$parameter[[i]]
+  }
+  config <- AnalysisConfiguration$new(atable, anaparam)
+  config$sep = dd$sep
+  return(config)
+}
+
+
+
 #' Cenerate instances of AnalysisTableAnnotation
 #'
 #' configurations examples of or various signal processing software outputs
@@ -19,6 +47,9 @@ NULL
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' skylineconfig$table$factor_keys()
 #' skylineconfig$table$hierarchy_keys()
+#'
+#'
+#'
 create_config_Skyline <- function(isotopeLabel="Isotope.Label",
                                   ident_qValue="annotation_QValue"){
   atable <- AnalysisTableAnnotation$new()

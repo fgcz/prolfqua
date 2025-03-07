@@ -50,7 +50,6 @@ Other modelling:
 \code{\link{my_contrast}()},
 \code{\link{my_contrast_V1}()},
 \code{\link{my_contrast_V2}()},
-\code{\link{my_contrast_logistf}()},
 \code{\link{my_glht}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{sim_build_models_lm}()},

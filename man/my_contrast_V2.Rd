@@ -4,7 +4,7 @@
 \alias{my_contrast_V2}
 \title{handles incomplete models}
 \usage{
-my_contrast_V2(m, linfct, confint = 0.95, f.contrast = my_contrast)
+my_contrast_V2(m, linfct, confint = 0.95)
 }
 \arguments{
 \item{m}{linear model generated using lm}
@@ -17,7 +17,7 @@ my_contrast_V2(m, linfct, confint = 0.95, f.contrast = my_contrast)
 only keeps non NA coefficients.
 }
 \examples{
-m <- sim_make_model_lm("factors")
+m <- sim_make_model_lm( "factors")
 linfct <- linfct_from_model(m)$linfct_factors
 my_contrast_V2(m, linfct, confint = 0.95)
 my_contrast_V2(m, linfct, confint = 0.99)
@@ -53,7 +53,6 @@ Other modelling:
 \code{\link{my_contest}()},
 \code{\link{my_contrast}()},
 \code{\link{my_contrast_V1}()},
-\code{\link{my_contrast_logistf}()},
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
