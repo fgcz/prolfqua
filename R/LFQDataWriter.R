@@ -61,7 +61,6 @@ LFQDataWriter <- R6::R6Class(
     #' write data to file
     #' @param path_qc path to write to
     write_wide = function(path_qc) {
-
       wide <- self$get_wide()
       fname <- paste0(self$prefix,"intensities_wide")
       self$file_paths[[fname]] <-

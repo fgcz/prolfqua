@@ -36,7 +36,6 @@
 #' stopifnot("LFQDataStats" %in% class(lfqdata$get_Stats()))
 #' stopifnot("LFQDataSummariser" %in% class(lfqdata$get_Summariser()))
 #' stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
-#' stopifnot("LFQDataWriter" %in% class(lfqdata$get_Writer()))
 #' stopifnot("LFQDataAggregator" %in% class(lfqdata$get_Aggregator()))
 #'
 #' lfqdata2 <- lfqdata$get_copy()
@@ -47,10 +46,7 @@
 #' tmp <- lfqdata$get_sample(5, seed = 4)
 #' stopifnot(nrow(tmp$hierarchy()) == 5)
 #'
-#' lw <- lfqdata$get_Writer()
-#' stopifnot(names(lw$get_wide()) %in% c("data", "annotation"))
 #'
-#' stopifnot("data.frame" %in% class(lw$get_long()))
 #'
 LFQData <- R6::R6Class(
   "LFQData",
@@ -238,13 +234,6 @@ LFQData <- R6::R6Class(
     #' @return LFQDataPlotter
     get_Plotter = function(){
       return(LFQDataPlotter$new(self, self$prefix))
-    },
-    #' @description
-    #' get Writer
-    #' @param format array of formats to write to supported are xlsx, csv and html
-    #' @return LFQDataPlotter
-    get_Writer = function(format = "xlsx"){
-      return(LFQDataWriter$new(self, self$prefix, format = format))
     },
     #' @description
     #' get Summariser

@@ -40,7 +40,6 @@ stopifnot("LFQDataTransformer" \%in\% class(lfqdata$get_Transformer()))
 stopifnot("LFQDataStats" \%in\% class(lfqdata$get_Stats()))
 stopifnot("LFQDataSummariser" \%in\% class(lfqdata$get_Summariser()))
 stopifnot("LFQDataPlotter" \%in\% class(lfqdata$get_Plotter()))
-stopifnot("LFQDataWriter" \%in\% class(lfqdata$get_Writer()))
 stopifnot("LFQDataAggregator" \%in\% class(lfqdata$get_Aggregator()))
 
 lfqdata2 <- lfqdata$get_copy()
@@ -51,10 +50,7 @@ stopifnot(nrow(res$data) == nrow(lfqdata$data) - 100)
 tmp <- lfqdata$get_sample(5, seed = 4)
 stopifnot(nrow(tmp$hierarchy()) == 5)
 
-lw <- lfqdata$get_Writer()
-stopifnot(names(lw$get_wide()) \%in\% c("data", "annotation"))
 
-stopifnot("data.frame" \%in\% class(lw$get_long()))
 
 }
 \seealso{
@@ -102,7 +98,6 @@ Other LFQData:
 \item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
 \item \href{#method-LFQData-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
 \item \href{#method-LFQData-get_Plotter}{\code{LFQData$get_Plotter()}}
-\item \href{#method-LFQData-get_Writer}{\code{LFQData$get_Writer()}}
 \item \href{#method-LFQData-get_Summariser}{\code{LFQData$get_Summariser()}}
 \item \href{#method-LFQData-get_Stats}{\code{LFQData$get_Stats()}}
 \item \href{#method-LFQData-get_Transformer}{\code{LFQData$get_Transformer()}}
@@ -396,26 +391,6 @@ get Plotter
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Plotter()}\if{html}{\out{</div>}}
 }
 
-\subsection{Returns}{
-LFQDataPlotter
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-get_Writer"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-get_Writer}{}}}
-\subsection{Method \code{get_Writer()}}{
-get Writer
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Writer(format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{format}}{array of formats to write to supported are xlsx, csv and html}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
 LFQDataPlotter
 }
