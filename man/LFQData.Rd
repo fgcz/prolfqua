@@ -50,8 +50,6 @@ stopifnot(nrow(res$data) == nrow(lfqdata$data) - 100)
 tmp <- lfqdata$get_sample(5, seed = 4)
 stopifnot(nrow(tmp$hierarchy()) == 5)
 
-
-
 }
 \seealso{
 Other LFQData: 
@@ -70,8 +68,6 @@ Other LFQData:
 \item{\code{config}}{AnalysisConfiguration}
 
 \item{\code{data}}{data.frame or tibble matching AnalysisConfiguration.}
-
-\item{\code{is_pep}}{todo}
 
 \item{\code{prefix}}{e.g. "peptide_", "protein_", "compound_"}
 }
@@ -112,7 +108,7 @@ Other LFQData:
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$new(data, config, is_pep = TRUE, prefix = "ms_", setup = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$new(data, config, prefix = "ms_", setup = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -122,11 +118,11 @@ initialize
 
 \item{\code{config}}{configuration}
 
-\item{\code{is_pep}}{todo}
-
 \item{\code{prefix}}{will be use as output prefix}
 
 \item{\code{setup}}{is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.}
+
+\item{\code{is_pep}}{todo}
 }
 \if{html}{\out{</div>}}
 }

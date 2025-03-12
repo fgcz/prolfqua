@@ -46,18 +46,13 @@
 #' tmp <- lfqdata$get_sample(5, seed = 4)
 #' stopifnot(nrow(tmp$hierarchy()) == 5)
 #'
-#'
-#'
 LFQData <- R6::R6Class(
   "LFQData",
-
   public = list(
     #' @field config AnalysisConfiguration
     config = NULL,
     #' @field data data.frame or tibble matching AnalysisConfiguration.
     data = NULL,
-    #' @field is_pep todo
-    is_pep = FALSE,
     #' @field prefix e.g. "peptide_", "protein_", "compound_"
     prefix = "",
     #' @description
@@ -67,10 +62,9 @@ LFQData <- R6::R6Class(
     #' @param is_pep todo
     #' @param prefix will be use as output prefix
     #' @param setup is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.
-    initialize = function(data, config, is_pep=TRUE, prefix = "ms_", setup = FALSE) {
+    initialize = function(data, config, prefix = "ms_", setup = FALSE) {
       self$data <- if (setup) {setup_analysis(data, config)} else {data}
       self$config <- config$clone(deep = TRUE)
-      self$is_pep <- is_pep
       self$prefix <- prefix
     },
     #' @description
