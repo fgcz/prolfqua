@@ -1,3 +1,19 @@
+#' convert to binary response
+#' @export
+#' @keywords internal
+#' @examples
+#'
+#' istar <- sim_lfq_data_peptide_config()
+#' istar$data <- encode_bin_resp(istar$data, istar$config)
+#' istar$config$table$bin_resp == "bin_resp"
+#' istar$data[["bin_resp"]]
+encode_bin_resp <- function(pdata, config, name = "bin_resp"){
+  config$table$bin_resp = "bin_resp"
+  pdata <- complete_cases(pdata,config)
+  pdata[[config$table$bin_resp]] <- as.integer(!is.na(pdata[[config$table$get_response()]]))
+  return(pdata)
+}
+
 # Functions - Missigness ----
 
 #' compute missingness statistics per hierarchy and factor level

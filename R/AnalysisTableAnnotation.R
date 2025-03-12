@@ -50,6 +50,8 @@ AnalysisTableAnnotation <- R6::R6Class(
     workIntensity = NULL, # could be list with names and functions
     #' @field is_response_transformed are the intensities transformed for constant variance
     is_response_transformed = FALSE,
+    #' @field bin_resp column with encoded missing information
+    bin_resp = character(),
     #' @description
     #' Add name of intensity column
     #' @param colName name of intensity column

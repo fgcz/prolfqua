@@ -456,11 +456,6 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
   return(gg)
 }
 
-
-
-
-
-
 # Generate linear functions -----
 
 .lmer4_coeff_matrix <- function(m){

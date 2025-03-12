@@ -58,6 +58,7 @@ Other modelling:
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{sim_build_models_lmer}()},
+\code{\link{sim_build_models_logistf}()},
 \code{\link{sim_make_model_lm}()},
 \code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_lmer}()},

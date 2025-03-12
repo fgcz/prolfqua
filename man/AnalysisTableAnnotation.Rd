@@ -62,6 +62,8 @@ Other configuration:
 
 \item{\code{is_response_transformed}}{are the intensities transformed for constant variance}
 
+\item{\code{bin_resp}}{column with encoded missing information}
+
 \item{\code{factors}}{Names of columns containing factors (annotations)}
 
 \item{\code{factorDepth}}{number of relevant factors (used by plotting functions etc)}
