@@ -46,6 +46,8 @@ initialize
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{lfq}}{lfqdata}
+
+\item{\code{prefix}}{datasetname}
 }
 \if{html}{\out{</div>}}
 }

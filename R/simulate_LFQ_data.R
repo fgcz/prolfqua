@@ -303,53 +303,6 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
   return(list(data = adata, config = config))
 }
 
-#' build dataframe with models for testing
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examples
-#' modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
-#' stopifnot(dim(modi$modelDF) == c(10,9))
-#' mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
-#' mod2$modelDF$linear_model[[1]]
-#' mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
-#' modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
-#'
-sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors", "interaction"),
-                                Nprot = 10,
-                                with_missing = TRUE,
-                                weight_missing = 1) {
-  model <- match.arg(model)
-  if (model != "parallel3") {
-    istar <- prolfqua::sim_lfq_data_2Factor_config(
-      Nprot = Nprot,
-      with_missing = with_missing,
-      weight_missing = weight_missing)
-
-  } else {
-    istar <- prolfqua::sim_lfq_data_protein_config(
-      Nprot = Nprot,
-      with_missing = with_missing,
-      weight_missing = weight_missing)
-
-  }
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
-
-  model <- if (model == "factors") {
-    "~ Treatment + Background"
-  } else if (model == "interaction") {
-    "~ Treatment * Background"
-  } else if (model == "parallel2") {
-    "~ Treatment"
-  } else if (model == "parallel3") {
-    "~ group_"
-  } else {NULL}
-  modelFunction <- strategy_lm(paste0(istar$response(), model))
-  mod <- build_model(
-    istar,
-    modelFunction)
-  return(mod)
-}
 
 #' build dataframe with models for testing
 #' @family modelling

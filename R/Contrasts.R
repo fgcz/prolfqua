@@ -48,7 +48,7 @@
 #'     "dil.ctrl_vs_b" = "group_Ctrl - group_A"
 #'      )
 #' # prolfqua::Contrasts$debug("get_linfct")
-#' #debug(prolfqua:::.linfct)
+#' # debug(prolfqua:::.linfct)
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' y <- contrastX$get_linfct(avg = FALSE)
 #' stopifnot(all(ref_lfc == y))

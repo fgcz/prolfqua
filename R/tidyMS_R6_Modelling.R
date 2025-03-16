@@ -210,77 +210,6 @@ strategy_glm <- function(modelstr,
   return(res)
 }
 
-#' Firth's Bias-Reduced Logistic Regression
-#' @export
-#' @rdname strategy
-#' @param modelstr model formula
-#' @param model_name name of model
-#' @param report_columns columns to report
-#' @family modelling
-#' @examples
-#' tmp <- strategy_logistf("Intensity ~ condition", model_name = "parallel design")
-#' tmp$model_fun(get_formula = TRUE)
-#' tmp$isSingular
-strategy_logistf <- function(
-    modelstr,
-    model_name = "logistf",
-    report_columns = c("statistic",
-                       "p.value",
-                       "p.value.adjusted",
-                       "moderated.p.value",
-                       "moderated.p.value.adjusted"),
-    test = "Chisq"
-) {
-  formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE){
-    if (get_formula) {
-      return(formula)
-    }
-    if (!missing(pb)) {
-      pb$tick()
-    }
-    # to avoid perfect separation (hack)
-    tt <- ftable(formula, x)
-    DFT <- as.data.frame(tt)
-    modelTest <- tryCatch(logistf::logistf( formula ,
-                                            data = DFT,
-                                            weights = Freq ),
-                          error = .ehandler)
-    return(modelTest)
-  }
-  df_residual_logistf = function(m) {
-    n <- m$n                          # Number of observations
-    p <- length(m$coefficients)       # Number of estimated parameters
-    df_residual <- n - p
-    return(df_residual)
-    }
-  isSingular_logistf = function(m)
-  {
-    anyNA <- any(is.na(coefficients(m)))
-    if (anyNA) {
-      return(TRUE)
-    } else {
-      if (df_residual_logistf(m) >= 2) {
-        return(FALSE)
-      }
-      return(TRUE)
-    }
-
-  }
-  sigma_logistf = function(m){
-    return(1)
-  }
-  res <- list(model_fun = model_fun,
-              isSingular = isSingular_logistf,
-              contrast_fun = my_contrast_V2,
-              model_name = model_name,
-              report_columns = report_columns,
-              anova_df = get_anova_df(test = test),
-              is_mixed = FALSE,
-              df_residual = df_residual_logistf,
-              sigma = sigma_logistf)
-  return(res)
-}
 
 
 #' anova returning dataframe
@@ -369,7 +298,7 @@ get_complete_model_fit <- function(modelProteinF){
 #' mr <- model_analyse( x$data,
 #'  formula_randomPeptide,
 #'  subject_Id = x$config$table$hierarchy_keys_depth())
-#' stopifnot(nrow(get_complete_model_fit(mr$modelProtein)) == 6)
+#' stopifnot(nrow(get_complete_model_fit(mr$modelDF)) == 6)
 #'
 model_analyse <- function(
     pepIntensity,
@@ -420,12 +349,11 @@ model_analyse <- function(
   modelProteinF <- modelProteinF |> dplyr::mutate(nrcoef = purrr::map_int(!!sym(lmermodel), nrcoeff))
   modelProteinF <- modelProteinF |> dplyr::mutate(nrcoeff_not_NA = purrr::map_int(!!sym(lmermodel), nrcoeff_not_NA))
 
-  #return(list(modelProtein = modelProtein, modelProteinF = modelProteinF))
   modelProteinF <- modelProteinF |>
     dplyr::select_at(c(subject_Id,"isSingular", "df.residual","sigma" ,"nrcoef", "nrcoeff_not_NA") )
   modelProtein <- dplyr::left_join(modelProtein, modelProteinF)
 
-  return(list(modelProtein = modelProtein,
+  return(list(modelDF = modelProtein,
               modelName = modelName
   ))
 }
@@ -458,22 +386,25 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 
 # Generate linear functions -----
 
-.lmer4_coeff_matrix <- function(m){
+.model_coeff_matrix <- function(m){
   data <- NULL
-  if ("lm" %in% class(m)) {
-    data <- m$model
+  if ("lmerModLmerTest" %in% class(m)) {
+    data <- m@frame
+    coeffs <- coefficients(summary(m))[,'Estimate']
   }else{
     # for "lmerModLmerTest"
-    data <- m@frame
+    data <- m$model
+    coeffs <- coef(m)
   }
   interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
 
-  if ("rlm" %in% class(m)) {
-    coeffs <- coefficients(summary(m))[,'Value']
-  } else {
-    coeffs <- coefficients(summary(m))[,'Estimate']
-  }
+  #if ("rlm" %in% class(m)) {
+  #  coeffs <- coefficients(summary(m))[,'Value']
+  #} else {
+  #
+  #}
+
   inter <- unique(data$interaction)
   mm <- matrix(0, nrow = length(inter), ncol = length(coeffs))
   rownames(mm) <- inter
@@ -545,7 +476,7 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
 #' linfct_from_model(m)
 #'
 linfct_from_model <- function(m, as_list = TRUE){
-  cm <- .lmer4_coeff_matrix(m)
+  cm <- .model_coeff_matrix(m)
   cm_mm <- cm$mm[order(rownames(cm$mm)),]
 
   l_factors <- .coeff_weights_factor_levels(cm_mm)
@@ -769,12 +700,18 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #'
 my_contrast <- function(m,
                         linfct,
+                        strategy = NULL,
                         coef = coefficients(m),
                         Sigma.hat = vcov(m),
-                        confint = 0.95){
-
-  df <- df.residual(m)
-  sigma <- sigma(m)
+                        confint = 0.95
+){
+  if(is.null(strategy)){
+    df <- df.residual(m)
+    sigma <- sigma(m)
+  } else {
+    df <- strategy$df_residual(m)
+    sigma <- strategy$sigma(m)
+  }
 
   estimate <- linfct %*% t(t(coef))
 
@@ -823,12 +760,12 @@ my_contrast <- function(m,
 #' linfct <- linfct_from_model(m)$linfct_factors
 #' my_contrast_V1(m, linfct, confint = 0.95)
 #' my_contrast_V1(m, linfct, confint = 0.99)
-my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
+my_contrast_V1 <- function(incomplete, linfct, confint = 0.95, strategy = NULL){
   Sigma.hat <- vcov(incomplete)
   Sigma.hat[is.na(Sigma.hat)] <- 0
   coef <- coefficients(incomplete)
   coef[is.na(coef)] <- 0
-  res <- my_contrast(incomplete, linfct,
+  res <- my_contrast(incomplete, linfct,strategy,
                      coef = coef,
                      Sigma.hat = Sigma.hat,
                      confint = confint)
@@ -852,7 +789,7 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95){
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)
 #'
-my_contrast_V2 <- function(m, linfct,confint = 0.95){
+my_contrast_V2 <- function(m, linfct,confint = 0.95, strategy = NULL){
   Sigma.hat <- vcov(m)
 
   coef <- na.omit(coefficients(m))
@@ -870,6 +807,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
       stopifnot(all.equal(colnames(linfct_v_red),colnames(Sigma.hat_red)))
       stopifnot(all.equal(colnames(linfct_v_red),names(coef_red)))
       res[[i]] <- my_contrast(m,linfct_v_red,
+                              strategy,
                               coef = coef_red,
                               Sigma.hat = Sigma.hat_red, confint = confint)
     }else{
@@ -975,12 +913,11 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
 #' m <- get_complete_model_fit(modelSummary_A$modelDF)
 #'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
+#'
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         factor_contrasts,
 #'         subject_Id = "protein_Id",
 #'         contrastfun = prolfqua::my_contrast_V2)
-#'
-#'
 contrasts_linfct <- function(models,
                              linfct,
                              subject_Id = "protein_Id" ,
@@ -996,7 +933,9 @@ contrasts_linfct <- function(models,
   if ("matrix" %in% class(linfct)) {
     pb <- progress::progress_bar$new(total = length(models[[modelcol]]))
     for (i in seq_along(models[[modelcol]])) {
-      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct)
+      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]],
+                                             linfct = linfct)
+
       pb$tick()
     }
     interaction_model_matrix <- models
@@ -1006,7 +945,9 @@ contrasts_linfct <- function(models,
 
     for (i in seq_along(models[[modelcol]])) {
 
-      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]])
+      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]],
+                                             linfct = linfct[[i]]
+                                             )
       pb$tick()
     }
     interaction_model_matrix <- models

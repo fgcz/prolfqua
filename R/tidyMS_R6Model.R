@@ -124,7 +124,7 @@ build_model <- function(data,
                                    model_strategy,
                                    modelName = modelName,
                                    subject_Id = subject_Id)
-  return( Model$new(modelDF = modellingResult$modelProtein,
+  return( Model$new(modelDF = modellingResult$modelDF,
                     model_strategy = model_strategy,
                     modelName = modellingResult$modelName,
                     subject_Id = subject_Id))

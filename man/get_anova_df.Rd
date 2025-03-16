@@ -25,7 +25,9 @@ Other modelling:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
 \code{\link{Model}},
+\code{\link{ModelFirth}},
 \code{\link{build_model}()},
+\code{\link{build_model_logistf}()},
 \code{\link{contrasts_fisher_exact}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_p_values_pbeta}()},
@@ -51,7 +53,7 @@ Other modelling:
 \code{\link{sim_build_models_logistf}()},
 \code{\link{sim_make_model_lm}()},
 \code{\link{sim_make_model_lmer}()},
-\code{\link{strategy_lmer}()},
+\code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}

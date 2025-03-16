@@ -19,11 +19,10 @@ modelSummary_A <- sim_build_models_lm()
 m <- get_complete_model_fit(modelSummary_A$modelDF)
 
 factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
+
 factor_levelContrasts <- contrasts_linfct( m,
         factor_contrasts,
         subject_Id = "protein_Id",
         contrastfun = prolfqua::my_contrast_V2)
-
-
 }
 \keyword{internal}

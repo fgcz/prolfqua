@@ -13,6 +13,7 @@ LFQDataImp <- R6::R6Class(
     #' @description
     #' initialize
     #' @param lfq lfqdata
+    #' @param prefix datasetname
     initialize = function(lfq, prefix = "protein"){
       self$lfq = lfq$clone(deep = TRUE)
       self$prefix = prefix
