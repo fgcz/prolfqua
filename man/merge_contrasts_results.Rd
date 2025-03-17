@@ -19,6 +19,7 @@ Typically used with results of \code{\link{Contrasts}} and \code{\link{Contrasts
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

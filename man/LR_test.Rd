@@ -61,6 +61,7 @@ hist(tmp$likelihood_ratio_test.pValue)
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

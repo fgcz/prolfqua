@@ -4,14 +4,26 @@
 \alias{contrasts_linfct_firth}
 \title{compute contrasts}
 \usage{
-contrasts_linfct_firth(
-  models,
-  linfct,
-  subject_Id = "protein_Id",
-  contrastfun = prolfqua::my_contest
-)
+contrasts_linfct_firth(models, subject_Id = "protein_Id")
 }
 \description{
 compute contrasts
+}
+\examples{
+
+mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
+contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
+ContrastsFirth$undebug("get_linfct")
+ctrpep <- ContrastsFirth$new(mod3,contrasts)
+ctrpep$get_contrast_sides()
+
+xx <- ctrpep$get_linfct()
+models1 <- xx$models$models$models1
+undebug(contrasts_linfct_firth)
+tmp1 <- contrasts_linfct_firth(models1)
+models2 <- xx$models$models$models2
+tmp2 <- contrasts_linfct_firth(models2)
+stopifnot(all(dim(tmp1) > 10))
+stopifnot(all(dim(tmp2) > 10))
 }
 \keyword{internal}

@@ -65,6 +65,7 @@ dev.off()
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},

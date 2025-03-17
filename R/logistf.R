@@ -3,46 +3,46 @@
 #'
 #' @export
 #' @keywords internal
+#' @examples
+#'
+#' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
+#' contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
+#' ContrastsFirth$undebug("get_linfct")
+#' ctrpep <- ContrastsFirth$new(mod3,contrasts)
+#' ctrpep$get_contrast_sides()
+#'
+#' xx <- ctrpep$get_linfct()
+#' models1 <- xx$models$models$models1
+#' undebug(contrasts_linfct_firth)
+#' tmp1 <- contrasts_linfct_firth(models1)
+#' models2 <- xx$models$models$models2
+#' tmp2 <- contrasts_linfct_firth(models2)
+#' stopifnot(all(dim(tmp1) > 10))
+#' stopifnot(all(dim(tmp2) > 10))
 contrasts_linfct_firth <- function(models,
-                             linfct,
-                             subject_Id = "protein_Id" ,
-                             contrastfun = prolfqua::my_contest){
+                                   subject_Id = "protein_Id" ){
+  modelDF <- models$modelDF
   #computeGroupAverages
   message("contrasts_linfct_firth")
   modelcol <- "linear_model"
   # TODO (goes into calling code)
   # models <- models |> dplyr::filter(.data$exists_lmer == TRUE)
 
-  interaction_models <- vector(mode = "list", length = nrow(models))
+  interaction_models <- vector(mode = "list", length = nrow(modelDF))
+  pb <- progress::progress_bar$new(total = length(modelDF[[modelcol]]))
 
-  if ("matrix" %in% class(linfct)) {
-    pb <- progress::progress_bar$new(total = length(models[[modelcol]]))
-    for (i in seq_along(models[[modelcol]])) {
-      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]],
-                                             linfct = linfct)
+  for (i in seq_along(modelDF[[modelcol]])) {
 
-      pb$tick()
-    }
-    interaction_model_matrix <- models
-    interaction_model_matrix$contrast <- interaction_models
-  } else if (("list" %in% class(linfct)) && (length(linfct) == nrow(models))) {
-    pb <- progress::progress_bar$new(total = length(models[[modelcol]]))
-
-    for (i in seq_along(models[[modelcol]])) {
-
-      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]],
-                                             linfct = linfct[[i]]
-      )
-      pb$tick()
-    }
-    interaction_model_matrix <- models
-    interaction_model_matrix$contrast <- interaction_models
-  } else {
-    stop("linct must be either a matrix or a list of length == nrow models")
+    interaction_models[[i]] <- prolfqua::my_contrast(
+      modelDF[[modelcol]][[i]],
+      linfct = modelDF$linfct[[i]],
+      strategy = models$strategy)
+    pb$tick()
   }
 
-  #interaction_model_matrix <- models |>
-  #  dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
+  interaction_model_matrix <- modelDF
+  interaction_model_matrix$contrast <- interaction_models
+
 
   mclass <- function(x){
     class(x)[1]
@@ -57,7 +57,7 @@ contrasts_linfct_firth <- function(models,
     tidyr::unnest_legacy()
 
   # take sigma and df from somewhere else.
-  modelInfos <- models |>
+  modelInfos <- modelDF |>
     dplyr::select_at(c(subject_Id,
                        "isSingular",
                        "sigma.model" = "sigma",
@@ -78,7 +78,7 @@ contrasts_linfct_firth <- function(models,
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 #' tmp <- LFQData$new(istar$data, istar$config)
 #' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
-#' xx <- build_model_logistf(tmp, formula)
+#' xx2 <- build_model_logistf(tmp, formula)
 #'
 #' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
@@ -87,22 +87,20 @@ contrasts_linfct_firth <- function(models,
 #' xx <- build_model_logistf(tmp, formula)
 #'
 #'
+#'
 #' m <- xx$models$models1$modelDF$linear_model[[1]]
 #' linfct <- linfct_from_model(m)
 #' linfct_all_possible_contrasts(linfct$linfct_factors)
-#' prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 #' linfct <- linfct_factors_contrasts(m)
 #'
-#' #contrasts_linfct_firth(xx$models$models1$modelDF[1,, drop=FALSE],linfct)
+#' m <- xx2$models$models2$modelDF$linear_model[[1]]
+#' linfct <- linfct_from_model(m)
+#' x <- linfct_all_possible_contrasts(linfct$linfct_factors)
+#' x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+#' linfct <- linfct_factors_contrasts(m)
 #'
-#' contrasts <- c(AvsB = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
-#' prolfqua:::.linfct(m, contrasts)
-#' # Contrasts$debug("get_contrasts")
 #'
-#' #xx <- Contrasts$new(xx, contrasts)
-#' #xx$get_contrast_sides()
-#' #xx$get_linfct()
-#' #xx$get_contrasts()
 #'
 build_model_logistf <- function(data,
                                 formula){
@@ -153,25 +151,47 @@ build_model_logistf <- function(data,
 #' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #' modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
 #'
+#' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
+#' modf <- sim_build_models_logistf(model = "factors", weight_missing = 1, peptide=TRUE)
+
 sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors", "interaction"),
                                      Nprot = 10,
                                      with_missing = TRUE,
-                                     weight_missing = 1) {
+                                     weight_missing = 1,
+                                     peptide = FALSE) {
   model <- match.arg(model)
-  if (model != "parallel3") {
-    istar <- prolfqua::sim_lfq_data_2Factor_config(
-      Nprot = Nprot,
-      with_missing = with_missing,
-      weight_missing = weight_missing)
-    istar$data <- encode_bin_resp(istar$data, istar$config)
+  if(!peptide){
+    if (model != "parallel3") {
+      istar <- prolfqua::sim_lfq_data_2Factor_config(
+        Nprot = Nprot,
+        with_missing = with_missing,
+        weight_missing = weight_missing)
+      istar$data <- encode_bin_resp(istar$data, istar$config)
+    } else {
+      istar <- prolfqua::sim_lfq_data_protein_config(
+        Nprot = Nprot,
+        with_missing = with_missing,
+        weight_missing = weight_missing)
+      istar$data <- encode_bin_resp(istar$data, istar$config)
+    }
+    istar <- prolfqua::LFQData$new(istar$data,istar$config)
+
   } else {
-    istar <- prolfqua::sim_lfq_data_protein_config(
-      Nprot = Nprot,
-      with_missing = with_missing,
-      weight_missing = weight_missing)
-    istar$data <- encode_bin_resp(istar$data, istar$config)
+    if (model != "parallel3") {
+      istar <- prolfqua::sim_lfq_data_2Factor_config(
+        Nprot = Nprot,
+        with_missing = with_missing,
+        weight_missing = weight_missing, PEPTIDE = TRUE)
+      istar$data <- encode_bin_resp(istar$data, istar$config)
+    } else {
+      istar <- prolfqua::sim_lfq_data_peptide_config(
+        Nprot = Nprot,
+        with_missing = with_missing,
+        weight_missing = weight_missing)
+      istar$data <- encode_bin_resp(istar$data, istar$config)
+    }
+    istar <- prolfqua::LFQData$new(istar$data,istar$config)
   }
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
 
   model <- if (model == "factors") {
     "~ Treatment + Background"
@@ -279,29 +299,5 @@ strategy_logistf <- function(
               df_residual = df_residual_logistf,
               sigma = sigma_logistf)
   return(res)
-}
-
-#'
-#'
-#'
-.logistf_coeff_matrix <- function(m){
-  data <- NULL
-  data <- m$model
-  interactionColumns <- intersect(attributes(terms(m))$term.labels,colnames(data))
-  data <- make_interaction_column(data, interactionColumns, sep = ":")
-  coeffs <- coef(m)
-  inter <- unique(data$interaction)
-  mm <- matrix(0, nrow = length(inter), ncol = length(coeffs))
-  rownames(mm) <- inter
-  colnames(mm) <- names(coeffs)
-  mm[,1] <- 1
-  coefi <- coeffs[-1]
-  for (i in seq_along(coefi)) {
-    # the grep is needed to extract coefficients of interaction terms belonging to a factor
-    # I am using wor boundaries "\\b" to allow for factor levels that are substrings.
-    positionIDX <- grep(paste0("\\b",names(coefi)[i],"\\b"), inter)
-    mm[positionIDX, i + 1 ] <- 1
-  }
-  return(list(mm = mm, coeffs = coeffs))
 }
 

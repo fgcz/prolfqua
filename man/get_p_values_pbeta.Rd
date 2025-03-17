@@ -30,6 +30,7 @@ testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10), 
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

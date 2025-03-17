@@ -789,7 +789,7 @@ my_contrast_V1 <- function(incomplete, linfct, confint = 0.95, strategy = NULL){
 #' my_contrast_V2(m, linfct, confint = 0.95)
 #' my_contrast_V2(m, linfct, confint = 0.99)
 #'
-my_contrast_V2 <- function(m, linfct,confint = 0.95, strategy = NULL){
+my_contrast_V2 <- function(m, linfct,confint = 0.95){
   Sigma.hat <- vcov(m)
 
   coef <- na.omit(coefficients(m))
@@ -807,7 +807,6 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95, strategy = NULL){
       stopifnot(all.equal(colnames(linfct_v_red),colnames(Sigma.hat_red)))
       stopifnot(all.equal(colnames(linfct_v_red),names(coef_red)))
       res[[i]] <- my_contrast(m,linfct_v_red,
-                              strategy,
                               coef = coef_red,
                               Sigma.hat = Sigma.hat_red, confint = confint)
     }else{

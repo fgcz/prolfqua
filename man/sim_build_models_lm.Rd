@@ -26,6 +26,7 @@ modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

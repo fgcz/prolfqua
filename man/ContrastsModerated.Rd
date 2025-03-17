@@ -58,6 +58,7 @@ cp$ma_plot()
 
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsProDA}},

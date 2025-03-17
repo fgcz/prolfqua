@@ -35,6 +35,7 @@ stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

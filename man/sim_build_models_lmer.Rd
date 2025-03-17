@@ -29,6 +29,7 @@ stopifnot(sum(modf$modelDF$exists_lmer) == 6)
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

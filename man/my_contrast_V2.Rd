@@ -4,7 +4,7 @@
 \alias{my_contrast_V2}
 \title{handles incomplete models}
 \usage{
-my_contrast_V2(m, linfct, confint = 0.95, strategy = NULL)
+my_contrast_V2(m, linfct, confint = 0.95)
 }
 \arguments{
 \item{m}{linear model generated using lm}
@@ -26,6 +26,7 @@ my_contrast_V2(m, linfct, confint = 0.99)
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

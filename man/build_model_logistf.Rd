@@ -14,7 +14,7 @@ istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, 
 istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$config$table$bin_resp , "~ group_")
-xx <- build_model_logistf(tmp, formula)
+xx2 <- build_model_logistf(tmp, formula)
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
@@ -23,27 +23,26 @@ formula <- paste0(tmp$config$table$bin_resp , "~ group_")
 xx <- build_model_logistf(tmp, formula)
 
 
+
 m <- xx$models$models1$modelDF$linear_model[[1]]
 linfct <- linfct_from_model(m)
 linfct_all_possible_contrasts(linfct$linfct_factors)
-prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 linfct <- linfct_factors_contrasts(m)
 
-#contrasts_linfct_firth(xx$models$models1$modelDF[1,, drop=FALSE],linfct)
+m <- xx2$models$models2$modelDF$linear_model[[1]]
+linfct <- linfct_from_model(m)
+x <- linfct_all_possible_contrasts(linfct$linfct_factors)
+x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
+linfct <- linfct_factors_contrasts(m)
 
-contrasts <- c(AvsB = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
-prolfqua:::.linfct(m, contrasts)
-# Contrasts$debug("get_contrasts")
 
-#xx <- Contrasts$new(xx, contrasts)
-#xx$get_contrast_sides()
-#xx$get_linfct()
-#xx$get_contrasts()
 
 }
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

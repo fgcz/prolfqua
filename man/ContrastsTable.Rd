@@ -34,6 +34,7 @@ stopifnot(ncol(xcx$to_wide()) == 10)
 
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

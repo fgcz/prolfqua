@@ -36,6 +36,7 @@ mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

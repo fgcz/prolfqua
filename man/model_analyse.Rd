@@ -28,6 +28,7 @@ stopifnot(nrow(get_complete_model_fit(mr$modelDF)) == 6)
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},

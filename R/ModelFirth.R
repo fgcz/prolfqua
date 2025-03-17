@@ -37,7 +37,7 @@
 #' mod$write_coef_figures(tempdir())
 
 ModelFirth <- R6::R6Class(
-  "Model",
+  "ModelFirth",
   inherit = ModelInterface,
   public = list(
     #' @field modelDF data.frame with modelling data and model.

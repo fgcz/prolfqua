@@ -44,6 +44,7 @@ mod$write_coef_figures(tempdir())
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
@@ -86,7 +87,7 @@ Other modelling:
 }
 \concept{modelling}
 \section{Super class}{
-\code{\link[prolfqua:ModelInterface]{prolfqua::ModelInterface}} -> \code{Model}
+\code{\link[prolfqua:ModelInterface]{prolfqua::ModelInterface}} -> \code{ModelFirth}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -117,22 +118,22 @@ Other modelling:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-Model-new}{\code{ModelFirth$new()}}
-\item \href{#method-Model-get_coefficients}{\code{ModelFirth$get_coefficients()}}
-\item \href{#method-Model-get_anova}{\code{ModelFirth$get_anova()}}
-\item \href{#method-Model-write_coefficients}{\code{ModelFirth$write_coefficients()}}
-\item \href{#method-Model-coef_histogram}{\code{ModelFirth$coef_histogram()}}
-\item \href{#method-Model-coef_volcano}{\code{ModelFirth$coef_volcano()}}
-\item \href{#method-Model-coef_pairs}{\code{ModelFirth$coef_pairs()}}
-\item \href{#method-Model-anova_histogram}{\code{ModelFirth$anova_histogram()}}
-\item \href{#method-Model-write_anova_figures}{\code{ModelFirth$write_anova_figures()}}
-\item \href{#method-Model-write_coef_figures}{\code{ModelFirth$write_coef_figures()}}
-\item \href{#method-Model-clone}{\code{ModelFirth$clone()}}
+\item \href{#method-ModelFirth-new}{\code{ModelFirth$new()}}
+\item \href{#method-ModelFirth-get_coefficients}{\code{ModelFirth$get_coefficients()}}
+\item \href{#method-ModelFirth-get_anova}{\code{ModelFirth$get_anova()}}
+\item \href{#method-ModelFirth-write_coefficients}{\code{ModelFirth$write_coefficients()}}
+\item \href{#method-ModelFirth-coef_histogram}{\code{ModelFirth$coef_histogram()}}
+\item \href{#method-ModelFirth-coef_volcano}{\code{ModelFirth$coef_volcano()}}
+\item \href{#method-ModelFirth-coef_pairs}{\code{ModelFirth$coef_pairs()}}
+\item \href{#method-ModelFirth-anova_histogram}{\code{ModelFirth$anova_histogram()}}
+\item \href{#method-ModelFirth-write_anova_figures}{\code{ModelFirth$write_anova_figures()}}
+\item \href{#method-ModelFirth-write_coef_figures}{\code{ModelFirth$write_coef_figures()}}
+\item \href{#method-ModelFirth-clone}{\code{ModelFirth$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-new}{}}}
+\if{html}{\out{<a id="method-ModelFirth-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
@@ -161,8 +162,8 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-get_coefficients"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-get_coefficients}{}}}
+\if{html}{\out{<a id="method-ModelFirth-get_coefficients"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-get_coefficients}{}}}
 \subsection{Method \code{get_coefficients()}}{
 return model coefficient table
 \subsection{Usage}{
@@ -171,8 +172,8 @@ return model coefficient table
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-get_anova"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-get_anova}{}}}
+\if{html}{\out{<a id="method-ModelFirth-get_anova"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-get_anova}{}}}
 \subsection{Method \code{get_anova()}}{
 return anova table
 \subsection{Usage}{
@@ -181,8 +182,8 @@ return anova table
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-write_coefficients"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-write_coefficients}{}}}
+\if{html}{\out{<a id="method-ModelFirth-write_coefficients"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-write_coefficients}{}}}
 \subsection{Method \code{write_coefficients()}}{
 writes model coefficients to file
 \subsection{Usage}{
@@ -200,8 +201,8 @@ writes model coefficients to file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-coef_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-coef_histogram}{}}}
+\if{html}{\out{<a id="method-ModelFirth-coef_histogram"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-coef_histogram}{}}}
 \subsection{Method \code{coef_histogram()}}{
 histogram of model coefficient
 \subsection{Usage}{
@@ -210,8 +211,8 @@ histogram of model coefficient
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-coef_volcano"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-coef_volcano}{}}}
+\if{html}{\out{<a id="method-ModelFirth-coef_volcano"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-coef_volcano}{}}}
 \subsection{Method \code{coef_volcano()}}{
 volcano plot of non intercept coefficients
 \subsection{Usage}{
@@ -220,8 +221,8 @@ volcano plot of non intercept coefficients
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-coef_pairs"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-coef_pairs}{}}}
+\if{html}{\out{<a id="method-ModelFirth-coef_pairs"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-coef_pairs}{}}}
 \subsection{Method \code{coef_pairs()}}{
 pairs-plot of coefficients
 \subsection{Usage}{
@@ -230,8 +231,8 @@ pairs-plot of coefficients
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-anova_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-anova_histogram}{}}}
+\if{html}{\out{<a id="method-ModelFirth-anova_histogram"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-anova_histogram}{}}}
 \subsection{Method \code{anova_histogram()}}{
 histogram of ANOVA results
 \subsection{Usage}{
@@ -247,8 +248,8 @@ histogram of ANOVA results
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-write_anova_figures"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-write_anova_figures}{}}}
+\if{html}{\out{<a id="method-ModelFirth-write_anova_figures"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-write_anova_figures}{}}}
 \subsection{Method \code{write_anova_figures()}}{
 write figures related to ANOVA into pdf file
 \subsection{Usage}{
@@ -268,8 +269,8 @@ write figures related to ANOVA into pdf file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-write_coef_figures"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-write_coef_figures}{}}}
+\if{html}{\out{<a id="method-ModelFirth-write_coef_figures"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-write_coef_figures}{}}}
 \subsection{Method \code{write_coef_figures()}}{
 write figures related to Coefficients into pdf file
 \subsection{Usage}{
@@ -289,8 +290,8 @@ write figures related to Coefficients into pdf file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-clone}{}}}
+\if{html}{\out{<a id="method-ModelFirth-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

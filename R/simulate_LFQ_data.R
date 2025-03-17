@@ -241,7 +241,7 @@ sim_lfq_data_protein_config <- function(Nprot = 10,
 #' @param description Nprot number of proteins
 #' @param with_missing add missing values, default TRUE
 #' @param seed seed for reproducibility, if NULL no seed is set.
-#' @param TWO use two factors for modellin
+#' @param TWO use two factors for modelling
 #' @export
 #' @examples
 #' x <- sim_lfq_data_2Factor_config(PEPTIDE= FALSE)
@@ -252,7 +252,9 @@ sim_lfq_data_protein_config <- function(Nprot = 10,
 #'
 #' head(x$data)
 #' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = TRUE)
-#' x$data$Group |> table()
+#' names(x)
+#' nrow(x$data) > 10
+#' x$data$Treatment |> table()
 sim_lfq_data_2Factor_config <- function(Nprot = 10,
                                         with_missing = TRUE,
                                         weight_missing = 0.2,

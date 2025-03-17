@@ -22,6 +22,7 @@ pivot model contrasts matrix to wide format produced by `contrasts_linfct` and .
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
+\code{\link{ContrastsFirth}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
