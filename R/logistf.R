@@ -218,7 +218,7 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
 #' @param report_columns columns to report
 #' @family modelling
 #' @examples
-#' library(tidyverse)
+#'
 #' tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular

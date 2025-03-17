@@ -70,7 +70,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 The strategy contains functions to fit the model but also compute the contrasts etc.
 }
 \examples{
-library(tidyverse)
+
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 tmp$isSingular
