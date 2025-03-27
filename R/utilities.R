@@ -637,6 +637,102 @@ volcano_plotly <- function(.data,
 }
 
 
+.scatter <- function(data,
+                    contrast = NULL,
+                    dx = "diff.protein",
+                    dy = "diff.site",
+                    x_annot = min(data[[dx]], na.rm = TRUE),
+                    y_annot = min(data[[dy]], na.rm = TRUE),
+                    proteinID = "Prey",
+                    color = "modelName.site",
+                    palette = NULL,
+                    title_size = 25
+){
+  p <- plotly::plot_ly(data,
+                       x = as.formula(paste0("~",dx)),
+                       y = as.formula(paste0("~", dy)),
+                       type = "scatter",
+                       mode = "markers" ,
+                       color = as.formula(paste0("~", color)),
+                       colors = palette ,
+                       text = as.formula(paste0("~", proteinID)) ,
+                       showlegend = FALSE)
+
+  p <- p |>
+    plotly::add_annotations(contrast,
+                            x = x_annot,
+                            y = y_annot,
+                            showarrow = FALSE,
+                            xanchor = "left",
+                            font = list(size = title_size))
+  return(p)
+}
+
+
+#' volcano plotly
+#' @param .data data frame
+#' @param effect effect size x-axis
+#' @param significance significance
+#' @param proteinID column with protein ids
+#' @param xintercept vertical abline at x
+#' @param yintercept horizontal abline at y
+#' @export
+#' @examples
+#'
+#' data <- data.frame(diff.protein = c(-1,0,1,2,8), diff.site = c(0.01,1, 0.01, 0.005,0),
+#' condition = rep("A",5), protein_Id = LETTERS[1:5], modelName = c("A","A","B","A","A"))
+#'
+#' dataB <- data.frame(diff.protein = c(-1,0,1,2,8), diff.site = c(0.01,1, 0.01, 0.005,0),
+#' condition = rep("B",5), protein_Id = LETTERS[1:5],modelName = c("A","A","B","B","B"))
+#' data <- dplyr::bind_rows(data, dataB)
+#' bc <- scatter_plotly(data, palette = c(A = "black" , B = "red"))
+#' bc[[1]]
+#' bc[[2]]
+#' bc |> plotly::subplot()
+#'
+scatter_plotly <- function(.data,
+                           dx = "diff.protein",
+                           dy = "diff.site",
+                           contrast = "condition",
+                           proteinID = "protein_Id",
+                           color = "modelName",
+                           palette = NULL,
+                           title_size = 25,
+                           group = "BB"
+)
+{
+
+  xx <- .data |>
+    dplyr::group_by(!!dplyr::sym(contrast)) |> tidyr::nest()
+
+  makeshared <- function(x, proteinID = "Prey") {
+    crosstalk::SharedData$new(x, as.formula( paste0("~", proteinID) ) ,
+                              group = group)
+  }
+  xx <- dplyr::mutate(
+    xx,
+    shared_data = purrr::map(
+      data,
+      makeshared, proteinID = proteinID  ))
+
+  x_annot = min(.data[[dx]], na.rm = TRUE)
+  y_annot = min(.data[[dy]], na.rm = TRUE)
+
+  xd <- purrr::map2( xx$shared_data,
+                     xx[[contrast]],
+                     .scatter, dx = dx,
+                     dy = dy,
+                     x_annot = x_annot,
+                     y_annot = y_annot,
+                     proteinID = proteinID,
+                     color = color,
+                     palette = palette,
+                     title_size = title_size
+  )
+  return(xd)
+}
+
+
 
 #' load data from prolfqua
 #' @param datastr name of dataset

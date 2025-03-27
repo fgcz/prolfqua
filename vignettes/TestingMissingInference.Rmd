@@ -1,17 +1,25 @@
 ---
-title: "Impute"
+title: "Impute data using limit of detection (LOD)"
 output: html_document
 date: "2024-04-22"
 editor_options: 
   chunk_output_type: console
+vignette: >
+  %\VignetteIndexEntry{Impute data using limit of detection (LOD)} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+This vignette contains experimental code.
 
-alternatively use
+# Example using prolfqua::MissingHelpers class
+
 
 ```{r lookAtSummarizeStats}
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
@@ -32,9 +40,7 @@ points(imputed2$estimate, -log10(imputed2$p.value), col = 2, pch = "x")
 ```
 
 
-
-
-## modelling with linear models
+## Modelling with linear models
 
 
 Model with missing data
@@ -55,7 +61,6 @@ mod <- prolfqua::build_model(
 mod$modelDF
 mod$modelDF$nrcoeff_not_NA |> table()
 
-
 mod$modelDF$isSingular |> table()
 mod$modelDF |> nrow()
 mod$get_anova()
@@ -70,13 +75,16 @@ nr <- sapply(xx, nrow)
 nr |> table()
 nr <- sapply(xx, ncol)
 nr |> table()
+
 sum_matrix <- Reduce(`+`, xx)
 sum_matrix/length(xx)
 
 
 ```
 
-Model with lod imputation
+
+
+# Model with lod imputation
 
 ```{r lmod2}
 loddata <- dd$data

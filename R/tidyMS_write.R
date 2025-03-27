@@ -26,7 +26,6 @@ lfq_write_table <- function(x, path, name, format = c("xlsx","csv","html"))
     message("writing xlsx")
     path_xlsx <- file.path(path,paste0(name,".xlsx"))
     file_paths$xlsx <- path_xlsx
-
     writexl::write_xlsx(x, path = path_xlsx)
   }
   if ("html" %in% lfq_write_format)

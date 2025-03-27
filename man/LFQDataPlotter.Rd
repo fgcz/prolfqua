@@ -19,7 +19,7 @@ lfqdata <- LFQData$new(
  istar$data,
  istar$config)
 #LFQDataPlotter$debug("boxplots")
-# LFQDataPlotter$debug("pairs_smooth")
+# LFQDataPlotter$debug("pca")
 lfqplotter <- lfqdata$get_Plotter()
 
 stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
@@ -197,7 +197,7 @@ PCA plot
 
 A PCA is applied and the first and second principal component are shown.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, nipals = TRUE, nudge = 0.1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, impute = TRUE, nudge = 0.1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -207,9 +207,9 @@ A PCA is applied and the first and second principal component are shown.
 
 \item{\code{add_txt}}{show sample names}
 
-\item{\code{nipals}}{default TRUE (use nipals if data is missing else na.omit)}
-
 \item{\code{nudge}}{default 0.1 nudge point lables}
+
+\item{\code{nipals}}{default TRUE (use nipals if data is missing else na.omit)}
 }
 \if{html}{\out{</div>}}
 }

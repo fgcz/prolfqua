@@ -570,12 +570,12 @@ plot_NA_heatmap <- function(data,
 #' @examples
 #'
 #'
-#' istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 30)
+#' istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
 #' config <- istar$config
 #' analysis <- istar$data
-#' tmp <- plot_pca(analysis, config, add_txt= TRUE, nipals = FALSE)
+#' tmp <- plot_pca(analysis, config, add_txt= TRUE, impute = FALSE)
 #' print(tmp)
-#' tmp <- plot_pca(analysis, config, add_txt= TRUE, nipals=TRUE, nudge = 0.01)
+#' tmp <- plot_pca(analysis, config, add_txt= TRUE, impute=TRUE, nudge = 0.01)
 #' print(tmp)
 #'
 #' stopifnot("ggplot" %in% class(tmp) )
@@ -588,31 +588,32 @@ plot_NA_heatmap <- function(data,
 #' print(tmp)
 #' #stopifnot(is.null(tmp))
 #'
-plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE, nipals = TRUE, nudge = 0.1){
+plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE, impute = TRUE, nudge = 0.1){
   stopifnot(length(PC) == 2)
 
   wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
   has_missing <- any(is.na(wide$data))
 
-  if (has_missing && nipals) {
+  if (has_missing && impute) {
     data_matrix <- t(wide$data)
-    ncomp <- min(nrow(data_matrix) - 1, ncol(data_matrix))
-    nipals_result <- nipals::nipals(data_matrix, ncomp = ncomp, center = TRUE, scale = FALSE)
-    order_nip <- order(nipals_result$eig, decreasing = TRUE )
-    xx <- as_tibble(nipals_result$scores[,order_nip], rownames = config$table$sampleName)
-    eig <- nipals_result$eig[order_nip]
-    variance_explained <- eig / sum(eig) * 100
+    ncomp <- min(min(nrow(data_matrix) - 1, ncol(data_matrix)))
+    xx <- na.omit(as.numeric(data_matrix[,apply(data_matrix, 2, function(x){sum(!is.na(x))}) <= 2]))
+    if(length(xx) == 0){
+      xx <- as.numeric(data_matrix)
+      xx <- sort(xx)[1:(length(xx)/10)]
+    }
+    ff <- data_matrix
+    ff[is.na(ff)] <- sample(xx, sum(is.na(ff)), replace = TRUE)
   } else {
     ff <- na.omit(wide$data)
     warning("removing rows with missing values from the data; before :" ,
             nrow(wide$data), " afterwards :", nrow(ff))
-
     ff <- t(ff)
-    pca_result <- prcomp(ff)
-    xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
-
-    variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
   }
+  pca_result <- prcomp(ff)
+  xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
+  variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
+
   if (max(PC) > (ncol(xx) - 1)) {
     warning("nr of PCs: ", ncol(xx), "\n")
     return(NULL)

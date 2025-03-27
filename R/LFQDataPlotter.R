@@ -12,7 +12,7 @@
 #'  istar$data,
 #'  istar$config)
 #' #LFQDataPlotter$debug("boxplots")
-#' # LFQDataPlotter$debug("pairs_smooth")
+#' # LFQDataPlotter$debug("pca")
 #' lfqplotter <- lfqdata$get_Plotter()
 #'
 #' stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
@@ -121,8 +121,11 @@ LFQDataPlotter <- R6::R6Class(
     #' @param nipals default TRUE (use nipals if data is missing else na.omit)
     #' @param nudge default 0.1 nudge point lables
     #' @return ggplot
-    pca = function(PC = c(1,2), add_txt = TRUE, nipals = TRUE, nudge = 0.1){
-      fig <- prolfqua::plot_pca(self$lfq$data, self$lfq$config, PC = PC,add_txt = add_txt, nipals = nipals, nudge = nudge)
+    pca = function(PC = c(1,2), add_txt = TRUE, impute = TRUE, nudge = 0.1){
+      fig <- prolfqua::plot_pca(self$lfq$data,
+                                self$lfq$config,
+                                PC = PC,
+                                add_txt = add_txt, impute = impute, nudge = nudge)
       return(fig)
     },
     #' @description
