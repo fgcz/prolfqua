@@ -174,7 +174,7 @@ Example QC and sample size report
 
 # How to cite?
 
-Please do reference the [prolfqua article at Journal of Proteome Research](https://pubs.acs.org/doi/full/10.1021)
+Please do reference the [prolfqua article at Journal of Proteome Research](https://pubmed.ncbi.nlm.nih.gov/36939687/)
 
 ```
 
