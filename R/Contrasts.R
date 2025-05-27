@@ -1,17 +1,14 @@
-#'
-#'
-#'
-.linfct <- function(model, contrast, avg = TRUE){
+.linfct <- function(model, contrast, avg = TRUE) {
   linfct <- linfct_from_model(model, as_list = FALSE)
   linfct <- unique(linfct) # needed for single factor models
   if (avg) {
-    namtmp <- paste0("avg_",names(contrast))
+    namtmp <- paste0("avg_", names(contrast))
     cntr_avg <- paste0("(", gsub(" - ", " + ", contrast), ")/2")
     names(cntr_avg) <- namtmp
     contrast <- c(contrast, cntr_avg)
   }
   linfct_A <- linfct_matrix_contrasts(linfct, contrast)
-  return( linfct_A )
+  return(linfct_A)
 }
 
 # Contrasts -----
@@ -25,49 +22,50 @@
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #'
 #' modelFunction <-
-#' strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
+#'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
 #'
 #' config <- istar$config
 #' config$table$hierarchy_keys_depth()
 #'
 #' mod <- build_model(
-#'  istar$data,
-#'  modelFunction,
-#'  subject_Id = config$table$hierarchy_keys_depth()
-#'  )
+#'   istar$data,
+#'   modelFunction,
+#'   subject_Id = config$table$hierarchy_keys_depth()
+#' )
 #'
 #' ref_lfc <- data.frame(
-#' `(Intercept)` = c(0, 0, 0),
-#' group_B = c(0, 1, 0),
-#' group_Ctrl = c(-1, -1, 1),
-#' row.names = c("groupA_vs_Ctrl", "dil.e_vs_b", "dil.ctrl_vs_b")
+#'   `(Intercept)` = c(0, 0, 0),
+#'   group_B = c(0, 1, 0),
+#'   group_Ctrl = c(-1, -1, 1),
+#'   row.names = c("groupA_vs_Ctrl", "dil.e_vs_b", "dil.ctrl_vs_b")
 #' )
 #' prolfqua::model_summary(mod)
-#' Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
-#'     "dil.e_vs_b" = "group_B - group_Ctrl",
-#'     "dil.ctrl_vs_b" = "group_Ctrl - group_A"
-#'      )
+#' Contr <- c(
+#'   "groupA_vs_Ctrl" = "group_A - group_Ctrl",
+#'   "dil.e_vs_b" = "group_B - group_Ctrl",
+#'   "dil.ctrl_vs_b" = "group_Ctrl - group_A"
+#' )
 #' # prolfqua::Contrasts$debug("get_linfct")
 #' # debug(prolfqua:::.linfct)
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' y <- contrastX$get_linfct(avg = FALSE)
 #' stopifnot(all(ref_lfc == y))
-#' t <- contrastX$get_linfct(global=FALSE)
+#' t <- contrastX$get_linfct(global = FALSE)
 #'
 #' x <- contrastX$get_contrasts()
-#' stopifnot(all(x$p.value < 1 & x$p.value >0))
-#' stopifnot(all(x$avgAbd >0))
-#' stopifnot(all(x$FDR >0 & x$FDR < 1))
+#' stopifnot(all(x$p.value < 1 & x$p.value > 0))
+#' stopifnot(all(x$avgAbd > 0))
+#' stopifnot(all(x$FDR > 0 & x$FDR < 1))
 #'
 #' x <- contrastX$get_contrast_sides()
 #' xd <- contrastX$column_description()
 #' modelFunction <-
-#' strategy_lm("abundance  ~ group_")
+#'   strategy_lm("abundance  ~ group_")
 #' mod <- build_model(
-#'  istar$data,
-#'  modelFunction,
-#'  subject_Id = config$table$hierarchy_keys_depth()
-#'  )
+#'   istar$data,
+#'   modelFunction,
+#'   subject_Id = config$table$hierarchy_keys_depth()
+#' )
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' y <- contrastX$get_linfct(avg = FALSE)
 #' stopifnot(all(ref_lfc == y))
@@ -106,23 +104,23 @@ Contrasts <- R6::R6Class(
                           contrasts,
                           p.adjust = prolfqua::adjust_p_values,
                           global = FALSE,
-                          modelName = "WaldTest"
-    ){
-      self$models = model$modelDF |> dplyr::filter(exists_lmer == TRUE)
-      self$contrasts = contrasts
-      self$contrastfun = model$model_strategy$contrast_fun
-      self$modelName =  modelName
-      self$subject_Id = model$subject_Id
-      self$p.adjust = p.adjust
-      self$global = global
+                          modelName = "WaldTest") {
+      self$models <- model$modelDF |> dplyr::filter(exists_lmer == TRUE)
+      self$contrasts <- contrasts
+      self$contrastfun <- model$model_strategy$contrast_fun
+      self$modelName <- modelName
+      self$subject_Id <- model$subject_Id
+      self$p.adjust <- p.adjust
+      self$global <- global
     },
     #' @description
     #' get both sides of contrasts
-    get_contrast_sides = function(){
+    get_contrast_sides = function() {
       # extract contrast sides
-      tt <- self$contrasts[grep("-",self$contrasts)]
-      tt <- tibble(contrast = names(tt) , rhs = tt)
-      tt <- tt |> mutate(rhs = gsub("[` ]","",rhs)) |>
+      tt <- self$contrasts[grep("-", self$contrasts)]
+      tt <- tibble(contrast = names(tt), rhs = tt)
+      tt <- tt |>
+        mutate(rhs = gsub("[` ]", "", rhs)) |>
         tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
       return(tt)
     },
@@ -130,27 +128,29 @@ Contrasts <- R6::R6Class(
     #' get linear functions from contrasts
     #' @param global logical TRUE - get the a linear functions for all models, FALSE - linear function for each model
     #' @param avg logical TRUE - get also linfct for averages
-    get_linfct = function(global = TRUE, avg = TRUE){
+    get_linfct = function(global = TRUE, avg = TRUE) {
       if (global) {
-
         model <- get_complete_model_fit(self$models)$linear_model[[1]]
-        res <- .linfct( model, self$contrasts, avg = avg )
-        return( res )
-
-      }else{
+        res <- .linfct(model, self$contrasts, avg = avg)
+        return(res)
+      } else {
         res <- vector(mode = "list", nrow(self$models))
         pb <- progress::progress_bar$new(total = length(self$models$linear_model))
 
         model <- get_complete_model_fit(self$models)$linear_model[[1]]
-        compmodel <- .linfct( model, self$contrasts, avg = avg )
+        compmodel <- .linfct(model, self$contrasts, avg = avg)
 
         mcoef <- max(self$models$nrcoeff_not_NA)
 
         for (i in seq_along(self$models$linear_model)) {
           pb$tick()
-          res[[i]] <-  if (self$models$nrcoeff_not_NA[[i]] == mcoef) { compmodel } else {
+          res[[i]] <- if (self$models$nrcoeff_not_NA[[i]] == mcoef) {
+            compmodel
+          } else {
             .linfct(self$models$linear_model[[i]],
-                    contrast = self$contrasts, avg = avg)}
+              contrast = self$contrasts, avg = avg
+            )
+          }
         }
         return(res)
       }
@@ -160,19 +160,19 @@ Contrasts <- R6::R6Class(
     #' @param all should all columns be returned (default FALSE)
     #' @return data.frame with contrasts
     #'
-    get_contrasts = function(all = FALSE){
-
-      if (is.null(self$contrast_result) ) {
+    get_contrasts = function(all = FALSE) {
+      if (is.null(self$contrast_result)) {
         message("determine linear functions:")
         linfct <- self$get_linfct(global = self$global)
-        #contrast_sides <- self$get_contrast_sides()
+        # contrast_sides <- self$get_contrast_sides()
         message("get_contrasts -> contrasts_linfct")
         # TODO (goes into calling code)
         contrast_result <- contrasts_linfct(
           self$models,
           linfct,
           subject_Id = self$subject_Id,
-          contrastfun = self$contrastfun )
+          contrastfun = self$contrastfun
+        )
         contrast_result <- ungroup(contrast_result)
 
         contrast_result <- dplyr::rename(contrast_result, contrast = lhs, diff = estimate)
@@ -182,32 +182,33 @@ Contrasts <- R6::R6Class(
 
         avgAbd <- contrast_result |>
           dplyr::select(dplyr::all_of(c(self$subject_Id, "contrast", "diff"))) |>
-          dplyr::filter(startsWith(contrast , "avg_"))
+          dplyr::filter(startsWith(contrast, "avg_"))
 
-        avgAbd$contrast <- gsub("^avg_","", avgAbd$contrast)
+        avgAbd$contrast <- gsub("^avg_", "", avgAbd$contrast)
         avgAbd <- avgAbd |> dplyr::rename(avgAbd = diff)
         contrast_result <- left_join(differences, avgAbd)
 
         contrast_result <- self$p.adjust(contrast_result,
-                                         column = "p.value",
-                                         group_by_col = "contrast")
-        contrast_result <- contrast_result |> relocate("FDR", .after="diff")
+          column = "p.value",
+          group_by_col = "contrast"
+        )
+        contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
         contrast_result <- mutate(contrast_result, modelName = self$modelName, .before = 1)
         self$contrast_result <- contrast_result
-
       }
       res <- if (!all) {
         self$contrast_result |>
-          select( -all_of(c("sigma.model",
-                            "df.residual.model",
-                            "isSingular")))
-      }else{
+          select(-all_of(c(
+            "sigma.model",
+            "df.residual.model",
+            "isSingular"
+          )))
+      } else {
         self$contrast_result
       }
 
       stopifnot(all(super$column_description()$column_name %in% colnames(res)))
       return(res)
-
     },
     #' @description
     #' return \code{\link{ContrastsPlotter}}
@@ -216,18 +217,21 @@ Contrasts <- R6::R6Class(
     #' @param FDRthreshold FDR threshold to show in plots
     #' @return \code{\link{ContrastsPlotter}}
     get_Plotter = function(
-    FCthreshold = 1,
-    FDRthreshold = 0.1
-    ){
+        FCthreshold = 1,
+        FDRthreshold = 0.1) {
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = FCthreshold,
-        volcano = list(list(score = "p.value", thresh = FDRthreshold),
-                       list(score = "FDR", thresh = FDRthreshold)),
-        histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                         list(score = "FDR", xlim = c(0,1,0.05))),
+        volcano = list(
+          list(score = "p.value", thresh = FDRthreshold),
+          list(score = "FDR", thresh = FDRthreshold)
+        ),
+        histogram = list(
+          list(score = "p.value", xlim = c(0, 1, 0.05)),
+          list(score = "FDR", xlim = c(0, 1, 0.05))
+        ),
         score = list(list(score = "statistic", thresh = 5)),
         modelName = "modelName",
         diff = "diff",
@@ -239,13 +243,14 @@ Contrasts <- R6::R6Class(
     #' convert to wide format
     #' @param columns value column default p.value
     #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR", "statistic")){
+    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                     subject_Id = self$subject_Id,
-                                                     columns = c("diff", columns),
-                                                     contrast = 'contrast')
+        subject_Id = self$subject_Id,
+        columns = c("diff", columns),
+        contrast = "contrast"
+      )
       return(contrasts_wide)
     }
-  ))
-
+  )
+)
