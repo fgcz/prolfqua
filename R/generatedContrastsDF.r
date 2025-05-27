@@ -114,6 +114,8 @@ generate_contrasts_for_factor <- function(levels) {
 
 
 #' Combined generate_contrasts
+#' @export
+#' @family modelling
 #' @examples
 #' primary_levels <- c("MI", "MINOCAM")
 #' secondary_levels <- c("T0", "T150", "T300")
@@ -201,8 +203,9 @@ x5463yzwer453bbb <- structure(
 #' @export
 #' @family modelling
 #' @examples
-#' process_factor(x5463yzwer453bbb, "factor_A", "factor_B", "primary")
-#' process_factor(x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
+#'
+#' process_factor(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "primary")
+#' process_factor(prolfqua::x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
 process_factor <- function(df, primary_col, secondary_col, prefix, dataset_id = "dataset") {
   levels_p <- sort(unique(df[[primary_col]]))
   levels_s <- sort(unique(df[[secondary_col]]))
@@ -222,10 +225,10 @@ process_factor <- function(df, primary_col, secondary_col, prefix, dataset_id = 
     df %>% dplyr::select(-dplyr::all_of(c(primary_col, secondary_col))),
     df_contrast
   )
-  readr::write_csv(annot, paste0("DEA_", prefix, "_", dataset_id, ".csv"))
-  message(stringr::str_glue(
-    "{str_to_title(prefix)} contrasts written to: ",
-    "DEA_{prefix}_{dataset_id}.csv"
-  ))
-  return(annot)
+  name <- paste0("DEA_", prefix, "_", dataset_id, ".csv")
+  # message(stringr::str_glue(
+  #  "This {prefix} contrasts written to: ",
+  #  "DEA_{prefix}_{dataset_id}.csv"
+  # ))
+  return(list(annot = annot, name = name))
 }

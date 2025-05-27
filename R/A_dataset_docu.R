@@ -72,7 +72,12 @@ NULL
 #' @format a linear model
 "data_SAINTe_output"
 
-
+#' example dataset for testing
+#' @family data
+#' @docType data
+#' @keywords internal
+#' @format a data frame
+"x5463yzwer453bbb"
 
 
 
@@ -97,7 +102,7 @@ NULL
 #' @family data
 #' @docType data
 #' @keywords internal
-'data_checksummarizationrobust87'
+"data_checksummarizationrobust87"
 
 # #@usage data_checksummarizationrobust87 <- prolfqua_data("data_checksummarizationrobust87")
 
@@ -109,7 +114,7 @@ NULL
 #' @family data
 #' @docType data
 #' @keywords internal
-'data_checksummarizerobust'
+"data_checksummarizerobust"
 
 # #@usage data_checksummarizerobust <- prolfqua_data("data_checksummarizerobust")
 
@@ -123,21 +128,21 @@ NULL
 #' @docType data
 #' @keywords internal
 #'
-'data_checksummarizerobust69'
+"data_checksummarizerobust69"
 
 # #@usage data_checksummarizerobust69 <- prolfqua_data("data_checksummarizerobust69")
 
 
-#data_correlatedPeptideList <- prolfqua::correlatedPeptideList
-#usethis::use_data(data_correlatedPeptideList, compress = TRUE, overwrite = TRUE)
-#file.remove("data/correlatedPeptideList.rda")
+# data_correlatedPeptideList <- prolfqua::correlatedPeptideList
+# usethis::use_data(data_correlatedPeptideList, compress = TRUE, overwrite = TRUE)
+# file.remove("data/correlatedPeptideList.rda")
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 #'
-'data_correlatedPeptideList'
+"data_correlatedPeptideList"
 
 # #@usage data_correlatedPeptideList <- prolfqua_data("data_correlatedPeptideList")
 
@@ -151,7 +156,7 @@ NULL
 #' @docType data
 #' @keywords internal
 #'
-'data_IonstarProtein_subsetNorm'
+"data_IonstarProtein_subsetNorm"
 
 # #@usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 
@@ -160,15 +165,15 @@ NULL
 # #@usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
 
 
-#data_ionstar <- ionstar
-#usethis::use_data(data_ionstar, compress = TRUE, overwrite = TRUE)
-#file.remove("data/ionstar.rda")
+# data_ionstar <- ionstar
+# usethis::use_data(data_ionstar, compress = TRUE, overwrite = TRUE)
+# file.remove("data/ionstar.rda")
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
-'data_ionstar'
+"data_ionstar"
 
 # #@usage data_ionstar <- prolfqua_data("data_ionstar")
 
@@ -183,7 +188,7 @@ NULL
 #' @family data
 #' @docType data
 #' @keywords internal
-'data_test_confusion_matrix_scores'
+"data_test_confusion_matrix_scores"
 
 # data_skylinePRMSample_A <- skylinePRMSampleData_A
 # usethis::use_data(data_skylinePRMSample_A,compress = TRUE, overwrite = TRUE)
@@ -193,7 +198,7 @@ NULL
 #' @family data
 #' @docType data
 #' @keywords internal
-'data_skylinePRMSample_A'
+"data_skylinePRMSample_A"
 
 # #@usage data_skylinePRMSample_A <- prolfqua_data("data_skylinePRMSample_A")
 
@@ -206,7 +211,7 @@ NULL
 #' @family data
 #' @docType data
 #' @keywords internal
-'data_skylineSRM_HL_A'
+"data_skylineSRM_HL_A"
 
 # data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
 # data_skylineSRM_HL_A_new <- list()
@@ -228,15 +233,15 @@ NULL
 # usethis::use_data(data_skylineSRM_HL_A,compress = TRUE, overwrite = TRUE)
 
 
-#data_spectronautDIA250_A <- spectronautDIAData250_A
-#usethis::use_data(data_spectronautDIA250_A,compress = TRUE, overwrite = TRUE)
-#file.remove("data/spectronautDIAData250_A.rda")
+# data_spectronautDIA250_A <- spectronautDIAData250_A
+# usethis::use_data(data_spectronautDIA250_A,compress = TRUE, overwrite = TRUE)
+# file.remove("data/spectronautDIAData250_A.rda")
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
-'data_spectronautDIA250_A'
+"data_spectronautDIA250_A"
 
 # #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
 
@@ -244,7 +249,6 @@ NULL
 # @family data
 # @docType data
 # @keywords internal
-#'data_Yeast2Factor'
+#' data_Yeast2Factor'
 
 # #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
-

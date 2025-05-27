@@ -14,49 +14,50 @@ Estimate contrasts using Wald Test
 istar <- prolfqua::sim_lfq_data_peptide_config()
 
 modelFunction <-
-strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
+  strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
 
 config <- istar$config
 config$table$hierarchy_keys_depth()
 
 mod <- build_model(
- istar$data,
- modelFunction,
- subject_Id = config$table$hierarchy_keys_depth()
- )
+  istar$data,
+  modelFunction,
+  subject_Id = config$table$hierarchy_keys_depth()
+)
 
 ref_lfc <- data.frame(
-`(Intercept)` = c(0, 0, 0),
-group_B = c(0, 1, 0),
-group_Ctrl = c(-1, -1, 1),
-row.names = c("groupA_vs_Ctrl", "dil.e_vs_b", "dil.ctrl_vs_b")
+  `(Intercept)` = c(0, 0, 0),
+  group_B = c(0, 1, 0),
+  group_Ctrl = c(-1, -1, 1),
+  row.names = c("groupA_vs_Ctrl", "dil.e_vs_b", "dil.ctrl_vs_b")
 )
 prolfqua::model_summary(mod)
-Contr <- c("groupA_vs_Ctrl" = "group_A - group_Ctrl",
-    "dil.e_vs_b" = "group_B - group_Ctrl",
-    "dil.ctrl_vs_b" = "group_Ctrl - group_A"
-     )
+Contr <- c(
+  "groupA_vs_Ctrl" = "group_A - group_Ctrl",
+  "dil.e_vs_b" = "group_B - group_Ctrl",
+  "dil.ctrl_vs_b" = "group_Ctrl - group_A"
+)
 # prolfqua::Contrasts$debug("get_linfct")
 # debug(prolfqua:::.linfct)
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 y <- contrastX$get_linfct(avg = FALSE)
 stopifnot(all(ref_lfc == y))
-t <- contrastX$get_linfct(global=FALSE)
+t <- contrastX$get_linfct(global = FALSE)
 
 x <- contrastX$get_contrasts()
-stopifnot(all(x$p.value < 1 & x$p.value >0))
-stopifnot(all(x$avgAbd >0))
-stopifnot(all(x$FDR >0 & x$FDR < 1))
+stopifnot(all(x$p.value < 1 & x$p.value > 0))
+stopifnot(all(x$avgAbd > 0))
+stopifnot(all(x$FDR > 0 & x$FDR < 1))
 
 x <- contrastX$get_contrast_sides()
 xd <- contrastX$column_description()
 modelFunction <-
-strategy_lm("abundance  ~ group_")
+  strategy_lm("abundance  ~ group_")
 mod <- build_model(
- istar$data,
- modelFunction,
- subject_Id = config$table$hierarchy_keys_depth()
- )
+  istar$data,
+  modelFunction,
+  subject_Id = config$table$hierarchy_keys_depth()
+)
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 y <- contrastX$get_linfct(avg = FALSE)
 stopifnot(all(ref_lfc == y))
@@ -78,14 +79,20 @@ Other modelling:
 \code{\link{build_model}()},
 \code{\link{build_model_logistf}()},
 \code{\link{contrasts_fisher_exact}()},
+\code{\link{generate_contrasts}()},
+\code{\link{generate_contrasts_for_factor}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_p_values_pbeta}()},
+\code{\link{group_label}()},
+\code{\link{interaction_contrasts}()},
 \code{\link{isSingular_lm}()},
+\code{\link{level_specific_contrasts}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{main_effect_contrasts}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},
@@ -98,6 +105,7 @@ Other modelling:
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
+\code{\link{process_factor}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
 \code{\link{sim_build_models_logistf}()},
