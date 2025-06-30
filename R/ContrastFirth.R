@@ -31,7 +31,6 @@
 #'
 #' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
 #'
-#' # ContrastsFirth$debug("get_contrasts")
 #' ctrpep <- ContrastsFirth$new(mod3,contrasts)
 #' ctrpep$get_contrast_sides()
 #'

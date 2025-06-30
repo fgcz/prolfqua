@@ -30,7 +30,6 @@ stopifnot("AnalysisConfiguration" \%in\% class(x$config))
 x <- sim_lfq_data_protein_config(with_missing = FALSE)
 
 stopifnot(sum(is.na(x$data$abundance)) == 0)
-# debug(sim_lfq_data_protein_config)
 xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
 stopifnot(length(xp$config$table$factors) == 2)
 stopifnot(nrow(xp$data) == nrow(x$data))

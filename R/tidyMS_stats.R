@@ -87,7 +87,6 @@ pooled_V1 <- function(x){
 #' x <- data.frame(nrMeasured =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), meanAbundance = c(-1.94,-1.46,-1.87,-1.45) )
 #' compute_pooled(x)
 #' compute_pooled(x, method = "V2")
-#' #debug(compute_pooled)
 #' y <- data.frame(dilution.=c("a","b","c"),
 #'      nrReplicates = c(4,4,4), nrMeasured = c(0,0,1), sd =c(NA,NA,NA),
 #'      var = c(NA,NA,NA),meanAbundance = c(NaN,NaN,NaN))

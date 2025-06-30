@@ -37,7 +37,6 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 
 
 lfqdata <- LFQData$new(bb$data, bb$config)
-# LFQDataStats$debug("violin")
 lfqstats <- lfqdata$get_Stats()
 stopifnot(ncol(lfqstats$stats_wide()) == 30)
 lfqstats$violin()
@@ -68,7 +67,6 @@ runallfuncs(lfqstats)
 bb <- prolfqua::sim_lfq_data_peptide_config(N=1)
 table_factors_size(bb$data,bb$config )
 lfqdata <- LFQData$new(bb$data, bb$config)
-# LFQDataStats$debug("initialize")
 lfqstats <- lfqdata$get_Stats()
 
 # stopifnot(ncol(lfqstats$stats_wide()) == 30)

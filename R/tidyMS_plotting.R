@@ -128,7 +128,6 @@ plot_sample_correlation <- function(pdata, config){
 #'
 #' hierarchy = config$table$hierarchy_keys_depth()
 #' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
-#' undebug(plot_hierarchies_boxplot)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE, show_mean=TRUE)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE, facet_grid_on = "precursor_Id")

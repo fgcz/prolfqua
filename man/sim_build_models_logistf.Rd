@@ -16,7 +16,6 @@ sim_build_models_logistf(
 build dataframe with models for testing
 }
 \examples{
-# debug(sim_build_models_logistf)
 modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
 stopifnot(dim(modi$modelDF) == c(10,9))
 mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
@@ -44,20 +43,15 @@ Other modelling:
 \code{\link{build_model}()},
 \code{\link{build_model_logistf}()},
 \code{\link{contrasts_fisher_exact}()},
-\code{\link{generate_contrasts}()},
-\code{\link{generate_contrasts_for_factor}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{group_label}()},
-\code{\link{interaction_contrasts}()},
 \code{\link{isSingular_lm}()},
-\code{\link{level_specific_contrasts}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
-\code{\link{main_effect_contrasts}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},
@@ -70,7 +64,6 @@ Other modelling:
 \code{\link{my_glht}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
-\code{\link{process_factor}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
 \code{\link{sim_make_model_lm}()},

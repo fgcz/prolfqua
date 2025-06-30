@@ -45,7 +45,6 @@ print(dim(resTOPN$data))
 # stopifnot(dim(resTOPN$data) == c(3260, 8))
 stopifnot( names(resTOPN) \%in\% c("data", "config") )
 config$table$get_response()
-#debug(plot_estimate)
 tmpRob <- plot_estimate(ranked,
  config,
  resTOPN$data,

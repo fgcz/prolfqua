@@ -10,7 +10,7 @@ group_label <- function(primary, secondary) paste0("G_", primary, "_", secondary
 # Main effect contrasts (averaged across all secondary levels)
 #' main effects contrasts
 #' @export
-#' @family modelling
+#' @family contrasts
 #' @examples
 #' primary_levels <- c("MI", "MINOCAM")
 #' secondary_levels <- c("T150", "T0", "T300")
@@ -36,7 +36,7 @@ main_effect_contrasts <- function(primary_levels, secondary_levels) {
 
 #' Level-specific contrasts (per secondary level)
 #' @export
-#' @family modelling
+#' @family contrasts
 #' @examples
 #' # example code
 #'
@@ -64,7 +64,7 @@ level_specific_contrasts <- function(primary_levels, secondary_levels) {
 
 #' Interaction contrasts (difference of differences)
 #' @export
-#' @family modelling
+#' @family contrasts
 #' @examples
 #' primary_levels <- c("MI", "MINOCAM")
 #' secondary_levels <- c("T0", "T150", "T300")
@@ -91,7 +91,7 @@ interaction_contrasts <- function(primary_levels, secondary_levels) {
 
 #' Single-factor contrasts (pairwise comparisons)
 #' @export
-#' @family modelling
+#' @family contrasts
 #' @examples
 #' # example code
 #' primary_levels <- c("MI", "MINOCAM")
@@ -115,7 +115,7 @@ generate_contrasts_for_factor <- function(levels) {
 
 #' Combined generate_contrasts
 #' @export
-#' @family modelling
+#' @family contrasts
 #' @examples
 #' primary_levels <- c("MI", "MINOCAM")
 #' secondary_levels <- c("T0", "T150", "T300")
@@ -201,12 +201,12 @@ x5463yzwer453bbb <- structure(
 
 #' DRY function: process and export annotated contrasts
 #' @export
-#' @family modelling
+#' @family contrasts
 #' @examples
 #'
-#' process_factor(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "primary")
-#' process_factor(prolfqua::x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
-process_factor <- function(df, primary_col, secondary_col, prefix, dataset_id = "dataset") {
+#' annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "primary")
+#' annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
+annotation_add_contrasts <- function(df, primary_col, secondary_col, prefix, dataset_id = "dataset") {
   levels_p <- sort(unique(df[[primary_col]]))
   levels_s <- sort(unique(df[[secondary_col]]))
 

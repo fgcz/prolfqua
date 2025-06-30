@@ -139,7 +139,6 @@ get_impute_contrasts_V1 <- function(
 #' data <- complete_cases(analysis, config)
 #'
 #' Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
-#' #debug(get_imputed_contrasts)
 #' res <- get_imputed_contrasts(data, config, Contrasts)
 #' config <- config
 #' contrasts <- Contrasts
@@ -208,7 +207,6 @@ get_imputed_contrasts <- function(pepIntensity,
 #' res <- missigness_impute_factors_interactions(xx, config)
 #' res <- missigness_impute_factors_interactions(xx, config, value = "imputed")
 #' res <- missigness_impute_factors_interactions(xx, config, value = "nrMeasured")
-#' #debug(missigness_impute_factors_interactions)
 #' long <- missigness_impute_factors_interactions(xx, config, value = "long")
 #' head(long)
 #' plot(long$meanAbundance, long$imputed)

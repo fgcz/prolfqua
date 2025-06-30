@@ -11,8 +11,6 @@
 #' lfqdata <- LFQData$new(
 #'  istar$data,
 #'  istar$config)
-#' #LFQDataPlotter$debug("boxplots")
-#' # LFQDataPlotter$debug("pca")
 #' lfqplotter <- lfqdata$get_Plotter()
 #'
 #' stopifnot(class(lfqplotter$heatmap()) == "pheatmap")

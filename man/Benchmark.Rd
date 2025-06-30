@@ -27,7 +27,6 @@ medpol_benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(
  list(score = "statistic", xlim = c(-3,10) )))
 medpol_benchmark$get_confusion_benchmark()
 
-#Benchmark$debug("plot_score_distribution")
 benchmark <- make_benchmark(
   ttd$data,
   toscale =  c("moderated.p.value", "moderated.p.value.adjusted"),

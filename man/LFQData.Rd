@@ -11,7 +11,6 @@ LFQData R6 class
 \examples{
 
 istar <- sim_lfq_data_peptide_config()
-#LFQData$debug("omit_NA")
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$filter_proteins_by_peptide_count()
 tmp <- lfqdata$to_wide()

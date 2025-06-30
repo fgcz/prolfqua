@@ -25,7 +25,6 @@
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 #' tmp <- LFQData$new(istar$data, istar$config)
 #' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
-#' ModelFirth$undebug("get_coefficients")
 #' mod <- build_model_logistf(tmp, formula)
 #' tmp <- mod$get_coefficients()
 #' stopifnot(nrow(tmp) == 30)

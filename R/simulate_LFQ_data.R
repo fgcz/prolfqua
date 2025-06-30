@@ -199,7 +199,6 @@ sim_lfq_data_peptide_config <- function(
 #' x <- sim_lfq_data_protein_config(with_missing = FALSE)
 #'
 #' stopifnot(sum(is.na(x$data$abundance)) == 0)
-#' # debug(sim_lfq_data_protein_config)
 #' xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
 #' stopifnot(length(xp$config$table$factors) == 2)
 #' stopifnot(nrow(xp$data) == nrow(x$data))
@@ -357,7 +356,6 @@ sim_build_models_lm <- function(model = c("parallel2","parallel3","factors", "in
 #' @export
 #' @keywords internal
 #' @examples
-#' undebug(sim_build_models_lmer)
 #' modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
 #' stopifnot(sum(modi$modelDF$exists_lmer) == 6)
 #' mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
