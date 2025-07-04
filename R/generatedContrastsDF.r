@@ -206,9 +206,15 @@ x5463yzwer453bbb <- structure(
 #'
 #' annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "primary")
 #' annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
-annotation_add_contrasts <- function(df, primary_col, secondary_col, prefix, dataset_id = "dataset") {
-  levels_p <- sort(unique(df[[primary_col]]))
-  levels_s <- sort(unique(df[[secondary_col]]))
+annotation_add_contrasts <- function(
+    df,
+    primary_col,
+    secondary_col,
+    prefix = "G_",
+    dataset_id = "dataset",
+    decreasing = FALSE) {
+  levels_p <- sort(unique(df[[primary_col]]), decreasing = decreasing)
+  levels_s <- sort(unique(df[[secondary_col]]), decreasing = decreasing)
 
   df <- df |> tidyr::unite("Group", primary_col, secondary_col, sep = "_", remove = FALSE)
   df_contrast <- generate_contrasts(levels_p, levels_s)

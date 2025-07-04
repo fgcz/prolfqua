@@ -8,8 +8,9 @@ annotation_add_contrasts(
   df,
   primary_col,
   secondary_col,
-  prefix,
-  dataset_id = "dataset"
+  prefix = "G_",
+  dataset_id = "dataset",
+  decreasing = FALSE
 )
 }
 \description{
