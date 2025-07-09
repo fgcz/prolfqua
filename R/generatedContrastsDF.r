@@ -121,11 +121,11 @@ generate_contrasts_for_factor <- function(levels) {
 #' secondary_levels <- c("T0", "T150", "T300")
 #' generate_contrasts(primary_levels, secondary_levels)
 #' generate_contrasts(secondary_levels, primary_levels)
-generate_contrasts <- function(primary_levels, secondary_levels) {
+generate_contrasts <- function(primary_levels, secondary_levels, interactions = TRUE) {
   res <- c(
     unlist(main_effect_contrasts(primary_levels, secondary_levels)),
     unlist(level_specific_contrasts(primary_levels, secondary_levels)),
-    unlist(interaction_contrasts(primary_levels, secondary_levels))
+    if(interactions){unlist(interaction_contrasts(primary_levels, secondary_levels))} else {NULL}
   )
   res <- data.frame(ContrastName = names(res), Contrast = res)
   return(res)
@@ -212,12 +212,13 @@ annotation_add_contrasts <- function(
     secondary_col,
     prefix = "G_",
     dataset_id = "dataset",
-    decreasing = FALSE) {
+    decreasing = FALSE,
+    interactions = TRUE) {
   levels_p <- sort(unique(df[[primary_col]]), decreasing = decreasing)
   levels_s <- sort(unique(df[[secondary_col]]), decreasing = decreasing)
 
   df <- df |> tidyr::unite("Group", primary_col, secondary_col, sep = "_", remove = FALSE)
-  df_contrast <- generate_contrasts(levels_p, levels_s)
+  df_contrast <- generate_contrasts(levels_p, levels_s, interactions = interactions)
 
   if (nrow(df_contrast) < nrow(df)) {
     pad <- tibble::tibble(

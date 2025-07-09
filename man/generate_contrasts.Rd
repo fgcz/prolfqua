@@ -4,7 +4,7 @@
 \alias{generate_contrasts}
 \title{Combined generate_contrasts}
 \usage{
-generate_contrasts(primary_levels, secondary_levels)
+generate_contrasts(primary_levels, secondary_levels, interactions = TRUE)
 }
 \description{
 Combined generate_contrasts

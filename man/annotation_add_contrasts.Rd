@@ -10,7 +10,8 @@ annotation_add_contrasts(
   secondary_col,
   prefix = "G_",
   dataset_id = "dataset",
-  decreasing = FALSE
+  decreasing = FALSE,
+  interactions = TRUE
 )
 }
 \description{
