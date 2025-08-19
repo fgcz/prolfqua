@@ -577,7 +577,7 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd"
   stat <- match.arg(stat)
   pdata <- pdata |> tidyr::unite("groups", config$table$factor_keys_depth())
   p <- ggplot(pdata, aes_string(x = "groups", y = stat  )) +
-    geom_violin() + ggplot2::stat_summary(fun.y = median,
+    geom_violin() + ggplot2::stat_summary(fun = median,
                                           geom = "point", size = 1, color = "black")
 
   return(p)
