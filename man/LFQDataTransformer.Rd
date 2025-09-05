@@ -19,6 +19,7 @@ lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 
 x <- lfqTrans$intensity_array(log2)
+
 x$lfq$config$table$is_response_transformed
 x <- x$intensity_matrix(robust_scale)
 plotter <- x$lfq$get_Plotter()
@@ -32,7 +33,6 @@ x <- lfqTrans$intensity_array(asinh)
 mads1 <- mean(x$get_scales()$mads)
 x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
 mads2 <- mean(x$get_scales()$mads)
-
 stopifnot(abs(mads1 - mads2) < 1e-8)
 
 
@@ -71,6 +71,25 @@ quant <- function(y){
  res$lfq$get_Plotter()$intensity_distribution_density()
 }
 
+
+#subset scaling
+
+istar <- prolfqua_data('data_ionstar')$filtered()
+istar$config <- old2new(istar$config)
+data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
+lfqdata <- LFQData$new(data, istar$config)
+lfqdata <- lfqdata$get_Transformer()$intensity_array(log2)$lfq
+head(lfqdata$hierarchy())
+internal <- lfqdata$get_subset(head(lfqdata$hierarchy()))
+internal$hierarchy()
+tr <- lfqdata$get_Transformer()
+tr$center_to_reference(internal)
+pl <- tr$lfq$get_Plotter()
+pl$intensity_distribution_density()
+lfqdata$get_Plotter()$intensity_distribution_density()
+robscale <- lfqdata$get_Transformer()$robscale_subset(internal)$lfq
+robscale$get_Plotter()$intensity_distribution_density()
+
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -87,6 +106,7 @@ quant <- function(y){
 \item \href{#method-LFQDataTransformer-get_scales}{\code{LFQDataTransformer$get_scales()}}
 \item \href{#method-LFQDataTransformer-robscale}{\code{LFQDataTransformer$robscale()}}
 \item \href{#method-LFQDataTransformer-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
+\item \href{#method-LFQDataTransformer-center_to_reference}{\code{LFQDataTransformer$center_to_reference()}}
 \item \href{#method-LFQDataTransformer-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
 \item \href{#method-LFQDataTransformer-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
 \item \href{#method-LFQDataTransformer-clone}{\code{LFQDataTransformer$clone()}}
@@ -176,8 +196,32 @@ log2 transform and robust scale data based on subset
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale_subset(
   lfqsubset,
   preserveMean = TRUE,
-  colname = "transformedIntensity"
+  colname = "transformed_abundance"
 )}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lfqsubset}}{LFQData subset to use for normalization}
+
+\item{\code{preserveMean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
+
+\item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+LFQDataTransformer (self)
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataTransformer-center_to_reference"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-center_to_reference}{}}}
+\subsection{Method \code{center_to_reference()}}{
+log2 transform and robust scale data based on subset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$center_to_reference(lfqsubset)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
