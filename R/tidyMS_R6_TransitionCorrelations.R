@@ -459,6 +459,70 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
   }
 }
 
+
+# Function to normalize protein abundances by subtracting sample means of reference proteins
+center_to_reference <- function(
+    df,
+    df_reference,
+    sampleName,
+    abundance_column = "normalized_abundance") {
+
+  # Step 1: Calculate sample means for reference proteins
+  sample_means <- df_reference |>
+    dplyr::group_by(!!rlang::sym(sampleName)) |>  # Group by sample (Name column contains sample identifiers)
+    dplyr::summarise(
+      reference_mean = mean(.data[[abundance_column]], na.rm = TRUE),
+      reference_median = median(.data[[abundance_column]], na.rm = TRUE),
+      .groups = "drop"
+    )
+  # Step 2: Join back to original data and subtract sample means
+  normalized_df <-
+    dplyr::left_join(df , sample_means, by = sampleName)  |>
+    dplyr::mutate(
+      # Create normalized abundance column
+      centered_abundance_by_mean = .data[[abundance_column]] - reference_mean,
+      centered_abundance_by_median = .data[[abundance_column]] - reference_median
+    ) |>
+    dplyr::select( -reference_mean, -reference_median)  # Remove the temporary column
+  return(normalized_df)
+}
+
+#' center to reference
+#'
+#' takes the mean or median of the lfqdareference per sample and subtracts from lfqdata
+#' @export
+#' @examples
+#' # example code
+#'
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' x <- LFQData$new(bb$data, bb$config)
+#' xc <- x$get_copy()
+#' xc$data <- xc$data |> dplyr::filter(protein_Id == "0EfVhX~3967")
+#' xxd <- center_to_reference_cfg(x, xc, summary="median")
+#' xxd$response()
+#' xxd$data
+#' center_to_reference_cfg(x, xc, summary="median", copy=FALSE)
+#' x$response()
+#'
+center_to_reference_cfg <- function(lfqdata, lfqdareference, summary = c("median", "mean"), copy = TRUE){
+  summary <- match.arg(summary)
+  if (copy) {
+    resdata <- lfqdata$get_copy()
+  } else {
+    resdata <- lfqdata
+  }
+  cfg <- resdata$config$table
+  data <- center_to_reference(lfqdata$data, lfqdareference$data,cfg$sampleName, cfg$get_response()  )
+  resdata$data <- data
+  if (summary == "median") {
+    cfg$set_response("centered_abundance_by_median")
+  } else if(summary == "mean"){
+    cfg$set_response("centered_abundance_by_mean")
+  }
+  invisible(resdata)
+}
+
+
 #' Scale using a subset of the data, within factor levels (e.g. use for pulldown data)
 #'
 #' This method reduces the variance within the group.
@@ -724,7 +788,7 @@ nr_obs_experiment <- function(data, config,
   hkeys <- tb$hierarchy_keys()
   hkeysd <- tb$hierarchy_keys_depth()
   nr_children <- tb$nr_children
-    if (from_children ) {
+  if (from_children ) {
 
     xz <- nr_obs_sample(data,config)
     xz <- xz |> group_by(!!!syms(hkeysd)) |>
