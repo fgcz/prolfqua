@@ -15,6 +15,7 @@
 #' lfqTrans <- lfqcopy$get_Transformer()
 #'
 #' x <- lfqTrans$intensity_array(log2)
+#'
 #' x$lfq$config$table$is_response_transformed
 #' x <- x$intensity_matrix(robust_scale)
 #' plotter <- x$lfq$get_Plotter()
@@ -28,7 +29,6 @@
 #' mads1 <- mean(x$get_scales()$mads)
 #' x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
 #' mads2 <- mean(x$get_scales()$mads)
-#'
 #' stopifnot(abs(mads1 - mads2) < 1e-8)
 #'
 #'
@@ -66,6 +66,25 @@
 #'  res <- lfqTrans$intensity_matrix( .func = quant)
 #'  res$lfq$get_Plotter()$intensity_distribution_density()
 #' }
+#'
+#'
+#' #subset scaling
+#'
+#' istar <- prolfqua_data('data_ionstar')$filtered()
+#' istar$config <- old2new(istar$config)
+#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
+#' lfqdata <- LFQData$new(data, istar$config)
+#' lfqdata <- lfqdata$get_Transformer()$intensity_array(log2)$lfq
+#' head(lfqdata$hierarchy())
+#' internal <- lfqdata$get_subset(head(lfqdata$hierarchy()))
+#' internal$hierarchy()
+#' tr <- lfqdata$get_Transformer()
+#' tr$center_to_reference(internal)
+#' pl <- tr$lfq$get_Plotter()
+#' pl$intensity_distribution_density()
+#' lfqdata$get_Plotter()$intensity_distribution_density()
+#' robscale <- lfqdata$get_Transformer()$robscale_subset(internal)$lfq
+#' robscale$get_Plotter()$intensity_distribution_density()
 #'
 LFQDataTransformer <- R6::R6Class(
   "LFQDataTransformer",
@@ -119,7 +138,7 @@ LFQDataTransformer <- R6::R6Class(
     #'
     robscale_subset = function(lfqsubset,
                                preserveMean = TRUE,
-                               colname = "transformedIntensity"){
+                               colname = "transformed_abundance"){
       message("data is : ",self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
@@ -139,6 +158,27 @@ LFQDataTransformer <- R6::R6Class(
       invisible(self)
 
     },
+    #' @description
+    #' log2 transform and robust scale data based on subset
+    #' @param lfqsubset LFQData subset to use for normalization
+    #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
+    #' @param colname - how to name the transformed intensities, default transformedIntensity
+    #' @return LFQDataTransformer (self)
+    #'
+    center_to_reference = function(lfqsubset){
+      message("data is transoformed: ",self$lfq$is_transformed())
+      if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
+        stop("the subset must have the same config as self")
+
+      }
+      if (!self$lfq$is_transformed()){
+        warning("data should be log2 transformed")
+      }
+      center_to_reference_cfg(self$lfq, lfqsubset, copy = FALSE)
+      invisible(self)
+    },
+
+
     #' @description
     #' Transforms intensities
     #' @param .func transformation function working with arrays e.g. log2, log10, asinh etc.
