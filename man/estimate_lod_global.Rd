@@ -4,7 +4,7 @@
 \alias{estimate_lod_global}
 \title{esitmate lod}
 \usage{
-estimate_lod_global(data_matrix, prop_na = 10)
+estimate_lod_global(data_matrix, prop_na = 90)
 }
 \description{
 esitmate lod

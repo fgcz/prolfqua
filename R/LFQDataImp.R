@@ -18,13 +18,14 @@ estimate_lod_global <- function(data_matrix, prop_na = 90) {
 
 
 #' get smallest values per sample
+#' @export
 #' @examples
 #' # example code
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' xx <- lfqdata$to_wide(as.matrix=TRUE)
-#' s <- function_log_quantile(xx$data)
+#' s <- function_lod_quantile(xx$data)
 #' sapply(s, median)
 #' sapply(s, mean)
 function_lod_quantile <- function(data_matrix, percent = 10) {

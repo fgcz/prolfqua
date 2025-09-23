@@ -4,8 +4,18 @@
 \alias{impute_with_zcomp}
 \title{impute using zCompositions}
 \usage{
-impute_with_zcomp(data, config, method = "lrEM", dl = NULL)
+impute_with_zcomp(
+  lfqdata,
+  method = c("multRepl", "GBM", "SQ", "BL", "CZM"),
+  lod = c("global", "quantile")
+)
 }
 \description{
 impute using zCompositions
+}
+\examples{
+# example code
+dd <- prolfqua::sim_lfq_data_peptide_config()
+lfqdata <- LFQData$new(dd$data, dd$config)
+
 }

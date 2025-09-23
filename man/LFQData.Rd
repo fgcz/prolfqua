@@ -285,7 +285,7 @@ self
 \subsection{Method \code{to_wide()}}{
 converts the data to wide
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$to_wide(as.matrix = FALSE, value = c("response", "nr_children"))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$to_wide(as.matrix = FALSE, value = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -293,7 +293,7 @@ converts the data to wide
 \describe{
 \item{\code{as.matrix}}{return as data.frame or matrix}
 
-\item{\code{value}}{either response or nr chidren}
+\item{\code{value}}{see possible lfqdata$config$table$value_vars()}
 }
 \if{html}{\out{</div>}}
 }

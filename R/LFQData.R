@@ -164,17 +164,18 @@ LFQData <- R6::R6Class(
     #' @description
     #' converts the data to wide
     #' @param as.matrix return as data.frame or matrix
-    #' @param value either response or nr chidren
+    #' @param value see possible lfqdata$config$table$value_vars()
     #' @return list with data, annotation, and configuration
-    to_wide = function(as.matrix = FALSE, value = c("response", "nr_children")){
-      value <- match.arg(value)
-      if (value == "response") {
+    #'
+    to_wide = function(as.matrix = FALSE, value = NULL){
+      if (is.null(value)) {
         wide <- prolfqua::tidy_to_wide_config(self$data, self$config, as.matrix = as.matrix)
       } else {
+        stopifnot(value %in% self$config$table$value_vars())
         wide <- prolfqua::tidy_to_wide_config(
           self$data, self$config,
           as.matrix = as.matrix,
-          value = self$config$table$nr_children)
+          value = value)
       }
       wide$config <- self$config$clone(deep = TRUE)
       return(wide)

@@ -15,7 +15,7 @@ get smallest values per sample
 istar <- sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(istar$data, istar$config)
 xx <- lfqdata$to_wide(as.matrix=TRUE)
-s <- function_log_quantile(xx$data)
+s <- function_lod_quantile(xx$data)
 sapply(s, median)
 sapply(s, mean)
 }
