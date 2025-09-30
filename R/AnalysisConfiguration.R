@@ -148,6 +148,29 @@ R6_extract_values <- function(r6class){
 #' skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
 #' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 #'
+#' # Example with normValue column (e.g., creatinine)
+#' set.seed(1234)
+#' data <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE, N = 4)
+#' data$nr_children <- 1
+#' data$isotopeLabel <- "light"
+#' data$qValue <- 0
+#'
+#' # Add creatinine values per sample (not per protein/peptide)
+#' sample_creatinine <- data |> dplyr::select(sample) |> dplyr::distinct() |>
+#'   dplyr::mutate(creatinine = rnorm(dplyr::n(), mean = 100, sd = 10))
+#' data <- dplyr::inner_join(data, sample_creatinine, by = "sample")
+#'
+#' atable <- AnalysisTableAnnotation$new()
+#' atable$fileName = "sample"
+#' atable$factors["group_"] = "group"
+#' atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
+#' atable$hierarchy[["peptide_Id"]] = "peptideID"
+#' atable$set_response("abundance")
+#' atable$normValue = "creatinine"
+#'
+#' config <- AnalysisConfiguration$new(atable)
+#' adata <- setup_analysis(data, config)
+#'
 setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE){
   configuration <- configuration$clone(deep = TRUE)
   table <- configuration$table

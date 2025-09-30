@@ -46,6 +46,8 @@ Other configuration:
 
 \item{\code{sampleName}}{(will be generated from factors or fileName)}
 
+\item{\code{normValue}}{optional column with normalization values (e.g., Creatinine)}
+
 \item{\code{isotopeLabel}}{which column contains the isotope label (e.g. heavy or light), Gor light only if LFQ.}
 
 \item{\code{ident_qValue}}{column name with identification QValues (smaller better)}

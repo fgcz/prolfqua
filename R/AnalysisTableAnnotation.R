@@ -30,6 +30,8 @@ AnalysisTableAnnotation <- R6::R6Class(
     fileName = NULL,
     #' @field sampleName (will be generated from factors or fileName)
     sampleName = "sampleName",
+    #' @field normValue optional column with normalization values (e.g., Creatinine)
+    normValue = NULL,
 
     #' @field isotopeLabel which column contains the isotope label (e.g. heavy or light), Gor light only if LFQ.
     isotopeLabel = "isotopeLabel",
@@ -156,7 +158,8 @@ AnalysisTableAnnotation <- R6::R6Class(
         names(self$factors),
         names(self$hierarchy),
         self$isotopeLabel,
-        self$sampleName)
+        self$sampleName,
+        self$normValue)
       return(id_vars)
     },
     #' @description
@@ -170,7 +173,7 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' get names of columns with sample annotations
     #'
     annotation_vars = function(){
-      annotationVars <- c(self$fileName, self$sampleName, self$factor_keys() )
+      annotationVars <- c(self$fileName, self$sampleName, self$factor_keys(), self$normValue )
       return(annotationVars)
     }
   )
