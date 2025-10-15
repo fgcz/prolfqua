@@ -32,24 +32,29 @@ config <- istar$config
 analysis <- istar$data
 
 xnested <- analysis |>
- dplyr::group_by_at(config$table$hierarchy_keys_depth()) |> tidyr::nest()
+  dplyr::group_by_at(config$table$hierarchy_keys_depth()) |>
+  tidyr::nest()
 
-prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]],config )
+prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)
 
-bb <- prolfqua_data('data_skylineSRM_HL_A')
+bb <- prolfqua_data("data_skylineSRM_HL_A")
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, conf)
 
-nest <- analysis |> dplyr::group_by(conf$table$hierarchy_keys_depth()) |> tidyr::nest()
+nest <- analysis |>
+  dplyr::group_by(conf$table$hierarchy_keys_depth()) |>
+  tidyr::nest()
 prolfqua::plot_hierarchies_line(nest$data[[1]],
-                                  "DUM",
-                                  conf,
-                                  separate = TRUE)
+  "DUM",
+  conf,
+  separate = TRUE
+)
 prolfqua::plot_hierarchies_line(nest$data[[1]],
-"DUM",
-conf,
-separate = TRUE,
-show.legend = TRUE)
+  "DUM",
+  conf,
+  separate = TRUE,
+  show.legend = TRUE
+)
 
 }
 \seealso{

@@ -28,8 +28,8 @@ nrow(bbRob$data)
 length(bbMed$data$medpolish)
 length(bbRob$data$lmrob)
 xt <- dplyr::inner_join(bbMed$data, bbRob$data)
-plot(xt$medpolish, xt$lmrob, log="xy", pch="*")
-abline(0,1, col=2)
+plot(xt$medpolish, xt$lmrob, log = "xy", pch = "*")
+abline(0, 1, col = 2)
 
 }
 \seealso{

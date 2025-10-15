@@ -20,8 +20,8 @@ Compute Tukey's median polish estimate of a protein from peptide or precursor in
 \examples{
 
 medpolish_estimate(name = TRUE)
-gg <- matrix(runif(20),4,5)
-rownames(gg) <- paste0("A",1:4)
+gg <- matrix(runif(20), 4, 5)
+rownames(gg) <- paste0("A", 1:4)
 colnames(gg) <- make.names(1:5)
 gg
 mx <- medpolish_estimate(gg)

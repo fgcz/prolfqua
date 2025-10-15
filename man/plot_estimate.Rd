@@ -35,7 +35,6 @@ tmpRob <- plot_estimate(analysis, config, bbRob$data, bbRob$config)
 stopifnot("ggplot" \%in\% class(tmpRob$plots[[1]]))
 stopifnot("ggplot" \%in\% class(tmpRob$plots[[2]]))
 
-
 }
 \seealso{
 Other plotting: 

@@ -26,7 +26,7 @@ istar$config$table$is_response_transformed <- TRUE
 res <- plot_hierarchies_line_df(istar$data, istar$config)
 res[[2]]
 
-#TODO make it work for other hiearachy levels.
+# TODO make it work for other hiearachy levels.
 
 }
 \seealso{

@@ -18,7 +18,7 @@ Summarizes the intensities within hierarchy
 \examples{
 
 
-bb <-sim_lfq_data_peptide_config()
+bb <- sim_lfq_data_peptide_config()
 data <- bb$data
 config <- bb$config
 x <- intensity_summary_by_hkeys(data, config, func = medpolish_estimate)

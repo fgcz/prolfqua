@@ -18,7 +18,7 @@ Convert old proflqua configurations (prolfqua 0.4) to new Analysis configuration
 prolfqua 0.5
 }
 \examples{
-dd <- prolfqua_data('data_ionstar')$filtered()
+dd <- prolfqua_data("data_ionstar")$filtered()
 dd$config <- old2new(dd$config)
 
 }
