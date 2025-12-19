@@ -13,10 +13,15 @@ Other LFQData:
 \code{\link{LFQData}},
 \code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
+\code{\link{LFQDataSE}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQDataWriter}}
+\code{\link{LFQDataWriter}},
+\code{\link{as_LFQData}()},
+\code{\link{as_LFQDataSE}()},
+\code{\link{as_lfq}()},
+\code{\link{make_LFQData}()}
 }
 \concept{LFQData}
 \section{Public fields}{

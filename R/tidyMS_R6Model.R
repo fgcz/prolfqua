@@ -116,10 +116,10 @@ LR_test <- function(modelProteinF,
 #'
 build_model <- function(data,
                         model_strategy,
-                        subject_Id = if ("LFQData" %in% class(data)) {data$subject_Id()} else {"protein_Id"},
+                        subject_Id = if (inherits(data, c("LFQData", "LFQDataSE"))) {data$subject_Id()} else {"protein_Id"},
                         modelName = model_strategy$model_name){
 
-  dataX <- if ("LFQData" %in% class(data)) { data$data }else{ data }
+  dataX <- if (inherits(data, c("LFQData", "LFQDataSE"))) { data$data }else{ data }
   modellingResult <- model_analyse(dataX,
                                    model_strategy,
                                    modelName = modelName,

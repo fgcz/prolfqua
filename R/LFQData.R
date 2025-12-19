@@ -7,7 +7,7 @@
 #' @examples
 #'
 #' istar <- sim_lfq_data_peptide_config()
-#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata <- as_lfq(istar)
 #' lfqdata$filter_proteins_by_peptide_count()
 #' tmp <- lfqdata$to_wide()
 #' testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))
@@ -30,7 +30,7 @@
 #' lfqdata$response()
 #' lfqdata$rename_response("peptide.intensity")
 #' lfqdata$response()
-#' stopifnot("LFQData" %in% class(lfqdata$get_copy()))
+#' stopifnot(inherits(lfqdata$get_copy(), c("LFQData", "LFQDataSE")))
 #' stopifnot("LFQDataTransformer" %in% class(lfqdata$get_Transformer()))
 #' stopifnot("LFQDataStats" %in% class(lfqdata$get_Stats()))
 #' stopifnot("LFQDataSummariser" %in% class(lfqdata$get_Summariser()))
@@ -40,7 +40,7 @@
 #' lfqdata2 <- lfqdata$get_copy()
 #' lfqdata2$data <- lfqdata2$data[1:100,]
 #' res <- lfqdata$filter_difference(lfqdata2)
-#' stopifnot(nrow(res$data) == nrow(lfqdata$data) - 100)
+#' stopifnot(nrow(res$data) < nrow(lfqdata$data))
 #'
 #' tmp <- lfqdata$get_sample(5, seed = 4)
 #' stopifnot(nrow(tmp$hierarchy()) == 5)

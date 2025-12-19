@@ -13,7 +13,7 @@ get smallest values per sample
 # example code
 
 istar <- sim_lfq_data_peptide_config()
-lfqdata <- LFQData$new(istar$data, istar$config)
+lfqdata <- as_lfq(istar)
 xx <- lfqdata$to_wide(as.matrix=TRUE)
 s <- function_lod_quantile(xx$data)
 sapply(s, median)

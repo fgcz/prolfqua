@@ -11,9 +11,7 @@ ContrastsProDA Wrapper to results produced by proDA
 \examples{
 
 istar <- prolfqua::sim_lfq_data_peptide_config()
-istar$config <- istar$config
-istar_data <- istar$data
-lfd <- LFQData$new(istar_data, istar$config)
+lfd <- as_lfq(istar)
 se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
 if(require(proDA)){
 fit <- proDA::proDA(se, design = ~ group_ - 1, data_is_log_transformed = TRUE)

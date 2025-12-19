@@ -74,13 +74,13 @@ contrasts_linfct_firth <- function(models,
 #' @examples
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
-#' tmp <- LFQData$new(istar$data, istar$config)
+#' tmp <- as_lfq(istar)
 #' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
 #' xx2 <- build_model_logistf(tmp, formula)
 #'
 #' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
-#' tmp <- LFQData$new(istar$data, istar$config)
+#' tmp <- as_lfq(istar)
 #' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
 #' xx <- build_model_logistf(tmp, formula)
 #'
@@ -171,7 +171,7 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
         weight_missing = weight_missing)
       istar$data <- encode_bin_resp(istar$data, istar$config)
     }
-    istar <- prolfqua::LFQData$new(istar$data,istar$config)
+    istar <- prolfqua::as_lfq(istar)
 
   } else {
     if (model != "parallel3") {
@@ -187,7 +187,7 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
         weight_missing = weight_missing)
       istar$data <- encode_bin_resp(istar$data, istar$config)
     }
-    istar <- prolfqua::LFQData$new(istar$data,istar$config)
+    istar <- prolfqua::as_lfq(istar)
   }
 
   model <- if (model == "factors") {
@@ -222,7 +222,7 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
 #'
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 #' istar$data <- encode_bin_resp(istar$data, istar$config)
-#' istar <- LFQData$new(istar$data, istar$config)
+#' istar <- as_lfq(istar)
 #' df <- istar$summarize_hierarchy()
 #' df2 <- df[df[[ncol(df)]] > 1,  ]
 #' istar2 <- istar$get_subset(df2)

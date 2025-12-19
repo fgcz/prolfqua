@@ -166,7 +166,7 @@ AnalysisTableAnnotation <- R6::R6Class(
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
     value_vars = function(){
       "Columns containing values"
-      valueVars <- c( self$get_response(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt, self$nr_children)
+      valueVars <- c( self$get_response(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt, self$nr_children, self$bin_resp)
       return(valueVars)
     },
     #' @description

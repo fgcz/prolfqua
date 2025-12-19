@@ -184,7 +184,14 @@ sim_lfq_data_peptide_config <- function(
 
   config <- AnalysisConfiguration$new(atable)
   adata <- setup_analysis(data, config)
-  return(list(data = adata, config = config))
+  class_type <- getOption("prolfqua.default_class", default = "list")
+  if (class_type == "LFQDataSE") {
+    return(LFQDataSE$new(data = adata, config = config))
+  } else if (class_type == "LFQData") {
+    return(LFQData$new(data = adata, config = config))
+  } else {
+    return(list(data = adata, config = config))
+  }
 }
 #' Simulate data, protein, with config
 #' @param description Nprot number of proteins
@@ -232,7 +239,14 @@ sim_lfq_data_protein_config <- function(Nprot = 10,
 
   config <- AnalysisConfiguration$new(atable)
   adata <- setup_analysis(data, config)
-  return(list(data = adata, config = config))
+  class_type <- getOption("prolfqua.default_class", default = "list")
+  if (class_type == "LFQDataSE") {
+    return(LFQDataSE$new(data = adata, config = config))
+  } else if (class_type == "LFQData") {
+    return(LFQData$new(data = adata, config = config))
+  } else {
+    return(list(data = adata, config = config))
+  }
 }
 
 
@@ -301,7 +315,14 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
 
   config <- AnalysisConfiguration$new(atable)
   adata <- setup_analysis(data, config)
-  return(list(data = adata, config = config))
+  class_type <- getOption("prolfqua.default_class", default = "list")
+  if (class_type == "LFQDataSE") {
+    return(LFQDataSE$new(data = adata, config = config))
+  } else if (class_type == "LFQData") {
+    return(LFQData$new(data = adata, config = config))
+  } else {
+    return(list(data = adata, config = config))
+  }
 }
 
 
@@ -333,7 +354,7 @@ sim_build_models_lm <- function(model = c("parallel2","parallel3","factors", "in
       with_missing = with_missing,
       weight_missing = weight_missing)
   }
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  istar <- prolfqua::as_lfq(istar)
 
   model <- if (model == "factors") {
     "~ Treatment + Background"
@@ -379,7 +400,7 @@ sim_build_models_lmer <- function(model = c("parallel2", "parallel3","factors", 
   } else {
     istar <- prolfqua::sim_lfq_data_peptide_config()
   }
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  istar <- prolfqua::as_lfq(istar)
 
   model <- if (model == "factors") {
     "~ Treatment + Background + (1|peptide_Id) + (1|sampleName)"

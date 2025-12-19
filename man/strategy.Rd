@@ -77,7 +77,7 @@ tmp$isSingular
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 istar$data <- encode_bin_resp(istar$data, istar$config)
-istar <- LFQData$new(istar$data, istar$config)
+istar <- as_lfq(istar)
 df <- istar$summarize_hierarchy()
 df2 <- df[df[[ncol(df)]] > 1,  ]
 istar2 <- istar$get_subset(df2)
@@ -90,7 +90,7 @@ modelFunction$model_fun(nestProtein$data[[4]])
 
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
-istar <- prolfqua::LFQData$new(istar$data,istar$config)
+istar <- prolfqua::as_lfq(istar)
 istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
 dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
 istar$factors()

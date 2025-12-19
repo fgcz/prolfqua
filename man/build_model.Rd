@@ -7,11 +7,11 @@
 build_model(
   data,
   model_strategy,
-  subject_Id = if ("LFQData" \%in\% class(data)) {
+  subject_Id = if (inherits(data, c("LFQData", "LFQDataSE"))) {
      data$subject_Id()
- } else {
-    
-    "protein_Id"
+ }
+    else {
+     "protein_Id"
  },
   modelName = model_strategy$model_name
 )
