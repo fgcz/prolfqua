@@ -1,54 +1,42 @@
 name: R-CMD-check-prolfqua
-env:
-    ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-    R_LIBS_SITE: '/home/runner/work/_temp/Library/'
+
 on:
   push:
     branches: [ Modelling2R6 ]
   pull_request:
     branches: [ Modelling2R6 ]
+
 jobs:
-  build:
+  R-CMD-check:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        r-version: [4.4.0]
+        r-version: ['4.5.2']
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.r-version }}
-      - name: Install Linux packages
-        run: sudo apt-get install -y unzip curl libcurl4-openssl-dev libicu-dev pandoc wget unzip texlive texlive-latex-extra texlive-fonts-extra texlive-xetex lmodern
-      - name: install remotes
-        run: install.packages(c("remotes","rcmdcheck","covr","ggpubr"))
-        shell: Rscript {0}
-      - name: install local prolfqua
-        run: remotes::install_local('.', dependencies = TRUE)
-        shell: Rscript {0}
-      - name: rcmdcheck::rcmdcheck
-        run: rcmdcheck::rcmdcheck(error_on = "never", check_dir = "check")
-        shell: Rscript {0}
-      - name: codecov
-        run: covr::codecov(type = "all", token=Sys.getenv('CODECOV_TOKEN'))
-        shell: Rscript {0}
-      - name: List files in home directory
-        run: find $R_LIBS_SITE -type f > files.txt
-      - uses: actions/upload-artifact@v4
-        with:
-            name: files
-            path: files.txt
-            if-no-files-found: warn
 
-      - uses: actions/upload-artifact@v4
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libicu-dev pandoc
+
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
         with:
-            name: prolfqua CI Rcheck directory
-            path: check/prolfqua.Rcheck
-            if-no-files-found: warn
-#      - uses: actions/upload-artifact@v3
-#        with:
-#            name: R_LIBS_SITE directory
-#            path: /home/runner/work/_temp/Library/
-#            if-no-files-found: warn
+          extra-packages: any::rcmdcheck, any::covr
+
+      - name: R CMD check
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          error-on: '"error"'
+
+      - name: Code coverage
+        if: success()
+        run: covr::codecov(type = "all", token = Sys.getenv('CODECOV_TOKEN'))
+        shell: Rscript {0}

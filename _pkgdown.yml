@@ -1,0 +1,16 @@
+url: https://wolski.github.io/prolfqua/
+
+template:
+  bootstrap: 5
+
+development:
+  mode: auto
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/wolski/prolfqua
