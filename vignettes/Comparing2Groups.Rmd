@@ -262,15 +262,13 @@ This example will run only if the following packages are installed on you machin
 
 
 ```{r prepForGSEA}
-#evalAll <- require("clusterProfiler") & require("org.Sc.sgd.db") & require("prora")
-evalAll <- require("clusterProfiler") & require("org.Sc.sgd.db2") & require("prora")
+evalAll <- requireNamespace("clusterProfiler", quietly = TRUE) &
+  requireNamespace("org.Sc.sgd.db", quietly = TRUE) &
+  requireNamespace("prora", quietly = TRUE)
 
 ```
 
 ```{r clusterProfiler, eval=evalAll}
-library(clusterProfiler)
-library(org.Sc.sgd.db)
-
 bb <- prolfqua::get_UniprotID_from_fasta_header(merged$merged$get_contrasts(),
                                              idcolumn = "protein_Id")
 bb <- prora::map_ids_uniprot(bb)
@@ -278,16 +276,16 @@ ranklist <- bb$statistic
 names(ranklist) <- bb$P_ENTREZGENEID
 res <- clusterProfiler::gseGO(
   sort(ranklist, decreasing = TRUE),
-  OrgDb = org.Sc.sgd.db,
+  OrgDb = org.Sc.sgd.db::org.Sc.sgd.db,
   ont = "ALL")
 ```
 
 ```{r ridgeplot, fig.cap="ridgeplot", eval = evalAll}
-ridgeplot( res )
+enrichplot::ridgeplot( res )
 ```
 
 ```{r dotplot, fig.cap = "Dotplot", eval = evalAll}
-dotplot(res , showCategory = 30)
+enrichplot::dotplot(res , showCategory = 30)
 ```
 
 ```{r upsetplot, fig.cap="Upset Plot", eval = evalAll}
