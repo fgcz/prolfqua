@@ -33,7 +33,7 @@ build-vignettes: document
 	mkdir -p inst/doc
 	cp doc/*.html doc/*.Rmd doc/*.R inst/doc/ 2>/dev/null || true
 
-check-fast: build-vignettes
+check-fast: document
 	Rscript -e "devtools::check(build_args = '--no-build-vignettes', args = '--no-vignettes')"
 
 test: document

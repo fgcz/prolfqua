@@ -63,36 +63,45 @@ function_lod_quantile <- function(data_matrix, percent = 10) {
 
   return(result_list)
 }
-#' impute using zCompositions
+#' Impute missing values using zCompositions
+#'
+#' Replaces missing values in an LFQData object using methods from the
+#' zCompositions package. The limit of detection (LOD) can be estimated
+#' globally or per-sample using quantiles.
+#'
 #' @param lfqdata LFQData object containing the data to impute
-#' @param method imputation method passed to zCompositions (default "multRepl")
+#' @param method imputation method: "multRepl" (multiplicative replacement),
+#'   "GBM", "SQ", "BL", or "CZM" (passed to zCompositions)
 #' @param lod limit of detection strategy, either "global" or "quantile"
+#' @return the modified LFQData object (lfqdata), with imputed values
 #' @export
 #'
 #' @examples
-#' # example code
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(dd$data, dd$config)
+#' if (requireNamespace("zCompositions", quietly = TRUE)) {
+#'   wide_before <- lfqdata$to_wide(as.matrix = TRUE)
+#'   has_na_before <- any(is.na(wide_before$data))
+#'   lfqdata <- impute_with_zcomp(lfqdata, method = "multRepl", lod = "global")
+#'   wide_after <- lfqdata$to_wide(as.matrix = TRUE)
+#'   has_na_after <- any(is.na(wide_after$data))
+#'   stopifnot(has_na_before || !has_na_after)
+#'   stopifnot(!has_na_after)
+#' }
 #'
-
 impute_with_zcomp <- function(lfqdata,
-                              method = c("multRepl","GBM","SQ","BL","CZM" ) ,
+                              method = c("multRepl","GBM","SQ","BL","CZM") ,
                               lod = c("global","quantile")) {
 
   lod <- match.arg(lod)
   method <- match.arg(method)
-  method <- "SQ"
-  lod <- "global"
   wide <- lfqdata$to_wide(as.matrix = TRUE)
 
   if (!any(is.na(wide$data))) {
-    return(t(wide$data))
+    return(lfqdata)
   }
-  # TODO: check
-  data_matrix <- t(wide$data)
-  data_matrix <- wide$data
 
-  #if (method %in% c("lrEM", "lrDA")) {
+  data_matrix <- wide$data
   dl <- sapply(function_lod_quantile(data_matrix), median)
 
   if (lod == "global") {
@@ -102,52 +111,46 @@ impute_with_zcomp <- function(lfqdata,
     }
   }
 
-  data_matrix[is.na(data_matrix)] <- NA
-
-  # Pre-process for methods that need complete data
   if (method == "multRepl") {
     imputed_data <- zCompositions::multRepl(data_matrix, dl = dl, label = NA)
   } else if (method %in% c("GBM","SQ","BL","CZM")) {
     imputed_data <- zCompositions::cmultRepl(data_matrix, label = NA, method = method)
   }
 
-
   lfqdata$data <- response_matrix_as_tibble(
     imputed_data,
     paste0(lfqdata$response(),"_imputed"),
     lfqdata$conf, lfqdata$data)
 
-  return(imputed_data)
-
-
+  return(lfqdata)
 }
-
-
-# Example usage:
-#
-# # Simple usage - no detection limits needed for GS method
-# imputed_matrix <- impute_with_zcomp(data, config, method = "GS")
-#
-# # lrEM method with auto-estimated detection limits
-# imputed_matrix <- impute_with_zcomp(data, config, method = "lrEM")
-#
-# # Custom detection limit estimation
-# imputed_matrix <- impute_with_zcomp(data, config, method = "lrEM",
-#                                     dl_method = "quantile")
-#
-# # Provide your own detection limits
-# custom_dl <- c(0.01, 0.02, 0.005, ...)  # One per variable
-# imputed_matrix <- impute_with_zcomp(data, config, method = "lrEM", dl = custom_dl)
-#
-# # For quick testing without worrying about detection limits:
-# imputed_matrix <- impute_with_zcomp(data, config, method = "GS", verbose = FALSE)
 
 # LFQDataImp ----
 #'
 #' Decorates LFQData with methods to impute missing values
 #'
+#' Use `lfqdata$get_Imputer()` to create an instance. The imputer works on
+#' a deep copy of the data, so the original LFQData is not modified.
+#'
+#' Typical workflow:
+#' \preformatted{
+#' imp <- lfqdata$get_Imputer()
+#' imp$impute(method = "multRepl", lod = "global")
+#' imp$lfq$get_Plotter()$pca()
+#' }
+#'
 #' @export
 #' @family LFQData
+#'
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' lfqdata <- LFQData$new(dd$data, dd$config)
+#' imp <- LFQDataImp$new(lfqdata)
+#' if (requireNamespace("zCompositions", quietly = TRUE)) {
+#'   imp$impute(method = "multRepl", lod = "global")
+#'   wide <- imp$lfq$to_wide(as.matrix = TRUE)
+#'   stopifnot(!any(is.na(wide$data)))
+#' }
 #'
 LFQDataImp <- R6::R6Class(
   "LFQDataImp",
@@ -156,10 +159,18 @@ LFQDataImp <- R6::R6Class(
     lfq = NULL,
     #' @description
     #' initialize
-    #' @param lfq lfqdata
-    #' @param prefix datasetname
-    initialize = function(lfq, prefix = "protein"){
-      self$lfq=lfq$get_copy()
-      self$prefix = prefix
+    #' @param lfqdata LFQData object
+    initialize = function(lfqdata){
+      self$lfq = lfqdata$clone(deep = TRUE)
+    },
+    #' @description
+    #' Impute missing values using zCompositions
+    #' @param method imputation method (default "multRepl")
+    #' @param lod limit of detection strategy (default "global")
+    #' @return invisible(self) for chaining
+    impute = function(method = c("multRepl","GBM","SQ","BL","CZM"),
+                      lod = c("global","quantile")) {
+      self$lfq <- impute_with_zcomp(self$lfq, method = method, lod = lod)
+      invisible(self)
     })
 )

@@ -112,19 +112,20 @@ LFQDataPlotter <- R6::R6Class(
     #' PCA plot
     #'
     #' A PCA is applied and the first and second principal component are shown.
+    #' Features with missing values are removed. For PCA with all features,
+    #' impute first using \code{\link{LFQDataImp}}.
     #'
     #' @seealso \code{\link{plot_pca}}
     #'
     #' @param add_txt show sample names
     #' @param PC default c(1,2) - first and second principal component
-    #' @param impute default TRUE use nipals imputation if data has missing values
-    #' @param nudge default 0.1 nudge point lables
+    #' @param nudge default 0.1 nudge point labels
     #' @return ggplot
-    pca = function(PC = c(1,2), add_txt = TRUE, impute = TRUE, nudge = 0.1){
+    pca = function(PC = c(1,2), add_txt = TRUE, nudge = 0.1){
       fig <- prolfqua::plot_pca(self$lfq$data,
                                 self$lfq$config,
                                 PC = PC,
-                                add_txt = add_txt, impute = impute, nudge = nudge)
+                                add_txt = add_txt, nudge = nudge)
       return(fig)
     },
     #' @description

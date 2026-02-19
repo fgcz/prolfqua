@@ -10,7 +10,6 @@ plot_pca(
   PC = c(1, 2),
   add_txt = FALSE,
   plotly = FALSE,
-  impute = TRUE,
   nudge = 0.1
 )
 }
@@ -23,20 +22,16 @@ plot PCA
 istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
 config <- istar$config
 analysis <- istar$data
-tmp <- plot_pca(analysis, config, add_txt= TRUE, impute = FALSE)
-print(tmp)
-tmp <- plot_pca(analysis, config, add_txt= TRUE, impute=TRUE, nudge = 0.01)
+tmp <- plot_pca(analysis, config, add_txt= TRUE, nudge = 0.01)
 print(tmp)
 
 stopifnot("ggplot" \%in\% class(tmp) )
 tmp <- plot_pca(analysis, config, add_txt= FALSE)
 stopifnot("ggplot" \%in\% class(tmp) )
-#tmp
 tmp <- plot_pca(analysis, config, PC = c(1,2))
 stopifnot("ggplot" \%in\% class(tmp) )
 tmp <- plot_pca(analysis, config, PC = c(2,40))
 print(tmp)
-#stopifnot(is.null(tmp))
 
 }
 \seealso{

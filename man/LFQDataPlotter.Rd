@@ -194,8 +194,10 @@ pheatmap
 PCA plot
 
 A PCA is applied and the first and second principal component are shown.
+Features with missing values are removed. For PCA with all features,
+impute first using \code{\link{LFQDataImp}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, impute = TRUE, nudge = 0.1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, nudge = 0.1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -205,9 +207,7 @@ A PCA is applied and the first and second principal component are shown.
 
 \item{\code{add_txt}}{show sample names}
 
-\item{\code{impute}}{default TRUE use nipals imputation if data has missing values}
-
-\item{\code{nudge}}{default 0.1 nudge point lables}
+\item{\code{nudge}}{default 0.1 nudge point labels}
 }
 \if{html}{\out{</div>}}
 }

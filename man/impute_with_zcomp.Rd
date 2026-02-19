@@ -2,7 +2,7 @@
 % Please edit documentation in R/LFQDataImp.R
 \name{impute_with_zcomp}
 \alias{impute_with_zcomp}
-\title{impute using zCompositions}
+\title{Impute missing values using zCompositions}
 \usage{
 impute_with_zcomp(
   lfqdata,
@@ -13,16 +13,30 @@ impute_with_zcomp(
 \arguments{
 \item{lfqdata}{LFQData object containing the data to impute}
 
-\item{method}{imputation method passed to zCompositions (default "multRepl")}
+\item{method}{imputation method: "multRepl" (multiplicative replacement),
+"GBM", "SQ", "BL", or "CZM" (passed to zCompositions)}
 
 \item{lod}{limit of detection strategy, either "global" or "quantile"}
 }
+\value{
+the modified LFQData object (lfqdata), with imputed values
+}
 \description{
-impute using zCompositions
+Replaces missing values in an LFQData object using methods from the
+zCompositions package. The limit of detection (LOD) can be estimated
+globally or per-sample using quantiles.
 }
 \examples{
-# example code
 dd <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(dd$data, dd$config)
+if (requireNamespace("zCompositions", quietly = TRUE)) {
+  wide_before <- lfqdata$to_wide(as.matrix = TRUE)
+  has_na_before <- any(is.na(wide_before$data))
+  lfqdata <- impute_with_zcomp(lfqdata, method = "multRepl", lod = "global")
+  wide_after <- lfqdata$to_wide(as.matrix = TRUE)
+  has_na_after <- any(is.na(wide_after$data))
+  stopifnot(has_na_before || !has_na_after)
+  stopifnot(!has_na_after)
+}
 
 }

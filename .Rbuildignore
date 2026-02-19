@@ -21,3 +21,5 @@ R/tidyMS_stanr\.R
 ^CODE_OF_CONDUCT\.md$
 ^Makefile$
 ^conda$
+^TODO\.md$
+^data-raw$
