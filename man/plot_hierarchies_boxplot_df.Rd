@@ -16,9 +16,9 @@ plot_hierarchies_boxplot_df(
 
 \item{config}{AnalysisConfiguration}
 
-\item{facet_grid_on}{default NULL}
+\item{hierarchy}{e.g. protein_Id default hierarchy_keys_depth}
 
-\item{hiearchy}{e.g. protein_Id default hierarchy_keys_depth}
+\item{facet_grid_on}{default NULL}
 }
 \description{
 generates peptide level plots for all Proteins

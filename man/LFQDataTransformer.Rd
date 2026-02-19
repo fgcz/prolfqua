@@ -60,6 +60,7 @@ if(require("vsn")){
  res$lfq$get_Plotter()$intensity_distribution_density()
  res$get_scales()
 }
+\dontrun{
 if(require("preprocessCore")){
 quant <- function(y){
  ynorm <- preprocessCore::normalize.quantiles(y)
@@ -69,6 +70,7 @@ quant <- function(y){
 }
  res <- lfqTrans$intensity_matrix( .func = quant)
  res$lfq$get_Plotter()$intensity_distribution_density()
+}
 }
 
 

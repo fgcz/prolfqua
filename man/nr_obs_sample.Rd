@@ -6,6 +6,13 @@
 \usage{
 nr_obs_sample(data, config, new_child = config$table$nr_children)
 }
+\arguments{
+\item{data}{data.frame with peptide-level data}
+
+\item{config}{AnalysisConfiguration}
+
+\item{new_child}{column name for the nr_children count}
+}
 \description{
 Aggregates e.g. protein abundances from peptide abundances
 }

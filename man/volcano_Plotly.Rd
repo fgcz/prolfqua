@@ -26,11 +26,23 @@ volcano_plotly(
 
 \item{significance}{significance}
 
+\item{contrast}{column with contrast labels}
+
 \item{proteinID}{column with protein ids}
+
+\item{color}{column used for colouring points}
+
+\item{palette}{named colour vector for the colour aesthetic}
 
 \item{xintercept}{vertical abline at x}
 
 \item{yintercept}{horizontal abline at y}
+
+\item{minsignificance}{minimum significance value (floor for -log10 axis)}
+
+\item{title_size}{font size of the subplot title annotation}
+
+\item{group}{crosstalk group name for linked brushing}
 }
 \description{
 volcano plotly

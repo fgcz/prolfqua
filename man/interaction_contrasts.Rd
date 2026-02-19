@@ -6,6 +6,11 @@
 \usage{
 interaction_contrasts(primary_levels, secondary_levels)
 }
+\arguments{
+\item{primary_levels}{character vector of primary factor levels}
+
+\item{secondary_levels}{character vector of secondary factor levels}
+}
 \description{
 Interaction contrasts (difference of differences)
 }

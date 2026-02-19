@@ -10,6 +10,13 @@ impute_with_zcomp(
   lod = c("global", "quantile")
 )
 }
+\arguments{
+\item{lfqdata}{LFQData object containing the data to impute}
+
+\item{method}{imputation method passed to zCompositions (default "multRepl")}
+
+\item{lod}{limit of detection strategy, either "global" or "quantile"}
+}
 \description{
 impute using zCompositions
 }

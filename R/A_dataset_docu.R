@@ -25,6 +25,8 @@
 #' @importFrom tibble add_column as_tibble column_to_rownames tibble
 #' @importFrom stats anova coef coefficients confint cor.test df.residual ecdf formula lm mad median medpolish
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
+#' @importFrom stats approx df fisher.test ftable lm.fit pchisq pf pnorm qf rgeom rlnorm rnorm uniroot
+#' @importFrom methods is
 #' @importFrom stringr str_trim
 #' @importFrom utils combn data head read.csv tail unzip
 #' @importFrom yaml write_yaml
@@ -32,6 +34,15 @@ NULL
 
 
 ## @importFrom vsn justvsn
+
+# Suppress R CMD check NOTEs for variables used in NSE (dplyr/ggplot2)
+utils::globalVariables(c(
+  ".", ".env", "Freq", "Group", "PC", "Replicate",
+  "group", "isSingular", "linear_model", "meanAbundance",
+  "nr_peptides", "percent_variance_explained",
+  "reference_mean", "reference_median",
+  "subject", "y"
+))
 
 #' Internal Functions by category
 #' @family aggregation
@@ -63,9 +74,8 @@ NULL
 #' SAINT express output
 #'
 #' SAINT express output produced by running the function
-#' \code{\link{runSaint}}
+#' runSaint
 #'
-#' @seealso \code{\link{runSaint}}
 #' @family data
 #' @keywords internal
 #' @docType data

@@ -19,9 +19,9 @@ scale_with_subset(
 
 \item{config}{configuration}
 
-\item{get_scales}{return a list of transformed data and the scaling parameters}
+\item{preserveMean}{default FALSE - sets mean to zero}
 
-\item{perserveMean}{default FASE - sets mean to zero}
+\item{get_scales}{return a list of transformed data and the scaling parameters}
 }
 \description{
 this should reduce the overall variance.

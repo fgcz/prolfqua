@@ -8,7 +8,8 @@
 #'
 #'
 #'
-#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
+#'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 #' tmp <- LFQData$new(istar$data, istar$config)
 #' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
@@ -21,7 +22,8 @@
 #' mod$anova_histogram()
 #' mod$write_coef_figures(tempdir())
 #'
-#' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+#' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
+#'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 #' tmp <- LFQData$new(istar$data, istar$config)
 #' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
@@ -39,21 +41,19 @@ ModelFirth <- R6::R6Class(
   "ModelFirth",
   inherit = ModelInterface,
   public = list(
-    #' @field modelDF data.frame with modelling data and model.
+    #' @field models data.frame with modelling data and model.
     models = NULL,
     #' @field modelName name of model
     modelName = character(),
     #' @field subject_Id e.g. protein_Id
     subject_Id = character(),
-    #' @field model_strategy function to create the models
     #' @field anova_df function to compute anova
     anova_df = NULL,
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
     #' @description
     #' initialize
-    #' @param modelDF dataframe with modelling results
-    #' @param model_strategy model_strategy see \code{\link{strategy_lmer}}
+    #' @param models dataframe with modelling results
     #' @param modelName name of model
     #' @param subject_Id subject column name
     #' @param p.adjust method to adjust p-values

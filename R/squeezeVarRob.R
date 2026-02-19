@@ -280,7 +280,7 @@ fitFDistRobustly_LG <- function(x, df1, covariate=NULL, winsor.tail.p=c(0.05,0.1
     ztrend <- mean(z,trim=winsor.tail.p[2])
     zresid <- z-ztrend
   } else {
-    lo <- loessFit(z,covariate,span=0.4)
+    lo <- limma::loessFit(z,covariate,span=0.4)
     ztrend <- lo$fitted
     zresid <- lo$residual
   }
@@ -486,7 +486,6 @@ fitFDistRobustly_LG <- function(x, df1, covariate=NULL, winsor.tail.p=c(0.05,0.1
 #' @param covariate If \code{non-NULL}, \code{var.prior} will depend on this numeric covariate. Otherwise, \code{var.prior} is constant.
 #' @param robust A logical indicating wheter the estimation of \code{df.prior} and \code{var.prior} should be robustified against outlier sample variances. Defaults to \code{FALSE}.
 #' @param winsor.tail.p A numeric vector of length 1 or 2, giving left and right tail proportions of \code{x} to Winsorize. Used only when \code{robust=TRUE}.
-#' @param k A numeric value indicating that the calculation of the robust squeezed variances should Winsorize at \code{k} standard deviations.
 #' @param min_df A numeric value indicating the minimal degrees of freedom that will be taken into account for calculating the prior degrees of freedom and prior variance.
 #' @return A list with components:
 #' \code{var.post} A numeric vector of posterior variances.

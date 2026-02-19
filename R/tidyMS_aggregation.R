@@ -313,7 +313,7 @@ response_as_matrix <- function(pdata, config) {
 #' @param pdata data.frame
 #' @param response column name with intensities
 #' @param feature column name e.g. peptide ids
-#' @param samples column name e.g. sampleName
+#' @param sampleName column name e.g. sampleName
 #' @return data.frame
 #' @export
 #' @keywords internal
@@ -486,19 +486,23 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' @param pdata data
 #' @param response intensities
 #' @param feature e.g. peptideIDs.
-#' @param sample e.g. sampleName
+#' @param samples e.g. sampleName
 #' @importFrom MASS rlm
 #' @export
 #' @examples
 #'
-#' xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4), samples = rep(letters[1:4], 5))
+#' xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4),
+#'   samples = rep(letters[1:4], 5))
 #'
 #' bb <- rlm_estimate(xx, "response", "feature", "samples", maxIt = 20)
 #'
-#' xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4), sampleName = rep(letters[1:4], 5))
+#' xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4),
+#'   sampleName = rep(letters[1:4], 5))
 #' rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
-#' rlm_estimate(prolfqua_data("data_checksummarizationrobust87"), "log2Area", "peptide_Id", "sampleName")
-#' rlm_estimate(prolfqua_data("data_checksummarizerobust69"), "log2Area", "peptide_Id", "sampleName")
+#' rlm_estimate(prolfqua_data("data_checksummarizationrobust87"),
+#'   "log2Area", "peptide_Id", "sampleName")
+#' rlm_estimate(prolfqua_data("data_checksummarizerobust69"),
+#'   "log2Area", "peptide_Id", "sampleName")
 #' res <- vector(100, mode = "list")
 #' for (i in seq_len(100)) {
 #'   xx3 <- xx2
@@ -541,7 +545,7 @@ rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
 #' @seealso \code{\link{rlm_estimate}}
 #' @export
 #' @param pdata data.frame
-#' @param config \code{\link{AnalysisConfiguraton}}
+#' @param config \code{\link{AnalysisConfiguration}}
 #' @family aggregation
 #' @keywords internal
 #' @examples
@@ -678,9 +682,10 @@ estimate_intensity <- function(data, config, .func) {
 #' Plot feature data and result of aggregation
 #'
 #' @param data data.frame before aggregation
-#' @param config AnalyisConfiguration
+#' @param config AnalysisConfiguration
 #' @param data_aggr data.frame after aggregation
-#' @param config_aggr AnalysisConfiguration of aggregated data
+#' @param config_reduced AnalysisConfiguration of aggregated data
+#' @param show.legend logical, show legend in plot
 #' @family plotting
 #' @family aggregation
 #' @keywords internal

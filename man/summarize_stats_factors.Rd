@@ -6,6 +6,11 @@
 \usage{
 summarize_stats_factors(pdata, config)
 }
+\arguments{
+\item{pdata}{data.frame}
+
+\item{config}{AnalysisConfiguration}
+}
 \description{
 compute var sd etc for all factor levels
 }

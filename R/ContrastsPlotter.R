@@ -158,7 +158,7 @@ ContrastsPlotter <- R6::R6Class(
     #' volcano plots (fold change vs FDR)
     #' @param colour column name with color information default modelName
     #' @param legend default TRUE
-    #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
+    #' @param scales default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument
     #' @param min_score replace p.values or FDR's smaller then min_score with min_score (default 0.0001).
     volcano = function(colour,
                        legend = TRUE,
@@ -181,7 +181,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @param colour column in contrast matrix with colour coding
     #' @return list of ggplots
     #' @param legend default TRUE
-    #' @param scales default fixed \code{\link{facet_wrap}}, scales argument
+    #' @param scales default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument
     #' @param min_score replace p.values or FDR's smaller then min_score with min_score (default 0.0001).
     volcano_plotly = function(colour,
                               legend = TRUE,

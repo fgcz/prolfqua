@@ -322,7 +322,8 @@ do_confusion_c <- function(
 #' bb <- benchmark$pAUC_summaries()
 #' benchmark$complete(FALSE)
 #' benchmark$smc$summary
-#' benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),list(score = "statistic", xlim = c(-3,10) )))
+#' benchmark$plot_score_distribution(list(list(score = "estimate", xlim = c(-1,2) ),
+#'   list(score = "statistic", xlim = c(-3,10) )))
 #' benchmark$plot_score_distribution()
 #'
 #'
@@ -335,7 +336,8 @@ do_confusion_c <- function(
 #' benchmark$plot_precision_recall()
 #'
 #' benchmark$plot_FDRvsFDP()
-#' benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),list(score = "statistic", ylim = c(-3,10) )))
+#' benchmark$plot_scatter(list(list(score = "estimate", ylim = c(-1,2) ),
+#'   list(score = "statistic", ylim = c(-3,10) )))
 #' benchmark$complete(FALSE)
 #' benchmark$missing_contrasts()
 #' stopifnot(nrow(benchmark$pAUC_summaries()$ftable$content) == 4 * (4 + 1))

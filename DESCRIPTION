@@ -20,6 +20,7 @@ Description: The prolfqua package integrates essential steps
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+LazyDataCompression: xz
 VignetteBuilder: knitr
 URL: https://github.com/wolski/prolfqua
 BugReports: https://github.com/wolski/prolfqua/issues
@@ -27,9 +28,7 @@ Imports:
     bookdown,
     broom,
     conflicted,
-    data.table,
     dplyr,
-    dtplyr,
     DT,
     forcats,
     gridExtra,
@@ -45,31 +44,43 @@ Imports:
     logistf,
     MASS,
     multcomp,
-    nipals,
     pheatmap,
     plotly,
     progress,
     purrr,
     readr,
-    readxl,
     rlang,
     statmod,
+    stringi,
     stringr,
+    tidyselect,
     tidyr,
     tibble,
+    methods,
     UpSetR,
     yaml,
     writexl
 Suggests:
     corrplot,
+    crosstalk,
+    data.table,
     docopt,
+    dtplyr,
+    KernSmooth,
     knitr,
+    nipals,
+    readxl,
     rmarkdown,
     S4Vectors,
     testthat,
     SummarizedExperiment,
+    clusterProfiler,
+    limma,
+    org.Sc.sgd.db,
     proDA,
-    vsn
+    prora,
+    vsn,
+    zCompositions
 RoxygenNote: 7.3.3
 Roxygen: list(r6 = TRUE)
 Depends: 

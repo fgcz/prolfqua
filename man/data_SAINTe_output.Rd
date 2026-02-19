@@ -12,11 +12,9 @@ data_SAINTe_output
 }
 \description{
 SAINT express output produced by running the function
-\code{\link{runSaint}}
+runSaint
 }
 \seealso{
-\code{\link{runSaint}}
-
 Other data: 
 \code{\link{PACKAGE_DATA}},
 \code{\link{data_IonstarProtein_subsetNorm}},

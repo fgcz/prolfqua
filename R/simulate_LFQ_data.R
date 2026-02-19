@@ -10,10 +10,14 @@
 
 #' simulate protein level data with two groups
 #' @export
-#' @param Nprot number of porteins
+#' @param Nprot number of proteins
 #' @param N group size
 #' @param fc D - down regulation N - matrix,  U -  regulation
 #' @param prop proportion of down (D), up (U) and not regulated (N)
+#' @param mean_prot mean protein abundance on the natural scale
+#' @param sdlog standard deviation of the log-normal abundance distribution
+#' @param probability_of_success probability of success for the geometric distribution of peptide counts
+#' @param PEPTIDE if TRUE, simulate peptide-level data; if FALSE, protein-level
 #' @examples
 #'
 #' res <- sim_lfq_data(Nprot = 10)
@@ -146,9 +150,11 @@ which_missing <- function(x, weight_missing = 0.2){
 
 
 #' Simulate data, protein and peptide, with config
-#' @param description Nprot number of proteins
+#' @param Nprot number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
+#' @param weight_missing controls proportion of missing values; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
+#' @param N number of replicates per group
 #' @export
 #' @examples
 #'
@@ -187,9 +193,11 @@ sim_lfq_data_peptide_config <- function(
   return(list(data = adata, config = config))
 }
 #' Simulate data, protein, with config
-#' @param description Nprot number of proteins
+#' @param Nprot number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
+#' @param weight_missing controls proportion of missing values; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
+#' @param paired if TRUE, add a paired subject factor to the design
 #' @export
 #' @examples
 #'
@@ -236,9 +244,11 @@ sim_lfq_data_protein_config <- function(Nprot = 10,
 }
 
 
-#' Simulate data, protein, with config with 2 factros Treatment and Background
-#' @param description Nprot number of proteins
+#' Simulate data, protein, with config with 2 factors Treatment and Background
+#' @param Nprot number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
+#' @param weight_missing controls proportion of missing values; greater weight means more missingness
+#' @param PEPTIDE if TRUE, simulate peptide-level data; if FALSE, protein-level
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param TWO use two factors for modelling
 #' @export

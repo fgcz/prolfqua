@@ -9,7 +9,7 @@ rlm_estimate_dfconfig(pdata, config, name = FALSE)
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{\code{\link{AnalysisConfiguraton}}}
+\item{config}{\code{\link{AnalysisConfiguration}}}
 }
 \description{
 Estimate protein abundance from peptide abundances using MASS::rlm

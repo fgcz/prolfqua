@@ -21,7 +21,8 @@
 #' istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
 #' dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
 #' istar$factors()
-#' modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ", model_name = "random_example")
+#' modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ",
+#'   model_name = "random_example")
 #' mod <- build_model(
 #'  istar,
 #'  modelFunction)
@@ -161,8 +162,10 @@ strategy_rlm <- function(modelstr,
 #' @rdname strategy
 #' @param modelstr model formula
 #' @param model_name name of model
+#' @param test type of test statistic passed to anova (e.g. "Chisq")
 #' @param family either binomial or quasibinomial
 #' @param multiplier for tuning default is 1.
+#' @param offset offset added to contingency table cells to avoid perfect separation
 #' @param report_columns columns to report
 #' @family modelling
 #' @examples
@@ -330,7 +333,7 @@ model_analyse <- function(
 
   nrcoeff <- function(x) {
     cc <- coefficients(x)
-    if (class(cc) == "numeric") {
+    if (inherits(cc, "numeric")) {
       return(length(cc))
     }else{
       return(ncol(cc[[1]]))
@@ -339,7 +342,7 @@ model_analyse <- function(
 
   nrcoeff_not_NA <- function(x){
     cc <- coefficients(x)
-    if (class(cc) == "numeric") {
+    if (inherits(cc, "numeric")) {
       return(sum(!is.na(cc)))
     }else{
       return(ncol(cc[[1]]))
@@ -501,7 +504,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 #' linfct_matrix_contrasts
 #' @export
 #' @param linfct linear functions as created by linfct_from_model
-#' @param contrast contrasts to determine linear functions for
+#' @param contrasts named character vector of contrasts to determine linear functions for
 #' @param p.message print messages default FALSE
 #'
 #' @family modelling
@@ -643,7 +646,7 @@ linfct_factors_contrasts <- function(m){
 #' my_glht(m, linfct)
 #'
 my_glht <- function(model, linfct , sep = TRUE ) {
-  if (!class(model) == "lm") # fixes issue of mutlcomp not working on factors of class character
+  if (!inherits(model, "lm")) # fixes issue of mutlcomp not working on factors of class character
   {
     warning("USE ONLY WITH LM models ", class(model))
     if (length(lme4::fixef(model)) != ncol(linfct)) {
@@ -683,8 +686,9 @@ my_glht <- function(model, linfct , sep = TRUE ) {
 #' compute contrasts for full models
 #' @param m linear model generated using lm
 #' @param linfct linear function
-#' @param coef use default
-#' @param use default
+#' @param strategy optional strategy for df and sigma computation
+#' @param coef coefficients vector, default from model
+#' @param Sigma.hat variance-covariance matrix, default from model
 #' @param confint which confidence interval to determine
 #'
 #' @export
@@ -748,9 +752,10 @@ my_contrast <- function(m,
 }
 
 #' handles incomplete models by setting coefficients to 0
-#' @param m linear model generated using lm
+#' @param incomplete linear model generated using lm
 #' @param linfct linear function
 #' @param confint confidence interval default 0.95
+#' @param strategy optional strategy for df and sigma computation
 #'
 #' @export
 #' @family modelling
@@ -827,7 +832,7 @@ my_contrast_V2 <- function(m, linfct,confint = 0.95){
 }
 
 #' applies contrast computation using lmerTest::contest function
-#' @param m mixed effects model
+#' @param model mixed effects model
 #' @param linfct linear function
 #' @param ddf method to determine denominator degrees of freedom
 #' @family modelling

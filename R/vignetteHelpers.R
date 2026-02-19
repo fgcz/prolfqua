@@ -89,12 +89,13 @@ scriptCopyHelperVec <-
 #' render MQ Summary.
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#' @param project_config list with workunit_Id project_Id order_Id
+#' @param project_conf list with workunit_Id project_Id order_Id
 #' @param pep are these peptide or protein data
 #' @param dest_path destination path
 #' @param dest_file_name name of pdf file
 #' @param workdir working directory
 #' @param format either pdf or html
+#' @param markdown_path path to the Rmd template file
 #' @family vignetteHelpers
 #' @keywords internal
 #' @export

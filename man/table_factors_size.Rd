@@ -9,7 +9,7 @@ table_factors_size(pdata, configuration)
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{configuration}{AnalysisConfiguration}
 }
 \description{
 Table of distinct factors (sample annotation)

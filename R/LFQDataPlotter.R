@@ -4,6 +4,7 @@
 #'
 #' @family LFQData
 #' @import dplyr
+#' @importFrom UpSetR upset
 #' @examples
 #'
 #' istar <- sim_lfq_data_peptide_config()
@@ -116,7 +117,7 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' @param add_txt show sample names
     #' @param PC default c(1,2) - first and second principal component
-    #' @param nipals default TRUE (use nipals if data is missing else na.omit)
+    #' @param impute default TRUE use nipals imputation if data has missing values
     #' @param nudge default 0.1 nudge point lables
     #' @return ggplot
     pca = function(PC = c(1,2), add_txt = TRUE, impute = TRUE, nudge = 0.1){

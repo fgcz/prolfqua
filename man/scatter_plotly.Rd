@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{scatter_plotly}
 \alias{scatter_plotly}
-\title{volcano plotly}
+\title{scatter plotly}
 \usage{
 scatter_plotly(
   .data,
@@ -19,18 +19,24 @@ scatter_plotly(
 \arguments{
 \item{.data}{data frame}
 
+\item{dx}{column name for the x-axis difference}
+
+\item{dy}{column name for the y-axis difference}
+
+\item{contrast}{column with contrast labels}
+
 \item{proteinID}{column with protein ids}
 
-\item{effect}{effect size x-axis}
+\item{color}{column used for colouring points}
 
-\item{significance}{significance}
+\item{palette}{named colour vector for the colour aesthetic}
 
-\item{xintercept}{vertical abline at x}
+\item{title_size}{font size of the subplot title annotation}
 
-\item{yintercept}{horizontal abline at y}
+\item{group}{crosstalk group name for linked brushing}
 }
 \description{
-volcano plotly
+scatter plotly
 }
 \examples{
 

@@ -27,8 +27,6 @@ summarize_stats_quantiles(
 \item{stats}{summarize either sd or CV}
 
 \item{probs}{for which quantiles 10, 20 etc.}
-
-\item{all}{also compute for all samples (default), or only of conditions (set to FALSE)}
 }
 \description{
 Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.

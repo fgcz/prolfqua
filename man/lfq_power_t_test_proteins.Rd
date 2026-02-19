@@ -19,9 +19,9 @@ lfq_power_t_test_proteins(
 
 \item{power}{of test}
 
-\item{min.n}{smallest n to determine}
+\item{sig.level}{P-Value}
 
-\item{sigma.level}{P-Value}
+\item{min.n}{smallest n to determine}
 }
 \description{
 Compute theoretical sample sizes from factor level standard deviations

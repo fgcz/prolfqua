@@ -13,11 +13,15 @@ sim_lfq_data_peptide_config(
 )
 }
 \arguments{
+\item{Nprot}{number of proteins to simulate}
+
 \item{with_missing}{add missing values, default TRUE}
+
+\item{weight_missing}{controls proportion of missing values; greater weight means more missingness}
 
 \item{seed}{seed for reproducibility, if NULL no seed is set.}
 
-\item{description}{Nprot number of proteins}
+\item{N}{number of replicates per group}
 }
 \description{
 Simulate data, protein and peptide, with config

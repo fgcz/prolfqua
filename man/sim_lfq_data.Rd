@@ -16,13 +16,21 @@ sim_lfq_data(
 )
 }
 \arguments{
-\item{Nprot}{number of porteins}
+\item{Nprot}{number of proteins}
 
 \item{N}{group size}
 
 \item{fc}{D - down regulation N - matrix,  U -  regulation}
 
 \item{prop}{proportion of down (D), up (U) and not regulated (N)}
+
+\item{mean_prot}{mean protein abundance on the natural scale}
+
+\item{sdlog}{standard deviation of the log-normal abundance distribution}
+
+\item{probability_of_success}{probability of success for the geometric distribution of peptide counts}
+
+\item{PEPTIDE}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
 }
 \description{
 simulate protein level data with two groups

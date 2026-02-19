@@ -9,11 +9,13 @@ plot_estimate(data, config, data_aggr, config_reduced, show.legend = FALSE)
 \arguments{
 \item{data}{data.frame before aggregation}
 
-\item{config}{AnalyisConfiguration}
+\item{config}{AnalysisConfiguration}
 
 \item{data_aggr}{data.frame after aggregation}
 
-\item{config_aggr}{AnalysisConfiguration of aggregated data}
+\item{config_reduced}{AnalysisConfiguration of aggregated data}
+
+\item{show.legend}{logical, show legend in plot}
 }
 \description{
 Plot feature data and result of aggregation

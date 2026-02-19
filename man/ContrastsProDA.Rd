@@ -196,7 +196,7 @@ get contrasts
 \if{html}{\out{<a id="method-ContrastsProDA-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsProDA-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get \code{\link{Contrast_Plotter}}
+get \code{\link{ContrastsPlotter}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$get_Plotter(
   fcthreshold = 1,

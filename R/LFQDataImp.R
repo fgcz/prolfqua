@@ -2,6 +2,8 @@
 
 
 #' esitmate lod
+#' @param data_matrix numeric matrix of abundance values
+#' @param prop_na numeric, percentage threshold for NA proportion per row
 #' @export
 #' @examples
 #' # example code
@@ -18,6 +20,8 @@ estimate_lod_global <- function(data_matrix, prop_na = 90) {
 
 
 #' get smallest values per sample
+#' @param data_matrix numeric matrix or data.frame of abundance values
+#' @param percent numeric, percentile cutoff for smallest values
 #' @export
 #' @examples
 #' # example code
@@ -60,6 +64,9 @@ function_lod_quantile <- function(data_matrix, percent = 10) {
   return(result_list)
 }
 #' impute using zCompositions
+#' @param lfqdata LFQData object containing the data to impute
+#' @param method imputation method passed to zCompositions (default "multRepl")
+#' @param lod limit of detection strategy, either "global" or "quantile"
 #' @export
 #'
 #' @examples
@@ -108,7 +115,7 @@ impute_with_zcomp <- function(lfqdata,
   lfqdata$data <- response_matrix_as_tibble(
     imputed_data,
     paste0(lfqdata$response(),"_imputed"),
-    lfqdata$conf, lfdqdata$data)
+    lfqdata$conf, lfqdata$data)
 
   return(imputed_data)
 

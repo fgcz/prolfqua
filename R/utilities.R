@@ -4,8 +4,8 @@
 #' @keywords internal
 #' @family utilities
 #' @return data.frame
-#' @param obj data.frame
-#' @param idcol columns to extract uniprot id's from
+#' @param df data.frame
+#' @param idcolumn character, column name to extract uniprot IDs from
 #'
 #' @examples
 #'
@@ -78,26 +78,27 @@ names_to_matrix <- function(names,split="\\||\\_")
 
 
 #' plot volcano given multiple contrasts
-#' @param misspX data in long format
+#' @param .data data in long format
 #' @param effect column containing effect sizes
-#' @param p.value column containing p-values, q.values etc
+#' @param significance column containing p-values, q.values etc
 #' @param contrast column with contrast
 #' @param colour colouring of points
 #' @param xintercept fc thresholds
-#' @param sigthreshold sigthreshold threshold
+#' @param yintercept significance threshold
 #' @param label column containing labels
 #' @param size controls size of text
 #' @param segment.size controls size of lines
 #' @param segment.alpha controls visibility of lines
-#' @param ablines adds ablines horizontal and vertical
 #' @param scales parameter to ggplot2::facet_wrap
+#' @param maxNrOfSignificantText maximum number of significant labels to display
 #' @export
 #' @keywords internal
 #' @family utilities
 #' @examples
 #'
 #'
-#' show <- data.frame(logFC = rnorm(100, 0, 1), adj.P.Val = runif(100,0,1), Condition = sample(c("a","b")), colour = "forward", Name = paste0("n", 1:100))
+#' show <- data.frame(logFC = rnorm(100, 0, 1), adj.P.Val = runif(100, 0, 1),
+#'   Condition = sample(c("a","b")), colour = "forward", Name = paste0("n", 1:100))
 #' prolfqua::multigroup_volcano( show,
 #' effect="logFC",
 #' significance = "adj.P.Val",
@@ -403,7 +404,7 @@ pairs_w_abline <- function(dataframe,
 panel_hist <- function(x, ...)
 {
   usr <- par("usr")
-  on.exit(par(usr))
+  on.exit(par(usr = usr))
   par(usr = c(usr[seq_len(2)], 0, 1.5))
   h <- hist(x, plot = FALSE)
   breaks <- h$breaks
@@ -423,7 +424,7 @@ panel_hist <- function(x, ...)
 panel_cor <- function(x, y, digits = 2, ...)
 {
   usr <- par("usr")
-  on.exit(par(usr))
+  on.exit(par(usr = usr))
   par(usr = c(0, 1, 0, 1))
   # correlation coefficient
   r <- cor(x, y, use = "pairwise.complete.obs")
@@ -447,7 +448,7 @@ panel_cor <- function(x, y, digits = 2, ...)
 }
 
 #' smoothScatter pairs
-#' @param dataframe data matrix or data.frame as normally passed to pairs
+#' @param data data matrix or data.frame as normally passed to pairs
 #' @param legend  add legend to plots
 #' @param ... params usually passed to pairs
 #' @export
@@ -573,9 +574,15 @@ table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE)
 #' @param .data data frame
 #' @param effect effect size x-axis
 #' @param significance significance
+#' @param contrast column with contrast labels
 #' @param proteinID column with protein ids
+#' @param color column used for colouring points
+#' @param palette named colour vector for the colour aesthetic
 #' @param xintercept vertical abline at x
 #' @param yintercept horizontal abline at y
+#' @param minsignificance minimum significance value (floor for -log10 axis)
+#' @param title_size font size of the subplot title annotation
+#' @param group crosstalk group name for linked brushing
 #' @export
 #' @examples
 #'
@@ -669,13 +676,16 @@ volcano_plotly <- function(.data,
 }
 
 
-#' volcano plotly
+#' scatter plotly
 #' @param .data data frame
-#' @param effect effect size x-axis
-#' @param significance significance
+#' @param dx column name for the x-axis difference
+#' @param dy column name for the y-axis difference
+#' @param contrast column with contrast labels
 #' @param proteinID column with protein ids
-#' @param xintercept vertical abline at x
-#' @param yintercept horizontal abline at y
+#' @param color column used for colouring points
+#' @param palette named colour vector for the colour aesthetic
+#' @param title_size font size of the subplot title annotation
+#' @param group crosstalk group name for linked brushing
 #' @export
 #' @examples
 #'
@@ -740,8 +750,9 @@ scatter_plotly <- function(.data,
 #' @export
 #' @family data
 prolfqua_data <- function(datastr, package="prolfqua"){
-  data(list = datastr, package = package)
-  return(eval(parse(text = datastr)))
+  e <- new.env(parent = emptyenv())
+  data(list = datastr, package = package, envir = e)
+  return(e[[datastr]])
 }
 
 

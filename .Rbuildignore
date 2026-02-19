@@ -14,3 +14,10 @@ vignettes/_CVReport\.Rmd$
 inst/Benchresults/*
 R/tidyMS_stanr\.R
 .github/*
+^\.lintr$
+^\.claude$
+^\.vscode$
+^BinaryFiles$
+^CODE_OF_CONDUCT\.md$
+^Makefile$
+^conda$

@@ -11,6 +11,15 @@ center_to_reference_cfg(
   copy = TRUE
 )
 }
+\arguments{
+\item{lfqdata}{LFQData object containing the data to center}
+
+\item{lfqdareference}{LFQData object containing the reference subset}
+
+\item{summary}{character, summary statistic to use ("median" or "mean")}
+
+\item{copy}{logical, if TRUE return a copy, otherwise modify in place}
+}
 \description{
 takes the mean or median of the lfqdareference per sample and subtracts from lfqdata
 }

@@ -205,9 +205,9 @@ A PCA is applied and the first and second principal component are shown.
 
 \item{\code{add_txt}}{show sample names}
 
-\item{\code{nudge}}{default 0.1 nudge point lables}
+\item{\code{impute}}{default TRUE use nipals imputation if data has missing values}
 
-\item{\code{nipals}}{default TRUE (use nipals if data is missing else na.omit)}
+\item{\code{nudge}}{default 0.1 nudge point lables}
 }
 \if{html}{\out{</div>}}
 }

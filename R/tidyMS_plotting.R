@@ -128,9 +128,12 @@ plot_sample_correlation <- function(pdata, config){
 #'
 #' hierarchy = config$table$hierarchy_keys_depth()
 #' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
-#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = FALSE, show_mean=TRUE)
-#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE)
-#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
+#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
+#'   config, beeswarm = FALSE, show_mean = TRUE)
+#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
+#'   config, beeswarm = TRUE)
+#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
+#'   config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
 #' p
 plot_hierarchies_boxplot <- function(pdata,
                                      title,
@@ -192,7 +195,7 @@ plot_hierarchies_boxplot <- function(pdata,
 #' @export
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#' @param hiearchy e.g. protein_Id default hierarchy_keys_depth
+#' @param hierarchy e.g. protein_Id default hierarchy_keys_depth
 #' @param facet_grid_on default NULL
 #' @family plotting
 #' @keywords internal
@@ -429,7 +432,8 @@ plot_heatmap <- function(data,
 #' @param config dataframe configuration
 #' @param arrange either mean or var
 #' @param not_na if true than arrange by nr of NA's first and then by arrange
-#' @param y.labels show y labels
+#' @param show_rownames logical, show row names in heatmap
+#' @param ... additional arguments passed to pheatmap
 #' @keywords internal
 #'
 #' @family plotting

@@ -18,11 +18,13 @@ my_contrast(
 
 \item{linfct}{linear function}
 
-\item{coef}{use default}
+\item{strategy}{optional strategy for df and sigma computation}
+
+\item{coef}{coefficients vector, default from model}
+
+\item{Sigma.hat}{variance-covariance matrix, default from model}
 
 \item{confint}{which confidence interval to determine}
-
-\item{use}{default}
 }
 \description{
 compute contrasts for full models

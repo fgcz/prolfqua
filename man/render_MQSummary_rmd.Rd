@@ -21,6 +21,8 @@ render_MQSummary_rmd(
 
 \item{config}{AnalysisConfiguration}
 
+\item{project_conf}{list with workunit_Id project_Id order_Id}
+
 \item{pep}{are these peptide or protein data}
 
 \item{dest_path}{destination path}
@@ -31,7 +33,7 @@ render_MQSummary_rmd(
 
 \item{format}{either pdf or html}
 
-\item{project_config}{list with workunit_Id project_Id order_Id}
+\item{markdown_path}{path to the Rmd template file}
 }
 \description{
 render MQ Summary.

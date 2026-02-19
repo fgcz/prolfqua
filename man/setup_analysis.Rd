@@ -9,9 +9,11 @@ setup_analysis(data, configuration, cc = TRUE, from_factors = FALSE)
 \arguments{
 \item{data}{data.frame}
 
+\item{configuration}{AnalysisConfiguration}
+
 \item{cc}{complete cases default TRUE}
 
-\item{config}{AnlalysisConfiguration}
+\item{from_factors}{if TRUE, create sampleName from factor columns}
 }
 \description{
 Extracts columns relevant for a configuration from a data frame

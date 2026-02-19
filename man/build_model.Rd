@@ -17,13 +17,13 @@ build_model(
 )
 }
 \arguments{
-\item{data}{data - a data frame}
+\item{data}{data - a data frame or LFQData object}
+
+\item{model_strategy}{model strategy object (e.g. from strategy_lmer or strategy_lm)}
 
 \item{subject_Id}{grouping variable}
 
 \item{modelName}{model name}
-
-\item{modelFunction}{model function}
 }
 \value{
 a object of class \code{\link{Model}}

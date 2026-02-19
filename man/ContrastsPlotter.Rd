@@ -287,7 +287,7 @@ volcano plots (fold change vs FDR)
 
 \item{\code{legend}}{default TRUE}
 
-\item{\code{scales}}{default fixed \code{\link{facet_wrap}}, scales argument}
+\item{\code{scales}}{default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument}
 
 \item{\code{min_score}}{replace p.values or FDR's smaller then min_score with min_score (default 0.0001).}
 }
@@ -315,7 +315,7 @@ plotly volcano plots
 
 \item{\code{legend}}{default TRUE}
 
-\item{\code{scales}}{default fixed \code{\link{facet_wrap}}, scales argument}
+\item{\code{scales}}{default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument}
 
 \item{\code{min_score}}{replace p.values or FDR's smaller then min_score with min_score (default 0.0001).}
 }

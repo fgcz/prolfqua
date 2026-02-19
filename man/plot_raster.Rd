@@ -22,7 +22,9 @@ plot_raster(
 
 \item{not_na}{if true than arrange by nr of NA's first and then by arrange}
 
-\item{y.labels}{show y labels}
+\item{show_rownames}{logical, show row names in heatmap}
+
+\item{...}{additional arguments passed to pheatmap}
 }
 \description{
 plot heatmap without any clustering (use to show NA's)

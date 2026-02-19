@@ -14,6 +14,21 @@ annotation_add_contrasts(
   interactions = TRUE
 )
 }
+\arguments{
+\item{df}{data.frame with annotation data}
+
+\item{primary_col}{character, name of the primary factor column}
+
+\item{secondary_col}{character, name of the secondary factor column}
+
+\item{prefix}{character, prefix for output naming (default "G_")}
+
+\item{dataset_id}{character, dataset identifier for output naming}
+
+\item{decreasing}{logical, if TRUE sort factor levels in decreasing order}
+
+\item{interactions}{logical, if TRUE include interaction contrasts}
+}
 \description{
 DRY function: process and export annotated contrasts
 }

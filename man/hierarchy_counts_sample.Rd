@@ -9,7 +9,9 @@ hierarchy_counts_sample(pdata, configuration, nr_children = 1)
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{\code{\link{AnalysisConfiguration}}}
+\item{configuration}{\code{\link{AnalysisConfiguration}}}
+
+\item{nr_children}{integer, minimum number of children required}
 }
 \description{
 Count distinct elements for each level of hierarchy per sample
@@ -37,7 +39,8 @@ xl <- dplyr::bind_rows(x1, x2)
 
 xl$nr_children |> table()
 nudgeval <-  -mean(xl$protein_Id) * 0.05
-ggplot2::ggplot(xl, ggplot2::aes(x = sampleName, y = protein_Id, fill = as.character(nr_children)) ) +
+ggplot2::ggplot(xl,
+  ggplot2::aes(x = sampleName, y = protein_Id, fill = as.character(nr_children))) +
  ggplot2::geom_bar(stat = "identity", position = ggplot2::position_dodge())
 
 }

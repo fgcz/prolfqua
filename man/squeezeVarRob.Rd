@@ -25,8 +25,6 @@ squeezeVarRob(
 \item{winsor.tail.p}{A numeric vector of length 1 or 2, giving left and right tail proportions of \code{x} to Winsorize. Used only when \code{robust=TRUE}.}
 
 \item{min_df}{A numeric value indicating the minimal degrees of freedom that will be taken into account for calculating the prior degrees of freedom and prior variance.}
-
-\item{k}{A numeric value indicating that the calculation of the robust squeezed variances should Winsorize at \code{k} standard deviations.}
 }
 \value{
 A list with components:

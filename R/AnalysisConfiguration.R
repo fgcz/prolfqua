@@ -29,6 +29,7 @@ AnalysisConfiguration <- R6::R6Class(
 
 
 #' read minimal yaml to reconstruct configuration
+#' @param dd list with table and parameter elements as produced by R6_extract_values
 #' @export
 #' @examples
 #'
@@ -136,8 +137,9 @@ R6_extract_values <- function(r6class){
 #' Extracts columns relevant for a configuration from a data frame
 #' and create new columns e.g. sampleName column etc.
 #' @param data data.frame
-#' @param config AnlalysisConfiguration
+#' @param configuration AnalysisConfiguration
 #' @param cc complete cases default TRUE
+#' @param from_factors if TRUE, create sampleName from factor columns
 #' @export
 #' @keywords internal
 #' @family configuration
@@ -341,7 +343,7 @@ complete_cases <- function(pdata, config) {
 
 
 #' Sample subset of proteins/peptides/precursors
-#' @param n size of sample
+#' @param size size of sample
 #' @param pdata tidy table
 #' @param config \code{\link{AnalysisConfiguration}}
 #' @export
@@ -362,7 +364,7 @@ sample_subset <- function(size, pdata, config){
 
 #' Table of distinct factors (sample annotation)
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param configuration AnalysisConfiguration
 #'
 #' @export
 #' @keywords internal
@@ -390,7 +392,7 @@ table_factors <- function(pdata, configuration){
 
 #' Table of distinct factors (sample annotation)
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param configuration AnalysisConfiguration
 #'
 #' @export
 #' @keywords internal
@@ -418,7 +420,7 @@ table_factors <- function(pdata, configuration){
 
 #' Table of distinct factors (sample annotation)
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param configuration AnalysisConfiguration
 #'
 #' @export
 #' @keywords internal
@@ -476,7 +478,8 @@ hierarchy_counts <- function(pdata, config){
 #'
 #' @export
 #' @param pdata data.frame
-#' @param config \code{\link{AnalysisConfiguration}}
+#' @param configuration \code{\link{AnalysisConfiguration}}
+#' @param nr_children integer, minimum number of children required
 #'
 #' @keywords internal
 #' @family summary
@@ -503,7 +506,8 @@ hierarchy_counts <- function(pdata, config){
 #'
 #' xl$nr_children |> table()
 #' nudgeval <-  -mean(xl$protein_Id) * 0.05
-#' ggplot2::ggplot(xl, ggplot2::aes(x = sampleName, y = protein_Id, fill = as.character(nr_children)) ) +
+#' ggplot2::ggplot(xl,
+#'   ggplot2::aes(x = sampleName, y = protein_Id, fill = as.character(nr_children))) +
 #'  ggplot2::geom_bar(stat = "identity", position = ggplot2::position_dodge())
 #'
 hierarchy_counts_sample <- function(

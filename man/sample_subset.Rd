@@ -7,11 +7,11 @@
 sample_subset(size, pdata, config)
 }
 \arguments{
+\item{size}{size of sample}
+
 \item{pdata}{tidy table}
 
 \item{config}{\code{\link{AnalysisConfiguration}}}
-
-\item{n}{size of sample}
 }
 \description{
 Sample subset of proteins/peptides/precursors

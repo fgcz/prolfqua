@@ -46,7 +46,7 @@ ContrastsFirth <- R6::R6Class(
     models = NULL,
     #' @field contrasts character with contrasts
     contrasts = character(),
-    #' @field contrastfun function to compute contrasts
+    #' @field modelName name of model
     modelName = character(),
     #' @field subject_Id name of column containing e.g., protein Id's
     subject_Id = character(),

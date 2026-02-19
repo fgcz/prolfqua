@@ -7,11 +7,13 @@
 my_contrast_V1(incomplete, linfct, confint = 0.95, strategy = NULL)
 }
 \arguments{
+\item{incomplete}{linear model generated using lm}
+
 \item{linfct}{linear function}
 
 \item{confint}{confidence interval default 0.95}
 
-\item{m}{linear model generated using lm}
+\item{strategy}{optional strategy for df and sigma computation}
 }
 \description{
 handles incomplete models by setting coefficients to 0

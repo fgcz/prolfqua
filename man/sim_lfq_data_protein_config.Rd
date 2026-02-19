@@ -13,11 +13,15 @@ sim_lfq_data_protein_config(
 )
 }
 \arguments{
+\item{Nprot}{number of proteins to simulate}
+
 \item{with_missing}{add missing values, default TRUE}
+
+\item{weight_missing}{controls proportion of missing values; greater weight means more missingness}
 
 \item{seed}{seed for reproducibility, if NULL no seed is set.}
 
-\item{description}{Nprot number of proteins}
+\item{paired}{if TRUE, add a paired subject factor to the design}
 }
 \description{
 Simulate data, protein, with config

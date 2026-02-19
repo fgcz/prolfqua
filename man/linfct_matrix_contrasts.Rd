@@ -9,9 +9,9 @@ linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
 \arguments{
 \item{linfct}{linear functions as created by linfct_from_model}
 
-\item{p.message}{print messages default FALSE}
+\item{contrasts}{named character vector of contrasts to determine linear functions for}
 
-\item{contrast}{contrasts to determine linear functions for}
+\item{p.message}{print messages default FALSE}
 }
 \description{
 linfct_matrix_contrasts

@@ -55,9 +55,13 @@ strategy_glm(
 
 \item{report_columns}{columns to report}
 
+\item{test}{type of test statistic passed to anova (e.g. "Chisq")}
+
 \item{family}{either binomial or quasibinomial}
 
 \item{multiplier}{for tuning default is 1.}
+
+\item{offset}{offset added to contingency table cells to avoid perfect separation}
 }
 \value{
 list with model function, contrast computation function etc.
@@ -75,7 +79,8 @@ tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 tmp$isSingular
 
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
+  weight_missing = 0.5, seed = 3)
 istar$data <- encode_bin_resp(istar$data, istar$config)
 istar <- LFQData$new(istar$data, istar$config)
 df <- istar$summarize_hierarchy()
@@ -94,7 +99,8 @@ istar <- prolfqua::LFQData$new(istar$data,istar$config)
 istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
 dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
 istar$factors()
-modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ", model_name = "random_example")
+modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ",
+  model_name = "random_example")
 mod <- build_model(
  istar,
  modelFunction)

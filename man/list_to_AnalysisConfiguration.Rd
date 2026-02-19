@@ -6,6 +6,9 @@
 \usage{
 list_to_AnalysisConfiguration(dd)
 }
+\arguments{
+\item{dd}{list with table and parameter elements as produced by R6_extract_values}
+}
 \description{
 read minimal yaml to reconstruct configuration
 }

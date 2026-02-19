@@ -116,8 +116,6 @@ transform_work_intensity <- function(pdata,
 #'
 #' @export
 #' @keywords internal
-#' @param data data
-#' @param config configuration
 #' @examples
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- dd$config_f()
@@ -416,7 +414,7 @@ apply_to_response_matrix <- function(data, config, .func, .funcname = NULL){
 #' @param data the whole dataset
 #' @param subset a subset of the dataset
 #' @param config configuration
-#' @param perserveMean default FASE - sets mean to zero
+#' @param preserveMean default FALSE - sets mean to zero
 #' @param get_scales return a list of transformed data and the scaling parameters
 #' @family preprocessing
 #' @examples
@@ -490,6 +488,10 @@ center_to_reference <- function(
 #' center to reference
 #'
 #' takes the mean or median of the lfqdareference per sample and subtracts from lfqdata
+#' @param lfqdata LFQData object containing the data to center
+#' @param lfqdareference LFQData object containing the reference subset
+#' @param summary character, summary statistic to use ("median" or "mean")
+#' @param copy logical, if TRUE return a copy, otherwise modify in place
 #' @export
 #' @examples
 #' # example code
@@ -732,6 +734,9 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
 
 #' Aggregates e.g. protein abundances from peptide abundances
 #'
+#' @param data data.frame with peptide-level data
+#' @param config AnalysisConfiguration
+#' @param new_child column name for the nr_children count
 #' @export
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
@@ -877,7 +882,8 @@ rank_peptide_by_intensity <- function(pdata, config){
 #' res <- rank_by_NA(res,config)
 #' colnames(res)
 #' x <- res |>
-#'   dplyr::select(config$table$hierarchy_keys()[1], config$table$hierarchy_keys(TRUE)[1], "srm_NrNotNAs") |>
+#'   dplyr::select(config$table$hierarchy_keys()[1],
+#'     config$table$hierarchy_keys(TRUE)[1], "srm_NrNotNAs") |>
 #'   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
 #' stopifnot(sum(!is.na(res[[config$table$get_response()[1]]])) == x)
 #' res |> dplyr::select(c(config$table$hierarchy_keys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>

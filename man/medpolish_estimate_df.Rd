@@ -13,7 +13,7 @@ medpolish_estimate_df(pdata, response, feature, sampleName)
 
 \item{feature}{column name e.g. peptide ids}
 
-\item{samples}{column name e.g. sampleName}
+\item{sampleName}{column name e.g. sampleName}
 }
 \value{
 data.frame

@@ -79,8 +79,8 @@ LR_test <- function(modelProteinF,
 #'
 #'
 #'
-#' @param data data - a data frame
-#' @param modelFunction model function
+#' @param data data - a data frame or LFQData object
+#' @param model_strategy model strategy object (e.g. from strategy_lmer or strategy_lm)
 #' @param subject_Id grouping variable
 #' @param modelName model name
 #' @return

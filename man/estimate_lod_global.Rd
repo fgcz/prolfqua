@@ -6,6 +6,11 @@
 \usage{
 estimate_lod_global(data_matrix, prop_na = 90)
 }
+\arguments{
+\item{data_matrix}{numeric matrix of abundance values}
+
+\item{prop_na}{numeric, percentage threshold for NA proportion per row}
+}
 \description{
 esitmate lod
 }

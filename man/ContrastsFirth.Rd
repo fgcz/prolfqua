@@ -84,20 +84,13 @@ Other modelling:
 
 \item{\code{contrasts}}{character with contrasts}
 
-\item{\code{contrastfun}}{function to compute contrasts}
+\item{\code{modelName}}{name of model}
 
 \item{\code{subject_Id}}{name of column containing e.g., protein Id's}
 
 \item{\code{p.adjust}}{function to adjust p-values (default prolfqua::adjust_p_values)}
 
 \item{\code{contrast_result}}{data frame containing results of contrast computation}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{contrastfun}}{function to compute contrasts}
 }
 \if{html}{\out{</div>}}
 }

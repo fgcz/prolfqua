@@ -88,7 +88,7 @@ ContrastsProDA <- R6::R6Class(
     get_contrasts = function(all = FALSE){
       return(self$contrast_result)
     },
-    #' @description get \code{\link{Contrast_Plotter}}
+    #' @description get \code{\link{ContrastsPlotter}}
     #' @param fcthreshold fold change threshold to show
     #' @param fdrthreshold FDR threshold
     #' @param tstatthreshold t statistics threshold

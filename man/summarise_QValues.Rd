@@ -9,9 +9,7 @@ summarise_QValues(pdata, config)
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{configuration}
-
-\item{data}{data}
+\item{config}{AnalysisConfiguration}
 }
 \value{
 data.frame

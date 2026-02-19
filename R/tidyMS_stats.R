@@ -5,7 +5,8 @@
 #' @examples
 #'
 #' x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
-#' x <- data.frame(nrMeasured =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), meanAbundance = c(-1.94,-1.46,-1.87,-1.45) )
+#' x <- data.frame(nrMeasured = c(1,2,1,1), var = c(NA, 0.0370, NA, NA),
+#'   meanAbundance = c(-1.94,-1.46,-1.87,-1.45))
 #' prolfqua:::pooled_V2(na.omit(x))
 #' prolfqua:::pooled_V1(na.omit(x))
 #' x <- x[1,, drop=FALSE]
@@ -84,7 +85,8 @@ pooled_V1 <- function(x){
 #'
 #' @examples
 #' x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
-#' x <- data.frame(nrMeasured =c(1,2,1,1), var = c(NA, 0.0370, NA, NA), meanAbundance = c(-1.94,-1.46,-1.87,-1.45) )
+#' x <- data.frame(nrMeasured = c(1,2,1,1), var = c(NA, 0.0370, NA, NA),
+#'   meanAbundance = c(-1.94,-1.46,-1.87,-1.45))
 #' compute_pooled(x)
 #' compute_pooled(x, method = "V2")
 #' y <- data.frame(dilution.=c("a","b","c"),
@@ -147,7 +149,6 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #'
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#' @param all also compute for all samples (default), or only of conditions (set to FALSE)
 #' @export
 #' @rdname summarize_stats
 #' @keywords internal
@@ -207,6 +208,8 @@ summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys
 
 #' compute var sd etc for all factor levels
 #'
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
 #' @export
 #' @examples
 #' # example code
@@ -238,7 +241,6 @@ summarize_stats_factors <- function(pdata, config){
 #'
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
-#' @param all also compute for all samples (default), or only of conditions (set to FALSE)
 #' @export
 #' @rdname summarize_stats
 #' @keywords internal
@@ -343,7 +345,7 @@ summarize_stats_quantiles <- function(stats_res,
 #' @param quantile_sd output of `summarize_stats_quantiles`
 #' @param delta effect size you are interested in
 #' @param power of test
-#' @param sigma.level P-Value
+#' @param sig.level P-Value
 #' @param min.n smallest n to determine
 #'
 #' @export
@@ -392,7 +394,8 @@ lfq_power_t_test_quantiles_V2 <-
 #' @param config AnalysisConfiguration
 #' @param delta effect size you are interested in
 #' @param power of test
-#' @param sigma.level P-Value
+#' @param sig.level P-Value
+#' @param probs numeric vector of quantile probabilities
 #'
 #' @export
 #' @keywords internal
@@ -453,7 +456,7 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' @param stats_res data.frame `summarize_stats` output
 #' @param delta effect size you are interested in
 #' @param power of test
-#' @param sigma.level P-Value
+#' @param sig.level P-Value
 #' @param min.n smallest n to determine
 #'
 #' @export

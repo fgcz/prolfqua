@@ -22,7 +22,9 @@ lfq_power_t_test_quantiles(
 
 \item{power}{of test}
 
-\item{sigma.level}{P-Value}
+\item{sig.level}{P-Value}
+
+\item{probs}{numeric vector of quantile probabilities}
 }
 \description{
 Compute theoretical sample sizes from factor level standard deviations

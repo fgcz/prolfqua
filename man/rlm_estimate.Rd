@@ -13,21 +13,25 @@ rlm_estimate(pdata, response, feature, samples, maxIt = 20)
 
 \item{feature}{e.g. peptideIDs.}
 
-\item{sample}{e.g. sampleName}
+\item{samples}{e.g. sampleName}
 }
 \description{
 Estimate e.g. protein abundance from peptides using MASS:rlm
 }
 \examples{
 
-xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4), samples = rep(letters[1:4], 5))
+xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4),
+  samples = rep(letters[1:4], 5))
 
 bb <- rlm_estimate(xx, "response", "feature", "samples", maxIt = 20)
 
-xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4), sampleName = rep(letters[1:4], 5))
+xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4),
+  sampleName = rep(letters[1:4], 5))
 rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
-rlm_estimate(prolfqua_data("data_checksummarizationrobust87"), "log2Area", "peptide_Id", "sampleName")
-rlm_estimate(prolfqua_data("data_checksummarizerobust69"), "log2Area", "peptide_Id", "sampleName")
+rlm_estimate(prolfqua_data("data_checksummarizationrobust87"),
+  "log2Area", "peptide_Id", "sampleName")
+rlm_estimate(prolfqua_data("data_checksummarizerobust69"),
+  "log2Area", "peptide_Id", "sampleName")
 res <- vector(100, mode = "list")
 for (i in seq_len(100)) {
   xx3 <- xx2

@@ -6,6 +6,11 @@
 \usage{
 group_label(primary, secondary)
 }
+\arguments{
+\item{primary}{character, primary factor level}
+
+\item{secondary}{character, secondary factor level}
+}
 \description{
 group label function
 }

@@ -19,9 +19,9 @@ lfq_power_t_test_quantiles_V2(
 
 \item{power}{of test}
 
-\item{min.n}{smallest n to determine}
+\item{sig.level}{P-Value}
 
-\item{sigma.level}{P-Value}
+\item{min.n}{smallest n to determine}
 }
 \description{
 estimate sample sizes

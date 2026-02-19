@@ -72,13 +72,15 @@ contrasts_linfct_firth <- function(models,
 #' @family modelling
 #' @keywords internal
 #' @examples
-#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
+#'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 #' tmp <- LFQData$new(istar$data, istar$config)
 #' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
 #' xx2 <- build_model_logistf(tmp, formula)
 #'
-#' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+#' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
+#'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 #' tmp <- LFQData$new(istar$data, istar$config)
 #' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
@@ -213,6 +215,7 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
 #' @param modelstr model formula
 #' @param model_name name of model
 #' @param report_columns columns to report
+#' @param test type of test statistic to use (e.g. "Chisq")
 #' @family modelling
 #' @examples
 #'
@@ -220,7 +223,8 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
 #' tmp$model_fun(get_formula = TRUE)
 #' tmp$isSingular
 #'
-#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
+#'   weight_missing = 0.5, seed = 3)
 #' istar$data <- encode_bin_resp(istar$data, istar$config)
 #' istar <- LFQData$new(istar$data, istar$config)
 #' df <- istar$summarize_hierarchy()

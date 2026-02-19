@@ -6,6 +6,11 @@
 \usage{
 function_lod_quantile(data_matrix, percent = 10)
 }
+\arguments{
+\item{data_matrix}{numeric matrix or data.frame of abundance values}
+
+\item{percent}{numeric, percentile cutoff for smallest values}
+}
 \description{
 get smallest values per sample
 }

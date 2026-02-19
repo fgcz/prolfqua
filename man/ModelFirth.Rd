@@ -13,7 +13,8 @@ R6 class representing modelling result
 
 
 
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
+  weight_missing = 0.5, seed = 3)
 istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$config$table$bin_resp , "~ group_")
@@ -26,7 +27,8 @@ mod$coef_volcano()
 mod$anova_histogram()
 mod$write_coef_figures(tempdir())
 
-istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
+  weight_missing = 0.5, seed = 3)
 istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$config$table$bin_resp , "~ group_")
@@ -92,26 +94,15 @@ Other modelling:
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{modelDF}}{data.frame with modelling data and model.}
+\item{\code{models}}{data.frame with modelling data and model.}
 
 \item{\code{modelName}}{name of model}
 
 \item{\code{subject_Id}}{e.g. protein_Id}
 
-\item{\code{model_strategy}}{function to create the models}
-
 \item{\code{anova_df}}{function to compute anova}
 
 \item{\code{p.adjust}}{function to adjust p-values}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{modelDF}}{data.frame with modelling data and model.}
-
-\item{\code{model_strategy}}{function to create the models}
 }
 \if{html}{\out{</div>}}
 }
@@ -148,15 +139,13 @@ initialize
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{models}}{dataframe with modelling results}
+
 \item{\code{modelName}}{name of model}
 
 \item{\code{subject_Id}}{subject column name}
 
 \item{\code{p.adjust}}{method to adjust p-values}
-
-\item{\code{modelDF}}{dataframe with modelling results}
-
-\item{\code{model_strategy}}{model_strategy see \code{\link{strategy_lmer}}}
 }
 \if{html}{\out{</div>}}
 }

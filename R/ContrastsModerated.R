@@ -119,7 +119,7 @@ ContrastsModerated <- R6::R6Class(
                                          newname = "FDR.moderated")
       }
       contrast_result <- dplyr::ungroup(contrast_result)
-      if (class(contrast_result$modelName) == "factor") {
+      if (inherits(contrast_result$modelName, "factor")) {
         mname <- factor(paste0(contrast_result$modelName,"_moderated"),
                         levels = paste0(levels(contrast_result$modelName), "_moderated"))
       }else{

@@ -6,6 +6,13 @@
 \usage{
 generate_contrasts(primary_levels, secondary_levels, interactions = TRUE)
 }
+\arguments{
+\item{primary_levels}{character vector of primary factor levels}
+
+\item{secondary_levels}{character vector of secondary factor levels}
+
+\item{interactions}{logical, if TRUE include interaction contrasts}
+}
 \description{
 Combined generate_contrasts
 }

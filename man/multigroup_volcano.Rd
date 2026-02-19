@@ -21,13 +21,19 @@ multigroup_volcano(
 )
 }
 \arguments{
+\item{.data}{data in long format}
+
 \item{effect}{column containing effect sizes}
+
+\item{significance}{column containing p-values, q.values etc}
 
 \item{contrast}{column with contrast}
 
 \item{colour}{colouring of points}
 
 \item{xintercept}{fc thresholds}
+
+\item{yintercept}{significance threshold}
 
 \item{label}{column containing labels}
 
@@ -39,13 +45,7 @@ multigroup_volcano(
 
 \item{scales}{parameter to ggplot2::facet_wrap}
 
-\item{misspX}{data in long format}
-
-\item{p.value}{column containing p-values, q.values etc}
-
-\item{sigthreshold}{sigthreshold threshold}
-
-\item{ablines}{adds ablines horizontal and vertical}
+\item{maxNrOfSignificantText}{maximum number of significant labels to display}
 }
 \description{
 plot volcano given multiple contrasts
@@ -53,7 +53,8 @@ plot volcano given multiple contrasts
 \examples{
 
 
-show <- data.frame(logFC = rnorm(100, 0, 1), adj.P.Val = runif(100,0,1), Condition = sample(c("a","b")), colour = "forward", Name = paste0("n", 1:100))
+show <- data.frame(logFC = rnorm(100, 0, 1), adj.P.Val = runif(100, 0, 1),
+  Condition = sample(c("a","b")), colour = "forward", Name = paste0("n", 1:100))
 prolfqua::multigroup_volcano( show,
 effect="logFC",
 significance = "adj.P.Val",

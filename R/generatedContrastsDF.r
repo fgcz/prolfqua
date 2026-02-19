@@ -1,4 +1,6 @@
 #' group label function
+#' @param primary character, primary factor level
+#' @param secondary character, secondary factor level
 #' @export
 #' @family modelling
 #' @examples
@@ -9,6 +11,8 @@ group_label <- function(primary, secondary) paste0("G_", primary, "_", secondary
 # Generic function to build pairwise contrasts for any two factors
 # Main effect contrasts (averaged across all secondary levels)
 #' main effects contrasts
+#' @param primary_levels character vector of primary factor levels
+#' @param secondary_levels character vector of secondary factor levels
 #' @export
 #' @family contrasts
 #' @examples
@@ -35,6 +39,8 @@ main_effect_contrasts <- function(primary_levels, secondary_levels) {
 }
 
 #' Level-specific contrasts (per secondary level)
+#' @param primary_levels character vector of primary factor levels
+#' @param secondary_levels character vector of secondary factor levels
 #' @export
 #' @family contrasts
 #' @examples
@@ -63,6 +69,8 @@ level_specific_contrasts <- function(primary_levels, secondary_levels) {
 
 
 #' Interaction contrasts (difference of differences)
+#' @param primary_levels character vector of primary factor levels
+#' @param secondary_levels character vector of secondary factor levels
 #' @export
 #' @family contrasts
 #' @examples
@@ -90,6 +98,7 @@ interaction_contrasts <- function(primary_levels, secondary_levels) {
 }
 
 #' Single-factor contrasts (pairwise comparisons)
+#' @param levels character vector of factor levels
 #' @export
 #' @family contrasts
 #' @examples
@@ -114,6 +123,9 @@ generate_contrasts_for_factor <- function(levels) {
 
 
 #' Combined generate_contrasts
+#' @param primary_levels character vector of primary factor levels
+#' @param secondary_levels character vector of secondary factor levels
+#' @param interactions logical, if TRUE include interaction contrasts
 #' @export
 #' @family contrasts
 #' @examples
@@ -200,6 +212,13 @@ x5463yzwer453bbb <- structure(
 )
 
 #' DRY function: process and export annotated contrasts
+#' @param df data.frame with annotation data
+#' @param primary_col character, name of the primary factor column
+#' @param secondary_col character, name of the secondary factor column
+#' @param prefix character, prefix for output naming (default "G_")
+#' @param dataset_id character, dataset identifier for output naming
+#' @param decreasing logical, if TRUE sort factor levels in decreasing order
+#' @param interactions logical, if TRUE include interaction contrasts
 #' @export
 #' @family contrasts
 #' @examples

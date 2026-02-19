@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_lfq_data_2Factor_config}
 \alias{sim_lfq_data_2Factor_config}
-\title{Simulate data, protein, with config with 2 factros Treatment and Background}
+\title{Simulate data, protein, with config with 2 factors Treatment and Background}
 \usage{
 sim_lfq_data_2Factor_config(
   Nprot = 10,
@@ -14,16 +14,20 @@ sim_lfq_data_2Factor_config(
 )
 }
 \arguments{
+\item{Nprot}{number of proteins to simulate}
+
 \item{with_missing}{add missing values, default TRUE}
+
+\item{weight_missing}{controls proportion of missing values; greater weight means more missingness}
+
+\item{PEPTIDE}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
 
 \item{seed}{seed for reproducibility, if NULL no seed is set.}
 
 \item{TWO}{use two factors for modelling}
-
-\item{description}{Nprot number of proteins}
 }
 \description{
-Simulate data, protein, with config with 2 factros Treatment and Background
+Simulate data, protein, with config with 2 factors Treatment and Background
 }
 \examples{
 x <- sim_lfq_data_2Factor_config(PEPTIDE= FALSE)
