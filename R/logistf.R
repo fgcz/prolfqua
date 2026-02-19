@@ -47,7 +47,15 @@ contrasts_linfct_firth <- function(models,
   }
 
   interaction_model_matrix <-  interaction_model_matrix |>
-    dplyr::mutate(classC = purrr::map_chr(.data$contrast, mclass)) |>
+    dplyr::mutate(classC = purrr::map_chr(.data$contrast, mclass))
+
+  n_failed <- sum(interaction_model_matrix$classC == "logical")
+  if (n_failed > 0) {
+    message("contrasts_linfct_logistf: dropped ", n_failed, " of ",
+            nrow(interaction_model_matrix), " proteins with failed contrasts.")
+  }
+
+  interaction_model_matrix <- interaction_model_matrix |>
     dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix |>

@@ -87,7 +87,22 @@ transform_work_intensity <- function(pdata,
 
   #pdata <- pdata |> dplyr::mutate_at(config$table$get_response(),
   #                                    .funs = funs(!!sym(newcol) := .func(.)))
-  pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(config$table$get_response())))
+  response_col <- config$table$get_response()
+  vals <- pdata[[response_col]]
+  if (identical(.func, log2) || identical(.func, log) || identical(.func, log10)) {
+    n_zero <- sum(vals == 0, na.rm = TRUE)
+    n_neg <- sum(vals < 0, na.rm = TRUE)
+    if (n_neg > 0) {
+      warning("log transform: ", n_neg, " negative values in '", response_col,
+              "' will produce NaN. Consider filtering or using asinh.")
+    }
+    if (n_zero > 0) {
+      warning("log transform: ", n_zero, " zeros in '", response_col,
+              "' will produce -Inf. Consider replacing zeros with NA first.")
+    }
+  }
+
+  pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(response_col)))
 
   config$table$set_response(newcol)
   message("Column added : ", newcol)
