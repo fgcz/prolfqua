@@ -8,7 +8,7 @@ missigness_histogram(
   x,
   config,
   showempty = FALSE,
-  factors = config$table$factor_keys_depth(),
+  factors = config$factor_keys_depth(),
   alpha = 0.1
 )
 }

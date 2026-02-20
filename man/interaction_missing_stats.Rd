@@ -7,9 +7,9 @@
 interaction_missing_stats(
   pdata,
   config,
-  factors = config$table$factor_keys_depth(),
-  hierarchy = config$table$hierarchy_keys(),
-  workIntensity = config$table$get_response()
+  factors = config$factor_keys_depth(),
+  hierarchy = config$hierarchy_keys(),
+  workIntensity = config$get_response()
 )
 }
 \arguments{
@@ -33,18 +33,15 @@ istar <- sim_lfq_data_peptide_config()
 config <- istar$config
 analysis <- istar$data
 
-config$parameter$qVal_individual_threshold <- 0.01
-xx <- prolfqua::remove_large_QValues(analysis,
-   config)
-xx <- complete_cases(xx, config)
+xx <- complete_cases(analysis, config)
 x <- interaction_missing_stats(xx, config)$data |> dplyr::arrange(desc(nrNAs))
 nrow(x)
 tmp <- interaction_missing_stats(xx, config,
  factors= character(),
-  hierarchy = config$table$hierarchy_keys()[1])$data
+  hierarchy = config$hierarchy_keys()[1])$data
 stopifnot(nrow(tmp) == 10)
 tmp <- interaction_missing_stats(xx, config,
-  hierarchy = config$table$hierarchy_keys()[1])$data
+  hierarchy = config$hierarchy_keys()[1])$data
 stopifnot(nrow(tmp) == length(unique(xx$protein_Id))* length(unique(xx$group_)))
 stopifnot(sum(is.na(tmp$nrMeasured))==0)
 

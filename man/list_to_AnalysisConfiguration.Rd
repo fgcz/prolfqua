@@ -19,6 +19,4 @@ configList <- prolfqua::R6_extract_values(DEAconfig)
 stopifnot(class(configList) == "list")
 config <- list_to_AnalysisConfiguration(configList)
 all.equal(prolfqua::R6_extract_values(config), configList)
-config$parameter$min_nr_of_notNA <- 4
-all.equal(prolfqua::R6_extract_values(config), configList)
 }

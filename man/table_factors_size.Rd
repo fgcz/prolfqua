@@ -27,8 +27,6 @@ stopifnot(all(xx$n == 4))
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
-\code{\link{AnalysisParameters}},
-\code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},

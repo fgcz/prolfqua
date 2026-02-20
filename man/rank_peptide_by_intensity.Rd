@@ -21,10 +21,9 @@ ranks precursor - peptide by intensity.
 
 
 bb <- prolfqua::sim_lfq_data_peptide_config()
-res <- remove_large_QValues(bb$data, bb$config)
-res <- rank_peptide_by_intensity(res,bb$config)
-X <-res |> dplyr::select(c(bb$config$table$hierarchy_keys(),
+res <- rank_peptide_by_intensity(bb$data, bb$config)
+X <-res |> dplyr::select(c(bb$config$hierarchy_keys(),
  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-X |> dplyr::arrange(!!!rlang::syms(c(bb$config$table$hierarchy_keys()[1], "srm_meanIntRank"  )))
+X |> dplyr::arrange(!!!rlang::syms(c(bb$config$hierarchy_keys()[1], "srm_meanIntRank"  )))
 }
 \keyword{internal}

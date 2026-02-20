@@ -7,7 +7,7 @@
 summarize_hierarchy(
   pdata,
   config,
-  hierarchy = config$table$hierarchy_keys_depth(),
+  hierarchy = config$hierarchy_keys_depth(),
   factors = character()
 )
 }
@@ -34,17 +34,17 @@ summarize_hierarchy(data, configur)
 summarize_hierarchy(data, configur, factors = character())
 
 summarize_hierarchy(data, configur,
- hierarchy = configur$table$hierarchy_keys_depth() )
+ hierarchy = configur$hierarchy_keys_depth() )
 summarize_hierarchy(data, configur,
- hierarchy = NULL, factors = configur$table$factor_keys_depth() )
-configur$table$hierarchyDepth = 1
+ hierarchy = NULL, factors = configur$factor_keys_depth() )
+configur$hierarchyDepth = 1
 summarize_hierarchy(data, configur,
- factors = configur$table$factor_keys_depth())
-configur$table$hierarchyDepth = 2
+ factors = configur$factor_keys_depth())
+configur$hierarchyDepth = 2
 summarize_hierarchy(data, configur)
-configur$table$hierarchyDepth = 3
+configur$hierarchyDepth = 3
 summarize_hierarchy(data, configur )
-configur$table$hierarchyDepth = 4
+configur$hierarchyDepth = 4
 summarize_hierarchy(data, configur )
 
 }

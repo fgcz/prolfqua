@@ -15,8 +15,6 @@ Extract all value slots in an R6 object
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
-\code{\link{AnalysisParameters}},
-\code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{complete_cases}()},
 \code{\link{concrete_AnalysisConfiguration}},

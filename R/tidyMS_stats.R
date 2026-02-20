@@ -132,7 +132,7 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #'
 poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
-  resp <- res1 |> nest(data = -all_of(config$table$hierarchy_keys()) )
+  resp <- res1 |> nest(data = -all_of(config$hierarchy_keys()) )
   pooled <- vector(length = length(resp$data), mode = "list")
   for (i in seq_along(resp$data)) {
     #print(i)
@@ -141,7 +141,7 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
   pooled =  bind_rows(pooled)
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
-  resp <- resp |> mutate(!!config$table$factor_keys()[1] := "pooled")
+  resp <- resp |> mutate(!!config$factor_keys()[1] := "pooled")
   return(resp)
 }
 
@@ -163,22 +163,22 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' res1 <- summarize_stats(data, config)
 #'
 #' res2 <- prolfqua::sim_lfq_data_2Factor_config()
-#' res2$config$table$factorDepth <- 2
+#' res2$config$factorDepth <- 2
 #' stats <- summarize_stats(res2$data, res2$config)
 #' stopifnot(nrow(stats) == 40)
 #'
-#' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[1])
+#' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$factor_keys()[1])
 #' stopifnot(nrow(stats) == 20)
-#' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[2])
+#' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$factor_keys()[2])
 #' stopifnot(nrow(stats) == 20)
 #' stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
 #' stopifnot(nrow(stats) == 10)
 #' # TODO (WEW) add test when there is one level per group.
-summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys_depth()){
+summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth()){
   pdata <- complete_cases(pdata, config)
-  intsym <- sym(config$table$get_response())
+  intsym <- sym(config$get_response())
   hierarchyFactor <- pdata |>
-    dplyr::group_by(!!!syms( c(config$table$hierarchy_keys(), factor_key) )) |>
+    dplyr::group_by(!!!syms( c(config$hierarchy_keys(), factor_key) )) |>
     dplyr::summarize(nrReplicates = dplyr::n(),
                      nrMeasured = sum(!is.na(!!intsym)),
                      nrNAs = sum(is.na(!!intsym)),
@@ -190,11 +190,11 @@ summarize_stats <- function(pdata, config, factor_key = config$table$factor_keys
 
   hierarchyFactor <- hierarchyFactor |>
     dplyr::mutate(dplyr::across(all_of(factor_key), as.character))
-  if (config$table$is_response_transformed == FALSE) {
+  if (config$is_response_transformed == FALSE) {
     hierarchyFactor <- hierarchyFactor |> dplyr::mutate(CV = sd/meanAbundance * 100)
   }
   if (is.null(factor_key) || length(factor_key) == 0) {
-    hierarchyFactor <- dplyr::mutate(hierarchyFactor, !!config$table$factor_keys()[1] := "All")
+    hierarchyFactor <- dplyr::mutate(hierarchyFactor, !!config$factor_keys()[1] := "All")
   }
   hierarchyFactor <- ungroup(hierarchyFactor)
   if (length(factor_key) > 0 && !is.null(factor_key)) {
@@ -224,8 +224,8 @@ summarize_stats_factors <- function(pdata, config){
     config)
   fac_res[["interaction"]] <- stats
 
-  if (config$table$factorDepth > 1 ) { # if 1 only then done
-    for (factor in config$table$factor_keys_depth()) {
+  if (config$factorDepth > 1 ) { # if 1 only then done
+    for (factor in config$factor_keys_depth()) {
       stats <- summarize_stats(
         pdata,
         config,factor_key = factor)
@@ -280,7 +280,7 @@ summarize_stats_all <- function(pdata, config) {
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
 #' config <- bb$config
 #' data <- bb$data
-#' config$table$get_response()
+#' config$get_response()
 #' stats_res <- summarize_stats(data, config)
 #' sq <- summarize_stats_quantiles(stats_res, config)
 #' sq <- summarize_stats_quantiles(stats_res, config, stats = "sd")
@@ -302,16 +302,16 @@ summarize_stats_quantiles <- function(stats_res,
 
   stats_res <- stats_res |> dplyr::filter(!is.na(!!sym(stats)))
   xx2 <- stats_res |>
-    dplyr::group_by(!!!syms(config$table$factor_keys_depth())) |>
+    dplyr::group_by(!!!syms(config$factor_keys_depth())) |>
     tidyr::nest()
 
 
   sd_quantile_res2 <- xx2 |>
     dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  |>
-    dplyr::select(!!!syms(c(config$table$factor_keys_depth(),q_column))) |>
+    dplyr::select(!!!syms(c(config$factor_keys_depth(),q_column))) |>
     tidyr::unnest(cols = c(q_column))
 
-  xx <- sd_quantile_res2 |> tidyr::unite("interaction",config$table$factor_keys_depth())
+  xx <- sd_quantile_res2 |> tidyr::unite("interaction",config$factor_keys_depth())
   wide <- xx |>  spread("interaction", .data$quantiles)
   return(list(long = sd_quantile_res2, wide = wide))
 }
@@ -420,7 +420,7 @@ lfq_power_t_test_quantiles <- function(pdata,
                                        sig.level = 0.05,
                                        probs = seq(0.5,0.9, by = 0.1)){
 
-  if (!config$table$is_response_transformed) {
+  if (!config$is_response_transformed) {
     warning("Intensities are not transformed yet.")
   }
 
@@ -518,7 +518,7 @@ plot_stat_density <- function(pdata,
                               ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  p <- ggplot(pdata, aes_string(x = stat, colour = config$table$factor_keys()[1] )) +
+  p <- ggplot(pdata, aes_string(x = stat, colour = config$factor_keys()[1] )) +
     geom_line(stat = ggstat)
   return(p)
 }
@@ -552,7 +552,7 @@ plot_stat_density_median <- function(
   pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
   res <- pdata |> dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE),"top 50","bottom 50")) -> top50
   p <- ggplot(top50, aes_string(x = stat, colour = "top")) +
-    geom_line(stat = ggstat) + facet_wrap(config$table$factor_keys()[1])
+    geom_line(stat = ggstat) + facet_wrap(config$factor_keys()[1])
   return(p)
 }
 
@@ -578,7 +578,7 @@ plot_stat_density_median <- function(
 #'
 plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd")){
   stat <- match.arg(stat)
-  pdata <- pdata |> tidyr::unite("groups", config$table$factor_keys_depth())
+  pdata <- pdata |> tidyr::unite("groups", config$factor_keys_depth())
   p <- ggplot(pdata, aes_string(x = "groups", y = stat  )) +
     geom_violin() + ggplot2::stat_summary(fun = median,
                                           geom = "point", size = 1, color = "black")
@@ -613,7 +613,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "meanAbundanc
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE),"top 50","bottom 50")) ->
     top50
 
-  p <- ggplot(top50, aes_string(x = config$table$factor_keys()[1], y = stat)) +
+  p <- ggplot(top50, aes_string(x = config$factor_keys()[1], y = stat)) +
     geom_violin() +
     stat_summary(fun = median.quartile, geom = 'point', shape = 3) +
     stat_summary(fun = median, geom = 'point', shape = 1) +
@@ -642,27 +642,27 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "meanAbundanc
 #' datalog2 <- transform_work_intensity(data, config, log2)
 #' statlog2 <- summarize_stats(datalog2, config)
 #' plot_stdv_vs_mean(statlog2, config)
-#' config$table$get_response()
-#' config$table$pop_response()
+#' config$get_response()
+#' config$pop_response()
 #' datasqrt <- transform_work_intensity(data, config, sqrt)
 #' ressqrt <- summarize_stats(datasqrt, config)
 #' plot_stdv_vs_mean(ressqrt, config)
 #'
 plot_stdv_vs_mean <- function(pdata, config, size=2000){
   summary <- pdata |>
-    group_by_at(config$table$factor_keys_depth()) |>
+    group_by_at(config$factor_keys_depth()) |>
     dplyr::summarize(n = n(),.groups = "drop")
   size <- min(size, min(summary$n))
 
   pdata <- pdata |>
-    dplyr::group_by_at(config$table$factor_keys_depth()) |>
+    dplyr::group_by_at(config$factor_keys_depth()) |>
     dplyr::sample_n(size = size) |>
     dplyr::ungroup()
 
   p <- ggplot(pdata, aes(x = meanAbundance, y = sd)) +
     geom_point() +
     geom_smooth(method = "loess") +
-    facet_wrap(config$table$factor_keys_depth(), nrow = 1) +
+    facet_wrap(config$factor_keys_depth(), nrow = 1) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
   return(p)
 }

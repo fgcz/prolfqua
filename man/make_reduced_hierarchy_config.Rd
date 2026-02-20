@@ -24,15 +24,13 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 
 red <- make_reduced_hierarchy_config(bb$config,
  "testintensity",
- bb$config$table$hierarchy[1])
-stopifnot(red$table$get_response() == "testintensity")
-stopifnot(length(red$table$hierarchy) == 1)
+ bb$config$hierarchy[1])
+stopifnot(red$get_response() == "testintensity")
+stopifnot(length(red$hierarchy) == 1)
 }
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
-\code{\link{AnalysisParameters}},
-\code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},

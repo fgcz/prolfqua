@@ -13,7 +13,7 @@ convert to binary response
 
 istar <- sim_lfq_data_peptide_config()
 istar$data <- encode_bin_resp(istar$data, istar$config)
-istar$config$table$bin_resp == "bin_resp"
+istar$config$bin_resp == "bin_resp"
 istar$data[["bin_resp"]]
 }
 \keyword{internal}

@@ -5,8 +5,6 @@
 \title{Table of distinct factors (sample annotation)}
 \usage{
 table_factors(pdata, configuration)
-
-table_factors(pdata, configuration)
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -14,8 +12,6 @@ table_factors(pdata, configuration)
 \item{configuration}{AnalysisConfiguration}
 }
 \description{
-Table of distinct factors (sample annotation)
-
 Table of distinct factors (sample annotation)
 }
 \examples{
@@ -26,19 +22,7 @@ istar <- sim_lfq_data_peptide_config()
 
 xx <- table_factors(istar$data,istar$config )
 xx
-xt <- xx |> dplyr::group_by(!!!rlang::syms(istar$config$table$factor_keys())) |>
- dplyr::summarize(n = dplyr::n())
-xt
-stopifnot(all(xt$n == 4))
-
-
-
-istar <- sim_lfq_data_peptide_config()
-
-
-xx <- table_factors(istar$data,istar$config )
-xx
-xt <- xx |> dplyr::group_by(!!!rlang::syms(istar$config$table$factor_keys())) |>
+xt <- xx |> dplyr::group_by(!!!rlang::syms(istar$config$factor_keys())) |>
  dplyr::summarize(n = dplyr::n())
 xt
 stopifnot(all(xt$n == 4))
@@ -47,25 +31,6 @@ stopifnot(all(xt$n == 4))
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
-\code{\link{AnalysisParameters}},
-\code{\link{AnalysisTableAnnotation}},
-\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6_extract_values}()},
-\code{\link{complete_cases}()},
-\code{\link{concrete_AnalysisConfiguration}},
-\code{\link{make_interaction_column}()},
-\code{\link{make_reduced_hierarchy_config}()},
-\code{\link{sample_subset}()},
-\code{\link{separate_factors}()},
-\code{\link{separate_hierarchy}()},
-\code{\link{setup_analysis}()},
-\code{\link{spread_response_by_IsotopeLabel}()},
-\code{\link{table_factors_size}()}
-
-Other configuration: 
-\code{\link{AnalysisConfiguration}},
-\code{\link{AnalysisParameters}},
-\code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},

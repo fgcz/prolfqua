@@ -134,7 +134,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param PC default c(1,2) - first and second principal component
     #' @return plotly
     pca_plotly = function(PC = c(1,2), add_txt = FALSE){
-      fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$config$table$sampleName)
+      fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$config$sampleName)
       return(fig)
     },
     #' @description
@@ -143,15 +143,15 @@ LFQDataPlotter <- R6::R6Class(
     #' @return tibble with column boxplots containing ggplot objects
     boxplots = function(facet = TRUE){
       config <- self$lfq$config
-      if (config$table$hierarchyDepth < length(config$table$hierarchy) && facet) {
+      if (config$hierarchyDepth < length(config$hierarchy) && facet) {
         bb <- prolfqua::plot_hierarchies_boxplot_df(
           self$lfq$data, config,
-          hierarchy = config$table$hierarchy_keys_depth(),
-          facet_grid_on = config$table$hierarchy_keys()[config$table$hierarchyDepth + 1])
+          hierarchy = config$hierarchy_keys_depth(),
+          facet_grid_on = config$hierarchy_keys()[config$hierarchyDepth + 1])
 
       } else {
         bb <- prolfqua::plot_hierarchies_boxplot_df(self$lfq$data, config,
-                                                    hierarchy = config$table$hierarchy_keys_depth(),
+                                                    hierarchy = config$hierarchy_keys_depth(),
                                                     facet_grid_on = NULL)
 
       }
@@ -190,13 +190,13 @@ LFQDataPlotter <- R6::R6Class(
     pairs_smooth = function(max=10){
       dataTransformed <- self$lfq$data
       config <- self$lfq$config
-      samples <- dplyr::select(self$lfq$data, config$table$sampleName) |>
+      samples <- dplyr::select(self$lfq$data, config$sampleName) |>
         distinct() |>
         pull()
       if (length(samples) > max) {
         limit <- samples |> sample(max)
         ldata <- dataTransformed |>
-          dplyr::filter(!!sym(config$table$sampleName) %in% limit)
+          dplyr::filter(!!sym(config$sampleName) %in% limit)
         prolfqua::pairs_smooth( prolfqua::tidy_to_wide_config(ldata, config, as.matrix = TRUE)$data )
       }else{
         prolfqua::pairs_smooth( prolfqua::tidy_to_wide_config(dataTransformed, config, as.matrix = TRUE)$data )

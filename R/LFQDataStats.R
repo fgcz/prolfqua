@@ -88,8 +88,8 @@ LFQDataStats <- R6::R6Class(
 
       tb <- table_factors_size(lfqdata$data,lfqdata$config )
       if ( all(tb$n == 1) ) {
-        if(self$lfq$config$table$factorDepth > 1){
-          self$lfq$config$table$factorDepth <- self$lfq$config$table$factorDepth - 1
+        if(self$lfq$config$factorDepth > 1){
+          self$lfq$config$factorDepth <- self$lfq$config$factorDepth - 1
         } else {
           stats = "all"
         }
@@ -119,8 +119,8 @@ LFQDataStats <- R6::R6Class(
     #' @return data.frame with computed statistics in wide format
     stats_wide = function(){
       res <- tidyr::pivot_wider(
-        self$statsdf,id_cols = self$lfq$config$table$hierarchy_keys() ,
-        names_from = self$lfq$config$table$factor_keys_depth(),
+        self$statsdf,id_cols = self$lfq$config$hierarchy_keys() ,
+        names_from = self$lfq$config$factor_keys_depth(),
         values_from = tidyselect::any_of(
           c("nrReplicates",
             "nrMeasured",

@@ -19,11 +19,11 @@ Compute nr of B per A
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 config <- bb$config$clone(deep=TRUE)
 data <- bb$data
-hierarchy <- config$table$hierarchy_keys()
+hierarchy <- config$hierarchy_keys()
 res <- nr_B_in_A(data, config)
 
 res$data |>
-  dplyr::select_at(c(config$table$hierarchy_keys_depth(),  res$name)) |>
+  dplyr::select_at(c(config$hierarchy_keys_depth(),  res$name)) |>
   dplyr::distinct() |>
   dplyr::pull() |> table()
 
@@ -38,7 +38,7 @@ resDataStart <- bb$analysis(bb$data, config)
 
 nr_B_in_A(resDataStart, config)
 nr_B_in_A(resDataStart, config, merge = FALSE)
-config$table$hierarchyDepth <- 2
+config$hierarchyDepth <- 2
 nr_B_in_A(resDataStart, config, merge = FALSE)
 
 }

@@ -16,12 +16,12 @@
 #'    model_name = modelName)
 #' pepIntensity <- istar_data
 #' config <- istar$config
-#' config$table$hierarchy_keys_depth()
+#' config$hierarchy_keys_depth()
 #' mod <- prolfqua::build_model(
 #'  pepIntensity,
 #'  formula_randomPeptide,
 #'  modelName = modelName,
-#'  subject_Id = config$table$hierarchy_keys_depth())
+#'  subject_Id = config$hierarchy_keys_depth())
 #'
 #' mod$modelDF
 #' aovtable  <- mod$get_anova()

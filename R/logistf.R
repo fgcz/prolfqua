@@ -84,14 +84,14 @@ contrasts_linfct_firth <- function(models,
 #'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 #' tmp <- LFQData$new(istar$data, istar$config)
-#' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
+#' formula <- paste0(tmp$config$bin_resp , "~ group_")
 #' xx2 <- build_model_logistf(tmp, formula)
 #'
 #' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
 #' tmp <- LFQData$new(istar$data, istar$config)
-#' formula <- paste0(tmp$config$table$bin_resp , "~ group_")
+#' formula <- paste0(tmp$config$bin_resp , "~ group_")
 #' xx <- build_model_logistf(tmp, formula)
 #'
 #'
@@ -119,7 +119,7 @@ build_model_logistf <- function(data,
   models2 <- NULL
   hkey <- NULL
   if (nrow(df2) > 0) {
-    hkey <- tail(pep$config$table$hierarchy_keys(), n = 1)
+    hkey <- tail(pep$config$hierarchy_keys(), n = 1)
     lfq2 <- pep$get_subset(df2)
     formula2 <- paste0(formula, "+", hkey)
     model_strategy2 <- prolfqua::strategy_logistf(formula2)
@@ -209,7 +209,7 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
   } else if (model == "parallel3") {
     "~ group_"
   } else {NULL}
-  modelFunction <- paste0( istar$config$table$bin_resp, model)
+  modelFunction <- paste0( istar$config$bin_resp, model)
   mod <- build_model_logistf(
     istar,
     modelFunction)

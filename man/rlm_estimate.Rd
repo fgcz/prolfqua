@@ -47,17 +47,17 @@ bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
-conf$table$hierarchyDepth <- 1
+conf$hierarchyDepth <- 1
 xnested <- data |>
-  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+  dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
   tidyr::nest()
 
-feature <- base::setdiff(conf$table$hierarchy_keys(), conf$table$hierarchy_keys_depth())
+feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 x <- xnested$data[[1]]
 bb <- rlm_estimate(x,
-  response = conf$table$get_response(),
+  response = conf$get_response(),
   feature = feature,
-  samples = conf$table$sampleName
+  samples = conf$sampleName
 )
 
 }

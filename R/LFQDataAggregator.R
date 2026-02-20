@@ -56,14 +56,14 @@ LFQDataAggregator <- R6::R6Class(
     #' @param lfq LFQData
     #' @param prefix default protein
     initialize = function(lfq, prefix = "protein"){
-      if ( length(lfq$config$table$hierarchy_keys()) == 1 ) {
-        stop("no hierarchies to aggregate from: ",  lfq$config$table$hierarchy_keys())
+      if ( length(lfq$config$hierarchy_keys()) == 1 ) {
+        stop("no hierarchies to aggregate from: ",  lfq$config$hierarchy_keys())
       }
-      if (length(lfq$config$table$hierarchy_keys()) == lfq$config$table$hierarchyDepth) {
+      if (length(lfq$config$hierarchy_keys()) == lfq$config$hierarchyDepth) {
         stop("no hierarchies to aggregate from: ",
-             lfq$config$table$hierarchy_keys(),
+             lfq$config$hierarchy_keys(),
              ", hierarchyDepth :",
-             lfq$config$table$hierarchyDepth)
+             lfq$config$hierarchyDepth)
       }
       self$lfq = lfq$clone(deep = TRUE)
       self$prefix = prefix
@@ -77,7 +77,7 @@ LFQDataAggregator <- R6::R6Class(
         warning("You did not transform the intensities.",
                 "medpolish works best with already variance stabilized intensities.",
                 "Use LFQData$get_Transformer to transform the data :",
-                self$lfq$config$table$workIntensity)
+                self$lfq$config$workIntensity)
       }
       res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = medpolish_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
@@ -92,7 +92,7 @@ LFQDataAggregator <- R6::R6Class(
         warning("You did not transform the intensities.",
                 "Robust regression works best with already variance stabilized intensities.",
                 "Use LFQData$get_Transformer to transform the data.",
-                self$lfq$config$table$workIntensity,)
+                self$lfq$config$workIntensity,)
       }
 
       res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = rlm_estimate_dfconfig)
@@ -173,7 +173,7 @@ LFQDataAggregator <- R6::R6Class(
       if (self$lfq$is_transformed()) {
         warning("You did transform the intensities.",
                 "top N works with raw data.",
-                self$lfq$config$table$workIntensity)
+                self$lfq$config$workIntensity)
       }
       ranked <- rank_peptide_by_intensity(self$lfq$data , self$lfq$config)
       resTOPN <- aggregate_intensity_topN(ranked, self$lfq$config, .func = .func, N = N)

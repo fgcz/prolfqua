@@ -295,7 +295,7 @@ converts the data to wide
 \describe{
 \item{\code{as.matrix}}{return as data.frame or matrix}
 
-\item{\code{value}}{see possible lfqdata$config$table$value_vars()}
+\item{\code{value}}{see possible lfqdata$config$value_vars()}
 }
 \if{html}{\out{</div>}}
 }

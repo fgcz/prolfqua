@@ -29,7 +29,7 @@ res <- tidy_to_wide_config(data, conf, as.matrix = TRUE)
 res <- scale(res$data)
 xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
 xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf, data)
-conf$table$get_response() == "srm_intensityScaled"
+conf$get_response() == "srm_intensityScaled"
 
 }
 \keyword{internal}

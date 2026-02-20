@@ -23,7 +23,7 @@ and create new columns e.g. sampleName column etc.
 
 skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
-skylineconfig$table$factors[["Time"]] = "Sampling.Time.Point"
+skylineconfig$factors[["Time"]] = "Sampling.Time.Point"
 sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 
 # Example with normValue column (e.g., creatinine)
@@ -38,23 +38,20 @@ sample_creatinine <- data |> dplyr::select(sample) |> dplyr::distinct() |>
   dplyr::mutate(creatinine = rnorm(dplyr::n(), mean = 100, sd = 10))
 data <- dplyr::inner_join(data, sample_creatinine, by = "sample")
 
-atable <- AnalysisTableAnnotation$new()
-atable$fileName = "sample"
-atable$factors["group_"] = "group"
-atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
-atable$hierarchy[["peptide_Id"]] = "peptideID"
-atable$set_response("abundance")
-atable$normValue = "creatinine"
+config <- AnalysisConfiguration$new()
+config$fileName = "sample"
+config$factors["group_"] = "group"
+config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
+config$hierarchy[["peptide_Id"]] = "peptideID"
+config$set_response("abundance")
+config$normValue = "creatinine"
 
-config <- AnalysisConfiguration$new(atable)
 adata <- setup_analysis(data, config)
 
 }
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
-\code{\link{AnalysisParameters}},
-\code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},

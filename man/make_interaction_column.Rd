@@ -17,16 +17,14 @@ bb <- prolfqua::sim_lfq_data_protein_config()
 config <- bb$config
 analysis <- bb$data
 
-config$table$factorDepth <- 1
+config$factorDepth <- 1
 make_interaction_column(analysis,
-   config$table$factor_keys_depth())
+   config$factor_keys_depth())
 
 }
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
-\code{\link{AnalysisParameters}},
-\code{\link{AnalysisTableAnnotation}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},

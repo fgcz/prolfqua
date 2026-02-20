@@ -67,7 +67,7 @@ plot_hierarchies_line_default <- function(data,
 #' analysis <- istar$data
 #'
 #' xnested <- analysis |>
-#'   dplyr::group_by_at(config$table$hierarchy_keys_depth()) |>
+#'   dplyr::group_by_at(config$hierarchy_keys_depth()) |>
 #'   tidyr::nest()
 #'
 #' prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)
@@ -77,7 +77,7 @@ plot_hierarchies_line_default <- function(data,
 #' analysis <- bb$analysis(bb$data, conf)
 #'
 #' nest <- analysis |>
-#'   dplyr::group_by(conf$table$hierarchy_keys_depth()) |>
+#'   dplyr::group_by(conf$hierarchy_keys_depth()) |>
 #'   tidyr::nest()
 #' prolfqua::plot_hierarchies_line(nest$data[[1]],
 #'   "DUM",
@@ -96,7 +96,7 @@ plot_hierarchies_line <- function(res,
                                   config,
                                   separate = FALSE,
                                   show.legend = FALSE) {
-  rev_hnames <- config$table$hierarchy_keys(TRUE)
+  rev_hnames <- config$hierarchy_keys(TRUE)
   fragment <- rev_hnames[1]
   peptide <- rev_hnames[1]
 
@@ -106,14 +106,14 @@ plot_hierarchies_line <- function(res,
   res <- plot_hierarchies_line_default(
     res,
     proteinName = proteinName,
-    sample = config$table$sampleName,
-    intensity = config$table$get_response(),
+    sample = config$sampleName,
+    intensity = config$get_response(),
     peptide = peptide,
     fragment = fragment,
-    factor = config$table$factor_keys_depth(),
-    isotopeLabel = config$table$isotopeLabel,
+    factor = config$factor_keys_depth(),
+    isotopeLabel = config$isotopeLabel,
     separate = separate,
-    log_y = !config$table$is_response_transformed,
+    log_y = !config$is_response_transformed,
     show.legend = show.legend
   )
   return(res)
@@ -136,20 +136,20 @@ plot_hierarchies_line <- function(res,
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #'
-#' istar$config$table$is_response_transformed <- FALSE
+#' istar$config$is_response_transformed <- FALSE
 #' res <- plot_hierarchies_line_df(istar$data, istar$config)
 #' res[[1]]
-#' istar$config$table$is_response_transformed <- TRUE
+#' istar$config$is_response_transformed <- TRUE
 #' res <- plot_hierarchies_line_df(istar$data, istar$config)
 #' res[[2]]
 #'
 #' # TODO make it work for other hiearachy levels.
 #'
 plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
-  factor_level <- config$table$factorDepth
+  factor_level <- config$factorDepth
 
   hierarchy_ID <- "hierarchy_ID"
-  pdata <- pdata |> tidyr::unite(hierarchy_ID, !!!syms(config$table$hierarchy_keys_depth()), remove = FALSE)
+  pdata <- pdata |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()), remove = FALSE)
 
   xnested <- pdata |>
     dplyr::group_by_at(hierarchy_ID) |>
@@ -173,17 +173,16 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
 #' @examples
 #' # todo
 plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
-  table <- configuration$table
   p + geom_line(
     data = data,
-    aes_string(x = table$sampleName, y = aes_y, group = 1),
+    aes_string(x = configuration$sampleName, y = aes_y, group = 1),
     size = 1.3,
     color = "black",
     linetype = "solid"
   ) +
     geom_point(
       data = data,
-      aes_string(x = table$sampleName, y = aes_y, group = 1), color = "black", shape = 10
+      aes_string(x = configuration$sampleName, y = aes_y, group = 1), color = "black", shape = 10
     )
 }
 
@@ -191,16 +190,15 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
 .reestablish_condition <- function(data,
                                    medpolishRes,
                                    config) {
-  table <- config$table
   xx <- data |>
     dplyr::select(c(
-      table$sampleName,
-      table$factor_keys(),
-      table$fileName,
-      table$isotopeLabel
+      config$sampleName,
+      config$factor_keys(),
+      config$fileName,
+      config$isotopeLabel
     )) |>
     dplyr::distinct()
-  res <- dplyr::inner_join(xx, medpolishRes, by = table$sampleName)
+  res <- dplyr::inner_join(xx, medpolishRes, by = config$sampleName)
   res
 }
 
@@ -263,13 +261,13 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #' data <- bb$data
 #'
 #' xnested <- data |>
-#'   dplyr::group_by_at(configur$table$hierarchy_keys_depth()) |>
+#'   dplyr::group_by_at(configur$hierarchy_keys_depth()) |>
 #'   tidyr::nest()
 #' x <- xnested$data[[1]]
 #' nn <- x |>
 #'   dplyr::select(base::setdiff(
-#'     configur$table$hierarchy_keys(),
-#'     configur$table$hierarchy_keys_depth()
+#'     configur$hierarchy_keys(),
+#'     configur$hierarchy_keys_depth()
 #'   )) |>
 #'   dplyr::distinct() |>
 #'   nrow()
@@ -279,17 +277,17 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #'
 #' # change hierarchyDepth ###################
 #' conf <- configur$clone(deep = TRUE)
-#' conf$table$hierarchyDepth <- 1
+#' conf$hierarchyDepth <- 1
 #'
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
 #'   tidyr::nest()
 #'
 #' x <- xnested$data[[1]]
 #' nn <- x |>
 #'   dplyr::select(base::setdiff(
-#'     configur$table$hierarchy_keys(),
-#'     configur$table$hierarchy_keys_depth()
+#'     configur$hierarchy_keys(),
+#'     configur$hierarchy_keys_depth()
 #'   )) |>
 #'   dplyr::distinct() |>
 #'   nrow()
@@ -298,12 +296,11 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #' stopifnot(dim(xx) == c(nn, 20))
 #'
 response_as_matrix <- function(pdata, config) {
-  table <- config$table
   .extractInt(
     pdata,
-    table$get_response(),
-    base::setdiff(table$hierarchy_keys(), table$hierarchy_keys_depth()),
-    table$sampleName
+    config$get_response(),
+    base::setdiff(config$hierarchy_keys(), config$hierarchy_keys_depth()),
+    config$sampleName
   )
 }
 
@@ -327,20 +324,20 @@ response_as_matrix <- function(pdata, config) {
 #' conf <- bb$config
 #' data <- bb$data
 #'
-#' conf$table$hierarchyDepth <- 1
+#' conf$hierarchyDepth <- 1
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
 #'   tidyr::nest()
 #'
 #' feature <- base::setdiff(
-#'   conf$table$hierarchy_keys(),
-#'   conf$table$hierarchy_keys_depth()
+#'   conf$hierarchy_keys(),
+#'   conf$hierarchy_keys_depth()
 #' )
 #' x <- xnested$data[[1]]
 #' bb <- medpolish_estimate_df(x,
-#'   response = conf$table$get_response(),
+#'   response = conf$get_response(),
 #'   feature = feature,
-#'   sampleName = conf$table$sampleName
+#'   sampleName = conf$sampleName
 #' )
 #' prolfqua:::.reestablish_condition(x, bb, conf)
 #'
@@ -369,12 +366,12 @@ medpolish_estimate_df <- function(pdata, response, feature, sampleName) {
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
-#' conf$table$hierarchyDepth <- 1
+#' conf$hierarchyDepth <- 1
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
 #'   tidyr::nest()
 #'
-#' feature <- base::setdiff(conf$table$hierarchy_keys(), conf$table$hierarchy_keys_depth())
+#' feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- medpolish_estimate_dfconfig(x, conf)
 #' prolfqua:::.reestablish_condition(x, bb, conf)
@@ -384,11 +381,11 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
     return("medpolish")
   }
 
-  feature <- base::setdiff(config$table$hierarchy_keys(), config$table$hierarchy_keys_depth())
+  feature <- base::setdiff(config$hierarchy_keys(), config$hierarchy_keys_depth())
   res <- medpolish_estimate_df(pdata,
-    response = config$table$get_response(),
+    response = config$get_response(),
     feature = feature,
-    sampleName = config$table$sampleName
+    sampleName = config$sampleName
   )
   return(res)
 }
@@ -518,17 +515,17 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
-#' conf$table$hierarchyDepth <- 1
+#' conf$hierarchyDepth <- 1
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
 #'   tidyr::nest()
 #'
-#' feature <- base::setdiff(conf$table$hierarchy_keys(), conf$table$hierarchy_keys_depth())
+#' feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- rlm_estimate(x,
-#'   response = conf$table$get_response(),
+#'   response = conf$get_response(),
 #'   feature = feature,
-#'   samples = conf$table$sampleName
+#'   samples = conf$sampleName
 #' )
 #'
 rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
@@ -553,12 +550,12 @@ rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
 #' bb <- prolfqua_data("data_ionstar")$filtered()
 #' conf <- old2new(bb$config)
 #' data <- bb$data
-#' conf$table$hierarchyDepth <- 1
+#' conf$hierarchyDepth <- 1
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
 #'   tidyr::nest()
 #'
-#' feature <- base::setdiff(conf$table$hierarchy_keys(), conf$table$hierarchy_keys_depth())
+#' feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
 #' bb <- rlm_estimate_dfconfig(x, conf)
 #'
@@ -569,11 +566,11 @@ rlm_estimate_dfconfig <- function(pdata, config, name = FALSE) {
     return("lmrob")
   }
 
-  feature <- base::setdiff(config$table$hierarchy_keys(), config$table$hierarchy_keys_depth())
+  feature <- base::setdiff(config$hierarchy_keys(), config$hierarchy_keys_depth())
   rlm_estimate(pdata,
-    response = config$table$get_response(),
+    response = config$get_response(),
     feature = feature,
-    samples = config$table$sampleName,
+    samples = config$sampleName,
     maxIt = 20
   )
 }
@@ -588,29 +585,34 @@ rlm_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' dd$config <- old2new(dd$config)
 #'
 old2new <- function(config) {
-  ata <- AnalysisTableAnnotation$new()
-  ata$factors <- config$table$factors
-  ata$factorDepth <- config$table$factorDepth
-  ata$workIntensity <- config$table$workIntensity
-  ata$hierarchyDepth <- config$table$hierarchyDepth
-  ata$hierarchy <- config$table$hierarchy
-  ata$isotopeLabel <- config$table$isotopeLabel
-  ata$is_response_transformed <- config$table$is_intensity_transformed
-  ata$ident_qValue <- config$table$ident_qValue
-  ata$sampleName <- config$table$sampleName
-  ata$isotopeLabel <- config$table$isotopeLabel
-  ata$fileName <- config$table$fileName
-  config <- AnalysisConfiguration$new(ata)
-  return(config)
+  newconfig <- AnalysisConfiguration$new()
+  newconfig$factors <- config$factors
+  newconfig$factorDepth <- config$factorDepth
+  newconfig$workIntensity <- config$workIntensity
+  newconfig$hierarchyDepth <- config$hierarchyDepth
+  newconfig$hierarchy <- config$hierarchy
+  newconfig$isotopeLabel <- config$isotopeLabel
+  newconfig$is_response_transformed <- if (!is.null(config$is_response_transformed)) {
+    config$is_response_transformed
+  } else if (!is.null(config$is_intensity_transformed)) {
+    config$is_intensity_transformed
+  } else {
+    FALSE
+  }
+  newconfig$ident_qValue <- config$ident_qValue
+  newconfig$sampleName <- config$sampleName
+  newconfig$isotopeLabel <- config$isotopeLabel
+  newconfig$fileName <- config$fileName
+  return(newconfig)
 }
 
 .add_nr_children <- function(data, aggregated_data, config, newconfig) {
-  new_child <- paste(c("nr_children", config$table$hierarchy_keys_depth()), collapse = "_")
+  new_child <- paste(c("nr_children", config$hierarchy_keys_depth()), collapse = "_")
   res_nr_children <- nr_obs_sample(data, config, new_child = new_child)
   result <- inner_join(aggregated_data, res_nr_children,
-    by = c(config$table$hierarchy_keys_depth(), config$table$fileName)
+    by = c(config$hierarchy_keys_depth(), config$fileName)
   )
-  newconfig$table$nr_children <- new_child
+  newconfig$nr_children <- new_child
   return(list(data = result, config = newconfig))
 }
 
@@ -643,7 +645,7 @@ estimate_intensity <- function(data, config, .func) {
   config <- config$clone(deep = TRUE)
 
   xnested <- data |>
-    group_by_at(config$table$hierarchy_keys_depth()) |>
+    group_by_at(config$hierarchy_keys_depth()) |>
     nest()
 
 
@@ -665,11 +667,11 @@ estimate_intensity <- function(data, config, .func) {
   newconfig <- make_reduced_hierarchy_config(
     config,
     workIntensity = .func(name = TRUE),
-    hierarchy = config$table$hierarchy_keys_depth(names = FALSE)
+    hierarchy = config$hierarchy_keys_depth(names = FALSE)
   )
 
   unnested <- xnested |>
-    dplyr::select_at(c(config$table$hierarchy_keys_depth(), makeName)) |>
+    dplyr::select_at(c(config$hierarchy_keys_depth(), makeName)) |>
     tidyr::unnest(cols = makeName) |>
     dplyr::ungroup()
 
@@ -714,13 +716,13 @@ plot_estimate <- function(data,
                           show.legend = FALSE) {
   hierarchy_ID <- "hierarchy_ID"
   xnested <- data |>
-    group_by(!!!syms(config$table$hierarchy_keys_depth())) |>
+    group_by(!!!syms(config$hierarchy_keys_depth())) |>
     nest()
-  xnested <- xnested |> tidyr::unite(hierarchy_ID, !!!syms(config$table$hierarchy_keys_depth()))
+  xnested <- xnested |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()))
   xnested_aggr <- data_aggr |>
-    group_by(!!!syms(config_reduced$table$hierarchy_keys_depth())) |>
+    group_by(!!!syms(config_reduced$hierarchy_keys_depth())) |>
     nest_by(.key = "other")
-  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_ID, !!!syms(config$table$hierarchy_keys_depth()))
+  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()))
   xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_ID)
 
 
@@ -735,7 +737,7 @@ plot_estimate <- function(data,
     p2 <- plot_hierarchies_add_quantline(
       p1,
       xnested_all$other[[i]],
-      config_reduced$table$get_response(),
+      config_reduced$get_response(),
       config
     )
     plots[[i]] <- p2
@@ -788,7 +790,7 @@ plot_estimate <- function(data,
 #' print(dim(resTOPN$data))
 #' # stopifnot(dim(resTOPN$data) == c(3260, 8))
 #' stopifnot(names(resTOPN) %in% c("data", "config"))
-#' config$table$get_response()
+#' config$get_response()
 #' tmpRob <- plot_estimate(ranked,
 #'   config,
 #'   resTOPN$data,
@@ -806,21 +808,21 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
 
   topInt <- topInt |>
     dplyr::group_by_at(c(
-      config$table$hierarchy_keys_depth(),
-      config$table$sampleName,
-      config$table$fileName,
-      config$table$isotopeLabel,
-      config$table$factor_keys()
+      config$hierarchy_keys_depth(),
+      config$sampleName,
+      config$fileName,
+      config$isotopeLabel,
+      config$factor_keys()
     ))
   sumTopInt <- topInt |>
-    dplyr::summarize(!!newcol := .func(!!sym(config$table$get_response())),
-      ident_qValue = min(!!sym(config$table$ident_qValue)), .groups = "drop"
+    dplyr::summarize(!!newcol := .func(!!sym(config$get_response())),
+      ident_qValue = min(!!sym(config$ident_qValue)), .groups = "drop"
     )
 
   newconfig <- make_reduced_hierarchy_config(
     config,
     workIntensity = newcol,
-    hierarchy = config$table$hierarchy[seq_len(config$table$hierarchyDepth)]
+    hierarchy = config$hierarchy[seq_len(config$hierarchyDepth)]
   )
 
   return(.add_nr_children(pdata, sumTopInt, config, newconfig))
@@ -856,7 +858,7 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
 #'
 #' # example how to add peptide count information
 #' tmp <- summarize_hierarchy(data, config)
-#' tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$table$hierarchy_keys_depth())
+#' tmp <- dplyr::inner_join(tmp, x("wide")$data, by = config$hierarchy_keys_depth())
 #' tmp
 intensity_summary_by_hkeys <- function(data, config, func) {
   x <- as.list(match.call())
@@ -864,7 +866,7 @@ intensity_summary_by_hkeys <- function(data, config, func) {
   config <- config$clone(deep = TRUE)
 
   xnested <- data |>
-    group_by_at(config$table$hierarchy_keys_depth()) |>
+    group_by_at(config$hierarchy_keys_depth()) |>
     nest()
 
   pb <- progress::progress_bar$new(total = 3 * nrow(xnested))
@@ -902,14 +904,14 @@ intensity_summary_by_hkeys <- function(data, config, func) {
 
     newconfig <- make_reduced_hierarchy_config(config,
       workIntensity = func(name = TRUE),
-      hierarchy = config$table$hierarchy_keys_depth(names = FALSE)
+      hierarchy = config$hierarchy_keys_depth(names = FALSE)
     )
 
     if (value == "nested") {
       return(list(xnested = xnested, config = newconfig))
     } else if (value == "unnest" || value == "wide") {
       unnested <- xnested |>
-        dplyr::select(config$table$hierarchy_keys_depth(), makeName) |>
+        dplyr::select(config$hierarchy_keys_depth(), makeName) |>
         tidyr::unnest(cols = c(medpolish_estimate)) |>
         dplyr::ungroup()
 
@@ -921,7 +923,7 @@ intensity_summary_by_hkeys <- function(data, config, func) {
       return(list(data = unnested, config = newconfig))
     } else if (value == "plot") {
       hierarchy_ID <- "hierarchy_ID"
-      xnested <- xnested |> tidyr::unite(hierarchy_ID, !!!syms(config$table$hierarchy_keys_depth()))
+      xnested <- xnested |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()))
       figs <- xnested |>
         dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID),
           plot_hierarchies_line,

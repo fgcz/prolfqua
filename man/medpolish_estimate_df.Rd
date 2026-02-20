@@ -29,20 +29,20 @@ stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
 
-conf$table$hierarchyDepth <- 1
+conf$hierarchyDepth <- 1
 xnested <- data |>
-  dplyr::group_by_at(conf$table$hierarchy_keys_depth()) |>
+  dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
   tidyr::nest()
 
 feature <- base::setdiff(
-  conf$table$hierarchy_keys(),
-  conf$table$hierarchy_keys_depth()
+  conf$hierarchy_keys(),
+  conf$hierarchy_keys_depth()
 )
 x <- xnested$data[[1]]
 bb <- medpolish_estimate_df(x,
-  response = conf$table$get_response(),
+  response = conf$get_response(),
   feature = feature,
-  sampleName = conf$table$sampleName
+  sampleName = conf$sampleName
 )
 prolfqua:::.reestablish_condition(x, bb, conf)
 

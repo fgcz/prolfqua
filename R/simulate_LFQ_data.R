@@ -180,15 +180,13 @@ sim_lfq_data_peptide_config <- function(
   data$isotopeLabel <- "light"
   data$qValue <- 0
 
-  atable <- AnalysisTableAnnotation$new()
-  atable$fileName = "sample"
+  config <- AnalysisConfiguration$new()
+  config$fileName = "sample"
 
-  atable$factors["group_"] = "group"
-  atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
-  atable$hierarchy[["peptide_Id"]] = "peptideID"
-  atable$set_response("abundance")
-
-  config <- AnalysisConfiguration$new(atable)
+  config$factors["group_"] = "group"
+  config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
+  config$hierarchy[["peptide_Id"]] = "peptideID"
+  config$set_response("abundance")
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
 }
@@ -208,7 +206,7 @@ sim_lfq_data_peptide_config <- function(
 #'
 #' stopifnot(sum(is.na(x$data$abundance)) == 0)
 #' xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
-#' stopifnot(length(xp$config$table$factors) == 2)
+#' stopifnot(length(xp$config$factors) == 2)
 #' stopifnot(nrow(xp$data) == nrow(x$data))
 sim_lfq_data_protein_config <- function(Nprot = 10,
                                         with_missing = TRUE,
@@ -230,15 +228,13 @@ sim_lfq_data_protein_config <- function(Nprot = 10,
   data$isotopeLabel <- "light"
   data$qValue <- 0
 
-  atable <- AnalysisTableAnnotation$new()
-  atable$fileName = "sample"
-  atable$nr_children = "nr_peptides"
-  atable$factors["group_"] = "group"
-  if (paired) {atable$factors["subject_"] = "subject"}
-  atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
-  atable$set_response("abundance")
-
-  config <- AnalysisConfiguration$new(atable)
+  config <- AnalysisConfiguration$new()
+  config$fileName = "sample"
+  config$nr_children = "nr_peptides"
+  config$factors["group_"] = "group"
+  if (paired) {config$factors["subject_"] = "subject"}
+  config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
+  config$set_response("abundance")
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
 }
@@ -290,26 +286,24 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
 
   data$isotopeLabel <- "light"
   data$qValue <- 0
-  atable <- AnalysisTableAnnotation$new()
-  atable$fileName = "sample"
-  atable$nr_children = "nr_peptides"
+  config <- AnalysisConfiguration$new()
+  config$fileName = "sample"
+  config$nr_children = "nr_peptides"
 
   if (TWO) {
-    atable$factors["Treatment"] = "Treatment"
-    atable$factors["Background"] = "Background"
-    atable$factorDepth <- 2
+    config$factors["Treatment"] = "Treatment"
+    config$factors["Background"] = "Background"
+    config$factorDepth <- 2
   } else {
     data <- data |> tidyr::unite(Group, c("Treatment", "Background"))
-    atable$factors["Group"] = "Group"
-    atable$factorDepth <- 1
+    config$factors["Group"] = "Group"
+    config$factorDepth <- 1
   }
-  atable$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
+  config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   if (PEPTIDE) {
-    atable$hierarchy[["peptide_Id"]] = c("peptideID")
+    config$hierarchy[["peptide_Id"]] = c("peptideID")
   }
-  atable$set_response("abundance")
-
-  config <- AnalysisConfiguration$new(atable)
+  config$set_response("abundance")
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
 }

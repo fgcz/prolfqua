@@ -4,7 +4,7 @@
 \alias{nr_obs_sample}
 \title{Aggregates e.g. protein abundances from peptide abundances}
 \usage{
-nr_obs_sample(data, config, new_child = config$table$nr_children)
+nr_obs_sample(data, config, new_child = config$nr_children)
 }
 \arguments{
 \item{data}{data.frame with peptide-level data}

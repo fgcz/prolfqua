@@ -23,16 +23,12 @@ dd <- prolfqua_data('data_spectronautDIA250_A')
 config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)
 
-config$table$get_response()
+config$get_response()
 
 res1 <- remove_small_intensities(analysis, config, threshold=1 )
 res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
 stopifnot(nrow(res1) >  nrow(res1000))
 
-}
-\seealso{
-Other filtering: 
-\code{\link{remove_large_QValues}()}
 }
 \concept{filtering}
 \keyword{internal}

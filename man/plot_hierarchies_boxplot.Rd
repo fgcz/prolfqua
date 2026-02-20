@@ -38,7 +38,7 @@ data <- prolfqua::transform_work_intensity(analysis, config, log2)
 res <- plot_hierarchies_boxplot_df(data, config)
 res$boxplot[[1]]
 
-hierarchy = config$table$hierarchy_keys_depth()
+hierarchy = config$hierarchy_keys_depth()
 xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
   config, beeswarm = FALSE, show_mean = TRUE)

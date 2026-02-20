@@ -22,16 +22,15 @@ Ranks peptides/precursors of a protein by NAs (adds new column .NARank)
 bb <- prolfqua::prolfqua_data('data_spectronautDIA250_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
-res <- remove_large_QValues(analysis, config)
-res <- rank_by_NA(res,config)
+res <- rank_by_NA(analysis, config)
 colnames(res)
 x <- res |>
-  dplyr::select(config$table$hierarchy_keys()[1],
-    config$table$hierarchy_keys(TRUE)[1], "srm_NrNotNAs") |>
+  dplyr::select(config$hierarchy_keys()[1],
+    config$hierarchy_keys(TRUE)[1], "srm_NrNotNAs") |>
   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
-stopifnot(sum(!is.na(res[[config$table$get_response()[1]]])) == x)
-res |> dplyr::select(c(config$table$hierarchy_keys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
+stopifnot(sum(!is.na(res[[config$get_response()[1]]])) == x)
+res |> dplyr::select(c(config$hierarchy_keys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
  dplyr::distinct() |>
- dplyr::arrange(!!!rlang::syms(c(config$table$hierarchy_keys()[1],"srm_NrNotNARank")))
+ dplyr::arrange(!!!rlang::syms(c(config$hierarchy_keys()[1],"srm_NrNotNARank")))
 }
 \keyword{internal}

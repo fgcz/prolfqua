@@ -113,7 +113,7 @@ The $log_2$ stabilizes the variance, while the z-scaling removes systematic diff
 ```{r normalizeData}
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
-transformed$config$table$is_response_transformed
+transformed$config$is_response_transformed
 ```
 
 Again we want to look into the distribution of the intensities in our samples after normalization.

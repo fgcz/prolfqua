@@ -6,7 +6,7 @@
 \alias{summarize_stats_quantiles}
 \title{Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.}
 \usage{
-summarize_stats(pdata, config, factor_key = config$table$factor_keys_depth())
+summarize_stats(pdata, config, factor_key = config$factor_keys_depth())
 
 summarize_stats_all(pdata, config)
 
@@ -45,13 +45,13 @@ data <- bb$data
 res1 <- summarize_stats(data, config)
 
 res2 <- prolfqua::sim_lfq_data_2Factor_config()
-res2$config$table$factorDepth <- 2
+res2$config$factorDepth <- 2
 stats <- summarize_stats(res2$data, res2$config)
 stopifnot(nrow(stats) == 40)
 
-stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[1])
+stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$factor_keys()[1])
 stopifnot(nrow(stats) == 20)
-stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$table$factor_keys()[2])
+stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$factor_keys()[2])
 stopifnot(nrow(stats) == 20)
 stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
 stopifnot(nrow(stats) == 10)
@@ -75,7 +75,7 @@ sq <- summarize_stats_quantiles(stats_res, config, stats = "CV")
 bb <- prolfqua::sim_lfq_data_peptide_config()
 config <- bb$config
 data <- bb$data
-config$table$get_response()
+config$get_response()
 stats_res <- summarize_stats(data, config)
 sq <- summarize_stats_quantiles(stats_res, config)
 sq <- summarize_stats_quantiles(stats_res, config, stats = "sd")

@@ -9,7 +9,7 @@
 #'
 #' bb <-prolfqua::sim_lfq_data_peptide_config()
 #' configur <- bb$config$clone(deep=TRUE)
-#' configur$table$hierarchyDepth <- 2
+#' configur$hierarchyDepth <- 2
 #' data <- bb$data
 #' lfqdata <- LFQData$new(data, configur)
 #' lfqdata$factors()

@@ -25,12 +25,12 @@
 #'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
 #'
 #' config <- istar$config
-#' config$table$hierarchy_keys_depth()
+#' config$hierarchy_keys_depth()
 #'
 #' mod <- build_model(
 #'   istar$data,
 #'   modelFunction,
-#'   subject_Id = config$table$hierarchy_keys_depth()
+#'   subject_Id = config$hierarchy_keys_depth()
 #' )
 #'
 #' ref_lfc <- data.frame(
@@ -62,7 +62,7 @@
 #' mod <- build_model(
 #'   istar$data,
 #'   modelFunction,
-#'   subject_Id = config$table$hierarchy_keys_depth()
+#'   subject_Id = config$hierarchy_keys_depth()
 #' )
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' y <- contrastX$get_linfct(avg = FALSE)

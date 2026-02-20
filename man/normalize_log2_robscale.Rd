@@ -21,7 +21,7 @@ normalize data by log2 and robust scaling
 
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 xx <- normalize_log2_robscale(bb$data, bb$config)
-xx$config$table$workIntensity
+xx$config$workIntensity
 
 }
 \seealso{

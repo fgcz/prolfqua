@@ -100,7 +100,7 @@ MissingHelpers <- R6::R6Class(
         impDat <- self$impute_lod()
       }
       pooled <- prolfqua::poolvar(impDat, self$config, method = "V1")
-      pooled <- dplyr::select(pooled ,-all_of(c(self$config$table$factor_keys_depth()[1],"var")))
+      pooled <- dplyr::select(pooled ,-all_of(c(self$config$factor_keys_depth()[1],"var")))
 
       pooled_zero <- pooled[pooled$df > 0 & pooled$sd > 0,]
       meandf <- pooled_zero |> summarize(
@@ -129,7 +129,7 @@ MissingHelpers <- R6::R6Class(
         lt <- self$impute_lod()
       }
       abundance_column = "meanAbundanceImp"
-      hierarchy_keys <- self$config$table$hierarchy_keys()
+      hierarchy_keys <- self$config$hierarchy_keys()
       imp <- lt |> pivot_wider(id_cols = hierarchy_keys,
                                names_from = interaction,
                                values_from = !!sym(abundance_column))
@@ -170,7 +170,7 @@ MissingHelpers <- R6::R6Class(
     get_contrasts = function(Contrasts, confint = 0.95, all = FALSE) {
       imputed <- self$get_contrast_estimates(Contrasts = Contrasts)
       pooled <- self$get_poolvar()
-      result <- inner_join(imputed, pooled, by = self$config$table$hierarchy_keys())
+      result <- inner_join(imputed, pooled, by = self$config$hierarchy_keys())
       result <- private$add_p_values(result, confint = confint)
       if (!all) {
         result <- select(result, -all_of( c("nrMeasured" , "mean" ,"n.groups", "n", "meanAll") ) )

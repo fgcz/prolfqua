@@ -21,7 +21,7 @@ formula_randomPeptide <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)")
 mr <- model_analyse( x$data,
  formula_randomPeptide,
- subject_Id = x$config$table$hierarchy_keys_depth())
+ subject_Id = x$config$hierarchy_keys_depth())
 stopifnot(nrow(get_complete_model_fit(mr$modelDF)) == 6)
 
 }

@@ -56,7 +56,7 @@ mod <- prolfqua::build_model(
   dd$data,
   formula_Protein,
   modelName = modelName,
-  subject_Id = dd$config$table$hierarchy_keys_depth())
+  subject_Id = dd$config$hierarchy_keys_depth())
 
 mod$modelDF
 mod$modelDF$nrcoeff_not_NA |> table()
@@ -94,7 +94,7 @@ modI <- prolfqua::build_model(
   loddata,
   formula_Protein,
   modelName = modelName,
-  subject_Id = dd$config$table$hierarchy_keys_depth())
+  subject_Id = dd$config$hierarchy_keys_depth())
 
 
 modI$modelDF$nrcoeff_not_NA |> table()

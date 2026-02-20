@@ -15,7 +15,7 @@
 #'
 #' pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
 #'
-#' pMerged$config$table$get_response()
+#' pMerged$config$get_response()
 #' pMerged$factors()
 #'
 #' formula_condition_and_Batches <-
@@ -23,14 +23,14 @@
 #' modCB <- prolfqua::build_model(
 #'   pMerged$data,
 #'   formula_condition_and_Batches,
-#'   subject_Id = pMerged$config$table$hierarchy_keys() )
+#'   subject_Id = pMerged$config$hierarchy_keys() )
 #'
 #' formula_condition <-
 #'   prolfqua::strategy_lm("abundance ~ Treatment")
 #' modC <- prolfqua::build_model(
 #'   pMerged$data,
 #'   formula_condition,
-#'   subject_Id = pMerged$config$table$hierarchy_keys() )
+#'   subject_Id = pMerged$config$hierarchy_keys() )
 #'
 #' tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
 #' hist(tmp$likelihood_ratio_test.pValue)
@@ -104,7 +104,7 @@ LR_test <- function(modelProteinF,
 #'  D$data,
 #'  formula_randomPeptide,
 #'  modelName = modelName,
-#'  subject_Id = D$config$table$hierarchy_keys_depth())
+#'  subject_Id = D$config$hierarchy_keys_depth())
 #' aovtable <- mod$get_anova()
 #'
 #' mod <- prolfqua::build_model(

@@ -7,7 +7,7 @@
 plot_hierarchies_boxplot_df(
   pdata,
   config,
-  hierarchy = config$table$hierarchy_keys_depth(),
+  hierarchy = config$hierarchy_keys_depth(),
   facet_grid_on = NULL
 )
 }
@@ -35,11 +35,11 @@ generates peptide level plots for all Proteins
 
  res <- plot_hierarchies_boxplot_df(analysis,config)
  res$boxplot[[1]]
- res <- plot_hierarchies_boxplot_df(analysis,config,config$table$hierarchy_keys()[1])
+ res <- plot_hierarchies_boxplot_df(analysis,config,config$hierarchy_keys()[1])
  res$boxplot[[1]]
  res <- plot_hierarchies_boxplot_df(analysis,config,
-                                    config$table$hierarchy_keys()[1],
-                                    facet_grid_on = config$table$hierarchy_keys()[2])
+                                    config$hierarchy_keys()[1],
+                                    facet_grid_on = config$hierarchy_keys()[2])
  res$boxplot[[1]]
  res$boxplot[[2]]
 
@@ -51,7 +51,7 @@ generates peptide level plots for all Proteins
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
  res$boxplot[[1]]
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-                                    iostar$config$table$hierarchy_keys()[1])
+                                    iostar$config$hierarchy_keys()[1])
 }
 \seealso{
 Other plotting: 

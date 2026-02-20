@@ -10,7 +10,7 @@ tidy_to_wide_config(
   as.matrix = FALSE,
   fileName = FALSE,
   sep = "~lfq~",
-  value = config$table$get_response()
+  value = config$get_response()
 )
 }
 \value{
@@ -33,20 +33,20 @@ stopifnot(all(dim(res$annotation) == c(12,  4)))
 stopifnot(all(dim(res$rowdata) == c(28, 3)))
 
 res <- scale(res$data)
-tidy_to_wide_config(data, config,  value = config$table$nr_children)
+tidy_to_wide_config(data, config,  value = config$nr_children)
 
 
 xt <- prolfqua::LFQData$new(dd$data, dd$config)
 xt$data$nr_children
-#xt$config$table$is_response_transformed <- TRUE
+#xt$config$is_response_transformed <- TRUE
 res <- xt$get_Aggregator()
 x <- res$medpolish()
-towide <- tidy_to_wide_config(x$data, x$config,  value = x$config$table$nr_children)
+towide <- tidy_to_wide_config(x$data, x$config,  value = x$config$nr_children)
 
 dd <- prolfqua::sim_lfq_data_protein_config()
-dd$config$table$nr_children
+dd$config$nr_children
 dd$data
-xt <- tidy_to_wide_config(dd$data, dd$config,  value = dd$config$table$nr_children)
+xt <- tidy_to_wide_config(dd$data, dd$config,  value = dd$config$nr_children)
 xt$data
 
 }

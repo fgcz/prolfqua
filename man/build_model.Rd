@@ -46,7 +46,7 @@ mod <- prolfqua::build_model(
  D$data,
  formula_randomPeptide,
  modelName = modelName,
- subject_Id = D$config$table$hierarchy_keys_depth())
+ subject_Id = D$config$hierarchy_keys_depth())
 aovtable <- mod$get_anova()
 
 mod <- prolfqua::build_model(

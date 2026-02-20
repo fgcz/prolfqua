@@ -4,11 +4,7 @@
 \alias{missingness_per_condition}
 \title{Summarize missing in condtion as barplot}
 \usage{
-missingness_per_condition(
-  x,
-  config,
-  factors = config$table$factor_keys_depth()
-)
+missingness_per_condition(x, config, factors = config$factor_keys_depth())
 }
 \description{
 Summarize missing in condtion as barplot

@@ -25,13 +25,13 @@ data <- complete_cases(analysis, config)
 Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
 
 var = summarize_stats(data, config)
-var <- prolfqua::make_interaction_column(var, columns = config$table$factor_keys_depth())
+var <- prolfqua::make_interaction_column(var, columns = config$factor_keys_depth())
 
-imp <- var |> tidyr::pivot_wider(id_cols = config$table$hierarchy_keys(),
+imp <- var |> tidyr::pivot_wider(id_cols = config$hierarchy_keys(),
                         names_from = interaction,
                         values_from = !!rlang::sym("meanAbundance"))
 
-imputed <- get_contrast(imp, config$table$hierarchy_keys(), Contrasts)
+imputed <- get_contrast(imp, config$hierarchy_keys(), Contrasts)
 
 
 }
