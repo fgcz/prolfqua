@@ -312,7 +312,7 @@ summarize_stats_quantiles <- function(stats_res,
     tidyr::unnest(cols = c(q_column))
 
   xx <- sd_quantile_res2 |> tidyr::unite("interaction",config$factor_keys_depth())
-  wide <- xx |>  spread("interaction", .data$quantiles)
+  wide <- xx |>  tidyr::pivot_wider(names_from = "interaction", values_from = "quantiles")
   return(list(long = sd_quantile_res2, wide = wide))
 }
 
@@ -365,7 +365,7 @@ summarize_stats_quantiles <- function(stats_res,
 #' bbb <- dplyr::bind_rows(bbb)
 #' summary <- bbb |>
 #'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
-#'  tidyr::spread(delta, N, sep = "=")
+#'  tidyr::pivot_wider(names_from = delta, values_from = N)
 #'
 lfq_power_t_test_quantiles_V2 <-
   function(quantile_sd,
@@ -441,7 +441,7 @@ lfq_power_t_test_quantiles <- function(pdata,
     sampleSizes <- sampleSizes |> mutate( N = ceiling(.data$N_exact))
     sampleSizes <- sampleSizes |> mutate( FC = round(2^delta, digits = 2))
 
-    summary <- sampleSizes |> dplyr::select( -.data$N_exact, -.data$delta) |> spread(.data$FC, .data$N, sep = "=")
+    summary <- sampleSizes |> dplyr::select( -.data$N_exact, -.data$delta) |> tidyr::pivot_wider(names_from = "FC", values_from = "N", names_prefix = "FC=")
     return(list(long = sampleSizes, summary = summary))
   }else{
     message("!!! ERROR !!! No standard deviation is available,
@@ -518,7 +518,7 @@ plot_stat_density <- function(pdata,
                               ggstat = c("density", "ecdf")){
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  p <- ggplot(pdata, aes_string(x = stat, colour = config$factor_keys()[1] )) +
+  p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[config$factor_keys()[1]]] )) +
     geom_line(stat = ggstat)
   return(p)
 }
@@ -551,7 +551,7 @@ plot_stat_density_median <- function(
   ggstat <- match.arg(ggstat)
   pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
   res <- pdata |> dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE),"top 50","bottom 50")) -> top50
-  p <- ggplot(top50, aes_string(x = stat, colour = "top")) +
+  p <- ggplot(top50, aes(x = .data[[stat]], colour = .data$top)) +
     geom_line(stat = ggstat) + facet_wrap(config$factor_keys()[1])
   return(p)
 }
@@ -579,7 +579,7 @@ plot_stat_density_median <- function(
 plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd")){
   stat <- match.arg(stat)
   pdata <- pdata |> tidyr::unite("groups", config$factor_keys_depth())
-  p <- ggplot(pdata, aes_string(x = "groups", y = stat  )) +
+  p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]]  )) +
     geom_violin() + ggplot2::stat_summary(fun = median,
                                           geom = "point", size = 1, color = "black")
 
@@ -613,7 +613,7 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "meanAbundanc
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE),"top 50","bottom 50")) ->
     top50
 
-  p <- ggplot(top50, aes_string(x = config$factor_keys()[1], y = stat)) +
+  p <- ggplot(top50, aes(x = .data[[config$factor_keys()[1]]], y = .data[[stat]])) +
     geom_violin() +
     stat_summary(fun = median.quartile, geom = 'point', shape = 3) +
     stat_summary(fun = median, geom = 'point', shape = 1) +
@@ -650,12 +650,12 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "meanAbundanc
 #'
 plot_stdv_vs_mean <- function(pdata, config, size=2000){
   summary <- pdata |>
-    group_by_at(config$factor_keys_depth()) |>
+    group_by(across(all_of(config$factor_keys_depth()))) |>
     dplyr::summarize(n = n(),.groups = "drop")
   size <- min(size, min(summary$n))
 
   pdata <- pdata |>
-    dplyr::group_by_at(config$factor_keys_depth()) |>
+    dplyr::group_by(across(all_of(config$factor_keys_depth()))) |>
     dplyr::sample_n(size = size) |>
     dplyr::ungroup()
 

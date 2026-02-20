@@ -40,7 +40,7 @@ bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- dplyr::bind_rows(bbb)
 summary <- bbb |>
  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
- tidyr::spread(delta, N, sep = "=")
+ tidyr::pivot_wider(names_from = delta, values_from = N)
 
 }
 \seealso{

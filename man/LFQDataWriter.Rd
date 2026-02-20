@@ -8,6 +8,21 @@ Write LFQData, or provide outputs for writing.
 
 Write LFQData, or provide outputs for writing.
 }
+\examples{
+istar <- prolfqua::sim_lfq_data_peptide_config()
+istar$data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 5))
+lfqdata <- LFQData$new(istar$data, istar$config)
+
+writer <- LFQDataWriter$new(lfqdata, prefix = "test_", format = "xlsx")
+wide <- writer$get_wide()
+stopifnot(is.list(wide))
+stopifnot(all(c("data", "annotation") \%in\% names(wide)))
+
+outdir <- tempdir()
+writer$write_wide(outdir)
+stopifnot(length(writer$file_paths) == 2)
+
+}
 \seealso{
 \code{\link{LFQData}}
 
@@ -38,9 +53,7 @@ Other LFQData:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-LFQDataWriter-new}{\code{LFQDataWriter$new()}}
-\item \href{#method-LFQDataWriter-get_long}{\code{LFQDataWriter$get_long()}}
 \item \href{#method-LFQDataWriter-get_wide}{\code{LFQDataWriter$get_wide()}}
-\item \href{#method-LFQDataWriter-write_long}{\code{LFQDataWriter$write_long()}}
 \item \href{#method-LFQDataWriter-write_wide}{\code{LFQDataWriter$write_wide()}}
 \item \href{#method-LFQDataWriter-clone}{\code{LFQDataWriter$clone()}}
 }
@@ -67,20 +80,6 @@ initialize class
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataWriter-get_long"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataWriter-get_long}{}}}
-\subsection{Method \code{get_long()}}{
-Get data in long format for writing
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$get_long()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-tibble
-gets data formatted for writing
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataWriter-get_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataWriter-get_wide}{}}}
 \subsection{Method \code{get_wide()}}{
@@ -92,23 +91,6 @@ Get data in Wide format for writing
 \subsection{Returns}{
 list with data and annotation
 gets data formatted for writing
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataWriter-write_long"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataWriter-write_long}{}}}
-\subsection{Method \code{write_long()}}{
-write data to file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataWriter$write_long(path_qc)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path_qc}}{path to write to}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

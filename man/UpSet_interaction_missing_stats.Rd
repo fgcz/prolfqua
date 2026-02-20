@@ -19,9 +19,7 @@ analysis <- istar$data
 
 pups <- UpSet_interaction_missing_stats(analysis, config)
 stopifnot(ncol(pups$data) == 5)
-\dontrun{
-  UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
-}
+UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 }
 \seealso{
 Other plotting: 

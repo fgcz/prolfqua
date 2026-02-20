@@ -23,7 +23,7 @@ hierarchy <- config$hierarchy_keys()
 res <- nr_B_in_A(data, config)
 
 res$data |>
-  dplyr::select_at(c(config$hierarchy_keys_depth(),  res$name)) |>
+  dplyr::select(all_of(c(config$hierarchy_keys_depth(),  res$name))) |>
   dplyr::distinct() |>
   dplyr::pull() |> table()
 

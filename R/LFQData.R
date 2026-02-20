@@ -144,7 +144,7 @@ LFQData <- R6::R6Class(
         }
       }
       notNA <- missing |> dplyr::filter(nrNAs <= nrNA)
-      sumN <- notNA |> group_by_at(self$config$hierarchy_keys()) |>
+      sumN <- notNA |> group_by(across(all_of(self$config$hierarchy_keys()))) |>
         summarise(n = n())
       notNA <- sumN |> dplyr::filter(n == max(n))
 

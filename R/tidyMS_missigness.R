@@ -53,10 +53,10 @@ interaction_missing_stats <- function(pdata,
   warning(">>>> deprecated! <<<< \n
           use summarize_stats_factors instead.")
   pdata <- complete_cases(pdata, config)
-  missingPrec <- pdata |> group_by_at(c(factors,
+  missingPrec <- pdata |> group_by(across(all_of(c(factors,
                                         hierarchy,
                                         config$isotopeLabel
-  ))
+  ))))
   missingPrec <- missingPrec |>
     dplyr::summarize(nrReplicates = n(),
                      nrNAs = sum(is.na(!!sym(workIntensity))),
@@ -216,10 +216,10 @@ missingness_per_condition_cumsum <- function(x,
                                              factors = config$factor_keys_depth()){
   missingPrec <- interaction_missing_stats(x, config,factors)$data
 
-  xx <- missingPrec |> group_by_at(c(config$isotopeLabel, factors,"nrNAs","nrReplicates")) |>
+  xx <- missingPrec |> group_by(across(all_of(c(config$isotopeLabel, factors,"nrNAs","nrReplicates")))) |>
     dplyr::summarize(nrTransitions = n())
 
-  xxcs <- xx |> group_by_at( c(config$isotopeLabel,factors)) |> arrange(.data$nrNAs) |>
+  xxcs <- xx |> group_by(across(all_of(c(config$isotopeLabel,factors)))) |> arrange(.data$nrNAs) |>
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
   res <- xxcs  |> dplyr::select(-.data$nrTransitions)
 
@@ -256,8 +256,8 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
   missingPrec <- interaction_missing_stats(x, config, factors)$data
   hierarchyKey <- tail(config$hierarchy_keys(),1)
   hierarchyKey <- paste0("nr_",hierarchyKey)
-  xx <- missingPrec |> group_by_at(c(config$isotopeLabel,
-                                     factors,"nrNAs","nrReplicates")) |>
+  xx <- missingPrec |> group_by(across(all_of(c(config$isotopeLabel,
+                                     factors,"nrNAs","nrReplicates")))) |>
     dplyr::summarize( !!sym(hierarchyKey) := n())
 
   formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
@@ -265,11 +265,11 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
 
   nudgeval = max(xx[[hierarchyKey]]) * 0.05
 
-  p <- ggplot(xx, aes_string(x = "nrNAs", y = hierarchyKey)) +
+  p <- ggplot(xx, aes(x = .data$nrNAs, y = .data[[hierarchyKey]])) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = !!sym(hierarchyKey)), nudge_y = nudgeval, angle = 45) +
     facet_grid(as.formula(formula))
-  xx <- tidyr::spread(xx, "nrNAs",hierarchyKey)
+  xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = hierarchyKey)
 
   return(list(data = xx ,figure = p))
 }
@@ -289,9 +289,7 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
 #'
 #' pups <- UpSet_interaction_missing_stats(analysis, config)
 #' stopifnot(ncol(pups$data) == 5)
-#' \dontrun{
-#'   UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
-#' }
+#' UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::interaction_missing_stats(data, cf)
   nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$hierarchy_keys(),
@@ -315,9 +313,7 @@ UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
 #' config <- istar$config
 #' analysis <- istar$data
 #' pups <- UpSet_missing_stats(analysis, config)
-#' \dontrun{
 #' UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
-#' }
 UpSet_missing_stats <- function(data, config){
   data <- prolfqua::complete_cases(data, config)
   responseName <- config$get_response()

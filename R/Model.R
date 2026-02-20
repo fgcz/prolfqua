@@ -81,7 +81,7 @@ Model <- R6::R6Class(
         dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
       Model_Coeff <- Model_Coeff |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef)
-      Model_Coeff <- tidyr::unnest_legacy(Model_Coeff)
+      Model_Coeff <- tidyr::unnest(Model_Coeff, cols = c(Coeffs_model))
       return(Model_Coeff)
     },
     #' @description
@@ -96,7 +96,7 @@ Model <- R6::R6Class(
 
       Model_Anova <- Model_Anova |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Anova_model"), isSingular, nrcoef)
-      Model_Anova <- tidyr::unnest_legacy(Model_Anova)
+      Model_Anova <- tidyr::unnest(Model_Anova, cols = c(Anova_model))
 
       Model_Anova <- Model_Anova |> dplyr::filter(factor != "Residuals")
       Model_Anova <- Model_Anova |> dplyr::filter(factor != "NULL")

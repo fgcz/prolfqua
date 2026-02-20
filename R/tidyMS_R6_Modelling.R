@@ -353,7 +353,7 @@ model_analyse <- function(
   modelProteinF <- modelProteinF |> dplyr::mutate(nrcoeff_not_NA = purrr::map_int(!!sym(lmermodel), nrcoeff_not_NA))
 
   modelProteinF <- modelProteinF |>
-    dplyr::select_at(c(subject_Id,"isSingular", "df.residual","sigma" ,"nrcoef", "nrcoeff_not_NA") )
+    dplyr::select(all_of(c(subject_Id,"isSingular", "df.residual","sigma" ,"nrcoef", "nrcoeff_not_NA")))
   modelProtein <- dplyr::left_join(modelProtein, modelProteinF)
 
   return(list(modelDF = modelProtein,
@@ -549,7 +549,7 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
         # Handle the error, e.g., by skipping the current iteration, logging the error, etc.
       })
     }
-    res <- data |> dplyr::select(-one_of(cnams))
+    res <- data |> dplyr::select(-all_of(cnams))
     return(res)
   }
 
@@ -980,15 +980,15 @@ contrasts_linfct <- function(models,
     dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix |>
-    dplyr::select_at( c(subject_Id, "contrast") ) |>
-    tidyr::unnest_legacy()
+    dplyr::select(all_of(c(subject_Id, "contrast"))) |>
+    tidyr::unnest(cols = c(contrast))
 
   # take sigma and df from somewhere else.
   modelInfos <- models |>
-    dplyr::select_at(c(subject_Id,
+    dplyr::select(all_of(c(subject_Id,
                        "isSingular",
                        "sigma.model" = "sigma",
-                       "df.residual.model" = "df.residual" )) |>
+                       "df.residual.model" = "df.residual" ))) |>
 
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
@@ -1053,7 +1053,7 @@ moderated_p_limma_long <- function(mm ,
                                    estimate = "estimate",
                                    robust = FALSE){
   dfg <- mm |>
-    dplyr::group_by_at(group_by_col) |>
+    dplyr::group_by(across(all_of(group_by_col))) |>
     dplyr::group_split()
   xx <- purrr::map_df(dfg, moderated_p_limma, estimate = estimate, robust = robust)
   return(xx)
@@ -1088,7 +1088,7 @@ adjust_p_values <- function(
     newname = "FDR"
 ){
   dfg <- mm |>
-    dplyr::group_by_at(group_by_col)
+    dplyr::group_by(across(all_of(group_by_col)))
   xx <- dplyr::mutate(dfg, !!newname := p.adjust(!!sym(column),method = "BH"))
   return(xx)
 }
@@ -1214,7 +1214,7 @@ summary_ROPECA_median_p.scaled <- function(
     max.n = 10){
 
   nrpepsPerProt <- contrasts_data |>
-    group_by_at(c(subject_Id, contrast)) |>
+    group_by(across(all_of(c(subject_Id, contrast)))) |>
     dplyr::summarize(n = dplyr::n() )
 
   contrasts_data <- contrasts_data |>
@@ -1223,7 +1223,7 @@ summary_ROPECA_median_p.scaled <- function(
         ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value) , !!sym(p.value) - 1))
 
   summarized.protein <- contrasts_data |>
-    group_by_at(c(subject_Id, contrast)) |>
+    group_by(across(all_of(c(subject_Id, contrast)))) |>
     dplyr::summarize(
       n_not_na = n(),
       mad.estimate = mad(!!sym(estimate), na.rm = TRUE),

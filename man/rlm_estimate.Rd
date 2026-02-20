@@ -49,7 +49,7 @@ conf <- bb$config
 data <- bb$data
 conf$hierarchyDepth <- 1
 xnested <- data |>
-  dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
+  dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
   tidyr::nest()
 
 feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())

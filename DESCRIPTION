@@ -69,6 +69,7 @@ Suggests:
     KernSmooth,
     knitr,
     nipals,
+    preprocessCore,
     readxl,
     rmarkdown,
     S4Vectors,

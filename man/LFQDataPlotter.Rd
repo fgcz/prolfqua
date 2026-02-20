@@ -31,9 +31,7 @@ stopifnot("ggplot" \%in\% class(lfqplotter$missigness_histogram()))
 stopifnot(class(lfqplotter$NA_heatmap()) == "pheatmap")
 class(lfqplotter$intensity_distribution_density())
 class(lfqplotter$intensity_distribution_violin())
-\dontrun{
-  stopifnot(is.null(lfqplotter$pairs_smooth()))
-}
+stopifnot(is.null(lfqplotter$pairs_smooth()))
 stopifnot(class(lfqplotter$sample_correlation()) == "list")
 stopifnot(class(lfqplotter$raster()) == "pheatmap")
 stopifnot("upset" == class(lfqplotter$upset_missing()))

@@ -99,7 +99,7 @@ ModelFirth <- R6::R6Class(
         dplyr::mutate(!!"Coeffs_model" := purrr::map( !!sym(lmermodel),  .coef_df ))
       Model_Coeff <- Model_Coeff |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nrcoef)
-      Model_Coeff <- tidyr::unnest_legacy(Model_Coeff)
+      Model_Coeff <- tidyr::unnest(Model_Coeff, cols = c(Coeffs_model))
       if(!is.null(self$models$hkey)){
         Model_Coeff <- Model_Coeff |> dplyr::filter(!grepl(self$models$hkey, factor))
       }

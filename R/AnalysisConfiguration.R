@@ -8,6 +8,13 @@
 #'
 #' @family configuration
 #' @export
+#' @examples
+#' istar <- sim_lfq_data_peptide_config()
+#' config <- istar$config
+#' stopifnot("AnalysisConfiguration" %in% class(config))
+#' stopifnot(length(config$hierarchy_keys()) > 0)
+#' stopifnot(length(config$factor_keys()) > 0)
+#' stopifnot(length(config$get_response()) == 1)
 #'
 AnalysisConfiguration <- R6::R6Class(
   "AnalysisConfiguration",
@@ -381,9 +388,9 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
   # extract hierarchy columns
   for (i in seq_along(configuration$hierarchy))
   {
-    data <- tidyr::unite(data, UQ(sym(configuration$hierarchy_keys()[i])), configuration$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
+    data <- tidyr::unite(data, !!sym(configuration$hierarchy_keys()[i]), configuration$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
   }
-  data <- dplyr::select(data , -dplyr::one_of(dplyr::setdiff(unlist(configuration$hierarchy), configuration$hierarchy_keys() )))
+  data <- dplyr::select(data , -dplyr::all_of(dplyr::setdiff(unlist(configuration$hierarchy), configuration$hierarchy_keys() )))
 
   # extract factors
   if ( length(configuration$factors) == 0) {
@@ -395,7 +402,7 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
   for (i in seq_along(configuration$factors))
   {
     if ( length(configuration$factors[[i]]) > 1) {
-      data <- tidyr::unite(data, UQ(sym(configuration$factor_keys()[i])), configuration$factors[[i]],remove = FALSE, sep = configuration$sep)
+      data <- tidyr::unite(data, !!sym(configuration$factor_keys()[i]), configuration$factors[[i]],remove = FALSE, sep = configuration$sep)
     } else {
       newname <- configuration$factor_keys()[i]
       data <- dplyr::mutate(data, !!newname := as.character(!!sym(configuration$factors[[i]])))
@@ -407,10 +414,10 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
   if (from_factors & !sampleName  %in% names(data)) {
     message("creating sampleName from factor columns")
     data <- data |>  tidyr::unite(
-      UQ(sym(sampleName)) ,
+      !!sym(sampleName) ,
       unique(unlist(configuration$factors)), remove = TRUE , sep = configuration$sep) |>
       dplyr::select(sampleName, configuration$fileName) |> dplyr::distinct() |>
-      dplyr::mutate_at(sampleName, function(x){ x <- make.unique( x, sep = configuration$sep )}) |>
+      dplyr::mutate(across(all_of(sampleName), function(x){ make.unique( x, sep = configuration$sep ) })) |>
       dplyr::inner_join(data, by = configuration$fileName)
   } else if (!sampleName  %in% names(data)) {
     message("creating sampleName from fileName column")
@@ -419,7 +426,7 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
     message("column sampleName already exists, using :", sampleName)
   }
 
-  data <- data |> dplyr::select(-dplyr::one_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
+  data <- data |> dplyr::select(-dplyr::all_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
 
   # Make implicit NA's explicit
   if (!(configuration$isotopeLabel %in% colnames(data))) {
@@ -636,8 +643,8 @@ table_factors_size <- function(pdata, configuration){
 hierarchy_counts <- function(pdata, config){
   hierarchy <- config$hierarchy_keys()
   res <- pdata |>
-    dplyr::group_by_at(config$isotopeLabel) |>
-    dplyr::summarise_at( hierarchy, n_distinct )
+    dplyr::group_by(across(all_of(config$isotopeLabel))) |>
+    dplyr::summarise(across(all_of(hierarchy), n_distinct))
 
   return(res)
 }
@@ -686,17 +693,19 @@ hierarchy_counts_sample <- function(
   hierarchy <- configuration$hierarchy_keys()
   summary <- pdata |> dplyr::filter(!is.na(!!rlang::sym(configuration$get_response() )),
                                     !!rlang::sym(configuration$nr_children ) >= .env$nr_children) |>
-    dplyr::group_by_at(c(configuration$isotopeLabel, configuration$sampleName)) |>
-    dplyr::summarise_at( hierarchy, dplyr::n_distinct )
+    dplyr::group_by(across(all_of(c(configuration$isotopeLabel, configuration$sampleName)))) |>
+    dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct))
 
   res <- function(value = c("wide", "long", "plot")){
     value <- match.arg(value)
     if (value == "wide") {
       return(summary)
     }else{
-      long <- summary |> tidyr::gather("key",
-                                       "nr",-dplyr::one_of(configuration$isotopeLabel,
-                                                           configuration$sampleName))
+      long <- summary |> tidyr::pivot_longer(
+                                       cols = -dplyr::all_of(c(configuration$isotopeLabel,
+                                                           configuration$sampleName)),
+                                       names_to = "key",
+                                       values_to = "nr")
       if (value == "long") {
         return(long)
       }else if (value == "plot" & nrow(long) > 0) {
@@ -759,9 +768,9 @@ summarize_hierarchy <- function(pdata,
   all_hierarchy <- c(config$isotopeLabel, config$hierarchy_keys() )
 
   precursor <- pdata |> dplyr::select(factors, all_hierarchy) |> dplyr::distinct()
-  x3 <- precursor |> dplyr::group_by_at(c(factors, hierarchy)) |>
-    dplyr::summarize_at( base::setdiff(all_hierarchy, hierarchy),
-                         list( n = dplyr::n_distinct))
+  x3 <- precursor |> dplyr::group_by(across(all_of(c(factors, hierarchy)))) |>
+    dplyr::summarize(across(all_of(base::setdiff(all_hierarchy, hierarchy)),
+                         list( n = dplyr::n_distinct)))
   return(x3)
 }
 
@@ -793,9 +802,9 @@ summarize_hierarchy <- function(pdata,
 spread_response_by_IsotopeLabel <- function(resData, config){
   id_vars <- config$id_vars()
   resData2 <- resData |> dplyr::select(c(id_vars, config$value_vars()) )
-  resData2 <- resData2 |> tidyr::gather(key = "variable", value = "value", -dplyr::all_of(id_vars)  )
+  resData2 <- resData2 |> tidyr::pivot_longer(cols = -dplyr::all_of(id_vars), names_to = "variable", values_to = "value")
   resData2 <- resData2 |>  tidyr::unite("temp", config$isotopeLabel, .data$variable )
-  HLData <- resData2 |> tidyr::spread(.data$temp,.data$value)
+  HLData <- resData2 |> tidyr::pivot_wider(names_from = "temp", values_from = "value")
   invisible(HLData)
 }
 

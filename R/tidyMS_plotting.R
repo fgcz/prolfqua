@@ -12,7 +12,7 @@
 #' plot_intensity_distribution_violin(istar$data, istar$config)
 #'
 plot_intensity_distribution_violin <- function(pdata, config){
-  p <- ggplot(pdata, aes_string(x = config$sampleName, y = config$get_response() )) +
+  p <- ggplot(pdata, aes(x = .data[[config$sampleName]], y = .data[[config$get_response()]] )) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
@@ -35,8 +35,8 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' plot_intensity_distribution_density(istar$data, istar$config)
 #'
 plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
-  p <- ggplot(pdata, aes_string(x = config$get_response(),
-                                colour = config$sampleName )) +
+  p <- ggplot(pdata, aes(x = .data[[config$get_response()]],
+                                colour = .data[[config$sampleName]] )) +
     geom_line(stat = "density")
   if (!config$is_response_transformed) {
     p <- p + scale_x_continuous(trans = 'log10')
@@ -106,7 +106,7 @@ plot_sample_correlation <- function(pdata, config){
 #' res$boxplot[[1]]
 #'
 #' hierarchy = config$hierarchy_keys_depth()
-#' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
+#' xnested <- data |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
 #'   config, beeswarm = FALSE, show_mean = TRUE)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
@@ -130,12 +130,12 @@ plot_hierarchies_boxplot <- function(pdata,
   pdata$size <- ifelse(pdata[[config$nr_children]] == 0, 2, pdata[[config$nr_children]])
   pdata[[config$nr_children]] <- as.factor(pdata[[config$nr_children]])
   color <- if (lil > 1) {isotopeLabel} else {NULL}
-  p <- ggplot(pdata, aes_string(x = "interaction",
-                                y = config$get_response(),
-                                color = color
+  p <- ggplot(pdata, aes(x = .data[["interaction"]],
+                                y = .data[[config$get_response()]]
   )) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
+  if (!is.null(color)) p <- p + aes(colour = .data[[color]])
 
   if (!config$is_response_transformed) {
     p <- p + scale_y_continuous(trans = "log10")
@@ -148,10 +148,9 @@ plot_hierarchies_boxplot <- function(pdata,
     } else {
       shape_values <- 16
     }
-    p <- p + ggbeeswarm::geom_quasirandom(aes_string(
-      color = color,
-      size = "size",
-      shape = config$nr_children) , dodge.width = 0.7 ) +
+    p <- p + ggbeeswarm::geom_quasirandom(aes(
+      size = .data[["size"]],
+      shape = .data[[config$nr_children]]) , dodge.width = 0.7 ) +
       scale_shape_manual(values = shape_values) +
       scale_size_continuous(range = range(pdata$size, na.rm= TRUE))
   }
@@ -212,9 +211,9 @@ plot_hierarchies_boxplot_df <- function(pdata,
                                         hierarchy = config$hierarchy_keys_depth(),
                                         facet_grid_on = NULL){
 
-  xnested <- pdata |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
+  xnested <- pdata |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
   newcol <- paste(hierarchy, collapse = "+")
-  xnested <- xnested |> tidyr::unite(!!sym(newcol), one_of(hierarchy))
+  xnested <- xnested |> tidyr::unite(!!sym(newcol), all_of(hierarchy))
 
   pb <- progress::progress_bar$new(total = nrow(xnested))
 
@@ -223,7 +222,7 @@ plot_hierarchies_boxplot_df <- function(pdata,
                                  plot_hierarchies_boxplot,
                                  config ,
                                  facet_grid_on = facet_grid_on, pb = pb))
-  return(dplyr::select_at(figs, c(newcol, "boxplot")))
+  return(dplyr::select(figs, all_of(c(newcol, "boxplot"))))
 }
 
 
@@ -260,7 +259,7 @@ plot_heatmap_cor <- function(data,
     cres <- cres^2
   }
 
-  factors <- dplyr::select_at(annot, config$factor_keys())
+  factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$sampleName]]
 
@@ -317,7 +316,7 @@ plot_heatmap_cor_iheatmap <- function(data,
   }
 
   # Prepare factors for annotation
-  factors <- dplyr::select_at(annot, config$factor_keys())
+  factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$sampleName]]
 
@@ -373,7 +372,7 @@ plot_heatmap <- function(data,
   wide <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- wide$annotation
 
-  factors <- dplyr::select_at(annot, config$factor_keys())
+  factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$sampleName]]
   resdata <- t(scale(t(wide$data)))
@@ -447,7 +446,7 @@ plot_raster <- function(data,
   resdata <- res$data
 
 
-  factors <- dplyr::select_at(annot, config$factor_keys())
+  factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$sampleName]]
 
@@ -507,7 +506,7 @@ plot_NA_heatmap <- function(data,
   res <- res$data
   stopifnot(annot[[config$sampleName]] %in% colnames(res))
 
-  factors <- dplyr::select_at(annot, config$factor_keys())
+  factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$sampleName]]
 

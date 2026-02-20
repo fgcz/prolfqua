@@ -63,8 +63,8 @@ transform_work_intensity <- function(pdata,
     newcol <- intesityNewName
   }
 
-  #pdata <- pdata |> dplyr::mutate_at(config$get_response(),
-  #                                    .funs = funs(!!sym(newcol) := .func(.)))
+  #pdata <- pdata |> dplyr::mutate(across(all_of(config$get_response()),
+  #                                    .fns = list(!!newcol := .func)))
   response_col <- config$get_response()
   vals <- pdata[[response_col]]
   if (identical(.func, log2) || identical(.func, log) || identical(.func, log10)) {
@@ -120,14 +120,11 @@ tidy_to_wide <- function(data,
                          value
 ){
   wide <- data |>
-    dplyr::select_at(c(rowIDs, columnLabels, value  ))
+    dplyr::select(all_of(c(rowIDs, columnLabels, value  )))
 
   wide_spread <- wide |>
-    tidyr::spread(key = columnLabels, value = value)
-  # wide_pivot <- wide |>
-  #  tidyr::pivot_wider( names_from = all_of(columnLabels) , values_from =  all_of(value) )
+    tidyr::pivot_wider(names_from = all_of(columnLabels), values_from = all_of(value))
 
-  #message("I AM BEING USED: spread")
   return(wide_spread)
 }
 
@@ -186,7 +183,7 @@ tidy_to_wide_config <- function(data, config,
                        value = value )
   rowdata <- res |> dplyr::select(all_of(c(config$hierarchy_keys(),config$isotopeLabel)))
   if (as.matrix) {
-    resMat <- as.matrix(dplyr::select(res,-dplyr::one_of(c(config$hierarchy_keys(),config$isotopeLabel))))
+    resMat <- as.matrix(dplyr::select(res,-dplyr::all_of(c(config$hierarchy_keys(),config$isotopeLabel))))
     names <- rowdata |>
       tidyr::unite("newID", !!!dplyr::syms(c(config$hierarchy_keys(), config$isotopeLabel)), sep = sep) |> dplyr::pull("newID")
     rownames(resMat) <- names
@@ -221,7 +218,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
     tibble::tibble("row.names" := rownames(pdata)),
     tibble::as_tibble(pdata)
   )
-  pdata <- tidyr::gather(pdata,key = !!config$sampleName, value = !!value, 2:ncol(pdata))
+  pdata <- tidyr::pivot_longer(pdata, cols = -1, names_to = config$sampleName, values_to = value)
   pdata <- tidyr::separate(pdata, "row.names",  config$hierarchy_keys(), sep = sep)
   if (!is.null(data)) {
     pdata <- dplyr::inner_join(data, pdata)
@@ -550,9 +547,9 @@ normalize_log2_robscale <- function(pdata, config){
     data$c_name <- NULL
   }
   tmp <- data |>
-    dplyr::select_at(c(levelA, levelB)) |>
+    dplyr::select(all_of(c(levelA, levelB))) |>
     dplyr::distinct() |>
-    dplyr::group_by_at(levelA) |>
+    dplyr::group_by(across(all_of(levelA))) |>
     dplyr::summarize(!!c_name := n())
 
   if (!merge) {
@@ -578,7 +575,7 @@ normalize_log2_robscale <- function(pdata, config){
 #' res <- nr_B_in_A(data, config)
 #'
 #' res$data |>
-#'   dplyr::select_at(c(config$hierarchy_keys_depth(),  res$name)) |>
+#'   dplyr::select(all_of(c(config$hierarchy_keys_depth(),  res$name))) |>
 #'   dplyr::distinct() |>
 #'   dplyr::pull() |> table()
 #'
@@ -633,7 +630,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
   data <- data |>
     dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$get_response())) ~ 1,
                                             TRUE ~ 0))
-  pepStats <- data |> group_by_at(c(cf$hierarchy_keys_depth(), cf$sampleName)) |>
+  pepStats <- data |> group_by(across(all_of(c(cf$hierarchy_keys_depth(), cf$sampleName)))) |>
     summarize(nrPep = n(), present = sum(.data$presentabsent), .groups = "drop")
 
   annotColumns <- c(cf$fileName,
@@ -646,7 +643,7 @@ nr_B_in_A_per_sample <- function(data, config, nested = TRUE){
     distinct()
 
   res <- inner_join(annotation, pepStats, by = c(cf$sampleName, cf$hierarchy_keys_depth() ))
-  res <-  if (nested) {res |> group_by_at(cf$hierarchy_keys_depth()) |> nest()} else {res}
+  res <-  if (nested) {res |> group_by(across(all_of(cf$hierarchy_keys_depth()))) |> nest()} else {res}
   return(res)
 }
 

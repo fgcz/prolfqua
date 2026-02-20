@@ -140,7 +140,7 @@ multigroup_volcano <- function(.data,
       head(n = maxNrOfSignificantText)
     if (nrow(subsetData) > 0) {
       p <- p + ggrepel::geom_text_repel(data = subsetData,
-                                        aes_string(effect , colname , label = "label"),
+                                        aes(x = .data[[effect]] , y = !!rlang::parse_expr(colname) , label = .data$label),
                                         size = size,
                                         segment.size = segment.size,
                                         segment.alpha = segment.alpha)
@@ -163,8 +163,10 @@ multigroup_volcano <- function(.data,
   colname = paste("-log10(", significance, ")", sep = "")
   p <- ggplot(
     data,
-    aes_string(x = effect, y = colname, color = colour, text = text)) +
+    aes(x = .data[[effect]], y = !!rlang::parse_expr(colname))) +
     geom_point(alpha = 0.5)
+  if (!is.null(colour)) p <- p + aes(color = .data[[colour]])
+  if (!is.null(text)) p <- p + aes(text = .data[[text]])
   p <- p + scale_colour_manual(
     values = c("black", "green",
                "blue", "red") )
@@ -293,12 +295,12 @@ jackknife_matrix <- function(dataX, distmethod , ... ){
   if (nrow(dataX) > 1 & ncol(dataX) > 1) {
     tmp <- jackknife( dataX, distmethod, ... )
     x <- purrr::map_df(tmp$jack.values, prolfqua::matrix_to_tibble)
-    dd <- tidyr::gather(x, "col.names" , "correlation" , 2:ncol(x))
+    dd <- tidyr::pivot_longer(x, cols = -1, names_to = "col.names", values_to = "correlation")
     ddd <- dd |>
-      group_by(UQ(sym("row.names")), UQ(sym("col.names"))) |>
-      summarize_at(c("jcor" = "correlation"), function(x){max(x, na.rm = TRUE)})
+      group_by(.data$row.names, .data$col.names) |>
+      summarize(jcor = max(.data$correlation, na.rm = TRUE))
 
-    dddd <- tidyr::spread(ddd, UQ(sym("col.names")), UQ(sym("jcor"))  )
+    dddd <- tidyr::pivot_wider(ddd, names_from = "col.names", values_from = "jcor")
     dddd <- as.data.frame(dddd)
     rownames(dddd) <- dddd$row.names
     dddd <- dddd[,-1]

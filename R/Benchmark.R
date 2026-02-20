@@ -3,6 +3,16 @@
 #' @family benchmarking
 #' @param data analysis results
 #' @param idcol default "protein_Id"
+#' @examples
+#' dd <- data.frame(
+#'   protein_Id = c("P1_HUMAN", "P2_ECOLI", "P3_HUMAN", "P4_OTHER"),
+#'   estimate = c(0.5, -1.2, 0.3, 0.1),
+#'   stringsAsFactors = FALSE)
+#' res <- ionstar_bench_preprocess(dd)
+#' stopifnot(is.list(res))
+#' stopifnot(all(c("data", "table") %in% names(res)))
+#' stopifnot(nrow(res$data) == 3)  # OTHER is filtered out
+#' stopifnot("TP" %in% colnames(res$data))
 ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
   tmp <- data |>
     ungroup() |>
@@ -82,7 +92,11 @@ ms_bench_add_scores <- function(data,
 #' @param FPR array of FPR
 #' @param TPR array of corresponding TPR
 #' @param fpr_threshold default = 1
-#'
+#' @examples
+#' FPR <- c(0, 0.1, 0.2, 0.5, 1.0)
+#' TPR <- c(0, 0.4, 0.7, 0.9, 1.0)
+#' auc <- ms_bench_auc(FPR, TPR)
+#' stopifnot(is.numeric(auc), length(auc) == 1, auc > 0)
 ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
   # make sure that sorted.
   oFPR <- order(FPR)
@@ -128,8 +142,8 @@ do_confusion <-
            subject_Id = "protein_Id") {
     # TODO add to prolfqua
     est <- data |> ungroup() |>
-      dplyr::select_at(c(subject_Id, "TP",
-                         purrr::map_chr(arrangeby, "score")))
+      dplyr::select(all_of(c(subject_Id, "TP",
+                         purrr::map_chr(arrangeby, "score"))))
     res <- list()
     for (arrange in arrangeby) {
       score <- arrange$score
@@ -151,7 +165,7 @@ do_confusion_c <- function(
     arrangeby = list(list(score = "scaled.p.value", desc = FALSE)),
     subject_Id = "protein_Id") {
 
-  txx <- data |> group_by_at(contrast) |> nest()
+  txx <- data |> group_by(across(all_of(contrast))) |> nest()
   out <- vector(mode = "list", length = length(txx$data))
   for (i in 1:length(txx$data)) {
     out[[i]] <- do_confusion(
@@ -163,7 +177,7 @@ do_confusion_c <- function(
   #txx <- txx |> mutate(out = map(data,
   #                               do_confusion,
   #                               arrangeby = arrangeby, subject_Id = subject_Id))
-  xx <- txx  |> select_at(c(contrast, "out")) |>
+  xx <- txx  |> select(all_of(c(contrast, "out"))) |>
     unnest("out") |>
     ungroup()
 
@@ -246,7 +260,7 @@ do_confusion_c <- function(
   )
 
   xxA <- data |>
-    group_by_at(hierarchy) |>
+    group_by(across(all_of(hierarchy))) |>
     summarize(n = n(), nr_na = sum(is.na(!!sym(what))))
   summary <- xxA |> group_by(.data$nr_na) |> summarize(n = n())
 

@@ -39,7 +39,7 @@ res <- plot_hierarchies_boxplot_df(data, config)
 res$boxplot[[1]]
 
 hierarchy = config$hierarchy_keys_depth()
-xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
+xnested <- data |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
   config, beeswarm = FALSE, show_mean = TRUE)
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],

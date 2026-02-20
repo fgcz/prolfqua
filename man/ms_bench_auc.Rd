@@ -16,6 +16,12 @@ ms_bench_auc(FPR, TPR, fpr_threshold = 1)
 \description{
 computes auc and pauc using trapez rule
 }
+\examples{
+FPR <- c(0, 0.1, 0.2, 0.5, 1.0)
+TPR <- c(0, 0.4, 0.7, 0.9, 1.0)
+auc <- ms_bench_auc(FPR, TPR)
+stopifnot(is.numeric(auc), length(auc) == 1, auc > 0)
+}
 \seealso{
 Other benchmarking: 
 \code{\link{Benchmark}},

@@ -8,6 +8,15 @@ Analysis Configuration — holds all table annotations, hierarchy
 definitions, factor definitions, and analysis parameters in a single
 flat object.
 }
+\examples{
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
+stopifnot("AnalysisConfiguration" \%in\% class(config))
+stopifnot(length(config$hierarchy_keys()) > 0)
+stopifnot(length(config$factor_keys()) > 0)
+stopifnot(length(config$get_response()) == 1)
+
+}
 \seealso{
 Other configuration: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

@@ -59,15 +59,15 @@ contrasts_linfct_firth <- function(models,
     dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix |>
-    dplyr::select_at( c(subject_Id, "contrast") ) |>
-    tidyr::unnest_legacy()
+    dplyr::select(all_of(c(subject_Id, "contrast"))) |>
+    tidyr::unnest(cols = c(contrast))
 
   # take sigma and df from somewhere else.
   modelInfos <- modelDF |>
-    dplyr::select_at(c(subject_Id,
+    dplyr::select(all_of(c(subject_Id,
                        "isSingular",
                        "sigma.model" = "sigma",
-                       "df.residual.model" = "df.residual" )) |>
+                       "df.residual.model" = "df.residual" ))) |>
 
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)

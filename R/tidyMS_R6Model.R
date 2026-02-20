@@ -139,6 +139,14 @@ build_model <- function(data,
 #' @keywords internal
 #' @family modelling
 #' @export
+#' @examples
+#' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
+#' formula_rp <- strategy_lmer("abundance ~ group_ + (1 | peptide_Id) + (1 | sampleName)")
+#' mod <- prolfqua::build_model(
+#'   LFQData$new(D$data, D$config), formula_rp)
+#' res <- model_summary(mod)
+#' stopifnot(is.list(res))
+#' stopifnot(all(c("exists", "isSingular") %in% names(res)))
 model_summary <- function(mod){
   res <- list()
   res$exists <- table(mod$modelDF$exists_lmer)

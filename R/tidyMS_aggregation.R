@@ -14,31 +14,31 @@ plot_hierarchies_line_default <- function(data,
   if (length(isotopeLabel)) {
     if (separate) {
       formula <- paste(paste(isotopeLabel, collapse = "+"), "~", paste(factor, collapse = "+"))
-      p <- ggplot(data, aes_string(
-        x = sample,
-        y = intensity,
-        group = fragment,
-        color = peptide
+      p <- ggplot(data, aes(
+        x = .data[[sample]],
+        y = .data[[intensity]],
+        group = .data[[fragment]],
+        color = .data[[peptide]]
       ))
     } else {
       formula <- sprintf("~%s", paste(factor, collapse = " + "))
       data <- tidyr::unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
-      p <- ggplot(data, aes_string(
-        x = sample,
-        y = intensity,
-        group = "fragment_label",
-        color = peptide
+      p <- ggplot(data, aes(
+        x = .data[[sample]],
+        y = .data[[intensity]],
+        group = .data[["fragment_label"]],
+        color = .data[[peptide]]
       ))
     }
-    p <- p + geom_point(aes_string(shape = isotopeLabel), show.legend = show.legend) +
-      geom_line(aes_string(linetype = isotopeLabel), show.legend = show.legend)
+    p <- p + geom_point(aes(shape = .data[[isotopeLabel]]), show.legend = show.legend) +
+      geom_line(aes(linetype = .data[[isotopeLabel]]), show.legend = show.legend)
   } else {
     formula <- sprintf("~%s", paste(factor, collapse = " + "))
-    p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment, color = peptide))
+    p <- ggplot(data, aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]]))
     p <- p + geom_point(show.legend = show.legend) + geom_line(show.legend = show.legend)
   }
 
-  # p <- ggplot(data, aes_string(x = sample, y = intensity, group = fragment,  color= peptide, linetype = isotopeLabel))
+  # p <- ggplot(data, aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]], linetype = .data[[isotopeLabel]]))
   p <- p + facet_grid(as.formula(formula), scales = "free_x")
   p <- p + ggtitle(proteinName)
   p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
@@ -67,7 +67,7 @@ plot_hierarchies_line_default <- function(data,
 #' analysis <- istar$data
 #'
 #' xnested <- analysis |>
-#'   dplyr::group_by_at(config$hierarchy_keys_depth()) |>
+#'   dplyr::group_by(across(all_of(config$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
 #'
 #' prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)
@@ -152,7 +152,7 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
   pdata <- pdata |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()), remove = FALSE)
 
   xnested <- pdata |>
-    dplyr::group_by_at(hierarchy_ID) |>
+    dplyr::group_by(across(all_of(hierarchy_ID))) |>
     tidyr::nest()
 
   figs <- xnested |>
@@ -175,14 +175,14 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
 plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
   p + geom_line(
     data = data,
-    aes_string(x = configuration$sampleName, y = aes_y, group = 1),
+    aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1),
     size = 1.3,
     color = "black",
     linetype = "solid"
   ) +
     geom_point(
       data = data,
-      aes_string(x = configuration$sampleName, y = aes_y, group = 1), color = "black", shape = 10
+      aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1), color = "black", shape = 10
     )
 }
 
@@ -261,7 +261,7 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #' data <- bb$data
 #'
 #' xnested <- data |>
-#'   dplyr::group_by_at(configur$hierarchy_keys_depth()) |>
+#'   dplyr::group_by(across(all_of(configur$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
 #' x <- xnested$data[[1]]
 #' nn <- x |>
@@ -280,7 +280,7 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #' conf$hierarchyDepth <- 1
 #'
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
+#'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
 #'
 #' x <- xnested$data[[1]]
@@ -326,7 +326,7 @@ response_as_matrix <- function(pdata, config) {
 #'
 #' conf$hierarchyDepth <- 1
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
+#'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
 #'
 #' feature <- base::setdiff(
@@ -368,7 +368,7 @@ medpolish_estimate_df <- function(pdata, response, feature, sampleName) {
 #' data <- bb$data
 #' conf$hierarchyDepth <- 1
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
+#'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
 #'
 #' feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
@@ -393,7 +393,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 
 .rlm_estimate <- function(pdata, response, feature, samples = "samples", maxIt = 20) {
   data <- pdata |>
-    select_at(c(samples, feature, response)) |>
+    select(all_of(c(samples, feature, response))) |>
     na.omit()
   ## If there is only one 1 peptide for all samples return response of that peptide
   expname <- paste0("mean.", response)
@@ -409,7 +409,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
   ## model-matrix breaks on factors with 1 level so make vector of ones (will be intercept)
   if (length(unique(data[[samples]])) == 1L) {
     data <- data |>
-      group_by_at(samples) |>
+      group_by(across(all_of(samples))) |>
       summarize(
         lmrob = mean(!!sym(response)),
         !!expname := mean(!!sym(response)), .groups = "drop"
@@ -444,7 +444,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 
     sumdata <- data |>
       select(-!!sym(feature)) |>
-      group_by_at(samples) |>
+      group_by(across(all_of(samples))) |>
       dplyr::summarize(!!expname := mean(!!sym(response)),
         weights = 1 / mean(residuals^2), .groups = "drop"
       )
@@ -459,7 +459,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
   } else {
     sumdata <- data |>
       select(-!!sym(feature)) |>
-      group_by_at(samples) |>
+      group_by(across(all_of(samples))) |>
       dplyr::summarize(!!expname := mean(!!sym(response)),
         lmrob = mean(!!sym(response)),
         .groups = "drop"
@@ -468,7 +468,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
     res <- sumdata
   }
   pdata <- pdata |>
-    dplyr::select_at(samples) |>
+    dplyr::select(all_of(samples)) |>
     distinct()
   res <- left_join(pdata, res, by = samples)
   return(res)
@@ -517,7 +517,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' data <- bb$data
 #' conf$hierarchyDepth <- 1
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
+#'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
 #'
 #' feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
@@ -552,7 +552,7 @@ rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
 #' data <- bb$data
 #' conf$hierarchyDepth <- 1
 #' xnested <- data |>
-#'   dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
+#'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
 #'
 #' feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
@@ -645,7 +645,7 @@ estimate_intensity <- function(data, config, .func) {
   config <- config$clone(deep = TRUE)
 
   xnested <- data |>
-    group_by_at(config$hierarchy_keys_depth()) |>
+    group_by(across(all_of(config$hierarchy_keys_depth()))) |>
     nest()
 
 
@@ -671,7 +671,7 @@ estimate_intensity <- function(data, config, .func) {
   )
 
   unnested <- xnested |>
-    dplyr::select_at(c(config$hierarchy_keys_depth(), makeName)) |>
+    dplyr::select(all_of(c(config$hierarchy_keys_depth(), makeName))) |>
     tidyr::unnest(cols = makeName) |>
     dplyr::ungroup()
 
@@ -807,13 +807,13 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
     pdata |> dplyr::filter(!!sym("srm_meanIntRank") <= N)
 
   topInt <- topInt |>
-    dplyr::group_by_at(c(
+    dplyr::group_by(across(all_of(c(
       config$hierarchy_keys_depth(),
       config$sampleName,
       config$fileName,
       config$isotopeLabel,
       config$factor_keys()
-    ))
+    ))))
   sumTopInt <- topInt |>
     dplyr::summarize(!!newcol := .func(!!sym(config$get_response())),
       ident_qValue = min(!!sym(config$ident_qValue)), .groups = "drop"
@@ -866,7 +866,7 @@ intensity_summary_by_hkeys <- function(data, config, func) {
   config <- config$clone(deep = TRUE)
 
   xnested <- data |>
-    group_by_at(config$hierarchy_keys_depth()) |>
+    group_by(across(all_of(config$hierarchy_keys_depth()))) |>
     nest()
 
   pb <- progress::progress_bar$new(total = 3 * nrow(xnested))

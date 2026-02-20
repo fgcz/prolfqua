@@ -32,7 +32,7 @@ config <- istar$config
 analysis <- istar$data
 
 xnested <- analysis |>
-  dplyr::group_by_at(config$hierarchy_keys_depth()) |>
+  dplyr::group_by(across(all_of(config$hierarchy_keys_depth()))) |>
   tidyr::nest()
 
 prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)

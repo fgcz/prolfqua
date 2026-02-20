@@ -6,6 +6,19 @@
 #'
 #' @seealso \code{\link{LFQData}}
 #' @export
+#' @examples
+#' istar <- prolfqua::sim_lfq_data_peptide_config()
+#' istar$data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 5))
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#'
+#' writer <- LFQDataWriter$new(lfqdata, prefix = "test_", format = "xlsx")
+#' wide <- writer$get_wide()
+#' stopifnot(is.list(wide))
+#' stopifnot(all(c("data", "annotation") %in% names(wide)))
+#'
+#' outdir <- tempdir()
+#' writer$write_wide(outdir)
+#' stopifnot(length(writer$file_paths) == 2)
 #'
 LFQDataWriter <- R6::R6Class(
   "LFQDataWriter",list(
@@ -29,15 +42,6 @@ LFQDataWriter <- R6::R6Class(
       self$prefix = prefix
     },
     #' @description
-    #' Get data in long format for writing
-    #' @return tibble
-    get_long = function(){
-      #' gets data formatted for writing
-      separate_factors(
-        separate_hierarchy(self$lfq$data, self$lfq$config),
-        self$lfq$config)
-    },
-    #' @description
     #' Get data in Wide format for writing
     #' @return list with data and annotation
     get_wide = function(){
@@ -45,17 +49,6 @@ LFQDataWriter <- R6::R6Class(
       wide <- self$lfq$to_wide()
       res <- list(data = separate_hierarchy(wide$data, self$lfq$config), annotation = wide$annotation)
       return(res)
-    },
-    #' @description
-    #' write data to file
-    #' @param path_qc path to write to
-    write_long = function(path_qc) {
-      fname <- paste0(self$prefix,"intensities_long")
-      self$file_paths[[fname]] <-
-        lfq_write_table(self$get_long(),
-                        path = path_qc,
-                        name = fname,
-                        format = self$format)
     },
     #' @description
     #' write data to file

@@ -14,6 +14,17 @@ ionstar_bench_preprocess(data, idcol = "protein_Id")
 \description{
 prepare benchmark data
 }
+\examples{
+dd <- data.frame(
+  protein_Id = c("P1_HUMAN", "P2_ECOLI", "P3_HUMAN", "P4_OTHER"),
+  estimate = c(0.5, -1.2, 0.3, 0.1),
+  stringsAsFactors = FALSE)
+res <- ionstar_bench_preprocess(dd)
+stopifnot(is.list(res))
+stopifnot(all(c("data", "table") \%in\% names(res)))
+stopifnot(nrow(res$data) == 3)  # OTHER is filtered out
+stopifnot("TP" \%in\% colnames(res$data))
+}
 \seealso{
 Other benchmarking: 
 \code{\link{Benchmark}},

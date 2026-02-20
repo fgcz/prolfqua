@@ -19,7 +19,7 @@ configur <- bb$config
 data <- bb$data
 
 xnested <- data |>
-  dplyr::group_by_at(configur$hierarchy_keys_depth()) |>
+  dplyr::group_by(across(all_of(configur$hierarchy_keys_depth()))) |>
   tidyr::nest()
 x <- xnested$data[[1]]
 nn <- x |>
@@ -38,7 +38,7 @@ conf <- configur$clone(deep = TRUE)
 conf$hierarchyDepth <- 1
 
 xnested <- data |>
-  dplyr::group_by_at(conf$hierarchy_keys_depth()) |>
+  dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
   tidyr::nest()
 
 x <- xnested$data[[1]]

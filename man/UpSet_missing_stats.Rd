@@ -14,9 +14,7 @@ istar <- sim_lfq_data_peptide_config()
 config <- istar$config
 analysis <- istar$data
 pups <- UpSet_missing_stats(analysis, config)
-\dontrun{
 UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
-}
 }
 \seealso{
 Other plotting: 
