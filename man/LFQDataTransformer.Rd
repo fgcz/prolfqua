@@ -20,7 +20,7 @@ lfqTrans <- lfqcopy$get_Transformer()
 
 x <- lfqTrans$intensity_array(log2)
 
-x$lfq$config$table$is_response_transformed
+x$lfq$config$is_response_transformed
 x <- x$intensity_matrix(robust_scale)
 plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
@@ -76,20 +76,18 @@ quant <- function(y){
 
 #subset scaling
 
-istar <- prolfqua_data('data_ionstar')$filtered()
-istar$config <- old2new(istar$config)
-data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
-lfqdata <- LFQData$new(data, istar$config)
-lfqdata <- lfqdata$get_Transformer()$intensity_array(log2)$lfq
-head(lfqdata$hierarchy())
-internal <- lfqdata$get_subset(head(lfqdata$hierarchy()))
+istar2 <- sim_lfq_data_peptide_config()
+lfqdata2 <- LFQData$new(istar2$data, istar2$config)
+lfqdata2 <- lfqdata2$get_Transformer()$intensity_array(log2)$lfq
+head(lfqdata2$hierarchy())
+internal <- lfqdata2$get_subset(head(lfqdata2$hierarchy()))
 internal$hierarchy()
-tr <- lfqdata$get_Transformer()
+tr <- lfqdata2$get_Transformer()
 tr$center_to_reference(internal)
 pl <- tr$lfq$get_Plotter()
 pl$intensity_distribution_density()
-lfqdata$get_Plotter()$intensity_distribution_density()
-robscale <- lfqdata$get_Transformer()$robscale_subset(internal)$lfq
+lfqdata2$get_Plotter()$intensity_distribution_density()
+robscale <- lfqdata2$get_Transformer()$robscale_subset(internal)$lfq
 robscale$get_Plotter()$intensity_distribution_density()
 
 }

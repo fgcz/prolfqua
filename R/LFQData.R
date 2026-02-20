@@ -92,7 +92,7 @@ LFQData <- R6::R6Class(
     #' @description
     #' get subject ID columns
     subject_Id = function(){
-      return(self$config$table$hierarchy_keys_depth())
+      return(self$config$hierarchy_keys_depth())
     },
     #' @description
     #' is data transformed
@@ -100,9 +100,9 @@ LFQData <- R6::R6Class(
     #' @return logical
     is_transformed = function(is_transformed){
       if (missing(is_transformed)) {
-        return(self$config$table$is_response_transformed)
+        return(self$config$is_response_transformed)
       }else{
-        self$config$table$is_response_transformed = is_transformed
+        self$config$is_response_transformed = is_transformed
       }
     },
     #' @description
@@ -118,7 +118,7 @@ LFQData <- R6::R6Class(
     #' @return self
     filter_proteins_by_peptide_count = function(){
       message("removing proteins with less than: ",
-              self$config$parameter$min_peptides_protein,
+              self$config$min_peptides_protein,
               " peptpides")
       self$data <- prolfqua::filter_proteins_by_peptide_count(self$data, self$config)$data
       invisible(self)
@@ -137,18 +137,18 @@ LFQData <- R6::R6Class(
       } else {
         if (factorDepth >= 1) {
           cfg <- self$config$clone(deep = TRUE)
-          cfg$table$factorDepth <- factorDepth
+          cfg$factorDepth <- factorDepth
           missing <- prolfqua::summarize_stats_factors(self$data, cfg)
         } else{
           missing <- prolfqua::summarize_stats_all(self$data, self$config)
         }
       }
       notNA <- missing |> dplyr::filter(nrNAs <= nrNA)
-      sumN <- notNA |> group_by_at(self$config$table$hierarchy_keys()) |>
+      sumN <- notNA |> group_by_at(self$config$hierarchy_keys()) |>
         summarise(n = n())
       notNA <- sumN |> dplyr::filter(n == max(n))
 
-      notNA <- notNA |> dplyr::select(self$config$table$hierarchy_keys())
+      notNA <- notNA |> dplyr::select(self$config$hierarchy_keys())
       notNAdata <- dplyr::inner_join( notNA, self$data) |> ungroup()
       return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
     },
@@ -165,14 +165,14 @@ LFQData <- R6::R6Class(
     #' @description
     #' converts the data to wide
     #' @param as.matrix return as data.frame or matrix
-    #' @param value see possible lfqdata$config$table$value_vars()
+    #' @param value see possible lfqdata$config$value_vars()
     #' @return list with data, annotation, and configuration
     #'
     to_wide = function(as.matrix = FALSE, value = NULL){
       if (is.null(value)) {
         wide <- prolfqua::tidy_to_wide_config(self$data, self$config, as.matrix = as.matrix)
       } else {
-        stopifnot(value %in% self$config$table$value_vars())
+        stopifnot(value %in% self$config$value_vars())
         wide <- prolfqua::tidy_to_wide_config(
           self$data, self$config,
           as.matrix = as.matrix,
@@ -190,7 +190,7 @@ LFQData <- R6::R6Class(
     #' @description
     #' Hierarchy table
     hierarchy = function(){
-      hk <- self$config$table$hierarchy_keys_depth()
+      hk <- self$config$hierarchy_keys_depth()
       hkdf <- self$data |> select(all_of(hk)) |> distinct()
       return(hkdf)
     },
@@ -198,7 +198,7 @@ LFQData <- R6::R6Class(
     #' name of response variable
     #' @return data.frame
     response = function(){
-      self$config$table$get_response()
+      self$config$get_response()
     },
     #' @description
     #' new name of response variable
@@ -208,8 +208,8 @@ LFQData <- R6::R6Class(
         msg <- paste(newname, " already in data :", paste( colnames(self$data), collapse = " "), ".")
         message(msg)
       } else {
-        old <- self$config$table$pop_response()
-        self$config$table$set_response(newname)
+        old <- self$config$pop_response()
+        self$config$set_response(newname)
         self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
       }
     },
@@ -290,7 +290,6 @@ LFQData <- R6::R6Class(
 #' @examples
 #'
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
-#' istar$config <- (istar$config)
 #' data <- istar$data
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$to_wide()
@@ -303,7 +302,7 @@ LFQDataToSummarizedExperiment <- function(lfqdata){
     wide <- lfqdata$to_wide(as.matrix = TRUE)
     nr_children <- lfqdata$to_wide(as.matrix = TRUE, value = "nr_children")
     ann <- data.frame(wide$annotation)
-    rownames(ann) <- wide$annotation[[lfqdata$config$table$sampleName]]
+    rownames(ann) <- wide$annotation[[lfqdata$config$sampleName]]
     se <- SummarizedExperiment::SummarizedExperiment(S4Vectors::SimpleList(
       LFQ = wide$data,
       nr_children = nr_children$data),

@@ -10,7 +10,7 @@ plot contrasts
 }
 \examples{
 
-istar <- sim_lfq_data_peptide_config(Nprot = 100)
+istar <- sim_lfq_data_peptide_config(Nprot = 20)
 modelName <- "Model"
 modelFunction <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1|sample)",
@@ -22,7 +22,7 @@ mod <- build_model(
   pepIntensity,
   modelFunction,
   modelName = modelName,
-  subject_Id = config$table$hierarchy_keys_depth())
+  subject_Id = config$hierarchy_keys_depth())
 
  Contr <- c("group_A_vs_Ctrl" = "group_A - group_Ctrl",
  "group_B_vs_Ctrl" = "group_B - group_Ctrl"

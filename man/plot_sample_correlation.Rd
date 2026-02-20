@@ -15,17 +15,9 @@ plot_sample_correlation(pdata, config)
 visualize correlation among samples
 }
 \examples{
-
-istar <-sim_lfq_data_peptide_config()
-
-config <- istar$config
-analysis <- istar$data
-
-analysis <- remove_small_intensities(analysis, config)
-analysis <- transform_work_intensity(analysis, config, log2)
-mm <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
-class(plot_sample_correlation(analysis, config))
-plot_sample_correlation(analysis, config)
+istar <- sim_lfq_data_peptide_config()
+analysis <- transform_work_intensity(istar$data, istar$config, log2)
+plot_sample_correlation(analysis, istar$config)
 }
 \seealso{
 Other plotting: 

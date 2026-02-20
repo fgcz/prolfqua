@@ -22,24 +22,11 @@ visualize intensity distributions
 visualize intensity distributions
 }
 \examples{
+istar <- sim_lfq_data_peptide_config()
+plot_intensity_distribution_violin(istar$data, istar$config)
 
-istar <-sim_lfq_data_peptide_config()
-
-config <- istar$config
-analysis <- istar$data
-
-plot_intensity_distribution_violin(analysis, config)
-analysis <- transform_work_intensity(analysis, config, log2)
-plot_intensity_distribution_violin(analysis, config)
-
-
-istar <-sim_lfq_data_peptide_config()
-
-config <- istar$config
-analysis <- istar$data
-plot_intensity_distribution_density(analysis, config)
-analysis <- transform_work_intensity(analysis, config, log2)
-plot_intensity_distribution_density(analysis, config)
+istar <- sim_lfq_data_peptide_config()
+plot_intensity_distribution_density(istar$data, istar$config)
 
 }
 \seealso{

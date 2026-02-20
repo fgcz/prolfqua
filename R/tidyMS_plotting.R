@@ -8,22 +8,15 @@
 #' @import ggplot2
 #' @family plotting
 #' @examples
-#'
-#' istar <-sim_lfq_data_peptide_config()
-#'
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' plot_intensity_distribution_violin(analysis, config)
-#' analysis <- transform_work_intensity(analysis, config, log2)
-#' plot_intensity_distribution_violin(analysis, config)
+#' istar <- sim_lfq_data_peptide_config()
+#' plot_intensity_distribution_violin(istar$data, istar$config)
 #'
 plot_intensity_distribution_violin <- function(pdata, config){
-  p <- ggplot(pdata, aes_string(x = config$table$sampleName, y = config$table$get_response() )) +
+  p <- ggplot(pdata, aes_string(x = config$sampleName, y = config$get_response() )) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
-  if (!config$table$is_response_transformed) {
+  if (!config$is_response_transformed) {
     p <- p + scale_y_continuous(trans = 'log10')
   }
   return(p)
@@ -38,20 +31,14 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' @family plotting
 #' @rdname plot_intensity_distribution_violin
 #' @examples
-#'
-#' istar <-sim_lfq_data_peptide_config()
-#'
-#' config <- istar$config
-#' analysis <- istar$data
-#' plot_intensity_distribution_density(analysis, config)
-#' analysis <- transform_work_intensity(analysis, config, log2)
-#' plot_intensity_distribution_density(analysis, config)
+#' istar <- sim_lfq_data_peptide_config()
+#' plot_intensity_distribution_density(istar$data, istar$config)
 #'
 plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
-  p <- ggplot(pdata, aes_string(x = config$table$get_response(),
-                                colour = config$table$sampleName )) +
+  p <- ggplot(pdata, aes_string(x = config$get_response(),
+                                colour = config$sampleName )) +
     geom_line(stat = "density")
-  if (!config$table$is_response_transformed) {
+  if (!config$is_response_transformed) {
     p <- p + scale_x_continuous(trans = 'log10')
   }
   if (!legend) {
@@ -69,17 +56,9 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
 #' @family plotting
 #' @rdname plot_sample_correlation
 #' @examples
-#'
-#' istar <-sim_lfq_data_peptide_config()
-#'
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' analysis <- remove_small_intensities(analysis, config)
-#' analysis <- transform_work_intensity(analysis, config, log2)
-#' mm <- tidy_to_wide_config(analysis, config, as.matrix = TRUE)
-#' class(plot_sample_correlation(analysis, config))
-#' plot_sample_correlation(analysis, config)
+#' istar <- sim_lfq_data_peptide_config()
+#' analysis <- transform_work_intensity(istar$data, istar$config, log2)
+#' plot_sample_correlation(analysis, istar$config)
 plot_sample_correlation <- function(pdata, config){
   matrix <- tidy_to_wide_config(pdata, config, as.matrix = TRUE)$data
   M <- cor(matrix, use = "pairwise.complete.obs")
@@ -126,7 +105,7 @@ plot_sample_correlation <- function(pdata, config){
 #' res <- plot_hierarchies_boxplot_df(data, config)
 #' res$boxplot[[1]]
 #'
-#' hierarchy = config$table$hierarchy_keys_depth()
+#' hierarchy = config$hierarchy_keys_depth()
 #' xnested <- data |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
 #'   config, beeswarm = FALSE, show_mean = TRUE)
@@ -144,35 +123,35 @@ plot_hierarchies_boxplot <- function(pdata,
                                      pb){
   if (!missing(pb)) { pb$tick() }
 
-  isotopeLabel <- config$table$isotopeLabel
+  isotopeLabel <- config$isotopeLabel
   lil <- length(unique(pdata[[isotopeLabel]]))
 
-  pdata <- prolfqua::make_interaction_column( pdata , c(config$table$factor_keys_depth()))
-  pdata$size <- ifelse(pdata[[config$table$nr_children]] == 0, 2, pdata[[config$table$nr_children]])
-  pdata[[config$table$nr_children]] <- as.factor(pdata[[config$table$nr_children]])
+  pdata <- prolfqua::make_interaction_column( pdata , c(config$factor_keys_depth()))
+  pdata$size <- ifelse(pdata[[config$nr_children]] == 0, 2, pdata[[config$nr_children]])
+  pdata[[config$nr_children]] <- as.factor(pdata[[config$nr_children]])
   color <- if (lil > 1) {isotopeLabel} else {NULL}
   p <- ggplot(pdata, aes_string(x = "interaction",
-                                y = config$table$get_response(),
+                                y = config$get_response(),
                                 color = color
   )) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
 
-  if (!config$table$is_response_transformed) {
+  if (!config$is_response_transformed) {
     p <- p + scale_y_continuous(trans = "log10")
   }
   p <- p + geom_boxplot()
   if ( beeswarm ) {
 
-    if (length(levels(pdata[[config$table$nr_children]])) > 1 ) {
-      shape_values <- c(4, rep(16, length(levels(pdata[[config$table$nr_children]])) - 1))
+    if (length(levels(pdata[[config$nr_children]])) > 1 ) {
+      shape_values <- c(4, rep(16, length(levels(pdata[[config$nr_children]])) - 1))
     } else {
       shape_values <- 16
     }
     p <- p + ggbeeswarm::geom_quasirandom(aes_string(
       color = color,
       size = "size",
-      shape = config$table$nr_children) , dodge.width = 0.7 ) +
+      shape = config$nr_children) , dodge.width = 0.7 ) +
       scale_shape_manual(values = shape_values) +
       scale_size_continuous(range = range(pdata$size, na.rm= TRUE))
   }
@@ -211,11 +190,11 @@ plot_hierarchies_boxplot <- function(pdata,
 #'
 #'  res <- plot_hierarchies_boxplot_df(analysis,config)
 #'  res$boxplot[[1]]
-#'  res <- plot_hierarchies_boxplot_df(analysis,config,config$table$hierarchy_keys()[1])
+#'  res <- plot_hierarchies_boxplot_df(analysis,config,config$hierarchy_keys()[1])
 #'  res$boxplot[[1]]
 #'  res <- plot_hierarchies_boxplot_df(analysis,config,
-#'                                     config$table$hierarchy_keys()[1],
-#'                                     facet_grid_on = config$table$hierarchy_keys()[2])
+#'                                     config$hierarchy_keys()[1],
+#'                                     facet_grid_on = config$hierarchy_keys()[2])
 #'  res$boxplot[[1]]
 #'  res$boxplot[[2]]
 #'
@@ -227,10 +206,10 @@ plot_hierarchies_boxplot <- function(pdata,
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
 #'  res$boxplot[[1]]
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-#'                                     iostar$config$table$hierarchy_keys()[1])
+#'                                     iostar$config$hierarchy_keys()[1])
 plot_hierarchies_boxplot_df <- function(pdata,
                                         config,
-                                        hierarchy = config$table$hierarchy_keys_depth(),
+                                        hierarchy = config$hierarchy_keys_depth(),
                                         facet_grid_on = NULL){
 
   xnested <- pdata |> dplyr::group_by_at(hierarchy) |> tidyr::nest()
@@ -281,9 +260,9 @@ plot_heatmap_cor <- function(data,
     cres <- cres^2
   }
 
-  factors <- dplyr::select_at(annot, config$table$factor_keys())
+  factors <- dplyr::select_at(annot, config$factor_keys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$table$sampleName]]
+  rownames(factors) <- annot[[config$sampleName]]
 
   #res <- pheatmap::pheatmap(cres,
   #                          scale = "none",
@@ -338,9 +317,9 @@ plot_heatmap_cor_iheatmap <- function(data,
   }
 
   # Prepare factors for annotation
-  factors <- dplyr::select_at(annot, config$table$factor_keys())
+  factors <- dplyr::select_at(annot, config$factor_keys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$table$sampleName]]
+  rownames(factors) <- annot[[config$sampleName]]
 
   # Perform hierarchical clustering
   gg <- stats::hclust(stats::dist(cres))
@@ -394,9 +373,9 @@ plot_heatmap <- function(data,
   wide <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- wide$annotation
 
-  factors <- dplyr::select_at(annot, config$table$factor_keys())
+  factors <- dplyr::select_at(annot, config$factor_keys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$table$sampleName]]
+  rownames(factors) <- annot[[config$sampleName]]
   resdata <- t(scale(t(wide$data)))
   resdataf <- prolfqua::remove_NA_rows(resdata,floor(ncol(resdata)*na_fraction))
 
@@ -468,9 +447,9 @@ plot_raster <- function(data,
   resdata <- res$data
 
 
-  factors <- dplyr::select_at(annot, config$table$factor_keys())
+  factors <- dplyr::select_at(annot, config$factor_keys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$table$sampleName]]
+  rownames(factors) <- annot[[config$sampleName]]
 
 
   if (arrange == "mean") {
@@ -526,11 +505,11 @@ plot_NA_heatmap <- function(data,
   res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
-  stopifnot(annot[[config$table$sampleName]] %in% colnames(res))
+  stopifnot(annot[[config$sampleName]] %in% colnames(res))
 
-  factors <- dplyr::select_at(annot, config$table$factor_keys())
+  factors <- dplyr::select_at(annot, config$factor_keys())
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$table$sampleName]]
+  rownames(factors) <- annot[[config$sampleName]]
 
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
@@ -602,7 +581,7 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
   }
   ff <- t(ff)
   pca_result <- prcomp(ff)
-  xx <- as_tibble(pca_result$x, rownames = config$table$sampleName)
+  xx <- as_tibble(pca_result$x, rownames = config$sampleName)
   variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
 
   if (max(PC) > (ncol(xx) - 1)) {
@@ -612,22 +591,22 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
 
   xx <- inner_join(wide$annotation, xx)
 
-  sh <- config$table$factor_keys()[2]
+  sh <- config$factor_keys()[2]
   point <- (if (!is.na(sh)) {
     geom_point(aes(shape = !!sym(sh)))
   }else{
     geom_point()
   })
 
-  text <- geom_text(aes(label = !!sym(config$table$sampleName)),check_overlap = TRUE,
+  text <- geom_text(aes(label = !!sym(config$sampleName)),check_overlap = TRUE,
                     nudge_x = nudge,
                     nudge_y = nudge )
 
   PCx <- paste0("PC", PC[1])
   PCy <- paste0("PC", PC[2])
   x <- ggplot(xx, aes(x = !!sym(PCx), y = !!sym(PCy),
-                      color = !!sym(config$table$factor_keys()[1]),
-                      text = !!sym(config$table$sampleName))) +
+                      color = !!sym(config$factor_keys()[1]),
+                      text = !!sym(config$sampleName))) +
     labs(x = paste0(PCx," (", round(variance_explained[PC[1]]), "% variance)"),
          y = paste0(PCy," (", round(variance_explained[PC[2]]), "% variance)")) +
     point +

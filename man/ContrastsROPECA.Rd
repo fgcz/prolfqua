@@ -15,20 +15,20 @@ ROPECA optimizes the reproducibility of statistical testing
 }
 \examples{
 
-istar <- istar <- prolfqua::sim_lfq_data_peptide_config(Nprot=50)
+istar <- prolfqua::sim_lfq_data_peptide_config(Nprot=20)
 istar$config <- old2new(istar$config )
 istar_data <- istar$data
 modelFunction <-
   strategy_lm("abundance  ~ group_")
 pepIntensity <- istar_data
 config <- istar$config$clone(deep = TRUE)
-config$table$hierarchyDepth <- 2
-config$table$hierarchy_keys_depth()
+config$hierarchyDepth <- 2
+config$hierarchy_keys_depth()
 
 mod <- build_model(
  pepIntensity,
  modelFunction,
- subject_Id = config$table$hierarchy_keys_depth())
+ subject_Id = config$hierarchy_keys_depth())
 
  Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
 
