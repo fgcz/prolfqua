@@ -293,10 +293,12 @@ plot_heatmap_cor <- function(data,
 #' config <- istar$config
 #' analysis <- istar$data
 #'
-#' pheat_map <- plot_heatmap_cor_iheatmap( analysis, config )
-#' stopifnot("IheatmapHorizontal" %in% class(pheat_map))
-#' pheat_map <- plot_heatmap_cor_iheatmap( analysis, config, R2 = TRUE )
-#' stopifnot("IheatmapHorizontal" %in% class(pheat_map))
+#' if (require("iheatmapr")) {
+#'   pheat_map <- plot_heatmap_cor_iheatmap( analysis, config )
+#'   stopifnot("IheatmapHorizontal" %in% class(pheat_map))
+#'   pheat_map <- plot_heatmap_cor_iheatmap( analysis, config, R2 = TRUE )
+#'   stopifnot("IheatmapHorizontal" %in% class(pheat_map))
+#' }
 #'
 plot_heatmap_cor_iheatmap <- function(data,
                                       config,
@@ -325,6 +327,9 @@ plot_heatmap_cor_iheatmap <- function(data,
   ordered_cres <- cres[gg$order, gg$order]
 
   # Create the heatmap using iheatmapr
+  if (!requireNamespace("iheatmapr", quietly = TRUE)) {
+    stop("Package 'iheatmapr' is required for this function. Install it with: install.packages('iheatmapr')")
+  }
   hm <- iheatmapr::iheatmap(ordered_cres,
                             cluster_rows = "hclust",
                             cluster_cols = "hclust",

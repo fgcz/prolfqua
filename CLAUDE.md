@@ -1,0 +1,130 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What is prolfqua
+
+An R package for mass spectrometry-based label-free quantification (LFQ) proteomics analysis. It provides a complete workflow: QC, normalization, protein aggregation, statistical modelling, hypothesis testing, and sample size estimation. Data is always in long (tidy) format. Branch `Modelling2R6` is the active development branch.
+
+## Build & Test Commands
+
+```bash
+make test            # Run testthat suite (runs document first)
+make check-fast      # R CMD check without vignettes (quick validation)
+make check           # Full R CMD check (document → build → check)
+make document        # Generate roxygen2 docs (NAMESPACE + man/)
+make install         # Install package locally
+make lint            # Run lintr static analysis
+make format          # Format with air
+make build-vignettes # Build vignettes into inst/doc
+make site            # Build pkgdown site locally
+```
+
+Single test file:
+```bash
+Rscript -e "testthat::test_file('tests/testthat/test-LFQData.R')"
+```
+
+renv management:
+```bash
+make renv-init       # First-time setup (with Bioconductor)
+make renv-restore    # Install from renv.lock
+make renv-snapshot   # Update renv.lock after dep changes
+```
+
+## Code Style
+
+- **Line length:** 120 chars, **indentation:** 2 spaces (`.lintr`)
+- `object_name_linter` is disabled — the codebase uses camelCase for R6 classes and snake_case/mixed for functions
+- NAMESPACE is **auto-generated** by roxygen2 — never edit directly; run `make document`
+- Roxygen is configured with `r6 = TRUE` for R6 class documentation
+
+## Architecture
+
+### Core Data Flow
+
+```
+Raw Data + AnalysisConfiguration → LFQData
+    ├── get_Transformer() → LFQDataTransformer  (log2, robscale, normalize)
+    ├── get_Aggregator()  → LFQDataAggregator   (peptide → protein rollup)
+    ├── get_Stats()       → LFQDataStats         (CV, variance per group)
+    ├── get_Plotter()     → LFQDataPlotter       (heatmaps, PCA, boxplots)
+    ├── get_Summariser()  → LFQDataSummariser    (missingness, hierarchy counts)
+    └── get_Imputer()     → LFQDataImp           (missing value imputation)
+
+LFQData → build_model(strategy) → Model
+    └── Contrasts$new(model, contrast_spec) → contrast results
+        ├── ContrastsModerated  (limma EB shrinkage)
+        ├── ContrastsProDA      (missing-data-aware)
+        ├── ContrastsMissing    (imputation-based)
+        ├── ContrastsFirth      (Firth logistic)
+        └── get_Plotter() → ContrastsPlotter (volcano, MA, heatmap)
+```
+
+### Key Design Patterns
+
+**Decorator/Composition**: LFQData factory methods (`get_Transformer()`, `get_Plotter()`, etc.) return decorator objects that wrap the LFQData. Decorators hold a reference in their `lfq` field.
+
+**Method chaining**: Transformer methods return `self` for chaining, access result via `$lfq`:
+```r
+lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
+```
+
+**Strategy pattern for models**: `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` return lists with `model_fun`, `contrast_fun`, `isSingular`, `anova_df`.
+
+**Config immutability**: AnalysisConfiguration is always deep-cloned when passed to new LFQData instances. Never modify config in-place on an existing LFQData.
+
+### R6 Classes (22 classes across R/)
+
+| Category | Classes | Files |
+|----------|---------|-------|
+| Core data | `LFQData`, `AnalysisConfiguration` | LFQData.R, AnalysisConfiguration.R |
+| Decorators | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp` | LFQData*.R |
+| Model interfaces | `ModelInterface`, `Model`, `ModelFirth` | Model*.R |
+| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsProDA`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
+| Visualization | `ContrastsPlotter` | ContrastsPlotter.R |
+| Utilities | `MissingHelpers` | tidyMS_missigness_V2.R |
+
+### AnalysisConfiguration
+
+Flat R6 class that maps column roles in the data:
+- **hierarchy**: ordered measurement levels (protein_Id → peptide_Id → precursor_Id → fragment_Id). `hierarchyDepth` controls which level is modelled.
+- **factors**: explanatory variables (group, treatment). `factorDepth` controls interaction depth.
+- **workIntensity**: response column. Uses a stack (`set_response()` / `pop_response()` / `get_response()`) for working with multiple intensity columns.
+- **fileName**: sample identifier column.
+
+Concrete config factories: `create_config_MQ_peptide()`, `create_config_Skyline()`, `create_config_Spectronaut_Peptide()`, etc. in `tidyMS_R6_ConcreteConfigurations.R`.
+
+### Key Functions (not in classes)
+
+- `setup_analysis(data, config)` — prepare data for analysis (in AnalysisConfiguration.R)
+- `build_model(data, strategy, subject_Id)` — fit models per protein (in tidyMS_R6Model.R)
+- `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` — model strategies (in tidyMS_R6_Modelling.R)
+- `sim_lfq_data_peptide_config()` — simulate test data (in simulate_LFQ_data.R)
+
+### File Naming Convention
+
+- `R/LFQData*.R` — Core data container and its decorator classes
+- `R/Model*.R`, `R/Contrasts*.R` — Modelling and hypothesis testing
+- `R/AnalysisConfiguration.R` — Configuration system
+- `R/tidyMS_R6_*.R` — Model strategies, concrete configs, correlation analysis
+- `R/tidyMS_*.R` — Utility functions (plotting, stats, aggregation, missingness)
+
+## Testing
+
+6 test files in `tests/testthat/`:
+- `test-LFQData.R` — Core data container and decorators
+- `test-Model.R` — Model fitting and coefficient extraction
+- `test-Contrasts.R` — Contrast computation
+- `test-ContrastsPlotter.R` — Contrast visualization
+- `test-plotting_functions.R` — Low-level plots
+- `test-tidyconfig_functions.R` — Configuration and utilities
+
+## Cross-Package Context
+
+prolfqua is part of the prolfqua ecosystem (see `../CLAUDE.md`). Downstream packages depend on its R6 classes and exported API:
+- **prolfquapp** — CLI wrapper for core facility workflows
+- **prophosqua** — Phosphoproteomics analysis
+- **prolfquabenchmark** — Benchmarking vignettes
+
+Renaming R6 methods, changing exported function signatures, or modifying AnalysisConfiguration fields can silently break these packages.

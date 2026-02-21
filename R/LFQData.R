@@ -307,12 +307,15 @@ LFQData <- R6::R6Class(
 LFQDataToSummarizedExperiment <- function(lfqdata){
   if (requireNamespace("SummarizedExperiment")) {
     wide <- lfqdata$to_wide(as.matrix = TRUE)
-    nr_children <- lfqdata$to_wide(as.matrix = TRUE, value = "nr_children")
     ann <- data.frame(wide$annotation)
     rownames(ann) <- wide$annotation[[lfqdata$config$sampleName]]
-    se <- SummarizedExperiment::SummarizedExperiment(S4Vectors::SimpleList(
-      LFQ = wide$data,
-      nr_children = nr_children$data),
+    assays <- S4Vectors::SimpleList(LFQ = wide$data)
+    if ("nr_children" %in% lfqdata$config$value_vars()) {
+      nr_children <- lfqdata$to_wide(as.matrix = TRUE, value = "nr_children")
+      assays[["nr_children"]] <- nr_children$data
+    }
+    se <- SummarizedExperiment::SummarizedExperiment(
+      assays,
       colData = ann,
       rowData = wide$rowdata)
     return(se)

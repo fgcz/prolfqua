@@ -21,10 +21,12 @@ istar <- sim_lfq_data_protein_config()
 config <- istar$config
 analysis <- istar$data
 
-pheat_map <- plot_heatmap_cor_iheatmap( analysis, config )
-stopifnot("IheatmapHorizontal" \%in\% class(pheat_map))
-pheat_map <- plot_heatmap_cor_iheatmap( analysis, config, R2 = TRUE )
-stopifnot("IheatmapHorizontal" \%in\% class(pheat_map))
+if (require("iheatmapr")) {
+  pheat_map <- plot_heatmap_cor_iheatmap( analysis, config )
+  stopifnot("IheatmapHorizontal" \%in\% class(pheat_map))
+  pheat_map <- plot_heatmap_cor_iheatmap( analysis, config, R2 = TRUE )
+  stopifnot("IheatmapHorizontal" \%in\% class(pheat_map))
+}
 
 }
 \seealso{

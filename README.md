@@ -53,7 +53,7 @@ How to build a `LFQData` object from a table with protein or peptide quantificat
 
 A minimal example for a table with protein abudances is:
 
-```{r}
+```r
 #Table with abundances
 df <- data.frame(protein_Id = c("tr|A|HUMAN","tr|B|HUMAN","tr|C|HUMAN","tr|D|HUMAN"),
                  Intensity_A = c(100,10000,10,NA),
@@ -87,7 +87,7 @@ lfqdata$hierarchy_counts()
 
 Once you have created an `LFQData` you can use prolfqua like this.
 
-```{r}
+```r
 R.version.string; packageVersion("prolfqua")
 
 ## here we simulate peptide level data
@@ -117,7 +117,7 @@ ggpubr::ggarrange(panelA, panelB, panelC, panelD)
 ![image](https://github.com/fgcz/prolfqua/assets/1926513/4d5bb64b-6e45-4d00-b029-f08995ac3127)
 
 
-```{r}
+```r
 ## specify model
 modelFunction <-
  strategy_lm("log_protein_abundance  ~ group_")
