@@ -326,9 +326,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpRM6e2C/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpRM6e2C/Coef_VolcanoPlot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpRM6e2C/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpinBQM7/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpinBQM7/Coef_VolcanoPlot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpinBQM7/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -400,9 +400,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpRM6e2C/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpRM6e2C/Coef_VolcanoPlot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpRM6e2C/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpinBQM7/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpinBQM7/Coef_VolcanoPlot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpinBQM7/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>

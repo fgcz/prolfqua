@@ -116,24 +116,19 @@ mod <- prolfqua::build_model(
   lfqdata,
   formula_Condition)
 aovtable <- mod$get_anova()
-mod$anova_histogram()
+mod$anova_histogram()$plot
 ```
 
-    ## $plot
-
-    ## 
-    ## $name
-    ## [1] "Anova_p.values_Model.pdf"
+![](SimulateData_files/figure-html/unnamed-chunk-6-1.png)
 
 ``` r
 xx <- aovtable |> dplyr::filter(FDR < 0.05)
 signif <- lfqdata$get_copy()
 signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
-hmSig <- signif$get_Plotter()$heatmap()
-hmSig
+signif$get_Plotter()$heatmap()
 ```
 
-![](SimulateData_files/figure-html/unnamed-chunk-6-1.png)
+![](SimulateData_files/figure-html/unnamed-chunk-7-1.png)
 
 ## Aggregate data
 
@@ -162,7 +157,7 @@ v1 <- contr$get_Plotter()$volcano()
 v1$FDR
 ```
 
-![](SimulateData_files/figure-html/unnamed-chunk-8-1.png)
+![](SimulateData_files/figure-html/unnamed-chunk-9-1.png)
 
 ``` r
 ctr <- contr$get_contrasts()
