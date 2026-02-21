@@ -1,3 +1,18 @@
+#' Print method for pheatmap objects
+#'
+#' Fixes pheatmap's print method which omits \code{grid.newpage()},
+#' causing the heatmap to draw on top of the previous plot when
+#' multiple plots are produced in the same knitr chunk or graphics device.
+#'
+#' @param x a pheatmap object
+#' @param ... ignored
+#' @export
+#' @method print pheatmap
+print.pheatmap <- function(x, ...) {
+  grid::grid.newpage()
+  grid::grid.draw(x$gtable)
+}
+
 #' visualize intensity distributions
 #' @param pdata data.frame
 #' @param config AnalysisConfiguration
