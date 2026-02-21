@@ -96,14 +96,14 @@ mod <- prolfqua::build_model(
   lfqdata,
   formula_Condition)
 aovtable <- mod$get_anova()
-mod$anova_histogram()
+mod$anova_histogram()$plot
+```
 
+```{r}
 xx <- aovtable |> dplyr::filter(FDR < 0.05)
 signif <- lfqdata$get_copy()
 signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
-hmSig <- signif$get_Plotter()$heatmap()
-hmSig
-
+signif$get_Plotter()$heatmap()
 ```
 
 # Aggregate data
