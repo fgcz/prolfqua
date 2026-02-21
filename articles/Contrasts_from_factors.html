@@ -74,7 +74,417 @@ Wolski</h4>
 
     
     
-
+<div class="section level2">
+<h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
+</h2>
+<p>When working with factorial experimental designs (e.g. two conditions
+crossed with three time points), specifying all the relevant contrasts
+by hand is tedious and error-prone. The <code>generate_contrasts</code>
+family of functions in prolfqua automates this by generating contrast
+specifications from factor levels. These contrast strings can then be
+passed directly to the <code>Contrasts</code> class for statistical
+testing.</p>
+<p>This vignette demonstrates how to:</p>
+<ul>
+<li>Generate main effect, level-specific, and interaction contrasts for
+a two-factor design</li>
+<li>Use <code>annotation_add_contrasts</code> to produce a combined
+annotation and contrast table ready for analysis</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="group-labelling-convention">Group labelling convention<a class="anchor" aria-label="anchor" href="#group-labelling-convention"></a>
+</h2>
+<p>All contrast generation functions assume that the group levels in the
+fitted model follow the naming convention
+<code>G_&lt;primary&gt;_&lt;secondary&gt;</code>, which is produced by
+<code><a href="../reference/group_label.html">group_label()</a></code>:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/wolski/prolfqua" class="external-link">prolfqua</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/group_label.html">group_label</a></span><span class="op">(</span><span class="st">"MI"</span>, <span class="st">"T0"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "G_MI_T0"</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/group_label.html">group_label</a></span><span class="op">(</span><span class="st">"MINOCA"</span>, <span class="st">"T300"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "G_MINOCA_T300"</span></span></code></pre>
+<p>This means that before fitting a model, the data must contain a
+grouping column with levels in this format. The
+<code>annotation_add_contrasts</code> function creates such a column
+automatically using <code><a href="https://tidyr.tidyverse.org/reference/unite.html" class="external-link">tidyr::unite</a></code>.</p>
+</div>
+<div class="section level2">
+<h2 id="building-contrasts-step-by-step">Building contrasts step by step<a class="anchor" aria-label="anchor" href="#building-contrasts-step-by-step"></a>
+</h2>
+<p>Consider a two-factor design with disease type (MI, MINOCA) and time
+point (T0, T150, T300):</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">primary_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MI"</span>, <span class="st">"MINOCA"</span><span class="op">)</span></span>
+<span><span class="va">secondary_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T0"</span>, <span class="st">"T150"</span>, <span class="st">"T300"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="main-effect-contrasts">Main effect contrasts<a class="anchor" aria-label="anchor" href="#main-effect-contrasts"></a>
+</h3>
+<p>Main effects average across all levels of the secondary factor. For
+example, the main effect of MINOCA vs MI is the average difference
+across all time points:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">me</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/main_effect_contrasts.html">main_effect_contrasts</a></span><span class="op">(</span><span class="va">primary_levels</span>, <span class="va">secondary_levels</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ContrastName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span>, Contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##              ContrastName</span></span>
+<span><span class="co">## MINOCA_vs_MI MINOCA_vs_MI</span></span>
+<span><span class="co">##                                                                                               Contrast</span></span>
+<span><span class="co">## MINOCA_vs_MI ( (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</span></span></code></pre>
+<p>Swapping the roles of primary and secondary gives main effects for
+time points averaged across disease types:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">me2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/main_effect_contrasts.html">main_effect_contrasts</a></span><span class="op">(</span><span class="va">secondary_levels</span>, <span class="va">primary_levels</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ContrastName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">me2</span><span class="op">)</span>, Contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">me2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##              ContrastName</span></span>
+<span><span class="co">## T150_vs_T0     T150_vs_T0</span></span>
+<span><span class="co">## T300_vs_T0     T300_vs_T0</span></span>
+<span><span class="co">## T300_vs_T150 T300_vs_T150</span></span>
+<span><span class="co">##                                                                       Contrast</span></span>
+<span><span class="co">## T150_vs_T0       ( (G_T150_MI + G_T150_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2 )</span></span>
+<span><span class="co">## T300_vs_T0       ( (G_T300_MI + G_T300_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2 )</span></span>
+<span><span class="co">## T300_vs_T150 ( (G_T300_MI + G_T300_MINOCA)/2 - (G_T150_MI + G_T150_MINOCA)/2 )</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="level-specific-contrasts">Level-specific contrasts<a class="anchor" aria-label="anchor" href="#level-specific-contrasts"></a>
+</h3>
+<p>These compare primary factor levels at each individual level of the
+secondary factor:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/level_specific_contrasts.html">level_specific_contrasts</a></span><span class="op">(</span><span class="va">primary_levels</span>, <span class="va">secondary_levels</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ContrastName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ls</span><span class="op">)</span>, Contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">ls</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                              ContrastName                  Contrast</span></span>
+<span><span class="co">## MINOCA_vs_MI_at_T0     MINOCA_vs_MI_at_T0     G_MINOCA_T0 - G_MI_T0</span></span>
+<span><span class="co">## MINOCA_vs_MI_at_T150 MINOCA_vs_MI_at_T150 G_MINOCA_T150 - G_MI_T150</span></span>
+<span><span class="co">## MINOCA_vs_MI_at_T300 MINOCA_vs_MI_at_T300 G_MINOCA_T300 - G_MI_T300</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="interaction-contrasts">Interaction contrasts<a class="anchor" aria-label="anchor" href="#interaction-contrasts"></a>
+</h3>
+<p>Interaction contrasts test whether the difference between primary
+levels changes across secondary levels (difference of differences):</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/interaction_contrasts.html">interaction_contrasts</a></span><span class="op">(</span><span class="va">primary_levels</span>, <span class="va">secondary_levels</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ContrastName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ic</span><span class="op">)</span>, Contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">ic</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                                                      ContrastName</span></span>
+<span><span class="co">## interaction_MINOCA_vs_MI_at_T150_vs_T0     interaction_MINOCA_vs_MI_at_T150_vs_T0</span></span>
+<span><span class="co">## interaction_MINOCA_vs_MI_at_T300_vs_T0     interaction_MINOCA_vs_MI_at_T300_vs_T0</span></span>
+<span><span class="co">## interaction_MINOCA_vs_MI_at_T300_vs_T150 interaction_MINOCA_vs_MI_at_T300_vs_T150</span></span>
+<span><span class="co">##                                                                                           Contrast</span></span>
+<span><span class="co">## interaction_MINOCA_vs_MI_at_T150_vs_T0       (G_MINOCA_T150 - G_MI_T150) - (G_MINOCA_T0 - G_MI_T0)</span></span>
+<span><span class="co">## interaction_MINOCA_vs_MI_at_T300_vs_T0       (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T0 - G_MI_T0)</span></span>
+<span><span class="co">## interaction_MINOCA_vs_MI_at_T300_vs_T150 (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T150 - G_MI_T150)</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="single-factor-contrasts">Single-factor contrasts<a class="anchor" aria-label="anchor" href="#single-factor-contrasts"></a>
+</h3>
+<p>For a one-factor design, <code>generate_contrasts_for_factor</code>
+generates all pairwise comparisons:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">group_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CondA"</span>, <span class="st">"CondB"</span>, <span class="st">"CondC"</span><span class="op">)</span></span>
+<span><span class="va">sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_contrasts_for_factor.html">generate_contrasts_for_factor</a></span><span class="op">(</span><span class="va">group_levels</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ContrastName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sf</span><span class="op">)</span>, Contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">sf</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                  ContrastName      Contrast</span></span>
+<span><span class="co">## CondB_vs_CondA CondB_vs_CondA CondB - CondA</span></span>
+<span><span class="co">## CondC_vs_CondA CondC_vs_CondA CondC - CondA</span></span>
+<span><span class="co">## CondC_vs_CondB CondC_vs_CondB CondC - CondB</span></span></code></pre>
+</div>
+</div>
+<div class="section level2">
+<h2 id="generating-all-contrasts-at-once">Generating all contrasts at once<a class="anchor" aria-label="anchor" href="#generating-all-contrasts-at-once"></a>
+</h2>
+<p><code>generate_contrasts</code> combines main effects,
+level-specific, and interaction contrasts into a single data frame:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">all_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_contrasts.html">generate_contrasts</a></span><span class="op">(</span><span class="va">primary_levels</span>, <span class="va">secondary_levels</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">all_contrasts</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="31%">
+<col width="68%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">ContrastName</th>
+<th align="left">Contrast</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">MINOCA_vs_MI</td>
+<td align="left">( (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
+(G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</td>
+</tr>
+<tr class="even">
+<td align="left">MINOCA_vs_MI_at_T0</td>
+<td align="left">G_MINOCA_T0 - G_MI_T0</td>
+</tr>
+<tr class="odd">
+<td align="left">MINOCA_vs_MI_at_T150</td>
+<td align="left">G_MINOCA_T150 - G_MI_T150</td>
+</tr>
+<tr class="even">
+<td align="left">MINOCA_vs_MI_at_T300</td>
+<td align="left">G_MINOCA_T300 - G_MI_T300</td>
+</tr>
+<tr class="odd">
+<td align="left">interaction_MINOCA_vs_MI_at_T150_vs_T0</td>
+<td align="left">(G_MINOCA_T150 - G_MI_T150) - (G_MINOCA_T0 -
+G_MI_T0)</td>
+</tr>
+<tr class="even">
+<td align="left">interaction_MINOCA_vs_MI_at_T300_vs_T0</td>
+<td align="left">(G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T0 -
+G_MI_T0)</td>
+</tr>
+<tr class="odd">
+<td align="left">interaction_MINOCA_vs_MI_at_T300_vs_T150</td>
+<td align="left">(G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T150 -
+G_MI_T150)</td>
+</tr>
+</tbody>
+</table>
+<p>To exclude interaction contrasts:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">no_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_contrasts.html">generate_contrasts</a></span><span class="op">(</span><span class="va">primary_levels</span>, <span class="va">secondary_levels</span>, interactions <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">no_int</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="18%">
+<col width="81%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">ContrastName</th>
+<th align="left">Contrast</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">MINOCA_vs_MI</td>
+<td align="left">( (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
+(G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</td>
+</tr>
+<tr class="even">
+<td align="left">MINOCA_vs_MI_at_T0</td>
+<td align="left">G_MINOCA_T0 - G_MI_T0</td>
+</tr>
+<tr class="odd">
+<td align="left">MINOCA_vs_MI_at_T150</td>
+<td align="left">G_MINOCA_T150 - G_MI_T150</td>
+</tr>
+<tr class="even">
+<td align="left">MINOCA_vs_MI_at_T300</td>
+<td align="left">G_MINOCA_T300 - G_MI_T300</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="working-with-annotation-tables">Working with annotation tables<a class="anchor" aria-label="anchor" href="#working-with-annotation-tables"></a>
+</h2>
+<p>In a typical prolfquapp workflow, you start with a sample annotation
+table that has columns for the two factors.
+<code>annotation_add_contrasts</code> creates a united Group column,
+generates all contrasts, and binds them alongside the annotation:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># x5463yzwer453bbb is a bundled example annotation table</span></span>
+<span><span class="co"># with factor_A (MI / MINOCA) and factor_B (T0 / T150 / T300)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/x5463yzwer453bbb.html">x5463yzwer453bbb</a></span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Name"</span>, <span class="st">"Group"</span>, <span class="st">"factor_A"</span>, <span class="st">"factor_B"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
+<span><span class="co">##   Name         Group       factor_A factor_B</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> MI_150_6     MI_T150     MI       T150    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> MINOCA_0_3   MINOCA_T0   MINOCA   T0      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> MINOCA_300_5 MINOCA_T300 MINOCA   T300    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> MI_150_5     MI_T150     MI       T150    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> MI_150_1     MI_T150     MI       T150    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> MI_0_3       MI_T0       MI       T0</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotation_add_contrasts.html">annotation_add_contrasts</a></span><span class="op">(</span></span>
+<span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/x5463yzwer453bbb.html">x5463yzwer453bbb</a></span>,</span>
+<span>  primary_col <span class="op">=</span> <span class="st">"factor_A"</span>,</span>
+<span>  secondary_col <span class="op">=</span> <span class="st">"factor_B"</span>,</span>
+<span>  prefix <span class="op">=</span> <span class="st">"primary"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># The annotation with united Group and contrast columns</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">annot</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Name"</span>, <span class="st">"Group"</span>, <span class="st">"ContrastName"</span>, <span class="st">"Contrast"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>             row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="8%">
+<col width="7%">
+<col width="26%">
+<col width="57%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Name</th>
+<th align="left">Group</th>
+<th align="left">ContrastName</th>
+<th align="left">Contrast</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">MI_150_6</td>
+<td align="left">MI_T150</td>
+<td align="left">MINOCA_vs_MI</td>
+<td align="left">( (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
+(G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</td>
+</tr>
+<tr class="even">
+<td align="left">MINOCA_0_3</td>
+<td align="left">MINOCA_T0</td>
+<td align="left">MINOCA_vs_MI_at_T0</td>
+<td align="left">G_MINOCA_T0 - G_MI_T0</td>
+</tr>
+<tr class="odd">
+<td align="left">MINOCA_300_5</td>
+<td align="left">MINOCA_T300</td>
+<td align="left">MINOCA_vs_MI_at_T150</td>
+<td align="left">G_MINOCA_T150 - G_MI_T150</td>
+</tr>
+<tr class="even">
+<td align="left">MI_150_5</td>
+<td align="left">MI_T150</td>
+<td align="left">MINOCA_vs_MI_at_T300</td>
+<td align="left">G_MINOCA_T300 - G_MI_T300</td>
+</tr>
+<tr class="odd">
+<td align="left">MI_150_1</td>
+<td align="left">MI_T150</td>
+<td align="left">interaction_MINOCA_vs_MI_at_T150_vs_T0</td>
+<td align="left">(G_MINOCA_T150 - G_MI_T150) - (G_MINOCA_T0 -
+G_MI_T0)</td>
+</tr>
+<tr class="even">
+<td align="left">MI_0_3</td>
+<td align="left">MI_T0</td>
+<td align="left">interaction_MINOCA_vs_MI_at_T300_vs_T0</td>
+<td align="left">(G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T0 -
+G_MI_T0)</td>
+</tr>
+<tr class="odd">
+<td align="left">MINOCA_150_1</td>
+<td align="left">MINOCA_T150</td>
+<td align="left">interaction_MINOCA_vs_MI_at_T300_vs_T150</td>
+<td align="left">(G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T150 -
+G_MI_T150)</td>
+</tr>
+<tr class="even">
+<td align="left">MI_300_2</td>
+<td align="left">MI_T300</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">MINOCA_150_5</td>
+<td align="left">MINOCA_T150</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">MI_300_3</td>
+<td align="left">MI_T300</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Suggested output file name</span></span>
+<span><span class="va">result</span><span class="op">$</span><span class="va">name</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "DEA_primary_dataset.csv"</span></span></code></pre>
+<p>Swapping primary and secondary factors gives contrasts from the other
+perspective:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotation_add_contrasts.html">annotation_add_contrasts</a></span><span class="op">(</span></span>
+<span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/x5463yzwer453bbb.html">x5463yzwer453bbb</a></span>,</span>
+<span>  primary_col <span class="op">=</span> <span class="st">"factor_B"</span>,</span>
+<span>  secondary_col <span class="op">=</span> <span class="st">"factor_A"</span>,</span>
+<span>  prefix <span class="op">=</span> <span class="st">"secondary"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result2</span><span class="op">$</span><span class="va">annot</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Name"</span>, <span class="st">"Group"</span>, <span class="st">"ContrastName"</span>, <span class="st">"Contrast"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>             row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="10%">
+<col width="9%">
+<col width="30%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Name</th>
+<th align="left">Group</th>
+<th align="left">ContrastName</th>
+<th align="left">Contrast</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">MI_150_6</td>
+<td align="left">T150_MI</td>
+<td align="left">T150_vs_T0</td>
+<td align="left">( (G_T150_MI + G_T150_MINOCA)/2 - (G_T0_MI +
+G_T0_MINOCA)/2 )</td>
+</tr>
+<tr class="even">
+<td align="left">MINOCA_0_3</td>
+<td align="left">T0_MINOCA</td>
+<td align="left">T300_vs_T0</td>
+<td align="left">( (G_T300_MI + G_T300_MINOCA)/2 - (G_T0_MI +
+G_T0_MINOCA)/2 )</td>
+</tr>
+<tr class="odd">
+<td align="left">MINOCA_300_5</td>
+<td align="left">T300_MINOCA</td>
+<td align="left">T300_vs_T150</td>
+<td align="left">( (G_T300_MI + G_T300_MINOCA)/2 - (G_T150_MI +
+G_T150_MINOCA)/2 )</td>
+</tr>
+<tr class="even">
+<td align="left">MI_150_5</td>
+<td align="left">T150_MI</td>
+<td align="left">T150_vs_T0_at_MI</td>
+<td align="left">G_T150_MI - G_T0_MI</td>
+</tr>
+<tr class="odd">
+<td align="left">MI_150_1</td>
+<td align="left">T150_MI</td>
+<td align="left">T150_vs_T0_at_MINOCA</td>
+<td align="left">G_T150_MINOCA - G_T0_MINOCA</td>
+</tr>
+<tr class="even">
+<td align="left">MI_0_3</td>
+<td align="left">T0_MI</td>
+<td align="left">T300_vs_T0_at_MI</td>
+<td align="left">G_T300_MI - G_T0_MI</td>
+</tr>
+<tr class="odd">
+<td align="left">MINOCA_150_1</td>
+<td align="left">T150_MINOCA</td>
+<td align="left">T300_vs_T0_at_MINOCA</td>
+<td align="left">G_T300_MINOCA - G_T0_MINOCA</td>
+</tr>
+<tr class="even">
+<td align="left">MI_300_2</td>
+<td align="left">T300_MI</td>
+<td align="left">T300_vs_T150_at_MI</td>
+<td align="left">G_T300_MI - G_T150_MI</td>
+</tr>
+<tr class="odd">
+<td align="left">MINOCA_150_5</td>
+<td align="left">T150_MINOCA</td>
+<td align="left">T300_vs_T150_at_MINOCA</td>
+<td align="left">G_T300_MINOCA - G_T150_MINOCA</td>
+</tr>
+<tr class="even">
+<td align="left">MI_300_3</td>
+<td align="left">T300_MI</td>
+<td align="left">interaction_T150_vs_T0_at_MINOCA_vs_MI</td>
+<td align="left">(G_T150_MINOCA - G_T0_MINOCA) - (G_T150_MI -
+G_T0_MI)</td>
+</tr>
+</tbody>
+</table>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
