@@ -110,7 +110,6 @@ Other modelling:
 \item \href{#method-ContrastsProDA-get_contrasts}{\code{ContrastsProDA$get_contrasts()}}
 \item \href{#method-ContrastsProDA-get_Plotter}{\code{ContrastsProDA$get_Plotter()}}
 \item \href{#method-ContrastsProDA-to_wide}{\code{ContrastsProDA$to_wide()}}
-\item \href{#method-ContrastsProDA-write}{\code{ContrastsProDA$write()}}
 \item \href{#method-ContrastsProDA-clone}{\code{ContrastsProDA$clone()}}
 }
 }
@@ -230,27 +229,6 @@ convert to wide format
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{columns}}{value column default t_statistic, adj_pval}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsProDA-write"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsProDA-write}{}}}
-\subsection{Method \code{write()}}{
-write results
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsProDA$write(path, filename, format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{directory}
-
-\item{\code{filename}}{file to write to}
-
-\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
 }
 \if{html}{\out{</div>}}
 }

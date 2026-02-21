@@ -8,6 +8,15 @@ LFQData R6 class
 
 LFQData R6 class
 }
+\section{Missing Data Assumptions}{
+
+The filtering and imputation methods in this package assume that
+missing values are Missing Completely At Random (MCAR) or Missing At
+Random (MAR). Abundance-dependent missingness (MNAR), which is common
+in DDA proteomics, is not modelled. Users should be aware that MNAR
+can bias fold-change estimates and inflate false discovery rates.
+}
+
 \examples{
 
 istar <- sim_lfq_data_peptide_config()
@@ -58,8 +67,7 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQDataWriter}}
+\code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
 \section{Public fields}{

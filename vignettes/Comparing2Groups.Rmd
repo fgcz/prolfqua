@@ -16,7 +16,7 @@ bibliography:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-conflicted::conflict_prefer("filter", "dplyr")
+library(dplyr)
 ```
 
 
@@ -250,47 +250,20 @@ moreProt$get_Plotter()$raster()
 # here we do not get anything because there is nothing imputed!
 ```
 
-# GSEA Analyis
+# Gene Set Enrichment Analysis (GSEA)
 
-We can rank the proteins based on the log2FC or the t-statistic and subject them them to gene set enrichment analysis (see GSEA).
+After computing contrasts, proteins can be ranked by log2 fold change or t-statistic and subjected to gene set enrichment analysis. The typical workflow is:
 
-This example will run only if the following packages are installed on you machine:
+1. Extract UniProt IDs from the contrast results using `prolfqua::get_UniprotID_from_fasta_header()`
+2. Map UniProt IDs to Entrez Gene IDs using `AnnotationDbi::mapIds()` with a species-specific annotation package
+3. Create a named ranked list (statistic values named by gene IDs)
+4. Run GSEA using `clusterProfiler::gseGO()` or `clusterProfiler::gseKEGG()`
 
-- clusterProfiler (Bioconductor)
-- org.Sc.sgd.db (Bioconductor)
-- prora (github.com/protviz/prora)
+For details see:
 
-
-```{r prepForGSEA}
-evalAll <- requireNamespace("clusterProfiler", quietly = TRUE) &
-  requireNamespace("org.Sc.sgd.db", quietly = TRUE) &
-  requireNamespace("prora", quietly = TRUE)
-
-```
-
-```{r clusterProfiler, eval=evalAll}
-bb <- prolfqua::get_UniprotID_from_fasta_header(merged$merged$get_contrasts(),
-                                             idcolumn = "protein_Id")
-bb <- prora::map_ids_uniprot(bb)
-ranklist <- bb$statistic
-names(ranklist) <- bb$P_ENTREZGENEID
-res <- clusterProfiler::gseGO(
-  sort(ranklist, decreasing = TRUE),
-  OrgDb = org.Sc.sgd.db::org.Sc.sgd.db,
-  ont = "ALL")
-```
-
-```{r ridgeplot, fig.cap="ridgeplot", eval = evalAll}
-enrichplot::ridgeplot( res )
-```
-
-```{r dotplot, fig.cap = "Dotplot", eval = evalAll}
-enrichplot::dotplot(res , showCategory = 30)
-```
-
-```{r upsetplot, fig.cap="Upset Plot", eval = evalAll}
-enrichplot::upsetplot(res)
-```
+- [clusterProfiler book](https://yulab-smu.top/biomedical-knowledge-mining-book/) -- comprehensive guide to enrichment analysis in R
+- [clusterProfiler Bioconductor page](https://bioconductor.org/packages/clusterProfiler/)
+- [AnnotationDbi](https://bioconductor.org/packages/AnnotationDbi/) -- for mapping between gene identifier types
 
 The `prolfqua` package is described in [@Wolski2022.06.07.494524].
 

@@ -74,6 +74,11 @@ function_lod_quantile <- function(data_matrix, percent = 10) {
 #'   "GBM", "SQ", "BL", or "CZM" (passed to zCompositions)
 #' @param lod limit of detection strategy, either "global" or "quantile"
 #' @return the modified LFQData object (lfqdata), with imputed values
+#' @note This function assumes that missing values are Missing Completely
+#'   At Random (MCAR) or Missing At Random (MAR). If missingness is
+#'   abundance-dependent (MNAR, common in proteomics DDA), the imputed
+#'   values and downstream statistics may be biased. For MNAR-aware
+#'   analysis, consider packages such as proDA or DEqMS.
 #' @export
 #'
 #' @examples

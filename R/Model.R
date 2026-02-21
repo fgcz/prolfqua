@@ -110,16 +110,6 @@ Model <- R6::R6Class(
     },
 
     #' @description
-    #' writes model coefficients to file
-    #' @param path folder to write to
-    #' @param format default xlsx \code{\link{lfq_write_table}}
-    write_coefficients  = function(path, format = "xlsx"){
-      lfq_write_table(self$get_coefficients(),
-                      path = path,
-                      name  = paste0("Coef_",self$modelName),
-                      format = format)
-    },
-    #' @description
     #' histogram of model coefficient
     coef_histogram = function(){
       Model_Coeff <- self$get_coefficients()

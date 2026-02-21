@@ -101,23 +101,19 @@ LFQDataSummariser <- R6::R6Class(
     #' Computes the percent abundance of proteins overall and within each group
     #' @return data frame
     percentage_abundance = function(){
-      # roll up to protein intensities
-      # compute protein level summaries
-
       dall <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
       dfac <- prolfqua::summarize_stats_factors(self$lfq$data, self$lfq$config)
-
       all <- dplyr::bind_rows(dfac, dall)
-      nested <- all |> dplyr::group_by(!!sym("interaction")) |> tidyr::nest()
-      for (i in seq_len(nrow(nested))) {
-        nested$data[[i]] <- nested$data[[i]] |>
-          dplyr::arrange(.data$meanAbundance) |>
-          dplyr::mutate(id = dplyr::row_number()) |>
-          dplyr::mutate(abundance_percent = meanAbundance/sum(meanAbundance, na.rm = TRUE)*100 ) |>
-          dplyr::mutate(abundance_percent_cumulative = cumsum(ifelse(is.na(abundance_percent), 0, abundance_percent)) + abundance_percent*0) |>
-          dplyr::mutate(percent_prot = id / max(id) * 100)
-      }
-      res <- tidyr::unnest(nested, cols = "data")
+      res <- all |>
+        dplyr::group_by(!!sym("interaction")) |>
+        dplyr::arrange(.data$meanAbundance, .by_group = TRUE) |>
+        dplyr::mutate(
+          id = dplyr::row_number(),
+          abundance_percent = meanAbundance / sum(meanAbundance, na.rm = TRUE) * 100,
+          abundance_percent_cumulative = cumsum(ifelse(is.na(abundance_percent), 0, abundance_percent)) + abundance_percent * 0,
+          percent_prot = id / max(id) * 100
+        ) |>
+        dplyr::ungroup()
       return(res)
     }
 

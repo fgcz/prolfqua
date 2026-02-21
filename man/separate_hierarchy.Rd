@@ -24,8 +24,6 @@ stopifnot(ncol(dt) >= ncol(bb$data))
 
 }
 \seealso{
-\code{\link{lfq_write_table}}
-
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

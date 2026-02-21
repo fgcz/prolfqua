@@ -26,6 +26,13 @@ Replaces missing values in an LFQData object using methods from the
 zCompositions package. The limit of detection (LOD) can be estimated
 globally or per-sample using quantiles.
 }
+\note{
+This function assumes that missing values are Missing Completely
+  At Random (MCAR) or Missing At Random (MAR). If missingness is
+  abundance-dependent (MNAR, common in proteomics DDA), the imputed
+  values and downstream statistics may be biased. For MNAR-aware
+  analysis, consider packages such as proDA or DEqMS.
+}
 \examples{
 dd <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(dd$data, dd$config)

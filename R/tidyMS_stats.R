@@ -133,12 +133,7 @@ compute_pooled <- function(x, method = c("V1","V2")){
 poolvar <- function(res1, config,  method = c("V1","V2")){
   method <- match.arg(method)
   resp <- res1 |> nest(data = -all_of(config$hierarchy_keys()) )
-  pooled <- vector(length = length(resp$data), mode = "list")
-  for (i in seq_along(resp$data)) {
-    #print(i)
-    pooled[[i]] <- compute_pooled(resp$data[[i]], method = method)
-  }
-  pooled =  bind_rows(pooled)
+  pooled <- purrr::map_df(resp$data, compute_pooled, method = method)
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
   resp <- resp |> mutate(!!config$factor_keys()[1] := "pooled")
@@ -478,7 +473,7 @@ lfq_power_t_test_proteins <- function(stats_res,
 
 
   stats_res <- na.omit(stats_res)
-  sd_delta <- purrr::map_df(delta, function(x){dplyr::mutate(stats_res, delta = x)} )
+  sd_delta <- tidyr::crossing(stats_res, delta = delta)
 
   getSampleSize <- function(sd, delta){
     sd_threshold <- power.t.test(delta = delta,

@@ -468,7 +468,6 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
 #'
 #'
 #' @export
-#' @seealso \code{\link{lfq_write_table}}
 #' @param data data.frame
 #' @param config AnlalysisConfiguration
 #' @family configuration

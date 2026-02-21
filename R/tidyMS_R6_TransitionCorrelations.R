@@ -273,12 +273,14 @@ get_robscales <- function(data, config){
 robust_scale <- function(data, dim = 2, preserveMean = FALSE){
   scales <- .get_robscales(data, dim = dim)
   data = sweep(data, dim, scales$medians, "-")
-  mads <- scales$mads/mean(scales$mads)
-  data = (sweep(data, dim, mads, "/"))
-
+  if (!any(scales$mads == 0)) {
+    mads <- scales$mads/mean(scales$mads)
+    data = sweep(data, dim, mads, "/")
+  } else {
+    warning("SKIPPING scaling step in robust_scale: one or more MAD values are zero.")
+  }
   meanmed <- mean(scales$medians)
   addmean <- if (preserveMean) {meanmed} else {0}
-
   return(data + addmean)
 }
 

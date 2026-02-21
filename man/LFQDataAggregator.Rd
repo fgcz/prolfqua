@@ -51,8 +51,7 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQDataWriter}}
+\code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
 \section{Public fields}{

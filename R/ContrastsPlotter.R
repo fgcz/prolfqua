@@ -218,45 +218,9 @@ ContrastsPlotter <- R6::R6Class(
     #' @param rank default FALSE, if TRUE then rank of avgAbd is used.
     #' @return ggplot
     ma_plot = function(fc, colour, legend = TRUE, rank = TRUE){
-      if ( missing(fc))
-        fc <- self$fcthresh
-      if (missing(colour)) {
-        colour <- self$modelName
-      }
-      contrastDF <- self$contrastDF
-      if (!is.null(contrastDF[[self$avg.abundance]])) {
-        # pdf version
-        if (rank) {
-          rankcol <- paste0("rank_", self$avg.abundance)
-
-          contrastDF <- contrastDF |>
-            dplyr::group_by(!!sym(self$contrast)) |>
-            mutate(!!rankcol := rank(!!sym(self$avg.abundance)))
-
-          #contrastDF[[ rankcol ]] <- rank(contrastDF[[self$avg.abundance]])
-          fig <- private$.ma_plot(
-            contrastDF,
-            rankcol,
-            self$diff,
-            self$contrast,
-            fc,
-            colour = colour,
-            legend = legend )
-        }else{
-          fig <- private$.ma_plot(
-            contrastDF,
-            self$avg.abundance,
-            self$diff,
-            self$contrast,
-            fc,
-            colour = colour,
-            legend = legend)
-        }
-      }else{
-        warning("no group_1 group_2 columns can't generate MA")
-        fig <- NULL
-      }
-      return(fig)
+      if (missing(fc)) fc <- self$fcthresh
+      if (missing(colour)) colour <- self$modelName
+      private$.ma_fig(self$contrastDF, fc, colour, legend, rank)
     },
     #' @description
     #' ma plotly
@@ -266,49 +230,11 @@ ContrastsPlotter <- R6::R6Class(
     #' @param rank default FALSE, if TRUE then rank of avgAbd is used.
     #' @return list of ggplots
     ma_plotly = function(fc, colour, legend = TRUE, rank = FALSE){
-      # html version
-      if (missing(fc))
-        fc <- self$fcthresh
-      if (missing(colour))
-        colour <- self$modelName
-      contrastDF  <- self$contrastDF
-      if (!is.null(contrastDF[[self$avg.abundance]])) {
-        if (rank) {
-          rankcol <- paste0("rank_", self$avg.abundance)
-          contrastDF <- contrastDF |>
-            dplyr::group_by(!!sym(self$contrast)) |>
-            mutate(!!rankcol := rank(!!sym(self$avg.abundance)))
-
-          fig <- private$.ma_plot(
-            contrastDF,
-            rankcol,
-            self$diff,
-            self$contrast,
-            fc,
-            colour = colour,
-            legend = legend
-          )
-        } else {
-          contrastDF  <- contrastDF |>
-            plotly::highlight_key(~subject_Id)
-          fig <- private$.ma_plot(
-            contrastDF,
-            self$avg.abundance,
-            self$diff,
-            self$contrast,
-            fc,
-            colour = colour,
-            legend = legend
-          )
-        }
-
-        fig_plotly <- fig |>
-          plotly::ggplotly(tooltip = "subject_Id")
-
-        return(fig_plotly)
-      }else{
-        return(NULL)
-      }
+      if (missing(fc)) fc <- self$fcthresh
+      if (missing(colour)) colour <- self$modelName
+      fig <- private$.ma_fig(self$contrastDF, fc, colour, legend, rank, plotly_mode = TRUE)
+      if (!is.null(fig)) fig <- fig |> plotly::ggplotly(tooltip = "subject_Id")
+      fig
     },
     #' @description
     #' plot a score against the log2 fc e.g. t-statistic
@@ -383,6 +309,23 @@ ContrastsPlotter <- R6::R6Class(
     }
   ),
   private = list(
+    .ma_fig = function(contrastDF, fc, colour, legend, rank, plotly_mode = FALSE) {
+      if (is.null(contrastDF[[self$avg.abundance]])) {
+        if (!plotly_mode) warning("no group_1 group_2 columns can't generate MA")
+        return(NULL)
+      }
+      xcol <- self$avg.abundance
+      if (rank) {
+        xcol <- paste0("rank_", self$avg.abundance)
+        contrastDF <- contrastDF |>
+          dplyr::group_by(!!sym(self$contrast)) |>
+          dplyr::mutate(!!xcol := rank(!!sym(self$avg.abundance)))
+      } else if (plotly_mode) {
+        contrastDF <- contrastDF |> plotly::highlight_key(~subject_Id)
+      }
+      private$.ma_plot(contrastDF, xcol, self$diff, self$contrast, fc,
+                       colour = colour, legend = legend)
+    },
     .volcano = function(contrasts,
                         scores,
                         colour = NULL,

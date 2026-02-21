@@ -112,7 +112,6 @@ Other modelling:
 \item \href{#method-ModelFirth-new}{\code{ModelFirth$new()}}
 \item \href{#method-ModelFirth-get_coefficients}{\code{ModelFirth$get_coefficients()}}
 \item \href{#method-ModelFirth-get_anova}{\code{ModelFirth$get_anova()}}
-\item \href{#method-ModelFirth-write_coefficients}{\code{ModelFirth$write_coefficients()}}
 \item \href{#method-ModelFirth-coef_histogram}{\code{ModelFirth$coef_histogram()}}
 \item \href{#method-ModelFirth-coef_volcano}{\code{ModelFirth$coef_volcano()}}
 \item \href{#method-ModelFirth-coef_pairs}{\code{ModelFirth$coef_pairs()}}
@@ -169,25 +168,6 @@ return anova table
 \if{html}{\out{<div class="r">}}\preformatted{ModelFirth$get_anova()}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelFirth-write_coefficients"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelFirth-write_coefficients}{}}}
-\subsection{Method \code{write_coefficients()}}{
-writes model coefficients to file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$write_coefficients(path, format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{folder to write to}
-
-\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelFirth-coef_histogram"></a>}}

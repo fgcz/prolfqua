@@ -50,8 +50,7 @@ Other LFQData:
 \code{\link{LFQDataImp}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()},
-\code{\link{LFQDataWriter}}
+\code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
 \keyword{static}

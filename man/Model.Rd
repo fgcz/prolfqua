@@ -109,7 +109,6 @@ Other modelling:
 \item \href{#method-Model-new}{\code{Model$new()}}
 \item \href{#method-Model-get_coefficients}{\code{Model$get_coefficients()}}
 \item \href{#method-Model-get_anova}{\code{Model$get_anova()}}
-\item \href{#method-Model-write_coefficients}{\code{Model$write_coefficients()}}
 \item \href{#method-Model-coef_histogram}{\code{Model$coef_histogram()}}
 \item \href{#method-Model-coef_volcano}{\code{Model$coef_volcano()}}
 \item \href{#method-Model-coef_pairs}{\code{Model$coef_pairs()}}
@@ -169,25 +168,6 @@ return anova table
 \if{html}{\out{<div class="r">}}\preformatted{Model$get_anova()}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-write_coefficients"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-write_coefficients}{}}}
-\subsection{Method \code{write_coefficients()}}{
-writes model coefficients to file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$write_coefficients(path, format = "xlsx")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{folder to write to}
-
-\item{\code{format}}{default xlsx \code{\link{lfq_write_table}}}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Model-coef_histogram"></a>}}

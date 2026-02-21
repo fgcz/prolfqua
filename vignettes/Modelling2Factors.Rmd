@@ -42,7 +42,7 @@ Interesting here is the definition of the model. If interaction shall be include
 
 
 ```{r specifyModel}
-conflicted::conflict_prefer("filter", "dplyr")
+library(dplyr)
 
 #data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
 data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(

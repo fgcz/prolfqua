@@ -33,7 +33,6 @@ Other LFQData:
 \code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
-\code{\link{LFQDataSummariser}},
-\code{\link{LFQDataWriter}}
+\code{\link{LFQDataSummariser}}
 }
 \concept{LFQData}

@@ -652,13 +652,11 @@ estimate_intensity <- function(data, config, .func) {
   loopOverNested <- function(xnested, .func, config) {
     pb <- progress::progress_bar$new(total = nrow(xnested))
     message("starting aggregation")
-    res <- vector(mode = "list", length = nrow(xnested))
-    for (i in seq_len(nrow(xnested))) {
+    purrr::map(xnested$data, function(d) {
       pb$tick()
-      aggr <- .func(xnested$data[[i]], config)
-      res[[i]] <- .reestablish_condition(xnested$data[[i]], aggr, config)
-    }
-    return(res)
+      aggr <- .func(d, config)
+      .reestablish_condition(d, aggr, config)
+    })
   }
 
   res <- loopOverNested(xnested, .func = .func, config = config)
