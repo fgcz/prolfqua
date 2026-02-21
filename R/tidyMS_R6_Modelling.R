@@ -981,7 +981,7 @@ contrasts_linfct <- function(models,
 
   contrasts <- interaction_model_matrix |>
     dplyr::select(all_of(c(subject_Id, "contrast"))) |>
-    tidyr::unnest(cols = c(contrast))
+    tidyr::unnest(cols = c("contrast"))
 
   # take sigma and df from somewhere else.
   modelInfos <- models |>

@@ -125,7 +125,7 @@ impute_with_zcomp <- function(lfqdata,
   lfqdata$data <- response_matrix_as_tibble(
     imputed_data,
     paste0(lfqdata$response(),"_imputed"),
-    lfqdata$conf, lfqdata$data)
+    lfqdata$config, lfqdata$data)
 
   return(lfqdata)
 }
