@@ -18,3 +18,5 @@ docs
 /doc/
 /Meta/
 TODO/
+Rplots.pdf
+*.Rcheck/
