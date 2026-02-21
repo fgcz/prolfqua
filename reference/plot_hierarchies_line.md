@@ -1,0 +1,135 @@
+# Plot peptide intensities of protein as a function of the sample and factor
+
+Plot peptide intensities of protein as a function of the sample and
+factor
+
+## Usage
+
+``` r
+plot_hierarchies_line(
+  res,
+  proteinName,
+  config,
+  separate = FALSE,
+  show.legend = FALSE
+)
+```
+
+## Arguments
+
+- res:
+
+  data.frame
+
+- proteinName:
+
+  title of plot
+
+- config:
+
+  AnalysisConfiguration
+
+- separate:
+
+  if heavy and light show in one plot or with separate y axis?
+
+## See also
+
+Other aggregation:
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
+[`intensity_summary_by_hkeys()`](https://wolski.github.io/prolfqua/reference/intensity_summary_by_hkeys.md),
+[`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
+[`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
+[`medpolish_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_dfconfig.md),
+[`medpolish_protein_estimates()`](https://wolski.github.io/prolfqua/reference/medpolish_protein_estimates.md),
+[`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
+[`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
+[`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
+[`rlm_estimate()`](https://wolski.github.io/prolfqua/reference/rlm_estimate.md),
+[`rlm_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/rlm_estimate_dfconfig.md)
+
+Other plotting:
+[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`UpSet_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
+[`UpSet_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.md),
+[`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
+[`missigness_histogram()`](https://wolski.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_per_condition()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition.md),
+[`missingness_per_condition_cumsum()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
+[`plot_NA_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_NA_heatmap.md),
+[`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
+[`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md),
+[`plot_heatmap_cor()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor.md),
+[`plot_heatmap_cor_iheatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor_iheatmap.md),
+[`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
+[`plot_hierarchies_boxplot_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_boxplot_df.md),
+[`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
+[`plot_intensity_distribution_violin()`](https://wolski.github.io/prolfqua/reference/plot_intensity_distribution_violin.md),
+[`plot_pca()`](https://wolski.github.io/prolfqua/reference/plot_pca.md),
+[`plot_raster()`](https://wolski.github.io/prolfqua/reference/plot_raster.md),
+[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md),
+[`plot_screeplot()`](https://wolski.github.io/prolfqua/reference/plot_screeplot.md)
+
+## Examples
+
+``` r
+
+istar <- sim_lfq_data_peptide_config()
+#> creating sampleName from fileName column
+#> completing cases
+#> completing cases done
+#> setup done
+config <- istar$config
+analysis <- istar$data
+
+xnested <- analysis |>
+  dplyr::group_by(across(all_of(config$hierarchy_keys_depth()))) |>
+  tidyr::nest()
+
+prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)
+#> Warning: Removed 7 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
+
+
+bb <- prolfqua_data("data_skylineSRM_HL_A")
+conf <- bb$config_f()
+#> config$table is deprecated, use config directly
+#> config$table is deprecated, use config directly
+#> config$table is deprecated, use config directly
+analysis <- bb$analysis(bb$data, conf)
+#> creating sampleName from fileName column
+#> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
+#> completing cases
+#> completing cases done
+#> setup done
+
+nest <- analysis |>
+  dplyr::group_by(conf$hierarchy_keys_depth()) |>
+  tidyr::nest()
+prolfqua::plot_hierarchies_line(nest$data[[1]],
+  "DUM",
+  conf,
+  separate = TRUE
+)
+#> Warning: Removed 802 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 750 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
+
+prolfqua::plot_hierarchies_line(nest$data[[1]],
+  "DUM",
+  conf,
+  separate = TRUE,
+  show.legend = TRUE
+)
+#> Warning: Removed 802 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 750 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
+
+```

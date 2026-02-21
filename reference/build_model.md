@@ -1,0 +1,186 @@
+# Build protein models from data
+
+Build protein models from data
+
+## Usage
+
+``` r
+build_model(
+  data,
+  model_strategy,
+  subject_Id = if ("LFQData" %in% class(data)) {
+     data$subject_Id()
+ } else {
+    
+    "protein_Id"
+ },
+  modelName = model_strategy$model_name
+)
+```
+
+## Arguments
+
+- data:
+
+  data - a data frame or LFQData object
+
+- model_strategy:
+
+  model strategy object (e.g. from strategy_lmer or strategy_lm)
+
+- subject_Id:
+
+  grouping variable
+
+- modelName:
+
+  model name
+
+## Value
+
+a object of class
+[`Model`](https://wolski.github.io/prolfqua/reference/Model.md)
+
+## See also
+
+[`model_analyse`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
+[`strategy_lmer`](https://wolski.github.io/prolfqua/reference/strategy.md)
+[`strategy_lm`](https://wolski.github.io/prolfqua/reference/strategy.md)
+
+Other modelling:
+[`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
+[`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
+[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
+[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
+[`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
+[`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
+[`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
+[`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
+[`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
+[`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
+[`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
+[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
+[`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
+[`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
+[`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
+[`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
+[`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
+[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
+[`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
+[`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
+[`my_contrast_V1()`](https://wolski.github.io/prolfqua/reference/my_contrast_V1.md),
+[`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
+[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
+[`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
+[`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
+[`sim_make_model_lm()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lm.md),
+[`sim_make_model_lmer()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lmer.md),
+[`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
+#> creating sampleName from fileName column
+#> completing cases
+#> completing cases done
+#> setup done
+D$data$abundance |> is.na() |> sum()
+#> [1] 68
+D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
+#> creating sampleName from fileName column
+#> completing cases
+#> completing cases done
+#> setup done
+D$data$abundance |> is.na() |> sum()
+#> [1] 59
+modelName <- "f_condtion_r_peptide"
+formula_randomPeptide <-
+  strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sampleName)",
+   model_name = modelName)
+
+
+mod <- prolfqua::build_model(
+ D$data,
+ formula_randomPeptide,
+ modelName = modelName,
+ subject_Id = D$config$hierarchy_keys_depth())
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> Warning: There were 6 warnings in `dplyr::mutate()`.
+#> The first warning was:
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
+#> ℹ In group 1: `protein_Id = "0GRprF~7339"`.
+#> Caused by warning in `value[[3L]]()`:
+#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.
+#> Joining with `by = join_by(protein_Id)`
+aovtable <- mod$get_anova()
+
+mod <- prolfqua::build_model(
+ LFQData$new(D$data, D$config),
+ formula_randomPeptide,
+ modelName = modelName)
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> Warning: There were 6 warnings in `dplyr::mutate()`.
+#> The first warning was:
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
+#> ℹ In group 1: `protein_Id = "0GRprF~7339"`.
+#> Caused by warning in `value[[3L]]()`:
+#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.
+#> Joining with `by = join_by(protein_Id)`
+model_summary(mod)
+#> $exists
+#> 
+#> FALSE  TRUE 
+#>     6    14 
+#> 
+#> $isSingular
+#> 
+#> TRUE 
+#>   14 
+#> 
+
+```

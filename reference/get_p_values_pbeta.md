@@ -1,0 +1,83 @@
+# p-value of protein from p.value of the median fold change peptide.
+
+p-value of protein from p.value of the median fold change peptide.
+
+## Usage
+
+``` r
+get_p_values_pbeta(median.p.value, n.obs, max.n = 10)
+```
+
+## Arguments
+
+- max.n:
+
+  limit number of peptides per protein.
+
+## See also
+
+Other modelling:
+[`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
+[`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
+[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
+[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
+[`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
+[`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
+[`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
+[`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
+[`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
+[`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
+[`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
+[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
+[`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
+[`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
+[`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
+[`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
+[`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
+[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
+[`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
+[`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
+[`my_contrast_V1()`](https://wolski.github.io/prolfqua/reference/my_contrast_V1.md),
+[`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
+[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
+[`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
+[`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
+[`sim_make_model_lm()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lm.md),
+[`sim_make_model_lmer()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lmer.md),
+[`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+plot(get_p_values_pbeta(0.1,1:10,10), ylim=c(0,0.1))
+
+plot(get_p_values_pbeta(0.1,1:10,3), ylim=c(0,0.1))
+
+plot(get_p_values_pbeta(0.3,1:30, 3), ylim=c(0,0.1))
+abline(h=.05,col = 2)
+
+plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30)))
+abline(0,1)
+
+plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
+abline(0,1)
+
+testthat::expect_equal(get_p_values_pbeta(0.3,10, 3),0.216, tolerance = 1e-4)
+testthat::expect_equal(get_p_values_pbeta(0,10, 3),0, tolerance = 1e-4)
+testthat::expect_equal(get_p_values_pbeta(1,10, 3),1, tolerance = 1e-4)
+testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10), tolerance = 1e-4)
+```
