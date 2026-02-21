@@ -298,6 +298,7 @@ pMean$plots[[1]]
 #> (`geom_point()`).
 #> Warning: Removed 4 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
+
 protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 protPlotter$heatmap()
 

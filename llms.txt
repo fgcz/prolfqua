@@ -451,6 +451,8 @@ What name should we use?
 - [`old2new()`](https://wolski.github.io/prolfqua/reference/old2new.md)
   : Convert old proflqua configurations (prolfqua 0.4) to new Analysis
   configurations prolfqua 0.5
+- [`print(`*`<pheatmap>`*`)`](https://wolski.github.io/prolfqua/reference/print.pheatmap.md)
+  : Print method for pheatmap objects
 - [`prolfqua_data()`](https://wolski.github.io/prolfqua/reference/prolfqua_data.md)
   : load data from prolfqua
 - [`scatter_plotly()`](https://wolski.github.io/prolfqua/reference/scatter_plotly.md)

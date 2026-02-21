@@ -8,6 +8,10 @@ This vignette contains experimental code.
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 ```
 
+    ## Registered S3 method overwritten by 'prolfqua':
+    ##   method         from    
+    ##   print.pheatmap pheatmap
+
     ## creating sampleName from fileName column
 
     ## completing cases
