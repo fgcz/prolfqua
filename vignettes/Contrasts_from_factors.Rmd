@@ -6,13 +6,146 @@ output:
   html_document: default
   pdf_document: default
 vignette: |
-  %\VignetteIndexEntry{Contrasts from factors}  
-  %\VignetteEncoding{UTF-8}   
+  %\VignetteIndexEntry{Contrasts from factors}
+  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 bibliography:
   - prolfqua.bib
 ---
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Purpose
+
+When working with factorial experimental designs (e.g. two conditions crossed with three time points), specifying all the relevant contrasts by hand is tedious and error-prone. The `generate_contrasts` family of functions in prolfqua automates this by generating contrast specifications from factor levels. These contrast strings can then be passed directly to the `Contrasts` class for statistical testing.
+
+This vignette demonstrates how to:
+
+- Generate main effect, level-specific, and interaction contrasts for a two-factor design
+- Use `annotation_add_contrasts` to produce a combined annotation and contrast table ready for analysis
+
+# Group labelling convention
+
+All contrast generation functions assume that the group levels in the fitted model follow the naming convention `G_<primary>_<secondary>`, which is produced by `group_label()`:
+
+```{r group_label}
+library(prolfqua)
+
+group_label("MI", "T0")
+group_label("MINOCA", "T300")
+```
+
+This means that before fitting a model, the data must contain a grouping column with levels in this format. The `annotation_add_contrasts` function creates such a column automatically using `tidyr::unite`.
+
+# Building contrasts step by step
+
+Consider a two-factor design with disease type (MI, MINOCA) and time point (T0, T150, T300):
+
+```{r define_levels}
+primary_levels <- c("MI", "MINOCA")
+secondary_levels <- c("T0", "T150", "T300")
+```
+
+## Main effect contrasts
+
+Main effects average across all levels of the secondary factor. For example, the main effect of MINOCA vs MI is the average difference across all time points:
+
+```{r main_effects}
+me <- main_effect_contrasts(primary_levels, secondary_levels)
+data.frame(ContrastName = names(me), Contrast = unlist(me))
+```
+
+Swapping the roles of primary and secondary gives main effects for time points averaged across disease types:
+
+```{r main_effects_swapped}
+me2 <- main_effect_contrasts(secondary_levels, primary_levels)
+data.frame(ContrastName = names(me2), Contrast = unlist(me2))
+```
+
+## Level-specific contrasts
+
+These compare primary factor levels at each individual level of the secondary factor:
+
+```{r level_specific}
+ls <- level_specific_contrasts(primary_levels, secondary_levels)
+data.frame(ContrastName = names(ls), Contrast = unlist(ls))
+```
+
+## Interaction contrasts
+
+Interaction contrasts test whether the difference between primary levels changes across secondary levels (difference of differences):
+
+```{r interactions}
+ic <- interaction_contrasts(primary_levels, secondary_levels)
+data.frame(ContrastName = names(ic), Contrast = unlist(ic))
+```
+
+## Single-factor contrasts
+
+For a one-factor design, `generate_contrasts_for_factor` generates all pairwise comparisons:
+
+```{r single_factor}
+group_levels <- c("CondA", "CondB", "CondC")
+sf <- generate_contrasts_for_factor(group_levels)
+data.frame(ContrastName = names(sf), Contrast = unlist(sf))
+```
+
+# Generating all contrasts at once
+
+`generate_contrasts` combines main effects, level-specific, and interaction contrasts into a single data frame:
+
+```{r generate_all}
+all_contrasts <- generate_contrasts(primary_levels, secondary_levels)
+knitr::kable(all_contrasts, row.names = FALSE)
+```
+
+To exclude interaction contrasts:
+
+```{r generate_no_interactions}
+no_int <- generate_contrasts(primary_levels, secondary_levels, interactions = FALSE)
+knitr::kable(no_int, row.names = FALSE)
+```
+
+# Working with annotation tables
+
+In a typical prolfquapp workflow, you start with a sample annotation table that has columns for the two factors. `annotation_add_contrasts` creates a united Group column, generates all contrasts, and binds them alongside the annotation:
+
+```{r annotation_example}
+# x5463yzwer453bbb is a bundled example annotation table
+# with factor_A (MI / MINOCA) and factor_B (T0 / T150 / T300)
+head(prolfqua::x5463yzwer453bbb[, c("Name", "Group", "factor_A", "factor_B")])
+```
+
+```{r annotation_add_contrasts}
+result <- annotation_add_contrasts(
+  prolfqua::x5463yzwer453bbb,
+  primary_col = "factor_A",
+  secondary_col = "factor_B",
+  prefix = "primary"
+)
+
+# The annotation with united Group and contrast columns
+knitr::kable(head(result$annot[, c("Name", "Group", "ContrastName", "Contrast")], 10),
+             row.names = FALSE)
+
+# Suggested output file name
+result$name
+```
+
+Swapping primary and secondary factors gives contrasts from the other perspective:
+
+```{r annotation_swapped}
+result2 <- annotation_add_contrasts(
+  prolfqua::x5463yzwer453bbb,
+  primary_col = "factor_B",
+  secondary_col = "factor_A",
+  prefix = "secondary"
+)
+knitr::kable(head(result2$annot[, c("Name", "Group", "ContrastName", "Contrast")], 10),
+             row.names = FALSE)
+```
