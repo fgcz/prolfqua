@@ -1,0 +1,207 @@
+---
+title: "Limma Backend for prolfqua"
+author: "Witold E. Wolski"
+date: "`r Sys.Date()`"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Limma Backend for prolfqua}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Purpose
+
+This vignette demonstrates the **limma backend** for prolfqua's modelling pipeline. The limma backend is a drop-in alternative to the per-protein `lm` + `squeezeVar` pipeline. Both approaches fit linear models and perform empirical Bayes variance shrinkage, but:
+
+- **prolfqua default** (`strategy_lm` + `Contrasts` + `ContrastsModerated`): fits one `lm()` per protein, then applies prolfqua's own `squeezeVarRob` moderation.
+- **limma backend** (`strategy_limma` + `ContrastsLimma`): uses limma's matrix-based `lmFit` + `contrasts.fit` + `eBayes` pipeline directly.
+
+The user-facing API is identical: same formula specification, same contrast specification, same downstream methods (`get_contrasts`, `get_Plotter`, `to_wide`, `merge_contrasts_results`).
+
+# Data preparation
+
+We use simulated protein-level data with 3 groups (A, B, Ctrl) and some missing values.
+
+```{r data}
+library(prolfqua)
+library(dplyr)
+
+istar <- sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.3)
+lfqdata <- LFQData$new(istar$data, istar$config)
+lfqdata$remove_small_intensities()
+
+lt <- lfqdata$get_Transformer()
+transformed <- lt$log2()$robscale()$lfq
+transformed$rename_response("transformedIntensity")
+transformed$factors()
+```
+
+# Define contrasts
+
+The same contrast specification is used for both backends.
+
+```{r contrasts}
+contr_spec <- c(
+  "AvsCtrl" = "group_A - group_Ctrl",
+  "BvsCtrl" = "group_B - group_Ctrl",
+  "AvsB"    = "group_A - group_B"
+)
+```
+
+# prolfqua default pipeline
+
+```{r prolfqua_pipeline}
+mod_lm <- build_model(transformed, strategy_lm("transformedIntensity ~ group_"))
+contr_lm <- prolfqua::Contrasts$new(mod_lm, contr_spec)
+contr_moderated <- ContrastsModerated$new(contr_lm)
+res_moderated <- contr_moderated$get_contrasts()
+```
+
+# Limma backend pipeline
+
+The only difference is using `strategy_limma` + `build_model_limma` + `ContrastsLimma`.
+
+```{r limma_pipeline}
+strat_limma <- strategy_limma("transformedIntensity ~ group_")
+mod_limma <- build_model_limma(transformed, strat_limma)
+contr_limma <- ContrastsLimma$new(mod_limma, contr_spec)
+res_limma <- contr_limma$get_contrasts()
+```
+
+## Model-level inspection
+
+The `ModelLimma` object supports the same inspection methods as `Model`.
+
+```{r model_inspection}
+mod_limma$get_anova() |> head()
+mod_limma$get_coefficients() |> head()
+mod_limma$anova_histogram()
+```
+
+# Comparing results
+
+## Fold changes are identical
+
+Both backends estimate the same linear model, so fold changes (log2 FC) are identical.
+
+```{r compare_fc}
+merged <- inner_join(
+  select(res_limma, protein_Id, contrast, diff_limma = diff),
+  select(res_moderated, protein_Id, contrast, diff_moderated = diff),
+  by = c("protein_Id", "contrast")
+)
+
+cor(merged$diff_limma, merged$diff_moderated, use = "complete.obs")
+```
+
+```{r plot_fc, fig.cap="Fold changes: limma vs. prolfqua moderated. Points lie on the diagonal."}
+plot(merged$diff_limma, merged$diff_moderated,
+     xlab = "limma logFC", ylab = "prolfqua moderated logFC",
+     pch = 20, col = rgb(0, 0, 0, 0.3))
+abline(0, 1, col = "red")
+```
+
+## P-values differ (different shrinkage)
+
+The p-values differ because limma and prolfqua use different eBayes implementations, but they are highly correlated.
+
+```{r compare_pval}
+merged_p <- inner_join(
+  select(res_limma, protein_Id, contrast, p_limma = p.value),
+  select(res_moderated, protein_Id, contrast, p_moderated = p.value),
+  by = c("protein_Id", "contrast")
+)
+
+cor(-log10(merged_p$p_limma), -log10(merged_p$p_moderated), use = "complete.obs")
+```
+
+```{r plot_pval, fig.cap="P-values: limma vs. prolfqua moderated. High correlation but not identical."}
+plot(-log10(merged_p$p_limma), -log10(merged_p$p_moderated),
+     xlab = "-log10(p) limma", ylab = "-log10(p) prolfqua moderated",
+     pch = 20, col = rgb(0, 0, 0, 0.3))
+abline(0, 1, col = "red")
+```
+
+# Volcano plots
+
+```{r volcano, fig.cap="Volcano plots from both backends."}
+pl_limma <- contr_limma$get_Plotter()
+pl_moderated <- contr_moderated$get_Plotter()
+
+gridExtra::grid.arrange(
+  pl_limma$volcano()$FDR + ggplot2::ggtitle("limma"),
+  pl_moderated$volcano()$FDR + ggplot2::ggtitle("prolfqua moderated"),
+  ncol = 1
+)
+```
+
+# Merging with missing value imputation
+
+`ContrastsLimma` integrates seamlessly with `ContrastsMissing` and `merge_contrasts_results`.
+
+```{r merge_missing}
+mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
+merged_result <- merge_contrasts_results(prefer = contr_limma, add = mC)
+
+plotter <- merged_result$merged$get_Plotter()
+plotter$volcano()$FDR
+```
+
+# Wide format export
+
+```{r wide}
+wide <- contr_limma$to_wide()
+head(wide)
+```
+
+# Two-factor design
+
+The limma backend handles multi-factor designs in the same way.
+
+```{r two_factor}
+dd <- sim_lfq_data_2Factor_config(Nprot = 100, with_missing = FALSE)
+lProt2 <- LFQData$new(dd$data, dd$config)
+lProt2$rename_response("transformedIntensity")
+
+strat2 <- strategy_limma("transformedIntensity ~ Treatment + Background")
+mod2 <- build_model_limma(lProt2, strat2)
+
+Contr2 <- c(
+  "A_vs_B" = "TreatmentA - TreatmentB",
+  "X_vs_Z" = "BackgroundX - BackgroundZ"
+)
+contr2 <- ContrastsLimma$new(mod2, Contr2)
+
+pl2 <- contr2$get_Plotter()
+pl2$volcano()$FDR
+```
+
+# strategy_limma options
+
+The `strategy_limma` function accepts `trend` and `robust` arguments that are passed to `limma::eBayes`:
+
+- `trend = TRUE`: allows the prior variance to depend on average intensity (useful when variance is intensity-dependent)
+- `robust = TRUE`: uses a robust empirical Bayes procedure (resistant to outlier variances)
+
+```{r options}
+strat_robust <- strategy_limma(
+  "transformedIntensity ~ group_",
+  trend = TRUE,
+  robust = TRUE
+)
+mod_robust <- build_model_limma(transformed, strat_robust)
+contr_robust <- ContrastsLimma$new(mod_robust, contr_spec)
+head(contr_robust$get_contrasts())
+```
+
+# Session Info
+
+```{r}
+sessionInfo()
+```

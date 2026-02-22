@@ -35,6 +35,7 @@ Imports:
     ggrepel,
     ggridges,
     ggpubr,
+    limma,
     lme4,
     lmerTest,
     logistf,
@@ -47,11 +48,9 @@ Imports:
     rlang,
     statmod,
     stringi,
-    stringr,
     tidyselect,
     tidyr,
     tibble,
-    methods,
     UpSetR,
     yaml
 Suggests:
@@ -62,7 +61,6 @@ Suggests:
     iheatmapr,
     KernSmooth,
     knitr,
-    limma,
     lintr,
     pkgdown,
     preprocessCore,

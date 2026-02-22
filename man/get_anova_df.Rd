@@ -17,6 +17,7 @@ x <- get_anova_df(test = "Chisq")
 Other modelling: 
 \code{\link{Contrasts}},
 \code{\link{ContrastsFirth}},
+\code{\link{ContrastsLimma}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
@@ -27,7 +28,9 @@ Other modelling:
 \code{\link{LR_test}()},
 \code{\link{Model}},
 \code{\link{ModelFirth}},
+\code{\link{ModelLimma}},
 \code{\link{build_model}()},
+\code{\link{build_model_limma}()},
 \code{\link{build_model_logistf}()},
 \code{\link{contrasts_fisher_exact}()},
 \code{\link{get_complete_model_fit}()},
@@ -55,6 +58,7 @@ Other modelling:
 \code{\link{sim_build_models_logistf}()},
 \code{\link{sim_make_model_lm}()},
 \code{\link{sim_make_model_lmer}()},
+\code{\link{strategy_limma}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }

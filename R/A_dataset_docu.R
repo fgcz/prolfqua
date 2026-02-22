@@ -21,12 +21,11 @@
 #' @importFrom tidyr nest nesting separate_rows unite unnest separate
 #' @importFrom tidyr pivot_wider pivot_longer
 #' @importFrom tibble add_column as_tibble column_to_rownames tibble
-#' @importFrom stats anova coef coefficients confint cor.test df.residual ecdf formula lm mad median medpolish
+#' @importFrom stats anova coef coefficients confint cor.test delete.response df.residual ecdf formula lm mad median medpolish
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
 #' @importFrom stats approx df fisher.test ftable lm.fit pchisq pf pnorm qf rgeom rlnorm rnorm uniroot
-#' @importFrom methods is
-#' @importFrom stringr str_trim
 #' @importFrom utils combn data head read.csv tail unzip
+#' @importFrom limma lmFit contrasts.fit eBayes topTable
 #' @importFrom yaml write_yaml
 NULL
 
