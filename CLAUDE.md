@@ -54,11 +54,15 @@ Raw Data + AnalysisConfiguration → LFQData
 
 LFQData → build_model(strategy) → Model
     └── Contrasts$new(model, contrast_spec) → contrast results
-        ├── ContrastsModerated  (limma EB shrinkage)
+        ├── ContrastsModerated  (prolfqua squeezeVarRob shrinkage)
         ├── ContrastsProDA      (missing-data-aware)
         ├── ContrastsMissing    (imputation-based)
         ├── ContrastsFirth      (Firth logistic)
         └── get_Plotter() → ContrastsPlotter (volcano, MA, heatmap)
+
+LFQData → build_model_limma(strategy_limma) → ModelLimma
+    └── ContrastsLimma$new(model, contrast_spec) → contrast results
+        └── Same downstream API: get_contrasts(), get_Plotter(), to_wide()
 ```
 
 ### Key Design Patterns
@@ -70,7 +74,7 @@ LFQData → build_model(strategy) → Model
 lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 ```
 
-**Strategy pattern for models**: `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` return lists with `model_fun`, `contrast_fun`, `isSingular`, `anova_df`.
+**Strategy pattern for models**: `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` return lists with `model_fun`, `contrast_fun`, `isSingular`, `anova_df`. `strategy_limma()` returns a simpler list (formula, trend, robust) consumed by `build_model_limma()`.
 
 **Config immutability**: AnalysisConfiguration is always deep-cloned when passed to new LFQData instances. Never modify config in-place on an existing LFQData.
 
@@ -80,8 +84,8 @@ lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 |----------|---------|-------|
 | Core data | `LFQData`, `AnalysisConfiguration` | LFQData.R, AnalysisConfiguration.R |
 | Decorators | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp` | LFQData*.R |
-| Model interfaces | `ModelInterface`, `Model`, `ModelFirth` | Model*.R |
-| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsProDA`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
+| Model interfaces | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma` | Model*.R, ContrastsLimma.R |
+| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsProDA`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
 | Visualization | `ContrastsPlotter` | ContrastsPlotter.R |
 | Utilities | `MissingHelpers` | tidyMS_missigness_V2.R |
 
@@ -98,8 +102,10 @@ Concrete config factories: `create_config_MQ_peptide()`, `create_config_Skyline(
 ### Key Functions (not in classes)
 
 - `setup_analysis(data, config)` — prepare data for analysis (in AnalysisConfiguration.R)
-- `build_model(data, strategy, subject_Id)` — fit models per protein (in tidyMS_R6Model.R)
-- `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` — model strategies (in tidyMS_R6_Modelling.R)
+- `build_model(data, strategy, subject_Id)` — fit per-protein models (in tidyMS_R6Model.R)
+- `build_model_limma(lfqdata, strategy)` — fit limma matrix model (in ContrastsLimma.R)
+- `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` — per-protein model strategies (in tidyMS_R6_Modelling.R)
+- `strategy_limma()` — limma matrix model strategy (in ContrastsLimma.R)
 - `sim_lfq_data_peptide_config()` — simulate test data (in simulate_LFQ_data.R)
 
 ### File Naming Convention
@@ -112,10 +118,11 @@ Concrete config factories: `create_config_MQ_peptide()`, `create_config_Skyline(
 
 ## Testing
 
-6 test files in `tests/testthat/`:
+7 test files in `tests/testthat/`:
 - `test-LFQData.R` — Core data container and decorators
 - `test-Model.R` — Model fitting and coefficient extraction
 - `test-Contrasts.R` — Contrast computation
+- `test-ContrastsLimma.R` — Limma backend (ModelLimma, ContrastsLimma, merge, 2-factor)
 - `test-ContrastsPlotter.R` — Contrast visualization
 - `test-plotting_functions.R` — Low-level plots
 - `test-tidyconfig_functions.R` — Configuration and utilities

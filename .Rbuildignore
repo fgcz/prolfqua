@@ -25,3 +25,4 @@ R/tidyMS_stanr\.R
 ^conda$
 ^TODO\.md$
 ^data-raw$
+^CLAUDE\.md$
