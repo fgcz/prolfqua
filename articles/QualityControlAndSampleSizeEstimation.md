@@ -443,24 +443,24 @@ sessionInfo()
     ## [10] magrittr_2.0.4      evaluate_1.0.5      grid_4.5.2         
     ## [13] RColorBrewer_1.1-3  fastmap_1.2.0       Matrix_1.7-4       
     ## [16] plyr_1.8.9          jsonlite_2.0.0      ggrepel_0.9.6      
-    ## [19] prolfqua_1.4.0      gridExtra_2.3       mgcv_1.9-3         
-    ## [22] httr_1.4.8          purrr_1.2.1         viridisLite_0.4.3  
-    ## [25] scales_1.4.0        UpSetR_1.4.0        lazyeval_0.2.2     
-    ## [28] textshaping_1.0.4   jquerylib_0.1.4     cli_3.6.5          
-    ## [31] rlang_1.1.7         splines_4.5.2       withr_3.0.2        
-    ## [34] cachem_1.1.0        yaml_2.3.12         otel_0.2.0         
-    ## [37] tools_4.5.2         dplyr_1.2.0         ggplot2_4.0.2      
-    ## [40] forcats_1.0.1       vctrs_0.7.1         R6_2.6.1           
-    ## [43] lifecycle_1.0.5     stringr_1.6.0       fs_1.6.6           
+    ## [19] limma_3.66.0        prolfqua_1.5.0      gridExtra_2.3      
+    ## [22] mgcv_1.9-3          httr_1.4.8          purrr_1.2.1        
+    ## [25] viridisLite_0.4.3   scales_1.4.0        UpSetR_1.4.0       
+    ## [28] lazyeval_0.2.2      textshaping_1.0.4   jquerylib_0.1.4    
+    ## [31] cli_3.6.5           rlang_1.1.7         splines_4.5.2      
+    ## [34] withr_3.0.2         cachem_1.1.0        yaml_2.3.12        
+    ## [37] otel_0.2.0          tools_4.5.2         dplyr_1.2.0        
+    ## [40] ggplot2_4.0.2       forcats_1.0.1       vctrs_0.7.1        
+    ## [43] R6_2.6.1            lifecycle_1.0.5     fs_1.6.6           
     ## [46] htmlwidgets_1.6.4   MASS_7.3-65         ragg_1.5.0         
     ## [49] pkgconfig_2.0.3     desc_1.4.3          pkgdown_2.2.0      
     ## [52] pillar_1.11.1       bslib_0.10.0        gtable_0.3.6       
     ## [55] glue_1.8.0          data.table_1.18.2.1 Rcpp_1.1.1         
-    ## [58] systemfonts_1.3.1   xfun_0.56           tibble_3.3.1       
-    ## [61] tidyselect_1.2.1    knitr_1.51          farver_2.1.2       
-    ## [64] nlme_3.1-168        htmltools_0.5.9     labeling_0.4.3     
-    ## [67] rmarkdown_2.30      pheatmap_1.0.13     compiler_4.5.2     
-    ## [70] S7_0.2.1
+    ## [58] statmod_1.5.1       systemfonts_1.3.1   xfun_0.56          
+    ## [61] tibble_3.3.1        tidyselect_1.2.1    knitr_1.51         
+    ## [64] farver_2.1.2        nlme_3.1-168        htmltools_0.5.9    
+    ## [67] labeling_0.4.3      rmarkdown_2.30      pheatmap_1.0.13    
+    ## [70] compiler_4.5.2      S7_0.2.1
 
 ## References
 

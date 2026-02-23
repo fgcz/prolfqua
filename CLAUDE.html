@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +21,8 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
+    <li><a class="dropdown-item" href="articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
+    <li><a class="dropdown-item" href="articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
     <li><a class="dropdown-item" href="articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
     <li><a class="dropdown-item" href="articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
@@ -91,11 +93,15 @@
 
 LFQData → build_model(strategy) → Model
     └── Contrasts$new(model, contrast_spec) → contrast results
-        ├── ContrastsModerated  (limma EB shrinkage)
+        ├── ContrastsModerated  (prolfqua squeezeVarRob shrinkage)
         ├── ContrastsProDA      (missing-data-aware)
         ├── ContrastsMissing    (imputation-based)
         ├── ContrastsFirth      (Firth logistic)
-        └── get_Plotter() → ContrastsPlotter (volcano, MA, heatmap)</code></pre>
+        └── get_Plotter() → ContrastsPlotter (volcano, MA, heatmap)
+
+LFQData → build_model_limma(strategy_limma) → ModelLimma
+    └── ContrastsLimma$new(model, contrast_spec) → contrast results
+        └── Same downstream API: get_contrasts(), get_Plotter(), to_wide()</code></pre>
 </div>
 <div class="section level3">
 <h3 id="key-design-patterns">Key Design Patterns<a class="anchor" aria-label="anchor" href="#key-design-patterns"></a></h3>
@@ -103,7 +109,7 @@ LFQData → build_model(strategy) → Model
 <p><strong>Method chaining</strong>: Transformer methods return <code>self</code> for chaining, access result via <code>$lfq</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span></code></pre></div>
-<p><strong>Strategy pattern for models</strong>: <code><a href="reference/strategy.html">strategy_lm()</a></code>, <code><a href="reference/strategy.html">strategy_lmer()</a></code>, <code><a href="reference/strategy.html">strategy_rlm()</a></code>, <code><a href="reference/strategy.html">strategy_glm()</a></code> return lists with <code>model_fun</code>, <code>contrast_fun</code>, <code>isSingular</code>, <code>anova_df</code>.</p>
+<p><strong>Strategy pattern for models</strong>: <code><a href="reference/strategy.html">strategy_lm()</a></code>, <code><a href="reference/strategy.html">strategy_lmer()</a></code>, <code><a href="reference/strategy.html">strategy_rlm()</a></code>, <code><a href="reference/strategy.html">strategy_glm()</a></code> return lists with <code>model_fun</code>, <code>contrast_fun</code>, <code>isSingular</code>, <code>anova_df</code>. <code><a href="reference/strategy_limma.html">strategy_limma()</a></code> returns a simpler list (formula, trend, robust) consumed by <code><a href="reference/build_model_limma.html">build_model_limma()</a></code>.</p>
 <p><strong>Config immutability</strong>: AnalysisConfiguration is always deep-cloned when passed to new LFQData instances. Never modify config in-place on an existing LFQData.</p>
 </div>
 <div class="section level3">
@@ -123,12 +129,12 @@ LFQData → build_model(strategy) → Model
 <td>LFQData*.R</td>
 </tr><tr class="odd"><td>Model interfaces</td>
 <td>
-<code>ModelInterface</code>, <code>Model</code>, <code>ModelFirth</code>
+<code>ModelInterface</code>, <code>Model</code>, <code>ModelFirth</code>, <code>ModelLimma</code>
 </td>
-<td>Model*.R</td>
+<td>Model*.R, ContrastsLimma.R</td>
 </tr><tr class="even"><td>Contrast interfaces</td>
 <td>
-<code>ContrastsInterface</code>, <code>Contrasts</code>, <code>ContrastsModerated</code>, <code>ContrastsProDA</code>, <code>ContrastsROPECA</code>, <code>ContrastsMissing</code>, <code>ContrastsFirth</code>, <code>ContrastsTable</code>
+<code>ContrastsInterface</code>, <code>Contrasts</code>, <code>ContrastsModerated</code>, <code>ContrastsLimma</code>, <code>ContrastsProDA</code>, <code>ContrastsROPECA</code>, <code>ContrastsMissing</code>, <code>ContrastsFirth</code>, <code>ContrastsTable</code>
 </td>
 <td>Contrasts*.R, ContrastFirth.R, ContrastsSimpleImpute.R</td>
 </tr><tr class="odd"><td>Visualization</td>
@@ -148,9 +154,13 @@ LFQData → build_model(strategy) → Model
 <ul><li>
 <code>setup_analysis(data, config)</code> — prepare data for analysis (in AnalysisConfiguration.R)</li>
 <li>
-<code>build_model(data, strategy, subject_Id)</code> — fit models per protein (in tidyMS_R6Model.R)</li>
+<code>build_model(data, strategy, subject_Id)</code> — fit per-protein models (in tidyMS_R6Model.R)</li>
 <li>
-<code><a href="reference/strategy.html">strategy_lm()</a></code>, <code><a href="reference/strategy.html">strategy_lmer()</a></code>, <code><a href="reference/strategy.html">strategy_rlm()</a></code>, <code><a href="reference/strategy.html">strategy_glm()</a></code> — model strategies (in tidyMS_R6_Modelling.R)</li>
+<code>build_model_limma(lfqdata, strategy)</code> — fit limma matrix model (in ContrastsLimma.R)</li>
+<li>
+<code><a href="reference/strategy.html">strategy_lm()</a></code>, <code><a href="reference/strategy.html">strategy_lmer()</a></code>, <code><a href="reference/strategy.html">strategy_rlm()</a></code>, <code><a href="reference/strategy.html">strategy_glm()</a></code> — per-protein model strategies (in tidyMS_R6_Modelling.R)</li>
+<li>
+<code><a href="reference/strategy_limma.html">strategy_limma()</a></code> — limma matrix model strategy (in ContrastsLimma.R)</li>
 <li>
 <code><a href="reference/sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config()</a></code> — simulate test data (in simulate_LFQ_data.R)</li>
 </ul></div>
@@ -170,7 +180,7 @@ LFQData → build_model(strategy) → Model
 </div>
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
-<p>6 test files in <code>tests/testthat/</code>: - <code>test-LFQData.R</code> — Core data container and decorators - <code>test-Model.R</code> — Model fitting and coefficient extraction - <code>test-Contrasts.R</code> — Contrast computation - <code>test-ContrastsPlotter.R</code> — Contrast visualization - <code>test-plotting_functions.R</code> — Low-level plots - <code>test-tidyconfig_functions.R</code> — Configuration and utilities</p>
+<p>7 test files in <code>tests/testthat/</code>: - <code>test-LFQData.R</code> — Core data container and decorators - <code>test-Model.R</code> — Model fitting and coefficient extraction - <code>test-Contrasts.R</code> — Contrast computation - <code>test-ContrastsLimma.R</code> — Limma backend (ModelLimma, ContrastsLimma, merge, 2-factor) - <code>test-ContrastsPlotter.R</code> — Contrast visualization - <code>test-plotting_functions.R</code> — Low-level plots - <code>test-tidyconfig_functions.R</code> — Configuration and utilities</p>
 </div>
 <div class="section level2">
 <h2 id="cross-package-context">Cross-Package Context<a class="anchor" aria-label="anchor" href="#cross-package-context"></a></h2>

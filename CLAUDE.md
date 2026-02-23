@@ -62,11 +62,15 @@ make renv-snapshot   # Update renv.lock after dep changes
 
     LFQData → build_model(strategy) → Model
         └── Contrasts$new(model, contrast_spec) → contrast results
-            ├── ContrastsModerated  (limma EB shrinkage)
+            ├── ContrastsModerated  (prolfqua squeezeVarRob shrinkage)
             ├── ContrastsProDA      (missing-data-aware)
             ├── ContrastsMissing    (imputation-based)
             ├── ContrastsFirth      (Firth logistic)
             └── get_Plotter() → ContrastsPlotter (volcano, MA, heatmap)
+
+    LFQData → build_model_limma(strategy_limma) → ModelLimma
+        └── ContrastsLimma$new(model, contrast_spec) → contrast results
+            └── Same downstream API: get_contrasts(), get_Plotter(), to_wide()
 
 ### Key Design Patterns
 
@@ -87,6 +91,9 @@ lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 [`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`strategy_glm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
 return lists with `model_fun`, `contrast_fun`, `isSingular`, `anova_df`.
+[`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
+returns a simpler list (formula, trend, robust) consumed by
+[`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md).
 
 **Config immutability**: AnalysisConfiguration is always deep-cloned
 when passed to new LFQData instances. Never modify config in-place on an
@@ -94,14 +101,14 @@ existing LFQData.
 
 ### R6 Classes (22 classes across R/)
 
-| Category            | Classes                                                                                                                                              | Files                                                   |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| Core data           | `LFQData`, `AnalysisConfiguration`                                                                                                                   | LFQData.R, AnalysisConfiguration.R                      |
-| Decorators          | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp`                                       | LFQData\*.R                                             |
-| Model interfaces    | `ModelInterface`, `Model`, `ModelFirth`                                                                                                              | Model\*.R                                               |
-| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsProDA`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
-| Visualization       | `ContrastsPlotter`                                                                                                                                   | ContrastsPlotter.R                                      |
-| Utilities           | `MissingHelpers`                                                                                                                                     | tidyMS_missigness_V2.R                                  |
+| Category            | Classes                                                                                                                                                                | Files                                                   |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
+| Core data           | `LFQData`, `AnalysisConfiguration`                                                                                                                                     | LFQData.R, AnalysisConfiguration.R                      |
+| Decorators          | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp`                                                         | LFQData\*.R                                             |
+| Model interfaces    | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma`                                                                                                                  | Model\*.R, ContrastsLimma.R                             |
+| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsProDA`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
+| Visualization       | `ContrastsPlotter`                                                                                                                                                     | ContrastsPlotter.R                                      |
+| Utilities           | `MissingHelpers`                                                                                                                                                       | tidyMS_missigness_V2.R                                  |
 
 ### AnalysisConfiguration
 
@@ -124,13 +131,17 @@ etc. in `tidyMS_R6_ConcreteConfigurations.R`.
 
 - `setup_analysis(data, config)` — prepare data for analysis (in
   AnalysisConfiguration.R)
-- `build_model(data, strategy, subject_Id)` — fit models per protein (in
+- `build_model(data, strategy, subject_Id)` — fit per-protein models (in
   tidyMS_R6Model.R)
+- `build_model_limma(lfqdata, strategy)` — fit limma matrix model (in
+  ContrastsLimma.R)
 - [`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
   [`strategy_lmer()`](https://wolski.github.io/prolfqua/reference/strategy.md),
   [`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
   [`strategy_glm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
-  — model strategies (in tidyMS_R6_Modelling.R)
+  — per-protein model strategies (in tidyMS_R6_Modelling.R)
+- [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
+  — limma matrix model strategy (in ContrastsLimma.R)
 - [`sim_lfq_data_peptide_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md)
   — simulate test data (in simulate_LFQ_data.R)
 
@@ -146,10 +157,11 @@ etc. in `tidyMS_R6_ConcreteConfigurations.R`.
 
 ## Testing
 
-6 test files in `tests/testthat/`: - `test-LFQData.R` — Core data
+7 test files in `tests/testthat/`: - `test-LFQData.R` — Core data
 container and decorators - `test-Model.R` — Model fitting and
 coefficient extraction - `test-Contrasts.R` — Contrast computation -
-`test-ContrastsPlotter.R` — Contrast visualization -
+`test-ContrastsLimma.R` — Limma backend (ModelLimma, ContrastsLimma,
+merge, 2-factor) - `test-ContrastsPlotter.R` — Contrast visualization -
 `test-plotting_functions.R` — Low-level plots -
 `test-tidyconfig_functions.R` — Configuration and utilities
 

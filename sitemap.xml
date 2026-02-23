@@ -8,6 +8,8 @@
 <url><loc>https://wolski.github.io/prolfqua/articles/Comparing2Groups.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/Contrasts_from_factors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/CreatingConfigurations.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/articles/DEqMS_Moderation.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/articles/LimmaBackend.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/Modelling2Factors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/QCandSampleSize.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html</loc></url>
@@ -21,8 +23,10 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/Contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsFirth.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsInterface.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsMissing.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsModerated.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsPlotter.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsProDA.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsROPECA.html</loc></url>
@@ -41,6 +45,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/Model.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ModelFirth.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ModelInterface.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ModelLimma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/PACKAGE_DATA.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/R6_extract_values.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.html</loc></url>
@@ -50,6 +55,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/annotation_add_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/apply_to_response_matrix.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/build_model_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_logistf.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/complete_cases.html</loc></url>
@@ -78,6 +84,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/estimate_lod_global.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/filter_difference.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/find_d0_deqms.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/find_package_file.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/function_lod_quantile.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/generate_contrasts.html</loc></url>
@@ -124,6 +131,8 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/missingness_per_condition_cumsum.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/model_analyse.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/model_summary.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_deqms.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ms_bench_add_scores.html</loc></url>
@@ -200,6 +209,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/spread_response_by_IsotopeLabel.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/squeezeVarRob.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/strategy.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/strategy_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/summarize_hierarchy.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/summarize_stats.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/summarize_stats_factors.html</loc></url>

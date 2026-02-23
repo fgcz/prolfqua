@@ -12,10 +12,14 @@
   : Estimate contrasts using Wald Test
 - [`ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
   : Base class for all Contrasts classes
+- [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md)
+  : Limma-based contrasts (direct limma pipeline)
 - [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md)
   : Compute contrasts with group mean imputation
 - [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md)
   : Limma moderated contrasts
+- [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md)
+  : DEqMS count-dependent moderated contrasts
 - [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
   : plot contrasts
 - [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md)
@@ -53,12 +57,16 @@
   : R6 class representing modelling result
 - [`ModelInterface`](https://wolski.github.io/prolfqua/reference/ModelInterface.md)
   : R6 interface class representing modelling result
+- [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md)
+  : R6 class representing a limma modelling result
 - [`PACKAGE_DATA`](https://wolski.github.io/prolfqua/reference/PACKAGE_DATA.md)
   : Package Data
 - [`annotation_add_contrasts()`](https://wolski.github.io/prolfqua/reference/annotation_add_contrasts.md)
   : DRY function: process and export annotated contrasts
 - [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md)
   : Build protein models from data
+- [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md)
+  : Build limma model from LFQData
 - [`center_to_reference_cfg()`](https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.md)
   : center to reference
 - [`create_config_Skyline()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
@@ -122,6 +130,8 @@
   [`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_glm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   : Firth's Bias-Reduced Logistic Regression (logistf)
+- [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
+  : Create limma modelling strategy
 - [`summarize_stats_factors()`](https://wolski.github.io/prolfqua/reference/summarize_stats_factors.md)
   : compute var sd etc for all factor levels
 - [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_Plotly.md)

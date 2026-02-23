@@ -5,12 +5,14 @@ articles:
   Comparing2Groups: Comparing2Groups.html
   Contrasts_from_factors: Contrasts_from_factors.html
   CreatingConfigurations: CreatingConfigurations.html
+  DEqMS_Moderation: DEqMS_Moderation.html
+  LimmaBackend: LimmaBackend.html
   Modelling2Factors: Modelling2Factors.html
   QCandSampleSize: QCandSampleSize.html
   QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
   SimulateData: SimulateData.html
   TestingMissingInference: TestingMissingInference.html
-last_built: 2026-02-21T17:52Z
+last_built: 2026-02-23T07:55Z
 urls:
   reference: https://wolski.github.io/prolfqua/reference
   article: https://wolski.github.io/prolfqua/articles

@@ -1,0 +1,96 @@
+# DEqMS-style moderation for long contrast table
+
+Splits by contrast group and applies
+[`moderated_p_deqms`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md)
+to each group independently.
+
+## Usage
+
+``` r
+moderated_p_deqms_long(
+  mm,
+  count_col,
+  group_by_col = "contrast",
+  estimate = "diff",
+  loess_span = 0.75
+)
+```
+
+## Arguments
+
+- mm:
+
+  contrast result data.frame (long format)
+
+- count_col:
+
+  name of column with peptide/PSM count per protein
+
+- group_by_col:
+
+  column to group by (default "contrast")
+
+- estimate:
+
+  name of the fold change column
+
+- loess_span:
+
+  span parameter for LOESS fit (default 0.75)
+
+## Value
+
+data.frame with moderated columns added
+
+## See also
+
+Other modelling:
+[`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
+[`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
+[`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
+[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
+[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
+[`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
+[`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
+[`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
+[`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
+[`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
+[`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
+[`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
+[`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
+[`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
+[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
+[`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
+[`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
+[`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
+[`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
+[`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
+[`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
+[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
+[`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
+[`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
+[`my_contrast_V1()`](https://wolski.github.io/prolfqua/reference/my_contrast_V1.md),
+[`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
+[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
+[`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
+[`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
+[`sim_make_model_lm()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lm.md),
+[`sim_make_model_lmer()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lmer.md),
+[`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
+[`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
