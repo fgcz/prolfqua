@@ -252,9 +252,5 @@ annotation_add_contrasts <- function(
     df_contrast
   )
   name <- paste0("DEA_", prefix, "_", dataset_id, ".csv")
-  # message(stringr::str_glue(
-  #  "This {prefix} contrasts written to: ",
-  #  "DEA_{prefix}_{dataset_id}.csv"
-  # ))
   return(list(annot = annot, name = name))
 }

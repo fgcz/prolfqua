@@ -69,7 +69,7 @@ remove_NA_rows <- function(obj, thresh=0 ) {
 #' names_to_matrix(dat,split="\\_|\\/")
 names_to_matrix <- function(names,split="\\||\\_")
 {
-  cnamessplit <- stringr::str_split(as.character(names),pattern = split)
+  cnamessplit <- stringi::stri_split_regex(as.character(names), pattern = split)
   protnam <- do.call("rbind",cnamessplit)
   return(protnam)
 }

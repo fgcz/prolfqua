@@ -1,0 +1,370 @@
+# ContrastsModeratedDEqMS -----
+
+
+#' Find prior degrees of freedom for DEqMS
+#'
+#' Uses trigammaInverse to estimate d0 from the mean residual variance
+#' after removing the count-dependent trend.
+#'
+#' @param mean_myfct mean of squared residuals minus trigamma correction
+#' @return scalar prior degrees of freedom (d0)
+#' @keywords internal
+find_d0_deqms <- function(mean_myfct) {
+  if (is.na(mean_myfct) || mean_myfct <= 0) return(Inf)
+  d0 <- 2 * trigammaInverse(mean_myfct)
+  return(max(d0, 0.1))
+}
+
+
+#' DEqMS-style count-dependent variance moderation
+#'
+#' Applies count-dependent empirical Bayes variance shrinkage to a contrast
+#' result table. Proteins quantified from many peptides get less shrinkage;
+#' proteins from few peptides get more.
+#'
+#' @param mm data.frame from one contrast group with columns: sigma, df,
+#'   statistic, std.error, and the estimate column
+#' @param count_col name of column with peptide/PSM count per protein
+#' @param df name of the degrees of freedom column
+#' @param estimate name of the fold change column
+#' @param loess_span span parameter for LOESS fit (default 0.75)
+#' @param confint confidence level for intervals (default 0.95)
+#' @return data.frame with added moderated.* columns
+#' @export
+#' @family modelling
+#' @keywords internal
+moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff",
+                              loess_span = 0.75, confint = 0.95) {
+  logvar <- log(mm$sigma^2)
+  log2count <- log2(mm[[count_col]])
+  df_res <- mm[[df]]
+
+  # Handle edge cases: remove NAs/Infs for fitting
+  ok <- is.finite(logvar) & is.finite(log2count) & is.finite(df_res) & df_res > 0
+  if (sum(ok) < 4) {
+    # Too few observations for LOESS — fall back to standard limma moderation
+    return(moderated_p_limma(mm, df = df, estimate = estimate, confint = confint))
+  }
+
+  # Fit variance ~ count curve using LOESS
+  loess_fit <- loess(logvar[ok] ~ log2count[ok], span = loess_span)
+
+  # Predict for all proteins (including those not used in fit)
+  fitted_logvar <- rep(NA_real_, length(logvar))
+  fitted_logvar[ok] <- fitted(loess_fit)
+  # For non-ok, predict from the fit if possible
+  not_ok <- !ok & is.finite(log2count)
+  if (any(not_ok)) {
+    fitted_logvar[not_ok] <- predict(loess_fit, newdata = data.frame(
+      `log2count[ok]` = log2count[not_ok]
+    ))
+  }
+  # For any remaining NAs, use the mean fitted value
+  fitted_logvar[is.na(fitted_logvar)] <- mean(fitted_logvar, na.rm = TRUE)
+
+  # Estimate d0 via trigamma approach
+  eg <- logvar - digamma(df_res / 2) + log(df_res / 2)
+  egpred <- fitted_logvar - digamma(df_res / 2) + log(df_res / 2)
+  myfct <- (eg - egpred)^2 - trigamma(df_res / 2)
+  mean_myfct <- mean(myfct[ok], na.rm = TRUE)
+
+  d0 <- find_d0_deqms(mean_myfct)
+
+  # Count-specific prior variance
+  if (is.finite(d0)) {
+    s02 <- exp(egpred + digamma(d0 / 2) - log(d0 / 2))
+  } else {
+    s02 <- exp(fitted_logvar)
+  }
+
+  # Posterior variance
+  if (is.finite(d0)) {
+    var_post <- (d0 * s02 + df_res * mm$sigma^2) / (d0 + df_res)
+    df_total <- d0 + df_res
+  } else {
+    var_post <- s02
+    df_total <- df_res
+  }
+
+  # Moderated statistics
+  moderated_t <- mm$statistic * mm$sigma / sqrt(var_post)
+  moderated_p <- 2 * pt(abs(moderated_t), df = df_total, lower.tail = FALSE)
+
+  # Confidence intervals (same pattern as moderated_p_limma)
+  prqt <- -qt((1 - confint) / 2, df = df_total)
+  conf_low  <- mm[[estimate]] - prqt * sqrt(var_post)
+  conf_high <- mm[[estimate]] + prqt * sqrt(var_post)
+
+  # Attach results (same naming convention as moderated_p_limma)
+  mm$moderated.var.prior  <- s02
+  mm$moderated.df.prior   <- d0
+  mm$moderated.var.post   <- var_post
+  mm$moderated.statistic  <- moderated_t
+  mm$moderated.df.total   <- df_total
+  mm$moderated.p.value    <- moderated_p
+  mm$moderated.conf.low   <- conf_low
+  mm$moderated.conf.high  <- conf_high
+
+  return(mm)
+}
+
+
+#' DEqMS-style moderation for long contrast table
+#'
+#' Splits by contrast group and applies \code{\link{moderated_p_deqms}} to
+#' each group independently.
+#'
+#' @param mm contrast result data.frame (long format)
+#' @param count_col name of column with peptide/PSM count per protein
+#' @param group_by_col column to group by (default "contrast")
+#' @param estimate name of the fold change column
+#' @param loess_span span parameter for LOESS fit (default 0.75)
+#' @return data.frame with moderated columns added
+#' @export
+#' @family modelling
+#' @keywords internal
+moderated_p_deqms_long <- function(mm, count_col,
+                                   group_by_col = "contrast",
+                                   estimate = "diff",
+                                   loess_span = 0.75) {
+  dfg <- mm |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(group_by_col))) |>
+    dplyr::group_split()
+  xx <- purrr::map_df(dfg, moderated_p_deqms,
+                       count_col = count_col,
+                       estimate = estimate,
+                       loess_span = loess_span)
+  return(xx)
+}
+
+
+#' DEqMS count-dependent moderated contrasts
+#'
+#' Decorator that wraps any Contrasts object and applies count-dependent
+#' empirical Bayes variance shrinkage. Similar to \code{\link{ContrastsModerated}}
+#' but the prior variance depends on the number of quantified peptides/PSMs
+#' per protein: proteins with many peptides get less shrinkage, proteins with
+#' few peptides get more.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#'
+#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' protIntensity <- istar$data
+#' config <- istar$config
+#'
+#' lProt <- LFQData$new(protIntensity, config)
+#' lProt$rename_response("transformedIntensity")
+#' modelFunction <-
+#'   strategy_lm("transformedIntensity ~ group_")
+#' mod <- build_model(
+#'  lProt,
+#'  modelFunction)
+#'
+#' Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
+#' contrast <- prolfqua::Contrasts$new(mod, Contr)
+#'
+#' # Build count_df from config
+#' count_df <- dplyr::select(protIntensity,
+#'   dplyr::all_of(c(config$hierarchy_keys_depth(), "nr_peptides"))) |>
+#'   dplyr::distinct()
+#'
+#' deqms <- ContrastsModeratedDEqMS$new(contrast,
+#'   count_df = count_df,
+#'   count_column = "nr_peptides")
+#'
+#' bb <- deqms$get_contrasts()
+#' stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
+#'
+#' # Merge with ContrastsMissing
+#' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
+#' merged <- merge_contrasts_results(deqms, csi)
+#'
+#' cs <- deqms$get_contrast_sides()
+#' cslf <- deqms$get_linfct()
+#' ctrwide <- deqms$to_wide()
+#' cp <- deqms$get_Plotter()
+#' cp$volcano()
+#'
+ContrastsModeratedDEqMS <- R6::R6Class(
+  classname = "ContrastsModeratedDEqMS",
+  inherit = ContrastsInterface,
+  public = list(
+    #' @field Contrast Class implementing the Contrast interface
+    Contrast = NULL,
+    #' @field count_df data.frame with subject_Id + count column
+    count_df = NULL,
+    #' @field count_column name of the count column in count_df
+    count_column = character(),
+    #' @field loess_span span parameter for LOESS fit
+    loess_span = numeric(),
+    #' @field modelName name of model
+    modelName = character(),
+    #' @field subject_Id columns with subject_Id (proteinID)
+    subject_Id = character(),
+    #' @field p.adjust function to adjust p-values
+    p.adjust = NULL,
+    #' @description
+    #' initialize
+    #' @param Contrast class implementing the ContrastInterface
+    #' @param count_df data.frame with subject_Id columns and a count column
+    #' @param count_column name of the count column in count_df
+    #' @param loess_span span for LOESS variance fit (default 0.75)
+    #' @param modelName name of the model
+    #' @param p.adjust function to adjust p-values - default BH
+    initialize = function(Contrast,
+                          count_df,
+                          count_column,
+                          loess_span = 0.75,
+                          modelName = paste0(Contrast$modelName, "_DEqMS"),
+                          p.adjust = prolfqua::adjust_p_values
+    ) {
+      self$Contrast = Contrast
+      self$subject_Id = Contrast$subject_Id
+      # Aggregate count_df to one row per subject_Id (max count)
+      count_df <- count_df |>
+        dplyr::group_by(dplyr::across(dplyr::all_of(Contrast$subject_Id))) |>
+        dplyr::summarise(!!count_column := max(!!rlang::sym(count_column), na.rm = TRUE),
+                         .groups = "drop")
+      # Replace -Inf (from all-NA groups) with NA
+      count_df[[count_column]][is.infinite(count_df[[count_column]])] <- NA
+      self$count_df = count_df
+      self$count_column = count_column
+      self$loess_span = loess_span
+      self$modelName = modelName
+      self$p.adjust = p.adjust
+    },
+    #' @description
+    #' get both sides of contrasts
+    get_contrast_sides = function() {
+      self$Contrast$get_contrast_sides()
+    },
+    #' @description
+    #' get linear functions from contrasts
+    #' @param global logical TRUE - get linear functions for all models
+    get_linfct = function(global = TRUE) {
+      self$Contrast$get_linfct()
+    },
+    #' @description
+    #' applies DEqMS-style count-dependent moderation
+    #' @seealso \code{\link{moderated_p_deqms_long}}
+    #' @param all should all columns be returned (default FALSE)
+    get_contrasts = function(all = FALSE) {
+      contrast_result <- self$Contrast$get_contrasts(all = FALSE)
+
+      # Join count_df to get per-protein peptide counts
+      contrast_result <- dplyr::inner_join(
+        contrast_result,
+        self$count_df,
+        by = self$subject_Id
+      )
+
+      # Ensure count >= 1 to avoid log2(0)
+      contrast_result[[self$count_column]] <- pmax(
+        contrast_result[[self$count_column]], 1
+      )
+
+      contrast_result <- moderated_p_deqms_long(
+        contrast_result,
+        count_col = self$count_column,
+        group_by_col = "contrast",
+        estimate = "diff",
+        loess_span = self$loess_span
+      )
+
+      # Remove the count column from output (it was joined for computation)
+      contrast_result[[self$count_column]] <- NULL
+
+      if (!all) {
+        contrast_result <- contrast_result |>
+          dplyr::select(-c(
+            "sigma", "df",
+            "statistic", "p.value", "conf.low", "conf.high",
+            "FDR", "moderated.df.prior",
+            "moderated.var.prior"
+          ))
+        contrast_result <- contrast_result |>
+          dplyr::mutate(sigma = sqrt(moderated.var.post), .keep = "unused")
+        contrast_result <- contrast_result |>
+          dplyr::rename(
+            conf.low = "moderated.conf.low",
+            conf.high = "moderated.conf.high",
+            statistic = "moderated.statistic",
+            df = "moderated.df.total",
+            p.value = "moderated.p.value"
+          )
+        contrast_result <- self$p.adjust(
+          contrast_result,
+          column = "p.value",
+          group_by_col = "contrast",
+          newname = "FDR"
+        )
+      } else {
+        contrast_result <- self$p.adjust(
+          contrast_result,
+          column = "moderated.p.value",
+          group_by_col = "contrast",
+          newname = "FDR.moderated"
+        )
+      }
+
+      contrast_result <- dplyr::ungroup(contrast_result)
+
+      if (inherits(contrast_result$modelName, "factor")) {
+        mname <- factor(
+          paste0(contrast_result$modelName, "_DEqMS"),
+          levels = paste0(levels(contrast_result$modelName), "_DEqMS")
+        )
+      } else {
+        mname <- paste0(contrast_result$modelName, "_DEqMS")
+      }
+      contrast_result$modelName <- mname
+
+      stopifnot(all(
+        super$column_description()$column_name %in% colnames(contrast_result)
+      ))
+
+      return(contrast_result)
+    },
+    #' @description
+    #' get \code{\link{ContrastsPlotter}}
+    #' @param FCthreshold fold change threshold to show in plots
+    #' @param FDRthreshold FDR threshold to show in plots
+    get_Plotter = function(
+      FCthreshold = 1,
+      FDRthreshold = 0.1
+    ) {
+      contrast_result <- self$get_contrasts()
+      res <- ContrastsPlotter$new(
+        contrast_result,
+        subject_Id = self$subject_Id,
+        fcthresh = FCthreshold,
+        volcano = list(list(score = "FDR", thresh = FDRthreshold)),
+        histogram = list(
+          list(score = "p.value", xlim = c(0, 1, 0.05)),
+          list(score = "FDR", xlim = c(0, 1, 0.05))
+        ),
+        score = list(list(score = "statistic", thresh = 5)),
+        modelName = "modelName",
+        diff = "diff",
+        contrast = "contrast"
+      )
+      return(res)
+    },
+    #' @description
+    #' convert to wide format
+    #' @param columns value column default p.value, FDR, statistic
+    #' @return data.frame
+    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
+      contrast_minimal <- self$get_contrasts()
+      contrasts_wide <- pivot_model_contrasts_2_Wide(
+        contrast_minimal,
+        subject_Id = self$subject_Id,
+        columns = c("diff", columns),
+        contrast = "contrast"
+      )
+      return(contrasts_wide)
+    }
+  )
+)

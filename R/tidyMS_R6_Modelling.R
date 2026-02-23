@@ -438,7 +438,7 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance"){
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level,.before = 1)
   }
-  factor_levels <- unique(unlist(stringr::str_split(rownames(mm), ":")))
+  factor_levels <- unique(unlist(stringi::stri_split_fixed(rownames(mm), ":")))
   xx <- purrr::map_df(factor_levels, getCoeffs, mm)
   return(xx)
 }

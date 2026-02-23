@@ -144,7 +144,7 @@ fitFDist_LG <- function(x, df1, covariate=NULL, min_df=1)
   } else {
     if(!requireNamespace("splines",quietly=TRUE)) stop("splines package required but is not available")
     design <- try(splines::ns(covariate,df=splinedf,intercept=TRUE),silent=TRUE)
-    if(is(design,"try-error")) stop("Problem with covariate")
+    if(inherits(design,"try-error")) stop("Problem with covariate")
     fit <- lm.fit(design,e)
     if(notallok) {
       design2 <- predict(design,newx=covariate.notok)
