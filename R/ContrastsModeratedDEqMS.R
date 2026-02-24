@@ -47,11 +47,11 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff",
   }
 
   # Fit variance ~ count curve using LOESS
-  loess_fit <- loess(logvar[ok] ~ log2count[ok], span = loess_span)
+  loess_fit <- stats::loess(logvar[ok] ~ log2count[ok], span = loess_span)
 
   # Predict for all proteins (including those not used in fit)
   fitted_logvar <- rep(NA_real_, length(logvar))
-  fitted_logvar[ok] <- fitted(loess_fit)
+  fitted_logvar[ok] <- stats::fitted(loess_fit)
   # For non-ok, predict from the fit if possible
   not_ok <- !ok & is.finite(log2count)
   if (any(not_ok)) {

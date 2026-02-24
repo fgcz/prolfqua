@@ -141,7 +141,7 @@ formula_Condition <-  strategy_lm("transformedIntensity ~ group_")
 
 # specify model definition
 modelName  <- "Model"
-Contrasts <- c("AvsC" = "group_A - group_Ctrl",
+contr_spec <- c("AvsC" = "group_A - group_Ctrl",
 "BvsC" = "group_B - group_Ctrl")
 
 ```
@@ -186,7 +186,7 @@ Next we do calculate the statistics for our defined contrasts for all the protei
 For this we can use the `Contrasts` function.
 
 ```{r computeContrasts}
-contr <- prolfqua::Contrasts$new(mod, Contrasts)
+contr <- prolfqua::Contrasts$new(mod, contr_spec)
 v1 <- contr$get_Plotter()$volcano()
 ```
 
@@ -222,7 +222,7 @@ dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 Use this method if there proteins with no observations in one of the groups. With the `ContrastsMissing` function, we can estimate difference in mean for proteins that are not observed in one group or condition. For this we are using the average expression at percentile 0.05 of the group where the protein is not quantified. 
 
 ```{r computeMissing, eval=TRUE}
-mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = Contrasts)
+mC <- prolfqua::ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
 colnames(mC$get_contrasts())
 
 ```

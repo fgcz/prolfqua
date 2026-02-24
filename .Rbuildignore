@@ -26,3 +26,4 @@ R/tidyMS_stanr\.R
 ^TODO\.md$
 ^data-raw$
 ^CLAUDE\.md$
+^Rplots\.pdf$

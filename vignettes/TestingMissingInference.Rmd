@@ -25,11 +25,11 @@ This vignette contains experimental code.
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 dd$data$abundance |> is.na() |> sum()
 
-Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
+contr_spec <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
 mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = TRUE)
-imputed <- mh1$get_contrasts(Contrasts = Contrasts)
+imputed <- mh1$get_contrasts(Contrasts = contr_spec)
 mh2 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = FALSE)
-imputed2 <- mh2$get_contrasts(Contrasts = Contrasts)
+imputed2 <- mh2$get_contrasts(Contrasts = contr_spec)
 plot(imputed$estimate, imputed2$estimate)
 abline(0 , 1 , col=2 , lwd=2)
 

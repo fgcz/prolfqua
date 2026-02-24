@@ -16,7 +16,8 @@ Description: The prolfqua package integrates essential steps
     with a single explanatory variable and complex experiments with multiple factors;
     to benchmark data acquisition,
     data preprocessing or data modeling methods.
-    We developed and improved the package by applying the "Eating your own dog food" principle, making it easy to use.
+    We developed and improved the package by applying the "Eating your own dog food" principle, 
+    when analysing dozens of proteomics datasets.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
