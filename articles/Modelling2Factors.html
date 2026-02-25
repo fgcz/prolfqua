@@ -68,7 +68,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-02-23</h4>
+            <h4 data-toc-skip class="date">2026-02-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/vignettes/Modelling2Factors.Rmd" class="external-link"><code>vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="d-none name"><code>Modelling2Factors.Rmd</code></div>
@@ -154,7 +154,7 @@ specifying the respective contrasts.</p>
 <span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"abundance ~ Treatment * Background "</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># specify model definition</span></span>
-<span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TA - TB"</span> <span class="op">=</span> <span class="st">"TreatmentA - TreatmentB"</span>,</span>
+<span><span class="va">contr_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TA - TB"</span> <span class="op">=</span> <span class="st">"TreatmentA - TreatmentB"</span>,</span>
 <span>               <span class="st">"BX - BY"</span> <span class="op">=</span> <span class="st">"BackgroundX - BackgroundZ"</span>,</span>
 <span>               <span class="st">"AvsB_gv_BackgroundX"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`"</span>,</span>
 <span>               <span class="st">"AvsB_gv_BackgroundZ"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`"</span>,</span>
@@ -218,7 +218,7 @@ comparisons that have been specified in our contrast definition. Here we
 are using the moderated statistics which implements the concept of
 pooled variance for all proteins.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contrasts</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">contr_spec</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">contrdf</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>These results can be visualized with e.g a <code>volcano</code> or a
 <code>MA</code> plot.</p>
@@ -247,7 +247,7 @@ use the <code>ContrastsMissing</code> function where the 10th percentile
 expression of all proteins is used for the estimate of the missing
 condition.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">Contrasts</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">contr_spec</span><span class="op">)</span></span>
 <span><span class="va">contrdfSimple</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pl</span><span class="op">$</span><span class="fu">histogram_diff</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -434,7 +434,7 @@ factor model but using only one factor and the subgroups.</p>
 <span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"abundance ~ Group"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># specify model definition</span></span>
-<span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TA - TB"</span> <span class="op">=</span> <span class="st">"(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2"</span>,</span>
+<span><span class="va">contr_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TA - TB"</span> <span class="op">=</span> <span class="st">"(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2"</span>,</span>
 <span>               <span class="st">"BX - BY"</span> <span class="op">=</span> <span class="st">"(GroupA_X + GroupB_X)/2 - (GroupA_Z + GroupB_Z)/2"</span>,</span>
 <span>               <span class="st">"AvsB_gv_BackgroundX"</span> <span class="op">=</span> <span class="st">"GroupA_X - GroupB_X"</span>,</span>
 <span>               <span class="st">"AvsB_gv_BackgroundZ"</span> <span class="op">=</span> <span class="st">"GroupA_Z - GroupB_Z"</span>,</span>
@@ -443,7 +443,7 @@ factor model but using only one factor and the subgroups.</p>
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">data_1Factor</span><span class="op">$</span><span class="va">data</span>, <span class="va">formula_Batches</span>,</span>
 <span>  subject_Id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contrasts</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">contr_spec</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">contrdfONE</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>We now compare the contrasts computed from the model with two factors
 with those obtained from the model with one factor. We can see that the
@@ -502,7 +502,7 @@ open the documentation run <code><a href="../reference/LR_test.html">?LR_test</a
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] beeswarm_0.4.0      gtable_0.3.6        xfun_0.56          </span></span>
 <span><span class="co">##  [4] bslib_0.10.0        ggplot2_4.0.2       htmlwidgets_1.6.4  </span></span>
-<span><span class="co">##  [7] ggrepel_0.9.6       rstatix_0.7.3       vctrs_0.7.1        </span></span>
+<span><span class="co">##  [7] ggrepel_0.9.7       rstatix_0.7.3       vctrs_0.7.1        </span></span>
 <span><span class="co">## [10] tools_4.5.2         generics_0.1.4      tibble_3.3.1       </span></span>
 <span><span class="co">## [13] pkgconfig_2.0.3     pheatmap_1.0.13     data.table_1.18.2.1</span></span>
 <span><span class="co">## [16] RColorBrewer_1.1-3  S7_0.2.1            desc_1.4.3         </span></span>
@@ -512,7 +512,7 @@ open the documentation run <code><a href="../reference/LR_test.html">?LR_test</a
 <span><span class="co">## [28] htmltools_0.5.9     sass_0.4.10         yaml_2.3.12        </span></span>
 <span><span class="co">## [31] lazyeval_0.2.2      Formula_1.2-5       plotly_4.12.0      </span></span>
 <span><span class="co">## [34] car_3.1-5           pillar_1.11.1       pkgdown_2.2.0      </span></span>
-<span><span class="co">## [37] ggpubr_0.6.2        crayon_1.5.3        jquerylib_0.1.4    </span></span>
+<span><span class="co">## [37] ggpubr_0.6.3        crayon_1.5.3        jquerylib_0.1.4    </span></span>
 <span><span class="co">## [40] tidyr_1.3.2         MASS_7.3-65         cachem_1.1.0       </span></span>
 <span><span class="co">## [43] limma_3.66.0        abind_1.4-8         tidyselect_1.2.1   </span></span>
 <span><span class="co">## [46] digest_0.6.39       stringi_1.8.7       purrr_1.2.1        </span></span>

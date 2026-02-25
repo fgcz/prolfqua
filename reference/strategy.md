@@ -349,7 +349,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x555b379c03b8>
+#> <environment: 0x563045dd1c78>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -364,8 +364,8 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x555b0e35ee38>
-#> <environment: 0x555b379c03b8>
+#> <bytecode: 0x56301d295d18>
+#> <environment: 0x563045dd1c78>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -462,7 +462,7 @@ sum(mod$modelDF$isSingular, na.rm=TRUE)
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x555b35b26330>
+#> <environment: 0x5630325dc070>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -477,12 +477,12 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x555b164a0d28>
+#> <bytecode: 0x56301e751648>
 #> <environment: namespace:prolfqua>
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x555b450b4258>
+#> <environment: 0x563032130548>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -497,12 +497,12 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x555b164a0d28>
+#> <bytecode: 0x56301e751648>
 #> <environment: namespace:prolfqua>
 tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x555b45b4ea60>
+#> <environment: 0x563031ead2a8>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -517,6 +517,6 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x555b164a0d28>
+#> <bytecode: 0x56301e751648>
 #> <environment: namespace:prolfqua>
 ```

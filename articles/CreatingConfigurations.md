@@ -253,7 +253,7 @@ sessionInfo()
     ##  [4] generics_0.1.4      tidyr_1.3.2         stringi_1.8.7      
     ##  [7] digest_0.6.39       magrittr_2.0.4      evaluate_1.0.5     
     ## [10] grid_4.5.2          RColorBrewer_1.1-3  fastmap_1.2.0      
-    ## [13] plyr_1.8.9          jsonlite_2.0.0      ggrepel_0.9.6      
+    ## [13] plyr_1.8.9          jsonlite_2.0.0      ggrepel_0.9.7      
     ## [16] limma_3.66.0        prolfqua_1.5.0      gridExtra_2.3      
     ## [19] httr_1.4.8          purrr_1.2.1         viridisLite_0.4.3  
     ## [22] scales_1.4.0        UpSetR_1.4.0        lazyeval_0.2.2     

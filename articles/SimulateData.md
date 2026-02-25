@@ -104,7 +104,7 @@ lfqdata$config$hierarchyDepth  <- 2
 
 # specify model definition
 modelName  <- "Model"
-Contrasts <- c("B_over_Ctrl" = "group_B - group_Ctrl",
+contr_spec <- c("B_over_Ctrl" = "group_B - group_Ctrl",
                "A_over_Ctrl" = "group_A - group_Ctrl")
 lfqdata$subject_Id()
 ```
@@ -152,7 +152,7 @@ mod <- prolfqua::build_model(
   protData,
   formula_Condition)
 
-contr <- prolfqua::Contrasts$new(mod, Contrasts)
+contr <- prolfqua::Contrasts$new(mod, contr_spec)
 v1 <- contr$get_Plotter()$volcano()
 v1$FDR
 ```

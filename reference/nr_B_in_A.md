@@ -43,9 +43,6 @@ res$data |>
 
 bb <- prolfqua::prolfqua_data('data_skylineSRM_HL_A')
 config <- old2new(bb$config_f())
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
 data <- bb$data
 data$Area[data$Area == 0] <- NA
 analysis <- setup_analysis(data, config)

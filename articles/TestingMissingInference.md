@@ -27,9 +27,9 @@ dd$data$abundance |> is.na() |> sum()
     ## [1] 552
 
 ``` r
-Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
+contr_spec <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
 mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = TRUE)
-imputed <- mh1$get_contrasts(Contrasts = Contrasts)
+imputed <- mh1$get_contrasts(Contrasts = contr_spec)
 ```
 
     ## completing cases
@@ -48,7 +48,7 @@ imputed <- mh1$get_contrasts(Contrasts = Contrasts)
 
 ``` r
 mh2 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = FALSE)
-imputed2 <- mh2$get_contrasts(Contrasts = Contrasts)
+imputed2 <- mh2$get_contrasts(Contrasts = contr_spec)
 ```
 
     ## completing cases

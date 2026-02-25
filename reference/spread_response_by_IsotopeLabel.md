@@ -40,9 +40,6 @@ x<-spread_response_by_IsotopeLabel(data,configur)
 
 bb <- prolfqua_data('data_skylineSRM_HL_A')
 configur <- bb$config_f()
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
 data <- bb$analysis(bb$data, configur)
 #> creating sampleName from fileName column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
@@ -52,13 +49,7 @@ data <- bb$analysis(bb$data, configur)
 
 bb <- prolfqua_data('data_skylineSRM_HL_A')
 conf <- bb$config_f()
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
 analysis <- bb$analysis(bb$data, bb$config_f())
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
 #> creating sampleName from fileName column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases

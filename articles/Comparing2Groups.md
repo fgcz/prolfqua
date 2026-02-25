@@ -283,7 +283,7 @@ formula_Condition <-  strategy_lm("transformedIntensity ~ group_")
 
 # specify model definition
 modelName  <- "Model"
-Contrasts <- c("AvsC" = "group_A - group_Ctrl",
+contr_spec <- c("AvsC" = "group_A - group_Ctrl",
 "BvsC" = "group_B - group_Ctrl")
 ```
 
@@ -361,7 +361,7 @@ Next we do calculate the statistics for our defined contrasts for all
 the proteins. For this we can use the `Contrasts` function.
 
 ``` r
-contr <- prolfqua::Contrasts$new(mod, Contrasts)
+contr <- prolfqua::Contrasts$new(mod, contr_spec)
 v1 <- contr$get_Plotter()$volcano()
 ```
 
@@ -413,7 +413,7 @@ For this we are using the average expression at percentile 0.05 of the
 group where the protein is not quantified.
 
 ``` r
-mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = Contrasts)
+mC <- prolfqua::ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
 colnames(mC$get_contrasts())
 ```
 
@@ -519,7 +519,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        xfun_0.56           bslib_0.10.0       
-    ##  [4] ggplot2_4.0.2       htmlwidgets_1.6.4   ggrepel_0.9.6      
+    ##  [4] ggplot2_4.0.2       htmlwidgets_1.6.4   ggrepel_0.9.7      
     ##  [7] vctrs_0.7.1         tools_4.5.2         crosstalk_1.2.2    
     ## [10] generics_0.1.4      tibble_3.3.1        pkgconfig_2.0.3    
     ## [13] pheatmap_1.0.13     KernSmooth_2.23-26  data.table_1.18.2.1
@@ -528,7 +528,7 @@ sessionInfo()
     ## [22] textshaping_1.0.4   progress_1.2.3      statmod_1.5.1      
     ## [25] httpuv_1.6.16       htmltools_0.5.9     sass_0.4.10        
     ## [28] yaml_2.3.12         lazyeval_0.2.2      plotly_4.12.0      
-    ## [31] later_1.4.6         pillar_1.11.1       pkgdown_2.2.0      
+    ## [31] later_1.4.7         pillar_1.11.1       pkgdown_2.2.0      
     ## [34] crayon_1.5.3        jquerylib_0.1.4     tidyr_1.3.2        
     ## [37] MASS_7.3-65         cachem_1.1.0        limma_3.66.0       
     ## [40] mime_0.13           tidyselect_1.2.1    digest_0.6.39      

@@ -98,8 +98,8 @@ ggplot(count_per_prot, aes(x = nr_peptides)) +
 
 ``` r
 mod_lm <- build_model(transformed, strategy_lm("transformedIntensity ~ group_"))
-contr_lm <- Contrasts$new(mod_lm, contr_spec)
-contr_moderated <- ContrastsModerated$new(contr_lm)
+contr_lm <- prolfqua::Contrasts$new(mod_lm, contr_spec)
+contr_moderated <- prolfqua::ContrastsModerated$new(contr_lm)
 res_moderated <- contr_moderated$get_contrasts()
 ```
 
@@ -320,7 +320,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        xfun_0.56           bslib_0.10.0       
-    ##  [4] htmlwidgets_1.6.4   ggrepel_0.9.6       lattice_0.22-7     
+    ##  [4] htmlwidgets_1.6.4   ggrepel_0.9.7       lattice_0.22-7     
     ##  [7] vctrs_0.7.1         tools_4.5.2         generics_0.1.4     
     ## [10] tibble_3.3.1        pkgconfig_2.0.3     Matrix_1.7-4       
     ## [13] pheatmap_1.0.13     data.table_1.18.2.1 RColorBrewer_1.1-3 

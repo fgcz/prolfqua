@@ -27,10 +27,6 @@ data.frame
 ``` r
 dd <- prolfqua_data('data_spectronautDIA250_A')
 config <- dd$config_f()
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
 analysis <- dd$analysis(dd$data,config)
 #> creating sampleName from fileName column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.

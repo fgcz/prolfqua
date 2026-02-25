@@ -98,9 +98,6 @@ prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], conf
 
 bb <- prolfqua_data("data_skylineSRM_HL_A")
 conf <- bb$config_f()
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
-#> config$table is deprecated, use config directly
 analysis <- bb$analysis(bb$data, conf)
 #> creating sampleName from fileName column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.

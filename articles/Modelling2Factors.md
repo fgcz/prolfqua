@@ -84,7 +84,7 @@ formula_Batches <-
   prolfqua::strategy_lm("abundance ~ Treatment * Background ")
 
 # specify model definition
-Contrasts <- c("TA - TB" = "TreatmentA - TreatmentB",
+contr_spec <- c("TA - TB" = "TreatmentA - TreatmentB",
                "BX - BY" = "BackgroundX - BackgroundZ",
                "AvsB_gv_BackgroundX" = "`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`",
                "AvsB_gv_BackgroundZ" = "`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`",
@@ -162,7 +162,7 @@ are using the moderated statistics which implements the concept of
 pooled variance for all proteins.
 
 ``` r
-contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
+contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, contr_spec))
 contrdf <- contr$get_contrasts()
 ```
 
@@ -196,7 +196,7 @@ use the `ContrastsMissing` function where the 10th percentile expression
 of all proteins is used for the estimate of the missing condition.
 
 ``` r
-contrSimple <- prolfqua::ContrastsMissing$new(pMerged, Contrasts)
+contrSimple <- prolfqua::ContrastsMissing$new(pMerged, contr_spec)
 contrdfSimple <- contrSimple$get_contrasts()
 pl <- contrSimple$get_Plotter()
 pl$histogram_diff()
@@ -333,7 +333,7 @@ formula_Batches <-
   prolfqua::strategy_lm("abundance ~ Group")
 
 # specify model definition
-Contrasts <- c("TA - TB" = "(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2",
+contr_spec <- c("TA - TB" = "(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2",
                "BX - BY" = "(GroupA_X + GroupB_X)/2 - (GroupA_Z + GroupB_Z)/2",
                "AvsB_gv_BackgroundX" = "GroupA_X - GroupB_X",
                "AvsB_gv_BackgroundZ" = "GroupA_Z - GroupB_Z",
@@ -346,7 +346,7 @@ mod <- prolfqua::build_model(data_1Factor$data, formula_Batches,
 ```
 
 ``` r
-contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, Contrasts))
+contr <- prolfqua::ContrastsModerated$new(prolfqua::Contrasts$new(mod, contr_spec))
 contrdfONE <- contr$get_contrasts()
 ```
 
@@ -410,7 +410,7 @@ sessionInfo()
     ## loaded via a namespace (and not attached):
     ##  [1] beeswarm_0.4.0      gtable_0.3.6        xfun_0.56          
     ##  [4] bslib_0.10.0        ggplot2_4.0.2       htmlwidgets_1.6.4  
-    ##  [7] ggrepel_0.9.6       rstatix_0.7.3       vctrs_0.7.1        
+    ##  [7] ggrepel_0.9.7       rstatix_0.7.3       vctrs_0.7.1        
     ## [10] tools_4.5.2         generics_0.1.4      tibble_3.3.1       
     ## [13] pkgconfig_2.0.3     pheatmap_1.0.13     data.table_1.18.2.1
     ## [16] RColorBrewer_1.1-3  S7_0.2.1            desc_1.4.3         
@@ -420,7 +420,7 @@ sessionInfo()
     ## [28] htmltools_0.5.9     sass_0.4.10         yaml_2.3.12        
     ## [31] lazyeval_0.2.2      Formula_1.2-5       plotly_4.12.0      
     ## [34] car_3.1-5           pillar_1.11.1       pkgdown_2.2.0      
-    ## [37] ggpubr_0.6.2        crayon_1.5.3        jquerylib_0.1.4    
+    ## [37] ggpubr_0.6.3        crayon_1.5.3        jquerylib_0.1.4    
     ## [40] tidyr_1.3.2         MASS_7.3-65         cachem_1.1.0       
     ## [43] limma_3.66.0        abind_1.4-8         tidyselect_1.2.1   
     ## [46] digest_0.6.39       stringi_1.8.7       purrr_1.2.1        

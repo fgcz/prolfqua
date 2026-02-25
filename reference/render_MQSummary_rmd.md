@@ -66,9 +66,7 @@ Other vignetteHelpers:
 ``` r
 bb <- prolfqua_data('data_skylinePRMSample_A')
 config <- bb$config_f()
-#> config$table is deprecated, use config directly
 analysis <- bb$analysis(bb$data, bb$config_f())
-#> config$table is deprecated, use config directly
 #> creating sampleName from fileName column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases
