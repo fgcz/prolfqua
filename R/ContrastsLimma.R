@@ -62,8 +62,12 @@ build_model_limma <- function(lfqdata,
   wide <- lfqdata$to_wide(as.matrix = TRUE)
   expr_matrix <- wide$data  # rows = proteins, cols = samples
   annotation <- wide$annotation
-  subject_Id <- lfqdata$subject_Id()
+  subject_Id <- lfqdata$config$hierarchy_keys()
   rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_Id))
+  if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotopeLabel)) {
+    rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(unique(c(subject_Id, lfqdata$config$isotopeLabel))))
+    subject_Id <- colnames(rowdata)
+  }
 
   # Use only RHS of formula for design matrix (response is the expression matrix)
   rhs_formula <- formula(delete.response(terms(strategy$formula)))
@@ -84,8 +88,6 @@ build_model_limma <- function(lfqdata,
   dummy_data$.response <- as.numeric(expr_matrix[idx, ])
   dummy_formula <- update(rhs_formula, .response ~ .)
   dummy_model <- lm(dummy_formula, data = dummy_data)
-
-  subject_Id <- lfqdata$subject_Id()
 
   ModelLimma$new(
     fit = fit,

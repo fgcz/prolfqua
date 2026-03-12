@@ -25,12 +25,12 @@ Single test file:
 Rscript -e "testthat::test_file('tests/testthat/test-LFQData.R')"
 ```
 
-renv management:
+Library setup:
 ```bash
-make renv-init       # First-time setup (with Bioconductor)
-make renv-restore    # Install from renv.lock
-make renv-snapshot   # Update renv.lock after dep changes
+Rscript -e ".libPaths()"
 ```
+
+Use the normal user / system R libraries for this workspace; `renv` autoload is disabled.
 
 ## Code Style
 
