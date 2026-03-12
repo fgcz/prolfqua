@@ -304,9 +304,9 @@ summarize_stats_quantiles <- function(stats_res,
   sd_quantile_res2 <- xx2 |>
     dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  |>
     dplyr::select(!!!syms(c(config$factor_keys_depth(),q_column))) |>
-    tidyr::unnest(cols = c(q_column))
+    tidyr::unnest(cols = dplyr::all_of(q_column))
 
-  xx <- sd_quantile_res2 |> tidyr::unite("interaction",config$factor_keys_depth())
+  xx <- sd_quantile_res2 |> tidyr::unite("interaction", dplyr::all_of(config$factor_keys_depth()))
   wide <- xx |>  tidyr::pivot_wider(names_from = "interaction", values_from = "quantiles")
   return(list(long = sd_quantile_res2, wide = wide))
 }
@@ -436,7 +436,7 @@ lfq_power_t_test_quantiles <- function(pdata,
     sampleSizes <- sampleSizes |> mutate( N = ceiling(.data$N_exact))
     sampleSizes <- sampleSizes |> mutate( FC = round(2^delta, digits = 2))
 
-    summary <- sampleSizes |> dplyr::select( -.data$N_exact, -.data$delta) |> tidyr::pivot_wider(names_from = "FC", values_from = "N", names_prefix = "FC=")
+    summary <- sampleSizes |> dplyr::select(-N_exact, -delta) |> tidyr::pivot_wider(names_from = "FC", values_from = "N", names_prefix = "FC=")
     return(list(long = sampleSizes, summary = summary))
   }else{
     message("!!! ERROR !!! No standard deviation is available,

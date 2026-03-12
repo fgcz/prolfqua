@@ -267,7 +267,7 @@ strategy_logistf <- function(
     # DFT <- as.data.frame(tt)
     predictor_vars <- all.vars(update(formula, . ~ .))
     DFT <- x %>%
-      group_by(across(predictor_vars)) %>%
+      group_by(across(all_of(predictor_vars))) %>%
       summarize(Freq = n(), .groups = "drop")
 
     modelTest <- tryCatch(logistf::logistf( formula ,

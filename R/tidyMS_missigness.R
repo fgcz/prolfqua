@@ -123,8 +123,13 @@ get_contrast <- function(data,
     sides <- .get_sides(contrasts[i] )
     sides <- intersect(sides,colnames(data))
 
-    df  <- dplyr::select(data ,
-                         c( hierarchy_keys, group_1 = sides[1], group_2 = sides[2], estimate = names(contrasts)[i]))
+    df  <- dplyr::select(
+      data,
+      dplyr::all_of(hierarchy_keys),
+      group_1 = dplyr::all_of(sides[1]),
+      group_2 = dplyr::all_of(sides[2]),
+      estimate = dplyr::all_of(names(contrasts)[i])
+    )
 
     df$group_1_name <- sides[1]
     df$group_2_name <- sides[2]
@@ -221,7 +226,7 @@ missingness_per_condition_cumsum <- function(x,
 
   xxcs <- xx |> group_by(across(all_of(c(config$isotopeLabel,factors)))) |> arrange(.data$nrNAs) |>
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
-  res <- xxcs  |> dplyr::select(-.data$nrTransitions)
+  res <- xxcs  |> dplyr::select(-nrTransitions)
 
   formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)

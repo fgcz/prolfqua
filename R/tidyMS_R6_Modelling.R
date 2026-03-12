@@ -484,7 +484,7 @@ linfct_from_model <- function(m, as_list = TRUE){
 
   l_factors <- .coeff_weights_factor_levels(cm_mm)
   linfct_factors <- l_factors |>
-    dplyr::select(-.data$factor_level) |>
+    dplyr::select(-factor_level) |>
     data.matrix()
 
   rownames(linfct_factors) <- l_factors$factor_level
@@ -539,17 +539,48 @@ linfct_matrix_contrasts <- function(linfct , contrasts, p.message = FALSE){
                              contrasts)
   {
     cnams <- base::setdiff(colnames(data),"interaction")
+    failures <- list()
     for (i in seq_along(contrasts)) {
       if (p.message) {message(names(contrasts)[i], "=", contrasts[i],"\n")}
-      expr_string <- as.character(rlang::parse_expr(contrasts[i]))
-      tryCatch({
+      contrast_name <- names(contrasts)[i]
+      if (is.null(contrast_name) || !nzchar(contrast_name)) {
+        contrast_name <- paste0("contrast_", i)
+      }
+      err <- tryCatch({
         data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
+        NULL
       }, error = function(e) {
-        warning("Warn 'linfct_matrix_contrasts':", e$message, "\n")
-        # Handle the error, e.g., by skipping the current iteration, logging the error, etc.
+        e
       })
+      if (inherits(err, "error")) {
+        failures[[length(failures) + 1]] <- list(
+          contrast = contrast_name,
+          message = conditionMessage(err)
+        )
+      }
     }
     res <- data |> dplyr::select(-all_of(cnams))
+    if (length(failures) > 0) {
+      failure_df <- dplyr::bind_rows(failures)
+      failure_names <- paste(failure_df$contrast, collapse = ", ")
+      failure_messages <- unique(failure_df$message)
+      failure_summary <- paste(utils::head(failure_messages, 3), collapse = "; ")
+      warning(
+        paste0(
+          "linfct_matrix_contrasts: computed ",
+          ncol(res) - 1,
+          "/",
+          length(contrasts),
+          " contrasts; failed ",
+          nrow(failure_df),
+          ": ",
+          failure_names,
+          ". ",
+          failure_summary
+        ),
+        call. = FALSE
+      )
+    }
     return(res)
   }
 
@@ -662,7 +693,7 @@ my_glht <- function(model, linfct , sep = TRUE ) {
     res <- list()
     for (i in seq_len(nrow(linfct))) {
       x <- multcomp::glht(model, linfct = linfct[i,,drop = FALSE])
-      RHS <- broom::tidy(confint(x)) |> dplyr::select(-.data$estimate)
+      RHS <- broom::tidy(confint(x)) |> dplyr::select(-estimate)
 
       RHS$df <- x$df
       RHS$sigma <- sigma(model)
@@ -674,11 +705,11 @@ my_glht <- function(model, linfct , sep = TRUE ) {
     return(res)
   }else{
     x <- multcomp::glht(model, linfct = linfct)
-    RHS <- broom::tidy(confint(x)) |> dplyr::select(-.data$estimate)
+    RHS <- broom::tidy(confint(x)) |> dplyr::select(-estimate)
     RHS$df <- x$df
     RHS$sigma <- sigma(model)
     res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("contrast")) |>
-      dplyr::select(-.data$rhs)
+      dplyr::select(-rhs)
     return(res)
   }
 }
@@ -896,7 +927,10 @@ pivot_model_contrasts_2_Wide <- function(modelWithInteractionsContrasts,
     res <- longContrasts |>
       dplyr::select(all_of(c(subject_Id, contrast,  column)))
     res <- res |> dplyr::mutate(!!contrast := paste0(column, ".", !!sym(contrast)))
-    res <- res |> tidyr::pivot_wider(names_from = contrast, values_from = column)
+    res <- res |> tidyr::pivot_wider(
+      names_from = dplyr::all_of(contrast),
+      values_from = dplyr::all_of(column)
+    )
     return(res)
   }
   res <- list()

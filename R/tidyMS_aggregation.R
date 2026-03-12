@@ -22,7 +22,7 @@ plot_hierarchies_line_default <- function(data,
       ))
     } else {
       formula <- sprintf("~%s", paste(factor, collapse = " + "))
-      data <- tidyr::unite(data, "fragment_label", fragment, isotopeLabel, remove = FALSE)
+      data <- tidyr::unite(data, "fragment_label", dplyr::all_of(c(fragment, isotopeLabel)), remove = FALSE)
       p <- ggplot(data, aes(
         x = .data[[sample]],
         y = .data[[intensity]],
@@ -176,7 +176,7 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
   p + geom_line(
     data = data,
     aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1),
-    size = 1.3,
+    linewidth = 1.3,
     color = "black",
     linetype = "solid"
   ) +
@@ -670,7 +670,7 @@ estimate_intensity <- function(data, config, .func) {
 
   unnested <- xnested |>
     dplyr::select(all_of(c(config$hierarchy_keys_depth(), makeName))) |>
-    tidyr::unnest(cols = makeName) |>
+    tidyr::unnest(cols = dplyr::all_of(makeName)) |>
     dplyr::ungroup()
 
   return(.add_nr_children(data, unnested, config, newconfig))

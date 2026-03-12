@@ -120,7 +120,7 @@ multigroup_volcano <- function(.data,
                               scales = "fixed",
                               maxNrOfSignificantText = 20)
 {
-  misspX <- tidyr::unite(.data, "label", label)
+  misspX <- tidyr::unite(.data, "label", dplyr::all_of(label))
 
   p <- .multigroup_volcano(misspX,
                           effect = effect,

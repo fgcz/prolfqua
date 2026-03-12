@@ -129,11 +129,78 @@ moderated_p_deqms_long <- function(mm, count_col,
                                    loess_span = 0.75) {
   dfg <- mm |>
     dplyr::group_by(dplyr::across(dplyr::all_of(group_by_col))) |>
-    dplyr::group_split()
-  xx <- purrr::map_df(dfg, moderated_p_deqms,
-                       count_col = count_col,
-                       estimate = estimate,
-                       loess_span = loess_span)
+    tidyr::nest()
+
+  results <- vector("list", nrow(dfg))
+  warning_rows <- list()
+
+  for (i in seq_len(nrow(dfg))) {
+    warnings_i <- character()
+    group_data <- dfg[i, setdiff(names(dfg), "data"), drop = FALSE]
+    result_i <- withCallingHandlers(
+      moderated_p_deqms(
+        dfg$data[[i]],
+        count_col = count_col,
+        estimate = estimate,
+        loess_span = loess_span
+      ),
+      warning = function(w) {
+        warnings_i <<- c(warnings_i, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    )
+    results[[i]] <- dplyr::bind_cols(
+      group_data[rep(1, nrow(result_i)), , drop = FALSE],
+      result_i
+    )
+
+    if (length(warnings_i) > 0) {
+      group_label <- paste(
+        sprintf(
+          "%s=%s",
+          names(group_data),
+          unlist(group_data[1, ], use.names = FALSE)
+        ),
+        collapse = ", "
+      )
+      if (!nzchar(group_label)) {
+        group_label <- paste0("group_", i)
+      }
+      warning_rows[[length(warning_rows) + 1]] <- tibble::tibble(
+        group = group_label,
+        messages = paste(unique(warnings_i), collapse = "; ")
+      )
+    }
+  }
+
+  xx <- dplyr::bind_rows(results)
+
+  if (length(warning_rows) > 0) {
+    warning_df <- dplyr::bind_rows(warning_rows)
+    n_show <- min(nrow(warning_df), 3)
+    warning_examples <- paste(
+      vapply(
+        seq_len(n_show),
+        function(i) {
+          paste0(warning_df$group[[i]], " (", warning_df$messages[[i]], ")")
+        },
+        character(1)
+      ),
+      collapse = "; "
+    )
+    warning(
+      paste0(
+        "moderated_p_deqms_long: warnings in ",
+        nrow(warning_df),
+        "/",
+        nrow(dfg),
+        " groups. ",
+        warning_examples
+      ),
+      call. = FALSE
+    )
+  }
+
   return(xx)
 }
 

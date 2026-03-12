@@ -130,9 +130,11 @@ MissingHelpers <- R6::R6Class(
       }
       abundance_column = "meanAbundanceImp"
       hierarchy_keys <- self$config$hierarchy_keys()
-      imp <- lt |> pivot_wider(id_cols = hierarchy_keys,
-                               names_from = interaction,
-                               values_from = !!sym(abundance_column))
+      imp <- lt |> pivot_wider(
+        id_cols = dplyr::all_of(hierarchy_keys),
+        names_from = "interaction",
+        values_from = !!sym(abundance_column)
+      )
 
 
       imputed <- prolfqua::get_contrast(ungroup(imp), hierarchy_keys, Contrasts)
@@ -142,7 +144,11 @@ MissingHelpers <- R6::R6Class(
         !!paste0(abundance_column, "_group_2") := "group_2")
 
       nr <- lt |> mutate(is_missing = ifelse( .data$nrNAs == .data$nrReplicates , 1 , 0) )
-      nr <- nr |> pivot_wider(id_cols = hierarchy_keys, names_from = interaction, values_from = .data$is_missing)
+      nr <- nr |> pivot_wider(
+        id_cols = dplyr::all_of(hierarchy_keys),
+        names_from = "interaction",
+        values_from = "is_missing"
+      )
       nrs <- prolfqua::get_contrast(ungroup(nr), hierarchy_keys, Contrasts)
 
       nrs <- nrs |> select(all_of(c(hierarchy_keys,"contrast", "estimate" )))
@@ -150,9 +156,11 @@ MissingHelpers <- R6::R6Class(
       imputed <- inner_join(imputed, nrs, by = c(hierarchy_keys, "contrast"))
 
 
-      nrMeasured <- lt |> pivot_wider(id_cols = hierarchy_keys,
-                                      names_from = interaction,
-                                      values_from = nrMeasured)
+      nrMeasured <- lt |> pivot_wider(
+        id_cols = dplyr::all_of(hierarchy_keys),
+        names_from = "interaction",
+        values_from = nrMeasured
+      )
       nrMeasured <- prolfqua::get_contrast(ungroup(nrMeasured),  hierarchy_keys, Contrasts)
       nrMeasured <- nrMeasured |> select(all_of(c(hierarchy_keys, "contrast", nrMeasured_group_1 = "group_1", nrMeasured_group_2  = "group_2")))
       imputed <- inner_join(imputed, nrMeasured, by = c(hierarchy_keys, "contrast"))

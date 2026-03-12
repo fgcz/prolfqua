@@ -303,7 +303,7 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #'    config$factor_keys_depth())
 #'
 make_interaction_column <- function(data, columns, sep="."){
-  intr <- dplyr::select(data, columns)
+  intr <- dplyr::select(data, dplyr::all_of(columns))
   intr <- purrr::map_dfc(intr, factor)
   names(columns) <- columns
   newlev <- purrr::map2(columns, intr, function(x,y){paste0(x,levels(y))})
@@ -766,7 +766,7 @@ summarize_hierarchy <- function(pdata,
 {
   all_hierarchy <- c(config$isotopeLabel, config$hierarchy_keys() )
 
-  precursor <- pdata |> dplyr::select(factors, all_hierarchy) |> dplyr::distinct()
+  precursor <- pdata |> dplyr::select(dplyr::all_of(c(factors, all_hierarchy))) |> dplyr::distinct()
   x3 <- precursor |> dplyr::group_by(across(all_of(c(factors, hierarchy)))) |>
     dplyr::summarize(across(all_of(base::setdiff(all_hierarchy, hierarchy)),
                          list( n = dplyr::n_distinct)))
@@ -802,7 +802,7 @@ spread_response_by_IsotopeLabel <- function(resData, config){
   id_vars <- config$id_vars()
   resData2 <- resData |> dplyr::select(c(id_vars, config$value_vars()) )
   resData2 <- resData2 |> tidyr::pivot_longer(cols = -dplyr::all_of(id_vars), names_to = "variable", values_to = "value")
-  resData2 <- resData2 |>  tidyr::unite("temp", config$isotopeLabel, .data$variable )
+  resData2 <- resData2 |> tidyr::unite("temp", dplyr::all_of(c(config$isotopeLabel, "variable")))
   HLData <- resData2 |> tidyr::pivot_wider(names_from = "temp", values_from = "value")
   invisible(HLData)
 }

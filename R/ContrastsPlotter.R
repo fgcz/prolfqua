@@ -106,7 +106,7 @@ ContrastsPlotter <- R6::R6Class(
     ){
       self$contrastDF <- tidyr::unite(
         contrastDF,
-        "subject_Id", subject_Id, sep = "~", remove = FALSE)
+        "subject_Id", dplyr::all_of(subject_Id), sep = "~", remove = FALSE)
 
       self$modelName  = modelName
       self$subject_Id = subject_Id
@@ -142,8 +142,8 @@ ContrastsPlotter <- R6::R6Class(
       fig <- ggplot(self$contrastDF, aes(x = !!sym(self$diff))) +
         geom_histogram(breaks = seq(from = re[1], to = re[2], by = binwidth)) +
         geom_vline(aes(xintercept = median(!!sym( self$diff ), na.rm = T)),   # Ignore NA values for mean
-                   color = "red", linetype = "dashed", size = 1) +
-        geom_vline(xintercept = 0, col = "green" , size = 1) +
+                   color = "red", linetype = "dashed", linewidth = 1) +
+        geom_vline(xintercept = 0, col = "green" , linewidth = 1) +
         facet_wrap(vars(!!sym(self$contrast)))
 
       return(fig)
