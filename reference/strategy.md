@@ -90,20 +90,27 @@ list with model function, contrast computation function etc.
 
 Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -141,20 +148,27 @@ Other modelling:
 
 Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -192,20 +206,27 @@ Other modelling:
 
 Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -243,20 +264,27 @@ Other modelling:
 
 Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -294,20 +322,27 @@ Other modelling:
 
 Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -349,7 +384,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x562abf0d7130>
+#> <environment: 0x5625fa8f3808>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -364,8 +399,8 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x562ab4d8ebb8>
-#> <environment: 0x562abf0d7130>
+#> <bytecode: 0x5625d7b252b8>
+#> <environment: 0x5625fa8f3808>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -462,7 +497,7 @@ sum(mod$modelDF$isSingular, na.rm=TRUE)
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x562ac845a510>
+#> <environment: 0x5626088b9fb8>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -477,12 +512,12 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x562aae5b1db8>
+#> <bytecode: 0x5625cef70858>
 #> <environment: namespace:prolfqua>
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x562ab894c698>
+#> <environment: 0x5625e8921da8>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -497,12 +532,12 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x562aae5b1db8>
+#> <bytecode: 0x5625cef70858>
 #> <environment: namespace:prolfqua>
 tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x562ac1a19130>
+#> <environment: 0x5625f74d2388>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -517,6 +552,6 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x562aae5b1db8>
+#> <bytecode: 0x5625cef70858>
 #> <environment: namespace:prolfqua>
 ```

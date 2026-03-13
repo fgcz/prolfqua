@@ -541,6 +541,10 @@ stopifnot("upset" == class(lfqplotter$upset_missing()))
 #> ℹ See also `vignette("ggplot2-in-packages")` for more information.
 #> ℹ The deprecated feature was likely used in the UpSetR package.
 #>   Please report the issue to the authors.
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> ℹ The deprecated feature was likely used in the UpSetR package.
+#>   Please report the issue to the authors.
 #> Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
 #> ℹ Please use the `linewidth` argument instead.
 #> ℹ The deprecated feature was likely used in the UpSetR package.

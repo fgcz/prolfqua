@@ -257,16 +257,16 @@ sessionInfo()
     ## [16] limma_3.66.0        prolfqua_1.5.0      gridExtra_2.3      
     ## [19] httr_1.4.8          purrr_1.2.1         viridisLite_0.4.3  
     ## [22] scales_1.4.0        UpSetR_1.4.0        lazyeval_0.2.2     
-    ## [25] textshaping_1.0.4   jquerylib_0.1.4     cli_3.6.5          
+    ## [25] textshaping_1.0.5   jquerylib_0.1.4     cli_3.6.5          
     ## [28] rlang_1.1.7         withr_3.0.2         cachem_1.1.0       
     ## [31] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
     ## [34] dplyr_1.2.0         ggplot2_4.0.2       forcats_1.0.1      
     ## [37] vctrs_0.7.1         R6_2.6.1            lifecycle_1.0.5    
-    ## [40] fs_1.6.6            htmlwidgets_1.6.4   MASS_7.3-65        
-    ## [43] ragg_1.5.0          pkgconfig_2.0.3     desc_1.4.3         
+    ## [40] fs_1.6.7            htmlwidgets_1.6.4   MASS_7.3-65        
+    ## [43] ragg_1.5.1          pkgconfig_2.0.3     desc_1.4.3         
     ## [46] pkgdown_2.2.0       pillar_1.11.1       bslib_0.10.0       
     ## [49] gtable_0.3.6        data.table_1.18.2.1 glue_1.8.0         
-    ## [52] Rcpp_1.1.1          statmod_1.5.1       systemfonts_1.3.1  
+    ## [52] Rcpp_1.1.1          statmod_1.5.1       systemfonts_1.3.2  
     ## [55] xfun_0.56           tibble_3.3.1        tidyselect_1.2.1   
     ## [58] knitr_1.51          farver_2.1.2        htmltools_0.5.9    
     ## [61] labeling_0.4.3      rmarkdown_2.30      pheatmap_1.0.13    

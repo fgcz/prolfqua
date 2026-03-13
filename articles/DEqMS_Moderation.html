@@ -34,6 +34,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Comparing Contrast Facades</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
@@ -50,7 +51,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -68,7 +69,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-02-25</h4>
+            <h4 data-toc-skip class="date">2026-03-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/vignettes/DEqMS_Moderation.Rmd" class="external-link"><code>vignettes/DEqMS_Moderation.Rmd</code></a></small>
       <div class="d-none name"><code>DEqMS_Moderation.Rmd</code></div>
@@ -160,21 +161,17 @@ which is exactly the count we need.</p>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="build-the-count-table">Build the count table<a class="anchor" aria-label="anchor" href="#build-the-count-table"></a>
+<h2 id="inspect-peptide-counts">Inspect peptide counts<a class="anchor" aria-label="anchor" href="#inspect-peptide-counts"></a>
 </h2>
-<p><code>ContrastsModeratedDEqMS</code> requires a data.frame mapping
-each protein to its peptide count. This is typically extracted from the
-input data. The constructor automatically aggregates to one value per
-protein (taking the max).</p>
+<p>At the low-level <code>ContrastsModeratedDEqMS</code> API we still
+provide an explicit count table. The count column can be derived
+directly from the <code>LFQData</code> object via
+<code>config$nr_children</code>. In this simulated data set the count
+variable is <code>nr_peptides</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">count_df</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span>, <span class="st">"nr_peptides"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Inspect the distribution of peptide counts</span></span>
-<span><span class="va">count_per_prot</span> <span class="op">&lt;-</span> <span class="va">count_df</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">count_per_prot</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">protein_Id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>nr_peptides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">nr_peptides</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>nr_peptides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">transformed</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">]</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">count_per_prot</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">nr_peptides</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">1</span>, fill <span class="op">=</span> <span class="st">"steelblue"</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -196,14 +193,13 @@ protein (taking the max).</p>
 <h2 id="deqms-moderation-pipeline">DEqMS moderation pipeline<a class="anchor" aria-label="anchor" href="#deqms-moderation-pipeline"></a>
 </h2>
 <p>The only difference: wrap with <code>ContrastsModeratedDEqMS</code>
-instead of <code>ContrastsModerated</code>, and supply
-<code>count_df</code> + <code>count_column</code>.</p>
+instead of <code>ContrastsModerated</code>, and provide the
+protein-level peptide counts. If you use the higher-level
+<code>build_contrast_analysis(..., method = "deqms")</code> facade, that
+count extraction is done for you from the <code>LFQData</code>
+object.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contr_deqms</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>  <span class="va">contr_lm</span>,</span>
-<span>  count_df <span class="op">=</span> <span class="va">count_df</span>,</span>
-<span>  count_column <span class="op">=</span> <span class="st">"nr_peptides"</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contr_deqms</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">contr_lm</span>, <span class="va">count_per_prot</span>, <span class="st">"nr_peptides"</span><span class="op">)</span></span>
 <span><span class="va">res_deqms</span> <span class="op">&lt;-</span> <span class="va">contr_deqms</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -324,17 +320,17 @@ Volcano plots from both moderation approaches.
 <code class="sourceCode R"><span><span class="va">wide</span> <span class="op">&lt;-</span> <span class="va">contr_deqms</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wide</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 13</span></span></span>
-<span><span class="co">##   protein_Id  diff.AvsB diff.AvsCtrl diff.BvsCtrl p.value.AvsB p.value.AvsCtrl</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~7697    0.272       0.143      -<span style="color: #BB0000;">0.128</span>      0.000<span style="text-decoration: underline;">003</span>80        0.005<span style="text-decoration: underline;">75</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0lCgkE~2864   -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">5</span>     -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">0</span>     -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">541</span>   0.540             0.506   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0m5WN4~1168    0.018<span style="text-decoration: underline;">2</span>      0.163       0.145      0.664             0.000<span style="text-decoration: underline;">510</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> 0vgFfT~5498    0.135       0.078<span style="text-decoration: underline;">2</span>     -<span style="color: #BB0000;">0.056</span><span style="color: #BB0000; text-decoration: underline;">9</span>     0.047<span style="text-decoration: underline;">2</span>            0.202   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> 0YSKpy~7538    0.018<span style="text-decoration: underline;">2</span>     -<span style="color: #BB0000;">0.006</span><span style="color: #BB0000; text-decoration: underline;">21</span>    -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">4</span>     0.700             0.896   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> 0ZHbvZ~4125    0.087<span style="text-decoration: underline;">3</span>      0.047<span style="text-decoration: underline;">1</span>     -<span style="color: #BB0000;">0.040</span><span style="color: #BB0000; text-decoration: underline;">2</span>     0.050<span style="text-decoration: underline;">5</span>            0.283   </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 7 more variables: p.value.BvsCtrl &lt;dbl&gt;, FDR.AvsB &lt;dbl&gt;, FDR.AvsCtrl &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   FDR.BvsCtrl &lt;dbl&gt;, statistic.AvsB &lt;dbl&gt;, statistic.AvsCtrl &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   statistic.BvsCtrl &lt;dbl&gt;</span></span></span></code></pre>
+<span><span class="co">##   protein_Id diff.AvsCtrl diff.BvsCtrl diff.AvsB p.value.AvsCtrl p.value.BvsCtrl</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~76…      0.143      -<span style="color: #BB0000;">0.128</span>       0.272         0.005<span style="text-decoration: underline;">75</span>          0.011<span style="text-decoration: underline;">7</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0lCgkE~28…     -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">0</span>     -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">541</span>   -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">5</span>        0.506            0.991  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0m5WN4~11…      0.163       0.145       0.018<span style="text-decoration: underline;">2</span>        0.000<span style="text-decoration: underline;">510</span>         0.001<span style="text-decoration: underline;">11</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> 0vgFfT~54…      0.078<span style="text-decoration: underline;">2</span>     -<span style="color: #BB0000;">0.056</span><span style="color: #BB0000; text-decoration: underline;">9</span>      0.135         0.202            0.390  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> 0YSKpy~75…     -<span style="color: #BB0000;">0.006</span><span style="color: #BB0000; text-decoration: underline;">21</span>    -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">4</span>      0.018<span style="text-decoration: underline;">2</span>        0.896            0.604  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> 0ZHbvZ~41…      0.047<span style="text-decoration: underline;">1</span>     -<span style="color: #BB0000;">0.040</span><span style="color: #BB0000; text-decoration: underline;">2</span>      0.087<span style="text-decoration: underline;">3</span>        0.283            0.344  </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 7 more variables: p.value.AvsB &lt;dbl&gt;, FDR.AvsCtrl &lt;dbl&gt;, FDR.BvsCtrl &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   FDR.AvsB &lt;dbl&gt;, statistic.AvsCtrl &lt;dbl&gt;, statistic.BvsCtrl &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   statistic.AvsB &lt;dbl&gt;</span></span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="inspecting-all-columns">Inspecting all columns<a class="anchor" aria-label="anchor" href="#inspecting-all-columns"></a>
@@ -349,18 +345,18 @@ columns side by side.</p>
 <span>         <span class="va">moderated.var.post</span>, <span class="va">moderated.statistic</span>, <span class="va">moderated.p.value</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 10</span></span></span>
-<span><span class="co">##    protein_Id  contrast  sigma     diff statistic moderated.var.prior</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 0EfVhX~7697 AvsB     0.065<span style="text-decoration: underline;">9</span>  0.272       5.83              0.004<span style="text-decoration: underline;">53</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 0lCgkE~2864 AvsB     0.053<span style="text-decoration: underline;">1</span> -<span style="color: #BB0000;">0.032</span><span style="color: #BB0000; text-decoration: underline;">5</span>     -<span style="color: #BB0000;">0.749</span>             0.004<span style="text-decoration: underline;">59</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 0m5WN4~1168 AvsB     0.036<span style="text-decoration: underline;">7</span>  0.018<span style="text-decoration: underline;">2</span>      0.700             0.004<span style="text-decoration: underline;">44</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 0vgFfT~5498 AvsB     0.086<span style="text-decoration: underline;">0</span>  0.135       2.06              0.007<span style="text-decoration: underline;">15</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 0YSKpy~7538 AvsB     0.063<span style="text-decoration: underline;">2</span>  0.018<span style="text-decoration: underline;">2</span>      0.406             0.004<span style="text-decoration: underline;">53</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 0ZHbvZ~4125 AvsB     0.049<span style="text-decoration: underline;">0</span>  0.087<span style="text-decoration: underline;">3</span>      2.52              0.004<span style="text-decoration: underline;">24</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 1HZ2jt~5236 AvsB     0.087<span style="text-decoration: underline;">1</span>  0.066<span style="text-decoration: underline;">6</span>      1.00              0.004<span style="text-decoration: underline;">68</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 3QYop0~6494 AvsB     0.047<span style="text-decoration: underline;">7</span>  0.168       4.30              0.004<span style="text-decoration: underline;">82</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 3Zhyy7~9324 AvsB     0.060<span style="text-decoration: underline;">4</span>  0.137       2.97              0.004<span style="text-decoration: underline;">69</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> 4E74Ry~7621 AvsB     0.051<span style="text-decoration: underline;">5</span>  0.006<span style="text-decoration: underline;">04</span>     0.166             0.004<span style="text-decoration: underline;">39</span></span></span>
+<span><span class="co">##    protein_Id  contrast  sigma      diff statistic moderated.var.prior</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 0EfVhX~7697 AvsCtrl  0.065<span style="text-decoration: underline;">9</span>  0.143      3.07                0.004<span style="text-decoration: underline;">68</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 0lCgkE~2864 AvsCtrl  0.053<span style="text-decoration: underline;">1</span> -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">0</span>    -<span style="color: #BB0000;">0.814</span>               0.004<span style="text-decoration: underline;">59</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 0m5WN4~1168 AvsCtrl  0.036<span style="text-decoration: underline;">7</span>  0.163      6.27                0.004<span style="text-decoration: underline;">44</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 0vgFfT~5498 AvsCtrl  0.086<span style="text-decoration: underline;">0</span>  0.078<span style="text-decoration: underline;">2</span>     1.29                0.007<span style="text-decoration: underline;">04</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 0YSKpy~7538 AvsCtrl  0.063<span style="text-decoration: underline;">2</span> -<span style="color: #BB0000;">0.006</span><span style="color: #BB0000; text-decoration: underline;">21</span>   -<span style="color: #BB0000;">0.139</span>               0.004<span style="text-decoration: underline;">68</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 0ZHbvZ~4125 AvsCtrl  0.049<span style="text-decoration: underline;">0</span>  0.047<span style="text-decoration: underline;">1</span>     1.36                0.004<span style="text-decoration: underline;">33</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 1HZ2jt~5236 AvsCtrl  0.087<span style="text-decoration: underline;">1</span>  0.000<span style="text-decoration: underline;">509</span>   0.008<span style="text-decoration: underline;">27</span>             0.004<span style="text-decoration: underline;">74</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 3QYop0~6494 AvsCtrl  0.047<span style="text-decoration: underline;">7</span>  0.079<span style="text-decoration: underline;">6</span>     2.04                0.004<span style="text-decoration: underline;">98</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 3Zhyy7~9324 AvsCtrl  0.060<span style="text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.016</span><span style="color: #BB0000; text-decoration: underline;">7</span>    -<span style="color: #BB0000;">0.338</span>               0.004<span style="text-decoration: underline;">85</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> 4E74Ry~7621 AvsCtrl  0.051<span style="text-decoration: underline;">5</span>  0.024<span style="text-decoration: underline;">0</span>     0.659               0.004<span style="text-decoration: underline;">46</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 4 more variables: moderated.df.prior &lt;dbl&gt;, moderated.var.post &lt;dbl&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   moderated.statistic &lt;dbl&gt;, moderated.p.value &lt;dbl&gt;</span></span></span></code></pre>
 <p>Note that <code>moderated.var.prior</code> varies per protein
@@ -402,7 +398,7 @@ constant.</p>
 <span><span class="co">## [10] tibble_3.3.1        pkgconfig_2.0.3     Matrix_1.7-4       </span></span>
 <span><span class="co">## [13] pheatmap_1.0.13     data.table_1.18.2.1 RColorBrewer_1.1-3 </span></span>
 <span><span class="co">## [16] S7_0.2.1            desc_1.4.3          lifecycle_1.0.5    </span></span>
-<span><span class="co">## [19] compiler_4.5.2      farver_2.1.2        textshaping_1.0.4  </span></span>
+<span><span class="co">## [19] compiler_4.5.2      farver_2.1.2        textshaping_1.0.5  </span></span>
 <span><span class="co">## [22] progress_1.2.3      statmod_1.5.1       htmltools_0.5.9    </span></span>
 <span><span class="co">## [25] sass_0.4.10         yaml_2.3.12         lazyeval_0.2.2     </span></span>
 <span><span class="co">## [28] plotly_4.12.0       pillar_1.11.1       pkgdown_2.2.0      </span></span>
@@ -414,12 +410,12 @@ constant.</p>
 <span><span class="co">## [46] grid_4.5.2          cli_3.6.5           magrittr_2.0.4     </span></span>
 <span><span class="co">## [49] utf8_1.2.6          withr_3.0.2         prettyunits_1.2.0  </span></span>
 <span><span class="co">## [52] scales_1.4.0        rmarkdown_2.30      httr_1.4.8         </span></span>
-<span><span class="co">## [55] otel_0.2.0          gridExtra_2.3       ragg_1.5.0         </span></span>
+<span><span class="co">## [55] otel_0.2.0          gridExtra_2.3       ragg_1.5.1         </span></span>
 <span><span class="co">## [58] hms_1.1.4           evaluate_1.0.5      knitr_1.51         </span></span>
 <span><span class="co">## [61] UpSetR_1.4.0        viridisLite_0.4.3   mgcv_1.9-3         </span></span>
 <span><span class="co">## [64] rlang_1.1.7         Rcpp_1.1.1          glue_1.8.0         </span></span>
 <span><span class="co">## [67] jsonlite_2.0.0      R6_2.6.1            plyr_1.8.9         </span></span>
-<span><span class="co">## [70] systemfonts_1.3.1   fs_1.6.6</span></span></code></pre>
+<span><span class="co">## [70] systemfonts_1.3.2   fs_1.6.7</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

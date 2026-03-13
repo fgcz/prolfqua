@@ -8,12 +8,22 @@
   : Benchmark R6 class
 - [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md)
   : Estimate contrasts using Wald Test
+- [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md)
+  : DEqMS contrast analysis facade
 - [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md)
   : Estimate contrasts using Wald Test
 - [`ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
   : Base class for all Contrasts classes
+- [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md)
+  : LM contrast analysis facade
+- [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md)
+  : LM + missing-value imputation contrast analysis facade
 - [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md)
   : Limma-based contrasts (direct limma pipeline)
+- [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md)
+  : Limma contrast analysis facade
+- [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md)
+  : Lmer contrast analysis facade
 - [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md)
   : Compute contrasts with group mean imputation
 - [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md)
@@ -26,6 +36,8 @@
   : ContrastsProDA Wrapper to results produced by proDA
 - [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md)
   : ROPECA reproducibility-optimization method
+- [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md)
+  : ROPECA contrast analysis facade
 - [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md)
   : holds results when contrasts are added.
 - [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
@@ -63,6 +75,8 @@
   : Package Data
 - [`annotation_add_contrasts()`](https://wolski.github.io/prolfqua/reference/annotation_add_contrasts.md)
   : DRY function: process and export annotated contrasts
+- [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+  : Build a contrast analysis using one of several statistical methods
 - [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md)
   : Build protein models from data
 - [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md)

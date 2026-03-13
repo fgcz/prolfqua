@@ -4,6 +4,8 @@
 
 - [Comparing Two Groups with
   prolfqua](https://wolski.github.io/prolfqua/articles/Comparing2Groups.md):
+- [Comparing Contrast
+  Facades](https://wolski.github.io/prolfqua/articles/ContrastFacades.md):
 - [Contrasts from
   factors](https://wolski.github.io/prolfqua/articles/Contrasts_from_factors.md):
 - [Getting Started, Data Import, Creating prolfqua

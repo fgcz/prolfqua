@@ -68,22 +68,17 @@ contr_spec <- c(
 )
 ```
 
-## Build the count table
+## Inspect peptide counts
 
-`ContrastsModeratedDEqMS` requires a data.frame mapping each protein to
-its peptide count. This is typically extracted from the input data. The
-constructor automatically aggregates to one value per protein (taking
-the max).
+At the low-level `ContrastsModeratedDEqMS` API we still provide an
+explicit count table. The count column can be derived directly from the
+`LFQData` object via `config$nr_children`. In this simulated data set
+the count variable is `nr_peptides`.
 
 ``` r
-count_df <- istar$data |>
-  select(all_of(c(istar$config$hierarchy_keys_depth(), "nr_peptides"))) |>
-  distinct()
-
-# Inspect the distribution of peptide counts
-count_per_prot <- count_df |>
+count_per_prot <- transformed$data |>
   group_by(protein_Id) |>
-  summarise(nr_peptides = max(nr_peptides, na.rm = TRUE))
+  summarise(nr_peptides = max(.data[[transformed$config$nr_children]], na.rm = TRUE))
 
 ggplot(count_per_prot, aes(x = nr_peptides)) +
   geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
@@ -106,14 +101,13 @@ res_moderated <- contr_moderated$get_contrasts()
 ## DEqMS moderation pipeline
 
 The only difference: wrap with `ContrastsModeratedDEqMS` instead of
-`ContrastsModerated`, and supply `count_df` + `count_column`.
+`ContrastsModerated`, and provide the protein-level peptide counts. If
+you use the higher-level
+`build_contrast_analysis(..., method = "deqms")` facade, that count
+extraction is done for you from the `LFQData` object.
 
 ``` r
-contr_deqms <- ContrastsModeratedDEqMS$new(
-  contr_lm,
-  count_df = count_df,
-  count_column = "nr_peptides"
-)
+contr_deqms <- ContrastsModeratedDEqMS$new(contr_lm, count_per_prot, "nr_peptides")
 res_deqms <- contr_deqms$get_contrasts()
 ```
 
@@ -244,17 +238,17 @@ head(wide)
 ```
 
     ## # A tibble: 6 × 13
-    ##   protein_Id  diff.AvsB diff.AvsCtrl diff.BvsCtrl p.value.AvsB p.value.AvsCtrl
-    ##   <chr>           <dbl>        <dbl>        <dbl>        <dbl>           <dbl>
-    ## 1 0EfVhX~7697    0.272       0.143      -0.128      0.00000380        0.00575 
-    ## 2 0lCgkE~2864   -0.0325     -0.0330     -0.000541   0.540             0.506   
-    ## 3 0m5WN4~1168    0.0182      0.163       0.145      0.664             0.000510
-    ## 4 0vgFfT~5498    0.135       0.0782     -0.0569     0.0472            0.202   
-    ## 5 0YSKpy~7538    0.0182     -0.00621    -0.0244     0.700             0.896   
-    ## 6 0ZHbvZ~4125    0.0873      0.0471     -0.0402     0.0505            0.283   
-    ## # ℹ 7 more variables: p.value.BvsCtrl <dbl>, FDR.AvsB <dbl>, FDR.AvsCtrl <dbl>,
-    ## #   FDR.BvsCtrl <dbl>, statistic.AvsB <dbl>, statistic.AvsCtrl <dbl>,
-    ## #   statistic.BvsCtrl <dbl>
+    ##   protein_Id diff.AvsCtrl diff.BvsCtrl diff.AvsB p.value.AvsCtrl p.value.BvsCtrl
+    ##   <chr>             <dbl>        <dbl>     <dbl>           <dbl>           <dbl>
+    ## 1 0EfVhX~76…      0.143      -0.128       0.272         0.00575          0.0117 
+    ## 2 0lCgkE~28…     -0.0330     -0.000541   -0.0325        0.506            0.991  
+    ## 3 0m5WN4~11…      0.163       0.145       0.0182        0.000510         0.00111
+    ## 4 0vgFfT~54…      0.0782     -0.0569      0.135         0.202            0.390  
+    ## 5 0YSKpy~75…     -0.00621    -0.0244      0.0182        0.896            0.604  
+    ## 6 0ZHbvZ~41…      0.0471     -0.0402      0.0873        0.283            0.344  
+    ## # ℹ 7 more variables: p.value.AvsB <dbl>, FDR.AvsCtrl <dbl>, FDR.BvsCtrl <dbl>,
+    ## #   FDR.AvsB <dbl>, statistic.AvsCtrl <dbl>, statistic.BvsCtrl <dbl>,
+    ## #   statistic.AvsB <dbl>
 
 ## Inspecting all columns
 
@@ -271,18 +265,18 @@ res_all |>
 ```
 
     ## # A tibble: 10 × 10
-    ##    protein_Id  contrast  sigma     diff statistic moderated.var.prior
-    ##    <chr>       <chr>     <dbl>    <dbl>     <dbl>               <dbl>
-    ##  1 0EfVhX~7697 AvsB     0.0659  0.272       5.83              0.00453
-    ##  2 0lCgkE~2864 AvsB     0.0531 -0.0325     -0.749             0.00459
-    ##  3 0m5WN4~1168 AvsB     0.0367  0.0182      0.700             0.00444
-    ##  4 0vgFfT~5498 AvsB     0.0860  0.135       2.06              0.00715
-    ##  5 0YSKpy~7538 AvsB     0.0632  0.0182      0.406             0.00453
-    ##  6 0ZHbvZ~4125 AvsB     0.0490  0.0873      2.52              0.00424
-    ##  7 1HZ2jt~5236 AvsB     0.0871  0.0666      1.00              0.00468
-    ##  8 3QYop0~6494 AvsB     0.0477  0.168       4.30              0.00482
-    ##  9 3Zhyy7~9324 AvsB     0.0604  0.137       2.97              0.00469
-    ## 10 4E74Ry~7621 AvsB     0.0515  0.00604     0.166             0.00439
+    ##    protein_Id  contrast  sigma      diff statistic moderated.var.prior
+    ##    <chr>       <chr>     <dbl>     <dbl>     <dbl>               <dbl>
+    ##  1 0EfVhX~7697 AvsCtrl  0.0659  0.143      3.07                0.00468
+    ##  2 0lCgkE~2864 AvsCtrl  0.0531 -0.0330    -0.814               0.00459
+    ##  3 0m5WN4~1168 AvsCtrl  0.0367  0.163      6.27                0.00444
+    ##  4 0vgFfT~5498 AvsCtrl  0.0860  0.0782     1.29                0.00704
+    ##  5 0YSKpy~7538 AvsCtrl  0.0632 -0.00621   -0.139               0.00468
+    ##  6 0ZHbvZ~4125 AvsCtrl  0.0490  0.0471     1.36                0.00433
+    ##  7 1HZ2jt~5236 AvsCtrl  0.0871  0.000509   0.00827             0.00474
+    ##  8 3QYop0~6494 AvsCtrl  0.0477  0.0796     2.04                0.00498
+    ##  9 3Zhyy7~9324 AvsCtrl  0.0604 -0.0167    -0.338               0.00485
+    ## 10 4E74Ry~7621 AvsCtrl  0.0515  0.0240     0.659               0.00446
     ## # ℹ 4 more variables: moderated.df.prior <dbl>, moderated.var.post <dbl>,
     ## #   moderated.statistic <dbl>, moderated.p.value <dbl>
 
@@ -325,7 +319,7 @@ sessionInfo()
     ## [10] tibble_3.3.1        pkgconfig_2.0.3     Matrix_1.7-4       
     ## [13] pheatmap_1.0.13     data.table_1.18.2.1 RColorBrewer_1.1-3 
     ## [16] S7_0.2.1            desc_1.4.3          lifecycle_1.0.5    
-    ## [19] compiler_4.5.2      farver_2.1.2        textshaping_1.0.4  
+    ## [19] compiler_4.5.2      farver_2.1.2        textshaping_1.0.5  
     ## [22] progress_1.2.3      statmod_1.5.1       htmltools_0.5.9    
     ## [25] sass_0.4.10         yaml_2.3.12         lazyeval_0.2.2     
     ## [28] plotly_4.12.0       pillar_1.11.1       pkgdown_2.2.0      
@@ -337,9 +331,9 @@ sessionInfo()
     ## [46] grid_4.5.2          cli_3.6.5           magrittr_2.0.4     
     ## [49] utf8_1.2.6          withr_3.0.2         prettyunits_1.2.0  
     ## [52] scales_1.4.0        rmarkdown_2.30      httr_1.4.8         
-    ## [55] otel_0.2.0          gridExtra_2.3       ragg_1.5.0         
+    ## [55] otel_0.2.0          gridExtra_2.3       ragg_1.5.1         
     ## [58] hms_1.1.4           evaluate_1.0.5      knitr_1.51         
     ## [61] UpSetR_1.4.0        viridisLite_0.4.3   mgcv_1.9-3         
     ## [64] rlang_1.1.7         Rcpp_1.1.1          glue_1.8.0         
     ## [67] jsonlite_2.0.0      R6_2.6.1            plyr_1.8.9         
-    ## [70] systemfonts_1.3.1   fs_1.6.6
+    ## [70] systemfonts_1.3.2   fs_1.6.7

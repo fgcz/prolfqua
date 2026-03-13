@@ -53,14 +53,8 @@ sample_analysis <- bb$data
 res <- transform_work_intensity(sample_analysis, conf, log2)
 #> Column added : log2_abundance
 res <- scale_with_subset_by_factors(res, res, conf)
-#> Warning: Expected 2 pieces. Additional pieces discarded in 1400 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`
-#> Warning: Expected 2 pieces. Additional pieces discarded in 1400 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`
-#> Warning: Expected 2 pieces. Additional pieces discarded in 1400 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 
 ```

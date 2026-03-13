@@ -21,6 +21,7 @@ DEqMS count-dependent moderated contrasts"></head><body>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Comparing Contrast Facades</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
@@ -33,7 +34,7 @@ DEqMS count-dependent moderated contrasts"></head><body>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -66,19 +67,26 @@ few peptides get more.</p>
     <div class="dont-index"><p><code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long</a></code></p>
 <p>Other modelling:
 <code><a href="Contrasts.html">Contrasts</a></code>,
+<code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
+<code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
+<code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>,
 <code><a href="ContrastsLimma.html">ContrastsLimma</a></code>,
+<code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
+<code><a href="ContrastsLmerFacade.html">ContrastsLmerFacade</a></code>,
 <code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
+<code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test()</a></code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="ModelFirth.html">ModelFirth</a></code>,
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
+<code><a href="build_contrast_analysis.html">build_contrast_analysis()</a></code>,
 <code><a href="build_model.html">build_model()</a></code>,
 <code><a href="build_model_limma.html">build_model_limma()</a></code>,
 <code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
@@ -342,22 +350,21 @@ few peptides get more.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">deqms</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Warn 'linfct_matrix_contrasts':In argument: `dil.b_vs_a = group_A - group_Ctrl`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Warn 'linfct_matrix_contrasts':In argument: `avg_dil.b_vs_a = (group_A + group_Ctrl)/2`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>linfct_matrix_contrasts: computed 0/2 contrasts; failed 2: dil.b_vs_a, avg_dil.b_vs_a. <span style="color: #00BBBB;">ℹ</span> In argument: `dil.b_vs_a = group_A - group_Ctrl`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error:</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> object 'group_A' not found; <span style="color: #00BBBB;">ℹ</span> In argument: `avg_dil.b_vs_a = (group_A + group_Ctrl)/2`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error:</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> object 'group_A' not found</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>pseudoinverse used at 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>neighborhood radius 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>reciprocal condition number  2.362e-17</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"diff"</span>, <span class="st">"p.value"</span>, <span class="st">"FDR"</span>, <span class="st">"sigma"</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">bb</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Merge with ContrastsMissing</span></span></span>
 <span class="r-in"><span><span class="va">csi</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, contrasts <span class="op">=</span> <span class="va">Contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span><span class="va">deqms</span>, <span class="va">csi</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>pseudoinverse used at 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>neighborhood radius 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>reciprocal condition number  2.362e-17</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
@@ -368,13 +375,9 @@ few peptides get more.</p>
 <span class="r-in"><span><span class="va">cs</span> <span class="op">&lt;-</span> <span class="va">deqms</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cslf</span> <span class="op">&lt;-</span> <span class="va">deqms</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ctrwide</span> <span class="op">&lt;-</span> <span class="va">deqms</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>pseudoinverse used at 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>neighborhood radius 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>reciprocal condition number  2.362e-17</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)</span>
 <span class="r-in"><span><span class="va">cp</span> <span class="op">&lt;-</span> <span class="va">deqms</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>pseudoinverse used at 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>neighborhood radius 1</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>reciprocal condition number  2.362e-17</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)</span>
 <span class="r-in"><span><span class="va">cp</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $FDR</span>
 <span class="r-plt img"><img src="ContrastsModeratedDEqMS-1.png" alt="" width="700" height="433"></span>

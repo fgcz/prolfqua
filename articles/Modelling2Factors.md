@@ -415,7 +415,7 @@ sessionInfo()
     ## [13] pkgconfig_2.0.3     pheatmap_1.0.13     data.table_1.18.2.1
     ## [16] RColorBrewer_1.1-3  S7_0.2.1            desc_1.4.3         
     ## [19] lifecycle_1.0.5     prolfqua_1.5.0      compiler_4.5.2     
-    ## [22] farver_2.1.2        textshaping_1.0.4   progress_1.2.3     
+    ## [22] farver_2.1.2        textshaping_1.0.5   progress_1.2.3     
     ## [25] statmod_1.5.1       carData_3.0-6       vipor_0.4.7        
     ## [28] htmltools_0.5.9     sass_0.4.10         yaml_2.3.12        
     ## [31] lazyeval_0.2.2      Formula_1.2-5       plotly_4.12.0      
@@ -430,10 +430,10 @@ sessionInfo()
     ## [58] withr_3.0.2         backports_1.5.0     prettyunits_1.2.0  
     ## [61] scales_1.4.0        ggbeeswarm_0.7.3    rmarkdown_2.30     
     ## [64] httr_1.4.8          otel_0.2.0          gridExtra_2.3      
-    ## [67] ggsignif_0.6.4      ragg_1.5.0          hms_1.1.4          
+    ## [67] ggsignif_0.6.4      ragg_1.5.1          hms_1.1.4          
     ## [70] evaluate_1.0.5      knitr_1.51          UpSetR_1.4.0       
     ## [73] viridisLite_0.4.3   rlang_1.1.7         Rcpp_1.1.1         
     ## [76] glue_1.8.0          jsonlite_2.0.0      R6_2.6.1           
-    ## [79] plyr_1.8.9          systemfonts_1.3.1   fs_1.6.6
+    ## [79] plyr_1.8.9          systemfonts_1.3.2   fs_1.6.7
 
 ## References

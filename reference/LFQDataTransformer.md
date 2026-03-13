@@ -272,9 +272,7 @@ x <- lfqTrans$intensity_array(asinh)
 #> Column added : asinh_peptide.intensity
 mads1 <- mean(x$get_scales()$mads)
 x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
-#> Warning: Expected 2 pieces. Additional pieces discarded in 15280 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`
+#> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`
 mads2 <- mean(x$get_scales()$mads)
 stopifnot(abs(mads1 - mads2) < 1e-8)
 
@@ -287,9 +285,7 @@ lfqTrans$log2()
 before <- lfqTrans$get_scales()
 lfqTrans$robscale()
 #> data is : TRUE
-#> Warning: Expected 2 pieces. Additional pieces discarded in 15280 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`
+#> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`
 after <- lfqTrans$get_scales()
 stopifnot(abs(mean(before$medians) - mean(after$medians)) < 1e-8)
 stopifnot(abs(mean(before$mads) - mean(after$mads)) < 1e-8)
@@ -304,19 +300,19 @@ lfqTransCheck$log2()
 lfqTransCheck$get_scales()
 #> $medians
 #>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 
-#> 24.86211 24.92791 24.84002 24.74686 24.74735 24.71654 24.75473 24.77979 
+#> 24.83373 24.90253 24.82138 24.72917 24.72036 24.70535 24.72028 24.76536 
 #>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 
-#> 24.76562 25.17942 25.14736 24.87502 25.08201 25.14705 25.17601 25.19250 
+#> 24.72115 25.15540 25.13049 24.84177 25.06052 25.11136 25.13985 25.17819 
 #>     c~18     b~19     a~20     a~21 
-#> 25.24238 25.16130 25.18241 25.19239 
+#> 25.19270 25.13891 25.16233 25.17072 
 #> 
 #> $mads
 #>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 
-#> 2.250102 2.313422 2.182621 2.169717 2.165824 2.140431 2.316916 2.311747 
+#> 2.212583 2.275791 2.171028 2.142237 2.196353 2.127855 2.302519 2.312846 
 #>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 
-#> 2.291713 2.277076 2.234688 2.221903 2.156718 2.192336 2.159619 2.295144 
+#> 2.238950 2.243746 2.220689 2.222436 2.126487 2.162166 2.148171 2.265475 
 #>     c~18     b~19     a~20     a~21 
-#> 2.216481 2.233216 2.232052 2.259164 
+#> 2.234537 2.214160 2.196464 2.227671 
 #> 
 lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
 
@@ -327,24 +323,22 @@ if(require("vsn")){
  res$get_scales()
 }
 #> Loading required package: vsn
-#> Warning: Expected 2 pieces. Additional pieces discarded in 15280 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(protein_Id, sampleName, peptide_Id)`
+#> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`
 #> $medians
 #>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 
-#> 24.88535 25.00486 24.96972 24.96221 24.97661 24.95791 25.01922 24.97236 
+#> 24.85800 24.97357 24.94905 24.94858 24.95029 24.94866 24.98283 24.95805 
 #>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 
-#> 24.94173 24.95409 24.92463 25.04857 24.92617 25.02650 25.04352 25.04521 
+#> 24.89048 24.92424 24.91216 25.01958 24.90674 24.99417 25.00696 25.02897 
 #>     c~18     b~19     a~20     a~21 
-#> 25.05081 24.99553 24.98337 25.03043 
+#> 25.00426 24.97514 24.96236 25.00745 
 #> 
 #> $mads
 #>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 
-#> 2.250102 2.313422 2.182621 2.169717 2.165824 2.140431 2.316916 2.311747 
+#> 2.212583 2.275791 2.171028 2.142237 2.196353 2.127855 2.302519 2.312846 
 #>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 
-#> 2.291713 2.277076 2.234688 2.221903 2.156718 2.192336 2.159619 2.295144 
+#> 2.238950 2.243746 2.220689 2.222436 2.126487 2.162166 2.148171 2.265475 
 #>     c~18     b~19     a~20     a~21 
-#> 2.216481 2.233216 2.232052 2.259164 
+#> 2.234537 2.214160 2.196464 2.227671 
 #> 
 if(require("preprocessCore")){
 quant <- function(y){
@@ -403,9 +397,7 @@ lfqdata2$get_Plotter()$intensity_distribution_density()
 
 robscale <- lfqdata2$get_Transformer()$robscale_subset(internal)$lfq
 #> data is : TRUE
-#> Warning: Expected 2 pieces. Additional pieces discarded in 336 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 robscale$get_Plotter()$intensity_distribution_density()
 
 ```

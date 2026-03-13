@@ -6,6 +6,7 @@
 <url><loc>https://wolski.github.io/prolfqua/LICENSE-text.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/LICENSE.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/Comparing2Groups.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/articles/ContrastFacades.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/Contrasts_from_factors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/CreatingConfigurations.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/DEqMS_Moderation.html</loc></url>
@@ -21,15 +22,21 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/Benchmark.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/Contrasts.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsFirth.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsInterface.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimma.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsMissing.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsModerated.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsPlotter.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsProDA.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsROPECA.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsTable.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/LFQData.html</loc></url>
@@ -54,6 +61,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/annotation_add_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/apply_to_response_matrix.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/build_contrast_analysis.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_logistf.html</loc></url>

@@ -7,20 +7,27 @@ Estimate contrasts using Wald Test
 ## See also
 
 Other modelling:
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -287,6 +294,9 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 
 modelFunction <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
+#> Registered S3 method overwritten by 'lme4':
+#>   method           from
+#>   na.action.merMod car 
 
 config <- istar$config
 config$hierarchy_keys_depth()

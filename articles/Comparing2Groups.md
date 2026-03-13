@@ -525,10 +525,10 @@ sessionInfo()
     ## [13] pheatmap_1.0.13     KernSmooth_2.23-26  data.table_1.18.2.1
     ## [16] RColorBrewer_1.1-3  S7_0.2.1            desc_1.4.3         
     ## [19] lifecycle_1.0.5     compiler_4.5.2      farver_2.1.2       
-    ## [22] textshaping_1.0.4   progress_1.2.3      statmod_1.5.1      
+    ## [22] textshaping_1.0.5   progress_1.2.3      statmod_1.5.1      
     ## [25] httpuv_1.6.16       htmltools_0.5.9     sass_0.4.10        
     ## [28] yaml_2.3.12         lazyeval_0.2.2      plotly_4.12.0      
-    ## [31] later_1.4.7         pillar_1.11.1       pkgdown_2.2.0      
+    ## [31] later_1.4.8         pillar_1.11.1       pkgdown_2.2.0      
     ## [34] crayon_1.5.3        jquerylib_0.1.4     tidyr_1.3.2        
     ## [37] MASS_7.3-65         cachem_1.1.0        limma_3.66.0       
     ## [40] mime_0.13           tidyselect_1.2.1    digest_0.6.39      
@@ -537,12 +537,12 @@ sessionInfo()
     ## [49] cli_3.6.5           magrittr_2.0.4      utf8_1.2.6         
     ## [52] withr_3.0.2         promises_1.5.0      prettyunits_1.2.0  
     ## [55] scales_1.4.0        rmarkdown_2.30      httr_1.4.8         
-    ## [58] otel_0.2.0          gridExtra_2.3       ragg_1.5.0         
+    ## [58] otel_0.2.0          gridExtra_2.3       ragg_1.5.1         
     ## [61] hms_1.1.4           shiny_1.13.0        evaluate_1.0.5     
     ## [64] knitr_1.51          UpSetR_1.4.0        viridisLite_0.4.3  
     ## [67] rlang_1.1.7         Rcpp_1.1.1          xtable_1.8-8       
     ## [70] glue_1.8.0          jsonlite_2.0.0      R6_2.6.1           
-    ## [73] plyr_1.8.9          systemfonts_1.3.1   fs_1.6.6
+    ## [73] plyr_1.8.9          systemfonts_1.3.2   fs_1.6.7
 
 ## References
 

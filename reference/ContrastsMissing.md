@@ -18,19 +18,26 @@ observations of all groups.
 
 Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -325,8 +332,8 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1479509725 
-#>                     2 
+#> agg_record_a9a7a63bfe0 
+#>                      2 
 
 dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
 #> creating sampleName from fileName column
@@ -367,6 +374,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1479509725 
-#>                     2 
+#> agg_record_a9a7a63bfe0 
+#>                      2 
 ```

@@ -43,9 +43,7 @@ bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> setup done
 xx <- normalize_log2_robscale(bb$data, bb$config)
 #> Column added : log2_abundance
-#> Warning: Expected 2 pieces. Additional pieces discarded in 4200 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 xx$config$workIntensity
 #> [1] "abundance"            "log2_abundance"       "transformedIntensity"
 ```

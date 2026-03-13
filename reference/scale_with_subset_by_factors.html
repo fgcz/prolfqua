@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Comparing Contrast Facades</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
@@ -31,7 +32,7 @@
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -101,15 +102,9 @@
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="transform_work_intensity.html">transform_work_intensity</a></span><span class="op">(</span><span class="va">sample_analysis</span>, <span class="va">conf</span>, <span class="va">log2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">scale_with_subset_by_factors</span><span class="op">(</span><span class="va">res</span>, <span class="va">res</span>, <span class="va">conf</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 1400 rows [1, 2, 3, 4, 5, 6,</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 1400 rows [1, 2, 3, 4, 5, 6,</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 2 pieces. Additional pieces discarded in 1400 rows [1, 2, 3, 4, 5, 6,</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -35,9 +35,7 @@ pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
 s1 <- get_robscales(pepIntensityNormalized, conf)
 
 res <- scale_with_subset(pepIntensityNormalized, pepIntensityNormalized, conf)
-#> Warning: Expected 2 pieces. Additional pieces discarded in 336 rows [1, 2, 3, 4, 5, 6,
-#> 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(sampleName, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 s2 <- get_robscales(res$data, conf)
 abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 #> [1] TRUE

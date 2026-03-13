@@ -1,6 +1,6 @@
 # prolfqua - a comprehensive R package for Proteomics Differential Expression Analysis
 
-![](reference/figures/imgfile.png)
+![prolfqua hex sticker](reference/figures/imgfile.png)
 
 The R package contains functions for analyzing mass spectrometry based
 experiments. This package is developed at the [FGCZ](http://fgcz.ch/).

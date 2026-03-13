@@ -19,19 +19,26 @@ with few peptides get more.
 
 Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -301,22 +308,21 @@ deqms <- ContrastsModeratedDEqMS$new(contrast,
 
 bb <- deqms$get_contrasts()
 #> determine linear functions:
-#> Warning: Warn 'linfct_matrix_contrasts':In argument: `dil.b_vs_a = group_A - group_Ctrl`.
-#> Warning: Warn 'linfct_matrix_contrasts':In argument: `avg_dil.b_vs_a = (group_A + group_Ctrl)/2`.
+#> Warning: linfct_matrix_contrasts: computed 0/2 contrasts; failed 2: dil.b_vs_a, avg_dil.b_vs_a. ℹ In argument: `dil.b_vs_a = group_A - group_Ctrl`.
+#> Caused by error:
+#> ! object 'group_A' not found; ℹ In argument: `avg_dil.b_vs_a = (group_A + group_Ctrl)/2`.
+#> Caused by error:
+#> ! object 'group_A' not found
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> Warning: pseudoinverse used at 1
-#> Warning: neighborhood radius 1
-#> Warning: reciprocal condition number  2.362e-17
+#> Warning: moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
 
 # Merge with ContrastsMissing
 csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 merged <- merge_contrasts_results(deqms, csi)
-#> Warning: pseudoinverse used at 1
-#> Warning: neighborhood radius 1
-#> Warning: reciprocal condition number  2.362e-17
+#> Warning: moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 #> completing cases
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl
@@ -327,13 +333,9 @@ merged <- merge_contrasts_results(deqms, csi)
 cs <- deqms$get_contrast_sides()
 cslf <- deqms$get_linfct()
 ctrwide <- deqms$to_wide()
-#> Warning: pseudoinverse used at 1
-#> Warning: neighborhood radius 1
-#> Warning: reciprocal condition number  2.362e-17
+#> Warning: moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 cp <- deqms$get_Plotter()
-#> Warning: pseudoinverse used at 1
-#> Warning: neighborhood radius 1
-#> Warning: reciprocal condition number  2.362e-17
+#> Warning: moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 cp$volcano()
 #> $FDR
 

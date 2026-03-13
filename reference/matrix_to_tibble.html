@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Comparing Contrast Facades</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
@@ -31,7 +32,7 @@
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -98,11 +99,11 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   row.names       V1      V2      V3     V4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A         -<span style="color: #BB0000;">1.49</span>    -<span style="color: #BB0000;">0.071</span><span style="color: #BB0000; text-decoration: underline;">9</span>  1.06    0.707</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B         -<span style="color: #BB0000;">1.38</span>    -<span style="color: #BB0000;">1.55</span>    0.059<span style="text-decoration: underline;">7</span>  0.508</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> C         -<span style="color: #BB0000;">0.511</span>    0.098<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.359</span>   1.62 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> D          0.003<span style="text-decoration: underline;">32</span>  1.03   -<span style="color: #BB0000;">0.764</span>  -<span style="color: #BB0000;">0.252</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> E         -<span style="color: #BB0000;">1.61</span>     0.545  -<span style="color: #BB0000;">1.26</span>    0.406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A         -<span style="color: #BB0000;">2.52</span>    -<span style="color: #BB0000;">1.61</span>    0.545  -<span style="color: #BB0000;">1.26</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B         -<span style="color: #BB0000;">1.49</span>    -<span style="color: #BB0000;">0.071</span><span style="color: #BB0000; text-decoration: underline;">9</span>  1.06    0.707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> C         -<span style="color: #BB0000;">1.38</span>    -<span style="color: #BB0000;">1.55</span>    0.059<span style="text-decoration: underline;">7</span>  0.508</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> D         -<span style="color: #BB0000;">0.511</span>    0.098<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.359</span>   1.62 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> E          0.003<span style="text-decoration: underline;">32</span>  1.03   -<span style="color: #BB0000;">0.764</span>  -<span style="color: #BB0000;">0.252</span></span>
 <span class="r-in"><span><span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">is.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">is.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>
