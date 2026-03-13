@@ -13,9 +13,9 @@ Encapsulates the pipeline: \code{\link{strategy_limma}} ->
 \code{\link{build_model_limma}} -> \code{\link{ContrastsLimma}}.
 }
 \examples{
-istar <- sim_lfq_data_peptide_config()
+istar <- sim_lfq_data_protein_config()
 lfqdata <- LFQData$new(istar$data, istar$config)
-lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
@@ -29,6 +29,7 @@ Other modelling:
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
+\code{\link{ContrastsLmerFacade}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},

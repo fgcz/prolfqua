@@ -76,21 +76,17 @@ contr_spec <- c(
 )
 ```
 
-# Build the count table
+# Inspect peptide counts
 
-`ContrastsModeratedDEqMS` requires a data.frame mapping each protein to its
-peptide count. This is typically extracted from the input data. The constructor
-automatically aggregates to one value per protein (taking the max).
+At the low-level `ContrastsModeratedDEqMS` API we still provide an explicit
+count table. The count column can be derived directly from the `LFQData` object
+via `config$nr_children`. In this simulated data set the count variable is
+`nr_peptides`.
 
 ```{r count_df}
-count_df <- istar$data |>
-  select(all_of(c(istar$config$hierarchy_keys_depth(), "nr_peptides"))) |>
-  distinct()
-
-# Inspect the distribution of peptide counts
-count_per_prot <- count_df |>
+count_per_prot <- transformed$data |>
   group_by(protein_Id) |>
-  summarise(nr_peptides = max(nr_peptides, na.rm = TRUE))
+  summarise(nr_peptides = max(.data[[transformed$config$nr_children]], na.rm = TRUE))
 
 ggplot(count_per_prot, aes(x = nr_peptides)) +
   geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
@@ -111,14 +107,12 @@ res_moderated <- contr_moderated$get_contrasts()
 # DEqMS moderation pipeline
 
 The only difference: wrap with `ContrastsModeratedDEqMS` instead of
-`ContrastsModerated`, and supply `count_df` + `count_column`.
+`ContrastsModerated`, and provide the protein-level peptide counts. If you use
+the higher-level `build_contrast_analysis(..., method = "deqms")` facade, that
+count extraction is done for you from the `LFQData` object.
 
 ```{r deqms}
-contr_deqms <- ContrastsModeratedDEqMS$new(
-  contr_lm,
-  count_df = count_df,
-  count_column = "nr_peptides"
-)
+contr_deqms <- ContrastsModeratedDEqMS$new(contr_lm, count_per_prot, "nr_peptides")
 res_deqms <- contr_deqms$get_contrasts()
 ```
 

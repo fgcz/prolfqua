@@ -1,5 +1,40 @@
 # ContrastsFacades -----
 
+.assert_aggregated_facade_input <- function(lfqdata, facade_name) {
+  subject_id <- lfqdata$subject_Id()
+  hierarchy_keys <- lfqdata$config$hierarchy_keys()
+  if (!identical(subject_id, hierarchy_keys)) {
+    stop(
+      facade_name,
+      " requires aggregated LFQData. ",
+      "`lfqdata$subject_Id()` must equal `lfqdata$config$hierarchy_keys()`. ",
+      "Aggregate first.",
+      call. = FALSE
+    )
+  }
+}
+
+.assert_nested_facade_input <- function(lfqdata, facade_name) {
+  subject_id <- lfqdata$subject_Id()
+  hierarchy_keys <- lfqdata$config$hierarchy_keys()
+  if (!(all(subject_id %in% hierarchy_keys) && length(subject_id) < length(hierarchy_keys))) {
+    stop(
+      facade_name,
+      " requires LFQData with additional hierarchy below `subject_Id()`. ",
+      "`lfqdata$subject_Id()` must be a strict subset of ",
+      "`lfqdata$config$hierarchy_keys()`. Do not aggregate first.",
+      call. = FALSE
+    )
+  }
+}
+
+.add_facade_column <- function(res, facade_name) {
+  if (!("facade" %in% colnames(res))) {
+    res <- dplyr::mutate(res, facade = facade_name, .before = 1)
+  }
+  res
+}
+
 #' Limma contrast analysis facade
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_limma}} ->
@@ -8,9 +43,9 @@
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_peptide_config()
+#' istar <- sim_lfq_data_protein_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 #' fa <- ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
 #' head(fa$get_contrasts())
@@ -29,6 +64,7 @@ ContrastsLimmaFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
     initialize = function(lfqdata, modelstr, contrasts, ...) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat          <- strategy_limma(full_formula, ...)
@@ -37,7 +73,9 @@ ContrastsLimmaFacade <- R6::R6Class(
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsLimma$get_contrasts
-    get_contrasts = function(...) self$contrast$get_contrasts(...),
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "limma")
+    },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsLimma$get_Plotter
     get_Plotter   = function(...) self$contrast$get_Plotter(...),
@@ -57,9 +95,9 @@ ContrastsLimmaFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_peptide_config()
+#' istar <- sim_lfq_data_protein_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 #' fa <- ContrastsLMFacade$new(lfqdata, "~ group_", contrasts)
 #' head(fa$get_contrasts())
@@ -78,6 +116,7 @@ ContrastsLMFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsLMFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat          <- strategy_lm(full_formula, ...)
@@ -86,7 +125,9 @@ ContrastsLMFacade <- R6::R6Class(
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModerated$get_contrasts
-    get_contrasts = function(...) self$contrast$get_contrasts(...),
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "lm")
+    },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModerated$get_Plotter
     get_Plotter   = function(...) self$contrast$get_Plotter(...),
@@ -97,6 +138,66 @@ ContrastsLMFacade <- R6::R6Class(
 )
 
 
+#' Lmer contrast analysis facade
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_lmer}} ->
+#' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
+#' \code{\link{ContrastsModerated}}.
+#'
+#' This facade requires data with hierarchy below the analysis subject, for
+#' example peptide-level measurements nested within proteins.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_peptide_config()
+#' istar$config <- old2new(istar$config)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsLmerFacade$new(
+#'   lfqdata,
+#'   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
+#'   contrasts
+#' )
+#' head(fa$get_contrasts())
+#' fa$to_wide()
+ContrastsLmerFacade <- R6::R6Class(
+  "ContrastsLmerFacade",
+  public = list(
+    #' @field model Model object
+    model = NULL,
+    #' @field contrast ContrastsModerated object
+    contrast = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object
+    #' @param modelstr model formula string (e.g. "~ group_ + (1 | peptide_Id)")
+    #' @param contrasts named character vector of contrasts
+    #' @param ... passed to \code{\link{strategy_lmer}}
+    initialize = function(lfqdata, modelstr, contrasts, ...) {
+      .assert_nested_facade_input(lfqdata, "ContrastsLmerFacade")
+      response <- lfqdata$config$get_response()
+      full_formula <- paste(response, modelstr)
+      strat          <- strategy_lmer(full_formula, ...)
+      self$model     <- build_model(lfqdata, strat)
+      self$contrast  <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+    },
+    #' @description get contrast results
+    #' @param ... passed to ContrastsModerated$get_contrasts
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "lmer")
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsModerated$get_Plotter
+    get_Plotter   = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsModerated$to_wide
+    to_wide       = function(...) self$contrast$to_wide(...)
+  )
+)
+
+#'
 #' LM + missing-value imputation contrast analysis facade
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
@@ -136,6 +237,7 @@ ContrastsLMMissingFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsLMMissingFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat                  <- strategy_lm(full_formula, ...)
@@ -147,7 +249,9 @@ ContrastsLMMissingFacade <- R6::R6Class(
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsTable$get_contrasts
-    get_contrasts = function(...) self$contrast$get_contrasts(...),
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "lm_missing")
+    },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsTable$get_Plotter
     get_Plotter   = function(...) self$contrast$get_Plotter(...),
@@ -189,6 +293,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsDEqMSFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat         <- strategy_lm(full_formula, ...)
@@ -203,7 +308,9 @@ ContrastsDEqMSFacade <- R6::R6Class(
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModeratedDEqMS$get_contrasts
-    get_contrasts = function(...) self$contrast$get_contrasts(...),
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "deqms")
+    },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModeratedDEqMS$get_Plotter
     get_Plotter   = function(...) self$contrast$get_Plotter(...),
@@ -249,6 +356,7 @@ ContrastsROPECAFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
+      .assert_nested_facade_input(lfqdata, "ContrastsROPECAFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat         <- strategy_lm(full_formula, ...)
@@ -293,7 +401,8 @@ ContrastsROPECAFacade <- R6::R6Class(
       standard_cols <- c(protein_Id, "modelName", "contrast", "avgAbd",
                          "diff", "FDR", "statistic", "std.error", "df",
                          "p.value", "conf.low", "conf.high", "sigma")
-      res[, standard_cols, drop = FALSE]
+      res <- res[, standard_cols, drop = FALSE]
+      .add_facade_column(res, "ropeca")
     },
     #' @description get ContrastsPlotter (uses standardized column names)
     #' @param FCthreshold fold change threshold

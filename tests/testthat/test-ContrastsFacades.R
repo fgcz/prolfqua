@@ -2,10 +2,16 @@
 
 # Shared test data (peptide-level, used for lm / lm_missing / limma / ropeca)
 make_peptide_lfqdata <- function(Nprot = 30) {
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = Nprot, seed = 42)
+  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = Nprot, with_missing = FALSE, seed = 42)
   istar$config <- prolfqua::old2new(istar$config)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$get_Transformer()$log2()$lfq
+  lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+  keep <- lfqdata$data |>
+    dplyr::group_by(protein_Id) |>
+    dplyr::summarise(n_peptides = dplyr::n_distinct(peptide_Id), .groups = "drop") |>
+    dplyr::filter(n_peptides > 1)
+  lfqdata$data <- dplyr::semi_join(lfqdata$data, keep, by = "protein_Id")
+  lfqdata
 }
 
 # Protein-level data with nr_peptides (used for deqms)
@@ -18,13 +24,14 @@ make_protein_lfqdata <- function(Nprot = 30) {
 
 CONTRASTS <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 MODELSTR  <- "~ group_"
+MODELSTR_LMER <- "~ group_ + (1 | peptide_Id) + (1 | sampleName)"
 
 # Helper: check that a facade has the required interface
 check_facade_interface <- function(fa) {
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
   expect_true(nrow(res) > 0)
-  expected_cols <- c("modelName", "contrast", "diff", "FDR", "p.value")
+  expected_cols <- c("facade", "modelName", "contrast", "diff", "FDR", "p.value")
   for (col in expected_cols) {
     expect_true(col %in% colnames(res), info = paste("missing column:", col))
   }
@@ -40,25 +47,40 @@ check_facade_interface <- function(fa) {
 # ---- ContrastsLimmaFacade ----
 
 test_that("ContrastsLimmaFacade initialises and returns correct structure", {
-  lfqdata <- make_peptide_lfqdata()
+  lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::ContrastsLimmaFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsLimmaFacade"))
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
   check_facade_interface(fa)
+  expect_true(all(fa$get_contrasts()$facade == "limma"))
 })
 
 # ---- ContrastsLMFacade ----
 
 test_that("ContrastsLMFacade initialises and returns correct structure", {
-  lfqdata <- make_peptide_lfqdata()
+  lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::ContrastsLMFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsLMFacade"))
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
   check_facade_interface(fa)
+  expect_true(all(fa$get_contrasts()$facade == "lm"))
+})
+
+# ---- ContrastsLmerFacade ----
+
+test_that("ContrastsLmerFacade initialises and returns correct structure", {
+  lfqdata <- make_peptide_lfqdata()
+  fa <- prolfqua::ContrastsLmerFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS)
+
+  expect_true(inherits(fa, "ContrastsLmerFacade"))
+  expect_true(!is.null(fa$model))
+  expect_true(!is.null(fa$contrast))
+  check_facade_interface(fa)
+  expect_true(all(fa$get_contrasts()$facade == "lmer"))
 })
 
 # ---- ContrastsLMMissingFacade ----
@@ -75,6 +97,7 @@ test_that("ContrastsLMMissingFacade initialises and returns correct structure", 
   expect_true(!is.null(fa$missing_contrast))
   expect_true(!is.null(fa$merged))
   check_facade_interface(fa)
+  expect_true(all(fa$get_contrasts()$facade == "lm_missing"))
 })
 
 # ---- ContrastsDEqMSFacade ----
@@ -89,6 +112,7 @@ test_that("ContrastsDEqMSFacade initialises and returns correct structure", {
   expect_true(!is.null(fa$contrast))
   expect_equal(fa$contrast$count_column, "nr_peptides")
   check_facade_interface(fa)
+  expect_true(all(fa$get_contrasts()$facade == "deqms"))
 })
 
 # ---- ContrastsROPECAFacade ----
@@ -103,6 +127,7 @@ test_that("ContrastsROPECAFacade initialises and returns correct structure", {
 
   # Facade normalises ROPECA output to standard column names
   check_facade_interface(fa)
+  expect_true(all(fa$get_contrasts()$facade == "ropeca"))
 
   res <- fa$get_contrasts()
   # Heuristically derived columns should have real values (not all NA)
@@ -126,9 +151,16 @@ test_that("ContrastsROPECAFacade initialises and returns correct structure", {
 # ---- build_contrast_analysis ----
 
 test_that("build_contrast_analysis dispatches to ContrastsLMFacade for method='lm'", {
-  lfqdata <- make_peptide_lfqdata()
+  lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "lm")
   expect_true(inherits(fa, "ContrastsLMFacade"))
+  check_facade_interface(fa)
+})
+
+test_that("build_contrast_analysis dispatches to ContrastsLmerFacade for method='lmer'", {
+  lfqdata <- make_peptide_lfqdata()
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR_LMER, CONTRASTS, method = "lmer")
+  expect_true(inherits(fa, "ContrastsLmerFacade"))
   check_facade_interface(fa)
 })
 
@@ -140,7 +172,7 @@ test_that("build_contrast_analysis dispatches to ContrastsLMMissingFacade for me
 })
 
 test_that("build_contrast_analysis dispatches to ContrastsLimmaFacade for method='limma'", {
-  lfqdata <- make_peptide_lfqdata()
+  lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "limma")
   expect_true(inherits(fa, "ContrastsLimmaFacade"))
   check_facade_interface(fa)
@@ -170,7 +202,41 @@ test_that("build_contrast_analysis dispatches to ContrastsROPECAFacade for metho
 })
 
 test_that("build_contrast_analysis defaults to lm when no method specified", {
-  lfqdata <- make_peptide_lfqdata()
+  lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS)
   expect_true(inherits(fa, "ContrastsLMFacade"))
+})
+
+test_that("aggregated facades error on peptide-level LFQData", {
+  lfqdata <- make_peptide_lfqdata()
+
+  expect_error(
+    prolfqua::ContrastsLMFacade$new(lfqdata, MODELSTR, CONTRASTS),
+    "requires aggregated LFQData"
+  )
+  expect_error(
+    prolfqua::ContrastsLimmaFacade$new(lfqdata, MODELSTR, CONTRASTS),
+    "requires aggregated LFQData"
+  )
+  expect_error(
+    prolfqua::ContrastsLMMissingFacade$new(lfqdata, MODELSTR, CONTRASTS),
+    "requires aggregated LFQData"
+  )
+  expect_error(
+    prolfqua::ContrastsDEqMSFacade$new(lfqdata, MODELSTR, CONTRASTS),
+    "requires aggregated LFQData"
+  )
+})
+
+test_that("nested facades error on aggregated LFQData", {
+  lfqdata <- make_protein_lfqdata()$lfqdata
+
+  expect_error(
+    prolfqua::ContrastsROPECAFacade$new(lfqdata, MODELSTR, CONTRASTS),
+    "requires LFQData with additional hierarchy below `subject_Id\\(\\)`"
+  )
+  expect_error(
+    prolfqua::ContrastsLmerFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS),
+    "requires LFQData with additional hierarchy below `subject_Id\\(\\)`"
+  )
 })

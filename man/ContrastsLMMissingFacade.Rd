@@ -35,6 +35,7 @@ Other modelling:
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLimma}},
 \code{\link{ContrastsLimmaFacade}},
+\code{\link{ContrastsLmerFacade}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},

@@ -3,7 +3,7 @@
 [![DOI](https://img.shields.io/badge/DOI-10.1021%2Facs.jproteome.2c00441-blue)](https://pubs.acs.org/doi/10.1021/acs.jproteome.2c00441)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18775726.svg)](https://doi.org/10.5281/zenodo.18775726)
 
-<img src="man/figures/imgfile.png" width="200"> 
+<img src="man/figures/imgfile.png" alt="prolfqua hex sticker" width="200"> 
 
 # prolfqua - a comprehensive R package for Proteomics Differential Expression Analysis
 

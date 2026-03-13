@@ -14,3 +14,4 @@ navbar:
     github:
       icon: fa-github
       href: https://github.com/wolski/prolfqua
+      aria-label: GitHub repository
