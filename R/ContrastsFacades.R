@@ -172,11 +172,7 @@ ContrastsLMMissingFacade <- R6::R6Class(
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-#' count_df <- dplyr::select(istar$data,
-#'   dplyr::all_of(c(istar$config$hierarchy_keys_depth(), "nr_peptides"))) |>
-#'   dplyr::distinct()
-#' fa <- ContrastsDEqMSFacade$new(lfqdata, "~ group_", contrasts,
-#'   count_df = count_df, count_column = "nr_peptides")
+#' fa <- ContrastsDEqMSFacade$new(lfqdata, "~ group_", contrasts)
 #' head(fa$get_contrasts())
 #' fa$to_wide()
 ContrastsDEqMSFacade <- R6::R6Class(
@@ -191,16 +187,16 @@ ContrastsDEqMSFacade <- R6::R6Class(
     #' @param lfqdata LFQData object
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    #' @param count_df data.frame with subject_Id columns and a count column
-    #' @param count_column name of the count column in count_df
     #' @param ... passed to \code{\link{strategy_lm}}
-    initialize = function(lfqdata, modelstr, contrasts,
-                          count_df, count_column, ...) {
+    initialize = function(lfqdata, modelstr, contrasts, ...) {
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat         <- strategy_lm(full_formula, ...)
       self$model    <- build_model(lfqdata, strat)
       base_contrast <- Contrasts$new(self$model, contrasts)
+      count_column <- lfqdata$config$nr_children
+      count_df <- lfqdata$data |>
+        dplyr::select(dplyr::all_of(c(base_contrast$subject_Id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast,
                                                     count_df = count_df,
                                                     count_column = count_column)

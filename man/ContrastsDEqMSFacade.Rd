@@ -19,11 +19,7 @@ istar <- sim_lfq_data_protein_config(Nprot = 50)
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-count_df <- dplyr::select(istar$data,
-  dplyr::all_of(c(istar$config$hierarchy_keys_depth(), "nr_peptides"))) |>
-  dplyr::distinct()
-fa <- ContrastsDEqMSFacade$new(lfqdata, "~ group_", contrasts,
-  count_df = count_df, count_column = "nr_peptides")
+fa <- ContrastsDEqMSFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
 fa$to_wide()
 }
@@ -111,14 +107,7 @@ Other modelling:
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsDEqMSFacade$new(
-  lfqdata,
-  modelstr,
-  contrasts,
-  count_df,
-  count_column,
-  ...
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -129,10 +118,6 @@ initialize
 \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
 
 \item{\code{contrasts}}{named character vector of contrasts}
-
-\item{\code{count_df}}{data.frame with subject_Id columns and a count column}
-
-\item{\code{count_column}}{name of the count column in count_df}
 
 \item{\code{...}}{passed to \code{\link{strategy_lm}}}
 }

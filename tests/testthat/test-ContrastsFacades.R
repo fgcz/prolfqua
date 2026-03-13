@@ -82,18 +82,12 @@ test_that("ContrastsLMMissingFacade initialises and returns correct structure", 
 test_that("ContrastsDEqMSFacade initialises and returns correct structure", {
   obj <- make_protein_lfqdata()
   lfqdata <- obj$lfqdata
-  istar   <- obj$raw
-  count_df <- dplyr::select(istar$data,
-    dplyr::all_of(c(istar$config$hierarchy_keys_depth(), "nr_peptides"))) |>
-    dplyr::distinct()
-
-  fa <- prolfqua::ContrastsDEqMSFacade$new(lfqdata, MODELSTR, CONTRASTS,
-                                            count_df = count_df,
-                                            count_column = "nr_peptides")
+  fa <- prolfqua::ContrastsDEqMSFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsDEqMSFacade"))
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
+  expect_equal(fa$contrast$count_column, "nr_peptides")
   check_facade_interface(fa)
 })
 
@@ -153,18 +147,12 @@ test_that("build_contrast_analysis dispatches to ContrastsLimmaFacade for method
 })
 
 test_that("build_contrast_analysis dispatches to ContrastsDEqMSFacade for method='deqms'", {
-  obj <- make_protein_lfqdata()
-  lfqdata <- obj$lfqdata
-  istar   <- obj$raw
-  count_df <- dplyr::select(istar$data,
-    dplyr::all_of(c(istar$config$hierarchy_keys_depth(), "nr_peptides"))) |>
-    dplyr::distinct()
-
+  lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS,
-                                           method = "deqms",
-                                           count_df = count_df,
-                                           count_column = "nr_peptides")
+    method = "deqms"
+  )
   expect_true(inherits(fa, "ContrastsDEqMSFacade"))
+  expect_equal(fa$contrast$count_column, "nr_peptides")
   check_facade_interface(fa)
 })
 
@@ -179,14 +167,6 @@ test_that("build_contrast_analysis dispatches to ContrastsROPECAFacade for metho
   expect_true("p.value" %in% colnames(res))
   expect_true("FDR" %in% colnames(res))
   expect_false("beta.based.significance" %in% colnames(res))
-})
-
-test_that("build_contrast_analysis errors when deqms missing count_df", {
-  lfqdata <- make_peptide_lfqdata()
-  expect_error(
-    prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "deqms"),
-    "count_df and count_column are required"
-  )
 })
 
 test_that("build_contrast_analysis defaults to lm when no method specified", {

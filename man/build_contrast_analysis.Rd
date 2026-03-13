@@ -9,8 +9,6 @@ build_contrast_analysis(
   modelstr,
   contrasts,
   method = c("lm", "lm_missing", "limma", "deqms", "ropeca"),
-  count_df = NULL,
-  count_column = NULL,
   ...
 )
 }
@@ -26,12 +24,6 @@ build_contrast_analysis(
 
 \item{method}{one of \code{"lm"}, \code{"lm_missing"}, \code{"limma"},
 \code{"deqms"}, \code{"ropeca"}}
-
-\item{count_df}{data.frame with subject_Id columns plus a count column;
-required when \code{method = "deqms"}}
-
-\item{count_column}{name of the count column in \code{count_df};
-required when \code{method = "deqms"}}
 
 \item{...}{additional arguments forwarded to the underlying strategy function
 (e.g. \code{trend}, \code{robust} for \code{strategy_limma})}
@@ -67,6 +59,9 @@ lfqdata_prot <- LFQData$new(istar_prot$data, istar_prot$config)
 lfqdata_prot$rename_response("transformedIntensity")
 fa_miss <- build_contrast_analysis(lfqdata_prot, "~ group_", contrasts, method = "lm_missing")
 head(fa_miss$get_contrasts())
+
+fa_deqms <- build_contrast_analysis(lfqdata_prot, "~ group_", contrasts, method = "deqms")
+head(fa_deqms$get_contrasts())
 }
 \seealso{
 Other modelling: 

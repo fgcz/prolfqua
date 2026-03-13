@@ -14,10 +14,6 @@
 #'   (e.g. \code{c("A_vs_B" = "group_A - group_B")})
 #' @param method one of \code{"lm"}, \code{"lm_missing"}, \code{"limma"},
 #'   \code{"deqms"}, \code{"ropeca"}
-#' @param count_df data.frame with subject_Id columns plus a count column;
-#'   required when \code{method = "deqms"}
-#' @param count_column name of the count column in \code{count_df};
-#'   required when \code{method = "deqms"}
 #' @param ... additional arguments forwarded to the underlying strategy function
 #'   (e.g. \code{trend}, \code{robust} for \code{strategy_limma})
 #' @return one of \code{\link{ContrastsLimmaFacade}},
@@ -46,26 +42,20 @@
 #' lfqdata_prot$rename_response("transformedIntensity")
 #' fa_miss <- build_contrast_analysis(lfqdata_prot, "~ group_", contrasts, method = "lm_missing")
 #' head(fa_miss$get_contrasts())
+#'
+#' fa_deqms <- build_contrast_analysis(lfqdata_prot, "~ group_", contrasts, method = "deqms")
+#' head(fa_deqms$get_contrasts())
 build_contrast_analysis <- function(lfqdata,
                                     modelstr,
                                     contrasts,
                                     method = c("lm", "lm_missing", "limma", "deqms", "ropeca"),
-                                    count_df     = NULL,
-                                    count_column = NULL,
                                     ...) {
   method <- match.arg(method)
   switch(method,
     lm         = ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...),
     lm_missing = ContrastsLMMissingFacade$new(lfqdata, modelstr, contrasts, ...),
     limma      = ContrastsLimmaFacade$new(lfqdata, modelstr, contrasts, ...),
-    deqms      = {
-      if (is.null(count_df) || is.null(count_column)) {
-        stop("count_df and count_column are required for method = 'deqms'")
-      }
-      ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts,
-                                count_df = count_df,
-                                count_column = count_column, ...)
-    },
+    deqms      = ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...),
     ropeca     = ContrastsROPECAFacade$new(lfqdata, modelstr, contrasts, ...)
   )
 }
