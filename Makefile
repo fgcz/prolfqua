@@ -1,64 +1,69 @@
-.PHONY: all check check-fast test test-short build build-vignettes document coverage install lint format clean help site deploy
+.DEFAULT_GOAL := check
 
-all: check
+.PHONY: check check-fast build build-vignettes document coverage install lint format clean help site deploy
+
+DOCUMENT_CMD = Rscript -e "devtools::document()"
+BUILD_CMD = Rscript -e "devtools::build()"
+CHECK_CMD = Rscript -e "devtools::check()"
+CHECK_FAST_CMD = Rscript -e "devtools::check(build_args = '--no-build-vignettes', args = '--no-vignettes')"
+BUILD_VIGNETTES_CMD = Rscript -e "devtools::build_vignettes()"
+TEST_CMD = Rscript -e "devtools::test()"
+COVERAGE_CMD = Rscript -e "covr::package_coverage() |> print()"
+INSTALL_CMD = Rscript -e "devtools::install()"
+LINT_CMD = Rscript -e "lintr::lint_package()"
+SITE_CMD = Rscript -e "pkgdown::build_site()"
+DEPLOY_CMD = Rscript -e "pkgdown::deploy_to_branch()"
 
 help:
 	@echo "prolfqua development targets:"
-	@echo "  make all       - full pipeline: document -> build -> check (default)"
 	@echo "  make check     - R CMD check (runs document, build first)"
 	@echo "  make check-fast - R CMD check without rebuilding vignettes during check"
-	@echo "  make build-vignettes - build vignettes into inst/doc"
-	@echo "  make test-short - run testthat tests without building vignettes"
-	@echo "  make test      - build vignettes, then run testthat tests"
-	@echo "  make build     - build tarball (runs document first)"
-	@echo "  make document  - generate roxygen2 docs"
-	@echo "  make coverage  - code coverage report"
 	@echo "  make install   - install package locally"
 	@echo "  make lint      - run lintr"
-	@echo "  make format    - format with air"
+	@echo "  make format    - format package with air"
 	@echo "  make clean     - remove build artifacts"
+	@echo ""
+	@echo "Advanced:"
+	@echo "  make document  - generate roxygen2 docs"
+	@echo "  make build     - build tarball"
+	@echo "  make build-vignettes - build vignettes into inst/doc"
+	@echo "  make coverage  - code coverage report"
 	@echo "  make site      - build pkgdown site locally"
 	@echo "  make deploy    - build pkgdown site and push to gh-pages"
 document:
-	Rscript -e "devtools::document()"
+	$(DOCUMENT_CMD)
 
 build: document
-	Rscript -e "devtools::build()"
+	$(BUILD_CMD)
 
 check: build
-	Rscript -e "devtools::check()"
+	$(CHECK_CMD)
 
 build-vignettes: document
-	Rscript -e "devtools::build_vignettes()"
+	$(BUILD_VIGNETTES_CMD)
 	mkdir -p inst/doc
 	cp doc/*.html doc/*.Rmd doc/*.R inst/doc/ 2>/dev/null || true
 
 check-fast: document
-	Rscript -e "devtools::check(build_args = '--no-build-vignettes', args = '--no-vignettes')"
-
-test-short: document
-	Rscript -e "devtools::test()"
-
-test: build-vignettes
-	Rscript -e "devtools::test()"
+	$(CHECK_FAST_CMD)
 
 coverage: document
-	Rscript -e "covr::package_coverage() |> print()"
+	$(COVERAGE_CMD)
 
 install: document
-	Rscript -e "devtools::install()"
+	$(INSTALL_CMD)
 
 lint:
-	Rscript -e "lintr::lint_package()"
+	$(LINT_CMD)
 
 format:
 	air format .
 
 site: document
-	Rscript -e "pkgdown::build_site()"
+	$(SITE_CMD)
 
 deploy: document
-	Rscript -e "pkgdown::deploy_to_branch()"
+	$(DEPLOY_CMD)
 
 clean:
 	rm -rf *.Rcheck
