@@ -1,4 +1,4 @@
-.PHONY: all check check-fast test build build-vignettes document coverage install lint format clean help site deploy
+.PHONY: all check check-fast test test-short build build-vignettes document coverage install lint format clean help site deploy
 
 all: check
 
@@ -8,7 +8,8 @@ help:
 	@echo "  make check     - R CMD check (runs document, build first)"
 	@echo "  make check-fast - R CMD check without rebuilding vignettes during check"
 	@echo "  make build-vignettes - build vignettes into inst/doc"
-	@echo "  make test      - run testthat tests (runs document first)"
+	@echo "  make test-short - run testthat tests without building vignettes"
+	@echo "  make test      - build vignettes, then run testthat tests"
 	@echo "  make build     - build tarball (runs document first)"
 	@echo "  make document  - generate roxygen2 docs"
 	@echo "  make coverage  - code coverage report"
@@ -35,7 +36,10 @@ build-vignettes: document
 check-fast: document
 	Rscript -e "devtools::check(build_args = '--no-build-vignettes', args = '--no-vignettes')"
 
-test: document
+test-short: document
+	Rscript -e "devtools::test()"
+
+test: build-vignettes
 	Rscript -e "devtools::test()"
 
 coverage: document

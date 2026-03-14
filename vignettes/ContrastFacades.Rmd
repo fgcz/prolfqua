@@ -29,6 +29,7 @@ backends:
 - `ropeca`
 - `lm_missing`
 - `deqms`
+- `firth`
 
 All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. The important difference is the required data
@@ -37,6 +38,8 @@ level:
 - `lm`, `limma`, `lm_missing`, and `deqms` require aggregated protein-level data
 - `lmer` and `ropeca` require lower-level measurements such as peptides nested
   within proteins
+- `firth` can be used with either aggregated protein-level data or nested
+  peptide-level data
 
 This vignette starts from one simulated peptide-level experiment, aggregates it
 to protein level, and then demonstrates both families of facades separately.
@@ -105,6 +108,13 @@ fa_deqms <- build_contrast_analysis(
   contrasts,
   method = "deqms"
 )
+
+fa_firth_protein <- build_contrast_analysis(
+  lfq_protein,
+  "~ group_",
+  contrasts,
+  method = "firth"
+)
 ```
 
 Because all protein-level facades share the same interface and the same unit of
@@ -115,7 +125,8 @@ results_protein <- bind_rows(
   fa_lm$get_contrasts(),
   fa_limma$get_contrasts(),
   fa_lm_missing$get_contrasts(),
-  fa_deqms$get_contrasts()
+  fa_deqms$get_contrasts(),
+  fa_firth_protein$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
     "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
@@ -169,8 +180,8 @@ results_protein |>
 # Peptide-level facades
 
 The mixed-effects `lmer` facade and `ropeca` require lower-level measurements
-below the analysis subject. They therefore operate on the peptide-level
-`LFQData`.
+below the analysis subject. The `firth` facade can also operate directly on the
+peptide-level `LFQData`, where it models missingness instead of intensity.
 
 ```{r facades_peptide}
 fa_lmer <- build_contrast_analysis(
@@ -186,15 +197,26 @@ fa_ropeca <- build_contrast_analysis(
   contrasts,
   method = "ropeca"
 )
+
+fa_firth_peptide <- build_contrast_analysis(
+  lfq_peptide,
+  "~ group_",
+  contrasts,
+  method = "firth"
+)
 ```
 
 `ropeca` aggregates peptide evidence back to proteins, whereas `lmer` models the
 nested peptide structure directly before reporting protein-level contrasts.
+For peptide-level `firth`, proteins with exactly one peptide are fitted without
+an added peptide term, while proteins with multiple peptides are fitted with the
+lowest hierarchy key added internally.
 
 ```{r collect_peptide}
 results_peptide <- bind_rows(
   fa_lmer$get_contrasts(),
-  fa_ropeca$get_contrasts()
+  fa_ropeca$get_contrasts(),
+  fa_firth_peptide$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
     "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",

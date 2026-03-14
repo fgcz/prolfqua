@@ -28,6 +28,22 @@
   }
 }
 
+.assert_firth_facade_input <- function(lfqdata, facade_name) {
+  subject_id <- lfqdata$subject_Id()
+  hierarchy_keys <- lfqdata$config$hierarchy_keys()
+  is_aggregated <- identical(subject_id, hierarchy_keys)
+  is_nested <- all(subject_id %in% hierarchy_keys) && length(subject_id) < length(hierarchy_keys)
+  if (!(is_aggregated || is_nested)) {
+    stop(
+      facade_name,
+      " requires `lfqdata$subject_Id()` to equal `hierarchy_keys()` or be a strict subset. ",
+      "Received an incompatible LFQData shape.",
+      call. = FALSE
+    )
+  }
+  if (is_aggregated) "aggregated" else "nested"
+}
+
 .add_facade_column <- function(res, facade_name) {
   if (!("facade" %in% colnames(res))) {
     res <- dplyr::mutate(res, facade = facade_name, .before = 1)
@@ -258,6 +274,60 @@ ContrastsLMMissingFacade <- R6::R6Class(
     #' @description convert results to wide format
     #' @param ... passed to ContrastsTable$to_wide
     to_wide       = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
+#' Firth logistic missingness contrast analysis facade
+#'
+#' Encapsulates the pipeline: encode missingness ->
+#' \code{\link{build_model_glm_protein}} or
+#' \code{\link{build_model_glm_peptide}} -> \code{\link{ContrastsFirth}}.
+#'
+#' The input may be aggregated protein-level data or nested peptide-level data.
+#' The correct builder is chosen from the \code{LFQData} hierarchy automatically.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsFirthFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$to_wide()
+ContrastsFirthFacade <- R6::R6Class(
+  "ContrastsFirthFacade",
+  public = list(
+    #' @field model ModelFirth object
+    model = NULL,
+    #' @field contrast ContrastsFirth object
+    contrast = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    initialize = function(lfqdata, modelstr, contrasts) {
+      input_shape <- .assert_firth_facade_input(lfqdata, "ContrastsFirthFacade")
+      self$model <- if (identical(input_shape, "aggregated")) {
+        build_model_glm_protein(lfqdata, modelstr)
+      } else {
+        build_model_glm_peptide(lfqdata, modelstr)
+      }
+      self$contrast <- ContrastsFirth$new(self$model, contrasts)
+    },
+    #' @description get contrast results
+    #' @param ... passed to ContrastsFirth$get_contrasts
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "firth")
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsFirth$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsFirth$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
   )
 )
 

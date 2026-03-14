@@ -66,3 +66,19 @@ test_that("ModelFirth", {
   expect_type(cv, "list")
   expect_s3_class(cv$plot, "ggplot")
 })
+
+test_that("build_model_glm_protein and build_model_glm_peptide return ModelFirth", {
+  prot <- sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
+    weight_missing = 0.5, seed = 7)
+  prot_lfq <- LFQData$new(prot$data, prot$config)
+  prot_mod <- build_model_glm_protein(prot_lfq, "~ group_")
+  expect_true(inherits(prot_mod, "ModelFirth"))
+  expect_s3_class(prot_mod$get_coefficients(), "data.frame")
+
+  pep <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
+    weight_missing = 0.5, seed = 7)
+  pep_lfq <- LFQData$new(pep$data, pep$config)
+  pep_mod <- build_model_glm_peptide(pep_lfq, "~ group_")
+  expect_true(inherits(pep_mod, "ModelFirth"))
+  expect_s3_class(pep_mod$get_coefficients(), "data.frame")
+})

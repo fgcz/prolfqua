@@ -145,3 +145,29 @@ test_that("ContrastsTable (passive container)", {
   pl <- ct$get_Plotter()
   expect_s3_class(pl, "ContrastsPlotter")
 })
+
+test_that("ContrastsFirth and ContrastsFirthFacade", {
+  istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE,
+    weight_missing = 0.5, seed = 9)
+  lfqdata <- LFQData$new(istar$data, istar$config)
+  Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  mod <- build_model_glm_protein(lfqdata, "~ group_")
+  ctr <- ContrastsFirth$new(mod, Contr)
+
+  res <- ctr$get_contrasts()
+  expect_s3_class(res, "data.frame")
+  expect_true(all(c("contrast", "diff", "statistic", "p.value", "FDR") %in% colnames(res)))
+
+  tw <- ctr$to_wide()
+  expect_s3_class(tw, "data.frame")
+
+  pl <- ctr$get_Plotter()
+  expect_s3_class(pl, "ContrastsPlotter")
+
+  fa <- build_contrast_analysis(lfqdata, "~ group_", Contr, method = "firth")
+  expect_true(inherits(fa, "ContrastsFirthFacade"))
+  fa_res <- fa$get_contrasts()
+  expect_true("facade" %in% colnames(fa_res))
+  expect_true(all(fa_res$facade == "firth"))
+})

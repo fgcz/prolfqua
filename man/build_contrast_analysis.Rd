@@ -8,7 +8,7 @@ build_contrast_analysis(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca"),
+  method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
   ...
 )
 }
@@ -23,7 +23,7 @@ build_contrast_analysis(
 (e.g. \code{c("A_vs_B" = "group_A - group_B")})}
 
 \item{method}{one of \code{"lm"}, \code{"lmer"}, \code{"lm_missing"},
-\code{"limma"}, \code{"deqms"}, \code{"ropeca"}}
+\code{"limma"}, \code{"deqms"}, \code{"ropeca"}, \code{"firth"}}
 
 \item{...}{additional arguments forwarded to the underlying strategy function
 (e.g. \code{trend}, \code{robust} for \code{strategy_limma})}
@@ -32,7 +32,7 @@ build_contrast_analysis(
 one of \code{\link{ContrastsLimmaFacade}},
   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsLmerFacade}},
   \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsDEqMSFacade}},
-  or \code{\link{ContrastsROPECAFacade}}
+  \code{\link{ContrastsROPECAFacade}}, or \code{\link{ContrastsFirthFacade}}
 }
 \description{
 A builder function that dispatches to the appropriate facade class based on
@@ -72,12 +72,16 @@ head(fa_lmer$get_contrasts())
 
 fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca")
 head(fa_ropeca$get_contrasts())
+
+fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
+head(fa_firth$get_contrasts())
 }
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsFirth}},
+\code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
@@ -97,6 +101,8 @@ Other modelling:
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
 \code{\link{build_model}()},
+\code{\link{build_model_glm_peptide}()},
+\code{\link{build_model_glm_protein}()},
 \code{\link{build_model_limma}()},
 \code{\link{build_model_logistf}()},
 \code{\link{contrasts_fisher_exact}()},

@@ -32,6 +32,7 @@ pl <- ctrpep$get_Plotter()
 Other modelling: 
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
+\code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
@@ -52,6 +53,8 @@ Other modelling:
 \code{\link{ModelLimma}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
+\code{\link{build_model_glm_peptide}()},
+\code{\link{build_model_glm_protein}()},
 \code{\link{build_model_limma}()},
 \code{\link{build_model_logistf}()},
 \code{\link{contrasts_fisher_exact}()},

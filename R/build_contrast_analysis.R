@@ -13,13 +13,13 @@
 #' @param contrasts named character vector of contrasts
 #'   (e.g. \code{c("A_vs_B" = "group_A - group_B")})
 #' @param method one of \code{"lm"}, \code{"lmer"}, \code{"lm_missing"},
-#'   \code{"limma"}, \code{"deqms"}, \code{"ropeca"}
+#'   \code{"limma"}, \code{"deqms"}, \code{"ropeca"}, \code{"firth"}
 #' @param ... additional arguments forwarded to the underlying strategy function
 #'   (e.g. \code{trend}, \code{robust} for \code{strategy_limma})
 #' @return one of \code{\link{ContrastsLimmaFacade}},
 #'   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsLmerFacade}},
 #'   \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsDEqMSFacade}},
-#'   or \code{\link{ContrastsROPECAFacade}}
+#'   \code{\link{ContrastsROPECAFacade}}, or \code{\link{ContrastsFirthFacade}}
 #' @export
 #' @family modelling
 #' @examples
@@ -55,10 +55,13 @@
 #'
 #' fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca")
 #' head(fa_ropeca$get_contrasts())
+#'
+#' fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
+#' head(fa_firth$get_contrasts())
 build_contrast_analysis <- function(lfqdata,
                                     modelstr,
                                     contrasts,
-                                    method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca"),
+                                    method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
                                     ...) {
   method <- match.arg(method)
   switch(method,
@@ -67,6 +70,7 @@ build_contrast_analysis <- function(lfqdata,
     lm_missing = ContrastsLMMissingFacade$new(lfqdata, modelstr, contrasts, ...),
     limma      = ContrastsLimmaFacade$new(lfqdata, modelstr, contrasts, ...),
     deqms      = ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...),
-    ropeca     = ContrastsROPECAFacade$new(lfqdata, modelstr, contrasts, ...)
+    ropeca     = ContrastsROPECAFacade$new(lfqdata, modelstr, contrasts, ...),
+    firth      = ContrastsFirthFacade$new(lfqdata, modelstr, contrasts)
   )
 }
