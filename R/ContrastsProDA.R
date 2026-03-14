@@ -50,12 +50,8 @@ ContrastsProDA <- R6::R6Class(
     #' @param contrasts  contrasts
     #' @param subject_Id column name with protein ID's
     #' @param modelName name of model default value ContrastProDA
-    initialize = function(contrastsdf,
-                          contrasts,
-                          subject_Id = "name",
-                          modelName = "ContrastProDA"
-    ){
-      if(!"modelName" %in% names(contrastsdf)){
+    initialize = function(contrastsdf, contrasts, subject_Id = "name", modelName = "ContrastProDA") {
+      if (!"modelName" %in% names(contrastsdf)) {
         contrastsdf$modelName <- modelName
       }
       self$contrast_result = contrastsdf
@@ -63,57 +59,58 @@ ContrastsProDA <- R6::R6Class(
       self$modelName = modelName
       self$contrasts = contrasts
       self$contrast_result <- contrastsdf
-
     },
     #' @description
     #' show names of contrasts
     #' @return data.frame
-    get_contrast_sides = function(){
+    get_contrast_sides = function() {
       # extract contrast sides
-      tt <- self$contrasts[grep("-",self$contrasts)]
-      tt <- tibble(contrast = names(tt) , rhs = tt)
-      tt <- tt |> mutate(rhs = gsub("[` ]","",rhs)) |>
-        tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
+      tt <- self$contrasts[grep("-", self$contrasts)]
+      tt <- tibble(contrast = names(tt), rhs = tt)
+      tt <- tt |> mutate(rhs = gsub("[` ]", "", rhs)) |> tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
       return(tt)
     },
     #' @description
     #' get linear function used to determine contrasts
     #' @return data.frame
-    get_linfct = function(){
+    get_linfct = function() {
       NULL
     },
     #' @description
     #' get contrasts
     #' @param all (default FALSE)
-    get_contrasts = function(all = FALSE){
+    get_contrasts = function(all = FALSE) {
       return(self$contrast_result)
     },
     #' @description get \code{\link{ContrastsPlotter}}
     #' @param fcthreshold fold change threshold to show
     #' @param fdrthreshold FDR threshold
     #' @param tstatthreshold t statistics threshold
-    get_Plotter = function(fcthreshold = 1, fdrthreshold = 0.1, tstatthreshold = 5){
+    get_Plotter = function(fcthreshold = 1, fdrthreshold = 0.1, tstatthreshold = 5) {
       res <- ContrastsPlotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
         fcthresh = fcthreshold,
-        volcano = list(list(score = "pval", thresh = fdrthreshold),list(score = "adj_pval", thresh = fdrthreshold)),
-        histogram = list(list(score = "pval", xlim = c(0,1,0.05)), list(score = "adj_pval", xlim = c(0,1,0.05))),
-        score = list(list(score = "t_statistic", thresh = tstatthreshold )),
+        volcano = list(list(score = "pval", thresh = fdrthreshold), list(score = "adj_pval", thresh = fdrthreshold)),
+        histogram = list(list(score = "pval", xlim = c(0, 1, 0.05)), list(score = "adj_pval", xlim = c(0, 1, 0.05))),
+        score = list(list(score = "t_statistic", thresh = tstatthreshold)),
         modelName = "modelName",
         diff = "diff",
-        contrast = "contrast")
+        contrast = "contrast"
+      )
       return(res)
     },
     #' @description convert to wide format
     #' @param columns value column default t_statistic, adj_pval
-    to_wide = function(columns = c("t_statistic", "adj_pval")){
+    to_wide = function(columns = c("t_statistic", "adj_pval")) {
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(
         contrast_minimal,
         subject_Id = self$subject_Id,
         columns = c("diff", columns),
-        contrast = 'contrast')
+        contrast = 'contrast'
+      )
       return(contrasts_wide)
     }
-  ))
+  )
+)

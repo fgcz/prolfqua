@@ -23,7 +23,7 @@ make_protein_lfqdata <- function(Nprot = 30) {
 }
 
 CONTRASTS <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-MODELSTR  <- "~ group_"
+MODELSTR <- "~ group_"
 MODELSTR_LMER <- "~ group_ + (1 | peptide_Id) + (1 | sampleName)"
 
 # Helper: check that a facade has the required interface
@@ -180,9 +180,7 @@ test_that("build_contrast_analysis dispatches to ContrastsLimmaFacade for method
 
 test_that("build_contrast_analysis dispatches to ContrastsDEqMSFacade for method='deqms'", {
   lfqdata <- make_protein_lfqdata()$lfqdata
-  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS,
-    method = "deqms"
-  )
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "deqms")
   expect_true(inherits(fa, "ContrastsDEqMSFacade"))
   expect_equal(fa$contrast$count_column, "nr_peptides")
   check_facade_interface(fa)

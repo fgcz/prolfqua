@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+echo "pre-commit: formatting with Air"
+make format
+
+if ! git diff --quiet -- .; then
+  echo "pre-commit: formatting changed files"
+  echo "Review and stage the formatting changes, then commit again."
+  git diff --name-only -- .
+  exit 1
+fi
+
+echo "pre-commit: running lintr"
+make lint

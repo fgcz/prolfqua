@@ -21,8 +21,10 @@
 #' @importFrom tidyr nest nesting separate_rows unite unnest separate
 #' @importFrom tidyr pivot_wider pivot_longer
 #' @importFrom tibble add_column as_tibble column_to_rownames tibble
-#' @importFrom stats anova coef coefficients confint cor.test delete.response df.residual ecdf formula lm mad median medpolish
-#' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt quantile sd setNames sigma terms update vcov
+#' @importFrom stats anova coef coefficients confint cor.test delete.response
+#'   df.residual ecdf formula lm mad median medpolish
+#' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt
+#'   quantile sd setNames sigma terms update vcov
 #' @importFrom stats approx df fisher.test ftable lm.fit pchisq pf pnorm qf rgeom rlnorm rnorm uniroot
 #' @importFrom utils combn data head read.csv tail unzip
 #' @importFrom limma lmFit contrasts.fit eBayes topTable
@@ -34,11 +36,22 @@ NULL
 
 # Suppress R CMD check NOTEs for variables used in NSE (dplyr/ggplot2)
 utils::globalVariables(c(
-  ".", ".env", "Freq", "Group", "PC", "Replicate",
-  "group", "isSingular", "linear_model", "meanAbundance",
-  "nr_peptides", "percent_variance_explained",
-  "reference_mean", "reference_median",
-  "subject", "y"
+  ".",
+  ".env",
+  "Freq",
+  "Group",
+  "PC",
+  "Replicate",
+  "group",
+  "isSingular",
+  "linear_model",
+  "meanAbundance",
+  "nr_peptides",
+  "percent_variance_explained",
+  "reference_mean",
+  "reference_median",
+  "subject",
+  "y"
 ))
 
 #' Internal Functions by category
@@ -87,7 +100,6 @@ NULL
 "x5463yzwer453bbb"
 
 
-
 # data_benchmarkExample <- prolfqua::benchmarkDataExample
 # usethis::use_data(data_benchmarkExample, compress = TRUE, overwrite = TRUE)
 # file.remove("data/benchmarkDataExample.rda")
@@ -125,7 +137,6 @@ NULL
 
 # #@usage data_checksummarizerobust <- prolfqua_data("data_checksummarizerobust")
 
-
 # data_checksummarizerobust69 <- prolfqua::checksummarizerobust69
 # usethis::use_data(data_checksummarizerobust69, compress = TRUE, overwrite = TRUE)
 # file.remove("data/checksummarizerobust69.rda")
@@ -138,7 +149,6 @@ NULL
 "data_checksummarizerobust69"
 
 # #@usage data_checksummarizerobust69 <- prolfqua_data("data_checksummarizerobust69")
-
 
 # data_correlatedPeptideList <- prolfqua::correlatedPeptideList
 # usethis::use_data(data_correlatedPeptideList, compress = TRUE, overwrite = TRUE)
@@ -153,7 +163,6 @@ NULL
 
 # #@usage data_correlatedPeptideList <- prolfqua_data("data_correlatedPeptideList")
 
-
 # data_IonstarProtein_subsetNorm <- prolfqua::dataIonstarProtein_subsetNorm
 # usethis::use_data(data_IonstarProtein_subsetNorm, compress = TRUE, overwrite = TRUE)
 # file.remove("data/dataIonstarProtein_subsetNorm.rda")
@@ -167,10 +176,7 @@ NULL
 
 # #@usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
 
-
-
 # #@usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
-
 
 # data_ionstar <- ionstar
 # usethis::use_data(data_ionstar, compress = TRUE, overwrite = TRUE)
@@ -183,11 +189,6 @@ NULL
 "data_ionstar"
 
 # #@usage data_ionstar <- prolfqua_data("data_ionstar")
-
-
-
-
-
 
 # #@usage data_multigroupFC <- prolfqua_data("data_multigroupFC")
 
@@ -208,7 +209,6 @@ NULL
 "data_skylinePRMSample_A"
 
 # #@usage data_skylinePRMSample_A <- prolfqua_data("data_skylinePRMSample_A")
-
 
 # data_skylineSRM_HL_A <- skylineSRM_HL_A
 # usethis::use_data(data_skylineSRM_HL_A,compress = TRUE, overwrite = TRUE)
@@ -238,7 +238,6 @@ NULL
 # }
 # data_skylineSRM_HL_A <- data_skylineSRM_HL_A_new
 # usethis::use_data(data_skylineSRM_HL_A,compress = TRUE, overwrite = TRUE)
-
 
 # data_spectronautDIA250_A <- spectronautDIAData250_A
 # usethis::use_data(data_spectronautDIA250_A,compress = TRUE, overwrite = TRUE)

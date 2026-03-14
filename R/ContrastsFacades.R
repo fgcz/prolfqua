@@ -83,9 +83,9 @@ ContrastsLimmaFacade <- R6::R6Class(
       .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
-      strat          <- strategy_limma(full_formula, ...)
-      self$model     <- build_model_limma(lfqdata, strat)
-      self$contrast  <- ContrastsLimma$new(self$model, contrasts)
+      strat <- strategy_limma(full_formula, ...)
+      self$model <- build_model_limma(lfqdata, strat)
+      self$contrast <- ContrastsLimma$new(self$model, contrasts)
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsLimma$get_contrasts
@@ -94,10 +94,10 @@ ContrastsLimmaFacade <- R6::R6Class(
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsLimma$get_Plotter
-    get_Plotter   = function(...) self$contrast$get_Plotter(...),
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
     #' @description convert results to wide format
     #' @param ... passed to ContrastsLimma$to_wide
-    to_wide       = function(...) self$contrast$to_wide(...)
+    to_wide = function(...) self$contrast$to_wide(...)
   )
 )
 
@@ -135,9 +135,9 @@ ContrastsLMFacade <- R6::R6Class(
       .assert_aggregated_facade_input(lfqdata, "ContrastsLMFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
-      strat          <- strategy_lm(full_formula, ...)
-      self$model     <- build_model(lfqdata, strat)
-      self$contrast  <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      strat <- strategy_lm(full_formula, ...)
+      self$model <- build_model(lfqdata, strat)
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModerated$get_contrasts
@@ -146,10 +146,10 @@ ContrastsLMFacade <- R6::R6Class(
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModerated$get_Plotter
-    get_Plotter   = function(...) self$contrast$get_Plotter(...),
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
     #' @description convert results to wide format
     #' @param ... passed to ContrastsModerated$to_wide
-    to_wide       = function(...) self$contrast$to_wide(...)
+    to_wide = function(...) self$contrast$to_wide(...)
   )
 )
 
@@ -195,9 +195,9 @@ ContrastsLmerFacade <- R6::R6Class(
       .assert_nested_facade_input(lfqdata, "ContrastsLmerFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
-      strat          <- strategy_lmer(full_formula, ...)
-      self$model     <- build_model(lfqdata, strat)
-      self$contrast  <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      strat <- strategy_lmer(full_formula, ...)
+      self$model <- build_model(lfqdata, strat)
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModerated$get_contrasts
@@ -206,10 +206,10 @@ ContrastsLmerFacade <- R6::R6Class(
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModerated$get_Plotter
-    get_Plotter   = function(...) self$contrast$get_Plotter(...),
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
     #' @description convert results to wide format
     #' @param ... passed to ContrastsModerated$to_wide
-    to_wide       = function(...) self$contrast$to_wide(...)
+    to_wide = function(...) self$contrast$to_wide(...)
   )
 )
 
@@ -256,12 +256,12 @@ ContrastsLMMissingFacade <- R6::R6Class(
       .assert_aggregated_facade_input(lfqdata, "ContrastsLMMissingFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
-      strat                  <- strategy_lm(full_formula, ...)
-      self$model             <- build_model(lfqdata, strat)
-      base_contrast          <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
-      self$missing_contrast  <- ContrastsMissing$new(lfqdata, contrasts = contrasts)
-      self$merged            <- merge_contrasts_results(base_contrast, self$missing_contrast)
-      self$contrast          <- self$merged$merged
+      strat <- strategy_lm(full_formula, ...)
+      self$model <- build_model(lfqdata, strat)
+      base_contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$missing_contrast <- ContrastsMissing$new(lfqdata, contrasts = contrasts)
+      self$merged <- merge_contrasts_results(base_contrast, self$missing_contrast)
+      self$contrast <- self$merged$merged
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsTable$get_contrasts
@@ -270,10 +270,10 @@ ContrastsLMMissingFacade <- R6::R6Class(
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsTable$get_Plotter
-    get_Plotter   = function(...) self$contrast$get_Plotter(...),
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
     #' @description convert results to wide format
     #' @param ... passed to ContrastsTable$to_wide
-    to_wide       = function(...) self$contrast$to_wide(...)
+    to_wide = function(...) self$contrast$to_wide(...)
   )
 )
 
@@ -366,15 +366,13 @@ ContrastsDEqMSFacade <- R6::R6Class(
       .assert_aggregated_facade_input(lfqdata, "ContrastsDEqMSFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
-      strat         <- strategy_lm(full_formula, ...)
-      self$model    <- build_model(lfqdata, strat)
+      strat <- strategy_lm(full_formula, ...)
+      self$model <- build_model(lfqdata, strat)
       base_contrast <- Contrasts$new(self$model, contrasts)
       count_column <- lfqdata$config$nr_children
       count_df <- lfqdata$data |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_Id, count_column)))
-      self$contrast <- ContrastsModeratedDEqMS$new(base_contrast,
-                                                    count_df = count_df,
-                                                    count_column = count_column)
+      self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModeratedDEqMS$get_contrasts
@@ -383,10 +381,10 @@ ContrastsDEqMSFacade <- R6::R6Class(
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModeratedDEqMS$get_Plotter
-    get_Plotter   = function(...) self$contrast$get_Plotter(...),
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
     #' @description convert results to wide format
     #' @param ... passed to ContrastsModeratedDEqMS$to_wide
-    to_wide       = function(...) self$contrast$to_wide(...)
+    to_wide = function(...) self$contrast$to_wide(...)
   )
 )
 
@@ -429,11 +427,11 @@ ContrastsROPECAFacade <- R6::R6Class(
       .assert_nested_facade_input(lfqdata, "ContrastsROPECAFacade")
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
-      strat         <- strategy_lm(full_formula, ...)
+      strat <- strategy_lm(full_formula, ...)
       # ROPECA requires subject_Id with >1 element (protein + peptide level).
       # Use all hierarchy keys, not just those at hierarchyDepth.
-      subject_Id    <- lfqdata$config$hierarchy_keys()
-      self$model    <- build_model(lfqdata, strat, subject_Id = subject_Id)
+      subject_Id <- lfqdata$config$hierarchy_keys()
+      self$model <- build_model(lfqdata, strat, subject_Id = subject_Id)
       self$contrast <- ContrastsROPECA$new(Contrasts$new(self$model, contrasts))
     },
     #' @description
@@ -451,26 +449,34 @@ ContrastsROPECAFacade <- R6::R6Class(
     #' }
     get_contrasts = function() {
       res <- self$contrast$get_contrasts(all = TRUE)
-      res <- dplyr::rename(res,
-        p.value = "beta.based.significance",
-        FDR     = "FDR.beta.based.significance"
-      )
+      res <- dplyr::rename(res, p.value = "beta.based.significance", FDR = "FDR.beta.based.significance")
       # Derive std.error from median fold change / median t-statistic
-      res$std.error <- ifelse(res$statistic != 0,
-                              res$diff / res$statistic, NA_real_)
+      res$std.error <- ifelse(res$statistic != 0, res$diff / res$statistic, NA_real_)
       # sigma: MAD of peptide-level fold changes as robust dispersion proxy
       res$sigma <- res$mad.estimate
       # df: number of contributing peptides
       res$df <- res$n_not_na
       # Confidence intervals from derived std.error and df
       prqt <- stats::qt(0.975, df = pmax(res$df, 1))
-      res$conf.low  <- res$diff - prqt * abs(res$std.error)
+      res$conf.low <- res$diff - prqt * abs(res$std.error)
       res$conf.high <- res$diff + prqt * abs(res$std.error)
       # Select standard columns only
       protein_Id <- self$contrast$subject_Id[1]
-      standard_cols <- c(protein_Id, "modelName", "contrast", "avgAbd",
-                         "diff", "FDR", "statistic", "std.error", "df",
-                         "p.value", "conf.low", "conf.high", "sigma")
+      standard_cols <- c(
+        protein_Id,
+        "modelName",
+        "contrast",
+        "avgAbd",
+        "diff",
+        "FDR",
+        "statistic",
+        "std.error",
+        "df",
+        "p.value",
+        "conf.low",
+        "conf.high",
+        "sigma"
+      )
       res <- res[, standard_cols, drop = FALSE]
       .add_facade_column(res, "ropeca")
     },
@@ -483,13 +489,12 @@ ContrastsROPECAFacade <- R6::R6Class(
       ContrastsPlotter$new(
         contrast_result,
         subject_Id = protein_Id,
-        fcthresh   = FCthreshold,
-        volcano    = list(list(score = "FDR",     thresh = FDRthreshold)),
-        histogram  = list(list(score = "p.value", xlim   = c(0, 1, 0.05)),
-                          list(score = "FDR",     xlim   = c(0, 1, 0.05))),
-        modelName  = "modelName",
-        diff       = "diff",
-        contrast   = "contrast"
+        fcthresh = FCthreshold,
+        volcano = list(list(score = "FDR", thresh = FDRthreshold)),
+        histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
+        modelName = "modelName",
+        diff = "diff",
+        contrast = "contrast"
       )
     },
     #' @description convert results to wide format
@@ -500,8 +505,8 @@ ContrastsROPECAFacade <- R6::R6Class(
       pivot_model_contrasts_2_Wide(
         contrast_result,
         subject_Id = protein_Id,
-        columns    = c("diff", columns),
-        contrast   = "contrast"
+        columns = c("diff", columns),
+        contrast = "contrast"
       )
     }
   )

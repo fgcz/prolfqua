@@ -65,10 +65,23 @@ test_that("ContrastsLimma produces valid results", {
 
   res <- contr_limma$get_contrasts()
   expect_true(is.data.frame(res))
-  expect_true(all(c("diff", "FDR", "p.value", "statistic",
-                     "std.error", "sigma", "df",
-                     "conf.low", "conf.high",
-                     "avgAbd", "modelName", "contrast") %in% colnames(res)))
+  expect_true(all(
+    c(
+      "diff",
+      "FDR",
+      "p.value",
+      "statistic",
+      "std.error",
+      "sigma",
+      "df",
+      "conf.low",
+      "conf.high",
+      "avgAbd",
+      "modelName",
+      "contrast"
+    ) %in%
+      colnames(res)
+  ))
   expect_true(all(res$p.value >= 0 & res$p.value <= 1, na.rm = TRUE))
   expect_true(all(res$FDR >= 0 & res$FDR <= 1, na.rm = TRUE))
   # avgAbd can be NA for proteins with incomplete data (NA coefficients)
@@ -140,8 +153,7 @@ test_that("ContrastsLimma get_contrast_sides works", {
 
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
   mod <- prolfqua::build_model_limma(lProt, strat)
-  Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl",
-             "B_vs_Ctrl" = "group_B - group_Ctrl")
+  Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
   contr_limma <- prolfqua::ContrastsLimma$new(mod, Contr)
 
   sides <- contr_limma$get_contrast_sides()
@@ -174,9 +186,7 @@ test_that("ContrastsLimma works with multiple contrasts", {
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
   mod <- prolfqua::build_model_limma(lProt, strat)
 
-  Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl",
-             "B_vs_Ctrl" = "group_B - group_Ctrl",
-             "A_vs_B" = "group_A - group_B")
+  Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl", "A_vs_B" = "group_A - group_B")
   contr_limma <- prolfqua::ContrastsLimma$new(mod, Contr)
   res <- contr_limma$get_contrasts()
 
@@ -194,8 +204,7 @@ test_that("ContrastsLimma works with 2-factor design", {
   strat <- prolfqua::strategy_limma("transformedIntensity ~ Treatment + Background")
   mod <- prolfqua::build_model_limma(lProt, strat)
 
-  Contr <- c("A_vs_B" = "TreatmentA - TreatmentB",
-             "X_vs_Z" = "BackgroundX - BackgroundZ")
+  Contr <- c("A_vs_B" = "TreatmentA - TreatmentB", "X_vs_Z" = "BackgroundX - BackgroundZ")
   contr_limma <- prolfqua::ContrastsLimma$new(mod, Contr)
   res <- contr_limma$get_contrasts()
 

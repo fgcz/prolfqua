@@ -70,45 +70,51 @@ LFQData <- R6::R6Class(
     #' @param prefix will be use as output prefix
     #' @param setup is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.
     initialize = function(data, config, prefix = "ms_", setup = FALSE) {
-      self$data <- if (setup) {setup_analysis(data, config)} else {data}
+      self$data <- if (setup) {
+        setup_analysis(data, config)
+      } else {
+        data
+      }
       self$config <- config$clone(deep = TRUE)
       self$prefix <- prefix
     },
     #' @description
     #' get deep copy
-    get_copy = function(){
+    get_copy = function() {
       return(self$clone(deep = TRUE))
     },
     #' @description
     #' samples subset of data
     #' @param size size of subset default 100
     #' @param seed set seed
-    get_sample = function(size = 100, seed = NULL){
-      if (!is.null(seed)) {  set.seed( seed ) }
+    get_sample = function(size = 100, seed = NULL) {
+      if (!is.null(seed)) {
+        set.seed(seed)
+      }
       subset <- prolfqua::sample_subset(size = size, self$data, self$config)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
     #' get subset of data
     #' @param x data frame with columns containing subject_Id
-    get_subset = function(x){
+    get_subset = function(x) {
       x <- select(x, any_of(self$subject_Id())) |> distinct()
       subset <- inner_join(x, self$data)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
     #' get subject ID columns
-    subject_Id = function(){
+    subject_Id = function() {
       return(self$config$hierarchy_keys_depth())
     },
     #' @description
     #' is data transformed
     #' @param is_transformed logical
     #' @return logical
-    is_transformed = function(is_transformed){
+    is_transformed = function(is_transformed) {
       if (missing(is_transformed)) {
         return(self$config$is_response_transformed)
-      }else{
+      } else {
         self$config$is_response_transformed = is_transformed
       }
     },
@@ -116,17 +122,15 @@ LFQData <- R6::R6Class(
     #' some software is reporting NA's as 0, you must remove it from your data
     #' @param threshold default 4.
     #' @return self
-    remove_small_intensities = function(threshold = 4){
-      self$data <- prolfqua::remove_small_intensities( self$data, self$config, threshold = threshold )
+    remove_small_intensities = function(threshold = 4) {
+      self$data <- prolfqua::remove_small_intensities(self$data, self$config, threshold = threshold)
       invisible(self)
     },
     #' @description
     #' remove proteins with less than X peptides
     #' @return self
-    filter_proteins_by_peptide_count = function(){
-      message("removing proteins with less than: ",
-              self$config$min_peptides_protein,
-              " peptpides")
+    filter_proteins_by_peptide_count = function() {
+      message("removing proteins with less than: ", self$config$min_peptides_protein, " peptpides")
       self$data <- prolfqua::filter_proteins_by_peptide_count(self$data, self$config)$data
       invisible(self)
     },
@@ -135,7 +139,8 @@ LFQData <- R6::R6Class(
     #' For instance if a peptide has a missing value in more then nrNA of the samples within a condition
     #' it will be removed
     #' @param nrNA number of NA values
-    #' @param factorDepth you control for nrNA per condition or experiment etc. e.g. factorDepth = 0  then per experiment
+    #' @param factorDepth control whether `nrNA` is applied per condition or more
+    #'   globally, e.g. `factorDepth = 0` means per experiment
     #' @return LFQData with NA omitted.
     #'
     omit_NA = function(nrNA = 0, factorDepth = NULL) {
@@ -146,17 +151,16 @@ LFQData <- R6::R6Class(
           cfg <- self$config$clone(deep = TRUE)
           cfg$factorDepth <- factorDepth
           missing <- prolfqua::summarize_stats_factors(self$data, cfg)
-        } else{
+        } else {
           missing <- prolfqua::summarize_stats_all(self$data, self$config)
         }
       }
       notNA <- missing |> dplyr::filter(nrNAs <= nrNA)
-      sumN <- notNA |> group_by(across(all_of(self$config$hierarchy_keys()))) |>
-        summarise(n = n())
+      sumN <- notNA |> group_by(across(all_of(self$config$hierarchy_keys()))) |> summarise(n = n())
       notNA <- sumN |> dplyr::filter(n == max(n))
 
       notNA <- notNA |> dplyr::select(dplyr::all_of(self$config$hierarchy_keys()))
-      notNAdata <- dplyr::inner_join( notNA, self$data) |> ungroup()
+      notNAdata <- dplyr::inner_join(notNA, self$data) |> ungroup()
       return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
     },
 
@@ -165,7 +169,7 @@ LFQData <- R6::R6Class(
     #' some software is reporting NA's as 0, you must remove it from your data
     #' @param threshold default 4.
     #' @return self
-    complete_cases = function(){
+    complete_cases = function() {
       self$data <- prolfqua::complete_cases(self$data, self$config)
       invisible(self)
     },
@@ -175,15 +179,17 @@ LFQData <- R6::R6Class(
     #' @param value see possible lfqdata$config$value_vars()
     #' @return list with data, annotation, and configuration
     #'
-    to_wide = function(as.matrix = FALSE, value = NULL){
+    to_wide = function(as.matrix = FALSE, value = NULL) {
       if (is.null(value)) {
         wide <- prolfqua::tidy_to_wide_config(self$data, self$config, as.matrix = as.matrix)
       } else {
         stopifnot(value %in% self$config$value_vars())
         wide <- prolfqua::tidy_to_wide_config(
-          self$data, self$config,
+          self$data,
+          self$config,
           as.matrix = as.matrix,
-          value = value)
+          value = value
+        )
       }
       wide$config <- self$config$clone(deep = TRUE)
       return(wide)
@@ -191,12 +197,12 @@ LFQData <- R6::R6Class(
     #' @description
     #' Annotation table
     #' @return data.frame
-    factors = function(){
+    factors = function() {
       prolfqua::table_factors(self$data, self$config)
     },
     #' @description
     #' Hierarchy table
-    hierarchy = function(){
+    hierarchy = function() {
       hk <- self$config$hierarchy_keys_depth()
       hkdf <- self$data |> select(all_of(hk)) |> distinct()
       return(hkdf)
@@ -204,15 +210,15 @@ LFQData <- R6::R6Class(
     #' @description
     #' name of response variable
     #' @return data.frame
-    response = function(){
+    response = function() {
       self$config$get_response()
     },
     #' @description
     #' new name of response variable
     #' @param newname default Intensity
-    rename_response = function(newname = "Intensity"){
-      if((newname %in% colnames(self$data))){
-        msg <- paste(newname, " already in data :", paste( colnames(self$data), collapse = " "), ".")
+    rename_response = function(newname = "Intensity") {
+      if ((newname %in% colnames(self$data))) {
+        msg <- paste(newname, " already in data :", paste(colnames(self$data), collapse = " "), ".")
         message(msg)
       } else {
         old <- self$config$pop_response()
@@ -222,32 +228,32 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' number of elements at each level
-    hierarchy_counts = function(){
+    hierarchy_counts = function() {
       prolfqua::hierarchy_counts(self$data, self$config)
     },
     #' @description
     #' e.g. number of peptides per protein etc
     #' @return data.frame
-    summarize_hierarchy = function(){
+    summarize_hierarchy = function() {
       prolfqua::summarize_hierarchy(self$data, self$config)
     },
     #' @description
     #' get Plotter
     #' @return LFQDataPlotter
-    get_Plotter = function(){
+    get_Plotter = function() {
       return(LFQDataPlotter$new(self, self$prefix))
     },
     #' @description
     #' get Summariser
     #' @return LFQDataSummarizer
-    get_Summariser = function(){
+    get_Summariser = function() {
       return(LFQDataSummariser$new(self))
     },
     #' @description
     #' Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
     #' @param stats default interaction, computes statistics within interaction.
     #' @return LFQDataStats
-    get_Stats = function(stats = c("everything","interaction", "all")){
+    get_Stats = function(stats = c("everything", "interaction", "all")) {
       stats <- match.arg(stats)
       return(LFQDataStats$new(self, stats = stats))
     },
@@ -278,9 +284,9 @@ LFQData <- R6::R6Class(
     #' @param other a filtered LFQData set
     #' @return LFQData
     #'
-    filter_difference = function(other){
-      diffdata <- prolfqua::filter_difference(self$data,other$data,self$config )
-      res <- LFQData$new(diffdata , self$config$clone(deep = TRUE))
+    filter_difference = function(other) {
+      diffdata <- prolfqua::filter_difference(self$data, other$data, self$config)
+      res <- LFQData$new(diffdata, self$config$clone(deep = TRUE))
       return(res)
     }
   )
@@ -304,7 +310,7 @@ LFQData <- R6::R6Class(
 #'    tmp <- LFQDataToSummarizedExperiment(lfqdata)
 #' }
 #'
-LFQDataToSummarizedExperiment <- function(lfqdata){
+LFQDataToSummarizedExperiment <- function(lfqdata) {
   if (requireNamespace("SummarizedExperiment")) {
     wide <- lfqdata$to_wide(as.matrix = TRUE)
     ann <- data.frame(wide$annotation)
@@ -317,7 +323,8 @@ LFQDataToSummarizedExperiment <- function(lfqdata){
     se <- SummarizedExperiment::SummarizedExperiment(
       assays,
       colData = ann,
-      rowData = wide$rowdata)
+      rowData = wide$rowdata
+    )
     return(se)
   }
 }

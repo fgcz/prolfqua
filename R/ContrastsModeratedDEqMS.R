@@ -1,6 +1,5 @@
 # ContrastsModeratedDEqMS -----
 
-
 #' Find prior degrees of freedom for DEqMS
 #'
 #' Uses trigammaInverse to estimate d0 from the mean residual variance
@@ -10,7 +9,9 @@
 #' @return scalar prior degrees of freedom (d0)
 #' @keywords internal
 find_d0_deqms <- function(mean_myfct) {
-  if (is.na(mean_myfct) || mean_myfct <= 0) return(Inf)
+  if (is.na(mean_myfct) || mean_myfct <= 0) {
+    return(Inf)
+  }
   d0 <- 2 * trigammaInverse(mean_myfct)
   return(max(d0, 0.1))
 }
@@ -33,8 +34,7 @@ find_d0_deqms <- function(mean_myfct) {
 #' @export
 #' @family modelling
 #' @keywords internal
-moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff",
-                              loess_span = 0.75, confint = 0.95) {
+moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess_span = 0.75, confint = 0.95) {
   logvar <- log(mm$sigma^2)
   log2count <- log2(mm[[count_col]])
   df_res <- mm[[df]]
@@ -55,9 +55,12 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff",
   # For non-ok, predict from the fit if possible
   not_ok <- !ok & is.finite(log2count)
   if (any(not_ok)) {
-    fitted_logvar[not_ok] <- predict(loess_fit, newdata = data.frame(
-      `log2count[ok]` = log2count[not_ok]
-    ))
+    fitted_logvar[not_ok] <- predict(
+      loess_fit,
+      newdata = data.frame(
+        `log2count[ok]` = log2count[not_ok]
+      )
+    )
   }
   # For any remaining NAs, use the mean fitted value
   fitted_logvar[is.na(fitted_logvar)] <- mean(fitted_logvar, na.rm = TRUE)
@@ -92,18 +95,18 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff",
 
   # Confidence intervals (same pattern as moderated_p_limma)
   prqt <- -qt((1 - confint) / 2, df = df_total)
-  conf_low  <- mm[[estimate]] - prqt * sqrt(var_post)
+  conf_low <- mm[[estimate]] - prqt * sqrt(var_post)
   conf_high <- mm[[estimate]] + prqt * sqrt(var_post)
 
   # Attach results (same naming convention as moderated_p_limma)
-  mm$moderated.var.prior  <- s02
-  mm$moderated.df.prior   <- d0
-  mm$moderated.var.post   <- var_post
-  mm$moderated.statistic  <- moderated_t
-  mm$moderated.df.total   <- df_total
-  mm$moderated.p.value    <- moderated_p
-  mm$moderated.conf.low   <- conf_low
-  mm$moderated.conf.high  <- conf_high
+  mm$moderated.var.prior <- s02
+  mm$moderated.df.prior <- d0
+  mm$moderated.var.post <- var_post
+  mm$moderated.statistic <- moderated_t
+  mm$moderated.df.total <- df_total
+  mm$moderated.p.value <- moderated_p
+  mm$moderated.conf.low <- conf_low
+  mm$moderated.conf.high <- conf_high
 
   return(mm)
 }
@@ -123,10 +126,7 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff",
 #' @export
 #' @family modelling
 #' @keywords internal
-moderated_p_deqms_long <- function(mm, count_col,
-                                   group_by_col = "contrast",
-                                   estimate = "diff",
-                                   loess_span = 0.75) {
+moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", estimate = "diff", loess_span = 0.75) {
   dfg <- mm |>
     dplyr::group_by(dplyr::across(dplyr::all_of(group_by_col))) |>
     tidyr::nest()
@@ -280,20 +280,20 @@ ContrastsModeratedDEqMS <- R6::R6Class(
     #' @param loess_span span for LOESS variance fit (default 0.75)
     #' @param modelName name of the model
     #' @param p.adjust function to adjust p-values - default BH
-    initialize = function(Contrast,
-                          count_df,
-                          count_column,
-                          loess_span = 0.75,
-                          modelName = paste0(Contrast$modelName, "_DEqMS"),
-                          p.adjust = prolfqua::adjust_p_values
+    initialize = function(
+      Contrast,
+      count_df,
+      count_column,
+      loess_span = 0.75,
+      modelName = paste0(Contrast$modelName, "_DEqMS"),
+      p.adjust = prolfqua::adjust_p_values
     ) {
       self$Contrast = Contrast
       self$subject_Id = Contrast$subject_Id
       # Aggregate count_df to one row per subject_Id (max count)
       count_df <- count_df |>
         dplyr::group_by(dplyr::across(dplyr::all_of(Contrast$subject_Id))) |>
-        dplyr::summarise(!!count_column := max(!!rlang::sym(count_column), na.rm = TRUE),
-                         .groups = "drop")
+        dplyr::summarise(!!count_column := max(!!rlang::sym(count_column), na.rm = TRUE), .groups = "drop")
       # Replace -Inf (from all-NA groups) with NA
       count_df[[count_column]][is.infinite(count_df[[count_column]])] <- NA
       self$count_df = count_df
@@ -329,7 +329,8 @@ ContrastsModeratedDEqMS <- R6::R6Class(
 
       # Ensure count >= 1 to avoid log2(0)
       contrast_result[[self$count_column]] <- pmax(
-        contrast_result[[self$count_column]], 1
+        contrast_result[[self$count_column]],
+        1
       )
 
       contrast_result <- moderated_p_deqms_long(
@@ -345,12 +346,19 @@ ContrastsModeratedDEqMS <- R6::R6Class(
 
       if (!all) {
         contrast_result <- contrast_result |>
-          dplyr::select(-c(
-            "sigma", "df",
-            "statistic", "p.value", "conf.low", "conf.high",
-            "FDR", "moderated.df.prior",
-            "moderated.var.prior"
-          ))
+          dplyr::select(
+            -c(
+              "sigma",
+              "df",
+              "statistic",
+              "p.value",
+              "conf.low",
+              "conf.high",
+              "FDR",
+              "moderated.df.prior",
+              "moderated.var.prior"
+            )
+          )
         contrast_result <- contrast_result |>
           dplyr::mutate(sigma = sqrt(moderated.var.post), .keep = "unused")
         contrast_result <- contrast_result |>

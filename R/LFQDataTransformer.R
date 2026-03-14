@@ -93,29 +93,27 @@ LFQDataTransformer <- R6::R6Class(
     #' initialize
     #' @param lfqdata
     #' LFQData object to transform
-    initialize = function(lfqdata){
+    initialize = function(lfqdata) {
       self$lfq = lfqdata$clone(deep = TRUE)
     },
     #' @description
     #' log2 transform data
-    #' @param force if FALSE, then data already log2 transformed will not be transformed a second time. TRUE force log transformation.
+    #' @param force if `FALSE`, data already log2 transformed will not be
+    #'   transformed a second time. `TRUE` forces log transformation
     #' @return LFQDataTransformer
-    log2 = function(force = FALSE){
-      if (self$lfq$is_transformed() == FALSE | force ) {
-        self$lfq$data  <-  prolfqua::transform_work_intensity(self$lfq$data ,
-                                                              self$lfq$config, log2)
+    log2 = function(force = FALSE) {
+      if (self$lfq$is_transformed() == FALSE | force) {
+        self$lfq$data <- prolfqua::transform_work_intensity(self$lfq$data, self$lfq$config, log2)
         self$lfq$is_transformed(TRUE)
       } else {
         warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
       }
       invisible(self)
-
     },
     #' @description
     #' get mean and variance and standard deviation in each sample
     #' @return list with means and mads
-    get_scales = function()
-    {
+    get_scales = function() {
       get_robscales(self$lfq$data, self$lfq$config)
     },
     #' @description
@@ -123,7 +121,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @param colname new name of transformed column
     #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
     #' @return LFQDataTransformer (self)
-    robscale = function(preserveMean = TRUE, colname = "transformedIntensity"){
+    robscale = function(preserveMean = TRUE, colname = "transformedIntensity") {
       res <- self$robscale_subset(self$lfq, preserveMean = preserveMean, colname = colname)
       invisible(res)
     },
@@ -134,19 +132,14 @@ LFQDataTransformer <- R6::R6Class(
     #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQDataTransformer (self)
     #'
-    robscale_subset = function(lfqsubset,
-                               preserveMean = TRUE,
-                               colname = "transformed_abundance"){
-      message("data is : ",self$lfq$is_transformed())
+    robscale_subset = function(lfqsubset, preserveMean = TRUE, colname = "transformed_abundance") {
+      message("data is : ", self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
         invisible(NULL)
       }
-      scales <- prolfqua::scale_with_subset(self$lfq$data,
-                                            lfqsubset$data,
-                                            self$lfq$config,
-                                            preserveMean = preserveMean)
-      self$lfq$data  <- scales$data
+      scales <- prolfqua::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config, preserveMean = preserveMean)
+      self$lfq$data <- scales$data
       if (!is.null(colname)) {
         self$lfq$data <- self$lfq$data |>
           dplyr::rename(!!colname := self$lfq$config$get_response())
@@ -154,7 +147,6 @@ LFQDataTransformer <- R6::R6Class(
         self$lfq$config$set_response(colname)
       }
       invisible(self)
-
     },
     #' @description
     #' log2 transform and robust scale data based on subset
@@ -163,19 +155,17 @@ LFQDataTransformer <- R6::R6Class(
     #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQDataTransformer (self)
     #'
-    center_to_reference = function(lfqsubset){
-      message("data is transoformed: ",self$lfq$is_transformed())
+    center_to_reference = function(lfqsubset) {
+      message("data is transoformed: ", self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         stop("the subset must have the same config as self")
-
       }
-      if (!self$lfq$is_transformed()){
+      if (!self$lfq$is_transformed()) {
         warning("data should be log2 transformed")
       }
       center_to_reference_cfg(self$lfq, lfqsubset, copy = FALSE)
       invisible(self)
     },
-
 
     #' @description
     #' Transforms intensities
@@ -186,40 +176,41 @@ LFQDataTransformer <- R6::R6Class(
     #'
     intensity_array = function(.func = log2, force = FALSE) {
       if (!self$lfq$is_transformed() | force) {
-        .call <- as.list( match.call() )
+        .call <- as.list(match.call())
         r <- prolfqua::transform_work_intensity(
           self$lfq$data,
           self$lfq$config,
           .func = .func,
-          .funcname = deparse(.call$.func))
+          .funcname = deparse(.call$.func)
+        )
         self$lfq$data <- r
         self$lfq$is_transformed(TRUE)
-
       } else {
         warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
-
       }
       invisible(self)
     },
     #' @description
     #' pass a function which works with matrices, e.g., vsn::justvsn
-    #' @param .func any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale
+    #' @param .func any function taking a matrix and returning a matrix
+    #'   (columns sample, rows feature, e.g. `base::scale()`), default
+    #'   `robust_scale`
     #' @param force transformation on data already transformed
     #' @return LFQDataTransformer (self)
     #'
-    intensity_matrix = function(.func = robust_scale, force = FALSE){
+    intensity_matrix = function(.func = robust_scale, force = FALSE) {
       if (!self$lfq$is_transformed() | force) {
-        .call <- as.list( match.call() )
+        .call <- as.list(match.call())
         r <- prolfqua::apply_to_response_matrix(
           self$lfq$data,
           self$lfq$config,
           .func = .func,
-          .funcname = deparse(.call$.func))
+          .funcname = deparse(.call$.func)
+        )
         self$lfq$data <- r
         self$lfq$is_transformed(TRUE)
       } else {
         warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
-
       }
       invisible(self)
     }

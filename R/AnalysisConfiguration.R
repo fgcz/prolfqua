@@ -38,7 +38,7 @@ AnalysisConfiguration <- R6::R6Class(
     ident_Score = character(),
 
     #' @field opt_rt optional column with rt information
-    opt_rt  = character(),
+    opt_rt = character(),
     #' @field opt_mz optional column with mz information
     opt_mz = character(),
     #' @field nr_children optional column containing for instance the number of peptides
@@ -69,13 +69,27 @@ AnalysisConfiguration <- R6::R6Class(
     #' create AnalysisConfiguration
     #' @param analysisTableAnnotation optional, for backwards compatibility with old constructor
     #' @param analysisParameter optional, for backwards compatibility with old constructor
-    initialize = function(analysisTableAnnotation = NULL, analysisParameter = NULL){
+    initialize = function(analysisTableAnnotation = NULL, analysisParameter = NULL) {
       if (!is.null(analysisTableAnnotation)) {
         # Copy all fields from an AnalysisTableAnnotation or AnalysisConfiguration
-        fields <- c("fileName", "sampleName", "normValue", "isotopeLabel",
-                     "ident_qValue", "ident_Score", "opt_rt", "opt_mz",
-                     "nr_children", "workIntensity", "is_response_transformed",
-                     "bin_resp", "factors", "factorDepth", "hierarchy", "hierarchyDepth")
+        fields <- c(
+          "fileName",
+          "sampleName",
+          "normValue",
+          "isotopeLabel",
+          "ident_qValue",
+          "ident_Score",
+          "opt_rt",
+          "opt_mz",
+          "nr_children",
+          "workIntensity",
+          "is_response_transformed",
+          "bin_resp",
+          "factors",
+          "factorDepth",
+          "hierarchy",
+          "hierarchyDepth"
+        )
         for (f in fields) {
           val <- analysisTableAnnotation[[f]]
           if (!is.null(val)) self[[f]] <- val
@@ -96,17 +110,17 @@ AnalysisConfiguration <- R6::R6Class(
     #' @description
     #' Add name of intensity column
     #' @param colName name of intensity column
-    set_response = function(colName){
+    set_response = function(colName) {
       self$workIntensity <- c(self$workIntensity, colName)
     },
     #' @description
     #' Get name of working intensity column
-    get_response = function(){
+    get_response = function() {
       return(tail(self$workIntensity, n = 1))
     },
     #' @description
     #' Remove last name in array of working intensity column names
-    pop_response = function(){
+    pop_response = function() {
       res <- self$workIntensity[length(self$workIntensity)]
       self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
       return(res)
@@ -115,12 +129,12 @@ AnalysisConfiguration <- R6::R6Class(
     #' @description
     #' Get factor keys
     #' @return array with keys
-    factor_keys = function(){
+    factor_keys = function() {
       return(names(self$factors))
     },
     #' @description
     #' Get factor keys till factorDepth
-    factor_keys_depth = function(){
+    factor_keys_depth = function() {
       res <- head(self$factors, n = self$factorDepth)
       return(names(res))
     },
@@ -129,10 +143,10 @@ AnalysisConfiguration <- R6::R6Class(
     #' get hierarchy keys
     #' @param rev return in reverse order
     #' @return array of column names
-    hierarchy_keys = function(rev = FALSE){
+    hierarchy_keys = function(rev = FALSE) {
       if (rev) {
         return(rev(names(self$hierarchy)))
-      }else{
+      } else {
         return(names(self$hierarchy))
       }
     },
@@ -140,7 +154,7 @@ AnalysisConfiguration <- R6::R6Class(
     #' get hierarchy keys (deprecated alias for hierarchy_keys)
     #' @param rev return in reverse order
     #' @return array of column names
-    hierarchyKeys = function(rev= FALSE){
+    hierarchyKeys = function(rev = FALSE) {
       self$hierarchy_keys(rev = rev)
     },
 
@@ -148,11 +162,11 @@ AnalysisConfiguration <- R6::R6Class(
     #' get hierarchy keys up to depth
     #' @param names if TRUE names only if FALSE key value pairs
     #' @return array of column names
-    hierarchy_keys_depth = function(names = TRUE){
-      res <- head( self$hierarchy,n = self$hierarchyDepth)
+    hierarchy_keys_depth = function(names = TRUE) {
+      res <- head(self$hierarchy, n = self$hierarchyDepth)
       res <- if (names) {
         names(res)
-      }else{
+      } else {
         res
       }
       return(res)
@@ -161,14 +175,14 @@ AnalysisConfiguration <- R6::R6Class(
     #' get hierarchy keys up to depth (deprecated alias for hierarchy_keys_depth)
     #' @param names if TRUE names only if FALSE key value pairs
     #' @return array of column names
-    hkeysDepth = function(names = TRUE){
+    hkeysDepth = function(names = TRUE) {
       self$hierarchy_keys_depth(names = names)
     },
 
     #' @description
     #' Id Columns which must be in the input data frame
     #' @return character array
-    id_required = function(){
+    id_required = function() {
       id_vars <- c(
         self$fileName,
         unlist(self$factors),
@@ -180,7 +194,7 @@ AnalysisConfiguration <- R6::R6Class(
     #' @description
     #' get names of columns annotating values (e.g. intensities)
     #' @return character array
-    id_vars = function(){
+    id_vars = function() {
       "Id Columns which must be in the output data frame"
       id_vars <- c(
         self$fileName,
@@ -188,34 +202,46 @@ AnalysisConfiguration <- R6::R6Class(
         names(self$hierarchy),
         self$isotopeLabel,
         self$sampleName,
-        self$normValue)
+        self$normValue
+      )
       return(id_vars)
     },
     #' @description
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
-    value_vars = function(){
+    value_vars = function() {
       "Columns containing values"
-      valueVars <- c( self$get_response(), self$ident_qValue, self$ident_Score, self$opt_mz, self$opt_rt, self$nr_children)
+      valueVars <- c(
+        self$get_response(),
+        self$ident_qValue,
+        self$ident_Score,
+        self$opt_mz,
+        self$opt_rt,
+        self$nr_children
+      )
       return(valueVars)
     },
     #' @description
     #' get names of columns with sample annotations
     #'
-    annotation_vars = function(){
-      annotationVars <- c(self$fileName, self$sampleName, self$factor_keys(), self$normValue )
+    annotation_vars = function() {
+      annotationVars <- c(self$fileName, self$sampleName, self$factor_keys(), self$normValue)
       return(annotationVars)
     }
   ),
   active = list(
     #' @field table deprecated, use config directly. Returns self for backwards compatibility.
     table = function(value) {
-      if (!missing(value)) return(invisible(self))
+      if (!missing(value)) {
+        return(invisible(self))
+      }
       message("config$table is deprecated, use config directly")
       self
     },
     #' @field parameter deprecated, use config directly. Returns self for backwards compatibility.
     parameter = function(value) {
-      if (!missing(value)) return(invisible(self))
+      if (!missing(value)) {
+        return(invisible(self))
+      }
       message("config$parameter is deprecated, use config directly")
       self
     }
@@ -233,7 +259,7 @@ AnalysisConfiguration <- R6::R6Class(
 #' stopifnot(class(configList) == "list")
 #' config <- list_to_AnalysisConfiguration(configList)
 #' all.equal(prolfqua::R6_extract_values(config), configList)
-list_to_AnalysisConfiguration <- function(dd){
+list_to_AnalysisConfiguration <- function(dd) {
   config <- AnalysisConfiguration$new()
   if (!is.null(dd$table)) {
     # Old nested format (backwards compat)
@@ -262,7 +288,6 @@ list_to_AnalysisConfiguration <- function(dd){
 }
 
 
-
 #' Make reduced hierarchy configuration
 #' @export
 #' @keywords internal
@@ -279,7 +304,7 @@ list_to_AnalysisConfiguration <- function(dd){
 #'  bb$config$hierarchy[1])
 #' stopifnot(red$get_response() == "testintensity")
 #' stopifnot(length(red$hierarchy) == 1)
-make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
+make_reduced_hierarchy_config <- function(config, workIntensity, hierarchy) {
   newConfig <- config$clone(deep = TRUE)
   newConfig$hierarchy = hierarchy
   newConfig$workIntensity = workIntensity
@@ -302,15 +327,17 @@ make_reduced_hierarchy_config <- function(config, workIntensity , hierarchy ){
 #' make_interaction_column(analysis,
 #'    config$factor_keys_depth())
 #'
-make_interaction_column <- function(data, columns, sep="."){
+make_interaction_column <- function(data, columns, sep = ".") {
   intr <- dplyr::select(data, dplyr::all_of(columns))
   intr <- purrr::map_dfc(intr, factor)
   names(columns) <- columns
-  newlev <- purrr::map2(columns, intr, function(x,y){paste0(x,levels(y))})
+  newlev <- purrr::map2(columns, intr, function(x, y) {
+    paste0(x, levels(y))
+  })
   intr <- purrr::map2_dfc(columns, intr, paste0)
-  intr <- purrr::map2_dfc(intr , newlev, forcats::fct_relevel)
+  intr <- purrr::map2_dfc(intr, newlev, forcats::fct_relevel)
 
-  colnames(intr) <- paste0("interaction_",columns)
+  colnames(intr) <- paste0("interaction_", columns)
   colname <- "interaction"
   data <- data |> dplyr::mutate(!!colname := interaction(intr, sep = sep))
   return(data)
@@ -323,16 +350,18 @@ make_interaction_column <- function(data, columns, sep="."){
 #' @keywords internal
 #' @family configuration
 #' @export
-R6_extract_values <- function(r6class){
+R6_extract_values <- function(r6class) {
   tmp <- sapply(r6class, class)
-  slots <- tmp[ !tmp %in% c("environment", "function")]
+  slots <- tmp[!tmp %in% c("environment", "function")]
   res <- list()
   for (i in names(slots)) {
     val <- r6class[[i]]
     if ("R6" %in% class(val)) {
-      if (identical(val, r6class)) next
-      res[[i]]  <- R6_extract_values(val)
-    }else{
+      if (identical(val, r6class)) {
+        next
+      }
+      res[[i]] <- R6_extract_values(val)
+    } else {
       res[[i]] <- val
     }
   }
@@ -380,29 +409,48 @@ R6_extract_values <- function(r6class){
 #'
 #' adata <- setup_analysis(data, config)
 #'
-setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE){
+setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE) {
   configuration <- configuration$clone(deep = TRUE)
-  if (is.null(configuration$fileName)) { stop("fileName column is not specified in configuration.")}
-  if (!configuration$fileName %in% colnames(data)) { stop("File name column :" , configuration$fileName , ", is missing in data.")}
+  if (is.null(configuration$fileName)) {
+    stop("fileName column is not specified in configuration.")
+  }
+  if (!configuration$fileName %in% colnames(data)) {
+    stop("File name column :", configuration$fileName, ", is missing in data.")
+  }
 
   # extract hierarchy columns
-  for (i in seq_along(configuration$hierarchy))
-  {
-    data <- tidyr::unite(data, !!sym(configuration$hierarchy_keys()[i]), configuration$hierarchy[[i]],remove = FALSE, sep = configuration$sep)
+  for (i in seq_along(configuration$hierarchy)) {
+    data <- tidyr::unite(
+      data,
+      !!sym(configuration$hierarchy_keys()[i]),
+      configuration$hierarchy[[i]],
+      remove = FALSE,
+      sep = configuration$sep
+    )
   }
-  data <- dplyr::select(data , -dplyr::all_of(dplyr::setdiff(unlist(configuration$hierarchy), configuration$hierarchy_keys() )))
+  data <- dplyr::select(
+    data,
+    -dplyr::all_of(dplyr::setdiff(unlist(configuration$hierarchy), configuration$hierarchy_keys()))
+  )
 
   # extract factors
-  if ( length(configuration$factors) == 0) {
-    stop("No factors (explanatory variables) specified in the AnalysisConfiguration.\n",
-         'Please use config$factors["Condition"] = "columnName".\n',
-         'where Condition is the new name of the variable and\n',
-         'columnName is the name of the column containing the variable.')
+  if (length(configuration$factors) == 0) {
+    stop(
+      "No factors (explanatory variables) specified in the AnalysisConfiguration.\n",
+      'Please use config$factors["Condition"] = "columnName".\n',
+      'where Condition is the new name of the variable and\n',
+      'columnName is the name of the column containing the variable.'
+    )
   }
-  for (i in seq_along(configuration$factors))
-  {
-    if ( length(configuration$factors[[i]]) > 1) {
-      data <- tidyr::unite(data, !!sym(configuration$factor_keys()[i]), configuration$factors[[i]],remove = FALSE, sep = configuration$sep)
+  for (i in seq_along(configuration$factors)) {
+    if (length(configuration$factors[[i]]) > 1) {
+      data <- tidyr::unite(
+        data,
+        !!sym(configuration$factor_keys()[i]),
+        configuration$factors[[i]],
+        remove = FALSE,
+        sep = configuration$sep
+      )
     } else {
       newname <- configuration$factor_keys()[i]
       data <- dplyr::mutate(data, !!newname := as.character(!!sym(configuration$factors[[i]])))
@@ -411,29 +459,39 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
 
   sampleName <- configuration$sampleName
 
-  if (from_factors & !sampleName  %in% names(data)) {
+  if (from_factors && !sampleName %in% names(data)) {
     message("creating sampleName from factor columns")
-    data <- data |>  tidyr::unite(
-      !!sym(sampleName) ,
-      unique(unlist(configuration$factors)), remove = TRUE , sep = configuration$sep) |>
-      dplyr::select(sampleName, configuration$fileName) |> dplyr::distinct() |>
-      dplyr::mutate(across(all_of(sampleName), function(x){ make.unique( x, sep = configuration$sep ) })) |>
+    data <- data |>
+      tidyr::unite(
+        !!sym(sampleName),
+        unique(unlist(configuration$factors)),
+        remove = TRUE,
+        sep = configuration$sep
+      ) |>
+      dplyr::select(sampleName, configuration$fileName) |>
+      dplyr::distinct() |>
+      dplyr::mutate(across(all_of(sampleName), function(x) {
+        make.unique(x, sep = configuration$sep)
+      })) |>
       dplyr::inner_join(data, by = configuration$fileName)
-  } else if (!sampleName  %in% names(data)) {
+  } else if (!sampleName %in% names(data)) {
     message("creating sampleName from fileName column")
-    data[[configuration$sampleName]] <- tools::file_path_sans_ext( basename(data[[configuration$fileName]]) )
-  }else {
+    data[[configuration$sampleName]] <- tools::file_path_sans_ext(basename(data[[configuration$fileName]]))
+  } else {
     message("column sampleName already exists, using :", sampleName)
   }
 
-  data <- data |> dplyr::select(-dplyr::all_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
+  data <- data |>
+    dplyr::select(-dplyr::all_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
 
   # Make implicit NA's explicit
   if (!(configuration$isotopeLabel %in% colnames(data))) {
-    warning("no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'.")
+    warning(
+      "no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'."
+    )
     data[[configuration$isotopeLabel]] <- "light"
   }
-  if (!(configuration$ident_qValue %in%  colnames(data))) {
+  if (!(configuration$ident_qValue %in% colnames(data))) {
     warning("no qValue column specified in the data. Creating column qValue and setting qValues to 0.")
     data[[configuration$ident_qValue]] <- 0
   }
@@ -445,23 +503,32 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
   }
 
   # TODO add better warning....
-  data <- data |> dplyr::select(c(configuration$id_vars(),configuration$value_vars()))
+  data <- data |> dplyr::select(c(configuration$id_vars(), configuration$value_vars()))
 
-  txd <- data |> group_by(!!!syms(c(configuration$fileName, configuration$hierarchy_keys(), configuration$isotopeLabel))) |>
+  txd <- data |>
+    group_by(!!!syms(c(configuration$fileName, configuration$hierarchy_keys(), configuration$isotopeLabel))) |>
     summarize(n = n())
   if (any(txd$n > 1)) {
-    str <- paste("There is more than ONE observations for each : ", paste( configuration$hierarchy_keys(), collapse = ", "), ",\n",
-                 "and sample : ", configuration$sampleName, "; (filename) : ", configuration$fileName, "\n")
+    str <- paste(
+      "There is more than ONE observations for each : ",
+      paste(configuration$hierarchy_keys(), collapse = ", "),
+      ",\n",
+      "and sample : ",
+      configuration$sampleName,
+      "; (filename) : ",
+      configuration$fileName,
+      "\n"
+    )
     warning(str)
     warning("Please inspect the returned dataframe. Check for rows where n > 1\n e.g. res |> dplyr::filter(n > 1)")
     return(txd)
   }
   if (cc) {
-    data <- complete_cases( data , configuration)
+    data <- complete_cases(data, configuration)
   }
   message("completing cases done")
   message("setup done")
-  return( data )
+  return(data)
 }
 
 #' Separates hierarchy columns into starting columns
@@ -480,12 +547,10 @@ setup_analysis <- function(data, configuration, cc = TRUE,  from_factors = FALSE
 #' base::setdiff(colnames(dt) ,colnames(bb$data))
 #' stopifnot(ncol(dt) >= ncol(bb$data))
 #'
-separate_hierarchy <- function(data, config){
+separate_hierarchy <- function(data, config) {
   for (hkey in config$hierarchy_keys_depth()) {
-    if (length(config$hierarchy[[hkey]]) == 1 && hkey == config$hierarchy[[hkey]]) {
-
-    }else {
-      data <- data |> tidyr::separate( hkey, config$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
+    if (length(config$hierarchy[[hkey]]) == 1 && hkey == config$hierarchy[[hkey]]) {} else {
+      data <- data |> tidyr::separate(hkey, config$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
     }
   }
   return(data)
@@ -508,7 +573,7 @@ separate_hierarchy <- function(data, config){
 #'
 separate_factors <- function(data, config) {
   for (fkey in config$factor_keys()) {
-    data <- data |> tidyr::separate( fkey, config$factors[[fkey]], sep = config$sep, remove = FALSE)
+    data <- data |> tidyr::separate(fkey, config$factors[[fkey]], sep = config$sep, remove = FALSE)
   }
   return(data)
 }
@@ -552,9 +617,9 @@ complete_cases <- function(pdata, config) {
 #' @keywords internal
 #' @family configuration
 #'
-sample_subset <- function(size, pdata, config){
+sample_subset <- function(size, pdata, config) {
   hk <- config$hierarchy_keys_depth()
-  message("Sampling ", size, paste(hk, collapse = "," ) )
+  message("Sampling ", size, paste(hk, collapse = ","))
   hkdf <- pdata |> select(all_of(hk)) |> distinct() |> sample_n(size = size)
   sdata <- inner_join(hkdf, pdata)
   return(sdata)
@@ -584,7 +649,7 @@ sample_subset <- function(size, pdata, config){
 #' xt
 #' stopifnot(all(xt$n == 4))
 #'
-table_factors <- function(pdata, configuration){
+table_factors <- function(pdata, configuration) {
   factorsTab <- pdata |>
     dplyr::select(c(configuration$fileName, configuration$sampleName, configuration$factor_keys())) |>
     dplyr::distinct() |>
@@ -608,7 +673,7 @@ table_factors <- function(pdata, configuration){
 #' xx <- table_factors_size(istar$data,istar$config )
 #' stopifnot(all(xx$n == 4))
 #'
-table_factors_size <- function(pdata, configuration){
+table_factors_size <- function(pdata, configuration) {
   xx <- table_factors(pdata, configuration)
   xx <- xx |> dplyr::group_by(dplyr::across(configuration$factor_keys_depth())) |> dplyr::summarize(n = dplyr::n())
   return(xx)
@@ -639,7 +704,7 @@ table_factors_size <- function(pdata, configuration){
 #' data0 <- data |> dplyr::filter( protein_Id == "XYZ")
 #' tmp <- hierarchy_counts(data0, config)
 #' stopifnot(nrow(tmp) == 0)
-hierarchy_counts <- function(pdata, config){
+hierarchy_counts <- function(pdata, config) {
   hierarchy <- config$hierarchy_keys()
   res <- pdata |>
     dplyr::group_by(across(all_of(config$isotopeLabel))) |>
@@ -685,34 +750,38 @@ hierarchy_counts <- function(pdata, config){
 #'  ggplot2::geom_bar(stat = "identity", position = ggplot2::position_dodge())
 #'
 hierarchy_counts_sample <- function(
-    pdata,
-    configuration,
-    nr_children = 1) {
-
+  pdata,
+  configuration,
+  nr_children = 1
+) {
   hierarchy <- configuration$hierarchy_keys()
-  summary <- pdata |> dplyr::filter(!is.na(!!rlang::sym(configuration$get_response() )),
-                                    !!rlang::sym(configuration$nr_children ) >= .env$nr_children) |>
+  summary <- pdata |>
+    dplyr::filter(
+      !is.na(!!rlang::sym(configuration$get_response())),
+      !!rlang::sym(configuration$nr_children) >= .env$nr_children
+    ) |>
     dplyr::group_by(across(all_of(c(configuration$isotopeLabel, configuration$sampleName)))) |>
     dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct))
 
-  res <- function(value = c("wide", "long", "plot")){
+  res <- function(value = c("wide", "long", "plot")) {
     value <- match.arg(value)
     if (value == "wide") {
       return(summary)
-    }else{
-      long <- summary |> tidyr::pivot_longer(
-                                       cols = -dplyr::all_of(c(configuration$isotopeLabel,
-                                                           configuration$sampleName)),
-                                       names_to = "key",
-                                       values_to = "nr")
+    } else {
+      long <- summary |>
+        tidyr::pivot_longer(
+          cols = -dplyr::all_of(c(configuration$isotopeLabel, configuration$sampleName)),
+          names_to = "key",
+          values_to = "nr"
+        )
       if (value == "long") {
         return(long)
-      }else if (value == "plot" & nrow(long) > 0) {
-        nudgeval <-  -mean(long$nr) * 0.05
+      } else if (value == "plot" && nrow(long) > 0) {
+        nudgeval <- -mean(long$nr) * 0.05
         # TODO(WEW) check potential problem with sampleName
         ggplot2::ggplot(long, ggplot2::aes(x = !!rlang::sym(configuration$sampleName), y = .data$nr)) +
           ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
-          ggplot2::facet_wrap( ~ key, scales = "free_y", ncol = 1) +
+          ggplot2::facet_wrap(~key, scales = "free_y", ncol = 1) +
           ggplot2::geom_text(ggplot2::aes(label = .data$nr), nudge_y = nudgeval, angle = 65) +
           ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
       }
@@ -720,7 +789,6 @@ hierarchy_counts_sample <- function(
   }
   return(res)
 }
-
 
 
 #' Summarize hierarchy counts
@@ -759,17 +827,13 @@ hierarchy_counts_sample <- function(
 #' configur$hierarchyDepth = 4
 #' summarize_hierarchy(data, configur )
 #'
-summarize_hierarchy <- function(pdata,
-                                config,
-                                hierarchy = config$hierarchy_keys_depth(),
-                                factors = character())
-{
-  all_hierarchy <- c(config$isotopeLabel, config$hierarchy_keys() )
+summarize_hierarchy <- function(pdata, config, hierarchy = config$hierarchy_keys_depth(), factors = character()) {
+  all_hierarchy <- c(config$isotopeLabel, config$hierarchy_keys())
 
   precursor <- pdata |> dplyr::select(dplyr::all_of(c(factors, all_hierarchy))) |> dplyr::distinct()
-  x3 <- precursor |> dplyr::group_by(across(all_of(c(factors, hierarchy)))) |>
-    dplyr::summarize(across(all_of(base::setdiff(all_hierarchy, hierarchy)),
-                         list( n = dplyr::n_distinct)))
+  x3 <- precursor |>
+    dplyr::group_by(across(all_of(c(factors, hierarchy)))) |>
+    dplyr::summarize(across(all_of(base::setdiff(all_hierarchy, hierarchy)), list(n = dplyr::n_distinct)))
   return(x3)
 }
 
@@ -798,15 +862,14 @@ summarize_hierarchy <- function(pdata,
 #' analysis <- bb$analysis(bb$data, bb$config_f())
 #' x <- spread_response_by_IsotopeLabel(analysis, conf)
 #'
-spread_response_by_IsotopeLabel <- function(resData, config){
+spread_response_by_IsotopeLabel <- function(resData, config) {
   id_vars <- config$id_vars()
-  resData2 <- resData |> dplyr::select(c(id_vars, config$value_vars()) )
-  resData2 <- resData2 |> tidyr::pivot_longer(cols = -dplyr::all_of(id_vars), names_to = "variable", values_to = "value")
+  resData2 <- resData |> dplyr::select(c(id_vars, config$value_vars()))
+  resData2 <- resData2 |>
+    tidyr::pivot_longer(cols = -dplyr::all_of(id_vars), names_to = "variable", values_to = "value")
   resData2 <- resData2 |> tidyr::unite("temp", dplyr::all_of(c(config$isotopeLabel, "variable")))
   HLData <- resData2 |> tidyr::pivot_wider(names_from = "temp", values_from = "value")
   invisible(HLData)
 }
 
-
 # Computing protein Intensity summaries ---
-

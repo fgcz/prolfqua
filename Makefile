@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := check
 
-.PHONY: check check-fast build build-vignettes document coverage install lint format clean help site deploy
+.PHONY: check check-fast build build-vignettes document coverage install lint format clean help site deploy install-pre-commit-hook
 
 DOCUMENT_CMD = Rscript -e "devtools::document()"
 BUILD_CMD = Rscript -e "devtools::build()"
@@ -21,6 +21,7 @@ help:
 	@echo "  make install   - install package locally"
 	@echo "  make lint      - run lintr"
 	@echo "  make format    - format package with air"
+	@echo "  make install-pre-commit-hook - install local pre-commit hook"
 	@echo "  make clean     - remove build artifacts"
 	@echo ""
 	@echo "Advanced:"
@@ -58,6 +59,10 @@ lint:
 
 format:
 	air format .
+
+install-pre-commit-hook:
+	cp ".githooks/pre-commit" ".git/hooks/pre-commit"
+	chmod +x ".git/hooks/pre-commit"
 
 site: document
 	$(SITE_CMD)

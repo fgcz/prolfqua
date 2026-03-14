@@ -1,4 +1,3 @@
-
 # ContrastsMissing----
 #' Compute contrasts with group mean imputation
 #'
@@ -90,12 +89,13 @@ ContrastsMissing <- R6::R6Class(
     #' @param confint confidence interval
     #' @param p.adjust method for p-value adjustment - default Benjamini Hochberg
     #' @param modelName default "groupAverage"
-    initialize = function(lfqdata,
-                          contrasts,
-                          confint = 0.95,
-                          p.adjust = prolfqua::adjust_p_values,
-                          modelName = "groupAverage"
-                          ){
+    initialize = function(
+      lfqdata,
+      contrasts,
+      confint = 0.95,
+      p.adjust = prolfqua::adjust_p_values,
+      modelName = "groupAverage"
+    ) {
       self$subject_Id = lfqdata$config$hierarchy_keys_depth()
       self$contrasts = contrasts
       self$modelName = modelName
@@ -106,18 +106,17 @@ ContrastsMissing <- R6::R6Class(
     #' @description
     #' get contrasts sides
     #'
-    get_contrast_sides = function(){
+    get_contrast_sides = function() {
       # extract contrast sides
-      tt <- self$contrasts[grep("-",self$contrasts)]
-      tt <- tibble(contrast = names(tt) , rhs = tt)
-      tt <- tt |> dplyr::mutate(rhs = gsub("[` ]","",rhs)) |>
-        tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
+      tt <- self$contrasts[grep("-", self$contrasts)]
+      tt <- tibble(contrast = names(tt), rhs = tt)
+      tt <- tt |> dplyr::mutate(rhs = gsub("[` ]", "", rhs)) |> tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
       return(tt)
     },
     #' @description
     #' table with results of contrast computation
     #' @param all FALSE, do not show all columns (default)
-    get_contrasts = function(all = FALSE){
+    get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
         if (self$lfqdata$config$hierarchyDepth < length(self$lfqdata$config$hierarchy_keys())) {
           stop("hierarchy depth < hierarchy_keys(). Please aggregate first.")
@@ -126,7 +125,7 @@ ContrastsMissing <- R6::R6Class(
           result <- mh1$get_contrasts(Contrasts = self$contrasts, confint = self$confint, all = all)
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
         }
-        result <- result |> rename(diff = estimate, sigma = sd, std.error = sdT )
+        result <- result |> rename(diff = estimate, sigma = sd, std.error = sdT)
         result <- mutate(result, modelName = self$modelName, .before = 1)
         self$contrast_result <- ungroup(result)
       }
@@ -137,30 +136,31 @@ ContrastsMissing <- R6::R6Class(
     #' @description
     #' get ContrastsPlotter
     #' @return Contrast_Plotter
-    get_Plotter = function(){
+    get_Plotter = function() {
       res <- ContrastsPlotter$new(
         self$get_contrasts(),
         subject_Id = self$subject_Id,
-        volcano = list(list(score = "p.value", thresh = 0.1),list(score = "FDR", thresh = 0.1)),
-        histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                         list(score = "FDR", xlim = c(0,1,0.05))),
+        volcano = list(list(score = "p.value", thresh = 0.1), list(score = "FDR", thresh = 0.1)),
+        histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
         modelName = "modelName",
         diff = "diff",
-        contrast = "contrast")
+        contrast = "contrast"
+      )
       return(res)
     },
     #' @description
     #' convert contrast results to wide format
     #' @param columns value column default p.value
     #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR","statistic")){
+    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
       contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
-                                                     subject_Id = self$subject_Id,
-                                                     columns = c("diff", columns),
-                                                     contrast = 'contrast')
+      contrasts_wide <- pivot_model_contrasts_2_Wide(
+        contrast_minimal,
+        subject_Id = self$subject_Id,
+        columns = c("diff", columns),
+        contrast = 'contrast'
+      )
       return(contrasts_wide)
     }
-
   )
 )

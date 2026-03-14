@@ -1,6 +1,3 @@
-
-
-
 #' esitmate lod
 #' @param data_matrix numeric matrix of abundance values
 #' @param prop_na numeric, percentage threshold for NA proportion per row
@@ -13,8 +10,13 @@
 #' stopifnot(length(estimate_lod_global(xx$data, prop_na = 90)) == 0)
 #' stopifnot(length(estimate_lod_global(xx$data, prop_na = 10)) > 0)
 estimate_lod_global <- function(data_matrix, prop_na = 90) {
-  frac <- ceiling(ncol(data_matrix) / (100/prop_na))
-  xx <- na.omit(as.numeric(data_matrix[apply(data_matrix, 1, function(x){sum(is.na(x))}) >= frac,]))
+  frac <- ceiling(ncol(data_matrix) / (100 / prop_na))
+  xx <- na.omit(as.numeric(data_matrix[
+    apply(data_matrix, 1, function(x) {
+      sum(is.na(x))
+    }) >=
+      frac,
+  ]))
   return(xx)
 }
 
@@ -94,10 +96,11 @@ function_lod_quantile <- function(data_matrix, percent = 10) {
 #'   stopifnot(!has_na_after)
 #' }
 #'
-impute_with_zcomp <- function(lfqdata,
-                              method = c("multRepl","GBM","SQ","BL","CZM") ,
-                              lod = c("global","quantile")) {
-
+impute_with_zcomp <- function(
+  lfqdata,
+  method = c("multRepl", "GBM", "SQ", "BL", "CZM"),
+  lod = c("global", "quantile")
+) {
   lod <- match.arg(lod)
   method <- match.arg(method)
   wide <- lfqdata$to_wide(as.matrix = TRUE)
@@ -118,14 +121,16 @@ impute_with_zcomp <- function(lfqdata,
 
   if (method == "multRepl") {
     imputed_data <- zCompositions::multRepl(data_matrix, dl = dl, label = NA)
-  } else if (method %in% c("GBM","SQ","BL","CZM")) {
+  } else if (method %in% c("GBM", "SQ", "BL", "CZM")) {
     imputed_data <- zCompositions::cmultRepl(data_matrix, label = NA, method = method)
   }
 
   lfqdata$data <- response_matrix_as_tibble(
     imputed_data,
-    paste0(lfqdata$response(),"_imputed"),
-    lfqdata$config, lfqdata$data)
+    paste0(lfqdata$response(), "_imputed"),
+    lfqdata$config,
+    lfqdata$data
+  )
 
   return(lfqdata)
 }
@@ -165,7 +170,7 @@ LFQDataImp <- R6::R6Class(
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
-    initialize = function(lfqdata){
+    initialize = function(lfqdata) {
       self$lfq = lfqdata$clone(deep = TRUE)
     },
     #' @description
@@ -173,9 +178,9 @@ LFQDataImp <- R6::R6Class(
     #' @param method imputation method (default "multRepl")
     #' @param lod limit of detection strategy (default "global")
     #' @return invisible(self) for chaining
-    impute = function(method = c("multRepl","GBM","SQ","BL","CZM"),
-                      lod = c("global","quantile")) {
+    impute = function(method = c("multRepl", "GBM", "SQ", "BL", "CZM"), lod = c("global", "quantile")) {
       self$lfq <- impute_with_zcomp(self$lfq, method = method, lod = lod)
       invisible(self)
-    })
+    }
+  )
 )

@@ -13,21 +13,20 @@
 #' x
 #' na.omit(x)
 #' prolfqua:::pooled_V2(na.omit(x))
-pooled_V2 <- function(x){
-
+pooled_V2 <- function(x) {
   n <- x$nrMeasured
   sample.var <- x$var
   sample.mean <- x$meanAbundance
   pool.n <- sum(n)
 
-  pool.mean <- sum(n * sample.mean)/pool.n
+  pool.mean <- sum(n * sample.mean) / pool.n
   deviation <- sample.mean - pool.mean
 
   SS <- (n - 1) * sample.var
   pool.SS <- sum(SS) + sum(n * deviation^2)
-  pool.var <- pool.SS/(pool.n - 1)
-  n.groups <-  length(sample.var)
-  sdT = sqrt(pool.var * 2 / (pool.n/n.groups))
+  pool.var <- pool.SS / (pool.n - 1)
+  n.groups <- length(sample.var)
+  sdT = sqrt(pool.var * 2 / (pool.n / n.groups))
 
   res <- data.frame(
     n.groups = n.groups,
@@ -44,7 +43,7 @@ pooled_V2 <- function(x){
 #' compute pooled variance V1
 #' @rdname pooled_var
 #' @param x data.frame
-pooled_V1 <- function(x){
+pooled_V1 <- function(x) {
   n <- x$nrMeasured
   sample.var <- x$var
   sample.mean <- x$meanAbundance
@@ -52,14 +51,14 @@ pooled_V1 <- function(x){
 
   n.groups <- length(sample.var)
   SS <- (n - 1) * sample.var
-  pool.var <- sum(SS)/(pool.n - n.groups)
+  pool.var <- sum(SS) / (pool.n - n.groups)
 
   #SS <- (n) * sample.var
   #pool.var <- sum(SS)/(pool.n)
 
-  pool.mean <- sum(sample.mean * n)/pool.n
+  pool.mean <- sum(sample.mean * n) / pool.n
 
-  sdT = sqrt(pool.var * 2 / (pool.n/n.groups))
+  sdT = sqrt(pool.var * 2 / (pool.n / n.groups))
 
   res <- data.frame(
     n.groups = n.groups,
@@ -94,11 +93,11 @@ pooled_V1 <- function(x){
 #'      var = c(NA,NA,NA),meanAbundance = c(NaN,NaN,NaN))
 #' compute_pooled(y)
 #' yb <- y |> dplyr::filter(nrMeasured > 1)
-compute_pooled <- function(x, method = c("V1","V2")){
+compute_pooled <- function(x, method = c("V1", "V2")) {
   method <- match.arg(method)
   xm <- x |> dplyr::filter(.data$nrMeasured > 0)
-  meanAll <- sum(xm$meanAbundance * xm$nrMeasured)/sum(xm$nrMeasured)
-  nrMeasured  = sum(xm$nrMeasured)
+  meanAll <- sum(xm$meanAbundance * xm$nrMeasured) / sum(xm$nrMeasured)
+  nrMeasured = sum(xm$nrMeasured)
 
   func <- pooled_V1
   if (method == "V2") {
@@ -130,9 +129,9 @@ compute_pooled <- function(x, method = c("V1","V2")){
 #' pv <- poolvar(res1, config)
 #' stopifnot(nrow(pv) == nrow(res1)/3)
 #'
-poolvar <- function(res1, config,  method = c("V1","V2")){
+poolvar <- function(res1, config, method = c("V1", "V2")) {
   method <- match.arg(method)
-  resp <- res1 |> nest(data = -all_of(config$hierarchy_keys()) )
+  resp <- res1 |> nest(data = -all_of(config$hierarchy_keys()))
   pooled <- purrr::map_df(resp$data, compute_pooled, method = method)
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
@@ -169,24 +168,27 @@ poolvar <- function(res1, config,  method = c("V1","V2")){
 #' stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
 #' stopifnot(nrow(stats) == 10)
 #' # TODO (WEW) add test when there is one level per group.
-summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth()){
+summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth()) {
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$get_response())
   hierarchyFactor <- pdata |>
-    dplyr::group_by(!!!syms( c(config$hierarchy_keys(), factor_key) )) |>
-    dplyr::summarize(nrReplicates = dplyr::n(),
-                     nrMeasured = sum(!is.na(!!intsym)),
-                     nrNAs = sum(is.na(!!intsym)),
-                     sd = stats::sd(!!intsym, na.rm = TRUE),
-                     var = stats::var(!!intsym, na.rm = TRUE),
-                     meanAbundance = mean(!!intsym, na.rm = TRUE),
-                     medianAbundance = median(!!intsym, na.rm = TRUE),
-                     .groups = "drop") |>  dplyr::ungroup()
+    dplyr::group_by(!!!syms(c(config$hierarchy_keys(), factor_key))) |>
+    dplyr::summarize(
+      nrReplicates = dplyr::n(),
+      nrMeasured = sum(!is.na(!!intsym)),
+      nrNAs = sum(is.na(!!intsym)),
+      sd = stats::sd(!!intsym, na.rm = TRUE),
+      var = stats::var(!!intsym, na.rm = TRUE),
+      meanAbundance = mean(!!intsym, na.rm = TRUE),
+      medianAbundance = median(!!intsym, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    dplyr::ungroup()
 
   hierarchyFactor <- hierarchyFactor |>
     dplyr::mutate(dplyr::across(all_of(factor_key), as.character))
   if (config$is_response_transformed == FALSE) {
-    hierarchyFactor <- hierarchyFactor |> dplyr::mutate(CV = sd/meanAbundance * 100)
+    hierarchyFactor <- hierarchyFactor |> dplyr::mutate(CV = sd / meanAbundance * 100)
   }
   if (is.null(factor_key) || length(factor_key) == 0) {
     hierarchyFactor <- dplyr::mutate(hierarchyFactor, !!config$factor_keys()[1] := "All")
@@ -194,7 +196,7 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
   hierarchyFactor <- ungroup(hierarchyFactor)
   if (length(factor_key) > 0 && !is.null(factor_key)) {
     hierarchyFactor <- prolfqua::make_interaction_column(hierarchyFactor, columns = factor_key, sep = ":")
-  } else{
+  } else {
     hierarchyFactor$interaction <- "All"
   }
   return(hierarchyFactor)
@@ -212,19 +214,23 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
 #' xx <- summarize_stats_factors(res2$data, res2$config)
 #' stopifnot(nrow(xx) == 80)
 #' stopifnot( length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
-summarize_stats_factors <- function(pdata, config){
+summarize_stats_factors <- function(pdata, config) {
   fac_res <- list()
   stats <- summarize_stats(
     pdata,
-    config)
+    config
+  )
   fac_res[["interaction"]] <- stats
 
-  if (config$factorDepth > 1 ) { # if 1 only then done
+  if (config$factorDepth > 1) {
+    # if 1 only then done
     for (factor in config$factor_keys_depth()) {
       stats <- summarize_stats(
         pdata,
-        config,factor_key = factor)
-      fac_res[[factor]]  <- stats
+        config,
+        factor_key = factor
+      )
+      fac_res[[factor]] <- stats
     }
   }
   intfact <- dplyr::bind_rows(fac_res)
@@ -284,56 +290,44 @@ summarize_stats_all <- function(pdata, config) {
 #' ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_line() + geom_point()
 #'
 #'
-summarize_stats_quantiles <- function(stats_res,
-                                   config,
-                                   stats = c("sd","CV"),
-                                   probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
+summarize_stats_quantiles <- function(stats_res, config, stats = c("sd", "CV"), probs = c(0.1, 0.25, 0.5, 0.75, 0.9)) {
   stats <- match.arg(stats)
-  toQuantiles <- function(x, probs_i = probs) {
-    tibble(probs = probs, quantiles = quantile(x, probs_i , na.rm = TRUE))
-  }
-  q_column <- paste0(stats,"_quantiles")
-
+  q_column <- paste0(stats, "_quantiles")
 
   stats_res <- stats_res |> dplyr::filter(!is.na(!!sym(stats)))
   xx2 <- stats_res |>
     dplyr::group_by(!!!syms(config$factor_keys_depth())) |>
     tidyr::nest()
 
-
   sd_quantile_res2 <- xx2 |>
-    dplyr::mutate( !!q_column := purrr::map(data, ~toQuantiles(.[[stats]]) ))  |>
-    dplyr::select(!!!syms(c(config$factor_keys_depth(),q_column))) |>
+    dplyr::mutate(
+      !!q_column := purrr::map(
+        data,
+        ~ tibble(probs = probs, quantiles = quantile(.[[stats]], probs, na.rm = TRUE))
+      )
+    ) |>
+    dplyr::select(!!!syms(c(config$factor_keys_depth(), q_column))) |>
     tidyr::unnest(cols = dplyr::all_of(q_column))
 
   xx <- sd_quantile_res2 |> tidyr::unite("interaction", dplyr::all_of(config$factor_keys_depth()))
-  wide <- xx |>  tidyr::pivot_wider(names_from = "interaction", values_from = "quantiles")
+  wide <- xx |> tidyr::pivot_wider(names_from = "interaction", values_from = "quantiles")
   return(list(long = sd_quantile_res2, wide = wide))
 }
 
 
-.lfq_power_t_test_quantiles <- function(quantile_sd,
-                                        delta = 1,
-                                        min.n = 1.5,
-                                        power = 0.8,
-                                        sig.level = 0.05
-){
-  minsd  <- power.t.test(delta = delta,
-                         n = min.n,
-                         sd = NULL,
-                         power = power,
-                         sig.level = sig.level)$sd
+.lfq_power_t_test_quantiles <- function(quantile_sd, delta = 1, min.n = 1.5, power = 0.8, sig.level = 0.05) {
+  minsd <- power.t.test(delta = delta, n = min.n, sd = NULL, power = power, sig.level = sig.level)$sd
   quantile_sd <- quantile_sd |>
-    mutate("sdtrimmed" := case_when(quantiles < minsd  ~ minsd, TRUE ~ quantiles))
+    mutate(sdtrimmed = dplyr::if_else(.data$quantiles < .env$minsd, .env$minsd, .data$quantiles))
 
   #, delta = delta, power = power, sig.level = sig.level
-  getSampleSize <- function(sd){
+  getSampleSize <- function(sd) {
     power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n
   }
   #  return(getSampleSize)
 
   sampleSizes <- quantile_sd |>
-    mutate( N_exact = purrr::map_dbl(!!sym("sdtrimmed"), getSampleSize), N = ceiling(!!sym("N_exact")))
+    mutate(N_exact = purrr::map_dbl(!!sym("sdtrimmed"), getSampleSize), N = ceiling(!!sym("N_exact")))
   return(sampleSizes)
 }
 #' estimate sample sizes
@@ -363,20 +357,17 @@ summarize_stats_quantiles <- function(stats_res,
 #'  tidyr::pivot_wider(names_from = delta, values_from = N)
 #'
 lfq_power_t_test_quantiles_V2 <-
-  function(quantile_sd,
-           delta = c(0.59,1,2),
-           power = 0.8,
-           sig.level = 0.05,
-           min.n = 1.5){
-
+  function(quantile_sd, delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05, min.n = 1.5) {
     res <- vector(mode = "list", length = length(delta))
     for (i in seq_along(delta)) {
       #message("i", i , "delta_i", delta[i], "\n")
-      res[[i]] <- .lfq_power_t_test_quantiles(quantile_sd,
-                                              delta = delta[i],
-                                              min.n = min.n,
-                                              power = power,
-                                              sig.level = sig.level)
+      res[[i]] <- .lfq_power_t_test_quantiles(
+        quantile_sd,
+        delta = delta[i],
+        min.n = min.n,
+        power = power,
+        sig.level = sig.level
+      )
       res[[i]]$delta = delta[i]
     }
     res <- bind_rows(res)
@@ -408,13 +399,14 @@ lfq_power_t_test_quantiles_V2 <-
 #' res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
 #'
 #'
-lfq_power_t_test_quantiles <- function(pdata,
-                                       config,
-                                       delta = 1,
-                                       power = 0.8,
-                                       sig.level = 0.05,
-                                       probs = seq(0.5,0.9, by = 0.1)){
-
+lfq_power_t_test_quantiles <- function(
+  pdata,
+  config,
+  delta = 1,
+  power = 0.8,
+  sig.level = 0.05,
+  probs = seq(0.5, 0.9, by = 0.1)
+) {
   if (!config$is_response_transformed) {
     warning("Intensities are not transformed yet.")
   }
@@ -423,26 +415,32 @@ lfq_power_t_test_quantiles <- function(pdata,
   sd <- na.omit(stats_res$sd)
 
   if (length(sd) > 0) {
-    quantilesSD <- quantile(sd,probs)
+    quantilesSD <- quantile(sd, probs)
 
     sampleSizes <- expand.grid(probs = probs, delta = delta)
-    quantilesSD <- quantile( sd, sampleSizes$probs )
-    sampleSizes <- add_column( sampleSizes, sd = quantilesSD, .before = 2 )
-    sampleSizes <- add_column( sampleSizes, quantile = names(quantilesSD), .before = 1 )
+    quantilesSD <- quantile(sd, sampleSizes$probs)
+    sampleSizes <- add_column(sampleSizes, sd = quantilesSD, .before = 2)
+    sampleSizes <- add_column(sampleSizes, quantile = names(quantilesSD), .before = 1)
 
-    getSampleSize <- function(sd, delta){power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n}
+    getSampleSize <- function(sd, delta) {
+      power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n
+    }
 
-    sampleSizes <- sampleSizes |> mutate( N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
-    sampleSizes <- sampleSizes |> mutate( N = ceiling(.data$N_exact))
-    sampleSizes <- sampleSizes |> mutate( FC = round(2^delta, digits = 2))
+    sampleSizes <- sampleSizes |> mutate(N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+    sampleSizes <- sampleSizes |> mutate(N = ceiling(.data$N_exact))
+    sampleSizes <- sampleSizes |> mutate(FC = round(2^delta, digits = 2))
 
-    summary <- sampleSizes |> dplyr::select(-N_exact, -delta) |> tidyr::pivot_wider(names_from = "FC", values_from = "N", names_prefix = "FC=")
+    summary <- sampleSizes |>
+      dplyr::select(-dplyr::all_of(c("N_exact", "delta"))) |>
+      tidyr::pivot_wider(names_from = "FC", values_from = "N", names_prefix = "FC=")
     return(list(long = sampleSizes, summary = summary))
-  }else{
-    message("!!! ERROR !!! No standard deviation is available,
+  } else {
+    message(
+      "!!! ERROR !!! No standard deviation is available,
             check if model is saturated (factor level variable).
             lfq_power_t_test_quantiles.
-            !!! ERROR !!!")
+            !!! ERROR !!!"
+    )
     return(NULL)
   }
 }
@@ -465,26 +463,16 @@ lfq_power_t_test_quantiles <- function(pdata,
 #' stats_res <- summarize_stats(ldata$data, ldata$config)
 #' bb <- lfq_power_t_test_proteins(stats_res)
 #'
-lfq_power_t_test_proteins <- function(stats_res,
-                                      delta = c(0.59,1,2),
-                                      power = 0.8,
-                                      sig.level = 0.05,
-                                      min.n = 1.5){
-
-
+lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05, min.n = 1.5) {
   stats_res <- na.omit(stats_res)
   sd_delta <- tidyr::crossing(stats_res, delta = delta)
 
-  getSampleSize <- function(sd, delta){
-    sd_threshold <- power.t.test(delta = delta,
-                                 n = min.n,
-                                 sd = NULL,
-                                 power = power,
-                                 sig.level = sig.level)$sd
+  getSampleSize <- function(sd, delta) {
+    sd_threshold <- power.t.test(delta = delta, n = min.n, sd = NULL, power = power, sig.level = sig.level)$sd
     power.t.test(delta = delta, sd = max(sd_threshold, sd), power = power, sig.level = sig.level)$n
   }
-  sampleSizes <- sd_delta |> dplyr::mutate( N_exact = purrr::map2_dbl(sd, delta,  getSampleSize))
-  sampleSizes <- sampleSizes |> dplyr::mutate( N = ceiling(.data$N_exact))
+  sampleSizes <- sd_delta |> dplyr::mutate(N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+  sampleSizes <- sampleSizes |> dplyr::mutate(N = ceiling(.data$N_exact))
   return(sampleSizes)
 }
 
@@ -507,13 +495,10 @@ lfq_power_t_test_proteins <- function(stats_res,
 #' plot_stat_density(res, config, stat = "meanAbundance")
 #' plot_stat_density(res, config, stat = "sd")
 #' plot_stat_density(res, config, stat = "CV")
-plot_stat_density <- function(pdata,
-                              config,
-                              stat = c("CV","meanAbundance","sd"),
-                              ggstat = c("density", "ecdf")){
+plot_stat_density <- function(pdata, config, stat = c("CV", "meanAbundance", "sd"), ggstat = c("density", "ecdf")) {
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[config$factor_keys()[1]]] )) +
+  p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[config$factor_keys()[1]]])) +
     geom_line(stat = ggstat)
   return(p)
 }
@@ -538,16 +523,19 @@ plot_stat_density <- function(pdata,
 #' plot_stat_density_median(res, config, "meanAbundance")
 #' plot_stat_density_median(res, config, "sd")
 plot_stat_density_median <- function(
-    pdata,
-    config,
-    stat = c("CV","meanAbundance","sd"),
-    ggstat = c("density", "ecdf")){
+  pdata,
+  config,
+  stat = c("CV", "meanAbundance", "sd"),
+  ggstat = c("density", "ecdf")
+) {
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
   pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
-  res <- pdata |> dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE),"top 50","bottom 50")) -> top50
+  top50 <- pdata |>
+    dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))
   p <- ggplot(top50, aes(x = .data[[stat]], colour = .data$top)) +
-    geom_line(stat = ggstat) + facet_wrap(config$factor_keys()[1])
+    geom_line(stat = ggstat) +
+    facet_wrap(config$factor_keys()[1])
   return(p)
 }
 
@@ -571,12 +559,12 @@ plot_stat_density_median <- function(
 #' plot_stat_violin(res, config, stat = "sd")
 #' plot_stat_violin(res, config, stat = "CV")
 #'
-plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd")){
+plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd")) {
   stat <- match.arg(stat)
   pdata <- pdata |> tidyr::unite("groups", config$factor_keys_depth())
-  p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]]  )) +
-    geom_violin() + ggplot2::stat_summary(fun = median,
-                                          geom = "point", size = 1, color = "black")
+  p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]])) +
+    geom_violin() +
+    ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black")
 
   return(p)
 }
@@ -596,17 +584,16 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd"
 #' data <- bb1$data
 #' res <- summarize_stats(data, config)
 #' plot_stat_violin_median(res, config, stat = "meanAbundance")
-plot_stat_violin_median <- function(pdata, config , stat = c("CV", "meanAbundance", "sd")){
-  median.quartile <- function(x){
-    out <- quantile(x, probs = c(0.25,0.5,0.75))
-    names(out) <- c("ymin","y","ymax")
+plot_stat_violin_median <- function(pdata, config, stat = c("CV", "meanAbundance", "sd")) {
+  median.quartile <- function(x) {
+    out <- quantile(x, probs = c(0.25, 0.5, 0.75))
+    names(out) <- c("ymin", "y", "ymax")
     return(out)
   }
   pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
 
-  res <- pdata |>
-    dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE),"top 50","bottom 50")) ->
-    top50
+  top50 <- pdata |>
+    dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))
 
   p <- ggplot(top50, aes(x = .data[[config$factor_keys()[1]]], y = .data[[stat]])) +
     geom_violin() +
@@ -643,10 +630,10 @@ plot_stat_violin_median <- function(pdata, config , stat = c("CV", "meanAbundanc
 #' ressqrt <- summarize_stats(datasqrt, config)
 #' plot_stdv_vs_mean(ressqrt, config)
 #'
-plot_stdv_vs_mean <- function(pdata, config, size=2000){
+plot_stdv_vs_mean <- function(pdata, config, size = 2000) {
   summary <- pdata |>
     group_by(across(all_of(config$factor_keys_depth()))) |>
-    dplyr::summarize(n = n(),.groups = "drop")
+    dplyr::summarize(n = n(), .groups = "drop")
   size <- min(size, min(summary$n))
 
   pdata <- pdata |>

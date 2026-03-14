@@ -5,9 +5,9 @@ test_that("ContrastsPlotter produces correct plot types", {
   config <- istar$config
 
   modelFunction <- strategy_lmer(
-    "abundance ~ group_ + (1 | peptide_Id) + (1 | sample)")
-  mod <- build_model(istar$data, modelFunction,
-    subject_Id = config$hierarchy_keys_depth())
+    "abundance ~ group_ + (1 | peptide_Id) + (1 | sample)"
+  )
+  mod <- build_model(istar$data, modelFunction, subject_Id = config$hierarchy_keys_depth())
 
   Contr <- c(
     "groupA_vs_Ctrl" = "group_A - group_Ctrl",

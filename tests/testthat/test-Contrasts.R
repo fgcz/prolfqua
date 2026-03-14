@@ -147,8 +147,7 @@ test_that("ContrastsTable (passive container)", {
 })
 
 test_that("ContrastsFirth and ContrastsFirthFacade", {
-  istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE,
-    weight_missing = 0.5, seed = 9)
+  istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 

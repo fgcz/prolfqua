@@ -15,10 +15,7 @@
 #' strat <- strategy_limma("abundance ~ group_")
 #' strat$formula
 #' strat$model_name
-strategy_limma <- function(modelstr,
-                           model_name = "limma",
-                           trend = FALSE,
-                           robust = FALSE) {
+strategy_limma <- function(modelstr, model_name = "limma", trend = FALSE, robust = FALSE) {
   formula <- as.formula(modelstr)
   list(
     formula = formula,
@@ -55,12 +52,9 @@ strategy_limma <- function(modelstr,
 #' mod_limma$get_coefficients()
 #' mod_limma$get_anova()
 #'
-build_model_limma <- function(lfqdata,
-                              strategy,
-                              modelName = strategy$model_name) {
-
+build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name) {
   wide <- lfqdata$to_wide(as.matrix = TRUE)
-  expr_matrix <- wide$data  # rows = proteins, cols = samples
+  expr_matrix <- wide$data # rows = proteins, cols = samples
   annotation <- wide$annotation
   subject_Id <- lfqdata$config$hierarchy_keys()
   rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_Id))
@@ -165,16 +159,18 @@ ModelLimma <- R6::R6Class(
     #' @param robust passed to eBayes
     #' @param dummy_model one fitted lm for linfct extraction
     #' @param p.adjust function to adjust p-values
-    initialize = function(fit,
-                          design,
-                          formula,
-                          subject_Id,
-                          modelName,
-                          rowdata,
-                          trend = FALSE,
-                          robust = FALSE,
-                          dummy_model = NULL,
-                          p.adjust = prolfqua::adjust_p_values) {
+    initialize = function(
+      fit,
+      design,
+      formula,
+      subject_Id,
+      modelName,
+      rowdata,
+      trend = FALSE,
+      robust = FALSE,
+      dummy_model = NULL,
+      p.adjust = prolfqua::adjust_p_values
+    ) {
       self$fit <- fit
       self$design <- design
       self$formula <- formula
@@ -229,10 +225,7 @@ ModelLimma <- R6::R6Class(
       }
 
       # Use limma topTable with all non-intercept coefficients for F-test
-      tt <- limma::topTable(fit_eb,
-                            coef = non_intercept,
-                            number = Inf,
-                            sort.by = "none")
+      tt <- limma::topTable(fit_eb, coef = non_intercept, number = Inf, sort.by = "none")
 
       result <- self$rowdata
       result$F.value <- tt$F
@@ -242,9 +235,7 @@ ModelLimma <- R6::R6Class(
       terms_tested <- paste(coef_names[non_intercept], collapse = "+")
       result$factor <- terms_tested
 
-      result <- self$p.adjust(result,
-                              column = "p.value",
-                              group_by_col = "factor")
+      result <- self$p.adjust(result, column = "p.value", group_by_col = "factor")
       return(dplyr::ungroup(result))
     },
     #' @description
@@ -377,10 +368,7 @@ ContrastsLimma <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param p.adjust function to adjust p-values
     #' @param modelName name of the contrast method
-    initialize = function(model,
-                          contrasts,
-                          p.adjust = prolfqua::adjust_p_values,
-                          modelName = "limma") {
+    initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, modelName = "limma") {
       self$model <- model
       self$contrasts <- contrasts
       self$subject_Id <- model$subject_Id
@@ -416,7 +404,7 @@ ContrastsLimma <- R6::R6Class(
 
       # Build the contrast matrix via linfct_from_model + linfct_matrix_contrasts
       linfct <- linfct_from_model(self$model$dummy_model, as_list = FALSE)
-      linfct <- unique(linfct)  # needed for single factor models
+      linfct <- unique(linfct) # needed for single factor models
 
       # Add avg contrasts for avgAbd computation
       namtmp <- paste0("avg_", names(self$contrasts))
@@ -436,18 +424,12 @@ ContrastsLimma <- R6::R6Class(
 
       # limma pipeline: contrasts.fit + eBayes
       fit2 <- limma::contrasts.fit(self$model$fit, contrast_matrix)
-      fit2 <- limma::eBayes(fit2,
-                            trend = self$model$trend,
-                            robust = self$model$robust)
+      fit2 <- limma::eBayes(fit2, trend = self$model$trend, robust = self$model$robust)
 
       # Extract results per contrast
       res_list <- vector("list", length(diff_names))
       for (i in seq_along(diff_names)) {
-        tt <- limma::topTable(fit2,
-                              coef = i,
-                              number = Inf,
-                              sort.by = "none",
-                              confint = TRUE)
+        tt <- limma::topTable(fit2, coef = i, number = Inf, sort.by = "none", confint = TRUE)
 
         df_i <- self$model$rowdata
         df_i$contrast <- diff_names[i]
@@ -472,7 +454,7 @@ ContrastsLimma <- R6::R6Class(
       avg_df_list <- vector("list", length(avg_names))
       for (i in seq_along(avg_names)) {
         df_avg <- self$model$rowdata
-        df_avg$contrast <- diff_names[i]  # map back to original contrast name
+        df_avg$contrast <- diff_names[i] # map back to original contrast name
         df_avg$avgAbd <- avg_vals[, i]
         avg_df_list[[i]] <- df_avg
       }
@@ -485,14 +467,9 @@ ContrastsLimma <- R6::R6Class(
       )
 
       # Adjust p-values per contrast
-      contrast_result <- self$p.adjust(contrast_result,
-                                       column = "p.value",
-                                       group_by_col = "contrast",
-                                       newname = "FDR")
+      contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast", newname = "FDR")
       contrast_result <- contrast_result |> dplyr::relocate("FDR", .after = "diff")
-      contrast_result <- dplyr::mutate(contrast_result,
-                                       modelName = self$modelName,
-                                       .before = 1)
+      contrast_result <- dplyr::mutate(contrast_result, modelName = self$modelName, .before = 1)
       contrast_result <- dplyr::ungroup(contrast_result)
       self$contrast_result <- contrast_result
 
@@ -504,8 +481,7 @@ ContrastsLimma <- R6::R6Class(
     #' @param FCthreshold fold change threshold to show in plots
     #' @param FDRthreshold FDR threshold to show in plots
     #' @return \code{\link{ContrastsPlotter}}
-    get_Plotter = function(FCthreshold = 1,
-                           FDRthreshold = 0.1) {
+    get_Plotter = function(FCthreshold = 1, FDRthreshold = 0.1) {
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
@@ -532,7 +508,8 @@ ContrastsLimma <- R6::R6Class(
     #' @return data.frame
     to_wide = function(columns = c("p.value", "FDR", "statistic")) {
       contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
+      contrasts_wide <- pivot_model_contrasts_2_Wide(
+        contrast_minimal,
         subject_Id = self$subject_Id,
         columns = c("diff", columns),
         contrast = "contrast"

@@ -1,7 +1,3 @@
-
-
-
-
 #' Generate instances of AnalysisConfiguration
 #'
 #' configurations examples of or various signal processing software outputs
@@ -26,16 +22,15 @@ NULL
 #'
 #'
 #'
-create_config_Skyline <- function(isotopeLabel="Isotope.Label",
-                                  ident_qValue="annotation_QValue"){
+create_config_Skyline <- function(isotopeLabel = "Isotope.Label", ident_qValue = "annotation_QValue") {
   config <- AnalysisConfiguration$new()
   config$fileName = "Replicate.Name"
 
   # measurement levels.
   config$hierarchy[["protein_Id"]] <- "Protein.Name"
   config$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
-  config$hierarchy[["precursor_Id"]] <-  c("Peptide.Sequence","Precursor.Charge")
-  config$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence","Precursor.Charge","Fragment.Ion", "Product.Charge")
+  config$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
+  config$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
 
   #
   config$ident_qValue = ident_qValue
@@ -57,16 +52,15 @@ create_config_Skyline <- function(isotopeLabel="Isotope.Label",
 #' config$factors[["age"]] = "age"
 #' config$factors[["Sample_id"]] = "Sample.Name"
 #'
-create_config_Spectronaut_Peptide <- function(isotopeLabel="Isotope.Label",
-                                                  ident_qValue="EG.Qvalue"){
+create_config_Spectronaut_Peptide <- function(isotopeLabel = "Isotope.Label", ident_qValue = "EG.Qvalue") {
   config <- AnalysisConfiguration$new()
   config$fileName = "R.FileName"
 
   # measurement levels.
-  config$hierarchy[["protein_Id"]]    <-  "PG.ProteinAccessions"
-  config$hierarchy[["peptide_Id"]]    <-  "PEP.StrippedSequence"
-  config$hierarchy[["modPeptide_Id"]] <-  "EG.ModifiedSequence"
-  config$hierarchy[["precursor_Id"]]   <-  c("EG.ModifiedSequence", "FG.Charge")
+  config$hierarchy[["protein_Id"]] <- "PG.ProteinAccessions"
+  config$hierarchy[["peptide_Id"]] <- "PEP.StrippedSequence"
+  config$hierarchy[["modPeptide_Id"]] <- "EG.ModifiedSequence"
+  config$hierarchy[["precursor_Id"]] <- c("EG.ModifiedSequence", "FG.Charge")
 
   #
   config$ident_qValue = ident_qValue
@@ -88,9 +82,7 @@ create_config_Spectronaut_Peptide <- function(isotopeLabel="Isotope.Label",
 #' @examples
 #' tmp <- create_config_MQ_peptide()
 #'
-create_config_MQ_peptide <- function(ident_qValue = "pep",
-                                  intensity = "peptide.intensity",
-                                  isotopeLabel = "isotope"){
+create_config_MQ_peptide <- function(ident_qValue = "pep", intensity = "peptide.intensity", isotopeLabel = "isotope") {
   config <- AnalysisConfiguration$new()
   config$fileName = "raw.file"
   # measurement levels.
@@ -113,12 +105,12 @@ create_config_MQ_peptide <- function(ident_qValue = "pep",
 #' @examples
 #'create_config_MSFragger_MSstats()
 #'
-create_config_MSFragger_MSstats <- function(){
+create_config_MSFragger_MSstats <- function() {
   ## Tell LFQ Service what column is what.
   config <- AnalysisConfiguration$new()
   # measurement levels.
   config$hierarchy[["protein_Id"]] <- c("ProteinName")
-  config$hierarchy[["peptide_Id"]] <- c("PeptideSequence","PrecursorCharge")
+  config$hierarchy[["peptide_Id"]] <- c("PeptideSequence", "PrecursorCharge")
   config$fileName = "Run"
   config$ident_qValue = "pep"
   config$set_response("Intensity")

@@ -7,9 +7,9 @@
 #' istar$data <- encode_bin_resp(istar$data, istar$config)
 #' istar$config$bin_resp == "bin_resp"
 #' istar$data[["bin_resp"]]
-encode_bin_resp <- function(pdata, config, name = "bin_resp"){
+encode_bin_resp <- function(pdata, config, name = "bin_resp") {
   config$bin_resp = "bin_resp"
-  pdata <- complete_cases(pdata,config)
+  pdata <- complete_cases(pdata, config)
   pdata[[config$bin_resp]] <- as.integer(!is.na(pdata[[config$get_response()]]))
   return(pdata)
 }
@@ -44,33 +44,33 @@ encode_bin_resp <- function(pdata, config, name = "bin_resp"){
 #' stopifnot(sum(is.na(tmp$nrMeasured))==0)
 #'
 #' tmp <- interaction_missing_stats(xx, config, factors = NULL)
-interaction_missing_stats <- function(pdata,
-                                      config,
-                                      factors = config$factor_keys_depth(),
-                                      hierarchy = config$hierarchy_keys(),
-                                      workIntensity = config$get_response())
-{
-  warning(">>>> deprecated! <<<< \n
-          use summarize_stats_factors instead.")
+interaction_missing_stats <- function(
+  pdata,
+  config,
+  factors = config$factor_keys_depth(),
+  hierarchy = config$hierarchy_keys(),
+  workIntensity = config$get_response()
+) {
+  warning(
+    ">>>> deprecated! <<<< \n
+          use summarize_stats_factors instead."
+  )
   pdata <- complete_cases(pdata, config)
-  missingPrec <- pdata |> group_by(across(all_of(c(factors,
-                                        hierarchy,
-                                        config$isotopeLabel
-  ))))
+  missingPrec <- pdata |> group_by(across(all_of(c(factors, hierarchy, config$isotopeLabel))))
   missingPrec <- missingPrec |>
-    dplyr::summarize(nrReplicates = n(),
-                     nrNAs = sum(is.na(!!sym(workIntensity))),
-                     meanAbundance = mean(!!sym(workIntensity), na.rm = TRUE),
-                     medianAbundance = median(!!sym(workIntensity), na.rm = TRUE)) |>
-    dplyr::mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |> dplyr::ungroup()
-  return(list(data = missingPrec,
-              summaries = c("nrReplicates","nrNAs","nrMeasured","meanAbundance", "medianAbundance")))
+    dplyr::summarize(
+      nrReplicates = n(),
+      nrNAs = sum(is.na(!!sym(workIntensity))),
+      meanAbundance = mean(!!sym(workIntensity), na.rm = TRUE),
+      medianAbundance = median(!!sym(workIntensity), na.rm = TRUE)
+    ) |>
+    dplyr::mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |>
+    dplyr::ungroup()
+  return(list(
+    data = missingPrec,
+    summaries = c("nrReplicates", "nrNAs", "nrMeasured", "meanAbundance", "medianAbundance")
+  ))
 }
-
-
-
-
-
 
 
 .get_sides <- function(contrast) {
@@ -78,7 +78,7 @@ interaction_missing_stats <- function(pdata,
 
   ast_list <- getAST(rlang::parse_expr(contrast))
   ast_array <- array(as.character(unlist(ast_list)))
-  ast_array <- gsub("`","",ast_array)
+  ast_array <- gsub("`", "", ast_array)
   return(ast_array)
 }
 
@@ -109,21 +109,18 @@ interaction_missing_stats <- function(pdata,
 #' imputed <- get_contrast(imp, config$hierarchy_keys(), Contrasts)
 #'
 #'
-get_contrast <- function(data,
-                         hierarchy_keys,
-                         contrasts)
-{
+get_contrast <- function(data, hierarchy_keys, contrasts) {
   for (i in seq_along(contrasts)) {
-    message(names(contrasts)[i], "=", contrasts[i],"\n")
+    message(names(contrasts)[i], "=", contrasts[i], "\n")
     data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
   }
   res <- vector(mode = "list", length(contrasts))
   names(res) <- names(contrasts)
   for (i in seq_along(contrasts)) {
-    sides <- .get_sides(contrasts[i] )
-    sides <- intersect(sides,colnames(data))
+    sides <- .get_sides(contrasts[i])
+    sides <- intersect(sides, colnames(data))
 
-    df  <- dplyr::select(
+    df <- dplyr::select(
       data,
       dplyr::all_of(hierarchy_keys),
       group_1 = dplyr::all_of(sides[1]),
@@ -133,15 +130,13 @@ get_contrast <- function(data,
 
     df$group_1_name <- sides[1]
     df$group_2_name <- sides[2]
-    df$contrast <-  names(contrasts)[i]
+    df$contrast <- names(contrasts)[i]
 
     res[[names(contrasts)[i]]] <- df
   }
   res <- dplyr::bind_rows(res)
   return(dplyr::ungroup(res))
 }
-
-
 
 
 #' Histogram summarizing missigness
@@ -162,32 +157,39 @@ get_contrast <- function(data,
 #' pl <- missigness_histogram(analysis, config, showempty=TRUE)
 #' stopifnot("ggplot" %in% class(pl))
 #'
-missigness_histogram <- function(x,
-                                 config,
-                                 showempty = FALSE,
-                                 factors = config$factor_keys_depth(),
-                                 alpha = 0.1){
-  missingPrec <- interaction_missing_stats(x, config , factors)$data
+missigness_histogram <- function(x, config, showempty = FALSE, factors = config$factor_keys_depth(), alpha = 0.1) {
+  missingPrec <- interaction_missing_stats(x, config, factors)$data
   missingPrec <- missingPrec |>
-    dplyr::ungroup() |> dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
+    dplyr::ungroup() |>
+    dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
 
   if (showempty) {
     if (config$is_response_transformed) {
       missingPrec <- missingPrec |>
-        dplyr::mutate(meanAbundance = ifelse(is.na(.data$meanAbundance), min(.data$meanAbundance, na.rm = TRUE) - 1,
-                                             .data$meanAbundance))
-    }else{
+        dplyr::mutate(
+          meanAbundance = ifelse(
+            is.na(.data$meanAbundance),
+            min(.data$meanAbundance, na.rm = TRUE) - 1,
+            .data$meanAbundance
+          )
+        )
+    } else {
       missingPrec <- missingPrec |>
-        dplyr::mutate(meanAbundance = ifelse(is.na(.data$meanAbundance),min(.data$meanAbundance, na.rm = TRUE) - 20,.data$meanAbundance))
+        dplyr::mutate(
+          meanAbundance = ifelse(
+            is.na(.data$meanAbundance),
+            min(.data$meanAbundance, na.rm = TRUE) - 20,
+            .data$meanAbundance
+          )
+        )
     }
-
   }
 
   factors <- config$factor_keys_depth()
   formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
   meanAbundance <- paste0("mean_", config$get_response())
-  missingPrec <- dplyr::rename(missingPrec, !!sym(meanAbundance) := .data$meanAbundance )
+  missingPrec <- dplyr::rename(missingPrec, !!sym(meanAbundance) := .data$meanAbundance)
 
   p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanAbundance), fill = .data$nrNAs, colour = .data$nrNAs)) +
     ggplot2::geom_density(alpha = alpha, position = "identity") +
@@ -216,17 +218,18 @@ missigness_histogram <- function(x,
 #' stopifnot("ggplot" %in% class(res$figure))
 #' stopifnot(ncol(res$data) >= 6)
 #'
-missingness_per_condition_cumsum <- function(x,
-                                             config,
-                                             factors = config$factor_keys_depth()){
-  missingPrec <- interaction_missing_stats(x, config,factors)$data
+missingness_per_condition_cumsum <- function(x, config, factors = config$factor_keys_depth()) {
+  missingPrec <- interaction_missing_stats(x, config, factors)$data
 
-  xx <- missingPrec |> group_by(across(all_of(c(config$isotopeLabel, factors,"nrNAs","nrReplicates")))) |>
+  xx <- missingPrec |>
+    group_by(across(all_of(c(config$isotopeLabel, factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(nrTransitions = n())
 
-  xxcs <- xx |> group_by(across(all_of(c(config$isotopeLabel,factors)))) |> arrange(.data$nrNAs) |>
+  xxcs <- xx |>
+    group_by(across(all_of(c(config$isotopeLabel, factors)))) |>
+    arrange(.data$nrNAs) |>
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
-  res <- xxcs  |> dplyr::select(-nrTransitions)
+  res <- xxcs |> dplyr::select(-dplyr::all_of("nrTransitions"))
 
   formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
@@ -257,13 +260,13 @@ missingness_per_condition_cumsum <- function(x,
 #'
 #' stopifnot(ncol(res$data) >= 5)
 #'
-missingness_per_condition <- function(x, config, factors = config$factor_keys_depth()){
+missingness_per_condition <- function(x, config, factors = config$factor_keys_depth()) {
   missingPrec <- interaction_missing_stats(x, config, factors)$data
-  hierarchyKey <- tail(config$hierarchy_keys(),1)
-  hierarchyKey <- paste0("nr_",hierarchyKey)
-  xx <- missingPrec |> group_by(across(all_of(c(config$isotopeLabel,
-                                     factors,"nrNAs","nrReplicates")))) |>
-    dplyr::summarize( !!sym(hierarchyKey) := n())
+  hierarchyKey <- tail(config$hierarchy_keys(), 1)
+  hierarchyKey <- paste0("nr_", hierarchyKey)
+  xx <- missingPrec |>
+    group_by(across(all_of(c(config$isotopeLabel, factors, "nrNAs", "nrReplicates")))) |>
+    dplyr::summarize(!!sym(hierarchyKey) := n())
 
   formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
   #message(formula)
@@ -276,7 +279,7 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
     facet_grid(as.formula(formula))
   xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = hierarchyKey)
 
-  return(list(data = xx ,figure = p))
+  return(list(data = xx, figure = p))
 }
 
 
@@ -297,13 +300,16 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
 #' UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::interaction_missing_stats(data, cf)
-  nrMiss <- tmp$data |> tidyr::pivot_wider(id_cols = cf$hierarchy_keys(),
-                                           names_from = cf$factor_keys_depth(),
-                                           values_from = !!rlang::sym("nrMeasured"))
+  nrMiss <- tmp$data |>
+    tidyr::pivot_wider(
+      id_cols = cf$hierarchy_keys(),
+      names_from = cf$factor_keys_depth(),
+      values_from = !!rlang::sym("nrMeasured")
+    )
 
   hl <- length(cf$hierarchy_keys())
-  nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] < tr] <- 0
-  nrMiss[,-(1:hl)][nrMiss[,-(1:hl)] >= tr] <- 1
+  nrMiss[, -(1:hl)][nrMiss[, -(1:hl)] < tr] <- 0
+  nrMiss[, -(1:hl)][nrMiss[, -(1:hl)] >= tr] <- 1
   return(list(data = as.data.frame(nrMiss), nsets = ncol(nrMiss) - length(cf$hierarchy_keys())))
 }
 
@@ -319,20 +325,22 @@ UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
 #' analysis <- istar$data
 #' pups <- UpSet_missing_stats(analysis, config)
 #' UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
-UpSet_missing_stats <- function(data, config){
+UpSet_missing_stats <- function(data, config) {
   data <- prolfqua::complete_cases(data, config)
-  responseName <- config$get_response()
-  data <- data |> dplyr::mutate(isThere =
-                                  dplyr::case_when(
-                                    !is.na(!!rlang::sym(responseName)) ~ 1,
-                                    TRUE ~ 0
-                                  )
-  )
-  pups2 <- data |> tidyr::pivot_wider(id_cols = config$hierarchy_keys(),
-                                      names_from = config$sampleName,
-                                      values_from = !!rlang::sym("isThere"))
+  data <- data |>
+    dplyr::mutate(
+      isThere = dplyr::case_when(
+        !is.na(!!rlang::sym(config$get_response())) ~ 1,
+        TRUE ~ 0
+      )
+    )
+  pups2 <- data |>
+    tidyr::pivot_wider(
+      id_cols = config$hierarchy_keys(),
+      names_from = config$sampleName,
+      values_from = !!rlang::sym("isThere")
+    )
   #colnames(pups2) <- make.names(colnames(pups2))
-  res <- list(data = as.data.frame(pups2), nsets = ncol(pups2) - length(config$hierarchy_keys()) )
+  res <- list(data = as.data.frame(pups2), nsets = ncol(pups2) - length(config$hierarchy_keys()))
   return(res)
 }
-

@@ -47,8 +47,7 @@ MissingHelpers <- R6::R6Class(
     #' @param config config
     #' @param prob default 0.5, median of groups with one observed value
     #' @param weighted should group average be computed used weighting, default TRUE.
-    initialize = function(data, config, prob = 0.5, weighted = TRUE)
-    {
+    initialize = function(data, config, prob = 0.5, weighted = TRUE) {
       self$data = data
       self$config = config
       self$prob = prob
@@ -57,7 +56,7 @@ MissingHelpers <- R6::R6Class(
     #' @description
     #' get data.frame with statistics
     #' @return data.frame
-    get_stats = function(){
+    get_stats = function() {
       if (is.null(self$stats)) {
         self$stats = prolfqua::summarize_stats_factors(self$data, self$config)
       }
@@ -67,25 +66,30 @@ MissingHelpers <- R6::R6Class(
     #' determine limit of detection
     #' computes quantile of abundances in groups with a single observation
     #' @return integer LOD
-    get_LOD = function(){
-      LOD <- self$get_stats() |> dplyr::filter(nrMeasured == 1) |>
-        dplyr::summarize(LOD = quantile(meanAbundance, probs = self$prob ,na.rm = TRUE)) |>
+    get_LOD = function() {
+      LOD <- self$get_stats() |>
+        dplyr::filter(nrMeasured == 1) |>
+        dplyr::summarize(LOD = quantile(meanAbundance, probs = self$prob, na.rm = TRUE)) |>
         pull()
       return(LOD)
     },
     #' @description
     #' compute group averages using weighted lod
     #'
-    impute_weighted_lod = function(){
+    impute_weighted_lod = function() {
       toimp <- self$get_stats()
       toimp$meanAbundanceZero <- ifelse(is.na(toimp$meanAbundance), 0, toimp$meanAbundance)
-      impDat <- toimp |> mutate(meanAbundanceImp = (.data$nrMeasured * .data$meanAbundanceZero + .data$nrNAs * self$get_LOD()) / .data$nrReplicates  )
+      impDat <- toimp |>
+        mutate(
+          meanAbundanceImp = (.data$nrMeasured * .data$meanAbundanceZero + .data$nrNAs * self$get_LOD()) /
+            .data$nrReplicates
+        )
       return(impDat)
     },
     #' @description
     #' if group average absent substitute with LOD
     #'
-    impute_lod = function(){
+    impute_lod = function() {
       toimp <- self$get_stats()
       toimp$meanAbundanceImp <- ifelse(is.na(toimp$meanAbundance), self$get_LOD(), toimp$meanAbundance)
       return(toimp)
@@ -100,20 +104,23 @@ MissingHelpers <- R6::R6Class(
         impDat <- self$impute_lod()
       }
       pooled <- prolfqua::poolvar(impDat, self$config, method = "V1")
-      pooled <- dplyr::select(pooled ,-all_of(c(self$config$factor_keys_depth()[1],"var")))
+      pooled <- dplyr::select(pooled, -all_of(c(self$config$factor_keys_depth()[1], "var")))
 
-      pooled_zero <- pooled[pooled$df > 0 & pooled$sd > 0,]
-      meandf <- pooled_zero |> summarize(
-        n = 1, df = 1,
-        sd = quantile(sd, prob = prob, na.rm = TRUE),
-        sdT = quantile(sdT, prob = prob, na.rm = TRUE))
+      pooled_zero <- pooled[pooled$df > 0 & pooled$sd > 0, ]
+      meandf <- pooled_zero |>
+        summarize(
+          n = 1,
+          df = 1,
+          sd = quantile(sd, prob = prob, na.rm = TRUE),
+          sdT = quantile(sdT, prob = prob, na.rm = TRUE)
+        )
 
       minsd <- 1
-      meandf$sd <-  ifelse(meandf$sd > 0, meandf$sd, minsd)
-      meandf$sdT <-  ifelse(meandf$sdT > 0, meandf$sdT, minsd)
+      meandf$sd <- ifelse(meandf$sd > 0, meandf$sd, minsd)
+      meandf$sdT <- ifelse(meandf$sdT > 0, meandf$sdT, minsd)
 
-      pooled <- pooled |> mutate(sd = ifelse(is.na(sd) | sd == 0 ,meandf$sd, sd))
-      pooled <- pooled |> mutate(sdT = ifelse(is.na(sdT) | sdT == 0, meandf$sdT, sdT ))
+      pooled <- pooled |> mutate(sd = ifelse(is.na(sd) | sd == 0, meandf$sd, sd))
+      pooled <- pooled |> mutate(sdT = ifelse(is.na(sdT) | sdT == 0, meandf$sdT, sdT))
       pooled <- pooled |> mutate(df = ifelse(df == 0, 1, df))
       return(pooled)
     },
@@ -121,8 +128,8 @@ MissingHelpers <- R6::R6Class(
     #' get contrast estimates
     #' @param Contrasts named array with contrasts
     get_contrast_estimates = function(
-    Contrasts
-    ){
+      Contrasts
+    ) {
       if (self$weighted) {
         lt <- self$impute_weighted_lod()
       } else {
@@ -130,39 +137,43 @@ MissingHelpers <- R6::R6Class(
       }
       abundance_column = "meanAbundanceImp"
       hierarchy_keys <- self$config$hierarchy_keys()
-      imp <- lt |> pivot_wider(
-        id_cols = dplyr::all_of(hierarchy_keys),
-        names_from = "interaction",
-        values_from = !!sym(abundance_column)
-      )
-
+      imp <- lt |>
+        pivot_wider(
+          id_cols = dplyr::all_of(hierarchy_keys),
+          names_from = "interaction",
+          values_from = !!sym(abundance_column)
+        )
 
       imputed <- prolfqua::get_contrast(ungroup(imp), hierarchy_keys, Contrasts)
-      imputed$avgAbd <- (imputed$group_1 + imputed$group_2)/2
-      imputed <- imputed |> dplyr::rename(
-        !!paste0(abundance_column,"_group_1") := "group_1",
-        !!paste0(abundance_column, "_group_2") := "group_2")
+      imputed$avgAbd <- (imputed$group_1 + imputed$group_2) / 2
+      imputed <- imputed |>
+        dplyr::rename(
+          !!paste0(abundance_column, "_group_1") := "group_1",
+          !!paste0(abundance_column, "_group_2") := "group_2"
+        )
 
-      nr <- lt |> mutate(is_missing = ifelse( .data$nrNAs == .data$nrReplicates , 1 , 0) )
-      nr <- nr |> pivot_wider(
-        id_cols = dplyr::all_of(hierarchy_keys),
-        names_from = "interaction",
-        values_from = "is_missing"
-      )
+      nr <- lt |> mutate(is_missing = ifelse(.data$nrNAs == .data$nrReplicates, 1, 0))
+      nr <- nr |>
+        pivot_wider(
+          id_cols = dplyr::all_of(hierarchy_keys),
+          names_from = "interaction",
+          values_from = "is_missing"
+        )
       nrs <- prolfqua::get_contrast(ungroup(nr), hierarchy_keys, Contrasts)
 
-      nrs <- nrs |> select(all_of(c(hierarchy_keys,"contrast", "estimate" )))
+      nrs <- nrs |> select(all_of(c(hierarchy_keys, "contrast", "estimate")))
       nrs <- nrs |> rename(indic = estimate)
       imputed <- inner_join(imputed, nrs, by = c(hierarchy_keys, "contrast"))
 
-
-      nrMeasured <- lt |> pivot_wider(
-        id_cols = dplyr::all_of(hierarchy_keys),
-        names_from = "interaction",
-        values_from = nrMeasured
-      )
-      nrMeasured <- prolfqua::get_contrast(ungroup(nrMeasured),  hierarchy_keys, Contrasts)
-      nrMeasured <- nrMeasured |> select(all_of(c(hierarchy_keys, "contrast", nrMeasured_group_1 = "group_1", nrMeasured_group_2  = "group_2")))
+      nrMeasured <- lt |>
+        pivot_wider(
+          id_cols = dplyr::all_of(hierarchy_keys),
+          names_from = "interaction",
+          values_from = nrMeasured
+        )
+      nrMeasured <- prolfqua::get_contrast(ungroup(nrMeasured), hierarchy_keys, Contrasts)
+      nrMeasured <- nrMeasured |>
+        select(all_of(c(hierarchy_keys, "contrast", nrMeasured_group_1 = "group_1", nrMeasured_group_2 = "group_2")))
       imputed <- inner_join(imputed, nrMeasured, by = c(hierarchy_keys, "contrast"))
 
       imputed2 <- imputed |> mutate(estimate = ifelse(.data$indic < 0 & .data$estimate < 0, 0, .data$estimate))
@@ -181,27 +192,23 @@ MissingHelpers <- R6::R6Class(
       result <- inner_join(imputed, pooled, by = self$config$hierarchy_keys())
       result <- private$add_p_values(result, confint = confint)
       if (!all) {
-        result <- select(result, -all_of( c("nrMeasured" , "mean" ,"n.groups", "n", "meanAll") ) )
+        result <- select(result, -all_of(c("nrMeasured", "mean", "n.groups", "n", "meanAll")))
       }
       return(result)
     }
-
   ),
   private = list(
-    add_p_values = function(result, confint = 0.95, all = TRUE){
-
-      result <- dplyr::mutate(result, statistic = .data$estimate / .data$sdT,
-                              p.value = 2*pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE))
-      prqt <- -qt((1 - confint)/2, df = result$df)
-      result$conf.low <- result$estimate  - prqt * (result$sdT)
+    add_p_values = function(result, confint = 0.95, all = TRUE) {
+      result <- dplyr::mutate(
+        result,
+        statistic = .data$estimate / .data$sdT,
+        p.value = 2 * pt(abs(.data$statistic), df = .data$df, lower.tail = FALSE)
+      )
+      prqt <- -qt((1 - confint) / 2, df = result$df)
+      result$conf.low <- result$estimate - prqt * (result$sdT)
       result$conf.high <- result$estimate + prqt * (result$sdT)
 
       return(result)
     }
   )
 )
-
-
-
-
-

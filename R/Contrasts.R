@@ -98,11 +98,13 @@ Contrasts <- R6::R6Class(
     #' @param p.adjust function to adjust the p-values
     #' @param global development/internal argument (if FALSE determine linfct for each model.)
     #' @param modelName name of contrast method, default WaldTest
-    initialize = function(model,
-                          contrasts,
-                          p.adjust = prolfqua::adjust_p_values,
-                          global = FALSE,
-                          modelName = "WaldTest") {
+    initialize = function(
+      model,
+      contrasts,
+      p.adjust = prolfqua::adjust_p_values,
+      global = FALSE,
+      modelName = "WaldTest"
+    ) {
       self$models <- model$modelDF |> dplyr::filter(exists_lmer == TRUE)
       self$contrasts <- contrasts
       self$contrastfun <- model$model_strategy$contrast_fun
@@ -145,9 +147,7 @@ Contrasts <- R6::R6Class(
           res[[i]] <- if (self$models$nrcoeff_not_NA[[i]] == mcoef) {
             compmodel
           } else {
-            .linfct(self$models$linear_model[[i]],
-              contrast = self$contrasts, avg = avg
-            )
+            .linfct(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
           }
         }
         return(res)
@@ -186,21 +186,20 @@ Contrasts <- R6::R6Class(
         avgAbd <- avgAbd |> dplyr::rename(avgAbd = diff)
         contrast_result <- left_join(differences, avgAbd)
 
-        contrast_result <- self$p.adjust(contrast_result,
-          column = "p.value",
-          group_by_col = "contrast"
-        )
+        contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
         contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
         contrast_result <- mutate(contrast_result, modelName = self$modelName, .before = 1)
         self$contrast_result <- contrast_result
       }
       res <- if (!all) {
         self$contrast_result |>
-          select(-all_of(c(
-            "sigma.model",
-            "df.residual.model",
-            "isSingular"
-          )))
+          select(
+            -all_of(c(
+              "sigma.model",
+              "df.residual.model",
+              "isSingular"
+            ))
+          )
       } else {
         self$contrast_result
       }
@@ -215,8 +214,9 @@ Contrasts <- R6::R6Class(
     #' @param FDRthreshold FDR threshold to show in plots
     #' @return \code{\link{ContrastsPlotter}}
     get_Plotter = function(
-        FCthreshold = 1,
-        FDRthreshold = 0.1) {
+      FCthreshold = 1,
+      FDRthreshold = 0.1
+    ) {
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
@@ -243,7 +243,8 @@ Contrasts <- R6::R6Class(
     #' @return data.frame
     to_wide = function(columns = c("p.value", "FDR", "statistic")) {
       contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(contrast_minimal,
+      contrasts_wide <- pivot_model_contrasts_2_Wide(
+        contrast_minimal,
         subject_Id = self$subject_Id,
         columns = c("diff", columns),
         contrast = "contrast"

@@ -26,8 +26,8 @@ print.pheatmap <- function(x, ...) {
 #' istar <- sim_lfq_data_peptide_config()
 #' plot_intensity_distribution_violin(istar$data, istar$config)
 #'
-plot_intensity_distribution_violin <- function(pdata, config){
-  p <- ggplot(pdata, aes(x = .data[[config$sampleName]], y = .data[[config$get_response()]] )) +
+plot_intensity_distribution_violin <- function(pdata, config) {
+  p <- ggplot(pdata, aes(x = .data[[config$sampleName]], y = .data[[config$get_response()]])) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
@@ -49,9 +49,8 @@ plot_intensity_distribution_violin <- function(pdata, config){
 #' istar <- sim_lfq_data_peptide_config()
 #' plot_intensity_distribution_density(istar$data, istar$config)
 #'
-plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
-  p <- ggplot(pdata, aes(x = .data[[config$get_response()]],
-                                colour = .data[[config$sampleName]] )) +
+plot_intensity_distribution_density <- function(pdata, config, legend = TRUE) {
+  p <- ggplot(pdata, aes(x = .data[[config$get_response()]], colour = .data[[config$sampleName]])) +
     geom_line(stat = "density")
   if (!config$is_response_transformed) {
     p <- p + scale_x_continuous(trans = 'log10')
@@ -74,28 +73,33 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE){
 #' istar <- sim_lfq_data_peptide_config()
 #' analysis <- transform_work_intensity(istar$data, istar$config, log2)
 #' plot_sample_correlation(analysis, istar$config)
-plot_sample_correlation <- function(pdata, config){
+plot_sample_correlation <- function(pdata, config) {
   matrix <- tidy_to_wide_config(pdata, config, as.matrix = TRUE)$data
   M <- cor(matrix, use = "pairwise.complete.obs")
   if (nrow(M) > 12) {
-    res <- corrplot::corrplot.mixed(M,upper = "ellipse",
-                                    lower = "pie",
-                                    diag = "u",
-                                    tl.cex = .6,
-                                    tl.pos = "lt",
-                                    tl.col = "black",
-                                    mar = c(2,5,5,2))
-  } else{
-    res <- corrplot::corrplot.mixed(M,upper = "ellipse",
-                                    lower = "number",
-                                    lower.col = "black",
-                                    tl.cex = .6,
-                                    number.cex = .7,
-                                    diag = "u",
-                                    tl.pos = "lt",
-                                    tl.col = "black",
-                                    mar = c(2,5,5,2))
-
+    res <- corrplot::corrplot.mixed(
+      M,
+      upper = "ellipse",
+      lower = "pie",
+      diag = "u",
+      tl.cex = .6,
+      tl.pos = "lt",
+      tl.col = "black",
+      mar = c(2, 5, 5, 2)
+    )
+  } else {
+    res <- corrplot::corrplot.mixed(
+      M,
+      upper = "ellipse",
+      lower = "number",
+      lower.col = "black",
+      tl.cex = .6,
+      number.cex = .7,
+      diag = "u",
+      tl.pos = "lt",
+      tl.col = "black",
+      mar = c(2, 5, 5, 2)
+    )
   }
   invisible(res)
 }
@@ -129,56 +133,72 @@ plot_sample_correlation <- function(pdata, config){
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
 #'   config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
 #' p
-plot_hierarchies_boxplot <- function(pdata,
-                                     title,
-                                     config,
-                                     facet_grid_on = NULL ,
-                                     beeswarm = TRUE,
-                                     show_mean = TRUE,
-                                     pb){
-  if (!missing(pb)) { pb$tick() }
+plot_hierarchies_boxplot <- function(
+  pdata,
+  title,
+  config,
+  facet_grid_on = NULL,
+  beeswarm = TRUE,
+  show_mean = TRUE,
+  pb
+) {
+  if (!missing(pb)) {
+    pb$tick()
+  }
 
   isotopeLabel <- config$isotopeLabel
   lil <- length(unique(pdata[[isotopeLabel]]))
 
-  pdata <- prolfqua::make_interaction_column( pdata , c(config$factor_keys_depth()))
+  pdata <- prolfqua::make_interaction_column(pdata, c(config$factor_keys_depth()))
   pdata$size <- ifelse(pdata[[config$nr_children]] == 0, 2, pdata[[config$nr_children]])
   pdata[[config$nr_children]] <- as.factor(pdata[[config$nr_children]])
-  color <- if (lil > 1) {isotopeLabel} else {NULL}
-  p <- ggplot(pdata, aes(x = .data[["interaction"]],
-                                y = .data[[config$get_response()]]
-  )) +
+  color <- if (lil > 1) {
+    isotopeLabel
+  } else {
+    NULL
+  }
+  p <- ggplot(pdata, aes(x = .data[["interaction"]], y = .data[[config$get_response()]])) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
-  if (!is.null(color)) p <- p + aes(colour = .data[[color]])
+  if (!is.null(color)) {
+    p <- p + aes(colour = .data[[color]])
+  }
 
   if (!config$is_response_transformed) {
     p <- p + scale_y_continuous(trans = "log10")
   }
   p <- p + geom_boxplot()
-  if ( beeswarm ) {
-
-    if (length(levels(pdata[[config$nr_children]])) > 1 ) {
+  if (beeswarm) {
+    if (length(levels(pdata[[config$nr_children]])) > 1) {
       shape_values <- c(4, rep(16, length(levels(pdata[[config$nr_children]])) - 1))
     } else {
       shape_values <- 16
     }
-    p <- p + ggbeeswarm::geom_quasirandom(aes(
-      size = .data[["size"]],
-      shape = .data[[config$nr_children]]) , dodge.width = 0.7 ) +
+    p <- p +
+      ggbeeswarm::geom_quasirandom(
+        aes(
+          size = .data[["size"]],
+          shape = .data[[config$nr_children]]
+        ),
+        dodge.width = 0.7
+      ) +
       scale_shape_manual(values = shape_values) +
-      scale_size_continuous(range = range(pdata$size, na.rm= TRUE))
+      scale_size_continuous(range = range(pdata$size, na.rm = TRUE))
   }
   if (show_mean) {
-    p <- p + stat_summary(fun = mean, geom = "point", position = position_dodge(0.7),
-                          size = 3, shape = 3)
-    p <- p + stat_summary(fun = mean, geom = "text", aes(label = round(after_stat(y), 2)),
-                          position = position_dodge(0.7),
-                          vjust = -1,
-                          size = 3)
+    p <- p + stat_summary(fun = mean, geom = "point", position = position_dodge(0.7), size = 3, shape = 3)
+    p <- p +
+      stat_summary(
+        fun = mean,
+        geom = "text",
+        aes(label = round(after_stat(y), 2)),
+        position = position_dodge(0.7),
+        vjust = -1,
+        size = 3
+      )
   }
-  if (!is.null( facet_grid_on ) && (facet_grid_on %in% colnames(pdata))) {
-    p <- p + facet_grid( formula(paste0("~", facet_grid_on ) ))
+  if (!is.null(facet_grid_on) && (facet_grid_on %in% colnames(pdata))) {
+    p <- p + facet_grid(formula(paste0("~", facet_grid_on)))
   }
   return(p)
 }
@@ -221,11 +241,12 @@ plot_hierarchies_boxplot <- function(pdata,
 #'  res$boxplot[[1]]
 #'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
 #'                                     iostar$config$hierarchy_keys()[1])
-plot_hierarchies_boxplot_df <- function(pdata,
-                                        config,
-                                        hierarchy = config$hierarchy_keys_depth(),
-                                        facet_grid_on = NULL){
-
+plot_hierarchies_boxplot_df <- function(
+  pdata,
+  config,
+  hierarchy = config$hierarchy_keys_depth(),
+  facet_grid_on = NULL
+) {
   xnested <- pdata |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
   newcol <- paste(hierarchy, collapse = "+")
   xnested <- xnested |> tidyr::unite(!!sym(newcol), all_of(hierarchy))
@@ -233,13 +254,11 @@ plot_hierarchies_boxplot_df <- function(pdata,
   pb <- progress::progress_bar$new(total = nrow(xnested))
 
   figs <- xnested |>
-    dplyr::mutate(boxplot = map2(data, !!sym(newcol),
-                                 plot_hierarchies_boxplot,
-                                 config ,
-                                 facet_grid_on = facet_grid_on, pb = pb))
+    dplyr::mutate(
+      boxplot = map2(data, !!sym(newcol), plot_hierarchies_boxplot, config, facet_grid_on = facet_grid_on, pb = pb)
+    )
   return(dplyr::select(figs, all_of(c(newcol, "boxplot"))))
 }
-
 
 
 #' plot correlation heatmap with annotations
@@ -258,16 +277,10 @@ plot_hierarchies_boxplot_df <- function(pdata,
 #' pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
 #' stopifnot("pheatmap" %in% class(pheat_map))
 #'
-plot_heatmap_cor <- function(data,
-                             config,
-                             R2 = FALSE,
-                             color = colorRampPalette(c("white", "red"))(1024),
-                             ...){
-
-  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
+plot_heatmap_cor <- function(data, config, R2 = FALSE, color = colorRampPalette(c("white", "red"))(1024), ...) {
+  res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
-
 
   cres <- cor(res, use = "pa")
   if (R2) {
@@ -283,16 +296,18 @@ plot_heatmap_cor <- function(data,
   #                          silent = TRUE)
 
   gg <- stats::hclust(stats::dist(cres))
-  res <- pheatmap::pheatmap(cres[gg$order,],
-                            scale = "none",
-                            cluster_rows  = FALSE,
-                            annotation_col = factors,
-                            show_rownames = FALSE,
-                            border_color = NA,
-                            main = ifelse(R2, "R^2", "correlation"),
-                            silent = TRUE,
-                            color = color,
-                            ... = ...)
+  res <- pheatmap::pheatmap(
+    cres[gg$order, ],
+    scale = "none",
+    cluster_rows = FALSE,
+    annotation_col = factors,
+    show_rownames = FALSE,
+    border_color = NA,
+    main = ifelse(R2, "R^2", "correlation"),
+    silent = TRUE,
+    color = color,
+    ... = ...
+  )
   invisible(res)
 }
 
@@ -315,12 +330,13 @@ plot_heatmap_cor <- function(data,
 #'   stopifnot("IheatmapHorizontal" %in% class(pheat_map))
 #' }
 #'
-plot_heatmap_cor_iheatmap <- function(data,
-                                      config,
-                                      R2 = FALSE,
-                                      color = colorRampPalette(c("white", "red"))(1024),
-                                      ...){
-
+plot_heatmap_cor_iheatmap <- function(
+  data,
+  config,
+  R2 = FALSE,
+  color = colorRampPalette(c("white", "red"))(1024),
+  ...
+) {
   # Transform the data to a wide format using the provided function
   res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   annot <- res$annotation
@@ -345,17 +361,19 @@ plot_heatmap_cor_iheatmap <- function(data,
   if (!requireNamespace("iheatmapr", quietly = TRUE)) {
     stop("Package 'iheatmapr' is required for this function. Install it with: install.packages('iheatmapr')")
   }
-  hm <- iheatmapr::iheatmap(ordered_cres,
-                            cluster_rows = "hclust",
-                            cluster_cols = "hclust",
-                            col_annotation = factors,
-                            colors = color,
-                            scale = "none",
-                            name = ifelse(R2, "R^2", "correlation"))
+  hm <- iheatmapr::iheatmap(
+    ordered_cres,
+    cluster_rows = "hclust",
+    cluster_cols = "hclust",
+    col_annotation = factors,
+    colors = color,
+    scale = "none",
+    name = ifelse(R2, "R^2", "correlation")
+  )
   invisible(hm)
 }
 
-.ehandler = function(e){
+.ehandler = function(e) {
   warning("WARN :", e)
   # return string here
   as.character(e)
@@ -380,46 +398,47 @@ plot_heatmap_cor_iheatmap <- function(data,
 #' p2 <- plot_heatmap(analysis, config, show_rownames = TRUE)
 #' stopifnot(class(p) == "pheatmap")
 #'
-plot_heatmap <- function(data,
-                         config,
-                         na_fraction = 0.4,
-                         show_rownames = FALSE , ...){
-  if (nrow(data) == 0 ) {
+plot_heatmap <- function(data, config, na_fraction = 0.4, show_rownames = FALSE, ...) {
+  if (nrow(data) == 0) {
     warning("The dataset has :", nrow(data), "")
     return(NULL)
   }
 
-  wide <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
+  wide <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   annot <- wide$annotation
 
   factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$sampleName]]
   resdata <- t(scale(t(wide$data)))
-  resdataf <- prolfqua::remove_NA_rows(resdata,floor(ncol(resdata)*na_fraction))
+  resdataf <- prolfqua::remove_NA_rows(resdata, floor(ncol(resdata) * na_fraction))
 
   if (nrow(resdataf) >= 3) {
-    gg <- stats::hclust( stats::dist( resdataf ))
+    gg <- stats::hclust(stats::dist(resdataf))
     res <- pheatmap::pheatmap(
-      resdataf[gg$order,],
-      cluster_rows  = FALSE,
+      resdataf[gg$order, ],
+      cluster_rows = FALSE,
       scale = "row",
       annotation_col = factors,
       show_rownames = show_rownames,
       border_color = NA,
       silent = TRUE,
-      ... = ...)
+      ... = ...
+    )
   } else {
     res <- tryCatch(
       pheatmap::pheatmap(
         resdata,
-        cluster_rows  = FALSE,
+        cluster_rows = FALSE,
         scale = "row",
         annotation_col = factors,
         show_rownames = show_rownames,
         border_color = NA,
         silent = TRUE,
-        ... = ...), error = .ehandler)
+        ... = ...
+      ),
+      error = .ehandler
+    )
   }
   invisible(res)
 }
@@ -450,26 +469,19 @@ plot_heatmap <- function(data,
 #' rs <- plot_raster(analysis, config, show_rownames = TRUE)
 #' stopifnot(class(rs) == "pheatmap")
 #'
-plot_raster <- function(data,
-                        config,
-                        arrange = c("mean", "var"),
-                        not_na = FALSE,
-                        show_rownames = FALSE,
-                        ...) {
-  if (nrow(data) <= 1 ) {
+plot_raster <- function(data, config, arrange = c("mean", "var"), not_na = FALSE, show_rownames = FALSE, ...) {
+  if (nrow(data) <= 1) {
     warning("The dataset has :", nrow(data), "")
     return(NULL)
   }
   arrange <- match.arg(arrange)
-  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
+  res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   annot <- res$annotation
   resdata <- res$data
-
 
   factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$sampleName]]
-
 
   if (arrange == "mean") {
     bb <- apply(resdata, 1, mean, na.rm = TRUE)
@@ -477,26 +489,27 @@ plot_raster <- function(data,
     bb <- apply(resdata, 1, stats::var, na.rm = TRUE)
   }
   if (not_na) {
-    bNA <- apply(resdata, 1, function(x){sum(is.na(x))})
+    bNA <- apply(resdata, 1, function(x) {
+      sum(is.na(x))
+    })
     resdata <- resdata[order(bNA, bb, decreasing = c(FALSE, TRUE)), , drop = FALSE]
   } else {
-    resdata <- resdata[order(bb, decreasing =  TRUE), , drop = FALSE]
+    resdata <- resdata[order(bb, decreasing = TRUE), , drop = FALSE]
   }
 
-  res <- pheatmap::pheatmap(resdata,
-                            cluster_rows  = FALSE,
-                            cluster_cols = FALSE,
-                            annotation_col = factors,
-                            show_rownames = show_rownames,
-                            border_color = NA,
-                            silent = TRUE,
-                            ... = ...)
+  res <- pheatmap::pheatmap(
+    resdata,
+    cluster_rows = FALSE,
+    cluster_cols = FALSE,
+    annotation_col = factors,
+    show_rownames = show_rownames,
+    border_color = NA,
+    silent = TRUE,
+    ... = ...
+  )
 
   invisible(res)
 }
-
-
-
 
 
 #' plot heatmap of NA values
@@ -517,11 +530,8 @@ plot_raster <- function(data,
 #' stopifnot(class(tmp) == "pheatmap")
 #'
 #'
-plot_NA_heatmap <- function(data,
-                            config,
-                            limitrows = 10000,
-                            distance = "binary"){
-  res <-  tidy_to_wide_config(data, config , as.matrix = TRUE)
+plot_NA_heatmap <- function(data, config, limitrows = 10000, distance = "binary") {
+  res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
   stopifnot(annot[[config$sampleName]] %in% colnames(res))
@@ -533,29 +543,30 @@ plot_NA_heatmap <- function(data,
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
   allrows <- nrow(res)
-  res <- res[apply(res,1, sum) > 0, , drop = FALSE]
+  res <- res[apply(res, 1, sum) > 0, , drop = FALSE]
 
   message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
 
   if (nrow(res) > 1) {
-    res <- if (nrow(res) > limitrows ) {
-      message("limiting nr of rows to:", limitrows,"\n")
-      res[sample( seq_len(nrow(res)),limitrows),]
-    }else{
+    res <- if (nrow(res) > limitrows) {
+      message("limiting nr of rows to:", limitrows, "\n")
+      res[sample(seq_len(nrow(res)), limitrows), ]
+    } else {
       res
     }
 
-    gg <- stats::hclust( stats::dist( res, method = distance ))
-    resclust <- pheatmap::pheatmap(res[gg$order,],
-                                   cluster_rows  = FALSE,
-                                   clustering_distance_cols = distance,
-                                   scale = "none",
-                                   annotation_col = factors,
-                                   color = c("white", "black"),
-                                   show_rownames = FALSE,
-                                   border_color = NA,
-                                   legend = FALSE,
-                                   silent = TRUE
+    gg <- stats::hclust(stats::dist(res, method = distance))
+    resclust <- pheatmap::pheatmap(
+      res[gg$order, ],
+      cluster_rows = FALSE,
+      clustering_distance_cols = distance,
+      scale = "none",
+      annotation_col = factors,
+      color = c("white", "black"),
+      show_rownames = FALSE,
+      border_color = NA,
+      legend = FALSE,
+      silent = TRUE
     )
     return(resclust)
   } else {
@@ -585,18 +596,23 @@ plot_NA_heatmap <- function(data,
 #' tmp <- plot_pca(analysis, config, PC = c(2,40))
 #' print(tmp)
 #'
-plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE, nudge = 0.1){
+plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE, nudge = 0.1) {
   stopifnot(length(PC) == 2)
 
-  wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
+  wide <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   ff <- wide$data
   if (any(is.na(ff))) {
     n_before <- nrow(ff)
     ff <- na.omit(ff)
     n_after <- nrow(ff)
-    message("PCA: removed ", n_before - n_after, " of ", n_before,
-            " features with missing values. ",
-            "For PCA with all features, impute first using LFQDataImp.")
+    message(
+      "PCA: removed ",
+      n_before - n_after,
+      " of ",
+      n_before,
+      " features with missing values. ",
+      "For PCA with all features, impute first using LFQDataImp."
+    )
   }
   ff <- t(ff)
   pca_result <- prcomp(ff)
@@ -613,25 +629,28 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
   sh <- config$factor_keys()[2]
   point <- (if (!is.na(sh)) {
     geom_point(aes(shape = !!sym(sh)))
-  }else{
+  } else {
     geom_point()
   })
 
-  text <- geom_text(aes(label = !!sym(config$sampleName)),check_overlap = TRUE,
-                    nudge_x = nudge,
-                    nudge_y = nudge )
+  text <- geom_text(aes(label = !!sym(config$sampleName)), check_overlap = TRUE, nudge_x = nudge, nudge_y = nudge)
 
   PCx <- paste0("PC", PC[1])
   PCy <- paste0("PC", PC[2])
-  x <- ggplot(xx, aes(x = !!sym(PCx), y = !!sym(PCy),
-                      color = !!sym(config$factor_keys()[1]),
-                      text = !!sym(config$sampleName))) +
-    labs(x = paste0(PCx," (", round(variance_explained[PC[1]]), "% variance)"),
-         y = paste0(PCy," (", round(variance_explained[PC[2]]), "% variance)")) +
+  x <- ggplot(
+    xx,
+    aes(x = !!sym(PCx), y = !!sym(PCy), color = !!sym(config$factor_keys()[1]), text = !!sym(config$sampleName))
+  ) +
+    labs(
+      x = paste0(PCx, " (", round(variance_explained[PC[1]]), "% variance)"),
+      y = paste0(PCy, " (", round(variance_explained[PC[2]]), "% variance)")
+    ) +
     point +
-    if (add_txt) {text}
+    if (add_txt) {
+      text
+    }
   if (!is.na(sh)) {
-    x <- x +  ggplot2::scale_shape_manual(values = seq_along(unique(xx[[sh]])))
+    x <- x + ggplot2::scale_shape_manual(values = seq_along(unique(xx[[sh]])))
   }
   return(x)
 }
@@ -650,13 +669,16 @@ plot_pca <- function(data , config, PC = c(1,2), add_txt = FALSE, plotly = FALSE
 #' print(tmp)
 #' tmp <- plot_screeplot(analysis, config, nr_PC = 4, threshold_pc = NULL)
 #' print(tmp)
-plot_screeplot <- function(data , config, threshold_pc = 1, nr_PC = NULL) {
-  wide <- tidy_to_wide_config(data, config ,as.matrix = TRUE)
+plot_screeplot <- function(data, config, threshold_pc = 1, nr_PC = NULL) {
+  wide <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   ff <- na.omit(wide$data)
   ff <- t(ff)
   pca_result <- prcomp(ff)
   variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
-  xx <- data.frame(PC = paste("PC", 1:length(variance_explained), sep = "_"), percent_variance_explained = variance_explained)
+  xx <- data.frame(
+    PC = paste("PC", seq_along(variance_explained), sep = "_"),
+    percent_variance_explained = variance_explained
+  )
   xx$PC <- factor(xx$PC, levels = xx$PC)
 
   if (!is.null(threshold_pc)) {
@@ -664,10 +686,10 @@ plot_screeplot <- function(data , config, threshold_pc = 1, nr_PC = NULL) {
   }
   if (!is.null(nr_PC)) {
     minRow <- min(nr_PC, nrow(xx))
-    xx <- xx[1:minRow,]
+    xx <- xx[1:minRow, ]
   }
   nudgeval = -2
-  pl <- ggplot2::ggplot(xx, ggplot2::aes(x = PC, y = percent_variance_explained )) +
+  pl <- ggplot2::ggplot(xx, ggplot2::aes(x = PC, y = percent_variance_explained)) +
     ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
     ggplot2::geom_text(aes(label = round(.data$percent_variance_explained)), nudge_y = nudgeval, angle = 65) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))

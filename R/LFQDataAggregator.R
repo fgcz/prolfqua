@@ -53,15 +53,17 @@ LFQDataAggregator <- R6::R6Class(
     #' initialize
     #' @param lfq LFQData
     #' @param prefix default protein
-    initialize = function(lfq, prefix = "protein"){
-      if ( length(lfq$config$hierarchy_keys()) == 1 ) {
-        stop("no hierarchies to aggregate from: ",  lfq$config$hierarchy_keys())
+    initialize = function(lfq, prefix = "protein") {
+      if (length(lfq$config$hierarchy_keys()) == 1) {
+        stop("no hierarchies to aggregate from: ", lfq$config$hierarchy_keys())
       }
       if (length(lfq$config$hierarchy_keys()) == lfq$config$hierarchyDepth) {
-        stop("no hierarchies to aggregate from: ",
-             lfq$config$hierarchy_keys(),
-             ", hierarchyDepth :",
-             lfq$config$hierarchyDepth)
+        stop(
+          "no hierarchies to aggregate from: ",
+          lfq$config$hierarchy_keys(),
+          ", hierarchyDepth :",
+          lfq$config$hierarchyDepth
+        )
       }
       self$lfq = lfq$clone(deep = TRUE)
       self$prefix = prefix
@@ -70,12 +72,14 @@ LFQDataAggregator <- R6::R6Class(
     #' aggregate using median polish
     #' @param N top N by intensity
     #' @return LFQData
-    medpolish = function(){
+    medpolish = function() {
       if (!self$lfq$is_transformed()) {
-        warning("You did not transform the intensities.",
-                "medpolish works best with already variance stabilized intensities.",
-                "Use LFQData$get_Transformer to transform the data :",
-                self$lfq$config$workIntensity)
+        warning(
+          "You did not transform the intensities.",
+          "medpolish works best with already variance stabilized intensities.",
+          "Use LFQData$get_Transformer to transform the data :",
+          self$lfq$config$workIntensity
+        )
       }
       res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = medpolish_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
@@ -85,26 +89,30 @@ LFQDataAggregator <- R6::R6Class(
     #' aggregate using robust regression
     #' @param N top N by intensity
     #' @return LFQData
-    lmrob = function(){
+    lmrob = function() {
       if (!self$lfq$is_transformed()) {
-        warning("You did not transform the intensities.",
-                "Robust regression works best with already variance stabilized intensities.",
-                "Use LFQData$get_Transformer to transform the data.",
-                self$lfq$config$workIntensity,)
+        warning(
+          "You did not transform the intensities.",
+          "Robust regression works best with already variance stabilized intensities.",
+          "Use LFQData$get_Transformer to transform the data.",
+          self$lfq$config$workIntensity,
+        )
       }
 
       res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = rlm_estimate_dfconfig)
       res <-
-      self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
+        self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },
     #' @description
     #' aggregate topN using mean
     #' @param N top N by intensity
     #' @return LFQData
-    mean_topN = function(N = 3){
-      mean_f <- function(x, name = FALSE){
-        if (name) {return("mean")}
+    mean_topN = function(N = 3) {
+      mean_f <- function(x, name = FALSE) {
+        if (name) {
+          return("mean")
+        }
         return(mean(x, na.rm = TRUE))
       }
       private$.topN(N = N, .func = mean_f)
@@ -113,10 +121,13 @@ LFQDataAggregator <- R6::R6Class(
     #' aggregate topN using sum
     #' @param N top N by intensity
     #' @return LFQData
-    sum_topN = function(N = 3){
-      sum_f <- function(x, name = FALSE){
-        if (name) { return("sum") }
-        sum(x, na.rm = TRUE)}
+    sum_topN = function(N = 3) {
+      sum_f <- function(x, name = FALSE) {
+        if (name) {
+          return("sum")
+        }
+        sum(x, na.rm = TRUE)
+      }
 
       private$.topN(N = N, .func = sum_f)
     },
@@ -126,14 +137,14 @@ LFQDataAggregator <- R6::R6Class(
     #' @param show.legend default FALSE
     #' @return data.frame
     #'
-    plot = function(subset = NULL, show.legend = FALSE){
+    plot = function(subset = NULL, show.legend = FALSE) {
       if (is.null(self$lfq_agg)) {
         stop("please aggregate the data first")
       }
 
       if (!is.null(subset)) {
         lfqagg <- self$lfq_agg$get_subset(subset)
-      }else {
+      } else {
         lfqagg <- self$lfq_agg
       }
       df <- prolfqua::plot_estimate(
@@ -141,7 +152,8 @@ LFQDataAggregator <- R6::R6Class(
         self$lfq$config,
         lfqagg$data,
         lfqagg$config,
-        show.legend = show.legend)
+        show.legend = show.legend
+      )
       invisible(df)
     },
     #' @description
@@ -153,11 +165,11 @@ LFQDataAggregator <- R6::R6Class(
     #' @param width figure width
     #' @param height figure height
     #' @return file path
-    write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6){
+    write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
       pl <- self$plot(subset)
       pb <- progress::progress_bar$new(total = nrow(pl))
       filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
-      pdf(filepath , width = width, height = height)
+      pdf(filepath, width = width, height = height)
       for (i in seq_len(nrow(pl))) {
         print(pl$plots[[i]])
         pb$tick()
@@ -167,13 +179,11 @@ LFQDataAggregator <- R6::R6Class(
     }
   ),
   private = list(
-    .topN = function(.func, N = 3){
+    .topN = function(.func, N = 3) {
       if (self$lfq$is_transformed()) {
-        warning("You did transform the intensities.",
-                "top N works with raw data.",
-                self$lfq$config$workIntensity)
+        warning("You did transform the intensities.", "top N works with raw data.", self$lfq$config$workIntensity)
       }
-      ranked <- rank_peptide_by_intensity(self$lfq$data , self$lfq$config)
+      ranked <- rank_peptide_by_intensity(self$lfq$data, self$lfq$config)
       resTOPN <- aggregate_intensity_topN(ranked, self$lfq$config, .func = .func, N = N)
       self$lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config, prefix = self$prefix)
       invisible(self$lfq_agg)

@@ -15,21 +15,18 @@
 #' stopifnot(x$peptide_Id_n >= istar$config$min_peptides_protein)
 #'
 filter_proteins_by_peptide_count <-
-  function(pdata,
-           config){
-
+  function(pdata, config) {
     # remove single hit wonders
-    tmp <- prolfqua::nr_B_in_A(pdata,config)
+    tmp <- prolfqua::nr_B_in_A(pdata, config)
     if (!is.null(tmp)) {
-      res <- dplyr::filter(tmp$data, !!sym(tmp$name) >= config$min_peptides_protein )
+      res <- dplyr::filter(tmp$data, !!sym(tmp$name) >= config$min_peptides_protein)
       name <- tmp$name
-    }else{
+    } else {
       res <- pdata
       name <- NULL
     }
     return(list(data = res, name = name))
   }
-
 
 
 #' get the difference of two dataset where one is a subset of the other.
@@ -53,12 +50,10 @@ filter_proteins_by_peptide_count <-
 #' tmp <- filter_difference(filterPep$data, istar_data , istar$config)
 #' stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))
 #'
-filter_difference <- function(x, y, config){
+filter_difference <- function(x, y, config) {
   if (nrow(y) > nrow(x)) {
     dplyr::anti_join(y, x, by = config$id_vars())
-  }else{
+  } else {
     dplyr::anti_join(x, y, by = config$id_vars())
   }
 }
-
-

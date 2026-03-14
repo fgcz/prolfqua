@@ -25,28 +25,25 @@
 #' res <- sim_lfq_data(Nprot = 10, N=4)
 #'
 sim_lfq_data <- function(
-    Nprot = 20,
-    N = 4,
-    fc = list(A = c(D = -2,  U = 2, N = 0), B = c(D = 1, U = -4)),
-    prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20)),
-    mean_prot = 20,
-    sdlog = log(1.2),
-    probability_of_success = 0.3,
-    PEPTIDE = FALSE
+  Nprot = 20,
+  N = 4,
+  fc = list(A = c(D = -2, U = 2, N = 0), B = c(D = 1, U = -4)),
+  prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20)),
+  mean_prot = 20,
+  sdlog = log(1.2),
+  probability_of_success = 0.3,
+  PEPTIDE = FALSE
 ) {
-
-
   proteins <- stringi::stri_rand_strings(Nprot, 6)
   idtype2 <- .generate_random_string(Nprot, 4)
   # simulate number of peptides per protein
   nrpeptides <- rgeom(n = Nprot, probability_of_success) + 1
 
-
   prot <- data.frame(
     proteinID = proteins,
     idtype2 = idtype2,
     nr_peptides = nrpeptides,
-    average_prot_abundance = rlnorm(Nprot,log(20),sdlog = sdlog),
+    average_prot_abundance = rlnorm(Nprot, log(20), sdlog = sdlog),
     mean_Ctrl = 0,
     N_Ctrl = N,
     sd = 1
@@ -72,20 +69,18 @@ sim_lfq_data <- function(
   }
 
   if (PEPTIDE) {
-
     # add row for each protein
-    peptide_df <- prot |> tidyr::uncount( nr_peptides )
+    peptide_df <- prot |> tidyr::uncount(nr_peptides)
     # create peptide ids
     peptide_df$peptideID <- stringi::stri_rand_strings(sum(prot$nr_peptides), 8)
   } else {
     peptide_df <- prot
   }
 
-
   # transform into long format
-  peptide_df2 <- peptide_df |> tidyr::pivot_longer(cols = tidyselect::starts_with(c("mean", "N_")),
-                                                   names_to = "group" , values_to = "mean")
-  peptide_df2 <-  peptide_df2 |> tidyr::separate(group, c("what", "group"))
+  peptide_df2 <- peptide_df |>
+    tidyr::pivot_longer(cols = tidyselect::starts_with(c("mean", "N_")), names_to = "group", values_to = "mean")
+  peptide_df2 <- peptide_df2 |> tidyr::separate(group, c("what", "group"))
   peptide_df2 <- peptide_df2 |> tidyr::pivot_wider(names_from = "what", values_from = mean)
 
   sample_from_normal <- function(mean, sd, n) {
@@ -93,35 +88,36 @@ sim_lfq_data <- function(
   }
   nrpep <- nrow(peptide_df2)
   sampled_data <- matrix(nrow = nrpep, ncol = N)
-  colnames(sampled_data) <- paste0("V", 1:ncol(sampled_data))
+  colnames(sampled_data) <- paste0("V", seq_len(ncol(sampled_data)))
 
   peptide_df2$average_prot_abundance <- peptide_df2$average_prot_abundance - peptide_df2$mean
 
   if (PEPTIDE) {
     peptide_df2$avg_peptide_abd <-
-      with(peptide_df2,
-           rlnorm(nrow(peptide_df2),
-                  meanlog = log(average_prot_abundance),
-                  sdlog = sdlog))
+      with(peptide_df2, rlnorm(nrow(peptide_df2), meanlog = log(average_prot_abundance), sdlog = sdlog))
     for (i in seq_len(nrpep)) {
-      sampled_data[i,] <- sample_from_normal(peptide_df2$avg_peptide_abd[i], peptide_df2$sd[1], peptide_df2$N[i])
+      sampled_data[i, ] <- sample_from_normal(peptide_df2$avg_peptide_abd[i], peptide_df2$sd[1], peptide_df2$N[i])
     }
-
   } else {
     for (i in seq_len(nrpep)) {
-      sampled_data[i,] <- sample_from_normal(peptide_df2$average_prot_abundance[i], peptide_df2$sd[1], peptide_df2$N[i])
+      sampled_data[i, ] <- sample_from_normal(
+        peptide_df2$average_prot_abundance[i],
+        peptide_df2$sd[1],
+        peptide_df2$N[i]
+      )
     }
   }
 
-  x <- dplyr::bind_cols(peptide_df2,sampled_data)
+  x <- dplyr::bind_cols(peptide_df2, sampled_data)
 
   peptideAbudances <- x |>
     tidyr::pivot_longer(
       tidyselect::starts_with("V"),
       names_to = "Replicate",
-      values_to = "abundance")
+      values_to = "abundance"
+    )
   peptideAbundances <- peptideAbudances |>
-    tidyr::unite("sample", group, Replicate, remove =  FALSE)
+    tidyr::unite("sample", group, Replicate, remove = FALSE)
   return(peptideAbundances)
 }
 
@@ -133,11 +129,11 @@ sim_lfq_data <- function(
 #' @examples
 #' which_missing(2**rnorm(10,2,0.4))
 #'
-which_missing <- function(x, weight_missing = 0.2){
+which_missing <- function(x, weight_missing = 0.2) {
   missing_prop <- pnorm(x, mean = mean(x), sd = sd(x))
   # sample TRUE or FALSE with propability in missing_prop
   samplemiss <- function(missing_prop) {
-    mp <- c((1 - missing_prop)*weight_missing, missing_prop*3)
+    mp <- c((1 - missing_prop) * weight_missing, missing_prop * 3)
     mp <- mp / sum(mp)
     sample(c(TRUE, FALSE), size = 1, replace = TRUE, prob = mp)
   }
@@ -162,10 +158,12 @@ which_missing <- function(x, weight_missing = 0.2){
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
 sim_lfq_data_peptide_config <- function(
-    Nprot = 10,
-    with_missing = TRUE,
-    weight_missing = 0.2,
-    seed = 1234, N = 4){
+  Nprot = 10,
+  with_missing = TRUE,
+  weight_missing = 0.2,
+  seed = 1234,
+  N = 4
+) {
   if (!is.null(seed)) {
     set.seed(seed)
   }
@@ -175,7 +173,7 @@ sim_lfq_data_peptide_config <- function(
   # data <- data[not_missing,]
   data$nr_children <- as.numeric(not_missing)
   if (with_missing) {
-    data <- data[data$nr_children > 0,]
+    data <- data[data$nr_children > 0, ]
   }
   data$isotopeLabel <- "light"
   data$qValue <- 0
@@ -208,21 +206,29 @@ sim_lfq_data_peptide_config <- function(
 #' xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
 #' stopifnot(length(xp$config$factors) == 2)
 #' stopifnot(nrow(xp$data) == nrow(x$data))
-sim_lfq_data_protein_config <- function(Nprot = 10,
-                                        with_missing = TRUE,
-                                        weight_missing = 0.2, seed = 1234, paired = FALSE){
+sim_lfq_data_protein_config <- function(
+  Nprot = 10,
+  with_missing = TRUE,
+  weight_missing = 0.2,
+  seed = 1234,
+  paired = FALSE
+) {
   if (!is.null(seed)) {
     set.seed(seed)
   }
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
   if (paired) {
     annot <- data |> select(sample, group) |> distinct()
-    annot <- annot |> group_by(group) |> mutate(subject = row_number()) |> ungroup() |> mutate(subject = paste0("P", subject))
-    data <- inner_join(annot , data ,by = c("group", "sample"))
+    annot <- annot |>
+      group_by(group) |>
+      mutate(subject = row_number()) |>
+      ungroup() |>
+      mutate(subject = paste0("P", subject))
+    data <- inner_join(annot, data, by = c("group", "sample"))
   }
-  data$nr_peptides[which_missing(data$abundance,weight_missing = weight_missing)] <- 0
+  data$nr_peptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
   if (with_missing) {
-    data <- data[data$nr_peptides > 0,]
+    data <- data[data$nr_peptides > 0, ]
   }
 
   data$isotopeLabel <- "light"
@@ -232,7 +238,9 @@ sim_lfq_data_protein_config <- function(Nprot = 10,
   config$fileName = "sample"
   config$nr_children = "nr_peptides"
   config$factors["group_"] = "group"
-  if (paired) {config$factors["subject_"] = "subject"}
+  if (paired) {
+    config$factors["subject_"] = "subject"
+  }
   config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
   config$set_response("abundance")
   adata <- setup_analysis(data, config)
@@ -260,28 +268,32 @@ sim_lfq_data_protein_config <- function(Nprot = 10,
 #' names(x)
 #' nrow(x$data) > 10
 #' x$data$Treatment |> table()
-sim_lfq_data_2Factor_config <- function(Nprot = 10,
-                                        with_missing = TRUE,
-                                        weight_missing = 0.2,
-                                        PEPTIDE = FALSE,
-                                        seed = 1234,
-                                        TWO = TRUE
-){
+sim_lfq_data_2Factor_config <- function(
+  Nprot = 10,
+  with_missing = TRUE,
+  weight_missing = 0.2,
+  PEPTIDE = FALSE,
+  seed = 1234,
+  TWO = TRUE
+) {
   if (!is.null(seed)) {
     set.seed(seed)
   }
-  res <- sim_lfq_data(Nprot = Nprot, PEPTIDE = PEPTIDE,
-                      fc = list(A = c(D = -2,  U = 2, N = 0), B = c(D = 1, U = -4), C = c(D = -1, U = -4)),
-                      prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20), C = c(D = 15, U = 25)))
+  res <- sim_lfq_data(
+    Nprot = Nprot,
+    PEPTIDE = PEPTIDE,
+    fc = list(A = c(D = -2, U = 2, N = 0), B = c(D = 1, U = -4), C = c(D = -1, U = -4)),
+    prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20), C = c(D = 15, U = 25))
+  )
   res <- res |> mutate(Treatment = case_when(group %in% c("Ctrl", "A") ~ "A", TRUE ~ "B"))
   data <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
 
   if (is.null(data$nr_peptides)) {
     data$nr_peptides <- 1
   }
-  data$nr_peptides[which_missing(data$abundance,weight_missing = weight_missing)] <- 0
+  data$nr_peptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
   if (with_missing) {
-    data <- data[data$nr_peptides > 0,]
+    data <- data[data$nr_peptides > 0, ]
   }
 
   data$isotopeLabel <- "light"
@@ -321,23 +333,27 @@ sim_lfq_data_2Factor_config <- function(Nprot = 10,
 #' mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 #' modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 #'
-sim_build_models_lm <- function(model = c("parallel2","parallel3","factors", "interaction"),
-                                Nprot = 10,
-                                with_missing = TRUE,
-                                weight_missing = 1) {
+sim_build_models_lm <- function(
+  model = c("parallel2", "parallel3", "factors", "interaction"),
+  Nprot = 10,
+  with_missing = TRUE,
+  weight_missing = 1
+) {
   model <- match.arg(model)
   if (model != "parallel3") {
     istar <- prolfqua::sim_lfq_data_2Factor_config(
       Nprot = Nprot,
       with_missing = with_missing,
-      weight_missing = weight_missing)
+      weight_missing = weight_missing
+    )
   } else {
     istar <- prolfqua::sim_lfq_data_protein_config(
       Nprot = Nprot,
       with_missing = with_missing,
-      weight_missing = weight_missing)
+      weight_missing = weight_missing
+    )
   }
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  istar <- prolfqua::LFQData$new(istar$data, istar$config)
 
   model <- if (model == "factors") {
     "~ Treatment + Background"
@@ -347,11 +363,14 @@ sim_build_models_lm <- function(model = c("parallel2","parallel3","factors", "in
     "~ Treatment"
   } else if (model == "parallel3") {
     "~ group_"
-  } else {NULL}
+  } else {
+    NULL
+  }
   modelFunction <- strategy_lm(paste0(istar$response(), model))
   mod <- build_model(
     istar,
-    modelFunction)
+    modelFunction
+  )
   return(mod)
 }
 
@@ -369,21 +388,24 @@ sim_build_models_lm <- function(model = c("parallel2","parallel3","factors", "in
 #' modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
 #' stopifnot(sum(modf$modelDF$exists_lmer) == 6)
 #'
-sim_build_models_lmer <- function(model = c("parallel2", "parallel3","factors", "interaction"),
-                                  Nprot = 10,
-                                  with_missing = TRUE,
-                                  weight_missing = 1) {
+sim_build_models_lmer <- function(
+  model = c("parallel2", "parallel3", "factors", "interaction"),
+  Nprot = 10,
+  with_missing = TRUE,
+  weight_missing = 1
+) {
   model <- match.arg(model)
   if (model != "parallel3") {
     istar <- prolfqua::sim_lfq_data_2Factor_config(
       Nprot = Nprot,
       with_missing = with_missing,
       PEPTIDE = TRUE,
-      weight_missing = weight_missing)
+      weight_missing = weight_missing
+    )
   } else {
     istar <- prolfqua::sim_lfq_data_peptide_config()
   }
-  istar <- prolfqua::LFQData$new(istar$data,istar$config)
+  istar <- prolfqua::LFQData$new(istar$data, istar$config)
 
   model <- if (model == "factors") {
     "~ Treatment + Background + (1|peptide_Id) + (1|sampleName)"
@@ -393,11 +415,14 @@ sim_build_models_lmer <- function(model = c("parallel2", "parallel3","factors", 
     "~ Treatment + (1|peptide_Id) + (1|sampleName)"
   } else if (model == "parallel3") {
     "~ group_ + (1|peptide_Id) + (1|sampleName)"
-  } else {NULL}
+  } else {
+    NULL
+  }
   modelFunction <- strategy_lmer(paste0(istar$response(), model))
   mod <- build_model(
     istar,
-    modelFunction)
+    modelFunction
+  )
   return(mod)
 }
 
@@ -413,7 +438,7 @@ sim_build_models_lmer <- function(model = c("parallel2", "parallel3","factors", 
 #' mf <- sim_make_model_lmer("factors")
 #' m2 <- sim_make_model_lmer("parallel2")
 #' m3 <- sim_make_model_lmer("parallel3")
-sim_make_model_lm <- function(model = c("parallel2", "parallel3","factors", "interaction")){
+sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "interaction")) {
   model <- match.arg(model)
   mod <- sim_build_models_lm(model = model, Nprot = 1, with_missing = FALSE)
   return(mod$modelDF$linear_model[[1]])
@@ -428,8 +453,7 @@ sim_make_model_lm <- function(model = c("parallel2", "parallel3","factors", "int
 #' mf <- sim_make_model_lmer("factors")
 #' mi <- sim_make_model_lmer("interaction")
 #'
-sim_make_model_lmer <- function(model = c("parallel2", "parallel3","factors", "interaction"),
-                                singular = FALSE){
+sim_make_model_lmer <- function(model = c("parallel2", "parallel3", "factors", "interaction"), singular = FALSE) {
   model <- match.arg(model)
   mod <- sim_build_models_lmer(model = model, Nprot = 10, with_missing = FALSE)
   m <- mod$modelDF |> dplyr::filter(isSingular == isSingular) |> dplyr::pull(linear_model)

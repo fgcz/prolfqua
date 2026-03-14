@@ -35,35 +35,42 @@
 #' tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
 #' hist(tmp$likelihood_ratio_test.pValue)
 #'
-LR_test <- function(modelProteinF,
-                    modelName,
-                    modelProteinF_Int,
-                    modelName_Int,
-                    subject_Id = "protein_Id",
-                    path = NULL
-){
+LR_test <- function(
+  modelProteinF,
+  modelName,
+  modelProteinF_Int,
+  modelName_Int,
+  subject_Id = "protein_Id",
+  path = NULL
+) {
   # Model Comparison
-  reg <- dplyr::inner_join(dplyr::select(modelProteinF, !!sym(subject_Id), "linear_model"),
-                           dplyr::select(modelProteinF_Int, !!sym(subject_Id), "linear_model") , by = subject_Id)
+  reg <- dplyr::inner_join(
+    dplyr::select(modelProteinF, !!sym(subject_Id), "linear_model"),
+    dplyr::select(modelProteinF_Int, !!sym(subject_Id), "linear_model"),
+    by = subject_Id
+  )
 
-  reg <- reg |> dplyr::mutate(modelComparisonLikelihoodRatioTest = map2(!!sym("linear_model.x"),
-                                                                        !!sym("linear_model.y"),
-                                                                        .likelihood_ratio_test ))
+  reg <- reg |>
+    dplyr::mutate(
+      modelComparisonLikelihoodRatioTest = map2(
+        !!sym("linear_model.x"),
+        !!sym("linear_model.y"),
+        .likelihood_ratio_test
+      )
+    )
   likelihood_ratio_test_result <- reg |>
-    dplyr::select(!!sym(subject_Id), modelComparisonLikelihoodRatioTest) |>
+    dplyr::select(!!sym(subject_Id), dplyr::all_of("modelComparisonLikelihoodRatioTest")) |>
     tidyr::unnest(cols = c("modelComparisonLikelihoodRatioTest"))
   likelihood_ratio_test_result <- likelihood_ratio_test_result |>
     dplyr::rename(likelihood_ratio_test.pValue = .data$modelComparisonLikelihoodRatioTest)
 
-
   if (!is.null(path)) {
     fileName <- paste("hist_LRT_", modelName, "_", modelName_Int, ".pdf", sep = "")
     fileName <- file.path(path, fileName)
-    message("writing figure : " , fileName , "\n")
+    message("writing figure : ", fileName, "\n")
     pdf(fileName)
     par(mfrow = c(2, 1))
-    hist(likelihood_ratio_test_result$likelihood_ratio_test.pValue,
-         breaks = 20)
+    hist(likelihood_ratio_test_result$likelihood_ratio_test.pValue, breaks = 20)
     plot(ecdf(
       likelihood_ratio_test_result$likelihood_ratio_test.pValue
     ))
@@ -114,24 +121,29 @@ LR_test <- function(modelProteinF,
 #' model_summary(mod)
 #'
 #'
-build_model <- function(data,
-                        model_strategy,
-                        subject_Id = if ("LFQData" %in% class(data)) {data$subject_Id()} else {"protein_Id"},
-                        modelName = model_strategy$model_name){
-
-  dataX <- if ("LFQData" %in% class(data)) { data$data }else{ data }
-  modellingResult <- model_analyse(dataX,
-                                   model_strategy,
-                                   modelName = modelName,
-                                   subject_Id = subject_Id)
-  return( Model$new(modelDF = modellingResult$modelDF,
-                    model_strategy = model_strategy,
-                    modelName = modellingResult$modelName,
-                    subject_Id = subject_Id))
+build_model <- function(
+  data,
+  model_strategy,
+  subject_Id = if ("LFQData" %in% class(data)) {
+    data$subject_Id()
+  } else {
+    "protein_Id"
+  },
+  modelName = model_strategy$model_name
+) {
+  dataX <- if ("LFQData" %in% class(data)) {
+    data$data
+  } else {
+    data
+  }
+  modellingResult <- model_analyse(dataX, model_strategy, modelName = modelName, subject_Id = subject_Id)
+  return(Model$new(
+    modelDF = modellingResult$modelDF,
+    model_strategy = model_strategy,
+    modelName = modellingResult$modelName,
+    subject_Id = subject_Id
+  ))
 }
-
-
-
 
 
 #' Summarize modelling and error reporting
@@ -147,10 +159,9 @@ build_model <- function(data,
 #' res <- model_summary(mod)
 #' stopifnot(is.list(res))
 #' stopifnot(all(c("exists", "isSingular") %in% names(res)))
-model_summary <- function(mod){
+model_summary <- function(mod) {
   res <- list()
   res$exists <- table(mod$modelDF$exists_lmer)
   res$isSingular <- table(mod$modelDF$isSingular)
   return(res)
-
 }

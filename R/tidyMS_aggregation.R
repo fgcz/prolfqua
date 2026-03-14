@@ -1,44 +1,60 @@
 # Functions - Plotting ----
 # Plot peptide and fragments
-plot_hierarchies_line_default <- function(data,
-                                          proteinName,
-                                          sample,
-                                          intensity,
-                                          peptide,
-                                          fragment,
-                                          factor,
-                                          isotopeLabel,
-                                          separate = FALSE,
-                                          log_y = FALSE,
-                                          show.legend = FALSE) {
+plot_hierarchies_line_default <- function(
+  data,
+  proteinName,
+  sample,
+  intensity,
+  peptide,
+  fragment,
+  factor,
+  isotopeLabel,
+  separate = FALSE,
+  log_y = FALSE,
+  show.legend = FALSE
+) {
   if (length(isotopeLabel)) {
     if (separate) {
       formula <- paste(paste(isotopeLabel, collapse = "+"), "~", paste(factor, collapse = "+"))
-      p <- ggplot(data, aes(
-        x = .data[[sample]],
-        y = .data[[intensity]],
-        group = .data[[fragment]],
-        color = .data[[peptide]]
-      ))
+      p <- ggplot(
+        data,
+        aes(
+          x = .data[[sample]],
+          y = .data[[intensity]],
+          group = .data[[fragment]],
+          color = .data[[peptide]]
+        )
+      )
     } else {
       formula <- sprintf("~%s", paste(factor, collapse = " + "))
       data <- tidyr::unite(data, "fragment_label", dplyr::all_of(c(fragment, isotopeLabel)), remove = FALSE)
-      p <- ggplot(data, aes(
-        x = .data[[sample]],
-        y = .data[[intensity]],
-        group = .data[["fragment_label"]],
-        color = .data[[peptide]]
-      ))
+      p <- ggplot(
+        data,
+        aes(
+          x = .data[[sample]],
+          y = .data[[intensity]],
+          group = .data[["fragment_label"]],
+          color = .data[[peptide]]
+        )
+      )
     }
-    p <- p + geom_point(aes(shape = .data[[isotopeLabel]]), show.legend = show.legend) +
+    p <- p +
+      geom_point(aes(shape = .data[[isotopeLabel]]), show.legend = show.legend) +
       geom_line(aes(linetype = .data[[isotopeLabel]]), show.legend = show.legend)
   } else {
     formula <- sprintf("~%s", paste(factor, collapse = " + "))
-    p <- ggplot(data, aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]]))
+    p <- ggplot(
+      data,
+      aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]])
+    )
     p <- p + geom_point(show.legend = show.legend) + geom_line(show.legend = show.legend)
   }
 
-  # p <- ggplot(data, aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]], linetype = .data[[isotopeLabel]]))
+  # p <- ggplot(
+  #   data,
+  #   aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]],
+  #       color = .data[[peptide]], linetype = .data[[isotopeLabel]])
+  # )
   p <- p + facet_grid(as.formula(formula), scales = "free_x")
   p <- p + ggtitle(proteinName)
   p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
@@ -91,11 +107,7 @@ plot_hierarchies_line_default <- function(data,
 #'   show.legend = TRUE
 #' )
 #'
-plot_hierarchies_line <- function(res,
-                                  proteinName,
-                                  config,
-                                  separate = FALSE,
-                                  show.legend = FALSE) {
+plot_hierarchies_line <- function(res, proteinName, config, separate = FALSE, show.legend = FALSE) {
   rev_hnames <- config$hierarchy_keys(TRUE)
   fragment <- rev_hnames[1]
   peptide <- rev_hnames[1]
@@ -118,8 +130,6 @@ plot_hierarchies_line <- function(res,
   )
   return(res)
 }
-
-
 
 
 #' Generates peptide level plots for all proteins
@@ -146,8 +156,6 @@ plot_hierarchies_line <- function(res,
 #' # TODO make it work for other hiearachy levels.
 #'
 plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
-  factor_level <- config$factorDepth
-
   hierarchy_ID <- "hierarchy_ID"
   pdata <- pdata |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()), remove = FALSE)
 
@@ -156,13 +164,11 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
     tidyr::nest()
 
   figs <- xnested |>
-    dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID),
-      plot_hierarchies_line,
-      config = config, show.legend = show.legend
-    ))
+    dplyr::mutate(
+      plot = map2(data, !!sym(hierarchy_ID), plot_hierarchies_line, config = config, show.legend = show.legend)
+    )
   return(figs$plot)
 }
-
 
 
 #' Add protein estimate to plot of peptide intensities
@@ -173,23 +179,24 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
 #' @examples
 #' # todo
 plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
-  p + geom_line(
-    data = data,
-    aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1),
-    linewidth = 1.3,
-    color = "black",
-    linetype = "solid"
-  ) +
+  p +
+    geom_line(
+      data = data,
+      aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1),
+      linewidth = 1.3,
+      color = "black",
+      linetype = "solid"
+    ) +
     geom_point(
       data = data,
-      aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1), color = "black", shape = 10
+      aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1),
+      color = "black",
+      shape = 10
     )
 }
 
 
-.reestablish_condition <- function(data,
-                                   medpolishRes,
-                                   config) {
+.reestablish_condition <- function(data, medpolishRes, config) {
   xx <- data |>
     dplyr::select(c(
       config$sampleName,
@@ -201,7 +208,6 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
   res <- dplyr::inner_join(xx, medpolishRes, by = config$sampleName)
   res
 }
-
 
 
 #' Median polish estimate of e.g. protein from peptide intensities
@@ -342,11 +348,7 @@ response_as_matrix <- function(pdata, config) {
 #' prolfqua:::.reestablish_condition(x, bb, conf)
 #'
 medpolish_estimate_df <- function(pdata, response, feature, sampleName) {
-  bb <- .extractInt(pdata,
-    response = response,
-    feature = feature,
-    sampleName = sampleName
-  )
+  bb <- .extractInt(pdata, response = response, feature = feature, sampleName = sampleName)
   medpolish_estimate(bb, sampleName = sampleName)
 }
 
@@ -382,7 +384,8 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
   }
 
   feature <- base::setdiff(config$hierarchy_keys(), config$hierarchy_keys_depth())
-  res <- medpolish_estimate_df(pdata,
+  res <- medpolish_estimate_df(
+    pdata,
     response = config$get_response(),
     feature = feature,
     sampleName = config$sampleName
@@ -412,7 +415,8 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
       group_by(across(all_of(samples))) |>
       summarize(
         lmrob = mean(!!sym(response)),
-        !!expname := mean(!!sym(response)), .groups = "drop"
+        !!expname := mean(!!sym(response)),
+        .groups = "drop"
       )
     data$weights <- 1
     return(data)
@@ -445,9 +449,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
     sumdata <- data |>
       select(-!!sym(feature)) |>
       group_by(across(all_of(samples))) |>
-      dplyr::summarize(!!expname := mean(!!sym(response)),
-        weights = 1 / mean(residuals^2), .groups = "drop"
-      )
+      dplyr::summarize(!!expname := mean(!!sym(response)), weights = 1 / mean(residuals^2), .groups = "drop")
     if (any(is.infinite(sumdata$weights) | is.na(sumdata$weights) | sumdata$weights > 10e6)) {
       sumdata$weights <- 1
     }
@@ -460,10 +462,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
     sumdata <- data |>
       select(-!!sym(feature)) |>
       group_by(across(all_of(samples))) |>
-      dplyr::summarize(!!expname := mean(!!sym(response)),
-        lmrob = mean(!!sym(response)),
-        .groups = "drop"
-      )
+      dplyr::summarize(!!expname := mean(!!sym(response)), lmrob = mean(!!sym(response)), .groups = "drop")
     sumdata$weights <- 1
     res <- sumdata
   }
@@ -473,7 +472,6 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
   res <- left_join(pdata, res, by = samples)
   return(res)
 }
-
 
 
 #' Estimate e.g. protein abundance from peptides using MASS:rlm
@@ -567,12 +565,7 @@ rlm_estimate_dfconfig <- function(pdata, config, name = FALSE) {
   }
 
   feature <- base::setdiff(config$hierarchy_keys(), config$hierarchy_keys_depth())
-  rlm_estimate(pdata,
-    response = config$get_response(),
-    feature = feature,
-    samples = config$sampleName,
-    maxIt = 20
-  )
+  rlm_estimate(pdata, response = config$get_response(), feature = feature, samples = config$sampleName, maxIt = 20)
 }
 
 #' Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
@@ -609,9 +602,7 @@ old2new <- function(config) {
 .add_nr_children <- function(data, aggregated_data, config, newconfig) {
   new_child <- paste(c("nr_children", config$hierarchy_keys_depth()), collapse = "_")
   res_nr_children <- nr_obs_sample(data, config, new_child = new_child)
-  result <- inner_join(aggregated_data, res_nr_children,
-    by = c(config$hierarchy_keys_depth(), config$fileName)
-  )
+  result <- inner_join(aggregated_data, res_nr_children, by = c(config$hierarchy_keys_depth(), config$fileName))
   newconfig$nr_children <- new_child
   return(list(data = result, config = newconfig))
 }
@@ -648,7 +639,6 @@ estimate_intensity <- function(data, config, .func) {
     group_by(across(all_of(config$hierarchy_keys_depth()))) |>
     nest()
 
-
   loopOverNested <- function(xnested, .func, config) {
     pb <- progress::progress_bar$new(total = nrow(xnested))
     message("starting aggregation")
@@ -675,8 +665,6 @@ estimate_intensity <- function(data, config, .func) {
 
   return(.add_nr_children(data, unnested, config, newconfig))
 }
-
-
 
 
 #' Plot feature data and result of aggregation
@@ -707,11 +695,7 @@ estimate_intensity <- function(data, config, .func) {
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[1]]))
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[2]]))
 #'
-plot_estimate <- function(data,
-                          config,
-                          data_aggr,
-                          config_reduced,
-                          show.legend = FALSE) {
+plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend = FALSE) {
   hierarchy_ID <- "hierarchy_ID"
   xnested <- data |>
     group_by(!!!syms(config$hierarchy_keys_depth())) |>
@@ -723,14 +707,15 @@ plot_estimate <- function(data,
   xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()))
   xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_ID)
 
-
   plots <- vector(mode = "list", length = nrow(xnested_all))
 
   pb <- progress::progress_bar$new(total = nrow(xnested_all))
   for (i in seq_len(nrow(xnested_all))) {
-    p1 <- plot_hierarchies_line(xnested_all$data[[i]],
+    p1 <- plot_hierarchies_line(
+      xnested_all$data[[i]],
       xnested_all[[hierarchy_ID]][i],
-      config = config, show.legend = show.legend
+      config = config,
+      show.legend = show.legend
     )
     p2 <- plot_hierarchies_add_quantline(
       p1,
@@ -813,8 +798,10 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
       config$factor_keys()
     ))))
   sumTopInt <- topInt |>
-    dplyr::summarize(!!newcol := .func(!!sym(config$get_response())),
-      ident_qValue = min(!!sym(config$ident_qValue)), .groups = "drop"
+    dplyr::summarize(
+      !!newcol := .func(!!sym(config$get_response())),
+      ident_qValue = min(!!sym(config$ident_qValue)),
+      .groups = "drop"
     )
 
   newconfig <- make_reduced_hierarchy_config(
@@ -825,7 +812,6 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
 
   return(.add_nr_children(pdata, sumTopInt, config, newconfig))
 }
-
 
 
 #' Summarizes the intensities within hierarchy
@@ -871,10 +857,16 @@ intensity_summary_by_hkeys <- function(data, config, func) {
   message("starting aggregation")
 
   xnested <- xnested |>
-    dplyr::mutate(spreadMatrix = map(data, function(x, config) {
-      pb$tick()
-      response_as_matrix(x, config)
-    }, config))
+    dplyr::mutate(
+      spreadMatrix = map(
+        data,
+        function(x, config) {
+          pb$tick()
+          response_as_matrix(x, config)
+        },
+        config
+      )
+    )
 
   # xnested <- xnested |>
   #  dplyr::mutate(!!makeName := map( .data$spreadMatrix , function(x){pb$tick(); func(x)}))
@@ -888,11 +880,17 @@ intensity_summary_by_hkeys <- function(data, config, func) {
   }
   xnested[[makeName]] <- res
   xnested <- xnested |>
-    dplyr::mutate(!!makeName := map2(data, !!sym(makeName), function(x, y, config) {
-      pb$tick()
-      .reestablish_condition(x, y, config)
-    }, config))
-
+    dplyr::mutate(
+      !!makeName := map2(
+        data,
+        !!sym(makeName),
+        function(x, y, config) {
+          pb$tick()
+          .reestablish_condition(x, y, config)
+        },
+        config
+      )
+    )
 
   res_fun <- function(value = c("nested", "unnest", "wide", "plot"), DEBUG = FALSE) {
     value <- match.arg(value)
@@ -900,7 +898,8 @@ intensity_summary_by_hkeys <- function(data, config, func) {
       return(list(config = config, value = value, xnested = xnested))
     }
 
-    newconfig <- make_reduced_hierarchy_config(config,
+    newconfig <- make_reduced_hierarchy_config(
+      config,
       workIntensity = func(name = TRUE),
       hierarchy = config$hierarchy_keys_depth(names = FALSE)
     )
@@ -923,16 +922,18 @@ intensity_summary_by_hkeys <- function(data, config, func) {
       hierarchy_ID <- "hierarchy_ID"
       xnested <- xnested |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()))
       figs <- xnested |>
-        dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID),
-          plot_hierarchies_line,
-          config = config
-        ))
+        dplyr::mutate(plot = map2(data, !!sym(hierarchy_ID), plot_hierarchies_line, config = config))
 
       figs <- figs |>
-        dplyr::mutate(plot = map2(
-          plot, !!sym(makeName),
-          plot_hierarchies_add_quantline, func(name = TRUE), config
-        ))
+        dplyr::mutate(
+          plot = map2(
+            plot,
+            !!sym(makeName),
+            plot_hierarchies_add_quantline,
+            func(name = TRUE),
+            config
+          )
+        )
       return(figs)
     }
   }

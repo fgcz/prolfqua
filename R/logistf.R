@@ -17,8 +17,7 @@
 #' tmp2 <- contrasts_linfct_firth(models2)
 #' stopifnot(all(dim(tmp1) > 10))
 #' stopifnot(all(dim(tmp2) > 10))
-contrasts_linfct_firth <- function(models,
-                                   subject_Id = "protein_Id" ){
+contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
   modelDF <- models$modelDF
   #computeGroupAverages
   message("contrasts_linfct_firth")
@@ -30,29 +29,33 @@ contrasts_linfct_firth <- function(models,
   pb <- progress::progress_bar$new(total = length(modelDF[[modelcol]]))
 
   for (i in seq_along(modelDF[[modelcol]])) {
-
     interaction_models[[i]] <- prolfqua::my_contrast(
       modelDF[[modelcol]][[i]],
       linfct = modelDF$linfct[[i]],
-      strategy = models$strategy)
+      strategy = models$strategy
+    )
     pb$tick()
   }
 
   interaction_model_matrix <- modelDF
   interaction_model_matrix$contrast <- interaction_models
 
-
-  mclass <- function(x){
+  mclass <- function(x) {
     class(x)[1]
   }
 
-  interaction_model_matrix <-  interaction_model_matrix |>
+  interaction_model_matrix <- interaction_model_matrix |>
     dplyr::mutate(classC = purrr::map_chr(.data$contrast, mclass))
 
   n_failed <- sum(interaction_model_matrix$classC == "logical")
   if (n_failed > 0) {
-    message("contrasts_linfct_logistf: dropped ", n_failed, " of ",
-            nrow(interaction_model_matrix), " proteins with failed contrasts.")
+    message(
+      "contrasts_linfct_logistf: dropped ",
+      n_failed,
+      " of ",
+      nrow(interaction_model_matrix),
+      " proteins with failed contrasts."
+    )
   }
 
   interaction_model_matrix <- interaction_model_matrix |>
@@ -64,10 +67,7 @@ contrasts_linfct_firth <- function(models,
 
   # take sigma and df from somewhere else.
   modelInfos <- modelDF |>
-    dplyr::select(all_of(c(subject_Id,
-                       "isSingular",
-                       "sigma.model" = "sigma",
-                       "df.residual.model" = "df.residual" ))) |>
+    dplyr::select(all_of(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
 
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
@@ -167,11 +167,10 @@ build_model_glm_peptide <- function(lfqdata, modelstr) {
 #'
 #'
 #'
-build_model_logistf <- function(data,
-                                formula){
+build_model_logistf <- function(data, formula) {
   pep <- data
   df <- pep$summarize_hierarchy()
-  df2 <- df[df[[ncol(df)]] > 1,  ]
+  df2 <- df[df[[ncol(df)]] > 1, ]
 
   models2 <- NULL
   hkey <- NULL
@@ -180,22 +179,16 @@ build_model_logistf <- function(data,
     lfq2 <- pep$get_subset(df2)
     formula2 <- paste0(formula, "+", hkey)
     model_strategy2 <- prolfqua::strategy_logistf(formula2)
-    models2 <- model_analyse(lfq2$data,
-                             model_strategy2,
-                             modelName = "logistf_2",
-                             subject_Id = lfq2$subject_Id())
+    models2 <- model_analyse(lfq2$data, model_strategy2, modelName = "logistf_2", subject_Id = lfq2$subject_Id())
     models2$strategy = model_strategy2
   }
 
-  df1 <- df[df[[ncol(df)]] == 1,]
+  df1 <- df[df[[ncol(df)]] == 1, ]
   models1 <- NULL
   if (nrow(df1) > 0) {
     lfq1 <- pep$get_subset(df1)
     model_strategy1 <- prolfqua::strategy_logistf(formula)
-    models1 <- model_analyse(lfq1$data,
-                             model_strategy1,
-                             modelName = "logistf_1",
-                             subject_Id = lfq1$subject_Id())
+    models1 <- model_analyse(lfq1$data, model_strategy1, modelName = "logistf_1", subject_Id = lfq1$subject_Id())
     models1$strategy = model_strategy1
   }
   res <- ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey))
@@ -218,43 +211,49 @@ build_model_logistf <- function(data,
 #' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
 #' modf <- sim_build_models_logistf(model = "factors", weight_missing = 1, peptide=TRUE)
 
-sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors", "interaction"),
-                                     Nprot = 10,
-                                     with_missing = TRUE,
-                                     weight_missing = 1,
-                                     peptide = FALSE) {
+sim_build_models_logistf <- function(
+  model = c("parallel2", "parallel3", "factors", "interaction"),
+  Nprot = 10,
+  with_missing = TRUE,
+  weight_missing = 1,
+  peptide = FALSE
+) {
   model <- match.arg(model)
-  if(!peptide){
+  if (!peptide) {
     if (model != "parallel3") {
       istar <- prolfqua::sim_lfq_data_2Factor_config(
         Nprot = Nprot,
         with_missing = with_missing,
-        weight_missing = weight_missing)
+        weight_missing = weight_missing
+      )
       istar$data <- encode_bin_resp(istar$data, istar$config)
     } else {
       istar <- prolfqua::sim_lfq_data_protein_config(
         Nprot = Nprot,
         with_missing = with_missing,
-        weight_missing = weight_missing)
+        weight_missing = weight_missing
+      )
       istar$data <- encode_bin_resp(istar$data, istar$config)
     }
-    istar <- prolfqua::LFQData$new(istar$data,istar$config)
-
+    istar <- prolfqua::LFQData$new(istar$data, istar$config)
   } else {
     if (model != "parallel3") {
       istar <- prolfqua::sim_lfq_data_2Factor_config(
         Nprot = Nprot,
         with_missing = with_missing,
-        weight_missing = weight_missing, PEPTIDE = TRUE)
+        weight_missing = weight_missing,
+        PEPTIDE = TRUE
+      )
       istar$data <- encode_bin_resp(istar$data, istar$config)
     } else {
       istar <- prolfqua::sim_lfq_data_peptide_config(
         Nprot = Nprot,
         with_missing = with_missing,
-        weight_missing = weight_missing)
+        weight_missing = weight_missing
+      )
       istar$data <- encode_bin_resp(istar$data, istar$config)
     }
-    istar <- prolfqua::LFQData$new(istar$data,istar$config)
+    istar <- prolfqua::LFQData$new(istar$data, istar$config)
   }
 
   model <- if (model == "factors") {
@@ -265,11 +264,14 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
     "~ Treatment"
   } else if (model == "parallel3") {
     "~ group_"
-  } else {NULL}
-  modelFunction <- paste0( istar$config$bin_resp, model)
+  } else {
+    NULL
+  }
+  modelFunction <- paste0(istar$config$bin_resp, model)
   mod <- build_model_logistf(
     istar,
-    modelFunction)
+    modelFunction
+  )
   return(mod)
 }
 
@@ -303,17 +305,13 @@ sim_build_models_logistf <- function(model = c("parallel2","parallel3","factors"
 #' modelFunction$model_fun(nestProtein$data[[4]])
 #'
 strategy_logistf <- function(
-    modelstr,
-    model_name = "logistf",
-    report_columns = c("statistic",
-                       "p.value",
-                       "p.value.adjusted",
-                       "moderated.p.value",
-                       "moderated.p.value.adjusted"),
-    test = "Chisq"
+  modelstr,
+  model_name = "logistf",
+  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted"),
+  test = "Chisq"
 ) {
   formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE){
+  model_fun <- function(x, pb, get_formula = FALSE) {
     if (get_formula) {
       return(formula)
     }
@@ -323,24 +321,20 @@ strategy_logistf <- function(
     # tt <- ftable(formula, x)
     # DFT <- as.data.frame(tt)
     predictor_vars <- all.vars(update(formula, . ~ .))
-    DFT <- x %>%
-      group_by(across(all_of(predictor_vars))) %>%
+    DFT <- x |>
+      group_by(across(all_of(predictor_vars))) |>
       summarize(Freq = n(), .groups = "drop")
 
-    modelTest <- tryCatch(logistf::logistf( formula ,
-                                            data = DFT,
-                                            weights = Freq ),
-                          error = .ehandler)
+    modelTest <- tryCatch(logistf::logistf(formula, data = DFT, weights = Freq), error = .ehandler)
     return(modelTest)
   }
   df_residual_logistf = function(m) {
-    n <- m$n                          # Number of observations
-    p <- length(m$coefficients)       # Number of estimated parameters
+    n <- m$n # Number of observations
+    p <- length(m$coefficients) # Number of estimated parameters
     df_residual <- n - p
     return(df_residual)
   }
-  isSingular_logistf = function(m)
-  {
+  isSingular_logistf = function(m) {
     anyNA <- any(is.na(coefficients(m)))
     if (anyNA) {
       return(TRUE)
@@ -350,20 +344,20 @@ strategy_logistf <- function(
       }
       return(TRUE)
     }
-
   }
-  sigma_logistf = function(m){
+  sigma_logistf = function(m) {
     return(1)
   }
-  res <- list(model_fun = model_fun,
-              isSingular = isSingular_logistf,
-              contrast_fun = my_contrast_V2,
-              model_name = model_name,
-              report_columns = report_columns,
-              anova_df = get_anova_df(test = test),
-              is_mixed = FALSE,
-              df_residual = df_residual_logistf,
-              sigma = sigma_logistf)
+  res <- list(
+    model_fun = model_fun,
+    isSingular = isSingular_logistf,
+    contrast_fun = my_contrast_V2,
+    model_name = model_name,
+    report_columns = report_columns,
+    anova_df = get_anova_df(test = test),
+    is_mixed = FALSE,
+    df_residual = df_residual_logistf,
+    sigma = sigma_logistf
+  )
   return(res)
 }
-

@@ -80,28 +80,33 @@ LFQDataStats <- R6::R6Class(
     #' @description
     #' create analyse variances and CV
     #' @param lfqdata LFQData object
-    #' @param stats if interaction - within group stats, if all then overall CV, if pooled - then pooled variance using grouping information (t.b.d.)
-    initialize = function(lfqdata, stats = c("everything", "interaction", "all")){
+    #' @param stats if `interaction`, compute within-group stats; if `all`,
+    #'   compute overall CV; if `pooled`, use pooled variance with grouping
+    #'   information
+    initialize = function(lfqdata, stats = c("everything", "interaction", "all")) {
       stats <- match.arg(stats)
       self$lfq = lfqdata$clone(deep = TRUE)
-      self$stat <- if (!self$lfq$is_transformed()) {"CV"} else {"sd"}
+      self$stat <- if (!self$lfq$is_transformed()) {
+        "CV"
+      } else {
+        "sd"
+      }
 
-      tb <- table_factors_size(lfqdata$data,lfqdata$config )
-      if ( all(tb$n == 1) ) {
-        if(self$lfq$config$factorDepth > 1){
+      tb <- table_factors_size(lfqdata$data, lfqdata$config)
+      if (all(tb$n == 1)) {
+        if (self$lfq$config$factorDepth > 1) {
           self$lfq$config$factorDepth <- self$lfq$config$factorDepth - 1
         } else {
           stats = "all"
         }
       }
 
-      if (stats == "interaction" ) {
+      if (stats == "interaction") {
         self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
-      } else if (stats == "all" ) {
+      } else if (stats == "all") {
         self$statsdf <-
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
-      } else if (stats == "everything" ) {
-
+      } else if (stats == "everything") {
         self$statsdf <- bind_rows(
           prolfqua::summarize_stats(self$lfq$data, self$lfq$config),
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
@@ -111,64 +116,64 @@ LFQDataStats <- R6::R6Class(
     #' @description
     #' access data.frame with statistics
     #' @return data.frame with computed statistics
-    stats = function(){
+    stats = function() {
       self$statsdf
     },
     #' @description
     #' access data.frame with statistics in wide format
     #' @return data.frame with computed statistics in wide format
-    stats_wide = function(){
+    stats_wide = function() {
       res <- tidyr::pivot_wider(
-        self$statsdf,id_cols = self$lfq$config$hierarchy_keys() ,
+        self$statsdf,
+        id_cols = self$lfq$config$hierarchy_keys(),
         names_from = self$lfq$config$factor_keys_depth(),
         values_from = tidyselect::any_of(
-          c("nrReplicates",
-            "nrMeasured",
-            "sd",
-            "var",
-            "meanAbundance",
-            "medianAbundance",
-            "CV")))
+          c("nrReplicates", "nrMeasured", "sd", "var", "meanAbundance", "medianAbundance", "CV")
+        )
+      )
       return(res)
     },
     #' @description
     #' Determine CV or sd for the quantiles
     #' @param probs for which quantile to determine CV or sd
-    stats_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)){
+    stats_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)) {
       res <- prolfqua::summarize_stats_quantiles(
         self$stats(),
         self$lfq$config,
         stats = self$stat,
-        probs = probs)
+        probs = probs
+      )
       return(res)
     },
     #' @description
     #' plots density or ecdf
     #' @param ggstat either density or ecdf
     #' @return ggplot
-    density = function(ggstat = c("density", "ecdf")){
+    density = function(ggstat = c("density", "ecdf")) {
       prolfqua::plot_stat_density(
         self$stats(),
         self$lfq$config,
         stat = self$stat,
-        ggstat = ggstat)
+        ggstat = ggstat
+      )
     },
     #' @description
     #' plot density or ecdf of CV or sd for the 50% of low intensity data and 50% of high intensity data
     #' @param ggstat either density of ecdf
     #' @return ggplot
-    density_median = function(ggstat = c("density", "ecdf")){
+    density_median = function(ggstat = c("density", "ecdf")) {
       prolfqua::plot_stat_density_median(
         self$stats(),
         self$lfq$config,
         stat = self$stat,
-        ggstat = ggstat)
+        ggstat = ggstat
+      )
     },
     #' @description
     #' plot violinplot of CV or sd
     #' @param ggstat either density of ecdf
     #' @return ggplot
-    violin = function(){
+    violin = function() {
       prolfqua::plot_stat_violin(self$stats(), self$lfq$config, stat = self$stat)
     },
     #' @description
@@ -176,7 +181,7 @@ LFQDataStats <- R6::R6Class(
     #'
     #' @return ggplot
     #'
-    violin_median = function(){
+    violin_median = function() {
       prolfqua::plot_stat_violin_median(self$stats(), self$lfq$config, stat = self$stat)
     },
     #' @description
@@ -184,7 +189,7 @@ LFQDataStats <- R6::R6Class(
     #' @param size number of points to sample (default 200)
     #' @return ggplot
     #'
-    stdv_vs_mean = function(size= 200){
+    stdv_vs_mean = function(size = 200) {
       prolfqua::plot_stdv_vs_mean(self$stats(), self$lfq$config, size = size)
     },
     #' @description
@@ -194,20 +199,17 @@ LFQDataStats <- R6::R6Class(
     #' @param power power of test
     #' @param sig.level significance level.
     power_t_test_quantiles = function(
-    probs = c(0.1, 0.25, 0.5, 0.75, 0.9),
-    delta = c(0.59,1,2),
-    power = 0.8,
-    sig.level = 0.05)
-    {
+      probs = c(0.1, 0.25, 0.5, 0.75, 0.9),
+      delta = c(0.59, 1, 2),
+      power = 0.8,
+      sig.level = 0.05
+    ) {
       if (!self$lfq$is_transformed()) {
         warning("data is not transformed - aborting")
         return()
       }
       res <- self$stats_quantiles(probs)
-      res <- lfq_power_t_test_quantiles_V2(res$long,
-                                           delta = delta,
-                                           power = power,
-                                           sig.level = sig.level )
+      res <- lfq_power_t_test_quantiles_V2(res$long, delta = delta, power = power, sig.level = sig.level)
       return(res)
     },
     #' @description
@@ -216,20 +218,22 @@ LFQDataStats <- R6::R6Class(
     #' @param power power of test
     #' @param sig.level significance level.
     power_t_test = function(
-    delta = c(0.59,1,2),
-    power = 0.8,
-    sig.level = 0.05
-    ){
+      delta = c(0.59, 1, 2),
+      power = 0.8,
+      sig.level = 0.05
+    ) {
       if (!self$lfq$is_transformed()) {
         warning("data is not transformed - aborting")
         return()
       }
 
-      res <- prolfqua::lfq_power_t_test_proteins(self$stats(),
-                                                 delta = delta,
-                                                 power = power,
-                                                 sig.level = sig.level,
-                                                 min.n = 1.5)
+      res <- prolfqua::lfq_power_t_test_proteins(
+        self$stats(),
+        delta = delta,
+        power = power,
+        sig.level = sig.level,
+        min.n = 1.5
+      )
       return(res)
     }
   )

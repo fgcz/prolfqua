@@ -64,10 +64,7 @@ ContrastsROPECA <- R6::R6Class(
     #' @param Contrast e.g. instance of Contrasts class, or ContrastsModerated
     #' @param modelName default ROPECA
     #' @param p.adjust function to use for p.value adjustement
-    initialize = function(Contrast,
-                          modelName = "ROPECA",
-                          p.adjust = prolfqua::adjust_p_values
-    ){
+    initialize = function(Contrast, modelName = "ROPECA", p.adjust = prolfqua::adjust_p_values) {
       self$Contrast = Contrast
       stopifnot(length(Contrast$subject_Id) > 1)
       self$modelName = modelName
@@ -77,13 +74,13 @@ ContrastsROPECA <- R6::R6Class(
     #' @description
     #' show names of contrasts
     #' @return data.frame
-    get_contrast_sides = function(){
+    get_contrast_sides = function() {
       self$Contrast$get_contrast_sides()
     },
     #' @description
     #' get linear function used to determine contrasts
     #' @return data.frame
-    get_linfct = function(){
+    get_linfct = function() {
       self$Contrast$get_linfct()
     },
     #' @description
@@ -92,7 +89,7 @@ ContrastsROPECA <- R6::R6Class(
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
     #' @return data.frame
-    get_contrasts = function(all = FALSE){
+    get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
         contrast_result <- self$Contrast$get_contrasts(all = FALSE)
 
@@ -103,28 +100,39 @@ ContrastsROPECA <- R6::R6Class(
           estimate = "diff",
           statistic = "statistic",
           p.value = "p.value",
-          max.n = 10)
+          max.n = 10
+        )
         contrast_result <- dplyr::rename(contrast_result, diff = "estimate")
-        contrast_result <- self$p.adjust(contrast_result,
-                                         column = "beta.based.significance",
-                                         group_by_col = "contrast",
-                                         newname = "FDR.beta.based.significance")
-        contrast_result <- self$p.adjust(contrast_result,
-                                         column = "median.p.value",
-                                         group_by_col = "contrast",
-                                         newname = "FDR.median.p.value")
-        contrast_result <- mutate(contrast_result,modelName = self$modelName, .before  = 1)
+        contrast_result <- self$p.adjust(
+          contrast_result,
+          column = "beta.based.significance",
+          group_by_col = "contrast",
+          newname = "FDR.beta.based.significance"
+        )
+        contrast_result <- self$p.adjust(
+          contrast_result,
+          column = "median.p.value",
+          group_by_col = "contrast",
+          newname = "FDR.median.p.value"
+        )
+        contrast_result <- mutate(contrast_result, modelName = self$modelName, .before = 1)
         self$contrast_result <- contrast_result
-
       }
 
       if (!all) {
-        res <- select(self$contrast_result ,
-                      -all_of(c( "n_not_na", "mad.estimate",
-                                 "n.beta", "isSingular",
-                                 "median.p.scaled","median.p.value",
-                                 "FDR.median.p.value")) )
-      }else{
+        res <- select(
+          self$contrast_result,
+          -all_of(c(
+            "n_not_na",
+            "mad.estimate",
+            "n.beta",
+            "isSingular",
+            "median.p.scaled",
+            "median.p.value",
+            "FDR.median.p.value"
+          ))
+        )
+      } else {
         res <- self$contrast_result
       }
 
@@ -135,32 +143,35 @@ ContrastsROPECA <- R6::R6Class(
     #' @return \code{\link{ContrastsPlotter}}
     #' @param FDRthreshold FDR threshold
     #' @param FCthreshold FC threshold
-    get_Plotter = function(FDRthreshold = 0.1,
-                           FCthreshold = 2){
+    get_Plotter = function(FDRthreshold = 0.1, FCthreshold = 2) {
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id[1],
         fcthresh = FCthreshold,
         volcano = list(list(score = "FDR.beta.based.significance", thresh = FDRthreshold)),
-        histogram = list(list(score = "beta.based.significance", xlim = c(0,1,0.05)),
-                         list(score = "FDR.beta.based.significance", xlim = c(0,1,0.05))),
+        histogram = list(
+          list(score = "beta.based.significance", xlim = c(0, 1, 0.05)),
+          list(score = "FDR.beta.based.significance", xlim = c(0, 1, 0.05))
+        ),
         modelName = "modelName",
         diff = "diff",
-        contrast = "contrast")
+        contrast = "contrast"
+      )
       return(res)
     },
     #' @description convert to wide format
     #' @param columns value column default beta.based.significance
     #' @return data.frame
-    to_wide = function(columns = c("beta.based.significance", "FDR.beta.based.significance")){
+    to_wide = function(columns = c("beta.based.significance", "FDR.beta.based.significance")) {
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_2_Wide(
         contrast_minimal,
         subject_Id = self$subject_Id[length(self$subject_Id) - 1],
         columns = c("diff", columns),
-        contrast = 'contrast')
+        contrast = 'contrast'
+      )
       return(contrasts_wide)
     }
-
-  ))
+  )
+)

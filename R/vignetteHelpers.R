@@ -4,14 +4,14 @@
 #' @examples
 #' find_package_file("prolfqua","extdata/medata.csv")
 #'
-find_package_file <- function(packagename, file){
-  src_script <- file.path(find.package(packagename) , file )
+find_package_file <- function(packagename, file) {
+  src_script <- file.path(find.package(packagename), file)
   if (!file.exists(src_script)) {
-    src_script <- file.path(find.package(packagename) , "inst" , file)
+    src_script <- file.path(find.package(packagename), "inst", file)
   }
   if (file.exists(src_script)) {
     return(src_script)
-  }else{
+  } else {
     return(NULL)
   }
 }
@@ -20,29 +20,27 @@ find_package_file <- function(packagename, file){
 #' @export
 #' @keywords internal
 scriptCopyHelperVec <-
-  function(runscripts,
-           workdir = getwd(),
-           packagename = "prolfqua") {
+  function(runscripts, workdir = getwd(), packagename = "prolfqua") {
     res <- NULL
     for (scripts in runscripts) {
-      src_script <- file.path(find.package(packagename) , scripts)
-      dest_script <- file.path(workdir , basename(scripts))
+      src_script <- file.path(find.package(packagename), scripts)
+      dest_script <- file.path(workdir, basename(scripts))
       message("copy ", src_script, " to ", dest_script)
       if (!file.exists(src_script)) {
-        src_script <- file.path(find.package(packagename) , "inst" , scripts)
+        src_script <- file.path(find.package(packagename), "inst", scripts)
         if (!file.exists(src_script)) {
           warning(paste("could not copy script file.", dest_script, sep = " "))
         }
       }
-      if (!file.copy(src_script , dest_script, overwrite = TRUE)) {
+      if (!file.copy(src_script, dest_script, overwrite = TRUE)) {
         warning(paste("could not copy script file.", src_script, " to ", dest_script, sep = " "))
-      } else{
+      } else {
         res <- c(res, dest_script)
       }
     }
     message(paste(
       "your working directory now should contain: ",
-      length(res) ,
+      length(res),
       "new files :\n",
       sep = " "
     ))
@@ -51,16 +49,16 @@ scriptCopyHelperVec <-
 
 
 .run_markdown_with_params <-
-  function(params,
-           markdown_path,
-           dest_path,
-           dest_file_name,
-           workdir = tempdir(),
-           packagename = "prolfqua",
-           format = "pdf") {
-    res <- prolfqua::scriptCopyHelperVec(markdown_path,
-                                workdir = workdir,
-                                packagename = packagename)
+  function(
+    params,
+    markdown_path,
+    dest_path,
+    dest_file_name,
+    workdir = tempdir(),
+    packagename = "prolfqua",
+    format = "pdf"
+  ) {
+    res <- prolfqua::scriptCopyHelperVec(markdown_path, workdir = workdir, packagename = packagename)
     dist_file_path <-
       file.path(dest_path, paste0(dest_file_name, ".", format))
     if (is.null(res)) {
@@ -70,7 +68,7 @@ scriptCopyHelperVec <-
       res[1],
       output_format = if (format == "pdf") {
         bookdown::pdf_document2()
-      } else{
+      } else {
         bookdown::html_document2()
       },
       params = params,
@@ -80,7 +78,7 @@ scriptCopyHelperVec <-
     pdf_doc <- paste0(tools::file_path_sans_ext(res[1]), ".", format)
     message("XXXX--------------------------------------XXXX")
     if (pdf_doc != dist_file_path) {
-      message("from " , pdf_doc, " to ", dist_file_path)
+      message("from ", pdf_doc, " to ", dist_file_path)
       file.copy(pdf_doc, dist_file_path, overwrite = TRUE)
     }
     return(dist_file_path)
@@ -111,16 +109,17 @@ scriptCopyHelperVec <-
 #'   workdir= tempdir()) # tempdir(check = FALSE))
 #' }
 render_MQSummary_rmd <-
-  function(pdata,
-           config,
-           project_conf,
-           pep = TRUE,
-           dest_path = ".",
-           dest_file_name = "QCandSampleSize.Rmd",
-           workdir = tempdir(),
-           format = c("pdf", "html"),
-           markdown_path = c("doc/QCandSampleSize.Rmd"))
-  {
+  function(
+    pdata,
+    config,
+    project_conf,
+    pep = TRUE,
+    dest_path = ".",
+    dest_file_name = "QCandSampleSize.Rmd",
+    workdir = tempdir(),
+    format = c("pdf", "html"),
+    markdown_path = c("doc/QCandSampleSize.Rmd")
+  ) {
     dist_file_path <- .run_markdown_with_params(
       list(
         data = pdata,
@@ -137,6 +136,3 @@ render_MQSummary_rmd <-
     )
     return(dist_file_path)
   }
-
-
-

@@ -16,15 +16,12 @@
 #' stopifnot("UniprotID" %in%  colnames(tmp))
 #'
 get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id") {
-  map <- df |> dplyr::select(dplyr::all_of(idcolumn)) |> distinct() |>
+  map <- df |>
+    dplyr::select(dplyr::all_of(idcolumn)) |>
+    distinct() |>
     dplyr::filter(grepl(pattern = "^[a-z_]{2,7}\\|", !!sym(idcolumn))) |>
-    tidyr::separate(col = !!sym(idcolumn),
-                    sep = "_",
-                    into = c("begin",
-                             "end"), remove = FALSE) |>
-    tidyr::separate(col = !!sym("begin"),
-                    sep = "\\|",
-                    into = c("prefix", "UniprotID", "Symbol")) |>
+    tidyr::separate(col = !!sym(idcolumn), sep = "_", into = c("begin", "end"), remove = FALSE) |>
+    tidyr::separate(col = !!sym("begin"), sep = "\\|", into = c("prefix", "UniprotID", "Symbol")) |>
     dplyr::select(-!!sym("prefix"), -!!sym("Symbol"), -!!sym("end"))
   if (nrow(map) > 0) {
     res <- dplyr::right_join(map, df, by = idcolumn)
@@ -52,9 +49,11 @@ get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 #' x2 = remove_NA_rows(obj, thresh=1)
 #' stopifnot(all(c(10,10)==dim(x2)))
 #'
-remove_NA_rows <- function(obj, thresh=0 ) {
-  x <- apply(obj,1,function(x){sum(is.na(x))})
-  obj <- obj[!(x > thresh),]
+remove_NA_rows <- function(obj, thresh = 0) {
+  x <- apply(obj, 1, function(x) {
+    sum(is.na(x))
+  })
+  obj <- obj[!(x > thresh), ]
 }
 #' splits names and creates a matrix
 #' @export
@@ -67,14 +66,11 @@ remove_NA_rows <- function(obj, thresh=0 ) {
 #' @examples
 #' dat = c("bla_ra0/2_run0","bla_ra1/2_run0","bla_ra2/2_run0")
 #' names_to_matrix(dat,split="\\_|\\/")
-names_to_matrix <- function(names,split="\\||\\_")
-{
+names_to_matrix <- function(names, split = "\\||\\_") {
   cnamessplit <- stringi::stri_split_regex(as.character(names), pattern = split)
-  protnam <- do.call("rbind",cnamessplit)
+  protnam <- do.call("rbind", cnamessplit)
   return(protnam)
 }
-
-
 
 
 #' plot volcano given multiple contrasts
@@ -106,92 +102,109 @@ names_to_matrix <- function(names,split="\\||\\_")
 #' colour=NULL,
 #' label="Name",
 #' maxNrOfSignificantText = 300)
-multigroup_volcano <- function(.data,
-                              effect = "fc",
-                              significance = "p.adjust",
-                              contrast = "condition",
-                              colour = "colour",
-                              xintercept = c(-2,2),
-                              yintercept = 0.05,
-                              label = NULL,
-                              size = 1,
-                              segment.size = 0.3,
-                              segment.alpha = 0.3,
-                              scales = "fixed",
-                              maxNrOfSignificantText = 20)
-{
+multigroup_volcano <- function(
+  .data,
+  effect = "fc",
+  significance = "p.adjust",
+  contrast = "condition",
+  colour = "colour",
+  xintercept = c(-2, 2),
+  yintercept = 0.05,
+  label = NULL,
+  size = 1,
+  segment.size = 0.3,
+  segment.alpha = 0.3,
+  scales = "fixed",
+  maxNrOfSignificantText = 20
+) {
   misspX <- tidyr::unite(.data, "label", dplyr::all_of(label))
 
-  p <- .multigroup_volcano(misspX,
-                          effect = effect,
-                          significance = significance,
-                          contrast = contrast,
-                          colour = colour,
-                          xintercept = xintercept,
-                          yintercept = yintercept,
-                          text = "label",
-                          scales = scales)
-  colname = paste("-log10(", significance , ")" , sep = "")
+  p <- .multigroup_volcano(
+    misspX,
+    effect = effect,
+    significance = significance,
+    contrast = contrast,
+    colour = colour,
+    xintercept = xintercept,
+    yintercept = yintercept,
+    text = "label",
+    scales = scales
+  )
+  colname = paste("-log10(", significance, ")", sep = "")
 
   if (!is.null(label)) {
-    effectX <- misspX[,effect]
-    typeX <- misspX[,significance]
-    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < yintercept ) |>
+    effectX <- misspX[, effect]
+    typeX <- misspX[, significance]
+    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < yintercept) |>
       head(n = maxNrOfSignificantText)
     if (nrow(subsetData) > 0) {
-      p <- p + ggrepel::geom_text_repel(data = subsetData,
-                                        aes(x = .data[[effect]] , y = !!rlang::parse_expr(colname) , label = .data$label),
-                                        size = size,
-                                        segment.size = segment.size,
-                                        segment.alpha = segment.alpha)
+      p <- p +
+        ggrepel::geom_text_repel(
+          data = subsetData,
+          aes(x = .data[[effect]], y = !!rlang::parse_expr(colname), label = .data$label),
+          size = size,
+          segment.size = segment.size,
+          segment.alpha = segment.alpha
+        )
     }
   }
   return(p)
 }
 
-.multigroup_volcano <- function(data,
-                               effect = "fc",
-                               significance = "p.adjust",
-                               contrast = "contrast",
-                               colour = "colour",
-                               xintercept = c(-2,2),
-                               yintercept = 0.05,
-                               text = NULL,
+.multigroup_volcano <- function(
+  data,
+  effect = "fc",
+  significance = "p.adjust",
+  contrast = "contrast",
+  colour = "colour",
+  xintercept = c(-2, 2),
+  yintercept = 0.05,
+  text = NULL,
 
-                               scales = "fixed")
-{
+  scales = "fixed"
+) {
   colname = paste("-log10(", significance, ")", sep = "")
   p <- ggplot(
     data,
-    aes(x = .data[[effect]], y = !!rlang::parse_expr(colname))) +
+    aes(x = .data[[effect]], y = !!rlang::parse_expr(colname))
+  ) +
     geom_point(alpha = 0.5)
-  if (!is.null(colour)) p <- p + aes(color = .data[[colour]])
-  if (!is.null(text)) p <- p + aes(text = .data[[text]])
-  p <- p + scale_colour_manual(
-    values = c("black", "green",
-               "blue", "red") )
-  p <- p + facet_wrap(
-    as.formula(paste("~", contrast)),
-    scales = scales) + labs(y = colname)
-  log2FC <- effect
-  if ( !is.null(xintercept) ) {
-    p <- p + geom_vline(
-      xintercept = xintercept,
-      linetype = "dashed",
-      colour = "red")
+  if (!is.null(colour)) {
+    p <- p + aes(color = .data[[colour]])
   }
-  if ( !is.null(yintercept) ) {
-    p_value <- paste0("-log10(",yintercept,")")
-    p <- p + geom_hline(
-      yintercept = -log10(yintercept),
-      linetype = "dashed",
-      color = "blue",
-      show.legend = FALSE)
+  if (!is.null(text)) {
+    p <- p + aes(text = .data[[text]])
+  }
+  p <- p +
+    scale_colour_manual(
+      values = c("black", "green", "blue", "red")
+    )
+  p <- p +
+    facet_wrap(
+      as.formula(paste("~", contrast)),
+      scales = scales
+    ) +
+    labs(y = colname)
+  if (!is.null(xintercept)) {
+    p <- p +
+      geom_vline(
+        xintercept = xintercept,
+        linetype = "dashed",
+        colour = "red"
+      )
+  }
+  if (!is.null(yintercept)) {
+    p <- p +
+      geom_hline(
+        yintercept = -log10(yintercept),
+        linetype = "dashed",
+        color = "blue",
+        show.legend = FALSE
+      )
   }
 
   return(p)
 }
-
 
 
 #' matrix or data.frame to tibble (taken from tidyquant)
@@ -208,28 +221,23 @@ multigroup_volcano <- function(.data,
 #' matrix_to_tibble(x)
 #' !(is.matrix(x) || is.data.frame(x))
 #'
-matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
-{
-  if (!(is.matrix(x) || is.data.frame(x))) stop("Error: `x` is not a matrix or data.frame object.")
+matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
+  if (!(is.matrix(x) || is.data.frame(x))) {
+    stop("Error: `x` is not a matrix or data.frame object.")
+  }
   if (!is.null(preserve_row_names)) {
     row.names <- rownames(x)
-    if (!is.null(row.names)  ) {
+    if (!is.null(row.names)) {
       dplyr::bind_cols(
-        tibble::tibble(!! preserve_row_names := row.names),
+        tibble::tibble(!!preserve_row_names := row.names),
         tibble::as_tibble(x, ...)
       )
-
     } else {
-
-      warning("Warning: No row names to preserve. ",
-              "Object otherwise converted to tibble successfully.")
+      warning("Warning: No row names to preserve. ", "Object otherwise converted to tibble successfully.")
       tibble::as_tibble(x, ...)
     }
-
   } else {
-
     tibble::as_tibble(x, ...)
-
   }
 }
 
@@ -251,18 +259,18 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ... )
 #' tmp <- jackknife(xx, cor, use="pairwise.complete.obs", method="pearson")
 #' stopifnot(length(tmp) == 3)
 #' stopifnot(length(tmp[[2]]) == nrow(xx))
-jackknife <- function(xdata, .method, ... ) {
+jackknife <- function(xdata, .method, ...) {
   x <- seq_len(nrow(xdata))
   call <- match.call()
   n <- length(x)
-  u <- vector( "list", length = n )
+  u <- vector("list", length = n)
   for (i in seq_len(n)) {
-    tmp <- xdata[x[-i],]
+    tmp <- xdata[x[-i], ]
     u[[i]] <- .method(tmp, ...)
   }
   names(u) <- seq_len(n)
   thetahat <- .method(xdata, ...)
-  invisible(list(thetahat = thetahat, jack.values = u, call = call ))
+  invisible(list(thetahat = thetahat, jack.values = u, call = call))
 }
 
 #' Compute correlation matrix with jack
@@ -284,7 +292,7 @@ jackknife <- function(xdata, .method, ... ) {
 #' stopifnot(dim(res) == c(4,4))
 #' res <- jackknife_matrix(dataX, cor, method="spearman")
 #' stopifnot(dim(res) == c(4,4))
-jackknife_matrix <- function(dataX, distmethod , ... ){
+jackknife_matrix <- function(dataX, distmethod, ...) {
   if (is.null(colnames(dataX))) {
     colnames(dataX) <- paste("C", seq_len(ncol(dataX)), sep = "")
   }
@@ -292,8 +300,8 @@ jackknife_matrix <- function(dataX, distmethod , ... ){
     rownames(dataX) <- paste("R", seq_len(nrow(dataX)), sep = "")
   }
 
-  if (nrow(dataX) > 1 & ncol(dataX) > 1) {
-    tmp <- jackknife( dataX, distmethod, ... )
+  if (nrow(dataX) > 1 && ncol(dataX) > 1) {
+    tmp <- jackknife(dataX, distmethod, ...)
     x <- purrr::map_df(tmp$jack.values, prolfqua::matrix_to_tibble)
     dd <- tidyr::pivot_longer(x, cols = -1, names_to = "col.names", values_to = "correlation")
     ddd <- dd |>
@@ -303,10 +311,10 @@ jackknife_matrix <- function(dataX, distmethod , ... ){
     dddd <- tidyr::pivot_wider(ddd, names_from = "col.names", values_from = "jcor")
     dddd <- as.data.frame(dddd)
     rownames(dddd) <- dddd$row.names
-    dddd <- dddd[,-1]
+    dddd <- dddd[, -1]
     return(dddd)
-  }else{
-    message("Could not compute correlation, nr rows : " , nrow(dataX) )
+  } else {
+    message("Could not compute correlation, nr rows : ", nrow(dataX))
     return(NULL)
   }
 }
@@ -324,8 +332,8 @@ cor_order <- function(dataX) {
     ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
     dd <- stats::cor(t(ordt), use = "pairwise.complete.obs", method = "spearman")
     return(dd)
-  }else{
-    message("Could not compute correlation, nr rows : " , nrow(dataX) )
+  } else {
+    message("Could not compute correlation, nr rows : ", nrow(dataX))
   }
 }
 
@@ -342,14 +350,17 @@ cor_order <- function(dataX) {
 #' dd[[1]][1,2] <- NA
 #' cor_jackknife_matrix(dd[[1]])
 #'
-cor_jackknife_matrix <- function(dataX,
-                                       distmethod =
-                                         function(x){cor(x, use = "pairwise.complete.obs", method = "pearson")}) {
+cor_jackknife_matrix <- function(
+  dataX,
+  distmethod = function(x) {
+    cor(x, use = "pairwise.complete.obs", method = "pearson")
+  }
+) {
   if (nrow(dataX) > 1) {
     ordt <- (dataX)[order(apply(dataX, 1, mean)), ]
     xpep <- t(ordt)
     res <- prolfqua::jackknife_matrix(xpep, distmethod)
-  }else{
+  } else {
     message("Could not compute correlation, nr rows : ", nrow(dataX))
     res <- NULL
   }
@@ -370,10 +381,7 @@ cor_jackknife_matrix <- function(dataX,
 #' pairs_w_abline(tmp,log="xy",main="small data")
 #' pairs_w_abline(tmp,log="xy",main="small data", legend=TRUE)
 #' @seealso also \code{\link{pairs}}
-pairs_w_abline <- function(dataframe,
-                           legend = FALSE,
-                           pch = ".",
-                           ...) {
+pairs_w_abline <- function(dataframe, legend = FALSE, pch = ".", ...) {
   pairs(
     dataframe,
     panel = function(x, y) {
@@ -386,13 +394,10 @@ pairs_w_abline <- function(dataframe,
         col = 2
       )
       if (legend) {
-        cR2 <- stats::cor(x, y, use = "pairwise.complete.obs") ^ 2
-        graphics::legend("topleft",
-                         legend = paste("R^2=", round(cR2, digits = 2) , sep = ""),
-                         text.col = 3)
+        cR2 <- stats::cor(x, y, use = "pairwise.complete.obs")^2
+        graphics::legend("topleft", legend = paste("R^2=", round(cR2, digits = 2), sep = ""), text.col = 3)
       }
-    }
-    ,
+    },
     lower.panel = NULL,
     ...
   )
@@ -403,8 +408,7 @@ pairs_w_abline <- function(dataframe,
 #' @keywords internal
 #' @param x numeric data
 #' @param ... additional parameters passed to rect
-panel_hist <- function(x, ...)
-{
+panel_hist <- function(x, ...) {
   usr <- par("usr")
   on.exit(par(usr = usr))
   par(usr = c(usr[seq_len(2)], 0, 1.5))
@@ -413,7 +417,7 @@ panel_hist <- function(x, ...)
   nB <- length(breaks)
   y <- h$counts
   y <- y / max(y)
-  rect(breaks[-nB], 0, breaks[-1], y,  ...)
+  rect(breaks[-nB], 0, breaks[-1], y, ...)
 }
 #' correlation panel for pairs plot function (used as default in pairs_smooth)
 #' @export
@@ -423,8 +427,7 @@ panel_hist <- function(x, ...)
 #' @param y numeric data
 #' @param ... not used
 #' @param digits number of digits to display
-panel_cor <- function(x, y, digits = 2, ...)
-{
+panel_cor <- function(x, y, digits = 2, ...) {
   usr <- par("usr")
   on.exit(par(usr = usr))
   par(usr = c(0, 1, 0, 1))
@@ -434,18 +437,21 @@ panel_cor <- function(x, y, digits = 2, ...)
   txt <- paste("r= ", txt, sep = "")
   text(0.5, 0.7, txt)
 
-  txt <- format(c(r ^ 2, 0.123456789), digits = digits)[1]
-  txt <- bquote(R ^ {
-    2
-  } ~ "=" ~ .(txt))
+  txt <- format(c(r^2, 0.123456789), digits = digits)[1]
+  txt <- bquote(
+    R^{
+      2
+    } ~ "=" ~ .(txt)
+  )
   text(0.5, 0.5, txt)
 
   # p-value calculation
   p <- cor.test(x, y)$p.value
   txt2 <- format(c(p, 0.123456789), digits = digits)[1]
   txt2 <- paste("p= ", txt2, sep = "")
-  if (p < 0.01)
+  if (p < 0.01) {
     txt2 <- paste("p= ", "<0.01", sep = "")
+  }
   text(0.5, 0.3, txt2)
 }
 
@@ -465,7 +471,7 @@ panel_cor <- function(x, y, digits = 2, ...)
 pairs_smooth <- function(data, legend = FALSE, ...) {
   non_na_counts <- apply(data, 2, function(x) sum(!is.na(x)))
   min_col <- which(non_na_counts < 2)
-  if(length(min_col) >= 1){
+  if (length(min_col) >= 1) {
     data <- data[, -min_col, drop = FALSE]
   }
   pairs(
@@ -480,30 +486,25 @@ pairs_smooth <- function(data, legend = FALSE, ...) {
         col = 2
       )
       if (legend) {
-        cR2 <- stats::cor(x , y, use = "pairwise.complete.obs") ^ 2
-        graphics::legend("topleft",
-                         legend = paste("R^2=", round(cR2, digits = 2) ,
-                                        sep = ""),
-                         text.col = 3)
+        cR2 <- stats::cor(x, y, use = "pairwise.complete.obs")^2
+        graphics::legend("topleft", legend = paste("R^2=", round(cR2, digits = 2), sep = ""), text.col = 3)
       }
-    }
-    , lower.panel = panel_cor,
+    },
+    lower.panel = panel_cor,
     ...
   )
 }
-
 
 
 #' table facade to easily switch implementations
 #' @export
 #' @family utilities
 #' @keywords internal
-table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE){
+table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE) {
   if (kable) {
-    knitr::kable(df, digits = digits, caption = caption )
+    knitr::kable(df, digits = digits, caption = caption)
   }
 }
-
 
 
 # @examples
@@ -511,22 +512,26 @@ table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE)
 # dataA <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
 # condition = rep("A",5), Prey = LETTERS[1:5], modelName = c("A","A","B","A","A"))
 #
-# bc <- .volcano(dataA, contrast = "BLAB", effect = "fc", xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
+# bc <- .volcano(
+#   dataA, contrast = "BLAB", effect = "fc", xintercept = 1, yintercept = 0.01,
+#   palette = c(A = "black", B = "red")
+# )
 #
 # bc |> plotly::subplot()
-.volcano <- function(data,
-                     contrast = NULL,
-                     effect = "log2_EFCs",
-                     significance = "BFDR",
-                     x_annot = min(data[[effect]], na.rm = TRUE),
-                     y_annot = min(data[[significance]], na.rm = TRUE),
-                     proteinID = "Prey",
-                     color = "modelName",
-                     palette = NULL,
-                     xintercept = c(-1,1),
-                     yintercept = 0.1,
-                     title_size = 25
-){
+.volcano <- function(
+  data,
+  contrast = NULL,
+  effect = "log2_EFCs",
+  significance = "BFDR",
+  x_annot = min(data[[effect]], na.rm = TRUE),
+  y_annot = min(data[[significance]], na.rm = TRUE),
+  proteinID = "Prey",
+  color = "modelName",
+  palette = NULL,
+  xintercept = c(-1, 1),
+  yintercept = 0.1,
+  title_size = 25
+) {
   vline <- function(x = 0, color = "green") {
     list(
       type = "line",
@@ -551,24 +556,29 @@ table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE)
     )
   }
 
-  p <- plotly::plot_ly(data,
-                       x = as.formula(paste0("~",effect)),
-                       y = as.formula(paste0("~ I(-log10(", significance, "))")),
-                       type = "scatter",
-                       mode = "markers" ,
-                       color = as.formula(paste0("~", color)),
-                       colors = palette ,
-                       text = as.formula(paste0("~", proteinID)) ,
-                       showlegend = FALSE)
+  p <- plotly::plot_ly(
+    data,
+    x = as.formula(paste0("~", effect)),
+    y = as.formula(paste0("~ I(-log10(", significance, "))")),
+    type = "scatter",
+    mode = "markers",
+    color = as.formula(paste0("~", color)),
+    colors = palette,
+    text = as.formula(paste0("~", proteinID)),
+    showlegend = FALSE
+  )
 
-  sh2 <- c( lapply(xintercept, vline) , list(hline(-log10(yintercept))))
-  p2 <- p |> plotly::layout(shapes = sh2) |>
-    plotly::add_annotations(contrast,
-                            x = x_annot,
-                            y = -log10(y_annot),
-                            showarrow = FALSE,
-                            xanchor = "left",
-                            font = list(size = title_size))
+  sh2 <- c(lapply(xintercept, vline), list(hline(-log10(yintercept))))
+  p2 <- p |>
+    plotly::layout(shapes = sh2) |>
+    plotly::add_annotations(
+      contrast,
+      x = x_annot,
+      y = -log10(y_annot),
+      showarrow = FALSE,
+      xanchor = "left",
+      font = list(size = title_size)
+    )
   return(p2)
 }
 
@@ -597,83 +607,86 @@ table_facade <- function(df, caption, digits =  getOption("digits"), kable=TRUE)
 #' bc <- volcano_plotly(data, xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
 #' bc |> plotly::subplot()
 #'
-volcano_plotly <- function(.data,
-                           effect = "fc",
-                           significance = "BFDR",
-                           contrast = "condition",
-                           proteinID = "Prey",
-                           color = "modelName",
-                           palette = NULL,
-                           xintercept = c(-2,2),
-                           yintercept = 0.1,
-                           minsignificance = 1e-4,
-                           title_size = 25,
-                           group = "BB"
-
-)
-{
+volcano_plotly <- function(
+  .data,
+  effect = "fc",
+  significance = "BFDR",
+  contrast = "condition",
+  proteinID = "Prey",
+  color = "modelName",
+  palette = NULL,
+  xintercept = c(-2, 2),
+  yintercept = 0.1,
+  minsignificance = 1e-4,
+  title_size = 25,
+  group = "BB"
+) {
   .data[[significance]] <- pmax(.data[[significance]], minsignificance)
 
   xx <- .data |>
-    dplyr::group_by(!!dplyr::sym(contrast)) |> tidyr::nest()
+    dplyr::group_by(!!dplyr::sym(contrast)) |>
+    tidyr::nest()
 
   makeshared <- function(x, proteinID = "Prey") {
-    crosstalk::SharedData$new(x, as.formula( paste0("~", proteinID) ) ,
-                              group = group)
+    crosstalk::SharedData$new(x, as.formula(paste0("~", proteinID)), group = group)
   }
-  xx <- dplyr::mutate( xx,
-                       shared_data = purrr::map( data,
-                                                 makeshared, proteinID = proteinID  ))
-
+  xx <- dplyr::mutate(xx, shared_data = purrr::map(data, makeshared, proteinID = proteinID))
 
   x_annot = min(.data[[effect]], na.rm = TRUE)
   y_annot = max(minsignificance, min(.data[[significance]], na.rm = TRUE))
 
-  xd <- purrr::map2( xx$shared_data,
-                     xx[[contrast]],
-                     .volcano, effect = effect,
-                     significance = significance,
-                     x_annot = x_annot,
-                     y_annot = y_annot,
-                     proteinID = proteinID,
-                     color = color,
-                     palette = palette,
-                     xintercept = xintercept,
-                     yintercept = yintercept,
-                     title_size = title_size
+  xd <- purrr::map2(
+    xx$shared_data,
+    xx[[contrast]],
+    .volcano,
+    effect = effect,
+    significance = significance,
+    x_annot = x_annot,
+    y_annot = y_annot,
+    proteinID = proteinID,
+    color = color,
+    palette = palette,
+    xintercept = xintercept,
+    yintercept = yintercept,
+    title_size = title_size
   )
   return(xd)
 }
 
 
-.scatter <- function(data,
-                    contrast = NULL,
-                    dx = "diff.protein",
-                    dy = "diff.site",
-                    x_annot = min(data[[dx]], na.rm = TRUE),
-                    y_annot = min(data[[dy]], na.rm = TRUE),
-                    proteinID = "Prey",
-                    color = "modelName.site",
-                    palette = NULL,
-                    title_size = 25
-){
-  p <- plotly::plot_ly(data,
-                       x = as.formula(paste0("~",dx)),
-                       y = as.formula(paste0("~", dy)),
-                       type = "scatter",
-                       mode = "markers" ,
-                       color = as.formula(paste0("~", color)),
-                       colors = palette ,
-                       text = as.formula(paste0("~", proteinID)) ,
-                       showlegend = FALSE)
+.scatter <- function(
+  data,
+  contrast = NULL,
+  dx = "diff.protein",
+  dy = "diff.site",
+  x_annot = min(data[[dx]], na.rm = TRUE),
+  y_annot = min(data[[dy]], na.rm = TRUE),
+  proteinID = "Prey",
+  color = "modelName.site",
+  palette = NULL,
+  title_size = 25
+) {
+  p <- plotly::plot_ly(
+    data,
+    x = as.formula(paste0("~", dx)),
+    y = as.formula(paste0("~", dy)),
+    type = "scatter",
+    mode = "markers",
+    color = as.formula(paste0("~", color)),
+    colors = palette,
+    text = as.formula(paste0("~", proteinID)),
+    showlegend = FALSE
+  )
 
   p <- p |>
-    plotly::add_annotations(contrast,
-                            x = x_annot,
-                            y = y_annot,
-                            showarrow = FALSE,
-                            xanchor = "left",
-                            font = list(size = title_size))
+    plotly::add_annotations(
+      contrast,
+      x = x_annot,
+      y = y_annot,
+      showarrow = FALSE,
+      xanchor = "left",
+      font = list(size = title_size)
+    )
   return(p)
 }
 
@@ -702,48 +715,51 @@ volcano_plotly <- function(.data,
 #' bc[[2]]
 #' bc |> plotly::subplot()
 #'
-scatter_plotly <- function(.data,
-                           dx = "diff.protein",
-                           dy = "diff.site",
-                           contrast = "condition",
-                           proteinID = "protein_Id",
-                           color = "modelName",
-                           palette = NULL,
-                           title_size = 25,
-                           group = "BB"
-)
-{
-
+scatter_plotly <- function(
+  .data,
+  dx = "diff.protein",
+  dy = "diff.site",
+  contrast = "condition",
+  proteinID = "protein_Id",
+  color = "modelName",
+  palette = NULL,
+  title_size = 25,
+  group = "BB"
+) {
   xx <- .data |>
-    dplyr::group_by(!!dplyr::sym(contrast)) |> tidyr::nest()
+    dplyr::group_by(!!dplyr::sym(contrast)) |>
+    tidyr::nest()
 
   makeshared <- function(x, proteinID = "Prey") {
-    crosstalk::SharedData$new(x, as.formula( paste0("~", proteinID) ) ,
-                              group = group)
+    crosstalk::SharedData$new(x, as.formula(paste0("~", proteinID)), group = group)
   }
   xx <- dplyr::mutate(
     xx,
     shared_data = purrr::map(
       data,
-      makeshared, proteinID = proteinID  ))
+      makeshared,
+      proteinID = proteinID
+    )
+  )
 
   x_annot = min(.data[[dx]], na.rm = TRUE)
   y_annot = min(.data[[dy]], na.rm = TRUE)
 
-  xd <- purrr::map2( xx$shared_data,
-                     xx[[contrast]],
-                     .scatter, dx = dx,
-                     dy = dy,
-                     x_annot = x_annot,
-                     y_annot = y_annot,
-                     proteinID = proteinID,
-                     color = color,
-                     palette = palette,
-                     title_size = title_size
+  xd <- purrr::map2(
+    xx$shared_data,
+    xx[[contrast]],
+    .scatter,
+    dx = dx,
+    dy = dy,
+    x_annot = x_annot,
+    y_annot = y_annot,
+    proteinID = proteinID,
+    color = color,
+    palette = palette,
+    title_size = title_size
   )
   return(xd)
 }
-
 
 
 #' load data from prolfqua
@@ -751,13 +767,8 @@ scatter_plotly <- function(.data,
 #' @param package default prolfqua
 #' @export
 #' @family data
-prolfqua_data <- function(datastr, package="prolfqua"){
+prolfqua_data <- function(datastr, package = "prolfqua") {
   e <- new.env(parent = emptyenv())
   data(list = datastr, package = package, envir = e)
   return(e[[datastr]])
 }
-
-
-
-
-

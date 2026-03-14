@@ -58,19 +58,22 @@
 #'
 #' fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
 #' head(fa_firth$get_contrasts())
-build_contrast_analysis <- function(lfqdata,
-                                    modelstr,
-                                    contrasts,
-                                    method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
-                                    ...) {
+build_contrast_analysis <- function(
+  lfqdata,
+  modelstr,
+  contrasts,
+  method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
+  ...
+) {
   method <- match.arg(method)
-  switch(method,
-    lm         = ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...),
-    lmer       = ContrastsLmerFacade$new(lfqdata, modelstr, contrasts, ...),
+  switch(
+    method,
+    lm = ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...),
+    lmer = ContrastsLmerFacade$new(lfqdata, modelstr, contrasts, ...),
     lm_missing = ContrastsLMMissingFacade$new(lfqdata, modelstr, contrasts, ...),
-    limma      = ContrastsLimmaFacade$new(lfqdata, modelstr, contrasts, ...),
-    deqms      = ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...),
-    ropeca     = ContrastsROPECAFacade$new(lfqdata, modelstr, contrasts, ...),
-    firth      = ContrastsFirthFacade$new(lfqdata, modelstr, contrasts)
+    limma = ContrastsLimmaFacade$new(lfqdata, modelstr, contrasts, ...),
+    deqms = ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...),
+    ropeca = ContrastsROPECAFacade$new(lfqdata, modelstr, contrasts, ...),
+    firth = ContrastsFirthFacade$new(lfqdata, modelstr, contrasts)
   )
 }

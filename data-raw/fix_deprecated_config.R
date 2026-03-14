@@ -23,7 +23,7 @@ library(prolfqua)
 #' The new binding function uses the R6 enclosing environment so `self` resolves correctly.
 silence_deprecated_bindings <- function(config) {
   stopifnot(inherits(config, "AnalysisConfiguration"))
-  env <- config  # R6 public env IS the object
+  env <- config # R6 public env IS the object
   enclos <- env[[".__enclos_env__"]]
   for (nm in c("table", "parameter")) {
     if (exists(nm, envir = env, inherits = FALSE) && bindingIsActive(nm, env)) {
@@ -50,8 +50,7 @@ usethis::use_data(data_IonstarProtein_subsetNorm, overwrite = TRUE)
 # --- data_skylinePRMSample_A: fix config_f closure ---
 load("data/data_skylinePRMSample_A.rda")
 data_skylinePRMSample_A$config_f <- function() {
-  config <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
-                                   ident_qValue = "Detection.Q.Value")
+  config <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
   config$factors[["Time"]] = "Sampling.Time.Point"
   return(config)
 }
@@ -60,8 +59,7 @@ usethis::use_data(data_skylinePRMSample_A, overwrite = TRUE)
 # --- data_skylineSRM_HL_A: fix config_f closure ---
 load("data/data_skylineSRM_HL_A.rda")
 data_skylineSRM_HL_A$config_f <- function() {
-  skylineconfig_HL <- create_config_Skyline(isotopeLabel = "Isotope.Label",
-                                             ident_qValue = "annotation_QValue")
+  skylineconfig_HL <- create_config_Skyline(isotopeLabel = "Isotope.Label", ident_qValue = "annotation_QValue")
   skylineconfig_HL$factors[["treatment_c"]] <- "Condition2"
   skylineconfig_HL$factors[["time_c"]] <- "time"
   skylineconfig_HL$is_response_transformed = FALSE
@@ -74,7 +72,8 @@ load("data/data_spectronautDIA250_A.rda")
 data_spectronautDIA250_A$config_f <- function() {
   spectronautDIAData250_config <- prolfqua::create_config_Spectronaut_Peptide(
     isotopeLabel = "Isotope.Label",
-    ident_qValue = "EG.Qvalue")
+    ident_qValue = "EG.Qvalue"
+  )
   spectronautDIAData250_config$factors[["coding"]] = "coding"
   spectronautDIAData250_config$factors[["sex"]] = "sex"
   spectronautDIAData250_config$factors[["age"]] = "age"
