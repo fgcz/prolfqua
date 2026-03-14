@@ -9,6 +9,7 @@ Estimate contrasts using Wald Test
 Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
+[`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
@@ -29,6 +30,8 @@ Other modelling:
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
+[`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
+[`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),

@@ -1,19 +1,21 @@
-# LM contrast analysis facade
+# Firth logistic missingness contrast analysis facade
 
-LM contrast analysis facade
+Firth logistic missingness contrast analysis facade
 
-LM contrast analysis facade
+Firth logistic missingness contrast analysis facade
 
 ## Details
 
-Encapsulates the pipeline:
-[`strategy_lm`](https://wolski.github.io/prolfqua/reference/strategy.md)
+Encapsulates the pipeline: encode missingness -\>
+[`build_model_glm_protein`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md)
+or
+[`build_model_glm_peptide`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md)
 -\>
-[`build_model`](https://wolski.github.io/prolfqua/reference/build_model.md)
--\>
-[`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md)
--\>
-[`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md).
+[`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md).
+
+The input may be aggregated protein-level data or nested peptide-level
+data. The correct builder is chosen from the `LFQData` hierarchy
+automatically.
 
 ## See also
 
@@ -21,7 +23,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
-[`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
@@ -82,25 +84,25 @@ Other modelling:
 
 - `model`:
 
-  Model object
+  ModelFirth object
 
 - `contrast`:
 
-  ContrastsModerated object
+  ContrastsFirth object
 
 ## Methods
 
 ### Public methods
 
-- [`ContrastsLMFacade$new()`](#method-ContrastsLMFacade-new)
+- [`ContrastsFirthFacade$new()`](#method-ContrastsFirthFacade-new)
 
-- [`ContrastsLMFacade$get_contrasts()`](#method-ContrastsLMFacade-get_contrasts)
+- [`ContrastsFirthFacade$get_contrasts()`](#method-ContrastsFirthFacade-get_contrasts)
 
-- [`ContrastsLMFacade$get_Plotter()`](#method-ContrastsLMFacade-get_Plotter)
+- [`ContrastsFirthFacade$get_Plotter()`](#method-ContrastsFirthFacade-get_Plotter)
 
-- [`ContrastsLMFacade$to_wide()`](#method-ContrastsLMFacade-to_wide)
+- [`ContrastsFirthFacade$to_wide()`](#method-ContrastsFirthFacade-to_wide)
 
-- [`ContrastsLMFacade$clone()`](#method-ContrastsLMFacade-clone)
+- [`ContrastsFirthFacade$clone()`](#method-ContrastsFirthFacade-clone)
 
 ------------------------------------------------------------------------
 
@@ -110,7 +112,7 @@ initialize
 
 #### Usage
 
-    ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsFirthFacade$new(lfqdata, modelstr, contrasts)
 
 #### Arguments
 
@@ -126,11 +128,6 @@ initialize
 
   named character vector of contrasts
 
-- `...`:
-
-  passed to
-  [`strategy_lm`](https://wolski.github.io/prolfqua/reference/strategy.md)
-
 ------------------------------------------------------------------------
 
 ### Method `get_contrasts()`
@@ -139,13 +136,13 @@ get contrast results
 
 #### Usage
 
-    ContrastsLMFacade$get_contrasts(...)
+    ContrastsFirthFacade$get_contrasts(...)
 
 #### Arguments
 
 - `...`:
 
-  passed to ContrastsModerated\$get_contrasts
+  passed to ContrastsFirth\$get_contrasts
 
 ------------------------------------------------------------------------
 
@@ -155,13 +152,13 @@ get ContrastsPlotter
 
 #### Usage
 
-    ContrastsLMFacade$get_Plotter(...)
+    ContrastsFirthFacade$get_Plotter(...)
 
 #### Arguments
 
 - `...`:
 
-  passed to ContrastsModerated\$get_Plotter
+  passed to ContrastsFirth\$get_Plotter
 
 ------------------------------------------------------------------------
 
@@ -171,13 +168,13 @@ convert results to wide format
 
 #### Usage
 
-    ContrastsLMFacade$to_wide(...)
+    ContrastsFirthFacade$to_wide(...)
 
 #### Arguments
 
 - `...`:
 
-  passed to ContrastsModerated\$to_wide
+  passed to ContrastsFirth\$to_wide
 
 ------------------------------------------------------------------------
 
@@ -187,7 +184,7 @@ The objects of this class are cloneable with this method.
 
 #### Usage
 
-    ContrastsLMFacade$clone(deep = FALSE)
+    ContrastsFirthFacade$clone(deep = FALSE)
 
 #### Arguments
 
@@ -198,48 +195,56 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-istar <- sim_lfq_data_protein_config()
+istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5)
 #> creating sampleName from fileName column
 #> completing cases
 #> completing cases done
 #> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
-lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-fa <- ContrastsLMFacade$new(lfqdata, "~ group_", contrasts)
+fa <- ContrastsFirthFacade$new(lfqdata, "~ group_", contrasts)
+#> completing cases
+#> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 head(fa$get_contrasts())
 #> determine linear functions:
-#> Warning: linfct_matrix_contrasts: computed 0/2 contrasts; failed 2: A_vs_Ctrl, avg_A_vs_Ctrl. ℹ In argument: `A_vs_Ctrl = group_A - group_Ctrl`.
-#> Caused by error:
-#> ! object 'group_Ctrl' not found; ℹ In argument: `avg_A_vs_Ctrl = (group_A + group_Ctrl)/2`.
-#> Caused by error:
-#> ! object 'group_Ctrl' not found
 #> get_contrasts -> contrasts_linfct
-#> contrasts_linfct
+#> contrasts_linfct_firth
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 14
-#>   facade modelName  protein_Id contrast    diff std.error avgAbd statistic    df
-#>   <chr>  <chr>      <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lm     WaldTest_… 0EfVhX~00… A_vs_Ct… -2.62       0.660   21.1   -3.51    15.1
-#> 2 lm     WaldTest_… 7cbcrd~57… A_vs_Ct…  2.80       0.417   20.7    4.06    13.1
-#> 3 lm     WaldTest_… 9VUkAq~47… A_vs_Ct…  1.67       0.740   20.3    1.97    14.1
-#> 4 lm     WaldTest_… BEJI92~52… A_vs_Ct…  0.424      0.960   21.0    0.569   15.1
-#> 5 lm     WaldTest_… CGzoYe~21… A_vs_Ct… -0.598      0.750   30.8   -0.867   16.1
-#> 6 lm     WaldTest_… Fl4JiV~86… A_vs_Ct… -0.0494     0.603   21.3   -0.0664  15.1
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#> # Groups:   contrast [1]
+#>   facade modelName     protein_Id contrast sigma    df      diff   FDR std.error
+#>   <chr>  <chr>         <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>
+#> 1 firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9  1.07e-15 1          2.11
+#> 2 firth  WaldTestFirth 0m5WN4~14… A_vs_Ct…     1     9  8.47e- 1 0.978      1.32
+#> 3 firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9  1.07e-15 1          2.11
+#> 4 firth  WaldTestFirth 9VUkAq~45… A_vs_Ct…     1     9 -1.35e+ 0 0.978      1.78
+#> 5 firth  WaldTestFirth At886V~32… A_vs_Ct…     1     9 -8.47e- 1 0.978      1.32
+#> 6 firth  WaldTestFirth BEJI92~91… A_vs_Ct…     1     9 -1.35e+ 0 0.978      1.78
+#> # ℹ 5 more variables: statistic <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, avgAbd <dbl>
 fa$to_wide()
-#> # A tibble: 9 × 5
-#>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
-#>   <chr>                <dbl>             <dbl>         <dbl>               <dbl>
-#> 1 0EfVhX~0087        -2.62             0.00311        0.0140             -3.51  
-#> 2 7cbcrd~5725         2.80             0.00132        0.0119              4.06  
-#> 3 9VUkAq~4703         1.67             0.0684         0.205               1.97  
-#> 4 BEJI92~5282         0.424            0.578          0.650               0.569 
-#> 5 CGzoYe~2147        -0.598            0.398          0.598              -0.867 
-#> 6 Fl4JiV~8625        -0.0494           0.948          0.948              -0.0664
-#> 7 HvIpHG~9079        -0.809            0.294          0.598              -1.09  
-#> 8 JcKVfU~9653         0.642            0.365          0.598               0.932 
-#> 9 SGIVBl~5782        -0.494            0.484          0.622              -0.717 
+#> # A tibble: 20 × 5
+#>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
+#>    <chr>               <dbl>             <dbl>         <dbl>               <dbl>
+#>  1 0EfVhX~59…       1.07e-15             1             1                5.08e-16
+#>  2 0m5WN4~14…       8.47e- 1             0.538         0.978            6.40e- 1
+#>  3 7cbcrd~83…       1.07e-15             1             1                5.08e-16
+#>  4 9VUkAq~45…      -1.35e+ 0             0.468         0.978           -7.58e- 1
+#>  5 At886V~32…      -8.47e- 1             0.538         0.978           -6.40e- 1
+#>  6 BEJI92~91…      -1.35e+ 0             0.468         0.978           -7.58e- 1
+#>  7 CGzoYe~28…      -4.13e-16             1             1               -1.96e-16
+#>  8 CtOJ9t~28…       1.35e+ 0             0.468         0.978            7.58e- 1
+#>  9 DoWup2~29…       2.20e+ 0             0.238         0.978            1.26e+ 0
+#> 10 DuwH7n~34…       8.47e- 1             0.538         0.978            6.40e- 1
+#> 11 Fl4JiV~75…      -2.85e-17             1             1               -2.26e-17
+#> 12 HC8K98~49…       8.47e- 1             0.538         0.978            6.40e- 1
+#> 13 HvIpHG~40…       1.07e-15             1             1                5.08e-16
+#> 14 I1Jk2Z~08…      -8.47e- 1             0.538         0.978           -6.40e- 1
+#> 15 JV3Z7t~29…       1.07e-15             1             1                5.08e-16
+#> 16 JcKVfU~08…      -1.35e+ 0             0.468         0.978           -7.58e- 1
+#> 17 JfvT8X~27…      -2.20e+ 0             0.238         0.978           -1.26e+ 0
+#> 18 R2i6w7~02…       6.65e-17             1             1                5.26e-17
+#> 19 SGIVBl~95…       1.07e-15             1             1                5.08e-16
+#> 20 r2J0Eh~26…      -4.13e-16             1             1               -1.96e-16
 ```

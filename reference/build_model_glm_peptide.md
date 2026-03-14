@@ -1,18 +1,32 @@
-# build dataframe with models for testing
+# Build Firth logistic model for nested LFQData
 
-build dataframe with models for testing
+Encodes missingness as a binary response and fits the peptide-aware
+Firth logistic backend. Proteins with multiple child features are fitted
+with the lowest hierarchy key appended to the formula.
 
 ## Usage
 
 ``` r
-sim_build_models_logistf(
-  model = c("parallel2", "parallel3", "factors", "interaction"),
-  Nprot = 10,
-  with_missing = TRUE,
-  weight_missing = 1,
-  peptide = FALSE
-)
+build_model_glm_peptide(lfqdata, modelstr)
 ```
+
+## Arguments
+
+- lfqdata:
+
+  nested
+  [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md)
+  object
+
+- modelstr:
+
+  model formula string without the response variable (e.g. `"~ group_"`)
+
+## Value
+
+a
+[`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md)
+object
 
 ## See also
 
@@ -41,7 +55,6 @@ Other modelling:
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
-[`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
@@ -71,6 +84,7 @@ Other modelling:
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
+[`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
 [`sim_make_model_lm()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lm.md),
 [`sim_make_model_lmer()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
@@ -80,61 +94,28 @@ Other modelling:
 ## Examples
 
 ``` r
-modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
+istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 #> creating sampleName from fileName column
 #> completing cases
 #> completing cases done
 #> setup done
-#> completing cases
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
-stopifnot(dim(modi$modelDF) == c(10,9))
-mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
-#> creating sampleName from fileName column
-#> completing cases
-#> completing cases done
-#> setup done
-#> completing cases
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
-mod2$modelDF$linear_model[[1]]
-#> NULL
-mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
-#> creating sampleName from fileName column
-#> completing cases
-#> completing cases done
-#> setup done
-#> completing cases
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
-modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
-#> creating sampleName from fileName column
-#> completing cases
-#> completing cases done
-#> setup done
-#> completing cases
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
-
-mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
-#> creating sampleName from fileName column
-#> completing cases
-#> completing cases done
-#> setup done
+lfqdata <- LFQData$new(istar$data, istar$config)
+mod <- build_model_glm_peptide(lfqdata, "~ group_")
 #> completing cases
 #> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
-modf <- sim_build_models_logistf(model = "factors", weight_missing = 1, peptide=TRUE)
-#> Warning: Unknown or uninitialised column: `nr_peptides`.
-#> creating sampleName from fileName column
-#> completing cases
-#> completing cases done
-#> setup done
-#> completing cases
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
+head(mod$get_coefficients())
+#> # A tibble: 6 × 11
+#> # Groups:   protein_Id [2]
+#>   protein_Id factor  Estimate se.coef. lower.0.95 upper.0.95 Chisq      p method
+#>   <chr>      <chr>      <dbl>    <dbl>      <dbl>      <dbl> <dbl>  <dbl>  <dbl>
+#> 1 7IZdVV~08… (Inte…  2.10e+ 0    0.950      0.439      4.49  6.53  0.0106      2
+#> 2 7IZdVV~08… group…  6.77e- 1    0.786     -0.937      2.51  0.669 0.413       2
+#> 3 7IZdVV~08… group… -6.66e- 1    0.645     -2.08       0.640 0.990 0.320       2
+#> 4 AZPG26~20… (Inte…  9.05e- 1    0.863     -0.729      2.90  1.15  0.284       2
+#> 5 AZPG26~20… group…  2.23e-16    1.02      -2.09       2.09  0     1           2
+#> 6 AZPG26~20… group…  1.82e+ 0    1.55      -0.855      6.80  1.67  0.197       2
+#> # ℹ 2 more variables: isSingular <lgl>, nrcoef <int>
 ```

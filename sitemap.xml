@@ -24,6 +24,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/Contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsFirth.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsInterface.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.html</loc></url>
@@ -63,6 +64,8 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/apply_to_response_matrix.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_contrast_analysis.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/build_model_glm_protein.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_logistf.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.html</loc></url>

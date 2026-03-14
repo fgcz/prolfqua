@@ -11,6 +11,7 @@ provides a common front-end for several contrast backends:
 - `ropeca`
 - `lm_missing`
 - `deqms`
+- `firth`
 
 All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. The important difference is the
@@ -20,6 +21,8 @@ required data level:
   protein-level data
 - `lmer` and `ropeca` require lower-level measurements such as peptides
   nested within proteins
+- `firth` can be used with either aggregated protein-level data or
+  nested peptide-level data
 
 This vignette starts from one simulated peptide-level experiment,
 aggregates it to protein level, and then demonstrates both families of
@@ -101,6 +104,13 @@ fa_deqms <- build_contrast_analysis(
   contrasts,
   method = "deqms"
 )
+
+fa_firth_protein <- build_contrast_analysis(
+  lfq_protein,
+  "~ group_",
+  contrasts,
+  method = "firth"
+)
 ```
 
 Because all protein-level facades share the same interface and the same
@@ -111,7 +121,8 @@ results_protein <- bind_rows(
   fa_lm$get_contrasts(),
   fa_limma$get_contrasts(),
   fa_lm_missing$get_contrasts(),
-  fa_deqms$get_contrasts()
+  fa_deqms$get_contrasts(),
+  fa_firth_protein$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
     "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
@@ -126,13 +137,14 @@ results_protein |>
   dplyr::count(facade, name = "n_results")
 ```
 
-    ## # A tibble: 4 × 2
+    ## # A tibble: 5 × 2
     ##   facade     n_results
     ##   <chr>          <int>
     ## 1 deqms             78
-    ## 2 limma             80
-    ## 3 lm                78
-    ## 4 lm_missing        80
+    ## 2 firth             80
+    ## 3 limma             80
+    ## 4 lm                78
+    ## 5 lm_missing        80
 
 For facades that combine several underlying result types, such as
 `lm_missing`, the `modelName` column still tells you where individual
@@ -143,14 +155,15 @@ results_protein |>
   dplyr::count(facade, modelName, name = "n_results")
 ```
 
-    ## # A tibble: 5 × 3
+    ## # A tibble: 6 × 3
     ##   facade     modelName          n_results
     ##   <chr>      <chr>                  <int>
     ## 1 deqms      WaldTest_DEqMS            78
-    ## 2 limma      limma                     80
-    ## 3 lm         WaldTest_moderated        78
-    ## 4 lm_missing WaldTest_moderated        78
-    ## 5 lm_missing groupAverage               2
+    ## 2 firth      WaldTestFirth             80
+    ## 3 limma      limma                     80
+    ## 4 lm         WaldTest_moderated        78
+    ## 5 lm_missing WaldTest_moderated        78
+    ## 6 lm_missing groupAverage               2
 
 ## Protein-level volcano comparison
 
@@ -186,35 +199,27 @@ results_protein |>
   dplyr::select(facade, modelName, protein_Id, diff, p.value, FDR)
 ```
 
-    ## # A tibble: 20 × 6
-    ##    facade     modelName          protein_Id    diff  p.value           FDR
-    ##    <chr>      <chr>              <chr>        <dbl>    <dbl>         <dbl>
-    ##  1 deqms      WaldTest_DEqMS     Zci7Jw~7064 -0.718 5.63e-11 0.00000000439
-    ##  2 deqms      WaldTest_DEqMS     4Y4DYT~0927  0.583 3.43e-10 0.0000000110 
-    ##  3 deqms      WaldTest_DEqMS     6TevMr~7550  0.765 4.24e-10 0.0000000110 
-    ##  4 deqms      WaldTest_DEqMS     0CubNR~0890  0.674 7.29e-10 0.0000000142 
-    ##  5 deqms      WaldTest_DEqMS     KVkccD~1805 -0.531 3.00e- 9 0.0000000468 
-    ##  6 limma      limma              Zci7Jw~7064 -0.718 3.13e-11 0.00000000244
-    ##  7 limma      limma              KVkccD~1805 -0.531 4.85e-10 0.0000000189 
-    ##  8 limma      limma              4Y4DYT~0927  0.583 1.81e- 9 0.0000000470 
-    ##  9 limma      limma              6TevMr~7550  0.765 3.36e- 9 0.0000000655 
-    ## 10 limma      limma              0CubNR~0890  0.674 4.24e- 9 0.0000000661 
-    ## 11 lm         WaldTest_moderated Zci7Jw~7064 -0.718 3.91e-11 0.00000000305
-    ## 12 lm         WaldTest_moderated KVkccD~1805 -0.531 5.78e-10 0.0000000225 
-    ## 13 lm         WaldTest_moderated 4Y4DYT~0927  0.583 2.18e- 9 0.0000000567 
-    ## 14 lm         WaldTest_moderated 6TevMr~7550  0.765 4.32e- 9 0.0000000809 
-    ## 15 lm         WaldTest_moderated 0CubNR~0890  0.674 5.19e- 9 0.0000000809 
-    ## 16 lm_missing WaldTest_moderated Zci7Jw~7064 -0.718 3.91e-11 0.00000000305
-    ## 17 lm_missing WaldTest_moderated KVkccD~1805 -0.531 5.78e-10 0.0000000225 
-    ## 18 lm_missing WaldTest_moderated 4Y4DYT~0927  0.583 2.18e- 9 0.0000000567 
-    ## 19 lm_missing WaldTest_moderated 6TevMr~7550  0.765 4.32e- 9 0.0000000809 
-    ## 20 lm_missing WaldTest_moderated 0CubNR~0890  0.674 5.19e- 9 0.0000000809
+    ## # A tibble: 25 × 6
+    ##    facade modelName      protein_Id    diff  p.value           FDR
+    ##    <chr>  <chr>          <chr>        <dbl>    <dbl>         <dbl>
+    ##  1 deqms  WaldTest_DEqMS Zci7Jw~7064 -0.718 5.63e-11 0.00000000439
+    ##  2 deqms  WaldTest_DEqMS 4Y4DYT~0927  0.583 3.43e-10 0.0000000110 
+    ##  3 deqms  WaldTest_DEqMS 6TevMr~7550  0.765 4.24e-10 0.0000000110 
+    ##  4 deqms  WaldTest_DEqMS 0CubNR~0890  0.674 7.29e-10 0.0000000142 
+    ##  5 deqms  WaldTest_DEqMS KVkccD~1805 -0.531 3.00e- 9 0.0000000468 
+    ##  6 firth  WaldTestFirth  DTCi0N~0734 -3.04  1.22e- 1 1            
+    ##  7 firth  WaldTestFirth  XX0Mbp~0735 -3.04  1.22e- 1 1            
+    ##  8 firth  WaldTestFirth  8mS8sK~0150 -2.20  2.38e- 1 1            
+    ##  9 firth  WaldTestFirth  9RxUFG~9605  2.20  2.38e- 1 1            
+    ## 10 firth  WaldTestFirth  OrL0ux~1369 -1.69  2.51e- 1 1            
+    ## # ℹ 15 more rows
 
 ## Peptide-level facades
 
 The mixed-effects `lmer` facade and `ropeca` require lower-level
-measurements below the analysis subject. They therefore operate on the
-peptide-level `LFQData`.
+measurements below the analysis subject. The `firth` facade can also
+operate directly on the peptide-level `LFQData`, where it models
+missingness instead of intensity.
 
 ``` r
 fa_lmer <- build_contrast_analysis(
@@ -230,16 +235,27 @@ fa_ropeca <- build_contrast_analysis(
   contrasts,
   method = "ropeca"
 )
+
+fa_firth_peptide <- build_contrast_analysis(
+  lfq_peptide,
+  "~ group_",
+  contrasts,
+  method = "firth"
+)
 ```
 
 `ropeca` aggregates peptide evidence back to proteins, whereas `lmer`
 models the nested peptide structure directly before reporting
-protein-level contrasts.
+protein-level contrasts. For peptide-level `firth`, proteins with
+exactly one peptide are fitted without an added peptide term, while
+proteins with multiple peptides are fitted with the lowest hierarchy key
+added internally.
 
 ``` r
 results_peptide <- bind_rows(
   fa_lmer$get_contrasts(),
-  fa_ropeca$get_contrasts()
+  fa_ropeca$get_contrasts(),
+  fa_firth_peptide$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
     "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
@@ -254,11 +270,12 @@ results_peptide |>
   dplyr::count(facade, name = "n_results")
 ```
 
-    ## # A tibble: 2 × 2
+    ## # A tibble: 3 × 2
     ##   facade n_results
     ##   <chr>      <int>
-    ## 1 lmer          51
-    ## 2 ropeca        78
+    ## 1 firth         80
+    ## 2 lmer          51
+    ## 3 ropeca        78
 
 ``` r
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +

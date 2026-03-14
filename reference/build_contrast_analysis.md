@@ -11,7 +11,7 @@ build_contrast_analysis(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca"),
+  method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
   ...
 )
 ```
@@ -37,7 +37,7 @@ build_contrast_analysis(
 - method:
 
   one of `"lm"`, `"lmer"`, `"lm_missing"`, `"limma"`, `"deqms"`,
-  `"ropeca"`
+  `"ropeca"`, `"firth"`
 
 - ...:
 
@@ -52,8 +52,9 @@ one of
 [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 or
-[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md)
+[`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md)
 
 ## See also
 
@@ -61,6 +62,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
@@ -80,6 +82,8 @@ Other modelling:
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
+[`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
+[`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
@@ -270,4 +274,26 @@ head(fa_ropeca$get_contrasts())
 #> 6 ropeca DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  0.00000138     14.7 
 #> # ℹ 6 more variables: std.error <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>
+
+fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
+#> completing cases
+#> Joining with `by = join_by(protein_Id)`
+#> Joining with `by = join_by(protein_Id)`
+head(fa_firth$get_contrasts())
+#> determine linear functions:
+#> get_contrasts -> contrasts_linfct
+#> contrasts_linfct_firth
+#> Joining with `by = join_by(protein_Id, contrast)`
+#> # A tibble: 6 × 14
+#> # Groups:   contrast [1]
+#>   facade modelName     protein_Id contrast sigma    df      diff   FDR std.error
+#>   <chr>  <chr>         <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>
+#> 1 firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9  1.07e-15     1      2.11
+#> 2 firth  WaldTestFirth 0m5WN4~14… A_vs_Ct…     1     9 -2.20e+ 0     1      1.74
+#> 3 firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9  1.07e-15     1      2.11
+#> 4 firth  WaldTestFirth 9VUkAq~45… A_vs_Ct…     1     9 -1.35e+ 0     1      1.78
+#> 5 firth  WaldTestFirth At886V~32… A_vs_Ct…     1     9  5.58e-16     1      1.38
+#> 6 firth  WaldTestFirth BEJI92~91… A_vs_Ct…     1     9 -1.35e+ 0     1      1.78
+#> # ℹ 5 more variables: statistic <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, avgAbd <dbl>
 ```

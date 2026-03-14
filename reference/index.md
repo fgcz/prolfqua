@@ -12,6 +12,8 @@
   : DEqMS contrast analysis facade
 - [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md)
   : Estimate contrasts using Wald Test
+- [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md)
+  : Firth logistic missingness contrast analysis facade
 - [`ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
   : Base class for all Contrasts classes
 - [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md)
@@ -79,6 +81,10 @@
   : Build a contrast analysis using one of several statistical methods
 - [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md)
   : Build protein models from data
+- [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md)
+  : Build Firth logistic model for nested LFQData
+- [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md)
+  : Build Firth logistic model for aggregated LFQData
 - [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md)
   : Build limma model from LFQData
 - [`center_to_reference_cfg()`](https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.md)
