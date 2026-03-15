@@ -139,7 +139,8 @@ log2 transform data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{force}}{if FALSE, then data already log2 transformed will not be transformed a second time. TRUE force log transformation.}
+\item{\code{force}}{if `FALSE`, data already log2 transformed will not be
+transformed a second time. `TRUE` forces log transformation}
 }
 \if{html}{\out{</div>}}
 }
@@ -271,7 +272,9 @@ pass a function which works with matrices, e.g., vsn::justvsn
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{.func}}{any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale}
+\item{\code{.func}}{any function taking a matrix and returning a matrix
+(columns sample, rows feature, e.g. `base::scale()`), default
+`robust_scale`}
 
 \item{\code{force}}{transformation on data already transformed}
 }

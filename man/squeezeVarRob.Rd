@@ -18,22 +18,32 @@ squeezeVarRob(
 
 \item{df}{A numeric vector of degrees of freedom for the sample variances.}
 
-\item{covariate}{If \code{non-NULL}, \code{var.prior} will depend on this numeric covariate. Otherwise, \code{var.prior} is constant.}
+\item{covariate}{If \code{non-NULL}, \code{var.prior} will depend on this
+numeric covariate. Otherwise, \code{var.prior} is constant.}
 
-\item{robust}{A logical indicating wheter the estimation of \code{df.prior} and \code{var.prior} should be robustified against outlier sample variances. Defaults to \code{FALSE}.}
+\item{robust}{A logical indicating wheter the estimation of
+\code{df.prior} and \code{var.prior} should be robustified against outlier
+sample variances. Defaults to \code{FALSE}.}
 
-\item{winsor.tail.p}{A numeric vector of length 1 or 2, giving left and right tail proportions of \code{x} to Winsorize. Used only when \code{robust=TRUE}.}
+\item{winsor.tail.p}{A numeric vector of length 1 or 2, giving left and
+right tail proportions of \code{x} to Winsorize. Used only when
+\code{robust=TRUE}.}
 
-\item{min_df}{A numeric value indicating the minimal degrees of freedom that will be taken into account for calculating the prior degrees of freedom and prior variance.}
+\item{min_df}{A numeric value indicating the minimal degrees of freedom that
+will be taken into account for calculating the prior degrees of freedom
+and prior variance.}
 }
 \value{
 A list with components:
 \code{var.post} A numeric vector of posterior variances.
-\code{var.prior} The location of prior distribution. A vector if \code{covariate} is non-\code{NULL}, otherwise a scalar.
+\code{var.prior} The location of prior distribution. A vector if
+  \code{covariate} is non-\code{NULL}, otherwise a scalar.
 \code{df.prior} The degrees of freedom of prior distribution. A vector if \code{robust=TRUE}, otherwise a scalar.
 }
 \description{
-This function squeezes a set of sample variances together by computing empirical Bayes posterior means in a way that is robust against the presence of very small non-integer degrees of freedom values.
+This function squeezes a set of sample variances together by
+  computing empirical Bayes posterior means in a way that is robust against
+  the presence of very small non-integer degrees of freedom values.
 }
 \examples{
 var <- rexp(1000)

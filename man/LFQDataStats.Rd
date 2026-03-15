@@ -125,7 +125,9 @@ create analyse variances and CV
 \describe{
 \item{\code{lfqdata}}{LFQData object}
 
-\item{\code{stats}}{if interaction - within group stats, if all then overall CV, if pooled - then pooled variance using grouping information (t.b.d.)}
+\item{\code{stats}}{if `interaction`, compute within-group stats; if `all`,
+compute overall CV; if `pooled`, use pooled variance with grouping
+information}
 }
 \if{html}{\out{</div>}}
 }

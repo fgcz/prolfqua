@@ -261,7 +261,8 @@ it will be removed
 \describe{
 \item{\code{nrNA}}{number of NA values}
 
-\item{\code{factorDepth}}{you control for nrNA per condition or experiment etc. e.g. factorDepth = 0  then per experiment}
+\item{\code{factorDepth}}{control whether `nrNA` is applied per condition or more
+globally, e.g. `factorDepth = 0` means per experiment}
 }
 \if{html}{\out{</div>}}
 }
