@@ -1,10 +1,10 @@
 ---
-title: "Comparing Contrast Facades"
+title: "Contrast Facades with Parallel Designs"
 author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Comparing Contrast Facades}
+  %\VignetteIndexEntry{Contrast Facades with Parallel Designs}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -157,7 +157,7 @@ results_protein |>
 ```{r volcano_protein, fig.height=8, fig.width=10, fig.cap="Volcano plots for the protein-level facades. Each panel shows the same contrast analysed by a different backend."}
 ggplot(results_protein, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
-  facet_wrap(~ facade, scales = "free_y") +
+  facet_wrap(~facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
@@ -239,7 +239,7 @@ results_peptide |>
 ```{r volcano_peptide, fig.height=5, fig.width=9, fig.cap="Volcano plots for the peptide-level facades."}
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
-  facet_wrap(~ facade, scales = "free_y") +
+  facet_wrap(~facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +

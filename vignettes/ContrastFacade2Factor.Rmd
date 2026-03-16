@@ -1,0 +1,185 @@
+---
+title: "Contrast Facades with Two-Factor Subgroup Design"
+author: "Witold E. Wolski"
+date: "`r Sys.Date()`"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Contrast Facades with Two-Factor Subgroup Design}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(prolfqua)
+library(dplyr)
+library(ggplot2)
+```
+
+# Purpose
+
+This vignette demonstrates the same `build_contrast_analysis()` facade workflow
+on a dataset with two factors (e.g. treatment and genotype), yielding four
+subgroups: `C_WT`, `T_WT`, `C_KO`, `T_KO`. We define contrasts:
+
+- `T_C_gv_WT = T_WT - C_WT`
+- `T_C_gv_KO = T_KO - C_KO`
+- `WT_KO_comp = T_C_gv_WT - T_C_gv_KO`
+
+We start from simulated two-factor peptide data, derive a single subgroup factor,
+and run both protein-input and peptide-input facades with the same contrast
+specification. See `ContrastFacades.Rmd` for the one-factor introduction.
+
+# Simulate two-factor data and encode subgroups
+
+```{r simulate_two_factor_subgroups}
+dd <- sim_lfq_data_2Factor_config(
+  Nprot = 80,
+  with_missing = TRUE,
+  weight_missing = 1,
+  PEPTIDE = TRUE,
+  seed = 7
+)
+
+cfg_subgroup <- dd$config$clone(deep = TRUE)
+data_subgroup <- dd$data |>
+  dplyr::mutate(
+    Condition = dplyr::recode(Treatment, A = "C", B = "T"),
+    Genotype = dplyr::recode(Background, Z = "WT", X = "KO"),
+    Subgroup = paste(Condition, Genotype, sep = "_")
+  )
+
+cfg_subgroup$factors <- c(Subgroup = "Subgroup")
+cfg_subgroup$factorDepth <- 1
+
+lfq_peptide_2f <- LFQData$new(data_subgroup, cfg_subgroup)
+lfq_peptide_2f <- lfq_peptide_2f$get_Transformer()$log2()$lfq
+
+lfq_protein_2f <- LFQDataAggregator$new(lfq_peptide_2f, "protein")$medpolish()
+
+contrasts_2f <- c(
+  T_C_gv_WT = "SubgroupT_WT - SubgroupC_WT",
+  T_C_gv_KO = "SubgroupT_KO - SubgroupC_KO",
+  WT_KO_comp = "T_C_gv_WT - T_C_gv_KO"
+)
+```
+
+# Protein-input facades
+
+```{r facades_protein_two_factor}
+fa_lm_2f <- build_contrast_analysis(
+  lfq_protein_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "lm"
+)
+
+fa_limma_2f <- build_contrast_analysis(
+  lfq_protein_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "limma"
+)
+
+fa_lm_missing_2f <- build_contrast_analysis(
+  lfq_protein_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "lm_missing"
+)
+
+fa_deqms_2f <- build_contrast_analysis(
+  lfq_protein_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "deqms"
+)
+
+fa_firth_protein_2f <- build_contrast_analysis(
+  lfq_protein_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "firth"
+)
+```
+
+```{r collect_protein_two_factor}
+results_protein_2f <- bind_rows(
+  fa_lm_2f$get_contrasts(),
+  fa_limma_2f$get_contrasts(),
+  fa_lm_missing_2f$get_contrasts(),
+  fa_deqms_2f$get_contrasts(),
+  fa_firth_protein_2f$get_contrasts()
+)
+
+results_protein_2f |>
+  dplyr::count(facade, contrast, name = "n_results")
+```
+
+# Peptide-input facades
+
+```{r facades_peptide_two_factor}
+fa_lmer_2f <- build_contrast_analysis(
+  lfq_peptide_2f,
+  "~ Subgroup + (1 | peptide_Id) + (1 | sampleName)",
+  contrasts_2f,
+  method = "lmer"
+)
+
+fa_ropeca_2f <- build_contrast_analysis(
+  lfq_peptide_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "ropeca"
+)
+
+fa_firth_peptide_2f <- build_contrast_analysis(
+  lfq_peptide_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "firth"
+)
+```
+
+```{r collect_peptide_two_factor}
+results_peptide_2f <- bind_rows(
+  fa_lmer_2f$get_contrasts(),
+  fa_ropeca_2f$get_contrasts(),
+  fa_firth_peptide_2f$get_contrasts()
+)
+
+results_peptide_2f |>
+  dplyr::count(facade, contrast, name = "n_results")
+```
+
+# Volcano plots
+
+```{r volcano_protein_2f, fig.height=8, fig.width=10, fig.cap="Protein-input facades, subgroup contrasts."}
+results_protein_2f <- results_protein_2f |>
+  dplyr::mutate(significant = FDR < 0.1 & abs(diff) > 0.5)
+
+ggplot(results_protein_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
+  geom_point(alpha = 0.6, size = 1.2) +
+  facet_grid(contrast ~ facade, scales = "free_y") +
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
+  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
+  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
+  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1 & |diff| > 0.5") +
+  theme_minimal(base_size = 12)
+```
+
+```{r volcano_peptide_2f, fig.height=6, fig.width=9, fig.cap="Peptide-input facades, subgroup contrasts."}
+results_peptide_2f <- results_peptide_2f |>
+  dplyr::mutate(significant = FDR < 0.1 & abs(diff) > 0.5)
+
+ggplot(results_peptide_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
+  geom_point(alpha = 0.6, size = 1.2) +
+  facet_grid(contrast ~ facade, scales = "free_y") +
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
+  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
+  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
+  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1 & |diff| > 0.5") +
+  theme_minimal(base_size = 12)
+```
