@@ -147,7 +147,9 @@ Contrasts <- R6::R6Class(
           res[[i]] <- if (self$models$nrcoeff_not_NA[[i]] == mcoef) {
             compmodel
           } else {
-            .linfct(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
+            suppressWarnings(
+              .linfct(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
+            )
           }
         }
         return(res)

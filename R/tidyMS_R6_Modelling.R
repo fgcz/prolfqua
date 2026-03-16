@@ -982,14 +982,18 @@ contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrast
   interaction_model_matrix <- interaction_model_matrix |>
     dplyr::mutate(classC = purrr::map_chr(.data$contrast, mclass))
 
-  n_failed <- sum(interaction_model_matrix$classC == "logical")
+  failed_mask <- interaction_model_matrix$classC == "logical"
+  n_failed <- sum(failed_mask)
   if (n_failed > 0) {
-    message(
+    failed_ids <- interaction_model_matrix[[subject_Id[1]]][failed_mask]
+    warning(
       "contrasts_linfct: dropped ",
       n_failed,
       " of ",
       nrow(interaction_model_matrix),
-      " proteins with failed contrasts."
+      " proteins with failed contrasts: ",
+      paste(failed_ids, collapse = ", "),
+      call. = FALSE
     )
   }
 
