@@ -62,8 +62,8 @@ log2 transform data
 
 - `force`:
 
-  if FALSE, then data already log2 transformed will not be transformed a
-  second time. TRUE force log transformation.
+  if \`FALSE\`, data already log2 transformed will not be transformed a
+  second time. \`TRUE\` forces log transformation
 
 #### Returns
 
@@ -215,7 +215,7 @@ pass a function which works with matrices, e.g., vsn::justvsn
 - `.func`:
 
   any function taking a matrix and returning a matrix (columns sample,
-  rows feature e.g. base::scale) default robust_scale
+  rows feature, e.g. \`base::scale()\`), default \`robust_scale\`
 
 - `force`:
 

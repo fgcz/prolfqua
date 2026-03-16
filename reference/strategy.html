@@ -21,13 +21,13 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
-    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Comparing Contrast Facades</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastFacade2Factor.html">Contrast Facades with Two-Factor Subgroup Design</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Contrast Facades with Parallel Designs</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
     <li><a class="dropdown-item" href="../articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
-    <li><a class="dropdown-item" href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
     <li><a class="dropdown-item" href="../articles/TestingMissingInference.html">Impute data using limit of detection (LOD)</a></li>
@@ -443,7 +443,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_logistf</span><span class="op">(</span><span class="st">"bin_resp ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bin_resp ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5582b7b10d58&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5651e2484728&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -458,8 +458,8 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5582a937fa38&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5582b7b10d58&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5651d5515f50&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5651e2484728&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
@@ -556,7 +556,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5582cd7b51c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5651fc27c430&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -571,12 +571,12 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5582a4119b28&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5651cd5c54e0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5582b9b390b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x565209f40c70&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -591,12 +591,12 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5582a4119b28&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5651cd5c54e0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_glm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5582c2bd9620&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5651fb382850&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -611,7 +611,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5582a4119b28&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5651cd5c54e0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 </code></pre></div>
     </div>

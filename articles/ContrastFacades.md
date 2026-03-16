@@ -1,4 +1,4 @@
-# Comparing Contrast Facades
+# Contrast Facades with Parallel Designs
 
 ## Purpose
 
@@ -14,15 +14,16 @@ provides a common front-end for several contrast backends:
 - `firth`
 
 All of them expose the same basic interface: `get_contrasts()`,
-`get_Plotter()`, and `to_wide()`. The important difference is the
-required data level:
+`get_Plotter()`, and `to_wide()`. All examples below return
+protein-level contrasts. The important difference is the required input
+level:
 
 - `lm`, `limma`, `lm_missing`, and `deqms` require aggregated
   protein-level data
 - `lmer` and `ropeca` require lower-level measurements such as peptides
-  nested within proteins
+  nested within proteins, but still report protein-level contrasts
 - `firth` can be used with either aggregated protein-level data or
-  nested peptide-level data
+  nested peptide-level data and still reports protein-level contrasts
 
 This vignette starts from one simulated peptide-level experiment,
 aggregates it to protein level, and then demonstrates both families of
@@ -71,10 +72,12 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 Using one contrast keeps the comparisons easy to read while still
 showing how the different backends behave.
 
-## Protein-level facades
+## Protein-input facades
 
 The following facades require aggregated input, which in practice means
 `lfqdata$subject_Id()` must match `lfqdata$config$hierarchy_keys()`.
+`firth` is included here on purpose because it can be fitted directly on
+aggregated protein input.
 
 ``` r
 fa_lm <- build_contrast_analysis(
@@ -113,8 +116,8 @@ fa_firth_protein <- build_contrast_analysis(
 )
 ```
 
-Because all protein-level facades share the same interface and the same
-unit of analysis, their outputs can be combined directly.
+Because all protein-input facades share the same interface and report
+protein-level contrasts, their outputs can be combined directly.
 
 ``` r
 results_protein <- bind_rows(
@@ -170,7 +173,7 @@ results_protein |>
 ``` r
 ggplot(results_protein, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
-  facet_wrap(~ facade, scales = "free_y") +
+  facet_wrap(~facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
@@ -214,12 +217,13 @@ results_protein |>
     ## 10 firth  WaldTestFirth  OrL0ux~1369 -1.69  2.51e- 1 1            
     ## # ℹ 15 more rows
 
-## Peptide-level facades
+## Peptide-input facades
 
 The mixed-effects `lmer` facade and `ropeca` require lower-level
 measurements below the analysis subject. The `firth` facade can also
-operate directly on the peptide-level `LFQData`, where it models
-missingness instead of intensity.
+operate directly on peptide-level `LFQData`. `firth` is shown a second
+time here on purpose, because it can also be fitted on peptide input.
+All three still return protein-level contrasts.
 
 ``` r
 fa_lmer <- build_contrast_analysis(
@@ -246,10 +250,10 @@ fa_firth_peptide <- build_contrast_analysis(
 
 `ropeca` aggregates peptide evidence back to proteins, whereas `lmer`
 models the nested peptide structure directly before reporting
-protein-level contrasts. For peptide-level `firth`, proteins with
-exactly one peptide are fitted without an added peptide term, while
-proteins with multiple peptides are fitted with the lowest hierarchy key
-added internally.
+protein-level contrasts. Peptide-level `firth` also reports
+protein-level contrasts. Proteins with exactly one peptide are fitted
+without an added peptide term, while proteins with multiple peptides are
+fitted with the lowest hierarchy key added internally.
 
 ``` r
 results_peptide <- bind_rows(
@@ -280,7 +284,7 @@ results_peptide |>
 ``` r
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
-  facet_wrap(~ facade, scales = "free_y") +
+  facet_wrap(~facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +

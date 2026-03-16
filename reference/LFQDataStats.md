@@ -78,8 +78,9 @@ create analyse variances and CV
 
 - `stats`:
 
-  if interaction - within group stats, if all then overall CV, if
-  pooled - then pooled variance using grouping information (t.b.d.)
+  if \`interaction\`, compute within-group stats; if \`all\`, compute
+  overall CV; if \`pooled\`, use pooled variance with grouping
+  information
 
 ------------------------------------------------------------------------
 

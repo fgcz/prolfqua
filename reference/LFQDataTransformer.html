@@ -21,13 +21,13 @@ Decorate LFQData with Methods for transforming Intensities"></head><body>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
-    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Comparing Contrast Facades</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastFacade2Factor.html">Contrast Facades with Two-Factor Subgroup Design</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Contrast Facades with Parallel Designs</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
     <li><a class="dropdown-item" href="../articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
-    <li><a class="dropdown-item" href="../articles/QCandSampleSize.html">Quality Control &amp; Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
     <li><a class="dropdown-item" href="../articles/TestingMissingInference.html">Impute data using limit of detection (LOD)</a></li>
@@ -103,7 +103,8 @@ Decorate LFQData with Methods for transforming Intensities"></head><body>
 <div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>force</code></dt>
-<dd><p>if FALSE, then data already log2 transformed will not be transformed a second time. TRUE force log transformation.</p></dd>
+<dd><p>if `FALSE`, data already log2 transformed will not be
+transformed a second time. `TRUE` forces log transformation</p></dd>
 
 
 </dl><p></p></div>
@@ -246,7 +247,9 @@ Decorate LFQData with Methods for transforming Intensities"></head><body>
 <div class="section">
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>.func</code></dt>
-<dd><p>any function taking a matrix and returning a matrix (columns sample, rows feature e.g. base::scale) default robust_scale</p></dd>
+<dd><p>any function taking a matrix and returning a matrix
+(columns sample, rows feature, e.g. `base::scale()`), default
+`robust_scale`</p></dd>
 
 
 <dt><code>force</code></dt>

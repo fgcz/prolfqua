@@ -255,8 +255,8 @@ removed
 
 - `factorDepth`:
 
-  you control for nrNA per condition or experiment etc. e.g. factorDepth
-  = 0 then per experiment
+  control whether \`nrNA\` is applied per condition or more globally,
+  e.g. \`factorDepth = 0\` means per experiment
 
 #### Returns
 
