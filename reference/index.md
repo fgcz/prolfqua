@@ -4,8 +4,6 @@
 
 - [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md)
   : Analysis Configuration
-- [`Benchmark`](https://wolski.github.io/prolfqua/reference/Benchmark.md)
-  : Benchmark R6 class
 - [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md)
   : Estimate contrasts using Wald Test
 - [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md)
@@ -108,16 +106,12 @@
   : Impute missing values using zCompositions
 - [`interaction_contrasts()`](https://wolski.github.io/prolfqua/reference/interaction_contrasts.md)
   : Interaction contrasts (difference of differences)
-- [`ionstar_bench_preprocess()`](https://wolski.github.io/prolfqua/reference/ionstar_bench_preprocess.md)
-  : prepare benchmark data
 - [`level_specific_contrasts()`](https://wolski.github.io/prolfqua/reference/level_specific_contrasts.md)
   : Level-specific contrasts (per secondary level)
 - [`list_to_AnalysisConfiguration()`](https://wolski.github.io/prolfqua/reference/list_to_AnalysisConfiguration.md)
   : read minimal yaml to reconstruct configuration
 - [`main_effect_contrasts()`](https://wolski.github.io/prolfqua/reference/main_effect_contrasts.md)
   : main effects contrasts
-- [`make_benchmark()`](https://wolski.github.io/prolfqua/reference/make_benchmark.md)
-  : make Benchmark
 - [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md)
   : Merge contrast results coming from two different model.
 - [`nr_obs_experiment()`](https://wolski.github.io/prolfqua/reference/nr_obs_experiment.md)

@@ -20,7 +20,6 @@
 <url><loc>https://wolski.github.io/prolfqua/authors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/index.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/Benchmark.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/Contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsFirth.html</loc></url>
@@ -89,7 +88,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/data_spectronautDIA250_A.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/data_test_confusion_matrix_scores.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/dot-get_robscales.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/dot-summarise_missing_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/encode_bin_resp.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/estimate_intensity.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/estimate_lod_global.html</loc></url>
@@ -114,7 +112,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/intensity_summary_by_hkeys.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/interaction_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/interaction_missing_stats.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/ionstar_bench_preprocess.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/isSingular_lm.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/jackknife.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/jackknife_matrix.html</loc></url>
@@ -128,7 +125,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/list_to_AnalysisConfiguration.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/main_effect_contrasts.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/make_benchmark.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/make_interaction_column.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/make_reduced_hierarchy_config.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/matrix_to_tibble.html</loc></url>
@@ -146,8 +142,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/ms_bench_add_scores.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/ms_bench_auc.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/multigroup_volcano.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/my_contest.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/my_contrast.html</loc></url>

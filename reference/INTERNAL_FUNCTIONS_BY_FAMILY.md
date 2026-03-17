@@ -19,13 +19,6 @@ Other aggregation:
 [`rlm_estimate()`](https://wolski.github.io/prolfqua/reference/rlm_estimate.md),
 [`rlm_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/rlm_estimate_dfconfig.md)
 
-Other benchmarking:
-[`Benchmark`](https://wolski.github.io/prolfqua/reference/Benchmark.md),
-[`ionstar_bench_preprocess()`](https://wolski.github.io/prolfqua/reference/ionstar_bench_preprocess.md),
-[`make_benchmark()`](https://wolski.github.io/prolfqua/reference/make_benchmark.md),
-[`ms_bench_add_scores()`](https://wolski.github.io/prolfqua/reference/ms_bench_add_scores.md),
-[`ms_bench_auc()`](https://wolski.github.io/prolfqua/reference/ms_bench_auc.md)
-
 Other configuration:
 [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md),
 [`R6_extract_values()`](https://wolski.github.io/prolfqua/reference/R6_extract_values.md),
