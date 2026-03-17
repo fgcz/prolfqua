@@ -17,6 +17,7 @@ bibliography:
 
 
 ```{r setup, include=FALSE}
+library(prolfqua)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
@@ -95,7 +96,7 @@ protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id[
 These proteins can easily be visualized using the `boxplot` function from the `plotter` objects in prolfqua
 
 ```{r fig.with=15, fig.height=15, fig.cap="Proteins with FDR < 0.05 for the interaction in the factors condition and batch in an ANOVA."}
-ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
+gridExtra::grid.arrange(grobs = protInt$get_Plotter()$boxplots()$boxplot)
 ```
 
 # Compute and analyse with the specified contrasts 
@@ -187,13 +188,13 @@ data_1Factor$response()
 
 Instead of two factors we now have one factor `Group` with four levels `r data_1Factor$factors()$Group |> table()`.
 
-```{r}
+```{r showFactors}
 knitr::kable(data_1Factor$factors())
 ```
 
 We specify the model formula and the same contrasts as for the two factor model but using only one factor and the subgroups.
 
-```{r}
+```{r specifyModel1Factor}
 formula_Batches <-
   prolfqua::strategy_lm("abundance ~ Group")
 
@@ -259,7 +260,7 @@ summary(glht(XF, linfct = rbind(i1 = c(1, -1, 0, 0,  0, 0, -1, 1  ))))
 
 # Session Info
 
-```{r}
+```{r sessionInfo}
 sessionInfo()
 ```
 
