@@ -144,7 +144,7 @@ These proteins can easily be visualized using the `boxplot` function
 from the `plotter` objects in prolfqua
 
 ``` r
-ggpubr::ggarrange(plotlist = protInt$get_Plotter()$boxplots()$boxplot)
+gridExtra::grid.arrange(grobs = protInt$get_Plotter()$boxplots()$boxplot)
 ```
 
 ![Proteins with FDR \< 0.05 for the interaction in the factors condition
@@ -405,35 +405,32 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] dplyr_1.2.0
+    ## [1] dplyr_1.2.0    prolfqua_1.5.0
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] beeswarm_0.4.0      gtable_0.3.6        xfun_0.56          
+    ##  [1] gtable_0.3.6        beeswarm_0.4.0      xfun_0.56          
     ##  [4] bslib_0.10.0        ggplot2_4.0.2       htmlwidgets_1.6.4  
-    ##  [7] ggrepel_0.9.8       rstatix_0.7.3       vctrs_0.7.1        
-    ## [10] tools_4.5.2         generics_0.1.4      tibble_3.3.1       
-    ## [13] pkgconfig_2.0.3     pheatmap_1.0.13     data.table_1.18.2.1
-    ## [16] RColorBrewer_1.1-3  S7_0.2.1            desc_1.4.3         
-    ## [19] lifecycle_1.0.5     prolfqua_1.5.0      compiler_4.5.2     
-    ## [22] farver_2.1.2        textshaping_1.0.5   progress_1.2.3     
-    ## [25] statmod_1.5.1       carData_3.0-6       vipor_0.4.7        
-    ## [28] htmltools_0.5.9     sass_0.4.10         yaml_2.3.12        
-    ## [31] lazyeval_0.2.2      Formula_1.2-5       plotly_4.12.0      
-    ## [34] car_3.1-5           pillar_1.11.1       pkgdown_2.2.0      
-    ## [37] ggpubr_0.6.3        crayon_1.5.3        jquerylib_0.1.4    
-    ## [40] tidyr_1.3.2         MASS_7.3-65         cachem_1.1.0       
-    ## [43] limma_3.66.0        abind_1.4-8         tidyselect_1.2.1   
-    ## [46] digest_0.6.39       stringi_1.8.7       purrr_1.2.1        
-    ## [49] labeling_0.4.3      forcats_1.0.1       cowplot_1.2.0      
-    ## [52] fastmap_1.2.0       grid_4.5.2          cli_3.6.5          
-    ## [55] magrittr_2.0.4      utf8_1.2.6          broom_1.0.12       
-    ## [58] withr_3.0.2         backports_1.5.0     prettyunits_1.2.0  
-    ## [61] scales_1.4.0        ggbeeswarm_0.7.3    rmarkdown_2.30     
-    ## [64] httr_1.4.8          otel_0.2.0          gridExtra_2.3      
-    ## [67] ggsignif_0.6.4      ragg_1.5.1          hms_1.1.4          
-    ## [70] evaluate_1.0.5      knitr_1.51          UpSetR_1.4.0       
-    ## [73] viridisLite_0.4.3   rlang_1.1.7         Rcpp_1.1.1         
-    ## [76] glue_1.8.0          jsonlite_2.0.0      R6_2.6.1           
-    ## [79] plyr_1.8.9          systemfonts_1.3.2   fs_1.6.7
+    ##  [7] ggrepel_0.9.8       vctrs_0.7.1         tools_4.5.2        
+    ## [10] generics_0.1.4      tibble_3.3.1        pkgconfig_2.0.3    
+    ## [13] pheatmap_1.0.13     data.table_1.18.2.1 RColorBrewer_1.1-3 
+    ## [16] S7_0.2.1            desc_1.4.3          lifecycle_1.0.5    
+    ## [19] compiler_4.5.2      farver_2.1.2        textshaping_1.0.5  
+    ## [22] progress_1.2.3      statmod_1.5.1       vipor_0.4.7        
+    ## [25] htmltools_0.5.9     sass_0.4.10         yaml_2.3.12        
+    ## [28] lazyeval_0.2.2      plotly_4.12.0       pillar_1.11.1      
+    ## [31] pkgdown_2.2.0       crayon_1.5.3        jquerylib_0.1.4    
+    ## [34] tidyr_1.3.2         MASS_7.3-65         cachem_1.1.0       
+    ## [37] limma_3.66.0        tidyselect_1.2.1    digest_0.6.39      
+    ## [40] stringi_1.8.7       purrr_1.2.1         labeling_0.4.3     
+    ## [43] forcats_1.0.1       fastmap_1.2.0       grid_4.5.2         
+    ## [46] cli_3.6.5           magrittr_2.0.4      utf8_1.2.6         
+    ## [49] withr_3.0.2         prettyunits_1.2.0   scales_1.4.0       
+    ## [52] ggbeeswarm_0.7.3    rmarkdown_2.30      httr_1.4.8         
+    ## [55] otel_0.2.0          gridExtra_2.3       ragg_1.5.1         
+    ## [58] hms_1.1.4           evaluate_1.0.5      knitr_1.51         
+    ## [61] UpSetR_1.4.0        viridisLite_0.4.3   rlang_1.1.7        
+    ## [64] Rcpp_1.1.1          glue_1.8.0          jsonlite_2.0.0     
+    ## [67] R6_2.6.1            plyr_1.8.9          systemfonts_1.3.2  
+    ## [70] fs_1.6.7
 
 ## References

@@ -93,7 +93,8 @@ Other modelling:
 ## Examples
 
 ``` r
-istar <- sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+istar <- sim_lfq_data_protein_config(
+  Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 #> creating sampleName from fileName column
 #> completing cases
 #> completing cases done
