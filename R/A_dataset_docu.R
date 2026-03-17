@@ -169,9 +169,3 @@ NULL
 #' @docType data
 #' @keywords internal
 "data_spectronautDIA250_A"
-
-#' example of 2 Factor data
-#' @family data
-#' @docType data
-#' @keywords internal
-"data_Yeast2Factor"

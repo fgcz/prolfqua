@@ -35,8 +35,6 @@ Imports:
     ggplot2,
     ggbeeswarm,
     ggrepel,
-    ggridges,
-    ggpubr,
     limma,
     lme4,
     lmerTest,

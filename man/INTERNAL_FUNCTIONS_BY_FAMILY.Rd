@@ -22,13 +22,6 @@ Other aggregation:
 \code{\link{rlm_estimate}()},
 \code{\link{rlm_estimate_dfconfig}()}
 
-Other benchmarking: 
-\code{\link{Benchmark}},
-\code{\link{ionstar_bench_preprocess}()},
-\code{\link{make_benchmark}()},
-\code{\link{ms_bench_add_scores}()},
-\code{\link{ms_bench_auc}()}
-
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
 \code{\link{R6_extract_values}()},
