@@ -21,7 +21,8 @@ logistic backend. Proteins with multiple child features are fitted with the
 lowest hierarchy key appended to the formula.
 }
 \examples{
-istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+istar <- sim_lfq_data_peptide_config(
+  Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 lfqdata <- LFQData$new(istar$data, istar$config)
 mod <- build_model_glm_peptide(lfqdata, "~ group_")
 head(mod$get_coefficients())

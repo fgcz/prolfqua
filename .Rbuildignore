@@ -27,3 +27,6 @@ R/tidyMS_stanr\.R
 ^data-raw$
 ^CLAUDE\.md$
 ^Rplots\.pdf$
+^\.cursor$
+^\.githooks$
+^air\.toml$
