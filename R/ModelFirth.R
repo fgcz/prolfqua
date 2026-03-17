@@ -96,11 +96,6 @@ ModelFirth <- R6::R6Class(
 
       models <- dplyr::bind_rows(self$models[[1]]$modelDF, self$models[[2]]$modelDF)
       res <- vector(mode = "list", nrow(models))
-      #for(i in 1:nrow(models)){
-      #  print(i)
-      #  x <- models$linear_model[[i]]
-      #  res[[i]] <- .coef_df(x)
-      #}
       Model_Coeff <- models |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
       Model_Coeff <- Model_Coeff |>
@@ -158,7 +153,6 @@ ModelFirth <- R6::R6Class(
         dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
       fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
-      #Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
       return(list(plot = forPairs, name = fname_Pairsplot_Coef))
     },
     #' @description

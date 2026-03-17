@@ -60,7 +60,7 @@ sim_lfq_data <- function(
       propx["N"] <- 100 - sum(propx)
     }
 
-    FC = rep(fcx, ceiling(propx / 100 * Nprot)) |> head(n = Nprot)
+    FC <- rep(fcx, ceiling(propx / 100 * Nprot)) |> head(n = Nprot)
 
     # add regulation to group A.
     groupMean <- paste0("mean_", name)
@@ -139,8 +139,6 @@ which_missing <- function(x, weight_missing = 0.2) {
   }
 
   missing_values <- sapply(missing_prop, samplemiss)
-  # Introduce missing values into the vector x
-  #x[missing_values] <- NA
   return(missing_values)
 }
 
@@ -170,7 +168,6 @@ sim_lfq_data_peptide_config <- function(
   data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE, N = N)
 
   not_missing <- !which_missing(data$abundance, weight_missing = weight_missing)
-  # data <- data[not_missing,]
   data$nr_children <- as.numeric(not_missing)
   if (with_missing) {
     data <- data[data$nr_children > 0, ]
@@ -179,11 +176,11 @@ sim_lfq_data_peptide_config <- function(
   data$qValue <- 0
 
   config <- AnalysisConfiguration$new()
-  config$fileName = "sample"
+  config$fileName <- "sample"
 
-  config$factors["group_"] = "group"
-  config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
-  config$hierarchy[["peptide_Id"]] = "peptideID"
+  config$factors["group_"] <- "group"
+  config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
+  config$hierarchy[["peptide_Id"]] <- "peptideID"
   config$set_response("abundance")
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
@@ -235,13 +232,13 @@ sim_lfq_data_protein_config <- function(
   data$qValue <- 0
 
   config <- AnalysisConfiguration$new()
-  config$fileName = "sample"
-  config$nr_children = "nr_peptides"
-  config$factors["group_"] = "group"
+  config$fileName <- "sample"
+  config$nr_children <- "nr_peptides"
+  config$factors["group_"] <- "group"
   if (paired) {
-    config$factors["subject_"] = "subject"
+    config$factors["subject_"] <- "subject"
   }
-  config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
+  config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
   config$set_response("abundance")
   adata <- setup_analysis(data, config)
   return(list(data = adata, config = config))
@@ -299,21 +296,21 @@ sim_lfq_data_2Factor_config <- function(
   data$isotopeLabel <- "light"
   data$qValue <- 0
   config <- AnalysisConfiguration$new()
-  config$fileName = "sample"
-  config$nr_children = "nr_peptides"
+  config$fileName <- "sample"
+  config$nr_children <- "nr_peptides"
 
   if (TWO) {
-    config$factors["Treatment"] = "Treatment"
-    config$factors["Background"] = "Background"
+    config$factors["Treatment"] <- "Treatment"
+    config$factors["Background"] <- "Background"
     config$factorDepth <- 2
   } else {
     data <- data |> tidyr::unite(Group, c("Treatment", "Background"))
-    config$factors["Group"] = "Group"
+    config$factors["Group"] <- "Group"
     config$factorDepth <- 1
   }
-  config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
+  config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
   if (PEPTIDE) {
-    config$hierarchy[["peptide_Id"]] = c("peptideID")
+    config$hierarchy[["peptide_Id"]] <- c("peptideID")
   }
   config$set_response("abundance")
   adata <- setup_analysis(data, config)

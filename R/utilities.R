@@ -130,7 +130,7 @@ multigroup_volcano <- function(
     text = "label",
     scales = scales
   )
-  colname = paste("-log10(", significance, ")", sep = "")
+  colname <- paste("-log10(", significance, ")", sep = "")
 
   if (!is.null(label)) {
     effectX <- misspX[, effect]
@@ -163,7 +163,7 @@ multigroup_volcano <- function(
 
   scales = "fixed"
 ) {
-  colname = paste("-log10(", significance, ")", sep = "")
+  colname <- paste("-log10(", significance, ")", sep = "")
   p <- ggplot(
     data,
     aes(x = .data[[effect]], y = !!rlang::parse_expr(colname))
@@ -507,17 +507,6 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 }
 
 
-# @examples
-#
-# dataA <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
-# condition = rep("A",5), Prey = LETTERS[1:5], modelName = c("A","A","B","A","A"))
-#
-# bc <- .volcano(
-#   dataA, contrast = "BLAB", effect = "fc", xintercept = 1, yintercept = 0.01,
-#   palette = c(A = "black", B = "red")
-# )
-#
-# bc |> plotly::subplot()
 .volcano <- function(
   data,
   contrast = NULL,
@@ -632,8 +621,8 @@ volcano_plotly <- function(
   }
   xx <- dplyr::mutate(xx, shared_data = purrr::map(data, makeshared, proteinID = proteinID))
 
-  x_annot = min(.data[[effect]], na.rm = TRUE)
-  y_annot = max(minsignificance, min(.data[[significance]], na.rm = TRUE))
+  x_annot <- min(.data[[effect]], na.rm = TRUE)
+  y_annot <- max(minsignificance, min(.data[[significance]], na.rm = TRUE))
 
   xd <- purrr::map2(
     xx$shared_data,
@@ -742,8 +731,8 @@ scatter_plotly <- function(
     )
   )
 
-  x_annot = min(.data[[dx]], na.rm = TRUE)
-  y_annot = min(.data[[dy]], na.rm = TRUE)
+  x_annot <- min(.data[[dx]], na.rm = TRUE)
+  y_annot <- min(.data[[dy]], na.rm = TRUE)
 
   xd <- purrr::map2(
     xx$shared_data,

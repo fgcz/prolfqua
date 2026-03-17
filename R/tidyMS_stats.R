@@ -26,7 +26,7 @@ pooled_V2 <- function(x) {
   pool.SS <- sum(SS) + sum(n * deviation^2)
   pool.var <- pool.SS / (pool.n - 1)
   n.groups <- length(sample.var)
-  sdT = sqrt(pool.var * 2 / (pool.n / n.groups))
+  sdT <- sqrt(pool.var * 2 / (pool.n / n.groups))
 
   res <- data.frame(
     n.groups = n.groups,
@@ -53,12 +53,9 @@ pooled_V1 <- function(x) {
   SS <- (n - 1) * sample.var
   pool.var <- sum(SS) / (pool.n - n.groups)
 
-  #SS <- (n) * sample.var
-  #pool.var <- sum(SS)/(pool.n)
-
   pool.mean <- sum(sample.mean * n) / pool.n
 
-  sdT = sqrt(pool.var * 2 / (pool.n / n.groups))
+  sdT <- sqrt(pool.var * 2 / (pool.n / n.groups))
 
   res <- data.frame(
     n.groups = n.groups,
@@ -97,7 +94,7 @@ compute_pooled <- function(x, method = c("V1", "V2")) {
   method <- match.arg(method)
   xm <- x |> dplyr::filter(.data$nrMeasured > 0)
   meanAll <- sum(xm$meanAbundance * xm$nrMeasured) / sum(xm$nrMeasured)
-  nrMeasured = sum(xm$nrMeasured)
+  nrMeasured <- sum(xm$nrMeasured)
 
   func <- pooled_V1
   if (method == "V2") {
@@ -324,7 +321,6 @@ summarize_stats_quantiles <- function(stats_res, config, stats = c("sd", "CV"), 
   getSampleSize <- function(sd) {
     power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n
   }
-  #  return(getSampleSize)
 
   sampleSizes <- quantile_sd |>
     mutate(N_exact = purrr::map_dbl(!!sym("sdtrimmed"), getSampleSize), N = ceiling(!!sym("N_exact")))
@@ -360,7 +356,6 @@ lfq_power_t_test_quantiles_V2 <-
   function(quantile_sd, delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05, min.n = 1.5) {
     res <- vector(mode = "list", length = length(delta))
     for (i in seq_along(delta)) {
-      #message("i", i , "delta_i", delta[i], "\n")
       res[[i]] <- .lfq_power_t_test_quantiles(
         quantile_sd,
         delta = delta[i],
@@ -368,7 +363,7 @@ lfq_power_t_test_quantiles_V2 <-
         power = power,
         sig.level = sig.level
       )
-      res[[i]]$delta = delta[i]
+      res[[i]]$delta <- delta[i]
     }
     res <- bind_rows(res)
     return(res)
@@ -597,8 +592,8 @@ plot_stat_violin_median <- function(pdata, config, stat = c("CV", "meanAbundance
 
   p <- ggplot(top50, aes(x = .data[[config$factor_keys()[1]]], y = .data[[stat]])) +
     geom_violin() +
-    stat_summary(fun = median.quartile, geom = 'point', shape = 3) +
-    stat_summary(fun = median, geom = 'point', shape = 1) +
+    stat_summary(fun = median.quartile, geom = "point", shape = 3) +
+    stat_summary(fun = median, geom = "point", shape = 1) +
     facet_wrap("top")
   return(p)
 }

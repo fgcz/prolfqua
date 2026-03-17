@@ -148,7 +148,6 @@ Model <- R6::R6Class(
         dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
       fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
-      #Pairsplot_Coef <-  GGally::ggpairs(forPairs, columns = 2:ncol(forPairs))
       return(list(plot = forPairs, name = fname_Pairsplot_Coef))
     },
     #' @description

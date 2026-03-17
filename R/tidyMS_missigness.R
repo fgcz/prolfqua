@@ -8,7 +8,7 @@
 #' istar$config$bin_resp == "bin_resp"
 #' istar$data[["bin_resp"]]
 encode_bin_resp <- function(pdata, config, name = "bin_resp") {
-  config$bin_resp = "bin_resp"
+  config$bin_resp <- "bin_resp"
   pdata <- complete_cases(pdata, config)
   pdata[[config$bin_resp]] <- as.integer(!is.na(pdata[[config$get_response()]]))
   return(pdata)
@@ -234,7 +234,7 @@ missingness_per_condition_cumsum <- function(x, config, factors = config$factor_
   formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
   message(formula)
 
-  nudgeval = mean(res$cumulative_sum) * 0.05
+  nudgeval <- mean(res$cumulative_sum) * 0.05
   p <- ggplot(res, aes(x = .data$nrNAs, y = .data$cumulative_sum)) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = .data$cumulative_sum), nudge_y = nudgeval, angle = -45) +
@@ -269,9 +269,8 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
     dplyr::summarize(!!sym(hierarchyKey) := n())
 
   formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
-  #message(formula)
 
-  nudgeval = max(xx[[hierarchyKey]]) * 0.05
+  nudgeval <- max(xx[[hierarchyKey]]) * 0.05
 
   p <- ggplot(xx, aes(x = .data$nrNAs, y = .data[[hierarchyKey]])) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
@@ -340,7 +339,6 @@ UpSet_missing_stats <- function(data, config) {
       names_from = config$sampleName,
       values_from = !!rlang::sym("isThere")
     )
-  #colnames(pups2) <- make.names(colnames(pups2))
   res <- list(data = as.data.frame(pups2), nsets = ncol(pups2) - length(config$hierarchy_keys()))
   return(res)
 }

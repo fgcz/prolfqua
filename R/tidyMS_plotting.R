@@ -32,7 +32,7 @@ plot_intensity_distribution_violin <- function(pdata, config) {
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
   if (!config$is_response_transformed) {
-    p <- p + scale_y_continuous(trans = 'log10')
+    p <- p + scale_y_continuous(trans = "log10")
   }
   return(p)
 }
@@ -53,7 +53,7 @@ plot_intensity_distribution_density <- function(pdata, config, legend = TRUE) {
   p <- ggplot(pdata, aes(x = .data[[config$get_response()]], colour = .data[[config$sampleName]])) +
     geom_line(stat = "density")
   if (!config$is_response_transformed) {
-    p <- p + scale_x_continuous(trans = 'log10')
+    p <- p + scale_x_continuous(trans = "log10")
   }
   if (!legend) {
     p <- p + ggplot2::guides(colour = FALSE)
@@ -291,10 +291,6 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE, color = colorRampPalette(
   factors <- as.data.frame(factors)
   rownames(factors) <- annot[[config$sampleName]]
 
-  #res <- pheatmap::pheatmap(cres,
-  #                          scale = "none",
-  #                          silent = TRUE)
-
   gg <- stats::hclust(stats::dist(cres))
   res <- pheatmap::pheatmap(
     cres[gg$order, ],
@@ -373,7 +369,7 @@ plot_heatmap_cor_iheatmap <- function(
   invisible(hm)
 }
 
-.ehandler = function(e) {
+.ehandler <- function(e) {
   warning("WARN :", e)
   # return string here
   as.character(e)
@@ -688,7 +684,7 @@ plot_screeplot <- function(data, config, threshold_pc = 1, nr_PC = NULL) {
     minRow <- min(nr_PC, nrow(xx))
     xx <- xx[1:minRow, ]
   }
-  nudgeval = -2
+  nudgeval <- -2
   pl <- ggplot2::ggplot(xx, ggplot2::aes(x = PC, y = percent_variance_explained)) +
     ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
     ggplot2::geom_text(aes(label = round(.data$percent_variance_explained)), nudge_y = nudgeval, angle = 65) +

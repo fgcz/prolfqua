@@ -24,7 +24,7 @@ NULL
 #'
 create_config_Skyline <- function(isotopeLabel = "Isotope.Label", ident_qValue = "annotation_QValue") {
   config <- AnalysisConfiguration$new()
-  config$fileName = "Replicate.Name"
+  config$fileName <- "Replicate.Name"
 
   # measurement levels.
   config$hierarchy[["protein_Id"]] <- "Protein.Name"
@@ -32,10 +32,9 @@ create_config_Skyline <- function(isotopeLabel = "Isotope.Label", ident_qValue =
   config$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
   config$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
 
-  #
-  config$ident_qValue = ident_qValue
+  config$ident_qValue <- ident_qValue
   config$set_response("Area")
-  config$isotopeLabel = isotopeLabel
+  config$isotopeLabel <- isotopeLabel
   config
 }
 
@@ -54,7 +53,7 @@ create_config_Skyline <- function(isotopeLabel = "Isotope.Label", ident_qValue =
 #'
 create_config_Spectronaut_Peptide <- function(isotopeLabel = "Isotope.Label", ident_qValue = "EG.Qvalue") {
   config <- AnalysisConfiguration$new()
-  config$fileName = "R.FileName"
+  config$fileName <- "R.FileName"
 
   # measurement levels.
   config$hierarchy[["protein_Id"]] <- "PG.ProteinAccessions"
@@ -62,10 +61,9 @@ create_config_Spectronaut_Peptide <- function(isotopeLabel = "Isotope.Label", id
   config$hierarchy[["modPeptide_Id"]] <- "EG.ModifiedSequence"
   config$hierarchy[["precursor_Id"]] <- c("EG.ModifiedSequence", "FG.Charge")
 
-  #
-  config$ident_qValue = ident_qValue
-  config$workIntensity = "FG.Quantity"
-  config$isotopeLabel = isotopeLabel
+  config$ident_qValue <- ident_qValue
+  config$workIntensity <- "FG.Quantity"
+  config$isotopeLabel <- isotopeLabel
   config
 }
 
@@ -84,15 +82,15 @@ create_config_Spectronaut_Peptide <- function(isotopeLabel = "Isotope.Label", id
 #'
 create_config_MQ_peptide <- function(ident_qValue = "pep", intensity = "peptide.intensity", isotopeLabel = "isotope") {
   config <- AnalysisConfiguration$new()
-  config$fileName = "raw.file"
+  config$fileName <- "raw.file"
   # measurement levels.
   config$hierarchy[["protein_Id"]] <- c("leading.razor.protein")
   config$hierarchy[["peptide_Id"]] <- c("sequence")
   config$hierarchyDepth <- 1
-  #
-  config$ident_qValue = ident_qValue
+
+  config$ident_qValue <- ident_qValue
   config$set_response(intensity)
-  config$isotopeLabel = isotopeLabel
+  config$isotopeLabel <- isotopeLabel
   config$min_peptides_protein <- 2
 
   return(config)
@@ -111,10 +109,10 @@ create_config_MSFragger_MSstats <- function() {
   # measurement levels.
   config$hierarchy[["protein_Id"]] <- c("ProteinName")
   config$hierarchy[["peptide_Id"]] <- c("PeptideSequence", "PrecursorCharge")
-  config$fileName = "Run"
-  config$ident_qValue = "pep"
+  config$fileName <- "Run"
+  config$ident_qValue <- "pep"
   config$set_response("Intensity")
-  config$isotopeLabel = "IsotopeLabelType"
+  config$isotopeLabel <- "IsotopeLabelType"
   config$min_peptides_protein <- 2
   return(config)
 }

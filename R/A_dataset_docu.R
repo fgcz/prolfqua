@@ -100,10 +100,6 @@ NULL
 "x5463yzwer453bbb"
 
 
-# data_benchmarkExample <- prolfqua::benchmarkDataExample
-# usethis::use_data(data_benchmarkExample, compress = TRUE, overwrite = TRUE)
-# file.remove("data/benchmarkDataExample.rda")
-
 #' Benchmark data Example
 #' @format A data frame
 #' @family data
@@ -111,35 +107,17 @@ NULL
 #' @keywords internal
 "data_benchmarkExample"
 
-# #@usage data_benchmarkExample <- prolfqua_data("data_benchmarkExample")
-
-# data_checksummarizationrobust87 <- prolfqua::checksummarizationrobust87
-# usethis::use_data(data_checksummarizationrobust87, compress = TRUE, overwrite = TRUE)
-# file.remove("data/checksummarizationrobust87.rda")
-
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 "data_checksummarizationrobust87"
 
-# #@usage data_checksummarizationrobust87 <- prolfqua_data("data_checksummarizationrobust87")
-
-# data_checksummarizerobust <- prolfqua::checksummarizerobust
-# usethis::use_data(data_checksummarizerobust, compress = TRUE, overwrite = TRUE)
-# file.remove("data/checksummarizerobust.rda")
-
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 "data_checksummarizerobust"
-
-# #@usage data_checksummarizerobust <- prolfqua_data("data_checksummarizerobust")
-
-# data_checksummarizerobust69 <- prolfqua::checksummarizerobust69
-# usethis::use_data(data_checksummarizerobust69, compress = TRUE, overwrite = TRUE)
-# file.remove("data/checksummarizerobust69.rda")
 
 #' example data for check
 #' @family data
@@ -148,24 +126,12 @@ NULL
 #'
 "data_checksummarizerobust69"
 
-# #@usage data_checksummarizerobust69 <- prolfqua_data("data_checksummarizerobust69")
-
-# data_correlatedPeptideList <- prolfqua::correlatedPeptideList
-# usethis::use_data(data_correlatedPeptideList, compress = TRUE, overwrite = TRUE)
-# file.remove("data/correlatedPeptideList.rda")
-
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 #'
 "data_correlatedPeptideList"
-
-# #@usage data_correlatedPeptideList <- prolfqua_data("data_correlatedPeptideList")
-
-# data_IonstarProtein_subsetNorm <- prolfqua::dataIonstarProtein_subsetNorm
-# usethis::use_data(data_IonstarProtein_subsetNorm, compress = TRUE, overwrite = TRUE)
-# file.remove("data/dataIonstarProtein_subsetNorm.rda")
 
 #' example data for check
 #' @family data
@@ -174,23 +140,11 @@ NULL
 #'
 "data_IonstarProtein_subsetNorm"
 
-# #@usage data_IonstarProtein_subsetNorm <- prolfqua_data("data_IonstarProtein_subsetNorm")
-
-# #@usage data_interactionModel_p1807 <- prolfqua_data("data_interactionModel_p1807")
-
-# data_ionstar <- ionstar
-# usethis::use_data(data_ionstar, compress = TRUE, overwrite = TRUE)
-# file.remove("data/ionstar.rda")
-
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 "data_ionstar"
-
-# #@usage data_ionstar <- prolfqua_data("data_ionstar")
-
-# #@usage data_multigroupFC <- prolfqua_data("data_multigroupFC")
 
 #' example data for check of scores produced based on confusion matrix
 #' @family data
@@ -198,21 +152,11 @@ NULL
 #' @keywords internal
 "data_test_confusion_matrix_scores"
 
-# data_skylinePRMSample_A <- skylinePRMSampleData_A
-# usethis::use_data(data_skylinePRMSample_A,compress = TRUE, overwrite = TRUE)
-# file.remove("data/skylinePRMSampleData_A.rda")
-
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 "data_skylinePRMSample_A"
-
-# #@usage data_skylinePRMSample_A <- prolfqua_data("data_skylinePRMSample_A")
-
-# data_skylineSRM_HL_A <- skylineSRM_HL_A
-# usethis::use_data(data_skylineSRM_HL_A,compress = TRUE, overwrite = TRUE)
-# file.remove("data/skylineSRM_HL_A.rda")
 
 #' example data for check
 #' @family data
@@ -220,41 +164,14 @@ NULL
 #' @keywords internal
 "data_skylineSRM_HL_A"
 
-# data_skylineSRM_HL_A <- prolfqua_data("data_skylineSRM_HL_A")
-# data_skylineSRM_HL_A_new <- list()
-# data_skylineSRM_HL_A_new$data <- data_skylineSRM_HL_A$data
-# data_skylineSRM_HL_A_new$config_f <- function(){
-#   skylineconfig_HL <- create_config_Skyline(isotopeLabel = "Isotope.Label",
-#                                             ident_qValue = "annotation_QValue")
-#   skylineconfig_HL$table$factors[["treatment_c"]] <- "Condition2"
-#   skylineconfig_HL$table$factors[["time_c"]] <- "time"
-#   skylineconfig_HL$table$is_response_transformed = FALSE
-#   return(skylineconfig_HL)
-# }
-# data_skylineSRM_HL_A_new$analysis <- function(data,config ){
-#   data$Area[data$Area == 0] <- NA
-#   analysis <- setup_analysis(data, config)
-#   return(analysis)
-# }
-# data_skylineSRM_HL_A <- data_skylineSRM_HL_A_new
-# usethis::use_data(data_skylineSRM_HL_A,compress = TRUE, overwrite = TRUE)
-
-# data_spectronautDIA250_A <- spectronautDIAData250_A
-# usethis::use_data(data_spectronautDIA250_A,compress = TRUE, overwrite = TRUE)
-# file.remove("data/spectronautDIAData250_A.rda")
-
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 "data_spectronautDIA250_A"
 
-# #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
-
-# example of 2 Factor data
-# @family data
-# @docType data
-# @keywords internal
-#' data_Yeast2Factor'
-
-# #@usage data_spectronautDIA250_A <- prolfqua_data("data_spectronautDIA250_A")
+#' example of 2 Factor data
+#' @family data
+#' @docType data
+#' @keywords internal
+"data_Yeast2Factor"

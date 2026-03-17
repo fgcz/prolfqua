@@ -91,7 +91,7 @@ transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, int
 
   config$set_response(newcol)
   message("Column added : ", newcol)
-  config$is_response_transformed = TRUE
+  config$is_response_transformed <- TRUE
 
   if (deep) {
     return(list(data = pdata, config = config))
@@ -241,7 +241,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #'
 .get_robscales <- function(data, dim = 2) {
   medians <- apply(data, dim, median, na.rm = TRUE)
-  data = sweep(data, dim, medians, "-")
+  data <- sweep(data, dim, medians, "-")
   mads <- apply(data, dim, mad, na.rm = TRUE)
   return(list(medians = medians, mads = mads))
 }
@@ -278,7 +278,7 @@ get_robscales <- function(data, config) {
 #' @export
 robust_scale <- function(data, dim = 2, preserveMean = FALSE) {
   scales <- .get_robscales(data, dim = dim)
-  data = sweep(data, dim, scales$medians, "-")
+  data <- sweep(data, dim, scales$medians, "-")
   if (!any(scales$mads == 0)) {
     mads <- scales$mads / mean(scales$mads)
     data = sweep(data, dim, mads, "/")
@@ -369,10 +369,10 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
 
   scales <- .get_robscales(subset)
   mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
-  mat = sweep(mat, 2, scales$medians, "-")
+  mat <- sweep(mat, 2, scales$medians, "-")
   if (!any(scales$mads == 0)) {
     mads <- scales$mads / mean(scales$mads)
-    mat = sweep(mat, 2, mads, "/")
+    mat <- sweep(mat, 2, mads, "/")
   } else {
     warning("SKIPPING scaling step in scale_with_subset function.")
   }
@@ -501,7 +501,6 @@ scale_with_subset_by_factors <- function(data, subset, config, preserveMean = FA
   tmp <- scale_with_subset(dl$data[[N]], sl$data[[N]], cf, preserveMean = TRUE, get_scales = TRUE)
   res[[N]] <- tmp$data
   scales[[N]] <- tmp$scales
-  #names(scales) <- dl[[1]]
   resb <- dl
   resb$data <- res
   resb <- dplyr::ungroup(unnest(resb, cols = (names(resb))))
@@ -530,7 +529,7 @@ scale_with_subset_by_factors <- function(data, subset, config, preserveMean = FA
 normalize_log2_robscale <- function(pdata, config) {
   pepConfig <- config$clone(deep = TRUE)
   pepIntensityNormalized <- transform_work_intensity(pdata, pepConfig, log2)
-  pepConfig$is_response_transformed = TRUE
+  pepConfig$is_response_transformed <- TRUE
 
   pepIntensityNormalized <- apply_to_response_matrix(pepIntensityNormalized, pepConfig, .func = robust_scale)
 

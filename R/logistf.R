@@ -22,8 +22,6 @@ contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
   #computeGroupAverages
   message("contrasts_linfct_firth")
   modelcol <- "linear_model"
-  # TODO (goes into calling code)
-  # models <- models |> dplyr::filter(.data$exists_lmer == TRUE)
 
   interaction_models <- vector(mode = "list", length = nrow(modelDF))
   pb <- progress::progress_bar$new(total = length(modelDF[[modelcol]]))
@@ -318,8 +316,6 @@ strategy_logistf <- function(
     if (!missing(pb)) {
       pb$tick()
     }
-    # tt <- ftable(formula, x)
-    # DFT <- as.data.frame(tt)
     predictor_vars <- all.vars(update(formula, . ~ .))
     DFT <- x |>
       group_by(across(all_of(predictor_vars))) |>
@@ -328,13 +324,13 @@ strategy_logistf <- function(
     modelTest <- tryCatch(logistf::logistf(formula, data = DFT, weights = Freq), error = .ehandler)
     return(modelTest)
   }
-  df_residual_logistf = function(m) {
+  df_residual_logistf <- function(m) {
     n <- m$n # Number of observations
     p <- length(m$coefficients) # Number of estimated parameters
     df_residual <- n - p
     return(df_residual)
   }
-  isSingular_logistf = function(m) {
+  isSingular_logistf <- function(m) {
     anyNA <- any(is.na(coefficients(m)))
     if (anyNA) {
       return(TRUE)
@@ -345,7 +341,7 @@ strategy_logistf <- function(
       return(TRUE)
     }
   }
-  sigma_logistf = function(m) {
+  sigma_logistf <- function(m) {
     return(1)
   }
   res <- list(

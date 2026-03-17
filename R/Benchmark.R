@@ -50,8 +50,6 @@ ionstar_bench_preprocess <- function(data, idcol = "protein_Id") {
 #' plot(1- xd$PREC, xd$FDP)
 #'
 ms_bench_add_scores <- function(data, TP_col = "TP", arrangeby = "diff", desc = TRUE, subject_Id = "protein_Id") {
-  #data <- est
-
   data <- if (!desc) {
     data |> arrange(!!sym(arrangeby))
   } else {
@@ -116,7 +114,7 @@ ms_bench_auc <- function(FPR, TPR, fpr_threshold = 1) {
 .scale_probabilities <-
   function(est, toscale, fcestimate = "diff") {
     addScaledP <- function(data, fcestimate, scale) {
-      scaled.p = paste0("scaled.", scale)
+      scaled.p <- paste0("scaled.", scale)
       data <-
         data |> dplyr::mutate(!!scaled.p := ifelse(!!sym(fcestimate) > 0, 1 - !!sym(scale), !!sym(scale) - 1))
       return(data)
@@ -170,15 +168,11 @@ do_confusion_c <- function(
     )
   }
   txx$out <- out
-  #txx <- txx |> mutate(out = map(data,
-  #                               do_confusion,
-  #                               arrangeby = arrangeby, subject_Id = subject_Id))
   xx <- txx |> select(all_of(c(contrast, "out"))) |> unnest("out") |> ungroup()
 
   # computes FDR FDP for all contrasts
   xy <- do_confusion(data, arrangeby = arrangeby, subject_Id = subject_Id)
   xy <- xy |> dplyr::mutate(!!contrast := "all")
-  #xy <- tibble::add_column(data, contrast = "all", .before = 1)
   xx <- dplyr::bind_rows(xy, xx)
   return(xx)
 }
@@ -270,8 +264,8 @@ do_confusion_c <- function(
 ) {
   plots <- list()
   for (i in score) {
-    xlim = i$xlim
-    score = i$score
+    xlim <- i$xlim
+    score <- i$score
     plots[[score]] <- ggplot(data, aes(x = !!sym(score), y = !!sym(contrast), color = !!sym(species))) +
       ggridges::geom_density_ridges(alpha = 0.1) +
       if (!is.null(xlim)) {
@@ -563,7 +557,6 @@ Benchmark <-
       #' @return ggplot
       plot_FDRvsFDP = function() {
         xx <- self$get_confusion_FDRvsFDP()
-        #xx$FDP <- xx$FDP/seq(1,max(xx$FDP), length = length(xx$FDP))
         p <- ggplot(xx, aes(x = scorecol, y = FDP_, color = !!sym(self$contrast))) +
           geom_line() +
           geom_abline(slope = max(xx$FDP_), col = 2) +

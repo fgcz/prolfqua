@@ -59,7 +59,6 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' missing per condition and protein
     interaction_missing_stats = function() {
-      #x1 <- prolfqua::interaction_missing_stats(self$lfq$data, self$lfq$config)
       x2 <- prolfqua::summarize_stats_factors(self$lfq$data, self$lfq$config)
       return(x2)
     },

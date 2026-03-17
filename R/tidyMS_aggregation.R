@@ -868,8 +868,6 @@ intensity_summary_by_hkeys <- function(data, config, func) {
       )
     )
 
-  # xnested <- xnested |>
-  #  dplyr::mutate(!!makeName := map( .data$spreadMatrix , function(x){pb$tick(); func(x)}))
   res <- vector(mode = "list", length(nrow(xnested)))
   tmp <- function(x) {
     pb$tick()

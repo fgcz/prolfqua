@@ -47,8 +47,6 @@ LFQDataAggregator <- R6::R6Class(
     lfq_agg = NULL,
     #' @field prefix to use for aggregation results e.g. protein
     prefix = character(),
-    ## @field filepath
-    ## filepath = character(),
     #' @description
     #' initialize
     #' @param lfq LFQData

@@ -331,9 +331,7 @@ fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05
 
   # !!! Changed to make it more robust (mainly variance was a problem!)
 
-  #zwmean <- mean(zwins) #median(zwins)==median(zresid)
   zwmean <- median(zwins)
-  #zwvar <- mean((zwins-zwmean)^2)*n/(n-1) #mad(zwins)==mad(zresid)
   zwvar <- mad(zwins)
 
   if (trace) {
@@ -431,26 +429,6 @@ fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05
   if (any(ProbNotOutlier < 1)) {
     o <- order(TailP)
 
-    #		Old calculation for df2.outlier
-    #		VarOutlier <- max(zresid)^2
-    #		VarOutlier <- VarOutlier-trigamma(df1/2)
-    #		if(trace) cat("VarOutlier",VarOutlier,"\n")
-    #		if(VarOutlier > 0) {
-    #			df2.outlier.old <- 2*trigammaInverse(VarOutlier)
-    #			if(trace) cat("df2.outlier.old",df2.outlier.old,"\n")
-    #			if(df2.outlier.old < df2) {
-    #				df2.shrunk.old <- ProbNotOutlier*df2+ProbOutlier*df2.outlier.old
-    #				Make df2.shrunk.old monotonic in TailP
-    #				df2.ordered <- df2.shrunk.old[o]
-    #				df2.ordered[1] <- min(df2.ordered[1],NonRobust$df2)
-    #				m <- cumsum(df2.ordered)
-    #				m <- m/(1:n)
-    #				imin <- which.min(m)
-    #				df2.ordered[1:imin] <- m[imin]
-    #				df2.shrunk.old[o] <- cummax(df2.ordered)
-    #			}
-    #		}
-
     #		New calculation for df2.outlier
     #		Find df2.outlier to make maxFstat the median of the distribution
     #		Exploit fact that log(TailP) is nearly linearly with positive 2nd deriv as a function of df2
@@ -475,12 +453,6 @@ fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05
     imin <- which.min(m)
     df2.ordered[1:imin] <- m[imin]
     df2.shrunk[o] <- cummax(df2.ordered)
-
-    #		Use isoreg() instead. This gives similar results.
-    #		df2.shrunk.iso <- rep.int(df2,n)
-    #		o <- o[1:(n/2)]
-    #		df2.shrunk.iso[o] <- ProbNotOutlier[o]*df2+ProbOutlier[o]*df2.outlier
-    #		df2.shrunk.iso[o] <- isoreg(TailP[o],df2.shrunk.iso[o])$yf
   } else {
     df2.outlier <- df2
     df2.shrunk <- rep.int(df2, n)
@@ -576,14 +548,12 @@ squeezeVarRob <- function(var, df, covariate = NULL, robust = FALSE, winsor.tail
 
   #If there is only one variance that is not NA: we want the same results if we have only one observation!
   if (sum(!is.na(var)) == 1) {
-    #df[!is.na(df)] <- 0
     return(list(var.post = var, var.prior = var, df.prior = df))
   }
 
-  #	Removed: "when df==0, guard against missing or infinite values in var": we want to keep NA at NA and Inf at Inf!
-  # if(length(df)>1) var[df==0] <- 0
+  # Keep NA at NA and Inf at Inf (no guard against missing/infinite values when df==0)
 
-  #Addition: if only one df is given, repeat it!
+  # If only one df is given, repeat it
   if (length(df) == 1) {
     df <- rep.int(df, n)
   } else {

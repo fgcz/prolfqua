@@ -1,6 +1,6 @@
 # Creating models from configuration ----
 
-.ehandler = function(e) {
+.ehandler <- function(e) {
   warning("WARN :", e)
   # return string here
   as.character(e)
@@ -294,9 +294,9 @@ model_analyse <- function(
   subject_Id = "protein_Id",
   modelName = "Model"
 ) {
-  pepIntensity |>
+  nestProtein <- pepIntensity |>
     dplyr::group_by(!!!syms(subject_Id)) |>
-    tidyr::nest() -> nestProtein
+    tidyr::nest()
 
   lmermodel <- "linear_model"
 
@@ -377,7 +377,7 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance") {
   data <- NULL
   if ("lmerModLmerTest" %in% class(m)) {
     data <- m@frame
-    coeffs <- coefficients(summary(m))[, 'Estimate']
+    coeffs <- coefficients(summary(m))[, "Estimate"]
   } else {
     # for "lmerModLmerTest"
     data <- m$model
@@ -385,12 +385,6 @@ plot_lmer_peptide_predictions <- function(m, intensity = "abundance") {
   }
   interactionColumns <- intersect(attributes(terms(m))$term.labels, colnames(data))
   data <- make_interaction_column(data, interactionColumns, sep = ":")
-
-  #if ("rlm" %in% class(m)) {
-  #  coeffs <- coefficients(summary(m))[,'Value']
-  #} else {
-  #
-  #}
 
   inter <- unique(data$interaction)
   mm <- matrix(0, nrow = length(inter), ncol = length(coeffs))
@@ -740,8 +734,6 @@ my_contrast <- function(m, linfct, strategy = NULL, coef = coefficients(m), Sigm
     std.error <- sqrt(diag(linfct %*% Sigma.hat %*% t(linfct)))
     statistic <- estimate / std.error
 
-    #p.value <- pt(-abs(statistic), df = df) * 2
-
     p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
     prqt <- -qt((1 - confint) / 2, df = df)
     conf.low <- estimate - prqt * std.error
@@ -942,11 +934,8 @@ pivot_model_contrasts_2_Wide <- function(
 #'         subject_Id = "protein_Id",
 #'         contrastfun = prolfqua::my_contrast_V2)
 contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrastfun = prolfqua::my_contest) {
-  #computeGroupAverages
   message("contrasts_linfct")
   modelcol <- "linear_model"
-  # TODO (goes into calling code)
-  # models <- models |> dplyr::filter(.data$exists_lmer == TRUE)
 
   interaction_models <- vector(mode = "list", length = nrow(models))
 
@@ -971,9 +960,6 @@ contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrast
   } else {
     stop("linct must be either a matrix or a list of length == nrow models")
   }
-
-  #interaction_model_matrix <- models |>
-  #  dplyr::mutate("contrast" := purrr::map(!!sym(modelcol) , contrastfun , linfct = linfct ))
 
   mclass <- function(x) {
     class(x)[1]
@@ -1030,7 +1016,7 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
   }
 
   sv <- tibble::as_tibble(sv)
-  sv <- setNames(sv, paste0('moderated.', names(sv)))
+  sv <- setNames(sv, paste0("moderated.", names(sv)))
   mm <- dplyr::bind_cols(mm, sv)
   mm <- mm |> dplyr::mutate(moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post))
   mm <- mm |> dplyr::mutate(moderated.df.total = !!sym(df) + .data$moderated.df.prior)
@@ -1137,7 +1123,6 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 
   shape1 <- (n.obs / 2 + 0.5)
   shape2 <- (n.obs - (n.obs / 2 + 0.5) + 1)
-  # n.obs/2 + 0.5
 
   stopifnot(shape1 == shape2)
   res.p.value <- pbeta(median.p.value, shape1 = shape1, shape2 = shape2)

@@ -169,7 +169,7 @@ ContrastsROPECA <- R6::R6Class(
         contrast_minimal,
         subject_Id = self$subject_Id[length(self$subject_Id) - 1],
         columns = c("diff", columns),
-        contrast = 'contrast'
+        contrast = "contrast"
       )
       return(contrasts_wide)
     }

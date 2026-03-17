@@ -40,7 +40,6 @@ MissingHelpers <- R6::R6Class(
     stats = NULL,
     #' @field weighted should we weight the LOD
     weighted = TRUE,
-    # constructor/initializer
     #' @description
     #' initialize
     #' @param data data
@@ -135,7 +134,7 @@ MissingHelpers <- R6::R6Class(
       } else {
         lt <- self$impute_lod()
       }
-      abundance_column = "meanAbundanceImp"
+      abundance_column <- "meanAbundanceImp"
       hierarchy_keys <- self$config$hierarchy_keys()
       imp <- lt |>
         pivot_wider(

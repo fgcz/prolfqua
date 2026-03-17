@@ -306,8 +306,8 @@ list_to_AnalysisConfiguration <- function(dd) {
 #' stopifnot(length(red$hierarchy) == 1)
 make_reduced_hierarchy_config <- function(config, workIntensity, hierarchy) {
   newConfig <- config$clone(deep = TRUE)
-  newConfig$hierarchy = hierarchy
-  newConfig$workIntensity = workIntensity
+  newConfig$hierarchy <- hierarchy
+  newConfig$workIntensity <- workIntensity
   return(newConfig)
 }
 
@@ -437,9 +437,9 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
   if (length(configuration$factors) == 0) {
     stop(
       "No factors (explanatory variables) specified in the AnalysisConfiguration.\n",
-      'Please use config$factors["Condition"] = "columnName".\n',
-      'where Condition is the new name of the variable and\n',
-      'columnName is the name of the column containing the variable.'
+      "Please use config$factors[\"Condition\"] = \"columnName\".\n",
+      "where Condition is the new name of the variable and\n",
+      "columnName is the name of the column containing the variable."
     )
   }
   for (i in seq_along(configuration$factors)) {
