@@ -314,7 +314,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        xfun_0.56           bslib_0.10.0       
-    ##  [4] htmlwidgets_1.6.4   ggrepel_0.9.7       lattice_0.22-7     
+    ##  [4] htmlwidgets_1.6.4   ggrepel_0.9.8       lattice_0.22-7     
     ##  [7] vctrs_0.7.1         tools_4.5.2         generics_0.1.4     
     ## [10] tibble_3.3.1        pkgconfig_2.0.3     Matrix_1.7-4       
     ## [13] pheatmap_1.0.13     data.table_1.18.2.1 RColorBrewer_1.1-3 

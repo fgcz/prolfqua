@@ -410,7 +410,7 @@ sessionInfo()
     ## loaded via a namespace (and not attached):
     ##  [1] beeswarm_0.4.0      gtable_0.3.6        xfun_0.56          
     ##  [4] bslib_0.10.0        ggplot2_4.0.2       htmlwidgets_1.6.4  
-    ##  [7] ggrepel_0.9.7       rstatix_0.7.3       vctrs_0.7.1        
+    ##  [7] ggrepel_0.9.8       rstatix_0.7.3       vctrs_0.7.1        
     ## [10] tools_4.5.2         generics_0.1.4      tibble_3.3.1       
     ## [13] pkgconfig_2.0.3     pheatmap_1.0.13     data.table_1.18.2.1
     ## [16] RColorBrewer_1.1-3  S7_0.2.1            desc_1.4.3         

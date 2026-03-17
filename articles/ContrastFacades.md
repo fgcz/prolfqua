@@ -217,6 +217,44 @@ results_protein |>
     ## 10 firth  WaldTestFirth  OrL0ux~1369 -1.69  2.51e- 1 1            
     ## # ℹ 15 more rows
 
+## Proteins dropped by lm but retained by limma
+
+The `lm` facade filters proteins more strictly than limma — it requires
+all model coefficients to be estimable and at least 2 residual degrees
+of freedom. Limma handles partial missingness internally per row. Here
+we identify the proteins that limma reports but `lm` does not, and show
+their per-sample intensities.
+
+``` r
+proteins_lm <- fa_lm$get_contrasts() |> dplyr::pull(protein_Id) |> unique()
+proteins_limma <- fa_limma$get_contrasts() |> dplyr::pull(protein_Id) |> unique()
+dropped <- setdiff(proteins_limma, proteins_lm)
+message("Proteins in limma but not in lm: ", length(dropped))
+```
+
+``` r
+if (length(dropped) > 0) {
+  lfq_protein$data |>
+    dplyr::filter(protein_Id %in% dropped) |>
+    dplyr::select(protein_Id, sampleName,
+                  !!rlang::sym(lfq_protein$config$get_response())) |>
+    tidyr::pivot_wider(names_from = sampleName,
+                       values_from = !!rlang::sym(lfq_protein$config$get_response())) |>
+    knitr::kable(digits = 2, caption = "Per-sample intensities of proteins dropped by lm")
+}
+```
+
+| protein_Id  | B_V1 | B_V4 | Ctrl_V3 | Ctrl_V4 | B_V2 | B_V3 | Ctrl_V2 |
+|:------------|-----:|-----:|--------:|--------:|-----:|-----:|--------:|
+| 8mS8sK~0150 | 3.85 | 3.76 |    3.37 |    3.55 |   NA |   NA |      NA |
+| DTCi0N~0734 |   NA | 4.28 |    4.07 |    4.21 | 4.37 | 4.35 |    4.06 |
+
+Per-sample intensities of proteins dropped by lm
+
+The missing cells (NA) explain why `lm` could not fit a full model for
+these proteins — they lack observations in one or more groups, so all
+coefficients cannot be estimated.
+
 ## Peptide-input facades
 
 The mixed-effects `lmer` facade and `ropeca` require lower-level

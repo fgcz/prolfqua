@@ -224,11 +224,6 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts)
 #> Joining with `by = join_by(protein_Id)`
 #> determine linear functions:
-#> Warning: linfct_matrix_contrasts: computed 0/2 contrasts; failed 2: A_vs_Ctrl, avg_A_vs_Ctrl. ℹ In argument: `A_vs_Ctrl = group_A - group_Ctrl`.
-#> Caused by error:
-#> ! object 'group_A' not found; ℹ In argument: `avg_A_vs_Ctrl = (group_A + group_Ctrl)/2`.
-#> Caused by error:
-#> ! object 'group_A' not found
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`

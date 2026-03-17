@@ -519,7 +519,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        xfun_0.56           bslib_0.10.0       
-    ##  [4] ggplot2_4.0.2       htmlwidgets_1.6.4   ggrepel_0.9.7      
+    ##  [4] ggplot2_4.0.2       htmlwidgets_1.6.4   ggrepel_0.9.8      
     ##  [7] vctrs_0.7.1         tools_4.5.2         crosstalk_1.2.2    
     ## [10] generics_0.1.4      tibble_3.3.1        pkgconfig_2.0.3    
     ## [13] pheatmap_1.0.13     KernSmooth_2.23-26  data.table_1.18.2.1

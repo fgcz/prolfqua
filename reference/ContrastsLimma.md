@@ -312,11 +312,6 @@ mod <- build_model(lProt, modelFunction)
 contr_prolfqua <- Contrasts$new(mod, Contr)
 res_prolfqua <- contr_prolfqua$get_contrasts()
 #> determine linear functions:
-#> Warning: linfct_matrix_contrasts: computed 0/2 contrasts; failed 2: dil.b_vs_a, avg_dil.b_vs_a. ℹ In argument: `dil.b_vs_a = group_A - group_Ctrl`.
-#> Caused by error:
-#> ! object 'group_A' not found; ℹ In argument: `avg_dil.b_vs_a = (group_A + group_Ctrl)/2`.
-#> Caused by error:
-#> ! object 'group_A' not found
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
