@@ -25,7 +25,6 @@ data.frame
 ## Examples
 
 ``` r
-
 bb <- prolfqua::prolfqua_data('data_spectronautDIA250_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, bb$config_f())
@@ -35,8 +34,8 @@ analysis <- bb$analysis(bb$data, bb$config_f())
 #> completing cases done
 #> setup done
 res <- rank_by_NA(analysis, config)
-#> Joining with `by = join_by(protein_Id, peptide_Id,
-#> modPeptide_Id, precursor_Id)`
+#> Joining with `by = join_by(protein_Id, peptide_Id, modPeptide_Id,
+#> precursor_Id)`
 #> Columns added : srm_NrNotNAs srm_NrNotNARank
 colnames(res)
 #>  [1] "R.FileName"      "sampleName"      "coding"          "sex"            

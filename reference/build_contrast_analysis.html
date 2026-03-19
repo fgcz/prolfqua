@@ -46,7 +46,7 @@ construction through modelling to contrast computation."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Build a contrast analysis using one of several statistical methods</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/build_contrast_analysis.R" class="external-link"><code>R/build_contrast_analysis.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/build_contrast_analysis.R" class="external-link"><code>R/build_contrast_analysis.R</code></a></small>
       <div class="d-none name"><code>build_contrast_analysis.Rd</code></div>
     </div>
 
@@ -279,13 +279,12 @@ construction through modelling to contrast computation.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 4 warnings in `dplyr::mutate()`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data,</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   model_strategy$model_fun, pb = pb)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   pb)`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 2: `protein_Id = "7cbcrd~5725"`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `value[[3L]]()`:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> WARN :Error: grouping factors must have &gt; 1 sampled level</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 3 remaining</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   warnings.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa_lmer</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
@@ -337,9 +336,9 @@ construction through modelling to contrast computation.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [1]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   facade modelName     protein_Id contrast sigma    df      diff   FDR std.error</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9 -<span style="color: #BB0000;">1.23</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>     1      2.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>     1      2.11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> firth  WaldTestFirth 0m5WN4~14… A_vs_Ct…     1     9 -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0     1      1.74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9 -<span style="color: #BB0000;">1.23</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>     1      2.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>     1      2.11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> firth  WaldTestFirth 9VUkAq~45… A_vs_Ct…     1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0     1      1.78</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> firth  WaldTestFirth At886V~32… A_vs_Ct…     1     9  5.58<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>     1      1.38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> firth  WaldTestFirth BEJI92~91… A_vs_Ct…     1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0     1      1.78</span>

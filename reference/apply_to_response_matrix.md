@@ -41,7 +41,6 @@ Other preprocessing:
 
 ``` r
 
-
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from fileName column
 #> completing cases
@@ -50,22 +49,19 @@ bb <- sim_lfq_data_peptide_config(Nprot = 100)
 data <- bb$data
 conf <- bb$config
 res <- apply_to_response_matrix(data, conf, .func = base::scale)
-#> Joining with `by = join_by(sampleName, isotopeLabel,
-#> protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 
 stopifnot("abundance_base..scale" %in% colnames(res))
 stopifnot("abundance_base..scale" == conf$get_response())
 conf <- bb$config$clone(deep=TRUE)
 conf$workIntensity <- "abundance"
 res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
-#> Joining with `by = join_by(sampleName, isotopeLabel,
-#> protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 
 # Normalize data using the vsn method from bioconductor
 
 if( require("vsn")){
  res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
 }
-#> Joining with `by = join_by(sampleName, isotopeLabel,
-#> protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 ```

@@ -44,7 +44,6 @@ Other plotting:
 
 ``` r
 
-
 istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
 #> creating sampleName from fileName column
 #> completing cases

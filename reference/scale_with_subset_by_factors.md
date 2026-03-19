@@ -42,7 +42,6 @@ Other preprocessing:
 
 ``` r
 
-
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from fileName column
 #> completing cases
@@ -54,11 +53,8 @@ sample_analysis <- bb$data
 res <- transform_work_intensity(sample_analysis, conf, log2)
 #> Column added : log2_abundance
 res <- scale_with_subset_by_factors(res, res, conf)
-#> Joining with `by = join_by(sampleName, isotopeLabel,
-#> protein_Id, peptide_Id)`
-#> Joining with `by = join_by(sampleName, isotopeLabel,
-#> protein_Id, peptide_Id)`
-#> Joining with `by = join_by(sampleName, isotopeLabel,
-#> protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 
 ```

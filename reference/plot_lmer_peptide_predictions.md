@@ -86,13 +86,12 @@ m <- sim_make_model_lmer()
 #> boundary (singular) fit: see help('isSingular')
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data,
-#>   model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining
-#>   warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
 plot_lmer_peptide_predictions(m, intensity = "abundance")
 
@@ -110,13 +109,12 @@ m <- sim_make_model_lmer("interaction")
 #> boundary (singular) fit: see help('isSingular')
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data,
-#>   model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining
-#>   warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
 plot_lmer_peptide_predictions(m, intensity = "abundance")
 ```

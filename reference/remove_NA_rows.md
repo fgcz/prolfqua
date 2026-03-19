@@ -39,7 +39,6 @@ Other utilities:
 ## Examples
 
 ``` r
-
 obj = matrix(rnorm(10*10),ncol=10)
 dim(obj)
 #> [1] 10 10

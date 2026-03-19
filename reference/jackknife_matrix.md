@@ -44,11 +44,11 @@ colnames(dataX)<- paste("C",seq_len(ncol(dataX)),sep="")
 tmp <- jackknife(dataX, cor, use="pairwise.complete.obs", method="pearson")
 res <- jackknife_matrix(dataX, cor)
 res
-#>           C1         C2        C3         C4
-#> C1 1.0000000  0.8176846 0.3712903  0.7552681
-#> C2 0.8176846  1.0000000 0.2017283 -0.6904332
-#> C3 0.3712903  0.2017283 1.0000000  0.5906774
-#> C4 0.7552681 -0.6904332 0.5906774  1.0000000
+#>           C1         C2         C3          C4
+#> C1 1.0000000  0.7068741 0.73327820  0.58869599
+#> C2 0.7068741  1.0000000 0.28845670 -0.17789058
+#> C3 0.7332782  0.2884567 1.00000000  0.04364043
+#> C4 0.5886960 -0.1778906 0.04364043  1.00000000
 stopifnot(dim(res) == c(4,4))
 res <- jackknife_matrix(dataX, cor, method="spearman")
 stopifnot(dim(res) == c(4,4))

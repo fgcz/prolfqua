@@ -77,7 +77,6 @@ Other plotting:
 
 ``` r
 
-
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -91,10 +90,10 @@ xnested <- analysis |>
   tidyr::nest()
 
 prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)
-#> Warning: Removed 7 rows containing missing values or values outside
-#> the scale range (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside
-#> the scale range (`geom_line()`).
+#> Warning: Removed 7 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
 
 
 bb <- prolfqua_data("data_skylineSRM_HL_A")
@@ -114,10 +113,10 @@ prolfqua::plot_hierarchies_line(nest$data[[1]],
   conf,
   separate = TRUE
 )
-#> Warning: Removed 802 rows containing missing values or values outside
-#> the scale range (`geom_point()`).
-#> Warning: Removed 750 rows containing missing values or values outside
-#> the scale range (`geom_line()`).
+#> Warning: Removed 802 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 750 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
 
 prolfqua::plot_hierarchies_line(nest$data[[1]],
   "DUM",
@@ -125,9 +124,9 @@ prolfqua::plot_hierarchies_line(nest$data[[1]],
   separate = TRUE,
   show.legend = TRUE
 )
-#> Warning: Removed 802 rows containing missing values or values outside
-#> the scale range (`geom_point()`).
-#> Warning: Removed 750 rows containing missing values or values outside
-#> the scale range (`geom_line()`).
+#> Warning: Removed 802 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 750 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
 
 ```

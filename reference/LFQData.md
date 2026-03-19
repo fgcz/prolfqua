@@ -521,7 +521,6 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases

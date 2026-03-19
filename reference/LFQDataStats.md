@@ -296,7 +296,6 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-
 # study variance of not normalized data
 #source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
 runallfuncs <- function(x){

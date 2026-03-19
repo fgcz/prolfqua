@@ -75,7 +75,6 @@ Other plotting:
 ## Examples
 
 ``` r
-
 bb <- prolfqua_data("data_ionstar")$filtered()
 #> Column added : nr_peptide_Id_IN_protein_Id
 bb$config <- old2new(bb$config)

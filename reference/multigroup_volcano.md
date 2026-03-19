@@ -94,7 +94,6 @@ Other utilities:
 
 ``` r
 
-
 show <- data.frame(logFC = rnorm(100, 0, 1), adj.P.Val = runif(100, 0, 1),
   Condition = sample(c("a","b")), colour = "forward", Name = paste0("n", 1:100))
 prolfqua::multigroup_volcano( show,

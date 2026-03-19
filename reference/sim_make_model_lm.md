@@ -101,13 +101,12 @@ mf <- sim_make_model_lmer("factors")
 #> boundary (singular) fit: see help('isSingular')
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data,
-#>   model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining
-#>   warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
 m2 <- sim_make_model_lmer("parallel2")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
@@ -121,13 +120,12 @@ m2 <- sim_make_model_lmer("parallel2")
 #> boundary (singular) fit: see help('isSingular')
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data,
-#>   model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining
-#>   warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
 m3 <- sim_make_model_lmer("parallel3")
 #> creating sampleName from fileName column
@@ -141,12 +139,11 @@ m3 <- sim_make_model_lmer("parallel3")
 #> boundary (singular) fit: see help('isSingular')
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data,
-#>   model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining
-#>   warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
 ```

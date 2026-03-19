@@ -246,7 +246,6 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-
 bb <-prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases

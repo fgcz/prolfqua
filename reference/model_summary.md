@@ -102,22 +102,14 @@ mod <- prolfqua::build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> 
-
-#> [=======================================================================] 100%
-#> 
-                                                                              
-#> 
-
 #> Warning: There were 7 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data,
-#>   model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 1: `protein_Id = "0EfVhX~5954"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 6 remaining
-#>   warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 6 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
 res <- model_summary(mod)
 stopifnot(is.list(res))

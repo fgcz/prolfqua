@@ -46,7 +46,7 @@ globally or per-sample using quantiles."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Impute missing values using zCompositions</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/LFQDataImp.R" class="external-link"><code>R/LFQDataImp.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/LFQDataImp.R" class="external-link"><code>R/LFQDataImp.R</code></a></small>
       <div class="d-none name"><code>impute_with_zcomp.Rd</code></div>
     </div>
 
@@ -112,6 +112,9 @@ globally or per-sample using quantiles.</p>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">has_na_before</span> <span class="op">||</span> <span class="op">!</span><span class="va">has_na_after</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="op">!</span><span class="va">has_na_after</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Expected 3 pieces. Missing pieces filled with `NA` in 336 rows [1, 2, 3, 4, 5,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

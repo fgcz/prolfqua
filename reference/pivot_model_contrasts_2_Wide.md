@@ -98,6 +98,5 @@ Other modelling:
 ## Examples
 
 ``` r
-
 # this function is used by the contrast classes to implement the to wide method
 ```

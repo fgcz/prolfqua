@@ -24,7 +24,6 @@ We use simulated protein-level data with 3 groups (A, B, Ctrl) and some
 missing values.
 
 ``` r
-
 library(prolfqua)
 library(dplyr)
 
@@ -59,7 +58,6 @@ transformed$factors()
 The same contrast specification is used for both backends.
 
 ``` r
-
 contr_spec <- c(
   "AvsCtrl" = "group_A - group_Ctrl",
   "BvsCtrl" = "group_B - group_Ctrl",
@@ -70,7 +68,6 @@ contr_spec <- c(
 ## prolfqua default pipeline
 
 ``` r
-
 mod_lm <- build_model(transformed, strategy_lm("transformedIntensity ~ group_"))
 contr_lm <- prolfqua::Contrasts$new(mod_lm, contr_spec)
 contr_moderated <- ContrastsModerated$new(contr_lm)
@@ -83,7 +80,6 @@ The only difference is using `strategy_limma` + `build_model_limma` +
 `ContrastsLimma`.
 
 ``` r
-
 strat_limma <- strategy_limma("transformedIntensity ~ group_")
 mod_limma <- build_model_limma(transformed, strat_limma)
 contr_limma <- ContrastsLimma$new(mod_limma, contr_spec)
@@ -95,7 +91,6 @@ res_limma <- contr_limma$get_contrasts()
 The `ModelLimma` object supports the same inspection methods as `Model`.
 
 ``` r
-
 mod_limma$get_anova() |> head()
 ```
 
@@ -110,7 +105,6 @@ mod_limma$get_anova() |> head()
     ## 6 76k03k~7094  3.12   0.0539        group_B+group_Ctrl 0.133
 
 ``` r
-
 mod_limma$get_coefficients() |> head()
 ```
 
@@ -125,7 +119,6 @@ mod_limma$get_coefficients() |> head()
     ## 6 76k03k~7094 (Intercept)     4.67     0.0355    132. 4.16e-60
 
 ``` r
-
 mod_limma$anova_histogram()
 ```
 
@@ -145,7 +138,6 @@ Both backends estimate the same linear model, so fold changes (log2 FC)
 are identical.
 
 ``` r
-
 merged <- inner_join(
   select(res_limma, protein_Id, contrast, diff_limma = diff),
   select(res_moderated, protein_Id, contrast, diff_moderated = diff),
@@ -158,7 +150,6 @@ cor(merged$diff_limma, merged$diff_moderated, use = "complete.obs")
     ## [1] 1
 
 ``` r
-
 plot(merged$diff_limma, merged$diff_moderated,
      xlab = "limma logFC", ylab = "prolfqua moderated logFC",
      pch = 20, col = rgb(0, 0, 0, 0.3))
@@ -176,7 +167,6 @@ The p-values differ because limma and prolfqua use different eBayes
 implementations, but they are highly correlated.
 
 ``` r
-
 merged_p <- inner_join(
   select(res_limma, protein_Id, contrast, p_limma = p.value),
   select(res_moderated, protein_Id, contrast, p_moderated = p.value),
@@ -189,7 +179,6 @@ cor(-log10(merged_p$p_limma), -log10(merged_p$p_moderated), use = "complete.obs"
     ## [1] 0.984774
 
 ``` r
-
 plot(-log10(merged_p$p_limma), -log10(merged_p$p_moderated),
      xlab = "-log10(p) limma", ylab = "-log10(p) prolfqua moderated",
      pch = 20, col = rgb(0, 0, 0, 0.3))
@@ -205,7 +194,6 @@ identical.
 ## Volcano plots
 
 ``` r
-
 pl_limma <- contr_limma$get_Plotter()
 pl_moderated <- contr_moderated$get_Plotter()
 
@@ -227,7 +215,6 @@ Volcano plots from both backends.
 `merge_contrasts_results`.
 
 ``` r
-
 mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
 merged_result <- merge_contrasts_results(prefer = contr_limma, add = mC)
 
@@ -240,7 +227,6 @@ plotter$volcano()$FDR
 ## Wide format export
 
 ``` r
-
 wide <- contr_limma$to_wide()
 head(wide)
 ```
@@ -263,7 +249,6 @@ head(wide)
 The limma backend handles multi-factor designs in the same way.
 
 ``` r
-
 dd <- sim_lfq_data_2Factor_config(Nprot = 100, with_missing = FALSE)
 lProt2 <- LFQData$new(dd$data, dd$config)
 lProt2$rename_response("transformedIntensity")
@@ -295,7 +280,6 @@ that are passed to
   outlier variances)
 
 ``` r
-
 strat_robust <- strategy_limma(
   "transformedIntensity ~ group_",
   trend = TRUE,
@@ -321,23 +305,25 @@ head(contr_robust$get_contrasts())
 ## Session Info
 
 ``` r
-
 sessionInfo()
 ```
 
     ## R version 4.5.2 (2025-10-31)
-    ## Platform: aarch64-apple-darwin20
-    ## Running under: macOS Tahoe 26.3.1
+    ## Platform: x86_64-pc-linux-gnu
+    ## Running under: Ubuntu 24.04.3 LTS
     ## 
     ## Matrix products: default
-    ## BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
-    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
     ## 
     ## locale:
-    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+    ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+    ##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+    ##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+    ## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
     ## 
-    ## time zone: Europe/Zurich
-    ## tzcode source: internal
+    ## time zone: UTC
+    ## tzcode source: system (glibc)
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -351,20 +337,20 @@ sessionInfo()
     ##  [7] hms_1.1.4           digest_0.6.39       magrittr_2.0.4     
     ## [10] evaluate_1.0.5      grid_4.5.2          RColorBrewer_1.1-3 
     ## [13] fastmap_1.2.0       plyr_1.8.9          jsonlite_2.0.0     
-    ## [16] progress_1.2.3      ggrepel_0.9.7       limma_3.66.0       
+    ## [16] progress_1.2.3      ggrepel_0.9.8       limma_3.66.0       
     ## [19] gridExtra_2.3       httr_1.4.8          purrr_1.2.1        
     ## [22] viridisLite_0.4.3   scales_1.4.0        UpSetR_1.4.0       
-    ## [25] lazyeval_0.2.2      textshaping_1.0.4   jquerylib_0.1.4    
+    ## [25] lazyeval_0.2.2      textshaping_1.0.5   jquerylib_0.1.4    
     ## [28] cli_3.6.5           crayon_1.5.3        rlang_1.1.7        
     ## [31] withr_3.0.2         cachem_1.1.0        yaml_2.3.12        
     ## [34] otel_0.2.0          tools_4.5.2         ggplot2_4.0.2      
     ## [37] forcats_1.0.1       vctrs_0.7.1         R6_2.6.1           
     ## [40] lifecycle_1.0.5     fs_1.6.7            htmlwidgets_1.6.4  
-    ## [43] MASS_7.3-65         ragg_1.5.0          pkgconfig_2.0.3    
+    ## [43] MASS_7.3-65         ragg_1.5.1          pkgconfig_2.0.3    
     ## [46] desc_1.4.3          pkgdown_2.2.0       pillar_1.11.1      
     ## [49] bslib_0.10.0        gtable_0.3.6        glue_1.8.0         
     ## [52] data.table_1.18.2.1 Rcpp_1.1.1          statmod_1.5.1      
-    ## [55] systemfonts_1.3.1   xfun_0.56           tibble_3.3.1       
+    ## [55] systemfonts_1.3.2   xfun_0.56           tibble_3.3.1       
     ## [58] tidyselect_1.2.1    knitr_1.51          farver_2.1.2       
     ## [61] htmltools_0.5.9     labeling_0.4.3      rmarkdown_2.30     
     ## [64] pheatmap_1.0.13     compiler_4.5.2      prettyunits_1.2.0  

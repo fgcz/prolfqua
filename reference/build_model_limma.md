@@ -104,7 +104,6 @@ Other modelling:
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from fileName column
 #> completing cases

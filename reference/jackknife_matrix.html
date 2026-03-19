@@ -42,7 +42,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Compute correlation matrix with jack</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/utilities.R" class="external-link"><code>R/utilities.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/utilities.R" class="external-link"><code>R/utilities.R</code></a></small>
       <div class="d-none name"><code>jackknife_matrix.Rd</code></div>
     </div>
 
@@ -92,11 +92,11 @@
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="jackknife.html">jackknife</a></span><span class="op">(</span><span class="va">dataX</span>, <span class="va">cor</span>, use<span class="op">=</span><span class="st">"pairwise.complete.obs"</span>, method<span class="op">=</span><span class="st">"pearson"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">jackknife_matrix</span><span class="op">(</span><span class="va">dataX</span>, <span class="va">cor</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           C1         C2        C3         C4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C1 1.0000000  0.8176846 0.3712903  0.7552681</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C2 0.8176846  1.0000000 0.2017283 -0.6904332</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C3 0.3712903  0.2017283 1.0000000  0.5906774</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C4 0.7552681 -0.6904332 0.5906774  1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           C1         C2         C3          C4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C1 1.0000000  0.7068741 0.73327820  0.58869599</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C2 0.7068741  1.0000000 0.28845670 -0.17789058</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C3 0.7332782  0.2884567 1.00000000  0.04364043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C4 0.5886960 -0.1778906 0.04364043  1.00000000</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">jackknife_matrix</span><span class="op">(</span><span class="va">dataX</span>, <span class="va">cor</span>, method<span class="op">=</span><span class="st">"spearman"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>

@@ -32,7 +32,6 @@ facades separately.
 ## Simulate one experiment
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
 istar$config <- old2new(istar$config)
 
@@ -48,14 +47,12 @@ lfq_peptide$config$hierarchy_keys()
     ## [1] "protein_Id" "peptide_Id"
 
 ``` r
-
 lfq_protein$config$hierarchy_keys()
 ```
 
     ## [1] "protein_Id"
 
 ``` r
-
 lfq_protein$config$nr_children
 ```
 
@@ -69,7 +66,6 @@ to be passed around.
 ## Define one contrast
 
 ``` r
-
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 ```
 
@@ -84,7 +80,6 @@ The following facades require aggregated input, which in practice means
 aggregated protein input.
 
 ``` r
-
 fa_lm <- build_contrast_analysis(
   lfq_protein,
   "~ group_",
@@ -125,7 +120,6 @@ Because all protein-input facades share the same interface and report
 protein-level contrasts, their outputs can be combined directly.
 
 ``` r
-
 results_protein <- bind_rows(
   fa_lm$get_contrasts(),
   fa_limma$get_contrasts(),
@@ -160,7 +154,6 @@ For facades that combine several underlying result types, such as
 rows came from.
 
 ``` r
-
 results_protein |>
   dplyr::count(facade, modelName, name = "n_results")
 ```
@@ -178,7 +171,6 @@ results_protein |>
 ## Protein-level volcano comparison
 
 ``` r
-
 ggplot(results_protein, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
   facet_wrap(~facade, scales = "free_y") +
@@ -203,7 +195,6 @@ contrast analysed by a different backend.
 ## Looking at the strongest protein-level hits
 
 ``` r
-
 results_protein |>
   dplyr::group_by(facade) |>
   dplyr::slice_min(order_by = p.value, n = 5, with_ties = FALSE) |>
@@ -235,7 +226,6 @@ we identify the proteins that limma reports but `lm` does not, and show
 their per-sample intensities.
 
 ``` r
-
 proteins_lm <- fa_lm$get_contrasts() |> dplyr::pull(protein_Id) |> unique()
 proteins_limma <- fa_limma$get_contrasts() |> dplyr::pull(protein_Id) |> unique()
 dropped <- setdiff(proteins_limma, proteins_lm)
@@ -243,7 +233,6 @@ message("Proteins in limma but not in lm: ", length(dropped))
 ```
 
 ``` r
-
 if (length(dropped) > 0) {
   lfq_protein$data |>
     dplyr::filter(protein_Id %in% dropped) |>
@@ -260,7 +249,7 @@ if (length(dropped) > 0) {
 | 8mS8sK~0150 | 3.85 | 3.76 |    3.37 |    3.55 |   NA |   NA |      NA |
 | DTCi0N~0734 |   NA | 4.28 |    4.07 |    4.21 | 4.37 | 4.35 |    4.06 |
 
-Per-sample intensities of proteins dropped by lm {.table}
+Per-sample intensities of proteins dropped by lm
 
 The missing cells (NA) explain why `lm` could not fit a full model for
 these proteins — they lack observations in one or more groups, so all
@@ -275,7 +264,6 @@ time here on purpose, because it can also be fitted on peptide input.
 All three still return protein-level contrasts.
 
 ``` r
-
 fa_lmer <- build_contrast_analysis(
   lfq_peptide,
   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
@@ -306,7 +294,6 @@ without an added peptide term, while proteins with multiple peptides are
 fitted with the lowest hierarchy key added internally.
 
 ``` r
-
 results_peptide <- bind_rows(
   fa_lmer$get_contrasts(),
   fa_ropeca$get_contrasts(),
@@ -333,7 +320,6 @@ results_peptide |>
     ## 3 ropeca        78
 
 ``` r
-
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
   facet_wrap(~facade, scales = "free_y") +

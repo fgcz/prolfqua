@@ -40,7 +40,6 @@ sim_lfq_data_protein_config(
 ## Examples
 
 ``` r
-
 x <- sim_lfq_data_protein_config()
 #> creating sampleName from fileName column
 #> completing cases

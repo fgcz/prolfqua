@@ -52,7 +52,6 @@ Other preprocessing:
 ``` r
 
 
-
 bb <-sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from fileName column
 #> completing cases
@@ -65,8 +64,7 @@ res <- transform_work_intensity(sample_analysis, conf, log2)
 #> Column added : log2_abundance
 s1 <- get_robscales(res, conf)
 res <- scale_with_subset(res, res, conf)
-#> Joining with `by = join_by(sampleName, isotopeLabel,
-#> protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 s2 <- get_robscales(res$data, conf)
 stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 ```
