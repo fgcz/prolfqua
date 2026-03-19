@@ -70,6 +70,19 @@ test_that("ContrastsLMFacade initialises and returns correct structure", {
   expect_true(all(fa$get_contrasts()$facade == "lm"))
 })
 
+# ---- ContrastsRLMFacade ----
+
+test_that("ContrastsRLMFacade initialises and returns correct structure", {
+  lfqdata <- make_protein_lfqdata()$lfqdata
+  fa <- prolfqua::ContrastsRLMFacade$new(lfqdata, MODELSTR, CONTRASTS)
+
+  expect_true(inherits(fa, "ContrastsRLMFacade"))
+  expect_true(!is.null(fa$model))
+  expect_true(!is.null(fa$contrast))
+  check_facade_interface(fa)
+  expect_true(all(fa$get_contrasts()$facade == "rlm"))
+})
+
 # ---- ContrastsLmerFacade ----
 
 test_that("ContrastsLmerFacade initialises and returns correct structure", {
@@ -157,6 +170,13 @@ test_that("build_contrast_analysis dispatches to ContrastsLMFacade for method='l
   check_facade_interface(fa)
 })
 
+test_that("build_contrast_analysis dispatches to ContrastsRLMFacade for method='rlm'", {
+  lfqdata <- make_protein_lfqdata()$lfqdata
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "rlm")
+  expect_true(inherits(fa, "ContrastsRLMFacade"))
+  check_facade_interface(fa)
+})
+
 test_that("build_contrast_analysis dispatches to ContrastsLmerFacade for method='lmer'", {
   lfqdata <- make_peptide_lfqdata()
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR_LMER, CONTRASTS, method = "lmer")
@@ -210,6 +230,10 @@ test_that("aggregated facades error on peptide-level LFQData", {
 
   expect_error(
     prolfqua::ContrastsLMFacade$new(lfqdata, MODELSTR, CONTRASTS),
+    "requires aggregated LFQData"
+  )
+  expect_error(
+    prolfqua::ContrastsRLMFacade$new(lfqdata, MODELSTR, CONTRASTS),
     "requires aggregated LFQData"
   )
   expect_error(

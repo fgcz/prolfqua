@@ -8,7 +8,7 @@ build_contrast_analysis(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
+  method = c("lm", "rlm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
   ...
 )
 }
@@ -22,7 +22,7 @@ build_contrast_analysis(
 \item{contrasts}{named character vector of contrasts
 (e.g. \code{c("A_vs_B" = "group_A - group_B")})}
 
-\item{method}{one of \code{"lm"}, \code{"lmer"}, \code{"lm_missing"},
+\item{method}{one of \code{"lm"}, \code{"rlm"}, \code{"lmer"}, \code{"lm_missing"},
 \code{"limma"}, \code{"deqms"}, \code{"ropeca"}, \code{"firth"}}
 
 \item{...}{additional arguments forwarded to the underlying strategy function
@@ -30,7 +30,8 @@ build_contrast_analysis(
 }
 \value{
 one of \code{\link{ContrastsLimmaFacade}},
-  \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsLmerFacade}},
+  \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsRLMFacade}},
+  \code{\link{ContrastsLmerFacade}},
   \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsDEqMSFacade}},
   \code{\link{ContrastsROPECAFacade}}, or \code{\link{ContrastsFirthFacade}}
 }
@@ -91,7 +92,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},

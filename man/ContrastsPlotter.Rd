@@ -70,7 +70,7 @@ Other modelling:
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},

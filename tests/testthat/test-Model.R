@@ -43,6 +43,41 @@ test_that("Model (lm strategy)", {
   expect_s3_class(ah$plot, "ggplot")
 })
 
+test_that("Model (lm strategy with weights)", {
+  istar <- sim_lfq_data_peptide_config(Nprot = 20)
+  config <- istar$config
+
+  # Add a weight column with non-uniform weights
+  set.seed(42)
+  istar$data$wt_col <- runif(nrow(istar$data), min = 0.1, max = 10)
+
+  # Fit unweighted model
+  mod_unw <- build_model(
+    istar$data,
+    strategy_lm("abundance ~ group_"),
+    subject_Id = config$hierarchy_keys_depth()
+  )
+
+  # Fit weighted model
+  mod_w <- build_model(
+    istar$data,
+    strategy_lm("abundance ~ group_", weights = "wt_col"),
+    subject_Id = config$hierarchy_keys_depth()
+  )
+
+  coefs_unw <- mod_unw$get_coefficients()
+  coefs_w <- mod_w$get_coefficients()
+
+  expect_s3_class(coefs_w, "data.frame")
+  expect_true("Estimate" %in% colnames(coefs_w))
+
+  # Weighted and unweighted estimates should differ
+  expect_false(
+    all(coefs_unw$Estimate == coefs_w$Estimate),
+    info = "Weighted and unweighted models should produce different estimates"
+  )
+})
+
 test_that("ModelFirth", {
   istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
   istar$data <- encode_bin_resp(istar$data, istar$config)

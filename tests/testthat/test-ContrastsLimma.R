@@ -196,6 +196,49 @@ test_that("ContrastsLimma works with multiple contrasts", {
   expect_true(length(unique(n_per_contrast)) == 1)
 })
 
+test_that("build_model_limma passes weights from column name", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  lProt <- prolfqua::LFQData$new(istar$data, istar$config)
+  lProt$rename_response("transformedIntensity")
+
+  # Add a weight column to the underlying data (per-sample weights)
+  set.seed(42)
+  sample_ids <- unique(lProt$data$sampleName)
+  wt_map <- stats::setNames(runif(length(sample_ids), 0.1, 1.0), sample_ids)
+  lProt$data$sample_weight <- wt_map[lProt$data$sampleName]
+
+  # Fit with weights
+  strat_wt <- prolfqua::strategy_limma("transformedIntensity ~ group_", weights = "sample_weight")
+  mod_wt <- prolfqua::build_model_limma(lProt, strat_wt)
+
+  # Fit without weights
+  strat_nw <- prolfqua::strategy_limma("transformedIntensity ~ group_")
+  mod_nw <- prolfqua::build_model_limma(lProt, strat_nw)
+
+  # Both should produce valid ModelLimma objects
+
+  expect_true(inherits(mod_wt, "ModelLimma"))
+  expect_true(inherits(mod_nw, "ModelLimma"))
+
+  # Contrasts should work with weighted model
+  Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+  contr_wt <- prolfqua::ContrastsLimma$new(mod_wt, Contr)
+  res_wt <- contr_wt$get_contrasts()
+  expect_true(is.data.frame(res_wt))
+  expect_true(all(c("diff", "FDR", "p.value", "statistic") %in% colnames(res_wt)))
+
+  contr_nw <- prolfqua::ContrastsLimma$new(mod_nw, Contr)
+  res_nw <- contr_nw$get_contrasts()
+
+  # Results should differ (weights are non-uniform)
+  merged <- dplyr::inner_join(
+    dplyr::select(res_wt, protein_Id, p_wt = p.value),
+    dplyr::select(res_nw, protein_Id, p_nw = p.value),
+    by = "protein_Id"
+  )
+  expect_false(all(abs(merged$p_wt - merged$p_nw) < 1e-10))
+})
+
 test_that("ContrastsLimma works with 2-factor design", {
   dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 30, with_missing = FALSE)
   lProt <- prolfqua::LFQData$new(dd$data, dd$config)

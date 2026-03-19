@@ -64,7 +64,6 @@ Suggests:
     lintr,
     pkgdown,
     preprocessCore,
-    proDA,
     rcmdcheck,
     rmarkdown,
     roxygen2,

@@ -12,12 +12,13 @@
 #'   \code{lfqdata$config$get_response()}.
 #' @param contrasts named character vector of contrasts
 #'   (e.g. \code{c("A_vs_B" = "group_A - group_B")})
-#' @param method one of \code{"lm"}, \code{"lmer"}, \code{"lm_missing"},
+#' @param method one of \code{"lm"}, \code{"rlm"}, \code{"lmer"}, \code{"lm_missing"},
 #'   \code{"limma"}, \code{"deqms"}, \code{"ropeca"}, \code{"firth"}
 #' @param ... additional arguments forwarded to the underlying strategy function
 #'   (e.g. \code{trend}, \code{robust} for \code{strategy_limma})
 #' @return one of \code{\link{ContrastsLimmaFacade}},
-#'   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsLmerFacade}},
+#'   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsRLMFacade}},
+#'   \code{\link{ContrastsLmerFacade}},
 #'   \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsDEqMSFacade}},
 #'   \code{\link{ContrastsROPECAFacade}}, or \code{\link{ContrastsFirthFacade}}
 #' @export
@@ -62,13 +63,14 @@ build_contrast_analysis <- function(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
+  method = c("lm", "rlm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
   ...
 ) {
   method <- match.arg(method)
   switch(
     method,
     lm = ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...),
+    rlm = ContrastsRLMFacade$new(lfqdata, modelstr, contrasts, ...),
     lmer = ContrastsLmerFacade$new(lfqdata, modelstr, contrasts, ...),
     lm_missing = ContrastsLMMissingFacade$new(lfqdata, modelstr, contrasts, ...),
     limma = ContrastsLimmaFacade$new(lfqdata, modelstr, contrasts, ...),

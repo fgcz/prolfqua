@@ -27,7 +27,8 @@ strategy_lm(
   modelstr,
   model_name = "Model",
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted")
+    "moderated.p.value.adjusted"),
+  weights = NULL
 )
 
 strategy_rlm(
@@ -56,6 +57,10 @@ strategy_glm(
 \item{report_columns}{columns to report}
 
 \item{test}{type of test statistic passed to anova (e.g. "Chisq")}
+
+\item{weights}{optional character string naming a column in the data
+containing per-observation weights, passed to \code{\link[stats]{lm}}.
+Default \code{NULL} (unweighted).}
 
 \item{family}{either binomial or quasibinomial}
 
@@ -134,7 +139,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},
@@ -195,7 +200,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},
@@ -256,7 +261,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},
@@ -317,7 +322,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},
@@ -378,7 +383,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},

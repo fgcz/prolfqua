@@ -71,7 +71,7 @@ Other modelling:
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},

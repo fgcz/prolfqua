@@ -42,7 +42,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

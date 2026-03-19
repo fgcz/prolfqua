@@ -4,7 +4,13 @@
 \alias{strategy_limma}
 \title{Create limma modelling strategy}
 \usage{
-strategy_limma(modelstr, model_name = "limma", trend = FALSE, robust = FALSE)
+strategy_limma(
+  modelstr,
+  model_name = "limma",
+  trend = FALSE,
+  robust = FALSE,
+  weights = NULL
+)
 }
 \arguments{
 \item{modelstr}{model formula as string (e.g. "abundance ~ group_")}
@@ -14,6 +20,10 @@ strategy_limma(modelstr, model_name = "limma", trend = FALSE, robust = FALSE)
 \item{trend}{logical, passed to \code{\link[limma]{eBayes}}}
 
 \item{robust}{logical, passed to \code{\link[limma]{eBayes}}}
+
+\item{weights}{either a character string (column name in annotation for
+per-sample weights) or a numeric matrix (proteins x samples) passed to
+\code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).}
 }
 \description{
 Analogous to \code{\link{strategy_lm}} but for limma's matrix-based pipeline.
@@ -39,7 +49,7 @@ Other modelling:
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
-\code{\link{ContrastsProDA}},
+\code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECAFacade}},
 \code{\link{ContrastsTable}},

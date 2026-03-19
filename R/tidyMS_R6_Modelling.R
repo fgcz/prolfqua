@@ -6,6 +6,34 @@
   as.character(e)
 }
 
+#' Residual degrees of freedom for rlm objects
+#'
+#' \code{stats::df.residual} returns \code{NA} for \code{\link[MASS]{rlm}}
+#' objects. This S3 method computes weighted residual df instead.
+#'
+#' @param object an \code{rlm} object
+#' @param ... ignored
+#' @return numeric scalar
+#' @keywords internal
+#' @export
+df.residual.rlm <- function(object, ...) {
+  sum(object$w) - object$rank
+}
+
+#' Residual scale estimate for rlm objects
+#'
+#' \code{stats::sigma} returns \code{NA} for \code{\link[MASS]{rlm}} objects.
+#' This S3 method computes a weighted residual scale estimate instead.
+#'
+#' @param object an \code{rlm} object
+#' @param ... ignored
+#' @return numeric scalar
+#' @keywords internal
+#' @export
+sigma.rlm <- function(object, ...) {
+  sqrt(sqrt(sum(object$w * object$resid^2) / (sum(object$w) - object$rank)))
+}
+
 #' Create custom lmer model
 #' @rdname strategy
 #' @param modelstr model formula
@@ -66,6 +94,9 @@ strategy_lmer <- function(
 #' @param modelstr model formula
 #' @param model_name name of model
 #' @param report_columns columns to report
+#' @param weights optional character string naming a column in the data
+#'   containing per-observation weights, passed to \code{\link[stats]{lm}}.
+#'   Default \code{NULL} (unweighted).
 #' @family modelling
 #' @return list with model function, contrast computation function etc.
 #' @examples
@@ -77,7 +108,8 @@ strategy_lmer <- function(
 strategy_lm <- function(
   modelstr,
   model_name = "Model",
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
+  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted"),
+  weights = NULL
 ) {
   formula <- as.formula(modelstr)
   model_fun <- function(x, pb, get_formula = FALSE) {
@@ -87,7 +119,12 @@ strategy_lm <- function(
     if (!missing(pb)) {
       pb$tick()
     }
-    modelTest <- tryCatch(lm(formula, data = x), error = .ehandler)
+    if (!is.null(weights)) {
+      call <- bquote(lm(formula, data = x, weights = .(as.name(weights))))
+      modelTest <- tryCatch(eval(call), error = .ehandler)
+    } else {
+      modelTest <- tryCatch(lm(formula, data = x), error = .ehandler)
+    }
     return(modelTest)
   }
   res <- list(
@@ -136,9 +173,20 @@ strategy_rlm <- function(
     modelTest <- tryCatch(MASS::rlm(formula, data = x, method = "M"), error = .ehandler)
     return(modelTest)
   }
+  isSingular_rlm <- function(m) {
+    anyNA <- any(is.na(coefficients(m)))
+    if (anyNA) {
+      return(TRUE)
+    }
+    df <- df.residual(m)
+    if (is.na(df) || df < 2) {
+      return(TRUE)
+    }
+    FALSE
+  }
   res <- list(
     model_fun = model_fun,
-    isSingular = isSingular_lm,
+    isSingular = isSingular_rlm,
     contrast_fun = my_contrast_V2,
     model_name = model_name,
     report_columns = report_columns,

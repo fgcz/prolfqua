@@ -154,6 +154,58 @@ ContrastsLMFacade <- R6::R6Class(
 )
 
 
+#' RLM contrast analysis facade
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_rlm}} ->
+#' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
+#' \code{\link{ContrastsModerated}}.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config()
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsRLMFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$to_wide()
+ContrastsRLMFacade <- R6::R6Class(
+  "ContrastsRLMFacade",
+  public = list(
+    #' @field model Model object
+    model = NULL,
+    #' @field contrast ContrastsModerated object
+    contrast = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param ... passed to \code{\link{strategy_rlm}}
+    initialize = function(lfqdata, modelstr, contrasts, ...) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsRLMFacade")
+      response <- lfqdata$config$get_response()
+      full_formula <- paste(response, modelstr)
+      strat <- strategy_rlm(full_formula, ...)
+      self$model <- build_model(lfqdata, strat)
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+    },
+    #' @description get contrast results
+    #' @param ... passed to ContrastsModerated$get_contrasts
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "rlm")
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsModerated$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsModerated$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
 #' Lmer contrast analysis facade
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_lmer}} ->

@@ -9,19 +9,23 @@
 #' @param model_name name of model
 #' @param trend logical, passed to \code{\link[limma]{eBayes}}
 #' @param robust logical, passed to \code{\link[limma]{eBayes}}
+#' @param weights either a character string (column name in annotation for
+#'   per-sample weights) or a numeric matrix (proteins x samples) passed to
+#'   \code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).
 #' @export
 #' @family modelling
 #' @examples
 #' strat <- strategy_limma("abundance ~ group_")
 #' strat$formula
 #' strat$model_name
-strategy_limma <- function(modelstr, model_name = "limma", trend = FALSE, robust = FALSE) {
+strategy_limma <- function(modelstr, model_name = "limma", trend = FALSE, robust = FALSE, weights = NULL) {
   formula <- as.formula(modelstr)
   list(
     formula = formula,
     model_name = model_name,
     trend = trend,
-    robust = robust
+    robust = robust,
+    weights = weights
   )
 }
 
@@ -67,7 +71,24 @@ build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name
   rhs_formula <- formula(delete.response(terms(strategy$formula)))
   design <- model.matrix(rhs_formula, data = annotation)
 
-  fit <- limma::lmFit(expr_matrix, design)
+  wt <- NULL
+  if (!is.null(strategy$weights)) {
+    if (is.character(strategy$weights) && length(strategy$weights) == 1) {
+      wcol <- strategy$weights
+      if (wcol %in% colnames(annotation)) {
+        wt <- annotation[[wcol]]
+      } else if (wcol %in% colnames(lfqdata$data)) {
+        # Extract per-sample weights from long-format data
+        fname_col <- lfqdata$config$table$fileName
+        wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
+        wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
+        wt <- wt_df[[wcol]]
+      }
+    } else if (is.matrix(strategy$weights)) {
+      wt <- strategy$weights
+    }
+  }
+  fit <- limma::lmFit(expr_matrix, design, weights = wt)
 
   # Fit a dummy lm on one protein's complete data for linfct extraction
   # Pick the first protein with all non-NA values (= complete row)
