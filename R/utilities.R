@@ -1,7 +1,6 @@
 #' Extracts uniprot ID
 #'
 #' @export
-#' @keywords internal
 #' @family utilities
 #' @return data.frame
 #' @param df data.frame
@@ -214,7 +213,6 @@ multigroup_volcano <- function(
 #' @param ... further parameters passed to as_tibble
 #' @export
 #' @family utilities
-#' @keywords internal
 #' @examples
 #' x <- matrix(rnorm(20), ncol=4)
 #' rownames(x) <- LETTERS[seq_len(nrow(x))]
@@ -499,7 +497,10 @@ pairs_smooth <- function(data, legend = FALSE, ...) {
 #' table facade to easily switch implementations
 #' @export
 #' @family utilities
-#' @keywords internal
+#' @param df data.frame to display
+#' @param caption table caption
+#' @param digits number of digits (default from options)
+#' @param kable if TRUE use knitr::kable
 table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE) {
   if (kable) {
     knitr::kable(df, digits = digits, caption = caption)

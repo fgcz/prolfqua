@@ -29,4 +29,3 @@ Other configuration:
 \code{\link{table_factors_size}()}
 }
 \concept{configuration}
-\keyword{internal}

@@ -936,7 +936,10 @@ my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 #' pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
 #' @export
 #' @family modelling
-#' @keywords internal
+#' @param modelWithInteractionsContrasts data.frame with contrast results in long format
+#' @param subject_Id column name(s) identifying subjects (e.g. protein_Id)
+#' @param columns character vector of value columns to pivot wide
+#' @param contrast column name containing contrast labels
 #' @examples
 #'
 #' # this function is used by the contrast classes to implement the to wide method
@@ -1112,7 +1115,10 @@ moderated_p_limma_long <- function(mm, group_by_col = "lhs", estimate = "estimat
 #' adjust columns
 #'
 #' @export
-#' @keywords internal
+#' @param mm data.frame with p-values to adjust
+#' @param column name of column containing p-values
+#' @param group_by_col column(s) to group by before adjusting (e.g. contrast), or NULL for no grouping
+#' @param newname name of the new column with adjusted p-values
 #' @examples
 #'
 #' bb <- c(runif(1000), rexp(1500,rate=5))

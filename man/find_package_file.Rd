@@ -6,6 +6,11 @@
 \usage{
 find_package_file(packagename, file)
 }
+\arguments{
+\item{packagename}{name of the R package}
+
+\item{file}{relative path to the file within the package}
+}
 \description{
 find file stored in package
 }
@@ -13,4 +18,3 @@ find file stored in package
 find_package_file("prolfqua","extdata/medata.csv")
 
 }
-\keyword{internal}

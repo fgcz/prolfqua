@@ -11,6 +11,15 @@ pivot_model_contrasts_2_Wide(
   contrast = "lhs"
 )
 }
+\arguments{
+\item{modelWithInteractionsContrasts}{data.frame with contrast results in long format}
+
+\item{subject_Id}{column name(s) identifying subjects (e.g. protein_Id)}
+
+\item{columns}{character vector of value columns to pivot wide}
+
+\item{contrast}{column name containing contrast labels}
+}
 \description{
 pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
 }
@@ -82,4 +91,3 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }
 \concept{modelling}
-\keyword{internal}

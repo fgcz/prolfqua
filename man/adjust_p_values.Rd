@@ -11,6 +11,15 @@ adjust_p_values(
   newname = "FDR"
 )
 }
+\arguments{
+\item{mm}{data.frame with p-values to adjust}
+
+\item{column}{name of column containing p-values}
+
+\item{group_by_col}{column(s) to group by before adjusting (e.g. contrast), or NULL for no grouping}
+
+\item{newname}{name of the new column with adjusted p-values}
+}
 \description{
 adjust columns
 }
@@ -32,4 +41,3 @@ stopifnot(all.equal(data2$FDR, p.adjust(data2$p.value, method="BH")))
 
 
 }
-\keyword{internal}

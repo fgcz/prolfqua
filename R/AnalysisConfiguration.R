@@ -347,7 +347,6 @@ make_interaction_column <- function(data, columns, sep = ".") {
 # Functions - Configuration ----
 #' Extract all value slots in an R6 object
 #' @param r6class r6 class
-#' @keywords internal
 #' @family configuration
 #' @export
 R6_extract_values <- function(r6class) {
@@ -378,7 +377,6 @@ R6_extract_values <- function(r6class) {
 #' @param cc complete cases default TRUE
 #' @param from_factors if TRUE, create sampleName from factor columns
 #' @export
-#' @keywords internal
 #' @family configuration
 #' @examples
 #'

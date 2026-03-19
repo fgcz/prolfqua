@@ -6,6 +6,15 @@
 \usage{
 table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 }
+\arguments{
+\item{df}{data.frame to display}
+
+\item{caption}{table caption}
+
+\item{digits}{number of digits (default from options)}
+
+\item{kable}{if TRUE use knitr::kable}
+}
 \description{
 table facade to easily switch implementations
 }
@@ -23,4 +32,3 @@ Other utilities:
 \code{\link{remove_NA_rows}()}
 }
 \concept{utilities}
-\keyword{internal}

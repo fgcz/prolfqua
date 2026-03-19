@@ -285,9 +285,10 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
 #' UpSetR plot from interaction_missing_stats
 #'
 #' @export
-#' @keywords internal
 #' @family plotting
 #' @family imputation
+#' @param data data.frame
+#' @param cf AnalysisConfiguration
 #' @param tr if less than tr observations in condition then missing
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()

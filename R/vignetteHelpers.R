@@ -1,6 +1,7 @@
 #' find file stored in package
 #' @export
-#' @keywords internal
+#' @param packagename name of the R package
+#' @param file relative path to the file within the package
 #' @examples
 #' find_package_file("prolfqua","extdata/medata.csv")
 #'

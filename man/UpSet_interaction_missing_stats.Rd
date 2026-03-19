@@ -7,6 +7,10 @@
 UpSet_interaction_missing_stats(data, cf, tr = 2)
 }
 \arguments{
+\item{data}{data.frame}
+
+\item{cf}{AnalysisConfiguration}
+
 \item{tr}{if less than tr observations in condition then missing}
 }
 \description{
@@ -54,4 +58,3 @@ Other imputation:
 }
 \concept{imputation}
 \concept{plotting}
-\keyword{internal}

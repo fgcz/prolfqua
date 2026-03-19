@@ -37,4 +37,3 @@ Other utilities:
 \code{\link{table_facade}()}
 }
 \concept{utilities}
-\keyword{internal}
