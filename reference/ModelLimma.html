@@ -44,7 +44,7 @@ R6 class representing a limma modelling result"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>R6 class representing a limma modelling result</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/ContrastsLimma.R" class="external-link"><code>R/ContrastsLimma.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/ContrastsLimma.R" class="external-link"><code>R/ContrastsLimma.R</code></a></small>
       <div class="d-none name"><code>ModelLimma.Rd</code></div>
     </div>
 
@@ -75,7 +75,7 @@ R6 class representing a limma modelling result"></head><body>
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
-<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
+<code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
@@ -369,7 +369,8 @@ R6 class representing a limma modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 7soopj~3451    1.51 2.21<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> group_B+group_Ctrl 5.41<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">coef_histogram</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing non-finite outside the scale range (`stat_bin()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_bin()`).</span>
 <span class="r-plt img"><img src="ModelLimma-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
@@ -377,8 +378,8 @@ R6 class representing a limma modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">coef_volcano</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing missing values or values outside the scale range</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_point()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing missing values or values outside the</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> scale range (`geom_point()`).</span>
 <span class="r-plt img"><img src="ModelLimma-2.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
@@ -386,7 +387,8 @@ R6 class representing a limma modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing non-finite outside the scale range (`stat_bin()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 1 row containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_bin()`).</span>
 <span class="r-plt img"><img src="ModelLimma-3.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>

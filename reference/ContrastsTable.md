@@ -22,7 +22,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
@@ -246,6 +246,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+
 bb <-prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases

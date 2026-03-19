@@ -44,7 +44,7 @@ plot contrasts"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>plot contrasts</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/ContrastsPlotter.R" class="external-link"><code>R/ContrastsPlotter.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/ContrastsPlotter.R" class="external-link"><code>R/ContrastsPlotter.R</code></a></small>
       <div class="d-none name"><code>ContrastsPlotter.Rd</code></div>
     </div>
 
@@ -69,7 +69,7 @@ plot contrasts"></head><body>
 <code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
-<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
+<code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
@@ -352,7 +352,7 @@ plot contrasts"></head><body>
 </div>
 
 </div><p></p><hr><a id="method-ContrastsPlotter-volcano_plotly"></a><div class="section">
-<h3 id="method-volcano-plotly-">Method <code><a href="volcano_Plotly.html">volcano_plotly()</a></code><a class="anchor" aria-label="anchor" href="#method-volcano-plotly-"></a></h3>
+<h3 id="method-volcano-plotly-">Method <code><a href="volcano_plotly.html">volcano_plotly()</a></code><a class="anchor" aria-label="anchor" href="#method-volcano-plotly-"></a></h3>
 <p>plotly volcano plots</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">volcano_plotly</span><span class="op">(</span></span>
@@ -578,16 +578,30 @@ Such systematic effects can be explored using MA-plots.</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 
+</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [===============================================================&gt;-------]  90%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 
+</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [==================================================================&gt;----]  95%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 
+</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [=======================================================================] 100%</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 
+                                                                              </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 
+</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 7 warnings in `dplyr::mutate()`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   pb)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   model_strategy$model_fun, pb = pb)`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 1: `protein_Id = "0EfVhX~5954"`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `value[[3L]]()`:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> WARN :Error: grouping factors must have &gt; 1 sampled level</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 6 remaining warnings.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 6 remaining</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   warnings.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">Contr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"group_A_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span>,</span></span>

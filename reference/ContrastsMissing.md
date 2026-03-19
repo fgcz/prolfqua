@@ -29,7 +29,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -335,8 +335,8 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_2970269662b 
-#>                      2 
+#> agg_record_25169593 
+#>                   2 
 
 dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
 #> creating sampleName from fileName column
@@ -377,6 +377,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_2970269662b 
-#>                      2 
+#> agg_record_25169593 
+#>                   2 
 ```

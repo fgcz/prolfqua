@@ -8,7 +8,13 @@ but for limma's matrix-based pipeline. Returns a list consumed by
 ## Usage
 
 ``` r
-strategy_limma(modelstr, model_name = "limma", trend = FALSE, robust = FALSE)
+strategy_limma(
+  modelstr,
+  model_name = "limma",
+  trend = FALSE,
+  robust = FALSE,
+  weights = NULL
+)
 ```
 
 ## Arguments
@@ -31,6 +37,13 @@ strategy_limma(modelstr, model_name = "limma", trend = FALSE, robust = FALSE)
   logical, passed to
   [`eBayes`](https://rdrr.io/pkg/limma/man/ebayes.html)
 
+- weights:
+
+  either a character string (column name in annotation for per-sample
+  weights) or a numeric matrix (proteins x samples) passed to
+  [`lmFit`](https://rdrr.io/pkg/limma/man/lmFit.html). Default `NULL`
+  (no weights).
+
 ## See also
 
 Other modelling:
@@ -47,7 +60,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -100,7 +113,7 @@ Other modelling:
 strat <- strategy_limma("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x560cd35e0b48>
+#> <environment: 0x32eaae140>
 strat$model_name
 #> [1] "limma"
 ```

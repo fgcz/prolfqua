@@ -54,7 +54,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -104,6 +104,7 @@ Other modelling:
 ## Examples
 
 ``` r
+
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from fileName column
 #> completing cases

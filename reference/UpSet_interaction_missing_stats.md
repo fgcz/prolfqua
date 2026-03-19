@@ -10,6 +10,14 @@ UpSet_interaction_missing_stats(data, cf, tr = 2)
 
 ## Arguments
 
+- data:
+
+  data.frame
+
+- cf:
+
+  AnalysisConfiguration
+
 - tr:
 
   if less than tr observations in condition then missing

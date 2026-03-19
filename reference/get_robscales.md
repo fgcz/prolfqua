@@ -23,6 +23,7 @@ Other preprocessing:
 
 ``` r
 
+
 bb <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -35,7 +36,8 @@ pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
 s1 <- get_robscales(pepIntensityNormalized, conf)
 
 res <- scale_with_subset(pepIntensityNormalized, pepIntensityNormalized, conf)
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel,
+#> protein_Id, peptide_Id)`
 s2 <- get_robscales(res$data, conf)
 abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 #> [1] TRUE

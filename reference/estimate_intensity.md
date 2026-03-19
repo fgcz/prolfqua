@@ -41,6 +41,7 @@ Other aggregation:
 ## Examples
 
 ``` r
+
 dd <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -65,8 +66,8 @@ length(bbMed$data$medpolish)
 length(bbRob$data$lmrob)
 #> [1] 116
 xt <- dplyr::inner_join(bbMed$data, bbRob$data)
-#> Joining with `by = join_by(protein_Id, sampleName, group_, sample,
-#> isotopeLabel, nr_children_protein_Id)`
+#> Joining with `by = join_by(protein_Id, sampleName, group_,
+#> sample, isotopeLabel, nr_children_protein_Id)`
 plot(xt$medpolish, xt$lmrob, log = "xy", pch = "*")
 abline(0, 1, col = 2)
 

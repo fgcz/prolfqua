@@ -13,9 +13,29 @@ adjust_p_values(
 )
 ```
 
+## Arguments
+
+- mm:
+
+  data.frame with p-values to adjust
+
+- column:
+
+  name of column containing p-values
+
+- group_by_col:
+
+  column(s) to group by before adjusting (e.g. contrast), or NULL for no
+  grouping
+
+- newname:
+
+  name of the new column with adjusted p-values
+
 ## Examples
 
 ``` r
+
 bb <- c(runif(1000), rexp(1500,rate=5))
 length(bb)
 #> [1] 2500

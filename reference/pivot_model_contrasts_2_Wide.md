@@ -14,6 +14,24 @@ pivot_model_contrasts_2_Wide(
 )
 ```
 
+## Arguments
+
+- modelWithInteractionsContrasts:
+
+  data.frame with contrast results in long format
+
+- subject_Id:
+
+  column name(s) identifying subjects (e.g. protein_Id)
+
+- columns:
+
+  character vector of value columns to pivot wide
+
+- contrast:
+
+  column name containing contrast labels
+
 ## See also
 
 Other modelling:
@@ -30,7 +48,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -80,5 +98,6 @@ Other modelling:
 ## Examples
 
 ``` r
+
 # this function is used by the contrast classes to implement the to wide method
 ```

@@ -27,7 +27,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -298,6 +298,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from fileName column
 #> completing cases
@@ -333,7 +334,8 @@ head(anova_tbl)
 #> 6 7soopj~3451    1.51 2.21e- 1 group_B+group_Ctrl 5.41e- 1
 mod$coef_histogram()
 #> $plot
-#> Warning: Removed 1 row containing non-finite outside the scale range (`stat_bin()`).
+#> Warning: Removed 1 row containing non-finite outside the scale range
+#> (`stat_bin()`).
 
 #> 
 #> $name
@@ -341,8 +343,8 @@ mod$coef_histogram()
 #> 
 mod$coef_volcano()
 #> $plot
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_point()`).
+#> Warning: Removed 1 row containing missing values or values outside the
+#> scale range (`geom_point()`).
 
 #> 
 #> $name
@@ -350,7 +352,8 @@ mod$coef_volcano()
 #> 
 mod$anova_histogram()
 #> $plot
-#> Warning: Removed 1 row containing non-finite outside the scale range (`stat_bin()`).
+#> Warning: Removed 1 row containing non-finite outside the scale range
+#> (`stat_bin()`).
 
 #> 
 #> $name

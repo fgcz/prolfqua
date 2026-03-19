@@ -28,7 +28,8 @@ strategy_lm(
   modelstr,
   model_name = "Model",
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted")
+    "moderated.p.value.adjusted"),
+  weights = NULL
 )
 
 strategy_rlm(
@@ -68,6 +69,12 @@ strategy_glm(
 
   type of test statistic passed to anova (e.g. "Chisq")
 
+- weights:
+
+  optional character string naming a column in the data containing
+  per-observation weights, passed to
+  [`lm`](https://rdrr.io/r/stats/lm.html). Default `NULL` (unweighted).
+
 - family:
 
   either binomial or quasibinomial
@@ -102,7 +109,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -163,7 +170,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -224,7 +231,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -285,7 +292,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -346,7 +353,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -396,10 +403,11 @@ Other modelling:
 ## Examples
 
 ``` r
+
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x560cc593bca0>
+#> <environment: 0x3472fa358>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -414,8 +422,8 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x560cb1fd8100>
-#> <environment: 0x560cc593bca0>
+#> <bytecode: 0x307f26588>
+#> <environment: 0x3472fa358>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -441,9 +449,9 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq 
-#>       2.101899e+00       6.773389e-01      -6.663876e-01       3.440276e-16 
+#>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.022940e-15 
 #> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg 
-#>      -1.068335e+00       3.432936e-16      -1.068335e+00       1.197563e+00 
+#>      -1.068335e+00      -8.904050e-16      -1.068335e+00       1.197563e+00 
 #> peptide_Idq2jTaC1y 
 #>      -1.445323e+00 
 #> 
@@ -456,9 +464,9 @@ modelFunction$model_fun(nestProtein$data[[4]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd 
-#>       8.375544e-03       8.360400e-11       9.365126e-01      -3.147690e-01 
+#>       8.375544e-03       8.360331e-11       9.365126e-01      -3.147690e-01 
 #> peptide_IdgdnXrza3 peptide_IdxvlVt88v 
-#>      -2.035802e-09      -6.303721e-01 
+#>      -2.035803e-09      -6.303721e-01 
 #> 
 #> Likelihood ratio test=3.276542 on 5 df, p=0.657435, n=48
 #> 
@@ -495,12 +503,13 @@ mod <- build_model(
  modelFunction)
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data,
+#>   model_strategy$model_fun, pb = pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining
+#>   warnings.
 #> Joining with `by = join_by(protein_Id)`
 sum(mod$modelDF$exists_lmer)
 #> [1] 6
@@ -512,7 +521,7 @@ sum(mod$modelDF$isSingular, na.rm=TRUE)
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x560cc70e0a10>
+#> <environment: 0x31e219a68>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -527,32 +536,29 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x560caf601448>
+#> <bytecode: 0x16a206ef0>
 #> <environment: namespace:prolfqua>
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x560cc6f8ea20>
+#> <environment: 0x31df39c08>
 tmp$isSingular
 #> function (m) 
 #> {
 #>     anyNA <- any(is.na(coefficients(m)))
-#>     if (anyNA) {
+#>     if (anyNA) 
 #>         return(TRUE)
-#>     }
-#>     else {
-#>         if (df.residual(m) >= 2) {
-#>             return(FALSE)
-#>         }
+#>     df <- df.residual(m)
+#>     if (is.na(df) || df < 2) 
 #>         return(TRUE)
-#>     }
+#>     FALSE
 #> }
-#> <bytecode: 0x560caf601448>
-#> <environment: namespace:prolfqua>
+#> <bytecode: 0x313083b30>
+#> <environment: 0x31df39c08>
 tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x560cc6e31c88>
+#> <environment: 0x31dcf55e0>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -567,6 +573,6 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x560caf601448>
+#> <bytecode: 0x16a206ef0>
 #> <environment: namespace:prolfqua>
 ```

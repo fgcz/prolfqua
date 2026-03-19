@@ -37,6 +37,7 @@ Other plotting:
 
 ``` r
 
+
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases

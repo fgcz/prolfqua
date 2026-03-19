@@ -83,6 +83,7 @@ Decorators hold a reference in their `lfq` field.
 access result via `$lfq`:
 
 ``` r
+
 lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 ```
 
@@ -102,14 +103,14 @@ existing LFQData.
 
 ### R6 Classes (22 classes across R/)
 
-| Category            | Classes                                                                                                                                                                | Files                                                   |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| Core data           | `LFQData`, `AnalysisConfiguration`                                                                                                                                     | LFQData.R, AnalysisConfiguration.R                      |
-| Decorators          | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp`                                                         | LFQData\*.R                                             |
-| Model interfaces    | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma`                                                                                                                  | Model\*.R, ContrastsLimma.R                             |
+| Category | Classes | Files |
+|----|----|----|
+| Core data | `LFQData`, `AnalysisConfiguration` | LFQData.R, AnalysisConfiguration.R |
+| Decorators | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp` | LFQData\*.R |
+| Model interfaces | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma` | Model\*.R, ContrastsLimma.R |
 | Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsProDA`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
-| Visualization       | `ContrastsPlotter`                                                                                                                                                     | ContrastsPlotter.R                                      |
-| Utilities           | `MissingHelpers`                                                                                                                                                       | tidyMS_missigness_V2.R                                  |
+| Visualization | `ContrastsPlotter` | ContrastsPlotter.R |
+| Utilities | `MissingHelpers` | tidyMS_missigness_V2.R |
 
 ### AnalysisConfiguration
 

@@ -8,6 +8,24 @@ table facade to easily switch implementations
 table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 ```
 
+## Arguments
+
+- df:
+
+  data.frame to display
+
+- caption:
+
+  table caption
+
+- digits:
+
+  number of digits (default from options)
+
+- kable:
+
+  if TRUE use knitr::kable
+
 ## See also
 
 Other utilities:

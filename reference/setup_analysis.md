@@ -47,6 +47,7 @@ Other configuration:
 ## Examples
 
 ``` r
+
 skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
  ident_qValue = "Detection.Q.Value")
 skylineconfig$factors[["Time"]] = "Sampling.Time.Point"

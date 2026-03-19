@@ -41,6 +41,7 @@ Other stats:
 ``` r
 
 
+
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -53,9 +54,10 @@ res <- summarize_stats(data, config)
 
 plot_stdv_vs_mean(res, config)
 #> `geom_smooth()` using formula = 'y ~ x'
-#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_smooth()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range
+#> (`stat_smooth()`).
+#> Warning: Removed 2 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
 
 datalog2 <- transform_work_intensity(data, config, log2)
 #> Column added : log2_abundance
@@ -63,9 +65,10 @@ statlog2 <- summarize_stats(datalog2, config)
 #> completing cases
 plot_stdv_vs_mean(statlog2, config)
 #> `geom_smooth()` using formula = 'y ~ x'
-#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_smooth()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range
+#> (`stat_smooth()`).
+#> Warning: Removed 2 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
 
 config$get_response()
 #> [1] "log2_abundance"
@@ -77,8 +80,9 @@ ressqrt <- summarize_stats(datasqrt, config)
 #> completing cases
 plot_stdv_vs_mean(ressqrt, config)
 #> `geom_smooth()` using formula = 'y ~ x'
-#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_smooth()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range
+#> (`stat_smooth()`).
+#> Warning: Removed 2 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
 
 ```

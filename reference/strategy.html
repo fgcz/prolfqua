@@ -44,7 +44,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Firth's Bias-Reduced Logistic Regression (logistf)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/logistf.R" class="external-link"><code>R/logistf.R</code></a>, <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/tidyMS_R6_Modelling.R" class="external-link"><code>R/tidyMS_R6_Modelling.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/logistf.R" class="external-link"><code>R/logistf.R</code></a>, <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/tidyMS_R6_Modelling.R" class="external-link"><code>R/tidyMS_R6_Modelling.R</code></a></small>
       <div class="d-none name"><code>strategy.Rd</code></div>
     </div>
 
@@ -74,7 +74,8 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span>  <span class="va">modelstr</span>,</span>
 <span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
 <span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
-<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
+<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">strategy_rlm</span><span class="op">(</span></span>
@@ -116,6 +117,12 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <dd><p>type of test statistic passed to anova (e.g. "Chisq")</p></dd>
 
 
+<dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
+<dd><p>optional character string naming a column in the data
+containing per-observation weights, passed to <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></code>.
+Default <code>NULL</code> (unweighted).</p></dd>
+
+
 <dt id="arg-family">family<a class="anchor" aria-label="anchor" href="#arg-family"></a></dt>
 <dd><p>either binomial or quasibinomial</p></dd>
 
@@ -149,7 +156,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
-<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
+<code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
@@ -209,7 +216,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
-<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
+<code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
@@ -269,7 +276,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
-<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
+<code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
@@ -329,7 +336,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
-<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
+<code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
@@ -389,7 +396,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
-<code><a href="ContrastsProDA.html">ContrastsProDA</a></code>,
+<code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
@@ -443,7 +450,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_logistf</span><span class="op">(</span><span class="st">"bin_resp ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bin_resp ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560cc593bca0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x3472fa358&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -458,8 +465,8 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560cb1fd8100&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560cc593bca0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x307f26588&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x3472fa358&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
@@ -485,9 +492,9 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       2.101899e+00       6.773389e-01      -6.663876e-01       3.440276e-16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.022940e-15 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      -1.068335e+00       3.432936e-16      -1.068335e+00       1.197563e+00 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      -1.068335e+00      -8.904050e-16      -1.068335e+00       1.197563e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_Idq2jTaC1y </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      -1.445323e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -500,9 +507,9 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       8.375544e-03       8.360400e-11       9.365126e-01      -3.147690e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       8.375544e-03       8.360331e-11       9.365126e-01      -3.147690e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_IdgdnXrza3 peptide_IdxvlVt88v </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      -2.035802e-09      -6.303721e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      -2.035803e-09      -6.303721e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Likelihood ratio test=3.276542 on 5 df, p=0.657435, n=48</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -539,12 +546,13 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-in"><span> <span class="va">modelFunction</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 4 warnings in `dplyr::mutate()`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   pb)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   model_strategy$model_fun, pb = pb)`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 2: `protein_Id = "7cbcrd~5725"`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `value[[3L]]()`:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> WARN :Error: grouping factors must have &gt; 1 sampled level</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 3 remaining</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   warnings.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">exists_lmer</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
@@ -556,7 +564,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560cc70e0a10&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x31e219a68&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -571,32 +579,29 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560caf601448&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x16a206ef0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560cc6f8ea20&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x31df39c08&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     anyNA &lt;- any(is.na(coefficients(m)))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     if (anyNA) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (anyNA) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (df.residual(m) &gt;= 2) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             return(FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     df &lt;- df.residual(m)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (is.na(df) || df &lt; 2) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560caf601448&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x313083b30&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x31df39c08&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_glm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560cc6e31c88&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x31dcf55e0&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -611,7 +616,7 @@ The strategy contains functions to fit the model but also compute the contrasts 
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560caf601448&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x16a206ef0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 </code></pre></div>
     </div>

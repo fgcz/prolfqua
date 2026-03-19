@@ -58,7 +58,7 @@ Other modelling:
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsProDA`](https://wolski.github.io/prolfqua/reference/ContrastsProDA.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
@@ -150,12 +150,13 @@ modCB <- prolfqua::build_model(
   subject_Id = pMerged$config$hierarchy_keys() )
 #> Warning: There were 25 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data,
+#>   model_strategy$model_fun, pb = pb)`.
 #> ℹ In group 33: `protein_Id = "Br6sVH~3679"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 24 remaining warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 24 remaining
+#>   warnings.
 #> Joining with `by = join_by(protein_Id)`
 
 formula_condition <-
@@ -166,12 +167,13 @@ modC <- prolfqua::build_model(
   subject_Id = pMerged$config$hierarchy_keys() )
 #> Warning: There were 19 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data,
+#>   model_strategy$model_fun, pb = pb)`.
 #> ℹ In group 33: `protein_Id = "Br6sVH~3679"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 18 remaining warnings.
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 18 remaining
+#>   warnings.
 #> Joining with `by = join_by(protein_Id)`
 
 tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")

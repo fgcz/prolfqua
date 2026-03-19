@@ -125,6 +125,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+
 mi <- ModelInterface$new()
 
 testthat::expect_error(mi$get_coefficients())

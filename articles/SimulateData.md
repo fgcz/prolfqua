@@ -3,6 +3,7 @@
 ### Dimulate data
 
 ``` r
+
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
@@ -17,20 +18,22 @@ For peptides:
 - The transformed protein abundances have a log normal distribution with
   `meanlog = log(20)`, and `sd = log(1.2)`.
 - The number of peptides per protein follow a geometric distribution,
-  $N_{pep} \sim Geo(p)$ with $p = 0.3$
+  $`N_{pep} \sim Geo(p)`$ with $`p = 0.3`$
 - The peptide abundances of a protein have log normal distribution with
   `meanlog = log(proteinabundance)` and `sd = log(1.2)`
 - The log2 intensities of a peptide within a group follow a normal
-  distribution distribution \$I\_{pep} LogNormal(,) \$, where $\mu$ is
-  the peptide abundance and $\sigma$
+  distribution distribution \$I\_{pep} LogNormal(,) \$, where $`\mu`$ is
+  the peptide abundance and $`\sigma`$
 
 ``` r
+
 peptideAbundances <- prolfqua::sim_lfq_data(PEPTIDE = TRUE)
 ```
 
 ## Analyse simulated data with prolfqua
 
 ``` r
+
 library(prolfqua)
 
 atable <- AnalysisConfiguration$new()
@@ -69,6 +72,7 @@ lfqdata$factors()
     ## 12 Ctrl_V4 Ctrl_V4    Ctrl
 
 ``` r
+
 pl <- lfqdata$get_Plotter()
 lfqdata$hierarchy_counts()
 ```
@@ -79,18 +83,21 @@ lfqdata$hierarchy_counts()
     ## 1 light                16         60
 
 ``` r
+
 lfqdata$config$hierarchy_keys_depth()
 ```
 
     ## [1] "protein_Id"
 
 ``` r
+
 pl$heatmap()
 ```
 
 ![](SimulateData_files/figure-html/unnamed-chunk-4-1.png)
 
 ``` r
+
 pl$intensity_distribution_density()
 ```
 
@@ -99,6 +106,7 @@ pl$intensity_distribution_density()
 ## Fit peptide model
 
 ``` r
+
 formula_Condition <-  strategy_lm("abundance ~ group_")
 lfqdata$config$hierarchyDepth  <- 2
 
@@ -112,6 +120,7 @@ lfqdata$subject_Id()
     ## [1] "protein_Id" "peptide_Id"
 
 ``` r
+
 mod <- prolfqua::build_model(
   lfqdata,
   formula_Condition)
@@ -122,6 +131,7 @@ mod$anova_histogram()$plot
 ![](SimulateData_files/figure-html/unnamed-chunk-6-1.png)
 
 ``` r
+
 xx <- aovtable |> dplyr::filter(FDR < 0.05)
 signif <- lfqdata$get_copy()
 signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
@@ -133,6 +143,7 @@ signif$get_Plotter()$heatmap()
 ## Aggregate data
 
 ``` r
+
 lfqdata$config$hierarchyDepth <- 1
 ag <- lfqdata$get_Aggregator()
 ag$medpolish()
@@ -140,12 +151,14 @@ protData <- ag$lfq_agg
 ```
 
 ``` r
+
 protData$response()
 ```
 
     ## [1] "medpolish"
 
 ``` r
+
 formula_Condition <-  strategy_lm("medpolish ~ group_")
 
 mod <- prolfqua::build_model(
@@ -160,5 +173,6 @@ v1$FDR
 ![](SimulateData_files/figure-html/unnamed-chunk-9-1.png)
 
 ``` r
+
 ctr <- contr$get_contrasts()
 ```

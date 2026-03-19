@@ -36,6 +36,7 @@ Other preprocessing:
 ## Examples
 
 ``` r
+
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from fileName column
 #> completing cases
@@ -43,7 +44,8 @@ bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> setup done
 xx <- normalize_log2_robscale(bb$data, bb$config)
 #> Column added : log2_abundance
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel,
+#> protein_Id, peptide_Id)`
 xx$config$workIntensity
 #> [1] "abundance"            "log2_abundance"       "transformedIntensity"
 ```

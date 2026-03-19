@@ -43,6 +43,7 @@ Other deprecated:
 
 ``` r
 
+
 bb <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -63,14 +64,14 @@ dd <- x(value = "plot")
 stopifnot(nrow(dd) == length(unique(bb$data$protein_Id)))
 
 dd$plot[[2]]
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
+#> Warning: Removed 2 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 1 row containing missing values or values outside the
+#> scale range (`geom_line()`).
+#> Warning: Removed 1 row containing missing values or values outside the
+#> scale range (`geom_line()`).
+#> Warning: Removed 2 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
 
 
 # example how to add peptide count information

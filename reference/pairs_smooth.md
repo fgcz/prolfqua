@@ -47,24 +47,24 @@ pairs_smooth(tmp,main="small data", legend=TRUE)
 pairs_smooth(tmp,main="small data", diag.panel=panel_hist)
 
 pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 2 y values <= 0 omitted from logarithmic plot
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
 #> Warning: 2 x values <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 2 x values <= 0 omitted from logarithmic plot
 #> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 2 x values <= 0 omitted from logarithmic plot
 #> Warning: 1 y value <= 0 omitted from logarithmic plot
 #> Warning: 2 x values <= 0 omitted from logarithmic plot
 #> Warning: 1 y value <= 0 omitted from logarithmic plot
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
+#> Warning: 2 x values <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
+#> Warning: 2 x values <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
+#> Warning: 2 x values <= 0 omitted from logarithmic plot
 #> Warning: 1 y value <= 0 omitted from logarithmic plot
+#> Warning: 2 x values <= 0 omitted from logarithmic plot
+#> Warning: 1 y value <= 0 omitted from logarithmic plot
+#> Warning: 1 x value <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
 #> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
@@ -72,7 +72,7 @@ pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
 #> Warning: 1 y value <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
 #> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot

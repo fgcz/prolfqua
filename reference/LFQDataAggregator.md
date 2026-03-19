@@ -250,26 +250,27 @@ lfqTrans$log2()
 #> Column added : log2_abundance
 lfqTrans <- lfqTrans$robscale()$lfq
 #> data is : TRUE
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel,
+#> protein_Id, peptide_Id)`
 lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
 
 lfqAggregator$medpolish()
 #> starting aggregation
 pmed <- lfqAggregator$plot()
 pmed$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
+#> Warning: Removed 7 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
 
 lfqAggregator$lmrob()
 #> starting aggregation
 prob <- lfqAggregator$plot()
 prob$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
+#> Warning: Removed 7 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
 
 
 lfqCopy <- lfqdata$clone()
@@ -281,10 +282,10 @@ lfqAggregator$sum_topN()
 #> Columns added : srm_meanInt srm_meanIntRank
 pSum <- lfqAggregator$plot()
 pSum$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
+#> Warning: Removed 7 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
 
 
 lfqAggregator$mean_topN()
@@ -292,53 +293,81 @@ lfqAggregator$mean_topN()
 #> Columns added : srm_meanInt srm_meanIntRank
 pMean <- lfqAggregator$plot()
 pMean$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
+#> Warning: Removed 7 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
 
 protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
 protPlotter$heatmap()
 
 lfqAggregator$write_plots(tempdir())
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
+#> Warning: Removed 7 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 5 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 3 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
+#> Warning: Removed 2 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 1 row containing missing values or values outside the
+#> scale range (`geom_line()`).
+#> Warning: Removed 1 row containing missing values or values outside the
+#> scale range (`geom_point()`).
+#> 
+
+#> [====================>--------------------------------------------------]  30%
+#> Warning: Removed 5 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 3 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 8 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 6 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
+#> 
+
+#> [===========================>-------------------------------------------]  40%
+#> Warning: Removed 1 row containing missing values or values outside the
+#> scale range (`geom_point()`).
+#> Warning: Removed 1 row containing missing values or values outside the
+#> scale range (`geom_line()`).
+#> 
+
+#> [===================================>-----------------------------------]  50%
+#> 
+
+#> [==========================================>----------------------------]  60%
+#> Warning: Removed 8 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 6 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
-#> Warning: Removed 3 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 9 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
+#> 
+
+#> [=================================================>---------------------]  70%
+#> Warning: Removed 3 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 2 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
+#> 
+
+#> [========================================================>--------------]  80%
+#> 
+
+#> [===============================================================>-------]  90%
+#> Warning: Removed 9 rows containing missing values or values outside
+#> the scale range (`geom_point()`).
+#> Warning: Removed 7 rows containing missing values or values outside
+#> the scale range (`geom_line()`).
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
+#> 
+
+#> [=======================================================================] 100%
+#> 
+                                                                              
+#> 
+
 ```

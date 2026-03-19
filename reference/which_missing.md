@@ -22,5 +22,5 @@ which_missing(x, weight_missing = 0.2)
 
 ``` r
 which_missing(2**rnorm(10,2,0.4))
-#>  [1] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE
+#>  [1]  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
 ```

@@ -1,8 +1,19 @@
-# ContrastsProDA Wrapper to results produced by proDA
+# RLM contrast analysis facade
 
-ContrastsProDA Wrapper to results produced by proDA
+RLM contrast analysis facade
 
-ContrastsProDA Wrapper to results produced by proDA
+RLM contrast analysis facade
+
+## Details
+
+Encapsulates the pipeline:
+[`strategy_rlm`](https://wolski.github.io/prolfqua/reference/strategy.md)
+-\>
+[`build_model`](https://wolski.github.io/prolfqua/reference/build_model.md)
+-\>
+[`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md)
+-\>
+[`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md).
 
 ## See also
 
@@ -67,50 +78,29 @@ Other modelling:
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
 
-## Super class
-
-[`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
--\> `ContrastsProDA`
-
 ## Public fields
 
-- `contrast_result`:
+- `model`:
 
-  contrast result
+  Model object
 
-- `modelName`:
+- `contrast`:
 
-  model name
-
-- `subject_Id`:
-
-  columns with protein ID's
-
-- `contrasts`:
-
-  named vector of length 1.
+  ContrastsModerated object
 
 ## Methods
 
 ### Public methods
 
-- [`ContrastsProDA$new()`](#method-ContrastsProDA-new)
+- [`ContrastsRLMFacade$new()`](#method-ContrastsRLMFacade-new)
 
-- [`ContrastsProDA$get_contrast_sides()`](#method-ContrastsProDA-get_contrast_sides)
+- [`ContrastsRLMFacade$get_contrasts()`](#method-ContrastsRLMFacade-get_contrasts)
 
-- [`ContrastsProDA$get_linfct()`](#method-ContrastsProDA-get_linfct)
+- [`ContrastsRLMFacade$get_Plotter()`](#method-ContrastsRLMFacade-get_Plotter)
 
-- [`ContrastsProDA$get_contrasts()`](#method-ContrastsProDA-get_contrasts)
+- [`ContrastsRLMFacade$to_wide()`](#method-ContrastsRLMFacade-to_wide)
 
-- [`ContrastsProDA$get_Plotter()`](#method-ContrastsProDA-get_Plotter)
-
-- [`ContrastsProDA$to_wide()`](#method-ContrastsProDA-to_wide)
-
-- [`ContrastsProDA$clone()`](#method-ContrastsProDA-clone)
-
-Inherited methods
-
-- [`prolfqua::ContrastsInterface$column_description()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`ContrastsRLMFacade$clone()`](#method-ContrastsRLMFacade-clone)
 
 ------------------------------------------------------------------------
 
@@ -120,119 +110,74 @@ initialize
 
 #### Usage
 
-    ContrastsProDA$new(
-      contrastsdf,
-      contrasts,
-      subject_Id = "name",
-      modelName = "ContrastProDA"
-    )
+    ContrastsRLMFacade$new(lfqdata, modelstr, contrasts, ...)
 
 #### Arguments
 
-- `contrastsdf`:
+- `lfqdata`:
 
-  data.frame returned by proDA
+  LFQData object
+
+- `modelstr`:
+
+  model formula string (e.g. "~ group\_")
 
 - `contrasts`:
 
-  contrasts
+  named character vector of contrasts
 
-- `subject_Id`:
+- `...`:
 
-  column name with protein ID's
-
-- `modelName`:
-
-  name of model default value ContrastProDA
-
-------------------------------------------------------------------------
-
-### Method `get_contrast_sides()`
-
-show names of contrasts
-
-#### Usage
-
-    ContrastsProDA$get_contrast_sides()
-
-#### Returns
-
-data.frame
-
-------------------------------------------------------------------------
-
-### Method `get_linfct()`
-
-get linear function used to determine contrasts
-
-#### Usage
-
-    ContrastsProDA$get_linfct()
-
-#### Returns
-
-data.frame
+  passed to
+  [`strategy_rlm`](https://wolski.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------
 
 ### Method `get_contrasts()`
 
-get contrasts
+get contrast results
 
 #### Usage
 
-    ContrastsProDA$get_contrasts(all = FALSE)
+    ContrastsRLMFacade$get_contrasts(...)
 
 #### Arguments
 
-- `all`:
+- `...`:
 
-  (default FALSE)
+  passed to ContrastsModerated\$get_contrasts
 
 ------------------------------------------------------------------------
 
 ### Method `get_Plotter()`
 
-get
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
+get ContrastsPlotter
 
 #### Usage
 
-    ContrastsProDA$get_Plotter(
-      fcthreshold = 1,
-      fdrthreshold = 0.1,
-      tstatthreshold = 5
-    )
+    ContrastsRLMFacade$get_Plotter(...)
 
 #### Arguments
 
-- `fcthreshold`:
+- `...`:
 
-  fold change threshold to show
-
-- `fdrthreshold`:
-
-  FDR threshold
-
-- `tstatthreshold`:
-
-  t statistics threshold
+  passed to ContrastsModerated\$get_Plotter
 
 ------------------------------------------------------------------------
 
 ### Method `to_wide()`
 
-convert to wide format
+convert results to wide format
 
 #### Usage
 
-    ContrastsProDA$to_wide(columns = c("t_statistic", "adj_pval"))
+    ContrastsRLMFacade$to_wide(...)
 
 #### Arguments
 
-- `columns`:
+- `...`:
 
-  value column default t_statistic, adj_pval
+  passed to ContrastsModerated\$to_wide
 
 ------------------------------------------------------------------------
 
@@ -242,7 +187,7 @@ The objects of this class are cloneable with this method.
 
 #### Usage
 
-    ContrastsProDA$clone(deep = FALSE)
+    ContrastsRLMFacade$clone(deep = FALSE)
 
 #### Arguments
 
@@ -253,38 +198,43 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-istar <- prolfqua::sim_lfq_data_peptide_config()
+istar <- sim_lfq_data_protein_config()
 #> creating sampleName from fileName column
 #> completing cases
 #> completing cases done
 #> setup done
-istar$config <- istar$config
-istar_data <- istar$data
-lfd <- LFQData$new(istar_data, istar$config)
-se <- prolfqua::LFQDataToSummarizedExperiment(lfd)
-#> Loading required namespace: SummarizedExperiment
-if(require(proDA)){
-fit <- proDA::proDA(se, design = ~ group_ - 1, data_is_log_transformed = TRUE)
-contr <- list()
-contrasts <- c("group_AvsCtrl" = "group_A - group_Ctrl",
-               "group_BvsCtrl" = "group_B - group_Ctrl")
-contr[["group_AvsCtrl"]] <- data.frame(
-  contrast = "group_AvsCtrl",
-  proDA::test_diff(fit, contrast = "group_A - group_Ctrl"))
-contr[["group_BvsCtrl"]] <- data.frame(
-  contrast = "group_BvsCtrl",
-  proDA::test_diff(fit, contrast = "group_B - group_Ctrl"))
-
-bb <- dplyr::bind_rows(contr)
-cproDA <- ContrastsProDA$new(bb, contrasts = contrasts, subject_Id = "name")
-x <- cproDA$get_contrasts()
-cproDA$get_linfct()
-contsides <- cproDA$get_contrast_sides()
-stopifnot(ncol(cproDA$to_wide()) == c(7))
-tmp <- cproDA$get_Plotter()
-tmp$volcano()$pval
-tmp$volcano()$adj_pval
-}
-#> Loading required package: proDA
-
+lfqdata <- LFQData$new(istar$data, istar$config)
+lfqdata$rename_response("transformedIntensity")
+contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+fa <- ContrastsRLMFacade$new(lfqdata, "~ group_", contrasts)
+#> Joining with `by = join_by(protein_Id)`
+head(fa$get_contrasts())
+#> determine linear functions:
+#> get_contrasts -> contrasts_linfct
+#> contrasts_linfct
+#> Joining with `by = join_by(protein_Id, contrast)`
+#> # A tibble: 6 × 14
+#>   facade modelName   protein_Id contrast   diff std.error avgAbd statistic    df
+#>   <chr>  <chr>       <chr>      <chr>     <dbl>     <dbl>  <dbl>     <dbl> <dbl>
+#> 1 rlm    WaldTest_m… 0EfVhX~00… A_vs_Ct… -2.44      0.680   21.0    -3.51   12.9
+#> 2 rlm    WaldTest_m… 7cbcrd~57… A_vs_Ct…  2.79      0.434   20.6     4.89   10.1
+#> 3 rlm    WaldTest_m… 9VUkAq~47… A_vs_Ct…  1.74      0.352   20.4     4.06   10.7
+#> 4 rlm    WaldTest_m… BEJI92~52… A_vs_Ct…  0.951     0.472   20.7     2.04   12.6
+#> 5 rlm    WaldTest_m… CGzoYe~21… A_vs_Ct… -0.579     0.914   30.7    -0.728  14.9
+#> 6 rlm    WaldTest_m… Fl4JiV~86… A_vs_Ct… -0.174     0.715   21.2    -0.239  13.8
+#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#> #   sigma <dbl>, FDR <dbl>
+fa$to_wide()
+#> # A tibble: 9 × 5
+#>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
+#>   <chr>                <dbl>             <dbl>         <dbl>               <dbl>
+#> 1 0EfVhX~0087         -2.44           0.00389        0.0117               -3.51 
+#> 2 7cbcrd~5725          2.79           0.000610       0.00549               4.89 
+#> 3 9VUkAq~4703          1.74           0.00197        0.00887               4.06 
+#> 4 BEJI92~5282          0.951          0.0626         0.141                 2.04 
+#> 5 CGzoYe~2147         -0.579          0.478          0.610                -0.728
+#> 6 Fl4JiV~8625         -0.174          0.815          0.815                -0.239
+#> 7 HvIpHG~9079         -0.585          0.399          0.610                -0.870
+#> 8 JcKVfU~9653          0.328          0.542          0.610                 0.627
+#> 9 SGIVBl~5782         -0.494          0.482          0.610                -0.723
 ```
