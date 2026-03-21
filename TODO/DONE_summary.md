@@ -1,0 +1,160 @@
+# prolfqua — Completed Work Summary
+
+Chronological record of completed development work on the `Modelling2R6` branch.
+
+---
+
+## 2026-02-19 — Bug Fixes: Hardcoded Imputation, Log Protection, Silent Drops
+
+From code review top-10 items #1, #2, #5.
+
+- **Fixed hardcoded imputation parameters** (`R/LFQDataImp.R`): removed hardcoded overrides, now uses `match.arg()`. Cleaned up dead code, proper return type, fleshed out `LFQDataImp` class.
+- **Added log(0)/log(negative) protection** (`R/tidyMS_R6_TransitionCorrelations.R`): `transform_work_intensity()` now warns when log transform encounters zeros (-Inf) or negatives (NaN).
+- **Added reporting for silently dropped proteins/contrasts** (`R/tidyMS_R6_Modelling.R`, `R/logistf.R`): `contrasts_linfct()` and `contrasts_linfct_logistf()` now report how many proteins were dropped via `message()`.
+
+---
+
+## 2026-02-20 — Test Coverage & Deprecated Function Migration
+
+Reference: `code_review_report.md`, commit `f1adad05`.
+
+### Added `@examples`
+
+| Class/Function | File | Status |
+|----------------|------|--------|
+| `LFQDataWriter` — `get_long()`, `get_wide()`, `write_long()`, `write_wide()` | `R/LFQDataWriter.R` | Done |
+| `AnalysisConfiguration` — class constructor | `R/AnalysisConfiguration.R` | Done |
+| `model_summary()` | `R/tidyMS_R6Model.R` | Done |
+| `ionstar_bench_preprocess()` | `R/Benchmark.R` | Done |
+| `ms_bench_auc()` | `R/Benchmark.R` | Done |
+
+### Removed `\dontrun{}` wrappers
+
+All `\dontrun{}` removed — code now runs during `R CMD check`:
+
+| File | What was unwrapped |
+|------|--------------------|
+| `R/LFQDataTransformer.R` | `preprocessCore` quantile normalization (guarded by `if(require(...))`) |
+| `R/LFQDataPlotter.R` | `pairs_smooth()` call |
+| `R/LFQDataAggregator.R` | `write_plots()` to tempdir |
+| `R/tidyMS_missigness.R` | `UpSetR::upset()` interaction plot |
+| `R/tidyMS_missigness.R` | `UpSetR::upset()` sample-level plot |
+
+### Cleaned up `tests/testthat/test-plotting_functions.R`
+
+- Removed placeholder test (`"multiplication works"`, `expect_equal(2 * 2, 4)`)
+- Replaced `stopifnot("ggplot" %in% class(p))` with `expect_true("ggplot" %in% class(p))` (3 locations)
+
+### Replaced ~92 deprecated dplyr/tidyr/ggplot2 calls across 14 files
+
+| Deprecated | Replacement | Count |
+|---|---|---|
+| `group_by_at(vars)` | `group_by(across(all_of(vars)))` | 32 |
+| `select_at(vars)` | `select(all_of(vars))` | 17 |
+| `aes_string(x = var)` | `aes(x = .data[[var]])` | 17 |
+| `spread(key, val)` | `pivot_wider(names_from, values_from)` | 6 |
+| `one_of(vars)` | `all_of(vars)` | 6 |
+| `UQ(sym(x))` | `!!sym(x)` | 5 |
+| `unnest_legacy()` | `unnest(cols = c(...))` | 5 |
+| `gather(key, val, cols)` | `pivot_longer(cols, names_to, values_to)` | 4 |
+| `summarise_at(vars, fn)` | `summarise(across(all_of(vars), fn))` | 4 |
+| `mutate_at(var, fn)` | `mutate(across(all_of(var), fn))` | 1 |
+
+Special cases: `aes_string()` with expression strings → `!!rlang::parse_expr()`, nullable colour/text → conditional `aes()`.
+
+### Removed dead code
+
+- `LFQDataWriter` dead `write_plots()` method removed
+- Dead `NA <- NA` assignment in `R/LFQDataImp.R` noted
+
+---
+
+## 2026-02-20 — Code Review Items Completed (items 1–7, 9–10)
+
+From the 5-agent code review report (2026-02-19):
+
+| # | Issue | Resolution |
+|---|-------|------------|
+| 1 | Hardcoded imputation params | `match.arg()` in `impute_with_zcomp()` |
+| 2 | log(0)/log(negative) protection | Warnings in `transform_work_intensity()` |
+| 3 | 115+ deprecated tidyverse functions | All replaced (commit `f1adad05`) |
+| 4 | Missing `@examples` | All added |
+| 5 | Silent dropped proteins/contrasts | `message()` in `contrasts_linfct` |
+| 6 | MAD division-by-zero guard | Zero-MAD check + warning in `robust_scale()` |
+| 7 | Document MCAR assumption | `@note` on `impute_with_zcomp()`, `@section` on `LFQData` |
+| 9 | Replace for-loops | Vectorized: `loopOverNested` → `purrr::map()`, `poolvar` → `map_df()`, `percentage_abundance` → grouped mutate, stats crossing → `tidyr::crossing()` |
+| 10 | Remove dead code/stubs | Placeholder test, `\dontrun{}`, dead `write_plots()` removed |
+
+Additional: `ContrastsPlotter` code deduplication (`.ma_fig()` helper).
+
+---
+
+## 2026-03 — LFQDataWriter Removal
+
+Commit `3a094331`. `LFQDataWriter` class removed entirely — only used externally by ptm-pipeline, which was updated.
+
+---
+
+## 2026-03 — Limma Backend Added
+
+Commit `cbed2721`. New file `R/ContrastsLimma.R` with:
+
+- `strategy_limma()` — analogous to `strategy_lm()`, returns strategy list with formula, trend, robust
+- `build_model_limma()` — fits limma matrix model via `lmFit()` on wide expression matrix
+- `ModelLimma` R6 class — wraps limma `MArrayLM` fit, same API as `Model`
+- `ContrastsLimma` R6 class — inherits `ContrastsInterface`, uses `contrasts.fit()` + `eBayes()`
+
+User-facing workflow is identical — just swap `strategy_lm` → `strategy_limma` and `Contrasts` → `ContrastsLimma`.
+
+---
+
+## 2026-03 — DEqMS Backend Added
+
+`ContrastsDEqMSFacade` and `ContrastsModeratedDEqMS` implemented. Facade derives count info directly from `LFQData$config$nr_children`. `DEqMS_Moderation.Rmd` vignette added.
+
+---
+
+## 2026-03-12 — Contrast Facades, DEqMS Simplification, Pkgdown Fixes
+
+Commit `dcc7b107`.
+
+### Simplified DEqMS facade API
+- Removed `count_df` and `count_column` from `ContrastsDEqMSFacade`
+- Facade now derives counts directly from `LFQData` via `lfqdata$config$nr_children`
+
+### Tightened facade input contracts
+- Aggregate-only facades (`lm`, `limma`, `deqms`, `lm_missing`) require protein-level `LFQData`
+- Nested-data facades (`ropeca`, `lmer`) require peptide-level data
+- Added explicit validation errors
+
+### Added `ContrastsLmerFacade`
+- Added `method = "lmer"` support in `build_contrast_analysis()`
+
+### Harmonized facade outputs
+- Added `facade` column in each facade result
+- Kept `modelName` as the underlying engine/result label
+
+### Vignette and test updates
+- Added `vignettes/ContrastFacades.Rmd`
+- Extended `tests/testthat/test-ContrastsFacades.R`
+- Fixed pkgdown metadata/accessibility warnings (site URL, aria-label, alt text)
+
+---
+
+## 2026-03 — Formatting (Air) & Linting Standardization
+
+Air formatter applied. `.lintr` configured with 120-char line length. `object_name_linter` disabled for mixed naming conventions.
+
+---
+
+## 2026-03-18 — Limma Weights Support Added
+
+From `Expose_additional_lmFit_paths.md`. Extended `strategy_limma()` and `build_model_limma()` with `weights` parameter support. Per-sample weights are passed through to `limma::lmFit(weights=)`.
+
+---
+
+## 2026-03-19 — ContrastsProDA Removed, ContrastsRLMFacade Added, Weights in strategy_lm
+
+- `ContrastsProDA` class removed (proDA dependency dropped)
+- `ContrastsRLMFacade` added for robust linear model contrasts
+- `strategy_lm()` extended with weights support
