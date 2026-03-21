@@ -35,6 +35,12 @@ check_facade_interface <- function(fa) {
   for (col in expected_cols) {
     expect_true(col %in% colnames(res), info = paste("missing column:", col))
   }
+  # get_contrasts must not contain NA diff
+  expect_true(!any(is.na(res$diff)), info = "get_contrasts() must not return NA diff rows")
+
+  missing <- fa$get_missing()
+  expect_true(is.data.frame(missing))
+  expect_true("contrast" %in% colnames(missing))
 
   wide <- fa$to_wide()
   expect_true(is.data.frame(wide))
@@ -248,6 +254,61 @@ test_that("aggregated facades error on peptide-level LFQData", {
     prolfqua::ContrastsDEqMSFacade$new(lfqdata, MODELSTR, CONTRASTS),
     "requires aggregated LFQData"
   )
+})
+
+# ---- get_missing with data that has missingness ----
+
+test_that("get_missing returns non-empty for data with missing groups", {
+  # Simulate with missingness so some proteins can't be estimated
+  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
+  istar$config <- prolfqua::old2new(istar$config)
+  lfq_peptide <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
+  aggregator <- prolfqua::LFQDataAggregator$new(lfq_peptide, "protein")
+  lfq_protein <- aggregator$medpolish()
+
+  contrasts2 <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
+
+  fa_lm <- prolfqua::ContrastsLMFacade$new(lfq_protein, MODELSTR, contrasts2)
+  fa_limma <- prolfqua::ContrastsLimmaFacade$new(lfq_protein, MODELSTR, contrasts2)
+  fa_lm_missing <- prolfqua::ContrastsLMMissingFacade$new(lfq_protein, MODELSTR, contrasts2)
+
+  # lm should have missing proteins (it drops unfittable ones)
+  lm_missing <- fa_lm$get_missing()
+  expect_true(is.data.frame(lm_missing))
+  expect_true("protein_Id" %in% colnames(lm_missing))
+  expect_true("contrast" %in% colnames(lm_missing))
+
+  # limma should also have missing proteins (NA diff rows are filtered)
+  limma_missing <- fa_limma$get_missing()
+  expect_true(is.data.frame(limma_missing))
+  expect_true("protein_Id" %in% colnames(limma_missing))
+
+  # limma get_contrasts must have no NA diff
+  limma_res <- fa_limma$get_contrasts()
+  expect_true(!any(is.na(limma_res$diff)))
+
+  # lm_missing should have fewer (or no) missing proteins thanks to imputation
+  lm_missing_missing <- fa_lm_missing$get_missing()
+  expect_true(nrow(lm_missing_missing) <= nrow(lm_missing))
+
+  # get_missing + get_contrasts should cover all input proteins × contrasts
+  n_input_proteins <- dplyr::n_distinct(lfq_protein$data$protein_Id)
+  n_contrasts <- length(contrasts2)
+  for (fa in list(fa_lm, fa_limma, fa_lm_missing)) {
+    n_estimated <- nrow(fa$get_contrasts())
+    n_missing <- nrow(fa$get_missing())
+    expect_equal(n_estimated + n_missing, n_input_proteins * n_contrasts)
+  }
+})
+
+test_that("get_missing returns empty data.frame when all proteins are estimable", {
+  # No missingness — all proteins should be estimable
+  lfqdata <- make_protein_lfqdata()$lfqdata
+  fa <- prolfqua::ContrastsLMFacade$new(lfqdata, MODELSTR, CONTRASTS)
+  missing <- fa$get_missing()
+  expect_true(is.data.frame(missing))
+  expect_equal(nrow(missing), 0)
 })
 
 test_that("nested facades error on aggregated LFQData", {

@@ -12,6 +12,7 @@ Base class for all Contrasts classes
 int <- ContrastsInterface$new()
 testthat::expect_error(int$get_contrast_sides())
 testthat::expect_error(int$get_contrasts())
+testthat::expect_error(int$get_missing())
 testthat::expect_error(int$get_Plotter())
 testthat::expect_error(int$to_wide())
 int$column_description()
@@ -23,6 +24,7 @@ int$column_description()
 \item \href{#method-ContrastsInterface-get_contrasts}{\code{ContrastsInterface$get_contrasts()}}
 \item \href{#method-ContrastsInterface-get_Plotter}{\code{ContrastsInterface$get_Plotter()}}
 \item \href{#method-ContrastsInterface-to_wide}{\code{ContrastsInterface$to_wide()}}
+\item \href{#method-ContrastsInterface-get_missing}{\code{ContrastsInterface$get_missing()}}
 \item \href{#method-ContrastsInterface-column_description}{\code{ContrastsInterface$column_description()}}
 \item \href{#method-ContrastsInterface-clone}{\code{ContrastsInterface$clone()}}
 }
@@ -64,6 +66,17 @@ initialize plotter
 create wide representation of data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$to_wide()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsInterface-get_missing"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-get_missing}{}}}
+\subsection{Method \code{get_missing()}}{
+get protein × contrast pairs that could not be estimated.
+Returns a data.frame with hierarchy columns and contrast, or 0 rows.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_missing()}\if{html}{\out{</div>}}
 }
 
 }

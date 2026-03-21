@@ -66,14 +66,17 @@ metadata in the `LFQData` object. The DEqMS facade uses
 `lfq_protein$config$nr_children` directly, so no extra count table has to be
 passed around.
 
-# Define one contrast
+# Define contrasts
 
 ```{r contrasts}
-contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+contrasts <- c(
+  "A_vs_Ctrl" = "group_A - group_Ctrl",
+  "B_vs_Ctrl" = "group_B - group_Ctrl"
+)
 ```
 
-Using one contrast keeps the comparisons easy to read while still showing how
-the different backends behave.
+Two contrasts let us see how each backend handles multiple comparisons and
+how FDR correction propagates across contrasts.
 
 # Protein-input facades
 
@@ -149,15 +152,15 @@ from.
 
 ```{r collect_protein_model_names}
 results_protein |>
-  dplyr::count(facade, modelName, name = "n_results")
+  dplyr::count(facade, contrast, modelName, name = "n_results")
 ```
 
 # Protein-level volcano comparison
 
-```{r volcano_protein, fig.height=8, fig.width=10, fig.cap="Volcano plots for the protein-level facades. Each panel shows the same contrast analysed by a different backend."}
+```{r volcano_protein, fig.height=10, fig.width=12, fig.cap="Volcano plots for the protein-level facades. Rows are contrasts, columns are backends."}
 ggplot(results_protein, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
-  facet_wrap(~facade, scales = "free_y") +
+  facet_grid(contrast ~ facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
@@ -173,42 +176,58 @@ ggplot(results_protein, aes(x = diff, y = -log10(p.value), color = significant))
 
 ```{r top_hits_protein}
 results_protein |>
-  dplyr::group_by(facade) |>
+  dplyr::group_by(facade, contrast) |>
   dplyr::slice_min(order_by = p.value, n = 5, with_ties = FALSE) |>
   dplyr::ungroup() |>
-  dplyr::select(facade, modelName, protein_Id, diff, p.value, FDR)
+  dplyr::select(facade, contrast, modelName, protein_Id, diff, p.value, FDR)
 ```
 
-# Proteins dropped by lm but retained by limma
+# Proteins that could not be estimated
 
-The `lm` facade filters proteins more strictly than limma — it requires all
-model coefficients to be estimable and at least 2 residual degrees of freedom.
-Limma handles partial missingness internally per row. Here we identify the
-proteins that limma reports but `lm` does not, and show their per-sample
-intensities.
+Every facade has a `get_missing()` method that returns the protein × contrast
+pairs present in the input data but absent from `get_contrasts()`. This makes
+it easy to see which proteins each method fails on and to compare coverage.
 
-```{r dropped_by_lm}
-proteins_lm <- fa_lm$get_contrasts() |> dplyr::pull(protein_Id) |> unique()
-proteins_limma <- fa_limma$get_contrasts() |> dplyr::pull(protein_Id) |> unique()
-dropped <- setdiff(proteins_limma, proteins_lm)
-message("Proteins in limma but not in lm: ", length(dropped))
+```{r missing_protein_facades}
+missing_all <- dplyr::bind_rows(
+  fa_lm$get_missing() |> dplyr::mutate(facade = "lm"),
+  fa_limma$get_missing() |> dplyr::mutate(facade = "limma"),
+  fa_lm_missing$get_missing() |> dplyr::mutate(facade = "lm_missing"),
+  fa_deqms$get_missing() |> dplyr::mutate(facade = "deqms"),
+  fa_firth_protein$get_missing() |> dplyr::mutate(facade = "firth")
+)
+
+missing_all |>
+  dplyr::count(facade, contrast, name = "n_missing") |>
+  knitr::kable(caption = "Number of missing protein × contrast pairs per facade")
 ```
 
-```{r dropped_intensities}
-if (length(dropped) > 0) {
+```{r missing_detail}
+if (nrow(missing_all) > 0) {
+  missing_all |>
+    knitr::kable(caption = "All missing protein × contrast pairs by facade")
+}
+```
+
+## Per-sample intensities of the missing proteins
+
+```{r missing_intensities}
+missing_proteins <- unique(missing_all$protein_Id)
+
+if (length(missing_proteins) > 0) {
   lfq_protein$data |>
-    dplyr::filter(protein_Id %in% dropped) |>
+    dplyr::filter(protein_Id %in% missing_proteins) |>
     dplyr::select(protein_Id, sampleName,
                   !!rlang::sym(lfq_protein$config$get_response())) |>
     tidyr::pivot_wider(names_from = sampleName,
                        values_from = !!rlang::sym(lfq_protein$config$get_response())) |>
-    knitr::kable(digits = 2, caption = "Per-sample intensities of proteins dropped by lm")
+    knitr::kable(digits = 2, caption = "Per-sample intensities of proteins that could not be estimated")
 }
 ```
 
-The missing cells (NA) explain why `lm` could not fit a full model for these
-proteins — they lack observations in one or more groups, so all coefficients
-cannot be estimated.
+The missing cells (NA) explain why these proteins cannot be estimated — they
+lack observations in one or more groups. The `lm_missing` facade fills in
+these gaps via imputation, so its `get_missing()` is typically empty.
 
 # Peptide-input facades
 
@@ -267,10 +286,10 @@ results_peptide |>
   dplyr::count(facade, name = "n_results")
 ```
 
-```{r volcano_peptide, fig.height=5, fig.width=9, fig.cap="Volcano plots for the peptide-level facades."}
+```{r volcano_peptide, fig.height=8, fig.width=10, fig.cap="Volcano plots for the peptide-level facades. Rows are contrasts, columns are backends."}
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
-  facet_wrap(~facade, scales = "free_y") +
+  facet_grid(contrast ~ facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +

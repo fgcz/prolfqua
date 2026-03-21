@@ -5,6 +5,7 @@
 #' int <- ContrastsInterface$new()
 #' testthat::expect_error(int$get_contrast_sides())
 #' testthat::expect_error(int$get_contrasts())
+#' testthat::expect_error(int$get_missing())
 #' testthat::expect_error(int$get_Plotter())
 #' testthat::expect_error(int$to_wide())
 #' int$column_description()
@@ -30,6 +31,12 @@ ContrastsInterface <- R6::R6Class(
     #' create wide representation of data.
     to_wide = function() {
       stop("to_wide not implemented.")
+    },
+    #' @description
+    #' get protein × contrast pairs that could not be estimated.
+    #' Returns a data.frame with hierarchy columns and contrast, or 0 rows.
+    get_missing = function() {
+      stop("get_missing not implemented.")
     },
     #' @description
     #' column description

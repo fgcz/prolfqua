@@ -93,6 +93,10 @@ Other modelling:
 \item{\code{model}}{ModelFirth object}
 
 \item{\code{contrast}}{ContrastsFirth object}
+
+\item{\code{.lfqdata}}{stored reference to input LFQData}
+
+\item{\code{.contrast_names}}{names of the requested contrasts}
 }
 \if{html}{\out{</div>}}
 }
@@ -101,6 +105,7 @@ Other modelling:
 \itemize{
 \item \href{#method-ContrastsFirthFacade-new}{\code{ContrastsFirthFacade$new()}}
 \item \href{#method-ContrastsFirthFacade-get_contrasts}{\code{ContrastsFirthFacade$get_contrasts()}}
+\item \href{#method-ContrastsFirthFacade-get_missing}{\code{ContrastsFirthFacade$get_missing()}}
 \item \href{#method-ContrastsFirthFacade-get_Plotter}{\code{ContrastsFirthFacade$get_Plotter()}}
 \item \href{#method-ContrastsFirthFacade-to_wide}{\code{ContrastsFirthFacade$to_wide()}}
 \item \href{#method-ContrastsFirthFacade-clone}{\code{ContrastsFirthFacade$clone()}}
@@ -143,6 +148,16 @@ get contrast results
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsFirthFacade-get_missing"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFirthFacade-get_missing}{}}}
+\subsection{Method \code{get_missing()}}{
+get protein × contrast pairs that could not be estimated
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsFirthFacade$get_missing()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsFirthFacade-get_Plotter"></a>}}

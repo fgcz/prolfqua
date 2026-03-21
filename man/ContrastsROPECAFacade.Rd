@@ -96,6 +96,10 @@ Other modelling:
 \item{\code{model}}{Model object (peptide-level)}
 
 \item{\code{contrast}}{ContrastsROPECA object}
+
+\item{\code{.lfqdata}}{stored reference to input LFQData}
+
+\item{\code{.contrast_names}}{names of the requested contrasts}
 }
 \if{html}{\out{</div>}}
 }
@@ -104,6 +108,7 @@ Other modelling:
 \itemize{
 \item \href{#method-ContrastsROPECAFacade-new}{\code{ContrastsROPECAFacade$new()}}
 \item \href{#method-ContrastsROPECAFacade-get_contrasts}{\code{ContrastsROPECAFacade$get_contrasts()}}
+\item \href{#method-ContrastsROPECAFacade-get_missing}{\code{ContrastsROPECAFacade$get_missing()}}
 \item \href{#method-ContrastsROPECAFacade-get_Plotter}{\code{ContrastsROPECAFacade$get_Plotter()}}
 \item \href{#method-ContrastsROPECAFacade-to_wide}{\code{ContrastsROPECAFacade$to_wide()}}
 \item \href{#method-ContrastsROPECAFacade-clone}{\code{ContrastsROPECAFacade$clone()}}
@@ -150,6 +155,16 @@ Columns not directly produced by ROPECA are derived heuristically:
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECAFacade$get_contrasts()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsROPECAFacade-get_missing"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECAFacade-get_missing}{}}}
+\subsection{Method \code{get_missing()}}{
+get protein × contrast pairs that could not be estimated
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECAFacade$get_missing()}\if{html}{\out{</div>}}
 }
 
 }

@@ -90,6 +90,10 @@ Other modelling:
 \item{\code{model}}{ModelLimma object}
 
 \item{\code{contrast}}{ContrastsLimma object}
+
+\item{\code{.lfqdata}}{stored reference to input LFQData}
+
+\item{\code{.contrast_names}}{names of the requested contrasts}
 }
 \if{html}{\out{</div>}}
 }
@@ -98,6 +102,7 @@ Other modelling:
 \itemize{
 \item \href{#method-ContrastsLimmaFacade-new}{\code{ContrastsLimmaFacade$new()}}
 \item \href{#method-ContrastsLimmaFacade-get_contrasts}{\code{ContrastsLimmaFacade$get_contrasts()}}
+\item \href{#method-ContrastsLimmaFacade-get_missing}{\code{ContrastsLimmaFacade$get_missing()}}
 \item \href{#method-ContrastsLimmaFacade-get_Plotter}{\code{ContrastsLimmaFacade$get_Plotter()}}
 \item \href{#method-ContrastsLimmaFacade-to_wide}{\code{ContrastsLimmaFacade$to_wide()}}
 \item \href{#method-ContrastsLimmaFacade-clone}{\code{ContrastsLimmaFacade$clone()}}
@@ -130,7 +135,7 @@ initialize
 \if{html}{\out{<a id="method-ContrastsLimmaFacade-get_contrasts"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsLimmaFacade-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
-get contrast results
+get contrast results (rows with NA diff are filtered out)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsLimmaFacade$get_contrasts(...)}\if{html}{\out{</div>}}
 }
@@ -142,6 +147,16 @@ get contrast results
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsLimmaFacade-get_missing"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsLimmaFacade-get_missing}{}}}
+\subsection{Method \code{get_missing()}}{
+get protein × contrast pairs that could not be estimated
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsLimmaFacade$get_missing()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsLimmaFacade-get_Plotter"></a>}}

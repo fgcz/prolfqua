@@ -44,6 +44,20 @@
   if (is_aggregated) "aggregated" else "nested"
 }
 
+# Compute protein × contrast pairs present in input but absent from output.
+# Returns a data.frame with hierarchy columns + contrast, or 0 rows if nothing missing.
+.compute_missing <- function(lfqdata, contrast_names, contrast_result) {
+  subject_id <- lfqdata$subject_Id()
+  all_subjects <- lfqdata$data |>
+    dplyr::select(dplyr::all_of(subject_id)) |>
+    dplyr::distinct()
+  expected <- tidyr::crossing(all_subjects, contrast = contrast_names)
+  estimated <- contrast_result |>
+    dplyr::select(dplyr::all_of(c(subject_id, "contrast"))) |>
+    dplyr::distinct()
+  dplyr::anti_join(expected, estimated, by = c(subject_id, "contrast"))
+}
+
 .add_facade_column <- function(res, facade_name) {
   if (!("facade" %in% colnames(res))) {
     res <- dplyr::mutate(res, facade = facade_name, .before = 1)
@@ -73,6 +87,10 @@ ContrastsLimmaFacade <- R6::R6Class(
     model = NULL,
     #' @field contrast ContrastsLimma object
     contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -81,16 +99,23 @@ ContrastsLimmaFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
     initialize = function(lfqdata, modelstr, contrasts, ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_limma(full_formula, ...)
       self$model <- build_model_limma(lfqdata, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts)
     },
-    #' @description get contrast results
+    #' @description get contrast results (rows with NA diff are filtered out)
     #' @param ... passed to ContrastsLimma$get_contrasts
     get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "limma")
+      res <- .add_facade_column(self$contrast$get_contrasts(...), "limma")
+      res[!is.na(res$diff), ]
+    },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsLimma$get_Plotter
@@ -125,6 +150,10 @@ ContrastsLMFacade <- R6::R6Class(
     model = NULL,
     #' @field contrast ContrastsModerated object
     contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -133,6 +162,8 @@ ContrastsLMFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLMFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, ...)
@@ -143,6 +174,10 @@ ContrastsLMFacade <- R6::R6Class(
     #' @param ... passed to ContrastsModerated$get_contrasts
     get_contrasts = function(...) {
       .add_facade_column(self$contrast$get_contrasts(...), "lm")
+    },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModerated$get_Plotter
@@ -177,6 +212,10 @@ ContrastsRLMFacade <- R6::R6Class(
     model = NULL,
     #' @field contrast ContrastsModerated object
     contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -185,6 +224,8 @@ ContrastsRLMFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_rlm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsRLMFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_rlm(full_formula, ...)
@@ -195,6 +236,10 @@ ContrastsRLMFacade <- R6::R6Class(
     #' @param ... passed to ContrastsModerated$get_contrasts
     get_contrasts = function(...) {
       .add_facade_column(self$contrast$get_contrasts(...), "rlm")
+    },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModerated$get_Plotter
@@ -237,6 +282,10 @@ ContrastsLmerFacade <- R6::R6Class(
     model = NULL,
     #' @field contrast ContrastsModerated object
     contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -245,6 +294,8 @@ ContrastsLmerFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_lmer}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
       .assert_nested_facade_input(lfqdata, "ContrastsLmerFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lmer(full_formula, ...)
@@ -255,6 +306,10 @@ ContrastsLmerFacade <- R6::R6Class(
     #' @param ... passed to ContrastsModerated$get_contrasts
     get_contrasts = function(...) {
       .add_facade_column(self$contrast$get_contrasts(...), "lmer")
+    },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModerated$get_Plotter
@@ -298,6 +353,10 @@ ContrastsLMMissingFacade <- R6::R6Class(
     missing_contrast = NULL,
     #' @field merged merged contrast result list from merge_contrasts_results
     merged = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -306,6 +365,8 @@ ContrastsLMMissingFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLMMissingFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, ...)
@@ -319,6 +380,10 @@ ContrastsLMMissingFacade <- R6::R6Class(
     #' @param ... passed to ContrastsTable$get_contrasts
     get_contrasts = function(...) {
       .add_facade_column(self$contrast$get_contrasts(...), "lm_missing")
+    },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsTable$get_Plotter
@@ -355,6 +420,10 @@ ContrastsFirthFacade <- R6::R6Class(
     model = NULL,
     #' @field contrast ContrastsFirth object
     contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -362,6 +431,8 @@ ContrastsFirthFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     initialize = function(lfqdata, modelstr, contrasts) {
       input_shape <- .assert_firth_facade_input(lfqdata, "ContrastsFirthFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
       self$model <- if (identical(input_shape, "aggregated")) {
         build_model_glm_protein(lfqdata, modelstr)
       } else {
@@ -373,6 +444,10 @@ ContrastsFirthFacade <- R6::R6Class(
     #' @param ... passed to ContrastsFirth$get_contrasts
     get_contrasts = function(...) {
       .add_facade_column(self$contrast$get_contrasts(...), "firth")
+    },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsFirth$get_Plotter
@@ -408,6 +483,10 @@ ContrastsDEqMSFacade <- R6::R6Class(
     model = NULL,
     #' @field contrast ContrastsModeratedDEqMS object
     contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -416,6 +495,8 @@ ContrastsDEqMSFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsDEqMSFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, ...)
@@ -430,6 +511,10 @@ ContrastsDEqMSFacade <- R6::R6Class(
     #' @param ... passed to ContrastsModeratedDEqMS$get_contrasts
     get_contrasts = function(...) {
       .add_facade_column(self$contrast$get_contrasts(...), "deqms")
+    },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },
     #' @description get ContrastsPlotter
     #' @param ... passed to ContrastsModeratedDEqMS$get_Plotter
@@ -469,6 +554,10 @@ ContrastsROPECAFacade <- R6::R6Class(
     model = NULL,
     #' @field contrast ContrastsROPECA object
     contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object with peptide-level data (hierarchyDepth >= 2)
@@ -477,6 +566,8 @@ ContrastsROPECAFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
       .assert_nested_facade_input(lfqdata, "ContrastsROPECAFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, ...)
@@ -532,6 +623,10 @@ ContrastsROPECAFacade <- R6::R6Class(
       res <- res[, standard_cols, drop = FALSE]
       .add_facade_column(res, "ropeca")
     },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
     #' @description get ContrastsPlotter (uses standardized column names)
     #' @param FCthreshold fold change threshold
     #' @param FDRthreshold FDR threshold
@@ -562,4 +657,26 @@ ContrastsROPECAFacade <- R6::R6Class(
       )
     }
   )
+)
+
+
+#' Registry of available contrast facade classes
+#'
+#' A named list mapping short names to facade class names and their data
+#' requirements. Each entry has:
+#' \describe{
+#'   \item{class}{Character string naming the R6 facade class}
+#'   \item{needs}{One of \code{"aggregated"}, \code{"nested"}, or \code{"either"}}
+#' }
+#'
+#' @export
+FACADE_REGISTRY <- list(
+  lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
+  lm_missing = list(class = "ContrastsLMMissingFacade", needs = "aggregated"),
+  limma = list(class = "ContrastsLimmaFacade", needs = "aggregated"),
+  rlm = list(class = "ContrastsRLMFacade", needs = "aggregated"),
+  deqms = list(class = "ContrastsDEqMSFacade", needs = "aggregated"),
+  firth = list(class = "ContrastsFirthFacade", needs = "either"),
+  lmer = list(class = "ContrastsLmerFacade", needs = "nested"),
+  ropeca = list(class = "ContrastsROPECAFacade", needs = "nested")
 )
