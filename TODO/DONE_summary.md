@@ -158,3 +158,24 @@ From `Expose_additional_lmFit_paths.md`. Extended `strategy_limma()` and `build_
 - `ContrastsProDA` class removed (proDA dependency dropped)
 - `ContrastsRLMFacade` added for robust linear model contrasts
 - `strategy_lm()` extended with weights support
+
+---
+
+## 2026-03-22 — LM-based Imputation with Covariance Borrowing
+
+From `TODO_new_Imputation.md`. Added a second-pass imputation mechanism inside `build_model()` for proteins whose initial `lm()` fit fails or produces NA coefficients.
+
+### New functions (`R/tidyMS_R6_Modelling.R`)
+- `new_lm_imputed()` — S3 constructor wrapping an `lm` object with borrowed covariance; overrides `vcov()`, `sigma()`, `df.residual()` so contrast code works unchanged
+- `compute_borrowed_variance()` — computes median sigma or element-wise median vcov from successful fits (two methods: `"sigma"` and `"vcov"`)
+- `impute_refit_singular()` — for each failed/singular protein: imputes NAs with LOD, clamps values to `max(value, LOD)`, refits, wraps model with borrowed covariance
+
+### Modified `build_model()` (`R/tidyMS_R6Model.R`)
+- New parameters: `impute`, `lod`, `borrow_method` (`"sigma"` / `"vcov"`), `df_method` (`"observed"` / `"borrowed"`)
+- When `impute = TRUE`, auto-computes LOD if not supplied, runs `impute_refit_singular()`, appends "Imputed" to modelName
+
+### New facade (`R/ContrastsFacades.R`)
+- `ContrastsLMImputeFacade` — same pattern as `ContrastsLMFacade` but passes `impute = TRUE` to `build_model()`
+
+### Tests (`tests/testthat/test-ImputeModel.R`)
+- 6 tests, 20 assertions: S3 dispatch, end-to-end model+contrasts, facade comparison, both borrow methods, both df methods

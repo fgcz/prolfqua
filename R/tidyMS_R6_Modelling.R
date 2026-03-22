@@ -283,6 +283,177 @@ get_anova_df <- function(test = "F") {
 }
 
 
+# lm_imputed S3 class ----
+
+#' Create an imputed lm wrapper
+#'
+#' Wraps an lm object with borrowed covariance information.
+#' S3 generics vcov(), sigma(), and df.residual() dispatch
+#' to the borrowed values instead of the original model's.
+#'
+#' @param model lm object fitted on imputed data
+#' @param borrowed_vcov matrix, borrowed variance-covariance matrix
+#' @param borrowed_sigma numeric, borrowed residual standard error
+#' @param borrowed_df numeric, borrowed residual degrees of freedom
+#' @param n_observed integer, number of non-imputed observations
+#' @return lm_imputed object
+#' @keywords internal
+#' @family modelling
+new_lm_imputed <- function(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed) {
+  attr(model, "borrowed_vcov") <- borrowed_vcov
+  attr(model, "borrowed_sigma") <- borrowed_sigma
+  attr(model, "borrowed_df") <- borrowed_df
+  attr(model, "n_observed") <- n_observed
+  class(model) <- c("lm_imputed", class(model))
+  model
+}
+
+#' @export
+vcov.lm_imputed <- function(object, ...) {
+  attr(object, "borrowed_vcov")
+}
+
+#' @export
+sigma.lm_imputed <- function(object, ...) {
+  attr(object, "borrowed_sigma")
+}
+
+#' @export
+df.residual.lm_imputed <- function(object, ...) {
+  attr(object, "borrowed_df")
+}
+
+
+# Covariance borrowing helpers ----
+
+#' Compute borrowed variance from successful model fits
+#'
+#' @param modelDF tibble from model_analyse
+#' @param method "sigma" borrows scalar sigma and uses per-protein (X'X)^-1,
+#'   "vcov" borrows element-wise median of full vcov matrices
+#' @return list with sigma, df, method, and optionally vcov
+#' @keywords internal
+#' @family modelling
+compute_borrowed_variance <- function(modelDF, method = c("sigma", "vcov")) {
+  method <- match.arg(method)
+  good <- get_complete_model_fit(modelDF)
+  good <- good |> dplyr::filter(.data$isSingular == FALSE)
+
+  if (nrow(good) == 0) {
+    stop("No successful model fits available to borrow variance from.", call. = FALSE)
+  }
+
+  borrowed_sigma <- stats::median(good$sigma, na.rm = TRUE)
+  borrowed_df <- stats::median(good$df.residual, na.rm = TRUE)
+
+  if (method == "sigma") {
+    return(list(sigma = borrowed_sigma, df = borrowed_df, method = "sigma"))
+  }
+
+  vcov_list <- lapply(good$linear_model, stats::vcov)
+  ref_dim <- dim(vcov_list[[1]])
+  ref_names <- dimnames(vcov_list[[1]])
+  # Check all have same dimensions
+  dims_ok <- all(vapply(vcov_list, function(v) identical(dim(v), ref_dim), logical(1)))
+  if (!dims_ok) {
+    warning("vcov dimensions differ across successful fits; falling back to sigma method.")
+    return(list(sigma = borrowed_sigma, df = borrowed_df, method = "sigma"))
+  }
+  vcov_array <- array(unlist(vcov_list), dim = c(ref_dim, length(vcov_list)))
+  borrowed_vcov <- apply(vcov_array, c(1, 2), stats::median)
+  dimnames(borrowed_vcov) <- ref_names
+
+  return(list(vcov = borrowed_vcov, sigma = borrowed_sigma, df = borrowed_df, method = "vcov"))
+}
+
+
+#' Impute and refit singular/failed models
+#'
+#' For proteins where the initial lm fit failed or produced NA coefficients,
+#' impute missing values with LOD, clamp, refit, and attach borrowed covariance.
+#'
+#' @param modelDF tibble from model_analyse
+#' @param model_strategy strategy list from strategy_lm etc.
+#' @param lod numeric, limit of detection value
+#' @param response character, response column name in nested data
+#' @param borrow_method "sigma" or "vcov"
+#' @param df_method "observed" uses max(n_observed - p, 1),
+#'   "borrowed" uses median df from successful fits
+#' @return modified modelDF with imputed models replacing failed/singular ones
+#' @keywords internal
+#' @family modelling
+impute_refit_singular <- function(
+  modelDF,
+  model_strategy,
+  lod,
+  response,
+  borrow_method = c("sigma", "vcov"),
+  df_method = c("observed", "borrowed")
+) {
+  borrow_method <- match.arg(borrow_method)
+  df_method <- match.arg(df_method)
+
+  needs_impute <- (!modelDF$exists_lmer) |
+    (!is.na(modelDF$isSingular) & modelDF$isSingular)
+
+  if (!any(needs_impute)) {
+    return(modelDF)
+  }
+
+  borrowed <- compute_borrowed_variance(modelDF, method = borrow_method)
+
+  for (i in which(needs_impute)) {
+    dat <- modelDF$data[[i]]
+    n_observed <- sum(!is.na(dat[[response]]))
+
+    # Impute NAs with LOD, clamp all values to max(value, LOD)
+    dat[[response]] <- ifelse(is.na(dat[[response]]), lod, dat[[response]])
+    dat[[response]] <- pmax(dat[[response]], lod)
+
+    new_model <- model_strategy$model_fun(dat)
+    if (is.character(new_model)) {
+      next
+    }
+
+    p <- length(stats::coefficients(new_model))
+
+    # Degrees of freedom
+    if (df_method == "observed") {
+      imp_df <- max(n_observed - p, 1)
+    } else {
+      imp_df <- borrowed$df
+    }
+
+    # Borrowed covariance
+    if (borrowed$method == "sigma") {
+      cov_unscaled <- summary(new_model)$cov.unscaled
+      imp_vcov <- borrowed$sigma^2 * cov_unscaled
+    } else {
+      imp_vcov <- borrowed$vcov
+    }
+
+    wrapped <- new_lm_imputed(
+      new_model,
+      borrowed_vcov = imp_vcov,
+      borrowed_sigma = borrowed$sigma,
+      borrowed_df = imp_df,
+      n_observed = n_observed
+    )
+
+    modelDF$linear_model[[i]] <- wrapped
+    modelDF$data[[i]] <- dat
+    modelDF$exists_lmer[[i]] <- TRUE
+    modelDF$isSingular[[i]] <- FALSE
+    modelDF$sigma[[i]] <- borrowed$sigma
+    modelDF$df.residual[[i]] <- imp_df
+    modelDF$nrcoef[[i]] <- p
+    modelDF$nrcoeff_not_NA[[i]] <- p
+  }
+
+  return(modelDF)
+}
+
+
 # Fit the models to data ----
 
 #' check if lm model is singular

@@ -84,8 +84,6 @@ LR_test <- function(
 
 #' Build protein models from data
 #'
-#'
-#'
 #' @param data data - a data frame or LFQData object
 #' @param model_strategy model strategy object (e.g. from strategy_lmer or strategy_lm)
 #' @param subject_Id grouping variable
@@ -131,12 +129,77 @@ build_model <- function(
   },
   modelName = model_strategy$model_name
 ) {
-  dataX <- if ("LFQData" %in% class(data)) {
-    data$data
-  } else {
-    data
-  }
+  dataX <- if ("LFQData" %in% class(data)) data$data else data
   modellingResult <- model_analyse(dataX, model_strategy, modelName = modelName, subject_Id = subject_Id)
+  return(Model$new(
+    modelDF = modellingResult$modelDF,
+    model_strategy = model_strategy,
+    modelName = modellingResult$modelName,
+    subject_Id = subject_Id
+  ))
+}
+
+
+#' Build protein models with LOD imputation for failed fits
+#'
+#' Fits per-protein models, then re-fits failed/singular proteins after
+#' imputing missing values with the limit of detection (LOD) and clamping.
+#' Covariance is borrowed from successful fits so that variance is not
+#' underestimated by the constant imputation.
+#'
+#' @param lfqdata LFQData object (aggregated to protein level)
+#' @param model_strategy model strategy object (e.g. from strategy_lm)
+#' @param modelName model name (default appends "Imputed")
+#' @param lod numeric limit of detection; if NULL, auto-computed from data
+#' @param borrow_method "sigma" borrows scalar sigma and uses per-protein
+#'   (X'X)^-1; "vcov" borrows element-wise median of full vcov matrices
+#' @param df_method "observed" uses max(n_observed - p, 1);
+#'   "borrowed" uses median df from successful fits
+#' @return a object of class \code{\link{Model}}
+#' @family modelling
+#' @seealso \code{\link{build_model}}, \code{\link{impute_refit_singular}}
+#' @export
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' strat <- strategy_lm(paste(lfqdata$config$get_response(), "~ group_"))
+#' mod <- build_model_impute(lfqdata, strat)
+#'
+build_model_impute <- function(
+  lfqdata,
+  model_strategy,
+  modelName = paste0(model_strategy$model_name, "Imputed"),
+  lod = NULL,
+  borrow_method = c("sigma", "vcov"),
+  df_method = c("observed", "borrowed")
+) {
+  borrow_method <- match.arg(borrow_method)
+  df_method <- match.arg(df_method)
+  subject_Id <- lfqdata$subject_Id()
+  response <- lfqdata$config$get_response()
+
+  modellingResult <- model_analyse(
+    lfqdata$data,
+    model_strategy,
+    modelName = modelName,
+    subject_Id = subject_Id
+  )
+
+  if (is.null(lod)) {
+    mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
+    lod <- mh$get_LOD()
+  }
+
+  modellingResult$modelDF <- impute_refit_singular(
+    modellingResult$modelDF,
+    model_strategy,
+    lod = lod,
+    response = response,
+    borrow_method = borrow_method,
+    df_method = df_method
+  )
+
   return(Model$new(
     modelDF = modellingResult$modelDF,
     model_strategy = model_strategy,

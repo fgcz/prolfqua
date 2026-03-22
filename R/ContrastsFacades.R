@@ -395,6 +395,92 @@ ContrastsLMMissingFacade <- R6::R6Class(
 )
 
 
+#' LM contrast analysis with LOD imputation facade
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
+#' \code{\link{build_model}} (with \code{impute = TRUE}) ->
+#' \code{\link{Contrasts}} -> \code{\link{ContrastsModerated}}.
+#'
+#' Proteins whose initial lm fit fails or produces NA coefficients are
+#' re-fitted after imputing missing values with the limit of detection (LOD).
+#' The covariance matrix is borrowed from successful fits so that the
+#' variance is not underestimated by the constant imputation.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsLMImputeFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$to_wide()
+ContrastsLMImputeFacade <- R6::R6Class(
+  "ContrastsLMImputeFacade",
+  public = list(
+    #' @field model Model object (with imputed proteins)
+    model = NULL,
+    #' @field contrast ContrastsModerated object
+    contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object (aggregated to protein level)
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param lod numeric limit of detection; if NULL, auto-computed from data
+    #' @param borrow_method "sigma" borrows scalar sigma and uses per-protein
+    #'   (X'X)^-1; "vcov" borrows element-wise median of full vcov matrices
+    #' @param df_method "observed" uses max(n_observed - p, 1);
+    #'   "borrowed" uses median df from successful fits
+    #' @param ... passed to \code{\link{strategy_lm}}
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      lod = NULL,
+      borrow_method = c("sigma", "vcov"),
+      df_method = c("observed", "borrowed"),
+      ...
+    ) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsLMImputeFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      response <- lfqdata$config$get_response()
+      full_formula <- paste(response, modelstr)
+      strat <- strategy_lm(full_formula, ...)
+      self$model <- build_model_impute(
+        lfqdata,
+        strat,
+        lod = lod,
+        borrow_method = borrow_method,
+        df_method = df_method
+      )
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+    },
+    #' @description get contrast results
+    #' @param ... passed to ContrastsModerated$get_contrasts
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "lm_impute")
+    },
+    #' @description get protein x contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsModerated$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsModerated$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
 #' Firth logistic missingness contrast analysis facade
 #'
 #' Encapsulates the pipeline: encode missingness ->

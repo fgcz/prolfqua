@@ -33,7 +33,11 @@ You said mean or median of covariance matrices from successful fits. But covaria
 - **Option A:** Take the median of `sigma^2` (residual variance) across successful fits, then scale the `(X'X)^{-1}` from the imputed fit by that median sigma. This is simple and preserves the design structure.
 - **Option B:** Take the full `vcov()` matrices and compute element-wise median. This is messier and the matrices may not be positive definite after aggregation.
 
+
+
 Option A seems cleaner — you're essentially saying "the coefficients are from the imputed fit, but the residual variance is borrowed." This is conceptually close to what limma's `squeezeVar` does.
+
+COMMENT: let's have both options A and B, build_model has a parameter to decide which.
 
 **2. Degrees of freedom — which df?**
 
@@ -43,6 +47,8 @@ You want df to reflect actual observed values. Two choices:
 - **n_observed - p** — honest but could be very small or even zero (which is why the model failed in the first place)
 
 If n_observed < p, you have no real df. You could use the df from the borrowed variance estimate (the successful fits), which gives you a "prior df" similar to limma's approach.
+
+COMMENT: again, two options max(n_observed - p, 1) or df from the borrowed, again param.
 
 **3. When exactly do you impute?**
 
@@ -78,7 +84,6 @@ Architecturally, this could be:
 
 - A **post-processor on `Model`** — fit all proteins (imputing where needed), then selectively replace `vcov` on the model objects.
 
-COMMENT: does model has a reference to LFQData. Not sure if we shall do postprocess to model, or add an option to build_model to enable disable imputation.
 
 - A **new `Contrasts*` class** that wraps `Contrasts` — takes a normal `Model`, identifies failures, refits with imputation, borrows covariance, and merges results
 
