@@ -8,7 +8,8 @@ build_contrast_analysis(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "rlm", "lmer", "lm_missing", "limma", "deqms", "ropeca", "firth"),
+  method = c("lm", "rlm", "lmer", "lm_missing", "lm_impute", "limma", "deqms", "ropeca",
+    "firth"),
   ...
 )
 }
@@ -23,7 +24,7 @@ build_contrast_analysis(
 (e.g. \code{c("A_vs_B" = "group_A - group_B")})}
 
 \item{method}{one of \code{"lm"}, \code{"rlm"}, \code{"lmer"}, \code{"lm_missing"},
-\code{"limma"}, \code{"deqms"}, \code{"ropeca"}, \code{"firth"}}
+\code{"lm_impute"}, \code{"limma"}, \code{"deqms"}, \code{"ropeca"}, \code{"firth"}}
 
 \item{...}{additional arguments forwarded to the underlying strategy function
 (e.g. \code{trend}, \code{robust} for \code{strategy_limma})}
@@ -32,7 +33,8 @@ build_contrast_analysis(
 one of \code{\link{ContrastsLimmaFacade}},
   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsRLMFacade}},
   \code{\link{ContrastsLmerFacade}},
-  \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsDEqMSFacade}},
+  \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsLMImputeFacade}},
+  \code{\link{ContrastsDEqMSFacade}},
   \code{\link{ContrastsROPECAFacade}}, or \code{\link{ContrastsFirthFacade}}
 }
 \description{

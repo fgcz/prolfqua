@@ -191,11 +191,18 @@ build_model_impute <- function(
     lod <- mh$get_LOD()
   }
 
+  # Build sample template: all unique sample rows (excluding subject_Id and response)
+  non_subject_cols <- setdiff(colnames(lfqdata$data), c(subject_Id, response))
+  sample_template <- lfqdata$data |>
+    dplyr::select(dplyr::all_of(non_subject_cols)) |>
+    dplyr::distinct()
+
   modellingResult$modelDF <- impute_refit_singular(
     modellingResult$modelDF,
     model_strategy,
     lod = lod,
     response = response,
+    sample_template = sample_template,
     borrow_method = borrow_method,
     df_method = df_method
   )

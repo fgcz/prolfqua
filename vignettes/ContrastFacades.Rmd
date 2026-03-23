@@ -28,6 +28,7 @@ backends:
 - `lmer`
 - `ropeca`
 - `lm_missing`
+- `lm_impute`
 - `deqms`
 - `firth`
 
@@ -35,7 +36,7 @@ All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. All examples below return protein-level
 contrasts. The important difference is the required input level:
 
-- `lm`, `limma`, `lm_missing`, and `deqms` require aggregated protein-level data
+- `lm`, `limma`, `lm_missing`, `lm_impute`, and `deqms` require aggregated protein-level data
 - `lmer` and `ropeca` require lower-level measurements such as peptides nested
   within proteins, but still report protein-level contrasts
 - `firth` can be used with either aggregated protein-level data or nested
@@ -114,6 +115,13 @@ fa_deqms <- build_contrast_analysis(
   method = "deqms"
 )
 
+fa_lm_impute <- build_contrast_analysis(
+  lfq_protein,
+  "~ group_",
+  contrasts,
+  method = "lm_impute"
+)
+
 fa_firth_protein <- build_contrast_analysis(
   lfq_protein,
   "~ group_",
@@ -130,6 +138,7 @@ results_protein <- bind_rows(
   fa_lm$get_contrasts(),
   fa_limma$get_contrasts(),
   fa_lm_missing$get_contrasts(),
+  fa_lm_impute$get_contrasts(),
   fa_deqms$get_contrasts(),
   fa_firth_protein$get_contrasts()
 ) |>
@@ -193,6 +202,7 @@ missing_all <- dplyr::bind_rows(
   fa_lm$get_missing() |> dplyr::mutate(facade = "lm"),
   fa_limma$get_missing() |> dplyr::mutate(facade = "limma"),
   fa_lm_missing$get_missing() |> dplyr::mutate(facade = "lm_missing"),
+  fa_lm_impute$get_missing() |> dplyr::mutate(facade = "lm_impute"),
   fa_deqms$get_missing() |> dplyr::mutate(facade = "deqms"),
   fa_firth_protein$get_missing() |> dplyr::mutate(facade = "firth")
 )
@@ -200,13 +210,6 @@ missing_all <- dplyr::bind_rows(
 missing_all |>
   dplyr::count(facade, contrast, name = "n_missing") |>
   knitr::kable(caption = "Number of missing protein × contrast pairs per facade")
-```
-
-```{r missing_detail}
-if (nrow(missing_all) > 0) {
-  missing_all |>
-    knitr::kable(caption = "All missing protein × contrast pairs by facade")
-}
 ```
 
 ## Per-sample intensities of the missing proteins
@@ -227,7 +230,36 @@ if (length(missing_proteins) > 0) {
 
 The missing cells (NA) explain why these proteins cannot be estimated — they
 lack observations in one or more groups. The `lm_missing` facade fills in
-these gaps via imputation, so its `get_missing()` is typically empty.
+these gaps via group-mean imputation, while `lm_impute` re-fits the lm model
+after imputing individual values with the LOD and borrowing covariance from
+successful fits. Both should have fewer missing proteins than plain `lm`.
+
+## Estimates for the missing proteins from `lm_missing` and `lm_impute`
+
+For proteins that plain `lm` could not estimate, the imputation-based facades
+can still produce contrast results. The table below shows these rescued
+estimates side by side.
+
+```{r rescued_estimates}
+lm_missing_proteins <- fa_lm$get_missing()$protein_Id |> unique()
+
+if (length(lm_missing_proteins) > 0) {
+  rescued <- results_protein |>
+    dplyr::filter(
+      protein_Id %in% lm_missing_proteins,
+      facade %in% c("lm_missing", "lm_impute")
+    ) |>
+    dplyr::arrange(protein_Id, contrast, facade)
+
+  rescued |>
+    knitr::kable(
+      digits = 3,
+      caption = "Contrast estimates from lm_missing and lm_impute for proteins that plain lm could not estimate"
+    )
+} else {
+  cat("All proteins were estimable by plain lm — no rescued estimates to show.")
+}
+```
 
 # Peptide-input facades
 

@@ -376,6 +376,9 @@ compute_borrowed_variance <- function(modelDF, method = c("sigma", "vcov")) {
 #' @param model_strategy strategy list from strategy_lm etc.
 #' @param lod numeric, limit of detection value
 #' @param response character, response column name in nested data
+#' @param sample_template data.frame with all sample/group combinations
+#'   (columns matching the nested data minus the response). Used to complete
+#'   proteins that are entirely missing in one or more groups.
 #' @param borrow_method "sigma" or "vcov"
 #' @param df_method "observed" uses max(n_observed - p, 1),
 #'   "borrowed" uses median df from successful fits
@@ -387,14 +390,18 @@ impute_refit_singular <- function(
   model_strategy,
   lod,
   response,
+  sample_template,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed")
 ) {
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
 
+  max_coef <- max(modelDF$nrcoef, na.rm = TRUE)
+
   needs_impute <- (!modelDF$exists_lmer) |
-    (!is.na(modelDF$isSingular) & modelDF$isSingular)
+    (!is.na(modelDF$isSingular) & modelDF$isSingular) |
+    (!is.na(modelDF$nrcoef) & modelDF$nrcoef < max_coef)
 
   if (!any(needs_impute)) {
     return(modelDF)
@@ -405,6 +412,9 @@ impute_refit_singular <- function(
   for (i in which(needs_impute)) {
     dat <- modelDF$data[[i]]
     n_observed <- sum(!is.na(dat[[response]]))
+
+    # Complete data with all samples so missing groups get rows
+    dat <- dplyr::left_join(sample_template, dat, by = intersect(colnames(sample_template), colnames(dat)))
 
     # Impute NAs with LOD, clamp all values to max(value, LOD)
     dat[[response]] <- ifelse(is.na(dat[[response]]), lod, dat[[response]])

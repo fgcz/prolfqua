@@ -9,6 +9,7 @@ impute_refit_singular(
   model_strategy,
   lod,
   response,
+  sample_template,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed")
 )
@@ -21,6 +22,10 @@ impute_refit_singular(
 \item{lod}{numeric, limit of detection value}
 
 \item{response}{character, response column name in nested data}
+
+\item{sample_template}{data.frame with all sample/group combinations
+(columns matching the nested data minus the response). Used to complete
+proteins that are entirely missing in one or more groups.}
 
 \item{borrow_method}{"sigma" or "vcov"}
 
