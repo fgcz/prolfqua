@@ -16,6 +16,7 @@ p-value and the FDR.
 ## Loading protein abundances from MaxQuant proteinGroups.txt
 
 ``` r
+
 library(prolfqua)
 ```
 
@@ -24,6 +25,7 @@ Specify the path to the MaxQuant `proteinGroups.txt` file. The function
 convert it into a tidy table
 
 ``` r
+
 xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100)
 xx
 ```
@@ -87,6 +89,7 @@ Create the `LFQData` class instance and remove zeros from data (MaxQuant
 encodes missing values with zero).
 
 ``` r
+
 lfqdata <- prolfqua::LFQData$new(xx$data, xx$config)
 lfqdata$remove_small_intensities()
 lfqdata$factors()
@@ -111,6 +114,7 @@ lfqdata$factors()
 You can always convert the data into wide format.
 
 ``` r
+
 lfqdata$to_wide()$data[1:3,1:7]
 ```
 
@@ -128,6 +132,7 @@ the proteins and the effect of normalization. Furthermore we use some
 functions to visualize the missing values in our data.
 
 ``` r
+
 lfqplotter <- lfqdata$get_Plotter()
 density_nn <- lfqplotter$intensity_distribution_density()
 ```
@@ -135,6 +140,7 @@ density_nn <- lfqplotter$intensity_distribution_density()
 #### Visualization of missing data
 
 ``` r
+
 lfqplotter$NA_heatmap()
 ```
 
@@ -146,6 +152,7 @@ Heatmap where missing proteins (zero in case of MaxQuant reported
 intensities), black - missing protein intensities, white - present
 
 ``` r
+
 lfqdata$get_Summariser()$plot_missingness_per_group()
 ```
 
@@ -155,6 +162,7 @@ values](Comparing2Groups_files/figure-html/missignessPerGroup-1.png)
 \# of proteins with 0,1,…N missing values
 
 ``` r
+
 lfqplotter$missigness_histogram()
 ```
 
@@ -170,6 +178,7 @@ standard deviations can be easily calculated using the `get_Stats`
 function and visualized with a violin plot.
 
 ``` r
+
 stats <- lfqdata$get_Stats()
 stats$violin()
 ```
@@ -180,6 +189,7 @@ groups](Comparing2Groups_files/figure-html/PlotCVDistributions-1.png)
 Violin plots of CVs in the different groups and among all groups
 
 ``` r
+
 prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
 ```
 
@@ -191,9 +201,10 @@ prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stat
 |  0.75 | 5.338899 | 5.462486 | 5.904953 | 7.411380 |
 |  0.90 | 7.541564 | 7.118907 | 7.471854 | 9.912513 |
 
-quantile of CV
+quantile of CV {.table}
 
 ``` r
+
 stats$density_median()
 ```
 
@@ -204,9 +215,10 @@ Distribution of CV’s for top 50% and bottom 50% proteins by intensity.
 
 ### Normalize protein intensities and show diagnostic plots
 
-We normalize the data by $\log_{2}$ transforming and then $z - scaling$.
+We normalize the data by $`\log_2`$ transforming and then $`z-scaling`$.
 
 ``` r
+
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
 transformed$config$is_response_transformed
@@ -215,11 +227,13 @@ transformed$config$is_response_transformed
     ## [1] TRUE
 
 ``` r
+
 pl <- transformed$get_Plotter()
 density_norm <- pl$intensity_distribution_density()
 ```
 
 ``` r
+
 gridExtra::grid.arrange(density_nn, density_norm)
 ```
 
@@ -229,6 +243,7 @@ normalization.](Comparing2Groups_files/figure-html/showIntensityDistributions-1.
 Distribution of intensities before and after normalization.
 
 ``` r
+
 pl$pairs_smooth()
 ```
 
@@ -240,10 +255,12 @@ Scatterplot matrix
     ## NULL
 
 ``` r
+
 p <- pl$heatmap_cor()
 ```
 
 ``` r
+
 p
 ```
 
@@ -259,6 +276,7 @@ proteins we have to first specify the model function and define the
 contrasts that we want to calculate.
 
 ``` r
+
 transformed$factors()
 ```
 
@@ -279,6 +297,7 @@ transformed$factors()
     ## 12 Ctrl_V4 Ctrl_V4    Ctrl
 
 ``` r
+
 formula_Condition <-  strategy_lm("transformedIntensity ~ group_")
 
 # specify model definition
@@ -290,6 +309,7 @@ contr_spec <- c("AvsC" = "group_A - group_Ctrl",
 Here we have to build the model for each protein.
 
 ``` r
+
 mod <- prolfqua::build_model(
   transformed$data,
   formula_Condition,
@@ -300,6 +320,7 @@ In this plot we can see what factors in our model are mostly responsible
 for the adjusted p-values calculated from an analysis of variance.
 
 ``` r
+
 mod$anova_histogram("FDR")
 ```
 
@@ -318,6 +339,7 @@ One also look what proteins do show different abundances in any of our
 five dilutions by looking at the FDR values of the analysis of variane.
 
 ``` r
+
 aovtable <- mod$get_anova()
 head(aovtable)
 ```
@@ -334,12 +356,14 @@ head(aovtable)
     ## # ℹ 1 more variable: FDR <dbl>
 
 ``` r
+
 dim(aovtable)
 ```
 
     ## [1] 98 10
 
 ``` r
+
 xx <- aovtable |> dplyr::filter(FDR < 0.2)
 signif <- transformed$get_copy()
 signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
@@ -347,6 +371,7 @@ hmSig <- signif$get_Plotter()$heatmap()
 ```
 
 ``` r
+
 hmSig
 ```
 
@@ -361,6 +386,7 @@ Next we do calculate the statistics for our defined contrasts for all
 the proteins. For this we can use the `Contrasts` function.
 
 ``` r
+
 contr <- prolfqua::Contrasts$new(mod, contr_spec)
 v1 <- contr$get_Plotter()$volcano()
 ```
@@ -369,6 +395,7 @@ Alternatively, we can moderate the variance and using the Experimental
 Bayes method implemented in `ContrastsModerated`.
 
 ``` r
+
 contr <- prolfqua::ContrastsModerated$new(contr)
 contrdf <- contr$get_contrasts()
 ```
@@ -376,6 +403,7 @@ contrdf <- contr$get_contrasts()
 In the next figure it can be seen WEWinputNEEDED.
 
 ``` r
+
 plotter <- contr$get_Plotter()
 v2 <- plotter$volcano()
 gridExtra::grid.arrange(v1$FDR,v2$FDR, ncol = 1)
@@ -387,6 +415,7 @@ moderation.](Comparing2Groups_files/figure-html/plotVolcanos-1.png)
 Volcano plot, Left panel - no moderation, Right panel - with moderation.
 
 ``` r
+
 plotter$ma_plotly()
 ```
 
@@ -394,6 +423,7 @@ MA plot showing the dependency of mean abuncance with respect to the
 difference
 
 ``` r
+
 #myProteinIDS <- c("sp|Q12246|LCB4_YEAST",  "sp|P38929|ATC2_YEAST",  "sp|Q99207|NOP14_YEAST")
 myProteinIDS <- c("sp|P0AC33|FUMA_ECOLI",  "sp|P28635|METQ_ECOLI",  "sp|Q14C86|GAPD1_HUMAN")
 dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
@@ -413,6 +443,7 @@ For this we are using the average expression at percentile 0.05 of the
 group where the protein is not quantified.
 
 ``` r
+
 mC <- prolfqua::ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
 colnames(mC$get_contrasts())
 ```
@@ -432,6 +463,7 @@ Finally we are merging the results and give priority to the results
 where we do not have missing values in one group.
 
 ``` r
+
 merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)$merged
 plotter <- merged$get_Plotter()
 tmp <- plotter$volcano()
@@ -449,6 +481,7 @@ Look at proteins which could not be fitted using the linear model, if
 any.
 
 ``` r
+
 merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)
 
 moreProt <- transformed$get_copy()
@@ -459,6 +492,7 @@ moreProt$get_Plotter()$raster()
 ![](Comparing2Groups_files/figure-html/mergedMore-1.png)
 
 ``` r
+
 # here we do not get anything because there is nothing imputed!
 ```
 
@@ -470,11 +504,14 @@ workflow is:
 
 1.  Extract UniProt IDs from the contrast results using
     [`prolfqua::get_UniprotID_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_UniprotID_from_fasta_header.md)
-2.  Map UniProt IDs to Entrez Gene IDs using `AnnotationDbi::mapIds()`
+2.  Map UniProt IDs to Entrez Gene IDs using
+    [`AnnotationDbi::mapIds()`](https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html)
     with a species-specific annotation package
 3.  Create a named ranked list (statistic values named by gene IDs)
-4.  Run GSEA using `clusterProfiler::gseGO()` or
-    `clusterProfiler::gseKEGG()`
+4.  Run GSEA using
+    [`clusterProfiler::gseGO()`](https://rdrr.io/pkg/clusterProfiler/man/gseGO.html)
+    or
+    [`clusterProfiler::gseKEGG()`](https://rdrr.io/pkg/clusterProfiler/man/gseKEGG.html)
 
 For details see:
 
@@ -491,25 +528,23 @@ The `prolfqua` package is described in (Wolski et al. 2022).
 ## Session Info
 
 ``` r
+
 sessionInfo()
 ```
 
     ## R version 4.5.2 (2025-10-31)
-    ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Platform: aarch64-apple-darwin20
+    ## Running under: macOS Tahoe 26.3.1
     ## 
     ## Matrix products: default
-    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
     ## 
     ## locale:
-    ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
-    ##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
-    ##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
-    ## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
     ## 
-    ## time zone: UTC
-    ## tzcode source: system (glibc)
+    ## time zone: Europe/Zurich
+    ## tzcode source: internal
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -518,15 +553,15 @@ sessionInfo()
     ## [1] prolfqua_1.5.0 dplyr_1.2.0   
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] gtable_0.3.6        xfun_0.56           bslib_0.10.0       
+    ##  [1] gtable_0.3.6        xfun_0.57           bslib_0.10.0       
     ##  [4] ggplot2_4.0.2       htmlwidgets_1.6.4   ggrepel_0.9.8      
-    ##  [7] vctrs_0.7.1         tools_4.5.2         crosstalk_1.2.2    
+    ##  [7] vctrs_0.7.2         tools_4.5.2         crosstalk_1.2.2    
     ## [10] generics_0.1.4      tibble_3.3.1        pkgconfig_2.0.3    
     ## [13] pheatmap_1.0.13     KernSmooth_2.23-26  data.table_1.18.2.1
     ## [16] RColorBrewer_1.1-3  S7_0.2.1            desc_1.4.3         
     ## [19] lifecycle_1.0.5     compiler_4.5.2      farver_2.1.2       
-    ## [22] textshaping_1.0.5   progress_1.2.3      statmod_1.5.1      
-    ## [25] httpuv_1.6.17       htmltools_0.5.9     sass_0.4.10        
+    ## [22] textshaping_1.0.4   progress_1.2.3      statmod_1.5.1      
+    ## [25] httpuv_1.6.16       htmltools_0.5.9     sass_0.4.10        
     ## [28] yaml_2.3.12         lazyeval_0.2.2      plotly_4.12.0      
     ## [31] later_1.4.8         pillar_1.11.1       pkgdown_2.2.0      
     ## [34] crayon_1.5.3        jquerylib_0.1.4     tidyr_1.3.2        
@@ -537,16 +572,16 @@ sessionInfo()
     ## [49] cli_3.6.5           magrittr_2.0.4      utf8_1.2.6         
     ## [52] withr_3.0.2         promises_1.5.0      prettyunits_1.2.0  
     ## [55] scales_1.4.0        rmarkdown_2.30      httr_1.4.8         
-    ## [58] otel_0.2.0          gridExtra_2.3       ragg_1.5.1         
-    ## [61] hms_1.1.4           shiny_1.13.0        evaluate_1.0.5     
+    ## [58] otel_0.2.0          gridExtra_2.3       ragg_1.5.0         
+    ## [61] hms_1.1.4           shiny_1.12.1        evaluate_1.0.5     
     ## [64] knitr_1.51          UpSetR_1.4.0        viridisLite_0.4.3  
-    ## [67] rlang_1.1.7         Rcpp_1.1.1          xtable_1.8-8       
+    ## [67] rlang_1.1.7         Rcpp_1.1.1          xtable_1.8-4       
     ## [70] glue_1.8.0          jsonlite_2.0.0      R6_2.6.1           
-    ## [73] plyr_1.8.9          systemfonts_1.3.2   fs_1.6.7
+    ## [73] plyr_1.8.9          systemfonts_1.3.1   fs_1.6.7
 
 ## References
 
 Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
 Schlapbach, and Christian Panse. 2022. “Prolfqua: A Comprehensive
-R-package for Proteomics Differential Expression Analysis.” *bioRxiv*.
-<https://doi.org/10.1101/2022.06.07.494524>.
+R-package for Proteomics Differential Expression Analysis.” *bioRxiv*,
+ahead of print. <https://doi.org/10.1101/2022.06.07.494524>.

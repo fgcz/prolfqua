@@ -46,6 +46,7 @@ vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
 A minimal example for a table with protein abudances is:
 
 ``` r
+
 #Table with abundances
 df <- data.frame(protein_Id = c("tr|A|HUMAN","tr|B|HUMAN","tr|C|HUMAN","tr|D|HUMAN"),
                  Intensity_A = c(100,10000,10,NA),
@@ -79,6 +80,7 @@ lfqdata$hierarchy_counts()
 Once you have created an `LFQData` you can use prolfqua like this.
 
 ``` r
+
 R.version.string; packageVersion("prolfqua")
 
 ## here we simulate peptide level data
@@ -109,6 +111,7 @@ ggpubr::ggarrange(panelA, panelB, panelC, panelD)
 image
 
 ``` r
+
 ## specify model
 modelFunction <-
  strategy_lm("log_protein_abundance  ~ group_")
@@ -181,6 +184,7 @@ Example QC and sample size report
 
 Please do reference the [prolfqua article at Journal of Proteome
 Research](https://pubmed.ncbi.nlm.nih.gov/36939687/)
+
 
     @article{prolfquawolski2023,
     author = {Wolski, Witold E. and Nanni, Paolo and Grossmann, Jonas and d’Errico, Maria and Schlapbach, Ralph and Panse, Christian},

@@ -1,30 +1,59 @@
-# handles incomplete models by setting coefficients to 0
+# Impute and refit singular/failed models
 
-handles incomplete models by setting coefficients to 0
+For proteins where the initial lm fit failed or produced NA
+coefficients, impute missing values with LOD, clamp, refit, and attach
+borrowed covariance.
 
 ## Usage
 
 ``` r
-my_contrast_V1(incomplete, linfct, confint = 0.95, strategy = NULL)
+impute_refit_singular(
+  modelDF,
+  model_strategy,
+  lod,
+  response,
+  sample_template,
+  borrow_method = c("sigma", "vcov"),
+  df_method = c("observed", "borrowed")
+)
 ```
 
 ## Arguments
 
-- incomplete:
+- modelDF:
 
-  linear model generated using lm
+  tibble from model_analyse
 
-- linfct:
+- model_strategy:
 
-  linear function
+  strategy list from strategy_lm etc.
 
-- confint:
+- lod:
 
-  confidence interval default 0.95
+  numeric, limit of detection value
 
-- strategy:
+- response:
 
-  optional strategy for df and sigma computation
+  character, response column name in nested data
+
+- sample_template:
+
+  data.frame with all sample/group combinations (columns matching the
+  nested data minus the response). Used to complete proteins that are
+  entirely missing in one or more groups.
+
+- borrow_method:
+
+  "sigma" or "vcov"
+
+- df_method:
+
+  "observed" uses max(n_observed - p, 1), "borrowed" uses median df from
+  successful fits
+
+## Value
+
+modified modelDF with imputed models replacing failed/singular ones
 
 ## See also
 
@@ -34,6 +63,7 @@ Other modelling:
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
@@ -55,8 +85,10 @@ Other modelling:
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
+[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -78,6 +110,7 @@ Other modelling:
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -88,37 +121,3 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
-
-## Examples
-
-``` r
-m <- sim_make_model_lm( "factors")
-#> creating sampleName from fileName column
-#> completing cases
-#> completing cases done
-#> setup done
-#> Joining with `by = join_by(protein_Id)`
-linfct <- linfct_from_model(m)$linfct_factors
-my_contrast_V1(m, linfct, confint = 0.95)
-#>                     lhs    sigma df estimate std.error statistic      p.value
-#> BackgroundX BackgroundX 1.557675 13 18.63959 0.5507212  33.84577 4.612815e-14
-#> BackgroundZ BackgroundZ 1.557675 13 18.19440 0.5507212  33.03740 6.294815e-14
-#> TreatmentA   TreatmentA 1.557675 13 18.75377 0.5507212  34.05311 4.264271e-14
-#> TreatmentB   TreatmentB 1.557675 13 18.08021 0.5507212  32.83007 6.825487e-14
-#>             conf.low conf.high
-#> BackgroundX 17.44983  19.82935
-#> BackgroundZ 17.00464  19.38416
-#> TreatmentA  17.56401  19.94353
-#> TreatmentB  16.89045  19.26998
-my_contrast_V1(m, linfct, confint = 0.99)
-#>                     lhs    sigma df estimate std.error statistic      p.value
-#> BackgroundX BackgroundX 1.557675 13 18.63959 0.5507212  33.84577 4.612815e-14
-#> BackgroundZ BackgroundZ 1.557675 13 18.19440 0.5507212  33.03740 6.294815e-14
-#> TreatmentA   TreatmentA 1.557675 13 18.75377 0.5507212  34.05311 4.264271e-14
-#> TreatmentB   TreatmentB 1.557675 13 18.08021 0.5507212  32.83007 6.825487e-14
-#>             conf.low conf.high
-#> BackgroundX 16.98066  20.29851
-#> BackgroundZ 16.53547  19.85332
-#> TreatmentA  17.09485  20.41269
-#> TreatmentB  16.42129  19.73914
-```

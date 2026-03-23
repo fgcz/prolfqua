@@ -29,15 +29,14 @@ Other configuration:
 [`make_interaction_column()`](https://wolski.github.io/prolfqua/reference/make_interaction_column.md),
 [`make_reduced_hierarchy_config()`](https://wolski.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
 [`sample_subset()`](https://wolski.github.io/prolfqua/reference/sample_subset.md),
-[`separate_factors()`](https://wolski.github.io/prolfqua/reference/separate_factors.md),
 [`separate_hierarchy()`](https://wolski.github.io/prolfqua/reference/separate_hierarchy.md),
 [`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md),
-[`spread_response_by_IsotopeLabel()`](https://wolski.github.io/prolfqua/reference/spread_response_by_IsotopeLabel.md),
 [`table_factors()`](https://wolski.github.io/prolfqua/reference/table_factors.md)
 
 ## Examples
 
 ``` r
+
 
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column

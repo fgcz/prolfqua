@@ -296,6 +296,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+
 # study variance of not normalized data
 #source("c:/Users/wewol/prog/prolfqua/R/LFQData.R")
 runallfuncs <- function(x){
@@ -329,10 +330,8 @@ lfqstats <- lfqdata$get_Stats()
 #> completing cases
 stopifnot(ncol(lfqstats$stats_wide()) == 30)
 lfqstats$violin()
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_ydensity()`).
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_ydensity()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_summary()`).
 
 runallfuncs(lfqstats)
 #> Warning: data is not transformed - aborting
@@ -382,10 +381,8 @@ lfqstats <- lfqdata$get_Stats()
 
 # stopifnot(ncol(lfqstats$stats_wide()) == 30)
 lfqstats$violin()
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_ydensity()`).
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_ydensity()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_summary()`).
 
 runallfuncs(lfqstats)
 #> Warning: data is not transformed - aborting

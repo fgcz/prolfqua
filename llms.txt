@@ -46,6 +46,7 @@ vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
 A minimal example for a table with protein abudances is:
 
 ``` r
+
 #Table with abundances
 df <- data.frame(protein_Id = c("tr|A|HUMAN","tr|B|HUMAN","tr|C|HUMAN","tr|D|HUMAN"),
                  Intensity_A = c(100,10000,10,NA),
@@ -79,6 +80,7 @@ lfqdata$hierarchy_counts()
 Once you have created an `LFQData` you can use prolfqua like this.
 
 ``` r
+
 R.version.string; packageVersion("prolfqua")
 
 ## here we simulate peptide level data
@@ -109,6 +111,7 @@ ggpubr::ggarrange(panelA, panelB, panelC, panelD)
 image
 
 ``` r
+
 ## specify model
 modelFunction <-
  strategy_lm("log_protein_abundance  ~ group_")
@@ -181,6 +184,7 @@ Example QC and sample size report
 
 Please do reference the [prolfqua article at Journal of Proteome
 Research](https://pubmed.ncbi.nlm.nih.gov/36939687/)
+
 
     @article{prolfquawolski2023,
     author = {Wolski, Witold E. and Nanni, Paolo and Grossmann, Jonas and d’Errico, Maria and Schlapbach, Ralph and Panse, Christian},
@@ -375,6 +379,9 @@ What name should we use?
 - [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md)
   : LM contrast analysis facade
 
+- [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md)
+  : LM contrast analysis with LOD imputation facade
+
 - [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md)
   : LM + missing-value imputation contrast analysis facade
 
@@ -410,6 +417,9 @@ What name should we use?
 
 - [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md)
   : holds results when contrasts are added.
+
+- [`FACADE_REGISTRY`](https://wolski.github.io/prolfqua/reference/FACADE_REGISTRY.md)
+  : Registry of available contrast facade classes
 
 - [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
   : Internal Functions by category
@@ -484,6 +494,9 @@ What name should we use?
 - [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md)
   : Build Firth logistic model for aggregated LFQData
 
+- [`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md)
+  : Build protein models with LOD imputation for failed fits
+
 - [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md)
   : Build limma model from LFQData
 
@@ -493,7 +506,6 @@ What name should we use?
 - [`create_config_Skyline()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
   [`create_config_Spectronaut_Peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
   [`create_config_MQ_peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
-  [`create_config_MSFragger_MSstats()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
   : Generate instances of AnalysisConfiguration
 
 - [`estimate_lod_global()`](https://wolski.github.io/prolfqua/reference/estimate_lod_global.md)
@@ -598,7 +610,7 @@ What name should we use?
 - [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
   : table facade to easily switch implementations
 
-- [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_Plotly.md)
+- [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_plotly.md)
   : volcano plotly
 
 - [`which_missing()`](https://wolski.github.io/prolfqua/reference/which_missing.md)

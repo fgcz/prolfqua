@@ -21,6 +21,7 @@ Other modelling:
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
@@ -41,13 +42,16 @@ Other modelling:
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
+[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
 [`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
@@ -62,9 +66,9 @@ Other modelling:
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V1()`](https://wolski.github.io/prolfqua/reference/my_contrast_V1.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -86,6 +90,14 @@ Other modelling:
 
   ContrastsLimma object
 
+- `.lfqdata`:
+
+  stored reference to input LFQData
+
+- `.contrast_names`:
+
+  names of the requested contrasts
+
 ## Methods
 
 ### Public methods
@@ -93,6 +105,8 @@ Other modelling:
 - [`ContrastsLimmaFacade$new()`](#method-ContrastsLimmaFacade-new)
 
 - [`ContrastsLimmaFacade$get_contrasts()`](#method-ContrastsLimmaFacade-get_contrasts)
+
+- [`ContrastsLimmaFacade$get_missing()`](#method-ContrastsLimmaFacade-get_missing)
 
 - [`ContrastsLimmaFacade$get_Plotter()`](#method-ContrastsLimmaFacade-get_Plotter)
 
@@ -134,7 +148,7 @@ initialize
 
 ### Method `get_contrasts()`
 
-get contrast results
+get contrast results (rows with NA diff are filtered out)
 
 #### Usage
 
@@ -145,6 +159,16 @@ get contrast results
 - `...`:
 
   passed to ContrastsLimma\$get_contrasts
+
+------------------------------------------------------------------------
+
+### Method `get_missing()`
+
+get protein × contrast pairs that could not be estimated
+
+#### Usage
+
+    ContrastsLimmaFacade$get_missing()
 
 ------------------------------------------------------------------------
 
@@ -209,14 +233,14 @@ fa <- ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
 #> Warning: Partial NA coefficients for 1 probe(s)
 head(fa$get_contrasts())
 #> # A tibble: 6 × 14
-#>   facade modelName protein_Id  contrast    diff       FDR std.error statistic
-#>   <chr>  <chr>     <chr>       <chr>      <dbl>     <dbl>     <dbl>     <dbl>
-#> 1 limma  limma     0EfVhX~0087 A_vs_Ctrl -2.62   0.00188      0.708    -3.69 
-#> 2 limma  limma     7cbcrd~5725 A_vs_Ctrl  2.80   0.000507     0.656     4.27 
-#> 3 limma  limma     9VUkAq~4703 A_vs_Ctrl  1.67   0.125        0.803     2.07 
-#> 4 limma  limma     BEJI92~5282 A_vs_Ctrl  0.424  0.621        0.708     0.598
-#> 5 limma  limma     CGzoYe~2147 A_vs_Ctrl -0.598  0.547        0.656    -0.911
-#> 6 limma  limma     DoWup2~5896 A_vs_Ctrl NA     NA           NA        NA    
+#>   facade modelName protein_Id  contrast     diff      FDR std.error statistic
+#>   <chr>  <chr>     <chr>       <chr>       <dbl>    <dbl>     <dbl>     <dbl>
+#> 1 limma  limma     0EfVhX~0087 A_vs_Ctrl -2.62   0.00188      0.708   -3.69  
+#> 2 limma  limma     7cbcrd~5725 A_vs_Ctrl  2.80   0.000507     0.656    4.27  
+#> 3 limma  limma     9VUkAq~4703 A_vs_Ctrl  1.67   0.125        0.803    2.07  
+#> 4 limma  limma     BEJI92~5282 A_vs_Ctrl  0.424  0.621        0.708    0.598 
+#> 5 limma  limma     CGzoYe~2147 A_vs_Ctrl -0.598  0.547        0.656   -0.911 
+#> 6 limma  limma     Fl4JiV~8625 A_vs_Ctrl -0.0494 0.945        0.708   -0.0698
 #> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, avgAbd <dbl>
 fa$to_wide()

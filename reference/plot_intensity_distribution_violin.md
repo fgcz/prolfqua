@@ -41,15 +41,13 @@ Other plotting:
 [`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
 [`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md),
 [`plot_heatmap_cor()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor.md),
-[`plot_heatmap_cor_iheatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor_iheatmap.md),
 [`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
 [`plot_hierarchies_boxplot_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_boxplot_df.md),
 [`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md),
 [`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
 [`plot_pca()`](https://wolski.github.io/prolfqua/reference/plot_pca.md),
 [`plot_raster()`](https://wolski.github.io/prolfqua/reference/plot_raster.md),
-[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md),
-[`plot_screeplot()`](https://wolski.github.io/prolfqua/reference/plot_screeplot.md)
+[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md)
 
 Other plotting:
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
@@ -64,15 +62,13 @@ Other plotting:
 [`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
 [`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md),
 [`plot_heatmap_cor()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor.md),
-[`plot_heatmap_cor_iheatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor_iheatmap.md),
 [`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
 [`plot_hierarchies_boxplot_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_boxplot_df.md),
 [`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md),
 [`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
 [`plot_pca()`](https://wolski.github.io/prolfqua/reference/plot_pca.md),
 [`plot_raster()`](https://wolski.github.io/prolfqua/reference/plot_raster.md),
-[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md),
-[`plot_screeplot()`](https://wolski.github.io/prolfqua/reference/plot_screeplot.md)
+[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md)
 
 ## Examples
 
@@ -83,10 +79,8 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 plot_intensity_distribution_violin(istar$data, istar$config)
-#> Warning: Removed 36 rows containing non-finite outside the scale range
-#> (`stat_ydensity()`).
-#> Warning: Removed 36 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
+#> Warning: Removed 36 rows containing non-finite outside the scale range (`stat_ydensity()`).
+#> Warning: Removed 36 rows containing non-finite outside the scale range (`stat_summary()`).
 
 
 istar <- sim_lfq_data_peptide_config()
@@ -95,7 +89,6 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 plot_intensity_distribution_density(istar$data, istar$config)
-#> Warning: Removed 36 rows containing non-finite outside the scale range
-#> (`stat_density()`).
+#> Warning: Removed 36 rows containing non-finite outside the scale range (`stat_density()`).
 
 ```

@@ -58,6 +58,7 @@ Other contrasts:
 ## Examples
 
 ``` r
+
 annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "primary")
 #> $annot
 #> # A tibble: 36 × 5

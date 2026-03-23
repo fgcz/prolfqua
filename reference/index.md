@@ -23,6 +23,9 @@
 - [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md)
   : LM contrast analysis facade
 
+- [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md)
+  : LM contrast analysis with LOD imputation facade
+
 - [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md)
   : LM + missing-value imputation contrast analysis facade
 
@@ -58,6 +61,9 @@
 
 - [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md)
   : holds results when contrasts are added.
+
+- [`FACADE_REGISTRY`](https://wolski.github.io/prolfqua/reference/FACADE_REGISTRY.md)
+  : Registry of available contrast facade classes
 
 - [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
   : Internal Functions by category
@@ -132,6 +138,9 @@
 - [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md)
   : Build Firth logistic model for aggregated LFQData
 
+- [`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md)
+  : Build protein models with LOD imputation for failed fits
+
 - [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md)
   : Build limma model from LFQData
 
@@ -141,7 +150,6 @@
 - [`create_config_Skyline()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
   [`create_config_Spectronaut_Peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
   [`create_config_MQ_peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
-  [`create_config_MSFragger_MSstats()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
   : Generate instances of AnalysisConfiguration
 
 - [`estimate_lod_global()`](https://wolski.github.io/prolfqua/reference/estimate_lod_global.md)
@@ -246,7 +254,7 @@
 - [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
   : table facade to easily switch implementations
 
-- [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_Plotly.md)
+- [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_plotly.md)
   : volcano plotly
 
 - [`which_missing()`](https://wolski.github.io/prolfqua/reference/which_missing.md)

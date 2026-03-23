@@ -11,6 +11,7 @@ on a deep copy of the data, so the original LFQData is not modified.
 
 Typical workflow:
 
+
     imp <- lfqdata$get_Imputer()
     imp$impute(method = "multRepl", lod = "global")
     imp$lfq$get_Plotter()$pca()
@@ -115,7 +116,4 @@ if (requireNamespace("zCompositions", quietly = TRUE)) {
   wide <- imp$lfq$to_wide(as.matrix = TRUE)
   stopifnot(!any(is.na(wide$data)))
 }
-#> Warning: Expected 3 pieces. Missing pieces filled with `NA` in 336 rows [1, 2, 3, 4, 5,
-#> 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 ```

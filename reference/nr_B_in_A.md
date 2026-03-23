@@ -21,6 +21,7 @@ nr_B_in_A(pdata, config, merge = TRUE)
 ## Examples
 
 ``` r
+
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from fileName column
 #> completing cases

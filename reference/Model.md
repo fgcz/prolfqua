@@ -12,6 +12,7 @@ Other modelling:
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
@@ -32,13 +33,16 @@ Other modelling:
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
+[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
 [`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
@@ -53,9 +57,9 @@ Other modelling:
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V1()`](https://wolski.github.io/prolfqua/reference/my_contrast_V1.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -296,6 +300,7 @@ The objects of this class are cloneable with this method.
 ``` r
 
 
+
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar$config <- old2new(istar$config)
 istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
@@ -312,7 +317,161 @@ mod <- prolfqua::build_model(
  formula_randomPeptide,
  modelName = modelName,
  subject_Id = config$hierarchy_keys_depth())
+#> 
+
+#> [===================>---------------------------------------------------]  28%
+#> 
+
+#> [====================>--------------------------------------------------]  29%
+#> 
+
+#> [=====================>-------------------------------------------------]  31%
+#> 
+
+#> [======================>------------------------------------------------]  32%
+#> 
+
+#> [=======================>-----------------------------------------------]  34%
+#> 
+
+#> [========================>----------------------------------------------]  35%
+#> 
+
+#> [=========================>---------------------------------------------]  37%
+#> 
+
+#> [==========================>--------------------------------------------]  38%
+#> 
+
+#> [===========================>-------------------------------------------]  40%
+#> 
+
+#> [============================>------------------------------------------]  41%
+#> 
+
+#> [=============================>-----------------------------------------]  43%
+#> 
+
+#> [==============================>----------------------------------------]  44%
+#> 
+
+#> [===============================>---------------------------------------]  46%
+#> 
+
+#> [================================>--------------------------------------]  47%
 #> boundary (singular) fit: see help('isSingular')
+#> 
+
+#> [=================================>-------------------------------------]  49%
+#> 
+
+#> [===================================>-----------------------------------]  50%
+#> 
+
+#> [====================================>----------------------------------]  51%
+#> 
+
+#> [=====================================>---------------------------------]  53%
+#> 
+
+#> [======================================>--------------------------------]  54%
+#> 
+
+#> [=======================================>-------------------------------]  56%
+#> 
+
+#> [========================================>------------------------------]  57%
+#> 
+
+#> [=========================================>-----------------------------]  59%
+#> 
+
+#> [==========================================>----------------------------]  60%
+#> 
+
+#> [===========================================>---------------------------]  62%
+#> 
+
+#> [============================================>--------------------------]  63%
+#> 
+
+#> [=============================================>-------------------------]  65%
+#> 
+
+#> [==============================================>------------------------]  66%
+#> 
+
+#> [===============================================>-----------------------]  68%
+#> 
+
+#> [================================================>----------------------]  69%
+#> 
+
+#> [=================================================>---------------------]  71%
+#> 
+
+#> [==================================================>--------------------]  72%
+#> 
+
+#> [===================================================>-------------------]  74%
+#> 
+
+#> [====================================================>------------------]  75%
+#> 
+
+#> [=====================================================>-----------------]  76%
+#> 
+
+#> [======================================================>----------------]  78%
+#> 
+
+#> [=======================================================>---------------]  79%
+#> 
+
+#> [========================================================>--------------]  81%
+#> 
+
+#> [=========================================================>-------------]  82%
+#> 
+
+#> [===========================================================>-----------]  84%
+#> 
+
+#> [============================================================>----------]  85%
+#> 
+
+#> [=============================================================>---------]  87%
+#> 
+
+#> [==============================================================>--------]  88%
+#> 
+
+#> [===============================================================>-------]  90%
+#> 
+
+#> [================================================================>------]  91%
+#> 
+
+#> [=================================================================>-----]  93%
+#> 
+
+#> [==================================================================>----]  94%
+#> 
+
+#> [===================================================================>---]  96%
+#> 
+
+#> [====================================================================>--]  97%
+#> 
+
+#> [=====================================================================>-]  99%
+#> 
+
+#> [=======================================================================] 100%
+#> 
+                                                                              
+#> 
+
 #> Joining with `by = join_by(protein_Id)`
 
 mod$modelDF

@@ -87,6 +87,7 @@ Other stats:
 
 ``` r
 
+
 bb <- prolfqua::sim_lfq_data_protein_config()
 #> creating sampleName from fileName column
 #> completing cases

@@ -44,7 +44,7 @@ Base class for all Contrasts classes"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Base class for all Contrasts classes</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/ContrastsInterface.R" class="external-link"><code>R/ContrastsInterface.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/ContrastsInterface.R" class="external-link"><code>R/ContrastsInterface.R</code></a></small>
       <div class="d-none name"><code>ContrastsInterface.Rd</code></div>
     </div>
 
@@ -64,6 +64,7 @@ Base class for all Contrasts classes"></head><body>
 <li><p><a href="#method-ContrastsInterface-get_contrasts"><code>ContrastsInterface$get_contrasts()</code></a></p></li>
 <li><p><a href="#method-ContrastsInterface-get_Plotter"><code>ContrastsInterface$get_Plotter()</code></a></p></li>
 <li><p><a href="#method-ContrastsInterface-to_wide"><code>ContrastsInterface$to_wide()</code></a></p></li>
+<li><p><a href="#method-ContrastsInterface-get_missing"><code>ContrastsInterface$get_missing()</code></a></p></li>
 <li><p><a href="#method-ContrastsInterface-column_description"><code>ContrastsInterface$column_description()</code></a></p></li>
 <li><p><a href="#method-ContrastsInterface-clone"><code>ContrastsInterface$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-ContrastsInterface-get_contrast_sides"></a><div class="section">
@@ -98,10 +99,19 @@ Base class for all Contrasts classes"></head><body>
 </div>
 
 
+</div><p></p><hr><a id="method-ContrastsInterface-get_missing"></a><div class="section">
+<h3 id="method-get-missing-">Method <code>get_missing()</code><a class="anchor" aria-label="anchor" href="#method-get-missing-"></a></h3>
+<p>get protein × contrast pairs that could not be estimated.
+Returns a data.frame with hierarchy columns and contrast, or 0 rows.</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+
 </div><p></p><hr><a id="method-ContrastsInterface-column_description"></a><div class="section">
 <h3 id="method-column-description-">Method <code>column_description()</code><a class="anchor" aria-label="anchor" href="#method-column-description-"></a></h3>
 <p>column description</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">column_description</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -109,7 +119,7 @@ Base class for all Contrasts classes"></head><body>
 </div><p></p><hr><a id="method-ContrastsInterface-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -131,6 +141,7 @@ Base class for all Contrasts classes"></head><body>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">int</span> <span class="op">&lt;-</span> <span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">int</span><span class="op">$</span><span class="fu">column_description</span><span class="op">(</span><span class="op">)</span></span></span>

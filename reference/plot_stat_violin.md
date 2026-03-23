@@ -40,6 +40,7 @@ Other stats:
 
 ``` r
 
+
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -54,15 +55,11 @@ res <- summarize_stats(data, config)
 plot_stat_violin(res, config, stat = "meanAbundance")
 
 plot_stat_violin(res, config, stat = "sd")
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_ydensity()`).
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_ydensity()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_summary()`).
 
 plot_stat_violin(res, config, stat = "CV")
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_ydensity()`).
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_ydensity()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_summary()`).
 
 ```

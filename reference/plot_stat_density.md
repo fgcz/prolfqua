@@ -49,6 +49,7 @@ Other stats:
 
 ``` r
 
+
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -61,10 +62,8 @@ res <- summarize_stats(data, config)
 plot_stat_density(res, config, stat = "meanAbundance")
 
 plot_stat_density(res, config, stat = "sd")
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_density()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_density()`).
 
 plot_stat_density(res, config, stat = "CV")
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_density()`).
+#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_density()`).
 ```

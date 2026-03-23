@@ -42,7 +42,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Internal Functions by category</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/A_dataset_docu.R" class="external-link"><code>R/A_dataset_docu.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/A_dataset_docu.R" class="external-link"><code>R/A_dataset_docu.R</code></a></small>
       <div class="d-none name"><code>INTERNAL_FUNCTIONS_BY_FAMILY.Rd</code></div>
     </div>
 
@@ -56,11 +56,9 @@
     <div class="dont-index"><p>Other aggregation:
 <code><a href="aggregate_intensity_topN.html">aggregate_intensity_topN()</a></code>,
 <code><a href="estimate_intensity.html">estimate_intensity()</a></code>,
-<code><a href="intensity_summary_by_hkeys.html">intensity_summary_by_hkeys()</a></code>,
 <code><a href="medpolish_estimate.html">medpolish_estimate()</a></code>,
 <code><a href="medpolish_estimate_df.html">medpolish_estimate_df()</a></code>,
 <code><a href="medpolish_estimate_dfconfig.html">medpolish_estimate_dfconfig()</a></code>,
-<code><a href="medpolish_protein_estimates.html">medpolish_protein_estimates()</a></code>,
 <code><a href="plot_estimate.html">plot_estimate()</a></code>,
 <code><a href="plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline()</a></code>,
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
@@ -75,21 +73,17 @@
 <code><a href="make_interaction_column.html">make_interaction_column()</a></code>,
 <code><a href="make_reduced_hierarchy_config.html">make_reduced_hierarchy_config()</a></code>,
 <code><a href="sample_subset.html">sample_subset()</a></code>,
-<code><a href="separate_factors.html">separate_factors()</a></code>,
 <code><a href="separate_hierarchy.html">separate_hierarchy()</a></code>,
 <code><a href="setup_analysis.html">setup_analysis()</a></code>,
-<code><a href="spread_response_by_IsotopeLabel.html">spread_response_by_IsotopeLabel()</a></code>,
 <code><a href="table_factors.html">table_factors()</a></code>,
 <code><a href="table_factors_size.html">table_factors_size()</a></code></p>
-<p>Other deprecated:
-<code><a href="intensity_summary_by_hkeys.html">intensity_summary_by_hkeys()</a></code>,
-<code><a href="medpolish_protein_estimates.html">medpolish_protein_estimates()</a></code></p>
 <p>Other modelling:
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
+<code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>,
 <code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>,
 <code><a href="ContrastsLimma.html">ContrastsLimma</a></code>,
 <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
@@ -110,13 +104,16 @@
 <code><a href="build_model.html">build_model()</a></code>,
 <code><a href="build_model_glm_peptide.html">build_model_glm_peptide()</a></code>,
 <code><a href="build_model_glm_protein.html">build_model_glm_protein()</a></code>,
+<code><a href="build_model_impute.html">build_model_impute()</a></code>,
 <code><a href="build_model_limma.html">build_model_limma()</a></code>,
 <code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
+<code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
+<code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
 <code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
@@ -131,9 +128,9 @@
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="my_contest.html">my_contest()</a></code>,
 <code><a href="my_contrast.html">my_contrast()</a></code>,
-<code><a href="my_contrast_V1.html">my_contrast_V1()</a></code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
 <code><a href="my_glht.html">my_glht()</a></code>,
+<code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -156,7 +153,6 @@
 <code><a href="plot_estimate.html">plot_estimate()</a></code>,
 <code><a href="plot_heatmap.html">plot_heatmap()</a></code>,
 <code><a href="plot_heatmap_cor.html">plot_heatmap_cor()</a></code>,
-<code><a href="plot_heatmap_cor_iheatmap.html">plot_heatmap_cor_iheatmap()</a></code>,
 <code><a href="plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline()</a></code>,
 <code><a href="plot_hierarchies_boxplot_df.html">plot_hierarchies_boxplot_df()</a></code>,
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
@@ -164,16 +160,13 @@
 <code><a href="plot_intensity_distribution_violin.html">plot_intensity_distribution_violin()</a></code>,
 <code><a href="plot_pca.html">plot_pca()</a></code>,
 <code><a href="plot_raster.html">plot_raster()</a></code>,
-<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code>,
-<code><a href="plot_screeplot.html">plot_screeplot()</a></code></p>
+<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code></p>
 <p>Other preprocessing:
 <code><a href="apply_to_response_matrix.html">apply_to_response_matrix()</a></code>,
 <code><a href="filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count()</a></code>,
 <code><a href="get_robscales.html">get_robscales()</a></code>,
-<code><a href="normalize_log2_robscale.html">normalize_log2_robscale()</a></code>,
 <code><a href="robust_scale.html">robust_scale()</a></code>,
-<code><a href="scale_with_subset.html">scale_with_subset()</a></code>,
-<code><a href="scale_with_subset_by_factors.html">scale_with_subset_by_factors()</a></code></p>
+<code><a href="scale_with_subset.html">scale_with_subset()</a></code></p>
 <p>Other stats:
 <code><a href="lfq_power_t_test_proteins.html">lfq_power_t_test_proteins()</a></code>,
 <code><a href="lfq_power_t_test_quantiles.html">lfq_power_t_test_quantiles()</a></code>,
@@ -188,7 +181,6 @@
 <p>Other summary:
 <code><a href="hierarchy_counts.html">hierarchy_counts()</a></code>,
 <code><a href="hierarchy_counts_sample.html">hierarchy_counts_sample()</a></code>,
-<code><a href="nr_B_in_A_per_sample.html">nr_B_in_A_per_sample()</a></code>,
 <code><a href="summarize_hierarchy.html">summarize_hierarchy()</a></code></p>
 <p>Other utilities:
 <code><a href="get_UniprotID_from_fasta_header.html">get_UniprotID_from_fasta_header()</a></code>,
@@ -196,13 +188,9 @@
 <code><a href="multigroup_volcano.html">multigroup_volcano()</a></code>,
 <code><a href="names_to_matrix.html">names_to_matrix()</a></code>,
 <code><a href="pairs_smooth.html">pairs_smooth()</a></code>,
-<code><a href="pairs_w_abline.html">pairs_w_abline()</a></code>,
 <code><a href="panel_cor.html">panel_cor()</a></code>,
-<code><a href="panel_hist.html">panel_hist()</a></code>,
 <code><a href="remove_NA_rows.html">remove_NA_rows()</a></code>,
-<code><a href="table_facade.html">table_facade()</a></code></p>
-<p>Other vignetteHelpers:
-<code><a href="render_MQSummary_rmd.html">render_MQSummary_rmd()</a></code></p></div>
+<code><a href="table_facade.html">table_facade()</a></code></p></div>
     </div>
 
   </main></div>

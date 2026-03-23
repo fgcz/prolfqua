@@ -20,6 +20,7 @@ one-factor introduction.
 ## Simulate two-factor data and encode subgroups
 
 ``` r
+
 dd <- sim_lfq_data_2Factor_config(
   Nprot = 80,
   with_missing = TRUE,
@@ -54,6 +55,7 @@ contrasts_2f <- c(
 ## Protein-input facades
 
 ``` r
+
 fa_lm_2f <- build_contrast_analysis(
   lfq_protein_2f,
   "~ Subgroup",
@@ -91,6 +93,7 @@ fa_firth_protein_2f <- build_contrast_analysis(
 ```
 
 ``` r
+
 results_protein_2f <- bind_rows(
   fa_lm_2f$get_contrasts(),
   fa_limma_2f$get_contrasts(),
@@ -112,9 +115,9 @@ results_protein_2f |>
     ##  4 firth      T_C_gv_KO         80
     ##  5 firth      T_C_gv_WT         80
     ##  6 firth      WT_KO_comp        80
-    ##  7 limma      T_C_gv_KO         80
-    ##  8 limma      T_C_gv_WT         80
-    ##  9 limma      WT_KO_comp        80
+    ##  7 limma      T_C_gv_KO         79
+    ##  8 limma      T_C_gv_WT         77
+    ##  9 limma      WT_KO_comp        76
     ## 10 lm         T_C_gv_KO         79
     ## 11 lm         T_C_gv_WT         77
     ## 12 lm         WT_KO_comp        76
@@ -125,6 +128,7 @@ results_protein_2f |>
 ## Peptide-input facades
 
 ``` r
+
 fa_lmer_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup + (1 | peptide_Id) + (1 | sampleName)",
@@ -148,6 +152,7 @@ fa_firth_peptide_2f <- build_contrast_analysis(
 ```
 
 ``` r
+
 results_peptide_2f <- bind_rows(
   fa_lmer_2f$get_contrasts(),
   fa_ropeca_2f$get_contrasts(),
@@ -174,6 +179,7 @@ results_peptide_2f |>
 ## Volcano plots
 
 ``` r
+
 results_protein_2f <- results_protein_2f |>
   dplyr::mutate(significant = FDR < 0.1 & abs(diff) > 0.5)
 
@@ -193,6 +199,7 @@ contrasts.](ContrastFacade2Factor_files/figure-html/volcano_protein_2f-1.png)
 Protein-input facades, subgroup contrasts.
 
 ``` r
+
 results_peptide_2f <- results_peptide_2f |>
   dplyr::mutate(significant = FDR < 0.1 & abs(diff) > 0.5)
 

@@ -26,11 +26,9 @@ Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
-[`intensity_summary_by_hkeys()`](https://wolski.github.io/prolfqua/reference/intensity_summary_by_hkeys.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
 [`medpolish_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_dfconfig.md),
-[`medpolish_protein_estimates()`](https://wolski.github.io/prolfqua/reference/medpolish_protein_estimates.md),
 [`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
 [`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
 [`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md),
@@ -40,6 +38,7 @@ Other aggregation:
 ## Examples
 
 ``` r
+
 bb <- prolfqua_data("data_ionstar")$filtered()
 #> Column added : nr_peptide_Id_IN_protein_Id
 conf <- old2new(bb$config)

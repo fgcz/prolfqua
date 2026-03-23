@@ -12,6 +12,7 @@ Other modelling:
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
@@ -32,13 +33,16 @@ Other modelling:
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
+[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
 [`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
@@ -53,9 +57,9 @@ Other modelling:
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V1()`](https://wolski.github.io/prolfqua/reference/my_contrast_V1.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -287,6 +291,7 @@ The objects of this class are cloneable with this method.
 
 
 
+
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 #> creating sampleName from fileName column
@@ -316,13 +321,13 @@ mod$coef_pairs()
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
 #>  1 7IZdVV~0841       2.10     6.77e- 1  -6.66e- 1
-#>  2 AZPG26~2091       0.905    2.23e-16   1.82e+ 0
+#>  2 AZPG26~2091       0.905    3.33e-16   1.82e+ 0
 #>  3 AoNKbb~6908       1.01    -7.77e- 1  -4.25e- 1
 #>  4 JnEDsz~4938       0.00838  8.36e-11   9.37e- 1
 #>  5 tCZCHm~6695       2.16     1.23e+ 0   1.23e+ 0
 #>  6 EnbuYk~0350       0.847    1.35e+ 0  -3.04e+ 0
-#>  7 NNASGK~1417       2.20    -1.35e+ 0   4.13e-16
-#>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
+#>  7 NNASGK~1417       2.20    -1.35e+ 0   2.87e-16
+#>  8 XYrp6h~5793       2.20     2.61e-15   1.23e-15
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
 #> 
@@ -343,24 +348,24 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpPiOb3D/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpPiOb3D/Coef_VolcanoPlot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpPiOb3D/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /var/folders/1v/ykbbqt_143g35h0h2w348jh40000gn/T//RtmpWi6Orf/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /var/folders/1v/ykbbqt_143g35h0h2w348jh40000gn/T//RtmpWi6Orf/Coef_VolcanoPlot_modelFirth.pdf
+#> Writing figure into : /var/folders/1v/ykbbqt_143g35h0h2w348jh40000gn/T//RtmpWi6Orf/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
 #>  1 7IZdVV~0841       2.10     6.77e- 1  -6.66e- 1
-#>  2 AZPG26~2091       0.905    2.23e-16   1.82e+ 0
+#>  2 AZPG26~2091       0.905    3.33e-16   1.82e+ 0
 #>  3 AoNKbb~6908       1.01    -7.77e- 1  -4.25e- 1
 #>  4 JnEDsz~4938       0.00838  8.36e-11   9.37e- 1
 #>  5 tCZCHm~6695       2.16     1.23e+ 0   1.23e+ 0
 #>  6 EnbuYk~0350       0.847    1.35e+ 0  -3.04e+ 0
-#>  7 NNASGK~1417       2.20    -1.35e+ 0   4.13e-16
-#>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
+#>  7 NNASGK~1417       2.20    -1.35e+ 0   2.87e-16
+#>  8 XYrp6h~5793       2.20     2.61e-15   1.23e-15
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_69ab2e3534fd 
-#>                       2 
+#> agg_record_1189364864 
+#>                     2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -389,16 +394,16 @@ mod$coef_pairs()
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841         2.20   5.61e-16  -2.20e+ 0
-#>  2 AZPG26~2091         2.20  -1.52e-15  -1.07e-15
-#>  3 AoNKbb~6908         2.20   6.16e-16  -1.35e+ 0
-#>  4 EnbuYk~0350         0.847 -8.47e- 1  -6.83e-16
-#>  5 JnEDsz~4938        -0.847 -1.35e+ 0   1.18e-16
-#>  6 NNASGK~1417         2.20  -1.52e-15  -1.07e-15
-#>  7 XYrp6h~5793         2.20  -1.52e-15  -1.07e-15
+#>  1 7IZdVV~0841         2.20   1.23e-15  -2.20e+ 0
+#>  2 AZPG26~2091         2.20   2.61e-15   1.23e-15
+#>  3 AoNKbb~6908         2.20  -1.61e-16  -1.35e+ 0
+#>  4 EnbuYk~0350         0.847 -8.47e- 1   9.70e-17
+#>  5 JnEDsz~4938        -0.847 -1.35e+ 0  -7.29e-17
+#>  6 NNASGK~1417         2.20   2.61e-15   1.23e-15
+#>  7 XYrp6h~5793         2.20   2.61e-15   1.23e-15
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
-#>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
-#> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
+#>  9 tCZCHm~6695         2.20  -1.35e+ 0   2.87e-16
+#> 10 tHE075~8231         0.847  1.35e+ 0   2.48e-16
 #> 
 #> $name
 #> [1] "Coef_Pairsplot_modelFirth.pdf"
@@ -417,22 +422,22 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpPiOb3D/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpPiOb3D/Coef_VolcanoPlot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpPiOb3D/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /var/folders/1v/ykbbqt_143g35h0h2w348jh40000gn/T//RtmpWi6Orf/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /var/folders/1v/ykbbqt_143g35h0h2w348jh40000gn/T//RtmpWi6Orf/Coef_VolcanoPlot_modelFirth.pdf
+#> Writing figure into : /var/folders/1v/ykbbqt_143g35h0h2w348jh40000gn/T//RtmpWi6Orf/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841         2.20   5.61e-16  -2.20e+ 0
-#>  2 AZPG26~2091         2.20  -1.52e-15  -1.07e-15
-#>  3 AoNKbb~6908         2.20   6.16e-16  -1.35e+ 0
-#>  4 EnbuYk~0350         0.847 -8.47e- 1  -6.83e-16
-#>  5 JnEDsz~4938        -0.847 -1.35e+ 0   1.18e-16
-#>  6 NNASGK~1417         2.20  -1.52e-15  -1.07e-15
-#>  7 XYrp6h~5793         2.20  -1.52e-15  -1.07e-15
+#>  1 7IZdVV~0841         2.20   1.23e-15  -2.20e+ 0
+#>  2 AZPG26~2091         2.20   2.61e-15   1.23e-15
+#>  3 AoNKbb~6908         2.20  -1.61e-16  -1.35e+ 0
+#>  4 EnbuYk~0350         0.847 -8.47e- 1   9.70e-17
+#>  5 JnEDsz~4938        -0.847 -1.35e+ 0  -7.29e-17
+#>  6 NNASGK~1417         2.20   2.61e-15   1.23e-15
+#>  7 XYrp6h~5793         2.20   2.61e-15   1.23e-15
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
-#>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
-#> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
-#> agg_record_69ab2e3534fd 
-#>                       2 
+#>  9 tCZCHm~6695         2.20  -1.35e+ 0   2.87e-16
+#> 10 tHE075~8231         0.847  1.35e+ 0   2.48e-16
+#> agg_record_1189364864 
+#>                     2 
 ```

@@ -27,12 +27,12 @@ hierarchy_counts_sample(pdata, configuration, nr_children = 1)
 Other summary:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`hierarchy_counts()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts.md),
-[`nr_B_in_A_per_sample()`](https://wolski.github.io/prolfqua/reference/nr_B_in_A_per_sample.md),
 [`summarize_hierarchy()`](https://wolski.github.io/prolfqua/reference/summarize_hierarchy.md)
 
 ## Examples
 
 ``` r
+
 bb <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases

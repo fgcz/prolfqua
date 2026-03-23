@@ -55,6 +55,7 @@ sim_lfq_data(
 ## Examples
 
 ``` r
+
 res <- sim_lfq_data(Nprot = 10)
 res <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE)
 res <- sim_lfq_data(Nprot = 10, N=4)

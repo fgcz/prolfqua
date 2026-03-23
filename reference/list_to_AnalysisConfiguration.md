@@ -18,6 +18,7 @@ list_to_AnalysisConfiguration(dd)
 ## Examples
 
 ``` r
+
 DEAconfig <- create_config_Skyline()
 configList <- prolfqua::R6_extract_values(DEAconfig)
 #> config$parameter is deprecated, use config directly

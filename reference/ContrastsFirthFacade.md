@@ -24,6 +24,7 @@ Other modelling:
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
@@ -45,13 +46,16 @@ Other modelling:
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
+[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
 [`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
@@ -66,9 +70,9 @@ Other modelling:
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V1()`](https://wolski.github.io/prolfqua/reference/my_contrast_V1.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -90,6 +94,14 @@ Other modelling:
 
   ContrastsFirth object
 
+- `.lfqdata`:
+
+  stored reference to input LFQData
+
+- `.contrast_names`:
+
+  names of the requested contrasts
+
 ## Methods
 
 ### Public methods
@@ -97,6 +109,8 @@ Other modelling:
 - [`ContrastsFirthFacade$new()`](#method-ContrastsFirthFacade-new)
 
 - [`ContrastsFirthFacade$get_contrasts()`](#method-ContrastsFirthFacade-get_contrasts)
+
+- [`ContrastsFirthFacade$get_missing()`](#method-ContrastsFirthFacade-get_missing)
 
 - [`ContrastsFirthFacade$get_Plotter()`](#method-ContrastsFirthFacade-get_Plotter)
 
@@ -143,6 +157,16 @@ get contrast results
 - `...`:
 
   passed to ContrastsFirth\$get_contrasts
+
+------------------------------------------------------------------------
+
+### Method `get_missing()`
+
+get protein × contrast pairs that could not be estimated
+
+#### Usage
+
+    ContrastsFirthFacade$get_missing()
 
 ------------------------------------------------------------------------
 
@@ -215,9 +239,9 @@ head(fa$get_contrasts())
 #> # Groups:   contrast [1]
 #>   facade modelName     protein_Id contrast sigma    df      diff   FDR std.error
 #>   <chr>  <chr>         <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>
-#> 1 firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9  1.07e-15 1          2.11
+#> 1 firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9 -1.23e-15 1          2.11
 #> 2 firth  WaldTestFirth 0m5WN4~14… A_vs_Ct…     1     9  8.47e- 1 0.978      1.32
-#> 3 firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9  1.07e-15 1          2.11
+#> 3 firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9 -1.23e-15 1          2.11
 #> 4 firth  WaldTestFirth 9VUkAq~45… A_vs_Ct…     1     9 -1.35e+ 0 0.978      1.78
 #> 5 firth  WaldTestFirth At886V~32… A_vs_Ct…     1     9 -8.47e- 1 0.978      1.32
 #> 6 firth  WaldTestFirth BEJI92~91… A_vs_Ct…     1     9 -1.35e+ 0 0.978      1.78
@@ -227,24 +251,24 @@ fa$to_wide()
 #> # A tibble: 20 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>    <chr>               <dbl>             <dbl>         <dbl>               <dbl>
-#>  1 0EfVhX~59…       1.07e-15             1             1                5.08e-16
+#>  1 0EfVhX~59…      -1.23e-15             1             1               -5.81e-16
 #>  2 0m5WN4~14…       8.47e- 1             0.538         0.978            6.40e- 1
-#>  3 7cbcrd~83…       1.07e-15             1             1                5.08e-16
+#>  3 7cbcrd~83…      -1.23e-15             1             1               -5.81e-16
 #>  4 9VUkAq~45…      -1.35e+ 0             0.468         0.978           -7.58e- 1
 #>  5 At886V~32…      -8.47e- 1             0.538         0.978           -6.40e- 1
 #>  6 BEJI92~91…      -1.35e+ 0             0.468         0.978           -7.58e- 1
-#>  7 CGzoYe~28…      -4.13e-16             1             1               -1.96e-16
+#>  7 CGzoYe~28…      -2.87e-16             1             1               -1.36e-16
 #>  8 CtOJ9t~28…       1.35e+ 0             0.468         0.978            7.58e- 1
 #>  9 DoWup2~29…       2.20e+ 0             0.238         0.978            1.26e+ 0
 #> 10 DuwH7n~34…       8.47e- 1             0.538         0.978            6.40e- 1
-#> 11 Fl4JiV~75…      -2.85e-17             1             1               -2.26e-17
+#> 11 Fl4JiV~75…       1.48e-17             1             1                1.17e-17
 #> 12 HC8K98~49…       8.47e- 1             0.538         0.978            6.40e- 1
-#> 13 HvIpHG~40…       1.07e-15             1             1                5.08e-16
+#> 13 HvIpHG~40…      -1.23e-15             1             1               -5.81e-16
 #> 14 I1Jk2Z~08…      -8.47e- 1             0.538         0.978           -6.40e- 1
-#> 15 JV3Z7t~29…       1.07e-15             1             1                5.08e-16
+#> 15 JV3Z7t~29…      -1.23e-15             1             1               -5.81e-16
 #> 16 JcKVfU~08…      -1.35e+ 0             0.468         0.978           -7.58e- 1
 #> 17 JfvT8X~27…      -2.20e+ 0             0.238         0.978           -1.26e+ 0
-#> 18 R2i6w7~02…       6.65e-17             1             1                5.26e-17
-#> 19 SGIVBl~95…       1.07e-15             1             1                5.08e-16
-#> 20 r2J0Eh~26…      -4.13e-16             1             1               -1.96e-16
+#> 18 R2i6w7~02…       3.27e-16             1             1                2.59e-16
+#> 19 SGIVBl~95…      -1.23e-15             1             1               -5.81e-16
+#> 20 r2J0Eh~26…      -2.87e-16             1             1               -1.36e-16
 ```

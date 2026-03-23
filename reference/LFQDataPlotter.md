@@ -493,6 +493,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -550,5 +551,6 @@ stopifnot("upset" == class(lfqplotter$upset_missing()))
 #> ℹ The deprecated feature was likely used in the UpSetR package.
 #>   Please report the issue to the authors.
 stopifnot(class(prolfqua::plot_sample_correlation(istar$data, istar$config)) == "list")
+
 
 ```

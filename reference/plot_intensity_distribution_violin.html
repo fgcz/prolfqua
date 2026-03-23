@@ -44,7 +44,7 @@ visualize intensity distributions"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>visualize intensity distributions</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/tidyMS_plotting.R" class="external-link"><code>R/tidyMS_plotting.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/HEAD/R/tidyMS_plotting.R" class="external-link"><code>R/tidyMS_plotting.R</code></a></small>
       <div class="d-none name"><code>plot_intensity_distribution_violin.Rd</code></div>
     </div>
 
@@ -91,15 +91,13 @@ visualize intensity distributions"></head><body>
 <code><a href="plot_estimate.html">plot_estimate()</a></code>,
 <code><a href="plot_heatmap.html">plot_heatmap()</a></code>,
 <code><a href="plot_heatmap_cor.html">plot_heatmap_cor()</a></code>,
-<code><a href="plot_heatmap_cor_iheatmap.html">plot_heatmap_cor_iheatmap()</a></code>,
 <code><a href="plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline()</a></code>,
 <code><a href="plot_hierarchies_boxplot_df.html">plot_hierarchies_boxplot_df()</a></code>,
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
 <code><a href="plot_hierarchies_line_df.html">plot_hierarchies_line_df()</a></code>,
 <code><a href="plot_pca.html">plot_pca()</a></code>,
 <code><a href="plot_raster.html">plot_raster()</a></code>,
-<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code>,
-<code><a href="plot_screeplot.html">plot_screeplot()</a></code></p>
+<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code></p>
 <p>Other plotting:
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
@@ -113,15 +111,13 @@ visualize intensity distributions"></head><body>
 <code><a href="plot_estimate.html">plot_estimate()</a></code>,
 <code><a href="plot_heatmap.html">plot_heatmap()</a></code>,
 <code><a href="plot_heatmap_cor.html">plot_heatmap_cor()</a></code>,
-<code><a href="plot_heatmap_cor_iheatmap.html">plot_heatmap_cor_iheatmap()</a></code>,
 <code><a href="plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline()</a></code>,
 <code><a href="plot_hierarchies_boxplot_df.html">plot_hierarchies_boxplot_df()</a></code>,
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
 <code><a href="plot_hierarchies_line_df.html">plot_hierarchies_line_df()</a></code>,
 <code><a href="plot_pca.html">plot_pca()</a></code>,
 <code><a href="plot_raster.html">plot_raster()</a></code>,
-<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code>,
-<code><a href="plot_screeplot.html">plot_screeplot()</a></code></p></div>
+<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -132,10 +128,8 @@ visualize intensity distributions"></head><body>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="fu">plot_intensity_distribution_violin</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 36 rows containing non-finite outside the scale range</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_ydensity()`).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 36 rows containing non-finite outside the scale range</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_summary()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 36 rows containing non-finite outside the scale range (`stat_ydensity()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 36 rows containing non-finite outside the scale range (`stat_summary()`).</span>
 <span class="r-plt img"><img src="plot_intensity_distribution_violin-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -144,8 +138,7 @@ visualize intensity distributions"></head><body>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="fu">plot_intensity_distribution_density</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 36 rows containing non-finite outside the scale range</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_density()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 36 rows containing non-finite outside the scale range (`stat_density()`).</span>
 <span class="r-plt img"><img src="plot_intensity_distribution_violin-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

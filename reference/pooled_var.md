@@ -54,6 +54,7 @@ Other stats:
 ## Examples
 
 ``` r
+
 x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
 x <- data.frame(nrMeasured = c(1,2,1,1), var = c(NA, 0.0370, NA, NA),
   meanAbundance = c(-1.94,-1.46,-1.87,-1.45))

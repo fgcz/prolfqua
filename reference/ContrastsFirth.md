@@ -11,6 +11,7 @@ Other modelling:
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
@@ -32,13 +33,16 @@ Other modelling:
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
+[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
 [`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
@@ -53,9 +57,9 @@ Other modelling:
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V1()`](https://wolski.github.io/prolfqua/reference/my_contrast_V1.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
+[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -119,6 +123,7 @@ Other modelling:
 Inherited methods
 
 - [`prolfqua::ContrastsInterface$column_description()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`prolfqua::ContrastsInterface$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
 
 ------------------------------------------------------------------------
 
@@ -265,6 +270,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+
 modi <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #> creating sampleName from fileName column
 #> completing cases
@@ -294,6 +300,7 @@ ctr$get_linfct()
 #>     get_contrast_sides: function () 
 #>     get_contrasts: function (all = FALSE) 
 #>     get_linfct: function (avg = TRUE) 
+#>     get_missing: function () 
 #>     initialize: function (model, contrasts, p.adjust = prolfqua::adjust_p_values, 
 #>     modelName: WaldTestFirth
 #>     models: ModelFirth, ModelInterface, R6
@@ -311,24 +318,24 @@ ctr$get_contrasts()
 #>    <chr>     <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>     <dbl>
 #>  1 WaldTest… 0EfVhX~00… Avs          1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
 #>  2 WaldTest… 0EfVhX~00… AvsCtrl      1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
-#>  3 WaldTest… 7cbcrd~57… Avs          1     9  6.90e-16 1          1.38  5.00e-16
+#>  3 WaldTest… 7cbcrd~57… Avs          1     9  2.58e-16 1          1.38  1.87e-16
 #>  4 WaldTest… 7cbcrd~57… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #>  5 WaldTest… 9VUkAq~47… Avs          1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
 #>  6 WaldTest… 9VUkAq~47… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #>  7 WaldTest… BEJI92~52… Avs          1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #>  8 WaldTest… BEJI92~52… AvsCtrl      1     9  2.20e+ 0 0.769      1.74  1.26e+ 0
-#>  9 WaldTest… CGzoYe~21… Avs          1     9  1.52e-15 1          2.11  7.20e-16
-#> 10 WaldTest… CGzoYe~21… AvsCtrl      1     9  1.07e-15 1          2.11  5.08e-16
+#>  9 WaldTest… CGzoYe~21… Avs          1     9 -2.61e-15 1          2.11 -1.24e-15
+#> 10 WaldTest… CGzoYe~21… AvsCtrl      1     9 -1.23e-15 1          2.11 -5.81e-16
 #> 11 WaldTest… DoWup2~58… Avs          1     9 -1.35e+ 0 0.769      1.78 -7.58e- 1
 #> 12 WaldTest… DoWup2~58… AvsCtrl      1     9 -3.04e+ 0 0.769      1.78 -1.71e+ 0
 #> 13 WaldTest… Fl4JiV~86… Avs          1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #> 14 WaldTest… Fl4JiV~86… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #> 15 WaldTest… HvIpHG~90… Avs          1     9 -1.69e+ 0 0.769      1.38 -1.23e+ 0
 #> 16 WaldTest… HvIpHG~90… AvsCtrl      1     9 -1.69e+ 0 0.769      1.38 -1.23e+ 0
-#> 17 WaldTest… JcKVfU~96… Avs          1     9  1.52e-15 1          2.11  7.20e-16
-#> 18 WaldTest… JcKVfU~96… AvsCtrl      1     9  1.07e-15 1          2.11  5.08e-16
+#> 17 WaldTest… JcKVfU~96… Avs          1     9 -2.61e-15 1          2.11 -1.24e-15
+#> 18 WaldTest… JcKVfU~96… AvsCtrl      1     9 -1.23e-15 1          2.11 -5.81e-16
 #> 19 WaldTest… SGIVBl~57… Avs          1     9  1.35e+ 0 0.769      1.78  7.58e- 1
-#> 20 WaldTest… SGIVBl~57… AvsCtrl      1     9 -4.13e-16 1          2.11 -1.96e-16
+#> 20 WaldTest… SGIVBl~57… AvsCtrl      1     9 -2.87e-16 1          2.11 -1.36e-16
 #> # ℹ 4 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   avgAbd <dbl>
 
@@ -363,6 +370,7 @@ ctrpep$get_linfct()
 #>     get_contrast_sides: function () 
 #>     get_contrasts: function (all = FALSE) 
 #>     get_linfct: function (avg = TRUE) 
+#>     get_missing: function () 
 #>     initialize: function (model, contrasts, p.adjust = prolfqua::adjust_p_values, 
 #>     modelName: WaldTestFirth
 #>     models: ModelFirth, ModelInterface, R6
@@ -382,7 +390,7 @@ ctrpep$get_contrasts()
 #>  1 WaldTest… 0EfVhX~00… Avs          1    31 -1.02e+ 0 0.463     0.838 -1.22e+ 0
 #>  2 WaldTest… 0EfVhX~00… AvsCtrl      1    31 -6.45e-10 1         0.822 -7.84e-10
 #>  3 WaldTest… BEJI92~52… Avs          1    20  1.41e-10 1.000     1.04   1.35e-10
-#>  4 WaldTest… BEJI92~52… AvsCtrl      1    20 -2.99e-16 1         1.04  -2.88e-16
+#>  4 WaldTest… BEJI92~52… AvsCtrl      1    20  8.69e-17 1         1.04   8.37e-17
 #>  5 WaldTest… Fl4JiV~86… Avs          1    42 -7.13e- 1 0.518     0.695 -1.03e+ 0
 #>  6 WaldTest… Fl4JiV~86… AvsCtrl      1    42  7.75e- 1 0.485     0.724  1.07e+ 0
 #>  7 WaldTest… HvIpHG~90… Avs          1    20 -1.98e+ 0 0.425     1.09  -1.81e+ 0
@@ -396,7 +404,7 @@ ctrpep$get_contrasts()
 #> 15 WaldTest… 9VUkAq~47… Avs          1     9 -1.35e+ 0 0.585     1.78  -7.58e- 1
 #> 16 WaldTest… 9VUkAq~47… AvsCtrl      1     9 -4.39e+ 0 0.485     2.11  -2.08e+ 0
 #> 17 WaldTest… CGzoYe~21… Avs          1     9  1.35e+ 0 0.585     1.78   7.58e- 1
-#> 18 WaldTest… CGzoYe~21… AvsCtrl      1     9 -4.13e-16 1         2.11  -1.96e-16
+#> 18 WaldTest… CGzoYe~21… AvsCtrl      1     9 -2.87e-16 1         2.11  -1.36e-16
 #> 19 WaldTest… DoWup2~58… Avs          1     9  4.39e+ 0 0.425     2.11   2.08e+ 0
 #> 20 WaldTest… DoWup2~58… AvsCtrl      1     9  3.04e+ 0 0.485     1.78   1.71e+ 0
 #> # ℹ 4 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,

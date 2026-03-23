@@ -16,6 +16,8 @@ Base class for all Contrasts classes
 
 - [`ContrastsInterface$to_wide()`](#method-ContrastsInterface-to_wide)
 
+- [`ContrastsInterface$get_missing()`](#method-ContrastsInterface-get_missing)
+
 - [`ContrastsInterface$column_description()`](#method-ContrastsInterface-column_description)
 
 - [`ContrastsInterface$clone()`](#method-ContrastsInterface-clone)
@@ -62,6 +64,17 @@ create wide representation of data.
 
 ------------------------------------------------------------------------
 
+### Method `get_missing()`
+
+get protein × contrast pairs that could not be estimated. Returns a
+data.frame with hierarchy columns and contrast, or 0 rows.
+
+#### Usage
+
+    ContrastsInterface$get_missing()
+
+------------------------------------------------------------------------
+
 ### Method `column_description()`
 
 column description
@@ -92,6 +105,7 @@ The objects of this class are cloneable with this method.
 int <- ContrastsInterface$new()
 testthat::expect_error(int$get_contrast_sides())
 testthat::expect_error(int$get_contrasts())
+testthat::expect_error(int$get_missing())
 testthat::expect_error(int$get_Plotter())
 testthat::expect_error(int$to_wide())
 int$column_description()
