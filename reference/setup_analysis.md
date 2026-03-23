@@ -46,8 +46,15 @@ Other configuration:
 
 ``` r
 
-skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
- ident_qValue = "Detection.Q.Value")
+skylineconfig <- AnalysisConfiguration$new()
+skylineconfig$fileName <- "Replicate.Name"
+skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
+skylineconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
+skylineconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
+skylineconfig$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+skylineconfig$ident_qValue <- "Detection.Q.Value"
+skylineconfig$set_response("Area")
+skylineconfig$isotopeLabel <- "Isotope.Label.Type"
 skylineconfig$factors[["Time"]] = "Sampling.Time.Point"
 sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 #> creating sampleName from fileName column

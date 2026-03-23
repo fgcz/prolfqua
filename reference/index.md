@@ -147,9 +147,7 @@
 - [`center_to_reference_cfg()`](https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.md)
   : center to reference
 
-- [`create_config_Skyline()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
-  [`create_config_Spectronaut_Peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
-  [`create_config_MQ_peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
+- [`create_config_MQ_peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
   : Generate instances of AnalysisConfiguration
 
 - [`estimate_lod_global()`](https://wolski.github.io/prolfqua/reference/estimate_lod_global.md)

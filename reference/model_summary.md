@@ -105,6 +105,9 @@ mod <- prolfqua::build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
+#> 
+
+#> [==================================================================>----]  95%
 #> boundary (singular) fit: see help('isSingular')
 #> 
 

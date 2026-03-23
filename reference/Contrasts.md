@@ -318,9 +318,6 @@ mod <- build_model(
 )
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> 
-
-#> [========================================================>--------------]  80%
 #> boundary (singular) fit: see help('isSingular')
 #> 
 

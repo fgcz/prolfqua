@@ -1,6 +1,6 @@
 # Generate instances of AnalysisConfiguration
 
-configurations examples of or various signal processing software outputs
+Configuration examples for various signal processing software outputs.
 
 file must be read with tidyMQ_Peptides, you will still need to add the
 factors (explanatory variables).
@@ -8,16 +8,6 @@ factors (explanatory variables).
 ## Usage
 
 ``` r
-create_config_Skyline(
-  isotopeLabel = "Isotope.Label",
-  ident_qValue = "annotation_QValue"
-)
-
-create_config_Spectronaut_Peptide(
-  isotopeLabel = "Isotope.Label",
-  ident_qValue = "EG.Qvalue"
-)
-
 create_config_MQ_peptide(
   ident_qValue = "pep",
   intensity = "peptide.intensity",
@@ -27,10 +17,6 @@ create_config_MQ_peptide(
 
 ## Arguments
 
-- isotopeLabel:
-
-  isotope
-
 - ident_qValue:
 
   pep
@@ -38,6 +24,10 @@ create_config_MQ_peptide(
 - intensity:
 
   peptide.intensity
+
+- isotopeLabel:
+
+  isotope
 
 ## See also
 
@@ -57,21 +47,35 @@ Other configuration:
 ## Examples
 
 ``` r
-skylineconfig <- create_config_Skyline()
+# Skyline configuration
+skylineconfig <- AnalysisConfiguration$new()
+skylineconfig$fileName <- "Replicate.Name"
+skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
+skylineconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
+skylineconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
+skylineconfig$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+skylineconfig$ident_qValue <- "annotation_QValue"
+skylineconfig$set_response("Area")
+skylineconfig$isotopeLabel <- "Isotope.Label"
 skylineconfig$factors[["Time"]] = "Sampling.Time.Point"
 skylineconfig$factor_keys()
 #> [1] "Time"
 skylineconfig$hierarchy_keys()
 #> [1] "protein_Id"   "peptide_Id"   "precursor_Id" "fragment_Id" 
 
-
-
-spectronautconfig <- create_config_Spectronaut_Peptide()
-config <- create_config_Spectronaut_Peptide()
-config$factors[["coding"]] = "coding"
-config$factors[["sex"]] = "sex"
-config$factors[["age"]] = "age"
-config$factors[["Sample_id"]] = "Sample.Name"
-
+# Spectronaut configuration
+spectronautconfig <- AnalysisConfiguration$new()
+spectronautconfig$fileName <- "R.FileName"
+spectronautconfig$hierarchy[["protein_Id"]] <- "PG.ProteinAccessions"
+spectronautconfig$hierarchy[["peptide_Id"]] <- "PEP.StrippedSequence"
+spectronautconfig$hierarchy[["modPeptide_Id"]] <- "EG.ModifiedSequence"
+spectronautconfig$hierarchy[["precursor_Id"]] <- c("EG.ModifiedSequence", "FG.Charge")
+spectronautconfig$ident_qValue <- "EG.Qvalue"
+spectronautconfig$workIntensity <- "FG.Quantity"
+spectronautconfig$isotopeLabel <- "Isotope.Label"
+spectronautconfig$factors[["coding"]] = "coding"
+spectronautconfig$factors[["sex"]] = "sex"
+spectronautconfig$factors[["age"]] = "age"
+spectronautconfig$factors[["Sample_id"]] = "Sample.Name"
 tmp <- create_config_MQ_peptide()
 ```

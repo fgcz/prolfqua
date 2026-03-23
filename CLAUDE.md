@@ -125,9 +125,8 @@ identifier column.
 
 Concrete config factories:
 [`create_config_MQ_peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md),
-[`create_config_Skyline()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md),
-[`create_config_Spectronaut_Peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md),
-etc. in `tidyMS_R6_ConcreteConfigurations.R`.
+`create_config_Skyline()`, `create_config_Spectronaut_Peptide()`, etc.
+in `tidyMS_R6_ConcreteConfigurations.R`.
 
 ### Key Functions (not in classes)
 

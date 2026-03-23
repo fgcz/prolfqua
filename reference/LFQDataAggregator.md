@@ -302,9 +302,6 @@ lfqAggregator$write_plots(tempdir())
 #> Warning: Removed 2 rows containing missing values or values outside the scale range (`geom_point()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range (`geom_line()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range (`geom_point()`).
-#> 
-
-#> [====================>--------------------------------------------------]  30%
 #> Warning: Removed 5 rows containing missing values or values outside the scale range (`geom_point()`).
 #> Warning: Removed 3 rows containing missing values or values outside the scale range (`geom_line()`).
 #> `geom_line()`: Each group consists of only one observation.

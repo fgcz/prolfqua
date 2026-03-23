@@ -147,7 +147,7 @@ LFQData → build_model_limma(strategy_limma) → ModelLimma
 <div class="section level3">
 <h3 id="analysisconfiguration">AnalysisConfiguration<a class="anchor" aria-label="anchor" href="#analysisconfiguration"></a></h3>
 <p>Flat R6 class that maps column roles in the data: - <strong>hierarchy</strong>: ordered measurement levels (protein_Id → peptide_Id → precursor_Id → fragment_Id). <code>hierarchyDepth</code> controls which level is modelled. - <strong>factors</strong>: explanatory variables (group, treatment). <code>factorDepth</code> controls interaction depth. - <strong>workIntensity</strong>: response column. Uses a stack (<code>set_response()</code> / <code>pop_response()</code> / <code>get_response()</code>) for working with multiple intensity columns. - <strong>fileName</strong>: sample identifier column.</p>
-<p>Concrete config factories: <code><a href="reference/concrete_AnalysisConfiguration.html">create_config_MQ_peptide()</a></code>, <code><a href="reference/concrete_AnalysisConfiguration.html">create_config_Skyline()</a></code>, <code><a href="reference/concrete_AnalysisConfiguration.html">create_config_Spectronaut_Peptide()</a></code>, etc. in <code>tidyMS_R6_ConcreteConfigurations.R</code>.</p>
+<p>Concrete config factories: <code><a href="reference/concrete_AnalysisConfiguration.html">create_config_MQ_peptide()</a></code>, <code>create_config_Skyline()</code>, <code>create_config_Spectronaut_Peptide()</code>, etc. in <code>tidyMS_R6_ConcreteConfigurations.R</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="key-functions-not-in-classes">Key Functions (not in classes)<a class="anchor" aria-label="anchor" href="#key-functions-not-in-classes"></a></h3>
