@@ -70,9 +70,7 @@ Other utilities:
 \code{\link{matrix_to_tibble}()},
 \code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
-\code{\link{pairs_w_abline}()},
 \code{\link{panel_cor}()},
-\code{\link{panel_hist}()},
 \code{\link{remove_NA_rows}()},
 \code{\link{table_facade}()}
 }

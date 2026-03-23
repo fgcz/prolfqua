@@ -67,7 +67,6 @@ Other modelling:
 \code{\link{moderated_p_limma_long}()},
 \code{\link{my_contest}()},
 \code{\link{my_contrast}()},
-\code{\link{my_contrast_V1}()},
 \code{\link{my_contrast_V2}()},
 \code{\link{my_glht}()},
 \code{\link{new_lm_imputed}()},

@@ -38,11 +38,9 @@ abline(0, 1, col = 2)
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{aggregate_intensity_topN}()},
-\code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{medpolish_estimate_dfconfig}()},
-\code{\link{medpolish_protein_estimates}()},
 \code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line}()},

@@ -30,10 +30,8 @@ Other preprocessing:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{apply_to_response_matrix}()},
 \code{\link{get_robscales}()},
-\code{\link{normalize_log2_robscale}()},
 \code{\link{robust_scale}()},
-\code{\link{scale_with_subset}()},
-\code{\link{scale_with_subset_by_factors}()}
+\code{\link{scale_with_subset}()}
 }
 \concept{preprocessing}
 \keyword{internal}

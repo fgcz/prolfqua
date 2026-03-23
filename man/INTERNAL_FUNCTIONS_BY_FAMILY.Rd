@@ -10,11 +10,9 @@ Internal Functions by category
 Other aggregation: 
 \code{\link{aggregate_intensity_topN}()},
 \code{\link{estimate_intensity}()},
-\code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{medpolish_estimate_dfconfig}()},
-\code{\link{medpolish_protein_estimates}()},
 \code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line}()},
@@ -30,16 +28,10 @@ Other configuration:
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
-\code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()},
 \code{\link{table_factors_size}()}
-
-Other deprecated: 
-\code{\link{intensity_summary_by_hkeys}()},
-\code{\link{medpolish_protein_estimates}()}
 
 Other modelling: 
 \code{\link{Contrasts}},
@@ -92,7 +84,6 @@ Other modelling:
 \code{\link{moderated_p_limma_long}()},
 \code{\link{my_contest}()},
 \code{\link{my_contrast}()},
-\code{\link{my_contrast_V1}()},
 \code{\link{my_contrast_V2}()},
 \code{\link{my_glht}()},
 \code{\link{new_lm_imputed}()},
@@ -119,7 +110,6 @@ Other plotting:
 \code{\link{plot_estimate}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
-\code{\link{plot_heatmap_cor_iheatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_boxplot_df}()},
 \code{\link{plot_hierarchies_line}()},
@@ -127,17 +117,14 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()},
-\code{\link{plot_screeplot}()}
+\code{\link{plot_sample_correlation}()}
 
 Other preprocessing: 
 \code{\link{apply_to_response_matrix}()},
 \code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
-\code{\link{normalize_log2_robscale}()},
 \code{\link{robust_scale}()},
-\code{\link{scale_with_subset}()},
-\code{\link{scale_with_subset_by_factors}()}
+\code{\link{scale_with_subset}()}
 
 Other stats: 
 \code{\link{lfq_power_t_test_proteins}()},
@@ -154,7 +141,6 @@ Other stats:
 Other summary: 
 \code{\link{hierarchy_counts}()},
 \code{\link{hierarchy_counts_sample}()},
-\code{\link{nr_B_in_A_per_sample}()},
 \code{\link{summarize_hierarchy}()}
 
 Other utilities: 
@@ -163,14 +149,9 @@ Other utilities:
 \code{\link{multigroup_volcano}()},
 \code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
-\code{\link{pairs_w_abline}()},
 \code{\link{panel_cor}()},
-\code{\link{panel_hist}()},
 \code{\link{remove_NA_rows}()},
 \code{\link{table_facade}()}
-
-Other vignetteHelpers: 
-\code{\link{render_MQSummary_rmd}()}
 }
 \concept{FragPipe}
 \concept{MaxQuant}

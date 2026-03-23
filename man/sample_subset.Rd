@@ -25,10 +25,8 @@ Other configuration:
 \code{\link{concrete_AnalysisConfiguration}},
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
-\code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
 \code{\link{setup_analysis}()},
-\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()},
 \code{\link{table_factors_size}()}
 }

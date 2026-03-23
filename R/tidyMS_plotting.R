@@ -308,67 +308,6 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE, color = colorRampPalette(
 }
 
 
-#' plot correlation heatmap with annotations
-#'
-#' @export
-#' @keywords internal
-#' @family plotting
-#' @examples
-#'
-#' istar <- sim_lfq_data_protein_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' if (require("iheatmapr")) {
-#'   pheat_map <- plot_heatmap_cor_iheatmap( analysis, config )
-#'   stopifnot("IheatmapHorizontal" %in% class(pheat_map))
-#'   pheat_map <- plot_heatmap_cor_iheatmap( analysis, config, R2 = TRUE )
-#'   stopifnot("IheatmapHorizontal" %in% class(pheat_map))
-#' }
-#'
-plot_heatmap_cor_iheatmap <- function(
-  data,
-  config,
-  R2 = FALSE,
-  color = colorRampPalette(c("white", "red"))(1024),
-  ...
-) {
-  # Transform the data to a wide format using the provided function
-  res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-  annot <- res$annotation
-  res <- res$data
-
-  # Calculate the correlation matrix
-  cres <- cor(res, use = "pairwise.complete.obs")
-  if (R2) {
-    cres <- cres^2
-  }
-
-  # Prepare factors for annotation
-  factors <- dplyr::select(annot, all_of(config$factor_keys()))
-  factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sampleName]]
-
-  # Perform hierarchical clustering
-  gg <- stats::hclust(stats::dist(cres))
-  ordered_cres <- cres[gg$order, gg$order]
-
-  # Create the heatmap using iheatmapr
-  if (!requireNamespace("iheatmapr", quietly = TRUE)) {
-    stop("Package 'iheatmapr' is required for this function. Install it with: install.packages('iheatmapr')")
-  }
-  hm <- iheatmapr::iheatmap(
-    ordered_cres,
-    cluster_rows = "hclust",
-    cluster_cols = "hclust",
-    col_annotation = factors,
-    colors = color,
-    scale = "none",
-    name = ifelse(R2, "R^2", "correlation")
-  )
-  invisible(hm)
-}
-
 .ehandler <- function(e) {
   warning("WARN :", e)
   # return string here
@@ -649,46 +588,4 @@ plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE
     x <- x + ggplot2::scale_shape_manual(values = seq_along(unique(xx[[sh]])))
   }
   return(x)
-}
-
-#' plot screeplot
-#' @export
-#' @keywords internal
-#' @family plotting
-#' @examples
-#' istar <- sim_lfq_data_protein_config(with_missing = FALSE)
-#' config <- istar$config
-#' analysis <- istar$data
-#' tmp <- plot_screeplot(analysis, config, threshold_pc= NULL)
-#' print(tmp)
-#' tmp <- plot_screeplot(analysis, config, threshold_pc= 1)
-#' print(tmp)
-#' tmp <- plot_screeplot(analysis, config, nr_PC = 4, threshold_pc = NULL)
-#' print(tmp)
-plot_screeplot <- function(data, config, threshold_pc = 1, nr_PC = NULL) {
-  wide <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-  ff <- na.omit(wide$data)
-  ff <- t(ff)
-  pca_result <- prcomp(ff)
-  variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
-  xx <- data.frame(
-    PC = paste("PC", seq_along(variance_explained), sep = "_"),
-    percent_variance_explained = variance_explained
-  )
-  xx$PC <- factor(xx$PC, levels = xx$PC)
-
-  if (!is.null(threshold_pc)) {
-    xx <- xx |> dplyr::filter(percent_variance_explained > threshold_pc)
-  }
-  if (!is.null(nr_PC)) {
-    minRow <- min(nr_PC, nrow(xx))
-    xx <- xx[1:minRow, ]
-  }
-  nudgeval <- -2
-  pl <- ggplot2::ggplot(xx, ggplot2::aes(x = PC, y = percent_variance_explained)) +
-    ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
-    ggplot2::geom_text(aes(label = round(.data$percent_variance_explained)), nudge_y = nudgeval, angle = 65) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
-
-  invisible(pl)
 }

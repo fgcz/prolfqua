@@ -50,7 +50,15 @@ usethis::use_data(data_IonstarProtein_subsetNorm, overwrite = TRUE)
 # --- data_skylinePRMSample_A: fix config_f closure ---
 load("data/data_skylinePRMSample_A.rda")
 data_skylinePRMSample_A$config_f <- function() {
-  config <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type", ident_qValue = "Detection.Q.Value")
+  config <- prolfqua::AnalysisConfiguration$new()
+  config$fileName <- "Replicate.Name"
+  config$hierarchy[["protein_Id"]] <- "Protein.Name"
+  config$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
+  config$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
+  config$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+  config$ident_qValue <- "Detection.Q.Value"
+  config$set_response("Area")
+  config$isotopeLabel <- "Isotope.Label.Type"
   config$factors[["Time"]] = "Sampling.Time.Point"
   return(config)
 }
@@ -59,26 +67,39 @@ usethis::use_data(data_skylinePRMSample_A, overwrite = TRUE)
 # --- data_skylineSRM_HL_A: fix config_f closure ---
 load("data/data_skylineSRM_HL_A.rda")
 data_skylineSRM_HL_A$config_f <- function() {
-  skylineconfig_HL <- create_config_Skyline(isotopeLabel = "Isotope.Label", ident_qValue = "annotation_QValue")
-  skylineconfig_HL$factors[["treatment_c"]] <- "Condition2"
-  skylineconfig_HL$factors[["time_c"]] <- "time"
-  skylineconfig_HL$is_response_transformed = FALSE
-  return(skylineconfig_HL)
+  config <- prolfqua::AnalysisConfiguration$new()
+  config$fileName <- "Replicate.Name"
+  config$hierarchy[["protein_Id"]] <- "Protein.Name"
+  config$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
+  config$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
+  config$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+  config$ident_qValue <- "annotation_QValue"
+  config$set_response("Area")
+  config$isotopeLabel <- "Isotope.Label"
+  config$factors[["treatment_c"]] <- "Condition2"
+  config$factors[["time_c"]] <- "time"
+  config$is_response_transformed = FALSE
+  return(config)
 }
 usethis::use_data(data_skylineSRM_HL_A, overwrite = TRUE)
 
 # --- data_spectronautDIA250_A: fix config_f closure ---
 load("data/data_spectronautDIA250_A.rda")
 data_spectronautDIA250_A$config_f <- function() {
-  spectronautDIAData250_config <- prolfqua::create_config_Spectronaut_Peptide(
-    isotopeLabel = "Isotope.Label",
-    ident_qValue = "EG.Qvalue"
-  )
-  spectronautDIAData250_config$factors[["coding"]] = "coding"
-  spectronautDIAData250_config$factors[["sex"]] = "sex"
-  spectronautDIAData250_config$factors[["age"]] = "age"
-  spectronautDIAData250_config$factors[["Sample_id"]] = "Sample.Name"
-  return(spectronautDIAData250_config)
+  config <- prolfqua::AnalysisConfiguration$new()
+  config$fileName <- "R.FileName"
+  config$hierarchy[["protein_Id"]] <- "PG.ProteinAccessions"
+  config$hierarchy[["peptide_Id"]] <- "PEP.StrippedSequence"
+  config$hierarchy[["modPeptide_Id"]] <- "EG.ModifiedSequence"
+  config$hierarchy[["precursor_Id"]] <- c("EG.ModifiedSequence", "FG.Charge")
+  config$ident_qValue <- "EG.Qvalue"
+  config$workIntensity <- "FG.Quantity"
+  config$isotopeLabel <- "Isotope.Label"
+  config$factors[["coding"]] = "coding"
+  config$factors[["sex"]] = "sex"
+  config$factors[["age"]] = "age"
+  config$factors[["Sample_id"]] = "Sample.Name"
+  return(config)
 }
 usethis::use_data(data_spectronautDIA250_A, overwrite = TRUE)
 

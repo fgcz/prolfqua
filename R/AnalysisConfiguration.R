@@ -254,7 +254,15 @@ AnalysisConfiguration <- R6::R6Class(
 #' @export
 #' @examples
 #'
-#' DEAconfig <- create_config_Skyline()
+#' DEAconfig <- AnalysisConfiguration$new()
+#' DEAconfig$fileName <- "Replicate.Name"
+#' DEAconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
+#' DEAconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
+#' DEAconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
+#' DEAconfig$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+#' DEAconfig$ident_qValue <- "annotation_QValue"
+#' DEAconfig$set_response("Area")
+#' DEAconfig$isotopeLabel <- "Isotope.Label"
 #' configList <- prolfqua::R6_extract_values(DEAconfig)
 #' stopifnot(class(configList) == "list")
 #' config <- list_to_AnalysisConfiguration(configList)
@@ -380,8 +388,15 @@ R6_extract_values <- function(r6class) {
 #' @family configuration
 #' @examples
 #'
-#' skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
-#'  ident_qValue = "Detection.Q.Value")
+#' skylineconfig <- AnalysisConfiguration$new()
+#' skylineconfig$fileName <- "Replicate.Name"
+#' skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
+#' skylineconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
+#' skylineconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
+#' skylineconfig$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+#' skylineconfig$ident_qValue <- "Detection.Q.Value"
+#' skylineconfig$set_response("Area")
+#' skylineconfig$isotopeLabel <- "Isotope.Label.Type"
 #' skylineconfig$factors[["Time"]] = "Sampling.Time.Point"
 #' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 #'
@@ -553,29 +568,6 @@ separate_hierarchy <- function(data, config) {
   }
   return(data)
 }
-
-#'
-#' Separates factor columns into starting columns
-#'
-#' @param data data.frame
-#' @param config AnlalysisConfiguration
-#' @export
-#'
-#' @keywords internal
-#' @family configuration
-#' @examples
-#' bb <- sim_lfq_data_protein_config()
-#' dt <- separate_factors(bb$data, bb$config)
-#' base::setdiff(colnames(dt), colnames(bb$data))
-#' stopifnot(ncol(bb$data) < ncol(dt))
-#'
-separate_factors <- function(data, config) {
-  for (fkey in config$factor_keys()) {
-    data <- data |> tidyr::separate(fkey, config$factors[[fkey]], sep = config$sep, remove = FALSE)
-  }
-  return(data)
-}
-
 
 #' Complete cases
 #'
@@ -835,39 +827,6 @@ summarize_hierarchy <- function(pdata, config, hierarchy = config$hierarchy_keys
   return(x3)
 }
 
-
 # Functions - Handling isotopes ----
-
-#' Spreads isotope label heavy and light into two columns
-#'
-#' @export
-#' @keywords internal
-#' @family configuration
-#' @examples
-#'
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' configur <- bb$config$clone(deep=TRUE)
-#' data <- bb$data
-#'
-#' x<-spread_response_by_IsotopeLabel(data,configur)
-#'
-#' bb <- prolfqua_data('data_skylineSRM_HL_A')
-#' configur <- bb$config_f()
-#' data <- bb$analysis(bb$data, configur)
-#'
-#' bb <- prolfqua_data('data_skylineSRM_HL_A')
-#' conf <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, bb$config_f())
-#' x <- spread_response_by_IsotopeLabel(analysis, conf)
-#'
-spread_response_by_IsotopeLabel <- function(resData, config) {
-  id_vars <- config$id_vars()
-  resData2 <- resData |> dplyr::select(c(id_vars, config$value_vars()))
-  resData2 <- resData2 |>
-    tidyr::pivot_longer(cols = -dplyr::all_of(id_vars), names_to = "variable", values_to = "value")
-  resData2 <- resData2 |> tidyr::unite("temp", dplyr::all_of(c(config$isotopeLabel, "variable")))
-  HLData <- resData2 |> tidyr::pivot_wider(names_from = "temp", values_from = "value")
-  invisible(HLData)
-}
 
 # Computing protein Intensity summaries ---

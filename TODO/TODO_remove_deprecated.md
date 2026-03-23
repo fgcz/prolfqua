@@ -14,7 +14,7 @@ Systematic dead code analysis across the prolfqua ecosystem (`prolfqua_fml/`). V
 | `get_impute_contrasts_V1` | None | No | Dead |
 | `get_imputed_contrasts` | None | No | Dead |
 | `missigness_impute_factors_interactions` | None | No | Dead |
-| `.missigness_impute_interactions` | None | No | Dead |
+| `.missigness_impute_interactions` | None | No |  Dead |
 
 File is under `inst/`, not `R/` — never loaded. All contain `message("deprecated")`. Superseded by `ContrastsMissing` R6 class.
 
@@ -52,6 +52,8 @@ These exported functions have **zero callers** anywhere in the ecosystem (no tes
 
 ## 3. TIER 2: Probably Unused — Remove After Verification (18 items)
 
+Comment: LFQDataPlotter is a public API so all functions called there must stay.
+
 Used only internally or in roxygen examples. Not called by any downstream package.
 
 | # | Function | File | Notes |
@@ -71,6 +73,8 @@ Used only internally or in roxygen examples. Not called by any downstream packag
 ---
 
 ## 4. De-export Candidates (keep function, remove `@export`)
+
+Comment: add callers -> who is using it internally. contrasts_fisher_exact do not see.
 
 Internal plumbing that works but should not be public API:
 
@@ -92,6 +96,8 @@ Internal plumbing that works but should not be public API:
 ---
 
 ## 5. TIER 3: Needs Your Decision
+
+COMMENT: This is all false! of course we use this in the the vignettes and in prolfquapp, through the facade! what is wrong with you man?
 
 ### Firth/GLM subsystem (`R/logistf.R`)
 - `strategy_logistf`, `build_model_logistf`, `build_model_glm_peptide`, `build_model_glm_protein`, `ContrastsFirth`, `ContrastsFirthFacade`, `ModelFirth`, `contrasts_linfct_firth`

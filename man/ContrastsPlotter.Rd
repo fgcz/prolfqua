@@ -108,7 +108,6 @@ Other modelling:
 \code{\link{moderated_p_limma_long}()},
 \code{\link{my_contest}()},
 \code{\link{my_contrast}()},
-\code{\link{my_contrast_V1}()},
 \code{\link{my_contrast_V2}()},
 \code{\link{my_glht}()},
 \code{\link{new_lm_imputed}()},
@@ -135,7 +134,6 @@ Other plotting:
 \code{\link{plot_estimate}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
-\code{\link{plot_heatmap_cor_iheatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_boxplot_df}()},
 \code{\link{plot_hierarchies_line}()},
@@ -143,8 +141,7 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()},
-\code{\link{plot_screeplot}()}
+\code{\link{plot_sample_correlation}()}
 }
 \concept{modelling}
 \concept{plotting}

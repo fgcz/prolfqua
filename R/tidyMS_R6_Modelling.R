@@ -990,29 +990,6 @@ my_contrast <- function(m, linfct, strategy = NULL, coef = coefficients(m), Sigm
   return(res)
 }
 
-#' handles incomplete models by setting coefficients to 0
-#' @param incomplete linear model generated using lm
-#' @param linfct linear function
-#' @param confint confidence interval default 0.95
-#' @param strategy optional strategy for df and sigma computation
-#'
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#' m <- sim_make_model_lm( "factors")
-#' linfct <- linfct_from_model(m)$linfct_factors
-#' my_contrast_V1(m, linfct, confint = 0.95)
-#' my_contrast_V1(m, linfct, confint = 0.99)
-my_contrast_V1 <- function(incomplete, linfct, confint = 0.95, strategy = NULL) {
-  Sigma.hat <- vcov(incomplete)
-  Sigma.hat[is.na(Sigma.hat)] <- 0
-  coef <- coefficients(incomplete)
-  coef[is.na(coef)] <- 0
-  res <- my_contrast(incomplete, linfct, strategy, coef = coef, Sigma.hat = Sigma.hat, confint = confint)
-  return(res)
-}
-
 #' handles incomplete models
 #'
 #' only keeps non NA coefficients.

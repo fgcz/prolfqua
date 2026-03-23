@@ -2,7 +2,8 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{medpolish_estimate_df}
 \alias{medpolish_estimate_df}
-\title{Median polish estimates of e.g. protein abundances for entire data.frame}
+\title{Extract response column of a protein into matrix
+Median polish estimates of e.g. protein abundances for entire data.frame}
 \usage{
 medpolish_estimate_df(pdata, response, feature, sampleName)
 }
@@ -19,6 +20,7 @@ medpolish_estimate_df(pdata, response, feature, sampleName)
 data.frame
 }
 \description{
+Extract response column of a protein into matrix
 Median polish estimates of e.g. protein abundances for entire data.frame
 }
 \examples{
@@ -54,10 +56,8 @@ Other aggregation:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{aggregate_intensity_topN}()},
 \code{\link{estimate_intensity}()},
-\code{\link{intensity_summary_by_hkeys}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_dfconfig}()},
-\code{\link{medpolish_protein_estimates}()},
 \code{\link{plot_estimate}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_line}()},
@@ -77,7 +77,6 @@ Other plotting:
 \code{\link{plot_estimate}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
-\code{\link{plot_heatmap_cor_iheatmap}()},
 \code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_boxplot_df}()},
 \code{\link{plot_hierarchies_line}()},
@@ -85,8 +84,7 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()},
-\code{\link{plot_screeplot}()}
+\code{\link{plot_sample_correlation}()}
 }
 \concept{aggregation}
 \concept{plotting}

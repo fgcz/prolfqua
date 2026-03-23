@@ -27,7 +27,6 @@ URL: https://github.com/wolski/prolfqua,
     https://wolski.github.io/prolfqua/
 BugReports: https://github.com/wolski/prolfqua/issues
 Imports:
-    bookdown,
     broom,
     dplyr,
     forcats,

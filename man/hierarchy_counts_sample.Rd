@@ -48,7 +48,6 @@ ggplot2::ggplot(xl,
 Other summary: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{hierarchy_counts}()},
-\code{\link{nr_B_in_A_per_sample}()},
 \code{\link{summarize_hierarchy}()}
 }
 \concept{summary}

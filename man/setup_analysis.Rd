@@ -21,8 +21,15 @@ and create new columns e.g. sampleName column etc.
 }
 \examples{
 
-skylineconfig <- create_config_Skyline(isotopeLabel = "Isotope.Label.Type",
- ident_qValue = "Detection.Q.Value")
+skylineconfig <- AnalysisConfiguration$new()
+skylineconfig$fileName <- "Replicate.Name"
+skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
+skylineconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
+skylineconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
+skylineconfig$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+skylineconfig$ident_qValue <- "Detection.Q.Value"
+skylineconfig$set_response("Area")
+skylineconfig$isotopeLabel <- "Isotope.Label.Type"
 skylineconfig$factors[["Time"]] = "Sampling.Time.Point"
 sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 
@@ -59,9 +66,7 @@ Other configuration:
 \code{\link{make_interaction_column}()},
 \code{\link{make_reduced_hierarchy_config}()},
 \code{\link{sample_subset}()},
-\code{\link{separate_factors}()},
 \code{\link{separate_hierarchy}()},
-\code{\link{spread_response_by_IsotopeLabel}()},
 \code{\link{table_factors}()},
 \code{\link{table_factors_size}()}
 }

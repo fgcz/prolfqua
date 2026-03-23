@@ -460,88 +460,6 @@ center_to_reference_cfg <- function(lfqdata, lfqdareference, summary = c("median
 }
 
 
-#' Scale using a subset of the data, within factor levels (e.g. use for pulldown data)
-#'
-#' This method reduces the variance within the group.
-#'
-#' @export
-#' @keywords internal
-#' @param data tibble with data
-#' @param subset tibble with subset of the data which will be used to derive scaling parameters
-#' @param config configuration
-#' @param preserveMean default FALSE then set mean to 0
-#' @family preprocessing
-#' @examples
-#'
-#'
-#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
-#' conf <- bb$config$clone(deep=TRUE)
-#' sample_analysis <- bb$data
-#'
-#' res <- transform_work_intensity(sample_analysis, conf, log2)
-#' res <- scale_with_subset_by_factors(res, res, conf)
-#'
-#'
-scale_with_subset_by_factors <- function(data, subset, config, preserveMean = FALSE) {
-  config <- config$clone(deep = TRUE)
-  dl <- group_by(data, !!!syms(config$factor_keys_depth())) |> nest()
-  sl <- group_by(subset, !!!syms(config$factor_keys_depth())) |> nest()
-  cf <- config$clone(deep = TRUE)
-  cf$factors <- NULL
-  cf$factorDepth <- 0
-  N <- length(dl$data)
-  res <- vector(mode = "list", N)
-  scales <- vector(mode = "list", N)
-
-  for (i in 1:(N - 1)) {
-    tmp <- scale_with_subset(dl$data[[i]], sl$data[[i]], cf$clone(deep = TRUE), preserveMean = TRUE, get_scales = TRUE)
-    res[[i]] <- tmp$data
-    scales[[i]] <- tmp$scales
-  }
-  tmp <- scale_with_subset(dl$data[[N]], sl$data[[N]], cf, preserveMean = TRUE, get_scales = TRUE)
-  res[[N]] <- tmp$data
-  scales[[N]] <- tmp$scales
-  resb <- dl
-  resb$data <- res
-  resb <- dplyr::ungroup(unnest(resb, cols = (names(resb))))
-  config$set_response(cf$get_response())
-  return(list(
-    data = resb,
-    config = config,
-    scales = list(mads = unlist(map(scales, "mads")), medians = unlist(map(scales, "medians")))
-  ))
-}
-
-#' normalize data by log2 and robust scaling
-#'
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @return list with data.frame (data) and updated config (config)
-#' @export
-#' @keywords internal
-#' @family preprocessing
-#' @examples
-#'
-#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
-#' xx <- normalize_log2_robscale(bb$data, bb$config)
-#' xx$config$workIntensity
-#'
-normalize_log2_robscale <- function(pdata, config) {
-  pepConfig <- config$clone(deep = TRUE)
-  pepIntensityNormalized <- transform_work_intensity(pdata, pepConfig, log2)
-  pepConfig$is_response_transformed <- TRUE
-
-  pepIntensityNormalized <- apply_to_response_matrix(pepIntensityNormalized, pepConfig, .func = robust_scale)
-
-  pepIntensityNormalized <- pepIntensityNormalized |>
-    dplyr::rename(transformedIntensity = pepConfig$get_response())
-  pepConfig$pop_response()
-  pepConfig$set_response("transformedIntensity")
-
-  return(list(data = pepIntensityNormalized, config = pepConfig))
-}
-
-
 .make_name_AinB <- function(levelA, levelB, prefix = "nr_") {
   c_name <- paste(prefix, levelB, "_IN_", levelA, sep = "")
   return(c_name)
@@ -610,48 +528,6 @@ nr_B_in_A <- function(pdata, config, merge = TRUE) {
   } else {
     .nr_B_in_A(pdata, levelA, levelB, merge = merge)
   }
-}
-
-
-#' how many peptides per protein in each sample
-#' @export
-#' @keywords internal
-#' @family summary
-#' @examples
-#'
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' nr_B_in_A_per_sample(bb$data, bb$config, nested =FALSE)
-#' bb <- prolfqua::sim_lfq_data_protein_config()
-#' nr_B_in_A_per_sample(bb$data, bb$config, nested=FALSE)
-#'
-nr_B_in_A_per_sample <- function(data, config, nested = TRUE) {
-  #TODO wew check for deprecation since not used.
-  cf <- config
-
-  levelA <- cf$hierarchy_keys_depth()
-  levelB <- cf$hierarchy_keys()[length(levelA) + 1]
-  if (is.na(levelB)) {
-    warning("here is no B in A")
-  }
-  data <- prolfqua::complete_cases(data, cf)
-  data <- data |>
-    dplyr::mutate(presentabsent = case_when(!is.na(!!sym(cf$get_response())) ~ 1, TRUE ~ 0))
-  pepStats <- data |>
-    group_by(across(all_of(c(cf$hierarchy_keys_depth(), cf$sampleName)))) |>
-    summarize(nrPep = n(), present = sum(.data$presentabsent), .groups = "drop")
-
-  annotColumns <- c(cf$fileName, cf$sampleName, cf$hierarchy_keys_depth(), cf$factor_keys_depth(), cf$isotopeLabel)
-  annotation <- data |>
-    dplyr::select(!!!syms(annotColumns)) |>
-    distinct()
-
-  res <- inner_join(annotation, pepStats, by = c(cf$sampleName, cf$hierarchy_keys_depth()))
-  res <- if (nested) {
-    res |> group_by(across(all_of(cf$hierarchy_keys_depth()))) |> nest()
-  } else {
-    res
-  }
-  return(res)
 }
 
 
@@ -789,51 +665,6 @@ rank_peptide_by_intensity <- function(pdata, config) {
     }
   )
 
-  message("Columns added : ", summaryColumn, " ", rankColumn)
-  return(pdata)
-}
-
-# Summarise NAs on lowest hierarchy ----
-
-#' Ranks peptides/precursors of a protein by NAs (adds new column .NARank)
-#'
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#'
-#' @return data.frame
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' bb <- prolfqua::prolfqua_data('data_spectronautDIA250_A')
-#' config <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, bb$config_f())
-#' res <- rank_by_NA(analysis, config)
-#' colnames(res)
-#' x <- res |>
-#'   dplyr::select(config$hierarchy_keys()[1],
-#'     config$hierarchy_keys(TRUE)[1], "srm_NrNotNAs") |>
-#'   dplyr::distinct() |> dplyr::summarize(sum(srm_NrNotNAs)) |> dplyr::pull()
-#' stopifnot(sum(!is.na(res[[config$get_response()[1]]])) == x)
-#' res |> dplyr::select(c(config$hierarchy_keys(),"srm_NrNotNAs"  ,"srm_NrNotNARank")) |>
-#'  dplyr::distinct() |>
-#'  dplyr::arrange(!!!rlang::syms(c(config$hierarchy_keys()[1],"srm_NrNotNARank")))
-rank_by_NA <- function(pdata, config) {
-  summaryColumn <- "srm_NrNotNAs"
-  rankColumn <- "srm_NrNotNARank"
-  pdata <- .rankProteinPrecursors(
-    pdata,
-    config,
-    column = config$get_response(),
-    fun = function(x) {
-      sum(!is.na(x))
-    },
-    summaryColumn = summaryColumn,
-    rankColumn = rankColumn,
-    rankFunction = function(x) {
-      min_rank(desc(x))
-    }
-  )
   message("Columns added : ", summaryColumn, " ", rankColumn)
   return(pdata)
 }
