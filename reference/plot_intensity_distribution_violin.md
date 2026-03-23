@@ -79,8 +79,10 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 plot_intensity_distribution_violin(istar$data, istar$config)
-#> Warning: Removed 36 rows containing non-finite outside the scale range (`stat_ydensity()`).
-#> Warning: Removed 36 rows containing non-finite outside the scale range (`stat_summary()`).
+#> Warning: Removed 36 rows containing non-finite outside the scale range
+#> (`stat_ydensity()`).
+#> Warning: Removed 36 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
 
 
 istar <- sim_lfq_data_peptide_config()
@@ -89,6 +91,7 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 plot_intensity_distribution_density(istar$data, istar$config)
-#> Warning: Removed 36 rows containing non-finite outside the scale range (`stat_density()`).
+#> Warning: Removed 36 rows containing non-finite outside the scale range
+#> (`stat_density()`).
 
 ```

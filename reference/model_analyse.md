@@ -83,7 +83,6 @@ Other modelling:
 ## Examples
 
 ``` r
-
 x <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -96,7 +95,8 @@ mr <- model_analyse( x$data,
  subject_Id = x$config$hierarchy_keys_depth())
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level

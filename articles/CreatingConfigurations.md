@@ -8,7 +8,6 @@ table. The first column contains, the protein id, while the other
 columns store the intensities for sample A, B, C.
 
 ``` r
-
 df <- data.frame(protein_Id = c("tr|A|HUMAN","tr|B|HUMAN","tr|C|HUMAN","tr|D|HUMAN"),
                  Intensity_A = c(100,10000,10,NA),
                  Intensity_B = c(NA, 9000, 20, 100),
@@ -26,7 +25,6 @@ df
 This table can be converted into a table in the long format using:
 
 ``` r
-
 table_long <- tidyr::pivot_longer(df, starts_with("Intensity_"),names_to = "Sample", values_to = "Intensity")
 table_long
 ```
@@ -55,14 +53,12 @@ In addition you will need a table with the Sample annotations. In this
 example with have two groups A, B.
 
 ``` r
-
 annot <- data.frame(Sample = c("Intensity_A", "Intensity_B", "Intensity_C", "Intensity_D"), Group = c("A","A","B","C"))
 ```
 
 Now you can annotate the samples in the table with the Intensities.
 
 ``` r
-
 table_long <- dplyr::inner_join(annot, table_long)
 ```
 
@@ -70,7 +66,6 @@ We create a `AnalysisConfiguration` and start annotating the data frame,
 that is specifying which column contains wich type of information.
 
 ``` r
-
 atable <- prolfqua::AnalysisConfiguration$new()
 atable$fileName = "Sample"
 atable$workIntensity = "Intensity"
@@ -86,20 +81,17 @@ The list `factors`, is used to point to the columns containing the
 factors of your analysis (Group).
 
 ``` r
-
 atable$hierarchy[["protein_Id"]]    <-  "protein_Id"
 atable$factors[["Group"]] <- "Group"
 ```
 
 ``` r
-
 config <- prolfqua::AnalysisConfiguration$new(atable)
 analysis_data <- prolfqua::setup_analysis(table_long, config)
 lfqdata <- prolfqua::LFQData$new(analysis_data, config)
 ```
 
 ``` r
-
 lfqdata$hierarchy_counts()
 ```
 
@@ -109,7 +101,6 @@ lfqdata$hierarchy_counts()
     ## 1 light                 4
 
 ``` r
-
 smrz <- lfqdata$get_Summariser()
 smrz$plot_hierarchy_counts_sample()
 ```
@@ -127,7 +118,6 @@ object describes the columns in the long table so that prolfqua
 functions know which columns to use.
 
 ``` r
-
 dataLongFormat <- prolfqua::sim_lfq_data(Nprot = 20, PEPTIDE = TRUE)
 head(dataLongFormat)
 ```
@@ -150,7 +140,6 @@ data quality we will also define the ident_qValue in this
 `AnalysisConfiguration`.
 
 ``` r
-
 atable <- prolfqua::AnalysisConfiguration$new()
 atable$fileName = "sample"
 atable$workIntensity = "abundance"
@@ -169,7 +158,6 @@ will then be used and not “R.Condition”. The data.frame can also contain
 more than one factor.
 
 ``` r
-
 atable$hierarchy[["proteinID"]]    <-  "proteinID"
 atable$hierarchy[["peptideID"]]    <-  "peptideID"
 atable$factors[["group"]] <- "group"
@@ -182,7 +170,6 @@ run most of the function in the package using the data and
 configuration.
 
 ``` r
-
 config <- prolfqua::AnalysisConfiguration$new(atable)
 analysis_data <- prolfqua::setup_analysis(dataLongFormat, config)
 
@@ -217,7 +204,6 @@ Now the analysis_data object is ready to generate the `LFQData` class
 instance. This object is the start for further analysis.
 
 ``` r
-
 lfqdata <- prolfqua::LFQData$new(analysis_data, config)
 ```
 
@@ -225,7 +211,6 @@ With this, it is possible for example to use the `get_Summariser`
 function to visualize and summarise the data efficiently.
 
 ``` r
-
 smrz <- lfqdata$get_Summariser()
 smrz$plot_hierarchy_counts_sample()
 ```
@@ -240,23 +225,25 @@ The `prolfqua` package is described in (Wolski et al. 2022).
 ## Session Info
 
 ``` r
-
 sessionInfo()
 ```
 
     ## R version 4.5.2 (2025-10-31)
-    ## Platform: aarch64-apple-darwin20
-    ## Running under: macOS Tahoe 26.3.1
+    ## Platform: x86_64-pc-linux-gnu
+    ## Running under: Ubuntu 24.04.3 LTS
     ## 
     ## Matrix products: default
-    ## BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
-    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
     ## 
     ## locale:
-    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+    ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+    ##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+    ##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+    ## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
     ## 
-    ## time zone: Europe/Zurich
-    ## tzcode source: internal
+    ## time zone: UTC
+    ## tzcode source: system (glibc)
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -270,16 +257,16 @@ sessionInfo()
     ## [16] limma_3.66.0        prolfqua_1.5.0      gridExtra_2.3      
     ## [19] httr_1.4.8          purrr_1.2.1         viridisLite_0.4.3  
     ## [22] scales_1.4.0        UpSetR_1.4.0        lazyeval_0.2.2     
-    ## [25] textshaping_1.0.4   jquerylib_0.1.4     cli_3.6.5          
+    ## [25] textshaping_1.0.5   jquerylib_0.1.4     cli_3.6.5          
     ## [28] rlang_1.1.7         withr_3.0.2         cachem_1.1.0       
     ## [31] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
     ## [34] dplyr_1.2.0         ggplot2_4.0.2       forcats_1.0.1      
     ## [37] vctrs_0.7.2         R6_2.6.1            lifecycle_1.0.5    
-    ## [40] fs_1.6.7            htmlwidgets_1.6.4   MASS_7.3-65        
-    ## [43] ragg_1.5.0          pkgconfig_2.0.3     desc_1.4.3         
+    ## [40] fs_2.0.0            htmlwidgets_1.6.4   MASS_7.3-65        
+    ## [43] ragg_1.5.2          pkgconfig_2.0.3     desc_1.4.3         
     ## [46] pkgdown_2.2.0       pillar_1.11.1       bslib_0.10.0       
     ## [49] gtable_0.3.6        data.table_1.18.2.1 glue_1.8.0         
-    ## [52] Rcpp_1.1.1          statmod_1.5.1       systemfonts_1.3.1  
+    ## [52] Rcpp_1.1.1          statmod_1.5.1       systemfonts_1.3.2  
     ## [55] xfun_0.57           tibble_3.3.1        tidyselect_1.2.1   
     ## [58] knitr_1.51          farver_2.1.2        htmltools_0.5.9    
     ## [61] labeling_0.4.3      rmarkdown_2.30      pheatmap_1.0.13    
@@ -289,5 +276,5 @@ sessionInfo()
 
 Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
 Schlapbach, and Christian Panse. 2022. “Prolfqua: A Comprehensive
-R-package for Proteomics Differential Expression Analysis.” *bioRxiv*,
-ahead of print. <https://doi.org/10.1101/2022.06.07.494524>.
+R-package for Proteomics Differential Expression Analysis.” *bioRxiv*.
+<https://doi.org/10.1101/2022.06.07.494524>.

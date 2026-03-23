@@ -45,7 +45,6 @@ We use simulated protein-level data. The simulation includes a
 exactly the count we need.
 
 ``` r
-
 library(prolfqua)
 library(dplyr)
 library(ggplot2)
@@ -62,7 +61,6 @@ transformed$rename_response("transformedIntensity")
 ## Define contrasts
 
 ``` r
-
 contr_spec <- c(
   "AvsCtrl" = "group_A - group_Ctrl",
   "BvsCtrl" = "group_B - group_Ctrl",
@@ -78,7 +76,6 @@ explicit count table. The count column can be derived directly from the
 the count variable is `nr_peptides`.
 
 ``` r
-
 count_per_prot <- transformed$data |>
   group_by(protein_Id) |>
   summarise(nr_peptides = max(.data[[transformed$config$nr_children]], na.rm = TRUE))
@@ -95,7 +92,6 @@ ggplot(count_per_prot, aes(x = nr_peptides)) +
 ## Standard moderation pipeline
 
 ``` r
-
 mod_lm <- build_model(transformed, strategy_lm("transformedIntensity ~ group_"))
 contr_lm <- prolfqua::Contrasts$new(mod_lm, contr_spec)
 contr_moderated <- prolfqua::ContrastsModerated$new(contr_lm)
@@ -111,7 +107,6 @@ you use the higher-level
 extraction is done for you from the `LFQData` object.
 
 ``` r
-
 contr_deqms <- ContrastsModeratedDEqMS$new(contr_lm, count_per_prot, "nr_peptides")
 res_deqms <- contr_deqms$get_contrasts()
 ```
@@ -123,7 +118,6 @@ This is the core diagnostic plot for the DEqMS approach. We expect
 curve captures this trend.
 
 ``` r
-
 # Get the unmoderated results with sigma and count
 contr_raw <- contr_lm$get_contrasts()
 contr_raw <- inner_join(
@@ -159,7 +153,6 @@ Both decorators wrap the same underlying `Contrasts` object, so fold
 changes are identical.
 
 ``` r
-
 merged <- inner_join(
   select(res_deqms, protein_Id, contrast, diff_deqms = diff),
   select(res_moderated, protein_Id, contrast, diff_moderated = diff),
@@ -177,7 +170,6 @@ The DEqMS approach produces different p-values because the prior
 variance is protein-specific rather than global.
 
 ``` r
-
 merged_p <- inner_join(
   select(res_deqms, protein_Id, contrast, p_deqms = p.value),
   select(res_moderated, protein_Id, contrast, p_moderated = p.value),
@@ -190,7 +182,6 @@ cor(-log10(merged_p$p_deqms), -log10(merged_p$p_moderated), use = "complete.obs"
     ## [1] 0.9964816
 
 ``` r
-
 ggplot(merged_p, aes(x = -log10(p_moderated), y = -log10(p_deqms))) +
   geom_point(alpha = 0.3, size = 1.5) +
   geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed") +
@@ -209,7 +200,6 @@ identical — DEqMS adjusts for peptide count.
 ## Volcano plots
 
 ``` r
-
 pl_moderated <- contr_moderated$get_Plotter()
 pl_deqms <- contr_deqms$get_Plotter()
 
@@ -231,7 +221,6 @@ Volcano plots from both moderation approaches.
 `merge_contrasts_results`.
 
 ``` r
-
 mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
 merged_result <- merge_contrasts_results(prefer = contr_deqms, add = mC)
 
@@ -244,7 +233,6 @@ plotter$volcano()$FDR
 ## Wide format export
 
 ``` r
-
 wide <- contr_deqms$to_wide()
 head(wide)
 ```
@@ -268,7 +256,6 @@ Use `all = TRUE` to see both the original and moderated columns side by
 side.
 
 ``` r
-
 res_all <- contr_deqms$get_contrasts(all = TRUE)
 res_all |>
   select(protein_Id, contrast, sigma, diff, statistic,
@@ -299,23 +286,25 @@ unlike in `ContrastsModerated` where it is constant.
 ## Session Info
 
 ``` r
-
 sessionInfo()
 ```
 
     ## R version 4.5.2 (2025-10-31)
-    ## Platform: aarch64-apple-darwin20
-    ## Running under: macOS Tahoe 26.3.1
+    ## Platform: x86_64-pc-linux-gnu
+    ## Running under: Ubuntu 24.04.3 LTS
     ## 
     ## Matrix products: default
-    ## BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
-    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
     ## 
     ## locale:
-    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+    ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+    ##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+    ##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+    ## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
     ## 
-    ## time zone: Europe/Zurich
-    ## tzcode source: internal
+    ## time zone: UTC
+    ## tzcode source: system (glibc)
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -330,7 +319,7 @@ sessionInfo()
     ## [10] tibble_3.3.1        pkgconfig_2.0.3     Matrix_1.7-4       
     ## [13] pheatmap_1.0.13     data.table_1.18.2.1 RColorBrewer_1.1-3 
     ## [16] S7_0.2.1            desc_1.4.3          lifecycle_1.0.5    
-    ## [19] compiler_4.5.2      farver_2.1.2        textshaping_1.0.4  
+    ## [19] compiler_4.5.2      farver_2.1.2        textshaping_1.0.5  
     ## [22] progress_1.2.3      statmod_1.5.1       htmltools_0.5.9    
     ## [25] sass_0.4.10         yaml_2.3.12         lazyeval_0.2.2     
     ## [28] plotly_4.12.0       pillar_1.11.1       pkgdown_2.2.0      
@@ -342,9 +331,9 @@ sessionInfo()
     ## [46] grid_4.5.2          cli_3.6.5           magrittr_2.0.4     
     ## [49] utf8_1.2.6          withr_3.0.2         prettyunits_1.2.0  
     ## [52] scales_1.4.0        rmarkdown_2.30      httr_1.4.8         
-    ## [55] otel_0.2.0          gridExtra_2.3       ragg_1.5.0         
+    ## [55] otel_0.2.0          gridExtra_2.3       ragg_1.5.2         
     ## [58] hms_1.1.4           evaluate_1.0.5      knitr_1.51         
-    ## [61] UpSetR_1.4.0        viridisLite_0.4.3   mgcv_1.9-4         
+    ## [61] UpSetR_1.4.0        viridisLite_0.4.3   mgcv_1.9-3         
     ## [64] rlang_1.1.7         Rcpp_1.1.1          glue_1.8.0         
     ## [67] jsonlite_2.0.0      R6_2.6.1            plyr_1.8.9         
-    ## [70] systemfonts_1.3.1   fs_1.6.7
+    ## [70] systemfonts_1.3.2   fs_2.0.0

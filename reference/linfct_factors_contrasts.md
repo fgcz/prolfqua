@@ -78,7 +78,6 @@ Other modelling:
 ## Examples
 
 ``` r
-
 m <- sim_make_model_lm( "interaction")
 #> creating sampleName from fileName column
 #> completing cases

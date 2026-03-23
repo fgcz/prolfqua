@@ -11,7 +11,6 @@ encode_bin_resp(pdata, config, name = "bin_resp")
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases

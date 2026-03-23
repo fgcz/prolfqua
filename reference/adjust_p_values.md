@@ -35,7 +35,6 @@ adjust_p_values(
 ## Examples
 
 ``` r
-
 bb <- c(runif(1000), rexp(1500,rate=5))
 length(bb)
 #> [1] 2500

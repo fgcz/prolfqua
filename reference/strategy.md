@@ -423,11 +423,10 @@ Other modelling:
 ## Examples
 
 ``` r
-
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x342ab1a88>
+#> <environment: 0x55dbdf63a808>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -442,8 +441,8 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x1375852e8>
-#> <environment: 0x342ab1a88>
+#> <bytecode: 0x55dbcf879e20>
+#> <environment: 0x55dbdf63a808>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -469,9 +468,9 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq 
-#>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.022940e-15 
+#>       2.101899e+00       6.773389e-01      -6.663876e-01       3.440276e-16 
 #> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg 
-#>      -1.068335e+00      -8.904050e-16      -1.068335e+00       1.197563e+00 
+#>      -1.068335e+00       3.432936e-16      -1.068335e+00       1.197563e+00 
 #> peptide_Idq2jTaC1y 
 #>      -1.445323e+00 
 #> 
@@ -484,9 +483,9 @@ modelFunction$model_fun(nestProtein$data[[4]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd 
-#>       8.375544e-03       8.360331e-11       9.365126e-01      -3.147690e-01 
+#>       8.375544e-03       8.360400e-11       9.365126e-01      -3.147690e-01 
 #> peptide_IdgdnXrza3 peptide_IdxvlVt88v 
-#>      -2.035803e-09      -6.303721e-01 
+#>      -2.035802e-09      -6.303721e-01 
 #> 
 #> Likelihood ratio test=3.276542 on 5 df, p=0.657435, n=48
 #> 
@@ -523,7 +522,8 @@ mod <- build_model(
  modelFunction)
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
@@ -539,7 +539,7 @@ sum(mod$modelDF$isSingular, na.rm=TRUE)
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x3451b85c0>
+#> <environment: 0x55dbf2932288>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -554,12 +554,12 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x1270d8ba8>
+#> <bytecode: 0x55dbcbb73ea0>
 #> <environment: namespace:prolfqua>
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x33f743ce0>
+#> <environment: 0x55dbeef51cd8>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -573,12 +573,12 @@ tmp$isSingular
 #>     }
 #>     FALSE
 #> }
-#> <bytecode: 0x144837a98>
-#> <environment: 0x33f743ce0>
+#> <bytecode: 0x55dbd3ec7140>
+#> <environment: 0x55dbeef51cd8>
 tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x34da51540>
+#> <environment: 0x55dc003011b0>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -593,6 +593,6 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x1270d8ba8>
+#> <bytecode: 0x55dbcbb73ea0>
 #> <environment: namespace:prolfqua>
 ```

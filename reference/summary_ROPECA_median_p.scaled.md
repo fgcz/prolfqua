@@ -121,7 +121,6 @@ Other modelling:
 ## Examples
 
 ``` r
-
 set.seed(10)
 nrPep <- 10000
 nrProtein <- 800

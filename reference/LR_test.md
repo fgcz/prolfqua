@@ -154,7 +154,8 @@ modCB <- prolfqua::build_model(
   subject_Id = pMerged$config$hierarchy_keys() )
 #> Warning: There were 25 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 33: `protein_Id = "Br6sVH~3679"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
@@ -169,7 +170,8 @@ modC <- prolfqua::build_model(
   subject_Id = pMerged$config$hierarchy_keys() )
 #> Warning: There were 19 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 33: `protein_Id = "Br6sVH~3679"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels

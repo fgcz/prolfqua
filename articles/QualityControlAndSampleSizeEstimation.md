@@ -8,7 +8,7 @@ read a “proteinGroups.txt” file from the MaxQuant software, and next, we
 specify a prolfqua configuration. Afterward, the data is transformed and
 normalized, and plots describing the data are generated. Finally, we
 estimate how many samples are necessary to properly quantify a two-fold
-change for $`90%`$ of all the proteins with a power of $`0.8`$.
+change for $90$ of all the proteins with a power of $0.8$.
 
 ## Loading data
 
@@ -16,7 +16,6 @@ Generate Simulated data. To learn how to create prolfqua LFQData objects
 see the vignette: creating configurations.
 
 ``` r
-
 simdata <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- prolfqua::LFQData$new(simdata$data,simdata$config)
 lfqdata$remove_small_intensities()
@@ -26,7 +25,6 @@ You can convert the data into a data frame in a wide format, where the
 intensities of each sample occupy their columns.
 
 ``` r
-
 lfqdata$to_wide()$data[1:3,1:8]
 ```
 
@@ -43,7 +41,6 @@ Next we show how the data is distributed before transformation and
 normalization.
 
 ``` r
-
 lfqplotter <- lfqdata$get_Plotter()
 lfqplotter$intensity_distribution_density()
 ```
@@ -59,14 +56,12 @@ see if some missing proteins are specific for one particular dilution or
 if they appear randomly in all samples.
 
 ``` r
-
 nah <- lfqplotter$NA_heatmap()
 ```
 
 Prints missing heatmap:
 
 ``` r
-
 nah
 ```
 
@@ -80,7 +75,6 @@ in the respective conditions and how many proteins do not have missing
 data and how complete the measurements are for each group.
 
 ``` r
-
 lfqdata$get_Summariser()$plot_missingness_per_group()
 ```
 
@@ -90,7 +84,6 @@ values](QualityControlAndSampleSizeEstimation_files/figure-html/summaryPerGroup-
 \# of proteins with 0,1,…N missing values
 
 ``` r
-
 lfqdata$get_Summariser()$plot_missingness_per_group_cumsum()
 ```
 
@@ -104,7 +97,6 @@ between NAs (and the number of NAs for earch protein) with respect to
 the protein intensity.
 
 ``` r
-
 lfqplotter$missigness_histogram()
 ```
 
@@ -119,7 +111,6 @@ Other important statistics that can be easily calculated from the object
 are coefficient of variation, means and standard deviations.
 
 ``` r
-
 stats <- lfqdata$get_Stats()
 prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
 ```
@@ -132,10 +123,9 @@ prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stat
 |  0.75 | 4.599101 | 4.155821 | 4.885600 | 19.467593 |
 |  0.90 | 6.349093 | 5.322302 | 6.008022 | 21.451325 |
 
-quantile of CV {.table}
+quantile of CV
 
 ``` r
-
 stats$density_median()
 ```
 
@@ -148,7 +138,6 @@ In the next figure we show the dependency of the standard deviation with
 respect to the mean intensitiy of the proteins.
 
 ``` r
-
 stdm_raw <- stats$stdv_vs_mean(size = 10000) +
   ggplot2::scale_x_log10() +
   ggplot2::scale_y_log10()
@@ -162,12 +151,11 @@ Scatter plot of standard deviation vs mean
 
 ### Normalize protein intensities
 
-Next, we want to normalize the data by first $`\log_2`$ transforming it
-and then z-scaling. The $`log_2`$ stabilizes the variance, while the
+Next, we want to normalize the data by first $\log_{2}$ transforming it
+and then z-scaling. The $log_{2}$ stabilizes the variance, while the
 z-scaling removes systematic differences from the samples.
 
 ``` r
-
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
 transformed$config$is_response_transformed
@@ -179,7 +167,6 @@ Again we want to look into the distribution of the intensities in our
 samples after normalization.
 
 ``` r
-
 pl <- transformed$get_Plotter()
 pl$intensity_distribution_density()
 ```
@@ -193,7 +180,6 @@ plots matrix scatter plot in the upper right matrix and some statistics
 in the lower left matrix.
 
 ``` r
-
 pl$pairs_smooth()
 ```
 
@@ -207,7 +193,6 @@ Scatterplot matrix
 plots protein heatmap:
 
 ``` r
-
 p <- pl$heatmap() 
 p 
 ```
@@ -221,12 +206,10 @@ We can also look at the correlation among the samples or look at a PCA
 plot.
 
 ``` r
-
 hc <- pl$heatmap_cor()
 ```
 
 ``` r
-
 hc
 ```
 
@@ -236,7 +219,6 @@ samples](QualityControlAndSampleSizeEstimation_files/figure-html/plotHeatmapCor-
 Heatmap based on sample correlations, Rows - samples, Columns - samples
 
 ``` r
-
 pl$pca()
 ```
 
@@ -248,7 +230,6 @@ Principal component analysis for all samples
 prints the standard deviations:
 
 ``` r
-
 stats <- transformed$get_Stats()
 prolfqua::table_facade(stats$stats_quantiles()$wide, "Standard deviations")
 ```
@@ -261,12 +242,11 @@ prolfqua::table_facade(stats$stats_quantiles()$wide, "Standard deviations")
 |  0.75 | 0.1240478 | 0.1209993 | 0.0720238 | 0.3004859 |
 |  0.90 | 0.1687990 | 0.1388753 | 0.1087199 | 0.3253740 |
 
-Standard deviations {.table}
+Standard deviations
 
 plots density of the standard deviation
 
 ``` r
-
 stats$density_median()
 ```
 
@@ -279,7 +259,6 @@ Check for heteroskedasticity. After transformation, the standard
 deviation should be independent of the mean intensity.
 
 ``` r
-
 stdm_trans <- stats$stdv_vs_mean(size = 10000) + ggplot2::scale_x_log10() + ggplot2::scale_y_log10()
 stdm_trans
 ```
@@ -290,7 +269,6 @@ intensity](QualityControlAndSampleSizeEstimation_files/figure-html/checkForHeter
 Scatter plot of sd vs mean of protein intensity
 
 ``` r
-
 #gridExtra::grid.arrange(stdm_raw, stdm_trans, nrow=1)
 ```
 
@@ -307,14 +285,12 @@ of 0.05.
 First, we need to filter our data for `group_` *A* only.
 
 ``` r
-
 transformedA <- transformed$get_copy()
 transformedA$data <- transformedA$data |> dplyr::filter(group_  == "A")
 stats <- transformedA$get_Stats()
 ```
 
 ``` r
-
 stats$density(ggstat = "ecdf")
 ```
 
@@ -331,7 +307,6 @@ of 0.8 (at 0.05 significance level) one would need to have 10 samples in
 each group.
 
 ``` r
-
 sampleSize <- stats$power_t_test_quantiles() |> 
   dplyr::filter(group_ != "All")
 prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - samplesize")
@@ -355,14 +330,13 @@ prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - sampl
 | A       |  0.75 | 0.1240478 | 0.1240478 | 1.533718 |   2 |  2.00 |
 | A       |  0.90 | 0.1687990 | 0.1687990 | 1.616344 |   2 |  2.00 |
 
-Sample sizes. delta - Effect size, N - samplesize {.table}
+Sample sizes. delta - Effect size, N - samplesize
 
 The table summarises visually how many samples are needed for different
 expected differences (in log2-scale) and different portions of all
 proteins.
 
 ``` r
-
 sampleSize |>
   ggplot2::ggplot(ggplot2::aes(x = factor(probs) , y = N)) +
   ggplot2::facet_wrap(~delta) +
@@ -381,7 +355,6 @@ group. The information includes group size, number of observations,
 standard deviation, variance, mean.
 
 ``` r
-
 stats$stats() |> head()
 ```
 
@@ -404,26 +377,24 @@ sizes for all proteins with a power of 0.8 at signifiance level 0.05 for
 a two fold change (delta = 1).
 
 ``` r
-
 x <- stats$power_t_test(delta = 1,power = 0.8, sig.level = 0.05)
 x <- x |> dplyr::filter(group_ == "A") |> dplyr::arrange(desc(N),protein_Id)
 prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 ```
 
-| protein_Id | peptide_Id | group\_ | nrReplicates | nrMeasured | nrNAs | sd | var | meanAbundance | medianAbundance | interaction | delta | N_exact | N |
-|:---|:---|:---|---:|---:|---:|---:|---:|---:|---:|:---|---:|---:|---:|
-| 0EfVhX~0087 | dJkdz7so | A | 4 | 2 | 2 | 0.1816806 | 0.0330078 | 3.971469 | 3.971469 | group_A | 1 | 2.023422 | 3 |
-| HvIpHG~9079 | opjydeWJ | A | 4 | 3 | 1 | 0.2392614 | 0.0572460 | 4.094835 | 3.997946 | group_A | 1 | 2.344670 | 3 |
-| JcKVfU~9653 | 9LMQBevj | A | 4 | 4 | 0 | 0.1871014 | 0.0350069 | 5.482917 | 5.406550 | group_A | 1 | 2.050429 | 3 |
-| 0EfVhX~0087 | ahQLlQY7 | A | 4 | 4 | 0 | 0.0620097 | 0.0038452 | 4.742744 | 4.735435 | group_A | 1 | 1.533666 | 2 |
-| 0EfVhX~0087 | ITLb4x1q | A | 4 | 3 | 1 | 0.1535287 | 0.0235710 | 4.190351 | 4.178250 | group_A | 1 | 1.892113 | 2 |
-| 7cbcrd~5725 | D5dQ4nKk | A | 4 | 4 | 0 | 0.0508679 | 0.0025875 | 4.956022 | 4.964554 | group_A | 1 | 1.500024 | 2 |
-| 9VUkAq~4703 | eIC06D7g | A | 4 | 4 | 0 | 0.0945821 | 0.0089458 | 4.159728 | 4.182873 | group_A | 1 | 1.654299 | 2 |
+| protein_Id  | peptide_Id | group\_ | nrReplicates | nrMeasured | nrNAs |        sd |       var | meanAbundance | medianAbundance | interaction | delta |  N_exact |   N |
+|:------------|:-----------|:--------|-------------:|-----------:|------:|----------:|----------:|--------------:|----------------:|:------------|------:|---------:|----:|
+| 0EfVhX~0087 | dJkdz7so   | A       |            4 |          2 |     2 | 0.1816806 | 0.0330078 |      3.971469 |        3.971469 | group_A     |     1 | 2.023422 |   3 |
+| HvIpHG~9079 | opjydeWJ   | A       |            4 |          3 |     1 | 0.2392614 | 0.0572460 |      4.094835 |        3.997946 | group_A     |     1 | 2.344670 |   3 |
+| JcKVfU~9653 | 9LMQBevj   | A       |            4 |          4 |     0 | 0.1871014 | 0.0350069 |      5.482917 |        5.406550 | group_A     |     1 | 2.050429 |   3 |
+| 0EfVhX~0087 | ahQLlQY7   | A       |            4 |          4 |     0 | 0.0620097 | 0.0038452 |      4.742744 |        4.735435 | group_A     |     1 | 1.533666 |   2 |
+| 0EfVhX~0087 | ITLb4x1q   | A       |            4 |          3 |     1 | 0.1535287 | 0.0235710 |      4.190351 |        4.178250 | group_A     |     1 | 1.892113 |   2 |
+| 7cbcrd~5725 | D5dQ4nKk   | A       |            4 |          4 |     0 | 0.0508679 | 0.0025875 |      4.956022 |        4.964554 | group_A     |     1 | 1.500024 |   2 |
+| 9VUkAq~4703 | eIC06D7g   | A       |            4 |          4 |     0 | 0.0945821 | 0.0089458 |      4.159728 |        4.182873 | group_A     |     1 | 1.654299 |   2 |
 
-Sample size for each protein {.table}
+Sample size for each protein
 
 ``` r
-
 x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
   ggplot2::geom_histogram() +
   ggplot2::facet_wrap(~delta) +
@@ -442,23 +413,25 @@ The `prolfqua` package is described in (Wolski et al. 2022).
 ## Session Info
 
 ``` r
-
 sessionInfo()
 ```
 
     ## R version 4.5.2 (2025-10-31)
-    ## Platform: aarch64-apple-darwin20
-    ## Running under: macOS Tahoe 26.3.1
+    ## Platform: x86_64-pc-linux-gnu
+    ## Running under: Ubuntu 24.04.3 LTS
     ## 
     ## Matrix products: default
-    ## BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
-    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
     ## 
     ## locale:
-    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+    ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+    ##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+    ##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+    ## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
     ## 
-    ## time zone: Europe/Zurich
-    ## tzcode source: internal
+    ## time zone: UTC
+    ## tzcode source: system (glibc)
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -471,19 +444,19 @@ sessionInfo()
     ## [13] RColorBrewer_1.1-3  fastmap_1.2.0       Matrix_1.7-4       
     ## [16] plyr_1.8.9          jsonlite_2.0.0      ggrepel_0.9.8      
     ## [19] limma_3.66.0        prolfqua_1.5.0      gridExtra_2.3      
-    ## [22] mgcv_1.9-4          httr_1.4.8          purrr_1.2.1        
+    ## [22] mgcv_1.9-3          httr_1.4.8          purrr_1.2.1        
     ## [25] viridisLite_0.4.3   scales_1.4.0        UpSetR_1.4.0       
-    ## [28] lazyeval_0.2.2      textshaping_1.0.4   jquerylib_0.1.4    
+    ## [28] lazyeval_0.2.2      textshaping_1.0.5   jquerylib_0.1.4    
     ## [31] cli_3.6.5           rlang_1.1.7         splines_4.5.2      
     ## [34] withr_3.0.2         cachem_1.1.0        yaml_2.3.12        
     ## [37] otel_0.2.0          tools_4.5.2         dplyr_1.2.0        
     ## [40] ggplot2_4.0.2       forcats_1.0.1       vctrs_0.7.2        
-    ## [43] R6_2.6.1            lifecycle_1.0.5     fs_1.6.7           
-    ## [46] htmlwidgets_1.6.4   MASS_7.3-65         ragg_1.5.0         
+    ## [43] R6_2.6.1            lifecycle_1.0.5     fs_2.0.0           
+    ## [46] htmlwidgets_1.6.4   MASS_7.3-65         ragg_1.5.2         
     ## [49] pkgconfig_2.0.3     desc_1.4.3          pkgdown_2.2.0      
     ## [52] pillar_1.11.1       bslib_0.10.0        gtable_0.3.6       
     ## [55] glue_1.8.0          data.table_1.18.2.1 Rcpp_1.1.1         
-    ## [58] statmod_1.5.1       systemfonts_1.3.1   xfun_0.57          
+    ## [58] statmod_1.5.1       systemfonts_1.3.2   xfun_0.57          
     ## [61] tibble_3.3.1        tidyselect_1.2.1    knitr_1.51         
     ## [64] farver_2.1.2        nlme_3.1-168        htmltools_0.5.9    
     ## [67] labeling_0.4.3      rmarkdown_2.30      pheatmap_1.0.13    
@@ -493,5 +466,5 @@ sessionInfo()
 
 Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
 Schlapbach, and Christian Panse. 2022. “Prolfqua: A Comprehensive
-R-package for Proteomics Differential Expression Analysis.” *bioRxiv*,
-ahead of print. <https://doi.org/10.1101/2022.06.07.494524>.
+R-package for Proteomics Differential Expression Analysis.” *bioRxiv*.
+<https://doi.org/10.1101/2022.06.07.494524>.

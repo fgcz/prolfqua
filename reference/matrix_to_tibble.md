@@ -40,18 +40,19 @@ Other utilities:
 x <- matrix(rnorm(20), ncol=4)
 rownames(x) <- LETTERS[seq_len(nrow(x))]
 matrix_to_tibble(x)
-#> Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
+#> Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if
+#> `.name_repair` is omitted as of tibble 2.0.0.
 #> ℹ Using compatibility `.name_repair`.
 #> ℹ The deprecated feature was likely used in the prolfqua package.
 #>   Please report the issue at <https://github.com/wolski/prolfqua/issues>.
 #> # A tibble: 5 × 5
 #>   row.names       V1      V2      V3     V4
 #>   <chr>        <dbl>   <dbl>   <dbl>  <dbl>
-#> 1 A         -1.49    -0.0719  1.06    0.707
-#> 2 B         -1.38    -1.55    0.0597  0.508
-#> 3 C         -0.511    0.0988 -0.359   1.62 
-#> 4 D          0.00332  1.03   -0.764  -0.252
-#> 5 E         -1.61     0.545  -1.26    0.406
+#> 1 A         -2.52    -1.61    0.545  -1.26 
+#> 2 B         -1.49    -0.0719  1.06    0.707
+#> 3 C         -1.38    -1.55    0.0597  0.508
+#> 4 D         -0.511    0.0988 -0.359   1.62 
+#> 5 E          0.00332  1.03   -0.764  -0.252
 !(is.matrix(x) || is.data.frame(x))
 #> [1] FALSE
 ```

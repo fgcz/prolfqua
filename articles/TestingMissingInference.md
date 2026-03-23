@@ -5,7 +5,6 @@ This vignette contains experimental code.
 ## Example using prolfqua::MissingHelpers class
 
 ``` r
-
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 ```
 
@@ -22,14 +21,12 @@ dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
     ## setup done
 
 ``` r
-
 dd$data$abundance |> is.na() |> sum()
 ```
 
     ## [1] 552
 
 ``` r
-
 contr_spec <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
 mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = TRUE)
 imputed <- mh1$get_contrasts(Contrasts = contr_spec)
@@ -50,7 +47,6 @@ imputed <- mh1$get_contrasts(Contrasts = contr_spec)
     ## dilution.c-e=group_A - group_Ctrl
 
 ``` r
-
 mh2 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = FALSE)
 imputed2 <- mh2$get_contrasts(Contrasts = contr_spec)
 ```
@@ -70,7 +66,6 @@ imputed2 <- mh2$get_contrasts(Contrasts = contr_spec)
     ## dilution.c-e=group_A - group_Ctrl
 
 ``` r
-
 plot(imputed$estimate, imputed2$estimate)
 abline(0 , 1 , col=2 , lwd=2)
 ```
@@ -78,7 +73,6 @@ abline(0 , 1 , col=2 , lwd=2)
 ![](TestingMissingInference_files/figure-html/lookAtSummarizeStats-1.png)
 
 ``` r
-
 mh1$get_LOD()
 ```
 
@@ -86,7 +80,6 @@ mh1$get_LOD()
     ## 18.13636
 
 ``` r
-
 plot( imputed$estimate, -log10(imputed$p.value), pch = "*" )
 points(imputed2$estimate, -log10(imputed2$p.value), col = 2, pch = "x")
 ```
@@ -98,7 +91,6 @@ points(imputed2$estimate, -log10(imputed2$p.value), col = 2, pch = "x")
 Model with missing data
 
 ``` r
-
 modelName <- "f_condtion_r_peptide"
 formula_Protein <-
   prolfqua::strategy_lm("abundance  ~ group_",
@@ -124,7 +116,6 @@ mod <- prolfqua::build_model(
     ## Joining with `by = join_by(protein_Id)`
 
 ``` r
-
 mod$modelDF
 ```
 
@@ -146,7 +137,6 @@ mod$modelDF
     ## # ℹ 2 more variables: nrcoef <int>, nrcoeff_not_NA <int>
 
 ``` r
-
 mod$modelDF$nrcoeff_not_NA |> table()
 ```
 
@@ -155,7 +145,6 @@ mod$modelDF$nrcoeff_not_NA |> table()
     ## 15 74
 
 ``` r
-
 mod$modelDF$isSingular |> table()
 ```
 
@@ -164,14 +153,12 @@ mod$modelDF$isSingular |> table()
     ##    69    20
 
 ``` r
-
 mod$modelDF |> nrow()
 ```
 
     ## [1] 100
 
 ``` r
-
 mod$get_anova()
 ```
 
@@ -192,7 +179,6 @@ mod$get_anova()
     ## # ℹ 1 more variable: FDR <dbl>
 
 ``` r
-
 prolfqua::model_summary(mod)
 ```
 
@@ -207,7 +193,6 @@ prolfqua::model_summary(mod)
     ##    69    20
 
 ``` r
-
 maxcoef <- max(mod$modelDF$nrcoeff_not_NA, na.rm = TRUE)
 goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, exists_lmer == TRUE, nrcoeff_not_NA == maxcoef)
 
@@ -217,7 +202,6 @@ dim(goodmods)
     ## [1] 61  9
 
 ``` r
-
 xx <- lapply(goodmods$linear_model, vcov)
 nr <- sapply(xx, nrow)
 nr |> table()
@@ -228,7 +212,6 @@ nr |> table()
     ## 61
 
 ``` r
-
 nr <- sapply(xx, ncol)
 nr |> table()
 ```
@@ -238,7 +221,6 @@ nr |> table()
     ## 61
 
 ``` r
-
 sum_matrix <- Reduce(`+`, xx)
 sum_matrix/length(xx)
 ```
@@ -251,7 +233,6 @@ sum_matrix/length(xx)
 ## Model with lod imputation
 
 ``` r
-
 loddata <- dd$data
 
 loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), mh1$get_LOD(), abundance))
@@ -265,7 +246,6 @@ modI <- prolfqua::build_model(
     ## Joining with `by = join_by(protein_Id)`
 
 ``` r
-
 modI$modelDF$nrcoeff_not_NA |> table()
 ```
 
@@ -274,7 +254,6 @@ modI$modelDF$nrcoeff_not_NA |> table()
     ## 100
 
 ``` r
-
 modI$modelDF$isSingular |> table()
 ```
 
@@ -283,14 +262,12 @@ modI$modelDF$isSingular |> table()
     ##   100
 
 ``` r
-
 modI$modelDF |> nrow()
 ```
 
     ## [1] 100
 
 ``` r
-
 allModels <- modI$modelDF$linear_model
 
 xx <- lapply(allModels, vcov)
@@ -304,7 +281,6 @@ sum_matrix/length(xx)
     ## group_Ctrl   -0.4759103  0.4759103  0.9518206
 
 ``` r
-
 m <- (modI$modelDF$linear_model[[1]])
 df.residual(m)
 ```
@@ -312,14 +288,12 @@ df.residual(m)
     ## [1] 9
 
 ``` r
-
 sigma(m)
 ```
 
     ## [1] 1.222678
 
 ``` r
-
 vcov(m)
 ```
 

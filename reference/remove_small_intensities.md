@@ -25,7 +25,6 @@ data.frame
 ## Examples
 
 ``` r
-
 dd <- prolfqua_data('data_spectronautDIA250_A')
 config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)

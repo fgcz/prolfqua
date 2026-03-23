@@ -319,7 +319,7 @@ volcano plots (fold change vs FDR)
 
 ------------------------------------------------------------------------
 
-### Method [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_plotly.md)
+### Method [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_Plotly.md)
 
 plotly volcano plots
 
@@ -518,7 +518,6 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config(Nprot = 20)
 #> creating sampleName from fileName column
 #> completing cases
@@ -549,16 +548,10 @@ mod <- build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> 
-
-#> [=======================================================================] 100%
-#> 
-                                                                              
-#> 
-
 #> Warning: There were 7 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 1: `protein_Id = "0EfVhX~5954"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level

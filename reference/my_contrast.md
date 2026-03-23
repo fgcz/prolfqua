@@ -111,7 +111,6 @@ Other modelling:
 ## Examples
 
 ``` r
-
 m <-  sim_make_model_lm( "factors")
 #> creating sampleName from fileName column
 #> completing cases

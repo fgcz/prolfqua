@@ -60,7 +60,6 @@ Other plotting:
 
 ``` r
 
-
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
@@ -70,14 +69,18 @@ istar <- sim_lfq_data_peptide_config()
 istar$config$is_response_transformed <- FALSE
 res <- plot_hierarchies_line_df(istar$data, istar$config)
 res[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range (`geom_line()`).
+#> Warning: Removed 7 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values or values outside the scale range
+#> (`geom_line()`).
 
 istar$config$is_response_transformed <- TRUE
 res <- plot_hierarchies_line_df(istar$data, istar$config)
 res[[2]]
-#> Warning: Removed 2 rows containing missing values or values outside the scale range (`geom_point()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range (`geom_line()`).
+#> Warning: Removed 2 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_line()`).
 
 
 # TODO make it work for other hiearachy levels.

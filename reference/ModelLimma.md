@@ -302,7 +302,6 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from fileName column
 #> completing cases
@@ -346,7 +345,8 @@ mod$coef_histogram()
 #> 
 mod$coef_volcano()
 #> $plot
-#> Warning: Removed 1 row containing missing values or values outside the scale range (`geom_point()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_point()`).
 
 #> 
 #> $name

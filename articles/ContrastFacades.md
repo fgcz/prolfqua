@@ -33,7 +33,6 @@ facades separately.
 ## Simulate one experiment
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
 istar$config <- old2new(istar$config)
 
@@ -49,14 +48,12 @@ lfq_peptide$config$hierarchy_keys()
     ## [1] "protein_Id" "peptide_Id"
 
 ``` r
-
 lfq_protein$config$hierarchy_keys()
 ```
 
     ## [1] "protein_Id"
 
 ``` r
-
 lfq_protein$config$nr_children
 ```
 
@@ -70,7 +67,6 @@ to be passed around.
 ## Define contrasts
 
 ``` r
-
 contrasts <- c(
   "A_vs_Ctrl" = "group_A - group_Ctrl",
   "B_vs_Ctrl" = "group_B - group_Ctrl"
@@ -88,7 +84,6 @@ The following facades require aggregated input, which in practice means
 aggregated protein input.
 
 ``` r
-
 fa_lm <- build_contrast_analysis(
   lfq_protein,
   "~ group_",
@@ -136,7 +131,6 @@ Because all protein-input facades share the same interface and report
 protein-level contrasts, their outputs can be combined directly.
 
 ``` r
-
 results_protein <- bind_rows(
   fa_lm$get_contrasts(),
   fa_limma$get_contrasts(),
@@ -173,7 +167,6 @@ For facades that combine several underlying result types, such as
 rows came from.
 
 ``` r
-
 results_protein |>
   dplyr::count(facade, contrast, modelName, name = "n_results")
 ```
@@ -199,7 +192,6 @@ results_protein |>
 ## Protein-level volcano comparison
 
 ``` r
-
 ggplot(results_protein, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
   facet_grid(contrast ~ facade, scales = "free_y") +
@@ -224,7 +216,6 @@ are backends.
 ## Looking at the strongest protein-level hits
 
 ``` r
-
 results_protein |>
   dplyr::group_by(facade, contrast) |>
   dplyr::slice_min(order_by = p.value, n = 5, with_ties = FALSE) |>
@@ -255,7 +246,6 @@ contrast pairs present in the input data but absent from
 fails on and to compare coverage.
 
 ``` r
-
 missing_all <- dplyr::bind_rows(
   fa_lm$get_missing() |> dplyr::mutate(facade = "lm"),
   fa_limma$get_missing() |> dplyr::mutate(facade = "limma"),
@@ -279,12 +269,11 @@ missing_all |>
 | lm     | A_vs_Ctrl |         2 |
 | lm     | B_vs_Ctrl |         1 |
 
-Number of missing protein × contrast pairs per facade {.table}
+Number of missing protein × contrast pairs per facade
 
 ### Per-sample intensities of the missing proteins
 
 ``` r
-
 missing_proteins <- unique(missing_all$protein_Id)
 
 if (length(missing_proteins) > 0) {
@@ -304,8 +293,7 @@ if (length(missing_proteins) > 0) {
 | DTCi0N~0734 |   NA | 4.28 |    4.07 |    4.21 | 4.37 | 4.35 |    4.06 |   NA |      NA |
 | OrL0ux~1369 |   NA |   NA |      NA |    3.98 |   NA |   NA |    4.05 | 3.78 |    4.12 |
 
-Per-sample intensities of proteins that could not be estimated {.table
-style="width:100%;"}
+Per-sample intensities of proteins that could not be estimated
 
 The missing cells (NA) explain why these proteins cannot be estimated —
 they lack observations in one or more groups. The `lm_missing` facade
@@ -321,7 +309,6 @@ facades can still produce contrast results. The table below shows these
 rescued estimates side by side.
 
 ``` r
-
 lm_missing_proteins <- fa_lm$get_missing()$protein_Id |> unique()
 
 if (length(lm_missing_proteins) > 0) {
@@ -342,23 +329,23 @@ if (length(lm_missing_proteins) > 0) {
 }
 ```
 
-| facade | modelName | protein_Id | contrast | avgAbd | diff | FDR | statistic | std.error | df | p.value | conf.low | conf.high | sigma | significant |
-|:---|:---|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---|
-| lm_impute | WaldTest_moderated | 8mS8sK~0150 | A_vs_Ctrl | 3.776 | 0.000 | 1.000 | 0.000 | 0.013 | 4.746 | 1.000 | -0.154 | 0.154 | 0.059 | FALSE |
-| lm_missing | groupAverage | 8mS8sK~0150 | A_vs_Ctrl | 3.697 | 0.000 | 1.000 | 0.000 | 0.102 | 2.000 | 1.000 | -0.437 | 0.437 | 0.102 | FALSE |
-| lm_impute | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl | 3.776 | 0.001 | 0.922 | 0.119 | 0.013 | 4.746 | 0.910 | -0.153 | 0.156 | 0.059 | FALSE |
-| lm_missing | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl | 3.632 | 0.339 | 0.009 | 4.446 | 0.102 | 5.746 | 0.005 | 0.150 | 0.527 | 0.076 | FALSE |
-| lm_impute | WaldTest_moderated | DTCi0N~0734 | A_vs_Ctrl | 3.786 | -0.022 | 0.193 | -1.776 | 0.013 | 6.746 | 0.121 | -0.165 | 0.122 | 0.060 | FALSE |
-| lm_missing | groupAverage | DTCi0N~0734 | A_vs_Ctrl | 3.902 | -0.253 | 0.032 | -4.417 | 0.057 | 4.000 | 0.012 | -0.412 | -0.094 | 0.070 | FALSE |
-| lm_impute | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl | 3.803 | 0.013 | 0.386 | 1.032 | 0.013 | 6.746 | 0.338 | -0.131 | 0.156 | 0.060 | FALSE |
-| lm_missing | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl | 4.224 | 0.222 | 0.006 | 4.194 | 0.057 | 7.746 | 0.003 | 0.072 | 0.372 | 0.065 | FALSE |
-| lm_impute | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl | 3.784 | -0.018 | 0.293 | -1.481 | 0.013 | 4.746 | 0.202 | -0.172 | 0.137 | 0.059 | FALSE |
-| lm_missing | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl | 3.913 | -0.276 | 0.023 | -3.752 | 0.084 | 5.757 | 0.010 | -0.433 | -0.118 | 0.064 | FALSE |
-| lm_impute | WaldTest_moderated | OrL0ux~1369 | B_vs_Ctrl | 3.784 | -0.018 | 0.247 | -1.460 | 0.013 | 4.746 | 0.207 | -0.172 | 0.137 | 0.059 | FALSE |
-| lm_missing | groupAverage | OrL0ux~1369 | B_vs_Ctrl | 3.879 | -0.207 | 0.094 | -3.473 | 0.060 | 2.000 | 0.074 | -0.463 | 0.049 | 0.073 | FALSE |
+| facade     | modelName          | protein_Id  | contrast  | avgAbd |   diff |   FDR | statistic | std.error |    df | p.value | conf.low | conf.high | sigma | significant |
+|:-----------|:-------------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|------:|--------:|---------:|----------:|------:|:------------|
+| lm_impute  | WaldTest_moderated | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.013 | 4.746 |   1.000 |   -0.154 |     0.154 | 0.059 | FALSE       |
+| lm_missing | groupAverage       | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 | 2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | FALSE       |
+| lm_impute  | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.776 |  0.001 | 0.922 |     0.119 |     0.013 | 4.746 |   0.910 |   -0.153 |     0.156 | 0.059 | FALSE       |
+| lm_missing | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.009 |     4.446 |     0.102 | 5.746 |   0.005 |    0.150 |     0.527 | 0.076 | FALSE       |
+| lm_impute  | WaldTest_moderated | DTCi0N~0734 | A_vs_Ctrl |  3.786 | -0.022 | 0.193 |    -1.776 |     0.013 | 6.746 |   0.121 |   -0.165 |     0.122 | 0.060 | FALSE       |
+| lm_missing | groupAverage       | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 | 4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | FALSE       |
+| lm_impute  | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  3.803 |  0.013 | 0.386 |     1.032 |     0.013 | 6.746 |   0.338 |   -0.131 |     0.156 | 0.060 | FALSE       |
+| lm_missing | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.006 |     4.194 |     0.057 | 7.746 |   0.003 |    0.072 |     0.372 | 0.065 | FALSE       |
+| lm_impute  | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.784 | -0.018 | 0.293 |    -1.481 |     0.013 | 4.746 |   0.202 |   -0.172 |     0.137 | 0.059 | FALSE       |
+| lm_missing | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.023 |    -3.752 |     0.084 | 5.757 |   0.010 |   -0.433 |    -0.118 | 0.064 | FALSE       |
+| lm_impute  | WaldTest_moderated | OrL0ux~1369 | B_vs_Ctrl |  3.784 | -0.018 | 0.247 |    -1.460 |     0.013 | 4.746 |   0.207 |   -0.172 |     0.137 | 0.059 | FALSE       |
+| lm_missing | groupAverage       | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 | 2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | FALSE       |
 
 Contrast estimates from lm_missing and lm_impute for proteins that plain
-lm could not estimate {.table}
+lm could not estimate
 
 ## Peptide-input facades
 
@@ -369,7 +356,6 @@ time here on purpose, because it can also be fitted on peptide input.
 All three still return protein-level contrasts.
 
 ``` r
-
 fa_lmer <- build_contrast_analysis(
   lfq_peptide,
   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
@@ -400,7 +386,6 @@ without an added peptide term, while proteins with multiple peptides are
 fitted with the lowest hierarchy key added internally.
 
 ``` r
-
 results_peptide <- bind_rows(
   fa_lmer$get_contrasts(),
   fa_ropeca$get_contrasts(),
@@ -427,7 +412,6 @@ results_peptide |>
     ## 3 ropeca       157
 
 ``` r
-
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
   facet_grid(contrast ~ facade, scales = "free_y") +

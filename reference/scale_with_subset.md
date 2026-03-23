@@ -50,7 +50,6 @@ Other preprocessing:
 ``` r
 
 
-
 bb <-sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from fileName column
 #> completing cases

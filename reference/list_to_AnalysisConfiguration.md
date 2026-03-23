@@ -18,7 +18,6 @@ list_to_AnalysisConfiguration(dd)
 ## Examples
 
 ``` r
-
 DEAconfig <- AnalysisConfiguration$new()
 DEAconfig$fileName <- "Replicate.Name"
 DEAconfig$hierarchy[["protein_Id"]] <- "Protein.Name"

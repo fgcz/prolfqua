@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/wolski/prolfqua/blob/HEAD/inst/CITATION)
+[`inst/CITATION`](https://github.com/wolski/prolfqua/blob/Modelling2R6/inst/CITATION)
 
 Wolski WE, Nanni P, Grossmann J, d'Errico M, Schlapbach R, Panse C
 (2023). “prolfqua : A Comprehensive R-Package for Proteomics

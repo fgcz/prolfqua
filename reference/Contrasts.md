@@ -293,7 +293,6 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-
 # Fitting mixed effects model to peptide data
 istar <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
@@ -319,21 +318,12 @@ mod <- build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> 
-
-#> [===============================================================>-------]  90%
 #> boundary (singular) fit: see help('isSingular')
-#> 
-
-#> [=======================================================================] 100%
-#> 
-                                                                              
-#> 
-
 #> boundary (singular) fit: see help('isSingular')
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb = pb)`.
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level

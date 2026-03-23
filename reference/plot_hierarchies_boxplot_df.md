@@ -57,7 +57,6 @@ Other plotting:
 ## Examples
 
 ``` r
-
  istar <- sim_lfq_data_peptide_config(with_missing = FALSE)
 #> creating sampleName from fileName column
 #> completing cases
@@ -76,26 +75,38 @@ Other plotting:
 
  res <- plot_hierarchies_boxplot_df(analysis,config)
  res$boxplot[[1]]
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_boxplot()`).
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 8 rows containing missing values or values outside the scale range (`position_quasirandom()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_boxplot()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
+#> Warning: Removed 8 rows containing missing values or values outside the scale range
+#> (`position_quasirandom()`).
 
  res <- plot_hierarchies_boxplot_df(analysis,config,config$hierarchy_keys()[1])
  res$boxplot[[1]]
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_boxplot()`).
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 8 rows containing missing values or values outside the scale range (`position_quasirandom()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_boxplot()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
+#> Warning: Removed 8 rows containing missing values or values outside the scale range
+#> (`position_quasirandom()`).
 
  res <- plot_hierarchies_boxplot_df(analysis,config,
                                     config$hierarchy_keys()[1],
                                     facet_grid_on = config$hierarchy_keys()[2])
  res$boxplot[[1]]
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_boxplot()`).
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 8 rows containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 8 rows containing missing values or values outside the scale range (`position_quasirandom()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_boxplot()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
+#> Warning: Removed 8 rows containing missing values or values outside the scale range
+#> (`position_quasirandom()`).
 
  res$boxplot[[2]]
 
@@ -115,7 +126,8 @@ Other plotting:
 #> Warning: Removed 1 row containing non-finite outside the scale range (`stat_boxplot()`).
 #> Warning: Removed 1 row containing non-finite outside the scale range (`stat_summary()`).
 #> Warning: Removed 1 row containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range (`position_quasirandom()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`position_quasirandom()`).
 
  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
                                     iostar$config$hierarchy_keys()[1])

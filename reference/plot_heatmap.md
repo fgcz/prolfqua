@@ -44,7 +44,6 @@ Other plotting:
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_protein_config()
 #> creating sampleName from fileName column
 #> completing cases

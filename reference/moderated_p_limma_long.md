@@ -94,7 +94,6 @@ Other modelling:
 ## Examples
 
 ``` r
-
 mod <- sim_build_models_lm()
 #> creating sampleName from fileName column
 #> completing cases

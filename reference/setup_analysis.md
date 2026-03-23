@@ -45,7 +45,6 @@ Other configuration:
 ## Examples
 
 ``` r
-
 skylineconfig <- AnalysisConfiguration$new()
 skylineconfig$fileName <- "Replicate.Name"
 skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"

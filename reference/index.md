@@ -252,7 +252,7 @@
 - [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
   : table facade to easily switch implementations
 
-- [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_plotly.md)
+- [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_Plotly.md)
   : volcano plotly
 
 - [`which_missing()`](https://wolski.github.io/prolfqua/reference/which_missing.md)
