@@ -179,3 +179,19 @@ From `TODO_new_Imputation.md`. Added a second-pass imputation mechanism inside `
 
 ### Tests (`tests/testthat/test-ImputeModel.R`)
 - 6 tests, 20 assertions: S3 dispatch, end-to-end model+contrasts, facade comparison, both borrow methods, both df methods
+
+---
+
+## 2026-03-24 — Remove Deprecated `interaction_missing_stats`, Rd Line Width Fixes
+
+Commit `4cb6b74f`.
+
+### Removed `interaction_missing_stats()` (`R/tidyMS_missigness.R`)
+- Deprecated function replaced by `summarize_stats()` from `R/tidyMS_stats.R`
+- Added `config$isotopeLabel` to `summarize_stats()` grouping for structural parity with the old function
+- Migrated all 4 internal callers: `missigness_histogram()`, `missingness_per_condition_cumsum()`, `missingness_per_condition()`, `UpSet_interaction_missing_stats()`
+- Deleted function, roxygen block, man page, and NAMESPACE export
+
+### Fixed Rd line width NOTEs
+- Wrapped long `hierarchy[["fragment_Id"]]` example lines in `R/AnalysisConfiguration.R` and `R/tidyMS_R6_ConcreteConfigurations.R`
+- Eliminated `checking Rd line widths` NOTE from `R CMD check`

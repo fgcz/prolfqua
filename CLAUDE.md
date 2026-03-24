@@ -52,18 +52,26 @@ Raw Data + AnalysisConfiguration → LFQData
     ├── get_Summariser()  → LFQDataSummariser    (missingness, hierarchy counts)
     └── get_Imputer()     → LFQDataImp           (missing value imputation)
 
-LFQData → build_model(strategy) → Model
-    └── Contrasts$new(model, contrast_spec) → contrast results
-        ├── ContrastsModerated  (prolfqua squeezeVarRob shrinkage)
-        ├── ContrastsProDA      (missing-data-aware)
-        ├── ContrastsMissing    (imputation-based)
-        ├── ContrastsFirth      (Firth logistic)
-        └── get_Plotter() → ContrastsPlotter (volcano, MA, heatmap)
-
-LFQData → build_model_limma(strategy_limma) → ModelLimma
-    └── ContrastsLimma$new(model, contrast_spec) → contrast results
-        └── Same downstream API: get_contrasts(), get_Plotter(), to_wide()
+LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
+    └── Returns a Facade with uniform API:
+        $get_contrasts(), $get_missing(), $get_Plotter(), $to_wide()
 ```
+
+### Facade Pattern (`ContrastsFacades.R`, `build_contrast_analysis.R`)
+
+`build_contrast_analysis()` is the recommended entry point. Each method dispatches to a Facade class that wires strategy → model → contrasts → moderation internally.
+
+**Aggregated input** (protein-level, `subject_Id == hierarchy_keys`):
+`lm`, `rlm`, `lm_missing`, `lm_impute`, `limma`, `deqms`, `firth`
+
+**Nested input** (peptide-level, `subject_Id` is strict subset of `hierarchy_keys`):
+`lmer`, `ropeca`
+
+### Weights & `nr_children`
+
+`config$nr_children` names the column tracking child-feature counts (e.g. peptides per protein). After `get_Aggregator()` rollup, this column is populated automatically. For peptide/precursor-level data it is typically 1.
+
+**Protein-level input must carry `nr_children`.** DEqMS uses it for count-based variance modelling (`ContrastsDEqMSFacade`). If the column is missing, `setup_analysis()` adds it set to 1 with a warning — but this defeats the purpose for aggregated protein data where the actual peptide count matters.
 
 ### Key Design Patterns
 
@@ -101,8 +109,10 @@ Concrete config factories: `create_config_MQ_peptide()`, `create_config_Skyline(
 
 ### Key Functions (not in classes)
 
+- `build_contrast_analysis(lfqdata, modelstr, contrasts, method)` — main entry point, returns a Facade (in build_contrast_analysis.R)
 - `setup_analysis(data, config)` — prepare data for analysis (in AnalysisConfiguration.R)
 - `build_model(data, strategy, subject_Id)` — fit per-protein models (in tidyMS_R6Model.R)
+- `build_model_impute(lfqdata, strategy)` — fit with LOD imputation + borrowed covariance for missing groups (in tidyMS_R6Model.R)
 - `build_model_limma(lfqdata, strategy)` — fit limma matrix model (in ContrastsLimma.R)
 - `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` — per-protein model strategies (in tidyMS_R6_Modelling.R)
 - `strategy_limma()` — limma matrix model strategy (in ContrastsLimma.R)
