@@ -754,3 +754,107 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
 
   return(.add_nr_children(pdata, sumTopInt, config, newconfig))
 }
+
+
+.ExtractMatrix <- function(x, sep = "~lfq~") {
+  idx <- sapply(x, is.numeric)
+  xmat <- as.matrix(x[, idx])
+  idcols <- x |> dplyr::select(which(!idx == TRUE))
+  if (ncol(idcols) > 0) {
+    rownames(xmat) <- x |> dplyr::select(which(!idx == TRUE)) |> tidyr::unite(x, sep = sep) |> dplyr::pull(x)
+  }
+  xmat
+}
+
+
+#' Aggregates e.g. protein abundances from peptide abundances
+#'
+#' @param data data.frame with peptide-level data
+#' @param config AnalysisConfiguration
+#' @param new_child column name for the nr_children count
+#' @export
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' dd$data <- na.omit(dd$data)
+#'
+#' xd <- nr_obs_sample(dd$data, dd$config)
+#' xd$nr_children |> table()
+#' # xd |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_children)
+#'
+#' dp <- prolfqua::sim_lfq_data_protein_config()
+#' xp <- nr_obs_sample(dp$data, dp$config)
+#' # xp
+#' # xp |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_peptides)
+#' xp$nr_peptides |> table()
+#'
+nr_obs_sample <- function(data, config, new_child = config$nr_children) {
+  data <- data[!is.na(data[[config$get_response()]]), ]
+  nr_children <- data |>
+    group_by(!!!rlang::syms(c(config$hierarchy_keys_depth(), config$fileName))) |>
+    summarize(!!new_child := sum(!!sym(config$nr_children), na.rm = TRUE), .groups = "drop")
+  return(nr_children)
+}
+
+
+# Summarize Intensities by Intensity or NAs ----
+.rankProteinPrecursors <- function(
+  data,
+  config,
+  column = config$get_response(),
+  fun = function(x) {
+    sum(x, na.rm = TRUE)
+  },
+  summaryColumn = "srm_meanInt",
+  rankColumn = "srm_meanIntRank",
+  rankFunction = function(x) {
+    min_rank(desc(x))
+  }
+) {
+  summaryPerPrecursor <- data |>
+    dplyr::group_by(!!!syms(config$hierarchy_keys())) |>
+    dplyr::summarize(!!summaryColumn := fun(!!sym(column)))
+
+  groupedByProtein <- summaryPerPrecursor |>
+    dplyr::arrange(!!sym(config$hierarchy_keys()[1])) |>
+    dplyr::group_by(!!sym(config$hierarchy_keys()[1]))
+  rankedBySummary <- groupedByProtein |>
+    dplyr::mutate(!!rankColumn := rankFunction(!!sym(summaryColumn)))
+
+  data <- dplyr::inner_join(data, rankedBySummary)
+  return(data)
+}
+
+#' ranks precursor - peptide by intensity.
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @return data.frame
+#' @export
+#' @keywords internal
+#' @examples
+#'
+#'
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
+#' res <- rank_peptide_by_intensity(bb$data, bb$config)
+#' X <-res |> dplyr::select(c(bb$config$hierarchy_keys(),
+#'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
+#' X |> dplyr::arrange(!!!rlang::syms(c(bb$config$hierarchy_keys()[1], "srm_meanIntRank"  )))
+rank_peptide_by_intensity <- function(pdata, config) {
+  summaryColumn <- "srm_meanInt"
+  rankColumn <- "srm_meanIntRank"
+  pdata <- .rankProteinPrecursors(
+    pdata,
+    config,
+    column = config$get_response(),
+    fun = function(x) {
+      mean(x, na.rm = TRUE)
+    },
+    summaryColumn = summaryColumn,
+    rankColumn = rankColumn,
+    rankFunction = function(x) {
+      min_rank(desc(x))
+    }
+  )
+
+  message("Columns added : ", summaryColumn, " ", rankColumn)
+  return(pdata)
+}

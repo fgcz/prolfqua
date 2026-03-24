@@ -216,3 +216,344 @@ LFQDataTransformer <- R6::R6Class(
     }
   )
 )
+
+# Intensity transformation helpers ----
+
+#' Transform intensity
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @param .func function to transform intensities e.g. log2
+#' @param .funcname generates new name from name of transformation and old working intensity column name.
+#' @param intesityNewName column name for new intensity, default NULL
+#' @return data.frame
+#' @export
+#' @keywords internal
+#' @examples
+#'
+#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' config <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,config)
+#' x <- transform_work_intensity(analysis, config, .func = log2)
+#' stopifnot("log2_FG.Quantity" %in% colnames(x))
+#' config <- dd$config_f()
+#' x <- transform_work_intensity(analysis, config, .func = asinh)
+#' stopifnot("asinh_FG.Quantity" %in% colnames(x))
+#'
+transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, intesityNewName = NULL, deep = FALSE) {
+  if (deep) {
+    config <- config$clone(deep = TRUE)
+  }
+  .call <- as.list(match.call())
+
+  if (is.null(intesityNewName)) {
+    .funcname <- if (is.null(.funcname)) {
+      deparse(.call$.func)
+    } else {
+      .funcname
+    }
+    newcol <- paste(.funcname, config$get_response(), sep = "_")
+  } else {
+    newcol <- intesityNewName
+  }
+
+  #pdata <- pdata |> dplyr::mutate(across(all_of(config$get_response()),
+  #                                    .fns = list(!!newcol := .func)))
+  response_col <- config$get_response()
+  vals <- pdata[[response_col]]
+  if (identical(.func, log2) || identical(.func, log) || identical(.func, log10)) {
+    n_zero <- sum(vals == 0, na.rm = TRUE)
+    n_neg <- sum(vals < 0, na.rm = TRUE)
+    if (n_neg > 0) {
+      warning(
+        "log transform: ",
+        n_neg,
+        " negative values in '",
+        response_col,
+        "' will produce NaN. Consider filtering or using asinh."
+      )
+    }
+    if (n_zero > 0) {
+      warning(
+        "log transform: ",
+        n_zero,
+        " zeros in '",
+        response_col,
+        "' will produce -Inf. Consider replacing zeros with NA first."
+      )
+    }
+  }
+
+  pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(response_col)))
+
+  config$set_response(newcol)
+  message("Column added : ", newcol)
+  config$is_response_transformed <- TRUE
+
+  if (deep) {
+    return(list(data = pdata, config = config))
+  } else {
+    return(pdata)
+  }
+}
+
+#' Takes matrix of responses and converts into tibble
+#'
+#' @param pdata (matrix)
+#' @param value name of column to store values in. (see `gather`)
+#' @param config AnalysisConfiguration
+#' @param data lfqdata
+#' @param sep separater to unite the hierarchy keys.
+#' @export
+#'
+#' @keywords internal
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' data <- dd$data
+#' conf <- dd$config
+#' res <- tidy_to_wide_config(data, conf, as.matrix = TRUE)
+#'
+#' res <- scale(res$data)
+#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
+#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf, data)
+#' conf$get_response() == "srm_intensityScaled"
+#'
+response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "~lfq~") {
+  pdata <- dplyr::bind_cols(
+    tibble::tibble("row.names" := rownames(pdata)),
+    tibble::as_tibble(pdata)
+  )
+  pdata <- tidyr::pivot_longer(pdata, cols = -1, names_to = config$sampleName, values_to = value)
+  pdata <- tidyr::separate(
+    pdata,
+    "row.names",
+    unique(c(config$hierarchy_keys(), config$isotopeLabel)),
+    sep = sep
+  )
+  if (!is.null(data)) {
+    pdata <- dplyr::inner_join(data, pdata)
+    config$set_response(value)
+  }
+  return(pdata)
+}
+
+#' compute median and mad on matrix
+#' @keywords internal
+#'
+.get_robscales <- function(data, dim = 2) {
+  medians <- apply(data, dim, median, na.rm = TRUE)
+  data <- sweep(data, dim, medians, "-")
+  mads <- apply(data, dim, mad, na.rm = TRUE)
+  return(list(medians = medians, mads = mads))
+}
+
+#' compute median and standard deviation for each sample
+#' @export
+#' @keywords internal
+#' @family preprocessing
+#' @examples
+#'
+#'
+#' bb <- prolfqua::sim_lfq_data_peptide_config()
+#' conf <- bb$config
+#' sample_analysis <- bb$data
+#' pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
+#' s1 <- get_robscales(pepIntensityNormalized, conf)
+#'
+#' res <- scale_with_subset(pepIntensityNormalized, pepIntensityNormalized, conf)
+#' s2 <- get_robscales(res$data, conf)
+#' abs(mean(s1$mads) - mean(s2$mads)) < 0.1
+#'
+#'
+get_robscales <- function(data, config) {
+  data <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
+  scales <- .get_robscales(data)
+  return(scales)
+}
+
+
+#' robust scale wrapper
+#' @keywords internal
+#' @family preprocessing
+#' @export
+robust_scale <- function(data, dim = 2, preserveMean = FALSE) {
+  scales <- .get_robscales(data, dim = dim)
+  data <- sweep(data, dim, scales$medians, "-")
+  if (!any(scales$mads == 0)) {
+    mads <- scales$mads / mean(scales$mads)
+    data = sweep(data, dim, mads, "/")
+  } else {
+    warning("SKIPPING scaling step in robust_scale: one or more MAD values are zero.")
+  }
+  meanmed <- mean(scales$medians)
+  addmean <- if (preserveMean) {
+    meanmed
+  } else {
+    0
+  }
+  return(data + addmean)
+}
+
+
+#' Apply function requiring a matrix to tidy table
+#'
+#' @param data data.frame
+#' @param config AnalysisConfiguration
+#' @param .func function
+#' @param .funcname name of function (used for creating new column)
+#' @export
+#' @keywords internal
+#' @family preprocessing
+#' @examples
+#'
+#'
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' data <- bb$data
+#' conf <- bb$config
+#' res <- apply_to_response_matrix(data, conf, .func = base::scale)
+#'
+#' stopifnot("abundance_base..scale" %in% colnames(res))
+#' stopifnot("abundance_base..scale" == conf$get_response())
+#' conf <- bb$config$clone(deep=TRUE)
+#' conf$workIntensity <- "abundance"
+#' res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
+#'
+#' # Normalize data using the vsn method from bioconductor
+#'
+#' if( require("vsn")){
+#'  res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
+#' }
+#'
+apply_to_response_matrix <- function(data, config, .func, .funcname = NULL) {
+  .call <- as.list(match.call())
+  .funcname <- if (is.null(.funcname)) {
+    deparse(.call$.func)
+  } else {
+    .funcname
+  }
+  colname <- make.names(paste(config$get_response(), .funcname, sep = "_"))
+  mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
+  mat <- .func(mat)
+  data <- response_matrix_as_tibble(mat, colname, config, data)
+  return(data)
+}
+
+#' Scale data using a subset of the data
+#'
+#' this should reduce the overall variance.
+#'
+#' @export
+#' @keywords internal
+#' @param data the whole dataset
+#' @param subset a subset of the dataset
+#' @param config configuration
+#' @param preserveMean default FALSE - sets mean to zero
+#' @param get_scales return a list of transformed data and the scaling parameters
+#' @family preprocessing
+#' @examples
+#'
+#'
+#'
+#' bb <-sim_lfq_data_peptide_config(Nprot = 100)
+#' conf <- bb$config$clone(deep=TRUE)
+#' sample_analysis <- bb$data
+#'
+#' res <- transform_work_intensity(sample_analysis, conf, log2)
+#' s1 <- get_robscales(res, conf)
+#' res <- scale_with_subset(res, res, conf)
+#' s2 <- get_robscales(res$data, conf)
+#' stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
+scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_scales = TRUE) {
+  colname <- make.names(paste(config$get_response(), "subset_scaled", sep = "_"))
+  subset <- tidy_to_wide_config(subset, config, as.matrix = TRUE)$data
+
+  scales <- .get_robscales(subset)
+  mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
+  mat <- sweep(mat, 2, scales$medians, "-")
+  if (!any(scales$mads == 0)) {
+    mads <- scales$mads / mean(scales$mads)
+    mat <- sweep(mat, 2, mads, "/")
+  } else {
+    warning("SKIPPING scaling step in scale_with_subset function.")
+  }
+
+  meanmed <- mean(scales$medians)
+  addmean <- if (preserveMean) {
+    meanmed
+  } else {
+    0
+  }
+  mat <- mat + addmean
+  data <- response_matrix_as_tibble(mat, colname, config, data)
+  if (get_scales) {
+    return(list(data = data, scales = scales))
+  } else {
+    return(data)
+  }
+}
+
+
+# Function to normalize protein abundances by subtracting sample means of reference proteins
+center_to_reference <- function(
+  df,
+  df_reference,
+  sampleName,
+  abundance_column = "normalized_abundance"
+) {
+  # Step 1: Calculate sample means for reference proteins
+  sample_means <- df_reference |>
+    dplyr::group_by(!!rlang::sym(sampleName)) |> # Group by sample (Name column contains sample identifiers)
+    dplyr::summarise(
+      reference_mean = mean(.data[[abundance_column]], na.rm = TRUE),
+      reference_median = median(.data[[abundance_column]], na.rm = TRUE),
+      .groups = "drop"
+    )
+  # Step 2: Join back to original data and subtract sample means
+  normalized_df <-
+    dplyr::left_join(df, sample_means, by = sampleName) |>
+    dplyr::mutate(
+      # Create normalized abundance column
+      centered_abundance_by_mean = .data[[abundance_column]] - reference_mean,
+      centered_abundance_by_median = .data[[abundance_column]] - reference_median
+    ) |>
+    dplyr::select(-reference_mean, -reference_median) # Remove the temporary column
+  return(normalized_df)
+}
+
+#' center to reference
+#'
+#' takes the mean or median of the lfqdareference per sample and subtracts from lfqdata
+#' @param lfqdata LFQData object containing the data to center
+#' @param lfqdareference LFQData object containing the reference subset
+#' @param summary character, summary statistic to use ("median" or "mean")
+#' @param copy logical, if TRUE return a copy, otherwise modify in place
+#' @export
+#' @examples
+#' # example code
+#'
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' x <- LFQData$new(bb$data, bb$config)
+#' xc <- x$get_copy()
+#' xc$data <- xc$data |> dplyr::filter(protein_Id == "0EfVhX~3967")
+#' xxd <- center_to_reference_cfg(x, xc, summary="median")
+#' xxd$response()
+#' xxd$data
+#' center_to_reference_cfg(x, xc, summary="median", copy=FALSE)
+#' x$response()
+#'
+center_to_reference_cfg <- function(lfqdata, lfqdareference, summary = c("median", "mean"), copy = TRUE) {
+  summary <- match.arg(summary)
+  if (copy) {
+    resdata <- lfqdata$get_copy()
+  } else {
+    resdata <- lfqdata
+  }
+  cfg <- resdata$config
+  data <- center_to_reference(lfqdata$data, lfqdareference$data, cfg$sampleName, cfg$get_response())
+  resdata$data <- data
+  if (summary == "median") {
+    cfg$set_response("centered_abundance_by_median")
+  } else if (summary == "mean") {
+    cfg$set_response("centered_abundance_by_mean")
+  }
+  invisible(resdata)
+}

@@ -292,6 +292,104 @@ LFQData <- R6::R6Class(
   )
 )
 
+# Direct intensity manipulation ----
+
+#' Remove rows when intensity lower then threshold
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @return data.frame
+#' @export
+#' @keywords internal
+#' @family filtering
+#' @examples
+#'
+#' dd <- prolfqua_data('data_spectronautDIA250_A')
+#' config <- dd$config_f()
+#' analysis <- dd$analysis(dd$data,config)
+#'
+#' config$get_response()
+#'
+#' res1 <- remove_small_intensities(analysis, config, threshold=1 )
+#' res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
+#' stopifnot(nrow(res1) >  nrow(res1000))
+#'
+remove_small_intensities <- function(pdata, config, threshold = 1) {
+  resData <- pdata |> dplyr::filter(!!sym(config$get_response()) >= threshold)
+  return(resData)
+}
+
+# Hierarchy counting helpers ----
+
+.make_name_AinB <- function(levelA, levelB, prefix = "nr_") {
+  c_name <- paste(prefix, levelB, "_IN_", levelA, sep = "")
+  return(c_name)
+}
+
+.nr_B_in_A <- function(data, levelA, levelB, merge = TRUE) {
+  namA <- paste(levelA, collapse = "_")
+  namB <- paste(levelB, collapse = "_")
+  c_name <- .make_name_AinB(namA, namB)
+  if (!c_name %in% colnames(data)) {
+    data$c_name <- NULL
+  }
+  tmp <- data |>
+    dplyr::select(all_of(c(levelA, levelB))) |>
+    dplyr::distinct() |>
+    dplyr::group_by(across(all_of(levelA))) |>
+    dplyr::summarize(!!c_name := n())
+
+  if (!merge) {
+    return(tmp)
+  }
+  data <- dplyr::inner_join(data, tmp, by = levelA)
+  message("Column added : ", c_name)
+  return(list(data = data, name = c_name))
+}
+
+
+#' Compute nr of B per A
+#' @param pdata data.frame
+#' @param config AnalysisConfiguration
+#' @export
+#' @keywords internal
+#' @examples
+#'
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' config <- bb$config$clone(deep=TRUE)
+#' data <- bb$data
+#' hierarchy <- config$hierarchy_keys()
+#' res <- nr_B_in_A(data, config)
+#'
+#' res$data |>
+#'   dplyr::select(all_of(c(config$hierarchy_keys_depth(),  res$name))) |>
+#'   dplyr::distinct() |>
+#'   dplyr::pull() |> table()
+#'
+#'
+#' bb <- prolfqua::prolfqua_data('data_skylineSRM_HL_A')
+#' config <- old2new(bb$config_f())
+#' data <- bb$data
+#' data$Area[data$Area == 0] <- NA
+#' analysis <- setup_analysis(data, config)
+#'
+#' resDataStart <- bb$analysis(bb$data, config)
+#'
+#' nr_B_in_A(resDataStart, config)
+#' nr_B_in_A(resDataStart, config, merge = FALSE)
+#' config$hierarchyDepth <- 2
+#' nr_B_in_A(resDataStart, config, merge = FALSE)
+#'
+nr_B_in_A <- function(pdata, config, merge = TRUE) {
+  levelA <- config$hkeysDepth()
+  levelB <- config$hierarchyKeys()[length(levelA) + 1]
+  if (is.na(levelB)) {
+    warning("here is no B in A")
+    return(NULL)
+  } else {
+    .nr_B_in_A(pdata, levelA, levelB, merge = merge)
+  }
+}
+
 # Filtering helpers -----
 
 #' Keep only those proteins with 2 IDENTIFIED peptides
