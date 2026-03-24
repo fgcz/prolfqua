@@ -515,9 +515,6 @@ stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
 tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
 stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 #> isotopeLabel ~ group_
 

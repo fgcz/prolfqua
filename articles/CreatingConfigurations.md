@@ -262,7 +262,7 @@ sessionInfo()
     ## [31] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
     ## [34] dplyr_1.2.0         ggplot2_4.0.2       forcats_1.0.1      
     ## [37] vctrs_0.7.2         R6_2.6.1            lifecycle_1.0.5    
-    ## [40] fs_2.0.0            htmlwidgets_1.6.4   MASS_7.3-65        
+    ## [40] fs_2.0.1            htmlwidgets_1.6.4   MASS_7.3-65        
     ## [43] ragg_1.5.2          pkgconfig_2.0.3     desc_1.4.3         
     ## [46] pkgdown_2.2.0       pillar_1.11.1       bslib_0.10.0       
     ## [49] gtable_0.3.6        data.table_1.18.2.1 glue_1.8.0         

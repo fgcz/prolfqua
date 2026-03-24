@@ -126,7 +126,6 @@
 <code><a href="my_contest.html">my_contest()</a></code>,
 <code><a href="my_contrast.html">my_contrast()</a></code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
-<code><a href="my_glht.html">my_glht()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -140,6 +139,37 @@
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_build_models_lm.html">sim_build_models_lm</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"parallel3"</span>, weight_missing <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Sigma method (default): returns median sigma and df from donors</span></span></span>
+<span class="r-in"><span><span class="va">borrowed_s</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">compute_borrowed_variance</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span>, method <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">borrowed_s</span><span class="op">$</span><span class="va">method</span> <span class="op">==</span> <span class="st">"sigma"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">is.numeric</a></span><span class="op">(</span><span class="va">borrowed_s</span><span class="op">$</span><span class="va">sigma</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="va">borrowed_s</span><span class="op">$</span><span class="va">sigma</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">is.numeric</a></span><span class="op">(</span><span class="va">borrowed_s</span><span class="op">$</span><span class="va">df</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="va">borrowed_s</span><span class="op">$</span><span class="va">df</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Vcov method: element-wise median vcov from donors.</span></span></span>
+<span class="r-in"><span><span class="co"># Falls back to sigma if donor models have different coefficient counts.</span></span></span>
+<span class="r-in"><span><span class="va">mod_no_missing</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_build_models_lm.html">sim_build_models_lm</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"parallel3"</span>,</span></span>
+<span class="r-in"><span>  Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
+<span class="r-in"><span><span class="va">borrowed_v</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">compute_borrowed_variance</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">mod_no_missing</span><span class="op">$</span><span class="va">modelDF</span>, method <span class="op">=</span> <span class="st">"vcov"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">borrowed_v</span><span class="op">$</span><span class="va">method</span> <span class="op">==</span> <span class="st">"vcov"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">is.matrix</a></span><span class="op">(</span><span class="va">borrowed_v</span><span class="op">$</span><span class="va">vcov</span><span class="op">)</span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

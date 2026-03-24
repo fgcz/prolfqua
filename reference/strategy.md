@@ -148,7 +148,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -213,7 +212,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -278,7 +276,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -343,7 +340,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -408,7 +404,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -426,7 +421,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x55dbdf63a808>
+#> <environment: 0x560cfacf97e0>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -441,8 +436,8 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x55dbcf879e20>
-#> <environment: 0x55dbdf63a808>
+#> <bytecode: 0x560cd316ada8>
+#> <environment: 0x560cfacf97e0>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -539,7 +534,7 @@ sum(mod$modelDF$isSingular, na.rm=TRUE)
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x55dbf2932288>
+#> <environment: 0x560d0090de10>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -554,12 +549,12 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x55dbcbb73ea0>
+#> <bytecode: 0x560cd0326b58>
 #> <environment: namespace:prolfqua>
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x55dbeef51cd8>
+#> <environment: 0x560d005a3fd0>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -573,12 +568,12 @@ tmp$isSingular
 #>     }
 #>     FALSE
 #> }
-#> <bytecode: 0x55dbd3ec7140>
-#> <environment: 0x55dbeef51cd8>
+#> <bytecode: 0x560ccd773a10>
+#> <environment: 0x560d005a3fd0>
 tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x55dc003011b0>
+#> <environment: 0x560cfd4baa18>
 tmp$isSingular
 #> function (m) 
 #> {
@@ -593,6 +588,6 @@ tmp$isSingular
 #>         return(TRUE)
 #>     }
 #> }
-#> <bytecode: 0x55dbcbb73ea0>
+#> <bytecode: 0x560cd0326b58>
 #> <environment: namespace:prolfqua>
 ```

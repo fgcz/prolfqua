@@ -336,4 +336,4 @@ sessionInfo()
     ## [61] UpSetR_1.4.0        viridisLite_0.4.3   mgcv_1.9-3         
     ## [64] rlang_1.1.7         Rcpp_1.1.1          glue_1.8.0         
     ## [67] jsonlite_2.0.0      R6_2.6.1            plyr_1.8.9         
-    ## [70] systemfonts_1.3.2   fs_2.0.0
+    ## [70] systemfonts_1.3.2   fs_2.0.1

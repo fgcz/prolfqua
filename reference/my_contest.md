@@ -76,7 +76,6 @@ Other modelling:
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -169,30 +168,6 @@ my_contest(mb, linfct$linfct_interactions)
 #> 2 Treatment…     26.2      1.01  3.19      26.0     23.1      29.3 8.08e-5  1.84
 #> 3 Treatment…     22.7      1.01  3.19      22.6     19.6      25.8 1.26e-4  1.84
 #> 4 Treatment…     22.8      1.01  3.19      22.6     19.7      25.9 1.26e-4  1.84
-if(require(multcomp)){
-my_glht(mb, linfct$linfct_factors)
-my_glht(mb, linfct$linfct_interactions)
-}
-#> Loading required package: multcomp
-#> Loading required package: mvtnorm
-#> Loading required package: survival
-#> Loading required package: TH.data
-#> Loading required package: MASS
-#> 
-#> Attaching package: ‘TH.data’
-#> The following object is masked from ‘package:MASS’:
-#> 
-#>     geyser
-#> Warning: USE ONLY WITH LM models lmerModLmerTest
-#> Warning: USE ONLY WITH LM models lmerModLmerTest
-#> # A tibble: 4 × 10
-#>   contrast          null.value estimate std.error statistic adj.p.value conf.low
-#>   <chr>                  <dbl>    <dbl>     <dbl>     <dbl>       <dbl>    <dbl>
-#> 1 TreatmentA:Backg…          0     16.8      1.01      16.7           0     14.8
-#> 2 TreatmentA:Backg…          0     26.2      1.01      26.0           0     24.2
-#> 3 TreatmentB:Backg…          0     22.7      1.01      22.6           0     20.8
-#> 4 TreatmentB:Backg…          0     22.8      1.01      22.6           0     20.8
-#> # ℹ 3 more variables: conf.high <dbl>, df <dbl>, sigma <dbl>
 length(mb@beta)
 #> [1] 4
 lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)

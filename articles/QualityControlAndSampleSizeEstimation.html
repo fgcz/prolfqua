@@ -69,7 +69,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-03-23</h4>
+            <h4 data-toc-skip class="date">2026-03-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/vignettes/QualityControlAndSampleSizeEstimation.Rmd" class="external-link"><code>vignettes/QualityControlAndSampleSizeEstimation.Rmd</code></a></small>
       <div class="d-none name"><code>QualityControlAndSampleSizeEstimation.Rmd</code></div>
@@ -574,17 +574,17 @@ group. The information includes group size, number of observations,
 standard deviation, variance, mean.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span><span class="op">$</span><span class="fu">stats</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 11</span></span></span>
-<span><span class="co">##   protein_Id  peptide_Id group_ nrReplicates nrMeasured nrNAs      sd        var</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~0087 ITLb4x1q   A                 4          3     1 0.154   0.023<span style="text-decoration: underline;">6</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0EfVhX~0087 ahQLlQY7   A                 4          4     0 0.062<span style="text-decoration: underline;">0</span>  0.003<span style="text-decoration: underline;">85</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0EfVhX~0087 dJkdz7so   A                 4          2     2 0.182   0.033<span style="text-decoration: underline;">0</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> 7cbcrd~5725 D5dQ4nKk   A                 4          4     0 0.050<span style="text-decoration: underline;">9</span>  0.002<span style="text-decoration: underline;">59</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> 9VUkAq~4703 eIC06D7g   A                 4          4     0 0.094<span style="text-decoration: underline;">6</span>  0.008<span style="text-decoration: underline;">95</span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> BEJI92~5282 HBkZvdhT   A                 4          2     2 0.003<span style="text-decoration: underline;">05</span> 0.000<span style="text-decoration: underline;">009</span>29</span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: meanAbundance &lt;dbl&gt;, medianAbundance &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   interaction &lt;chr&gt;</span></span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 12</span></span></span>
+<span><span class="co">##   protein_Id  peptide_Id isotopeLabel group_ nrReplicates nrMeasured nrNAs</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~0087 ITLb4x1q   light        A                 4          3     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0EfVhX~0087 ahQLlQY7   light        A                 4          4     0</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0EfVhX~0087 dJkdz7so   light        A                 4          2     2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> 7cbcrd~5725 D5dQ4nKk   light        A                 4          4     0</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> 9VUkAq~4703 eIC06D7g   light        A                 4          4     0</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> BEJI92~5282 HBkZvdhT   light        A                 4          2     2</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 5 more variables: sd &lt;dbl&gt;, var &lt;dbl&gt;, meanAbundance &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   medianAbundance &lt;dbl&gt;, interaction &lt;chr&gt;</span></span></span></code></pre>
 <p>You can also estimate the sample size needed to perform differential
 expression analysis for each protein, given the <code>power</code>,
 <code>delta</code>, and <code>sig.level</code>. The next figure shows
@@ -597,24 +597,26 @@ the distribution of needed sample sizes for all proteins with a power of
 <table class="table">
 <caption>Sample size for each protein</caption>
 <colgroup>
-<col width="8%">
-<col width="7%">
-<col width="5%">
-<col width="9%">
-<col width="7%">
-<col width="4%">
 <col width="7%">
 <col width="7%">
-<col width="10%">
-<col width="11%">
 <col width="8%">
 <col width="4%">
+<col width="8%">
+<col width="7%">
+<col width="3%">
 <col width="6%">
-<col width="2%">
+<col width="6%">
+<col width="9%">
+<col width="10%">
+<col width="7%">
+<col width="3%">
+<col width="5%">
+<col width="1%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">protein_Id</th>
 <th align="left">peptide_Id</th>
+<th align="left">isotopeLabel</th>
 <th align="left">group_</th>
 <th align="right">nrReplicates</th>
 <th align="right">nrMeasured</th>
@@ -632,6 +634,7 @@ the distribution of needed sample sizes for all proteins with a power of
 <tr class="odd">
 <td align="left">0EfVhX~0087</td>
 <td align="left">dJkdz7so</td>
+<td align="left">light</td>
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">2</td>
@@ -648,6 +651,7 @@ the distribution of needed sample sizes for all proteins with a power of
 <tr class="even">
 <td align="left">HvIpHG~9079</td>
 <td align="left">opjydeWJ</td>
+<td align="left">light</td>
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">3</td>
@@ -664,6 +668,7 @@ the distribution of needed sample sizes for all proteins with a power of
 <tr class="odd">
 <td align="left">JcKVfU~9653</td>
 <td align="left">9LMQBevj</td>
+<td align="left">light</td>
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">4</td>
@@ -680,6 +685,7 @@ the distribution of needed sample sizes for all proteins with a power of
 <tr class="even">
 <td align="left">0EfVhX~0087</td>
 <td align="left">ahQLlQY7</td>
+<td align="left">light</td>
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">4</td>
@@ -696,6 +702,7 @@ the distribution of needed sample sizes for all proteins with a power of
 <tr class="odd">
 <td align="left">0EfVhX~0087</td>
 <td align="left">ITLb4x1q</td>
+<td align="left">light</td>
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">3</td>
@@ -712,6 +719,7 @@ the distribution of needed sample sizes for all proteins with a power of
 <tr class="even">
 <td align="left">7cbcrd~5725</td>
 <td align="left">D5dQ4nKk</td>
+<td align="left">light</td>
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">4</td>
@@ -728,6 +736,7 @@ the distribution of needed sample sizes for all proteins with a power of
 <tr class="odd">
 <td align="left">9VUkAq~4703</td>
 <td align="left">eIC06D7g</td>
+<td align="left">light</td>
 <td align="left">A</td>
 <td align="right">4</td>
 <td align="right">4</td>
@@ -797,7 +806,7 @@ for all the proteins.
 <span><span class="co">## [34] withr_3.0.2         cachem_1.1.0        yaml_2.3.12        </span></span>
 <span><span class="co">## [37] otel_0.2.0          tools_4.5.2         dplyr_1.2.0        </span></span>
 <span><span class="co">## [40] ggplot2_4.0.2       forcats_1.0.1       vctrs_0.7.2        </span></span>
-<span><span class="co">## [43] R6_2.6.1            lifecycle_1.0.5     fs_2.0.0           </span></span>
+<span><span class="co">## [43] R6_2.6.1            lifecycle_1.0.5     fs_2.0.1           </span></span>
 <span><span class="co">## [46] htmlwidgets_1.6.4   MASS_7.3-65         ragg_1.5.2         </span></span>
 <span><span class="co">## [49] pkgconfig_2.0.3     desc_1.4.3          pkgdown_2.2.0      </span></span>
 <span><span class="co">## [52] pillar_1.11.1       bslib_0.10.0        gtable_0.3.6       </span></span>

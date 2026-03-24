@@ -68,7 +68,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -340,7 +339,7 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_2f88264a99c7 
+#> agg_record_2c7a43e48f70 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
@@ -382,6 +381,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_2f88264a99c7 
+#> agg_record_2c7a43e48f70 
 #>                       2 
 ```

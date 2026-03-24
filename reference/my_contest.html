@@ -125,7 +125,6 @@
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="my_contrast.html">my_contrast()</a></code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
-<code><a href="my_glht.html">my_glht()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -219,30 +218,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Treatment…     26.2      1.01  3.19      26.0     23.1      29.3 8.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>  1.84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Treatment…     22.7      1.01  3.19      22.6     19.6      25.8 1.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  1.84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Treatment…     22.8      1.01  3.19      22.6     19.7      25.9 1.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>  1.84</span>
-<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="http://multcomp.R-forge.R-project.org" class="external-link">multcomp</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="my_glht.html">my_glht</a></span><span class="op">(</span><span class="va">mb</span>, <span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="my_glht.html">my_glht</a></span><span class="op">(</span><span class="va">mb</span>, <span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: multcomp</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: mvtnorm</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: survival</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: TH.data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: MASS</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘TH.data’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:MASS’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     geyser</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>USE ONLY WITH LM models lmerModLmerTest</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>USE ONLY WITH LM models lmerModLmerTest</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   contrast          null.value estimate std.error statistic adj.p.value conf.low</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> TreatmentA:Backg…          0     16.8      1.01      16.7           0     14.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> TreatmentA:Backg…          0     26.2      1.01      26.0           0     24.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> TreatmentB:Backg…          0     22.7      1.01      22.6           0     20.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> TreatmentB:Backg…          0     22.8      1.01      22.6           0     20.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: conf.high &lt;dbl&gt;, df &lt;dbl&gt;, sigma &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mb</span><span class="op">@</span><span class="va">beta</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-in"><span><span class="fu">lmerTest</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lmerTest/man/contest.html" class="external-link">contest</a></span><span class="op">(</span><span class="va">mb</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">0</span> ,<span class="fl">1</span> , <span class="fl">0</span> , <span class="fl">0</span><span class="op">)</span>,joint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>

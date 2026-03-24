@@ -358,17 +358,17 @@ standard deviation, variance, mean.
 stats$stats() |> head()
 ```
 
-    ## # A tibble: 6 × 11
-    ##   protein_Id  peptide_Id group_ nrReplicates nrMeasured nrNAs      sd        var
-    ##   <chr>       <chr>      <chr>         <int>      <int> <int>   <dbl>      <dbl>
-    ## 1 0EfVhX~0087 ITLb4x1q   A                 4          3     1 0.154   0.0236    
-    ## 2 0EfVhX~0087 ahQLlQY7   A                 4          4     0 0.0620  0.00385   
-    ## 3 0EfVhX~0087 dJkdz7so   A                 4          2     2 0.182   0.0330    
-    ## 4 7cbcrd~5725 D5dQ4nKk   A                 4          4     0 0.0509  0.00259   
-    ## 5 9VUkAq~4703 eIC06D7g   A                 4          4     0 0.0946  0.00895   
-    ## 6 BEJI92~5282 HBkZvdhT   A                 4          2     2 0.00305 0.00000929
-    ## # ℹ 3 more variables: meanAbundance <dbl>, medianAbundance <dbl>,
-    ## #   interaction <chr>
+    ## # A tibble: 6 × 12
+    ##   protein_Id  peptide_Id isotopeLabel group_ nrReplicates nrMeasured nrNAs
+    ##   <chr>       <chr>      <chr>        <chr>         <int>      <int> <int>
+    ## 1 0EfVhX~0087 ITLb4x1q   light        A                 4          3     1
+    ## 2 0EfVhX~0087 ahQLlQY7   light        A                 4          4     0
+    ## 3 0EfVhX~0087 dJkdz7so   light        A                 4          2     2
+    ## 4 7cbcrd~5725 D5dQ4nKk   light        A                 4          4     0
+    ## 5 9VUkAq~4703 eIC06D7g   light        A                 4          4     0
+    ## 6 BEJI92~5282 HBkZvdhT   light        A                 4          2     2
+    ## # ℹ 5 more variables: sd <dbl>, var <dbl>, meanAbundance <dbl>,
+    ## #   medianAbundance <dbl>, interaction <chr>
 
 You can also estimate the sample size needed to perform differential
 expression analysis for each protein, given the `power`, `delta`, and
@@ -382,15 +382,15 @@ x <- x |> dplyr::filter(group_ == "A") |> dplyr::arrange(desc(N),protein_Id)
 prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 ```
 
-| protein_Id  | peptide_Id | group\_ | nrReplicates | nrMeasured | nrNAs |        sd |       var | meanAbundance | medianAbundance | interaction | delta |  N_exact |   N |
-|:------------|:-----------|:--------|-------------:|-----------:|------:|----------:|----------:|--------------:|----------------:|:------------|------:|---------:|----:|
-| 0EfVhX~0087 | dJkdz7so   | A       |            4 |          2 |     2 | 0.1816806 | 0.0330078 |      3.971469 |        3.971469 | group_A     |     1 | 2.023422 |   3 |
-| HvIpHG~9079 | opjydeWJ   | A       |            4 |          3 |     1 | 0.2392614 | 0.0572460 |      4.094835 |        3.997946 | group_A     |     1 | 2.344670 |   3 |
-| JcKVfU~9653 | 9LMQBevj   | A       |            4 |          4 |     0 | 0.1871014 | 0.0350069 |      5.482917 |        5.406550 | group_A     |     1 | 2.050429 |   3 |
-| 0EfVhX~0087 | ahQLlQY7   | A       |            4 |          4 |     0 | 0.0620097 | 0.0038452 |      4.742744 |        4.735435 | group_A     |     1 | 1.533666 |   2 |
-| 0EfVhX~0087 | ITLb4x1q   | A       |            4 |          3 |     1 | 0.1535287 | 0.0235710 |      4.190351 |        4.178250 | group_A     |     1 | 1.892113 |   2 |
-| 7cbcrd~5725 | D5dQ4nKk   | A       |            4 |          4 |     0 | 0.0508679 | 0.0025875 |      4.956022 |        4.964554 | group_A     |     1 | 1.500024 |   2 |
-| 9VUkAq~4703 | eIC06D7g   | A       |            4 |          4 |     0 | 0.0945821 | 0.0089458 |      4.159728 |        4.182873 | group_A     |     1 | 1.654299 |   2 |
+| protein_Id  | peptide_Id | isotopeLabel | group\_ | nrReplicates | nrMeasured | nrNAs |        sd |       var | meanAbundance | medianAbundance | interaction | delta |  N_exact |   N |
+|:------------|:-----------|:-------------|:--------|-------------:|-----------:|------:|----------:|----------:|--------------:|----------------:|:------------|------:|---------:|----:|
+| 0EfVhX~0087 | dJkdz7so   | light        | A       |            4 |          2 |     2 | 0.1816806 | 0.0330078 |      3.971469 |        3.971469 | group_A     |     1 | 2.023422 |   3 |
+| HvIpHG~9079 | opjydeWJ   | light        | A       |            4 |          3 |     1 | 0.2392614 | 0.0572460 |      4.094835 |        3.997946 | group_A     |     1 | 2.344670 |   3 |
+| JcKVfU~9653 | 9LMQBevj   | light        | A       |            4 |          4 |     0 | 0.1871014 | 0.0350069 |      5.482917 |        5.406550 | group_A     |     1 | 2.050429 |   3 |
+| 0EfVhX~0087 | ahQLlQY7   | light        | A       |            4 |          4 |     0 | 0.0620097 | 0.0038452 |      4.742744 |        4.735435 | group_A     |     1 | 1.533666 |   2 |
+| 0EfVhX~0087 | ITLb4x1q   | light        | A       |            4 |          3 |     1 | 0.1535287 | 0.0235710 |      4.190351 |        4.178250 | group_A     |     1 | 1.892113 |   2 |
+| 7cbcrd~5725 | D5dQ4nKk   | light        | A       |            4 |          4 |     0 | 0.0508679 | 0.0025875 |      4.956022 |        4.964554 | group_A     |     1 | 1.500024 |   2 |
+| 9VUkAq~4703 | eIC06D7g   | light        | A       |            4 |          4 |     0 | 0.0945821 | 0.0089458 |      4.159728 |        4.182873 | group_A     |     1 | 1.654299 |   2 |
 
 Sample size for each protein
 
@@ -451,7 +451,7 @@ sessionInfo()
     ## [34] withr_3.0.2         cachem_1.1.0        yaml_2.3.12        
     ## [37] otel_0.2.0          tools_4.5.2         dplyr_1.2.0        
     ## [40] ggplot2_4.0.2       forcats_1.0.1       vctrs_0.7.2        
-    ## [43] R6_2.6.1            lifecycle_1.0.5     fs_2.0.0           
+    ## [43] R6_2.6.1            lifecycle_1.0.5     fs_2.0.1           
     ## [46] htmlwidgets_1.6.4   MASS_7.3-65         ragg_1.5.2         
     ## [49] pkgconfig_2.0.3     desc_1.4.3          pkgdown_2.2.0      
     ## [52] pillar_1.11.1       bslib_0.10.0        gtable_0.3.6       

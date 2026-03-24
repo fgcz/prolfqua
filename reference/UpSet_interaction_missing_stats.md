@@ -64,9 +64,6 @@ config <- istar$config
 analysis <- istar$data
 
 pups <- UpSet_interaction_missing_stats(analysis, config)
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 stopifnot(ncol(pups$data) == 5)
 UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)

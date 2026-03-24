@@ -119,7 +119,7 @@ barplot showing number of elements at each level in every sample
 
 ------------------------------------------------------------------------
 
-### Method [`interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/interaction_missing_stats.md)
+### Method `interaction_missing_stats()`
 
 missing per condition and protein
 
@@ -297,9 +297,6 @@ tmp <- sum$interaction_missing_stats()
 #> completing cases
 
 sum$missingness_per_group()
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 #> # A tibble: 3 × 7
 #> # Groups:   isotopeLabel, group_ [3]
@@ -309,9 +306,6 @@ sum$missingness_per_group()
 #> 2 light        B                 4    21     7    NA    NA
 #> 3 light        Ctrl              4    17     8     3    NA
 sum$missingness_per_group_cumsum()
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 #> isotopeLabel ~ group_
 #> # A tibble: 3 × 7
@@ -322,42 +316,33 @@ sum$missingness_per_group_cumsum()
 #> 2 light        B                 4    21    28    NA    NA
 #> 3 light        Ctrl              4    17    25    28    NA
 sum$plot_missingness_per_group()
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 
 sum$plot_missingness_per_group_cumsum()
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 #> isotopeLabel ~ group_
 
 sum$upset_interaction_missing_stats()
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 
 sum$percentage_abundance()
 #> completing cases
 #> completing cases
-#> # A tibble: 112 × 16
-#>    protein_Id  peptide_Id group_ nrReplicates nrMeasured nrNAs    sd   var
-#>    <chr>       <chr>      <chr>         <int>      <int> <int> <dbl> <dbl>
-#>  1 BEJI92~5282 HBkZvdhT   All              12          8     4  1.35  1.82
-#>  2 DoWup2~5896 KVUnZ6oZ   All              12         12     0  2.55  6.48
-#>  3 Fl4JiV~8625 KpyeEoiy   All              12         10     2  1.30  1.68
-#>  4 0EfVhX~0087 dJkdz7so   All              12          9     3  4.36 19.0 
-#>  5 Fl4JiV~8625 fv2Ck8hz   All              12          8     4  4.31 18.6 
-#>  6 9VUkAq~4703 eIC06D7g   All              12         11     1  4.97 24.7 
-#>  7 Fl4JiV~8625 GsUIOl6Q   All              12         10     2  3.29 10.8 
-#>  8 HvIpHG~9079 opjydeWJ   All              12         10     2  3.16  9.99
-#>  9 SGIVBl~5782 03kMlNn1   All              12          9     3  1.24  1.53
-#> 10 BEJI92~5282 qQ1GK8Un   All              12         11     1  3.69 13.6 
+#> # A tibble: 112 × 17
+#>    protein_Id peptide_Id isotopeLabel group_ nrReplicates nrMeasured nrNAs    sd
+#>    <chr>      <chr>      <chr>        <chr>         <int>      <int> <int> <dbl>
+#>  1 BEJI92~52… HBkZvdhT   light        All              12          8     4  1.35
+#>  2 DoWup2~58… KVUnZ6oZ   light        All              12         12     0  2.55
+#>  3 Fl4JiV~86… KpyeEoiy   light        All              12         10     2  1.30
+#>  4 0EfVhX~00… dJkdz7so   light        All              12          9     3  4.36
+#>  5 Fl4JiV~86… fv2Ck8hz   light        All              12          8     4  4.31
+#>  6 9VUkAq~47… eIC06D7g   light        All              12         11     1  4.97
+#>  7 Fl4JiV~86… GsUIOl6Q   light        All              12         10     2  3.29
+#>  8 HvIpHG~90… opjydeWJ   light        All              12         10     2  3.16
+#>  9 SGIVBl~57… 03kMlNn1   light        All              12          9     3  1.24
+#> 10 BEJI92~52… qQ1GK8Un   light        All              12         11     1  3.69
 #> # ℹ 102 more rows
-#> # ℹ 8 more variables: meanAbundance <dbl>, medianAbundance <dbl>, CV <dbl>,
-#> #   interaction <chr>, id <int>, abundance_percent <dbl>,
+#> # ℹ 9 more variables: var <dbl>, meanAbundance <dbl>, medianAbundance <dbl>,
+#> #   CV <dbl>, interaction <chr>, id <int>, abundance_percent <dbl>,
 #> #   abundance_percent_cumulative <dbl>, percent_prot <dbl>
 ```

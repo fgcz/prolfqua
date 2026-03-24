@@ -63,7 +63,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),

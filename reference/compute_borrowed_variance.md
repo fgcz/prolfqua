@@ -77,7 +77,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -89,3 +88,35 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+mod <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
+#> creating sampleName from fileName column
+#> completing cases
+#> completing cases done
+#> setup done
+#> Joining with `by = join_by(protein_Id)`
+
+# Sigma method (default): returns median sigma and df from donors
+borrowed_s <- prolfqua:::compute_borrowed_variance(
+  mod$modelDF, method = "sigma")
+stopifnot(borrowed_s$method == "sigma")
+stopifnot(is.numeric(borrowed_s$sigma) && borrowed_s$sigma > 0)
+stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
+
+# Vcov method: element-wise median vcov from donors.
+# Falls back to sigma if donor models have different coefficient counts.
+mod_no_missing <- sim_build_models_lm(model = "parallel3",
+  Nprot = 10, with_missing = FALSE)
+#> creating sampleName from fileName column
+#> completing cases
+#> completing cases done
+#> setup done
+#> Joining with `by = join_by(protein_Id)`
+borrowed_v <- prolfqua:::compute_borrowed_variance(
+  mod_no_missing$modelDF, method = "vcov")
+stopifnot(borrowed_v$method == "vcov")
+stopifnot(is.matrix(borrowed_v$vcov))
+```

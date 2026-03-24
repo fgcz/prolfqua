@@ -195,7 +195,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="my_contest.html">my_contest()</a></code>,
 <code><a href="my_contrast.html">my_contrast()</a></code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
-<code><a href="my_glht.html">my_glht()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -259,7 +258,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="my_contest.html">my_contest()</a></code>,
 <code><a href="my_contrast.html">my_contrast()</a></code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
-<code><a href="my_glht.html">my_glht()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -323,7 +321,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="my_contest.html">my_contest()</a></code>,
 <code><a href="my_contrast.html">my_contrast()</a></code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
-<code><a href="my_glht.html">my_glht()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -387,7 +384,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="my_contest.html">my_contest()</a></code>,
 <code><a href="my_contrast.html">my_contrast()</a></code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
-<code><a href="my_glht.html">my_glht()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -451,7 +447,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="my_contest.html">my_contest()</a></code>,
 <code><a href="my_contrast.html">my_contrast()</a></code>,
 <code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
-<code><a href="my_glht.html">my_glht()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -470,7 +465,7 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_logistf</span><span class="op">(</span><span class="st">"bin_resp ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bin_resp ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dbdf63a808&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560cfacf97e0&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -485,8 +480,8 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55dbcf879e20&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dbdf63a808&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560cd316ada8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560cfacf97e0&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
@@ -583,7 +578,7 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dbf2932288&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560d0090de10&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -598,12 +593,12 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55dbcbb73ea0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560cd0326b58&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dbeef51cd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560d005a3fd0&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -617,12 +612,12 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55dbd3ec7140&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dbeef51cd8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560ccd773a10&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560d005a3fd0&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_glm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dc003011b0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x560cfd4baa18&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">isSingular</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (m) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
@@ -637,7 +632,7 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         return(TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x55dbcbb73ea0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x560cd0326b58&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: namespace:prolfqua&gt;</span>
 </code></pre></div>
     </div>

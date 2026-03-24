@@ -57,23 +57,14 @@ analysis <- istar$data
 xx <- complete_cases(analysis, config)
 #> completing cases
 pl <- missigness_histogram(xx, config)
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 #> isotopeLabel ~ group_
 
 pl <- missigness_histogram(analysis, config, showempty=FALSE)
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 #> isotopeLabel ~ group_
 stopifnot("ggplot" %in% class(pl))
 pl <- missigness_histogram(analysis, config, showempty=TRUE)
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 #> isotopeLabel ~ group_
 stopifnot("ggplot" %in% class(pl))

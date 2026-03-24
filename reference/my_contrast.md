@@ -95,7 +95,6 @@ Other modelling:
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -118,15 +117,6 @@ m <-  sim_make_model_lm( "factors")
 #> setup done
 #> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m)$linfct_factors
-my_glht(m, linfct)
-#> # A tibble: 4 × 10
-#>   contrast    null.value estimate std.error statistic adj.p.value conf.low
-#>   <chr>            <dbl>    <dbl>     <dbl>     <dbl>       <dbl>    <dbl>
-#> 1 BackgroundX          0     18.6     0.551      33.8    4.62e-14     17.4
-#> 2 BackgroundZ          0     18.2     0.551      33.0    6.29e-14     17.0
-#> 3 TreatmentA           0     18.8     0.551      34.1    4.26e-14     17.6
-#> 4 TreatmentB           0     18.1     0.551      32.8    6.83e-14     16.9
-#> # ℹ 3 more variables: conf.high <dbl>, df <int>, sigma <dbl>
 my_contrast(m, linfct, confint = 0.95)
 #>                     lhs    sigma df estimate std.error statistic      p.value
 #> BackgroundX BackgroundX 1.557675 13 18.63959 0.5507212  33.84577 4.612815e-14

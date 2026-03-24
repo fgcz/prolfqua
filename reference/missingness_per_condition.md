@@ -50,9 +50,6 @@ config <- istar$config
 analysis <- istar$data
 
 res <- missingness_per_condition(analysis, config)
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 stopifnot("ggplot" %in% class(res$figure))
 

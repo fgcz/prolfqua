@@ -542,7 +542,7 @@ sessionInfo()
     ## [64] knitr_1.51          UpSetR_1.4.0        viridisLite_0.4.3  
     ## [67] rlang_1.1.7         Rcpp_1.1.1          xtable_1.8-8       
     ## [70] glue_1.8.0          jsonlite_2.0.0      R6_2.6.1           
-    ## [73] plyr_1.8.9          systemfonts_1.3.2   fs_2.0.0
+    ## [73] plyr_1.8.9          systemfonts_1.3.2   fs_2.0.1
 
 ## References
 

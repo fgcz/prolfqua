@@ -91,7 +91,6 @@ Other modelling:
 [`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
 [`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`my_glht()`](https://wolski.github.io/prolfqua/reference/my_glht.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -102,3 +101,26 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+# Fit a normal lm, then wrap it with borrowed covariance
+dat <- data.frame(group_ = rep(c("A", "B"), each = 4),
+                  y = c(20.1, 20.5, 19.8, 20.3, 22.1, 22.4, 21.9, 22.2))
+fit <- lm(y ~ group_, data = dat)
+
+# Wrap with borrowed variance (in practice these come from donor pool)
+wrapped <- prolfqua:::new_lm_imputed(fit,
+  borrowed_vcov = vcov(fit),
+  borrowed_sigma = 0.8,
+  borrowed_df = 6,
+  n_observed = 5)
+
+# S3 dispatch returns borrowed values
+stopifnot(inherits(wrapped, "lm_imputed"))
+stopifnot(sigma(wrapped) == 0.8)
+stopifnot(df.residual(wrapped) == 6)
+# coefficients() still dispatches to underlying lm
+stopifnot(identical(coefficients(wrapped), coefficients(fit)))
+```

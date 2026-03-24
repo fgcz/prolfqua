@@ -55,9 +55,6 @@ config <- istar$config
 analysis <- istar$data
 
 res <- missingness_per_condition_cumsum(analysis,config)
-#> Warning: >>>> deprecated! <<<< 
-#> 
-#>           use summarize_stats_factors instead.
 #> completing cases
 #> isotopeLabel ~ group_
 stopifnot("ggplot" %in% class(res$figure))

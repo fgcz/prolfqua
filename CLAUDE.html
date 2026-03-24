@@ -91,17 +91,21 @@
     ├── get_Summariser()  → LFQDataSummariser    (missingness, hierarchy counts)
     └── get_Imputer()     → LFQDataImp           (missing value imputation)
 
-LFQData → build_model(strategy) → Model
-    └── Contrasts$new(model, contrast_spec) → contrast results
-        ├── ContrastsModerated  (prolfqua squeezeVarRob shrinkage)
-        ├── ContrastsProDA      (missing-data-aware)
-        ├── ContrastsMissing    (imputation-based)
-        ├── ContrastsFirth      (Firth logistic)
-        └── get_Plotter() → ContrastsPlotter (volcano, MA, heatmap)
-
-LFQData → build_model_limma(strategy_limma) → ModelLimma
-    └── ContrastsLimma$new(model, contrast_spec) → contrast results
-        └── Same downstream API: get_contrasts(), get_Plotter(), to_wide()</code></pre>
+LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
+    └── Returns a Facade with uniform API:
+        $get_contrasts(), $get_missing(), $get_Plotter(), $to_wide()</code></pre>
+</div>
+<div class="section level3">
+<h3 id="facade-pattern-contrastsfacadesr-build_contrast_analysisr">Facade Pattern (<code>ContrastsFacades.R</code>, <code>build_contrast_analysis.R</code>)<a class="anchor" aria-label="anchor" href="#facade-pattern-contrastsfacadesr-build_contrast_analysisr"></a></h3>
+<p><code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> is the recommended entry point. Each method dispatches to a Facade class that wires strategy → model → contrasts → moderation internally.</p>
+<p><strong>Aggregated input</strong> (protein-level, <code>subject_Id == hierarchy_keys</code>): <code>lm</code>, <code>rlm</code>, <code>lm_missing</code>, <code>lm_impute</code>, <code>limma</code>, <code>deqms</code>, <code>firth</code></p>
+<p><strong>Nested input</strong> (peptide-level, <code>subject_Id</code> is strict subset of <code>hierarchy_keys</code>): <code>lmer</code>, <code>ropeca</code></p>
+</div>
+<div class="section level3">
+<h3 id="weights--nr_children">Weights &amp; <code>nr_children</code>
+<a class="anchor" aria-label="anchor" href="#weights--nr_children"></a></h3>
+<p><code>config$nr_children</code> names the column tracking child-feature counts (e.g. peptides per protein). After <code>get_Aggregator()</code> rollup, this column is populated automatically. For peptide/precursor-level data it is typically 1.</p>
+<p><strong>Protein-level input must carry <code>nr_children</code>.</strong> DEqMS uses it for count-based variance modelling (<code>ContrastsDEqMSFacade</code>). If the column is missing, <code><a href="reference/setup_analysis.html">setup_analysis()</a></code> adds it set to 1 with a warning — but this defeats the purpose for aggregated protein data where the actual peptide count matters.</p>
 </div>
 <div class="section level3">
 <h3 id="key-design-patterns">Key Design Patterns<a class="anchor" aria-label="anchor" href="#key-design-patterns"></a></h3>
@@ -152,9 +156,13 @@ LFQData → build_model_limma(strategy_limma) → ModelLimma
 <div class="section level3">
 <h3 id="key-functions-not-in-classes">Key Functions (not in classes)<a class="anchor" aria-label="anchor" href="#key-functions-not-in-classes"></a></h3>
 <ul><li>
+<code>build_contrast_analysis(lfqdata, modelstr, contrasts, method)</code> — main entry point, returns a Facade (in build_contrast_analysis.R)</li>
+<li>
 <code>setup_analysis(data, config)</code> — prepare data for analysis (in AnalysisConfiguration.R)</li>
 <li>
 <code>build_model(data, strategy, subject_Id)</code> — fit per-protein models (in tidyMS_R6Model.R)</li>
+<li>
+<code>build_model_impute(lfqdata, strategy)</code> — fit with LOD imputation + borrowed covariance for missing groups (in tidyMS_R6Model.R)</li>
 <li>
 <code>build_model_limma(lfqdata, strategy)</code> — fit limma matrix model (in ContrastsLimma.R)</li>
 <li>
