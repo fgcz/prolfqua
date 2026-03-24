@@ -34,61 +34,195 @@ sigma.rlm <- function(object, ...) {
   sqrt(sqrt(sum(object$w * object$resid^2) / (sum(object$w) - object$rank)))
 }
 
-#' Create custom lmer model
-#' @rdname strategy
-#' @param modelstr model formula
-#' @param model_name name of model
-#' @param report_columns columns to report
+#' Linear mixed-effects model strategy (R6 class)
+#'
+#' Encapsulates everything needed to fit per-protein linear mixed-effects models
+#' via \code{\link[lmerTest]{lmer}} and extract contrasts.
+#'
 #' @export
 #' @family modelling
 #' @examples
-#'
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
-#' istar <- prolfqua::LFQData$new(istar$data,istar$config)
+#' istar <- prolfqua::LFQData$new(istar$data, istar$config)
 #' istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
-#' dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
-#' istar$factors()
-#' modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ",
+#'   dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
+#' strat <- StrategyLmer$new("abundanceC ~ group_ + (1|peptide_Id)",
 #'   model_name = "random_example")
-#' mod <- build_model(
-#'  istar,
-#'  modelFunction)
+#' mod <- build_model(istar, strat)
 #' sum(mod$modelDF$exists_lmer)
-#' sum(mod$modelDF$isSingular, na.rm=TRUE)
+StrategyLmer <- R6::R6Class(
+  "StrategyLmer",
+  public = list(
+    #' @field formula model formula
+    formula = NULL,
+    #' @field model_name name of model
+    model_name = NULL,
+    #' @field report_columns columns to report
+    report_columns = NULL,
+    #' @field is_mixed always TRUE for lmer
+    is_mixed = TRUE,
+    #' @field anova_df list with anova function and column names
+    anova_df = NULL,
+
+    #' @description Create a new StrategyLmer
+    #' @param modelstr model formula string
+    #' @param model_name name of model
+    #' @param report_columns columns to report
+    initialize = function(
+      modelstr,
+      model_name = "Model",
+      report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
+    ) {
+      self$formula <- as.formula(modelstr)
+      self$model_name <- model_name
+      self$report_columns <- report_columns
+      self$anova_df <- get_anova_df(test = "F")
+    },
+
+    #' @description Fit lmer to one protein's data
+    #' @param x data.frame for one protein
+    #' @param pb optional progress bar
+    #' @param get_formula if TRUE, return formula instead of fitting
+    model_fun = function(x, pb, get_formula = FALSE) {
+      if (get_formula) {
+        return(self$formula)
+      }
+      if (!missing(pb)) {
+        pb$tick()
+      }
+      tryCatch(lmerTest::lmer(self$formula, data = x), error = .ehandler)
+    },
+
+    #' @description Check if model is singular
+    #' @param model fitted model
+    isSingular = function(model) lme4::isSingular(model),
+
+    #' @description Compute contrasts from fitted model
+    #' @param ... passed to \code{\link{my_contest}}
+    contrast_fun = function(...) my_contest(...),
+
+    #' @description Get residual degrees of freedom
+    #' @param model fitted model
+    df_residual = function(model) stats::df.residual(model),
+
+    #' @description Get residual standard error
+    #' @param model fitted model
+    sigma = function(model) stats::sigma(model)
+  )
+)
+
+
+#' Create linear mixed-effects model strategy
 #'
+#' Convenience wrapper that creates a \code{\link{StrategyLmer}} object.
+#' @rdname strategy
+#' @export
+#' @param modelstr model formula
+#' @param model_name name of model
+#' @param report_columns columns to report
+#' @family modelling
+#' @return a \code{\link{StrategyLmer}} object
+#' @examples
+#' modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
+#'   model_name = "random_example")
+#' modelFunction$model_fun(get_formula = TRUE)
 strategy_lmer <- function(
   modelstr,
   model_name = "Model",
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
 ) {
-  formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE) {
-    if (get_formula) {
-      return(formula)
-    }
-    if (!missing(pb)) {
-      pb$tick()
-    }
-    modelTest <- tryCatch(lmerTest::lmer(formula, data = x), error = .ehandler)
-    return(modelTest)
-  }
-  res <- list(
-    model_fun = model_fun,
-    isSingular = lme4::isSingular,
-    contrast_fun = my_contest,
-    model_name = model_name,
-    report_columns = report_columns,
-    anova_df = get_anova_df(test = "F"),
-    is_mixed = TRUE,
-    df_residual = stats::df.residual,
-    sigma = stats::sigma
-  )
-  return(res)
+  StrategyLmer$new(modelstr, model_name, report_columns)
 }
 
-#' Create linear model
+#' Linear model strategy (R6 class)
 #'
-#' The strategy contains functions to fit the model but also compute the contrasts etc.
+#' Encapsulates everything needed to fit per-protein linear models and extract
+#' contrasts: the formula, model fitting function, singularity check, contrast
+#' computation, ANOVA, and residual statistics.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' strat <- StrategyLM$new("Intensity ~ condition", model_name = "parallel design")
+#' strat$model_fun(get_formula = TRUE)
+#' strat$weights
+StrategyLM <- R6::R6Class(
+  "StrategyLM",
+  public = list(
+    #' @field formula model formula
+    formula = NULL,
+    #' @field model_name name of model
+    model_name = NULL,
+    #' @field report_columns columns to report
+    report_columns = NULL,
+    #' @field weights optional character string naming a column in the data
+    #'   containing per-observation weights, passed to \code{\link[stats]{lm}}.
+    weights = NULL,
+    #' @field is_mixed always FALSE for lm
+    is_mixed = FALSE,
+    #' @field anova_df list with anova function and column names
+    anova_df = NULL,
+
+    #' @description Create a new StrategyLM
+    #' @param modelstr model formula string
+    #' @param model_name name of model
+    #' @param report_columns columns to report
+    #' @param weights optional character string naming a column in the data
+    #'   containing per-observation weights
+    initialize = function(
+      modelstr,
+      model_name = "Model",
+      report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted"),
+      weights = NULL
+    ) {
+      self$formula <- as.formula(modelstr)
+      self$model_name <- model_name
+      self$report_columns <- report_columns
+      self$weights <- weights
+      self$anova_df <- get_anova_df(test = "F")
+    },
+
+    #' @description Fit lm to one protein's data
+    #' @param x data.frame for one protein
+    #' @param pb optional progress bar
+    #' @param get_formula if TRUE, return formula instead of fitting
+    model_fun = function(x, pb, get_formula = FALSE) {
+      if (get_formula) {
+        return(self$formula)
+      }
+      if (!missing(pb)) {
+        pb$tick()
+      }
+      if (!is.null(self$weights)) {
+        call <- bquote(lm(.(self$formula), data = x, weights = .(as.name(self$weights))))
+        tryCatch(eval(call), error = .ehandler)
+      } else {
+        tryCatch(lm(self$formula, data = x), error = .ehandler)
+      }
+    },
+
+    #' @description Check if model is singular
+    #' @param model fitted model
+    isSingular = function(model) isSingular_lm(model),
+
+    #' @description Compute contrasts from fitted model
+    #' @param ... passed to \code{\link{my_contrast_V2}}
+    contrast_fun = function(...) my_contrast_V2(...),
+
+    #' @description Get residual degrees of freedom
+    #' @param model fitted model
+    df_residual = function(model) stats::df.residual(model),
+
+    #' @description Get residual standard error
+    #' @param model fitted model
+    sigma = function(model) stats::sigma(model)
+  )
+)
+
+
+#' Create linear model strategy
+#'
+#' Convenience wrapper that creates a \code{\link{StrategyLM}} object.
 #' @rdname strategy
 #' @export
 #' @param modelstr model formula
@@ -98,157 +232,157 @@ strategy_lmer <- function(
 #'   containing per-observation weights, passed to \code{\link[stats]{lm}}.
 #'   Default \code{NULL} (unweighted).
 #' @family modelling
-#' @return list with model function, contrast computation function etc.
+#' @return a \code{\link{StrategyLM}} object
 #' @examples
-#'
-#'
 #' tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
-#' tmp$isSingular
+#' tmp$weights
 strategy_lm <- function(
   modelstr,
   model_name = "Model",
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted"),
   weights = NULL
 ) {
-  formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE) {
-    if (get_formula) {
-      return(formula)
-    }
-    if (!missing(pb)) {
-      pb$tick()
-    }
-    if (!is.null(weights)) {
-      call <- bquote(lm(formula, data = x, weights = .(as.name(weights))))
-      modelTest <- tryCatch(eval(call), error = .ehandler)
-    } else {
-      modelTest <- tryCatch(lm(formula, data = x), error = .ehandler)
-    }
-    return(modelTest)
-  }
-  res <- list(
-    model_fun = model_fun,
-    isSingular = isSingular_lm,
-    contrast_fun = my_contrast_V2,
-    model_name = model_name,
-    report_columns = report_columns,
-    anova_df = get_anova_df(test = "F"),
-    is_mixed = FALSE,
-    df_residual = stats::df.residual,
-    sigma = stats::sigma
-  )
-  return(res)
+  StrategyLM$new(modelstr, model_name, report_columns, weights)
 }
 
 
-#' Create robust linear regression model
+#' Robust linear model strategy (R6 class)
 #'
-#' The strategy contains functions to fit the model but also compute the contrasts etc.
+#' Encapsulates everything needed to fit per-protein robust linear models
+#' via \code{\link[MASS]{rlm}} and extract contrasts.
 #'
+#' @export
+#' @family modelling
+#' @examples
+#' strat <- StrategyRLM$new("Intensity ~ condition", model_name = "parallel design")
+#' strat$model_fun(get_formula = TRUE)
+StrategyRLM <- R6::R6Class(
+  "StrategyRLM",
+  public = list(
+    #' @field formula model formula
+    formula = NULL,
+    #' @field model_name name of model
+    model_name = NULL,
+    #' @field report_columns columns to report
+    report_columns = NULL,
+    #' @field is_mixed always FALSE for rlm
+    is_mixed = FALSE,
+    #' @field anova_df list with anova function and column names
+    anova_df = NULL,
+
+    #' @description Create a new StrategyRLM
+    #' @param modelstr model formula string
+    #' @param model_name name of model
+    #' @param report_columns columns to report
+    initialize = function(
+      modelstr,
+      model_name = "Model",
+      report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
+    ) {
+      self$formula <- as.formula(modelstr)
+      self$model_name <- model_name
+      self$report_columns <- report_columns
+      self$anova_df <- get_anova_df(test = "F")
+    },
+
+    #' @description Fit rlm to one protein's data
+    #' @param x data.frame for one protein
+    #' @param pb optional progress bar
+    #' @param get_formula if TRUE, return formula instead of fitting
+    model_fun = function(x, pb, get_formula = FALSE) {
+      if (get_formula) {
+        return(self$formula)
+      }
+      if (!missing(pb)) {
+        pb$tick()
+      }
+      tryCatch(MASS::rlm(self$formula, data = x, method = "M"), error = .ehandler)
+    },
+
+    #' @description Check if model is singular (NA coefficients or df < 2)
+    #' @param model fitted model
+    isSingular = function(model) {
+      if (any(is.na(coefficients(model)))) {
+        return(TRUE)
+      }
+      df <- df.residual(model)
+      if (is.na(df) || df < 2) {
+        return(TRUE)
+      }
+      FALSE
+    },
+
+    #' @description Compute contrasts from fitted model
+    #' @param ... passed to \code{\link{my_contrast_V2}}
+    contrast_fun = function(...) my_contrast_V2(...),
+
+    #' @description Get residual degrees of freedom
+    #' @param model fitted model
+    df_residual = function(model) stats::df.residual(model),
+
+    #' @description Get residual standard error
+    #' @param model fitted model
+    sigma = function(model) stats::sigma(model)
+  )
+)
+
+
+#' Create robust linear model strategy
+#'
+#' Convenience wrapper that creates a \code{\link{StrategyRLM}} object.
 #' @rdname strategy
 #' @export
 #' @param modelstr model formula
 #' @param model_name name of model
 #' @param report_columns columns to report
 #' @family modelling
-#' @return list with model function, contrast computation function etc.
+#' @return a \code{\link{StrategyRLM}} object
 #' @examples
 #' tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
-#' tmp$isSingular
 strategy_rlm <- function(
   modelstr,
   model_name = "Model",
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
 ) {
-  formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE) {
-    if (get_formula) {
-      return(formula)
-    }
-    if (!missing(pb)) {
-      pb$tick()
-    }
-    modelTest <- tryCatch(MASS::rlm(formula, data = x, method = "M"), error = .ehandler)
-    return(modelTest)
-  }
-  isSingular_rlm <- function(m) {
-    anyNA <- any(is.na(coefficients(m)))
-    if (anyNA) {
-      return(TRUE)
-    }
-    df <- df.residual(m)
-    if (is.na(df) || df < 2) {
-      return(TRUE)
-    }
-    FALSE
-  }
-  res <- list(
-    model_fun = model_fun,
-    isSingular = isSingular_rlm,
-    contrast_fun = my_contrast_V2,
-    model_name = model_name,
-    report_columns = report_columns,
-    anova_df = get_anova_df(test = "F"),
-    is_mixed = FALSE,
-    df_residual = stats::df.residual,
-    sigma = stats::sigma
-  )
-  return(res)
+  StrategyRLM$new(modelstr, model_name, report_columns)
 }
 
-#' Create quasibinomial glm model
+
+#' R6 class for extracting ANOVA results as a data frame
+#'
+#' Wraps the ANOVA extraction logic and associated column names.
+#'
 #' @export
-#' @rdname strategy
-#' @param modelstr model formula
-#' @param model_name name of model
-#' @param test type of test statistic passed to anova (e.g. "Chisq")
-#' @param family either binomial or quasibinomial
-#' @param multiplier for tuning default is 1.
-#' @param offset offset added to contingency table cells to avoid perfect separation
-#' @param report_columns columns to report
 #' @family modelling
-#' @examples
-#' tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
-#' tmp$model_fun(get_formula = TRUE)
-#' tmp$isSingular
-strategy_glm <- function(
-  modelstr,
-  model_name = "Model",
-  test = "Chisq",
-  family = stats::binomial,
-  multiplier = 1,
-  offset = 1,
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
-) {
-  formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE) {
-    if (get_formula) {
-      return(formula)
+AnovaExtractor <- R6::R6Class(
+  "AnovaExtractor",
+  public = list(
+    #' @field test statistical test type ("F", "Chisq", etc.)
+    test = "F",
+    #' @field col_pval p-value column name in ANOVA output
+    col_pval = character(),
+    #' @field col_fdr FDR column name
+    col_fdr = character(),
+    #' @description Create a new AnovaExtractor
+    #' @param test statistical test type
+    initialize = function(test = "F") {
+      self$test <- test
+      self$col_pval <- paste0("Pr..", substr(test, 1, 3), ".")
+      self$col_fdr <- paste0("FDR.Pr..", substr(test, 1, 3), ".")
+    },
+    #' @description Extract ANOVA table from a fitted model
+    #' @param x a fitted model
+    #' @return data.frame with factor column and ANOVA statistics
+    fun = function(x) {
+      x <- anova(x, test = self$test)
+      colnames(x) <- make.names(colnames(x))
+      x <- data.frame(factor = rownames(x), x)
+      return(x)
     }
-    if (!missing(pb)) {
-      pb$tick()
-    }
-    # to avoid perfect separation (hack)
-    tt <- ftable(formula, x)
-    tt <- tt * multiplier + offset
-    DFT <- as.data.frame(tt)
-    modelTest <- tryCatch(glm(formula, data = DFT, weights = Freq, family = family), error = .ehandler)
-    return(modelTest)
-  }
-  res <- list(
-    model_fun = model_fun,
-    isSingular = isSingular_lm,
-    contrast_fun = my_contrast_V2,
-    model_name = model_name,
-    report_columns = report_columns,
-    anova_df = get_anova_df(test = test),
-    is_mixed = FALSE
   )
-  return(res)
-}
-
+)
 
 #' anova returning dataframe
 #' @keywords internal
@@ -258,17 +392,7 @@ strategy_glm <- function(
 #' x <- get_anova_df(test = "F")
 #' x <- get_anova_df(test = "Chisq")
 get_anova_df <- function(test = "F") {
-  res <- function(x) {
-    x <- anova(x, test = test)
-    colnames(x) <- make.names(colnames(x))
-    x <- data.frame(factor = rownames(x), x)
-    return(x)
-  }
-  return(list(
-    fun = res,
-    col_pval = paste0("Pr..", substr(test, 1, 3), "."),
-    col_fdr = paste0("FDR.Pr..", substr(test, 1, 3), ".")
-  ))
+  AnovaExtractor$new(test = test)
 }
 
 

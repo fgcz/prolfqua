@@ -1,9 +1,46 @@
-# strategy_limma -----
+# StrategyLimma -----
+
+#' R6 class for limma modelling strategy
+#'
+#' Analogous to \code{\link{strategy_lm}} but for limma's matrix-based pipeline.
+#' Consumed by \code{\link{build_model_limma}}.
+#'
+#' @export
+#' @family modelling
+StrategyLimma <- R6::R6Class(
+  "StrategyLimma",
+  public = list(
+    #' @field formula model formula
+    formula = NULL,
+    #' @field model_name name of model
+    model_name = character(),
+    #' @field trend logical, passed to \code{\link[limma]{eBayes}}
+    trend = FALSE,
+    #' @field robust logical, passed to \code{\link[limma]{eBayes}}
+    robust = FALSE,
+    #' @field weights either a character string (column name) or a numeric matrix
+    weights = NULL,
+    #' @description Create a new StrategyLimma
+    #' @param modelstr model formula as string (e.g. "abundance ~ group_")
+    #' @param model_name name of model
+    #' @param trend logical, passed to \code{\link[limma]{eBayes}}
+    #' @param robust logical, passed to \code{\link[limma]{eBayes}}
+    #' @param weights either a character string (column name in annotation for
+    #'   per-sample weights) or a numeric matrix (proteins x samples) passed to
+    #'   \code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).
+    initialize = function(modelstr, model_name = "limma", trend = FALSE, robust = FALSE, weights = NULL) {
+      self$formula <- as.formula(modelstr)
+      self$model_name <- model_name
+      self$trend <- trend
+      self$robust <- robust
+      self$weights <- weights
+    }
+  )
+)
 
 #' Create limma modelling strategy
 #'
-#' Analogous to \code{\link{strategy_lm}} but for limma's matrix-based pipeline.
-#' Returns a list consumed by \code{\link{build_model_limma}}.
+#' Wrapper that returns a \code{\link{StrategyLimma}} R6 object.
 #'
 #' @param modelstr model formula as string (e.g. "abundance ~ group_")
 #' @param model_name name of model
@@ -19,14 +56,7 @@
 #' strat$formula
 #' strat$model_name
 strategy_limma <- function(modelstr, model_name = "limma", trend = FALSE, robust = FALSE, weights = NULL) {
-  formula <- as.formula(modelstr)
-  list(
-    formula = formula,
-    model_name = model_name,
-    trend = trend,
-    robust = robust,
-    weights = weights
-  )
+  StrategyLimma$new(modelstr, model_name = model_name, trend = trend, robust = robust, weights = weights)
 }
 
 
@@ -78,11 +108,17 @@ build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name
       if (wcol %in% colnames(annotation)) {
         wt <- annotation[[wcol]]
       } else if (wcol %in% colnames(lfqdata$data)) {
-        # Extract per-sample weights from long-format data
-        fname_col <- lfqdata$config$table$fileName
-        wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
-        wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
-        wt <- wt_df[[wcol]]
+        if (wcol %in% lfqdata$config$value_vars()) {
+          # Per-protein x sample weights (e.g. nr_children) -> pivot to matrix
+          wt_wide <- lfqdata$to_wide(as.matrix = TRUE, value = wcol)
+          wt <- wt_wide$data
+        } else {
+          # Per-sample weights -> extract vector
+          fname_col <- lfqdata$config$table$fileName
+          wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
+          wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
+          wt <- wt_df[[wcol]]
+        }
       }
     } else if (is.matrix(strategy$weights)) {
       wt <- strategy$weights

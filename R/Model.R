@@ -104,7 +104,7 @@ Model <- R6::R6Class(
 
       Model_Anova <- self$p.adjust(Model_Anova, column = self$model_strategy$anova_df$col_pval, group_by_col = "factor")
 
-      Model_Anova <- Model_Anova |> dplyr::rename(p.value = !!sym(self$model_strategy$anova_df$col_pva))
+      Model_Anova <- Model_Anova |> dplyr::rename(p.value = !!sym(self$model_strategy$anova_df$col_pval))
       return(dplyr::ungroup(Model_Anova))
     },
 

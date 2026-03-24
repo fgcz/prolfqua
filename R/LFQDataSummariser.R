@@ -45,16 +45,16 @@ LFQDataSummariser <- R6::R6Class(
     #' @param nr_children get summary for 1,2 or more number of children
     hierarchy_counts_sample = function(value = c("wide", "long"), nr_children = 1) {
       value <- match.arg(value)
-      fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config, nr_children = nr_children)
-      return(fun(value))
+      hcs <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config, nr_children = nr_children)
+      if (value == "wide") return(hcs$wide()) else return(hcs$long())
     },
     #' @description
     #' barplot showing number of elements at each level in every sample
     #' @param value wide - wide format, long - long format, plot - ggplot
     #' @param nr_children get summary for 1,2 or more number of children
     plot_hierarchy_counts_sample = function(nr_children = 1) {
-      fun <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config, nr_children = nr_children)
-      return(fun("plot"))
+      hcs <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config, nr_children = nr_children)
+      return(hcs$plot())
     },
     #' @description
     #' missing per condition and protein

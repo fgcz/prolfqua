@@ -1,5 +1,6 @@
-test_that("strategy_limma returns correct structure", {
+test_that("strategy_limma returns StrategyLimma R6 object", {
   strat <- prolfqua::strategy_limma("abundance ~ group_")
+  expect_true(inherits(strat, "StrategyLimma"))
   expect_true(inherits(strat$formula, "formula"))
   expect_equal(strat$model_name, "limma")
   expect_false(strat$trend)

@@ -717,6 +717,70 @@ hierarchy_counts <- function(pdata, config) {
 #' @param nr_children integer, minimum number of children required
 #'
 #' @keywords internal
+#' R6 class for hierarchy counts per sample
+#'
+#' Provides wide, long, and plot views of hierarchy counts.
+#'
+#' @export
+#' @family summary
+HierarchyCountsSample <- R6::R6Class(
+  "HierarchyCountsSample",
+  public = list(
+    #' @field .summary summarised data frame
+    .summary = NULL,
+    #' @field .configuration AnalysisConfiguration object
+    .configuration = NULL,
+    #' @description Create a new HierarchyCountsSample
+    #' @param pdata data frame
+    #' @param configuration AnalysisConfiguration
+    #' @param nr_children minimum number of children to include
+    initialize = function(pdata, configuration, nr_children = 1) {
+      self$.configuration <- configuration
+      hierarchy <- configuration$hierarchy_keys()
+      self$.summary <- pdata |>
+        dplyr::filter(
+          !is.na(!!rlang::sym(configuration$get_response())),
+          !!rlang::sym(configuration$nr_children) >= .env$nr_children
+        ) |>
+        dplyr::group_by(across(all_of(c(configuration$isotopeLabel, configuration$sampleName)))) |>
+        dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct))
+    },
+    #' @description Return wide-format summary
+    wide = function() {
+      self$.summary
+    },
+    #' @description Return long-format summary
+    long = function() {
+      self$.summary |>
+        tidyr::pivot_longer(
+          cols = -dplyr::all_of(c(self$.configuration$isotopeLabel, self$.configuration$sampleName)),
+          names_to = "key",
+          values_to = "nr"
+        )
+    },
+    #' @description Return barplot of hierarchy counts
+    plot = function() {
+      long <- self$long()
+      if (nrow(long) == 0) {
+        return(NULL)
+      }
+      nudgeval <- -mean(long$nr) * 0.05
+      ggplot2::ggplot(long, ggplot2::aes(x = !!rlang::sym(self$.configuration$sampleName), y = .data$nr)) +
+        ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
+        ggplot2::facet_wrap(~key, scales = "free_y", ncol = 1) +
+        ggplot2::geom_text(ggplot2::aes(label = .data$nr), nudge_y = nudgeval, angle = 65) +
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
+    }
+  )
+)
+
+#' Hierarchy counts per sample
+#'
+#' @param pdata data.frame
+#' @param configuration AnalysisConfiguration
+#' @param nr_children minimum number of children
+#' @return \code{\link{HierarchyCountsSample}} R6 object
+#' @export
 #' @family summary
 #' @examples
 #'
@@ -725,16 +789,16 @@ hierarchy_counts <- function(pdata, config) {
 #' config <- bb$config
 #' data <- bb$data
 #' res <- hierarchy_counts_sample(data, config, nr_children = 1)
-#' x <- res("long")
+#' x <- res$long()
 #' # filters on peptide level
 #' res <- hierarchy_counts_sample(data, config, nr_children = 2)
-#' x2 <- res("long")
+#' x2 <- res$long()
 #' # filters on protein level based on peptide count
 #' bb <- prolfqua::sim_lfq_data_protein_config()
 #' res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 2)
-#' x1 <- res()
+#' x1 <- res$wide()
 #' res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 1)
-#' x2 <- res()
+#' x2 <- res$wide()
 #' x1$nr_children <- 2
 #' x2$nr_children <- 1
 #' xl <- dplyr::bind_rows(x1, x2)
@@ -750,40 +814,7 @@ hierarchy_counts_sample <- function(
   configuration,
   nr_children = 1
 ) {
-  hierarchy <- configuration$hierarchy_keys()
-  summary <- pdata |>
-    dplyr::filter(
-      !is.na(!!rlang::sym(configuration$get_response())),
-      !!rlang::sym(configuration$nr_children) >= .env$nr_children
-    ) |>
-    dplyr::group_by(across(all_of(c(configuration$isotopeLabel, configuration$sampleName)))) |>
-    dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct))
-
-  res <- function(value = c("wide", "long", "plot")) {
-    value <- match.arg(value)
-    if (value == "wide") {
-      return(summary)
-    } else {
-      long <- summary |>
-        tidyr::pivot_longer(
-          cols = -dplyr::all_of(c(configuration$isotopeLabel, configuration$sampleName)),
-          names_to = "key",
-          values_to = "nr"
-        )
-      if (value == "long") {
-        return(long)
-      } else if (value == "plot" && nrow(long) > 0) {
-        nudgeval <- -mean(long$nr) * 0.05
-        # TODO(WEW) check potential problem with sampleName
-        ggplot2::ggplot(long, ggplot2::aes(x = !!rlang::sym(configuration$sampleName), y = .data$nr)) +
-          ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
-          ggplot2::facet_wrap(~key, scales = "free_y", ncol = 1) +
-          ggplot2::geom_text(ggplot2::aes(label = .data$nr), nudge_y = nudgeval, angle = 65) +
-          ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
-      }
-    }
-  }
-  return(res)
+  HierarchyCountsSample$new(pdata, configuration, nr_children = nr_children)
 }
 
 
