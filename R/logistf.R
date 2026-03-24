@@ -276,7 +276,97 @@ sim_build_models_logistf <- function(
 }
 
 
-#' Firth's Bias-Reduced Logistic Regression (logistf)
+#' Firth's logistic regression strategy (R6 class)
+#'
+#' Encapsulates everything needed to fit per-protein Firth's bias-reduced
+#' logistic regression via \code{\link[logistf]{logistf}} and extract contrasts.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' strat <- StrategyLogistf$new("bin_resp ~ condition")
+#' strat$model_fun(get_formula = TRUE)
+StrategyLogistf <- R6::R6Class(
+  "StrategyLogistf",
+  public = list(
+    #' @field formula model formula
+    formula = NULL,
+    #' @field model_name name of model
+    model_name = NULL,
+    #' @field report_columns columns to report
+    report_columns = NULL,
+    #' @field is_mixed always FALSE for logistf
+    is_mixed = FALSE,
+    #' @field anova_df list with anova function and column names
+    anova_df = NULL,
+
+    #' @description Create a new StrategyLogistf
+    #' @param modelstr model formula string
+    #' @param model_name name of model
+    #' @param report_columns columns to report
+    #' @param test type of test statistic to use (e.g. "Chisq")
+    initialize = function(
+      modelstr,
+      model_name = "logistf",
+      report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted"),
+      test = "Chisq"
+    ) {
+      self$formula <- as.formula(modelstr)
+      self$model_name <- model_name
+      self$report_columns <- report_columns
+      self$anova_df <- get_anova_df(test = test)
+    },
+
+    #' @description Fit logistf to one protein's data
+    #' @param x data.frame for one protein
+    #' @param pb optional progress bar
+    #' @param get_formula if TRUE, return formula instead of fitting
+    model_fun = function(x, pb, get_formula = FALSE) {
+      if (get_formula) {
+        return(self$formula)
+      }
+      if (!missing(pb)) {
+        pb$tick()
+      }
+      predictor_vars <- all.vars(update(self$formula, . ~ .))
+      DFT <- x |>
+        dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
+        dplyr::summarize(Freq = dplyr::n(), .groups = "drop")
+      tryCatch(logistf::logistf(self$formula, data = DFT, weights = Freq), error = .ehandler)
+    },
+
+    #' @description Check if model is singular (NA coefficients or df < 2)
+    #' @param model fitted model
+    isSingular = function(model) {
+      if (any(is.na(coefficients(model)))) {
+        return(TRUE)
+      }
+      if (self$df_residual(model) >= 2) {
+        return(FALSE)
+      }
+      TRUE
+    },
+
+    #' @description Compute contrasts from fitted model
+    #' @param ... passed to \code{\link{my_contrast_V2}}
+    contrast_fun = function(...) my_contrast_V2(...),
+
+    #' @description Get residual degrees of freedom
+    #' @param model fitted model
+    df_residual = function(model) {
+      model$n - length(model$coefficients)
+    },
+
+    #' @description Get residual standard error (always 1 for logistic)
+    #' @param model fitted model
+    sigma = function(model) 1
+  )
+)
+
+
+#' Create Firth's logistic regression strategy
+#'
+#' Convenience wrapper that creates a \code{\link{StrategyLogistf}} object.
 #' @export
 #' @rdname strategy
 #' @param modelstr model formula
@@ -284,78 +374,30 @@ sim_build_models_logistf <- function(
 #' @param report_columns columns to report
 #' @param test type of test statistic to use (e.g. "Chisq")
 #' @family modelling
+#' @return a \code{\link{StrategyLogistf}} object
 #' @examples
-#'
 #' tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 #' tmp$model_fun(get_formula = TRUE)
-#' tmp$isSingular
 #'
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
 #' istar$data <- encode_bin_resp(istar$data, istar$config)
 #' istar <- LFQData$new(istar$data, istar$config)
 #' df <- istar$summarize_hierarchy()
-#' df2 <- df[df[[ncol(df)]] > 1,  ]
+#' df2 <- df[df[[ncol(df)]] > 1, ]
 #' istar2 <- istar$get_subset(df2)
 #' istar2$data |>
-#' dplyr::group_by(protein_Id) |>
-#'  tidyr::nest() -> nestProtein
-#' modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id", model_name = "random_example")
+#'   dplyr::group_by(protein_Id) |>
+#'   tidyr::nest() -> nestProtein
+#' modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",
+#'   model_name = "random_example")
 #' modelFunction$model_fun(nestProtein$data[[1]])
 #' modelFunction$model_fun(nestProtein$data[[4]])
-#'
 strategy_logistf <- function(
   modelstr,
   model_name = "logistf",
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted"),
   test = "Chisq"
 ) {
-  formula <- as.formula(modelstr)
-  model_fun <- function(x, pb, get_formula = FALSE) {
-    if (get_formula) {
-      return(formula)
-    }
-    if (!missing(pb)) {
-      pb$tick()
-    }
-    predictor_vars <- all.vars(update(formula, . ~ .))
-    DFT <- x |>
-      group_by(across(all_of(predictor_vars))) |>
-      summarize(Freq = n(), .groups = "drop")
-
-    modelTest <- tryCatch(logistf::logistf(formula, data = DFT, weights = Freq), error = .ehandler)
-    return(modelTest)
-  }
-  df_residual_logistf <- function(m) {
-    n <- m$n # Number of observations
-    p <- length(m$coefficients) # Number of estimated parameters
-    df_residual <- n - p
-    return(df_residual)
-  }
-  isSingular_logistf <- function(m) {
-    anyNA <- any(is.na(coefficients(m)))
-    if (anyNA) {
-      return(TRUE)
-    } else {
-      if (df_residual_logistf(m) >= 2) {
-        return(FALSE)
-      }
-      return(TRUE)
-    }
-  }
-  sigma_logistf <- function(m) {
-    return(1)
-  }
-  res <- list(
-    model_fun = model_fun,
-    isSingular = isSingular_logistf,
-    contrast_fun = my_contrast_V2,
-    model_name = model_name,
-    report_columns = report_columns,
-    anova_df = get_anova_df(test = test),
-    is_mixed = FALSE,
-    df_residual = df_residual_logistf,
-    sigma = sigma_logistf
-  )
-  return(res)
+  StrategyLogistf$new(modelstr, model_name, report_columns, test)
 }

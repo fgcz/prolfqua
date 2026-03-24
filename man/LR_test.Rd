@@ -60,6 +60,7 @@ hist(tmp$likelihood_ratio_test.pValue)
 }
 \seealso{
 Other modelling: 
+\code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsFirth}},
@@ -82,6 +83,11 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
+\code{\link{StrategyLM}},
+\code{\link{StrategyLimma}},
+\code{\link{StrategyLmer}},
+\code{\link{StrategyLogistf}},
+\code{\link{StrategyRLM}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
 \code{\link{build_model_glm_peptide}()},

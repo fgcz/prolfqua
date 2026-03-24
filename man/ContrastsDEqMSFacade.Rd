@@ -25,6 +25,7 @@ fa$to_wide()
 }
 \seealso{
 Other modelling: 
+\code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
@@ -47,6 +48,11 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
+\code{\link{StrategyLM}},
+\code{\link{StrategyLimma}},
+\code{\link{StrategyLmer}},
+\code{\link{StrategyLogistf}},
+\code{\link{StrategyRLM}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
 \code{\link{build_model_glm_peptide}()},
@@ -119,7 +125,13 @@ Other modelling:
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsDEqMSFacade$new(
+  lfqdata,
+  modelstr,
+  contrasts,
+  weights = lfqdata$config$nr_children,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -130,6 +142,9 @@ initialize
 \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
 
 \item{\code{contrasts}}{named character vector of contrasts}
+
+\item{\code{weights}}{column name for per-observation weights (default:
+\code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.}
 
 \item{\code{...}}{passed to \code{\link{strategy_lm}}}
 }

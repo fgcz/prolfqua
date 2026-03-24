@@ -195,3 +195,43 @@ Commit `4cb6b74f`.
 ### Fixed Rd line width NOTEs
 - Wrapped long `hierarchy[["fragment_Id"]]` example lines in `R/AnalysisConfiguration.R` and `R/tidyMS_R6_ConcreteConfigurations.R`
 - Eliminated `checking Rd line widths` NOTE from `R CMD check`
+
+---
+
+## 2026-03-24 — Strategy R6 Conversion & Default Weights Enforcement
+
+### Converted all model strategies from plain lists to R6 classes
+
+| Class | File | Wrapper | Fitting function |
+|-------|------|---------|-----------------|
+| `StrategyLM` | `tidyMS_R6_Modelling.R` | `strategy_lm()` | `lm()` |
+| `StrategyRLM` | `tidyMS_R6_Modelling.R` | `strategy_rlm()` | `MASS::rlm()` |
+| `StrategyLmer` | `tidyMS_R6_Modelling.R` | `strategy_lmer()` | `lmerTest::lmer()` |
+| `StrategyLogistf` | `logistf.R` | `strategy_logistf()` | `logistf::logistf()` |
+
+Each class exposes: `formula`, `model_name`, `report_columns`, `is_mixed`, `anova_df` (fields) and `model_fun()`, `isSingular()`, `contrast_fun()`, `df_residual()`, `sigma()` (methods). Wrapper functions preserved for backward compatibility — all existing call sites unchanged.
+
+### Dropped `strategy_glm` (dead code)
+- Zero production callers, zero test callers — only referenced in its own `@examples`
+
+### Enforced `nr_children` as default fitting weights
+
+**Key distinction clarified:** `nr_children` is **sample-wise** (per protein×sample count of child features after aggregation), not experiment-wide.
+
+- 5 aggregated facades now accept `weights = lfqdata$config$nr_children` by default:
+  `ContrastsLimmaFacade`, `ContrastsLMFacade`, `ContrastsLMMissingFacade`, `ContrastsLMImputeFacade`, `ContrastsDEqMSFacade`
+- Users pass `weights = NULL` to disable
+- `StrategyLM` holds `weights` field; passed to `lm(..., weights=)` via `bquote`
+- `build_model_limma()` weight handling fixed: columns in `value_vars()` (like `nr_children`) pivoted to protein×sample matrix via `to_wide()`; custom per-sample columns use vector extraction
+
+**DEqMS uses `nr_children` differently:** aggregates via `max()` per protein (experiment-wide) for count-dependent variance moderation — separate from fitting weights.
+
+### Files modified
+
+| File | Changes |
+|------|---------|
+| `R/tidyMS_R6_Modelling.R` | `StrategyLM`, `StrategyRLM`, `StrategyLmer` R6 classes; dropped `strategy_glm` |
+| `R/logistf.R` | `StrategyLogistf` R6 class |
+| `R/ContrastsFacades.R` | `weights` parameter added to 5 aggregated facades |
+| `R/ContrastsLimma.R` | `build_model_limma` weight pivot for protein×sample matrix |
+| `CLAUDE.md` | Updated strategy pattern and weights documentation |

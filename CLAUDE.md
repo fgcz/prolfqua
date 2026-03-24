@@ -69,9 +69,15 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 
 ### Weights & `nr_children`
 
-`config$nr_children` names the column tracking child-feature counts (e.g. peptides per protein). After `get_Aggregator()` rollup, this column is populated automatically. For peptide/precursor-level data it is typically 1.
+`config$nr_children` names the column tracking child-feature counts (e.g. peptides per protein). After `get_Aggregator()` rollup, each protein×sample row gets its own count — **`nr_children` is sample-wise**. For peptide/precursor-level data it is typically 1.
 
-**Protein-level input must carry `nr_children`.** DEqMS uses it for count-based variance modelling (`ContrastsDEqMSFacade`). If the column is missing, `setup_analysis()` adds it set to 1 with a warning — but this defeats the purpose for aggregated protein data where the actual peptide count matters.
+**Two distinct uses:**
+
+1. **Fitting weights** (sample-wise): Aggregated facades (`lm`, `limma`, `lm_missing`, `lm_impute`, `deqms`) pass `nr_children` as `weights` by default to `lm()` or `limma::lmFit()`. This down-weights protein intensities derived from fewer peptides in a given sample. Disable with `weights = NULL`.
+
+2. **DEqMS variance moderation** (experiment-wide): `ContrastsDEqMSFacade` additionally aggregates `nr_children` via `max()` per protein across all samples for count-dependent variance shrinkage. This is separate from the fitting weights.
+
+**Protein-level input must carry `nr_children`.** If the column is missing, `setup_analysis()` adds it set to 1 with a warning — but this defeats the purpose for aggregated data where the actual peptide count matters.
 
 ### Key Design Patterns
 
@@ -82,7 +88,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 ```
 
-**Strategy pattern for models**: `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` return lists with `model_fun`, `contrast_fun`, `isSingular`, `anova_df`. `strategy_limma()` returns a simpler list (formula, trend, robust) consumed by `build_model_limma()`.
+**Strategy pattern for models**: **Strategy R6 classes for models**: `StrategyLM`, `StrategyRLM`, `StrategyLmer`, `StrategyLogistf` — each with `model_fun`, `isSingular`, `contrast_fun`, `df_residual`, `sigma` methods. Wrapper functions `strategy_lm()`, `strategy_rlm()`, `strategy_lmer()`, `strategy_logistf()` create instances. `strategy_limma()` returns a plain list (formula, trend, robust, weights) consumed by `build_model_limma()`.
 
 **Config immutability**: AnalysisConfiguration is always deep-cloned when passed to new LFQData instances. Never modify config in-place on an existing LFQData.
 
@@ -114,7 +120,7 @@ Concrete config factories: `create_config_MQ_peptide()`, `create_config_Skyline(
 - `build_model(data, strategy, subject_Id)` — fit per-protein models (in tidyMS_R6Model.R)
 - `build_model_impute(lfqdata, strategy)` — fit with LOD imputation + borrowed covariance for missing groups (in tidyMS_R6Model.R)
 - `build_model_limma(lfqdata, strategy)` — fit limma matrix model (in ContrastsLimma.R)
-- `strategy_lm()`, `strategy_lmer()`, `strategy_rlm()`, `strategy_glm()` — per-protein model strategies (in tidyMS_R6_Modelling.R)
+- `StrategyLM`, `StrategyRLM`, `StrategyLmer` R6 classes + `strategy_lm/rlm/lmer()` wrappers (tidyMS_R6_Modelling.R); `StrategyLogistf` + `strategy_logistf()` (logistf.R)
 - `strategy_limma()` — limma matrix model strategy (in ContrastsLimma.R)
 - `sim_lfq_data_peptide_config()` — simulate test data (in simulate_LFQ_data.R)
 

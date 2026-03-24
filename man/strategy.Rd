@@ -5,8 +5,7 @@
 \alias{strategy_lmer}
 \alias{strategy_lm}
 \alias{strategy_rlm}
-\alias{strategy_glm}
-\title{Firth's Bias-Reduced Logistic Regression (logistf)}
+\title{Create Firth's logistic regression strategy}
 \usage{
 strategy_logistf(
   modelstr,
@@ -37,17 +36,6 @@ strategy_rlm(
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
     "moderated.p.value.adjusted")
 )
-
-strategy_glm(
-  modelstr,
-  model_name = "Model",
-  test = "Chisq",
-  family = stats::binomial,
-  multiplier = 1,
-  offset = 1,
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted")
-)
 }
 \arguments{
 \item{modelstr}{model formula}
@@ -56,76 +44,60 @@ strategy_glm(
 
 \item{report_columns}{columns to report}
 
-\item{test}{type of test statistic passed to anova (e.g. "Chisq")}
+\item{test}{type of test statistic to use (e.g. "Chisq")}
 
 \item{weights}{optional character string naming a column in the data
 containing per-observation weights, passed to \code{\link[stats]{lm}}.
 Default \code{NULL} (unweighted).}
-
-\item{family}{either binomial or quasibinomial}
-
-\item{multiplier}{for tuning default is 1.}
-
-\item{offset}{offset added to contingency table cells to avoid perfect separation}
 }
 \value{
-list with model function, contrast computation function etc.
+a \code{\link{StrategyLogistf}} object
 
-list with model function, contrast computation function etc.
+a \code{\link{StrategyLmer}} object
+
+a \code{\link{StrategyLM}} object
+
+a \code{\link{StrategyRLM}} object
 }
 \description{
-The strategy contains functions to fit the model but also compute the contrasts etc.
+Convenience wrapper that creates a \code{\link{StrategyLogistf}} object.
 
-The strategy contains functions to fit the model but also compute the contrasts etc.
+Convenience wrapper that creates a \code{\link{StrategyLmer}} object.
+
+Convenience wrapper that creates a \code{\link{StrategyLM}} object.
+
+Convenience wrapper that creates a \code{\link{StrategyRLM}} object.
 }
 \examples{
-
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
-tmp$isSingular
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 istar$data <- encode_bin_resp(istar$data, istar$config)
 istar <- LFQData$new(istar$data, istar$config)
 df <- istar$summarize_hierarchy()
-df2 <- df[df[[ncol(df)]] > 1,  ]
+df2 <- df[df[[ncol(df)]] > 1, ]
 istar2 <- istar$get_subset(df2)
 istar2$data |>
-dplyr::group_by(protein_Id) |>
- tidyr::nest() -> nestProtein
-modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id", model_name = "random_example")
+  dplyr::group_by(protein_Id) |>
+  tidyr::nest() -> nestProtein
+modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",
+  model_name = "random_example")
 modelFunction$model_fun(nestProtein$data[[1]])
 modelFunction$model_fun(nestProtein$data[[4]])
-
-
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
-istar <- prolfqua::LFQData$new(istar$data,istar$config)
-istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
-dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
-istar$factors()
-modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ",
+modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
-mod <- build_model(
- istar,
- modelFunction)
-sum(mod$modelDF$exists_lmer)
-sum(mod$modelDF$isSingular, na.rm=TRUE)
-
-
-
+modelFunction$model_fun(get_formula = TRUE)
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
-tmp$isSingular
+tmp$weights
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
-tmp$isSingular
-tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
-tmp$model_fun(get_formula = TRUE)
-tmp$isSingular
 }
 \seealso{
 Other modelling: 
+\code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsFirth}},
@@ -149,6 +121,11 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
+\code{\link{StrategyLM}},
+\code{\link{StrategyLimma}},
+\code{\link{StrategyLmer}},
+\code{\link{StrategyLogistf}},
+\code{\link{StrategyRLM}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
 \code{\link{build_model_glm_peptide}()},
@@ -190,6 +167,7 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 
 Other modelling: 
+\code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsFirth}},
@@ -213,6 +191,11 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
+\code{\link{StrategyLM}},
+\code{\link{StrategyLimma}},
+\code{\link{StrategyLmer}},
+\code{\link{StrategyLogistf}},
+\code{\link{StrategyRLM}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
 \code{\link{build_model_glm_peptide}()},
@@ -254,6 +237,7 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 
 Other modelling: 
+\code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsFirth}},
@@ -277,6 +261,11 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
+\code{\link{StrategyLM}},
+\code{\link{StrategyLimma}},
+\code{\link{StrategyLmer}},
+\code{\link{StrategyLogistf}},
+\code{\link{StrategyRLM}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
 \code{\link{build_model_glm_peptide}()},
@@ -318,6 +307,7 @@ Other modelling:
 \code{\link{summary_ROPECA_median_p.scaled}()}
 
 Other modelling: 
+\code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsFirth}},
@@ -341,70 +331,11 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
-\code{\link{build_contrast_analysis}()},
-\code{\link{build_model}()},
-\code{\link{build_model_glm_peptide}()},
-\code{\link{build_model_glm_protein}()},
-\code{\link{build_model_impute}()},
-\code{\link{build_model_limma}()},
-\code{\link{build_model_logistf}()},
-\code{\link{compute_borrowed_variance}()},
-\code{\link{contrasts_fisher_exact}()},
-\code{\link{get_anova_df}()},
-\code{\link{get_complete_model_fit}()},
-\code{\link{get_p_values_pbeta}()},
-\code{\link{group_label}()},
-\code{\link{impute_refit_singular}()},
-\code{\link{isSingular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
-\code{\link{linfct_from_model}()},
-\code{\link{linfct_matrix_contrasts}()},
-\code{\link{merge_contrasts_results}()},
-\code{\link{model_analyse}()},
-\code{\link{model_summary}()},
-\code{\link{moderated_p_deqms}()},
-\code{\link{moderated_p_deqms_long}()},
-\code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
-\code{\link{my_contest}()},
-\code{\link{my_contrast}()},
-\code{\link{my_contrast_V2}()},
-\code{\link{new_lm_imputed}()},
-\code{\link{pivot_model_contrasts_2_Wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
-\code{\link{sim_build_models_lm}()},
-\code{\link{sim_build_models_lmer}()},
-\code{\link{sim_build_models_logistf}()},
-\code{\link{sim_make_model_lm}()},
-\code{\link{sim_make_model_lmer}()},
-\code{\link{strategy_limma}()},
-\code{\link{summary_ROPECA_median_p.scaled}()}
-
-Other modelling: 
-\code{\link{Contrasts}},
-\code{\link{ContrastsDEqMSFacade}},
-\code{\link{ContrastsFirth}},
-\code{\link{ContrastsFirthFacade}},
-\code{\link{ContrastsLMFacade}},
-\code{\link{ContrastsLMImputeFacade}},
-\code{\link{ContrastsLMMissingFacade}},
-\code{\link{ContrastsLimma}},
-\code{\link{ContrastsLimmaFacade}},
-\code{\link{ContrastsLmerFacade}},
-\code{\link{ContrastsMissing}},
-\code{\link{ContrastsModerated}},
-\code{\link{ContrastsModeratedDEqMS}},
-\code{\link{ContrastsPlotter}},
-\code{\link{ContrastsRLMFacade}},
-\code{\link{ContrastsROPECA}},
-\code{\link{ContrastsROPECAFacade}},
-\code{\link{ContrastsTable}},
-\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{LR_test}()},
-\code{\link{Model}},
-\code{\link{ModelFirth}},
-\code{\link{ModelLimma}},
+\code{\link{StrategyLM}},
+\code{\link{StrategyLimma}},
+\code{\link{StrategyLmer}},
+\code{\link{StrategyLogistf}},
+\code{\link{StrategyRLM}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
 \code{\link{build_model_glm_peptide}()},

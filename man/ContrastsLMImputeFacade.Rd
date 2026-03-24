@@ -29,6 +29,7 @@ fa$to_wide()
 }
 \seealso{
 Other modelling: 
+\code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsFirth}},
@@ -51,6 +52,11 @@ Other modelling:
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
+\code{\link{StrategyLM}},
+\code{\link{StrategyLimma}},
+\code{\link{StrategyLmer}},
+\code{\link{StrategyLogistf}},
+\code{\link{StrategyRLM}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
 \code{\link{build_model_glm_peptide}()},
@@ -130,6 +136,7 @@ initialize
   lod = NULL,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed"),
+  weights = lfqdata$config$nr_children,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -150,6 +157,9 @@ initialize
 
 \item{\code{df_method}}{"observed" uses max(n_observed - p, 1);
 "borrowed" uses median df from successful fits}
+
+\item{\code{weights}}{column name for per-observation weights (default:
+\code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.}
 
 \item{\code{...}}{passed to \code{\link{strategy_lm}}}
 }
