@@ -210,9 +210,6 @@
 - [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md)
   : Merge contrast results coming from two different model.
 
-- [`nr_obs_experiment()`](https://wolski.github.io/prolfqua/reference/nr_obs_experiment.md)
-  : Aggregates e.g. protein abundances from peptide abundances
-
 - [`nr_obs_sample()`](https://wolski.github.io/prolfqua/reference/nr_obs_sample.md)
   : Aggregates e.g. protein abundances from peptide abundances
 
