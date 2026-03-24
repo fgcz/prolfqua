@@ -33,7 +33,6 @@ compute contrasts for full models
 
 m <-  sim_make_model_lm( "factors")
 linfct <- linfct_from_model(m)$linfct_factors
-my_glht(m, linfct)
 my_contrast(m, linfct, confint = 0.95)
 my_contrast(m, linfct, confint = 0.99)
 
@@ -91,7 +90,6 @@ Other modelling:
 \code{\link{moderated_p_limma_long}()},
 \code{\link{my_contest}()},
 \code{\link{my_contrast_V2}()},
-\code{\link{my_glht}()},
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},

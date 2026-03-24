@@ -16,63 +16,6 @@ encode_bin_resp <- function(pdata, config, name = "bin_resp") {
 
 # Functions - Missigness ----
 
-#' compute missingness statistics per hierarchy and factor level
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @param factors factor to include (default up to factor depth)
-#' @param hierarchy hierarchy to include (default up to hierarchy depth)
-#' @param workIntensity work intensity column
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' xx <- complete_cases(analysis, config)
-#' x <- interaction_missing_stats(xx, config)$data |> dplyr::arrange(desc(nrNAs))
-#' nrow(x)
-#' tmp <- interaction_missing_stats(xx, config,
-#'  factors= character(),
-#'   hierarchy = config$hierarchy_keys()[1])$data
-#' stopifnot(nrow(tmp) == 10)
-#' tmp <- interaction_missing_stats(xx, config,
-#'   hierarchy = config$hierarchy_keys()[1])$data
-#' stopifnot(nrow(tmp) == length(unique(xx$protein_Id))* length(unique(xx$group_)))
-#' stopifnot(sum(is.na(tmp$nrMeasured))==0)
-#'
-#' tmp <- interaction_missing_stats(xx, config, factors = NULL)
-interaction_missing_stats <- function(
-  pdata,
-  config,
-  factors = config$factor_keys_depth(),
-  hierarchy = config$hierarchy_keys(),
-  workIntensity = config$get_response()
-) {
-  warning(
-    ">>>> deprecated! <<<< \n
-          use summarize_stats_factors instead."
-  )
-  pdata <- complete_cases(pdata, config)
-  missingPrec <- pdata |> group_by(across(all_of(c(factors, hierarchy, config$isotopeLabel))))
-  missingPrec <- missingPrec |>
-    dplyr::summarize(
-      nrReplicates = n(),
-      nrNAs = sum(is.na(!!sym(workIntensity))),
-      meanAbundance = mean(!!sym(workIntensity), na.rm = TRUE),
-      medianAbundance = median(!!sym(workIntensity), na.rm = TRUE)
-    ) |>
-    dplyr::mutate(nrMeasured = .data$nrReplicates - .data$nrNAs) |>
-    dplyr::ungroup()
-  return(list(
-    data = missingPrec,
-    summaries = c("nrReplicates", "nrNAs", "nrMeasured", "meanAbundance", "medianAbundance")
-  ))
-}
-
-
 .get_sides <- function(contrast) {
   getAST <- function(ee) purrr::map_if(as.list(ee), is.call, getAST)
 
@@ -158,7 +101,7 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
 #' stopifnot("ggplot" %in% class(pl))
 #'
 missigness_histogram <- function(x, config, showempty = FALSE, factors = config$factor_keys_depth(), alpha = 0.1) {
-  missingPrec <- interaction_missing_stats(x, config, factors)$data
+  missingPrec <- summarize_stats(x, config, factor_key = factors)
   missingPrec <- missingPrec |>
     dplyr::ungroup() |>
     dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
@@ -219,7 +162,7 @@ missigness_histogram <- function(x, config, showempty = FALSE, factors = config$
 #' stopifnot(ncol(res$data) >= 6)
 #'
 missingness_per_condition_cumsum <- function(x, config, factors = config$factor_keys_depth()) {
-  missingPrec <- interaction_missing_stats(x, config, factors)$data
+  missingPrec <- summarize_stats(x, config, factor_key = factors)
 
   xx <- missingPrec |>
     group_by(across(all_of(c(config$isotopeLabel, factors, "nrNAs", "nrReplicates")))) |>
@@ -261,7 +204,7 @@ missingness_per_condition_cumsum <- function(x, config, factors = config$factor_
 #' stopifnot(ncol(res$data) >= 5)
 #'
 missingness_per_condition <- function(x, config, factors = config$factor_keys_depth()) {
-  missingPrec <- interaction_missing_stats(x, config, factors)$data
+  missingPrec <- summarize_stats(x, config, factor_key = factors)
   hierarchyKey <- tail(config$hierarchy_keys(), 1)
   hierarchyKey <- paste0("nr_", hierarchyKey)
   xx <- missingPrec |>
@@ -299,8 +242,8 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
 #' stopifnot(ncol(pups$data) == 5)
 #' UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
-  tmp <- prolfqua::interaction_missing_stats(data, cf)
-  nrMiss <- tmp$data |>
+  tmp <- prolfqua::summarize_stats(data, cf)
+  nrMiss <- tmp |>
     tidyr::pivot_wider(
       id_cols = cf$hierarchy_keys(),
       names_from = cf$factor_keys_depth(),

@@ -76,7 +76,6 @@ Other modelling:
 \code{\link{moderated_p_limma_long}()},
 \code{\link{my_contest}()},
 \code{\link{my_contrast}()},
-\code{\link{my_glht}()},
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},

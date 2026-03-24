@@ -875,60 +875,6 @@ linfct_factors_contrasts <- function(m) {
 
 # Computing contrasts helpers -----
 
-#' apply multcomp::glht method to linfct
-#'
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#'
-#' mb <- sim_make_model_lm( "interaction")
-#' linfct <- linfct_from_model(mb)
-#' names(linfct)
-#' my_glht(mb, linfct$linfct_factors)
-#'
-#' m <-  sim_make_model_lm( "factors")
-#' linfct <- linfct_from_model(m)$linfct_factors
-#' my_glht(m, linfct)
-#'
-my_glht <- function(model, linfct, sep = TRUE) {
-  if (!inherits(model, "lm")) {
-    # fixes issue of mutlcomp not working on factors of class character
-    warning("USE ONLY WITH LM models ", class(model))
-    if (length(lme4::fixef(model)) != ncol(linfct)) {
-      return(NA) # catch rank defficient
-    }
-  } else {
-    if (isSingular_lm(model)) {
-      return(NA)
-    }
-    model$model <- as.data.frame(unclass(model$model))
-  }
-  if (sep) {
-    res <- list()
-    for (i in seq_len(nrow(linfct))) {
-      x <- multcomp::glht(model, linfct = linfct[i, , drop = FALSE])
-      RHS <- broom::tidy(confint(x)) |> dplyr::select(-dplyr::all_of("estimate"))
-
-      RHS$df <- x$df
-      RHS$sigma <- sigma(model)
-
-      x <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("contrast")) # |> dplyr::select(-contrast)
-      res[[i]] <- x
-    }
-    res <- dplyr::bind_rows(res)
-    return(res)
-  } else {
-    x <- multcomp::glht(model, linfct = linfct)
-    RHS <- broom::tidy(confint(x)) |> dplyr::select(-dplyr::all_of("estimate"))
-    RHS$df <- x$df
-    RHS$sigma <- sigma(model)
-    res <- dplyr::inner_join(broom::tidy(summary(x)), RHS, by = c("contrast")) |>
-      dplyr::select(-dplyr::all_of("rhs"))
-    return(res)
-  }
-}
-
 #' compute contrasts for full models
 #' @param m linear model generated using lm
 #' @param linfct linear function
@@ -944,7 +890,6 @@ my_glht <- function(model, linfct, sep = TRUE) {
 #'
 #' m <-  sim_make_model_lm( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
-#' my_glht(m, linfct)
 #' my_contrast(m, linfct, confint = 0.95)
 #' my_contrast(m, linfct, confint = 0.99)
 #'
@@ -1060,10 +1005,6 @@ my_contrast_V2 <- function(m, linfct, confint = 0.95) {
 #' names(linfct)
 #' my_contest(mb, linfct$linfct_factors)
 #' my_contest(mb, linfct$linfct_interactions)
-#' if(require(multcomp)){
-#' my_glht(mb, linfct$linfct_factors)
-#' my_glht(mb, linfct$linfct_interactions)
-#' }
 #' length(mb@beta)
 #' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 #' summary(mb)

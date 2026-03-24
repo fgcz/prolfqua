@@ -25,10 +25,6 @@ linfct <- linfct_from_model(mb)
 names(linfct)
 my_contest(mb, linfct$linfct_factors)
 my_contest(mb, linfct$linfct_interactions)
-if(require(multcomp)){
-my_glht(mb, linfct$linfct_factors)
-my_glht(mb, linfct$linfct_interactions)
-}
 length(mb@beta)
 lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 summary(mb)
@@ -87,7 +83,6 @@ Other modelling:
 \code{\link{moderated_p_limma_long}()},
 \code{\link{my_contrast}()},
 \code{\link{my_contrast_V2}()},
-\code{\link{my_glht}()},
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},

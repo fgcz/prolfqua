@@ -169,7 +169,7 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
   pdata <- complete_cases(pdata, config)
   intsym <- sym(config$get_response())
   hierarchyFactor <- pdata |>
-    dplyr::group_by(!!!syms(c(config$hierarchy_keys(), factor_key))) |>
+    dplyr::group_by(!!!syms(c(config$hierarchy_keys(), config$isotopeLabel, factor_key))) |>
     dplyr::summarize(
       nrReplicates = dplyr::n(),
       nrMeasured = sum(!is.na(!!intsym)),

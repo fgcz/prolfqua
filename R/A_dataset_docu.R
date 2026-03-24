@@ -3,7 +3,6 @@
 #' @importFrom dplyr inner_join left_join mutate nest_by
 #' @importFrom dplyr rename select starts_with summarize ungroup
 #'
-#' @importFrom gridExtra grid.arrange
 #' @importFrom ggplot2 aes element_text facet_grid ggplot ggtitle geom_boxplot
 #' @importFrom ggplot2 geom_line geom_violin guides
 #' @importFrom ggplot2 stat_summary scale_x_continuous scale_y_continuous theme
@@ -28,7 +27,6 @@
 #' @importFrom stats approx df fisher.test ftable lm.fit pchisq pf pnorm qf rgeom rlnorm rnorm uniroot
 #' @importFrom utils combn data head read.csv tail unzip
 #' @importFrom limma lmFit contrasts.fit eBayes topTable
-#' @importFrom yaml write_yaml
 NULL
 
 

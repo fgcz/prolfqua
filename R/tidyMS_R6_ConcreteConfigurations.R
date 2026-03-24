@@ -11,7 +11,10 @@
 #' skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
 #' skylineconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
 #' skylineconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
-#' skylineconfig$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+#' skylineconfig$hierarchy[["fragment_Id"]] <- c(
+#'   "Peptide.Sequence", "Precursor.Charge",
+#'   "Fragment.Ion", "Product.Charge"
+#' )
 #' skylineconfig$ident_qValue <- "annotation_QValue"
 #' skylineconfig$set_response("Area")
 #' skylineconfig$isotopeLabel <- "Isotope.Label"

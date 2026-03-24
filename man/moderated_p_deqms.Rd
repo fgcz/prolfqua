@@ -88,7 +88,6 @@ Other modelling:
 \code{\link{my_contest}()},
 \code{\link{my_contrast}()},
 \code{\link{my_contrast_V2}()},
-\code{\link{my_glht}()},
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},

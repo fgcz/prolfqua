@@ -19,7 +19,10 @@ DEAconfig$fileName <- "Replicate.Name"
 DEAconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
 DEAconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
 DEAconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
-DEAconfig$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
+DEAconfig$hierarchy[["fragment_Id"]] <- c(
+  "Peptide.Sequence", "Precursor.Charge",
+  "Fragment.Ion", "Product.Charge"
+)
 DEAconfig$ident_qValue <- "annotation_QValue"
 DEAconfig$set_response("Area")
 DEAconfig$isotopeLabel <- "Isotope.Label"

@@ -30,7 +30,6 @@ Imports:
     broom,
     dplyr,
     forcats,
-    gridExtra,
     ggplot2,
     ggbeeswarm,
     ggrepel,
@@ -39,7 +38,6 @@ Imports:
     lmerTest,
     logistf,
     MASS,
-    multcomp,
     pheatmap,
     plotly,
     progress,
@@ -50,14 +48,13 @@ Imports:
     tidyselect,
     tidyr,
     tibble,
-    UpSetR,
-    yaml
+    UpSetR
 Suggests:
     corrplot,
     covr,
     crosstalk,
     devtools,
-    iheatmapr,
+    gridExtra,
     KernSmooth,
     knitr,
     lintr,
