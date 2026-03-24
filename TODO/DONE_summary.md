@@ -235,3 +235,47 @@ Each class exposes: `formula`, `model_name`, `report_columns`, `is_mixed`, `anov
 | `R/ContrastsFacades.R` | `weights` parameter added to 5 aggregated facades |
 | `R/ContrastsLimma.R` | `build_model_limma` weight pivot for protein×sample matrix |
 | `CLAUDE.md` | Updated strategy pattern and weights documentation |
+
+---
+
+## 2026-03-24 — File Reorganization: Renames, Splits, Dead Code Removal
+
+### Removed dead files and moved functions to their consumers
+
+Commits `edc5dee3`, `c305a1ce`, `a1d79433`.
+
+| Deleted file | Reason | Where functions went |
+|---|---|---|
+| `R/tidyMS_R6_ConcreteConfigurations.R` | `create_config_MQ_peptide()` dead (zero callers) | Deleted entirely |
+| `R/tidyMS_MQ_workflow.R` | `filter_proteins_by_peptide_count()`, `filter_difference()` only called from `LFQData` | Moved to `R/LFQData.R` |
+| `R/tidyMS_R6_TransitionCorrelations.R` | Mixed bag of unrelated functions | Split by theme (see below) |
+
+### Split `tidyMS_R6_TransitionCorrelations.R` by theme (commit `c305a1ce`)
+
+| Destination | Functions moved |
+|---|---|
+| `R/LFQData.R` | `remove_small_intensities`, `nr_B_in_A`, `.nr_B_in_A`, `.make_name_AinB` |
+| `R/LFQDataTransformer.R` | `transform_work_intensity`, `response_matrix_as_tibble`, `.get_robscales`, `get_robscales`, `robust_scale`, `apply_to_response_matrix`, `scale_with_subset`, `center_to_reference`, `center_to_reference_cfg` |
+| `R/tidyMS_aggregation.R` | `.ExtractMatrix`, `nr_obs_sample`, `.rankProteinPrecursors`, `rank_peptide_by_intensity` |
+| `R/tidyMS_reshaping.R` (new) | `tidy_to_wide`, `tidy_to_wide_config` |
+
+Also removed dead `nr_obs_experiment()` (zero callers).
+
+### Rename `tidyMS_missigness_V2.R` → `tidyMS_missigness_imputation.R` (commit `a1d79433`)
+
+Name now reflects actual content (imputation helpers, not "V2" of missingness).
+
+### Rename `tidyMS_R6Model.R` → `tidyMS_build_model.R` and split `tidyMS_R6_Modelling.R` (commit `d04e4775`)
+
+`tidyMS_R6Model.R` had no R6 classes — renamed to `tidyMS_build_model.R` to match its content (`build_model`, `build_model_impute`, `LR_test`, `model_summary`).
+
+`tidyMS_R6_Modelling.R` (1634 lines, 5 unrelated concerns) split into 4 files:
+
+| File | Lines | Contents |
+|---|---|---|
+| `R/tidyMS_R6_Modelling.R` | 396 | Strategy R6 classes (`StrategyLM`, `StrategyRLM`, `StrategyLmer`, `AnovaExtractor`) + wrappers |
+| `R/tidyMS_build_model.R` | 605 | Model fitting internals merged in: `model_analyse`, `isSingular_lm`, `get_complete_model_fit`, `new_lm_imputed` + S3 methods, `compute_borrowed_variance`, `impute_refit_singular`, `plot_lmer_peptide_predictions` |
+| `R/tidyMS_contrasts.R` (new) | 548 | Contrast linear function machinery: `linfct_*` family, `my_contrast`, `my_contrast_V2`, `my_contest`, `contrasts_linfct`, `pivot_model_contrasts_2_Wide` |
+| `R/tidyMS_moderation.R` (new) | 318 | Moderation + ROPECA + Fisher: `moderated_p_limma*`, `adjust_p_values`, `get_p_values_pbeta`, `summary_ROPECA_median_p.scaled`, `contrasts_fisher_exact` |
+
+No API changes — all exports preserved, all 485 tests pass.
