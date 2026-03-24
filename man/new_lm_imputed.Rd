@@ -25,6 +25,26 @@ Wraps an lm object with borrowed covariance information.
 S3 generics vcov(), sigma(), and df.residual() dispatch
 to the borrowed values instead of the original model's.
 }
+\examples{
+# Fit a normal lm, then wrap it with borrowed covariance
+dat <- data.frame(group_ = rep(c("A", "B"), each = 4),
+                  y = c(20.1, 20.5, 19.8, 20.3, 22.1, 22.4, 21.9, 22.2))
+fit <- lm(y ~ group_, data = dat)
+
+# Wrap with borrowed variance (in practice these come from donor pool)
+wrapped <- prolfqua:::new_lm_imputed(fit,
+  borrowed_vcov = vcov(fit),
+  borrowed_sigma = 0.8,
+  borrowed_df = 6,
+  n_observed = 5)
+
+# S3 dispatch returns borrowed values
+stopifnot(inherits(wrapped, "lm_imputed"))
+stopifnot(sigma(wrapped) == 0.8)
+stopifnot(df.residual(wrapped) == 6)
+# coefficients() still dispatches to underlying lm
+stopifnot(identical(coefficients(wrapped), coefficients(fit)))
+}
 \seealso{
 Other modelling: 
 \code{\link{Contrasts}},

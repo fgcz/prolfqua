@@ -299,6 +299,25 @@ get_anova_df <- function(test = "F") {
 #' @return lm_imputed object
 #' @keywords internal
 #' @family modelling
+#' @examples
+#' # Fit a normal lm, then wrap it with borrowed covariance
+#' dat <- data.frame(group_ = rep(c("A", "B"), each = 4),
+#'                   y = c(20.1, 20.5, 19.8, 20.3, 22.1, 22.4, 21.9, 22.2))
+#' fit <- lm(y ~ group_, data = dat)
+#'
+#' # Wrap with borrowed variance (in practice these come from donor pool)
+#' wrapped <- prolfqua:::new_lm_imputed(fit,
+#'   borrowed_vcov = vcov(fit),
+#'   borrowed_sigma = 0.8,
+#'   borrowed_df = 6,
+#'   n_observed = 5)
+#'
+#' # S3 dispatch returns borrowed values
+#' stopifnot(inherits(wrapped, "lm_imputed"))
+#' stopifnot(sigma(wrapped) == 0.8)
+#' stopifnot(df.residual(wrapped) == 6)
+#' # coefficients() still dispatches to underlying lm
+#' stopifnot(identical(coefficients(wrapped), coefficients(fit)))
 new_lm_imputed <- function(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed) {
   attr(model, "borrowed_vcov") <- borrowed_vcov
   attr(model, "borrowed_sigma") <- borrowed_sigma
@@ -334,6 +353,24 @@ df.residual.lm_imputed <- function(object, ...) {
 #' @return list with sigma, df, method, and optionally vcov
 #' @keywords internal
 #' @family modelling
+#' @examples
+#' mod <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
+#'
+#' # Sigma method (default): returns median sigma and df from donors
+#' borrowed_s <- prolfqua:::compute_borrowed_variance(
+#'   mod$modelDF, method = "sigma")
+#' stopifnot(borrowed_s$method == "sigma")
+#' stopifnot(is.numeric(borrowed_s$sigma) && borrowed_s$sigma > 0)
+#' stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
+#'
+#' # Vcov method: element-wise median vcov from donors.
+#' # Falls back to sigma if donor models have different coefficient counts.
+#' mod_no_missing <- sim_build_models_lm(model = "parallel3",
+#'   Nprot = 10, with_missing = FALSE)
+#' borrowed_v <- prolfqua:::compute_borrowed_variance(
+#'   mod_no_missing$modelDF, method = "vcov")
+#' stopifnot(borrowed_v$method == "vcov")
+#' stopifnot(is.matrix(borrowed_v$vcov))
 compute_borrowed_variance <- function(modelDF, method = c("sigma", "vcov")) {
   method <- match.arg(method)
   good <- get_complete_model_fit(modelDF)
