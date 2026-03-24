@@ -226,16 +226,16 @@ results_protein |>
     ## # A tibble: 60 × 7
     ##    facade contrast  modelName      protein_Id    diff  p.value      FDR
     ##    <chr>  <chr>     <chr>          <chr>        <dbl>    <dbl>    <dbl>
-    ##  1 deqms  A_vs_Ctrl WaldTest_DEqMS Zci7Jw~7064 -0.718 5.63e-11 4.39e- 9
-    ##  2 deqms  A_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.583 3.43e-10 1.10e- 8
-    ##  3 deqms  A_vs_Ctrl WaldTest_DEqMS 6TevMr~7550  0.765 4.24e-10 1.10e- 8
-    ##  4 deqms  A_vs_Ctrl WaldTest_DEqMS 0CubNR~0890  0.674 7.29e-10 1.42e- 8
-    ##  5 deqms  A_vs_Ctrl WaldTest_DEqMS KVkccD~1805 -0.531 3.00e- 9 4.68e- 8
-    ##  6 deqms  B_vs_Ctrl WaldTest_DEqMS fylZqB~3883  0.717 6.57e-13 5.19e-11
-    ##  7 deqms  B_vs_Ctrl WaldTest_DEqMS XxJoJB~7286  0.587 2.16e-11 8.51e-10
-    ##  8 deqms  B_vs_Ctrl WaldTest_DEqMS f0Cvvj~6658  0.345 2.89e- 9 7.62e- 8
-    ##  9 deqms  B_vs_Ctrl WaldTest_DEqMS TR3Ksv~1492 -0.413 1.07e- 8 2.12e- 7
-    ## 10 deqms  B_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.424 2.65e- 8 4.18e- 7
+    ##  1 deqms  A_vs_Ctrl WaldTest_DEqMS Zci7Jw~7064 -0.722 3.79e-12 2.96e-10
+    ##  2 deqms  A_vs_Ctrl WaldTest_DEqMS 6TevMr~7550  0.765 3.46e-11 1.35e- 9
+    ##  3 deqms  A_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.583 5.59e-11 1.45e- 9
+    ##  4 deqms  A_vs_Ctrl WaldTest_DEqMS 0CubNR~0890  0.674 9.73e-11 1.90e- 9
+    ##  5 deqms  A_vs_Ctrl WaldTest_DEqMS KVkccD~1805 -0.524 1.25e- 9 1.95e- 8
+    ##  6 deqms  B_vs_Ctrl WaldTest_DEqMS fylZqB~3883  0.717 1.05e-13 8.28e-12
+    ##  7 deqms  B_vs_Ctrl WaldTest_DEqMS XxJoJB~7286  0.587 4.63e-12 1.83e-10
+    ##  8 deqms  B_vs_Ctrl WaldTest_DEqMS f0Cvvj~6658  0.345 5.39e-10 1.42e- 8
+    ##  9 deqms  B_vs_Ctrl WaldTest_DEqMS TR3Ksv~1492 -0.413 3.73e- 9 7.37e- 8
+    ## 10 deqms  B_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.424 8.16e- 9 1.29e- 7
     ## # ℹ 50 more rows
 
 ## Proteins that could not be estimated
@@ -331,17 +331,17 @@ if (length(lm_missing_proteins) > 0) {
 
 | facade     | modelName          | protein_Id  | contrast  | avgAbd |   diff |   FDR | statistic | std.error |    df | p.value | conf.low | conf.high | sigma | significant |
 |:-----------|:-------------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|------:|--------:|---------:|----------:|------:|:------------|
-| lm_impute  | WaldTest_moderated | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.013 | 4.746 |   1.000 |   -0.154 |     0.154 | 0.059 | FALSE       |
+| lm_impute  | WaldTest_moderated | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.007 | 4.310 |   1.000 |   -0.234 |     0.234 | 0.087 | FALSE       |
 | lm_missing | groupAverage       | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 | 2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | FALSE       |
-| lm_impute  | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.776 |  0.001 | 0.922 |     0.119 |     0.013 | 4.746 |   0.910 |   -0.153 |     0.156 | 0.059 | FALSE       |
-| lm_missing | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.009 |     4.446 |     0.102 | 5.746 |   0.005 |    0.150 |     0.527 | 0.076 | FALSE       |
-| lm_impute  | WaldTest_moderated | DTCi0N~0734 | A_vs_Ctrl |  3.786 | -0.022 | 0.193 |    -1.776 |     0.013 | 6.746 |   0.121 |   -0.165 |     0.122 | 0.060 | FALSE       |
+| lm_impute  | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.776 |  0.000 | 0.987 |     0.030 |     0.007 | 4.310 |   0.977 |   -0.234 |     0.234 | 0.087 | FALSE       |
+| lm_missing | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.020 |     3.690 |     0.102 | 5.377 |   0.012 |    0.108 |     0.570 | 0.092 | FALSE       |
+| lm_impute  | WaldTest_moderated | DTCi0N~0734 | A_vs_Ctrl |  3.777 | -0.003 | 0.739 |    -0.468 |     0.007 | 6.310 |   0.656 |   -0.217 |     0.210 | 0.088 | FALSE       |
 | lm_missing | groupAverage       | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 | 4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | FALSE       |
-| lm_impute  | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  3.803 |  0.013 | 0.386 |     1.032 |     0.013 | 6.746 |   0.338 |   -0.131 |     0.156 | 0.060 | FALSE       |
-| lm_missing | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.006 |     4.194 |     0.057 | 7.746 |   0.003 |    0.072 |     0.372 | 0.065 | FALSE       |
-| lm_impute  | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.784 | -0.018 | 0.293 |    -1.481 |     0.013 | 4.746 |   0.202 |   -0.172 |     0.137 | 0.059 | FALSE       |
-| lm_missing | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.023 |    -3.752 |     0.084 | 5.757 |   0.010 |   -0.433 |    -0.118 | 0.064 | FALSE       |
-| lm_impute  | WaldTest_moderated | OrL0ux~1369 | B_vs_Ctrl |  3.784 | -0.018 | 0.247 |    -1.460 |     0.013 | 4.746 |   0.207 |   -0.172 |     0.137 | 0.059 | FALSE       |
+| lm_impute  | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  3.780 |  0.002 | 0.835 |     0.246 |     0.007 | 6.310 |   0.814 |   -0.212 |     0.215 | 0.088 | FALSE       |
+| lm_missing | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.016 |     3.499 |     0.057 | 7.377 |   0.009 |    0.040 |     0.403 | 0.078 | FALSE       |
+| lm_impute  | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.777 | -0.003 | 0.796 |    -0.389 |     0.007 | 4.310 |   0.716 |   -0.237 |     0.232 | 0.087 | FALSE       |
+| lm_missing | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.055 |    -2.951 |     0.084 | 5.340 |   0.029 |   -0.480 |    -0.072 | 0.081 | FALSE       |
+| lm_impute  | WaldTest_moderated | OrL0ux~1369 | B_vs_Ctrl |  3.777 | -0.003 | 0.749 |    -0.382 |     0.007 | 4.310 |   0.720 |   -0.237 |     0.232 | 0.087 | FALSE       |
 | lm_missing | groupAverage       | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 | 2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | FALSE       |
 
 Contrast estimates from lm_missing and lm_impute for proteins that plain

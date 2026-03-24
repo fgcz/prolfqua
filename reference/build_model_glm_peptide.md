@@ -31,6 +31,7 @@ object
 ## See also
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -54,6 +55,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),

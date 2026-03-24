@@ -1,6 +1,6 @@
-# Count distinct elements for each level of hierarchy per sample
+# Hierarchy counts per sample
 
-Count distinct elements for each level of hierarchy per sample
+Hierarchy counts per sample
 
 ## Usage
 
@@ -16,15 +16,21 @@ hierarchy_counts_sample(pdata, configuration, nr_children = 1)
 
 - configuration:
 
-  [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md)
+  AnalysisConfiguration
 
 - nr_children:
 
-  integer, minimum number of children required
+  minimum number of children
+
+## Value
+
+[`HierarchyCountsSample`](https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.md)
+R6 object
 
 ## See also
 
 Other summary:
+[`HierarchyCountsSample`](https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`hierarchy_counts()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts.md),
 [`summarize_hierarchy()`](https://wolski.github.io/prolfqua/reference/summarize_hierarchy.md)
@@ -41,10 +47,10 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 config <- bb$config
 data <- bb$data
 res <- hierarchy_counts_sample(data, config, nr_children = 1)
-x <- res("long")
+x <- res$long()
 # filters on peptide level
 res <- hierarchy_counts_sample(data, config, nr_children = 2)
-x2 <- res("long")
+x2 <- res$long()
 # filters on protein level based on peptide count
 bb <- prolfqua::sim_lfq_data_protein_config()
 #> creating sampleName from fileName column
@@ -52,9 +58,9 @@ bb <- prolfqua::sim_lfq_data_protein_config()
 #> completing cases done
 #> setup done
 res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 2)
-x1 <- res()
+x1 <- res$wide()
 res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 1)
-x2 <- res()
+x2 <- res$wide()
 x1$nr_children <- 2
 x2$nr_children <- 1
 xl <- dplyr::bind_rows(x1, x2)

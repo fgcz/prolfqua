@@ -21,6 +21,7 @@ hierarchy_counts(pdata, config)
 ## See also
 
 Other summary:
+[`HierarchyCountsSample`](https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`hierarchy_counts_sample()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.md),
 [`summarize_hierarchy()`](https://wolski.github.io/prolfqua/reference/summarize_hierarchy.md)

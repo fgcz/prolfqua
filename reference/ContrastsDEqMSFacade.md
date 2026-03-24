@@ -20,6 +20,7 @@ Encapsulates the pipeline:
 ## See also
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
@@ -42,6 +43,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -125,7 +131,13 @@ initialize
 
 #### Usage
 
-    ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsDEqMSFacade$new(
+      lfqdata,
+      modelstr,
+      contrasts,
+      weights = lfqdata$config$nr_children,
+      ...
+    )
 
 #### Arguments
 
@@ -140,6 +152,11 @@ initialize
 - `contrasts`:
 
   named character vector of contrasts
+
+- `weights`:
+
+  column name for per-observation weights (default:
+  `lfqdata$config$nr_children`). Pass `NULL` for unweighted.
 
 - `...`:
 

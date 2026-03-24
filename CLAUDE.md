@@ -80,16 +80,30 @@ that wires strategy → model → contrasts → moderation internally.
 ### Weights & `nr_children`
 
 `config$nr_children` names the column tracking child-feature counts
-(e.g. peptides per protein). After `get_Aggregator()` rollup, this
-column is populated automatically. For peptide/precursor-level data it
-is typically 1.
+(e.g. peptides per protein). After `get_Aggregator()` rollup, each
+protein×sample row gets its own count — **`nr_children` is
+sample-wise**. For peptide/precursor-level data it is typically 1.
 
-**Protein-level input must carry `nr_children`.** DEqMS uses it for
-count-based variance modelling (`ContrastsDEqMSFacade`). If the column
-is missing,
+**Two distinct uses:**
+
+1.  **Fitting weights** (sample-wise): Aggregated facades (`lm`,
+    `limma`, `lm_missing`, `lm_impute`, `deqms`) pass `nr_children` as
+    `weights` by default to [`lm()`](https://rdrr.io/r/stats/lm.html) or
+    [`limma::lmFit()`](https://rdrr.io/pkg/limma/man/lmFit.html). This
+    down-weights protein intensities derived from fewer peptides in a
+    given sample. Disable with `weights = NULL`.
+
+2.  **DEqMS variance moderation** (experiment-wide):
+    `ContrastsDEqMSFacade` additionally aggregates `nr_children` via
+    [`max()`](https://rdrr.io/r/base/Extremes.html) per protein across
+    all samples for count-dependent variance shrinkage. This is separate
+    from the fitting weights.
+
+**Protein-level input must carry `nr_children`.** If the column is
+missing,
 [`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md)
 adds it set to 1 with a warning — but this defeats the purpose for
-aggregated protein data where the actual peptide count matters.
+aggregated data where the actual peptide count matters.
 
 ### Key Design Patterns
 
@@ -104,14 +118,17 @@ access result via `$lfq`:
 lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 ```
 
-**Strategy pattern for models**:
+**Strategy pattern for models**: **Strategy R6 classes for models**:
+`StrategyLM`, `StrategyRLM`, `StrategyLmer`, `StrategyLogistf` — each
+with `model_fun`, `isSingular`, `contrast_fun`, `df_residual`, `sigma`
+methods. Wrapper functions
 [`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`strategy_lmer()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`strategy_glm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
-return lists with `model_fun`, `contrast_fun`, `isSingular`, `anova_df`.
+[`strategy_lmer()`](https://wolski.github.io/prolfqua/reference/strategy.md),
+[`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md)
+create instances.
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
-returns a simpler list (formula, trend, robust) consumed by
+returns a plain list (formula, trend, robust, weights) consumed by
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md).
 
 **Config immutability**: AnalysisConfiguration is always deep-cloned
@@ -140,8 +157,7 @@ stack (`set_response()` / `pop_response()` / `get_response()`) for
 working with multiple intensity columns. - **fileName**: sample
 identifier column.
 
-Concrete config factories:
-[`create_config_MQ_peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md),
+Concrete config factories: `create_config_MQ_peptide()`,
 `create_config_Skyline()`, `create_config_Spectronaut_Peptide()`, etc.
 in `tidyMS_R6_ConcreteConfigurations.R`.
 
@@ -157,11 +173,11 @@ in `tidyMS_R6_ConcreteConfigurations.R`.
   borrowed covariance for missing groups (in tidyMS_R6Model.R)
 - `build_model_limma(lfqdata, strategy)` — fit limma matrix model (in
   ContrastsLimma.R)
-- [`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-  [`strategy_lmer()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-  [`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-  [`strategy_glm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
-  — per-protein model strategies (in tidyMS_R6_Modelling.R)
+- `StrategyLM`, `StrategyRLM`, `StrategyLmer` R6 classes +
+  `strategy_lm/rlm/lmer()` wrappers (tidyMS_R6_Modelling.R);
+  `StrategyLogistf` +
+  [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md)
+  (logistf.R)
 - [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
   — limma matrix model strategy (in ContrastsLimma.R)
 - [`sim_lfq_data_peptide_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md)

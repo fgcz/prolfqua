@@ -21,7 +21,6 @@ Other configuration:
 [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md),
 [`R6_extract_values()`](https://wolski.github.io/prolfqua/reference/R6_extract_values.md),
 [`complete_cases()`](https://wolski.github.io/prolfqua/reference/complete_cases.md),
-[`concrete_AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md),
 [`make_interaction_column()`](https://wolski.github.io/prolfqua/reference/make_interaction_column.md),
 [`make_reduced_hierarchy_config()`](https://wolski.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
 [`sample_subset()`](https://wolski.github.io/prolfqua/reference/sample_subset.md),
@@ -31,6 +30,7 @@ Other configuration:
 [`table_factors_size()`](https://wolski.github.io/prolfqua/reference/table_factors_size.md)
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -53,6 +53,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -135,6 +140,7 @@ Other stats:
 [`summarize_stats()`](https://wolski.github.io/prolfqua/reference/summarize_stats.md)
 
 Other summary:
+[`HierarchyCountsSample`](https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.md),
 [`hierarchy_counts()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts.md),
 [`hierarchy_counts_sample()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.md),
 [`summarize_hierarchy()`](https://wolski.github.io/prolfqua/reference/summarize_hierarchy.md)

@@ -20,6 +20,7 @@
 <url><loc>https://wolski.github.io/prolfqua/authors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/index.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/AnovaExtractor.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/Contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsFirth.html</loc></url>
@@ -40,6 +41,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsTable.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/FACADE_REGISTRY.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/LFQData.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/LFQDataAggregator.html</loc></url>
@@ -57,6 +59,11 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/ModelLimma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/PACKAGE_DATA.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/R6_extract_values.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/StrategyLM.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/StrategyLimma.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/StrategyLmer.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/StrategyLogistf.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/StrategyRLM.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/adjust_p_values.html</loc></url>
@@ -73,7 +80,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/complete_cases.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_linfct.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_linfct_firth.html</loc></url>

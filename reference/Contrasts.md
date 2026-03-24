@@ -7,6 +7,7 @@ Estimate contrasts using Wald Test
 ## See also
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
@@ -29,6 +30,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -301,9 +307,6 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 
 modelFunction <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
-#> Registered S3 method overwritten by 'lme4':
-#>   method           from
-#>   na.action.merMod car 
 
 config <- istar$config
 config$hierarchy_keys_depth()
@@ -314,6 +317,9 @@ mod <- build_model(
   modelFunction,
   subject_Id = config$hierarchy_keys_depth()
 )
+#> Registered S3 method overwritten by 'lme4':
+#>   method           from
+#>   na.action.merMod car 
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')

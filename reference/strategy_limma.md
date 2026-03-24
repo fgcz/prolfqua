@@ -1,9 +1,8 @@
 # Create limma modelling strategy
 
-Analogous to
-[`strategy_lm`](https://wolski.github.io/prolfqua/reference/strategy.md)
-but for limma's matrix-based pipeline. Returns a list consumed by
-[`build_model_limma`](https://wolski.github.io/prolfqua/reference/build_model_limma.md).
+Wrapper that returns a
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md)
+R6 object.
 
 ## Usage
 
@@ -47,6 +46,7 @@ strategy_limma(
 ## See also
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -70,6 +70,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -116,7 +121,7 @@ Other modelling:
 strat <- strategy_limma("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x560ce4b79d00>
+#> <environment: 0x555a0922c1d8>
 strat$model_name
 #> [1] "limma"
 ```

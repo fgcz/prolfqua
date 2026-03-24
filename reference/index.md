@@ -5,6 +5,9 @@
 - [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md)
   : Analysis Configuration
 
+- [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md)
+  : R6 class for extracting ANOVA results as a data frame
+
 - [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md)
   : Estimate contrasts using Wald Test
 
@@ -117,6 +120,21 @@
 - [`R6_extract_values()`](https://wolski.github.io/prolfqua/reference/R6_extract_values.md)
   : Extract all value slots in an R6 object
 
+- [`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md)
+  : Linear model strategy (R6 class)
+
+- [`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md)
+  : R6 class for limma modelling strategy
+
+- [`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md)
+  : Linear mixed-effects model strategy (R6 class)
+
+- [`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md)
+  : Firth's logistic regression strategy (R6 class)
+
+- [`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md)
+  : Robust linear model strategy (R6 class)
+
 - [`UpSet_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
   : UpSetR plot from interaction_missing_stats
 
@@ -147,9 +165,6 @@
 - [`center_to_reference_cfg()`](https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.md)
   : center to reference
 
-- [`create_config_MQ_peptide()`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md)
-  : Generate instances of AnalysisConfiguration
-
 - [`estimate_lod_global()`](https://wolski.github.io/prolfqua/reference/estimate_lod_global.md)
   : esitmate lod
 
@@ -170,6 +185,9 @@
 
 - [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md)
   : group label function
+
+- [`hierarchy_counts_sample()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.md)
+  : Hierarchy counts per sample
 
 - [`impute_with_zcomp()`](https://wolski.github.io/prolfqua/reference/impute_with_zcomp.md)
   : Impute missing values using zCompositions
@@ -240,8 +258,7 @@
   [`strategy_lmer()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
-  [`strategy_glm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
-  : Firth's Bias-Reduced Logistic Regression (logistf)
+  : Create Firth's logistic regression strategy
 
 - [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
   : Create limma modelling strategy

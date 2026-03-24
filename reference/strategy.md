@@ -1,10 +1,20 @@
-# Firth's Bias-Reduced Logistic Regression (logistf)
+# Create Firth's logistic regression strategy
 
-The strategy contains functions to fit the model but also compute the
-contrasts etc.
+Convenience wrapper that creates a
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md)
+object.
 
-The strategy contains functions to fit the model but also compute the
-contrasts etc.
+Convenience wrapper that creates a
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md)
+object.
+
+Convenience wrapper that creates a
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md)
+object.
+
+Convenience wrapper that creates a
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md)
+object.
 
 ## Usage
 
@@ -38,17 +48,6 @@ strategy_rlm(
   report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
     "moderated.p.value.adjusted")
 )
-
-strategy_glm(
-  modelstr,
-  model_name = "Model",
-  test = "Chisq",
-  family = stats::binomial,
-  multiplier = 1,
-  offset = 1,
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted")
-)
 ```
 
 ## Arguments
@@ -67,7 +66,7 @@ strategy_glm(
 
 - test:
 
-  type of test statistic passed to anova (e.g. "Chisq")
+  type of test statistic to use (e.g. "Chisq")
 
 - weights:
 
@@ -75,27 +74,28 @@ strategy_glm(
   per-observation weights, passed to
   [`lm`](https://rdrr.io/r/stats/lm.html). Default `NULL` (unweighted).
 
-- family:
-
-  either binomial or quasibinomial
-
-- multiplier:
-
-  for tuning default is 1.
-
-- offset:
-
-  offset added to contingency table cells to avoid perfect separation
-
 ## Value
 
-list with model function, contrast computation function etc.
+a
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md)
+object
 
-list with model function, contrast computation function etc.
+a
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md)
+object
+
+a
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md)
+object
+
+a
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md)
+object
 
 ## See also
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -119,6 +119,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -160,6 +165,7 @@ Other modelling:
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -183,6 +189,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -224,6 +235,7 @@ Other modelling:
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -247,6 +259,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -288,6 +305,7 @@ Other modelling:
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -311,70 +329,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
-[`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
-[`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
-[`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
-[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
-[`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
-[`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
-[`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
-[`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
-[`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
-[`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
-[`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
-[`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
-[`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
-[`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
-[`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
-[`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
-[`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
-[`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
-[`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
-[`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
-[`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
-[`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
-[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
-[`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
-[`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
-[`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
-[`sim_make_model_lm()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lm.md),
-[`sim_make_model_lmer()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lmer.md),
-[`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
-
-Other modelling:
-[`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
-[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
-[`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
-[`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
-[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
-[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
-[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
-[`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
-[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
-[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
-[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
-[`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
-[`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
-[`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
-[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
-[`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
-[`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
-[`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
-[`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -421,23 +380,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x560cfacf97e0>
-tmp$isSingular
-#> function (m) 
-#> {
-#>     anyNA <- any(is.na(coefficients(m)))
-#>     if (anyNA) {
-#>         return(TRUE)
-#>     }
-#>     else {
-#>         if (df_residual_logistf(m) >= 2) {
-#>             return(FALSE)
-#>         }
-#>         return(TRUE)
-#>     }
-#> }
-#> <bytecode: 0x560cd316ada8>
-#> <environment: 0x560cfacf97e0>
+#> <environment: 0x555a061a8ae8>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -449,15 +392,16 @@ istar$data <- encode_bin_resp(istar$data, istar$config)
 #> completing cases
 istar <- LFQData$new(istar$data, istar$config)
 df <- istar$summarize_hierarchy()
-df2 <- df[df[[ncol(df)]] > 1,  ]
+df2 <- df[df[[ncol(df)]] > 1, ]
 istar2 <- istar$get_subset(df2)
 #> Joining with `by = join_by(protein_Id)`
 istar2$data |>
-dplyr::group_by(protein_Id) |>
- tidyr::nest() -> nestProtein
-modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id", model_name = "random_example")
+  dplyr::group_by(protein_Id) |>
+  tidyr::nest() -> nestProtein
+modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",
+  model_name = "random_example")
 modelFunction$model_fun(nestProtein$data[[1]])
-#> logistf::logistf(formula = formula, data = DFT, weights = Freq)
+#> logistf::logistf(formula = self$formula, data = DFT, weights = Freq)
 #> Model fitted by Penalized ML
 #> Confidence intervals and p-values by Profile Likelihood 
 #> 
@@ -472,7 +416,7 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> Likelihood ratio test=10.07111 on 8 df, p=0.2600707, n=84
 #> 
 modelFunction$model_fun(nestProtein$data[[4]])
-#> logistf::logistf(formula = formula, data = DFT, weights = Freq)
+#> logistf::logistf(formula = self$formula, data = DFT, weights = Freq)
 #> Model fitted by Penalized ML
 #> Confidence intervals and p-values by Profile Likelihood 
 #> 
@@ -484,110 +428,19 @@ modelFunction$model_fun(nestProtein$data[[4]])
 #> 
 #> Likelihood ratio test=3.276542 on 5 df, p=0.657435, n=48
 #> 
-
-
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
-#> creating sampleName from fileName column
-#> completing cases
-#> completing cases done
-#> setup done
-istar <- prolfqua::LFQData$new(istar$data,istar$config)
-istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
-dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
-istar$factors()
-#> # A tibble: 12 × 3
-#>    sample  sampleName group_
-#>    <chr>   <chr>      <chr> 
-#>  1 A_V1    A_V1       A     
-#>  2 A_V2    A_V2       A     
-#>  3 A_V3    A_V3       A     
-#>  4 A_V4    A_V4       A     
-#>  5 B_V1    B_V1       B     
-#>  6 B_V2    B_V2       B     
-#>  7 B_V3    B_V3       B     
-#>  8 B_V4    B_V4       B     
-#>  9 Ctrl_V1 Ctrl_V1    Ctrl  
-#> 10 Ctrl_V2 Ctrl_V2    Ctrl  
-#> 11 Ctrl_V3 Ctrl_V3    Ctrl  
-#> 12 Ctrl_V4 Ctrl_V4    Ctrl  
-modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id) ",
+modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
-mod <- build_model(
- istar,
- modelFunction)
-#> Warning: There were 4 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
-sum(mod$modelDF$exists_lmer)
-#> [1] 6
-sum(mod$modelDF$isSingular, na.rm=TRUE)
-#> [1] 0
-
-
-
+modelFunction$model_fun(get_formula = TRUE)
+#> abundanceC ~ group_ + (1 | peptide_Id)
+#> <environment: 0x555a0bc84538>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x560d0090de10>
-tmp$isSingular
-#> function (m) 
-#> {
-#>     anyNA <- any(is.na(coefficients(m)))
-#>     if (anyNA) {
-#>         return(TRUE)
-#>     }
-#>     else {
-#>         if (df.residual(m) >= 2) {
-#>             return(FALSE)
-#>         }
-#>         return(TRUE)
-#>     }
-#> }
-#> <bytecode: 0x560cd0326b58>
-#> <environment: namespace:prolfqua>
+#> <environment: 0x555a109a46e0>
+tmp$weights
+#> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x560d005a3fd0>
-tmp$isSingular
-#> function (m) 
-#> {
-#>     anyNA <- any(is.na(coefficients(m)))
-#>     if (anyNA) {
-#>         return(TRUE)
-#>     }
-#>     df <- df.residual(m)
-#>     if (is.na(df) || df < 2) {
-#>         return(TRUE)
-#>     }
-#>     FALSE
-#> }
-#> <bytecode: 0x560ccd773a10>
-#> <environment: 0x560d005a3fd0>
-tmp <- strategy_glm("Intensity ~ condition", model_name = "parallel design")
-tmp$model_fun(get_formula = TRUE)
-#> Intensity ~ condition
-#> <environment: 0x560cfd4baa18>
-tmp$isSingular
-#> function (m) 
-#> {
-#>     anyNA <- any(is.na(coefficients(m)))
-#>     if (anyNA) {
-#>         return(TRUE)
-#>     }
-#>     else {
-#>         if (df.residual(m) >= 2) {
-#>             return(FALSE)
-#>         }
-#>         return(TRUE)
-#>     }
-#> }
-#> <bytecode: 0x560cd0326b58>
-#> <environment: namespace:prolfqua>
+#> <environment: 0x555a09e99848>
 ```

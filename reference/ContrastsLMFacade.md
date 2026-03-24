@@ -18,6 +18,7 @@ Encapsulates the pipeline:
 ## See also
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -40,6 +41,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -123,7 +129,13 @@ initialize
 
 #### Usage
 
-    ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsLMFacade$new(
+      lfqdata,
+      modelstr,
+      contrasts,
+      weights = lfqdata$config$nr_children,
+      ...
+    )
 
 #### Arguments
 
@@ -138,6 +150,11 @@ initialize
 - `contrasts`:
 
   named character vector of contrasts
+
+- `weights`:
+
+  column name for per-observation weights (default:
+  `lfqdata$config$nr_children`). Pass `NULL` for unweighted.
 
 - `...`:
 
@@ -239,25 +256,25 @@ head(fa$get_contrasts())
 #> # A tibble: 6 × 14
 #>   facade modelName  protein_Id contrast    diff std.error avgAbd statistic    df
 #>   <chr>  <chr>      <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lm     WaldTest_… 0EfVhX~00… A_vs_Ct… -2.62       0.660   21.1   -3.51    15.1
-#> 2 lm     WaldTest_… 7cbcrd~57… A_vs_Ct…  2.80       0.417   20.7    4.06    13.1
-#> 3 lm     WaldTest_… 9VUkAq~47… A_vs_Ct…  1.67       0.740   20.3    1.97    14.1
-#> 4 lm     WaldTest_… BEJI92~52… A_vs_Ct…  0.424      0.960   21.0    0.569   15.1
-#> 5 lm     WaldTest_… CGzoYe~21… A_vs_Ct… -0.598      0.750   30.8   -0.867   16.1
-#> 6 lm     WaldTest_… Fl4JiV~86… A_vs_Ct… -0.0494     0.603   21.3   -0.0664  15.1
+#> 1 lm     WaldTest_… 0EfVhX~00… A_vs_Ct… -2.62       0.660   21.1   -4.12   11.5 
+#> 2 lm     WaldTest_… 7cbcrd~57… A_vs_Ct…  2.80       0.417   20.7    4.29    9.55
+#> 3 lm     WaldTest_… 9VUkAq~47… A_vs_Ct…  1.67       0.740   20.3    1.87   10.5 
+#> 4 lm     WaldTest_… BEJI92~52… A_vs_Ct…  0.424      0.960   21.0    0.476  11.5 
+#> 5 lm     WaldTest_… CGzoYe~21… A_vs_Ct… -0.598      0.750   30.8   -0.744  12.5 
+#> 6 lm     WaldTest_… Fl4JiV~86… A_vs_Ct… -0.0494     0.603   21.3   -0.0862 11.5 
 #> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 9 × 5
 #>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>   <chr>                <dbl>             <dbl>         <dbl>               <dbl>
-#> 1 0EfVhX~0087        -2.62             0.00311        0.0140             -3.51  
-#> 2 7cbcrd~5725         2.80             0.00132        0.0119              4.06  
-#> 3 9VUkAq~4703         1.67             0.0684         0.205               1.97  
-#> 4 BEJI92~5282         0.424            0.578          0.650               0.569 
-#> 5 CGzoYe~2147        -0.598            0.398          0.598              -0.867 
-#> 6 Fl4JiV~8625        -0.0494           0.948          0.948              -0.0664
-#> 7 HvIpHG~9079        -0.809            0.294          0.598              -1.09  
-#> 8 JcKVfU~9653         0.642            0.365          0.598               0.932 
-#> 9 SGIVBl~5782        -0.494            0.484          0.622              -0.717 
+#> 1 0EfVhX~0087        -2.62             0.00154       0.00789             -4.12  
+#> 2 7cbcrd~5725         2.80             0.00175       0.00789              4.29  
+#> 3 9VUkAq~4703         1.67             0.0893        0.268                1.87  
+#> 4 BEJI92~5282         0.424            0.643         0.723                0.476 
+#> 5 CGzoYe~2147        -0.598            0.470         0.605               -0.744 
+#> 6 Fl4JiV~8625        -0.0494           0.933         0.933               -0.0862
+#> 7 HvIpHG~9079        -0.809            0.287         0.605               -1.12  
+#> 8 JcKVfU~9653         0.642            0.411         0.605                0.851 
+#> 9 SGIVBl~5782        -0.494            0.441         0.605               -0.798 
 ```

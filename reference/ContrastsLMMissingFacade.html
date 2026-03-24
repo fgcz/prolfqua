@@ -66,6 +66,7 @@ group-mean imputation method (<code><a href="ContrastsMissing.html">ContrastsMis
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other modelling:
+<code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
@@ -88,6 +89,11 @@ group-mean imputation method (<code><a href="ContrastsMissing.html">ContrastsMis
 <code><a href="Model.html">Model</a></code>,
 <code><a href="ModelFirth.html">ModelFirth</a></code>,
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
+<code><a href="StrategyLM.html">StrategyLM</a></code>,
+<code><a href="StrategyLimma.html">StrategyLimma</a></code>,
+<code><a href="StrategyLmer.html">StrategyLmer</a></code>,
+<code><a href="StrategyLogistf.html">StrategyLogistf</a></code>,
+<code><a href="StrategyRLM.html">StrategyRLM</a></code>,
 <code><a href="build_contrast_analysis.html">build_contrast_analysis()</a></code>,
 <code><a href="build_model.html">build_model()</a></code>,
 <code><a href="build_model_glm_peptide.html">build_model_glm_peptide()</a></code>,
@@ -173,7 +179,13 @@ group-mean imputation method (<code><a href="ContrastsMissing.html">ContrastsMis
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="va">modelstr</span>, <span class="va">contrasts</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">lfqdata</span>,</span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  <span class="va">contrasts</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -188,6 +200,11 @@ group-mean imputation method (<code><a href="ContrastsMissing.html">ContrastsMis
 
 <dt><code>contrasts</code></dt>
 <dd><p>named character vector of contrasts</p></dd>
+
+
+<dt><code>weights</code></dt>
+<dd><p>column name for per-observation weights (default:
+<code>lfqdata$config$nr_children</code>). Pass <code>NULL</code> for unweighted.</p></dd>
 
 
 <dt><code>...</code></dt>
@@ -300,28 +317,28 @@ group-mean imputation method (<code><a href="ContrastsMissing.html">ContrastsMis
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   facade  modelName protein_Id contrast    diff std.error avgAbd statistic    df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lm_mis… WaldTest… 0EfVhX~29… A_vs_Ct…  1.24       0.731   22.6    1.63    31.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lm_mis… WaldTest… 0m5WN4~67… A_vs_Ct… -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">1</span>     0.614   20.8   -<span style="color: #BB0000;">0.041</span><span style="color: #BB0000; text-decoration: underline;">2</span>  29.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lm_mis… WaldTest… 7QuTub~61… A_vs_Ct… -<span style="color: #BB0000;">0.680</span>      0.806   16.6   -<span style="color: #BB0000;">0.831</span>   29.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lm_mis… WaldTest… 7cbcrd~26… A_vs_Ct…  0.704      0.718   22.0    0.929   31.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lm_mis… WaldTest… 9VUkAq~34… A_vs_Ct…  0.768      1.42    20.0    0.939   30.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lm_mis… WaldTest… At886V~77… A_vs_Ct… -<span style="color: #BB0000;">1.86</span>       0.706   29.1   -<span style="color: #BB0000;">2.46</span>    31.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lm_mis… WaldTest… 0EfVhX~29… A_vs_Ct…  1.24       0.731   22.6    1.85    13.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lm_mis… WaldTest… 0m5WN4~67… A_vs_Ct… -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">1</span>     0.614   20.8   -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">8</span>  11.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lm_mis… WaldTest… 7QuTub~61… A_vs_Ct… -<span style="color: #BB0000;">0.680</span>      0.806   16.6   -<span style="color: #BB0000;">0.946</span>   11.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lm_mis… WaldTest… 7cbcrd~26… A_vs_Ct…  0.704      0.718   22.0    0.930   13.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lm_mis… WaldTest… 9VUkAq~34… A_vs_Ct…  0.768      1.42    20.0    0.666   12.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lm_mis… WaldTest… At886V~77… A_vs_Ct… -<span style="color: #BB0000;">1.86</span>       0.706   29.1   -<span style="color: #BB0000;">2.48</span>    13.7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">fa</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 30 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~29…         1.24              0.113          0.509              1.63  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0m5WN4~67…        -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">1</span>            0.967          0.967             -<span style="color: #BB0000;">0.041</span><span style="color: #BB0000; text-decoration: underline;">2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 7QuTub~61…        -<span style="color: #BB0000;">0.680</span>             0.413          0.630             -<span style="color: #BB0000;">0.831</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 7cbcrd~26…         0.704             0.360          0.630              0.929 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 9VUkAq~34…         0.768             0.355          0.630              0.939 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> At886V~77…        -<span style="color: #BB0000;">1.86</span>              0.019<span style="text-decoration: underline;">6</span>         0.164             -<span style="color: #BB0000;">2.46</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> BEJI92~27…        -<span style="color: #BB0000;">0.721</span>             0.348          0.630             -<span style="color: #BB0000;">0.952</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CGzoYe~08…        -<span style="color: #BB0000;">0.389</span>             0.611          0.770             -<span style="color: #BB0000;">0.514</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CtOJ9t~91…        -<span style="color: #BB0000;">0.071</span><span style="color: #BB0000; text-decoration: underline;">7</span>            0.925          0.958             -<span style="color: #BB0000;">0.094</span><span style="color: #BB0000; text-decoration: underline;">6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> DoWup2~28…        -<span style="color: #BB0000;">1.82</span>              0.022<span style="text-decoration: underline;">6</span>         0.164             -<span style="color: #BB0000;">2.40</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~29…         1.24             0.085<span style="text-decoration: underline;">5</span>          0.496              1.85  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0m5WN4~67…        -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">1</span>           0.971           0.971             -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 7QuTub~61…        -<span style="color: #BB0000;">0.680</span>            0.363           0.714             -<span style="color: #BB0000;">0.946</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 7cbcrd~26…         0.704            0.369           0.714              0.930 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 9VUkAq~34…         0.768            0.517           0.714              0.666 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> At886V~77…        -<span style="color: #BB0000;">1.86</span>             0.026<span style="text-decoration: underline;">6</span>          0.193             -<span style="color: #BB0000;">2.48</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> BEJI92~27…        -<span style="color: #BB0000;">0.721</span>            0.444           0.714             -<span style="color: #BB0000;">0.789</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CGzoYe~08…        -<span style="color: #BB0000;">0.389</span>            0.701           0.799             -<span style="color: #BB0000;">0.393</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> CtOJ9t~91…        -<span style="color: #BB0000;">0.071</span><span style="color: #BB0000; text-decoration: underline;">7</span>           0.929           0.962             -<span style="color: #BB0000;">0.091</span><span style="color: #BB0000; text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> DoWup2~28…        -<span style="color: #BB0000;">1.82</span>             0.008<span style="text-decoration: underline;">65</span>         0.101             -<span style="color: #BB0000;">3.06</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 20 more rows</span></span>
 </code></pre></div>
     </div>

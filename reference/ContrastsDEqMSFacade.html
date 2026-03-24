@@ -64,6 +64,7 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other modelling:
+<code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
@@ -86,6 +87,11 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 <code><a href="Model.html">Model</a></code>,
 <code><a href="ModelFirth.html">ModelFirth</a></code>,
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
+<code><a href="StrategyLM.html">StrategyLM</a></code>,
+<code><a href="StrategyLimma.html">StrategyLimma</a></code>,
+<code><a href="StrategyLmer.html">StrategyLmer</a></code>,
+<code><a href="StrategyLogistf.html">StrategyLogistf</a></code>,
+<code><a href="StrategyRLM.html">StrategyRLM</a></code>,
 <code><a href="build_contrast_analysis.html">build_contrast_analysis()</a></code>,
 <code><a href="build_model.html">build_model()</a></code>,
 <code><a href="build_model_glm_peptide.html">build_model_glm_peptide()</a></code>,
@@ -163,7 +169,13 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="va">modelstr</span>, <span class="va">contrasts</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">lfqdata</span>,</span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  <span class="va">contrasts</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -178,6 +190,11 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 
 <dt><code>contrasts</code></dt>
 <dd><p>named character vector of contrasts</p></dd>
+
+
+<dt><code>weights</code></dt>
+<dd><p>column name for per-observation weights (default:
+<code>lfqdata$config$nr_children</code>). Pass <code>NULL</code> for unweighted.</p></dd>
 
 
 <dt><code>...</code></dt>

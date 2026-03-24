@@ -62,6 +62,7 @@ or
 ## See also
 
 Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
@@ -85,6 +86,11 @@ Other modelling:
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
@@ -147,26 +153,26 @@ head(fa_lm$get_contrasts())
 #> # A tibble: 6 × 14
 #>   facade modelName  protein_Id contrast    diff std.error avgAbd statistic    df
 #>   <chr>  <chr>      <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lm     WaldTest_… 0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2    3.70    23.6
-#> 2 lm     WaldTest_… 0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4    0.666   19.6
-#> 3 lm     WaldTest_… 7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0    3.52    23.6
-#> 4 lm     WaldTest_… 9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4    0.0855  21.6
-#> 5 lm     WaldTest_… At886V~32… A_vs_Ct… -1.01       0.969   19.1   -1.19    20.6
-#> 6 lm     WaldTest_… BEJI92~91… A_vs_Ct… -0.873      0.659   20.9   -1.10    22.6
+#> 1 lm     WaldTest_… 0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47  12.1 
+#> 2 lm     WaldTest_… 0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765  8.08
+#> 3 lm     WaldTest_… 7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68  12.1 
+#> 4 lm     WaldTest_… 9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.104 10.1 
+#> 5 lm     WaldTest_… At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.20   9.08
+#> 6 lm     WaldTest_… BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.39  11.1 
 #> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 
 fa_limma <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma")
 head(fa_limma$get_contrasts())
 #> # A tibble: 6 × 14
-#>   facade modelName protein_Id  contrast     diff     FDR std.error statistic
-#>   <chr>  <chr>     <chr>       <chr>       <dbl>   <dbl>     <dbl>     <dbl>
-#> 1 limma  limma     0EfVhX~5954 A_vs_Ctrl  2.72   0.00382     0.758    3.59  
-#> 2 limma  limma     0m5WN4~1448 A_vs_Ctrl  0.600  0.665       0.904    0.663 
-#> 3 limma  limma     7cbcrd~8305 A_vs_Ctrl  2.59   0.00382     0.736    3.52  
-#> 4 limma  limma     9VUkAq~4562 A_vs_Ctrl  0.0679 0.981       0.799    0.0850
-#> 5 limma  limma     At886V~3296 A_vs_Ctrl -1.01   0.665       0.858   -1.18  
-#> 6 limma  limma     BEJI92~9143 A_vs_Ctrl -0.873  0.665       0.796   -1.10  
+#>   facade modelName protein_Id  contrast     diff    FDR std.error statistic
+#>   <chr>  <chr>     <chr>       <chr>       <dbl>  <dbl>     <dbl>     <dbl>
+#> 1 limma  limma     0EfVhX~5954 A_vs_Ctrl  2.72   0.188      1.09      2.49 
+#> 2 limma  limma     0m5WN4~1448 A_vs_Ctrl  0.600  0.623      0.770     0.779
+#> 3 limma  limma     7cbcrd~8305 A_vs_Ctrl  2.59   0.0271     0.691     3.75 
+#> 4 limma  limma     9VUkAq~4562 A_vs_Ctrl  0.0679 0.967      0.647     0.105
+#> 5 limma  limma     At886V~3296 A_vs_Ctrl -1.01   0.623      0.836    -1.21 
+#> 6 limma  limma     BEJI92~9143 A_vs_Ctrl -0.873  0.623      0.621    -1.41 
 #> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, avgAbd <dbl>
 
@@ -186,12 +192,12 @@ head(fa_miss$get_contrasts())
 #> # A tibble: 6 × 14
 #>   facade  modelName protein_Id contrast    diff std.error avgAbd statistic    df
 #>   <chr>   <fct>     <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lm_mis… WaldTest… 0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2    3.70    23.6
-#> 2 lm_mis… WaldTest… 0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4    0.666   19.6
-#> 3 lm_mis… WaldTest… 7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0    3.52    23.6
-#> 4 lm_mis… WaldTest… 9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4    0.0855  21.6
-#> 5 lm_mis… WaldTest… At886V~32… A_vs_Ct… -1.01       0.969   19.1   -1.19    20.6
-#> 6 lm_mis… WaldTest… BEJI92~91… A_vs_Ct… -0.873      0.659   20.9   -1.10    22.6
+#> 1 lm_mis… WaldTest… 0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47  12.1 
+#> 2 lm_mis… WaldTest… 0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765  8.08
+#> 3 lm_mis… WaldTest… 7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68  12.1 
+#> 4 lm_mis… WaldTest… 9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.104 10.1 
+#> 5 lm_mis… WaldTest… At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.20   9.08
+#> 6 lm_mis… WaldTest… BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.39  11.1 
 #> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 

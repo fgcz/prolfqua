@@ -33,7 +33,6 @@ Other configuration:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`R6_extract_values()`](https://wolski.github.io/prolfqua/reference/R6_extract_values.md),
 [`complete_cases()`](https://wolski.github.io/prolfqua/reference/complete_cases.md),
-[`concrete_AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/concrete_AnalysisConfiguration.md),
 [`make_interaction_column()`](https://wolski.github.io/prolfqua/reference/make_interaction_column.md),
 [`sample_subset()`](https://wolski.github.io/prolfqua/reference/sample_subset.md),
 [`separate_hierarchy()`](https://wolski.github.io/prolfqua/reference/separate_hierarchy.md),

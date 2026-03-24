@@ -104,8 +104,11 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <div class="section level3">
 <h3 id="weights--nr_children">Weights &amp; <code>nr_children</code>
 <a class="anchor" aria-label="anchor" href="#weights--nr_children"></a></h3>
-<p><code>config$nr_children</code> names the column tracking child-feature counts (e.g. peptides per protein). After <code>get_Aggregator()</code> rollup, this column is populated automatically. For peptide/precursor-level data it is typically 1.</p>
-<p><strong>Protein-level input must carry <code>nr_children</code>.</strong> DEqMS uses it for count-based variance modelling (<code>ContrastsDEqMSFacade</code>). If the column is missing, <code><a href="reference/setup_analysis.html">setup_analysis()</a></code> adds it set to 1 with a warning — but this defeats the purpose for aggregated protein data where the actual peptide count matters.</p>
+<p><code>config$nr_children</code> names the column tracking child-feature counts (e.g. peptides per protein). After <code>get_Aggregator()</code> rollup, each protein×sample row gets its own count — <strong><code>nr_children</code> is sample-wise</strong>. For peptide/precursor-level data it is typically 1.</p>
+<p><strong>Two distinct uses:</strong></p>
+<ol style="list-style-type: decimal"><li><p><strong>Fitting weights</strong> (sample-wise): Aggregated facades (<code>lm</code>, <code>limma</code>, <code>lm_missing</code>, <code>lm_impute</code>, <code>deqms</code>) pass <code>nr_children</code> as <code>weights</code> by default to <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> or <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">limma::lmFit()</a></code>. This down-weights protein intensities derived from fewer peptides in a given sample. Disable with <code>weights = NULL</code>.</p></li>
+<li><p><strong>DEqMS variance moderation</strong> (experiment-wide): <code>ContrastsDEqMSFacade</code> additionally aggregates <code>nr_children</code> via <code><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max()</a></code> per protein across all samples for count-dependent variance shrinkage. This is separate from the fitting weights.</p></li>
+</ol><p><strong>Protein-level input must carry <code>nr_children</code>.</strong> If the column is missing, <code><a href="reference/setup_analysis.html">setup_analysis()</a></code> adds it set to 1 with a warning — but this defeats the purpose for aggregated data where the actual peptide count matters.</p>
 </div>
 <div class="section level3">
 <h3 id="key-design-patterns">Key Design Patterns<a class="anchor" aria-label="anchor" href="#key-design-patterns"></a></h3>
@@ -113,7 +116,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <p><strong>Method chaining</strong>: Transformer methods return <code>self</code> for chaining, access result via <code>$lfq</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span></code></pre></div>
-<p><strong>Strategy pattern for models</strong>: <code><a href="reference/strategy.html">strategy_lm()</a></code>, <code><a href="reference/strategy.html">strategy_lmer()</a></code>, <code><a href="reference/strategy.html">strategy_rlm()</a></code>, <code><a href="reference/strategy.html">strategy_glm()</a></code> return lists with <code>model_fun</code>, <code>contrast_fun</code>, <code>isSingular</code>, <code>anova_df</code>. <code><a href="reference/strategy_limma.html">strategy_limma()</a></code> returns a simpler list (formula, trend, robust) consumed by <code><a href="reference/build_model_limma.html">build_model_limma()</a></code>.</p>
+<p><strong>Strategy pattern for models</strong>: <strong>Strategy R6 classes for models</strong>: <code>StrategyLM</code>, <code>StrategyRLM</code>, <code>StrategyLmer</code>, <code>StrategyLogistf</code> — each with <code>model_fun</code>, <code>isSingular</code>, <code>contrast_fun</code>, <code>df_residual</code>, <code>sigma</code> methods. Wrapper functions <code><a href="reference/strategy.html">strategy_lm()</a></code>, <code><a href="reference/strategy.html">strategy_rlm()</a></code>, <code><a href="reference/strategy.html">strategy_lmer()</a></code>, <code><a href="reference/strategy.html">strategy_logistf()</a></code> create instances. <code><a href="reference/strategy_limma.html">strategy_limma()</a></code> returns a plain list (formula, trend, robust, weights) consumed by <code><a href="reference/build_model_limma.html">build_model_limma()</a></code>.</p>
 <p><strong>Config immutability</strong>: AnalysisConfiguration is always deep-cloned when passed to new LFQData instances. Never modify config in-place on an existing LFQData.</p>
 </div>
 <div class="section level3">
@@ -151,7 +154,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <div class="section level3">
 <h3 id="analysisconfiguration">AnalysisConfiguration<a class="anchor" aria-label="anchor" href="#analysisconfiguration"></a></h3>
 <p>Flat R6 class that maps column roles in the data: - <strong>hierarchy</strong>: ordered measurement levels (protein_Id → peptide_Id → precursor_Id → fragment_Id). <code>hierarchyDepth</code> controls which level is modelled. - <strong>factors</strong>: explanatory variables (group, treatment). <code>factorDepth</code> controls interaction depth. - <strong>workIntensity</strong>: response column. Uses a stack (<code>set_response()</code> / <code>pop_response()</code> / <code>get_response()</code>) for working with multiple intensity columns. - <strong>fileName</strong>: sample identifier column.</p>
-<p>Concrete config factories: <code><a href="reference/concrete_AnalysisConfiguration.html">create_config_MQ_peptide()</a></code>, <code>create_config_Skyline()</code>, <code>create_config_Spectronaut_Peptide()</code>, etc. in <code>tidyMS_R6_ConcreteConfigurations.R</code>.</p>
+<p>Concrete config factories: <code>create_config_MQ_peptide()</code>, <code>create_config_Skyline()</code>, <code>create_config_Spectronaut_Peptide()</code>, etc. in <code>tidyMS_R6_ConcreteConfigurations.R</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="key-functions-not-in-classes">Key Functions (not in classes)<a class="anchor" aria-label="anchor" href="#key-functions-not-in-classes"></a></h3>
@@ -166,7 +169,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <li>
 <code>build_model_limma(lfqdata, strategy)</code> — fit limma matrix model (in ContrastsLimma.R)</li>
 <li>
-<code><a href="reference/strategy.html">strategy_lm()</a></code>, <code><a href="reference/strategy.html">strategy_lmer()</a></code>, <code><a href="reference/strategy.html">strategy_rlm()</a></code>, <code><a href="reference/strategy.html">strategy_glm()</a></code> — per-protein model strategies (in tidyMS_R6_Modelling.R)</li>
+<code>StrategyLM</code>, <code>StrategyRLM</code>, <code>StrategyLmer</code> R6 classes + <code>strategy_lm/rlm/lmer()</code> wrappers (tidyMS_R6_Modelling.R); <code>StrategyLogistf</code> + <code><a href="reference/strategy.html">strategy_logistf()</a></code> (logistf.R)</li>
 <li>
 <code><a href="reference/strategy_limma.html">strategy_limma()</a></code> — limma matrix model strategy (in ContrastsLimma.R)</li>
 <li>
