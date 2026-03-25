@@ -165,8 +165,10 @@ poolvar <- function(res1, config, method = c("V1", "V2")) {
 #' stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
 #' stopifnot(nrow(stats) == 10)
 #' # TODO (WEW) add test when there is one level per group.
-summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth()) {
-  pdata <- complete_cases(pdata, config)
+summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth(), .completed = FALSE) {
+  if (!.completed) {
+    pdata <- complete_cases(pdata, config)
+  }
   intsym <- sym(config$get_response())
   hierarchyFactor <- pdata |>
     dplyr::group_by(!!!syms(c(config$hierarchy_keys(), config$isotopeLabel, factor_key))) |>
@@ -212,10 +214,12 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
 #' stopifnot(nrow(xx) == 80)
 #' stopifnot( length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
 summarize_stats_factors <- function(pdata, config) {
+  pdata <- complete_cases(pdata, config)
   fac_res <- list()
   stats <- summarize_stats(
     pdata,
-    config
+    config,
+    .completed = TRUE
   )
   fac_res[["interaction"]] <- stats
 
@@ -225,7 +229,8 @@ summarize_stats_factors <- function(pdata, config) {
       stats <- summarize_stats(
         pdata,
         config,
-        factor_key = factor
+        factor_key = factor,
+        .completed = TRUE
       )
       fac_res[[factor]] <- stats
     }
@@ -253,8 +258,8 @@ summarize_stats_factors <- function(pdata, config) {
 #' stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
 #' res2 <- prolfqua::sim_lfq_data_2Factor_config()
 #' resSt <- summarize_stats_all(res2$data, res2$config)
-summarize_stats_all <- function(pdata, config) {
-  summarize_stats(pdata, config, factor_key = NULL)
+summarize_stats_all <- function(pdata, config, .completed = FALSE) {
+  summarize_stats(pdata, config, factor_key = NULL, .completed = .completed)
 }
 
 

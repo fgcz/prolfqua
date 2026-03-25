@@ -17,10 +17,9 @@ moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust 
   squeezed_var <- setNames(squeezed_var, paste0("moderated.", names(squeezed_var)))
   contrast_df <- dplyr::bind_cols(contrast_df, squeezed_var)
   contrast_df <- contrast_df |>
-    dplyr::mutate(moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post))
-  contrast_df <- contrast_df |> dplyr::mutate(moderated.df.total = !!sym(df) + .data$moderated.df.prior)
-  contrast_df <- contrast_df |>
     dplyr::mutate(
+      moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post),
+      moderated.df.total = !!sym(df) + .data$moderated.df.prior,
       moderated.p.value = 2 * pt(abs(.data$moderated.statistic), df = .data$moderated.df.total, lower.tail = FALSE)
     )
 

@@ -107,9 +107,10 @@ LFQDataStats <- R6::R6Class(
         self$statsdf <-
           prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
       } else if (stats == "everything") {
+        completed_data <- complete_cases(self$lfq$data, self$lfq$config)
         self$statsdf <- bind_rows(
-          prolfqua::summarize_stats(self$lfq$data, self$lfq$config),
-          prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
+          prolfqua::summarize_stats(completed_data, self$lfq$config, .completed = TRUE),
+          prolfqua::summarize_stats_all(completed_data, self$lfq$config, .completed = TRUE)
         )
       }
     },

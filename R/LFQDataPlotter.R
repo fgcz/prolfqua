@@ -48,7 +48,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param lfqdata LFQData
     #' @param prefix will be prepended to outputs written
     initialize = function(lfqdata, prefix = "ms_") {
-      self$lfq = lfqdata
+      self$lfq = lfqdata$clone(deep = TRUE)
       self$prefix = prefix
       self$lfq$data <- na.omit(self$lfq$data)
     },

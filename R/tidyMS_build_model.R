@@ -425,9 +425,11 @@ impute_refit_singular <- function(
 
   borrowed <- compute_borrowed_variance(modelDF, method = borrow_method)
 
-  for (i in which(needs_impute)) {
-    result <- .impute_one_protein(
-      modelDF$data[[i]],
+  impute_idx <- which(needs_impute)
+  results <- vector("list", length(impute_idx))
+  for (j in seq_along(impute_idx)) {
+    results[[j]] <- .impute_one_protein(
+      modelDF$data[[impute_idx[j]]],
       model_strategy,
       lod,
       response,
@@ -435,17 +437,22 @@ impute_refit_singular <- function(
       borrowed,
       df_method
     )
-    if (is.null(result)) {
-      next
-    }
-    modelDF$linear_model[[i]] <- result$linear_model
-    modelDF$data[[i]] <- result$data
-    modelDF$has_model_fit[[i]] <- TRUE
-    modelDF$isSingular[[i]] <- FALSE
-    modelDF$sigma[[i]] <- result$sigma
-    modelDF$df.residual[[i]] <- result$df.residual
-    modelDF$nr_coef[[i]] <- result$nr_coef
-    modelDF$nr_coef_not_NA[[i]] <- result$nr_coef_not_NA
+  }
+
+  # Bulk-assign to avoid per-element copy-on-modify (O(n²) → O(n))
+  succeeded <- !vapply(results, is.null, logical(1))
+  idx <- impute_idx[succeeded]
+  results <- results[succeeded]
+
+  if (length(idx) > 0) {
+    modelDF$linear_model[idx] <- lapply(results, `[[`, "linear_model")
+    modelDF$data[idx] <- lapply(results, `[[`, "data")
+    modelDF$has_model_fit[idx] <- TRUE
+    modelDF$isSingular[idx] <- FALSE
+    modelDF$sigma[idx] <- vapply(results, `[[`, numeric(1), "sigma")
+    modelDF$df.residual[idx] <- vapply(results, `[[`, numeric(1), "df.residual")
+    modelDF$nr_coef[idx] <- vapply(results, `[[`, numeric(1), "nr_coef")
+    modelDF$nr_coef_not_NA[idx] <- vapply(results, `[[`, numeric(1), "nr_coef_not_NA")
   }
 
   return(modelDF)
@@ -594,12 +601,6 @@ model_analyse <- function(
 
   modelProteinF <- modelProtein |>
     dplyr::filter(!!sym("has_model_fit") == TRUE)
-  modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), model_strategy$isSingular))
-  modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"df.residual" := purrr::map_dbl(!!sym(lmermodel), model_strategy$df_residual))
-  modelProteinF <- modelProteinF |>
-    dplyr::mutate(!!"sigma" := purrr::map_dbl(!!sym(lmermodel), model_strategy$sigma))
 
   count_coef <- function(x) {
     cc <- coefficients(x)
@@ -619,8 +620,14 @@ model_analyse <- function(
     }
   }
 
-  modelProteinF <- modelProteinF |> dplyr::mutate(nr_coef = purrr::map_int(!!sym(lmermodel), count_coef))
-  modelProteinF <- modelProteinF |> dplyr::mutate(nr_coef_not_NA = purrr::map_int(!!sym(lmermodel), count_coef_not_NA))
+  modelProteinF <- modelProteinF |>
+    dplyr::mutate(
+      isSingular = purrr::map_lgl(!!sym(lmermodel), model_strategy$isSingular),
+      df.residual = purrr::map_dbl(!!sym(lmermodel), model_strategy$df_residual),
+      sigma = purrr::map_dbl(!!sym(lmermodel), model_strategy$sigma),
+      nr_coef = purrr::map_int(!!sym(lmermodel), count_coef),
+      nr_coef_not_NA = purrr::map_int(!!sym(lmermodel), count_coef_not_NA)
+    )
 
   modelProteinF <- modelProteinF |>
     dplyr::select(all_of(c(subject_Id, "isSingular", "df.residual", "sigma", "nr_coef", "nr_coef_not_NA")))

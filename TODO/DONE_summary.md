@@ -4,6 +4,22 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-25 — Performance Review Items 1–4
+
+From `TODO/TODO_perforance_review.md`.
+
+- **Item 1 (O(n²) copy-on-modify):** `impute_refit_singular` modified tibble list-columns element-by-element in a for-loop, triggering copy-on-modify per iteration. Fixed by collecting results into a list first, then bulk-assigning with `[idx] <-`. (`R/tidyMS_build_model.R`)
+
+- **Item 2 (redundant `complete_cases`):** `summarize_stats_factors` called `summarize_stats` N+1 times, each calling `tidyr::complete()` (expensive cross-join) on the same data. Added `.completed` parameter to `summarize_stats`/`summarize_stats_all`; callers now complete once and pass `.completed = TRUE`. Also fixed the `"everything"` branch in `LFQDataStats`. (`R/tidyMS_stats.R`, `R/LFQDataStats.R`)
+
+- **Item 3 (sequential mutates):** Combined 5 sequential `mutate()` calls into one in `model_analyse` and 3 sequential `mutate()` calls into one in `moderated_p_limma`. Each avoided mutate was copying a tibble with nested model objects. (`R/tidyMS_build_model.R`, `R/tidyMS_moderation.R`)
+
+- **Item 4 (decorator deep-cloning):** Original claim was mostly wrong — critical review showed all 4 cloning decorators (Transformer, Aggregator, Stats, Imp) are justified because they all mutate data or config. `LFQDataSummariser` already correctly avoids cloning. **Bug found and fixed:** `LFQDataPlotter` did NOT clone but DID mutate the original data via `na.omit()`, silently dropping NA rows from the caller's `LFQData`. Fixed by adding `$clone(deep = TRUE)`. (`R/LFQDataPlotter.R`)
+
+All 485 tests pass after each change.
+
+---
+
 ## 2026-03-25 — Item 9: Split `AnalysisConfiguration.R` into cohesive files
 
 From `TODO/TODO_10_refactorings.md` Item 9. Split the 870-line file (15 exports, 3 concerns) into cohesive files based on caller analysis:
