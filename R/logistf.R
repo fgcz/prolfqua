@@ -27,12 +27,13 @@ contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
   pb <- progress::progress_bar$new(total = length(modelDF[[modelcol]]))
 
   for (i in seq_along(modelDF[[modelcol]])) {
+    # nolint start: object_usage_linter
     interaction_models[[i]] <- .compute_contrast(
-      # nolint object_usage_linter
       modelDF[[modelcol]][[i]],
       linfct = modelDF$linfct[[i]],
       strategy = models$strategy
     )
+    # nolint end
     pb$tick()
   }
 
