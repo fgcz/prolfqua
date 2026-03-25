@@ -1,3 +1,9 @@
+# Internal error handler for tryCatch in model fitting and plotting
+.error_handler <- function(e) {
+  warning("WARN :", e)
+  as.character(e)
+}
+
 #' Extracts uniprot ID
 #'
 #' @export

@@ -87,11 +87,11 @@ ContrastsFirth <- R6::R6Class(
         pb <- progress::progress_bar$new(total = length(model1DF$linear_model))
         model <- get_complete_model_fit(model1DF)$linear_model[[1]]
         compmodel <- .linfct(model, self$contrasts, avg = avg)
-        mcoef <- max(model1DF$nrcoeff_not_NA)
+        max_coef <- max(model1DF$nr_coef_not_NA)
 
         for (i in seq_along(model1DF$linear_model)) {
           pb$tick()
-          res1[[i]] <- if (model1DF$nrcoeff_not_NA[[i]] == mcoef) {
+          res1[[i]] <- if (model1DF$nr_coef_not_NA[[i]] == max_coef) {
             compmodel
           } else {
             .linfct(model1DF$linear_model[[i]], contrast = self$contrasts, avg = avg)

@@ -59,15 +59,15 @@ mod <- prolfqua::build_model(
   subject_Id = dd$config$hierarchy_keys_depth())
 
 mod$modelDF
-mod$modelDF$nrcoeff_not_NA |> table()
+mod$modelDF$nr_coef_not_NA |> table()
 
 mod$modelDF$isSingular |> table()
 mod$modelDF |> nrow()
 mod$get_anova()
 prolfqua::model_summary(mod)
 
-maxcoef <- max(mod$modelDF$nrcoeff_not_NA, na.rm = TRUE)
-goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, exists_lmer == TRUE, nrcoeff_not_NA == maxcoef)
+maxcoef <- max(mod$modelDF$nr_coef_not_NA, na.rm = TRUE)
+goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, exists_lmer == TRUE, nr_coef_not_NA == maxcoef)
 
 dim(goodmods)
 xx <- lapply(goodmods$linear_model, vcov)
@@ -97,7 +97,7 @@ modI <- prolfqua::build_model(
   subject_Id = dd$config$hierarchy_keys_depth())
 
 
-modI$modelDF$nrcoeff_not_NA |> table()
+modI$modelDF$nr_coef_not_NA |> table()
 modI$modelDF$isSingular |> table()
 modI$modelDF |> nrow()
 

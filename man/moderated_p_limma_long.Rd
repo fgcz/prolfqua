@@ -28,7 +28,7 @@ factor_levelContrasts <- contrasts_linfct(
   mod$modelDF,
   factor_contrasts,
   subject_Id = "protein_Id",
-  contrastfun = my_contrast_V2)
+  contrastfun = compute_contrast)
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 
@@ -72,6 +72,8 @@ Other modelling:
 \code{\link{build_model_limma}()},
 \code{\link{build_model_logistf}()},
 \code{\link{compute_borrowed_variance}()},
+\code{\link{compute_contrast}()},
+\code{\link{compute_lmer_contrast}()},
 \code{\link{contrasts_fisher_exact}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -89,9 +91,6 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{my_contest}()},
-\code{\link{my_contrast}()},
-\code{\link{my_contrast_V2}()},
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_2_Wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},

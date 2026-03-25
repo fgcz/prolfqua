@@ -27,7 +27,7 @@ contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
   pb <- progress::progress_bar$new(total = length(modelDF[[modelcol]]))
 
   for (i in seq_along(modelDF[[modelcol]])) {
-    interaction_models[[i]] <- prolfqua::my_contrast(
+    interaction_models[[i]] <- .compute_contrast(
       modelDF[[modelcol]][[i]],
       linfct = modelDF$linfct[[i]],
       strategy = models$strategy
@@ -332,7 +332,7 @@ StrategyLogistf <- R6::R6Class(
       DFT <- x |>
         dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
         dplyr::summarize(Freq = dplyr::n(), .groups = "drop")
-      tryCatch(logistf::logistf(self$formula, data = DFT, weights = Freq), error = .ehandler)
+      tryCatch(logistf::logistf(self$formula, data = DFT, weights = Freq), error = .error_handler)
     },
 
     #' @description Check if model is singular (NA coefficients or df < 2)
@@ -348,8 +348,8 @@ StrategyLogistf <- R6::R6Class(
     },
 
     #' @description Compute contrasts from fitted model
-    #' @param ... passed to \code{\link{my_contrast_V2}}
-    contrast_fun = function(...) my_contrast_V2(...),
+    #' @param ... passed to \code{\link{compute_contrast}}
+    contrast_fun = function(...) compute_contrast(...),
 
     #' @description Get residual degrees of freedom
     #' @param model fitted model

@@ -1,11 +1,5 @@
 # Creating models from configuration ----
 
-.ehandler <- function(e) {
-  warning("WARN :", e)
-  # return string here
-  as.character(e)
-}
-
 #' Residual degrees of freedom for rlm objects
 #'
 #' \code{stats::df.residual} returns \code{NA} for \code{\link[MASS]{rlm}}
@@ -90,7 +84,7 @@ StrategyLmer <- R6::R6Class(
       if (!missing(pb)) {
         pb$tick()
       }
-      tryCatch(lmerTest::lmer(self$formula, data = x), error = .ehandler)
+      tryCatch(lmerTest::lmer(self$formula, data = x), error = .error_handler)
     },
 
     #' @description Check if model is singular
@@ -98,8 +92,8 @@ StrategyLmer <- R6::R6Class(
     isSingular = function(model) lme4::isSingular(model),
 
     #' @description Compute contrasts from fitted model
-    #' @param ... passed to \code{\link{my_contest}}
-    contrast_fun = function(...) my_contest(...),
+    #' @param ... passed to \code{\link{compute_lmer_contrast}}
+    contrast_fun = function(...) compute_lmer_contrast(...),
 
     #' @description Get residual degrees of freedom
     #' @param model fitted model
@@ -195,9 +189,9 @@ StrategyLM <- R6::R6Class(
       }
       if (!is.null(self$weights)) {
         call <- bquote(lm(.(self$formula), data = x, weights = .(as.name(self$weights))))
-        tryCatch(eval(call), error = .ehandler)
+        tryCatch(eval(call), error = .error_handler)
       } else {
-        tryCatch(lm(self$formula, data = x), error = .ehandler)
+        tryCatch(lm(self$formula, data = x), error = .error_handler)
       }
     },
 
@@ -206,8 +200,8 @@ StrategyLM <- R6::R6Class(
     isSingular = function(model) isSingular_lm(model),
 
     #' @description Compute contrasts from fitted model
-    #' @param ... passed to \code{\link{my_contrast_V2}}
-    contrast_fun = function(...) my_contrast_V2(...),
+    #' @param ... passed to \code{\link{compute_contrast}}
+    contrast_fun = function(...) compute_contrast(...),
 
     #' @description Get residual degrees of freedom
     #' @param model fitted model
@@ -297,7 +291,7 @@ StrategyRLM <- R6::R6Class(
       if (!missing(pb)) {
         pb$tick()
       }
-      tryCatch(MASS::rlm(self$formula, data = x, method = "M"), error = .ehandler)
+      tryCatch(MASS::rlm(self$formula, data = x, method = "M"), error = .error_handler)
     },
 
     #' @description Check if model is singular (NA coefficients or df < 2)
@@ -314,8 +308,8 @@ StrategyRLM <- R6::R6Class(
     },
 
     #' @description Compute contrasts from fitted model
-    #' @param ... passed to \code{\link{my_contrast_V2}}
-    contrast_fun = function(...) my_contrast_V2(...),
+    #' @param ... passed to \code{\link{compute_contrast}}
+    contrast_fun = function(...) compute_contrast(...),
 
     #' @description Get residual degrees of freedom
     #' @param model fitted model

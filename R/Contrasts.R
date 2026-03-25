@@ -140,11 +140,11 @@ Contrasts <- R6::R6Class(
         model <- get_complete_model_fit(self$models)$linear_model[[1]]
         compmodel <- .linfct(model, self$contrasts, avg = avg)
 
-        mcoef <- max(self$models$nrcoeff_not_NA)
+        max_coef <- max(self$models$nr_coef_not_NA)
 
         for (i in seq_along(self$models$linear_model)) {
           pb$tick()
-          res[[i]] <- if (self$models$nrcoeff_not_NA[[i]] == mcoef) {
+          res[[i]] <- if (self$models$nr_coef_not_NA[[i]] == max_coef) {
             compmodel
           } else {
             suppressWarnings(

@@ -308,12 +308,6 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE, color = colorRampPalette(
 }
 
 
-.ehandler <- function(e) {
-  warning("WARN :", e)
-  # return string here
-  as.character(e)
-}
-
 #' plot heatmap with annotations
 #'
 #' @export
@@ -372,7 +366,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, show_rownames = FALSE,
         silent = TRUE,
         ... = ...
       ),
-      error = .ehandler
+      error = .error_handler
     )
   }
   invisible(res)

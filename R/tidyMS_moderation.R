@@ -47,7 +47,7 @@ moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust 
 #'   mod$modelDF,
 #'   factor_contrasts,
 #'   subject_Id = "protein_Id",
-#'   contrastfun = my_contrast_V2)
+#'   contrastfun = compute_contrast)
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 #'

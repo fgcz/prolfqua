@@ -4,11 +4,24 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
-## 2026-03-25 — Item 3: Fix `nrcoef` / `nrcoeff_not_NA` naming inconsistency
+## 2026-03-25 — Item 4: Rename contrast functions and consolidate `.ehandler`
 
-From `TODO/TODO_10_refactorings.md` Item 3. Standardized column name spelling from `nrcoef` (one f) to `nrcoeff` (two f's) to match `nrcoeff_not_NA`. Renamed local closure `nrcoeff` → `count_coefficients` to avoid clash with column name.
+From `TODO/TODO_10_refactorings.md` Item 4. Renamed exported contrast functions and consolidated duplicated error handler:
 
-**Files:** `R/tidyMS_build_model.R`, `R/Model.R`, `R/ModelFirth.R`. All 485 tests pass.
+- `my_contrast` → `.compute_contrast` (made non-exported; only used internally by `compute_contrast` and `contrasts_linfct_firth`)
+- `my_contrast_V2` → `compute_contrast` (sole exported lm/rlm/logistf contrast function)
+- `my_contest` → `compute_lmer_contrast` (lmer-specific contrast wrapper)
+- `.ehandler` → `.error_handler` (consolidated from 2 identical copies in `tidyMS_R6_Modelling.R` and `tidyMS_plotting.R` into single definition in `utilities.R`)
+
+**Files:** `R/tidyMS_contrasts.R`, `R/tidyMS_R6_Modelling.R`, `R/logistf.R`, `R/tidyMS_plotting.R`, `R/utilities.R`, `R/tidyMS_moderation.R`. All 485 tests pass.
+
+---
+
+## 2026-03-25 — Item 3: Standardize `nrcoeff` → `nr_coef` / `nr_coef_not_NA`
+
+From `TODO/TODO_10_refactorings.md` Item 3. Standardized column names to single-f snake_case (`nr_coef`, `nr_coef_not_NA`) to match R's own `coef()` convention. Renamed closures: `count_coefficients` → `count_coef`, `nrcoeff_not_NA` → `count_coef_not_NA`. Renamed local var `mcoef` → `max_coef` in Contrasts.R and ContrastFirth.R.
+
+**Files:** `R/tidyMS_build_model.R`, `R/Model.R`, `R/ModelFirth.R`, `R/Contrasts.R`, `R/ContrastFirth.R`, `vignettes/TestingMissingInference.Rmd`. All 485 tests pass, all vignettes build.
 
 ---
 

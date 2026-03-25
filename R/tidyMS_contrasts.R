@@ -273,25 +273,14 @@ linfct_factors_contrasts <- function(m) {
 
 # Computing contrasts helpers -----
 
-#' compute contrasts for full models
-#' @param m linear model generated using lm
-#' @param linfct linear function
-#' @param strategy optional strategy for df and sigma computation
-#' @param coef coefficients vector, default from model
-#' @param Sigma.hat variance-covariance matrix, default from model
-#' @param confint which confidence interval to determine
-#'
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#'
-#' m <-  sim_make_model_lm( "factors")
-#' linfct <- linfct_from_model(m)$linfct_factors
-#' my_contrast(m, linfct, confint = 0.95)
-#' my_contrast(m, linfct, confint = 0.99)
-#'
-my_contrast <- function(m, linfct, strategy = NULL, coef = coefficients(m), Sigma.hat = vcov(m), confint = 0.95) {
+# compute contrasts for full models
+# @param m linear model generated using lm
+# @param linfct linear function
+# @param strategy optional strategy for df and sigma computation
+# @param coef coefficients vector, default from model
+# @param Sigma.hat variance-covariance matrix, default from model
+# @param confint which confidence interval to determine
+.compute_contrast <- function(m, linfct, strategy = NULL, coef = coefficients(m), Sigma.hat = vcov(m), confint = 0.95) {
   if (is.null(strategy)) {
     df <- df.residual(m)
     sigma <- sigma(m)
@@ -347,10 +336,10 @@ my_contrast <- function(m, linfct, strategy = NULL, coef = coefficients(m), Sigm
 #' @examples
 #' m <- sim_make_model_lm( "factors")
 #' linfct <- linfct_from_model(m)$linfct_factors
-#' my_contrast_V2(m, linfct, confint = 0.95)
-#' my_contrast_V2(m, linfct, confint = 0.99)
+#' compute_contrast(m, linfct, confint = 0.95)
+#' compute_contrast(m, linfct, confint = 0.99)
 #'
-my_contrast_V2 <- function(m, linfct, confint = 0.95) {
+compute_contrast <- function(m, linfct, confint = 0.95) {
   Sigma.hat <- vcov(m)
 
   coef <- na.omit(coefficients(m))
@@ -367,7 +356,7 @@ my_contrast_V2 <- function(m, linfct, confint = 0.95) {
       coef_red <- coef[nam]
       stopifnot(all.equal(colnames(linfct_v_red), colnames(Sigma.hat_red)))
       stopifnot(all.equal(colnames(linfct_v_red), names(coef_red)))
-      res[[i]] <- my_contrast(m, linfct_v_red, coef = coef_red, Sigma.hat = Sigma.hat_red, confint = confint)
+      res[[i]] <- .compute_contrast(m, linfct_v_red, coef = coef_red, Sigma.hat = Sigma.hat_red, confint = confint)
     } else {
       res[[i]] <- data.frame(
         lhs = rownames(linfct_v),
@@ -401,13 +390,13 @@ my_contrast_V2 <- function(m, linfct, confint = 0.95) {
 #'
 #' linfct <- linfct_from_model(mb)
 #' names(linfct)
-#' my_contest(mb, linfct$linfct_factors)
-#' my_contest(mb, linfct$linfct_interactions)
+#' compute_lmer_contrast(mb, linfct$linfct_factors)
+#' compute_lmer_contrast(mb, linfct$linfct_interactions)
 #' length(mb@beta)
 #' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 #' summary(mb)
 #'
-my_contest <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")) {
+compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")) {
   ddf <- match.arg(ddf)
   if (length(lme4::fixef(model)) != ncol(linfct)) {
     warning("Model is rank deficient!")
@@ -480,8 +469,8 @@ pivot_model_contrasts_2_Wide <- function(
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         factor_contrasts,
 #'         subject_Id = "protein_Id",
-#'         contrastfun = prolfqua::my_contrast_V2)
-contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrastfun = prolfqua::my_contest) {
+#'         contrastfun = prolfqua::compute_contrast)
+contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrastfun = prolfqua::compute_lmer_contrast) {
   message("contrasts_linfct")
   modelcol <- "linear_model"
 
