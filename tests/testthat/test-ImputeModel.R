@@ -31,11 +31,11 @@ test_that("build_model_impute recovers singular proteins", {
   mod_impute <- build_model_impute(lfqdata, strat)
 
   n_good_no_impute <- sum(
-    mod_no_impute$modelDF$exists_lmer & !is.na(mod_no_impute$modelDF$isSingular) & !mod_no_impute$modelDF$isSingular,
+    mod_no_impute$modelDF$has_model_fit & !is.na(mod_no_impute$modelDF$isSingular) & !mod_no_impute$modelDF$isSingular,
     na.rm = TRUE
   )
   n_good_impute <- sum(
-    mod_impute$modelDF$exists_lmer & !is.na(mod_impute$modelDF$isSingular) & !mod_impute$modelDF$isSingular,
+    mod_impute$modelDF$has_model_fit & !is.na(mod_impute$modelDF$isSingular) & !mod_impute$modelDF$isSingular,
     na.rm = TRUE
   )
   expect_gte(n_good_impute, n_good_no_impute)

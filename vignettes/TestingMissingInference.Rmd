@@ -67,7 +67,7 @@ mod$get_anova()
 prolfqua::model_summary(mod)
 
 maxcoef <- max(mod$modelDF$nr_coef_not_NA, na.rm = TRUE)
-goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, exists_lmer == TRUE, nr_coef_not_NA == maxcoef)
+goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, has_model_fit == TRUE, nr_coef_not_NA == maxcoef)
 
 dim(goodmods)
 xx <- lapply(goodmods$linear_model, vcov)

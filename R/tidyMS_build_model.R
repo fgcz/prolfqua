@@ -231,7 +231,7 @@ build_model_impute <- function(
 #' stopifnot(all(c("exists", "isSingular") %in% names(res)))
 model_summary <- function(mod) {
   res <- list()
-  res$exists <- table(mod$modelDF$exists_lmer)
+  res$exists <- table(mod$modelDF$has_model_fit)
   res$isSingular <- table(mod$modelDF$isSingular)
   return(res)
 }
@@ -403,7 +403,7 @@ impute_refit_singular <- function(
 
   max_coef <- max(modelDF$nr_coef, na.rm = TRUE)
 
-  needs_impute <- (!modelDF$exists_lmer) |
+  needs_impute <- (!modelDF$has_model_fit) |
     (!is.na(modelDF$isSingular) & modelDF$isSingular) |
     (!is.na(modelDF$nr_coef) & modelDF$nr_coef < max_coef)
 
@@ -456,7 +456,7 @@ impute_refit_singular <- function(
 
     modelDF$linear_model[[i]] <- wrapped
     modelDF$data[[i]] <- dat
-    modelDF$exists_lmer[[i]] <- TRUE
+    modelDF$has_model_fit[[i]] <- TRUE
     modelDF$isSingular[[i]] <- FALSE
     modelDF$sigma[[i]] <- borrowed$sigma
     modelDF$df.residual[[i]] <- imp_df
@@ -496,7 +496,7 @@ isSingular_lm <- function(m) {
 #' cfits <- get_complete_model_fit(x$modelDF)
 #' stopifnot(nrow(cfits) == 6)
 get_complete_model_fit <- function(modelProteinF) {
-  modelProteinF <- modelProteinF |> dplyr::filter(.data$exists_lmer == TRUE)
+  modelProteinF <- modelProteinF |> dplyr::filter(.data$has_model_fit == TRUE)
   modelProteinF <- modelProteinF |>
     dplyr::filter(.data$nr_coef_not_NA == max(.data$nr_coef_not_NA)) |>
     dplyr::arrange(dplyr::desc(.data$nr_coef_not_NA))
@@ -539,13 +539,13 @@ model_analyse <- function(
 
   modelProtein <- modelProtein |>
     dplyr::mutate(
-      !!"exists_lmer" := purrr::map_lgl(!!sym(lmermodel), function(x) {
+      !!"has_model_fit" := purrr::map_lgl(!!sym(lmermodel), function(x) {
         !is.character(x)
       })
     )
 
   modelProteinF <- modelProtein |>
-    dplyr::filter(!!sym("exists_lmer") == TRUE)
+    dplyr::filter(!!sym("has_model_fit") == TRUE)
   modelProteinF <- modelProteinF |>
     dplyr::mutate(!!"isSingular" := purrr::map_lgl(!!sym(lmermodel), model_strategy$isSingular))
   modelProteinF <- modelProteinF |>

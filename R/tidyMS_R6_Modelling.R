@@ -43,7 +43,7 @@ sigma.rlm <- function(object, ...) {
 #' strat <- StrategyLmer$new("abundanceC ~ group_ + (1|peptide_Id)",
 #'   model_name = "random_example")
 #' mod <- build_model(istar, strat)
-#' sum(mod$modelDF$exists_lmer)
+#' sum(mod$modelDF$has_model_fit)
 StrategyLmer <- R6::R6Class(
   "StrategyLmer",
   public = list(

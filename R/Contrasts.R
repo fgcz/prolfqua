@@ -105,7 +105,7 @@ Contrasts <- R6::R6Class(
       global = FALSE,
       modelName = "WaldTest"
     ) {
-      self$models <- model$modelDF |> dplyr::filter(exists_lmer == TRUE)
+      self$models <- model$modelDF |> dplyr::filter(has_model_fit == TRUE)
       self$contrasts <- contrasts
       self$contrastfun <- model$model_strategy$contrast_fun
       self$modelName <- modelName
