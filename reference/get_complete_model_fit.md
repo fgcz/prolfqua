@@ -99,7 +99,6 @@ x <- sim_build_models_lmer(model = "factors", Nprot = 10)
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 cfits <- get_complete_model_fit(x$modelDF)
 stopifnot(nrow(cfits) == 6)
 ```

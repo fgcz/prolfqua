@@ -252,7 +252,6 @@ lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsROPECAFacade$new(lfqdata, "~ group_", contrasts)
-#> Joining with `by = join_by(protein_Id, peptide_Id)`
 head(fa$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct

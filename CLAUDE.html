@@ -141,7 +141,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <td>Model*.R, ContrastsLimma.R</td>
 </tr><tr class="even"><td>Contrast interfaces</td>
 <td>
-<code>ContrastsInterface</code>, <code>Contrasts</code>, <code>ContrastsModerated</code>, <code>ContrastsLimma</code>, <code>ContrastsProDA</code>, <code>ContrastsROPECA</code>, <code>ContrastsMissing</code>, <code>ContrastsFirth</code>, <code>ContrastsTable</code>
+<code>ContrastsInterface</code>, <code>Contrasts</code>, <code>ContrastsModerated</code>, <code>ContrastsLimma</code>, <code>ContrastsROPECA</code>, <code>ContrastsMissing</code>, <code>ContrastsFirth</code>, <code>ContrastsTable</code>
 </td>
 <td>Contrasts*.R, ContrastFirth.R, ContrastsSimpleImpute.R</td>
 </tr><tr class="odd"><td>Visualization</td>
@@ -149,23 +149,23 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <td>ContrastsPlotter.R</td>
 </tr><tr class="even"><td>Utilities</td>
 <td><code>MissingHelpers</code></td>
-<td>tidyMS_missigness_V2.R</td>
+<td>tidyMS_missingness_imputation.R</td>
 </tr></tbody></table></div>
 <div class="section level3">
 <h3 id="analysisconfiguration">AnalysisConfiguration<a class="anchor" aria-label="anchor" href="#analysisconfiguration"></a></h3>
 <p>Flat R6 class that maps column roles in the data: - <strong>hierarchy</strong>: ordered measurement levels (protein_Id → peptide_Id → precursor_Id → fragment_Id). <code>hierarchyDepth</code> controls which level is modelled. - <strong>factors</strong>: explanatory variables (group, treatment). <code>factorDepth</code> controls interaction depth. - <strong>workIntensity</strong>: response column. Uses a stack (<code>set_response()</code> / <code>pop_response()</code> / <code>get_response()</code>) for working with multiple intensity columns. - <strong>fileName</strong>: sample identifier column.</p>
-<p>Concrete config factories: <code>create_config_MQ_peptide()</code>, <code>create_config_Skyline()</code>, <code>create_config_Spectronaut_Peptide()</code>, etc. in <code>tidyMS_R6_ConcreteConfigurations.R</code>.</p>
+<p>Concrete config factories (e.g. <code>create_config_Skyline()</code>, <code>create_config_Spectronaut_Peptide()</code>) were in <code>tidyMS_R6_ConcreteConfigurations.R</code> (now removed — <code>create_config_MQ_peptide()</code> was dead code). Remaining factories are in downstream packages.</p>
 </div>
 <div class="section level3">
 <h3 id="key-functions-not-in-classes">Key Functions (not in classes)<a class="anchor" aria-label="anchor" href="#key-functions-not-in-classes"></a></h3>
 <ul><li>
 <code>build_contrast_analysis(lfqdata, modelstr, contrasts, method)</code> — main entry point, returns a Facade (in build_contrast_analysis.R)</li>
 <li>
-<code>setup_analysis(data, config)</code> — prepare data for analysis (in AnalysisConfiguration.R)</li>
+<code>setup_analysis(data, config)</code> — prepare data for analysis (in tidyMS_data_setup.R)</li>
 <li>
-<code>build_model(data, strategy, subject_Id)</code> — fit per-protein models (in tidyMS_R6Model.R)</li>
+<code>build_model(data, strategy, subject_Id)</code> — fit per-protein models (in tidyMS_build_model.R)</li>
 <li>
-<code>build_model_impute(lfqdata, strategy)</code> — fit with LOD imputation + borrowed covariance for missing groups (in tidyMS_R6Model.R)</li>
+<code>build_model_impute(lfqdata, strategy)</code> — fit with LOD imputation + borrowed covariance for missing groups (in tidyMS_build_model.R)</li>
 <li>
 <code>build_model_limma(lfqdata, strategy)</code> — fit limma matrix model (in ContrastsLimma.R)</li>
 <li>
@@ -182,16 +182,34 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <li>
 <code>R/Model*.R</code>, <code>R/Contrasts*.R</code> — Modelling and hypothesis testing</li>
 <li>
-<code>R/AnalysisConfiguration.R</code> — Configuration system</li>
+<code>R/AnalysisConfiguration.R</code> — Configuration (column role mapping + serialization)</li>
 <li>
-<code>R/tidyMS_R6_*.R</code> — Model strategies, concrete configs, correlation analysis</li>
+<code>R/tidyMS_data_setup.R</code> — <code>setup_analysis</code>, <code>complete_cases</code>, <code>sample_subset</code>
+</li>
 <li>
-<code>R/tidyMS_*.R</code> — Utility functions (plotting, stats, aggregation, missingness)</li>
+<code>R/tidyMS_summarize_hierarchy.R</code> — <code>table_factors</code>, <code>hierarchy_counts</code>, etc.</li>
+<li>
+<code>R/tidyMS_R6_Modelling.R</code> — Strategy R6 classes (<code>StrategyLM</code>, <code>StrategyRLM</code>, <code>StrategyLmer</code>)</li>
+<li>
+<code>R/tidyMS_build_model.R</code> — <code>build_model</code>, <code>model_analyse</code>, imputation internals</li>
+<li>
+<code>R/tidyMS_contrasts.R</code> — <code>linfct_*</code> family, <code>compute_contrast</code>, <code>contrasts_linfct</code>, <code>pivot_model_contrasts_2_Wide</code>
+</li>
+<li>
+<code>R/tidyMS_moderation.R</code> — <code>moderated_p_limma*</code>, <code>adjust_p_values</code>, ROPECA, Fisher</li>
+<li>
+<code>R/tidyMS_*.R</code> — Other utility functions (plotting, stats, aggregation, missingness)</li>
+<li>
+<code>R/utilities.R</code> — Shared helpers (<code>make_interaction_column</code>, <code>.error_handler</code>)</li>
 </ul></div>
+<div class="section level3">
+<h3 id="vectorized-mode">Vectorized mode<a class="anchor" aria-label="anchor" href="#vectorized-mode"></a></h3>
+<p><code>options(prolfqua.vectorize = TRUE)</code> activates vectorized implementations of <code>compute_contrast</code> and <code>linfct_matrix_contrasts</code> (matrix multiplication instead of per-row loops). Affects all Wald test facades (lm, rlm, firth, lmer) and limma’s linfct path. Results are numerically identical. Default is <code>FALSE</code>.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
-<p>7 test files in <code>tests/testthat/</code>: - <code>test-LFQData.R</code> — Core data container and decorators - <code>test-Model.R</code> — Model fitting and coefficient extraction - <code>test-Contrasts.R</code> — Contrast computation - <code>test-ContrastsLimma.R</code> — Limma backend (ModelLimma, ContrastsLimma, merge, 2-factor) - <code>test-ContrastsPlotter.R</code> — Contrast visualization - <code>test-plotting_functions.R</code> — Low-level plots - <code>test-tidyconfig_functions.R</code> — Configuration and utilities</p>
+<p>11 test files in <code>tests/testthat/</code>: - <code>test-LFQData.R</code> — Core data container and decorators - <code>test-Model.R</code> — Model fitting and coefficient extraction - <code>test-Contrasts.R</code> — Contrast computation (Wald test path) - <code>test-ContrastsFacades.R</code> — All facade classes and <code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> - <code>test-ContrastsLimma.R</code> — Limma backend (ModelLimma, ContrastsLimma, merge, 2-factor) - <code>test-ContrastsModeratedDEqMS.R</code> — DEqMS moderation and facade - <code>test-ContrastsPlotter.R</code> — Contrast visualization - <code>test-ImputeModel.R</code> — LOD imputation with borrowed covariance - <code>test-plotting_functions.R</code> — Low-level plots - <code>test-tidyconfig_functions.R</code> — Configuration and utilities - <code>test-vectorize-contrasts.R</code> — Side-by-side original vs vectorized contrast functions</p>
 </div>
 <div class="section level2">
 <h2 id="cross-package-context">Cross-Package Context<a class="anchor" aria-label="anchor" href="#cross-package-context"></a></h2>

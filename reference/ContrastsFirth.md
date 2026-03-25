@@ -281,7 +281,6 @@ modi <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #> setup done
 #> completing cases
 #> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
 contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
 
 ctr <- ContrastsFirth$new(modi,contrasts)
@@ -348,8 +347,6 @@ mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptid
 #> completing cases done
 #> setup done
 #> completing cases
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 

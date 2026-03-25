@@ -89,13 +89,11 @@ m <- sim_make_model_lm()
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 mi <- sim_make_model_lm("interaction")
 #> creating sampleName from fileName column
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 stopifnot(length(coefficients(summary(mi))[,"Estimate"]) == 4)
 mf <- sim_make_model_lmer("factors")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
@@ -115,7 +113,6 @@ mf <- sim_make_model_lmer("factors")
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 m2 <- sim_make_model_lmer("parallel2")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
 #> creating sampleName from fileName column
@@ -134,7 +131,6 @@ m2 <- sim_make_model_lmer("parallel2")
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 m3 <- sim_make_model_lmer("parallel3")
 #> creating sampleName from fileName column
 #> completing cases
@@ -153,5 +149,4 @@ m3 <- sim_make_model_lmer("parallel3")
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 ```

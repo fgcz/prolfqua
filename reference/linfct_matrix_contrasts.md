@@ -1,6 +1,12 @@
 # linfct_matrix_contrasts
 
-linfct_matrix_contrasts
+When `options(prolfqua.vectorize = TRUE)` is set, dispatches to a
+vectorized implementation that batch-evaluates all contrast expressions
+in a single
+[`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)
+call instead of looping per expression. Set
+`options(prolfqua.vectorize = FALSE)` (the default) to use the original
+per-expression loop.
 
 ## Usage
 
@@ -101,7 +107,6 @@ m <- sim_make_model_lm( "factors")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
@@ -121,7 +126,6 @@ m <- sim_make_model_lm( "interaction")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m, as_list = FALSE)
 x <- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==1 )

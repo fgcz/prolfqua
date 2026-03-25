@@ -344,7 +344,7 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_29873cbe6cfb 
+#> agg_record_28f27fa512d6 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
@@ -363,8 +363,6 @@ lProt$rename_response("transformedIntensity")
 
 csi <- ContrastsMissing$new(lProt, contrasts = Contrasts)
 res <- csi$get_contrasts()
-#> completing cases
-#> completing cases
 #> completing cases
 #> c1=TreatmentA - TreatmentB
 #> C2=BackgroundX- BackgroundZ
@@ -386,6 +384,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_29873cbe6cfb 
+#> agg_record_28f27fa512d6 
 #>                       2 
 ```

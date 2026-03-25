@@ -13,6 +13,12 @@ Encapsulates the pipeline:
 -\>
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md).
 
+Supports `options(prolfqua.vectorize = TRUE)` for faster
+[`linfct_matrix_contrasts`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md)
+evaluation. See
+[`build_contrast_analysis`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+for details.
+
 ## See also
 
 Other modelling:

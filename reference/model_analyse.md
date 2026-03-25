@@ -105,6 +105,5 @@ mr <- model_analyse( x$data,
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 stopifnot(nrow(get_complete_model_fit(mr$modelDF)) == 6)
 ```

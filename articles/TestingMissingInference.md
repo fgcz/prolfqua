@@ -113,8 +113,6 @@ mod <- prolfqua::build_model(
     ## ! WARN :Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
     ## ℹ Run `dplyr::last_dplyr_warnings()` to see the 10 remaining warnings.
 
-    ## Joining with `by = join_by(protein_Id)`
-
 ``` r
 mod$modelDF
 ```
@@ -241,11 +239,8 @@ modI <- prolfqua::build_model(
   formula_Protein,
   modelName = modelName,
   subject_Id = dd$config$hierarchy_keys_depth())
-```
 
-    ## Joining with `by = join_by(protein_Id)`
 
-``` r
 modI$modelDF$nr_coef_not_NA |> table()
 ```
 

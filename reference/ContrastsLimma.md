@@ -317,7 +317,6 @@ stopifnot(all(c("diff", "FDR", "p.value", "statistic") %in% colnames(res)))
 # Compare with prolfqua's own pipeline
 modelFunction <- strategy_lm("transformedIntensity ~ group_")
 mod <- build_model(lProt, modelFunction)
-#> Joining with `by = join_by(protein_Id)`
 contr_prolfqua <- Contrasts$new(mod, Contr)
 res_prolfqua <- contr_prolfqua$get_contrasts()
 #> determine linear functions:

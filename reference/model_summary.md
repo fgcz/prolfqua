@@ -118,7 +118,6 @@ mod <- prolfqua::build_model(
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 6 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 res <- model_summary(mod)
 stopifnot(is.list(res))
 stopifnot(all(c("exists", "isSingular") %in% names(res)))

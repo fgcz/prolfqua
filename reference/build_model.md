@@ -166,7 +166,6 @@ mod <- prolfqua::build_model(
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 aovtable <- mod$get_anova()
 
 mod <- prolfqua::build_model(
@@ -195,7 +194,6 @@ mod <- prolfqua::build_model(
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 model_summary(mod)
 #> $exists
 #> 

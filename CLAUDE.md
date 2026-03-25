@@ -137,14 +137,14 @@ existing LFQData.
 
 ### R6 Classes (22 classes across R/)
 
-| Category            | Classes                                                                                                                                                                | Files                                                   |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| Core data           | `LFQData`, `AnalysisConfiguration`                                                                                                                                     | LFQData.R, AnalysisConfiguration.R                      |
-| Decorators          | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp`                                                         | LFQData\*.R                                             |
-| Model interfaces    | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma`                                                                                                                  | Model\*.R, ContrastsLimma.R                             |
-| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsProDA`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
-| Visualization       | `ContrastsPlotter`                                                                                                                                                     | ContrastsPlotter.R                                      |
-| Utilities           | `MissingHelpers`                                                                                                                                                       | tidyMS_missigness_V2.R                                  |
+| Category            | Classes                                                                                                                                              | Files                                                   |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
+| Core data           | `LFQData`, `AnalysisConfiguration`                                                                                                                   | LFQData.R, AnalysisConfiguration.R                      |
+| Decorators          | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp`                                       | LFQData\*.R                                             |
+| Model interfaces    | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma`                                                                                                | Model\*.R, ContrastsLimma.R                             |
+| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
+| Visualization       | `ContrastsPlotter`                                                                                                                                   | ContrastsPlotter.R                                      |
+| Utilities           | `MissingHelpers`                                                                                                                                     | tidyMS_missingness_imputation.R                         |
 
 ### AnalysisConfiguration
 
@@ -157,20 +157,22 @@ stack (`set_response()` / `pop_response()` / `get_response()`) for
 working with multiple intensity columns. - **fileName**: sample
 identifier column.
 
-Concrete config factories: `create_config_MQ_peptide()`,
-`create_config_Skyline()`, `create_config_Spectronaut_Peptide()`, etc.
-in `tidyMS_R6_ConcreteConfigurations.R`.
+Concrete config factories (e.g. `create_config_Skyline()`,
+`create_config_Spectronaut_Peptide()`) were in
+`tidyMS_R6_ConcreteConfigurations.R` (now removed —
+`create_config_MQ_peptide()` was dead code). Remaining factories are in
+downstream packages.
 
 ### Key Functions (not in classes)
 
 - `build_contrast_analysis(lfqdata, modelstr, contrasts, method)` — main
   entry point, returns a Facade (in build_contrast_analysis.R)
 - `setup_analysis(data, config)` — prepare data for analysis (in
-  AnalysisConfiguration.R)
+  tidyMS_data_setup.R)
 - `build_model(data, strategy, subject_Id)` — fit per-protein models (in
-  tidyMS_R6Model.R)
+  tidyMS_build_model.R)
 - `build_model_impute(lfqdata, strategy)` — fit with LOD imputation +
-  borrowed covariance for missing groups (in tidyMS_R6Model.R)
+  borrowed covariance for missing groups (in tidyMS_build_model.R)
 - `build_model_limma(lfqdata, strategy)` — fit limma matrix model (in
   ContrastsLimma.R)
 - `StrategyLM`, `StrategyRLM`, `StrategyLmer` R6 classes +
@@ -187,21 +189,48 @@ in `tidyMS_R6_ConcreteConfigurations.R`.
 
 - `R/LFQData*.R` — Core data container and its decorator classes
 - `R/Model*.R`, `R/Contrasts*.R` — Modelling and hypothesis testing
-- `R/AnalysisConfiguration.R` — Configuration system
-- `R/tidyMS_R6_*.R` — Model strategies, concrete configs, correlation
-  analysis
-- `R/tidyMS_*.R` — Utility functions (plotting, stats, aggregation,
-  missingness)
+- `R/AnalysisConfiguration.R` — Configuration (column role mapping +
+  serialization)
+- `R/tidyMS_data_setup.R` — `setup_analysis`, `complete_cases`,
+  `sample_subset`
+- `R/tidyMS_summarize_hierarchy.R` — `table_factors`,
+  `hierarchy_counts`, etc.
+- `R/tidyMS_R6_Modelling.R` — Strategy R6 classes (`StrategyLM`,
+  `StrategyRLM`, `StrategyLmer`)
+- `R/tidyMS_build_model.R` — `build_model`, `model_analyse`, imputation
+  internals
+- `R/tidyMS_contrasts.R` — `linfct_*` family, `compute_contrast`,
+  `contrasts_linfct`, `pivot_model_contrasts_2_Wide`
+- `R/tidyMS_moderation.R` — `moderated_p_limma*`, `adjust_p_values`,
+  ROPECA, Fisher
+- `R/tidyMS_*.R` — Other utility functions (plotting, stats,
+  aggregation, missingness)
+- `R/utilities.R` — Shared helpers (`make_interaction_column`,
+  `.error_handler`)
+
+### Vectorized mode
+
+`options(prolfqua.vectorize = TRUE)` activates vectorized
+implementations of `compute_contrast` and `linfct_matrix_contrasts`
+(matrix multiplication instead of per-row loops). Affects all Wald test
+facades (lm, rlm, firth, lmer) and limma’s linfct path. Results are
+numerically identical. Default is `FALSE`.
 
 ## Testing
 
-7 test files in `tests/testthat/`: - `test-LFQData.R` — Core data
+11 test files in `tests/testthat/`: - `test-LFQData.R` — Core data
 container and decorators - `test-Model.R` — Model fitting and
-coefficient extraction - `test-Contrasts.R` — Contrast computation -
+coefficient extraction - `test-Contrasts.R` — Contrast computation (Wald
+test path) - `test-ContrastsFacades.R` — All facade classes and
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md) -
 `test-ContrastsLimma.R` — Limma backend (ModelLimma, ContrastsLimma,
-merge, 2-factor) - `test-ContrastsPlotter.R` — Contrast visualization -
+merge, 2-factor) - `test-ContrastsModeratedDEqMS.R` — DEqMS moderation
+and facade - `test-ContrastsPlotter.R` — Contrast visualization -
+`test-ImputeModel.R` — LOD imputation with borrowed covariance -
 `test-plotting_functions.R` — Low-level plots -
-`test-tidyconfig_functions.R` — Configuration and utilities
+`test-tidyconfig_functions.R` — Configuration and utilities -
+`test-vectorize-contrasts.R` — Side-by-side original vs vectorized
+contrast functions
 
 ## Cross-Package Context
 

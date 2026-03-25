@@ -93,7 +93,6 @@ m <- sim_make_model_lm("factors")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m, as_list = TRUE)
 
 linfct$linfct_factors
@@ -121,7 +120,6 @@ m <- sim_make_model_lm("interaction")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m)
 
 m <- lm(Petal.Width ~ Species, data = iris)

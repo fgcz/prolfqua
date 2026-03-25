@@ -137,6 +137,5 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 strat <- strategy_lm(paste(lfqdata$config$get_response(), "~ group_"))
 mod <- build_model_impute(lfqdata, strat)
-#> Joining with `by = join_by(protein_Id)`
 #> completing cases
 ```

@@ -326,7 +326,6 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqstats <- lfqdata$get_Stats()
 #> completing cases
-#> completing cases
 stopifnot(ncol(lfqstats$stats_wide()) == 30)
 lfqstats$violin()
 #> Warning: Removed 2 rows containing non-finite outside the scale range
@@ -345,7 +344,6 @@ x <- lfqstats
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata$is_transformed(TRUE)
 lfqstats <- lfqdata$get_Stats()
-#> completing cases
 #> completing cases
 stopifnot(ncol(lfqstats$stats_wide()) == 26)
 runallfuncs(lfqstats)

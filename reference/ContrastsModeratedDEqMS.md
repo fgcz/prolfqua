@@ -304,7 +304,6 @@ modelFunction <-
 mod <- build_model(
  lProt,
  modelFunction)
-#> Joining with `by = join_by(protein_Id)`
 
 Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 contrast <- prolfqua::Contrasts$new(mod, Contr)

@@ -151,7 +151,6 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sigma method (default): returns median sigma and df from donors</span></span></span>
 <span class="r-in"><span><span class="va">borrowed_s</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">compute_borrowed_variance</span><span class="op">(</span></span></span>
@@ -168,7 +167,6 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="va">borrowed_v</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">compute_borrowed_variance</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">mod_no_missing</span><span class="op">$</span><span class="va">modelDF</span>, method <span class="op">=</span> <span class="st">"vcov"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">borrowed_v</span><span class="op">$</span><span class="va">method</span> <span class="op">==</span> <span class="st">"vcov"</span><span class="op">)</span></span></span>

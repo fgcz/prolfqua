@@ -248,7 +248,6 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsDEqMSFacade$new(lfqdata, "~ group_", contrasts)
-#> Joining with `by = join_by(protein_Id)`
 head(fa$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct

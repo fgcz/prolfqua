@@ -87,7 +87,6 @@ m <- sim_make_model_lm( "interaction")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 xl <- linfct_factors_contrasts(m)
 m <- lm(Petal.Width ~ Species, data = iris)
 linfct_factors_contrasts(m)

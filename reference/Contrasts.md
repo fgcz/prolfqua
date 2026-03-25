@@ -4,6 +4,17 @@ Estimate contrasts using Wald Test
 
 Estimate contrasts using Wald Test
 
+## Details
+
+The per-protein contrast computation uses
+[`compute_contrast`](https://wolski.github.io/prolfqua/reference/compute_contrast.md)
+and
+[`linfct_matrix_contrasts`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md)
+internally. Both support a vectorized code path activated by
+`options(prolfqua.vectorize = TRUE)`. This can give a significant
+speed-up for large datasets. The vectorized path produces numerically
+identical results.
+
 ## See also
 
 Other modelling:
@@ -316,9 +327,6 @@ mod <- build_model(
   modelFunction,
   subject_Id = config$hierarchy_keys_depth()
 )
-#> Registered S3 method overwritten by 'lme4':
-#>   method           from
-#>   na.action.merMod car 
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -332,7 +340,6 @@ mod <- build_model(
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 
 ref_lfc <- data.frame(
   `(Intercept)` = c(0, 0, 0),
@@ -379,7 +386,6 @@ mod <- build_model(
   modelFunction,
   subject_Id = config$hierarchy_keys_depth()
 )
-#> Joining with `by = join_by(protein_Id)`
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 y <- contrastX$get_linfct(avg = FALSE)
 stopifnot(all(ref_lfc == y))

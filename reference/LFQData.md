@@ -570,7 +570,6 @@ stopifnot("LFQData" %in% class(lfqdata$get_copy()))
 stopifnot("LFQDataTransformer" %in% class(lfqdata$get_Transformer()))
 stopifnot("LFQDataStats" %in% class(lfqdata$get_Stats()))
 #> completing cases
-#> completing cases
 stopifnot("LFQDataSummariser" %in% class(lfqdata$get_Summariser()))
 stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
 stopifnot("LFQDataImp" %in% class(lfqdata$get_Imputer()))

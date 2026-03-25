@@ -11,9 +11,14 @@ summarize stats output (compute quantiles)
 ## Usage
 
 ``` r
-summarize_stats(pdata, config, factor_key = config$factor_keys_depth())
+summarize_stats(
+  pdata,
+  config,
+  factor_key = config$factor_keys_depth(),
+  .completed = FALSE
+)
 
-summarize_stats_all(pdata, config)
+summarize_stats_all(pdata, config, .completed = FALSE)
 
 summarize_stats_quantiles(
   stats_res,

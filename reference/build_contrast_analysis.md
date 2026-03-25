@@ -59,6 +59,21 @@ one of
 or
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md)
 
+## Vectorized mode
+
+Set `options(prolfqua.vectorize = TRUE)` before calling this function to
+activate vectorized implementations of
+[`compute_contrast`](https://wolski.github.io/prolfqua/reference/compute_contrast.md)
+and
+[`linfct_matrix_contrasts`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md).
+This affects all methods that use the Wald test path (lm, rlm, firth,
+lmer) and can give a significant speed-up for large datasets. Results
+are numerically identical. Example:
+
+    options(prolfqua.vectorize = TRUE)
+    fa <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
+    options(prolfqua.vectorize = FALSE)  # restore default
+
 ## See also
 
 Other modelling:
@@ -143,7 +158,6 @@ lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
 fa_lm    <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
-#> Joining with `by = join_by(protein_Id)`
 head(fa_lm$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
@@ -176,7 +190,6 @@ head(fa_limma$get_contrasts())
 #> #   conf.high <dbl>, avgAbd <dbl>
 
 fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_missing")
-#> Joining with `by = join_by(protein_Id)`
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
@@ -201,7 +214,6 @@ head(fa_miss$get_contrasts())
 #> #   sigma <dbl>, FDR <dbl>
 
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
-#> Joining with `by = join_by(protein_Id)`
 head(fa_deqms$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
@@ -248,7 +260,6 @@ fa_lmer <- build_contrast_analysis(
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 head(fa_lmer$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
@@ -267,7 +278,6 @@ head(fa_lmer$get_contrasts())
 #> #   sigma <dbl>, FDR <dbl>
 
 fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca")
-#> Joining with `by = join_by(protein_Id, peptide_Id)`
 head(fa_ropeca$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
@@ -288,7 +298,6 @@ head(fa_ropeca$get_contrasts())
 
 fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
 #> completing cases
-#> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 head(fa_firth$get_contrasts())
 #> determine linear functions:

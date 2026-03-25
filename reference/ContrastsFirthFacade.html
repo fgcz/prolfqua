@@ -61,6 +61,8 @@ Firth logistic missingness contrast analysis facade"></head><body>
 <code><a href="build_model_glm_peptide.html">build_model_glm_peptide</a></code> -&gt; <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>.</p>
 <p>The input may be aggregated protein-level data or nested peptide-level data.
 The correct builder is chosen from the <code>LFQData</code> hierarchy automatically.</p>
+<p>Supports <code>options(prolfqua.vectorize = TRUE)</code> for faster contrast
+computation. See <code><a href="build_contrast_analysis.html">build_contrast_analysis</a></code> for details.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -276,7 +278,6 @@ The correct builder is chosen from the <code>LFQData</code> hierarchy automatica
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="va">ContrastsFirthFacade</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>

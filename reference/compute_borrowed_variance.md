@@ -102,7 +102,6 @@ mod <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 
 # Sigma method (default): returns median sigma and df from donors
 borrowed_s <- prolfqua:::compute_borrowed_variance(
@@ -119,7 +118,6 @@ mod_no_missing <- sim_build_models_lm(model = "parallel3",
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 borrowed_v <- prolfqua:::compute_borrowed_variance(
   mod_no_missing$modelDF, method = "vcov")
 stopifnot(borrowed_v$method == "vcov")

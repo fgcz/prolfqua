@@ -15,6 +15,11 @@ Encapsulates the pipeline:
 -\>
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md).
 
+Supports `options(prolfqua.vectorize = TRUE)` for faster contrast
+computation. See
+[`build_contrast_analysis`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+for details.
+
 ## See also
 
 Other modelling:
@@ -246,7 +251,6 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLMFacade$new(lfqdata, "~ group_", contrasts)
-#> Joining with `by = join_by(protein_Id)`
 head(fa$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct

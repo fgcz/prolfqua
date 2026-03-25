@@ -81,6 +81,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/complete_cases.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_contrast.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/compute_contrast_vectorized.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_linfct.html</loc></url>
@@ -131,6 +132,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/linfct_from_model.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts_vectorized.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/list_to_AnalysisConfiguration.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/main_effect_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/make_interaction_column.html</loc></url>

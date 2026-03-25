@@ -265,8 +265,6 @@ Contrasts <- c("c1" = "TreatmentA - TreatmentB",
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
 mh$get_stats()$interaction |> table()
 #> completing cases
-#> completing cases
-#> completing cases
 #> 
 #> TreatmentA:BackgroundX TreatmentB:BackgroundX TreatmentA:BackgroundZ 
 #>                    100                    100                    100 

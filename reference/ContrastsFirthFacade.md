@@ -17,6 +17,11 @@ The input may be aggregated protein-level data or nested peptide-level
 data. The correct builder is chosen from the `LFQData` hierarchy
 automatically.
 
+Supports `options(prolfqua.vectorize = TRUE)` for faster contrast
+computation. See
+[`build_contrast_analysis`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+for details.
+
 ## See also
 
 Other modelling:
@@ -232,7 +237,6 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsFirthFacade$new(lfqdata, "~ group_", contrasts)
 #> completing cases
-#> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 head(fa$get_contrasts())
 #> determine linear functions:

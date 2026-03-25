@@ -358,7 +358,6 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <span class="r-in"><span><span class="co"># Compare with prolfqua's own pipeline</span></span></span>
 <span class="r-in"><span><span class="va">modelFunction</span> <span class="op">&lt;-</span> <span class="fu"><a href="strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"transformedIntensity ~ group_"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_model.html">build_model</a></span><span class="op">(</span><span class="va">lProt</span>, <span class="va">modelFunction</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="va">contr_prolfqua</span> <span class="op">&lt;-</span> <span class="va"><a href="Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">Contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res_prolfqua</span> <span class="op">&lt;-</span> <span class="va">contr_prolfqua</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>

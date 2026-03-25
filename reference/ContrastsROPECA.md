@@ -298,7 +298,6 @@ mod <- build_model(
  pepIntensity,
  modelFunction,
  subject_Id = config$hierarchy_keys_depth())
-#> Joining with `by = join_by(protein_Id, peptide_Id)`
 
  Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
 

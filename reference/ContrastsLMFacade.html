@@ -59,6 +59,8 @@ LM contrast analysis facade"></head><body>
     <p>Encapsulates the pipeline: <code><a href="strategy.html">strategy_lm</a></code> -&gt;
 <code><a href="build_model.html">build_model</a></code> -&gt; <code><a href="Contrasts.html">Contrasts</a></code> -&gt;
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>.</p>
+<p>Supports <code>options(prolfqua.vectorize = TRUE)</code> for faster contrast
+computation. See <code><a href="build_contrast_analysis.html">build_contrast_analysis</a></code> for details.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -289,7 +291,6 @@ LM contrast analysis facade"></head><body>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"transformedIntensity"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="va">ContrastsLMFacade</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>

@@ -116,7 +116,6 @@ mb <- sim_make_model_lmer("interaction")
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 summary(mb)
 #> Linear mixed model fit by REML. t-tests use Satterthwaite's method [
 #> lmerModLmerTest]

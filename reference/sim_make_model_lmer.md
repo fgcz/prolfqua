@@ -103,7 +103,6 @@ mf <- sim_make_model_lmer("factors")
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 mi <- sim_make_model_lmer("interaction")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
 #> creating sampleName from fileName column
@@ -124,5 +123,4 @@ mi <- sim_make_model_lmer("interaction")
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 ```

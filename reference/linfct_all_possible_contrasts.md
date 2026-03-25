@@ -87,7 +87,6 @@ m <- sim_make_model_lm( "interaction")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
@@ -96,7 +95,6 @@ m <- sim_make_model_lm( "factor")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
@@ -105,7 +103,6 @@ m <- sim_make_model_lm( "parallel2")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 stopifnot(all(xl == c(0,-1)))
@@ -117,7 +114,6 @@ m <- sim_make_model_lm( "parallel3")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))

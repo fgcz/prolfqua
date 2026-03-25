@@ -305,10 +305,6 @@ lfqAggregator$write_plots(tempdir())
 #> (`geom_point()`).
 #> Warning: Removed 4 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
-#> `geom_line()`: Each group consists of only one observation.
-#> ℹ Do you need to adjust the group aesthetic?
-#> `geom_line()`: Each group consists of only one observation.
-#> ℹ Do you need to adjust the group aesthetic?
 #> Warning: Removed 2 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range
@@ -319,8 +315,6 @@ lfqAggregator$write_plots(tempdir())
 #> (`geom_point()`).
 #> Warning: Removed 3 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
-#> `geom_line()`: Each group consists of only one observation.
-#> ℹ Do you need to adjust the group aesthetic?
 #> Warning: Removed 1 row containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range
@@ -329,8 +323,6 @@ lfqAggregator$write_plots(tempdir())
 #> (`geom_point()`).
 #> Warning: Removed 6 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
-#> `geom_line()`: Each group consists of only one observation.
-#> ℹ Do you need to adjust the group aesthetic?
 #> Warning: Removed 3 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 2 rows containing missing values or values outside the scale range
@@ -339,6 +331,4 @@ lfqAggregator$write_plots(tempdir())
 #> (`geom_point()`).
 #> Warning: Removed 7 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
-#> `geom_line()`: Each group consists of only one observation.
-#> ℹ Do you need to adjust the group aesthetic?
 ```

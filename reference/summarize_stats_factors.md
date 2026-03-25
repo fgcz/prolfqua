@@ -29,8 +29,6 @@ res2 <- prolfqua::sim_lfq_data_2Factor_config()
 #> setup done
 xx <- summarize_stats_factors(res2$data, res2$config)
 #> completing cases
-#> completing cases
-#> completing cases
 stopifnot(nrow(xx) == 80)
 stopifnot( length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
 ```

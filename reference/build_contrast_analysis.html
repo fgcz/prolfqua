@@ -107,6 +107,20 @@ construction through modelling to contrast computation.</p>
   <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>, or <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code></p>
     </div>
     <div class="section level2">
+    <h2 id="vectorized-mode">Vectorized mode<a class="anchor" aria-label="anchor" href="#vectorized-mode"></a></h2>
+
+
+<p>Set <code>options(prolfqua.vectorize = TRUE)</code> before calling this function
+to activate vectorized implementations of <code><a href="compute_contrast.html">compute_contrast</a></code> and
+<code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a></code>. This affects all methods that use the
+Wald test path (lm, rlm, firth, lmer) and can give a significant speed-up
+for large datasets. Results are numerically identical. Example:</p><div class="sourceCode"><pre><code><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>prolfqua.vectorize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>prolfqua.vectorize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>  <span class="co"># restore default</span></span></code></pre></div>
+
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other modelling:
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
@@ -190,7 +204,6 @@ construction through modelling to contrast computation.</p>
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fa_lm</span>    <span class="op">&lt;-</span> <span class="fu">build_contrast_analysis</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa_lm</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
@@ -223,7 +236,6 @@ construction through modelling to contrast computation.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fa_miss</span> <span class="op">&lt;-</span> <span class="fu">build_contrast_analysis</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"lm_missing"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
@@ -248,7 +260,6 @@ construction through modelling to contrast computation.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fa_deqms</span> <span class="op">&lt;-</span> <span class="fu">build_contrast_analysis</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"deqms"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa_deqms</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
@@ -295,7 +306,6 @@ construction through modelling to contrast computation.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `value[[3L]]()`:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> WARN :Error: grouping factors must have &gt; 1 sampled level</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa_lmer</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
@@ -314,7 +324,6 @@ construction through modelling to contrast computation.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fa_ropeca</span> <span class="op">&lt;-</span> <span class="fu">build_contrast_analysis</span><span class="op">(</span><span class="va">lfqdata_pep</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"ropeca"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa_ropeca</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
@@ -335,7 +344,6 @@ construction through modelling to contrast computation.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fa_firth</span> <span class="op">&lt;-</span> <span class="fu">build_contrast_analysis</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"firth"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa_firth</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>

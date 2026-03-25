@@ -22,6 +22,13 @@ compute_contrast(m, linfct, confint = 0.95)
 
   confidence interval default 0.95
 
+## Details
+
+When `options(prolfqua.vectorize = TRUE)` is set, dispatches to a
+vectorized implementation that uses matrix multiplication instead of a
+per-row loop. Set `options(prolfqua.vectorize = FALSE)` (the default) to
+use the original loop.
+
 ## See also
 
 Other modelling:
@@ -101,7 +108,6 @@ m <- sim_make_model_lm( "factors")
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m)$linfct_factors
 compute_contrast(m, linfct, confint = 0.95)
 #>                     lhs    sigma df estimate std.error statistic      p.value

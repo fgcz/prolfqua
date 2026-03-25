@@ -103,7 +103,6 @@ mod <- sim_build_models_lm()
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 m <- get_complete_model_fit(mod$modelDF)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 factor_levelContrasts <- contrasts_linfct(

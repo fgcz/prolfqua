@@ -164,7 +164,6 @@ modCB <- prolfqua::build_model(
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 24 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 
 formula_condition <-
   prolfqua::strategy_lm("abundance ~ Treatment")
@@ -180,7 +179,6 @@ modC <- prolfqua::build_model(
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 18 remaining warnings.
-#> Joining with `by = join_by(protein_Id)`
 
 tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
 hist(tmp$likelihood_ratio_test.pValue)

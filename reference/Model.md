@@ -321,7 +321,6 @@ mod <- prolfqua::build_model(
  modelName = modelName,
  subject_Id = config$hierarchy_keys_depth())
 #> boundary (singular) fit: see help('isSingular')
-#> Joining with `by = join_by(protein_Id)`
 
 mod$modelDF
 #> # A tibble: 68 × 9
