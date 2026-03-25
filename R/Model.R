@@ -79,12 +79,12 @@ Model <- R6::R6Class(
         x <- data.frame(factor = row.names(x), x)
         return(x)
       }
-      Model_Coeff <- modelProteinF |>
+      model_coeff <- modelProteinF |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
-      Model_Coeff <- Model_Coeff |>
+      model_coeff <- model_coeff |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nr_coef)
-      Model_Coeff <- tidyr::unnest(Model_Coeff, cols = c(Coeffs_model))
-      return(Model_Coeff)
+      model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
+      return(model_coeff)
     },
     #' @description
     #' return anova table
@@ -92,30 +92,30 @@ Model <- R6::R6Class(
       lmermodel <- "linear_model"
       modelProteinF <- get_complete_model_fit(self$modelDF)
 
-      Model_Anova <- modelProteinF |>
+      model_anova <- modelProteinF |>
         dplyr::mutate(!!"Anova_model" := purrr::map(!!sym(lmermodel), self$model_strategy$anova_df$fun))
 
-      Model_Anova <- Model_Anova |>
+      model_anova <- model_anova |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Anova_model"), isSingular, nr_coef)
-      Model_Anova <- tidyr::unnest(Model_Anova, cols = c(Anova_model))
+      model_anova <- tidyr::unnest(model_anova, cols = c(Anova_model))
 
-      Model_Anova <- Model_Anova |> dplyr::filter(factor != "Residuals")
-      Model_Anova <- Model_Anova |> dplyr::filter(factor != "NULL")
+      model_anova <- model_anova |> dplyr::filter(factor != "Residuals")
+      model_anova <- model_anova |> dplyr::filter(factor != "NULL")
 
-      Model_Anova <- self$p.adjust(Model_Anova, column = self$model_strategy$anova_df$col_pval, group_by_col = "factor")
+      model_anova <- self$p.adjust(model_anova, column = self$model_strategy$anova_df$col_pval, group_by_col = "factor")
 
-      Model_Anova <- Model_Anova |> dplyr::rename(p.value = !!sym(self$model_strategy$anova_df$col_pval))
-      return(dplyr::ungroup(Model_Anova))
+      model_anova <- model_anova |> dplyr::rename(p.value = !!sym(self$model_strategy$anova_df$col_pval))
+      return(dplyr::ungroup(model_anova))
     },
 
     #' @description
     #' histogram of model coefficient
     coef_histogram = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
       ## Coef_Histogram
       fname_histogram_coeff_p.values <- paste0("Coef_Histogram_", self$modelName, ".pdf")
-      histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = Pr...t.., group = factor)) +
+      histogram_coeff_p.values <- ggplot(data = model_coeff, aes(x = Pr...t.., group = factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
       return(list(plot = histogram_coeff_p.values, name = fname_histogram_coeff_p.values))
@@ -123,10 +123,10 @@ Model <- R6::R6Class(
     #' @description
     #' volcano plot of non intercept coefficients
     coef_volcano = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
-      fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_", self$modelName, ".pdf")
-      VolcanoPlot <- Model_Coeff |>
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
+      fname_volcano_plot <- paste0("Coef_volcano_plot_", self$modelName, ".pdf")
+      volcano_plot <- model_coeff |>
         dplyr::filter(factor != "(Intercept)") |>
         prolfqua::multigroup_volcano(
           effect = "Estimate",
@@ -136,15 +136,15 @@ Model <- R6::R6Class(
           xintercept = c(-1, 1),
           colour = "isSingular"
         )
-      return(list(plot = VolcanoPlot, name = fname_VolcanoPlot))
+      return(list(plot = volcano_plot, name = fname_volcano_plot))
     },
     #' @description
     #' pairs-plot of coefficients
     coef_pairs = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
       ## Coef_Pairsplot
-      forPairs <- Model_Coeff |>
+      forPairs <- model_coeff |>
         dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
       fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
@@ -156,9 +156,9 @@ Model <- R6::R6Class(
     anova_histogram = function(what = c("p.value", "FDR")) {
       ## Anova_p.values
       what <- match.arg(what)
-      Model_Anova <- self$get_anova()
+      model_anova <- self$get_anova()
       fname_histogram_anova_p.values <- paste0("Anova_p.values_", self$modelName, ".pdf")
-      histogram_anova_p.values <- Model_Anova |>
+      histogram_anova_p.values <- model_anova |>
         ggplot(aes(x = !!sym(what), group = factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)

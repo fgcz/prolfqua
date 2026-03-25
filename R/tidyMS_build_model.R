@@ -65,20 +65,32 @@ LR_test <- function(
     dplyr::rename(likelihood_ratio_test.pValue = .data$modelComparisonLikelihoodRatioTest)
 
   if (!is.null(path)) {
-    fileName <- paste("hist_LRT_", modelName, "_", modelName_Int, ".pdf", sep = "")
-    fileName <- file.path(path, fileName)
-    message("writing figure : ", fileName, "\n")
-    pdf(fileName)
-    par(mfrow = c(2, 1))
-    hist(likelihood_ratio_test_result$likelihood_ratio_test.pValue, breaks = 20)
-    plot(ecdf(
-      likelihood_ratio_test_result$likelihood_ratio_test.pValue
-    ))
-    abline(v = c(0.01, 0.05), col = c(3, 2))
-    dev.off()
+    plot_lrt_diagnostics(likelihood_ratio_test_result, modelName, modelName_Int, path)
   }
 
   return(likelihood_ratio_test_result)
+}
+
+#' Write LRT diagnostic plots to PDF
+#'
+#' Writes a histogram of p-values and an empirical CDF to a PDF file.
+#' Called by \code{\link{LR_test}} when \code{path} is non-NULL.
+#'
+#' @param result tibble with a \code{likelihood_ratio_test.pValue} column
+#' @param modelName name of the full model
+#' @param modelName_Int name of the reduced/interaction model
+#' @param path directory to write the PDF into
+#' @keywords internal
+plot_lrt_diagnostics <- function(result, modelName, modelName_Int, path) {
+  fileName <- paste("hist_LRT_", modelName, "_", modelName_Int, ".pdf", sep = "")
+  fileName <- file.path(path, fileName)
+  message("writing figure : ", fileName, "\n")
+  pdf(fileName)
+  par(mfrow = c(2, 1))
+  hist(result$likelihood_ratio_test.pValue, breaks = 20)
+  plot(ecdf(result$likelihood_ratio_test.pValue))
+  abline(v = c(0.01, 0.05), col = c(3, 2))
+  dev.off()
 }
 
 
@@ -414,57 +426,93 @@ impute_refit_singular <- function(
   borrowed <- compute_borrowed_variance(modelDF, method = borrow_method)
 
   for (i in which(needs_impute)) {
-    dat <- modelDF$data[[i]]
-    n_observed <- sum(!is.na(dat[[response]]))
-
-    # Complete data with all samples so missing groups get rows
-    dat <- dplyr::left_join(sample_template, dat, by = intersect(colnames(sample_template), colnames(dat)))
-
-    # Impute NAs with LOD, clamp all values to max(value, LOD)
-    dat[[response]] <- ifelse(is.na(dat[[response]]), lod, dat[[response]])
-    dat[[response]] <- pmax(dat[[response]], lod)
-
-    new_model <- model_strategy$model_fun(dat)
-    if (is.character(new_model)) {
+    result <- .impute_one_protein(
+      modelDF$data[[i]],
+      model_strategy,
+      lod,
+      response,
+      sample_template,
+      borrowed,
+      df_method
+    )
+    if (is.null(result)) {
       next
     }
-
-    p <- length(stats::coefficients(new_model))
-
-    # Degrees of freedom
-    if (df_method == "observed") {
-      imp_df <- max(n_observed - p, 1)
-    } else {
-      imp_df <- borrowed$df
-    }
-
-    # Borrowed covariance
-    if (borrowed$method == "sigma") {
-      cov_unscaled <- summary(new_model)$cov.unscaled
-      imp_vcov <- borrowed$sigma^2 * cov_unscaled
-    } else {
-      imp_vcov <- borrowed$vcov
-    }
-
-    wrapped <- new_lm_imputed(
-      new_model,
-      borrowed_vcov = imp_vcov,
-      borrowed_sigma = borrowed$sigma,
-      borrowed_df = imp_df,
-      n_observed = n_observed
-    )
-
-    modelDF$linear_model[[i]] <- wrapped
-    modelDF$data[[i]] <- dat
+    modelDF$linear_model[[i]] <- result$linear_model
+    modelDF$data[[i]] <- result$data
     modelDF$has_model_fit[[i]] <- TRUE
     modelDF$isSingular[[i]] <- FALSE
-    modelDF$sigma[[i]] <- borrowed$sigma
-    modelDF$df.residual[[i]] <- imp_df
-    modelDF$nr_coef[[i]] <- p
-    modelDF$nr_coef_not_NA[[i]] <- p
+    modelDF$sigma[[i]] <- result$sigma
+    modelDF$df.residual[[i]] <- result$df.residual
+    modelDF$nr_coef[[i]] <- result$nr_coef
+    modelDF$nr_coef_not_NA[[i]] <- result$nr_coef_not_NA
   }
 
   return(modelDF)
+}
+
+# Impute and refit a single protein's model
+#
+# Takes one protein's nested data, imputes missing values with LOD,
+# refits the model, and wraps it with borrowed covariance.
+#
+# @param dat data.frame for one protein (nested row)
+# @param model_strategy strategy object with model_fun
+# @param lod limit of detection value
+# @param response response column name
+# @param sample_template data.frame with all sample/group combinations
+# @param borrowed list from compute_borrowed_variance()
+# @param df_method "observed" or "borrowed"
+# @return named list of updated fields, or NULL if refit fails
+# @keywords internal
+.impute_one_protein <- function(dat, model_strategy, lod, response, sample_template, borrowed, df_method) {
+  n_observed <- sum(!is.na(dat[[response]]))
+
+  # Complete data with all samples so missing groups get rows
+  dat <- dplyr::left_join(sample_template, dat, by = intersect(colnames(sample_template), colnames(dat)))
+
+  # Impute NAs with LOD, clamp all values to max(value, LOD)
+  dat[[response]] <- ifelse(is.na(dat[[response]]), lod, dat[[response]])
+  dat[[response]] <- pmax(dat[[response]], lod)
+
+  new_model <- model_strategy$model_fun(dat)
+  if (is.character(new_model)) {
+    return(NULL)
+  }
+
+  p <- length(stats::coefficients(new_model))
+
+  # Degrees of freedom
+  if (df_method == "observed") {
+    imp_df <- max(n_observed - p, 1)
+  } else {
+    imp_df <- borrowed$df
+  }
+
+  # Borrowed covariance
+  if (borrowed$method == "sigma") {
+    cov_unscaled <- summary(new_model)$cov.unscaled
+    imp_vcov <- borrowed$sigma^2 * cov_unscaled
+  } else {
+    imp_vcov <- borrowed$vcov
+  }
+
+  wrapped <- new_lm_imputed(
+    new_model,
+    borrowed_vcov = imp_vcov,
+    borrowed_sigma = borrowed$sigma,
+    borrowed_df = imp_df,
+    n_observed = n_observed
+  )
+
+  list(
+    linear_model = wrapped,
+    data = dat,
+    sigma = borrowed$sigma,
+    df.residual = imp_df,
+    nr_coef = p,
+    nr_coef_not_NA = p
+  )
 }
 
 

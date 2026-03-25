@@ -96,15 +96,15 @@ ModelFirth <- R6::R6Class(
 
       models <- dplyr::bind_rows(self$models[[1]]$modelDF, self$models[[2]]$modelDF)
       res <- vector(mode = "list", nrow(models))
-      Model_Coeff <- models |>
+      model_coeff <- models |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
-      Model_Coeff <- Model_Coeff |>
+      model_coeff <- model_coeff |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nr_coef)
-      Model_Coeff <- tidyr::unnest(Model_Coeff, cols = c(Coeffs_model))
+      model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
       if (!is.null(self$models$hkey)) {
-        Model_Coeff <- Model_Coeff |> dplyr::filter(!grepl(self$models$hkey, factor))
+        model_coeff <- model_coeff |> dplyr::filter(!grepl(self$models$hkey, factor))
       }
-      return(Model_Coeff)
+      return(model_coeff)
     },
     #' @description
     #' return anova table
@@ -116,11 +116,11 @@ ModelFirth <- R6::R6Class(
     #' @description
     #' histogram of model coefficient
     coef_histogram = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
       ## Coef_Histogram
       fname_histogram_coeff_p.values <- paste0("Coef_Histogram_", self$modelName, ".pdf")
-      histogram_coeff_p.values <- ggplot(data = Model_Coeff, aes(x = p, group = factor)) +
+      histogram_coeff_p.values <- ggplot(data = model_coeff, aes(x = p, group = factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
       return(list(plot = histogram_coeff_p.values, name = fname_histogram_coeff_p.values))
@@ -128,10 +128,10 @@ ModelFirth <- R6::R6Class(
     #' @description
     #' volcano plot of non intercept coefficients
     coef_volcano = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
-      fname_VolcanoPlot <- paste0("Coef_VolcanoPlot_", self$modelName, ".pdf")
-      VolcanoPlot <- Model_Coeff |>
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
+      fname_volcano_plot <- paste0("Coef_volcano_plot_", self$modelName, ".pdf")
+      volcano_plot <- model_coeff |>
         dplyr::filter(factor != "(Intercept)") |>
         prolfqua::multigroup_volcano(
           effect = "Estimate",
@@ -141,15 +141,15 @@ ModelFirth <- R6::R6Class(
           xintercept = c(-1, 1),
           colour = "isSingular"
         )
-      return(list(plot = VolcanoPlot, name = fname_VolcanoPlot))
+      return(list(plot = volcano_plot, name = fname_volcano_plot))
     },
     #' @description
     #' pairs-plot of coefficients
     coef_pairs = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
       ## Coef_Pairsplot
-      forPairs <- Model_Coeff |>
+      forPairs <- model_coeff |>
         dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
       fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")

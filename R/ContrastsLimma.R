@@ -298,10 +298,10 @@ ModelLimma <- R6::R6Class(
     #' @description
     #' histogram of model coefficient p-values
     coef_histogram = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
       fname <- paste0("Coef_Histogram_", self$modelName, ".pdf")
-      p <- ggplot(data = Model_Coeff, aes(x = .data$Pr...t.., group = .data$factor)) +
+      p <- ggplot(data = model_coeff, aes(x = .data$Pr...t.., group = .data$factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
       return(list(plot = p, name = fname))
@@ -309,10 +309,10 @@ ModelLimma <- R6::R6Class(
     #' @description
     #' volcano plot of non-intercept coefficients
     coef_volcano = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
       fname <- paste0("Coef_VolcanoPlot_", self$modelName, ".pdf")
-      p <- Model_Coeff |>
+      p <- model_coeff |>
         dplyr::filter(.data$factor != "(Intercept)") |>
         prolfqua::multigroup_volcano(
           effect = "Estimate",
@@ -327,9 +327,9 @@ ModelLimma <- R6::R6Class(
     #' @description
     #' pairs plot of coefficients
     coef_pairs = function() {
-      Model_Coeff <- self$get_coefficients()
-      Model_Coeff <- tidyr::unite(Model_Coeff, "subject_Id", self$subject_Id)
-      forPairs <- Model_Coeff |>
+      model_coeff <- self$get_coefficients()
+      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
+      forPairs <- model_coeff |>
         dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
       fname <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
@@ -340,9 +340,9 @@ ModelLimma <- R6::R6Class(
     #' @param what show either "p.value" or "FDR"
     anova_histogram = function(what = c("p.value", "FDR")) {
       what <- match.arg(what)
-      Model_Anova <- self$get_anova()
+      model_anova <- self$get_anova()
       fname <- paste0("Anova_p.values_", self$modelName, ".pdf")
-      p <- Model_Anova |>
+      p <- model_anova |>
         ggplot(aes(x = !!sym(what), group = .data$factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
