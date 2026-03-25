@@ -107,7 +107,7 @@ modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
-stopifnot(sum(modi$modelDF$exists_lmer) == 6)
+stopifnot(sum(modi$modelDF$has_model_fit) == 6)
 mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
 #> creating sampleName from fileName column
@@ -127,7 +127,7 @@ mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
-stopifnot(sum(mod2$modelDF$exists_lmer) == 6)
+stopifnot(sum(mod2$modelDF$has_model_fit) == 6)
 mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
 #> creating sampleName from fileName column
 #> completing cases
@@ -147,7 +147,7 @@ mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
-stopifnot(sum(mod4$modelDF$exists_lmer) == 6)
+stopifnot(sum(mod4$modelDF$has_model_fit) == 6)
 modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
 #> creating sampleName from fileName column
@@ -166,5 +166,5 @@ modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 #> Joining with `by = join_by(protein_Id)`
-stopifnot(sum(modf$modelDF$exists_lmer) == 6)
+stopifnot(sum(modf$modelDF$has_model_fit) == 6)
 ```

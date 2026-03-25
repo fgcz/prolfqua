@@ -121,18 +121,18 @@ mod$modelDF
 
     ## # A tibble: 100 × 9
     ## # Groups:   protein_Id [100]
-    ##    protein_Id  data     linear_model exists_lmer isSingular df.residual sigma
-    ##    <chr>       <list>   <list>       <lgl>       <lgl>            <dbl> <dbl>
-    ##  1 0EfVhX~3967 <tibble> <lm>         TRUE        FALSE                6 1.22 
-    ##  2 0m5WN4~6025 <tibble> <lm>         TRUE        FALSE                4 0.447
-    ##  3 0YSKpy~2865 <tibble> <lm>         TRUE        TRUE                 1 1.55 
-    ##  4 3QLHfm~8938 <tibble> <lm>         TRUE        FALSE                7 0.923
-    ##  5 3QYop0~7543 <tibble> <lm>         TRUE        FALSE                7 0.808
-    ##  6 76k03k~7094 <tibble> <lm>         TRUE        FALSE                8 1.09 
-    ##  7 7cbcrd~7351 <tibble> <lm>         TRUE        FALSE                9 0.889
-    ##  8 7QuTub~1867 <tibble> <lm>         TRUE        FALSE                6 0.644
-    ##  9 7soopj~5352 <tibble> <lm>         TRUE        FALSE                3 0.920
-    ## 10 7zeekV~7127 <tibble> <lm>         TRUE        FALSE                6 1.06 
+    ##    protein_Id  data     linear_model has_model_fit isSingular df.residual sigma
+    ##    <chr>       <list>   <list>       <lgl>         <lgl>            <dbl> <dbl>
+    ##  1 0EfVhX~3967 <tibble> <lm>         TRUE          FALSE                6 1.22 
+    ##  2 0m5WN4~6025 <tibble> <lm>         TRUE          FALSE                4 0.447
+    ##  3 0YSKpy~2865 <tibble> <lm>         TRUE          TRUE                 1 1.55 
+    ##  4 3QLHfm~8938 <tibble> <lm>         TRUE          FALSE                7 0.923
+    ##  5 3QYop0~7543 <tibble> <lm>         TRUE          FALSE                7 0.808
+    ##  6 76k03k~7094 <tibble> <lm>         TRUE          FALSE                8 1.09 
+    ##  7 7cbcrd~7351 <tibble> <lm>         TRUE          FALSE                9 0.889
+    ##  8 7QuTub~1867 <tibble> <lm>         TRUE          FALSE                6 0.644
+    ##  9 7soopj~5352 <tibble> <lm>         TRUE          FALSE                3 0.920
+    ## 10 7zeekV~7127 <tibble> <lm>         TRUE          FALSE                6 1.06 
     ## # ℹ 90 more rows
     ## # ℹ 2 more variables: nr_coef <int>, nr_coef_not_NA <int>
 
@@ -194,7 +194,7 @@ prolfqua::model_summary(mod)
 
 ``` r
 maxcoef <- max(mod$modelDF$nr_coef_not_NA, na.rm = TRUE)
-goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, exists_lmer == TRUE, nr_coef_not_NA == maxcoef)
+goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, has_model_fit == TRUE, nr_coef_not_NA == maxcoef)
 
 dim(goodmods)
 ```

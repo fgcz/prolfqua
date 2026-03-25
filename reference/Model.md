@@ -326,18 +326,18 @@ mod <- prolfqua::build_model(
 mod$modelDF
 #> # A tibble: 68 × 9
 #> # Groups:   protein_Id [68]
-#>    protein_Id     data     linear_model exists_lmer isSingular df.residual sigma
-#>    <chr>          <list>   <list>       <lgl>       <lgl>            <dbl> <dbl>
-#>  1 sp|P21589|5NT… <tibble> <lmrMdLmT>   TRUE        FALSE              276 0.298
-#>  2 sp|Q9NZM3|ITS… <tibble> <lmrMdLmT>   TRUE        FALSE               18 0.250
-#>  3 sp|O43660|PLR… <tibble> <lmrMdLmT>   TRUE        FALSE               79 0.367
-#>  4 sp|P0A908|MIP… <tibble> <lmrMdLmT>   TRUE        FALSE               26 0.312
-#>  5 sp|P62857|RS2… <tibble> <lmrMdLmT>   TRUE        FALSE               53 0.695
-#>  6 sp|Q9Y3A5|SBD… <tibble> <lmrMdLmT>   TRUE        FALSE              172 0.287
-#>  7 sp|Q13838|DX3… <tibble> <lmrMdLmT>   TRUE        FALSE              199 0.305
-#>  8 sp|O00148|DX3… <tibble> <lmrMdLmT>   TRUE        FALSE              178 0.338
-#>  9 sp|P25789|PSA… <tibble> <lmrMdLmT>   TRUE        FALSE              142 0.435
-#> 10 sp|P41252|SYI… <tibble> <lmrMdLmT>   TRUE        FALSE              508 0.299
+#>    protein_Id   data     linear_model has_model_fit isSingular df.residual sigma
+#>    <chr>        <list>   <list>       <lgl>         <lgl>            <dbl> <dbl>
+#>  1 sp|P21589|5… <tibble> <lmrMdLmT>   TRUE          FALSE              276 0.298
+#>  2 sp|Q9NZM3|I… <tibble> <lmrMdLmT>   TRUE          FALSE               18 0.250
+#>  3 sp|O43660|P… <tibble> <lmrMdLmT>   TRUE          FALSE               79 0.367
+#>  4 sp|P0A908|M… <tibble> <lmrMdLmT>   TRUE          FALSE               26 0.312
+#>  5 sp|P62857|R… <tibble> <lmrMdLmT>   TRUE          FALSE               53 0.695
+#>  6 sp|Q9Y3A5|S… <tibble> <lmrMdLmT>   TRUE          FALSE              172 0.287
+#>  7 sp|Q13838|D… <tibble> <lmrMdLmT>   TRUE          FALSE              199 0.305
+#>  8 sp|O00148|D… <tibble> <lmrMdLmT>   TRUE          FALSE              178 0.338
+#>  9 sp|P25789|P… <tibble> <lmrMdLmT>   TRUE          FALSE              142 0.435
+#> 10 sp|P41252|S… <tibble> <lmrMdLmT>   TRUE          FALSE              508 0.299
 #> # ℹ 58 more rows
 #> # ℹ 2 more variables: nr_coef <int>, nr_coef_not_NA <int>
 aovtable  <- mod$get_anova()
@@ -370,7 +370,7 @@ mod$coef_volcano()
 
 #> 
 #> $name
-#> [1] "Coef_VolcanoPlot_f_condtion_r_peptide.pdf"
+#> [1] "Coef_volcano_plot_f_condtion_r_peptide.pdf"
 #> 
 mod$coef_pairs()
 #> $plot
