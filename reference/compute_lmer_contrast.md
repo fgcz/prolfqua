@@ -5,7 +5,7 @@ applies contrast computation using lmerTest::contest function
 ## Usage
 
 ``` r
-my_contest(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
+compute_lmer_contrast(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 ```
 
 ## Arguments
@@ -62,6 +62,7 @@ Other modelling:
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
+[`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -80,8 +81,6 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
-[`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -158,7 +157,7 @@ summary(mb)
 linfct <- linfct_from_model(mb)
 names(linfct)
 #> [1] "linfct_factors"      "linfct_interactions"
-my_contest(mb, linfct$linfct_factors)
+compute_lmer_contrast(mb, linfct$linfct_factors)
 #> # A tibble: 4 × 9
 #>   lhs        estimate std.error    df statistic conf.low conf.high p.value sigma
 #>   <chr>         <dbl>     <dbl> <dbl>     <dbl>    <dbl>     <dbl>   <dbl> <dbl>
@@ -166,7 +165,7 @@ my_contest(mb, linfct$linfct_factors)
 #> 2 Backgroun…     24.5     0.935  2.37      26.2     21.0      27.9 5.69e-4  1.84
 #> 3 TreatmentA     21.5     0.935  2.37      23.0     18.0      25.0 7.74e-4  1.84
 #> 4 TreatmentB     22.7     0.935  2.37      24.3     19.3      26.2 6.76e-4  1.84
-my_contest(mb, linfct$linfct_interactions)
+compute_lmer_contrast(mb, linfct$linfct_interactions)
 #> # A tibble: 4 × 9
 #>   lhs        estimate std.error    df statistic conf.low conf.high p.value sigma
 #>   <chr>         <dbl>     <dbl> <dbl>     <dbl>    <dbl>     <dbl>   <dbl> <dbl>

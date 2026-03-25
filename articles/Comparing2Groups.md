@@ -323,14 +323,14 @@ head(aovtable)
 ```
 
     ## # A tibble: 6 × 10
-    ##   protein_Id  factor    Df  Sum.Sq  Mean.Sq F.value  p.value isSingular nrcoef
-    ##   <chr>       <chr>  <int>   <dbl>    <dbl>   <dbl>    <dbl> <lgl>       <int>
-    ## 1 0EfVhX~3967 group_     2 0.0626  0.0313     5.18  0.0416   FALSE           3
-    ## 2 0m5WN4~6025 group_     2 0.324   0.162     29.4   0.000205 FALSE           3
-    ## 3 0YSKpy~2865 group_     2 0.00753 0.00376    0.605 0.569    FALSE           3
-    ## 4 3QLHfm~8938 group_     2 0.0637  0.0319    13.2   0.00213  FALSE           3
-    ## 5 3QYop0~7543 group_     2 0.00121 0.000603   0.178 0.840    FALSE           3
-    ## 6 76k03k~7094 group_     2 0.0264  0.0132     3.06  0.0968   FALSE           3
+    ##   protein_Id  factor    Df  Sum.Sq  Mean.Sq F.value  p.value isSingular nr_coef
+    ##   <chr>       <chr>  <int>   <dbl>    <dbl>   <dbl>    <dbl> <lgl>        <int>
+    ## 1 0EfVhX~3967 group_     2 0.0626  0.0313     5.18  0.0416   FALSE            3
+    ## 2 0m5WN4~6025 group_     2 0.324   0.162     29.4   0.000205 FALSE            3
+    ## 3 0YSKpy~2865 group_     2 0.00753 0.00376    0.605 0.569    FALSE            3
+    ## 4 3QLHfm~8938 group_     2 0.0637  0.0319    13.2   0.00213  FALSE            3
+    ## 5 3QYop0~7543 group_     2 0.00121 0.000603   0.178 0.840    FALSE            3
+    ## 6 76k03k~7094 group_     2 0.0264  0.0132     3.06  0.0968   FALSE            3
     ## # ℹ 1 more variable: FDR <dbl>
 
 ``` r

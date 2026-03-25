@@ -134,10 +134,10 @@ mod$modelDF
     ##  9 7soopj~5352 <tibble> <lm>         TRUE        FALSE                3 0.920
     ## 10 7zeekV~7127 <tibble> <lm>         TRUE        FALSE                6 1.06 
     ## # ℹ 90 more rows
-    ## # ℹ 2 more variables: nrcoef <int>, nrcoeff_not_NA <int>
+    ## # ℹ 2 more variables: nr_coef <int>, nr_coef_not_NA <int>
 
 ``` r
-mod$modelDF$nrcoeff_not_NA |> table()
+mod$modelDF$nr_coef_not_NA |> table()
 ```
 
     ## 
@@ -163,18 +163,18 @@ mod$get_anova()
 ```
 
     ## # A tibble: 69 × 10
-    ##    protein_Id  factor    Df Sum.Sq Mean.Sq F.value  p.value isSingular nrcoef
-    ##    <chr>       <chr>  <int>  <dbl>   <dbl>   <dbl>    <dbl> <lgl>       <int>
-    ##  1 0EfVhX~3967 group_     2 16.1     8.04    5.39  0.0457   FALSE           3
-    ##  2 0m5WN4~6025 group_     2 37.9    18.9    94.9   0.000426 FALSE           3
-    ##  3 3QLHfm~8938 group_     2  3.90    1.95    2.29  0.172    FALSE           3
-    ##  4 3QYop0~7543 group_     2  4.44    2.22    3.40  0.0932   FALSE           3
-    ##  5 76k03k~7094 group_     2  2.11    1.05    0.891 0.448    FALSE           3
-    ##  6 7cbcrd~7351 group_     2 21.0    10.5    13.3   0.00205  FALSE           3
-    ##  7 7QuTub~1867 group_     2 14.1     7.04   17.0   0.00338  FALSE           3
-    ##  8 7zeekV~7127 group_     2  0.425   0.212   0.189 0.832    FALSE           3
-    ##  9 9VUkAq~9664 group_     2  7.50    3.75   11.8   0.0128   FALSE           3
-    ## 10 At886V~1021 group_     2 46.3    23.2    49.4   0.00151  FALSE           3
+    ##    protein_Id  factor    Df Sum.Sq Mean.Sq F.value  p.value isSingular nr_coef
+    ##    <chr>       <chr>  <int>  <dbl>   <dbl>   <dbl>    <dbl> <lgl>        <int>
+    ##  1 0EfVhX~3967 group_     2 16.1     8.04    5.39  0.0457   FALSE            3
+    ##  2 0m5WN4~6025 group_     2 37.9    18.9    94.9   0.000426 FALSE            3
+    ##  3 3QLHfm~8938 group_     2  3.90    1.95    2.29  0.172    FALSE            3
+    ##  4 3QYop0~7543 group_     2  4.44    2.22    3.40  0.0932   FALSE            3
+    ##  5 76k03k~7094 group_     2  2.11    1.05    0.891 0.448    FALSE            3
+    ##  6 7cbcrd~7351 group_     2 21.0    10.5    13.3   0.00205  FALSE            3
+    ##  7 7QuTub~1867 group_     2 14.1     7.04   17.0   0.00338  FALSE            3
+    ##  8 7zeekV~7127 group_     2  0.425   0.212   0.189 0.832    FALSE            3
+    ##  9 9VUkAq~9664 group_     2  7.50    3.75   11.8   0.0128   FALSE            3
+    ## 10 At886V~1021 group_     2 46.3    23.2    49.4   0.00151  FALSE            3
     ## # ℹ 59 more rows
     ## # ℹ 1 more variable: FDR <dbl>
 
@@ -193,8 +193,8 @@ prolfqua::model_summary(mod)
     ##    69    20
 
 ``` r
-maxcoef <- max(mod$modelDF$nrcoeff_not_NA, na.rm = TRUE)
-goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, exists_lmer == TRUE, nrcoeff_not_NA == maxcoef)
+maxcoef <- max(mod$modelDF$nr_coef_not_NA, na.rm = TRUE)
+goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, exists_lmer == TRUE, nr_coef_not_NA == maxcoef)
 
 dim(goodmods)
 ```
@@ -246,7 +246,7 @@ modI <- prolfqua::build_model(
     ## Joining with `by = join_by(protein_Id)`
 
 ``` r
-modI$modelDF$nrcoeff_not_NA |> table()
+modI$modelDF$nr_coef_not_NA |> table()
 ```
 
     ## 

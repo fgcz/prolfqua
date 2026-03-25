@@ -124,13 +124,13 @@ ANOVA |> dplyr::filter(factor == "Treatment:Background") |> dplyr::arrange(FDR) 
 ```
 
     ## # A tibble: 5 × 10
-    ##   protein_Id  factor         Df Sum.Sq Mean.Sq F.value p.value isSingular nrcoef
-    ##   <chr>       <chr>       <int>  <dbl>   <dbl>   <dbl>   <dbl> <lgl>       <int>
-    ## 1 OyVSi8~0269 Treatment:…     1   28.7    28.7    52.8 1.61e-5 FALSE           4
-    ## 2 PP9CBP~7083 Treatment:…     1   20.3    20.3    60.2 2.83e-5 FALSE           4
-    ## 3 0YSKpy~7538 Treatment:…     1   28.1    28.1    24.9 3.13e-4 FALSE           4
-    ## 4 7cbcrd~3909 Treatment:…     1   43.6    43.6    24.8 3.20e-4 FALSE           4
-    ## 5 7QuTub~7020 Treatment:…     1   39.8    39.8    29.0 1.65e-4 FALSE           4
+    ##   protein_Id  factor        Df Sum.Sq Mean.Sq F.value p.value isSingular nr_coef
+    ##   <chr>       <chr>      <int>  <dbl>   <dbl>   <dbl>   <dbl> <lgl>        <int>
+    ## 1 OyVSi8~0269 Treatment…     1   28.7    28.7    52.8 1.61e-5 FALSE            4
+    ## 2 PP9CBP~7083 Treatment…     1   20.3    20.3    60.2 2.83e-5 FALSE            4
+    ## 3 0YSKpy~7538 Treatment…     1   28.1    28.1    24.9 3.13e-4 FALSE            4
+    ## 4 7cbcrd~3909 Treatment…     1   43.6    43.6    24.8 3.20e-4 FALSE            4
+    ## 5 7QuTub~7020 Treatment…     1   39.8    39.8    29.0 1.65e-4 FALSE            4
     ## # ℹ 1 more variable: FDR <dbl>
 
 ``` r

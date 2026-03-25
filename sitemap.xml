@@ -80,6 +80,8 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/complete_cases.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/compute_contrast.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_linfct.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_linfct_firth.html</loc></url>
@@ -148,9 +150,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/multigroup_volcano.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/my_contest.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/my_contrast.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/my_contrast_V2.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/names_to_matrix.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/new_lm_imputed.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_B_in_A.html</loc></url>

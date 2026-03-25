@@ -5,7 +5,7 @@ only keeps non NA coefficients.
 ## Usage
 
 ``` r
-my_contrast_V2(m, linfct, confint = 0.95)
+compute_contrast(m, linfct, confint = 0.95)
 ```
 
 ## Arguments
@@ -62,6 +62,7 @@ Other modelling:
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
+[`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -80,8 +81,6 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
-[`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
-[`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -104,7 +103,7 @@ m <- sim_make_model_lm( "factors")
 #> setup done
 #> Joining with `by = join_by(protein_Id)`
 linfct <- linfct_from_model(m)$linfct_factors
-my_contrast_V2(m, linfct, confint = 0.95)
+compute_contrast(m, linfct, confint = 0.95)
 #>                     lhs    sigma df estimate std.error statistic      p.value
 #> BackgroundX BackgroundX 1.557675 13 18.63959 0.5507212  33.84577 4.612815e-14
 #> BackgroundZ BackgroundZ 1.557675 13 18.19440 0.5507212  33.03740 6.294815e-14
@@ -115,7 +114,7 @@ my_contrast_V2(m, linfct, confint = 0.95)
 #> BackgroundZ 17.00464  19.38416
 #> TreatmentA  17.56401  19.94353
 #> TreatmentB  16.89045  19.26998
-my_contrast_V2(m, linfct, confint = 0.99)
+compute_contrast(m, linfct, confint = 0.99)
 #>                     lhs    sigma df estimate std.error statistic      p.value
 #> BackgroundX BackgroundX 1.557675 13 18.63959 0.5507212  33.84577 4.612815e-14
 #> BackgroundZ BackgroundZ 1.557675 13 18.19440 0.5507212  33.03740 6.294815e-14

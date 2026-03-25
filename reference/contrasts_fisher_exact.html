@@ -53,7 +53,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">contrasts_fisher_exact</span><span class="op">(</span></span>
-<span>  <span class="va">xb</span>,</span>
+<span>  <span class="va">fisher_input</span>,</span>
 <span>  observedA <span class="op">=</span> <span class="st">"observedA"</span>,</span>
 <span>  observedB <span class="op">=</span> <span class="st">"observedB"</span>,</span>
 <span>  samplesA <span class="op">=</span> <span class="st">"samplesA"</span>,</span>
@@ -101,6 +101,8 @@
 <code><a href="build_model_limma.html">build_model_limma()</a></code>,
 <code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
+<code><a href="compute_contrast.html">compute_contrast()</a></code>,
+<code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
@@ -118,9 +120,6 @@
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
-<code><a href="my_contest.html">my_contest()</a></code>,
-<code><a href="my_contrast.html">my_contrast()</a></code>,
-<code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -141,14 +140,13 @@
 <span class="r-in"><span><span class="va">condB</span> <span class="op">&lt;-</span> <span class="fl">8</span></span></span>
 <span class="r-in"><span><span class="va">observedA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">8</span>, <span class="va">Nprot</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">observedB</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">8</span>, <span class="va">Nprot</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">xb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>observedA <span class="op">=</span> <span class="va">observedA</span>, observedB <span class="op">=</span> <span class="va">observedB</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fisher_input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>observedA <span class="op">=</span> <span class="va">observedA</span>, observedB <span class="op">=</span> <span class="va">observedB</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">xb</span><span class="op">$</span><span class="va">samplesA</span> <span class="op">&lt;-</span> <span class="va">condA</span></span></span>
-<span class="r-in"><span><span class="va">xb</span><span class="op">$</span><span class="va">samplesB</span> <span class="op">&lt;-</span> <span class="va">condB</span></span></span>
+<span class="r-in"><span><span class="va">fisher_input</span><span class="op">$</span><span class="va">samplesA</span> <span class="op">&lt;-</span> <span class="va">condA</span></span></span>
+<span class="r-in"><span><span class="va">fisher_input</span><span class="op">$</span><span class="va">samplesB</span> <span class="op">&lt;-</span> <span class="va">condB</span></span></span>
 <span class="r-in"><span><span class="va">proteinID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">stringi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringi/man/stri_rand_strings.html" class="external-link">stri_rand_strings</a></span><span class="op">(</span><span class="va">Nprot</span> <span class="op">+</span> <span class="fl">20</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">Nprot</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">xb</span><span class="op">$</span><span class="va">proteinID</span> <span class="op">&lt;-</span> <span class="va">proteinID</span></span></span>
-<span class="r-in"><span><span class="va">xlater</span> <span class="op">&lt;-</span> <span class="va">xb</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">contrasts_fisher_exact</span><span class="op">(</span><span class="va">xlater</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fisher_input</span><span class="op">$</span><span class="va">proteinID</span> <span class="op">&lt;-</span> <span class="va">proteinID</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">contrasts_fisher_exact</span><span class="op">(</span><span class="va">fisher_input</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

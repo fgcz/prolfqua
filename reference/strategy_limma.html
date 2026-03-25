@@ -127,6 +127,8 @@ per-sample weights) or a numeric matrix (proteins x samples) passed to
 <code><a href="build_model_limma.html">build_model_limma()</a></code>,
 <code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
+<code><a href="compute_contrast.html">compute_contrast()</a></code>,
+<code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -145,9 +147,6 @@ per-sample weights) or a numeric matrix (proteins x samples) passed to
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
-<code><a href="my_contest.html">my_contest()</a></code>,
-<code><a href="my_contrast.html">my_contrast()</a></code>,
-<code><a href="my_contrast_V2.html">my_contrast_V2()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
 <code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
@@ -165,7 +164,7 @@ per-sample weights) or a numeric matrix (proteins x samples) passed to
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="fu">strategy_limma</span><span class="op">(</span><span class="st">"abundance ~ group_"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> abundance ~ group_</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5614507d0088&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c945202ef0&gt;</span>
 <span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">model_name</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "limma"</span>
 </code></pre></div>

@@ -67,6 +67,8 @@ Other modelling:
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
+[`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
+[`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -85,9 +87,6 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
-[`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
-[`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -127,5 +126,5 @@ head(mod$get_coefficients())
 #> 4 AZPG26~20… (Inte…  9.05e- 1    0.863     -0.729      2.90  1.15  0.284       2
 #> 5 AZPG26~20… group…  2.23e-16    1.02      -2.09       2.09  0     1           2
 #> 6 AZPG26~20… group…  1.82e+ 0    1.55      -0.855      6.80  1.67  0.197       2
-#> # ℹ 2 more variables: isSingular <lgl>, nrcoef <int>
+#> # ℹ 2 more variables: isSingular <lgl>, nr_coef <int>
 ```

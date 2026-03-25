@@ -43,6 +43,8 @@ Other modelling:
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
+[`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
+[`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -61,9 +63,6 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
-[`my_contest()`](https://wolski.github.io/prolfqua/reference/my_contest.md),
-[`my_contrast()`](https://wolski.github.io/prolfqua/reference/my_contrast.md),
-[`my_contrast_V2()`](https://wolski.github.io/prolfqua/reference/my_contrast_V2.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
@@ -352,9 +351,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpUL1dyb/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpUL1dyb/Coef_VolcanoPlot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpUL1dyb/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpjnyvRW/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpjnyvRW/Coef_VolcanoPlot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpjnyvRW/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -368,7 +367,7 @@ mod$write_coef_figures(tempdir())
 #>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_297b6c735819 
+#> agg_record_296f1129c013 
 #>                       2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
@@ -426,9 +425,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpUL1dyb/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpUL1dyb/Coef_VolcanoPlot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpUL1dyb/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpjnyvRW/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpjnyvRW/Coef_VolcanoPlot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpjnyvRW/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -442,6 +441,6 @@ mod$write_coef_figures(tempdir())
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
 #>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
 #> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
-#> agg_record_297b6c735819 
+#> agg_record_296f1129c013 
 #>                       2 
 ```

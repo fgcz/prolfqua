@@ -9,7 +9,7 @@ contrasts_linfct(
   models,
   linfct,
   subject_Id = "protein_Id",
-  contrastfun = prolfqua::my_contest
+  contrastfun = prolfqua::compute_lmer_contrast
 )
 ```
 
@@ -29,6 +29,6 @@ factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 factor_levelContrasts <- contrasts_linfct( m,
         factor_contrasts,
         subject_Id = "protein_Id",
-        contrastfun = prolfqua::my_contrast_V2)
+        contrastfun = prolfqua::compute_contrast)
 #> contrasts_linfct
 ```

@@ -166,9 +166,9 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 7soopj~5352 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lm&gt;</span>         TRUE        FALSE                3 0.920</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> 7zeekV~7127 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;lm&gt;</span>         TRUE        FALSE                6 1.06 </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 90 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nrcoef &lt;int&gt;, nrcoeff_not_NA &lt;int&gt;</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nr_coef &lt;int&gt;, nr_coef_not_NA &lt;int&gt;</span></span></span></code></pre>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nrcoeff_not_NA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nr_coef_not_NA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  2  3 </span></span>
 <span><span class="co">## 15 74</span></span></code></pre>
@@ -183,18 +183,18 @@
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 69 × 10</span></span></span>
-<span><span class="co">##    protein_Id  factor    Df Sum.Sq Mean.Sq F.value  p.value isSingular nrcoef</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 0EfVhX~3967 group_     2 16.1     8.04    5.39  0.045<span style="text-decoration: underline;">7</span>   FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 0m5WN4~6025 group_     2 37.9    18.9    94.9   0.000<span style="text-decoration: underline;">426</span> FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 3QLHfm~8938 group_     2  3.90    1.95    2.29  0.172    FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 3QYop0~7543 group_     2  4.44    2.22    3.40  0.093<span style="text-decoration: underline;">2</span>   FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 76k03k~7094 group_     2  2.11    1.05    0.891 0.448    FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 7cbcrd~7351 group_     2 21.0    10.5    13.3   0.002<span style="text-decoration: underline;">05</span>  FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 7QuTub~1867 group_     2 14.1     7.04   17.0   0.003<span style="text-decoration: underline;">38</span>  FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 7zeekV~7127 group_     2  0.425   0.212   0.189 0.832    FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 9VUkAq~9664 group_     2  7.50    3.75   11.8   0.012<span style="text-decoration: underline;">8</span>   FALSE           3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> At886V~1021 group_     2 46.3    23.2    49.4   0.001<span style="text-decoration: underline;">51</span>  FALSE           3</span></span>
+<span><span class="co">##    protein_Id  factor    Df Sum.Sq Mean.Sq F.value  p.value isSingular nr_coef</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 0EfVhX~3967 group_     2 16.1     8.04    5.39  0.045<span style="text-decoration: underline;">7</span>   FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 0m5WN4~6025 group_     2 37.9    18.9    94.9   0.000<span style="text-decoration: underline;">426</span> FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 3QLHfm~8938 group_     2  3.90    1.95    2.29  0.172    FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 3QYop0~7543 group_     2  4.44    2.22    3.40  0.093<span style="text-decoration: underline;">2</span>   FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> 76k03k~7094 group_     2  2.11    1.05    0.891 0.448    FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> 7cbcrd~7351 group_     2 21.0    10.5    13.3   0.002<span style="text-decoration: underline;">05</span>  FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> 7QuTub~1867 group_     2 14.1     7.04   17.0   0.003<span style="text-decoration: underline;">38</span>  FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> 7zeekV~7127 group_     2  0.425   0.212   0.189 0.832    FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> 9VUkAq~9664 group_     2  7.50    3.75   11.8   0.012<span style="text-decoration: underline;">8</span>   FALSE            3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> At886V~1021 group_     2 46.3    23.2    49.4   0.001<span style="text-decoration: underline;">51</span>  FALSE            3</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 59 more rows</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: FDR &lt;dbl&gt;</span></span></span></code></pre>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
@@ -209,8 +209,8 @@
 <span><span class="co">## FALSE  TRUE </span></span>
 <span><span class="co">##    69    20</span></span></code></pre>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">maxcoef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nrcoeff_not_NA</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">goodmods</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">isSingular</span> <span class="op">==</span> <span class="cn">FALSE</span>, <span class="va">exists_lmer</span> <span class="op">==</span> <span class="cn">TRUE</span>, <span class="va">nrcoeff_not_NA</span> <span class="op">==</span> <span class="va">maxcoef</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">maxcoef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nr_coef_not_NA</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">goodmods</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="va">modelDF</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">isSingular</span> <span class="op">==</span> <span class="cn">FALSE</span>, <span class="va">exists_lmer</span> <span class="op">==</span> <span class="cn">TRUE</span>, <span class="va">nr_coef_not_NA</span> <span class="op">==</span> <span class="va">maxcoef</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">goodmods</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 61  9</span></span></code></pre>
@@ -250,7 +250,7 @@
 <span>  subject_Id <span class="op">=</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Joining with `by = join_by(protein_Id)`</span></span></code></pre>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">modI</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nrcoeff_not_NA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">modI</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">nr_coef_not_NA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   3 </span></span>
 <span><span class="co">## 100</span></span></code></pre>

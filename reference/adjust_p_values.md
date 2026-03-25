@@ -6,7 +6,7 @@ adjust columns
 
 ``` r
 adjust_p_values(
-  mm,
+  contrast_df,
   column = "p.value",
   group_by_col = "contrast",
   newname = "FDR"
@@ -15,7 +15,7 @@ adjust_p_values(
 
 ## Arguments
 
-- mm:
+- contrast_df:
 
   data.frame with p-values to adjust
 
