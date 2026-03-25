@@ -1,5 +1,5 @@
 [![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleseeDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
-[![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/Modelling2R6/graph/badge.svg?token=NP7IPP323C)](https://codecov.io/gh/fgcz/prolfqua)
+[![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/Modelling2R6/graph/badge.svg?token=NP7IPP323C)](https://app.codecov.io/gh/fgcz/prolfqua)
 [![DOI](https://img.shields.io/badge/DOI-10.1021%2Facs.jproteome.2c00441-blue)](https://pubs.acs.org/doi/10.1021/acs.jproteome.2c00441)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18775726.svg)](https://doi.org/10.5281/zenodo.18775726)
 
@@ -8,7 +8,7 @@
 # prolfqua - a comprehensive R package for Proteomics Differential Expression Analysis
 
 The R package contains functions for analyzing mass spectrometry based experiments.
-This package is developed at the [FGCZ](http://fgcz.ch/).
+This package is developed at the [FGCZ](https://fgcz.ch/).
 The package documentation including vignettes can be accessed at https://fgcz.github.io/prolfqua/index.html
 
 `prolfqua` makes easy things easy while remaining fully hackable.
@@ -164,7 +164,7 @@ Document's explaining how to run an analysis with prolfqua are at github.io [htt
 
 Example QC and sample size report
 
-- [QC and sample size Report](https://fgcz.github.io/prolfqua/articles/QCandSampleSize.html)
+- [QC and sample size Report](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 
 # Releated projects
 
@@ -223,30 +223,30 @@ To use `prolfqua` knowledge of the R regression model infrastructure is of advan
 - [MSstats](https://www.bioconductor.org/packages/release/bioc/html/MSstats.html)
 - [MSQRob](https://github.com/statOmics/MSqRob)
 - [Triqler](https://github.com/statisticalbiotechnology/triqler)
-- [DAPAR](https://github.com/samWieczorek/DAPAR/)
-- [DAPARData](https://github.com/samWieczorek/DAPARdata/)
-- [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.html)
+- [DAPAR](https://bioconductor.org/packages/release/bioc/html/DAPAR.html)
+- [DAPARData](https://bioconductor.org/packages/release/data/experiment/html/DAPARdata.html)
+- [PECA/ROPECA](https://bioconductor.org/packages/release/bioc/html/PECA.html)
 
 #  Relevant background information
 
 - [R Companion](https://rcompanion.org/rcompanion/h_01.html)
-- [Extending the Linear Model with R](http://www.maths.bath.ac.uk/~jjf23/ELM/)
-- [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/)
+- [Extending the Linear Model with R](https://www.maths.bath.ac.uk/~jjf23/ELM/)
+- [Bayesian Data Analysis](https://sites.stat.columbia.edu/gelman/book/)
 - [Bayesian essentials with R - R package](https://CRAN.R-project.org/package=bayess)
 - [Contrasts in R - an example vignette by Rose Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
-- [Interactions and Contrasts PH525x series](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html)
+- [Interactions and Contrasts PH525x series](https://genomicsclass.github.io/book/pages/interactions_and_contrasts.html)
 
 # R packages to compute contrasts from linear and other models
 
-- [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/) Compute and plot predictions, slopes, marginal means, and comparisons (contrasts, risk ratios, odds ratios, etc.) for over 70 classes of statistical models in R.
+- [marginaleffects](https://marginaleffects.com/) Compute and plot predictions, slopes, marginal means, and comparisons (contrasts, risk ratios, odds ratios, etc.) for over 70 classes of statistical models in R.
 - [emmeans](https://CRAN.R-project.org/package=emmeans) Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.
 - [lmerTest](https://CRAN.R-project.org/package=lmerTest) computes contrast for [lme4](https://CRAN.R-project.org/package=lme4) models
 - [multcomp](https://CRAN.R-project.org/package=multcomp) computes contrast for linear models and adjusts p-values (multiple comparison)
 
 # Future interesting topics or packages to look at
 
-- [modelsummary](https://vincentarelbundock.github.io/modelsummary/index.html)
-- [modelsummary tutorial](https://elbersb.com/public/pdf/web-7-regression-tables-graphs.pdf)
+- [modelsummary](https://modelsummary.com/)
+- [modelsummary tutorial](https://modelsummary.com/vignettes/get_started.html)
 - [edgeR tutorial](https://gist.github.com/jdblischak/11384914)
 - [another edgeR tutorial](https://web.stanford.edu/class/bios221/labs/rnaseq/lab_4_rnaseq.html)
 

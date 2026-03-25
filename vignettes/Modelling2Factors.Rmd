@@ -34,7 +34,7 @@ Let's assume that the underlying dataset is generated in a course held annually.
 
 We are also modeling the interaction between the two explanatory variables _batch_ and _condition_ for demonstration purposes. In this case, having a significant interaction term would mean the protein is expressed more in the Glucose condition in one batch. In contrast, the same protein is more abundant in the Ethanol condition in the other batch.
 
-An in depth introduction to modelling and testing interactions using linear models can be found [here](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html).
+An in depth introduction to modelling and testing interactions using linear models can be found [here](https://genomicsclass.github.io/book/pages/interactions_and_contrasts.html).
 
 # Model Fitting
 

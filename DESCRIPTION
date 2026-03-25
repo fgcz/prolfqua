@@ -23,9 +23,9 @@ Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
 VignetteBuilder: knitr
-URL: https://github.com/wolski/prolfqua,
-    https://wolski.github.io/prolfqua/
-BugReports: https://github.com/wolski/prolfqua/issues
+URL: https://github.com/fgcz/prolfqua,
+    https://fgcz.github.io/prolfqua/
+BugReports: https://github.com/fgcz/prolfqua/issues
 Imports:
     broom,
     dplyr,

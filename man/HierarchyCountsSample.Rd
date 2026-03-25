@@ -8,6 +8,9 @@ Count distinct elements for each level of hierarchy per sample
 
 Count distinct elements for each level of hierarchy per sample
 }
+\details{
+Provides wide, long, and plot views of hierarchy counts.
+}
 \seealso{
 Other summary: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
@@ -16,22 +19,6 @@ Other summary:
 \code{\link{summarize_hierarchy}()}
 }
 \concept{summary}
-\keyword{Provides}
-\keyword{R6}
-\keyword{and}
-\keyword{class}
-\keyword{counts}
-\keyword{counts.}
-\keyword{for}
-\keyword{hierarchy}
-\keyword{internal}
-\keyword{long,}
-\keyword{of}
-\keyword{per}
-\keyword{plot}
-\keyword{sample}
-\keyword{views}
-\keyword{wide,}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

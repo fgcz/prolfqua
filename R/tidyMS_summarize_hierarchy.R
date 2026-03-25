@@ -86,14 +86,6 @@ hierarchy_counts <- function(pdata, config) {
 
 #' Count distinct elements for each level of hierarchy per sample
 #'
-#' @export
-#' @param pdata data.frame
-#' @param configuration \code{\link{AnalysisConfiguration}}
-#' @param nr_children integer, minimum number of children required
-#'
-#' @keywords internal
-#' R6 class for hierarchy counts per sample
-#'
 #' Provides wide, long, and plot views of hierarchy counts.
 #'
 #' @export
