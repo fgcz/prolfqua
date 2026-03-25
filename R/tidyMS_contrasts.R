@@ -14,45 +14,45 @@
   data <- make_interaction_column(data, interactionColumns, sep = ":")
 
   inter <- unique(data$interaction)
-  mm <- matrix(0, nrow = length(inter), ncol = length(coeffs))
-  rownames(mm) <- inter
-  colnames(mm) <- names(coeffs)
-  mm[, 1] <- 1
-  coefi <- coeffs[-1]
-  for (i in seq_along(coefi)) {
+  coeff_matrix <- matrix(0, nrow = length(inter), ncol = length(coeffs))
+  rownames(coeff_matrix) <- inter
+  colnames(coeff_matrix) <- names(coeffs)
+  coeff_matrix[, 1] <- 1
+  non_intercept_coeffs <- coeffs[-1]
+  for (i in seq_along(non_intercept_coeffs)) {
     # the grep is needed to extract coefficients of interaction terms belonging to a factor
     # I am using wor boundaries "\\b" to allow for factor levels that are substrings.
-    positionIDX <- grep(paste0("\\b", names(coefi)[i], "\\b"), inter)
-    mm[positionIDX, i + 1] <- 1
+    positionIDX <- grep(paste0("\\b", names(non_intercept_coeffs)[i], "\\b"), inter)
+    coeff_matrix[positionIDX, i + 1] <- 1
   }
-  return(list(mm = mm, coeffs = coeffs))
+  return(list(coeff_matrix = coeff_matrix, coeffs = coeffs))
 }
 
 
-.get_match_idx <- function(mm, factor_level) {
-  ddd <- names_to_matrix(rownames(mm), split = ":")
-  xd <- apply(
-    ddd,
+.get_match_idx <- function(coeff_matrix, factor_level) {
+  row_name_parts <- names_to_matrix(rownames(coeff_matrix), split = ":")
+  factor_match <- apply(
+    row_name_parts,
     2,
     function(x, factor_level) {
       x %in% factor_level
     },
     factor_level
   )
-  idx <- which(apply(xd, 1, sum) > 0)
+  idx <- which(apply(factor_match, 1, sum) > 0)
   return(idx)
 }
 
-.coeff_weights_factor_levels <- function(mm) {
-  getCoeffs <- function(factor_level, mm) {
-    idx <- .get_match_idx(mm, factor_level)
-    x <- as.list(apply(mm[idx, , drop = FALSE], 2, mean))
+.coeff_weights_factor_levels <- function(coeff_matrix) {
+  getCoeffs <- function(factor_level, coeff_matrix) {
+    idx <- .get_match_idx(coeff_matrix, factor_level)
+    x <- as.list(apply(coeff_matrix[idx, , drop = FALSE], 2, mean))
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level, .before = 1)
   }
-  factor_levels <- unique(unlist(stringi::stri_split_fixed(rownames(mm), ":")))
-  xx <- purrr::map_df(factor_levels, getCoeffs, mm)
-  return(xx)
+  factor_levels <- unique(unlist(stringi::stri_split_fixed(rownames(coeff_matrix), ":")))
+  weights_by_factor <- purrr::map_df(factor_levels, getCoeffs, coeff_matrix)
+  return(weights_by_factor)
 }
 
 #' get linfct from model
@@ -91,17 +91,17 @@
 #' linfct_from_model(m)
 #'
 linfct_from_model <- function(m, as_list = TRUE) {
-  cm <- .model_coeff_matrix(m)
-  cm_mm <- cm$mm[order(rownames(cm$mm)), ]
+  coeff_result <- .model_coeff_matrix(m)
+  sorted_coeff_matrix <- coeff_result$coeff_matrix[order(rownames(coeff_result$coeff_matrix)), ]
 
-  l_factors <- .coeff_weights_factor_levels(cm_mm)
+  l_factors <- .coeff_weights_factor_levels(sorted_coeff_matrix)
   linfct_factors <- l_factors |>
     dplyr::select(-dplyr::all_of("factor_level")) |>
     data.matrix()
 
   rownames(linfct_factors) <- l_factors$factor_level
   linfct_factors <- linfct_factors[order(rownames(linfct_factors)), ]
-  res <- list(linfct_factors = linfct_factors, linfct_interactions = cm_mm)
+  res <- list(linfct_factors = linfct_factors, linfct_interactions = sorted_coeff_matrix)
 
   if (as_list) {
     return(res)

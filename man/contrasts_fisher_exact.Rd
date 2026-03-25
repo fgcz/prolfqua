@@ -5,7 +5,7 @@
 \title{Fishers exact test on a datframe}
 \usage{
 contrasts_fisher_exact(
-  xb,
+  fisher_input,
   observedA = "observedA",
   observedB = "observedB",
   samplesA = "samplesA",
@@ -21,14 +21,13 @@ condA <- 8
 condB <- 8
 observedA <- sample(0:8, Nprot, replace = TRUE)
 observedB <- sample(0:8, Nprot, replace = TRUE)
-xb <- data.frame(observedA = observedA, observedB = observedB)
+fisher_input <- data.frame(observedA = observedA, observedB = observedB)
 
-xb$samplesA <- condA
-xb$samplesB <- condB
+fisher_input$samplesA <- condA
+fisher_input$samplesB <- condB
 proteinID <- unique(stringi::stri_rand_strings(Nprot + 20,5))[1:Nprot]
-xb$proteinID <- proteinID
-xlater <- xb
-res <- contrasts_fisher_exact(xlater)
+fisher_input$proteinID <- proteinID
+res <- contrasts_fisher_exact(fisher_input)
 
 }
 \seealso{

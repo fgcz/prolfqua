@@ -5,14 +5,14 @@
 \title{Moderate p-value for long table}
 \usage{
 moderated_p_limma_long(
-  mm,
+  contrast_df,
   group_by_col = "lhs",
   estimate = "estimate",
   robust = FALSE
 )
 }
 \arguments{
-\item{mm}{result of \code{\link{contrasts_linfct}}}
+\item{contrast_df}{result of \code{\link{contrasts_linfct}}}
 
 \item{group_by_col}{colnames with contrast description - default 'lhs'}
 }

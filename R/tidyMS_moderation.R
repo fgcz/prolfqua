@@ -5,34 +5,35 @@
 #' @family modelling
 #' @keywords internal
 #'
-moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, confint = 0.95) {
-  sv <- prolfqua::squeezeVarRob(mm$sigma^2, df = mm[[df]], robust = robust)
+moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust = FALSE, confint = 0.95) {
+  squeezed_var <- prolfqua::squeezeVarRob(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
 
   # pior degrees of freedom are Inf
-  if (all(is.infinite(sv$df.prior))) {
-    sv$df.prior <- mean(mm[[df]]) * nrow(mm) / 10
+  if (all(is.infinite(squeezed_var$df.prior))) {
+    squeezed_var$df.prior <- mean(contrast_df[[df]]) * nrow(contrast_df) / 10
   }
 
-  sv <- tibble::as_tibble(sv)
-  sv <- setNames(sv, paste0("moderated.", names(sv)))
-  mm <- dplyr::bind_cols(mm, sv)
-  mm <- mm |> dplyr::mutate(moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post))
-  mm <- mm |> dplyr::mutate(moderated.df.total = !!sym(df) + .data$moderated.df.prior)
-  mm <- mm |>
+  squeezed_var <- tibble::as_tibble(squeezed_var)
+  squeezed_var <- setNames(squeezed_var, paste0("moderated.", names(squeezed_var)))
+  contrast_df <- dplyr::bind_cols(contrast_df, squeezed_var)
+  contrast_df <- contrast_df |>
+    dplyr::mutate(moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post))
+  contrast_df <- contrast_df |> dplyr::mutate(moderated.df.total = !!sym(df) + .data$moderated.df.prior)
+  contrast_df <- contrast_df |>
     dplyr::mutate(
       moderated.p.value = 2 * pt(abs(.data$moderated.statistic), df = .data$moderated.df.total, lower.tail = FALSE)
     )
 
-  prqt <- -qt((1 - confint) / 2, df = mm$moderated.df.total)
-  mm$moderated.conf.low <- mm[[estimate]] - prqt * sqrt(mm$moderated.var.post)
-  mm$moderated.conf.high <- mm[[estimate]] + prqt * sqrt(mm$moderated.var.post)
-  mm <- dplyr::ungroup(mm)
+  conf_quantile <- -qt((1 - confint) / 2, df = contrast_df$moderated.df.total)
+  contrast_df$moderated.conf.low <- contrast_df[[estimate]] - conf_quantile * sqrt(contrast_df$moderated.var.post)
+  contrast_df$moderated.conf.high <- contrast_df[[estimate]] + conf_quantile * sqrt(contrast_df$moderated.var.post)
+  contrast_df <- dplyr::ungroup(contrast_df)
 
-  return(mm)
+  return(contrast_df)
 }
 
 #' Moderate p-value for long table
-#' @param mm result of \code{\link{contrasts_linfct}}
+#' @param contrast_df result of \code{\link{contrasts_linfct}}
 #' @param group_by_col colnames with contrast description - default 'lhs'
 #' @export
 #' @family modelling
@@ -50,19 +51,19 @@ moderated_p_limma <- function(mm, df = "df", estimate = "diff", robust = FALSE, 
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 #'
-moderated_p_limma_long <- function(mm, group_by_col = "lhs", estimate = "estimate", robust = FALSE) {
-  dfg <- mm |>
+moderated_p_limma_long <- function(contrast_df, group_by_col = "lhs", estimate = "estimate", robust = FALSE) {
+  split_groups <- contrast_df |>
     dplyr::group_by(across(all_of(group_by_col))) |>
     dplyr::group_split()
-  xx <- purrr::map_df(dfg, moderated_p_limma, estimate = estimate, robust = robust)
-  return(xx)
+  moderated_results <- purrr::map_df(split_groups, moderated_p_limma, estimate = estimate, robust = robust)
+  return(moderated_results)
 }
 
 
 #' adjust columns
 #'
 #' @export
-#' @param mm data.frame with p-values to adjust
+#' @param contrast_df data.frame with p-values to adjust
 #' @param column name of column containing p-values
 #' @param group_by_col column(s) to group by before adjusting (e.g. contrast), or NULL for no grouping
 #' @param newname name of the new column with adjusted p-values
@@ -84,15 +85,15 @@ moderated_p_limma_long <- function(mm, group_by_col = "lhs", estimate = "estimat
 #'
 #'
 adjust_p_values <- function(
-  mm,
+  contrast_df,
   column = "p.value",
   group_by_col = "contrast",
   newname = "FDR"
 ) {
-  dfg <- mm |>
+  grouped_df <- contrast_df |>
     dplyr::group_by(across(all_of(group_by_col)))
-  xx <- dplyr::mutate(dfg, !!newname := p.adjust(!!sym(column), method = "BH"))
-  return(xx)
+  adjusted_df <- dplyr::mutate(grouped_df, !!newname := p.adjust(!!sym(column), method = "BH"))
+  return(adjusted_df)
 }
 
 
@@ -251,17 +252,16 @@ summary_ROPECA_median_p.scaled <- function(
 #' condB <- 8
 #' observedA <- sample(0:8, Nprot, replace = TRUE)
 #' observedB <- sample(0:8, Nprot, replace = TRUE)
-#' xb <- data.frame(observedA = observedA, observedB = observedB)
+#' fisher_input <- data.frame(observedA = observedA, observedB = observedB)
 #'
-#' xb$samplesA <- condA
-#' xb$samplesB <- condB
+#' fisher_input$samplesA <- condA
+#' fisher_input$samplesB <- condB
 #' proteinID <- unique(stringi::stri_rand_strings(Nprot + 20,5))[1:Nprot]
-#' xb$proteinID <- proteinID
-#' xlater <- xb
-#' res <- contrasts_fisher_exact(xlater)
+#' fisher_input$proteinID <- proteinID
+#' res <- contrasts_fisher_exact(fisher_input)
 #'
 contrasts_fisher_exact <- function(
-  xb,
+  fisher_input,
   observedA = "observedA",
   observedB = "observedB",
   samplesA = "samplesA",
@@ -287,32 +287,32 @@ contrasts_fisher_exact <- function(
     ))
   }
 
-  xb$OdsRatioM <- odsRatio(
-    observedA = xb[["observedA"]],
-    observedB = xb[["observedB"]],
-    samplesA = xb[["samplesA"]],
-    samplesB = xb[["samplesB"]]
+  fisher_input$OdsRatioM <- odsRatio(
+    observedA = fisher_input[["observedA"]],
+    observedB = fisher_input[["observedB"]],
+    samplesA = fisher_input[["samplesA"]],
+    samplesB = fisher_input[["samplesB"]]
   )
-  xb$relativeRiskM <- relativeRisk(
-    observedA = xb[["observedA"]],
-    observedB = xb[["observedB"]],
-    samplesA = xb[["samplesA"]],
-    samplesB = xb[["samplesB"]]
+  fisher_input$relativeRiskM <- relativeRisk(
+    observedA = fisher_input[["observedA"]],
+    observedB = fisher_input[["observedB"]],
+    samplesA = fisher_input[["samplesA"]],
+    samplesB = fisher_input[["samplesB"]]
   )
 
-  res <- vector(mode = "list", length(nrow(xb)))
+  res <- vector(mode = "list", length(nrow(fisher_input)))
 
-  for (i in seq_len(nrow(xb))) {
+  for (i in seq_len(nrow(fisher_input))) {
     res[[i]] <- apply_fischer(
-      xb[["proteinID"]][i],
-      xb[["observedA"]][i],
-      xb[["observedB"]][i],
-      xb[["samplesA"]][i],
-      xb[["samplesB"]][i]
+      fisher_input[["proteinID"]][i],
+      fisher_input[["observedA"]][i],
+      fisher_input[["observedB"]][i],
+      fisher_input[["samplesA"]][i],
+      fisher_input[["samplesB"]][i]
     )
   }
 
   result <- dplyr::bind_rows(res)
-  xx <- dplyr::inner_join(xb, result, by = c("proteinID" = "proteinID"))
-  return(xx)
+  enriched_result <- dplyr::inner_join(fisher_input, result, by = c("proteinID" = "proteinID"))
+  return(enriched_result)
 }

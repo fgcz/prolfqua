@@ -5,14 +5,14 @@
 \title{adjust columns}
 \usage{
 adjust_p_values(
-  mm,
+  contrast_df,
   column = "p.value",
   group_by_col = "contrast",
   newname = "FDR"
 )
 }
 \arguments{
-\item{mm}{data.frame with p-values to adjust}
+\item{contrast_df}{data.frame with p-values to adjust}
 
 \item{column}{name of column containing p-values}
 

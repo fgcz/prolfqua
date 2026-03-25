@@ -5,7 +5,7 @@
 \title{Moderate p-values - limma approach}
 \usage{
 moderated_p_limma(
-  mm,
+  contrast_df,
   df = "df",
   estimate = "diff",
   robust = FALSE,

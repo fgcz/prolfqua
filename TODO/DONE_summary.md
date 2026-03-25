@@ -4,6 +4,26 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-25 — Item 2: Fix cryptic variable names in internal functions
+
+From `TODO/TODO_10_refactorings.md` Item 2. Renamed cryptic 2-letter variables to descriptive names in two files:
+
+**`R/tidyMS_contrasts.R`:**
+- `.model_coeff_matrix`: `mm` → `coeff_matrix`, `coefi` → `non_intercept_coeffs`, return field `$mm` → `$coeff_matrix`
+- `.get_match_idx`: param `mm` → `coeff_matrix`, `ddd` → `row_name_parts`, `xd` → `factor_match`
+- `.coeff_weights_factor_levels`: param `mm` → `coeff_matrix`, `xx` → `weights_by_factor`
+- `linfct_from_model`: `cm` → `coeff_result`, `cm_mm` → `sorted_coeff_matrix`
+
+**`R/tidyMS_moderation.R`:**
+- `moderated_p_limma`: param `mm` → `contrast_df`, `sv` → `squeezed_var`, `prqt` → `conf_quantile`
+- `moderated_p_limma_long`: param `mm` → `contrast_df`, `dfg` → `split_groups`, `xx` → `moderated_results`
+- `adjust_p_values`: param `mm` → `contrast_df`, `dfg` → `grouped_df`, `xx` → `adjusted_df`
+- `contrasts_fisher_exact`: param `xb` → `fisher_input`, `xx` → `enriched_result`
+
+All 485 tests pass.
+
+---
+
 ## 2026-02-19 — Bug Fixes: Hardcoded Imputation, Log Protection, Silent Drops
 
 From code review top-10 items #1, #2, #5.
