@@ -28,7 +28,6 @@ contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
 
   for (i in seq_along(modelDF[[modelcol]])) {
     interaction_models[[i]] <- .compute_contrast(
-      # nolint object_usage_linter. defined in tidyMS_contrasts.R
       modelDF[[modelcol]][[i]],
       linfct = modelDF$linfct[[i]],
       strategy = models$strategy
