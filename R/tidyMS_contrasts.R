@@ -112,6 +112,13 @@ linfct_from_model <- function(m, as_list = TRUE) {
 
 
 #' linfct_matrix_contrasts
+#'
+#' When \code{options(prolfqua.vectorize = TRUE)} is set, dispatches to a
+#' vectorized implementation that batch-evaluates all contrast expressions in a
+#' single \code{dplyr::mutate()} call instead of looping per expression.
+#' Set \code{options(prolfqua.vectorize = FALSE)} (the default) to use the
+#' original per-expression loop.
+#'
 #' @export
 #' @param linfct linear functions as created by linfct_from_model
 #' @param contrasts named character vector of contrasts to determine linear functions for
@@ -143,6 +150,9 @@ linfct_from_model <- function(m, as_list = TRUE) {
 #' stopifnot(sum(x["interactAB",]) ==1 )
 #'
 linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
+  if (isTRUE(getOption("prolfqua.vectorize"))) {
+    return(linfct_matrix_contrasts_vectorized(linfct, contrasts, p.message = p.message))
+  }
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")
   make_contrasts <- function(data, contrasts) {
@@ -203,6 +213,100 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
   return(res)
 }
 
+#' Vectorized version of \code{\link{linfct_matrix_contrasts}}
+#'
+#' Same semantics but uses a single \code{dplyr::mutate(data, !!!parsed)} call
+#' instead of one mutate per contrast. Falls back to per-expression evaluation
+#' on error so that granular failure reporting is preserved.
+#'
+#' @inheritParams linfct_matrix_contrasts
+#' @keywords internal
+linfct_matrix_contrasts_vectorized <- function(linfct, contrasts, p.message = FALSE) {
+  linfct <- t(linfct)
+  df <- tibble::as_tibble(linfct, rownames = "interaction")
+  make_contrasts <- function(data, contrasts) {
+    cnams <- base::setdiff(colnames(data), "interaction")
+
+    # Ensure all contrasts have names
+    for (i in seq_along(contrasts)) {
+      contrast_name <- names(contrasts)[i]
+      if (is.null(contrast_name) || !nzchar(contrast_name)) {
+        names(contrasts)[i] <- paste0("contrast_", i)
+      }
+    }
+
+    # Pre-parse all contrast expressions
+    parsed <- lapply(contrasts, rlang::parse_expr)
+    names(parsed) <- names(contrasts)
+
+    # Fast path: single mutate with !!! splicing
+    err <- tryCatch(
+      {
+        data <- dplyr::mutate(data, !!!parsed)
+        NULL
+      },
+      error = function(e) {
+        e
+      }
+    )
+
+    if (is.null(err)) {
+      res <- data |> dplyr::select(-dplyr::all_of(cnams))
+      return(res)
+    }
+
+    # Fallback: per-expression evaluation for granular error reporting
+    failures <- list()
+    for (i in seq_along(contrasts)) {
+      if (p.message) {
+        message(names(contrasts)[i], "=", contrasts[i], "\n")
+      }
+      err <- tryCatch(
+        {
+          data <- dplyr::mutate(data, !!names(contrasts)[i] := !!parsed[[i]])
+          NULL
+        },
+        error = function(e) {
+          e
+        }
+      )
+      if (inherits(err, "error")) {
+        failures[[length(failures) + 1]] <- list(
+          contrast = names(contrasts)[i],
+          message = conditionMessage(err)
+        )
+      }
+    }
+    res <- data |> dplyr::select(-dplyr::all_of(cnams))
+    if (length(failures) > 0) {
+      failure_df <- dplyr::bind_rows(failures)
+      failure_names <- paste(failure_df$contrast, collapse = ", ")
+      failure_messages <- unique(failure_df$message)
+      failure_summary <- paste(utils::head(failure_messages, 3), collapse = "; ")
+      warning(
+        paste0(
+          "linfct_matrix_contrasts: computed ",
+          ncol(res) - 1,
+          "/",
+          length(contrasts),
+          " contrasts; failed ",
+          nrow(failure_df),
+          ": ",
+          failure_names,
+          ". ",
+          failure_summary
+        ),
+        call. = FALSE
+      )
+    }
+    return(res)
+  }
+
+  res <- make_contrasts(df, contrasts)
+  res <- tibble::column_to_rownames(res, "interaction")
+  res <- t(res)
+  return(res)
+}
 
 #' create all possible contrasts
 #' @export
@@ -326,6 +430,11 @@ linfct_factors_contrasts <- function(m) {
 #'
 #' only keeps non NA coefficients.
 #'
+#' When \code{options(prolfqua.vectorize = TRUE)} is set, dispatches to a
+#' vectorized implementation that uses matrix multiplication instead of a
+#' per-row loop. Set \code{options(prolfqua.vectorize = FALSE)} (the default)
+#' to use the original loop.
+#'
 #' @param m linear model generated using lm
 #' @param linfct linear function
 #' @param confint confidence interval default 0.95
@@ -340,6 +449,9 @@ linfct_factors_contrasts <- function(m) {
 #' compute_contrast(m, linfct, confint = 0.99)
 #'
 compute_contrast <- function(m, linfct, confint = 0.95) {
+  if (isTRUE(getOption("prolfqua.vectorize"))) {
+    return(compute_contrast_vectorized(m, linfct, confint = confint))
+  }
   Sigma.hat <- vcov(m)
 
   coef <- na.omit(coefficients(m))
@@ -373,6 +485,87 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
     }
   }
   res <- dplyr::bind_rows(res)
+  return(res)
+}
+
+#' Vectorized version of \code{\link{compute_contrast}}
+#'
+#' Same semantics but uses vectorized matrix multiplication instead of a
+#' per-row loop. NAs in \code{coefficients(m)} propagate naturally via
+#' \code{linfct \%*\% coef} for rows that reference missing coefficients.
+#'
+#' @inheritParams compute_contrast
+#' @keywords internal
+compute_contrast_vectorized <- function(m, linfct, confint = 0.95) {
+  n <- nrow(linfct)
+  if (n == 0) {
+    return(data.frame(
+      lhs = character(0),
+      sigma = numeric(0),
+      df = numeric(0),
+      estimate = numeric(0),
+      std.error = numeric(0),
+      statistic = numeric(0),
+      p.value = numeric(0),
+      conf.low = numeric(0),
+      conf.high = numeric(0),
+      stringsAsFactors = FALSE
+    ))
+  }
+
+  coef_full <- coefficients(m)
+  available <- names(na.omit(coef_full))
+  Sigma.hat <- vcov(m)
+  df <- df.residual(m)
+  sig <- sigma(m)
+
+  # Align coefficients with linfct columns by name
+  coef_aligned <- coef_full[colnames(linfct)]
+  na_coefs <- is.na(coef_aligned)
+
+  # Use zero-filled coefficients for multiplication (0 * NA = NA in R, but 0 * 0 = 0)
+  coef_zero <- coef_aligned
+  coef_zero[na_coefs] <- 0
+  estimate <- as.vector(linfct %*% coef_zero)
+
+  # Mark rows invalid if any non-zero weight touches an NA coefficient
+  if (any(na_coefs)) {
+    invalid <- as.logical(linfct[, na_coefs, drop = FALSE] %*% rep(1, sum(na_coefs)) != 0)
+    estimate[invalid] <- NA
+  }
+
+  if (df > 0) {
+    # std.error: vcov only covers available (non-NA) coefficients
+    available_cols <- intersect(colnames(linfct), available)
+    linfct_avail <- linfct[, available_cols, drop = FALSE]
+    Sigma.hat_avail <- Sigma.hat[available_cols, available_cols, drop = FALSE]
+    std.error <- sqrt(diag(linfct_avail %*% Sigma.hat_avail %*% t(linfct_avail)))
+    std.error[is.na(estimate)] <- NA
+    statistic <- estimate / std.error
+    p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
+    prqt <- -qt((1 - confint) / 2, df = df)
+    conf.low <- estimate - prqt * std.error
+    conf.high <- estimate + prqt * std.error
+  } else {
+    std.error <- rep(NA_real_, n)
+    statistic <- rep(NA_real_, n)
+    p.value <- rep(NA_real_, n)
+    conf.low <- rep(NA_real_, n)
+    conf.high <- rep(NA_real_, n)
+  }
+
+  res <- data.frame(
+    lhs = rownames(linfct),
+    sigma = sig,
+    df = df,
+    estimate = estimate,
+    std.error = std.error,
+    statistic = statistic,
+    p.value = p.value,
+    conf.low = conf.low,
+    conf.high = conf.high,
+    stringsAsFactors = FALSE
+  )
   return(res)
 }
 
@@ -436,22 +629,13 @@ pivot_model_contrasts_2_Wide <- function(
   columns = c("estimate", "p.value", "p.value.adjusted"),
   contrast = "lhs"
 ) {
-  m_spread <- function(longContrasts, subject_Id, column, contrast) {
-    res <- longContrasts |>
-      dplyr::select(all_of(c(subject_Id, contrast, column)))
-    res <- res |> dplyr::mutate(!!contrast := paste0(column, ".", !!sym(contrast)))
-    res <- res |>
-      tidyr::pivot_wider(
-        names_from = dplyr::all_of(contrast),
-        values_from = dplyr::all_of(column)
-      )
-    return(res)
-  }
-  res <- list()
-  for (column in columns) {
-    res[[column]] <- m_spread(modelWithInteractionsContrasts, subject_Id, column, contrast)
-  }
-  res <- res |> reduce(left_join, by = c(subject_Id))
+  res <- modelWithInteractionsContrasts |>
+    dplyr::select(dplyr::all_of(c(subject_Id, contrast, columns))) |>
+    tidyr::pivot_wider(
+      names_from = dplyr::all_of(contrast),
+      values_from = dplyr::all_of(columns),
+      names_glue = paste0("{.value}.{", contrast, "}")
+    )
   return(res)
 }
 #' compute group averages

@@ -11,6 +11,10 @@ Limma contrast analysis facade
 \details{
 Encapsulates the pipeline: \code{\link{strategy_limma}} ->
 \code{\link{build_model_limma}} -> \code{\link{ContrastsLimma}}.
+
+Supports \code{options(prolfqua.vectorize = TRUE)} for faster
+\code{\link{linfct_matrix_contrasts}} evaluation.
+See \code{\link{build_contrast_analysis}} for details.
 }
 \examples{
 istar <- sim_lfq_data_protein_config()

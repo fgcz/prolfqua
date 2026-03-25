@@ -4,6 +4,64 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-25 — Performance Review Items 8, 9, 10
+
+From `TODO/TODO_perforance_review.md`. Final three items — all 10 now complete.
+
+- **Item 8 (`apply()` → `rowSums` + partial sort):** `estimate_lod_global()` replaced `apply(data_matrix, 1, function(x) sum(is.na(x)))` with vectorized `rowSums(is.na(data_matrix))`. `function_lod_quantile()` no longer converts matrix to data.frame; uses `sort(x, partial = n)[1:n]` for O(n) partial sort instead of full `sort()`. (`R/LFQDataImp.R`)
+
+- **Item 9 (`get_LOD()` caching):** Added `private$.lod_cache` to `MissingHelpers` R6 class. `get_LOD()` now computes once on first call and returns cached value thereafter, matching the existing `self$stats` caching pattern. Eliminates redundant filter + quantile computation on every call. (`R/tidyMS_missingness_imputation.R`)
+
+- **Item 10 (filter-compute-rejoin):** Replaced the filter → mutate → select → `left_join` pattern in `model_analyse()` with a single `mutate` using `purrr::map2_*` that checks `has_model_fit` per row. Failed fits get `NA` directly from the else branch, eliminating the intermediate filtered tibble and rejoin. (`R/tidyMS_build_model.R`)
+
+All 534 tests pass.
+
+---
+
+## 2026-03-25 — Performance Review Item 7: Single pivot_wider in pivot_model_contrasts_2_Wide
+
+From `TODO/TODO_perforance_review.md`.
+
+The function looped over value columns, calling `pivot_wider` per column via the `m_spread` helper, then chained N-1 `left_join` calls via `purrr::reduce`. Replaced with a single `tidyr::pivot_wider(values_from = columns, names_glue = "{.value}.{contrast}")`. Eliminates the helper function, the loop, and the reduce/left_join chain.
+
+**Files:** `R/tidyMS_contrasts.R`. All 534 tests pass.
+
+---
+
+## 2026-03-25 — Performance Review Items 5 & 6: Vectorized Contrast Computation
+
+From `TODO/TODO_perforance_review.md`.
+
+- **Item 5 (`compute_contrast` vectorization):** The original loops per-row of the `linfct` matrix, creating one `data.frame()` per contrast, then `bind_rows()`. The vectorized variant (`compute_contrast_vectorized`) uses matrix multiplication (`linfct %*% coef`) with zero-filled coefficients and invalid-row masking for NA coefficients. Standard errors computed via `sqrt(diag(L %*% Sigma %*% t(L)))` in one pass.
+
+- **Item 6 (`linfct_matrix_contrasts` vectorization):** The original loops `rlang::parse_expr()` + `dplyr::mutate()` per contrast expression. The vectorized variant (`linfct_matrix_contrasts_vectorized`) pre-parses all expressions with `lapply(parse_expr)` and evaluates in a single `dplyr::mutate(data, !!!parsed)` call. Falls back to per-expression loop on error for granular reporting.
+
+### Hot-swap mechanism
+
+Both originals are **untouched**. Vectorized variants live alongside them in `R/tidyMS_contrasts.R`. A package option controls dispatch:
+
+```r
+options(prolfqua.vectorize = TRUE)   # use vectorized path
+options(prolfqua.vectorize = FALSE)  # use original (default)
+```
+
+`compute_contrast()` and `linfct_matrix_contrasts()` check `getOption("prolfqua.vectorize")` at the top and delegate accordingly. This affects all Wald test facades (lm, rlm, firth, lmer) and limma's `linfct_matrix_contrasts` usage — no changes to R6 classes or strategy constructors needed.
+
+### Test harness
+
+`tests/testthat/test-vectorize-contrasts.R` (13 tests, 49 assertions):
+- **Section A** (5 tests): `linfct_matrix_contrasts` vs `_vectorized` — parallel3, self-referencing factors, interaction model, single contrast, invalid contrast warning
+- **Section B** (7 tests): `compute_contrast` vs `_vectorized` — full model, parallel3, single-row, all pairwise, different confint, manual NA coefficients, simulated incomplete models
+- **Section C** (1 test): End-to-end facade hot-swap via `build_contrast_analysis(method = "lm")` with `options(prolfqua.vectorize)` toggle — verifies diff, std.error, p.value, FDR match to 1e-12
+
+### Documentation
+
+Roxygen `@section Vectorized mode` added to `build_contrast_analysis()`. One-liner notes added to `Contrasts`, `ContrastsLMFacade`, `ContrastsRLMFacade`, `ContrastsFirthFacade`, `ContrastsLimmaFacade`.
+
+**Files:** `R/tidyMS_contrasts.R`, `R/build_contrast_analysis.R`, `R/Contrasts.R`, `R/ContrastsFacades.R`, `tests/testthat/test-vectorize-contrasts.R`. All 529 tests pass.
+
+---
+
 ## 2026-03-25 — Performance Review Items 1–4
 
 From `TODO/TODO_perforance_review.md`.

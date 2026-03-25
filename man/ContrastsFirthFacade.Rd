@@ -15,6 +15,9 @@ Encapsulates the pipeline: encode missingness ->
 
 The input may be aggregated protein-level data or nested peptide-level data.
 The correct builder is chosen from the \code{LFQData} hierarchy automatically.
+
+Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
+computation. See \code{\link{build_contrast_analysis}} for details.
 }
 \examples{
 istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5)

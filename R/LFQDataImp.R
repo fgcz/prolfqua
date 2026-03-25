@@ -11,12 +11,7 @@
 #' stopifnot(length(estimate_lod_global(xx$data, prop_na = 10)) > 0)
 estimate_lod_global <- function(data_matrix, prop_na = 90) {
   frac <- ceiling(ncol(data_matrix) / (100 / prop_na))
-  xx <- na.omit(as.numeric(data_matrix[
-    apply(data_matrix, 1, function(x) {
-      sum(is.na(x))
-    }) >=
-      frac,
-  ]))
+  xx <- na.omit(as.numeric(data_matrix[rowSums(is.na(data_matrix)) >= frac, ]))
   return(xx)
 }
 
@@ -35,34 +30,21 @@ estimate_lod_global <- function(data_matrix, prop_na = 90) {
 #' sapply(s, median)
 #' sapply(s, mean)
 function_lod_quantile <- function(data_matrix, percent = 10) {
-  # Convert to data frame if it's a matrix
-  if (is.matrix(data_matrix)) {
-    data_matrix <- as.data.frame(data_matrix)
+  if (!is.matrix(data_matrix)) {
+    data_matrix <- as.matrix(data_matrix)
   }
-
-  # Initialize list to store results
-  result_list <- list()
-
-  # Process each column
-  for (col_name in names(data_matrix)) {
-    col_data <- as.numeric(data_matrix[[col_name]])
-
-    # Remove NA values
-    col_data <- na.omit(col_data)
-
-    if (length(col_data) == 0) {
+  result_list <- vector("list", ncol(data_matrix))
+  names(result_list) <- colnames(data_matrix)
+  for (col_name in colnames(data_matrix)) {
+    col_data <- data_matrix[, col_name]
+    col_data <- col_data[!is.na(col_data)]
+    if (length(col_data) == 0L) {
       result_list[[col_name]] <- numeric(0)
       next
     }
-
-    # Calculate number of values to select (x% of total)
     n_select <- ceiling(length(col_data) * percent / 100)
-
-    # Sort and select the smallest values
-    sorted_values <- sort(col_data)
-    result_list[[col_name]] <- sorted_values[1:n_select]
+    result_list[[col_name]] <- sort(col_data, partial = n_select)[1:n_select]
   }
-
   return(result_list)
 }
 #' Impute missing values using zCompositions

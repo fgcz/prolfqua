@@ -66,11 +66,13 @@ MissingHelpers <- R6::R6Class(
     #' computes quantile of abundances in groups with a single observation
     #' @return integer LOD
     get_LOD = function() {
-      LOD <- self$get_stats() |>
-        dplyr::filter(nrMeasured == 1) |>
-        dplyr::summarize(LOD = quantile(meanAbundance, probs = self$prob, na.rm = TRUE)) |>
-        pull()
-      return(LOD)
+      if (is.null(private$.lod_cache)) {
+        private$.lod_cache <- self$get_stats() |>
+          dplyr::filter(nrMeasured == 1) |>
+          dplyr::summarize(LOD = quantile(meanAbundance, probs = self$prob, na.rm = TRUE)) |>
+          dplyr::pull()
+      }
+      return(private$.lod_cache)
     },
     #' @description
     #' compute group averages using weighted lod
@@ -197,6 +199,7 @@ MissingHelpers <- R6::R6Class(
     }
   ),
   private = list(
+    .lod_cache = NULL,
     add_p_values = function(result, confint = 0.95, all = TRUE) {
       result <- dplyr::mutate(
         result,

@@ -12,6 +12,9 @@ RLM contrast analysis facade
 Encapsulates the pipeline: \code{\link{strategy_rlm}} ->
 \code{\link{build_model}} -> \code{\link{Contrasts}} ->
 \code{\link{ContrastsModerated}}.
+
+Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
+computation. See \code{\link{build_contrast_analysis}} for details.
 }
 \examples{
 istar <- sim_lfq_data_protein_config()

@@ -16,6 +16,12 @@ compute_contrast(m, linfct, confint = 0.95)
 \description{
 only keeps non NA coefficients.
 }
+\details{
+When \code{options(prolfqua.vectorize = TRUE)} is set, dispatches to a
+vectorized implementation that uses matrix multiplication instead of a
+per-row loop. Set \code{options(prolfqua.vectorize = FALSE)} (the default)
+to use the original loop.
+}
 \examples{
 m <- sim_make_model_lm( "factors")
 linfct <- linfct_from_model(m)$linfct_factors

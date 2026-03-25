@@ -8,6 +8,13 @@ Estimate contrasts using Wald Test
 
 Estimate contrasts using Wald Test
 }
+\details{
+The per-protein contrast computation uses \code{\link{compute_contrast}} and
+\code{\link{linfct_matrix_contrasts}} internally. Both support a vectorized
+code path activated by \code{options(prolfqua.vectorize = TRUE)}. This can
+give a significant speed-up for large datasets. The vectorized path produces
+numerically identical results.
+}
 \examples{
 
 # Fitting mixed effects model to peptide data

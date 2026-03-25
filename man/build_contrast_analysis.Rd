@@ -42,6 +42,20 @@ A builder function that dispatches to the appropriate facade class based on
 the chosen method. Each facade encapsulates the full pipeline from strategy
 construction through modelling to contrast computation.
 }
+\section{Vectorized mode}{
+
+Set \code{options(prolfqua.vectorize = TRUE)} before calling this function
+to activate vectorized implementations of \code{\link{compute_contrast}} and
+\code{\link{linfct_matrix_contrasts}}. This affects all methods that use the
+Wald test path (lm, rlm, firth, lmer) and can give a significant speed-up
+for large datasets. Results are numerically identical. Example:
+\preformatted{
+options(prolfqua.vectorize = TRUE)
+fa <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
+options(prolfqua.vectorize = FALSE)  # restore default
+}
+}
+
 \examples{
 istar <- sim_lfq_data_protein_config(Nprot = 20)
 lfqdata <- LFQData$new(istar$data, istar$config)

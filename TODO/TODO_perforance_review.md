@@ -1,4 +1,4 @@
-## Performance Code Review: prolfqua R Package
+## Performance Code Review: prolfqua R Package — All Items Complete
 
 Here are the issues ranked by impact, from highest to lowest:
 
@@ -29,57 +29,34 @@ Fixed: combined into single `mutate()` calls in both `tidyMS_build_model.R` (5 m
 
 ---
 
-### 5. `contrasts_linfct` per-protein loop + per-row `data.frame()` creation
-**`tidyMS_contrasts.R` ~lines 348-375, 473-529**
-
-`compute_contrast` creates a `data.frame()` per row of `linfct` in a loop, then `bind_rows()`. This is called once per protein. Fix: pre-allocate result vectors and construct a single data.frame, or vectorize the matrix multiplication across all linfct rows.
+### ~~5. `contrasts_linfct` per-protein loop + per-row `data.frame()` creation~~ DONE
+Fixed: `compute_contrast_vectorized()` uses matrix multiplication (`linfct %*% coef`) with zero-filled coefficients and invalid-row masking for NA coefficients. Standard errors via `sqrt(diag(L %*% Sigma %*% t(L)))`. Original `compute_contrast()` untouched; hot-swap via `options(prolfqua.vectorize = TRUE)`.
 
 ---
 
-### 6. `rlang::parse_expr()` + `mutate()` in a loop
-**`tidyMS_contrasts.R` ~lines 145-198**
-
-```r
-for (i in seq_along(contrasts)) {
-  data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
-}
-```
-Each iteration copies the tibble and parses an expression. Fix: build all contrasts in a single `mutate()` using `!!!` splicing.
+### ~~6. `rlang::parse_expr()` + `mutate()` in a loop~~ DONE
+Fixed: `linfct_matrix_contrasts_vectorized()` pre-parses all expressions with `lapply(parse_expr)` and evaluates in a single `dplyr::mutate(data, !!!parsed)` call. Falls back to per-expression loop on error. Original `linfct_matrix_contrasts()` untouched; hot-swap via `options(prolfqua.vectorize = TRUE)`.
 
 ---
 
-### 7. `pivot_model_contrasts_2_Wide` uses `reduce(left_join)`
-**`tidyMS_contrasts.R` ~lines 450-454**
-
-Loops over columns, does a separate `pivot_wider` per column, then chains N-1 `left_join` calls. Fix: single `pivot_wider(values_from = columns, names_glue = "{.value}.{contrast}")`.
+### ~~7. `pivot_model_contrasts_2_Wide` uses `reduce(left_join)`~~ DONE
+Fixed: replaced loop of N `pivot_wider` + `reduce(left_join)` with single `pivot_wider(values_from = columns, names_glue = "{.value}.{contrast}")`. Eliminates the `m_spread` helper, the loop, and the `purrr::reduce`/`dplyr::left_join` chain.
 
 ---
 
-### 8. `apply()` instead of `rowSums` / partial sort
-**`LFQDataImp.R` ~lines 14-17:**
-```r
-apply(data_matrix, 1, function(x) { sum(is.na(x)) })
-```
-Fix: `rowSums(is.na(data_matrix))`
-
-**`LFQDataImp.R` ~lines 37-66:** Converts matrix to data.frame, then `sort()` per column.
-Fix: keep as matrix, use `sort(x, partial = n)[1:n]` for O(n) partial sort.
+### ~~8. `apply()` instead of `rowSums` / partial sort~~ DONE
+Fixed: `estimate_lod_global()` uses `rowSums(is.na(...))` instead of `apply()`. `function_lod_quantile()` keeps data as matrix (no data.frame conversion) and uses `sort(x, partial = n)[1:n]` for O(n) partial sort.
 
 ---
 
-### 9. `get_LOD()` not cached
-**`tidyMS_missingness_imputation.R` ~lines 68-73**
-
-Called multiple times (from `impute_weighted_lod`, `impute_lod`, `get_contrasts`), each time filtering and summarizing `get_stats()`. Fix: cache the LOD scalar in a private field.
+### ~~9. `get_LOD()` not cached~~ DONE
+Fixed: added `private$.lod_cache` field to `MissingHelpers`. `get_LOD()` computes once on first call, returns cached value thereafter. Same null-check pattern already used for `self$stats`.
 
 ---
 
-### 10. Filter-compute-rejoin pattern
-**`tidyMS_build_model.R` ~lines 595-627**
-
-Filters to models with fits, computes columns, then `left_join` back to the full table. Fix: use conditional `mutate` with `if_else`/`case_when` on the full table, avoiding the filter + rejoin round-trip.
+### ~~10. Filter-compute-rejoin pattern~~ DONE
+Fixed: replaced filter → compute → select → `left_join` with a single `mutate` using `purrr::map2_*` that checks `has_model_fit` per row. Failed fits get `NA` directly from the else branch.
 
 ---
 
-### Priority for remaining items:
-Issues **5** and **6** run in the per-protein hot path and are the most impactful remaining items. Issues **7**, **8**, **9**, **10** are moderate improvements.
+### All 10 items complete.

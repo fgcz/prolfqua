@@ -14,7 +14,11 @@ linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
 \item{p.message}{print messages default FALSE}
 }
 \description{
-linfct_matrix_contrasts
+When \code{options(prolfqua.vectorize = TRUE)} is set, dispatches to a
+vectorized implementation that batch-evaluates all contrast expressions in a
+single \code{dplyr::mutate()} call instead of looping per expression.
+Set \code{options(prolfqua.vectorize = FALSE)} (the default) to use the
+original per-expression loop.
 }
 \examples{
 

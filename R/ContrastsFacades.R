@@ -70,6 +70,10 @@
 #' Encapsulates the pipeline: \code{\link{strategy_limma}} ->
 #' \code{\link{build_model_limma}} -> \code{\link{ContrastsLimma}}.
 #'
+#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster
+#' \code{\link{linfct_matrix_contrasts}} evaluation.
+#' See \code{\link{build_contrast_analysis}} for details.
+#'
 #' @export
 #' @family modelling
 #' @examples
@@ -135,6 +139,9 @@ ContrastsLimmaFacade <- R6::R6Class(
 #' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
 #' \code{\link{ContrastsModerated}}.
 #'
+#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
+#' computation. See \code{\link{build_contrast_analysis}} for details.
+#'
 #' @export
 #' @family modelling
 #' @examples
@@ -198,6 +205,9 @@ ContrastsLMFacade <- R6::R6Class(
 #' Encapsulates the pipeline: \code{\link{strategy_rlm}} ->
 #' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
 #' \code{\link{ContrastsModerated}}.
+#'
+#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
+#' computation. See \code{\link{build_contrast_analysis}} for details.
 #'
 #' @export
 #' @family modelling
@@ -498,6 +508,9 @@ ContrastsLMImputeFacade <- R6::R6Class(
 #'
 #' The input may be aggregated protein-level data or nested peptide-level data.
 #' The correct builder is chosen from the \code{LFQData} hierarchy automatically.
+#'
+#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
+#' computation. See \code{\link{build_contrast_analysis}} for details.
 #'
 #' @export
 #' @family modelling

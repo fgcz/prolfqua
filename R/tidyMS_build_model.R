@@ -599,39 +599,44 @@ model_analyse <- function(
       })
     )
 
-  modelProteinF <- modelProtein |>
-    dplyr::filter(!!sym("has_model_fit") == TRUE)
-
   count_coef <- function(x) {
     cc <- coefficients(x)
-    if (inherits(cc, "numeric")) {
-      return(length(cc))
-    } else {
-      return(ncol(cc[[1]]))
-    }
+    if (inherits(cc, "numeric")) length(cc) else ncol(cc[[1]])
   }
 
   count_coef_not_NA <- function(x) {
     cc <- coefficients(x)
-    if (inherits(cc, "numeric")) {
-      return(sum(!is.na(cc)))
-    } else {
-      return(ncol(cc[[1]]))
-    }
+    if (inherits(cc, "numeric")) sum(!is.na(cc)) else ncol(cc[[1]])
   }
 
-  modelProteinF <- modelProteinF |>
+  modelProtein <- modelProtein |>
     dplyr::mutate(
-      isSingular = purrr::map_lgl(!!sym(lmermodel), model_strategy$isSingular),
-      df.residual = purrr::map_dbl(!!sym(lmermodel), model_strategy$df_residual),
-      sigma = purrr::map_dbl(!!sym(lmermodel), model_strategy$sigma),
-      nr_coef = purrr::map_int(!!sym(lmermodel), count_coef),
-      nr_coef_not_NA = purrr::map_int(!!sym(lmermodel), count_coef_not_NA)
+      isSingular = purrr::map2_lgl(
+        !!sym(lmermodel),
+        .data$has_model_fit,
+        function(m, ok) if (ok) model_strategy$isSingular(m) else NA
+      ),
+      df.residual = purrr::map2_dbl(
+        !!sym(lmermodel),
+        .data$has_model_fit,
+        function(m, ok) if (ok) model_strategy$df_residual(m) else NA_real_
+      ),
+      sigma = purrr::map2_dbl(
+        !!sym(lmermodel),
+        .data$has_model_fit,
+        function(m, ok) if (ok) model_strategy$sigma(m) else NA_real_
+      ),
+      nr_coef = purrr::map2_int(
+        !!sym(lmermodel),
+        .data$has_model_fit,
+        function(m, ok) if (ok) count_coef(m) else NA_integer_
+      ),
+      nr_coef_not_NA = purrr::map2_int(
+        !!sym(lmermodel),
+        .data$has_model_fit,
+        function(m, ok) if (ok) count_coef_not_NA(m) else NA_integer_
+      )
     )
-
-  modelProteinF <- modelProteinF |>
-    dplyr::select(all_of(c(subject_Id, "isSingular", "df.residual", "sigma", "nr_coef", "nr_coef_not_NA")))
-  modelProtein <- dplyr::left_join(modelProtein, modelProteinF)
 
   return(list(modelDF = modelProtein, modelName = modelName))
 }
