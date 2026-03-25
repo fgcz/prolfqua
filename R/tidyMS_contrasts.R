@@ -474,29 +474,22 @@ contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrast
   message("contrasts_linfct")
   modelcol <- "linear_model"
 
-  interaction_models <- vector(mode = "list", length = nrow(models))
-
-  if ("matrix" %in% class(linfct)) {
-    pb <- progress::progress_bar$new(total = length(models[[modelcol]]))
-    for (i in seq_along(models[[modelcol]])) {
-      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct)
-
-      pb$tick()
-    }
-    interaction_model_matrix <- models
-    interaction_model_matrix$contrast <- interaction_models
-  } else if (("list" %in% class(linfct)) && (length(linfct) == nrow(models))) {
-    pb <- progress::progress_bar$new(total = length(models[[modelcol]]))
-
-    for (i in seq_along(models[[modelcol]])) {
-      interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]])
-      pb$tick()
-    }
-    interaction_model_matrix <- models
-    interaction_model_matrix$contrast <- interaction_models
-  } else {
-    stop("linct must be either a matrix or a list of length == nrow models")
+  # Normalize: if linfct is a matrix, replicate it for each model
+  if (inherits(linfct, "matrix")) {
+    linfct <- rep(list(linfct), nrow(models))
   }
+  if (!is.list(linfct) || length(linfct) != nrow(models)) {
+    stop("linfct must be either a matrix or a list of length == nrow(models)")
+  }
+
+  interaction_models <- vector(mode = "list", length = nrow(models))
+  pb <- progress::progress_bar$new(total = nrow(models))
+  for (i in seq_along(models[[modelcol]])) {
+    interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]])
+    pb$tick()
+  }
+  interaction_model_matrix <- models
+  interaction_model_matrix$contrast <- interaction_models
 
   mclass <- function(x) {
     class(x)[1]
