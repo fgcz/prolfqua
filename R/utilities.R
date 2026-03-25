@@ -590,3 +590,36 @@ prolfqua_data <- function(datastr, package = "prolfqua") {
   data(list = datastr, package = package, envir = e)
   return(e[[datastr]])
 }
+
+
+#' create interaction column from factors
+#' @export
+#' @keywords internal
+#' @family configuration
+#' @examples
+#' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
+#' x <- make_interaction_column(xx, c("B","A"))
+#' x <- make_interaction_column(xx, c("A"))
+#' bb <- prolfqua::sim_lfq_data_protein_config()
+#' config <- bb$config
+#' analysis <- bb$data
+#'
+#' config$factorDepth <- 1
+#' make_interaction_column(analysis,
+#'    config$factor_keys_depth())
+#'
+make_interaction_column <- function(data, columns, sep = ".") {
+  intr <- dplyr::select(data, dplyr::all_of(columns))
+  intr <- purrr::map_dfc(intr, factor)
+  names(columns) <- columns
+  newlev <- purrr::map2(columns, intr, function(x, y) {
+    paste0(x, levels(y))
+  })
+  intr <- purrr::map2_dfc(columns, intr, paste0)
+  intr <- purrr::map2_dfc(intr, newlev, forcats::fct_relevel)
+
+  colnames(intr) <- paste0("interaction_", columns)
+  colname <- "interaction"
+  data <- data |> dplyr::mutate(!!colname := interaction(intr, sep = sep))
+  return(data)
+}
