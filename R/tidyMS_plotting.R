@@ -366,7 +366,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, show_rownames = FALSE,
         silent = TRUE,
         ... = ...
       ),
-      error = .error_handler
+      error = .error_handler # nolint object_usage_linter. defined in utilities.R
     )
   }
   invisible(res)
