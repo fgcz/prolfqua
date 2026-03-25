@@ -4,6 +4,19 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-25 — Items 6 & 7: Extract helpers from `tidyMS_build_model.R`
+
+From `TODO/TODO_10_refactorings.md` Items 6 and 7.
+
+- **Item 6:** Extracted `.impute_one_protein()` from `impute_refit_singular` for-loop body. The helper takes one protein's data, imputes missing values with LOD, refits the model, and returns a named list (or `NULL` on failure). The orchestration loop remains in `impute_refit_singular`.
+- **Item 7:** Extracted `plot_lrt_diagnostics()` from `LR_test`. The plotting code (histogram + ECDF PDF) is now a separate internal function. `LR_test` calls it when `path` is non-NULL.
+
+Also renamed PascalCase local variables to snake_case across Model classes: `Model_Coeff` → `model_coeff`, `Model_Anova` → `model_anova`, `VolcanoPlot` → `volcano_plot` in `Model.R`, `ModelFirth.R`, `ContrastsLimma.R`.
+
+**Files:** `R/tidyMS_build_model.R`, `R/Model.R`, `R/ModelFirth.R`, `R/ContrastsLimma.R`. All 485 tests pass.
+
+---
+
 ## 2026-03-25 — Item 5: Rename `exists_lmer` column → `has_model_fit`
 
 From `TODO/TODO_10_refactorings.md` Item 5. Renamed the `exists_lmer` column to `has_model_fit` across all R source, tests, and vignettes. The column is a boolean indicating whether a model fit succeeded (not lmer-specific), so the new name is accurate for all backends (lm, rlm, lmer, logistf).
