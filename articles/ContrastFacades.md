@@ -33,6 +33,8 @@ facades separately.
 ## Simulate one experiment
 
 ``` r
+options(prolfqua.vectorize = TRUE)
+
 istar <- sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
 istar$config <- old2new(istar$config)
 

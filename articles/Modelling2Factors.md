@@ -386,7 +386,7 @@ sessionInfo()
 
     ## R version 4.5.2 (2025-10-31)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.4 LTS
+    ## Running under: Ubuntu 24.04.3 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -405,7 +405,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] dplyr_1.2.0    prolfqua_1.5.0
+    ## [1] dplyr_1.2.0    prolfqua_1.6.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        beeswarm_0.4.0      xfun_0.57          

@@ -327,6 +327,9 @@ mod <- build_model(
   modelFunction,
   subject_Id = config$hierarchy_keys_depth()
 )
+#> Registered S3 method overwritten by 'lme4':
+#>   method           from
+#>   na.action.merMod car 
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
