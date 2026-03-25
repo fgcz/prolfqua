@@ -1,9 +1,9 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 1.5.0
+Version: 1.6.0
 Authors@R: c(person("Witold", "Wolski",
-        email = "wew@fgcz.ethz.ch",
+        email = "witold.wolski@fgcz.uzh.ch",
         role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-6468-120X")))
 Description: The prolfqua package integrates essential steps
