@@ -4,6 +4,20 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-25 — Item 9: Split `AnalysisConfiguration.R` into cohesive files
+
+From `TODO/TODO_10_refactorings.md` Item 9. Split the 870-line file (15 exports, 3 concerns) into cohesive files based on caller analysis:
+
+| Destination | Functions moved | Primary callers |
+|---|---|---|
+| `R/tidyMS_data_setup.R` | `setup_analysis`, `complete_cases`, `sample_subset`, `separate_hierarchy` | LFQData.R, simulate_LFQ_data.R |
+| `R/tidyMS_summarize_hierarchy.R` | `table_factors`, `table_factors_size`, `hierarchy_counts`, `HierarchyCountsSample`, `hierarchy_counts_sample`, `summarize_hierarchy` | LFQData.R, LFQDataSummariser.R, LFQDataStats.R |
+| `R/utilities.R` | `make_interaction_column` | tidyMS_contrasts.R, tidyMS_build_model.R, tidyMS_plotting.R, tidyMS_stats.R |
+
+`AnalysisConfiguration.R` reduced from 870 to ~345 lines (config container + serialization only). No API changes — all exports preserved, NAMESPACE unchanged. All 485 tests pass.
+
+---
+
 ## 2026-03-25 — Item 10: Deduplicate `contrasts_linfct` branches
 
 From `TODO/TODO_10_refactorings.md` Item 10. The function had two near-identical code paths for matrix vs list `linfct` inputs (only difference: `linfct` vs `linfct[[i]]`). Normalized the input at the top — if matrix, replicate as a list — then a single loop handles both cases. Net -7 lines.
