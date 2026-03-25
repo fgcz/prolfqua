@@ -4,6 +4,14 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-25 — Item 10: Deduplicate `contrasts_linfct` branches
+
+From `TODO/TODO_10_refactorings.md` Item 10. The function had two near-identical code paths for matrix vs list `linfct` inputs (only difference: `linfct` vs `linfct[[i]]`). Normalized the input at the top — if matrix, replicate as a list — then a single loop handles both cases. Net -7 lines.
+
+**Files:** `R/tidyMS_contrasts.R`. All 485 tests pass.
+
+---
+
 ## 2026-03-25 — Items 6 & 7: Extract helpers from `tidyMS_build_model.R`
 
 From `TODO/TODO_10_refactorings.md` Items 6 and 7.
