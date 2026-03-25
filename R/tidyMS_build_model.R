@@ -401,11 +401,11 @@ impute_refit_singular <- function(
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
 
-  max_coef <- max(modelDF$nrcoef, na.rm = TRUE)
+  max_coef <- max(modelDF$nrcoeff, na.rm = TRUE)
 
   needs_impute <- (!modelDF$exists_lmer) |
     (!is.na(modelDF$isSingular) & modelDF$isSingular) |
-    (!is.na(modelDF$nrcoef) & modelDF$nrcoef < max_coef)
+    (!is.na(modelDF$nrcoeff) & modelDF$nrcoeff < max_coef)
 
   if (!any(needs_impute)) {
     return(modelDF)
@@ -460,7 +460,7 @@ impute_refit_singular <- function(
     modelDF$isSingular[[i]] <- FALSE
     modelDF$sigma[[i]] <- borrowed$sigma
     modelDF$df.residual[[i]] <- imp_df
-    modelDF$nrcoef[[i]] <- p
+    modelDF$nrcoeff[[i]] <- p
     modelDF$nrcoeff_not_NA[[i]] <- p
   }
 
@@ -553,7 +553,7 @@ model_analyse <- function(
   modelProteinF <- modelProteinF |>
     dplyr::mutate(!!"sigma" := purrr::map_dbl(!!sym(lmermodel), model_strategy$sigma))
 
-  nrcoeff <- function(x) {
+  count_coefficients <- function(x) {
     cc <- coefficients(x)
     if (inherits(cc, "numeric")) {
       return(length(cc))
@@ -571,11 +571,11 @@ model_analyse <- function(
     }
   }
 
-  modelProteinF <- modelProteinF |> dplyr::mutate(nrcoef = purrr::map_int(!!sym(lmermodel), nrcoeff))
+  modelProteinF <- modelProteinF |> dplyr::mutate(nrcoeff = purrr::map_int(!!sym(lmermodel), count_coefficients))
   modelProteinF <- modelProteinF |> dplyr::mutate(nrcoeff_not_NA = purrr::map_int(!!sym(lmermodel), nrcoeff_not_NA))
 
   modelProteinF <- modelProteinF |>
-    dplyr::select(all_of(c(subject_Id, "isSingular", "df.residual", "sigma", "nrcoef", "nrcoeff_not_NA")))
+    dplyr::select(all_of(c(subject_Id, "isSingular", "df.residual", "sigma", "nrcoeff", "nrcoeff_not_NA")))
   modelProtein <- dplyr::left_join(modelProtein, modelProteinF)
 
   return(list(modelDF = modelProtein, modelName = modelName))

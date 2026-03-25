@@ -4,6 +4,14 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-25 — Item 3: Fix `nrcoef` / `nrcoeff_not_NA` naming inconsistency
+
+From `TODO/TODO_10_refactorings.md` Item 3. Standardized column name spelling from `nrcoef` (one f) to `nrcoeff` (two f's) to match `nrcoeff_not_NA`. Renamed local closure `nrcoeff` → `count_coefficients` to avoid clash with column name.
+
+**Files:** `R/tidyMS_build_model.R`, `R/Model.R`, `R/ModelFirth.R`. All 485 tests pass.
+
+---
+
 ## 2026-03-25 — Item 2: Fix cryptic variable names in internal functions
 
 From `TODO/TODO_10_refactorings.md` Item 2. Renamed cryptic 2-letter variables to descriptive names in two files:
