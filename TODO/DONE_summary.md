@@ -4,6 +4,14 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-25 — Item 5: Rename `exists_lmer` column → `has_model_fit`
+
+From `TODO/TODO_10_refactorings.md` Item 5. Renamed the `exists_lmer` column to `has_model_fit` across all R source, tests, and vignettes. The column is a boolean indicating whether a model fit succeeded (not lmer-specific), so the new name is accurate for all backends (lm, rlm, lmer, logistf).
+
+**Files:** `R/tidyMS_build_model.R`, `R/Contrasts.R`, `R/tidyMS_R6_Modelling.R`, `R/simulate_LFQ_data.R`, `tests/testthat/test-ImputeModel.R`, `vignettes/TestingMissingInference.Rmd`. All 485 tests pass.
+
+---
+
 ## 2026-03-25 — Item 4: Rename contrast functions and consolidate `.ehandler`
 
 From `TODO/TODO_10_refactorings.md` Item 4. Renamed exported contrast functions and consolidated duplicated error handler:
