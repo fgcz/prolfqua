@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="prolfqua---a-comprehensive-r-package-for-proteomics-differential-expression-analysis">prolfqua - a comprehensive R package for Proteomics Differential Expression Analysis<a class="anchor" aria-label="anchor" href="#prolfqua---a-comprehensive-r-package-for-proteomics-differential-expression-analysis"></a>
 </h1></div>
-<p>The R package contains functions for analyzing mass spectrometry based experiments. This package is developed at the <a href="http://fgcz.ch/" class="external-link">FGCZ</a>. The package documentation including vignettes can be accessed at <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link uri">https://fgcz.github.io/prolfqua/index.html</a></p>
+<p>The R package contains functions for analyzing mass spectrometry based experiments. This package is developed at the <a href="https://fgcz.ch/" class="external-link">FGCZ</a>. The package documentation including vignettes can be accessed at <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link uri">https://fgcz.github.io/prolfqua/index.html</a></p>
 <p><code>prolfqua</code> makes easy things easy while remaining fully hackable.</p>
 </div>
 <div class="section level1">
@@ -77,10 +77,10 @@
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"./prolfqua_X.Y.Z.tar.gz"</span>,repos <span class="op">=</span> <span class="cn">NULL</span>, type<span class="op">=</span><span class="st">"source"</span><span class="op">)</span></span></code></pre>
 <p>To install the package without vignettes from github you can execute in R.</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'fgcz/prolfqua'</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'fgcz/prolfqua'</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 <p>If you want to build the vignettes on your system:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'fgcz/prolfqua'</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'fgcz/prolfqua'</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 <p>Let us please know about any installation problems or errors when using the package: <a href="https://github.com/fgcz/prolfqua/issues" class="external-link uri">https://github.com/fgcz/prolfqua/issues</a></p>
 </div>
 <div class="section level1">
@@ -141,7 +141,7 @@
 <span><span class="va">panelC</span> <span class="op">&lt;-</span> <span class="va">lfqpro</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">violin</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"C"</span><span class="op">)</span></span>
 <span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">lfqpro</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">panelD</span> <span class="op">&lt;-</span> <span class="va">pl</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"D"</span><span class="op">)</span></span>
-<span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">panelA</span>, <span class="va">panelB</span>, <span class="va">panelC</span>, <span class="va">panelD</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu">ggarrange</span><span class="op">(</span><span class="va">panelA</span>, <span class="va">panelB</span>, <span class="va">panelC</span>, <span class="va">panelD</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
 <img src="https://github.com/fgcz/prolfqua/assets/1926513/4d5bb64b-6e45-4d00-b029-f08995ac3127" alt="image"><div class="figcaption">image</div>
 </div>
@@ -192,7 +192,7 @@
 </ul>
 <p>Example QC and sample size report</p>
 <ul>
-<li><a href="https://fgcz.github.io/prolfqua/articles/QCandSampleSize.html" class="external-link">QC and sample size Report</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html" class="external-link">QC and sample size Report</a></li>
 </ul>
 </div>
 <div class="section level1">
@@ -245,9 +245,9 @@ eprint = {https://doi.org/10.1021/acs.jproteome.2c00441}
 <li><a href="https://www.bioconductor.org/packages/release/bioc/html/MSstats.html" class="external-link">MSstats</a></li>
 <li><a href="https://github.com/statOmics/MSqRob" class="external-link">MSQRob</a></li>
 <li><a href="https://github.com/statisticalbiotechnology/triqler" class="external-link">Triqler</a></li>
-<li><a href="https://github.com/samWieczorek/DAPAR/" class="external-link">DAPAR</a></li>
-<li><a href="https://github.com/samWieczorek/DAPARdata/" class="external-link">DAPARData</a></li>
-<li><a href="http://bioconductor.org/packages/release/bioc/html/PECA.html" class="external-link">PECA/ROPECA</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/DAPAR.html" class="external-link">DAPAR</a></li>
+<li><a href="https://bioconductor.org/packages/release/data/experiment/html/DAPARdata.html" class="external-link">DAPARData</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/PECA.html" class="external-link">PECA/ROPECA</a></li>
 </ul>
 </div>
 <div class="section level1">
@@ -255,11 +255,11 @@ eprint = {https://doi.org/10.1021/acs.jproteome.2c00441}
 </h1>
 <ul>
 <li><a href="https://rcompanion.org/rcompanion/h_01.html" class="external-link">R Companion</a></li>
-<li><a href="http://www.maths.bath.ac.uk/~jjf23/ELM/" class="external-link">Extending the Linear Model with R</a></li>
-<li><a href="http://www.stat.columbia.edu/~gelman/book/" class="external-link">Bayesian Data Analysis</a></li>
+<li><a href="https://www.maths.bath.ac.uk/~jjf23/ELM/" class="external-link">Extending the Linear Model with R</a></li>
+<li><a href="https://sites.stat.columbia.edu/gelman/book/" class="external-link">Bayesian Data Analysis</a></li>
 <li><a href="https://CRAN.R-project.org/package=bayess" class="external-link">Bayesian essentials with R - R package</a></li>
 <li><a href="https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html" class="external-link">Contrasts in R - an example vignette by Rose Maier</a></li>
-<li><a href="http://genomicsclass.github.io/book/pages/interactions_and_contrasts.html" class="external-link">Interactions and Contrasts PH525x series</a></li>
+<li><a href="https://genomicsclass.github.io/book/pages/interactions_and_contrasts.html" class="external-link">Interactions and Contrasts PH525x series</a></li>
 </ul>
 </div>
 <div class="section level1">
@@ -267,7 +267,7 @@ eprint = {https://doi.org/10.1021/acs.jproteome.2c00441}
 </h1>
 <ul>
 <li>
-<a href="https://vincentarelbundock.github.io/marginaleffects/" class="external-link">marginaleffects</a> Compute and plot predictions, slopes, marginal means, and comparisons (contrasts, risk ratios, odds ratios, etc.) for over 70 classes of statistical models in R.</li>
+<a href="https://marginaleffects.com/" class="external-link">marginaleffects</a> Compute and plot predictions, slopes, marginal means, and comparisons (contrasts, risk ratios, odds ratios, etc.) for over 70 classes of statistical models in R.</li>
 <li>
 <a href="https://CRAN.R-project.org/package=emmeans" class="external-link">emmeans</a> Obtain estimated marginal means (EMMs) for many linear, generalized linear, and mixed models.</li>
 <li>
@@ -280,8 +280,8 @@ eprint = {https://doi.org/10.1021/acs.jproteome.2c00441}
 <h1 id="future-interesting-topics-or-packages-to-look-at">Future interesting topics or packages to look at<a class="anchor" aria-label="anchor" href="#future-interesting-topics-or-packages-to-look-at"></a>
 </h1>
 <ul>
-<li><p><a href="https://vincentarelbundock.github.io/modelsummary/index.html" class="external-link">modelsummary</a></p></li>
-<li><p><a href="https://elbersb.com/public/pdf/web-7-regression-tables-graphs.pdf" class="external-link">modelsummary tutorial</a></p></li>
+<li><p><a href="https://modelsummary.com/" class="external-link">modelsummary</a></p></li>
+<li><p><a href="https://modelsummary.com/vignettes/get_started.html" class="external-link">modelsummary tutorial</a></p></li>
 <li><p><a href="https://gist.github.com/jdblischak/11384914" class="external-link">edgeR tutorial</a></p></li>
 <li><p><a href="https://web.stanford.edu/class/bios221/labs/rnaseq/lab_4_rnaseq.html" class="external-link">another edgeR tutorial</a></p></li>
 <li><p><a href="https://fromthebottomoftheheap.net/2021/02/02/random-effects-in-gams/" class="external-link uri">https://fromthebottomoftheheap.net/2021/02/02/random-effects-in-gams/</a></p></li>
@@ -317,8 +317,8 @@ eprint = {https://doi.org/10.1021/acs.jproteome.2c00441}
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/wolski/prolfqua/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/wolski/prolfqua/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/fgcz/prolfqua/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/fgcz/prolfqua/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 

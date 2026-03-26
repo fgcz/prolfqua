@@ -230,7 +230,7 @@ sessionInfo()
 
     ## R version 4.5.2 (2025-10-31)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Running under: Ubuntu 24.04.4 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -254,7 +254,7 @@ sessionInfo()
     ##  [7] digest_0.6.39       magrittr_2.0.4      evaluate_1.0.5     
     ## [10] grid_4.5.2          RColorBrewer_1.1-3  fastmap_1.2.0      
     ## [13] plyr_1.8.9          jsonlite_2.0.0      ggrepel_0.9.8      
-    ## [16] limma_3.66.0        prolfqua_1.6.0      gridExtra_2.3      
+    ## [16] limma_3.66.0        prolfqua_1.6.1      gridExtra_2.3      
     ## [19] httr_1.4.8          purrr_1.2.1         viridisLite_0.4.3  
     ## [22] scales_1.4.0        UpSetR_1.4.0        lazyeval_0.2.2     
     ## [25] textshaping_1.0.5   jquerylib_0.1.4     cli_3.6.5          
@@ -269,7 +269,7 @@ sessionInfo()
     ## [52] Rcpp_1.1.1          statmod_1.5.1       systemfonts_1.3.2  
     ## [55] xfun_0.57           tibble_3.3.1        tidyselect_1.2.1   
     ## [58] knitr_1.51          farver_2.1.2        htmltools_0.5.9    
-    ## [61] labeling_0.4.3      rmarkdown_2.30      pheatmap_1.0.13    
+    ## [61] labeling_0.4.3      rmarkdown_2.31      pheatmap_1.0.13    
     ## [64] compiler_4.5.2      S7_0.2.1
 
 ## References

@@ -24,6 +24,7 @@ Other modelling:
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md),
 [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
@@ -49,8 +50,10 @@ Other modelling:
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
+[`build_model_limma_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_impute.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
+[`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
@@ -114,6 +117,13 @@ Other modelling:
 
   cached contrast results
 
+- `eBayes`:
+
+  logical, apply limma eBayes moderation (default TRUE). Set to FALSE to
+  return raw/unmoderated statistics, e.g. for downstream DEqMS
+  moderation via
+  [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md).
+
 ## Methods
 
 ### Public methods
@@ -149,7 +159,8 @@ initialize ContrastsLimma
       model,
       contrasts,
       p.adjust = prolfqua::adjust_p_values,
-      modelName = "limma"
+      modelName = NULL,
+      eBayes = TRUE
     )
 
 #### Arguments
@@ -171,6 +182,12 @@ initialize ContrastsLimma
 - `modelName`:
 
   name of the contrast method
+
+- `eBayes`:
+
+  logical, apply limma eBayes moderation (default TRUE). Set to FALSE to
+  return raw/unmoderated statistics suitable for wrapping with
+  [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md).
 
 ------------------------------------------------------------------------
 

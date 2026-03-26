@@ -11,7 +11,7 @@ construction through modelling to contrast computation."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,7 @@ construction through modelling to contrast computation."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Build a contrast analysis using one of several statistical methods</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/build_contrast_analysis.R" class="external-link"><code>R/build_contrast_analysis.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/R/build_contrast_analysis.R" class="external-link"><code>R/build_contrast_analysis.R</code></a></small>
       <div class="d-none name"><code>build_contrast_analysis.Rd</code></div>
     </div>
 
@@ -62,8 +62,8 @@ construction through modelling to contrast computation.</p>
 <span>  <span class="va">lfqdata</span>,</span>
 <span>  <span class="va">modelstr</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"rlm"</span>, <span class="st">"lmer"</span>, <span class="st">"lm_missing"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma"</span>, <span class="st">"deqms"</span>, <span class="st">"ropeca"</span>,</span>
-<span>    <span class="st">"firth"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"rlm"</span>, <span class="st">"lmer"</span>, <span class="st">"lm_missing"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma"</span>, <span class="st">"limma_impute"</span>,</span>
+<span>    <span class="st">"deqms"</span>, <span class="st">"ropeca"</span>, <span class="st">"firth"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -133,6 +133,7 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>,
 <code><a href="ContrastsLimma.html">ContrastsLimma</a></code>,
 <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
+<code><a href="ContrastsLimmaImputeFacade.html">ContrastsLimmaImputeFacade</a></code>,
 <code><a href="ContrastsLmerFacade.html">ContrastsLmerFacade</a></code>,
 <code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
@@ -157,8 +158,10 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="build_model_glm_protein.html">build_model_glm_protein()</a></code>,
 <code><a href="build_model_impute.html">build_model_impute()</a></code>,
 <code><a href="build_model_limma.html">build_model_limma()</a></code>,
+<code><a href="build_model_limma_impute.html">build_model_limma_impute()</a></code>,
 <code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
+<code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,

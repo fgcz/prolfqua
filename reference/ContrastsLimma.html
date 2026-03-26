@@ -9,7 +9,7 @@ Limma-based contrasts (direct limma pipeline)"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@ Limma-based contrasts (direct limma pipeline)"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Limma-based contrasts (direct limma pipeline)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/ContrastsLimma.R" class="external-link"><code>R/ContrastsLimma.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/R/ContrastsLimma.R" class="external-link"><code>R/ContrastsLimma.R</code></a></small>
       <div class="d-none name"><code>ContrastsLimma.Rd</code></div>
     </div>
 
@@ -73,6 +73,7 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>,
 <code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>,
 <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
+<code><a href="ContrastsLimmaImputeFacade.html">ContrastsLimmaImputeFacade</a></code>,
 <code><a href="ContrastsLmerFacade.html">ContrastsLmerFacade</a></code>,
 <code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
@@ -98,8 +99,10 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <code><a href="build_model_glm_protein.html">build_model_glm_protein()</a></code>,
 <code><a href="build_model_impute.html">build_model_impute()</a></code>,
 <code><a href="build_model_limma.html">build_model_limma()</a></code>,
+<code><a href="build_model_limma_impute.html">build_model_limma_impute()</a></code>,
 <code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
+<code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
@@ -162,6 +165,12 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <dd><p>cached contrast results</p></dd>
 
 
+<dt><code>eBayes</code></dt>
+<dd><p>logical, apply limma eBayes moderation (default TRUE).
+Set to FALSE to return raw/unmoderated statistics, e.g. for downstream
+DEqMS moderation via <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>.</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -187,7 +196,8 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <span>  <span class="va">model</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
 <span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
-<span>  modelName <span class="op">=</span> <span class="st">"limma"</span></span>
+<span>  modelName <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  eBayes <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -207,6 +217,12 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 
 <dt><code>modelName</code></dt>
 <dd><p>name of the contrast method</p></dd>
+
+
+<dt><code>eBayes</code></dt>
+<dd><p>logical, apply limma eBayes moderation (default TRUE).
+Set to FALSE to return raw/unmoderated statistics suitable for
+wrapping with <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>.</p></dd>
 
 
 </dl><p></p></div>

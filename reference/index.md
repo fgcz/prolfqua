@@ -2,6 +2,15 @@
 
 ## All functions
 
+- [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md)
+  : AggregateMedpolish
+
+- [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md)
+  : AggregateRlm
+
+- [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md)
+  : AggregateTopN
+
 - [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md)
   : Analysis Configuration
 
@@ -38,6 +47,9 @@
 - [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md)
   : Limma contrast analysis facade
 
+- [`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md)
+  : Limma contrast analysis with LOD imputation facade
+
 - [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md)
   : Lmer contrast analysis facade
 
@@ -68,15 +80,14 @@
 - [`FACADE_REGISTRY`](https://wolski.github.io/prolfqua/reference/FACADE_REGISTRY.md)
   : Registry of available contrast facade classes
 
+- [`HierarchyCountsSample`](https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.md)
+  : Count distinct elements for each level of hierarchy per sample
+
 - [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
   : Internal Functions by category
 
 - [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md) :
   LFQData R6 class
-
-- [`LFQDataAggregator`](https://wolski.github.io/prolfqua/reference/LFQDataAggregator.md)
-  : Decorates LFQData with methods to aggregate protein intensities
-  aggregates intensities
 
 - [`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md)
   : Decorates LFQData with methods to impute missing values
@@ -162,6 +173,9 @@
 - [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md)
   : Build limma model from LFQData
 
+- [`build_model_limma_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_impute.md)
+  : Build limma model with LOD imputation for failed proteins
+
 - [`center_to_reference_cfg()`](https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.md)
   : center to reference
 
@@ -209,6 +223,9 @@
 
 - [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md)
   : Merge contrast results coming from two different model.
+
+- [`nr_obs_experiment()`](https://wolski.github.io/prolfqua/reference/nr_obs_experiment.md)
+  : Aggregates e.g. protein abundances from peptide abundances
 
 - [`nr_obs_sample()`](https://wolski.github.io/prolfqua/reference/nr_obs_sample.md)
   : Aggregates e.g. protein abundances from peptide abundances

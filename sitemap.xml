@@ -19,6 +19,9 @@
 <url><loc>https://wolski.github.io/prolfqua/articles/index.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/authors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/index.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/AggregateMedpolish.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/AggregateRlm.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/AggregateTopN.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AnovaExtractor.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/Contrasts.html</loc></url>
@@ -31,6 +34,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsMissing.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsModerated.html</loc></url>
@@ -44,7 +48,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/LFQData.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/LFQDataAggregator.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/LFQDataImp.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/LFQDataPlotter.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/LFQDataStats.html</loc></url>
@@ -76,10 +79,12 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_glm_protein.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_impute.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_limma.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/build_model_limma_impute.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/build_model_logistf.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/complete_cases.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_contrast.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_contrast_vectorized.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.html</loc></url>
@@ -155,6 +160,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/names_to_matrix.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/new_lm_imputed.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_B_in_A.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/nr_obs_experiment.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_obs_sample.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/old2new.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/pairs_smooth.html</loc></url>

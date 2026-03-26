@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>transform long to wide</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/tidyMS_reshaping.R" class="external-link"><code>R/tidyMS_reshaping.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/R/tidyMS_reshaping.R" class="external-link"><code>R/tidyMS_reshaping.R</code></a></small>
       <div class="d-none name"><code>tidy_to_wide_config.Rd</code></div>
     </div>
 
@@ -157,9 +157,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [301]  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1 NA  1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [326]  1  1  1  1  1 NA  1  1  1  1  1</span>
 <span class="r-in"><span><span class="co">#xt$config$is_response_transformed &lt;- TRUE</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">xt</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="fu">medpolish</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>You did not transform the intensities.medpolish works best with already variance stabilized intensities.Use LFQData$get_Transformer to transform the data :abundance</span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">xt</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="st">"medpolish"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: abundance</span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
 <span class="r-in"><span><span class="va">towide</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">data</span>, <span class="va">x</span><span class="op">$</span><span class="va">config</span>,  value <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

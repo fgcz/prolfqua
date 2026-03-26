@@ -32,6 +32,7 @@ Other modelling:
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md),
 [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
@@ -57,8 +58,10 @@ Other modelling:
 [`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
+[`build_model_limma_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_impute.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
+[`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
@@ -289,15 +292,15 @@ fa$to_wide()
 #> # A tibble: 30 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>    <chr>               <dbl>             <dbl>         <dbl>               <dbl>
-#>  1 0EfVhX~29…         1.24             0.0791          0.593              1.88  
-#>  2 0m5WN4~67…        -0.0361           0.974           0.986             -0.0334
-#>  3 7QuTub~61…         0.909            0.362           0.906              0.961 
-#>  4 7cbcrd~26…         0.612            0.577           0.986              0.574 
-#>  5 9VUkAq~34…         0.768            0.489           0.986              0.710 
-#>  6 At886V~77…        -1.86             0.0294          0.294             -2.40  
-#>  7 BEJI92~27…        -1.30             0.221           0.737             -1.28  
-#>  8 CGzoYe~08…         0.196            0.860           0.986              0.180 
-#>  9 CtOJ9t~91…        -0.0717           0.926           0.986             -0.0938
+#>  1 0EfVhX~29…         1.24             0.0791          0.474              1.88  
+#>  2 0m5WN4~67…        -0.0361           0.974           0.974             -0.0334
+#>  3 7QuTub~61…         0.909            0.362           0.776              0.961 
+#>  4 7cbcrd~26…         0.612            0.577           0.883              0.574 
+#>  5 9VUkAq~34…         0.768            0.489           0.883              0.710 
+#>  6 At886V~77…        -1.86             0.0294          0.220             -2.40  
+#>  7 BEJI92~27…        -1.30             0.221           0.603             -1.28  
+#>  8 CGzoYe~08…         0.196            0.860           0.974              0.180 
+#>  9 CtOJ9t~91…        -0.0717           0.926           0.974             -0.0938
 #> 10 DoWup2~28…        -1.82             0.00762         0.114             -3.06  
 #> # ℹ 20 more rows
 ```

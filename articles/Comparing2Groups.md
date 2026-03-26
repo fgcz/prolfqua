@@ -496,7 +496,7 @@ sessionInfo()
 
     ## R version 4.5.2 (2025-10-31)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Running under: Ubuntu 24.04.4 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -515,7 +515,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.6.0 dplyr_1.2.0   
+    ## [1] prolfqua_1.6.1 dplyr_1.2.0   
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6        xfun_0.57           bslib_0.10.0       
@@ -536,7 +536,7 @@ sessionInfo()
     ## [46] forcats_1.0.1       fastmap_1.2.0       grid_4.5.2         
     ## [49] cli_3.6.5           magrittr_2.0.4      utf8_1.2.6         
     ## [52] withr_3.0.2         promises_1.5.0      prettyunits_1.2.0  
-    ## [55] scales_1.4.0        rmarkdown_2.30      httr_1.4.8         
+    ## [55] scales_1.4.0        rmarkdown_2.31      httr_1.4.8         
     ## [58] otel_0.2.0          gridExtra_2.3       ragg_1.5.2         
     ## [61] hms_1.1.4           shiny_1.13.0        evaluate_1.0.5     
     ## [64] knitr_1.51          UpSetR_1.4.0        viridisLite_0.4.3  

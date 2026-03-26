@@ -4,6 +4,10 @@ Count distinct elements for each level of hierarchy per sample
 
 Count distinct elements for each level of hierarchy per sample
 
+## Details
+
+Provides wide, long, and plot views of hierarchy counts.
+
 ## See also
 
 Other summary:

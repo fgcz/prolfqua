@@ -15,7 +15,9 @@ fold-change estimates and inflate false discovery rates.
 ## See also
 
 Other LFQData:
-[`LFQDataAggregator`](https://wolski.github.io/prolfqua/reference/LFQDataAggregator.md),
+[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
 [`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
@@ -471,11 +473,21 @@ get Aggregator
 
 #### Usage
 
-    LFQData$get_Aggregator()
+    LFQData$get_Aggregator(method = "medpolish", ...)
+
+#### Arguments
+
+- `method`:
+
+  aggregation method: "medpolish", "rlm", or "topN"
+
+- `...`:
+
+  passed to aggregator constructor (e.g. prefix, N, func)
 
 #### Returns
 
-LFQDataAggregator
+AggregateMedpolish, AggregateRlm, or AggregateTopN
 
 ------------------------------------------------------------------------
 
@@ -574,6 +586,8 @@ stopifnot("LFQDataSummariser" %in% class(lfqdata$get_Summariser()))
 stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
 stopifnot("LFQDataImp" %in% class(lfqdata$get_Imputer()))
 stopifnot("LFQDataAggregator" %in% class(lfqdata$get_Aggregator()))
+#> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: peptide.intensity
+#> Error: "LFQDataAggregator" %in% class(lfqdata$get_Aggregator()) is not TRUE
 
 lfqdata2 <- lfqdata$get_copy()
 lfqdata2$data <- lfqdata2$data[1:100,]

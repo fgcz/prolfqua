@@ -1,14 +1,19 @@
-# Decorates LFQData with methods to aggregate protein intensities aggregates intensities
+# AggregateTopN
 
-Decorates LFQData with methods to aggregate protein intensities
-aggregates intensities
+AggregateTopN
 
-Decorates LFQData with methods to aggregate protein intensities
-aggregates intensities
+AggregateTopN
+
+## Details
+
+Aggregates peptide intensities to protein level using top N peptides.
+Works with raw (untransformed) intensities.
 
 ## See also
 
 Other LFQData:
+[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
@@ -30,25 +35,27 @@ Other LFQData:
 
   to use for aggregation results e.g. protein
 
+- `N`:
+
+  top N peptides by intensity
+
+- `func`:
+
+  aggregation function name: "sum" or "mean"
+
 ## Methods
 
 ### Public methods
 
-- [`LFQDataAggregator$new()`](#method-LFQDataAggregator-new)
+- [`AggregateTopN$new()`](#method-AggregateTopN-new)
 
-- [`LFQDataAggregator$medpolish()`](#method-LFQDataAggregator-medpolish)
+- [`AggregateTopN$aggregate()`](#method-AggregateTopN-aggregate)
 
-- [`LFQDataAggregator$lmrob()`](#method-LFQDataAggregator-lmrob)
+- [`AggregateTopN$plot()`](#method-AggregateTopN-plot)
 
-- [`LFQDataAggregator$mean_topN()`](#method-LFQDataAggregator-mean_topN)
+- [`AggregateTopN$write_plots()`](#method-AggregateTopN-write_plots)
 
-- [`LFQDataAggregator$sum_topN()`](#method-LFQDataAggregator-sum_topN)
-
-- [`LFQDataAggregator$plot()`](#method-LFQDataAggregator-plot)
-
-- [`LFQDataAggregator$write_plots()`](#method-LFQDataAggregator-write_plots)
-
-- [`LFQDataAggregator$clone()`](#method-LFQDataAggregator-clone)
+- [`AggregateTopN$clone()`](#method-AggregateTopN-clone)
 
 ------------------------------------------------------------------------
 
@@ -58,7 +65,7 @@ initialize
 
 #### Usage
 
-    LFQDataAggregator$new(lfq, prefix = "protein")
+    AggregateTopN$new(lfq, prefix = "protein", N = 3, func = "sum")
 
 #### Arguments
 
@@ -70,81 +77,23 @@ initialize
 
   default protein
 
-------------------------------------------------------------------------
-
-### Method [`medpolish()`](https://rdrr.io/r/stats/medpolish.html)
-
-aggregate using median polish
-
-#### Usage
-
-    LFQDataAggregator$medpolish()
-
-#### Arguments
-
 - `N`:
 
-  top N by intensity
+  top N peptides (default 3)
 
-#### Returns
+- `func`:
 
-LFQData
+  "sum" or "mean" (default "sum")
 
 ------------------------------------------------------------------------
 
-### Method `lmrob()`
+### Method [`aggregate()`](https://rdrr.io/r/stats/aggregate.html)
 
-aggregate using robust regression
-
-#### Usage
-
-    LFQDataAggregator$lmrob()
-
-#### Arguments
-
-- `N`:
-
-  top N by intensity
-
-#### Returns
-
-LFQData
-
-------------------------------------------------------------------------
-
-### Method `mean_topN()`
-
-aggregate topN using mean
+run top N aggregation
 
 #### Usage
 
-    LFQDataAggregator$mean_topN(N = 3)
-
-#### Arguments
-
-- `N`:
-
-  top N by intensity
-
-#### Returns
-
-LFQData
-
-------------------------------------------------------------------------
-
-### Method `sum_topN()`
-
-aggregate topN using sum
-
-#### Usage
-
-    LFQDataAggregator$sum_topN(N = 3)
-
-#### Arguments
-
-- `N`:
-
-  top N by intensity
+    AggregateTopN$aggregate()
 
 #### Returns
 
@@ -158,14 +107,13 @@ creates aggregation plots
 
 #### Usage
 
-    LFQDataAggregator$plot(subset = NULL, show.legend = FALSE)
+    AggregateTopN$plot(subset = NULL, show.legend = FALSE)
 
 #### Arguments
 
 - `subset`:
 
-  create plots for a subset of the data only, e.g. proteins with more
-  then 2 peptides.
+  create plots for a subset of the data only
 
 - `show.legend`:
 
@@ -183,7 +131,7 @@ writes plots to folder
 
 #### Usage
 
-    LFQDataAggregator$write_plots(
+    AggregateTopN$write_plots(
       qcpath,
       subset = NULL,
       show.legend = FALSE,
@@ -225,7 +173,7 @@ The objects of this class are cloneable with this method.
 
 #### Usage
 
-    LFQDataAggregator$clone(deep = FALSE)
+    AggregateTopN$clone(deep = FALSE)
 
 #### Arguments
 
@@ -236,71 +184,34 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-istar <-  prolfqua::sim_lfq_data_peptide_config()
+istar <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from fileName column
 #> completing cases
 #> completing cases done
 #> setup done
-istar$config <- istar$config
 data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 
-lfqTrans <- lfqdata$clone()$get_Transformer()
-lfqTrans$log2()
-#> Column added : log2_abundance
-lfqTrans <- lfqTrans$robscale()$lfq
-#> data is : TRUE
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
-lfqAggregator <- LFQDataAggregator$new(lfqTrans, "protein")
-
-lfqAggregator$medpolish()
-#> starting aggregation
-pmed <- lfqAggregator$plot()
-pmed$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-
-lfqAggregator$lmrob()
-#> starting aggregation
-prob <- lfqAggregator$plot()
-prob$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-
-
-lfqCopy <- lfqdata$clone()
-lfqCopy$is_transformed()
-#> [1] FALSE
-lfqAggregator <- LFQDataAggregator$new(lfqCopy, "protein")
-lfqAggregator$sum_topN()
+agg <- AggregateTopN$new(lfqdata, "protein", N = 3, func = "sum")
+agg$aggregate()
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
-pSum <- lfqAggregator$plot()
-pSum$plots[[1]]
+p <- agg$plot()
+p$plots[[1]]
 #> Warning: Removed 7 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 4 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 
 
-lfqAggregator$mean_topN()
+agg_mean <- AggregateTopN$new(lfqdata, "protein", N = 3, func = "mean")
+agg_mean$aggregate()
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
-pMean <- lfqAggregator$plot()
-pMean$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-
-protPlotter <- lfqAggregator$lfq_agg$get_Plotter()
+protPlotter <- agg_mean$lfq_agg$get_Plotter()
 protPlotter$heatmap()
 
-lfqAggregator$write_plots(tempdir())
+agg_mean$write_plots(tempdir())
 #> Warning: Removed 7 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 4 rows containing missing values or values outside the scale range

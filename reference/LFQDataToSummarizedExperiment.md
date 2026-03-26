@@ -21,8 +21,10 @@ SummarizedExperiment (bioconductor)
 ## See also
 
 Other LFQData:
+[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
-[`LFQDataAggregator`](https://wolski.github.io/prolfqua/reference/LFQDataAggregator.md),
 [`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),

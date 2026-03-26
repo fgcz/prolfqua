@@ -134,8 +134,8 @@ signif$get_Plotter()$heatmap()
 
 ``` r
 lfqdata$config$hierarchyDepth <- 1
-ag <- lfqdata$get_Aggregator()
-ag$medpolish()
+ag <- lfqdata$get_Aggregator("medpolish")
+ag$aggregate()
 protData <- ag$lfq_agg
 ```
 

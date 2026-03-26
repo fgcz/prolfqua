@@ -44,7 +44,7 @@ matrix_to_tibble(x)
 #> `.name_repair` is omitted as of tibble 2.0.0.
 #> ℹ Using compatibility `.name_repair`.
 #> ℹ The deprecated feature was likely used in the prolfqua package.
-#>   Please report the issue at <https://github.com/wolski/prolfqua/issues>.
+#>   Please report the issue at <https://github.com/fgcz/prolfqua/issues>.
 #> # A tibble: 5 × 5
 #>   row.names       V1      V2      V3     V4
 #>   <chr>        <dbl>   <dbl>   <dbl>  <dbl>

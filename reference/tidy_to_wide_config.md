@@ -109,9 +109,9 @@ xt$data$nr_children
 #> [301]  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1 NA  1  1
 #> [326]  1  1  1  1  1 NA  1  1  1  1  1
 #xt$config$is_response_transformed <- TRUE
-res <- xt$get_Aggregator()
-x <- res$medpolish()
-#> Warning: You did not transform the intensities.medpolish works best with already variance stabilized intensities.Use LFQData$get_Transformer to transform the data :abundance
+res <- xt$get_Aggregator("medpolish")
+#> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: abundance
+x <- res$aggregate()
 #> starting aggregation
 towide <- tidy_to_wide_config(x$data, x$config,  value = x$config$nr_children)
 

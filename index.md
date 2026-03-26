@@ -3,7 +3,7 @@
 ![prolfqua hex sticker](reference/figures/imgfile.png)
 
 The R package contains functions for analyzing mass spectrometry based
-experiments. This package is developed at the [FGCZ](http://fgcz.ch/).
+experiments. This package is developed at the [FGCZ](https://fgcz.ch/).
 The package documentation including vignettes can be accessed at
 <https://fgcz.github.io/prolfqua/index.html>
 
@@ -165,7 +165,7 @@ github.io <https://fgcz.github.io/prolfqua/index.html>.
 Example QC and sample size report
 
 - [QC and sample size
-  Report](https://fgcz.github.io/prolfqua/articles/QCandSampleSize.html)
+  Report](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 
 # Releated projects
 
@@ -285,29 +285,29 @@ based on the annotation file structure.
 - [MSstats](https://www.bioconductor.org/packages/release/bioc/html/MSstats.html)
 - [MSQRob](https://github.com/statOmics/MSqRob)
 - [Triqler](https://github.com/statisticalbiotechnology/triqler)
-- [DAPAR](https://github.com/samWieczorek/DAPAR/)
-- [DAPARData](https://github.com/samWieczorek/DAPARdata/)
-- [PECA/ROPECA](http://bioconductor.org/packages/release/bioc/html/PECA.md)
+- [DAPAR](https://bioconductor.org/packages/release/bioc/html/DAPAR.html)
+- [DAPARData](https://bioconductor.org/packages/release/data/experiment/html/DAPARdata.html)
+- [PECA/ROPECA](https://bioconductor.org/packages/release/bioc/html/PECA.html)
 
 # Relevant background information
 
 - [R Companion](https://rcompanion.org/rcompanion/h_01.html)
 - [Extending the Linear Model with
-  R](http://www.maths.bath.ac.uk/~jjf23/ELM/)
-- [Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/)
+  R](https://www.maths.bath.ac.uk/~jjf23/ELM/)
+- [Bayesian Data Analysis](https://sites.stat.columbia.edu/gelman/book/)
 - [Bayesian essentials with R - R
   package](https://CRAN.R-project.org/package=bayess)
 - [Contrasts in R - an example vignette by Rose
   Maier](https://rstudio-pubs-static.s3.amazonaws.com/65059_586f394d8eb84f84b1baaf56ffb6b47f.html)
 - [Interactions and Contrasts PH525x
-  series](http://genomicsclass.github.io/book/pages/interactions_and_contrasts.md)
+  series](https://genomicsclass.github.io/book/pages/interactions_and_contrasts.html)
 
 # R packages to compute contrasts from linear and other models
 
-- [marginaleffects](https://vincentarelbundock.github.io/marginaleffects/)
-  Compute and plot predictions, slopes, marginal means, and comparisons
-  (contrasts, risk ratios, odds ratios, etc.) for over 70 classes of
-  statistical models in R.
+- [marginaleffects](https://marginaleffects.com/) Compute and plot
+  predictions, slopes, marginal means, and comparisons (contrasts, risk
+  ratios, odds ratios, etc.) for over 70 classes of statistical models
+  in R.
 - [emmeans](https://CRAN.R-project.org/package=emmeans) Obtain estimated
   marginal means (EMMs) for many linear, generalized linear, and mixed
   models.
@@ -318,10 +318,10 @@ based on the annotation file structure.
 
 # Future interesting topics or packages to look at
 
-- [modelsummary](https://vincentarelbundock.github.io/modelsummary/index.html)
+- [modelsummary](https://modelsummary.com/)
 
 - [modelsummary
-  tutorial](https://elbersb.com/public/pdf/web-7-regression-tables-graphs.pdf)
+  tutorial](https://modelsummary.com/vignettes/get_started.html)
 
 - [edgeR tutorial](https://gist.github.com/jdblischak/11384914)
 

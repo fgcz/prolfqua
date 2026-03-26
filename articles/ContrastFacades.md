@@ -7,6 +7,7 @@ provides a common front-end for several contrast backends:
 
 - `lm`
 - `limma`
+- `limma_impute`
 - `lmer`
 - `ropeca`
 - `lm_missing`
@@ -19,8 +20,8 @@ All of them expose the same basic interface: `get_contrasts()`,
 protein-level contrasts. The important difference is the required input
 level:
 
-- `lm`, `limma`, `lm_missing`, `lm_impute`, and `deqms` require
-  aggregated protein-level data
+- `lm`, `limma`, `limma_impute`, `lm_missing`, `lm_impute`, and `deqms`
+  require aggregated protein-level data
 - `lmer` and `ropeca` require lower-level measurements such as peptides
   nested within proteins, but still report protein-level contrasts
 - `firth` can be used with either aggregated protein-level data or
@@ -41,8 +42,8 @@ istar$config <- old2new(istar$config)
 lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 
-aggregator <- LFQDataAggregator$new(lfq_peptide, "protein")
-lfq_protein <- aggregator$medpolish()
+aggregator <- AggregateMedpolish$new(lfq_peptide, "protein")
+lfq_protein <- aggregator$aggregate()
 
 lfq_peptide$config$hierarchy_keys()
 ```
@@ -100,6 +101,13 @@ fa_limma <- build_contrast_analysis(
   method = "limma"
 )
 
+fa_limma_impute <- build_contrast_analysis(
+  lfq_protein,
+  "~ group_",
+  contrasts,
+  method = "limma_impute"
+)
+
 fa_lm_missing <- build_contrast_analysis(
   lfq_protein,
   "~ group_",
@@ -133,9 +141,15 @@ Because all protein-input facades share the same interface and report
 protein-level contrasts, their outputs can be combined directly.
 
 ``` r
+# Proteins missing in the baseline lm facade (used to flag rescued proteins)
+lm_missing_ids <- fa_lm$get_missing() |>
+  dplyr::select(protein_Id, contrast) |>
+  dplyr::mutate(rescued = TRUE)
+
 results_protein <- bind_rows(
   fa_lm$get_contrasts(),
   fa_limma$get_contrasts(),
+  fa_limma_impute$get_contrasts(),
   fa_lm_missing$get_contrasts(),
   fa_lm_impute$get_contrasts(),
   fa_deqms$get_contrasts(),
@@ -146,7 +160,9 @@ results_protein <- bind_rows(
     "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
     "sigma"
   ))) |>
+  dplyr::left_join(lm_missing_ids, by = c("protein_Id", "contrast")) |>
   dplyr::mutate(
+    rescued = dplyr::coalesce(rescued, FALSE),
     significant = FDR < 0.1 & abs(diff) > 0.5
   )
 
@@ -154,15 +170,16 @@ results_protein |>
   dplyr::count(facade, name = "n_results")
 ```
 
-    ## # A tibble: 6 × 2
-    ##   facade     n_results
-    ##   <chr>          <int>
-    ## 1 deqms            157
-    ## 2 firth            160
-    ## 3 limma            155
-    ## 4 lm               157
-    ## 5 lm_impute        160
-    ## 6 lm_missing       160
+    ## # A tibble: 7 × 2
+    ##   facade       n_results
+    ##   <chr>            <int>
+    ## 1 deqms              157
+    ## 2 firth              160
+    ## 3 limma              155
+    ## 4 limma_impute       160
+    ## 5 lm                 157
+    ## 6 lm_impute          160
+    ## 7 lm_missing         160
 
 For facades that combine several underlying result types, such as
 `lm_missing`, the `modelName` column still tells you where individual
@@ -173,47 +190,83 @@ results_protein |>
   dplyr::count(facade, contrast, modelName, name = "n_results")
 ```
 
-    ## # A tibble: 14 × 4
-    ##    facade     contrast  modelName          n_results
-    ##    <chr>      <chr>     <chr>                  <int>
-    ##  1 deqms      A_vs_Ctrl WaldTest_DEqMS            78
-    ##  2 deqms      B_vs_Ctrl WaldTest_DEqMS            79
-    ##  3 firth      A_vs_Ctrl WaldTestFirth             80
-    ##  4 firth      B_vs_Ctrl WaldTestFirth             80
-    ##  5 limma      A_vs_Ctrl limma                     78
-    ##  6 limma      B_vs_Ctrl limma                     77
-    ##  7 lm         A_vs_Ctrl WaldTest_moderated        78
-    ##  8 lm         B_vs_Ctrl WaldTest_moderated        79
-    ##  9 lm_impute  A_vs_Ctrl WaldTest_moderated        80
-    ## 10 lm_impute  B_vs_Ctrl WaldTest_moderated        80
-    ## 11 lm_missing A_vs_Ctrl WaldTest_moderated        78
-    ## 12 lm_missing A_vs_Ctrl groupAverage               2
-    ## 13 lm_missing B_vs_Ctrl WaldTest_moderated        79
-    ## 14 lm_missing B_vs_Ctrl groupAverage               1
+    ## # A tibble: 16 × 4
+    ##    facade       contrast  modelName          n_results
+    ##    <chr>        <chr>     <chr>                  <int>
+    ##  1 deqms        A_vs_Ctrl WaldTest_DEqMS            78
+    ##  2 deqms        B_vs_Ctrl WaldTest_DEqMS            79
+    ##  3 firth        A_vs_Ctrl WaldTestFirth             80
+    ##  4 firth        B_vs_Ctrl WaldTestFirth             80
+    ##  5 limma        A_vs_Ctrl limma                     78
+    ##  6 limma        B_vs_Ctrl limma                     77
+    ##  7 limma_impute A_vs_Ctrl limma                     80
+    ##  8 limma_impute B_vs_Ctrl limma                     80
+    ##  9 lm           A_vs_Ctrl WaldTest_moderated        78
+    ## 10 lm           B_vs_Ctrl WaldTest_moderated        79
+    ## 11 lm_impute    A_vs_Ctrl WaldTest_moderated        80
+    ## 12 lm_impute    B_vs_Ctrl WaldTest_moderated        80
+    ## 13 lm_missing   A_vs_Ctrl WaldTest_moderated        78
+    ## 14 lm_missing   A_vs_Ctrl groupAverage               2
+    ## 15 lm_missing   B_vs_Ctrl WaldTest_moderated        79
+    ## 16 lm_missing   B_vs_Ctrl groupAverage               1
 
 ## Protein-level volcano comparison
 
+### Standard facades
+
 ``` r
-ggplot(results_protein, aes(x = diff, y = -log10(p.value), color = significant)) +
-  geom_point(alpha = 0.6, size = 1.2) +
+standard_facades <- c("lm", "limma", "deqms")
+results_standard <- results_protein |>
+  dplyr::filter(facade %in% standard_facades)
+
+ggplot(results_standard, aes(x = diff, y = -log10(p.value), color = significant)) +
+  geom_point(alpha = 0.6, size = 1.5) +
   facet_grid(contrast ~ facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
-  labs(
-    x = "log2 fold change",
-    y = "-log10(p.value)",
-    color = "FDR < 0.1\nand |diff| > 0.5"
-  ) +
+  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1\nand |diff| > 0.5") +
   theme_minimal(base_size = 12)
 ```
 
-![Volcano plots for the protein-level facades. Rows are contrasts,
-columns are
-backends.](ContrastFacades_files/figure-html/volcano_protein-1.png)
+![Volcano plots for the standard protein-level facades (lm, limma,
+rlm-based).](ContrastFacades_files/figure-html/volcano_standard-1.png)
 
-Volcano plots for the protein-level facades. Rows are contrasts, columns
-are backends.
+Volcano plots for the standard protein-level facades (lm, limma,
+rlm-based).
+
+### Imputation and missingness facades
+
+Rescued proteins (missing in plain `lm`) are shown as large red diamonds
+so they stand out clearly. This group includes the LOD imputation
+facades (`lm_missing`, `lm_impute`, `limma_impute`) and the firth
+logistic regression facade which models missingness directly.
+
+``` r
+impute_facades <- c("lm_missing", "lm_impute", "limma_impute", "firth")
+results_impute <- results_protein |>
+  dplyr::filter(facade %in% impute_facades) |>
+  dplyr::mutate(facade = factor(facade, levels = impute_facades))
+
+ggplot(results_impute, aes(x = diff, y = -log10(p.value))) +
+  geom_point(data = dplyr::filter(results_impute, !rescued),
+             aes(color = significant), alpha = 0.5, size = 1.2) +
+  geom_point(data = dplyr::filter(results_impute, rescued),
+             color = "red", shape = 18, size = 5, alpha = 1) +
+  facet_grid(contrast ~ facade, scales = "free_y") +
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
+  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
+  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
+  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1\nand |diff| > 0.5") +
+  theme_minimal(base_size = 12)
+```
+
+![Volcano plots for the imputation and missingness facades. Large red
+diamonds mark proteins rescued (missing in plain
+lm).](ContrastFacades_files/figure-html/volcano_impute-1.png)
+
+Volcano plots for the imputation and missingness facades. Large red
+diamonds mark proteins rescued (missing in plain lm).
 
 ## Looking at the strongest protein-level hits
 
@@ -225,7 +278,7 @@ results_protein |>
   dplyr::select(facade, contrast, modelName, protein_Id, diff, p.value, FDR)
 ```
 
-    ## # A tibble: 60 × 7
+    ## # A tibble: 70 × 7
     ##    facade contrast  modelName      protein_Id    diff  p.value      FDR
     ##    <chr>  <chr>     <chr>          <chr>        <dbl>    <dbl>    <dbl>
     ##  1 deqms  A_vs_Ctrl WaldTest_DEqMS Zci7Jw~7064 -0.722 3.79e-12 2.96e-10
@@ -238,7 +291,7 @@ results_protein |>
     ##  8 deqms  B_vs_Ctrl WaldTest_DEqMS f0Cvvj~6658  0.345 5.39e-10 1.42e- 8
     ##  9 deqms  B_vs_Ctrl WaldTest_DEqMS TR3Ksv~1492 -0.413 3.73e- 9 7.37e- 8
     ## 10 deqms  B_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.424 8.16e- 9 1.29e- 7
-    ## # ℹ 50 more rows
+    ## # ℹ 60 more rows
 
 ## Proteins that could not be estimated
 
@@ -251,6 +304,7 @@ fails on and to compare coverage.
 missing_all <- dplyr::bind_rows(
   fa_lm$get_missing() |> dplyr::mutate(facade = "lm"),
   fa_limma$get_missing() |> dplyr::mutate(facade = "limma"),
+  fa_limma_impute$get_missing() |> dplyr::mutate(facade = "limma_impute"),
   fa_lm_missing$get_missing() |> dplyr::mutate(facade = "lm_missing"),
   fa_lm_impute$get_missing() |> dplyr::mutate(facade = "lm_impute"),
   fa_deqms$get_missing() |> dplyr::mutate(facade = "deqms"),
@@ -299,10 +353,10 @@ Per-sample intensities of proteins that could not be estimated
 
 The missing cells (NA) explain why these proteins cannot be estimated —
 they lack observations in one or more groups. The `lm_missing` facade
-fills in these gaps via group-mean imputation, while `lm_impute` re-fits
-the lm model after imputing individual values with the LOD and borrowing
-covariance from successful fits. Both should have fewer missing proteins
-than plain `lm`.
+fills in these gaps via group-mean imputation, while `lm_impute` and
+`limma_impute` re-fit after imputing individual values with the LOD and
+borrowing covariance from successful fits. These should have fewer
+missing proteins than plain `lm` or `limma`.
 
 ### Estimates for the missing proteins from `lm_missing` and `lm_impute`
 
@@ -317,37 +371,43 @@ if (length(lm_missing_proteins) > 0) {
   rescued <- results_protein |>
     dplyr::filter(
       protein_Id %in% lm_missing_proteins,
-      facade %in% c("lm_missing", "lm_impute")
+      facade %in% c("lm_missing", "lm_impute", "limma_impute")
     ) |>
     dplyr::arrange(protein_Id, contrast, facade)
 
   rescued |>
     knitr::kable(
       digits = 3,
-      caption = "Contrast estimates from lm_missing and lm_impute for proteins that plain lm could not estimate"
+      caption = "Contrast estimates from lm_missing, lm_impute, and limma_impute for proteins that plain lm could not estimate"
     )
 } else {
   cat("All proteins were estimable by plain lm — no rescued estimates to show.")
 }
 ```
 
-| facade     | modelName          | protein_Id  | contrast  | avgAbd |   diff |   FDR | statistic | std.error |    df | p.value | conf.low | conf.high | sigma | significant |
-|:-----------|:-------------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|------:|--------:|---------:|----------:|------:|:------------|
-| lm_impute  | WaldTest_moderated | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.007 | 4.310 |   1.000 |   -0.234 |     0.234 | 0.087 | FALSE       |
-| lm_missing | groupAverage       | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 | 2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | FALSE       |
-| lm_impute  | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.776 |  0.000 | 0.987 |     0.030 |     0.007 | 4.310 |   0.977 |   -0.234 |     0.234 | 0.087 | FALSE       |
-| lm_missing | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.020 |     3.690 |     0.102 | 5.377 |   0.012 |    0.108 |     0.570 | 0.092 | FALSE       |
-| lm_impute  | WaldTest_moderated | DTCi0N~0734 | A_vs_Ctrl |  3.777 | -0.003 | 0.739 |    -0.468 |     0.007 | 6.310 |   0.656 |   -0.217 |     0.210 | 0.088 | FALSE       |
-| lm_missing | groupAverage       | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 | 4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | FALSE       |
-| lm_impute  | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  3.780 |  0.002 | 0.835 |     0.246 |     0.007 | 6.310 |   0.814 |   -0.212 |     0.215 | 0.088 | FALSE       |
-| lm_missing | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.016 |     3.499 |     0.057 | 7.377 |   0.009 |    0.040 |     0.403 | 0.078 | FALSE       |
-| lm_impute  | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.777 | -0.003 | 0.796 |    -0.389 |     0.007 | 4.310 |   0.716 |   -0.237 |     0.232 | 0.087 | FALSE       |
-| lm_missing | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.055 |    -2.951 |     0.084 | 5.340 |   0.029 |   -0.480 |    -0.072 | 0.081 | FALSE       |
-| lm_impute  | WaldTest_moderated | OrL0ux~1369 | B_vs_Ctrl |  3.777 | -0.003 | 0.749 |    -0.382 |     0.007 | 4.310 |   0.720 |   -0.237 |     0.232 | 0.087 | FALSE       |
-| lm_missing | groupAverage       | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 | 2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | FALSE       |
+| facade       | modelName          | protein_Id  | contrast  | avgAbd |   diff |   FDR | statistic | std.error |    df | p.value | conf.low | conf.high | sigma | rescued | significant |
+|:-------------|:-------------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|------:|--------:|---------:|----------:|------:|:--------|:------------|
+| limma_impute | limma              | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 | 4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
+| lm_impute    | WaldTest_moderated | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.065 | 4.310 |   1.000 |   -0.234 |     0.234 | 0.087 | TRUE    | FALSE       |
+| lm_missing   | groupAverage       | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 | 2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | TRUE    | FALSE       |
+| limma_impute | limma              | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 | 4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
+| lm_impute    | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.798 |     0.286 |     0.065 | 4.310 |   0.788 |   -0.217 |     0.252 | 0.087 | FALSE   | FALSE       |
+| lm_missing   | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.020 |     3.690 |     0.102 | 5.377 |   0.012 |    0.108 |     0.570 | 0.092 | FALSE   | FALSE       |
+| limma_impute | limma              | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.996 |     0.063 | 6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
+| lm_impute    | WaldTest_moderated | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -4.057 |     0.065 | 6.310 |   0.006 |   -0.467 |    -0.040 | 0.088 | TRUE    | FALSE       |
+| lm_missing   | groupAverage       | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 | 4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | TRUE    | FALSE       |
+| limma_impute | limma              | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 | 6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
+| lm_impute    | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.049 |     2.665 |     0.065 | 6.310 |   0.035 |   -0.047 |     0.380 | 0.088 | FALSE   | FALSE       |
+| lm_missing   | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.016 |     3.499 |     0.057 | 7.377 |   0.009 |    0.040 |     0.403 | 0.078 | FALSE   | FALSE       |
+| limma_impute | limma              | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.063 | 4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | FALSE   | FALSE       |
+| lm_impute    | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.049 |    -3.369 |     0.065 | 4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | FALSE   | FALSE       |
+| lm_missing   | WaldTest_moderated | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.055 |    -2.951 |     0.084 | 5.340 |   0.029 |   -0.480 |    -0.072 | 0.081 | FALSE   | FALSE       |
+| limma_impute | limma              | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 | 4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
+| lm_impute    | WaldTest_moderated | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.036 |    -3.369 |     0.065 | 4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | TRUE    | FALSE       |
+| lm_missing   | groupAverage       | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 | 2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | TRUE    | FALSE       |
 
-Contrast estimates from lm_missing and lm_impute for proteins that plain
-lm could not estimate
+Contrast estimates from lm_missing, lm_impute, and limma_impute for
+proteins that plain lm could not estimate
 
 ## Peptide-input facades
 

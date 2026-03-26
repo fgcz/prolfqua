@@ -9,7 +9,7 @@ LFQData R6 class"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@ LFQData R6 class"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>LFQData R6 class</h1>
-      <small class="dont-index">Source: <a href="https://github.com/wolski/prolfqua/blob/Modelling2R6/R/LFQData.R" class="external-link"><code>R/LFQData.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/R/LFQData.R" class="external-link"><code>R/LFQData.R</code></a></small>
       <div class="d-none name"><code>LFQData.Rd</code></div>
     </div>
 
@@ -67,7 +67,9 @@ can bias fold-change estimates and inflate false discovery rates.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other LFQData:
-<code><a href="LFQDataAggregator.html">LFQDataAggregator</a></code>,
+<code><a href="AggregateMedpolish.html">AggregateMedpolish</a></code>,
+<code><a href="AggregateRlm.html">AggregateRlm</a></code>,
+<code><a href="AggregateTopN.html">AggregateTopN</a></code>,
 <code><a href="LFQDataImp.html">LFQDataImp</a></code>,
 <code><a href="LFQDataPlotter.html">LFQDataPlotter</a></code>,
 <code><a href="LFQDataStats.html">LFQDataStats</a></code>,
@@ -468,12 +470,24 @@ globally, e.g. `factorDepth = 0` means per experiment</p></dd>
 <h3 id="method-get-aggregator-">Method <code>get_Aggregator()</code><a class="anchor" aria-label="anchor" href="#method-get-aggregator-"></a></h3>
 <p>get Aggregator</p><div class="section">
 <h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"medpolish"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>method</code></dt>
+<dd><p>aggregation method: "medpolish", "rlm", or "topN"</p></dd>
+
+
+<dt><code>...</code></dt>
+<dd><p>passed to aggregator constructor (e.g. prefix, N, func)</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
 <h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
-<p>LFQDataAggregator</p>
+<p>AggregateMedpolish, AggregateRlm, or AggregateTopN</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-filter_difference"></a><div class="section">
@@ -484,7 +498,7 @@ globally, e.g. `factorDepth = 0` means per experiment</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>other</code></dt>
 <dd><p>a filtered LFQData set</p></dd>
 
@@ -509,7 +523,7 @@ globally, e.g. `factorDepth = 0` means per experiment</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -577,6 +591,8 @@ globally, e.g. `factorDepth = 0` means per experiment</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"LFQDataPlotter"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"LFQDataImp"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Imputer</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"LFQDataAggregator"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: peptide.intensity</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> "LFQDataAggregator" %in% class(lfqdata$get_Aggregator()) is not TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lfqdata2</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata2</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">lfqdata2</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,<span class="op">]</span></span></span>

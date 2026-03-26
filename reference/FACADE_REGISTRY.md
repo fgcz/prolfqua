@@ -19,4 +19,4 @@ FACADE_REGISTRY
 
 ## Format
 
-An object of class `list` of length 8.
+An object of class `list` of length 10.
