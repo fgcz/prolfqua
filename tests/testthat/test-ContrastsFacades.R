@@ -264,8 +264,8 @@ test_that("get_missing returns non-empty for data with missing groups", {
   istar$config <- prolfqua::old2new(istar$config)
   lfq_peptide <- prolfqua::LFQData$new(istar$data, istar$config)
   lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
-  aggregator <- prolfqua::LFQDataAggregator$new(lfq_peptide, "protein")
-  lfq_protein <- aggregator$medpolish()
+  aggregator <- prolfqua::AggregateMedpolish$new(lfq_peptide, "protein")
+  lfq_protein <- aggregator$aggregate()
 
   contrasts2 <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
 

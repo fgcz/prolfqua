@@ -62,7 +62,9 @@ stopifnot(nrow(tmp$hierarchy()) == 5)
 }
 \seealso{
 Other LFQData: 
-\code{\link{LFQDataAggregator}},
+\code{\link{AggregateMedpolish}},
+\code{\link{AggregateRlm}},
+\code{\link{AggregateTopN}},
 \code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
@@ -466,11 +468,20 @@ LFQDataImp
 \subsection{Method \code{get_Aggregator()}}{
 get Aggregator
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Aggregator()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Aggregator(method = "medpolish", ...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{method}}{aggregation method: "medpolish", "rlm", or "topN"}
+
+\item{\code{...}}{passed to aggregator constructor (e.g. prefix, N, func)}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-LFQDataAggregator
+AggregateMedpolish, AggregateRlm, or AggregateTopN
 }
 }
 \if{html}{\out{<hr>}}

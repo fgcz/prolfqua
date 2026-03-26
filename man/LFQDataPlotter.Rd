@@ -45,8 +45,10 @@ stopifnot(class(prolfqua::plot_sample_correlation(istar$data, istar$config)) == 
 \code{\link{plot_pca}}
 
 Other LFQData: 
+\code{\link{AggregateMedpolish}},
+\code{\link{AggregateRlm}},
+\code{\link{AggregateTopN}},
 \code{\link{LFQData}},
-\code{\link{LFQDataAggregator}},
 \code{\link{LFQDataImp}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},

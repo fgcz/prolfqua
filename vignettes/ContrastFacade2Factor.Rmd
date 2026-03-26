@@ -35,6 +35,8 @@ specification. See `ContrastFacades.Rmd` for the one-factor introduction.
 # Simulate two-factor data and encode subgroups
 
 ```{r simulate_two_factor_subgroups}
+options(prolfqua.vectorize = TRUE)
+
 dd <- sim_lfq_data_2Factor_config(
   Nprot = 80,
   with_missing = TRUE,
@@ -57,8 +59,16 @@ cfg_subgroup$factorDepth <- 1
 lfq_peptide_2f <- LFQData$new(data_subgroup, cfg_subgroup)
 lfq_peptide_2f <- lfq_peptide_2f$get_Transformer()$log2()$lfq
 
-lfq_protein_2f <- LFQDataAggregator$new(lfq_peptide_2f, "protein")$medpolish()
+lfq_protein_2f <- AggregateMedpolish$new(lfq_peptide_2f, "protein")$aggregate()
 
+lfq_peptide_2f$config$hierarchy_keys()
+lfq_protein_2f$config$hierarchy_keys()
+lfq_protein_2f$config$nr_children
+```
+
+# Define contrasts
+
+```{r contrasts_two_factor}
 contrasts_2f <- c(
   T_C_gv_WT = "SubgroupT_WT - SubgroupC_WT",
   T_C_gv_KO = "SubgroupT_KO - SubgroupC_KO",
@@ -66,7 +76,13 @@ contrasts_2f <- c(
 )
 ```
 
+Three contrasts: two within-genotype treatment effects and their difference
+(interaction-like comparison).
+
 # Protein-input facades
+
+The following facades require aggregated input. `firth` is included here
+because it can be fitted directly on aggregated protein input.
 
 ```{r facades_protein_two_factor}
 fa_lm_2f <- build_contrast_analysis(
@@ -83,6 +99,13 @@ fa_limma_2f <- build_contrast_analysis(
   method = "limma"
 )
 
+fa_limma_impute_2f <- build_contrast_analysis(
+  lfq_protein_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "limma_impute"
+)
+
 fa_lm_missing_2f <- build_contrast_analysis(
   lfq_protein_2f,
   "~ Subgroup",
@@ -97,6 +120,13 @@ fa_deqms_2f <- build_contrast_analysis(
   method = "deqms"
 )
 
+fa_lm_impute_2f <- build_contrast_analysis(
+  lfq_protein_2f,
+  "~ Subgroup",
+  contrasts_2f,
+  method = "lm_impute"
+)
+
 fa_firth_protein_2f <- build_contrast_analysis(
   lfq_protein_2f,
   "~ Subgroup",
@@ -105,20 +135,182 @@ fa_firth_protein_2f <- build_contrast_analysis(
 )
 ```
 
+Because all protein-input facades share the same interface and report
+protein-level contrasts, their outputs can be combined directly.
+
 ```{r collect_protein_two_factor}
+# Proteins missing in the baseline lm facade (used to flag rescued proteins)
+lm_missing_ids_2f <- fa_lm_2f$get_missing() |>
+  dplyr::select(protein_Id, contrast) |>
+  dplyr::mutate(rescued = TRUE)
+
 results_protein_2f <- bind_rows(
   fa_lm_2f$get_contrasts(),
   fa_limma_2f$get_contrasts(),
+  fa_limma_impute_2f$get_contrasts(),
   fa_lm_missing_2f$get_contrasts(),
+  fa_lm_impute_2f$get_contrasts(),
   fa_deqms_2f$get_contrasts(),
   fa_firth_protein_2f$get_contrasts()
-)
+) |>
+  dplyr::select(dplyr::any_of(c(
+    "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
+    "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
+    "sigma"
+  ))) |>
+  dplyr::left_join(lm_missing_ids_2f, by = c("protein_Id", "contrast")) |>
+  dplyr::mutate(
+    rescued = dplyr::coalesce(rescued, FALSE),
+    significant = FDR < 0.1 & abs(diff) > 0.5
+  )
 
 results_protein_2f |>
-  dplyr::count(facade, contrast, name = "n_results")
+  dplyr::count(facade, name = "n_results")
+```
+
+For facades that combine several underlying result types, such as
+`lm_missing`, the `modelName` column still tells you where individual rows came
+from.
+
+```{r collect_protein_model_names_2f}
+results_protein_2f |>
+  dplyr::count(facade, contrast, modelName, name = "n_results")
+```
+
+# Protein-level volcano comparison
+
+## Standard facades
+
+```{r volcano_standard_2f, fig.height=10, fig.width=12, fig.cap="Volcano plots for the standard protein-level facades (lm, limma, deqms)."}
+standard_facades_2f <- c("lm", "limma", "deqms")
+results_standard_2f <- results_protein_2f |>
+  dplyr::filter(facade %in% standard_facades_2f)
+
+ggplot(results_standard_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  facet_grid(contrast ~ facade, scales = "free_y") +
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
+  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
+  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
+  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1\nand |diff| > 0.5") +
+  theme_minimal(base_size = 12)
+```
+
+## Imputation and missingness facades
+
+Rescued proteins (missing in plain `lm`) are shown as large red diamonds
+so they stand out clearly. This group includes the LOD imputation facades
+(`lm_missing`, `lm_impute`, `limma_impute`) and the firth logistic
+regression facade which models missingness directly.
+
+```{r volcano_impute_2f, fig.height=10, fig.width=14, fig.cap="Volcano plots for the imputation and missingness facades. Large red diamonds mark proteins rescued (missing in plain lm)."}
+impute_facades_2f <- c("lm_missing", "lm_impute", "limma_impute", "firth")
+results_impute_2f <- results_protein_2f |>
+  dplyr::filter(facade %in% impute_facades_2f) |>
+  dplyr::mutate(facade = factor(facade, levels = impute_facades_2f))
+
+ggplot(results_impute_2f, aes(x = diff, y = -log10(p.value))) +
+  geom_point(data = dplyr::filter(results_impute_2f, !rescued),
+             aes(color = significant), alpha = 0.5, size = 1.2) +
+  geom_point(data = dplyr::filter(results_impute_2f, rescued),
+             color = "red", shape = 18, size = 5, alpha = 1) +
+  facet_grid(contrast ~ facade, scales = "free_y") +
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
+  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
+  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
+  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1\nand |diff| > 0.5") +
+  theme_minimal(base_size = 12)
+```
+
+# Looking at the strongest protein-level hits
+
+```{r top_hits_protein_2f}
+results_protein_2f |>
+  dplyr::group_by(facade, contrast) |>
+  dplyr::slice_min(order_by = p.value, n = 5, with_ties = FALSE) |>
+  dplyr::ungroup() |>
+  dplyr::select(facade, contrast, modelName, protein_Id, diff, p.value, FDR)
+```
+
+# Proteins that could not be estimated
+
+Every facade has a `get_missing()` method that returns the protein x contrast
+pairs present in the input data but absent from `get_contrasts()`. This makes
+it easy to see which proteins each method fails on and to compare coverage.
+
+```{r missing_protein_facades_2f}
+missing_all_2f <- dplyr::bind_rows(
+  fa_lm_2f$get_missing() |> dplyr::mutate(facade = "lm"),
+  fa_limma_2f$get_missing() |> dplyr::mutate(facade = "limma"),
+  fa_limma_impute_2f$get_missing() |> dplyr::mutate(facade = "limma_impute"),
+  fa_lm_missing_2f$get_missing() |> dplyr::mutate(facade = "lm_missing"),
+  fa_lm_impute_2f$get_missing() |> dplyr::mutate(facade = "lm_impute"),
+  fa_deqms_2f$get_missing() |> dplyr::mutate(facade = "deqms"),
+  fa_firth_protein_2f$get_missing() |> dplyr::mutate(facade = "firth")
+)
+
+missing_all_2f |>
+  dplyr::count(facade, contrast, name = "n_missing") |>
+  knitr::kable(caption = "Number of missing protein x contrast pairs per facade")
+```
+
+## Per-sample intensities of the missing proteins
+
+```{r missing_intensities_2f}
+missing_proteins_2f <- unique(missing_all_2f$protein_Id)
+
+if (length(missing_proteins_2f) > 0) {
+  lfq_protein_2f$data |>
+    dplyr::filter(protein_Id %in% missing_proteins_2f) |>
+    dplyr::select(protein_Id, sampleName,
+                  !!rlang::sym(lfq_protein_2f$config$get_response())) |>
+    tidyr::pivot_wider(names_from = sampleName,
+                       values_from = !!rlang::sym(lfq_protein_2f$config$get_response())) |>
+    knitr::kable(digits = 2, caption = "Per-sample intensities of proteins that could not be estimated")
+}
+```
+
+The missing cells (NA) explain why these proteins cannot be estimated — they
+lack observations in one or more groups. The `lm_missing` facade fills in
+these gaps via group-mean imputation, while `lm_impute` and `limma_impute`
+re-fit after imputing individual values with the LOD and borrowing covariance
+from successful fits. These should have fewer missing proteins than plain
+`lm` or `limma`.
+
+## Estimates for the missing proteins from `lm_missing` and `lm_impute`
+
+For proteins that plain `lm` could not estimate, the imputation-based facades
+can still produce contrast results. The table below shows these rescued
+estimates side by side.
+
+```{r rescued_estimates_2f}
+lm_missing_proteins_2f <- fa_lm_2f$get_missing()$protein_Id |> unique()
+
+if (length(lm_missing_proteins_2f) > 0) {
+  rescued_2f <- results_protein_2f |>
+    dplyr::filter(
+      protein_Id %in% lm_missing_proteins_2f,
+      facade %in% c("lm_missing", "lm_impute", "limma_impute")
+    ) |>
+    dplyr::arrange(protein_Id, contrast, facade)
+
+  rescued_2f |>
+    knitr::kable(
+      digits = 3,
+      caption = "Contrast estimates from lm_missing, lm_impute, and limma_impute for proteins that plain lm could not estimate"
+    )
+} else {
+  cat("All proteins were estimable by plain lm — no rescued estimates to show.")
+}
 ```
 
 # Peptide-input facades
+
+The mixed-effects `lmer` facade and `ropeca` require lower-level measurements
+below the analysis subject. The `firth` facade can also operate directly on
+peptide-level `LFQData`. `firth` is shown a second time here on purpose,
+because it can also be fitted on peptide input. All three still return
+protein-level contrasts.
 
 ```{r facades_peptide_two_factor}
 fa_lmer_2f <- build_contrast_analysis(
@@ -148,38 +340,45 @@ results_peptide_2f <- bind_rows(
   fa_lmer_2f$get_contrasts(),
   fa_ropeca_2f$get_contrasts(),
   fa_firth_peptide_2f$get_contrasts()
-)
+) |>
+  dplyr::select(dplyr::any_of(c(
+    "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
+    "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
+    "sigma"
+  ))) |>
+  dplyr::mutate(
+    significant = FDR < 0.1 & abs(diff) > 0.5
+  )
 
 results_peptide_2f |>
-  dplyr::count(facade, contrast, name = "n_results")
+  dplyr::count(facade, name = "n_results")
 ```
 
-# Volcano plots
-
-```{r volcano_protein_2f, fig.height=8, fig.width=10, fig.cap="Protein-input facades, subgroup contrasts."}
-results_protein_2f <- results_protein_2f |>
-  dplyr::mutate(significant = FDR < 0.1 & abs(diff) > 0.5)
-
-ggplot(results_protein_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
-  geom_point(alpha = 0.6, size = 1.2) +
-  facet_grid(contrast ~ facade, scales = "free_y") +
-  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
-  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
-  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
-  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1 & |diff| > 0.5") +
-  theme_minimal(base_size = 12)
-```
-
-```{r volcano_peptide_2f, fig.height=6, fig.width=9, fig.cap="Peptide-input facades, subgroup contrasts."}
-results_peptide_2f <- results_peptide_2f |>
-  dplyr::mutate(significant = FDR < 0.1 & abs(diff) > 0.5)
-
+```{r volcano_peptide_2f, fig.height=10, fig.width=10, fig.cap="Volcano plots for the peptide-level facades. Rows are contrasts, columns are backends."}
 ggplot(results_peptide_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
   facet_grid(contrast ~ facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
-  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1 & |diff| > 0.5") +
+  labs(
+    x = "log2 fold change",
+    y = "-log10(p.value)",
+    color = "FDR < 0.1\nand |diff| > 0.5"
+  ) +
   theme_minimal(base_size = 12)
 ```
+
+# Remarks
+
+The facades make it easy to benchmark alternative contrast backends without
+rewriting the analysis pipeline:
+
+- the protein-level facades now enforce aggregation before modelling
+- the peptide-level facades now explicitly require lower-level hierarchy below
+  the analysis subject
+- the shared facade API still makes it straightforward to compare methods once
+  the data level is chosen consistently
+
+The results are comparable at the API level, but the comparison is only
+meaningful when methods using the same biological unit are plotted together.

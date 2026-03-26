@@ -38,8 +38,8 @@ tidy_to_wide <- function(data, rowIDs, columnLabels, value) {
 #' xt <- prolfqua::LFQData$new(dd$data, dd$config)
 #' xt$data$nr_children
 #' #xt$config$is_response_transformed <- TRUE
-#' res <- xt$get_Aggregator()
-#' x <- res$medpolish()
+#' res <- xt$get_Aggregator("medpolish")
+#' x <- res$aggregate()
 #' towide <- tidy_to_wide_config(x$data, x$config,  value = x$config$nr_children)
 #'
 #' dd <- prolfqua::sim_lfq_data_protein_config()

@@ -57,8 +57,8 @@ istar$config <- old2new(istar$config)
 lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 
-aggregator <- LFQDataAggregator$new(lfq_peptide, "protein")
-lfq_protein <- aggregator$medpolish()
+aggregator <- AggregateMedpolish$new(lfq_peptide, "protein")
+lfq_protein <- aggregator$aggregate()
 
 lfq_peptide$config$hierarchy_keys()
 lfq_protein$config$hierarchy_keys()

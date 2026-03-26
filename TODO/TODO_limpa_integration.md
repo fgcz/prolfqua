@@ -2,12 +2,22 @@ https://github.com/SmythLab/limpa
 https://bioconductor.org/packages/release/bioc/html/limpa.html
 also sorce code /Users/wolski/projects/prolfqua_fml/limpa
 
+We also have both limpa papers in  /Users/wolski/projects/prolfqua_fml/addinfo
 
-- limpa does missing value imputation starting from precursor data, but only on protein level, or will it also do imputation, on precursor or peptide level?
+and at: ./.cursor/skills/adding-models-to-prolfqua/SKILL.md
+
+- limpa does missing value imputation starting from precursor data, but only on protein level (?), or will it also do imputation, on precursor or peptide level?
+
+- going from precursor to protein would possibly -> encourage an Aggregator.
+
+Question relevant because we want both to support Peptide and protein level analysis.
 
 - is imputation a separate step then protein abundance inference?
 
-Asking because proflqua has Imputation R6 class and Aggregation (inference R6) class, we shall wrap the limpa impuation and inference
+So can I use impuation and then fit a different then limpa model to the data, e.g. limma or prolfqua lm?
+
 
 - once inferred is limpa any different then limma?
+
+- could we add DeqMS moderation on top?
 

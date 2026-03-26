@@ -75,8 +75,10 @@ runallfuncs(lfqstats)
 }
 \seealso{
 Other LFQData: 
+\code{\link{AggregateMedpolish}},
+\code{\link{AggregateRlm}},
+\code{\link{AggregateTopN}},
 \code{\link{LFQData}},
-\code{\link{LFQDataAggregator}},
 \code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataSummariser}},

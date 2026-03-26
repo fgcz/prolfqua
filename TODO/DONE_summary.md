@@ -4,6 +4,94 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-26 — Refactor LFQDataAggregator into Strategy Classes
+
+Replaced monolithic `LFQDataAggregator` (one class, four methods) with three focused strategy classes sharing a uniform `$aggregate()` API:
+
+| Class | Replaces | Input requirement |
+|-------|----------|-------------------|
+| `AggregateMedpolish` | `$medpolish()` | Transformed (log) intensities |
+| `AggregateRlm` | `$lmrob()` | Transformed (log) intensities |
+| `AggregateTopN` | `$sum_topN()` / `$mean_topN()` | Raw intensities; `func = "sum"` or `"mean"` |
+
+**Design:** Composition, not inheritance. Shared logic (`plot`, `write_plots`) extracted to package-internal helpers (`.aggregator_plot()`, `.aggregator_write_plots()`). Validation warnings moved from method calls to constructors.
+
+**Factory updated:** `LFQData$get_Aggregator(method = "medpolish", ...)` dispatches to the correct class. `...` passes `prefix`, `N`, `func` to the constructor.
+
+**Bug fix:** `aggregate_intensity_topN()` used `match.call()` to capture `N` for column naming. When `N` was passed as an expression (e.g. `self$N` from an R6 method), `match.call()` captured the unevaluated expression, causing `:=` to fail with newer rlang. Fixed by using `N` directly instead of `xcall$N`.
+
+### Files modified
+
+| File | Changes |
+|------|---------|
+| `R/LFQDataAggregator.R` | Replaced `LFQDataAggregator` with `AggregateMedpolish`, `AggregateRlm`, `AggregateTopN` + shared helpers |
+| `R/LFQData.R` | `get_Aggregator(method, ...)` factory with `switch` dispatch |
+| `R/tidyMS_aggregation.R` | Removed fragile `match.call()` in `aggregate_intensity_topN()` |
+| `R/tidyMS_reshaping.R` | Updated roxygen example |
+| `tests/testthat/test-LFQData.R` | Split into 3 test blocks (one per strategy class) |
+| `tests/testthat/test-ContrastsFacades.R` | Updated to `AggregateMedpolish$new()$aggregate()` |
+| `vignettes/ContrastFacades.Rmd` | Updated aggregation calls |
+| `vignettes/ContrastFacade2Factor.Rmd` | Updated aggregation calls |
+| `vignettes/SimulateData.Rmd` | Updated aggregation calls |
+
+### Downstream consumer updates (prolfquapp)
+
+| File | Changes |
+|------|---------|
+| `prolfquapp/R/aggregation_IBAQ.R` | `get_Aggregator(method)` + `$aggregate()` |
+| `prolfquapp/R/R6_ProteinDataPrep.R` | `get_Aggregator(method)` + `$aggregate()` |
+
+All 549 tests pass (prolfqua). All 6 tests pass (prolfquapp).
+
+---
+
+## 2026-03-26 — Limma LOD Imputation Backend + lm_impute nr_children Fix
+
+### `ContrastsLimmaImputeFacade` and `build_model_limma_impute()`
+
+From `TODO/TODO_limma_with_LOD.md`. Added LOD imputation for limma, mirroring the existing `lm_impute` approach but adapted for limma's matrix-based fitting.
+
+**New functions (`R/ContrastsLimma.R`):**
+- `compute_borrowed_variance_limma()` — computes median sigma and df from successful proteins in an `MArrayLM` fit
+- `build_model_limma_impute()` — fits limma on original data, identifies failed proteins (NA coefficients), imputes NAs with LOD, refits, splices imputed rows back into the fit with borrowed sigma and corrected df
+
+**Key design decisions:**
+- Only sigma borrowing (no `borrow_method`). Limma represents variance as `sigma^2 * stdev.unscaled^2`; replacing sigma alone is sufficient
+- Direct field replacement on `MArrayLM` (coefficients, stdev.unscaled, sigma, Amean, df.residual) — no new S3 class needed
+- df correction: imputed proteins use `max(n_observed - p, 1)` (default) or borrowed median df, never the inflated df from the LOD-imputed fit
+
+**New facade (`R/ContrastsFacades.R`):**
+- `ContrastsLimmaImputeFacade` — same API as all other facades (`get_contrasts()`, `get_missing()`, `get_Plotter()`, `to_wide()`)
+
+**Also added:** `ContrastsLimma(eBayes = FALSE)` parameter to return raw unmoderated statistics, enabling downstream DEqMS moderation on limma results.
+
+### `lm_impute` nr_children fix
+
+`lm_impute` returned 157 results instead of the expected 160. Root cause: `.impute_one_protein()` joins with a sample template to add rows for missing groups, but the template only contains annotation columns — so `nr_children` was NA on new rows. Since `strategy_lm` passes `weights = nr_children` to `lm()`, the NA weights caused the refit to fail.
+
+Fix: thread `nr_children_col` from `build_model_impute()` → `impute_refit_singular()` → `.impute_one_protein()`, and after the join, fill NA `nr_children` with 1 (conservative weight for imputed rows with no observed peptides).
+
+### Vignettes
+
+- `ContrastFacades.Rmd` — updated with `limma_impute` and `lm_impute` facades, split volcano plots (standard vs imputation with rescued protein highlighting), missing protein tables, rescued estimates comparison
+- `ContrastFacade2Factor.Rmd` — restructured to match `ContrastFacades.Rmd`: added `lm_impute` and `limma_impute`, rescued protein flagging, split volcanos with red diamond markers, model name counts, missing protein tables, per-sample intensities, rescued estimates
+
+### Files modified
+
+| File | Changes |
+|------|---------|
+| `R/ContrastsLimma.R` | `eBayes` param on `ContrastsLimma`, `compute_borrowed_variance_limma()`, `build_model_limma_impute()` |
+| `R/ContrastsFacades.R` | `ContrastsLimmaImputeFacade`, updated `FACADE_REGISTRY` |
+| `R/build_contrast_analysis.R` | Added `"limma_impute"` method |
+| `R/tidyMS_build_model.R` | `nr_children_col` parameter threaded through imputation chain; `annotation_vars()` sample template |
+| `tests/testthat/test-ContrastsLimma.R` | 6 new test cases for limma impute |
+| `vignettes/ContrastFacades.Rmd` | Full restructure with imputation facades and rescued protein visualization |
+| `vignettes/ContrastFacade2Factor.Rmd` | Aligned structure with `ContrastFacades.Rmd` |
+
+All 547 tests pass.
+
+---
+
 ## 2026-03-25 — Performance Review Items 8, 9, 10
 
 From `TODO/TODO_perforance_review.md`. Final three items — all 10 now complete.

@@ -271,9 +271,17 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' get Aggregator
-    #' @return LFQDataAggregator
-    get_Aggregator = function() {
-      return(LFQDataAggregator$new(self))
+    #' @param method aggregation method: "medpolish", "rlm", or "topN"
+    #' @param ... passed to aggregator constructor (e.g. prefix, N, func)
+    #' @return AggregateMedpolish, AggregateRlm, or AggregateTopN
+    get_Aggregator = function(method = "medpolish", ...) {
+      switch(
+        method,
+        "medpolish" = AggregateMedpolish$new(self, ...),
+        "rlm" = AggregateRlm$new(self, ...),
+        "topN" = AggregateTopN$new(self, ...),
+        stop("Unknown aggregation method: ", method)
+      )
     },
     #' @description
     #' get difference of self with other if other is subset of self

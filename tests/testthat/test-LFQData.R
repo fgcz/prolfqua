@@ -82,7 +82,7 @@ test_that("LFQData decorator factory methods", {
   expect_s3_class(lfqdata$get_Summariser(), "LFQDataSummariser")
   expect_s3_class(lfqdata$get_Plotter(), "LFQDataPlotter")
   expect_s3_class(lfqdata$get_Imputer(), "LFQDataImp")
-  expect_s3_class(lfqdata$get_Aggregator(), "LFQDataAggregator")
+  expect_s3_class(lfqdata$get_Aggregator("medpolish"), "AggregateMedpolish")
 })
 
 test_that("LFQDataTransformer", {
@@ -132,28 +132,42 @@ test_that("LFQDataStats", {
   expect_equal(stats_t$stat, "sd")
 })
 
-test_that("LFQDataAggregator", {
+test_that("AggregateMedpolish", {
   lfq_copy <- lfqdata$get_copy()
   tr <- lfq_copy$get_Transformer()
   tr$log2()
   tr$robscale()
 
-  agg <- LFQDataAggregator$new(tr$lfq, "protein")
-  result <- agg$medpolish()
+  agg <- AggregateMedpolish$new(tr$lfq, "protein")
+  result <- agg$aggregate()
   expect_s3_class(result, "LFQData")
-  # Aggregated should have fewer rows (aggregated from peptide to protein level)
   expect_true(nrow(result$data) < nrow(lfqdata$data))
 
-  agg2 <- LFQDataAggregator$new(tr$lfq$get_copy(), "protein")
-  result2 <- agg2$lmrob()
-  expect_s3_class(result2, "LFQData")
-
-  # sum_topN works on untransformed data
-  lfq_raw <- lfqdata$get_copy()
-  agg3 <- LFQDataAggregator$new(lfq_raw, "protein")
-  result3 <- agg3$sum_topN()
-  expect_s3_class(result3, "LFQData")
-
-  pl <- agg3$plot()
+  pl <- agg$plot()
   expect_true("plots" %in% names(pl))
+})
+
+test_that("AggregateRlm", {
+  lfq_copy <- lfqdata$get_copy()
+  tr <- lfq_copy$get_Transformer()
+  tr$log2()
+  tr$robscale()
+
+  agg <- AggregateRlm$new(tr$lfq$get_copy(), "protein")
+  result <- agg$aggregate()
+  expect_s3_class(result, "LFQData")
+})
+
+test_that("AggregateTopN", {
+  lfq_raw <- lfqdata$get_copy()
+  agg <- AggregateTopN$new(lfq_raw, "protein", N = 3, func = "sum")
+  result <- agg$aggregate()
+  expect_s3_class(result, "LFQData")
+
+  pl <- agg$plot()
+  expect_true("plots" %in% names(pl))
+
+  agg_mean <- AggregateTopN$new(lfqdata$get_copy(), "protein", func = "mean")
+  result_mean <- agg_mean$aggregate()
+  expect_s3_class(result_mean, "LFQData")
 })

@@ -32,8 +32,10 @@ if (requireNamespace("zCompositions", quietly = TRUE)) {
 }
 \seealso{
 Other LFQData: 
+\code{\link{AggregateMedpolish}},
+\code{\link{AggregateRlm}},
+\code{\link{AggregateTopN}},
 \code{\link{LFQData}},
-\code{\link{LFQDataAggregator}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},

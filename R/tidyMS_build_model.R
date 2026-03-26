@@ -203,14 +203,22 @@ build_model_impute <- function(
     lod <- mh$get_LOD()
   }
 
-  # Build sample template: all unique sample rows (excluding subject_Id,
-
-  # response, and other value columns like nr_children that vary per protein)
-  exclude_cols <- unique(c(subject_Id, lfqdata$config$value_vars()))
-  non_subject_cols <- setdiff(colnames(lfqdata$data), exclude_cols)
+  # Build sample template from annotation columns only (fileName, sampleName,
+  # factors). These don't vary per protein, so distinct() gives one row per sample.
+  # Value columns like nr_children are protein-specific and come from dat via join.
+  annotation_cols <- intersect(
+    lfqdata$config$annotation_vars(),
+    colnames(lfqdata$data)
+  )
   sample_template <- lfqdata$data |>
-    dplyr::select(dplyr::all_of(non_subject_cols)) |>
+    dplyr::select(dplyr::all_of(annotation_cols)) |>
     dplyr::distinct()
+
+  # Resolve nr_children column name (used as lm weights; must be filled for imputed rows)
+  nr_children_col <- lfqdata$config$nr_children
+  if (!is.null(nr_children_col) && !nr_children_col %in% colnames(lfqdata$data)) {
+    nr_children_col <- NULL
+  }
 
   modellingResult$modelDF <- impute_refit_singular(
     modellingResult$modelDF,
@@ -219,7 +227,8 @@ build_model_impute <- function(
     response = response,
     sample_template = sample_template,
     borrow_method = borrow_method,
-    df_method = df_method
+    df_method = df_method,
+    nr_children_col = nr_children_col
   )
 
   return(Model$new(
@@ -401,6 +410,9 @@ compute_borrowed_variance <- function(modelDF, method = c("sigma", "vcov")) {
 #' @param borrow_method "sigma" or "vcov"
 #' @param df_method "observed" uses max(n_observed - p, 1),
 #'   "borrowed" uses median df from successful fits
+#' @param nr_children_col optional column name for nr_children (peptide counts);
+#'   NA values in this column are filled with 1 for imputed rows so that
+#'   weighted lm fits do not fail
 #' @return modified modelDF with imputed models replacing failed/singular ones
 #' @keywords internal
 #' @family modelling
@@ -411,7 +423,8 @@ impute_refit_singular <- function(
   response,
   sample_template,
   borrow_method = c("sigma", "vcov"),
-  df_method = c("observed", "borrowed")
+  df_method = c("observed", "borrowed"),
+  nr_children_col = NULL
 ) {
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
@@ -438,7 +451,8 @@ impute_refit_singular <- function(
       response,
       sample_template,
       borrowed,
-      df_method
+      df_method,
+      nr_children_col
     )
   }
 
@@ -475,11 +489,25 @@ impute_refit_singular <- function(
 # @param df_method "observed" or "borrowed"
 # @return named list of updated fields, or NULL if refit fails
 # @keywords internal
-.impute_one_protein <- function(dat, model_strategy, lod, response, sample_template, borrowed, df_method) {
+.impute_one_protein <- function(
+  dat,
+  model_strategy,
+  lod,
+  response,
+  sample_template,
+  borrowed,
+  df_method,
+  nr_children_col = NULL
+) {
   n_observed <- sum(!is.na(dat[[response]]))
 
   # Complete data with all samples so missing groups get rows
   dat <- dplyr::left_join(sample_template, dat, by = intersect(colnames(sample_template), colnames(dat)))
+
+  # Fill nr_children with 1 for imputed rows (no observed peptides in missing group)
+  if (!is.null(nr_children_col) && nr_children_col %in% colnames(dat)) {
+    dat[[nr_children_col]] <- ifelse(is.na(dat[[nr_children_col]]), 1, dat[[nr_children_col]])
+  }
 
   # Impute NAs with LOD, clamp all values to max(value, LOD)
   dat[[response]] <- ifelse(is.na(dat[[response]]), lod, dat[[response]])

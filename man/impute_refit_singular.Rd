@@ -11,7 +11,8 @@ impute_refit_singular(
   response,
   sample_template,
   borrow_method = c("sigma", "vcov"),
-  df_method = c("observed", "borrowed")
+  df_method = c("observed", "borrowed"),
+  nr_children_col = NULL
 )
 }
 \arguments{
@@ -31,6 +32,10 @@ proteins that are entirely missing in one or more groups.}
 
 \item{df_method}{"observed" uses max(n_observed - p, 1),
 "borrowed" uses median df from successful fits}
+
+\item{nr_children_col}{optional column name for nr_children (peptide counts);
+NA values in this column are filled with 1 for imputed rows so that
+weighted lm fits do not fail}
 }
 \value{
 modified modelDF with imputed models replacing failed/singular ones

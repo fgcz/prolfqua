@@ -725,8 +725,7 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend =
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[4]]))
 #'
 aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
-  xcall <- as.list(match.call())
-  newcol <- make.names(paste0("srm_", .func(name = TRUE), "_", xcall$N))
+  newcol <- make.names(paste0("srm_", .func(name = TRUE), "_", N))
 
   topInt <-
     pdata |> dplyr::filter(!!sym("srm_meanIntRank") <= N)
