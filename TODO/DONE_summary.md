@@ -4,6 +4,16 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-26 — Remove Unused LFQDataImp R6 Class
+
+Removed `LFQDataImp` R6 class and `LFQData$get_Imputer()` factory method. The class was a thin wrapper around `impute_with_zcomp()` — defined and tested but never used in any workflow, vignette, or downstream package (prolfquapp, prophosqua, prolfquabenchmark).
+
+The standalone exported functions (`estimate_lod_global`, `function_lod_quantile`, `impute_with_zcomp`) remain in `R/LFQDataImp.R`. Documentation cross-references in `LFQDataPlotter` and `tidyMS_plotting.R` updated to point to `impute_with_zcomp()`.
+
+**Files modified:** `R/LFQDataImp.R`, `R/LFQData.R`, `R/LFQDataPlotter.R`, `R/tidyMS_plotting.R`, `tests/testthat/test-LFQData.R`. All 548 tests pass.
+
+---
+
 ## 2026-03-26 — Refactor LFQDataAggregator into Strategy Classes
 
 Replaced monolithic `LFQDataAggregator` (one class, four methods) with three focused strategy classes sharing a uniform `$aggregate()` API:
