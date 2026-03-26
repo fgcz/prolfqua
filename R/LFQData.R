@@ -42,8 +42,7 @@
 #' stopifnot("LFQDataStats" %in% class(lfqdata$get_Stats()))
 #' stopifnot("LFQDataSummariser" %in% class(lfqdata$get_Summariser()))
 #' stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
-#' stopifnot("LFQDataImp" %in% class(lfqdata$get_Imputer()))
-#' stopifnot("LFQDataAggregator" %in% class(lfqdata$get_Aggregator()))
+#' stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))
 #'
 #' lfqdata2 <- lfqdata$get_copy()
 #' lfqdata2$data <- lfqdata2$data[1:100,]
@@ -262,12 +261,6 @@ LFQData <- R6::R6Class(
     #' @return LFQDataTransformer
     get_Transformer = function() {
       return(LFQDataTransformer$new(self))
-    },
-    #' @description
-    #' get Imputer
-    #' @return LFQDataImp
-    get_Imputer = function() {
-      return(LFQDataImp$new(self))
     },
     #' @description
     #' get Aggregator

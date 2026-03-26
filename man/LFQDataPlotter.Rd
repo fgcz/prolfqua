@@ -49,7 +49,6 @@ Other LFQData:
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
 \code{\link{LFQData}},
-\code{\link{LFQDataImp}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()}
@@ -194,7 +193,7 @@ PCA plot
 
 A PCA is applied and the first and second principal component are shown.
 Features with missing values are removed. For PCA with all features,
-impute first using \code{\link{LFQDataImp}}.
+impute first using \code{\link{impute_with_zcomp}}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, nudge = 0.1)}\if{html}{\out{</div>}}
 }

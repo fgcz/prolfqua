@@ -108,7 +108,7 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' A PCA is applied and the first and second principal component are shown.
     #' Features with missing values are removed. For PCA with all features,
-    #' impute first using \code{\link{LFQDataImp}}.
+    #' impute first using \code{\link{impute_with_zcomp}}.
     #'
     #' @seealso \code{\link{plot_pca}}
     #'

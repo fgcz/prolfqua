@@ -540,7 +540,7 @@ plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE
       " of ",
       n_before,
       " features with missing values. ",
-      "For PCA with all features, impute first using LFQDataImp."
+      "For PCA with all features, impute first using impute_with_zcomp()."
     )
   }
   ff <- t(ff)

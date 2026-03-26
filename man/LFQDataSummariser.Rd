@@ -35,7 +35,6 @@ Other LFQData:
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
 \code{\link{LFQData}},
-\code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataToSummarizedExperiment}()}

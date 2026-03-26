@@ -48,8 +48,7 @@ stopifnot("LFQDataTransformer" \%in\% class(lfqdata$get_Transformer()))
 stopifnot("LFQDataStats" \%in\% class(lfqdata$get_Stats()))
 stopifnot("LFQDataSummariser" \%in\% class(lfqdata$get_Summariser()))
 stopifnot("LFQDataPlotter" \%in\% class(lfqdata$get_Plotter()))
-stopifnot("LFQDataImp" \%in\% class(lfqdata$get_Imputer()))
-stopifnot("LFQDataAggregator" \%in\% class(lfqdata$get_Aggregator()))
+stopifnot("AggregateMedpolish" \%in\% class(lfqdata$get_Aggregator("medpolish")))
 
 lfqdata2 <- lfqdata$get_copy()
 lfqdata2$data <- lfqdata2$data[1:100,]
@@ -65,7 +64,6 @@ Other LFQData:
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
-\code{\link{LFQDataImp}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
@@ -107,7 +105,6 @@ Other LFQData:
 \item \href{#method-LFQData-get_Summariser}{\code{LFQData$get_Summariser()}}
 \item \href{#method-LFQData-get_Stats}{\code{LFQData$get_Stats()}}
 \item \href{#method-LFQData-get_Transformer}{\code{LFQData$get_Transformer()}}
-\item \href{#method-LFQData-get_Imputer}{\code{LFQData$get_Imputer()}}
 \item \href{#method-LFQData-get_Aggregator}{\code{LFQData$get_Aggregator()}}
 \item \href{#method-LFQData-filter_difference}{\code{LFQData$filter_difference()}}
 \item \href{#method-LFQData-clone}{\code{LFQData$clone()}}
@@ -447,19 +444,6 @@ get Stats
 
 \subsection{Returns}{
 LFQDataTransformer
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-get_Imputer"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-get_Imputer}{}}}
-\subsection{Method \code{get_Imputer()}}{
-get Imputer
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Imputer()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-LFQDataImp
 }
 }
 \if{html}{\out{<hr>}}

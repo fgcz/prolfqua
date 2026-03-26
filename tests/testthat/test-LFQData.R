@@ -81,7 +81,6 @@ test_that("LFQData decorator factory methods", {
   expect_s3_class(lfqdata$get_Stats(), "LFQDataStats")
   expect_s3_class(lfqdata$get_Summariser(), "LFQDataSummariser")
   expect_s3_class(lfqdata$get_Plotter(), "LFQDataPlotter")
-  expect_s3_class(lfqdata$get_Imputer(), "LFQDataImp")
   expect_s3_class(lfqdata$get_Aggregator("medpolish"), "AggregateMedpolish")
 })
 
