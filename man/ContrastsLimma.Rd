@@ -66,6 +66,7 @@ Other modelling:
 \code{\link{ContrastsLMImputeFacade}},
 \code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimmaFacade}},
+\code{\link{ContrastsLimmaImputeFacade}},
 \code{\link{ContrastsLmerFacade}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
@@ -91,8 +92,10 @@ Other modelling:
 \code{\link{build_model_glm_protein}()},
 \code{\link{build_model_impute}()},
 \code{\link{build_model_limma}()},
+\code{\link{build_model_limma_impute}()},
 \code{\link{build_model_logistf}()},
 \code{\link{compute_borrowed_variance}()},
+\code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
 \code{\link{contrasts_fisher_exact}()},
@@ -143,6 +146,10 @@ Other modelling:
 \item{\code{p.adjust}}{function to adjust p-values}
 
 \item{\code{contrast_result}}{cached contrast results}
+
+\item{\code{eBayes}}{logical, apply limma eBayes moderation (default TRUE).
+Set to FALSE to return raw/unmoderated statistics, e.g. for downstream
+DEqMS moderation via \code{\link{ContrastsModeratedDEqMS}}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -176,7 +183,8 @@ initialize ContrastsLimma
   model,
   contrasts,
   p.adjust = prolfqua::adjust_p_values,
-  modelName = "limma"
+  modelName = NULL,
+  eBayes = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -190,6 +198,10 @@ initialize ContrastsLimma
 \item{\code{p.adjust}}{function to adjust p-values}
 
 \item{\code{modelName}}{name of the contrast method}
+
+\item{\code{eBayes}}{logical, apply limma eBayes moderation (default TRUE).
+Set to FALSE to return raw/unmoderated statistics suitable for
+wrapping with \code{\link{ContrastsModeratedDEqMS}}.}
 }
 \if{html}{\out{</div>}}
 }

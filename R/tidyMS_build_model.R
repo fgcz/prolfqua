@@ -203,8 +203,11 @@ build_model_impute <- function(
     lod <- mh$get_LOD()
   }
 
-  # Build sample template: all unique sample rows (excluding subject_Id and response)
-  non_subject_cols <- setdiff(colnames(lfqdata$data), c(subject_Id, response))
+  # Build sample template: all unique sample rows (excluding subject_Id,
+
+  # response, and other value columns like nr_children that vary per protein)
+  exclude_cols <- unique(c(subject_Id, lfqdata$config$value_vars()))
+  non_subject_cols <- setdiff(colnames(lfqdata$data), exclude_cols)
   sample_template <- lfqdata$data |>
     dplyr::select(dplyr::all_of(non_subject_cols)) |>
     dplyr::distinct()

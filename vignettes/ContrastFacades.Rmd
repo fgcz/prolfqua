@@ -25,6 +25,7 @@ backends:
 
 - `lm`
 - `limma`
+- `limma_impute`
 - `lmer`
 - `ropeca`
 - `lm_missing`
@@ -36,7 +37,7 @@ All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. All examples below return protein-level
 contrasts. The important difference is the required input level:
 
-- `lm`, `limma`, `lm_missing`, `lm_impute`, and `deqms` require aggregated protein-level data
+- `lm`, `limma`, `limma_impute`, `lm_missing`, `lm_impute`, and `deqms` require aggregated protein-level data
 - `lmer` and `ropeca` require lower-level measurements such as peptides nested
   within proteins, but still report protein-level contrasts
 - `firth` can be used with either aggregated protein-level data or nested
@@ -103,6 +104,13 @@ fa_limma <- build_contrast_analysis(
   method = "limma"
 )
 
+fa_limma_impute <- build_contrast_analysis(
+  lfq_protein,
+  "~ group_",
+  contrasts,
+  method = "limma_impute"
+)
+
 fa_lm_missing <- build_contrast_analysis(
   lfq_protein,
   "~ group_",
@@ -136,9 +144,15 @@ Because all protein-input facades share the same interface and report
 protein-level contrasts, their outputs can be combined directly.
 
 ```{r collect_protein}
+# Proteins missing in the baseline lm facade (used to flag rescued proteins)
+lm_missing_ids <- fa_lm$get_missing() |>
+  dplyr::select(protein_Id, contrast) |>
+  dplyr::mutate(rescued = TRUE)
+
 results_protein <- bind_rows(
   fa_lm$get_contrasts(),
   fa_limma$get_contrasts(),
+  fa_limma_impute$get_contrasts(),
   fa_lm_missing$get_contrasts(),
   fa_lm_impute$get_contrasts(),
   fa_deqms$get_contrasts(),
@@ -149,7 +163,9 @@ results_protein <- bind_rows(
     "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
     "sigma"
   ))) |>
+  dplyr::left_join(lm_missing_ids, by = c("protein_Id", "contrast")) |>
   dplyr::mutate(
+    rescued = dplyr::coalesce(rescued, FALSE),
     significant = FDR < 0.1 & abs(diff) > 0.5
   )
 
@@ -168,18 +184,46 @@ results_protein |>
 
 # Protein-level volcano comparison
 
-```{r volcano_protein, fig.height=10, fig.width=12, fig.cap="Volcano plots for the protein-level facades. Rows are contrasts, columns are backends."}
-ggplot(results_protein, aes(x = diff, y = -log10(p.value), color = significant)) +
-  geom_point(alpha = 0.6, size = 1.2) +
+## Standard facades
+
+```{r volcano_standard, fig.height=8, fig.width=12, fig.cap="Volcano plots for the standard protein-level facades (lm, limma, rlm-based)."}
+standard_facades <- c("lm", "limma", "deqms")
+results_standard <- results_protein |>
+  dplyr::filter(facade %in% standard_facades)
+
+ggplot(results_standard, aes(x = diff, y = -log10(p.value), color = significant)) +
+  geom_point(alpha = 0.6, size = 1.5) +
   facet_grid(contrast ~ facade, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
-  labs(
-    x = "log2 fold change",
-    y = "-log10(p.value)",
-    color = "FDR < 0.1\nand |diff| > 0.5"
-  ) +
+  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1\nand |diff| > 0.5") +
+  theme_minimal(base_size = 12)
+```
+
+## Imputation and missingness facades
+
+Rescued proteins (missing in plain `lm`) are shown as large red diamonds
+so they stand out clearly. This group includes the LOD imputation facades
+(`lm_missing`, `lm_impute`, `limma_impute`) and the firth logistic
+regression facade which models missingness directly.
+
+```{r volcano_impute, fig.height=8, fig.width=14, fig.cap="Volcano plots for the imputation and missingness facades. Large red diamonds mark proteins rescued (missing in plain lm)."}
+impute_facades <- c("lm_missing", "lm_impute", "limma_impute", "firth")
+results_impute <- results_protein |>
+  dplyr::filter(facade %in% impute_facades) |>
+  dplyr::mutate(facade = factor(facade, levels = impute_facades))
+
+ggplot(results_impute, aes(x = diff, y = -log10(p.value))) +
+  geom_point(data = dplyr::filter(results_impute, !rescued),
+             aes(color = significant), alpha = 0.5, size = 1.2) +
+  geom_point(data = dplyr::filter(results_impute, rescued),
+             color = "red", shape = 18, size = 5, alpha = 1) +
+  facet_grid(contrast ~ facade, scales = "free_y") +
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
+  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
+  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
+  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1\nand |diff| > 0.5") +
   theme_minimal(base_size = 12)
 ```
 
@@ -203,6 +247,7 @@ it easy to see which proteins each method fails on and to compare coverage.
 missing_all <- dplyr::bind_rows(
   fa_lm$get_missing() |> dplyr::mutate(facade = "lm"),
   fa_limma$get_missing() |> dplyr::mutate(facade = "limma"),
+  fa_limma_impute$get_missing() |> dplyr::mutate(facade = "limma_impute"),
   fa_lm_missing$get_missing() |> dplyr::mutate(facade = "lm_missing"),
   fa_lm_impute$get_missing() |> dplyr::mutate(facade = "lm_impute"),
   fa_deqms$get_missing() |> dplyr::mutate(facade = "deqms"),
@@ -232,9 +277,10 @@ if (length(missing_proteins) > 0) {
 
 The missing cells (NA) explain why these proteins cannot be estimated — they
 lack observations in one or more groups. The `lm_missing` facade fills in
-these gaps via group-mean imputation, while `lm_impute` re-fits the lm model
-after imputing individual values with the LOD and borrowing covariance from
-successful fits. Both should have fewer missing proteins than plain `lm`.
+these gaps via group-mean imputation, while `lm_impute` and `limma_impute`
+re-fit after imputing individual values with the LOD and borrowing covariance
+from successful fits. These should have fewer missing proteins than plain
+`lm` or `limma`.
 
 ## Estimates for the missing proteins from `lm_missing` and `lm_impute`
 
@@ -249,14 +295,14 @@ if (length(lm_missing_proteins) > 0) {
   rescued <- results_protein |>
     dplyr::filter(
       protein_Id %in% lm_missing_proteins,
-      facade %in% c("lm_missing", "lm_impute")
+      facade %in% c("lm_missing", "lm_impute", "limma_impute")
     ) |>
     dplyr::arrange(protein_Id, contrast, facade)
 
   rescued |>
     knitr::kable(
       digits = 3,
-      caption = "Contrast estimates from lm_missing and lm_impute for proteins that plain lm could not estimate"
+      caption = "Contrast estimates from lm_missing, lm_impute, and limma_impute for proteins that plain lm could not estimate"
     )
 } else {
   cat("All proteins were estimable by plain lm — no rescued estimates to show.")

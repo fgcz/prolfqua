@@ -60,6 +60,37 @@ strategy_limma <- function(modelstr, model_name = "limma", trend = FALSE, robust
 }
 
 
+# compute_borrowed_variance_limma -----
+
+#' Compute borrowed variance from successful limma fits
+#'
+#' Extracts median sigma and df from proteins that fitted successfully
+#' (no NA coefficients). Used by \code{\link{build_model_limma_impute}} to
+#' replace the artificially low variance of LOD-imputed proteins.
+#'
+#' @param fit MArrayLM object from \code{\link[limma]{lmFit}}
+#' @return list with \code{sigma} (median residual SD) and \code{df} (median
+#'   residual df) from successful proteins
+#' @keywords internal
+#' @family modelling
+compute_borrowed_variance_limma <- function(fit) {
+  good <- which(
+    rowSums(is.na(fit$coefficients)) == 0 &
+      is.finite(fit$sigma) &
+      fit$sigma > 0 &
+      is.finite(fit$df.residual) &
+      fit$df.residual > 1
+  )
+  if (length(good) == 0) {
+    stop("No successful limma fits available to borrow variance from.", call. = FALSE)
+  }
+  list(
+    sigma = stats::median(fit$sigma[good], na.rm = TRUE),
+    df = stats::median(fit$df.residual[good], na.rm = TRUE)
+  )
+}
+
+
 # build_model_limma -----
 
 #' Build limma model from LFQData
@@ -142,6 +173,187 @@ build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name
 
   ModelLimma$new(
     fit = fit,
+    design = design,
+    formula = strategy$formula,
+    subject_Id = subject_Id,
+    modelName = modelName,
+    rowdata = rowdata,
+    trend = strategy$trend,
+    robust = strategy$robust,
+    dummy_model = dummy_model,
+    p.adjust = prolfqua::adjust_p_values
+  )
+}
+
+
+# build_model_limma_impute -----
+
+#' Build limma model with LOD imputation for failed proteins
+#'
+#' Analogous to \code{\link{build_model_impute}} but for limma's matrix-based
+#' pipeline. Fits all proteins with \code{\link[limma]{lmFit}}, identifies
+#' proteins with NA coefficients (typically from entire missing groups), imputes
+#' their missing values with the limit of detection (LOD), refits, and replaces
+#' the variance with a borrowed estimate from successful proteins.
+#'
+#' The LOD imputation gives plausible coefficients (fold change direction),
+#' while the borrowed sigma and corrected degrees of freedom ensure that
+#' inference is not artificially precise from the constant imputation.
+#'
+#' @param lfqdata an \code{\link{LFQData}} object (aggregated to protein level)
+#' @param strategy output of \code{\link{strategy_limma}}
+#' @param modelName name of model (default: strategy name + "Imputed")
+#' @param lod numeric limit of detection; if NULL, auto-computed from data
+#'   via \code{\link{MissingHelpers}}
+#' @param df_method how to set degrees of freedom for imputed proteins:
+#'   \code{"observed"} (default) uses \code{max(n_observed - p, 1)} where
+#'   \code{n_observed} counts only non-missing values;
+#'   \code{"borrowed"} uses the median df from successful fits
+#' @return a \code{\link{ModelLimma}} object with a hybrid fit
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#'
+#' strat <- strategy_limma("transformedIntensity ~ group_")
+#' mod <- build_model_limma_impute(lfqdata, strat)
+#' mod$get_coefficients()
+#'
+build_model_limma_impute <- function(
+  lfqdata,
+  strategy,
+  modelName = paste0(strategy$model_name, "Imputed"),
+  lod = NULL,
+  df_method = c("observed", "borrowed")
+) {
+  df_method <- match.arg(df_method)
+
+  wide <- lfqdata$to_wide(as.matrix = TRUE)
+  expr_matrix <- wide$data
+  annotation <- wide$annotation
+  subject_Id <- lfqdata$config$hierarchy_keys()
+  rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_Id))
+  if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotopeLabel)) {
+    rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(unique(c(subject_Id, lfqdata$config$isotopeLabel))))
+    subject_Id <- colnames(rowdata)
+  }
+
+  # Design matrix from RHS of formula
+  rhs_formula <- formula(delete.response(terms(strategy$formula)))
+  design <- model.matrix(rhs_formula, data = annotation)
+  p <- ncol(design)
+
+  # Resolve weights (same logic as build_model_limma)
+  wt <- NULL
+  if (!is.null(strategy$weights)) {
+    if (is.character(strategy$weights) && length(strategy$weights) == 1) {
+      wcol <- strategy$weights
+      if (wcol %in% colnames(annotation)) {
+        wt <- annotation[[wcol]]
+      } else if (wcol %in% colnames(lfqdata$data)) {
+        if (wcol %in% lfqdata$config$value_vars()) {
+          wt_wide <- lfqdata$to_wide(as.matrix = TRUE, value = wcol)
+          wt <- wt_wide$data
+        } else {
+          fname_col <- lfqdata$config$table$fileName
+          wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
+          wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
+          wt <- wt_df[[wcol]]
+        }
+      }
+    } else if (is.matrix(strategy$weights)) {
+      wt <- strategy$weights
+    }
+  }
+
+  # Step 1: Fit on original data (with NAs)
+  fit_na <- limma::lmFit(expr_matrix, design, weights = wt)
+
+  # Step 2: Identify failed proteins (any NA coefficient)
+  failed <- which(rowSums(is.na(fit_na$coefficients)) > 0)
+
+  if (length(failed) == 0) {
+    # Nothing to impute — build dummy model and return
+    complete_rows <- which(rowSums(is.na(expr_matrix)) == 0)
+    if (length(complete_rows) == 0) {
+      complete_rows <- which.min(rowSums(is.na(expr_matrix)))
+    }
+    idx <- complete_rows[1]
+    dummy_data <- annotation
+    dummy_data$.response <- as.numeric(expr_matrix[idx, ])
+    dummy_formula <- update(rhs_formula, .response ~ .)
+    dummy_model <- lm(dummy_formula, data = dummy_data)
+
+    return(ModelLimma$new(
+      fit = fit_na,
+      design = design,
+      formula = strategy$formula,
+      subject_Id = subject_Id,
+      modelName = modelName,
+      rowdata = rowdata,
+      trend = strategy$trend,
+      robust = strategy$robust,
+      dummy_model = dummy_model,
+      p.adjust = prolfqua::adjust_p_values
+    ))
+  }
+
+  # Step 3: Compute LOD if not provided
+  if (is.null(lod)) {
+    mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
+    lod <- mh$get_LOD()
+  }
+
+  # Step 4: Compute borrowed variance from successful proteins
+  borrowed <- compute_borrowed_variance_limma(fit_na)
+
+  # Step 5: Impute expression matrix with LOD
+  na_mask <- is.na(expr_matrix)
+  expr_imputed <- expr_matrix
+  expr_imputed[na_mask] <- lod
+  expr_imputed <- pmax(expr_imputed, lod)
+
+  # Also impute weight matrix: NA weights for imputed positions get weight = 1
+  # (minimum weight, consistent with a single imputed observation)
+  wt_imputed <- wt
+  if (is.matrix(wt_imputed)) {
+    wt_imputed[na_mask] <- 1
+  }
+
+  # Step 6: Fit on imputed data
+  fit_lod <- limma::lmFit(expr_imputed, design, weights = wt_imputed)
+
+  # Step 7: Create hybrid fit — replace failed rows in fit_na
+  # Coefficients and stdev.unscaled from the imputed fit
+  fit_na$coefficients[failed, ] <- fit_lod$coefficients[failed, ]
+  fit_na$stdev.unscaled[failed, ] <- fit_lod$stdev.unscaled[failed, ]
+  # Borrowed sigma (NOT from fit_lod which underestimates variance)
+  fit_na$sigma[failed] <- borrowed$sigma
+  # Amean needed for eBayes trend
+  fit_na$Amean[failed] <- fit_lod$Amean[failed]
+  # CRITICAL: df correction — never use fit_lod$df.residual (counts imputed as real)
+  n_observed <- rowSums(!is.na(expr_matrix))
+  if (df_method == "observed") {
+    fit_na$df.residual[failed] <- pmax(n_observed[failed] - p, 1)
+  } else {
+    fit_na$df.residual[failed] <- borrowed$df
+  }
+
+  # Step 8: Build dummy model for contrast extraction
+  complete_rows <- which(rowSums(is.na(expr_imputed)) == 0)
+  if (length(complete_rows) == 0) {
+    complete_rows <- which.min(rowSums(is.na(expr_imputed)))
+  }
+  idx <- complete_rows[1]
+  dummy_data <- annotation
+  dummy_data$.response <- as.numeric(expr_imputed[idx, ])
+  dummy_formula <- update(rhs_formula, .response ~ .)
+  dummy_model <- lm(dummy_formula, data = dummy_data)
+
+  ModelLimma$new(
+    fit = fit_na,
     design = design,
     formula = strategy$formula,
     subject_Id = subject_Id,
@@ -419,17 +631,25 @@ ContrastsLimma <- R6::R6Class(
     p.adjust = NULL,
     #' @field contrast_result cached contrast results
     contrast_result = NULL,
+    #' @field eBayes logical, apply limma eBayes moderation (default TRUE).
+    #'   Set to FALSE to return raw/unmoderated statistics, e.g. for downstream
+    #'   DEqMS moderation via \code{\link{ContrastsModeratedDEqMS}}.
+    eBayes = TRUE,
     #' @description
     #' initialize ContrastsLimma
     #' @param model a \code{\link{ModelLimma}} object
     #' @param contrasts named character vector of contrasts
     #' @param p.adjust function to adjust p-values
     #' @param modelName name of the contrast method
-    initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, modelName = "limma") {
+    #' @param eBayes logical, apply limma eBayes moderation (default TRUE).
+    #'   Set to FALSE to return raw/unmoderated statistics suitable for
+    #'   wrapping with \code{\link{ContrastsModeratedDEqMS}}.
+    initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, modelName = NULL, eBayes = TRUE) {
       self$model <- model
       self$contrasts <- contrasts
       self$subject_Id <- model$subject_Id
-      self$modelName <- modelName
+      self$eBayes <- eBayes
+      self$modelName <- modelName %||% if (eBayes) "limma" else "limma_raw"
       self$p.adjust <- p.adjust
     },
     #' @description
@@ -479,25 +699,49 @@ ContrastsLimma <- R6::R6Class(
       # Transpose for limma: rows = coefficients, cols = contrasts
       contrast_matrix <- t(linfct_A[diff_names, , drop = FALSE])
 
-      # limma pipeline: contrasts.fit + eBayes
+      # limma pipeline: contrasts.fit, optionally + eBayes
       fit2 <- limma::contrasts.fit(self$model$fit, contrast_matrix)
-      fit2 <- limma::eBayes(fit2, trend = self$model$trend, robust = self$model$robust)
+
+      if (self$eBayes) {
+        fit2 <- limma::eBayes(fit2, trend = self$model$trend, robust = self$model$robust)
+      }
 
       # Extract results per contrast
       res_list <- vector("list", length(diff_names))
       for (i in seq_along(diff_names)) {
-        tt <- limma::topTable(fit2, coef = i, number = Inf, sort.by = "none", confint = TRUE)
-
         df_i <- self$model$rowdata
         df_i$contrast <- diff_names[i]
-        df_i$diff <- tt$logFC
-        df_i$std.error <- sqrt(fit2$s2.post) * fit2$stdev.unscaled[, i]
-        df_i$statistic <- tt$t
-        df_i$p.value <- tt$P.Value
-        df_i$sigma <- sqrt(fit2$s2.post)
-        df_i$df <- fit2$df.total
-        df_i$conf.low <- tt$CI.L
-        df_i$conf.high <- tt$CI.R
+
+        if (self$eBayes) {
+          tt <- limma::topTable(fit2, coef = i, number = Inf, sort.by = "none", confint = TRUE)
+          df_i$diff <- tt$logFC
+          df_i$std.error <- sqrt(fit2$s2.post) * fit2$stdev.unscaled[, i]
+          df_i$statistic <- tt$t
+          df_i$p.value <- tt$P.Value
+          df_i$sigma <- sqrt(fit2$s2.post)
+          df_i$df <- fit2$df.total
+          df_i$conf.low <- tt$CI.L
+          df_i$conf.high <- tt$CI.R
+        } else {
+          # Raw/unmoderated statistics from the contrasts.fit object
+          sigma_raw <- fit2$sigma # per-protein residual SD
+          df_raw <- fit2$df.residual # per-protein residual df
+          diff_i <- fit2$coefficients[, i]
+          se_i <- sigma_raw * fit2$stdev.unscaled[, i]
+          t_raw <- diff_i / se_i
+          p_raw <- 2 * pt(abs(t_raw), df = df_raw, lower.tail = FALSE)
+          alpha <- 0.05
+          prqt <- -qt(alpha / 2, df = df_raw)
+
+          df_i$diff <- diff_i
+          df_i$std.error <- se_i
+          df_i$statistic <- t_raw
+          df_i$p.value <- p_raw
+          df_i$sigma <- sigma_raw
+          df_i$df <- df_raw
+          df_i$conf.low <- diff_i - prqt * se_i
+          df_i$conf.high <- diff_i + prqt * se_i
+        }
 
         res_list[[i]] <- df_i
       }

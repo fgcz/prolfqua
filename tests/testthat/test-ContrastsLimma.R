@@ -255,3 +255,125 @@ test_that("ContrastsLimma works with 2-factor design", {
   expect_equal(length(unique(res$contrast)), 2)
   expect_true(all(c("diff", "FDR", "p.value") %in% colnames(res)))
 })
+
+
+# --- build_model_limma_impute tests ---
+
+test_that("build_model_limma_impute recovers failed proteins", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
+
+  mod_na <- prolfqua::build_model_limma(lfqdata, strat)
+  mod_imp <- prolfqua::build_model_limma_impute(lfqdata, strat)
+
+  na_count_plain <- sum(rowSums(is.na(mod_na$fit$coefficients)) > 0)
+  na_count_imputed <- sum(rowSums(is.na(mod_imp$fit$coefficients)) > 0)
+
+  # Imputed model should have fewer (ideally zero) NA coefficient rows
+
+  expect_true(na_count_imputed < na_count_plain || na_count_plain == 0)
+  expect_equal(na_count_imputed, 0)
+})
+
+test_that("ContrastsLimmaImputeFacade end-to-end", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa <- prolfqua::ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
+  res <- fa$get_contrasts()
+  expect_true(nrow(res) > 0)
+  expect_true(all(c("diff", "FDR", "p.value", "statistic") %in% colnames(res)))
+
+  # get_Plotter returns a ContrastsPlotter
+  pl <- fa$get_Plotter()
+  expect_true(inherits(pl, "ContrastsPlotter"))
+
+  # to_wide works
+  wide <- fa$to_wide()
+  expect_true(nrow(wide) > 0)
+})
+
+test_that("limma_impute fold changes match plain limma for non-imputed proteins", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.3)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa_plain <- prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
+  fa_imp <- prolfqua::ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
+
+  res_plain <- fa_plain$get_contrasts()
+  res_imp <- fa_imp$get_contrasts()
+
+  # Imputed should have at least as many rows
+  expect_true(nrow(res_imp) >= nrow(res_plain))
+
+  # Fold changes for shared proteins should correlate highly
+  merged <- dplyr::inner_join(
+    dplyr::select(res_plain, protein_Id, diff_plain = diff),
+    dplyr::select(res_imp, protein_Id, diff_imp = diff),
+    by = "protein_Id"
+  )
+  if (nrow(merged) >= 3) {
+    expect_true(cor(merged$diff_plain, merged$diff_imp, use = "complete.obs") > 0.95)
+  }
+})
+
+test_that("build_contrast_analysis dispatches limma_impute", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.3)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma_impute")
+  expect_true(inherits(fa, "ContrastsLimmaImputeFacade"))
+  res <- fa$get_contrasts()
+  expect_true(nrow(res) > 0)
+})
+
+test_that("df_method borrowed works for limma_impute", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa <- prolfqua::ContrastsLimmaImputeFacade$new(
+    lfqdata,
+    "~ group_",
+    contrasts,
+    df_method = "borrowed"
+  )
+  res <- fa$get_contrasts()
+  expect_true(nrow(res) > 0)
+})
+
+test_that("df correction: imputed proteins do not use inflated df", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
+
+  mod_na <- prolfqua::build_model_limma(lfqdata, strat)
+  mod_imp <- prolfqua::build_model_limma_impute(lfqdata, strat)
+
+  # Identify which proteins were imputed (had NA coefficients in plain fit)
+  failed <- which(rowSums(is.na(mod_na$fit$coefficients)) > 0)
+
+  if (length(failed) > 0) {
+    p <- ncol(mod_imp$fit$coefficients)
+    wide <- lfqdata$to_wide(as.matrix = TRUE)
+    n_observed <- rowSums(!is.na(wide$data))
+    max_df_full <- ncol(wide$data) - p
+
+    # Imputed proteins should have df < max possible (not counting imputed as real)
+    imputed_df <- mod_imp$fit$df.residual[failed]
+    expect_true(all(imputed_df <= max_df_full))
+    # df should be based on n_observed, not n_total
+    expected_df <- pmax(n_observed[failed] - p, 1)
+    expect_equal(unname(imputed_df), unname(expected_df))
+  }
+})

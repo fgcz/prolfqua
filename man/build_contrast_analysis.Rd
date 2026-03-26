@@ -8,8 +8,8 @@ build_contrast_analysis(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "rlm", "lmer", "lm_missing", "lm_impute", "limma", "deqms", "ropeca",
-    "firth"),
+  method = c("lm", "rlm", "lmer", "lm_missing", "lm_impute", "limma", "limma_impute",
+    "deqms", "ropeca", "firth"),
   ...
 )
 }
@@ -105,6 +105,7 @@ Other modelling:
 \code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
 \code{\link{ContrastsLimmaFacade}},
+\code{\link{ContrastsLimmaImputeFacade}},
 \code{\link{ContrastsLmerFacade}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
@@ -129,8 +130,10 @@ Other modelling:
 \code{\link{build_model_glm_protein}()},
 \code{\link{build_model_impute}()},
 \code{\link{build_model_limma}()},
+\code{\link{build_model_limma_impute}()},
 \code{\link{build_model_logistf}()},
 \code{\link{compute_borrowed_variance}()},
+\code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
 \code{\link{contrasts_fisher_exact}()},

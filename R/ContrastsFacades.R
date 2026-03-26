@@ -133,6 +133,87 @@ ContrastsLimmaFacade <- R6::R6Class(
 )
 
 
+#' Limma contrast analysis with LOD imputation facade
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_limma}} ->
+#' \code{\link{build_model_limma_impute}} -> \code{\link{ContrastsLimma}}.
+#'
+#' Proteins whose limma fit produces NA coefficients (typically from entire
+#' missing groups) are recovered by imputing missing values with the limit of
+#' detection (LOD) and refitting. The variance is borrowed from successful fits
+#' and degrees of freedom are corrected so that inference is not artificially
+#' precise from the constant imputation.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$to_wide()
+ContrastsLimmaImputeFacade <- R6::R6Class(
+  "ContrastsLimmaImputeFacade",
+  public = list(
+    #' @field model ModelLimma object (with imputed proteins)
+    model = NULL,
+    #' @field contrast ContrastsLimma object
+    contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object (aggregated to protein level)
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param lod numeric limit of detection; if NULL, auto-computed from data
+    #' @param df_method "observed" uses max(n_observed - p, 1);
+    #'   "borrowed" uses median df from successful fits
+    #' @param weights column name for per-observation weights (default:
+    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      lod = NULL,
+      df_method = c("observed", "borrowed"),
+      weights = lfqdata$config$nr_children,
+      ...
+    ) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaImputeFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      response <- lfqdata$config$get_response()
+      full_formula <- paste(response, modelstr)
+      strat <- strategy_limma(full_formula, weights = weights, ...)
+      self$model <- build_model_limma_impute(lfqdata, strat, lod = lod, df_method = df_method)
+      self$contrast <- ContrastsLimma$new(self$model, contrasts)
+    },
+    #' @description get contrast results (rows with NA diff are filtered out)
+    #' @param ... passed to ContrastsLimma$get_contrasts
+    get_contrasts = function(...) {
+      res <- .add_facade_column(self$contrast$get_contrasts(...), "limma_impute")
+      res[!is.na(res$diff), ]
+    },
+    #' @description get protein x contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsLimma$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsLimma$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
 #' LM contrast analysis facade
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
@@ -783,7 +864,9 @@ ContrastsROPECAFacade <- R6::R6Class(
 FACADE_REGISTRY <- list(
   lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
   lm_missing = list(class = "ContrastsLMMissingFacade", needs = "aggregated"),
+  lm_impute = list(class = "ContrastsLMImputeFacade", needs = "aggregated"),
   limma = list(class = "ContrastsLimmaFacade", needs = "aggregated"),
+  limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "aggregated"),
   rlm = list(class = "ContrastsRLMFacade", needs = "aggregated"),
   deqms = list(class = "ContrastsDEqMSFacade", needs = "aggregated"),
   firth = list(class = "ContrastsFirthFacade", needs = "either"),

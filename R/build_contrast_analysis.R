@@ -76,7 +76,7 @@ build_contrast_analysis <- function(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "rlm", "lmer", "lm_missing", "lm_impute", "limma", "deqms", "ropeca", "firth"),
+  method = c("lm", "rlm", "lmer", "lm_missing", "lm_impute", "limma", "limma_impute", "deqms", "ropeca", "firth"),
   ...
 ) {
   method <- match.arg(method)
@@ -88,6 +88,7 @@ build_contrast_analysis <- function(
     lm_missing = ContrastsLMMissingFacade$new(lfqdata, modelstr, contrasts, ...),
     lm_impute = ContrastsLMImputeFacade$new(lfqdata, modelstr, contrasts, ...),
     limma = ContrastsLimmaFacade$new(lfqdata, modelstr, contrasts, ...),
+    limma_impute = ContrastsLimmaImputeFacade$new(lfqdata, modelstr, contrasts, ...),
     deqms = ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...),
     ropeca = ContrastsROPECAFacade$new(lfqdata, modelstr, contrasts, ...),
     firth = ContrastsFirthFacade$new(lfqdata, modelstr, contrasts)

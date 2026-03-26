@@ -5,7 +5,7 @@
 \alias{FACADE_REGISTRY}
 \title{Registry of available contrast facade classes}
 \format{
-An object of class \code{list} of length 8.
+An object of class \code{list} of length 10.
 }
 \usage{
 FACADE_REGISTRY
