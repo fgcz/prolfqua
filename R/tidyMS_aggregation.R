@@ -796,6 +796,53 @@ nr_obs_sample <- function(data, config, new_child = config$nr_children) {
 }
 
 
+#' Aggregates e.g. protein abundances from peptide abundances
+#'
+#' @export
+#' @param data tidy data
+#' @param config prolfqua config
+#' @param from_children TRUE compute from nr_children column, FALSE - do not use nr_children column
+#' @param name_nr_child how to name column
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#'
+#'
+#' xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
+#' xd <- nr_obs_experiment(dd$data, dd$config, from_children = TRUE)
+#' stopifnot(min(xd$nr_child_exp) == 1)
+#' dp <- prolfqua::sim_lfq_data_protein_config()
+#' nr_obs_experiment(dp$data, dp$config)
+#' nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
+#'
+#'
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' dd$config$hierarchyDepth <- 2
+#' xpep <- nr_obs_experiment(dd$data,dd$config)
+#' stopifnot(all(xpep$nr_child_exp == 1))
+#' xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)
+#' stopifnot(all(xpep$nr_child_exp == 1))
+#'
+nr_obs_experiment <- function(data, config, from_children = TRUE, name_nr_child = "nr_child_exp") {
+  hkeys <- config$hierarchy_keys()
+  hkeysd <- config$hierarchy_keys_depth()
+  nr_children <- config$nr_children
+  if (from_children) {
+    xz <- nr_obs_sample(data, config)
+    xz <- xz |>
+      group_by(!!!syms(hkeysd)) |>
+      dplyr::summarize(!!name_nr_child := max(!!sym(nr_children)), .groups = "drop")
+    return(xz)
+  } else {
+    xq <- data |>
+      dplyr::select(hkeys) |>
+      distinct() |>
+      dplyr::group_by(!!!syms(hkeysd)) |>
+      dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
+    return(xq)
+  }
+}
+
+
 # Summarize Intensities by Intensity or NAs ----
 .rankProteinPrecursors <- function(
   data,
