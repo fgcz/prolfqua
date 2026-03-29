@@ -57,6 +57,7 @@ Suggests:
     gridExtra,
     KernSmooth,
     knitr,
+    limpa,
     lintr,
     pkgdown,
     preprocessCore,

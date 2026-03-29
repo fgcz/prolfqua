@@ -24,3 +24,4 @@ If fitting limpa model can I disable moderation and apple DeqMS moderation?
 
 Once inferred missigness is limpa any different then limma?
 
+I am ready to introduce dependency on limpa similarily to the dependency on limma, The internal datasetructures are similar in limma and limpa so we might be reusing some code which we used for limma.

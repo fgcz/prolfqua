@@ -59,7 +59,7 @@ cfg_subgroup$factorDepth <- 1
 lfq_peptide_2f <- LFQData$new(data_subgroup, cfg_subgroup)
 lfq_peptide_2f <- lfq_peptide_2f$get_Transformer()$log2()$lfq
 
-lfq_protein_2f <- AggregateMedpolish$new(lfq_peptide_2f, "protein")$aggregate()
+lfq_protein_2f <- lfq_peptide_2f$get_Aggregator()$aggregate()
 
 lfq_peptide_2f$config$hierarchy_keys()
 lfq_protein_2f$config$hierarchy_keys()

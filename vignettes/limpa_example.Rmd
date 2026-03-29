@@ -1,0 +1,660 @@
+---
+title: "Using limpa Directly on prolfqua Simulated Data"
+author: "Witold Wolski"
+date: "`r Sys.Date()`"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{Using limpa Directly on prolfqua Simulated Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+This vignette demonstrates how to use the **limpa** package directly (without prolfqua wrappers)
+on peptide-level data simulated with prolfqua. Three analyses are shown:
+
+1. **Baseline: limma with NAs** — standard limma on protein-level medpolish-aggregated data (NAs dropped)
+2. **limpa peptide-level** — differential expression at the peptide level (no protein aggregation)
+3. **limpa protein-level** — limpa aggregates peptides to proteins via `dpcQuant()`, then tests for DE
+
+## Setup and Data Simulation
+
+```{r libraries}
+library(prolfqua)
+library(limpa)
+library(limma)
+```
+
+Simulate peptide-level data with 3 groups (Ctrl, A, B), 5 replicates per group,
+and 50 proteins with realistic missing values.
+
+```{r simulate}
+sim <- prolfqua::sim_lfq_data_peptide_config(
+  Nprot = 50, N = 5, with_missing = TRUE, seed = 1234
+)
+lfqdata <- prolfqua::LFQData$new(sim$data, sim$config)
+```
+
+Log2-transform and pivot to a wide matrix (peptides x samples) for limpa.
+
+```{r to_wide}
+lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+wide <- lfqdata$to_wide(as.matrix = TRUE)
+
+expr_matrix <- wide$data
+annotation <- wide$annotation
+rowdata <- wide$rowdata
+
+cat("Matrix dimensions:", nrow(expr_matrix), "peptides x", ncol(expr_matrix), "samples\n")
+cat("Missing values:", sum(is.na(expr_matrix)), "of", length(expr_matrix),
+    sprintf("(%.1f%%)\n", 100 * sum(is.na(expr_matrix)) / length(expr_matrix)))
+cat("Proteins:", length(unique(rowdata$protein_Id)), "\n")
+```
+
+## Design Matrix and Contrasts
+
+All analyses below use the same design matrix: a cell-means model with three groups.
+
+```{r design}
+group <- factor(annotation$group_, levels = c("Ctrl", "A", "B"))
+design <- stats::model.matrix(~ 0 + group)
+colnames(design) <- levels(group)
+
+cont_matrix <- limma::makeContrasts(
+  A_vs_Ctrl = A - Ctrl,
+  B_vs_Ctrl = B - Ctrl,
+  levels = design
+)
+```
+
+
+## Baseline: Standard limma Analysis (no limpa)
+
+As a baseline, aggregate peptides to proteins using prolfqua's medpolish aggregator,
+then run a plain `limma::lmFit()` + `eBayes()` analysis. NAs are simply ignored by limma.
+
+```{r baseline_aggregate}
+lfqdata_protein <- lfqdata$get_Aggregator()$aggregate()
+wide_prot <- lfqdata_protein$to_wide(as.matrix = TRUE)
+expr_protein_baseline <- wide_prot$data
+
+cat("Protein matrix:", nrow(expr_protein_baseline), "proteins x",
+    ncol(expr_protein_baseline), "samples\n")
+cat("NAs in protein matrix:", sum(is.na(expr_protein_baseline)), "\n")
+```
+
+Fit limma. `lmFit` handles NAs by fitting each protein on its available samples only.
+
+```{r baseline_fit}
+fit_baseline <- limma::lmFit(expr_protein_baseline, design)
+fit_baseline <- limma::contrasts.fit(fit_baseline, cont_matrix)
+fit_baseline <- limma::eBayes(fit_baseline)
+
+results_baseline_A <- limma::topTable(fit_baseline, coef = "A_vs_Ctrl", number = Inf, sort.by = "none")
+cat("Baseline limma — A vs Ctrl: ", sum(results_baseline_A$adj.P.Val < 0.05),
+    "significant proteins at FDR < 0.05\n")
+
+results_baseline_B <- limma::topTable(fit_baseline, coef = "B_vs_Ctrl", number = Inf, sort.by = "none")
+cat("Baseline limma — B vs Ctrl: ", sum(results_baseline_B$adj.P.Val < 0.05),
+    "significant proteins at FDR < 0.05\n")
+```
+
+
+## Estimate the Detection Probability Curve (DPC)
+
+The DPC models the probability of observing a peptide as a logit-linear function of
+its intensity: `logit P(detected) = beta0 + beta1 * intensity`. This is a global
+parameter estimated once from the entire peptide-level dataset.
+
+- `beta1` (slope) controls the strength of intensity-dependent missingness: 0 = MCAR, large = MNAR
+- `beta0` (intercept) shifts the detection probability curve left/right
+
+```{r dpc}
+dpc_est <- limpa::dpc(expr_matrix)
+cat("DPC parameters: beta0 =", round(dpc_est$dpc[1], 3),
+    ", beta1 =", round(dpc_est$dpc[2], 3), "\n")
+limpa::plotDPC(dpc_est)
+```
+
+
+## Example 1: Peptide-Level Analysis with limpa
+
+### Quantify peptides with `dpcQuantByRow()`
+
+`dpcQuantByRow()` quantifies each peptide row independently (no protein aggregation).
+Internally it calls `peptides2Proteins()` with each row as its own "protein" (using
+`protein.id = seq_len(nrow(y))`). Missing values are not filled in with fabricated
+numbers — instead, Bayesian maximum posterior estimation integrates over the missing
+values using the DPC.
+
+```{r peptide_quant}
+y_peptide <- limpa::dpcQuantByRow(expr_matrix, dpc = dpc_est)
+```
+
+The result is a limma `EList` object. Let's inspect its structure:
+
+```{r peptide_elist_structure}
+cat("Class:", class(y_peptide), "\n")
+cat("Slots:", names(y_peptide), "\n\n")
+
+cat("$E — expression matrix (peptides x samples), no NAs:\n")
+cat("  dim:", dim(y_peptide$E), "\n")
+cat("  NAs:", sum(is.na(y_peptide$E)), "\n")
+cat("  range:", round(range(y_peptide$E), 2), "\n\n")
+
+cat("$genes — per-peptide annotation:\n")
+str(y_peptide$genes)
+cat("\n")
+
+cat("$other — additional matrices:\n")
+cat("  names:", names(y_peptide$other), "\n")
+cat("  $n.observations — how many precursors were observed per row per sample:\n")
+cat("    range:", range(y_peptide$other$n.observations), "\n")
+cat("  $standard.error — posterior SD of the quantification:\n")
+cat("    range:", round(range(y_peptide$other$standard.error), 4), "\n\n")
+
+cat("$dpc — the DPC parameters used:\n")
+print(y_peptide$dpc)
+```
+
+**Key fields:**
+
+- `$E`: The quantified expression matrix. All NAs from the input have been replaced by
+  maximum posterior estimates (integrating over the DPC). This is a complete matrix.
+- `$other$standard.error`: Per-peptide, per-sample posterior standard deviations.
+  Peptides that were missing get larger SEs. This uncertainty is what limpa propagates
+  into the DE model.
+- `$other$n.observations`: How many observations contributed (1 = observed, 0 = was missing).
+- `$genes$PropObs`: Proportion of samples where the peptide was observed.
+
+### Fit the DE model with `dpcDE()`
+
+`dpcDE()` is a thin wrapper (9 lines of code) that calls `voomaLmFitWithImputation()`.
+Here is what it passes and why:
+
+```r
+# From limpa/R/dpcDE.R:
+dpcDE <- function(y, design, plot=TRUE, ...) {
+  eps <- 1e-6
+  voomaLmFitWithImputation(
+    y         = y,                              # EList with $E and $other
+    imputed   = !y$other$n.observations,        # logical matrix: TRUE where value was missing
+    design    = design,                         # design matrix
+    predictor = log(y$other$standard.error+eps),# log(SE) as precision predictor
+    plot      = plot,
+    ...
+  )
+}
+```
+
+**Why vooma when SEs are already estimated?**
+
+The SEs from `dpcQuantByRow()`/`dpcQuant()` are *per-observation* quantification uncertainties.
+But limma needs *observation-level precision weights* for the linear model. `voomaLmFitWithImputation()`
+converts the SEs into proper weights via a **bivariate lowess trend**:
+
+1. Fit an initial `lmFit()` to get per-protein residual SDs (`sigma`)
+2. Model `sqrt(sigma) ~ average_intensity + log(SE)` using a bivariate linear predictor
+3. Smooth with lowess to get a mean-variance trend function `f()`
+4. Compute weights as `w = 1/f(fitted_value)^4` — inverse fourth power of the predicted SD
+
+This is analogous to how `voom` converts RNA-seq counts into weights via a mean-variance trend,
+but extended with a second predictor (the SE from quantification). The two predictors capture
+different variance sources:
+
+- **Average intensity**: the classical mean-variance relationship in proteomics
+- **log(SE)**: additional variance from quantification uncertainty (more missing precursors = larger SE = lower weight)
+
+Additionally, `voomaLmFitWithImputation()` corrects residual degrees of freedom for proteins
+where entire groups were missing (all values imputed), preventing overconfident inference.
+
+```{r peptide_fit}
+fit_pep <- limpa::dpcDE(y_peptide, design, plot = TRUE)
+fit_pep <- limma::eBayes(fit_pep)
+```
+
+The plot shows `sqrt(sigma)` vs the combined predictor (average intensity + log SE).
+The red line is the lowess trend used to derive precision weights.
+
+### Test contrasts
+
+```{r peptide_contrasts}
+fit_pep2 <- limma::contrasts.fit(fit_pep, cont_matrix)
+fit_pep2 <- limma::eBayes(fit_pep2)
+```
+
+Results for A vs Ctrl at peptide level:
+
+```{r peptide_results}
+results_pep_A <- limma::topTable(fit_pep2, coef = "A_vs_Ctrl", number = 10, sort.by = "P")
+print(results_pep_A)
+```
+
+Results for B vs Ctrl at peptide level:
+
+```{r peptide_results_B}
+results_pep_B <- limma::topTable(fit_pep2, coef = "B_vs_Ctrl", number = 10, sort.by = "P")
+print(results_pep_B)
+```
+
+Summary of significant peptides (FDR < 0.05):
+
+```{r peptide_summary}
+res_all_pep <- limma::topTable(fit_pep2, coef = "A_vs_Ctrl", number = Inf, sort.by = "none")
+cat("A vs Ctrl: ", sum(res_all_pep$adj.P.Val < 0.05), "significant peptides at FDR < 0.05\n")
+
+res_all_pep_B <- limma::topTable(fit_pep2, coef = "B_vs_Ctrl", number = Inf, sort.by = "none")
+cat("B vs Ctrl: ", sum(res_all_pep_B$adj.P.Val < 0.05), "significant peptides at FDR < 0.05\n")
+```
+
+
+## Low-Level API: Step-by-Step Peptide Analysis
+
+This section decomposes the limpa pipeline into individual function calls, showing
+exactly what happens at each stage. We reuse the same `expr_matrix`, `dpc_est`, and
+`design` from above.
+
+### Step 1: Estimate the DPC
+
+Already done above, but for completeness:
+
+```{r lowlevel_dpc}
+dpc_est <- limpa::dpc(expr_matrix)
+cat("DPC: beta0 =", round(dpc_est$dpc["beta0"], 3),
+    ", beta1 =", round(dpc_est$dpc["beta1"], 3), "\n")
+```
+
+The `dpc()` return value also contains hyperparameters estimated from the data:
+
+```{r lowlevel_dpc_hyper}
+cat("mu.prior  (prior mean of row means):", round(dpc_est$mu.prior, 3), "\n")
+cat("df.prior  (prior df for variance):", round(dpc_est$df.prior, 3), "\n")
+cat("s2.prior  (prior variance):", round(dpc_est$s2.prior, 3), "\n")
+```
+
+### Step 2: Quantify peptides (row-level, no aggregation)
+
+`dpcQuantByRow()` calls `peptides2Proteins()` internally, treating each row as its own
+"protein" (i.e., `protein.id = 1:nrow(y)`). The result is an `EList`:
+
+```{r lowlevel_quant}
+y_pep <- limpa::dpcQuantByRow(expr_matrix, dpc = dpc_est)
+```
+
+### Step 3: Prepare inputs for the variance model
+
+`dpcDE()` is just 3 lines. Here we do what it does manually:
+
+```{r lowlevel_prepare}
+# Logical matrix: TRUE where the original value was missing
+imputed_matrix <- !y_pep$other$n.observations
+
+cat("Imputed values:", sum(imputed_matrix), "of", length(imputed_matrix), "\n")
+
+# Log(SE) as a precision predictor for the variance trend
+eps <- 1e-6
+predictor <- log(y_pep$other$standard.error + eps)
+
+cat("Predictor (log SE) range:", round(range(predictor), 2), "\n")
+```
+
+### Step 4: What `voomaLmFitWithImputation()` does internally
+
+Below we manually replicate the internals of `voomaLmFitWithImputation()`. This is
+the core of limpa's DE pipeline.
+
+#### Step 4a: Initial linear model fit (unweighted)
+
+First, fit a standard `lmFit()` without any precision weights. This gives per-peptide
+residual standard deviations (`sigma`) and fitted values.
+
+```{r lowlevel_4a_initial_fit}
+fit0 <- limma::lmFit(y_pep, design)
+
+cat("Initial fit — unweighted:\n")
+cat("  Coefficients:", dim(fit0$coefficients), "(peptides x groups)\n")
+cat("  Sigma range:", round(range(fit0$sigma), 4), "\n")
+cat("  df.residual:", unique(fit0$df.residual), "\n")
+
+# Compute per-observation fitted values (peptides x samples)
+fitted_values <- fit0$coefficients %*% t(fit0$design)
+cat("  Fitted values:", dim(fitted_values), "\n")
+```
+
+#### Step 4b: DF correction for fully imputed groups
+
+If a peptide has ALL values imputed within a design-matrix group, its fitted value
+for that group is determined entirely by imputed data — so the residual df should be
+reduced. This uses the hat matrix to detect such cases.
+
+```{r lowlevel_4b_df_correction}
+h <- 1 - hat(design)  # leverage complement per sample
+df_imputed <- imputed_matrix %*% (1 - h)  # effective imputed df per peptide
+
+n_affected <- sum(df_imputed > 0.9999)
+cat("Peptides with fully-imputed groups:", n_affected, "\n")
+
+# For affected peptides, refit on observed-only data to get corrected sigma/df
+if (n_affected > 0) {
+  affected_idx <- which(rowSums(df_imputed > 0.9999) > 0)
+  E_affected <- y_pep$E[affected_idx, , drop = FALSE]
+  E_affected_NA <- E_affected
+  E_affected_NA[imputed_matrix[affected_idx, , drop = FALSE]] <- NA
+  fit_NA <- suppressWarnings(limma::lmFit(E_affected_NA, design))
+
+  cat("Corrected df.residual for affected peptides:", fit_NA$df.residual[1:min(5, length(fit_NA$df.residual))], "\n")
+
+  # Replace sigma and df for affected rows
+  fit0$sigma[affected_idx] <- fit_NA$sigma
+  fit0$df.residual[affected_idx] <- fit_NA$df.residual
+}
+```
+
+#### Step 4c: Bivariate linear predictor (average intensity + log SE)
+
+This is the key innovation over standard `vooma`. Instead of modelling variance as a
+function of average intensity alone, limpa uses TWO predictors:
+
+- `sx` = average log2 expression per peptide (classical mean-variance axis)
+- `sxc` = average log(SE) per peptide (quantification uncertainty axis)
+
+A linear model `sqrt(sigma) ~ sx + sxc` combines them into a single predictor.
+
+```{r lowlevel_4c_bivariate}
+# Average expression per peptide
+sx <- rowMeans(y_pep$E, na.rm = TRUE)
+
+# Residual SD (square root for the variance trend)
+sy <- sqrt(fit0$sigma)
+
+# Average log(SE) per peptide — the precision predictor
+sxc <- rowMeans(predictor, na.rm = TRUE)
+
+# Bivariate linear model: sqrt(sigma) ~ 1 + avg_intensity + avg_log_SE
+vartrend <- lm.fit(cbind(1, sx, sxc), sy)
+beta <- coef(vartrend)
+cat("Variance trend coefficients:\n")
+cat("  Intercept:", round(beta[1], 4), "\n")
+cat("  avg_intensity:", round(beta[2], 4), "\n")
+cat("  avg_log_SE:", round(beta[3], 4),
+    ifelse(beta[3] > 0, " (higher SE → higher variance, as expected)", ""), "\n")
+
+# Combined predictor (per-peptide summary for the lowess x-axis)
+sx_combined <- vartrend$fitted.values
+
+# Per-observation combined predictor (for computing weights later)
+mu_combined <- beta[1] + beta[2] * fitted_values + beta[3] * predictor
+```
+
+#### Step 4d: Lowess smoothing of the variance trend
+
+Smooth the `sqrt(sigma) ~ combined_predictor` relationship with lowess. The smoothed
+trend function `f()` will be used to derive weights.
+
+```{r lowlevel_4d_lowess}
+span <- limma::chooseLowessSpan(nrow(y_pep), small.n = 50, min.span = 0.3, power = 1/3)
+cat("Lowess span:", round(span, 3), "\n")
+
+l <- lowess(sx_combined, sy, f = span)
+
+# Plot the trend
+plot(sx_combined, sy,
+     xlab = "Combined predictor (avg intensity + log SE)",
+     ylab = "Sqrt(sigma)",
+     pch = 16, cex = 0.5, col = "grey40",
+     main = "vooma variance trend (manual)")
+lines(l, col = "red", lwd = 2)
+```
+
+#### Step 4e: Derive precision weights
+
+The lowess trend gives a function `f()` that predicts `sqrt(sigma)` from the combined
+predictor. Weights are the inverse fourth power: `w = 1/f(mu)^4`. This means observations
+with higher predicted variance get lower weight.
+
+```{r lowlevel_4e_weights}
+# Interpolating function from the lowess fit
+f_trend <- approxfun(l, rule = 2, ties = list("ordered", mean))
+
+# Per-observation weights: 1/f(mu_ij)^4
+w_manual <- 1 / f_trend(mu_combined)^4
+dim(w_manual) <- dim(y_pep$E)
+
+cat("Weights matrix:", dim(w_manual), "\n")
+cat("Weight range:", round(range(w_manual), 2), "\n")
+cat("Weight median:", round(median(w_manual), 2), "\n")
+
+# Show how weights relate to missingness
+cat("\nMean weight for observed values:", round(mean(w_manual[!imputed_matrix]), 2), "\n")
+cat("Mean weight for imputed values:", round(mean(w_manual[imputed_matrix]), 2), "\n")
+```
+
+Imputed values get systematically lower weights because they have larger SEs, which
+pushes them to the high-variance end of the trend.
+
+#### Step 4f: Final weighted linear model fit
+
+Refit `lmFit()` using the vooma weights. This is the final model — coefficients now
+reflect precision-weighted estimates.
+
+```{r lowlevel_4f_final_fit}
+fit_vooma <- limma::lmFit(y_pep, design, weights = w_manual)
+
+# Re-apply DF correction for affected peptides
+if (n_affected > 0) {
+  fit_NA_w <- suppressWarnings(limma::lmFit(E_affected_NA, design,
+                                            weights = w_manual[affected_idx, , drop = FALSE]))
+  fit_vooma$sigma[affected_idx] <- fit_NA_w$sigma
+  fit_vooma$df.residual[affected_idx] <- fit_NA_w$df.residual
+}
+
+cat("Final weighted fit:\n")
+cat("  Sigma range:", round(range(fit_vooma$sigma), 4), "\n")
+cat("  df.residual range:", range(fit_vooma$df.residual), "\n")
+```
+
+At this point `fit_vooma` is an `MArrayLM` with precision-weighted coefficient estimates
+but no empirical Bayes moderation yet.
+
+### Step 5: Empirical Bayes moderation with `eBayes()`
+
+`eBayes()` shrinks the per-peptide variance estimates toward a common prior, producing
+moderated t-statistics with increased degrees of freedom:
+
+```{r lowlevel_ebayes}
+fit_eb <- limma::eBayes(fit_vooma)
+
+cat("Before eBayes — df.residual[1:5]:", fit_vooma$df.residual[1:5], "\n")
+cat("After eBayes  — df.total[1:5]:   ", fit_eb$df.total[1:5], "\n")
+cat("Prior df (df.prior):", round(fit_eb$df.prior, 2), "\n")
+cat("Prior variance (s2.prior):", round(fit_eb$s2.prior, 4), "\n")
+```
+
+### Step 6: Compute contrasts with `contrasts.fit()`
+
+`contrasts.fit()` re-parameterizes the fitted model from design-matrix coefficients
+to the contrasts of interest:
+
+```{r lowlevel_contrasts}
+fit_contr <- limma::contrasts.fit(fit_eb, cont_matrix)
+cat("Contrast coefficients:", colnames(fit_contr$coefficients), "\n")
+cat("Dimensions:", dim(fit_contr$coefficients), "\n")
+```
+
+Apply `eBayes()` again after re-parameterization (this re-computes moderated statistics
+for the contrast coefficients):
+
+```{r lowlevel_ebayes2}
+fit_contr <- limma::eBayes(fit_contr)
+```
+
+### Step 7: Extract results with `topTable()`
+
+```{r lowlevel_toptable}
+tt_A <- limma::topTable(fit_contr, coef = "A_vs_Ctrl", number = 10, sort.by = "P")
+print(tt_A)
+```
+
+`topTable()` returns:
+
+- `logFC` — the contrast estimate (log2 fold change)
+- `AveExpr` — average expression across all samples
+- `t` — moderated t-statistic
+- `P.Value` — p-value from the moderated t-test
+- `adj.P.Val` — BH-adjusted p-value (FDR)
+- `B` — log-odds of differential expression
+
+### Step 8: Verify equivalence with `dpcDE()` wrapper
+
+The low-level pipeline should give identical results to `dpcDE()`:
+
+```{r lowlevel_verify}
+# Compare with the high-level result from Example 1
+tt_highlevel <- limma::topTable(fit_pep2, coef = "A_vs_Ctrl", number = Inf, sort.by = "none")
+tt_lowlevel <- limma::topTable(fit_contr, coef = "A_vs_Ctrl", number = Inf, sort.by = "none")
+
+# Match by rownames and compare logFC
+common <- intersect(rownames(tt_highlevel), rownames(tt_lowlevel))
+max_diff <- max(abs(tt_highlevel[common, "logFC"] - tt_lowlevel[common, "logFC"]))
+cat("Max logFC difference between high-level and low-level:", max_diff, "\n")
+```
+
+
+## Example 2: Protein-Level Analysis with limpa
+
+### Quantify proteins with `dpcQuant()`
+
+`dpcQuant()` aggregates peptides to proteins using Bayesian maximum posterior estimation.
+For each protein it fits an additive model: `y_ij = mu_j + alpha_i + epsilon_ij` where
+`mu_j` is the protein expression in sample j and `alpha_i` is the peptide-specific offset.
+Missing values are integrated out via the DPC (Gauss quadrature, 16 nodes).
+
+```{r protein_quant}
+protein_id <- rowdata$protein_Id
+y_protein <- limpa::dpcQuant(expr_matrix, protein.id = protein_id, dpc = dpc_est)
+```
+
+Inspect the EList structure — same slots as peptide-level but now at protein level:
+
+```{r protein_elist_structure}
+cat("Class:", class(y_protein), "\n")
+cat("Slots:", names(y_protein), "\n\n")
+
+cat("$E — protein expression matrix (no NAs):\n")
+cat("  dim:", dim(y_protein$E), "\n")
+cat("  NAs:", sum(is.na(y_protein$E)), "\n")
+cat("  range:", round(range(y_protein$E), 2), "\n\n")
+
+cat("$genes — per-protein annotation:\n")
+str(y_protein$genes)
+cat("  NPrec: number of precursor peptides per protein\n")
+cat("  PropObs: proportion of (peptide x sample) values that were observed\n\n")
+
+cat("$other$standard.error — posterior SD of protein quantification:\n")
+cat("  dim:", dim(y_protein$other$standard.error), "\n")
+cat("  range:", round(range(y_protein$other$standard.error), 4), "\n")
+cat("  Proteins with more missing peptides get larger SEs.\n\n")
+
+cat("$other$n.observations — observed peptide count per protein x sample:\n")
+cat("  range:", range(y_protein$other$n.observations), "\n\n")
+
+cat("$dpc, $prior.mean, $prior.sd, $prior.logFC — hyperparameters:\n")
+cat("  DPC:", round(y_protein$dpc, 3), "\n")
+cat("  prior.mean:", round(y_protein$prior.mean, 3), "\n")
+cat("  prior.sd:", round(y_protein$prior.sd, 3), "\n")
+cat("  prior.logFC:", round(y_protein$prior.logFC, 3), "\n")
+```
+
+**Key difference from `dpcQuantByRow()`:** Here multiple peptide rows are aggregated
+into one protein row. The `$other$standard.error` now reflects both the within-protein
+variance and the impact of missing peptides. `$genes$NPrec` records how many peptides
+each protein had.
+
+### Fit the DE model
+
+Same `dpcDE()` call — it passes `log(SE)` as a precision predictor and the `!n.observations`
+matrix as the imputation indicator to `voomaLmFitWithImputation()`.
+
+```{r protein_fit}
+fit_prot <- limpa::dpcDE(y_protein, design, plot = TRUE)
+fit_prot <- limma::eBayes(fit_prot)
+```
+
+### Test contrasts
+
+```{r protein_contrasts}
+fit_prot2 <- limma::contrasts.fit(fit_prot, cont_matrix)
+fit_prot2 <- limma::eBayes(fit_prot2)
+```
+
+Results for A vs Ctrl at protein level:
+
+```{r protein_results}
+results_prot_A <- limma::topTable(fit_prot2, coef = "A_vs_Ctrl", number = 10, sort.by = "P")
+print(results_prot_A)
+```
+
+Results for B vs Ctrl at protein level:
+
+```{r protein_results_B}
+results_prot_B <- limma::topTable(fit_prot2, coef = "B_vs_Ctrl", number = 10, sort.by = "P")
+print(results_prot_B)
+```
+
+Summary of significant proteins (FDR < 0.05):
+
+```{r protein_summary}
+res_all_prot <- limma::topTable(fit_prot2, coef = "A_vs_Ctrl", number = Inf, sort.by = "none")
+cat("limpa protein — A vs Ctrl: ", sum(res_all_prot$adj.P.Val < 0.05),
+    "significant proteins at FDR < 0.05\n")
+
+res_all_prot_B <- limma::topTable(fit_prot2, coef = "B_vs_Ctrl", number = Inf, sort.by = "none")
+cat("limpa protein — B vs Ctrl: ", sum(res_all_prot_B$adj.P.Val < 0.05),
+    "significant proteins at FDR < 0.05\n")
+```
+
+
+## Summary Comparison
+
+```{r comparison}
+comparison <- data.frame(
+  method = c("baseline limma (medpolish + lmFit)",
+             "limpa peptide-level (dpcQuantByRow + dpcDE)",
+             "limpa protein-level (dpcQuant + dpcDE)"),
+  sig_A_vs_Ctrl = c(
+    sum(results_baseline_A$adj.P.Val < 0.05),
+    sum(res_all_pep$adj.P.Val < 0.05),
+    sum(res_all_prot$adj.P.Val < 0.05)
+  ),
+  sig_B_vs_Ctrl = c(
+    sum(results_baseline_B$adj.P.Val < 0.05),
+    sum(res_all_pep_B$adj.P.Val < 0.05),
+    sum(res_all_prot_B$adj.P.Val < 0.05)
+  )
+)
+knitr::kable(comparison, col.names = c("Method", "Sig. A vs Ctrl", "Sig. B vs Ctrl"))
+```
+
+## Key Takeaways
+
+- **`dpcQuantByRow()`** quantifies each peptide independently, returning an `EList` with
+  `$E` (complete, no NAs), `$other$standard.error` (quantification uncertainty), and
+  `$other$n.observations` (observation counts).
+
+- **`dpcQuant()`** additionally aggregates peptides to proteins, fitting a Bayesian additive
+  model per protein. The `EList` gains `$genes$NPrec` (peptide counts) and hyperparameter
+  fields (`$dpc`, `$prior.mean`, `$prior.sd`, `$prior.logFC`).
+
+- **`dpcDE()`** is a thin wrapper that calls `voomaLmFitWithImputation()` with:
+    - `imputed = !y$other$n.observations` — flags which values were missing
+    - `predictor = log(y$other$standard.error)` — SEs as a variance predictor
+
+- **Why vooma on top of SEs?** The SEs from `dpcQuant()` are per-observation quantification
+  uncertainties. `voomaLmFitWithImputation()` uses them as a **second predictor** in a
+  bivariate variance trend (`sqrt(sigma) ~ avg_intensity + log(SE)`) to derive
+  observation-level precision weights `w = 1/f(fitted)^4`. This captures both the classical
+  mean-variance relationship and the additional heteroscedasticity from missing values.
+  It also corrects residual DF for proteins where entire groups were imputed.
