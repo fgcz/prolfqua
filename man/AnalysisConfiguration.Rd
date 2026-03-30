@@ -52,6 +52,8 @@ Other configuration:
 
 \item{\code{opt_mz}}{optional column with mz information}
 
+\item{\code{opt_se}}{optional column with standard errors (e.g. from limpa aggregation)}
+
 \item{\code{nr_children}}{optional column containing for instance the number of peptides}
 
 \item{\code{workIntensity}}{column which contains the intensities}

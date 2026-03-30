@@ -15,6 +15,7 @@ Wraps the ANOVA extraction logic and associated column names.
 Other modelling: 
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
+\code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsLMFacade}},
@@ -23,6 +24,9 @@ Other modelling:
 \code{\link{ContrastsLimma}},
 \code{\link{ContrastsLimmaFacade}},
 \code{\link{ContrastsLimmaImputeFacade}},
+\code{\link{ContrastsLimmaVoomFacade}},
+\code{\link{ContrastsLimmaVoomImputeFacade}},
+\code{\link{ContrastsLimpaFacade}},
 \code{\link{ContrastsLmerFacade}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
@@ -39,6 +43,7 @@ Other modelling:
 \code{\link{ModelLimma}},
 \code{\link{StrategyLM}},
 \code{\link{StrategyLimma}},
+\code{\link{StrategyLimpa}},
 \code{\link{StrategyLmer}},
 \code{\link{StrategyLogistf}},
 \code{\link{StrategyRLM}},
@@ -49,6 +54,9 @@ Other modelling:
 \code{\link{build_model_impute}()},
 \code{\link{build_model_limma}()},
 \code{\link{build_model_limma_impute}()},
+\code{\link{build_model_limma_voom}()},
+\code{\link{build_model_limma_voom_impute}()},
+\code{\link{build_model_limpa}()},
 \code{\link{build_model_logistf}()},
 \code{\link{compute_borrowed_variance}()},
 \code{\link{compute_borrowed_variance_limma}()},
@@ -81,6 +89,7 @@ Other modelling:
 \code{\link{sim_make_model_lm}()},
 \code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_limma}()},
+\code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()}
 }

@@ -91,6 +91,113 @@ compute_borrowed_variance_limma <- function(fit) {
 }
 
 
+# .lfqdata_to_elist -----
+
+#' Convert LFQData to limma EList with design matrix and metadata
+#'
+#' Shared preamble for all \code{build_model_limma*} and \code{build_model_limpa}
+#' functions. Pivots LFQData to wide format, builds the design matrix from the
+#' formula, resolves the subject_Id / isotopeLabel, and creates a dummy lm for
+#' linfct extraction.
+#'
+#' @param lfqdata an \code{\link{LFQData}} object
+#' @param formula a formula (with response and RHS)
+#' @return a list with components:
+#' \describe{
+#'   \item{elist}{limma EList with \code{$E} = expression matrix}
+#'   \item{expr_matrix}{the expression matrix (same as \code{elist$E})}
+#'   \item{design}{the design matrix}
+#'   \item{annotation}{sample-level annotation data.frame}
+#'   \item{subject_Id}{character vector of hierarchy keys (possibly including isotopeLabel)}
+#'   \item{rowdata}{data.frame with one row per feature, columns = subject_Id}
+#'   \item{rhs_formula}{the RHS-only formula}
+#'   \item{dummy_model}{a dummy \code{lm} fitted on one complete row}
+#' }
+#' @keywords internal
+.lfqdata_to_elist <- function(lfqdata, formula) {
+  wide <- lfqdata$to_wide(as.matrix = TRUE)
+  expr_matrix <- wide$data
+  annotation <- wide$annotation
+  subject_Id <- lfqdata$config$hierarchy_keys()
+  rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_Id))
+  if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotopeLabel)) {
+    rowdata <- wide$rowdata |>
+      dplyr::select(dplyr::all_of(unique(c(subject_Id, lfqdata$config$isotopeLabel))))
+    subject_Id <- colnames(rowdata)
+  }
+
+  rhs_formula <- formula(delete.response(terms(formula)))
+  design <- model.matrix(rhs_formula, data = annotation)
+
+  elist <- new("EList", list(E = expr_matrix))
+
+  # Dummy model for linfct extraction: fit lm on one complete row
+  complete_rows <- which(rowSums(is.na(expr_matrix)) == 0)
+  if (length(complete_rows) == 0) {
+    complete_rows <- which.min(rowSums(is.na(expr_matrix)))
+  }
+  idx <- complete_rows[1]
+  dummy_data <- annotation
+  dummy_data$.response <- as.numeric(expr_matrix[idx, ])
+  dummy_formula <- update(rhs_formula, .response ~ .)
+  dummy_model <- lm(dummy_formula, data = dummy_data)
+
+  list(
+    elist = elist,
+    expr_matrix = expr_matrix,
+    design = design,
+    annotation = annotation,
+    subject_Id = subject_Id,
+    rowdata = rowdata,
+    rhs_formula = rhs_formula,
+    dummy_model = dummy_model
+  )
+}
+
+
+# .resolve_weights -----
+
+#' Resolve strategy weights to a matrix or vector for limma::lmFit
+#'
+#' Shared weight resolution logic for \code{build_model_limma*} functions.
+#' Handles character (column name in annotation or LFQData), matrix, or NULL.
+#'
+#' @param lfqdata an \code{\link{LFQData}} object
+#' @param strategy a strategy object with a \code{weights} field
+#' @param annotation the sample-level annotation data.frame
+#' @return a weight matrix, vector, or NULL
+#' @keywords internal
+.resolve_weights <- function(lfqdata, strategy, annotation) {
+  if (is.null(strategy$weights)) {
+    return(NULL)
+  }
+
+  if (is.matrix(strategy$weights)) {
+    return(strategy$weights)
+  }
+
+  if (is.character(strategy$weights) && length(strategy$weights) == 1) {
+    wcol <- strategy$weights
+    if (wcol %in% colnames(annotation)) {
+      return(annotation[[wcol]])
+    }
+    if (wcol %in% colnames(lfqdata$data)) {
+      if (wcol %in% lfqdata$config$value_vars()) {
+        wt_wide <- lfqdata$to_wide(as.matrix = TRUE, value = wcol)
+        return(wt_wide$data)
+      } else {
+        fname_col <- lfqdata$config$table$fileName
+        wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
+        wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
+        return(wt_df[[wcol]])
+      }
+    }
+  }
+
+  NULL
+}
+
+
 # build_model_limma -----
 
 #' Build limma model from LFQData
@@ -118,69 +225,20 @@ compute_borrowed_variance_limma <- function(fit) {
 #' mod_limma$get_anova()
 #'
 build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name) {
-  wide <- lfqdata$to_wide(as.matrix = TRUE)
-  expr_matrix <- wide$data # rows = proteins, cols = samples
-  annotation <- wide$annotation
-  subject_Id <- lfqdata$config$hierarchy_keys()
-  rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_Id))
-  if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotopeLabel)) {
-    rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(unique(c(subject_Id, lfqdata$config$isotopeLabel))))
-    subject_Id <- colnames(rowdata)
-  }
-
-  # Use only RHS of formula for design matrix (response is the expression matrix)
-  rhs_formula <- formula(delete.response(terms(strategy$formula)))
-  design <- model.matrix(rhs_formula, data = annotation)
-
-  wt <- NULL
-  if (!is.null(strategy$weights)) {
-    if (is.character(strategy$weights) && length(strategy$weights) == 1) {
-      wcol <- strategy$weights
-      if (wcol %in% colnames(annotation)) {
-        wt <- annotation[[wcol]]
-      } else if (wcol %in% colnames(lfqdata$data)) {
-        if (wcol %in% lfqdata$config$value_vars()) {
-          # Per-protein x sample weights (e.g. nr_children) -> pivot to matrix
-          wt_wide <- lfqdata$to_wide(as.matrix = TRUE, value = wcol)
-          wt <- wt_wide$data
-        } else {
-          # Per-sample weights -> extract vector
-          fname_col <- lfqdata$config$table$fileName
-          wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
-          wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
-          wt <- wt_df[[wcol]]
-        }
-      }
-    } else if (is.matrix(strategy$weights)) {
-      wt <- strategy$weights
-    }
-  }
-  fit <- limma::lmFit(expr_matrix, design, weights = wt)
-
-  # Fit a dummy lm on one protein's complete data for linfct extraction
-  # Pick the first protein with all non-NA values (= complete row)
-  complete_rows <- which(rowSums(is.na(expr_matrix)) == 0)
-  if (length(complete_rows) == 0) {
-    # fallback: pick the row with fewest NAs
-    complete_rows <- which.min(rowSums(is.na(expr_matrix)))
-  }
-  idx <- complete_rows[1]
-
-  dummy_data <- annotation
-  dummy_data$.response <- as.numeric(expr_matrix[idx, ])
-  dummy_formula <- update(rhs_formula, .response ~ .)
-  dummy_model <- lm(dummy_formula, data = dummy_data)
+  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
+  wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
+  fit <- limma::lmFit(setup$expr_matrix, setup$design, weights = wt)
 
   ModelLimma$new(
     fit = fit,
-    design = design,
+    design = setup$design,
     formula = strategy$formula,
-    subject_Id = subject_Id,
+    subject_Id = setup$subject_Id,
     modelName = modelName,
-    rowdata = rowdata,
+    rowdata = setup$rowdata,
     trend = strategy$trend,
     robust = strategy$robust,
-    dummy_model = dummy_model,
+    dummy_model = setup$dummy_model,
     p.adjust = prolfqua::adjust_p_values
   )
 }
@@ -230,43 +288,11 @@ build_model_limma_impute <- function(
 ) {
   df_method <- match.arg(df_method)
 
-  wide <- lfqdata$to_wide(as.matrix = TRUE)
-  expr_matrix <- wide$data
-  annotation <- wide$annotation
-  subject_Id <- lfqdata$config$hierarchy_keys()
-  rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_Id))
-  if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotopeLabel)) {
-    rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(unique(c(subject_Id, lfqdata$config$isotopeLabel))))
-    subject_Id <- colnames(rowdata)
-  }
-
-  # Design matrix from RHS of formula
-  rhs_formula <- formula(delete.response(terms(strategy$formula)))
-  design <- model.matrix(rhs_formula, data = annotation)
+  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
+  expr_matrix <- setup$expr_matrix
+  design <- setup$design
   p <- ncol(design)
-
-  # Resolve weights (same logic as build_model_limma)
-  wt <- NULL
-  if (!is.null(strategy$weights)) {
-    if (is.character(strategy$weights) && length(strategy$weights) == 1) {
-      wcol <- strategy$weights
-      if (wcol %in% colnames(annotation)) {
-        wt <- annotation[[wcol]]
-      } else if (wcol %in% colnames(lfqdata$data)) {
-        if (wcol %in% lfqdata$config$value_vars()) {
-          wt_wide <- lfqdata$to_wide(as.matrix = TRUE, value = wcol)
-          wt <- wt_wide$data
-        } else {
-          fname_col <- lfqdata$config$table$fileName
-          wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
-          wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
-          wt <- wt_df[[wcol]]
-        }
-      }
-    } else if (is.matrix(strategy$weights)) {
-      wt <- strategy$weights
-    }
-  }
+  wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
 
   # Step 1: Fit on original data (with NAs)
   fit_na <- limma::lmFit(expr_matrix, design, weights = wt)
@@ -275,27 +301,16 @@ build_model_limma_impute <- function(
   failed <- which(rowSums(is.na(fit_na$coefficients)) > 0)
 
   if (length(failed) == 0) {
-    # Nothing to impute — build dummy model and return
-    complete_rows <- which(rowSums(is.na(expr_matrix)) == 0)
-    if (length(complete_rows) == 0) {
-      complete_rows <- which.min(rowSums(is.na(expr_matrix)))
-    }
-    idx <- complete_rows[1]
-    dummy_data <- annotation
-    dummy_data$.response <- as.numeric(expr_matrix[idx, ])
-    dummy_formula <- update(rhs_formula, .response ~ .)
-    dummy_model <- lm(dummy_formula, data = dummy_data)
-
     return(ModelLimma$new(
       fit = fit_na,
       design = design,
       formula = strategy$formula,
-      subject_Id = subject_Id,
+      subject_Id = setup$subject_Id,
       modelName = modelName,
-      rowdata = rowdata,
+      rowdata = setup$rowdata,
       trend = strategy$trend,
       robust = strategy$robust,
-      dummy_model = dummy_model,
+      dummy_model = setup$dummy_model,
       p.adjust = prolfqua::adjust_p_values
     ))
   }
@@ -316,7 +331,6 @@ build_model_limma_impute <- function(
   expr_imputed <- pmax(expr_imputed, lod)
 
   # Also impute weight matrix: NA weights for imputed positions get weight = 1
-  # (minimum weight, consistent with a single imputed observation)
   wt_imputed <- wt
   if (is.matrix(wt_imputed)) {
     wt_imputed[na_mask] <- 1
@@ -326,12 +340,9 @@ build_model_limma_impute <- function(
   fit_lod <- limma::lmFit(expr_imputed, design, weights = wt_imputed)
 
   # Step 7: Create hybrid fit — replace failed rows in fit_na
-  # Coefficients and stdev.unscaled from the imputed fit
   fit_na$coefficients[failed, ] <- fit_lod$coefficients[failed, ]
   fit_na$stdev.unscaled[failed, ] <- fit_lod$stdev.unscaled[failed, ]
-  # Borrowed sigma (NOT from fit_lod which underestimates variance)
   fit_na$sigma[failed] <- borrowed$sigma
-  # Amean needed for eBayes trend
   fit_na$Amean[failed] <- fit_lod$Amean[failed]
   # CRITICAL: df correction — never use fit_lod$df.residual (counts imputed as real)
   n_observed <- rowSums(!is.na(expr_matrix))
@@ -341,24 +352,278 @@ build_model_limma_impute <- function(
     fit_na$df.residual[failed] <- borrowed$df
   }
 
-  # Step 8: Build dummy model for contrast extraction
-  complete_rows <- which(rowSums(is.na(expr_imputed)) == 0)
-  if (length(complete_rows) == 0) {
-    complete_rows <- which.min(rowSums(is.na(expr_imputed)))
-  }
-  idx <- complete_rows[1]
-  dummy_data <- annotation
-  dummy_data$.response <- as.numeric(expr_imputed[idx, ])
-  dummy_formula <- update(rhs_formula, .response ~ .)
+  # Dummy model from imputed data (all rows complete after imputation)
+  dummy_data <- setup$annotation
+  dummy_data$.response <- as.numeric(expr_imputed[1, ])
+  dummy_formula <- update(setup$rhs_formula, .response ~ .)
   dummy_model <- lm(dummy_formula, data = dummy_data)
 
   ModelLimma$new(
     fit = fit_na,
     design = design,
     formula = strategy$formula,
-    subject_Id = subject_Id,
+    subject_Id = setup$subject_Id,
     modelName = modelName,
-    rowdata = rowdata,
+    rowdata = setup$rowdata,
+    trend = strategy$trend,
+    robust = strategy$robust,
+    dummy_model = dummy_model,
+    p.adjust = prolfqua::adjust_p_values
+  )
+}
+
+
+# build_model_limma_voom -----
+
+#' Build limma model with vooma precision weights (proteomics)
+#'
+#' Estimates observation-level precision weights from a mean-variance trend
+#' (vooma) and fits a weighted least squares model via \code{\link[limma]{lmFit}}.
+#' For proteomics data that is already log2-transformed.
+#'
+#' When \code{strategy$weights} is set (e.g. to \code{nr_children}), these
+#' external weights enter the preliminary fit (so the trend estimation accounts
+#' for measurement precision) and are multiplied element-wise with the vooma
+#' weights for the final fit. See the voom integration notes in
+#' \code{TODO/TODO_limma_voom_integration.md} for the mathematical basis.
+#'
+#' @param lfqdata an \code{\link{LFQData}} object (aggregated to protein level)
+#' @param strategy output of \code{\link{strategy_limma}}
+#' @param modelName name of model (default from strategy)
+#' @param span lowess smoother span for mean-variance trend (default 0.5)
+#' @param plot logical; if TRUE, plot the mean-variance trend
+#' @return a \code{\link{ModelLimma}} object
+#' @export
+#' @family modelling
+#' @examples
+#'
+#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' lProt <- LFQData$new(istar$data, istar$config)
+#' lProt$rename_response("transformedIntensity")
+#'
+#' strat <- strategy_limma("transformedIntensity ~ group_")
+#' mod <- build_model_limma_voom(lProt, strat)
+#' mod$get_coefficients()
+#'
+build_model_limma_voom <- function(
+  lfqdata,
+  strategy,
+  modelName = strategy$model_name,
+  span = 0.5,
+  plot = FALSE
+) {
+  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
+  expr_matrix <- setup$expr_matrix
+  design <- setup$design
+  ext_wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
+
+  # Step 1: Preliminary fit (with external weights if available)
+  fit0 <- limma::lmFit(expr_matrix, design, weights = ext_wt)
+
+  # Step 2: Lowess trend on (mean expression, sqrt(sigma))
+  sx <- fit0$Amean
+  sy <- sqrt(fit0$sigma)
+  l <- stats::lowess(sx, sy, f = span)
+  f <- stats::approxfun(l, rule = 2, ties = list("ordered", mean))
+
+  # Step 3: Observation-level vooma weights
+  fitted_vals <- fit0$coefficients %*% t(fit0$design)
+  w_voom <- 1 / f(fitted_vals)^4
+  dim(w_voom) <- dim(fitted_vals)
+
+  # Step 4: Combine with external weights
+  if (!is.null(ext_wt)) {
+    if (is.matrix(ext_wt)) {
+      w_combined <- w_voom * ext_wt
+    } else {
+      w_combined <- w_voom * rep(ext_wt, each = nrow(w_voom))
+    }
+  } else {
+    w_combined <- w_voom
+  }
+
+  # Optional diagnostic plot
+  if (plot) {
+    graphics::plot(
+      sx,
+      sy,
+      xlab = "Average log2 expression",
+      ylab = expression(sqrt(sigma)),
+      main = "vooma: Mean-variance trend",
+      pch = 16,
+      cex = 0.3
+    )
+    graphics::lines(l, col = "red", lwd = 2)
+  }
+
+  # Step 5: Final WLS fit with combined weights
+  fit <- limma::lmFit(expr_matrix, design, weights = w_combined)
+
+  ModelLimma$new(
+    fit = fit,
+    design = design,
+    formula = strategy$formula,
+    subject_Id = setup$subject_Id,
+    modelName = modelName,
+    rowdata = setup$rowdata,
+    trend = strategy$trend,
+    robust = strategy$robust,
+    dummy_model = setup$dummy_model,
+    p.adjust = prolfqua::adjust_p_values
+  )
+}
+
+
+# build_model_limma_voom_impute -----
+
+#' Build limma-voom model with LOD imputation for failed proteins
+#'
+#' Combines vooma precision weights with LOD imputation for proteins that have
+#' entire missing groups (NA coefficients). Mirrors
+#' \code{\link{build_model_limma_impute}} but uses vooma weights.
+#'
+#' @param lfqdata an \code{\link{LFQData}} object (aggregated to protein level)
+#' @param strategy output of \code{\link{strategy_limma}}
+#' @param modelName name of model (default: strategy name + "Imputed")
+#' @param lod numeric limit of detection; if NULL, auto-computed from data
+#' @param df_method how to set degrees of freedom for imputed proteins:
+#'   \code{"observed"} (default) uses \code{max(n_observed - p, 1)};
+#'   \code{"borrowed"} uses the median df from successful fits
+#' @param span lowess smoother span for vooma trend (default 0.5)
+#' @param plot logical; if TRUE, plot the mean-variance trend
+#' @return a \code{\link{ModelLimma}} object with a hybrid fit
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#'
+#' strat <- strategy_limma("transformedIntensity ~ group_")
+#' mod <- build_model_limma_voom_impute(lfqdata, strat)
+#' mod$get_coefficients()
+#'
+build_model_limma_voom_impute <- function(
+  lfqdata,
+  strategy,
+  modelName = paste0(strategy$model_name, "Imputed"),
+  lod = NULL,
+  df_method = c("observed", "borrowed"),
+  span = 0.5,
+  plot = FALSE
+) {
+  df_method <- match.arg(df_method)
+
+  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
+  expr_matrix <- setup$expr_matrix
+  design <- setup$design
+  p <- ncol(design)
+  ext_wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
+
+  # Helper: compute vooma weights and final fit from an expression matrix
+  .voom_fit <- function(expr, wt_ext) {
+    fit0 <- limma::lmFit(expr, design, weights = wt_ext)
+    sx <- fit0$Amean
+    sy <- sqrt(fit0$sigma)
+    l <- stats::lowess(sx, sy, f = span)
+    f_trend <- stats::approxfun(l, rule = 2, ties = list("ordered", mean))
+    fitted_vals <- fit0$coefficients %*% t(fit0$design)
+    w_voom <- 1 / f_trend(fitted_vals)^4
+    dim(w_voom) <- dim(fitted_vals)
+    if (!is.null(wt_ext)) {
+      if (is.matrix(wt_ext)) {
+        w_combined <- w_voom * wt_ext
+      } else {
+        w_combined <- w_voom * rep(wt_ext, each = nrow(w_voom))
+      }
+    } else {
+      w_combined <- w_voom
+    }
+    if (plot) {
+      graphics::plot(
+        sx,
+        sy,
+        xlab = "Average log2 expression",
+        ylab = expression(sqrt(sigma)),
+        main = "vooma: Mean-variance trend",
+        pch = 16,
+        cex = 0.3
+      )
+      graphics::lines(l, col = "red", lwd = 2)
+    }
+    limma::lmFit(expr, design, weights = w_combined)
+  }
+
+  # Step 1: Fit on original data with vooma weights
+  fit_na <- .voom_fit(expr_matrix, ext_wt)
+
+  # Step 2: Identify failed proteins (any NA coefficient)
+  failed <- which(rowSums(is.na(fit_na$coefficients)) > 0)
+
+  if (length(failed) == 0) {
+    return(ModelLimma$new(
+      fit = fit_na,
+      design = design,
+      formula = strategy$formula,
+      subject_Id = setup$subject_Id,
+      modelName = modelName,
+      rowdata = setup$rowdata,
+      trend = strategy$trend,
+      robust = strategy$robust,
+      dummy_model = setup$dummy_model,
+      p.adjust = prolfqua::adjust_p_values
+    ))
+  }
+
+  # Step 3: Compute LOD if not provided
+  if (is.null(lod)) {
+    mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
+    lod <- mh$get_LOD()
+  }
+
+  # Step 4: Borrow variance from successful proteins
+  borrowed <- compute_borrowed_variance_limma(fit_na)
+
+  # Step 5: Impute expression matrix with LOD
+  na_mask <- is.na(expr_matrix)
+  expr_imputed <- expr_matrix
+  expr_imputed[na_mask] <- lod
+  expr_imputed <- pmax(expr_imputed, lod)
+
+  # Impute external weight matrix: NA positions get weight = 1
+  ext_wt_imputed <- ext_wt
+  if (is.matrix(ext_wt_imputed)) {
+    ext_wt_imputed[na_mask] <- 1
+  }
+
+  # Step 6: Fit on imputed data with vooma weights
+  fit_lod <- .voom_fit(expr_imputed, ext_wt_imputed)
+
+  # Step 7: Hybrid fit — replace failed rows
+  fit_na$coefficients[failed, ] <- fit_lod$coefficients[failed, ]
+  fit_na$stdev.unscaled[failed, ] <- fit_lod$stdev.unscaled[failed, ]
+  fit_na$sigma[failed] <- borrowed$sigma
+  fit_na$Amean[failed] <- fit_lod$Amean[failed]
+  n_observed <- rowSums(!is.na(expr_matrix))
+  if (df_method == "observed") {
+    fit_na$df.residual[failed] <- pmax(n_observed[failed] - p, 1)
+  } else {
+    fit_na$df.residual[failed] <- borrowed$df
+  }
+
+  # Dummy model from imputed data (all rows complete after imputation)
+  dummy_data <- setup$annotation
+  dummy_data$.response <- as.numeric(expr_imputed[1, ])
+  dummy_formula <- update(setup$rhs_formula, .response ~ .)
+  dummy_model <- lm(dummy_formula, data = dummy_data)
+
+  ModelLimma$new(
+    fit = fit_na,
+    design = design,
+    formula = strategy$formula,
+    subject_Id = setup$subject_Id,
+    modelName = modelName,
+    rowdata = setup$rowdata,
     trend = strategy$trend,
     robust = strategy$robust,
     dummy_model = dummy_model,

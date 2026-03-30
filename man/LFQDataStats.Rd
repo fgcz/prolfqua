@@ -75,6 +75,7 @@ runallfuncs(lfqstats)
 }
 \seealso{
 Other LFQData: 
+\code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},

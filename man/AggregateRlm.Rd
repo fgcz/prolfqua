@@ -26,6 +26,7 @@ p$plots[[1]]
 }
 \seealso{
 Other LFQData: 
+\code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateTopN}},
 \code{\link{LFQData}},

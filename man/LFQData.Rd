@@ -61,6 +61,7 @@ stopifnot(nrow(tmp$hierarchy()) == 5)
 }
 \seealso{
 Other LFQData: 
+\code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},

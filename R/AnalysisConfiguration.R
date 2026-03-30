@@ -41,6 +41,8 @@ AnalysisConfiguration <- R6::R6Class(
     opt_rt = character(),
     #' @field opt_mz optional column with mz information
     opt_mz = character(),
+    #' @field opt_se optional column with standard errors (e.g. from limpa aggregation)
+    opt_se = character(),
     #' @field nr_children optional column containing for instance the number of peptides
     nr_children = "nr_children",
 
@@ -81,6 +83,7 @@ AnalysisConfiguration <- R6::R6Class(
           "ident_Score",
           "opt_rt",
           "opt_mz",
+          "opt_se",
           "nr_children",
           "workIntensity",
           "is_response_transformed",
@@ -216,6 +219,7 @@ AnalysisConfiguration <- R6::R6Class(
         self$ident_Score,
         self$opt_mz,
         self$opt_rt,
+        self$opt_se,
         self$nr_children
       )
       return(valueVars)

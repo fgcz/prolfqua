@@ -31,6 +31,7 @@ sum$percentage_abundance()
 }
 \seealso{
 Other LFQData: 
+\code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},

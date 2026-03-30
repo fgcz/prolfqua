@@ -214,6 +214,250 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
 )
 
 
+#' Limma-voom contrast analysis facade
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_limma}} ->
+#' \code{\link{build_model_limma_voom}} -> \code{\link{ContrastsLimma}}.
+#'
+#' Uses vooma-style precision weights derived from a mean-variance trend,
+#' optionally combined with external weights (e.g. peptide/precursor counts).
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config()
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$to_wide()
+ContrastsLimmaVoomFacade <- R6::R6Class(
+  "ContrastsLimmaVoomFacade",
+  public = list(
+    #' @field model ModelLimma object
+    model = NULL,
+    #' @field contrast ContrastsLimma object
+    contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param weights column name for per-observation weights (default:
+    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #' @param span lowess smoother span for vooma trend (default 0.5)
+    #' @param plot logical; if TRUE, plot the mean-variance trend
+    #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      weights = lfqdata$config$nr_children,
+      span = 0.5,
+      plot = FALSE,
+      ...
+    ) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaVoomFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      response <- lfqdata$config$get_response()
+      full_formula <- paste(response, modelstr)
+      strat <- strategy_limma(full_formula, weights = weights, ...)
+      self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
+      self$contrast <- ContrastsLimma$new(self$model, contrasts)
+    },
+    #' @description get contrast results (rows with NA diff are filtered out)
+    #' @param ... passed to ContrastsLimma$get_contrasts
+    get_contrasts = function(...) {
+      res <- .add_facade_column(self$contrast$get_contrasts(...), "limma_voom")
+      res[!is.na(res$diff), ]
+    },
+    #' @description get protein x contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsLimma$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsLimma$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
+#' Limma-voom contrast analysis with LOD imputation facade
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_limma}} ->
+#' \code{\link{build_model_limma_voom_impute}} -> \code{\link{ContrastsLimma}}.
+#'
+#' Combines vooma precision weights with LOD imputation for proteins whose
+#' fit produces NA coefficients (typically from entire missing groups).
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsLimmaVoomImputeFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$to_wide()
+ContrastsLimmaVoomImputeFacade <- R6::R6Class(
+  "ContrastsLimmaVoomImputeFacade",
+  public = list(
+    #' @field model ModelLimma object (with imputed proteins)
+    model = NULL,
+    #' @field contrast ContrastsLimma object
+    contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object (aggregated to protein level)
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param lod numeric limit of detection; if NULL, auto-computed from data
+    #' @param df_method "observed" uses max(n_observed - p, 1);
+    #'   "borrowed" uses median df from successful fits
+    #' @param weights column name for per-observation weights (default:
+    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #' @param span lowess smoother span for vooma trend (default 0.5)
+    #' @param plot logical; if TRUE, plot the mean-variance trend
+    #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      lod = NULL,
+      df_method = c("observed", "borrowed"),
+      weights = lfqdata$config$nr_children,
+      span = 0.5,
+      plot = FALSE,
+      ...
+    ) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaVoomImputeFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      response <- lfqdata$config$get_response()
+      full_formula <- paste(response, modelstr)
+      strat <- strategy_limma(full_formula, weights = weights, ...)
+      self$model <- build_model_limma_voom_impute(
+        lfqdata,
+        strat,
+        lod = lod,
+        df_method = df_method,
+        span = span,
+        plot = plot
+      )
+      self$contrast <- ContrastsLimma$new(self$model, contrasts)
+    },
+    #' @description get contrast results (rows with NA diff are filtered out)
+    #' @param ... passed to ContrastsLimma$get_contrasts
+    get_contrasts = function(...) {
+      res <- .add_facade_column(self$contrast$get_contrasts(...), "limma_voom_impute")
+      res[!is.na(res$diff), ]
+    },
+    #' @description get protein x contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsLimma$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsLimma$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
+#' Limpa contrast analysis facade
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_limpa}} ->
+#' \code{\link{build_model_limpa}} -> \code{\link{ContrastsLimma}}.
+#'
+#' Requires protein-level LFQData produced by \code{\link{AggregateLimpa}},
+#' which provides the standard error (\code{config$opt_se}) and observation
+#' count (\code{config$nr_children}) columns needed for limpa's vooma
+#' precision weighting and imputation-aware DF correction.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' \dontrun{
+#' istar <- prolfqua::sim_lfq_data_peptide_config()
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' agg <- AggregateLimpa$new(lfqdata, "protein")
+#' lfq_agg <- agg$aggregate()
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' }
+ContrastsLimpaFacade <- R6::R6Class(
+  "ContrastsLimpaFacade",
+  public = list(
+    #' @field model ModelLimma object (from build_model_limpa)
+    model = NULL,
+    #' @field contrast ContrastsLimma object
+    contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData from AggregateLimpa (must have config$opt_se set)
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param plot logical; if TRUE, plot the vooma mean-variance trend
+    #' @param span lowess smoother span (NULL = auto)
+    #' @param ... passed to \code{\link{strategy_limpa}} (e.g. trend, robust)
+    initialize = function(lfqdata, modelstr, contrasts, plot = FALSE, span = NULL, ...) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsLimpaFacade")
+      if (length(lfqdata$config$opt_se) == 0 || nchar(lfqdata$config$opt_se) == 0) {
+        stop(
+          "ContrastsLimpaFacade requires LFQData with config$opt_se set. ",
+          "Use AggregateLimpa to produce the input."
+        )
+      }
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      response <- lfqdata$config$get_response()
+      full_formula <- paste(response, modelstr)
+      strat <- strategy_limpa(full_formula, plot = plot, span = span, ...)
+      self$model <- build_model_limpa(lfqdata, strat)
+      self$contrast <- ContrastsLimma$new(self$model, contrasts, modelName = "limpa")
+    },
+    #' @description get contrast results (rows with NA diff are filtered out)
+    #' @param ... passed to ContrastsLimma$get_contrasts
+    get_contrasts = function(...) {
+      res <- .add_facade_column(self$contrast$get_contrasts(...), "limpa")
+      res[!is.na(res$diff), ]
+    },
+    #' @description get protein x contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsLimma$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsLimma$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
 #' LM contrast analysis facade
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
@@ -704,6 +948,80 @@ ContrastsDEqMSFacade <- R6::R6Class(
       .add_facade_column(self$contrast$get_contrasts(...), "deqms")
     },
     #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsModeratedDEqMS$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsModeratedDEqMS$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
+#' DEqMS contrast analysis with vooma weights facade
+#'
+#' Combines vooma precision weights (mean-variance trend) with DEqMS
+#' count-dependent variance moderation. Vooma runs \strong{without} external
+#' weights so it captures only the mean-variance relationship; the peptide
+#' count enters solely through DEqMS moderation, avoiding double-counting.
+#'
+#' Pipeline: \code{\link{strategy_limma}} (weights = NULL) ->
+#' \code{\link{build_model_limma_voom}} -> \code{\link{ContrastsLimma}}
+#' (eBayes = FALSE) -> \code{\link{ContrastsModeratedDEqMS}}.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsDEqMSVoomFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+ContrastsDEqMSVoomFacade <- R6::R6Class(
+  "ContrastsDEqMSVoomFacade",
+  public = list(
+    #' @field model ModelLimma object
+    model = NULL,
+    #' @field contrast ContrastsModeratedDEqMS object
+    contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param span lowess smoother span for vooma trend (default 0.5)
+    #' @param plot logical; if TRUE, plot the mean-variance trend
+    #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
+    initialize = function(lfqdata, modelstr, contrasts, span = 0.5, plot = FALSE, ...) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsDEqMSVoomFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      response <- lfqdata$config$get_response()
+      full_formula <- paste(response, modelstr)
+      # No external weights — vooma handles mean-variance only
+      strat <- strategy_limma(full_formula, weights = NULL, ...)
+      self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
+      # eBayes = FALSE: DEqMS replaces eBayes moderation
+      base_contrast <- ContrastsLimma$new(self$model, contrasts, eBayes = FALSE)
+      count_column <- lfqdata$config$nr_children
+      count_df <- lfqdata$data |>
+        dplyr::select(dplyr::all_of(c(base_contrast$subject_Id, count_column)))
+      self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
+    },
+    #' @description get contrast results
+    #' @param ... passed to ContrastsModeratedDEqMS$get_contrasts
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "deqms_voom")
+    },
+    #' @description get protein x contrast pairs that could not be estimated
     get_missing = function() {
       .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },

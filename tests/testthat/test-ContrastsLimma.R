@@ -377,3 +377,121 @@ test_that("df correction: imputed proteins do not use inflated df", {
     expect_equal(unname(imputed_df), unname(expected_df))
   }
 })
+
+
+# ---- limma_voom tests ----
+
+test_that("build_model_limma_voom returns ModelLimma", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  lProt <- prolfqua::LFQData$new(istar$data, istar$config)
+  lProt$rename_response("transformedIntensity")
+
+  strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
+  mod <- prolfqua::build_model_limma_voom(lProt, strat)
+
+  expect_true(inherits(mod, "ModelLimma"))
+  expect_true(inherits(mod, "ModelInterface"))
+  expect_true(!is.null(mod$fit))
+  expect_true(!is.null(mod$dummy_model))
+})
+
+test_that("build_model_limma_voom produces different weights than plain limma", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  lProt <- prolfqua::LFQData$new(istar$data, istar$config)
+  lProt$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa_limma <- prolfqua::ContrastsLimmaFacade$new(lProt, "~ group_", contrasts)
+  fa_voom <- prolfqua::ContrastsLimmaVoomFacade$new(lProt, "~ group_", contrasts)
+
+  res_limma <- fa_limma$get_contrasts()
+  res_voom <- fa_voom$get_contrasts()
+
+  # Both should produce results
+
+  expect_true(nrow(res_voom) > 0)
+  expect_true(nrow(res_limma) > 0)
+
+  # Fold changes should be correlated but not identical (weights differ)
+  merged <- dplyr::inner_join(
+    dplyr::select(res_limma, protein_Id, diff_limma = diff),
+    dplyr::select(res_voom, protein_Id, diff_voom = diff),
+    by = "protein_Id"
+  )
+  expect_true(cor(merged$diff_limma, merged$diff_voom, use = "complete.obs") > 0.9)
+})
+
+test_that("build_contrast_analysis dispatches limma_voom", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma_voom")
+  expect_true(inherits(fa, "ContrastsLimmaVoomFacade"))
+  res <- fa$get_contrasts()
+  expect_true(nrow(res) > 0)
+  expect_true("facade" %in% colnames(res))
+  expect_equal(unique(res$facade), "limma_voom")
+})
+
+test_that("build_contrast_analysis dispatches limma_voom_impute", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma_voom_impute")
+  expect_true(inherits(fa, "ContrastsLimmaVoomImputeFacade"))
+  res <- fa$get_contrasts()
+  expect_true(nrow(res) > 0)
+  expect_true("facade" %in% colnames(res))
+  expect_equal(unique(res$facade), "limma_voom_impute")
+})
+
+test_that("limma_voom_impute recovers more proteins than limma_voom", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa_voom <- prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts)
+  fa_voom_imp <- prolfqua::ContrastsLimmaVoomImputeFacade$new(lfqdata, "~ group_", contrasts)
+
+  res_voom <- fa_voom$get_contrasts()
+  res_imp <- fa_voom_imp$get_contrasts()
+
+  expect_true(nrow(res_imp) >= nrow(res_voom))
+})
+
+test_that("build_contrast_analysis dispatches deqms_voom", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms_voom")
+  expect_true(inherits(fa, "ContrastsDEqMSVoomFacade"))
+  res <- fa$get_contrasts()
+  expect_true(nrow(res) > 0)
+  expect_true("facade" %in% colnames(res))
+  expect_equal(unique(res$facade), "deqms_voom")
+})
+
+test_that("limma_voom with external weights (nr_children)", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  # With default weights (nr_children)
+  fa_wt <- prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts)
+  # Without weights
+  fa_nowt <- prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts, weights = NULL)
+
+  res_wt <- fa_wt$get_contrasts()
+  res_nowt <- fa_nowt$get_contrasts()
+
+  expect_true(nrow(res_wt) > 0)
+  expect_true(nrow(res_nowt) > 0)
+})

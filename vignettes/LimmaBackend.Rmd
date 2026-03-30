@@ -200,6 +200,261 @@ contr_robust <- ContrastsLimma$new(mod_robust, contr_spec)
 head(contr_robust$get_contrasts())
 ```
 
+# Vooma backend pipeline
+
+The vooma (variance modelling at the observational level) backend extends limma
+with observation-level precision weights derived from a mean-variance trend.
+This is analogous to voom for RNA-seq but applied to proteomics intensities.
+The key idea: instead of assuming equal variance across all observations, vooma
+estimates a smooth mean-variance relationship and down-weights observations
+with higher expected variance.
+
+The API mirrors the standard limma pipeline — the only difference is calling
+`build_model_limma_voom` instead of `build_model_limma`.
+
+```{r vooma_pipeline}
+strat_voom <- strategy_limma("transformedIntensity ~ group_")
+mod_voom <- build_model_limma_voom(transformed, strat_voom, plot = TRUE)
+contr_voom <- ContrastsLimma$new(mod_voom, contr_spec)
+res_voom <- contr_voom$get_contrasts()
+```
+
+The plot shows `sqrt(sigma)` vs average log-expression. The red curve is the
+lowess trend used to derive per-observation weights.
+
+## Comparing limma vs vooma
+
+```{r compare_voom}
+merged_voom <- inner_join(
+  select(res_limma, protein_Id, contrast, p_limma = p.value, diff_limma = diff),
+  select(res_voom, protein_Id, contrast, p_voom = p.value, diff_voom = diff),
+  by = c("protein_Id", "contrast")
+)
+
+data.frame(
+  Metric = c("Fold-change correlation", "P-value correlation"),
+  Value = c(
+    cor(merged_voom$diff_limma, merged_voom$diff_voom, use = "complete.obs"),
+    cor(-log10(merged_voom$p_limma), -log10(merged_voom$p_voom), use = "complete.obs")
+  )
+) |> knitr::kable(digits = 4)
+```
+
+```{r volcano_voom, fig.cap="Volcano plots: limma vs vooma."}
+pl_voom <- contr_voom$get_Plotter()
+gridExtra::grid.arrange(
+  pl_limma$volcano()$FDR + ggplot2::ggtitle("limma"),
+  pl_voom$volcano()$FDR + ggplot2::ggtitle("vooma"),
+  ncol = 1
+)
+```
+
+
+# Limpa backend pipeline
+
+The limpa backend uses limpa's Detection Probability Curve (DPC) for
+probabilistic missing value handling, followed by vooma precision weighting
+that incorporates the quantification standard errors. The three-step pipeline
+is:
+
+1. **`AggregateLimpa`** — estimates the DPC, then quantifies features using
+   `limpa::dpcQuant()` (peptide→protein) or `limpa::dpcQuantByRow()`
+   (same-level imputation). Produces standard errors and observation counts.
+2. **`build_model_limpa`** — fits a vooma model using
+   `limpa::voomaLmFitWithImputation()` with the SEs as a bivariate predictor
+3. **`ContrastsLimma`** — reused as-is since the output is a standard `MArrayLM`
+
+We show two examples: aggregation to protein level and staying at peptide level.
+
+## Prepare peptide-level data
+
+Both examples start from the same simulated peptide-level dataset.
+
+```{r limpa_data, eval=requireNamespace("limpa", quietly = TRUE)}
+istar_pep <- sim_lfq_data_peptide_config(Nprot = 100)
+lfq_peptide <- LFQData$new(istar_pep$data, istar_pep$config)
+lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
+
+data.frame(
+  Property = c("Hierarchy", "Samples", "NAs"),
+  Value = c(
+    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
+    length(unique(lfq_peptide$data[[lfq_peptide$config$sampleName]])),
+    sum(is.na(lfq_peptide$data[[lfq_peptide$config$get_response()]]))
+  )
+) |> knitr::kable()
+```
+
+## Example 1: Peptide → protein aggregation
+
+### Step 1: Aggregate with AggregateLimpa
+
+`AggregateLimpa` wraps `limpa::dpc()` (DPC estimation) and `limpa::dpcQuant()`
+(protein quantification). The output is a protein-level `LFQData` with three
+value columns: intensity, standard error (`config$opt_se`), and observation
+count (`config$nr_children`). Missing values are probabilistically integrated
+out during quantification — no fabricated numbers are imputed.
+
+```{r limpa_agg, eval=requireNamespace("limpa", quietly = TRUE)}
+agg <- AggregateLimpa$new(lfq_peptide, "protein")
+lfq_protein_limpa <- agg$aggregate()
+
+data.frame(
+  Property = c("Input hierarchy", "Output hierarchy", "Response column",
+               "SE column", "Nr children column", "NAs in output",
+               "DPC beta0", "DPC beta1"),
+  Value = c(
+    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
+    paste(lfq_protein_limpa$config$hierarchy_keys(), collapse = " > "),
+    lfq_protein_limpa$config$get_response(),
+    lfq_protein_limpa$config$opt_se,
+    lfq_protein_limpa$config$nr_children,
+    sum(is.na(lfq_protein_limpa$data[[lfq_protein_limpa$config$get_response()]])),
+    round(agg$dpc_result$dpc[1], 3),
+    round(agg$dpc_result$dpc[2], 3)
+  )
+) |> knitr::kable()
+```
+
+### Step 2: Build model with build_model_limpa
+
+`build_model_limpa` extracts the SE and observation count matrices from the
+aggregated data and passes them to `limpa::voomaLmFitWithImputation()`. The
+SEs serve as a second predictor in the vooma variance trend (bivariate: average
+intensity + log SE), and the observation counts identify imputed entries for
+degree-of-freedom correction.
+
+```{r limpa_prot_model, eval=requireNamespace("limpa", quietly = TRUE)}
+response <- lfq_protein_limpa$config$get_response()
+strat_limpa <- strategy_limpa(paste(response, "~ group_"), plot = TRUE)
+mod_limpa_prot <- build_model_limpa(lfq_protein_limpa, strat_limpa)
+
+data.frame(
+  Property = c("Model class", "Model name"),
+  Value = c(class(mod_limpa_prot)[1], mod_limpa_prot$modelName)
+) |> knitr::kable()
+
+mod_limpa_prot$get_coefficients() |> head() |> knitr::kable(digits = 3)
+```
+
+### Step 3: Compute contrasts with ContrastsLimma
+
+Since `build_model_limpa` returns a standard `ModelLimma`, we reuse
+`ContrastsLimma` directly — same as for the limma and vooma backends.
+
+```{r limpa_prot_contrasts, eval=requireNamespace("limpa", quietly = TRUE)}
+contr_limpa_prot <- ContrastsLimma$new(mod_limpa_prot, contr_spec, modelName = "limpa")
+res_limpa_prot <- contr_limpa_prot$get_contrasts()
+head(res_limpa_prot) |> knitr::kable(digits = 3)
+```
+
+### Volcano plot
+
+```{r limpa_prot_volcano, eval=requireNamespace("limpa", quietly = TRUE), fig.cap="Limpa protein-level volcano plot."}
+pl_limpa_prot <- contr_limpa_prot$get_Plotter()
+pl_limpa_prot$volcano()$FDR
+```
+
+### Facade shortcut
+
+The same pipeline is available as a one-liner via `build_contrast_analysis(method = "limpa")`.
+The input must be `AggregateLimpa` output (not plain `get_Aggregator()` output),
+because the facade needs the SE and observation count columns.
+
+```{r limpa_prot_facade, eval=requireNamespace("limpa", quietly = TRUE)}
+fa_limpa_prot <- build_contrast_analysis(
+  lfq_protein_limpa, "~ group_", contr_spec, method = "limpa"
+)
+fa_limpa_prot$get_contrasts() |> head() |> knitr::kable(digits = 3)
+```
+
+
+## Example 2: Peptide-level analysis (no aggregation)
+
+In this example we stay at the peptide level. `AggregateLimpa` with
+`impute_only = TRUE` calls `limpa::dpcQuantByRow()`, which fills in missing
+values at the peptide level while preserving the full hierarchy. Each peptide
+row is treated as its own "protein" (one peptide per group). The output has the
+same hierarchy as the input but with no NAs and with SE and observation count
+columns attached.
+
+This is useful for peptidoform-level analyses (e.g. PTMs) where aggregation to
+protein level is not desired.
+
+### Step 1: Impute at peptide level
+
+```{r limpa_pep_impute, eval=requireNamespace("limpa", quietly = TRUE)}
+agg_pep <- AggregateLimpa$new(lfq_peptide, impute_only = TRUE)
+lfq_peptide_limpa <- agg_pep$aggregate()
+
+data.frame(
+  Property = c("Input hierarchy", "Output hierarchy",
+               "NAs in input", "NAs in output", "SE column"),
+  Value = c(
+    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
+    paste(lfq_peptide_limpa$config$hierarchy_keys(), collapse = " > "),
+    sum(is.na(lfq_peptide$data[[lfq_peptide$config$get_response()]])),
+    sum(is.na(lfq_peptide_limpa$data[[lfq_peptide_limpa$config$get_response()]])),
+    lfq_peptide_limpa$config$opt_se
+  )
+) |> knitr::kable()
+```
+
+### Step 2: Build model at peptide level
+
+The peptide-level data still has `protein_Id` and `peptide_Id` in its
+hierarchy. We set `hierarchyDepth` so that `hierarchy_keys()` returns only
+`protein_Id` — this makes the data "aggregated" from the model's perspective
+(one row per protein_Id × peptide_Id × sample, with `subject_Id = protein_Id`).
+
+Since each peptide is a separate row in the wide matrix, `build_model_limpa`
+fits the model at the peptide level.
+
+```{r limpa_pep_model, eval=requireNamespace("limpa", quietly = TRUE)}
+response_pep <- lfq_peptide_limpa$config$get_response()
+strat_limpa_pep <- strategy_limpa(paste(response_pep, "~ group_"), plot = TRUE)
+mod_limpa_pep <- build_model_limpa(lfq_peptide_limpa, strat_limpa_pep)
+
+data.frame(
+  Property = c("Model class", "Rows in model (peptides)"),
+  Value = c(class(mod_limpa_pep)[1], nrow(mod_limpa_pep$fit$coefficients))
+) |> knitr::kable()
+```
+
+### Step 3: Compute contrasts
+
+```{r limpa_pep_contrasts, eval=requireNamespace("limpa", quietly = TRUE)}
+contr_limpa_pep <- ContrastsLimma$new(mod_limpa_pep, contr_spec, modelName = "limpa_peptide")
+res_limpa_pep <- contr_limpa_pep$get_contrasts()
+
+data.frame(
+  Property = c("Peptide-level results", "Unique peptides"),
+  Value = c(nrow(res_limpa_pep), length(unique(res_limpa_pep$peptide_Id)))
+) |> knitr::kable()
+
+head(res_limpa_pep) |> knitr::kable(digits = 3)
+```
+
+### Volcano plot
+
+```{r limpa_pep_volcano, eval=requireNamespace("limpa", quietly = TRUE), fig.cap="Limpa peptide-level volcano plot."}
+pl_limpa_pep <- contr_limpa_pep$get_Plotter()
+pl_limpa_pep$volcano()$FDR
+```
+
+### Comparison: protein-level vs peptide-level limpa
+
+```{r limpa_compare, eval=requireNamespace("limpa", quietly = TRUE)}
+data.frame(
+  Level = c("Protein", "Peptide"),
+  Rows = c(nrow(res_limpa_prot), nrow(res_limpa_pep)),
+  Proteins = c(length(unique(res_limpa_prot$protein_Id)),
+               length(unique(res_limpa_pep$protein_Id))),
+  Peptides = c(NA_integer_, length(unique(res_limpa_pep$peptide_Id)))
+) |> knitr::kable()
+```
+
+
 # Session Info
 
 ```{r}

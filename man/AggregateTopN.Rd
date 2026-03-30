@@ -31,6 +31,7 @@ agg_mean$write_plots(tempdir())
 }
 \seealso{
 Other LFQData: 
+\code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{LFQData}},
