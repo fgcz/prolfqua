@@ -2,6 +2,9 @@
 
 ## All functions
 
+- [`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)
+  : AggregateLimpa
+
 - [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md)
   : AggregateMedpolish
 
@@ -22,6 +25,9 @@
 
 - [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md)
   : DEqMS contrast analysis facade
+
+- [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md)
+  : DEqMS contrast analysis with vooma weights facade
 
 - [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md)
   : Estimate contrasts using Wald Test
@@ -49,6 +55,15 @@
 
 - [`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md)
   : Limma contrast analysis with LOD imputation facade
+
+- [`ContrastsLimmaVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomFacade.md)
+  : Limma-voom contrast analysis facade
+
+- [`ContrastsLimmaVoomImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomImputeFacade.md)
+  : Limma-voom contrast analysis with LOD imputation facade
+
+- [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md)
+  : Limpa contrast analysis facade
 
 - [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md)
   : Lmer contrast analysis facade
@@ -88,9 +103,6 @@
 
 - [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md) :
   LFQData R6 class
-
-- [`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md)
-  : Decorates LFQData with methods to impute missing values
 
 - [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md)
   : LFQDataPlotter —- Create various visualization of the LFQdata
@@ -137,6 +149,9 @@
 - [`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md)
   : R6 class for limma modelling strategy
 
+- [`StrategyLimpa`](https://wolski.github.io/prolfqua/reference/StrategyLimpa.md)
+  : R6 class for limpa modelling strategy
+
 - [`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md)
   : Linear mixed-effects model strategy (R6 class)
 
@@ -175,6 +190,15 @@
 
 - [`build_model_limma_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_impute.md)
   : Build limma model with LOD imputation for failed proteins
+
+- [`build_model_limma_voom()`](https://wolski.github.io/prolfqua/reference/build_model_limma_voom.md)
+  : Build limma model with vooma precision weights (proteomics)
+
+- [`build_model_limma_voom_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_voom_impute.md)
+  : Build limma-voom model with LOD imputation for failed proteins
+
+- [`build_model_limpa()`](https://wolski.github.io/prolfqua/reference/build_model_limpa.md)
+  : Build limpa vooma model from aggregated LFQData
 
 - [`center_to_reference_cfg()`](https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.md)
   : center to reference
@@ -276,6 +300,9 @@
 
 - [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
   : Create limma modelling strategy
+
+- [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md)
+  : Create limpa modelling strategy
 
 - [`summarize_stats_factors()`](https://wolski.github.io/prolfqua/reference/summarize_stats_factors.md)
   : compute var sd etc for all factor levels

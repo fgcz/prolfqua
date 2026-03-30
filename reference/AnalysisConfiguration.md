@@ -57,6 +57,10 @@ Other configuration:
 
   optional column with mz information
 
+- `opt_se`:
+
+  optional column with standard errors (e.g. from limpa aggregation)
+
 - `nr_children`:
 
   optional column containing for instance the number of peptides

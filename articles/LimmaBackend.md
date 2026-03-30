@@ -302,6 +302,392 @@ head(contr_robust$get_contrasts())
     ## # ℹ 5 more variables: sigma <dbl>, df <dbl>, conf.low <dbl>, conf.high <dbl>,
     ## #   avgAbd <dbl>
 
+## Vooma backend pipeline
+
+The vooma (variance modelling at the observational level) backend
+extends limma with observation-level precision weights derived from a
+mean-variance trend. This is analogous to voom for RNA-seq but applied
+to proteomics intensities. The key idea: instead of assuming equal
+variance across all observations, vooma estimates a smooth mean-variance
+relationship and down-weights observations with higher expected
+variance.
+
+The API mirrors the standard limma pipeline — the only difference is
+calling `build_model_limma_voom` instead of `build_model_limma`.
+
+``` r
+strat_voom <- strategy_limma("transformedIntensity ~ group_")
+mod_voom <- build_model_limma_voom(transformed, strat_voom, plot = TRUE)
+```
+
+![](LimmaBackend_files/figure-html/vooma_pipeline-1.png)
+
+``` r
+contr_voom <- ContrastsLimma$new(mod_voom, contr_spec)
+res_voom <- contr_voom$get_contrasts()
+```
+
+The plot shows `sqrt(sigma)` vs average log-expression. The red curve is
+the lowess trend used to derive per-observation weights.
+
+### Comparing limma vs vooma
+
+``` r
+merged_voom <- inner_join(
+  select(res_limma, protein_Id, contrast, p_limma = p.value, diff_limma = diff),
+  select(res_voom, protein_Id, contrast, p_voom = p.value, diff_voom = diff),
+  by = c("protein_Id", "contrast")
+)
+
+data.frame(
+  Metric = c("Fold-change correlation", "P-value correlation"),
+  Value = c(
+    cor(merged_voom$diff_limma, merged_voom$diff_voom, use = "complete.obs"),
+    cor(-log10(merged_voom$p_limma), -log10(merged_voom$p_voom), use = "complete.obs")
+  )
+) |> knitr::kable(digits = 4)
+```
+
+| Metric                  |  Value |
+|:------------------------|-------:|
+| Fold-change correlation | 1.0000 |
+| P-value correlation     | 0.9886 |
+
+``` r
+pl_voom <- contr_voom$get_Plotter()
+gridExtra::grid.arrange(
+  pl_limma$volcano()$FDR + ggplot2::ggtitle("limma"),
+  pl_voom$volcano()$FDR + ggplot2::ggtitle("vooma"),
+  ncol = 1
+)
+```
+
+![Volcano plots: limma vs
+vooma.](LimmaBackend_files/figure-html/volcano_voom-1.png)
+
+Volcano plots: limma vs vooma.
+
+## Limpa backend pipeline
+
+The limpa backend uses limpa’s Detection Probability Curve (DPC) for
+probabilistic missing value handling, followed by vooma precision
+weighting that incorporates the quantification standard errors. The
+three-step pipeline is:
+
+1.  **`AggregateLimpa`** — estimates the DPC, then quantifies features
+    using
+    [`limpa::dpcQuant()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html)
+    (peptide→protein) or
+    [`limpa::dpcQuantByRow()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html)
+    (same-level imputation). Produces standard errors and observation
+    counts.
+2.  **`build_model_limpa`** — fits a vooma model using
+    [`limpa::voomaLmFitWithImputation()`](https://rdrr.io/pkg/limpa/man/voomaLmFitWithImputation.html)
+    with the SEs as a bivariate predictor
+3.  **`ContrastsLimma`** — reused as-is since the output is a standard
+    `MArrayLM`
+
+We show two examples: aggregation to protein level and staying at
+peptide level.
+
+### Prepare peptide-level data
+
+Both examples start from the same simulated peptide-level dataset.
+
+``` r
+istar_pep <- sim_lfq_data_peptide_config(Nprot = 100)
+lfq_peptide <- LFQData$new(istar_pep$data, istar_pep$config)
+lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
+
+data.frame(
+  Property = c("Hierarchy", "Samples", "NAs"),
+  Value = c(
+    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
+    length(unique(lfq_peptide$data[[lfq_peptide$config$sampleName]])),
+    sum(is.na(lfq_peptide$data[[lfq_peptide$config$get_response()]]))
+  )
+) |> knitr::kable()
+```
+
+| Property  | Value                    |
+|:----------|:-------------------------|
+| Hierarchy | protein_Id \> peptide_Id |
+| Samples   | 12                       |
+| NAs       | 528                      |
+
+### Example 1: Peptide → protein aggregation
+
+#### Step 1: Aggregate with AggregateLimpa
+
+`AggregateLimpa` wraps
+[`limpa::dpc()`](https://rdrr.io/pkg/limpa/man/dpc.html) (DPC
+estimation) and
+[`limpa::dpcQuant()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html)
+(protein quantification). The output is a protein-level `LFQData` with
+three value columns: intensity, standard error (`config$opt_se`), and
+observation count (`config$nr_children`). Missing values are
+probabilistically integrated out during quantification — no fabricated
+numbers are imputed.
+
+``` r
+agg <- AggregateLimpa$new(lfq_peptide, "protein")
+lfq_protein_limpa <- agg$aggregate()
+
+data.frame(
+  Property = c("Input hierarchy", "Output hierarchy", "Response column",
+               "SE column", "Nr children column", "NAs in output",
+               "DPC beta0", "DPC beta1"),
+  Value = c(
+    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
+    paste(lfq_protein_limpa$config$hierarchy_keys(), collapse = " > "),
+    lfq_protein_limpa$config$get_response(),
+    lfq_protein_limpa$config$opt_se,
+    lfq_protein_limpa$config$nr_children,
+    sum(is.na(lfq_protein_limpa$data[[lfq_protein_limpa$config$get_response()]])),
+    round(agg$dpc_result$dpc[1], 3),
+    round(agg$dpc_result$dpc[2], 3)
+  )
+) |> knitr::kable()
+```
+
+| Property           | Value                    |
+|:-------------------|:-------------------------|
+| Input hierarchy    | protein_Id \> peptide_Id |
+| Output hierarchy   | protein_Id               |
+| Response column    | limpa                    |
+| SE column          | limpa_se                 |
+| Nr children column | nr_children_protein_Id   |
+| NAs in output      | 0                        |
+| DPC beta0          | -2.372                   |
+| DPC beta1          | 1                        |
+
+#### Step 2: Build model with build_model_limpa
+
+`build_model_limpa` extracts the SE and observation count matrices from
+the aggregated data and passes them to
+[`limpa::voomaLmFitWithImputation()`](https://rdrr.io/pkg/limpa/man/voomaLmFitWithImputation.html).
+The SEs serve as a second predictor in the vooma variance trend
+(bivariate: average intensity + log SE), and the observation counts
+identify imputed entries for degree-of-freedom correction.
+
+``` r
+response <- lfq_protein_limpa$config$get_response()
+strat_limpa <- strategy_limpa(paste(response, "~ group_"), plot = TRUE)
+mod_limpa_prot <- build_model_limpa(lfq_protein_limpa, strat_limpa)
+```
+
+![](LimmaBackend_files/figure-html/limpa_prot_model-1.png)
+
+``` r
+data.frame(
+  Property = c("Model class", "Model name"),
+  Value = c(class(mod_limpa_prot)[1], mod_limpa_prot$modelName)
+) |> knitr::kable()
+```
+
+| Property    | Value      |
+|:------------|:-----------|
+| Model class | ModelLimma |
+| Model name  | limpa      |
+
+``` r
+mod_limpa_prot$get_coefficients() |> head() |> knitr::kable(digits = 3)
+```
+
+| protein_Id  | factor      | Estimate | Std..Error | t.value | Pr…t.. |
+|:------------|:------------|---------:|-----------:|--------:|-------:|
+| 0EfVhX~3967 | (Intercept) |    4.566 |      0.032 | 140.675 |      0 |
+| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.778 |      0 |
+| 0YSKpy~2865 | (Intercept) |    4.061 |      0.048 |  85.005 |      0 |
+| 3QLHfm~8938 | (Intercept) |    4.652 |      0.034 | 135.632 |      0 |
+| 3QYop0~7543 | (Intercept) |    4.564 |      0.014 | 331.068 |      0 |
+| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.082 |      0 |
+
+#### Step 3: Compute contrasts with ContrastsLimma
+
+Since `build_model_limpa` returns a standard `ModelLimma`, we reuse
+`ContrastsLimma` directly — same as for the limma and vooma backends.
+
+``` r
+contr_limpa_prot <- ContrastsLimma$new(mod_limpa_prot, contr_spec, modelName = "limpa")
+res_limpa_prot <- contr_limpa_prot$get_contrasts()
+head(res_limpa_prot) |> knitr::kable(digits = 3)
+```
+
+| modelName | protein_Id  | contrast |   diff |   FDR | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
+|:----------|:------------|:---------|-------:|------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
+| limpa     | 0EfVhX~3967 | AvsCtrl  |  0.188 | 0.005 |     0.056 |     3.353 |   0.002 | 0.772 | 25.515 |    0.073 |     0.303 |  4.472 |
+| limpa     | 0m5WN4~6025 | AvsCtrl  |  0.078 | 0.033 |     0.032 |     2.418 |   0.023 | 0.855 | 25.515 |    0.012 |     0.145 |  4.231 |
+| limpa     | 0YSKpy~2865 | AvsCtrl  | -0.125 | 0.059 |     0.059 |    -2.108 |   0.045 | 0.968 | 25.515 |   -0.247 |    -0.003 |  4.124 |
+| limpa     | 3QLHfm~8938 | AvsCtrl  |  0.233 | 0.011 |     0.080 |     2.929 |   0.007 | 0.927 | 25.515 |    0.069 |     0.397 |  4.535 |
+| limpa     | 3QYop0~7543 | AvsCtrl  | -0.133 | 0.000 |     0.018 |    -7.379 |   0.000 | 0.887 | 25.515 |   -0.170 |    -0.096 |  4.630 |
+| limpa     | 76k03k~7094 | AvsCtrl  | -0.112 | 0.000 |     0.019 |    -5.814 |   0.000 | 0.966 | 25.515 |   -0.151 |    -0.072 |  4.595 |
+
+#### Volcano plot
+
+``` r
+pl_limpa_prot <- contr_limpa_prot$get_Plotter()
+pl_limpa_prot$volcano()$FDR
+```
+
+![Limpa protein-level volcano
+plot.](LimmaBackend_files/figure-html/limpa_prot_volcano-1.png)
+
+Limpa protein-level volcano plot.
+
+#### Facade shortcut
+
+The same pipeline is available as a one-liner via
+`build_contrast_analysis(method = "limpa")`. The input must be
+`AggregateLimpa` output (not plain `get_Aggregator()` output), because
+the facade needs the SE and observation count columns.
+
+``` r
+fa_limpa_prot <- build_contrast_analysis(
+  lfq_protein_limpa, "~ group_", contr_spec, method = "limpa"
+)
+fa_limpa_prot$get_contrasts() |> head() |> knitr::kable(digits = 3)
+```
+
+| facade | modelName | protein_Id  | contrast |   diff |   FDR | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
+|:-------|:----------|:------------|:---------|-------:|------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
+| limpa  | limpa     | 0EfVhX~3967 | AvsCtrl  |  0.188 | 0.005 |     0.056 |     3.353 |   0.002 | 0.772 | 25.515 |    0.073 |     0.303 |  4.472 |
+| limpa  | limpa     | 0m5WN4~6025 | AvsCtrl  |  0.078 | 0.033 |     0.032 |     2.418 |   0.023 | 0.855 | 25.515 |    0.012 |     0.145 |  4.231 |
+| limpa  | limpa     | 0YSKpy~2865 | AvsCtrl  | -0.125 | 0.059 |     0.059 |    -2.108 |   0.045 | 0.968 | 25.515 |   -0.247 |    -0.003 |  4.124 |
+| limpa  | limpa     | 3QLHfm~8938 | AvsCtrl  |  0.233 | 0.011 |     0.080 |     2.929 |   0.007 | 0.927 | 25.515 |    0.069 |     0.397 |  4.535 |
+| limpa  | limpa     | 3QYop0~7543 | AvsCtrl  | -0.133 | 0.000 |     0.018 |    -7.379 |   0.000 | 0.887 | 25.515 |   -0.170 |    -0.096 |  4.630 |
+| limpa  | limpa     | 76k03k~7094 | AvsCtrl  | -0.112 | 0.000 |     0.019 |    -5.814 |   0.000 | 0.966 | 25.515 |   -0.151 |    -0.072 |  4.595 |
+
+### Example 2: Peptide-level analysis (no aggregation)
+
+In this example we stay at the peptide level. `AggregateLimpa` with
+`impute_only = TRUE` calls
+[`limpa::dpcQuantByRow()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html),
+which fills in missing values at the peptide level while preserving the
+full hierarchy. Each peptide row is treated as its own “protein” (one
+peptide per group). The output has the same hierarchy as the input but
+with no NAs and with SE and observation count columns attached.
+
+This is useful for peptidoform-level analyses (e.g. PTMs) where
+aggregation to protein level is not desired.
+
+#### Step 1: Impute at peptide level
+
+``` r
+agg_pep <- AggregateLimpa$new(lfq_peptide, impute_only = TRUE)
+lfq_peptide_limpa <- agg_pep$aggregate()
+
+data.frame(
+  Property = c("Input hierarchy", "Output hierarchy",
+               "NAs in input", "NAs in output", "SE column"),
+  Value = c(
+    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
+    paste(lfq_peptide_limpa$config$hierarchy_keys(), collapse = " > "),
+    sum(is.na(lfq_peptide$data[[lfq_peptide$config$get_response()]])),
+    sum(is.na(lfq_peptide_limpa$data[[lfq_peptide_limpa$config$get_response()]])),
+    lfq_peptide_limpa$config$opt_se
+  )
+) |> knitr::kable()
+```
+
+| Property         | Value                    |
+|:-----------------|:-------------------------|
+| Input hierarchy  | protein_Id \> peptide_Id |
+| Output hierarchy | protein_Id \> peptide_Id |
+| NAs in input     | 528                      |
+| NAs in output    | 0                        |
+| SE column        | limpa_se                 |
+
+#### Step 2: Build model at peptide level
+
+The peptide-level data still has `protein_Id` and `peptide_Id` in its
+hierarchy. We set `hierarchyDepth` so that `hierarchy_keys()` returns
+only `protein_Id` — this makes the data “aggregated” from the model’s
+perspective (one row per protein_Id × peptide_Id × sample, with
+`subject_Id = protein_Id`).
+
+Since each peptide is a separate row in the wide matrix,
+`build_model_limpa` fits the model at the peptide level.
+
+``` r
+response_pep <- lfq_peptide_limpa$config$get_response()
+strat_limpa_pep <- strategy_limpa(paste(response_pep, "~ group_"), plot = TRUE)
+mod_limpa_pep <- build_model_limpa(lfq_peptide_limpa, strat_limpa_pep)
+```
+
+![](LimmaBackend_files/figure-html/limpa_pep_model-1.png)
+
+``` r
+data.frame(
+  Property = c("Model class", "Rows in model (peptides)"),
+  Value = c(class(mod_limpa_pep)[1], nrow(mod_limpa_pep$fit$coefficients))
+) |> knitr::kable()
+```
+
+| Property                 | Value      |
+|:-------------------------|:-----------|
+| Model class              | ModelLimma |
+| Rows in model (peptides) | 350        |
+
+#### Step 3: Compute contrasts
+
+``` r
+contr_limpa_pep <- ContrastsLimma$new(mod_limpa_pep, contr_spec, modelName = "limpa_peptide")
+res_limpa_pep <- contr_limpa_pep$get_contrasts()
+
+data.frame(
+  Property = c("Peptide-level results", "Unique peptides"),
+  Value = c(nrow(res_limpa_pep), length(unique(res_limpa_pep$peptide_Id)))
+) |> knitr::kable()
+```
+
+| Property              | Value |
+|:----------------------|------:|
+| Peptide-level results |  1050 |
+| Unique peptides       |   350 |
+
+``` r
+head(res_limpa_pep) |> knitr::kable(digits = 3)
+```
+
+| modelName     | protein_Id  | peptide_Id | contrast |   diff |   FDR | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
+|:--------------|:------------|:-----------|:---------|-------:|------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
+| limpa_peptide | 0EfVhX~3967 | IIhYJDAe   | AvsCtrl  |  0.234 | 0.000 |     0.046 |     5.086 |   0.000 | 1.047 | 35.777 |    0.141 |     0.327 |  4.545 |
+| limpa_peptide | 0EfVhX~3967 | SWkbauTR   | AvsCtrl  |  0.156 | 0.021 |     0.061 |     2.562 |   0.015 | 1.208 | 35.777 |    0.033 |     0.280 |  4.393 |
+| limpa_peptide | 0m5WN4~6025 | 7uKIY8WX   | AvsCtrl  | -0.430 | 0.000 |     0.067 |    -6.396 |   0.000 | 1.164 | 35.777 |   -0.566 |    -0.293 |  4.041 |
+| limpa_peptide | 0m5WN4~6025 | 7xDNA2B6   | AvsCtrl  |  0.272 | 0.000 |     0.061 |     4.485 |   0.000 | 1.069 | 35.777 |    0.149 |     0.395 |  4.187 |
+| limpa_peptide | 0m5WN4~6025 | KT0ROM7b   | AvsCtrl  |  0.697 | 0.000 |     0.058 |    11.988 |   0.000 | 1.071 | 35.777 |    0.579 |     0.815 |  4.186 |
+| limpa_peptide | 0m5WN4~6025 | LYLauRlr   | AvsCtrl  | -0.413 | 0.000 |     0.049 |    -8.470 |   0.000 | 1.108 | 35.777 |   -0.512 |    -0.314 |  4.553 |
+
+#### Volcano plot
+
+``` r
+pl_limpa_pep <- contr_limpa_pep$get_Plotter()
+pl_limpa_pep$volcano()$FDR
+```
+
+![Limpa peptide-level volcano
+plot.](LimmaBackend_files/figure-html/limpa_pep_volcano-1.png)
+
+Limpa peptide-level volcano plot.
+
+#### Comparison: protein-level vs peptide-level limpa
+
+``` r
+data.frame(
+  Level = c("Protein", "Peptide"),
+  Rows = c(nrow(res_limpa_prot), nrow(res_limpa_pep)),
+  Proteins = c(length(unique(res_limpa_prot$protein_Id)),
+               length(unique(res_limpa_pep$protein_Id))),
+  Peptides = c(NA_integer_, length(unique(res_limpa_pep$peptide_Id)))
+) |> knitr::kable()
+```
+
+| Level   | Rows | Proteins | Peptides |
+|:--------|-----:|---------:|---------:|
+| Protein |  300 |      100 |       NA |
+| Peptide | 1050 |      100 |      350 |
+
 ## Session Info
 
 ``` r
@@ -332,26 +718,26 @@ sessionInfo()
     ## [1] dplyr_1.2.0    prolfqua_1.6.1
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] utf8_1.2.6          tidyr_1.3.2         plotly_4.12.0      
-    ##  [4] sass_0.4.10         generics_0.1.4      stringi_1.8.7      
-    ##  [7] hms_1.1.4           digest_0.6.39       magrittr_2.0.4     
-    ## [10] evaluate_1.0.5      grid_4.5.2          RColorBrewer_1.1-3 
-    ## [13] fastmap_1.2.0       plyr_1.8.9          jsonlite_2.0.0     
-    ## [16] progress_1.2.3      ggrepel_0.9.8       limma_3.66.0       
-    ## [19] gridExtra_2.3       httr_1.4.8          purrr_1.2.1        
-    ## [22] viridisLite_0.4.3   scales_1.4.0        UpSetR_1.4.0       
-    ## [25] lazyeval_0.2.2      textshaping_1.0.5   jquerylib_0.1.4    
-    ## [28] cli_3.6.5           crayon_1.5.3        rlang_1.1.7        
-    ## [31] withr_3.0.2         cachem_1.1.0        yaml_2.3.12        
-    ## [34] otel_0.2.0          tools_4.5.2         ggplot2_4.0.2      
-    ## [37] forcats_1.0.1       vctrs_0.7.2         R6_2.6.1           
-    ## [40] lifecycle_1.0.5     fs_2.0.1            htmlwidgets_1.6.4  
-    ## [43] MASS_7.3-65         ragg_1.5.2          pkgconfig_2.0.3    
-    ## [46] desc_1.4.3          pkgdown_2.2.0       pillar_1.11.1      
-    ## [49] bslib_0.10.0        gtable_0.3.6        glue_1.8.0         
-    ## [52] data.table_1.18.2.1 Rcpp_1.1.1          statmod_1.5.1      
-    ## [55] systemfonts_1.3.2   xfun_0.57           tibble_3.3.1       
-    ## [58] tidyselect_1.2.1    knitr_1.51          farver_2.1.2       
-    ## [61] htmltools_0.5.9     labeling_0.4.3      rmarkdown_2.31     
-    ## [64] pheatmap_1.0.13     compiler_4.5.2      prettyunits_1.2.0  
-    ## [67] S7_0.2.1
+    ##  [1] limpa_1.2.5         utf8_1.2.6          tidyr_1.3.2        
+    ##  [4] plotly_4.12.0       sass_0.4.10         generics_0.1.4     
+    ##  [7] stringi_1.8.7       hms_1.1.4           digest_0.6.39      
+    ## [10] magrittr_2.0.4      evaluate_1.0.5      grid_4.5.2         
+    ## [13] RColorBrewer_1.1-3  fastmap_1.2.0       plyr_1.8.9         
+    ## [16] jsonlite_2.0.0      progress_1.2.3      ggrepel_0.9.8      
+    ## [19] limma_3.66.0        gridExtra_2.3       httr_1.4.8         
+    ## [22] purrr_1.2.1         viridisLite_0.4.3   scales_1.4.0       
+    ## [25] UpSetR_1.4.0        lazyeval_0.2.2      textshaping_1.0.5  
+    ## [28] jquerylib_0.1.4     cli_3.6.5           crayon_1.5.3       
+    ## [31] rlang_1.1.7         withr_3.0.2         cachem_1.1.0       
+    ## [34] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
+    ## [37] ggplot2_4.0.2       forcats_1.0.1       vctrs_0.7.2        
+    ## [40] R6_2.6.1            lifecycle_1.0.5     fs_2.0.1           
+    ## [43] htmlwidgets_1.6.4   MASS_7.3-65         ragg_1.5.2         
+    ## [46] pkgconfig_2.0.3     desc_1.4.3          pkgdown_2.2.0      
+    ## [49] pillar_1.11.1       bslib_0.10.0        gtable_0.3.6       
+    ## [52] data.table_1.18.2.1 glue_1.8.0          Rcpp_1.1.1         
+    ## [55] statmod_1.5.1       systemfonts_1.3.2   xfun_0.57          
+    ## [58] tibble_3.3.1        tidyselect_1.2.1    knitr_1.51         
+    ## [61] farver_2.1.2        htmltools_0.5.9     labeling_0.4.3     
+    ## [64] rmarkdown_2.31      pheatmap_1.0.13     compiler_4.5.2     
+    ## [67] prettyunits_1.2.0   S7_0.2.1

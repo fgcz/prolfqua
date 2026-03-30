@@ -1,0 +1,170 @@
+# Build limma model with vooma precision weights (proteomics)
+
+Estimates observation-level precision weights from a mean-variance trend
+(vooma) and fits a weighted least squares model via
+[`lmFit`](https://rdrr.io/pkg/limma/man/lmFit.html). For proteomics data
+that is already log2-transformed.
+
+## Usage
+
+``` r
+build_model_limma_voom(
+  lfqdata,
+  strategy,
+  modelName = strategy$model_name,
+  span = 0.5,
+  plot = FALSE
+)
+```
+
+## Arguments
+
+- lfqdata:
+
+  an [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md)
+  object (aggregated to protein level)
+
+- strategy:
+
+  output of
+  [`strategy_limma`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
+
+- modelName:
+
+  name of model (default from strategy)
+
+- span:
+
+  lowess smoother span for mean-variance trend (default 0.5)
+
+- plot:
+
+  logical; if TRUE, plot the mean-variance trend
+
+## Value
+
+a
+[`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md)
+object
+
+## Details
+
+When `strategy$weights` is set (e.g. to `nr_children`), these external
+weights enter the preliminary fit (so the trend estimation accounts for
+measurement precision) and are multiplied element-wise with the vooma
+weights for the final fit. See the voom integration notes in
+`TODO/TODO_limma_voom_integration.md` for the mathematical basis.
+
+## See also
+
+Other modelling:
+[`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
+[`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
+[`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
+[`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
+[`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
+[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
+[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
+[`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
+[`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+[`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md),
+[`ContrastsLimmaVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomFacade.md),
+[`ContrastsLimmaVoomImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomImputeFacade.md),
+[`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
+[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
+[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
+[`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
+[`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
+[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
+[`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
+[`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
+[`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
+[`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
+[`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
+[`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
+[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLimpa`](https://wolski.github.io/prolfqua/reference/StrategyLimpa.md),
+[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
+[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
+[`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
+[`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
+[`build_model_glm_protein()`](https://wolski.github.io/prolfqua/reference/build_model_glm_protein.md),
+[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
+[`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
+[`build_model_limma_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_impute.md),
+[`build_model_limma_voom_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_voom_impute.md),
+[`build_model_limpa()`](https://wolski.github.io/prolfqua/reference/build_model_limpa.md),
+[`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
+[`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
+[`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
+[`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
+[`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
+[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
+[`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
+[`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
+[`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
+[`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
+[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
+[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
+[`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
+[`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
+[`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
+[`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
+[`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
+[`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
+[`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
+[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
+[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
+[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
+[`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
+[`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
+[`sim_make_model_lm()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lm.md),
+[`sim_make_model_lmer()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lmer.md),
+[`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
+[`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
+[`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+istar <- sim_lfq_data_protein_config(Nprot = 50)
+#> creating sampleName from fileName column
+#> completing cases
+#> completing cases done
+#> setup done
+lProt <- LFQData$new(istar$data, istar$config)
+lProt$rename_response("transformedIntensity")
+
+strat <- strategy_limma("transformedIntensity ~ group_")
+mod <- build_model_limma_voom(lProt, strat)
+#> Warning: Partial NA coefficients for 1 probe(s)
+mod$get_coefficients()
+#> # A tibble: 150 × 6
+#>    protein_Id  factor      Estimate Std..Error t.value   Pr...t..
+#>    <chr>       <chr>          <dbl>      <dbl>   <dbl>      <dbl>
+#>  1 0EfVhX~7161 (Intercept)     20.3      0.465    43.6 2.54 e-147
+#>  2 0m5WN4~3543 (Intercept)     20.5      0.451    45.5 3.83 e-153
+#>  3 76k03k~9735 (Intercept)     20.2      0.472    42.7 9.11 e-145
+#>  4 7QuTub~5556 (Intercept)     22.8      0.516    44.2 2.60 e-149
+#>  5 7cbcrd~0495 (Intercept)     17.2      0.670    25.6 8.66 e- 84
+#>  6 7soopj~3451 (Intercept)     26.3      0.490    53.8 1.70 e-176
+#>  7 9VUkAq~8655 (Intercept)     22.2      0.499    44.6 2.48 e-150
+#>  8 At886V~0359 (Intercept)     17.1      0.666    25.7 3.34 e- 84
+#>  9 BEJI92~5483 (Intercept)     15.8      0.370    42.7 1.000e-144
+#> 10 CGzoYe~1248 (Intercept)     18.2      0.537    34.0 1.84 e-115
+#> # ℹ 140 more rows
+```

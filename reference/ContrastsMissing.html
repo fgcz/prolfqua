@@ -27,6 +27,7 @@ Compute contrasts with group mean imputation"></head><body>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
     <li><a class="dropdown-item" href="../articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
+    <li><a class="dropdown-item" href="../articles/limpa_example.html">Using limpa Directly on prolfqua Simulated Data</a></li>
     <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
@@ -70,6 +71,7 @@ of all observations of all groups.</p>
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
+<code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
@@ -78,6 +80,9 @@ of all observations of all groups.</p>
 <code><a href="ContrastsLimma.html">ContrastsLimma</a></code>,
 <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
 <code><a href="ContrastsLimmaImputeFacade.html">ContrastsLimmaImputeFacade</a></code>,
+<code><a href="ContrastsLimmaVoomFacade.html">ContrastsLimmaVoomFacade</a></code>,
+<code><a href="ContrastsLimmaVoomImputeFacade.html">ContrastsLimmaVoomImputeFacade</a></code>,
+<code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>,
 <code><a href="ContrastsLmerFacade.html">ContrastsLmerFacade</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
@@ -93,6 +98,7 @@ of all observations of all groups.</p>
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
 <code><a href="StrategyLM.html">StrategyLM</a></code>,
 <code><a href="StrategyLimma.html">StrategyLimma</a></code>,
+<code><a href="StrategyLimpa.html">StrategyLimpa</a></code>,
 <code><a href="StrategyLmer.html">StrategyLmer</a></code>,
 <code><a href="StrategyLogistf.html">StrategyLogistf</a></code>,
 <code><a href="StrategyRLM.html">StrategyRLM</a></code>,
@@ -103,6 +109,9 @@ of all observations of all groups.</p>
 <code><a href="build_model_impute.html">build_model_impute()</a></code>,
 <code><a href="build_model_limma.html">build_model_limma()</a></code>,
 <code><a href="build_model_limma_impute.html">build_model_limma_impute()</a></code>,
+<code><a href="build_model_limma_voom.html">build_model_limma_voom()</a></code>,
+<code><a href="build_model_limma_voom_impute.html">build_model_limma_voom_impute()</a></code>,
+<code><a href="build_model_limpa.html">build_model_limpa()</a></code>,
 <code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
@@ -135,6 +144,7 @@ of all observations of all groups.</p>
 <code><a href="sim_make_model_lm.html">sim_make_model_lm()</a></code>,
 <code><a href="sim_make_model_lmer.html">sim_make_model_lmer()</a></code>,
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
+<code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code></p></div>
     </div>
@@ -389,7 +399,7 @@ of all observations of all groups.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $FDR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_2900464194ff </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_29f7510aaa9c </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       2 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_2Factor_config.html">sim_lfq_data_2Factor_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>,weight_missing <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
@@ -429,7 +439,7 @@ of all observations of all groups.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $FDR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_2900464194ff </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_29f7510aaa9c </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       2 </span>
 </code></pre></div>
     </div>

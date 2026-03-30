@@ -11,8 +11,9 @@ build_contrast_analysis(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "rlm", "lmer", "lm_missing", "lm_impute", "limma", "limma_impute",
-    "deqms", "ropeca", "firth"),
+  method = c("lm", "lm_impute", "lm_missing", "limma", "limma_impute", "limma_voom",
+    "limma_voom_impute", "limpa", "rlm", "deqms", "deqms_voom", "firth", "lmer",
+    "ropeca"),
   ...
 )
 ```
@@ -37,8 +38,9 @@ build_contrast_analysis(
 
 - method:
 
-  one of `"lm"`, `"rlm"`, `"lmer"`, `"lm_missing"`, `"lm_impute"`,
-  `"limma"`, `"deqms"`, `"ropeca"`, `"firth"`
+  one of `"lm"`, `"lm_impute"`, `"lm_missing"`, `"limma"`,
+  `"limma_impute"`, `"limma_voom"`, `"limma_voom_impute"`, `"limpa"`,
+  `"rlm"`, `"deqms"`, `"deqms_voom"`, `"firth"`, `"lmer"`, `"ropeca"`
 
 - ...:
 
@@ -80,6 +82,7 @@ Other modelling:
 [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
+[`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
@@ -88,6 +91,9 @@ Other modelling:
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
 [`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md),
+[`ContrastsLimmaVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomFacade.md),
+[`ContrastsLimmaVoomImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomImputeFacade.md),
+[`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
 [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
@@ -104,6 +110,7 @@ Other modelling:
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
 [`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
 [`StrategyLimma`](https://wolski.github.io/prolfqua/reference/StrategyLimma.md),
+[`StrategyLimpa`](https://wolski.github.io/prolfqua/reference/StrategyLimpa.md),
 [`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
 [`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
 [`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
@@ -113,6 +120,9 @@ Other modelling:
 [`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md),
 [`build_model_limma_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_impute.md),
+[`build_model_limma_voom()`](https://wolski.github.io/prolfqua/reference/build_model_limma_voom.md),
+[`build_model_limma_voom_impute()`](https://wolski.github.io/prolfqua/reference/build_model_limma_voom_impute.md),
+[`build_model_limpa()`](https://wolski.github.io/prolfqua/reference/build_model_limpa.md),
 [`build_model_logistf()`](https://wolski.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
@@ -145,6 +155,7 @@ Other modelling:
 [`sim_make_model_lm()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lm.md),
 [`sim_make_model_lmer()`](https://wolski.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
+[`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
 

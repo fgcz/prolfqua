@@ -15,10 +15,10 @@ fold-change estimates and inflate false discovery rates.
 ## See also
 
 Other LFQData:
+[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
-[`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
@@ -83,8 +83,6 @@ Other LFQData:
 - [`LFQData$get_Stats()`](#method-LFQData-get_Stats)
 
 - [`LFQData$get_Transformer()`](#method-LFQData-get_Transformer)
-
-- [`LFQData$get_Imputer()`](#method-LFQData-get_Imputer)
 
 - [`LFQData$get_Aggregator()`](#method-LFQData-get_Aggregator)
 
@@ -453,20 +451,6 @@ LFQDataTransformer
 
 ------------------------------------------------------------------------
 
-### Method `get_Imputer()`
-
-get Imputer
-
-#### Usage
-
-    LFQData$get_Imputer()
-
-#### Returns
-
-LFQDataImp
-
-------------------------------------------------------------------------
-
 ### Method `get_Aggregator()`
 
 get Aggregator
@@ -584,10 +568,8 @@ stopifnot("LFQDataStats" %in% class(lfqdata$get_Stats()))
 #> completing cases
 stopifnot("LFQDataSummariser" %in% class(lfqdata$get_Summariser()))
 stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
-stopifnot("LFQDataImp" %in% class(lfqdata$get_Imputer()))
-stopifnot("LFQDataAggregator" %in% class(lfqdata$get_Aggregator()))
+stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))
 #> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: peptide.intensity
-#> Error: "LFQDataAggregator" %in% class(lfqdata$get_Aggregator()) is not TRUE
 
 lfqdata2 <- lfqdata$get_copy()
 lfqdata2$data <- lfqdata2$data[1:100,]

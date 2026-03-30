@@ -50,22 +50,22 @@ istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, N
 config <- istar$config
 analysis <- istar$data
 tmp <- plot_pca(analysis, config, add_txt= TRUE, nudge = 0.01)
-#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using LFQDataImp.
+#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
 #> Joining with `by = join_by(sampleName)`
 print(tmp)
 
 
 stopifnot("ggplot" %in% class(tmp) )
 tmp <- plot_pca(analysis, config, add_txt= FALSE)
-#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using LFQDataImp.
+#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
 #> Joining with `by = join_by(sampleName)`
 stopifnot("ggplot" %in% class(tmp) )
 tmp <- plot_pca(analysis, config, PC = c(1,2))
-#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using LFQDataImp.
+#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
 #> Joining with `by = join_by(sampleName)`
 stopifnot("ggplot" %in% class(tmp) )
 tmp <- plot_pca(analysis, config, PC = c(2,40))
-#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using LFQDataImp.
+#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
 #> Warning: nr of PCs: 13
 print(tmp)
 #> NULL

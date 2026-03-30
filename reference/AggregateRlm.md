@@ -13,10 +13,10 @@ intensities.
 ## See also
 
 Other LFQData:
+[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
-[`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),

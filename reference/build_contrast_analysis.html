@@ -29,6 +29,7 @@ construction through modelling to contrast computation."></head><body>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
     <li><a class="dropdown-item" href="../articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
+    <li><a class="dropdown-item" href="../articles/limpa_example.html">Using limpa Directly on prolfqua Simulated Data</a></li>
     <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
@@ -62,8 +63,9 @@ construction through modelling to contrast computation.</p>
 <span>  <span class="va">lfqdata</span>,</span>
 <span>  <span class="va">modelstr</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"rlm"</span>, <span class="st">"lmer"</span>, <span class="st">"lm_missing"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma"</span>, <span class="st">"limma_impute"</span>,</span>
-<span>    <span class="st">"deqms"</span>, <span class="st">"ropeca"</span>, <span class="st">"firth"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"lm_impute"</span>, <span class="st">"lm_missing"</span>, <span class="st">"limma"</span>, <span class="st">"limma_impute"</span>, <span class="st">"limma_voom"</span>,</span>
+<span>    <span class="st">"limma_voom_impute"</span>, <span class="st">"limpa"</span>, <span class="st">"rlm"</span>, <span class="st">"deqms"</span>, <span class="st">"deqms_voom"</span>, <span class="st">"firth"</span>, <span class="st">"lmer"</span>,</span>
+<span>    <span class="st">"ropeca"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -88,8 +90,11 @@ construction through modelling to contrast computation.</p>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>one of <code>"lm"</code>, <code>"rlm"</code>, <code>"lmer"</code>, <code>"lm_missing"</code>,
-<code>"lm_impute"</code>, <code>"limma"</code>, <code>"deqms"</code>, <code>"ropeca"</code>, <code>"firth"</code></p></dd>
+<dd><p>one of <code>"lm"</code>, <code>"lm_impute"</code>, <code>"lm_missing"</code>,
+<code>"limma"</code>, <code>"limma_impute"</code>, <code>"limma_voom"</code>,
+<code>"limma_voom_impute"</code>, <code>"limpa"</code>, <code>"rlm"</code>,
+<code>"deqms"</code>, <code>"deqms_voom"</code>, <code>"firth"</code>,
+<code>"lmer"</code>, <code>"ropeca"</code></p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -126,6 +131,7 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
+<code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
@@ -134,6 +140,9 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="ContrastsLimma.html">ContrastsLimma</a></code>,
 <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
 <code><a href="ContrastsLimmaImputeFacade.html">ContrastsLimmaImputeFacade</a></code>,
+<code><a href="ContrastsLimmaVoomFacade.html">ContrastsLimmaVoomFacade</a></code>,
+<code><a href="ContrastsLimmaVoomImputeFacade.html">ContrastsLimmaVoomImputeFacade</a></code>,
+<code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>,
 <code><a href="ContrastsLmerFacade.html">ContrastsLmerFacade</a></code>,
 <code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
@@ -150,6 +159,7 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
 <code><a href="StrategyLM.html">StrategyLM</a></code>,
 <code><a href="StrategyLimma.html">StrategyLimma</a></code>,
+<code><a href="StrategyLimpa.html">StrategyLimpa</a></code>,
 <code><a href="StrategyLmer.html">StrategyLmer</a></code>,
 <code><a href="StrategyLogistf.html">StrategyLogistf</a></code>,
 <code><a href="StrategyRLM.html">StrategyRLM</a></code>,
@@ -159,6 +169,9 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="build_model_impute.html">build_model_impute()</a></code>,
 <code><a href="build_model_limma.html">build_model_limma()</a></code>,
 <code><a href="build_model_limma_impute.html">build_model_limma_impute()</a></code>,
+<code><a href="build_model_limma_voom.html">build_model_limma_voom()</a></code>,
+<code><a href="build_model_limma_voom_impute.html">build_model_limma_voom_impute()</a></code>,
+<code><a href="build_model_limpa.html">build_model_limpa()</a></code>,
 <code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
@@ -191,6 +204,7 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="sim_make_model_lm.html">sim_make_model_lm()</a></code>,
 <code><a href="sim_make_model_lmer.html">sim_make_model_lmer()</a></code>,
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
+<code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code></p></div>
     </div>

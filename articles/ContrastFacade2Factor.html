@@ -40,6 +40,7 @@
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
     <li><a class="dropdown-item" href="../articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
+    <li><a class="dropdown-item" href="../articles/limpa_example.html">Using limpa Directly on prolfqua Simulated Data</a></li>
     <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
@@ -69,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-03-26</h4>
+            <h4 data-toc-skip class="date">2026-03-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/vignettes/ContrastFacade2Factor.Rmd" class="external-link"><code>vignettes/ContrastFacade2Factor.Rmd</code></a></small>
       <div class="d-none name"><code>ContrastFacade2Factor.Rmd</code></div>
@@ -123,7 +124,7 @@ with the same contrast specification. See
 <span><span class="va">lfq_peptide_2f</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data_subgroup</span>, <span class="va">cfg_subgroup</span><span class="op">)</span></span>
 <span><span class="va">lfq_peptide_2f</span> <span class="op">&lt;-</span> <span class="va">lfq_peptide_2f</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span>
 <span></span>
-<span><span class="va">lfq_protein_2f</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/AggregateMedpolish.html">AggregateMedpolish</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfq_peptide_2f</span>, <span class="st">"protein"</span><span class="op">)</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">lfq_protein_2f</span> <span class="op">&lt;-</span> <span class="va">lfq_peptide_2f</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">lfq_peptide_2f</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "protein_Id" "peptide_Id"</span></span></code></pre>

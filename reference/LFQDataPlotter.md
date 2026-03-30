@@ -11,11 +11,11 @@ LFQDataPlotter —- Create various visualization of the LFQdata
 [`plot_pca`](https://wolski.github.io/prolfqua/reference/plot_pca.md)
 
 Other LFQData:
+[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
-[`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
 [`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
@@ -190,7 +190,7 @@ PCA plot
 A PCA is applied and the first and second principal component are shown.
 Features with missing values are removed. For PCA with all features,
 impute first using
-[`LFQDataImp`](https://wolski.github.io/prolfqua/reference/LFQDataImp.md).
+[`impute_with_zcomp`](https://wolski.github.io/prolfqua/reference/impute_with_zcomp.md).
 
 #### Usage
 
@@ -509,10 +509,10 @@ lfqplotter <- lfqdata$get_Plotter()
 stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
 stopifnot(class(lfqplotter$heatmap_cor()) == "pheatmap")
 stopifnot("ggplot" %in% class(lfqplotter$pca()))
-#> PCA: removed 16 of 28 features with missing values. For PCA with all features, impute first using LFQDataImp.
+#> PCA: removed 16 of 28 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
 #> Joining with `by = join_by(sampleName)`
 stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
-#> PCA: removed 16 of 28 features with missing values. For PCA with all features, impute first using LFQDataImp.
+#> PCA: removed 16 of 28 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
 #> Joining with `by = join_by(sampleName)`
 tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))

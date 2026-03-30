@@ -74,6 +74,7 @@ xx
     ##     nr_children: nr_peptides
     ##     opt_mz: 
     ##     opt_rt: 
+    ##     opt_se: 
     ##     parameter: active binding
     ##     pop_response: function () 
     ##     sampleName: sampleName
