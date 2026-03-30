@@ -38,6 +38,7 @@ Imports:
     lmerTest,
     logistf,
     MASS,
+    methods,
     pheatmap,
     plotly,
     progress,

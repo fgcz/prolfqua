@@ -4,6 +4,90 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-30 — Limpa Integration: AggregateLimpa, build_model_limpa, ContrastsLimpaFacade
+
+Full integration of the limpa package (Li & Smyth) into the prolfqua modelling pipeline. Limpa provides probabilistic protein quantification from precursor-level data with missing value handling via a Detection Probability Curve (DPC).
+
+### AggregateLimpa (`R/LFQDataAggregator.R`)
+
+New R6 aggregator class following the existing `AggregateMedpolish`/`AggregateRlm`/`AggregateTopN` pattern:
+
+- **Aggregation mode** (`impute_only = FALSE`): wraps `limpa::dpc()` + `limpa::dpcQuant()` to aggregate peptides → proteins. Output is a protein-level `LFQData` with no NAs, plus SE and observation count columns.
+- **Impute-only mode** (`impute_only = TRUE`): wraps `limpa::dpc()` + `limpa::dpcQuantByRow()` to fill missing values at the same hierarchy level (e.g. peptide-level imputation for PTM analysis). Hierarchy is preserved.
+
+Helper `.elist_to_lfqdata()` converts limpa's EList output back to long-format LFQData, parsing `~lfq~`-separated rownames back to hierarchy columns and attaching SE + n_obs as extra columns via `config$opt_se` and `config$nr_children`.
+
+### AnalysisConfiguration: `opt_se` field (`R/AnalysisConfiguration.R`)
+
+Added `opt_se` field for standard error column names, following the `opt_rt`/`opt_mz` pattern. Three one-line edits: field declaration, `initialize()` fields list, `value_vars()` return.
+
+### StrategyLimpa + build_model_limpa (`R/ContrastsLimpa.R`)
+
+- `StrategyLimpa` R6 class with fields for formula, model_name, trend, robust, plot, span
+- `strategy_limpa()` factory function
+- `build_model_limpa()`: extracts SE matrix → `log(SE + 1e-6)` as vooma predictor, n_obs matrix → imputed flag `(n_obs == 0)`, calls `limpa::voomaLmFitWithImputation()` for bivariate vooma precision weighting, returns `ModelLimma`
+
+Since the output is standard `MArrayLM`, `ContrastsLimma` is reused as-is.
+
+### ContrastsLimpaFacade (`R/ContrastsFacades.R`)
+
+New facade class wiring `strategy_limpa` → `build_model_limpa` → `ContrastsLimma`. Validates that `config$opt_se` is set (ensuring `AggregateLimpa` was used). Registered as `method = "limpa"` in `build_contrast_analysis()`.
+
+### Extract `.lfqdata_to_elist()` and `.resolve_weights()` helpers (`R/ContrastsLimma.R`)
+
+Deduplicated the common preamble across all 5 `build_model_limma*` functions:
+
+- `.lfqdata_to_elist(lfqdata, formula)` — `to_wide()` → expr_matrix + annotation + rowdata, subject_Id/isotopeLabel dedup, design matrix, EList construction, dummy lm for linfct extraction
+- `.resolve_weights(lfqdata, strategy, annotation)` — resolves `strategy$weights` from column name (per-sample or per-protein×sample) or matrix to the right format for `limma::lmFit()`
+
+Refactored: `build_model_limma`, `build_model_limma_impute`, `build_model_limma_voom`, `build_model_limma_voom_impute`, `build_model_limpa`.
+
+### Bug fix: `.elist_to_lfqdata` duplicate isotopeLabel columns
+
+The annotation join in `.elist_to_lfqdata()` produced `isotopeLabel.x`/`.y` suffixes because `isotopeLabel` was already parsed from row IDs. Fixed by excluding columns already present in `long_data` from the join.
+
+### DESCRIPTION
+
+Added `methods` to Imports (for `new("EList", ...)`). Added `@importFrom methods new` to `.lfqdata_to_elist`.
+
+### Vignettes
+
+- `LimmaBackend.Rmd` — added vooma section (`build_model_limma_voom`) and two limpa examples: (1) peptide → protein aggregation, (2) peptide-level impute-only analysis. Replaced `cat()` output with `knitr::kable()` tables throughout.
+- `ContrastFacades.Rmd` — added limpa facade to the parallel comparison (protein-level facades, volcano plots, missing protein tables, rescued estimates).
+
+### Tests
+
+48 new tests in `tests/testthat/test-ContrastsLimpa.R`:
+- `strategy_limpa` creation
+- `AggregateLimpa` aggregation (SE/n_obs columns, no NAs, hierarchy reduction, wide pivotable)
+- `AggregateLimpa` impute_only (hierarchy preserved, NAs filled)
+- `build_model_limpa` returns `ModelLimma`
+- `ContrastsLimma` works with limpa `ModelLimma`
+- `ContrastsLimpaFacade` end-to-end (get_contrasts, get_missing, to_wide)
+- `build_contrast_analysis(method = "limpa")`
+- Rejection when `opt_se` is not set
+
+### Files modified
+
+| File | Changes |
+|------|---------|
+| `R/AnalysisConfiguration.R` | Added `opt_se` field (3 lines) |
+| `R/LFQDataAggregator.R` | Added `AggregateLimpa`, `.elist_to_lfqdata()` (~180 lines) |
+| `R/ContrastsLimpa.R` | **New file**: `StrategyLimpa`, `strategy_limpa()`, `build_model_limpa()` |
+| `R/ContrastsLimma.R` | Extracted `.lfqdata_to_elist()`, `.resolve_weights()`; refactored 5 `build_model_*` functions |
+| `R/ContrastsFacades.R` | Added `ContrastsLimpaFacade` |
+| `R/build_contrast_analysis.R` | Added `"limpa"` method |
+| `DESCRIPTION` | Added `methods` to Imports |
+| `NAMESPACE` | Added limpa exports + `importFrom(methods, new)` |
+| `tests/testthat/test-ContrastsLimpa.R` | **New file**: 48 tests |
+| `tests/testthat/test-ContrastsLimma.R` | Added vooma/voom_impute test cases |
+| `vignettes/LimmaBackend.Rmd` | Added vooma + two limpa examples, `cat()` → `knitr::kable()` |
+| `vignettes/ContrastFacades.Rmd` | Added limpa facade to comparison |
+
+All 618 tests pass (0 failures, 42 pre-existing warnings).
+
+---
+
 ## 2026-03-26 — Remove Unused LFQDataImp R6 Class
 
 Removed `LFQDataImp` R6 class and `LFQData$get_Imputer()` factory method. The class was a thin wrapper around `impute_with_zcomp()` — defined and tested but never used in any workflow, vignette, or downstream package (prolfquapp, prophosqua, prolfquabenchmark).

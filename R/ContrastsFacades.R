@@ -1181,12 +1181,16 @@ ContrastsROPECAFacade <- R6::R6Class(
 #' @export
 FACADE_REGISTRY <- list(
   lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
-  lm_missing = list(class = "ContrastsLMMissingFacade", needs = "aggregated"),
   lm_impute = list(class = "ContrastsLMImputeFacade", needs = "aggregated"),
+  lm_missing = list(class = "ContrastsLMMissingFacade", needs = "aggregated"),
   limma = list(class = "ContrastsLimmaFacade", needs = "aggregated"),
   limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "aggregated"),
+  limma_voom = list(class = "ContrastsLimmaVoomFacade", needs = "aggregated"),
+  limma_voom_impute = list(class = "ContrastsLimmaVoomImputeFacade", needs = "aggregated"),
+  limpa = list(class = "ContrastsLimpaFacade", needs = "aggregated_limpa"),
   rlm = list(class = "ContrastsRLMFacade", needs = "aggregated"),
   deqms = list(class = "ContrastsDEqMSFacade", needs = "aggregated"),
+  deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "aggregated"),
   firth = list(class = "ContrastsFirthFacade", needs = "either"),
   lmer = list(class = "ContrastsLmerFacade", needs = "nested"),
   ropeca = list(class = "ContrastsROPECAFacade", needs = "nested")

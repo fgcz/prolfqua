@@ -8,8 +8,9 @@ build_contrast_analysis(
   lfqdata,
   modelstr,
   contrasts,
-  method = c("lm", "rlm", "lmer", "lm_missing", "lm_impute", "limma", "limma_impute",
-    "limma_voom", "limma_voom_impute", "deqms", "deqms_voom", "ropeca", "firth", "limpa"),
+  method = c("lm", "lm_impute", "lm_missing", "limma", "limma_impute", "limma_voom",
+    "limma_voom_impute", "limpa", "rlm", "deqms", "deqms_voom", "firth", "lmer",
+    "ropeca"),
   ...
 )
 }
@@ -23,10 +24,11 @@ build_contrast_analysis(
 \item{contrasts}{named character vector of contrasts
 (e.g. \code{c("A_vs_B" = "group_A - group_B")})}
 
-\item{method}{one of \code{"lm"}, \code{"rlm"}, \code{"lmer"}, \code{"lm_missing"},
-\code{"lm_impute"}, \code{"limma"}, \code{"limma_impute"}, \code{"limma_voom"},
-\code{"limma_voom_impute"}, \code{"deqms"}, \code{"deqms_voom"},
-\code{"ropeca"}, \code{"firth"}, \code{"limpa"}}
+\item{method}{one of \code{"lm"}, \code{"lm_impute"}, \code{"lm_missing"},
+\code{"limma"}, \code{"limma_impute"}, \code{"limma_voom"},
+\code{"limma_voom_impute"}, \code{"limpa"}, \code{"rlm"},
+\code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
+\code{"lmer"}, \code{"ropeca"}}
 
 \item{...}{additional arguments forwarded to the underlying strategy function
 (e.g. \code{trend}, \code{robust} for \code{strategy_limma})}

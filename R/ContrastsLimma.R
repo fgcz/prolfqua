@@ -113,6 +113,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #'   \item{rhs_formula}{the RHS-only formula}
 #'   \item{dummy_model}{a dummy \code{lm} fitted on one complete row}
 #' }
+#' @importFrom methods new
 #' @keywords internal
 .lfqdata_to_elist <- function(lfqdata, formula) {
   wide <- lfqdata$to_wide(as.matrix = TRUE)
