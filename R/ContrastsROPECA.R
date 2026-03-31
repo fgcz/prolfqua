@@ -12,13 +12,12 @@
 #' @examples
 #'
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot=20)
-#' istar$config <- old2new(istar$config )
 #' istar_data <- istar$data
 #' modelFunction <-
 #'   strategy_lm("abundance  ~ group_")
 #' pepIntensity <- istar_data
 #' config <- istar$config$clone(deep = TRUE)
-#' config$hierarchyDepth <- 2
+#' config$hierarchy_depth <- 2
 #' config$hierarchy_keys_depth()
 #'
 #' mod <- build_model(

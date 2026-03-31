@@ -106,10 +106,10 @@ lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 ### AnalysisConfiguration
 
 Flat R6 class that maps column roles in the data:
-- **hierarchy**: ordered measurement levels (protein_Id → peptide_Id → precursor_Id → fragment_Id). `hierarchyDepth` controls which level is modelled.
-- **factors**: explanatory variables (group, treatment). `factorDepth` controls interaction depth.
-- **workIntensity**: response column. Uses a stack (`set_response()` / `pop_response()` / `get_response()`) for working with multiple intensity columns.
-- **fileName**: sample identifier column.
+- **hierarchy**: ordered measurement levels (protein_Id → peptide_Id → precursor_Id → fragment_Id). `hierarchy_depth` controls which level is modelled.
+- **factors**: explanatory variables (group, treatment). `factor_depth` controls interaction depth.
+- **work_intensity**: response column. Uses a stack (`set_response()` / `pop_response()` / `get_response()`) for working with multiple intensity columns.
+- **file_name**: sample identifier column.
 
 Concrete config factories (e.g. `create_config_Skyline()`, `create_config_Spectronaut_Peptide()`) were in `tidyMS_R6_ConcreteConfigurations.R` (now removed — `create_config_MQ_peptide()` was dead code). Remaining factories are in downstream packages.
 

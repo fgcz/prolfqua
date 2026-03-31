@@ -17,7 +17,7 @@ bb <- prolfqua::sim_lfq_data_protein_config()
 config <- bb$config
 analysis <- bb$data
 
-config$factorDepth <- 1
+config$factor_depth <- 1
 make_interaction_column(analysis,
    config$factor_keys_depth())
 

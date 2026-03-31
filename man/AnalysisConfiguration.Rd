@@ -36,17 +36,17 @@ Other configuration:
 \describe{
 \item{\code{sep}}{separator to use when uniting columns is necessary}
 
-\item{\code{fileName}}{column name of column containing raw file names}
+\item{\code{file_name}}{column name of column containing raw file names}
 
-\item{\code{sampleName}}{(will be generated from factors or fileName)}
+\item{\code{sample_name}}{(will be generated from factors or file_name)}
 
-\item{\code{normValue}}{optional column with normalization values (e.g., Creatinine)}
+\item{\code{norm_value}}{optional column with normalization values (e.g., Creatinine)}
 
-\item{\code{isotopeLabel}}{which column contains the isotope label (e.g. heavy or light), or light only if LFQ.}
+\item{\code{isotope_label}}{which column contains the isotope label (e.g. heavy or light), or light only if LFQ.}
 
-\item{\code{ident_qValue}}{column name with identification QValues (smaller better)}
+\item{\code{ident_q_value}}{column name with identification QValues (smaller better)}
 
-\item{\code{ident_Score}}{column with identification score (larger better)}
+\item{\code{ident_score}}{column with identification score (larger better)}
 
 \item{\code{opt_rt}}{optional column with rt information}
 
@@ -56,7 +56,7 @@ Other configuration:
 
 \item{\code{nr_children}}{optional column containing for instance the number of peptides}
 
-\item{\code{workIntensity}}{column which contains the intensities}
+\item{\code{work_intensity}}{column which contains the intensities}
 
 \item{\code{is_response_transformed}}{are the intensities transformed for constant variance}
 
@@ -64,11 +64,11 @@ Other configuration:
 
 \item{\code{factors}}{Names of columns containing factors (annotations)}
 
-\item{\code{factorDepth}}{number of relevant factors (used by plotting functions etc)}
+\item{\code{factor_depth}}{number of relevant factors (used by plotting functions etc)}
 
 \item{\code{hierarchy}}{list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)}
 
-\item{\code{hierarchyDepth}}{At which depth do you want to model i.e. protein than 1}
+\item{\code{hierarchy_depth}}{At which depth do you want to model i.e. protein than 1}
 
 \item{\code{min_peptides_protein}}{minimum number of peptides per protein}
 }
@@ -77,9 +77,23 @@ Other configuration:
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{table}}{deprecated, use config directly. Returns self for backwards compatibility.}
+\item{\code{fileName}}{backward-compat alias for file_name}
 
-\item{\code{parameter}}{deprecated, use config directly. Returns self for backwards compatibility.}
+\item{\code{sampleName}}{backward-compat alias for sample_name}
+
+\item{\code{normValue}}{backward-compat alias for norm_value}
+
+\item{\code{isotopeLabel}}{backward-compat alias for isotope_label}
+
+\item{\code{workIntensity}}{backward-compat alias for work_intensity}
+
+\item{\code{factorDepth}}{backward-compat alias for factor_depth}
+
+\item{\code{hierarchyDepth}}{backward-compat alias for hierarchy_depth}
+
+\item{\code{ident_qValue}}{backward-compat alias for ident_q_value}
+
+\item{\code{ident_Score}}{backward-compat alias for ident_score}
 }
 \if{html}{\out{</div>}}
 }
@@ -109,21 +123,9 @@ Other configuration:
 \subsection{Method \code{new()}}{
 create AnalysisConfiguration
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$new(
-  analysisTableAnnotation = NULL,
-  analysisParameter = NULL
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$new()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{analysisTableAnnotation}}{optional, for backwards compatibility with old constructor}
-
-\item{\code{analysisParameter}}{optional, for backwards compatibility with old constructor}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-set_response"></a>}}

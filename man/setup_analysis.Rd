@@ -22,7 +22,7 @@ and create new columns e.g. sampleName column etc.
 \examples{
 
 skylineconfig <- AnalysisConfiguration$new()
-skylineconfig$fileName <- "Replicate.Name"
+skylineconfig$file_name <- "Replicate.Name"
 skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
 skylineconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
 skylineconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
@@ -30,9 +30,9 @@ skylineconfig$hierarchy[["fragment_Id"]] <- c(
   "Peptide.Sequence", "Precursor.Charge",
   "Fragment.Ion", "Product.Charge"
 )
-skylineconfig$ident_qValue <- "Detection.Q.Value"
+skylineconfig$ident_q_value <- "Detection.Q.Value"
 skylineconfig$set_response("Area")
-skylineconfig$isotopeLabel <- "Isotope.Label.Type"
+skylineconfig$isotope_label <- "Isotope.Label.Type"
 skylineconfig$factors[["Time"]] = "Sampling.Time.Point"
 sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 
@@ -49,12 +49,12 @@ sample_creatinine <- data |> dplyr::select(sample) |> dplyr::distinct() |>
 data <- dplyr::inner_join(data, sample_creatinine, by = "sample")
 
 config <- AnalysisConfiguration$new()
-config$fileName = "sample"
+config$file_name = "sample"
 config$factors["group_"] = "group"
 config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
 config$hierarchy[["peptide_Id"]] = "peptideID"
 config$set_response("abundance")
-config$normValue = "creatinine"
+config$norm_value = "creatinine"
 
 adata <- setup_analysis(data, config)
 

@@ -22,9 +22,9 @@
 #'
 table_factors <- function(pdata, configuration) {
   factorsTab <- pdata |>
-    dplyr::select(c(configuration$fileName, configuration$sampleName, configuration$factor_keys())) |>
+    dplyr::select(c(configuration$file_name, configuration$sample_name, configuration$factor_keys())) |>
     dplyr::distinct() |>
-    arrange(!!sym(configuration$sampleName))
+    arrange(!!sym(configuration$sample_name))
   return(factorsTab)
 }
 
@@ -78,7 +78,7 @@ table_factors_size <- function(pdata, configuration) {
 hierarchy_counts <- function(pdata, config) {
   hierarchy <- config$hierarchy_keys()
   res <- pdata |>
-    dplyr::group_by(across(all_of(config$isotopeLabel))) |>
+    dplyr::group_by(across(all_of(config$isotope_label))) |>
     dplyr::summarise(across(all_of(hierarchy), n_distinct))
 
   return(res)
@@ -109,7 +109,7 @@ HierarchyCountsSample <- R6::R6Class(
           !is.na(!!rlang::sym(configuration$get_response())),
           !!rlang::sym(configuration$nr_children) >= .env$nr_children
         ) |>
-        dplyr::group_by(across(all_of(c(configuration$isotopeLabel, configuration$sampleName)))) |>
+        dplyr::group_by(across(all_of(c(configuration$isotope_label, configuration$sample_name)))) |>
         dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct))
     },
     #' @description Return wide-format summary
@@ -120,7 +120,7 @@ HierarchyCountsSample <- R6::R6Class(
     long = function() {
       self$.summary |>
         tidyr::pivot_longer(
-          cols = -dplyr::all_of(c(self$.configuration$isotopeLabel, self$.configuration$sampleName)),
+          cols = -dplyr::all_of(c(self$.configuration$isotope_label, self$.configuration$sample_name)),
           names_to = "key",
           values_to = "nr"
         )
@@ -132,7 +132,7 @@ HierarchyCountsSample <- R6::R6Class(
         return(NULL)
       }
       nudgeval <- -mean(long$nr) * 0.05
-      ggplot2::ggplot(long, ggplot2::aes(x = !!rlang::sym(self$.configuration$sampleName), y = .data$nr)) +
+      ggplot2::ggplot(long, ggplot2::aes(x = !!rlang::sym(self$.configuration$sample_name), y = .data$nr)) +
         ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
         ggplot2::facet_wrap(~key, scales = "free_y", ncol = 1) +
         ggplot2::geom_text(ggplot2::aes(label = .data$nr), nudge_y = nudgeval, angle = 65) +
@@ -211,18 +211,18 @@ hierarchy_counts_sample <- function(
 #'  hierarchy = configur$hierarchy_keys_depth() )
 #' summarize_hierarchy(data, configur,
 #'  hierarchy = NULL, factors = configur$factor_keys_depth() )
-#' configur$hierarchyDepth = 1
+#' configur$hierarchy_depth = 1
 #' summarize_hierarchy(data, configur,
 #'  factors = configur$factor_keys_depth())
-#' configur$hierarchyDepth = 2
+#' configur$hierarchy_depth = 2
 #' summarize_hierarchy(data, configur)
-#' configur$hierarchyDepth = 3
+#' configur$hierarchy_depth = 3
 #' summarize_hierarchy(data, configur )
-#' configur$hierarchyDepth = 4
+#' configur$hierarchy_depth = 4
 #' summarize_hierarchy(data, configur )
 #'
 summarize_hierarchy <- function(pdata, config, hierarchy = config$hierarchy_keys_depth(), factors = character()) {
-  all_hierarchy <- c(config$isotopeLabel, config$hierarchy_keys())
+  all_hierarchy <- c(config$isotope_label, config$hierarchy_keys())
 
   precursor <- pdata |> dplyr::select(dplyr::all_of(c(factors, all_hierarchy))) |> dplyr::distinct()
   x3 <- precursor |>

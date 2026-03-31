@@ -27,7 +27,7 @@ print.pheatmap <- function(x, ...) {
 #' plot_intensity_distribution_violin(istar$data, istar$config)
 #'
 plot_intensity_distribution_violin <- function(pdata, config) {
-  p <- ggplot(pdata, aes(x = .data[[config$sampleName]], y = .data[[config$get_response()]])) +
+  p <- ggplot(pdata, aes(x = .data[[config$sample_name]], y = .data[[config$get_response()]])) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
@@ -50,7 +50,7 @@ plot_intensity_distribution_violin <- function(pdata, config) {
 #' plot_intensity_distribution_density(istar$data, istar$config)
 #'
 plot_intensity_distribution_density <- function(pdata, config, legend = TRUE) {
-  p <- ggplot(pdata, aes(x = .data[[config$get_response()]], colour = .data[[config$sampleName]])) +
+  p <- ggplot(pdata, aes(x = .data[[config$get_response()]], colour = .data[[config$sample_name]])) +
     geom_line(stat = "density")
   if (!config$is_response_transformed) {
     p <- p + scale_x_continuous(trans = "log10")
@@ -146,7 +146,7 @@ plot_hierarchies_boxplot <- function(
     pb$tick()
   }
 
-  isotopeLabel <- config$isotopeLabel
+  isotopeLabel <- config$isotope_label
   lil <- length(unique(pdata[[isotopeLabel]]))
 
   pdata <- prolfqua::make_interaction_column(pdata, c(config$factor_keys_depth()))
@@ -289,7 +289,7 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE, color = colorRampPalette(
 
   factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sampleName]]
+  rownames(factors) <- annot[[config$sample_name]]
 
   gg <- stats::hclust(stats::dist(cres))
   res <- pheatmap::pheatmap(
@@ -338,7 +338,7 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, show_rownames = FALSE,
 
   factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sampleName]]
+  rownames(factors) <- annot[[config$sample_name]]
   resdata <- t(scale(t(wide$data)))
   resdataf <- prolfqua::remove_NA_rows(resdata, floor(ncol(resdata) * na_fraction))
 
@@ -410,7 +410,7 @@ plot_raster <- function(data, config, arrange = c("mean", "var"), not_na = FALSE
 
   factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sampleName]]
+  rownames(factors) <- annot[[config$sample_name]]
 
   if (arrange == "mean") {
     bb <- apply(resdata, 1, mean, na.rm = TRUE)
@@ -463,11 +463,11 @@ plot_NA_heatmap <- function(data, config, limitrows = 10000, distance = "binary"
   res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data
-  stopifnot(annot[[config$sampleName]] %in% colnames(res))
+  stopifnot(annot[[config$sample_name]] %in% colnames(res))
 
   factors <- dplyr::select(annot, all_of(config$factor_keys()))
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sampleName]]
+  rownames(factors) <- annot[[config$sample_name]]
 
   res[!is.na(res)] <- 0
   res[is.na(res)] <- 1
@@ -545,7 +545,7 @@ plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE
   }
   ff <- t(ff)
   pca_result <- prcomp(ff)
-  xx <- as_tibble(pca_result$x, rownames = config$sampleName)
+  xx <- as_tibble(pca_result$x, rownames = config$sample_name)
   variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
 
   if (max(PC) > (ncol(xx) - 1)) {
@@ -562,13 +562,13 @@ plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE
     geom_point()
   })
 
-  text <- geom_text(aes(label = !!sym(config$sampleName)), check_overlap = TRUE, nudge_x = nudge, nudge_y = nudge)
+  text <- geom_text(aes(label = !!sym(config$sample_name)), check_overlap = TRUE, nudge_x = nudge, nudge_y = nudge)
 
   PCx <- paste0("PC", PC[1])
   PCy <- paste0("PC", PC[2])
   x <- ggplot(
     xx,
-    aes(x = !!sym(PCx), y = !!sym(PCy), color = !!sym(config$factor_keys()[1]), text = !!sym(config$sampleName))
+    aes(x = !!sym(PCx), y = !!sym(PCy), color = !!sym(config$factor_keys()[1]), text = !!sym(config$sample_name))
   ) +
     labs(
       x = paste0(PCx, " (", round(variance_explained[PC[1]]), "% variance)"),

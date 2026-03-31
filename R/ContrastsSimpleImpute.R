@@ -118,7 +118,7 @@ ContrastsMissing <- R6::R6Class(
     #' @param all FALSE, do not show all columns (default)
     get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
-        if (self$lfqdata$config$hierarchyDepth < length(self$lfqdata$config$hierarchy_keys())) {
+        if (self$lfqdata$config$hierarchy_depth < length(self$lfqdata$config$hierarchy_keys())) {
           stop("hierarchy depth < hierarchy_keys(). Please aggregate first.")
         } else {
           mh1 <- prolfqua::MissingHelpers$new(self$lfqdata$data, self$lfqdata$config, prob = 0.5, weighted = TRUE)

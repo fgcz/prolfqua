@@ -121,9 +121,9 @@ compute_borrowed_variance_limma <- function(fit) {
   annotation <- wide$annotation
   subject_Id <- lfqdata$config$hierarchy_keys()
   rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_Id))
-  if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotopeLabel)) {
+  if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotope_label)) {
     rowdata <- wide$rowdata |>
-      dplyr::select(dplyr::all_of(unique(c(subject_Id, lfqdata$config$isotopeLabel))))
+      dplyr::select(dplyr::all_of(unique(c(subject_Id, lfqdata$config$isotope_label))))
     subject_Id <- colnames(rowdata)
   }
 
@@ -187,7 +187,7 @@ compute_borrowed_variance_limma <- function(fit) {
         wt_wide <- lfqdata$to_wide(as.matrix = TRUE, value = wcol)
         return(wt_wide$data)
       } else {
-        fname_col <- lfqdata$config$table$fileName
+        fname_col <- lfqdata$config$file_name
         wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
         wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
         return(wt_df[[wcol]])

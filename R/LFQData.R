@@ -148,7 +148,7 @@ LFQData <- R6::R6Class(
       } else {
         if (factorDepth >= 1) {
           cfg <- self$config$clone(deep = TRUE)
-          cfg$factorDepth <- factorDepth
+          cfg$factor_depth <- factorDepth
           missing <- prolfqua::summarize_stats_factors(self$data, cfg)
         } else {
           missing <- prolfqua::summarize_stats_all(self$data, self$config)
@@ -368,7 +368,7 @@ remove_small_intensities <- function(pdata, config, threshold = 1) {
 #'
 #'
 #' bb <- prolfqua::prolfqua_data('data_skylineSRM_HL_A')
-#' config <- old2new(bb$config_f())
+#' config <- bb$config_f()
 #' data <- bb$data
 #' data$Area[data$Area == 0] <- NA
 #' analysis <- setup_analysis(data, config)
@@ -377,7 +377,7 @@ remove_small_intensities <- function(pdata, config, threshold = 1) {
 #'
 #' nr_B_in_A(resDataStart, config)
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
-#' config$hierarchyDepth <- 2
+#' config$hierarchy_depth <- 2
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
 nr_B_in_A <- function(pdata, config, merge = TRUE) {
@@ -473,7 +473,7 @@ LFQDataToSummarizedExperiment <- function(lfqdata) {
   if (requireNamespace("SummarizedExperiment")) {
     wide <- lfqdata$to_wide(as.matrix = TRUE)
     ann <- data.frame(wide$annotation)
-    rownames(ann) <- wide$annotation[[lfqdata$config$sampleName]]
+    rownames(ann) <- wide$annotation[[lfqdata$config$sample_name]]
     assays <- S4Vectors::SimpleList(LFQ = wide$data)
     if ("nr_children" %in% lfqdata$config$value_vars()) {
       nr_children <- lfqdata$to_wide(as.matrix = TRUE, value = "nr_children")

@@ -75,7 +75,7 @@ test_that("ContrastsModerated", {
 test_that("ContrastsROPECA", {
   istar <- sim_lfq_data_peptide_config(Nprot = 20)
   config <- istar$config$clone(deep = TRUE)
-  config$hierarchyDepth <- 2
+  config$hierarchy_depth <- 2
 
   modelFunction <- strategy_lm("abundance ~ group_")
   mod <- build_model(

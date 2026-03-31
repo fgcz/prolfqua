@@ -2,7 +2,7 @@ test_that("plot_hierarchies_boxplot", {
   istar <- sim_lfq_data_peptide_config()
   analysis <- istar$data
   config <- istar$config
-  config$hierarchyDepth
+  config$hierarchy_depth
   config$hierarchy_keys_depth()
   #'
   xnested <- analysis |>

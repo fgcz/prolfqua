@@ -3,7 +3,7 @@
 # Shared test data (peptide-level, used for lm / lm_missing / limma / ropeca)
 make_peptide_lfqdata <- function(Nprot = 30) {
   istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = Nprot, with_missing = FALSE, seed = 42)
-  istar$config <- prolfqua::old2new(istar$config)
+
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
   keep <- lfqdata$data |>
@@ -261,7 +261,7 @@ test_that("aggregated facades error on peptide-level LFQData", {
 test_that("get_missing returns non-empty for data with missing groups", {
   # Simulate with missingness so some proteins can't be estimated
   istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
-  istar$config <- prolfqua::old2new(istar$config)
+
   lfq_peptide <- prolfqua::LFQData$new(istar$data, istar$config)
   lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
   aggregator <- prolfqua::AggregateMedpolish$new(lfq_peptide, "protein")

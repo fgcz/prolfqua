@@ -7,7 +7,6 @@
 #' @examples
 #'
 #' istar <- prolfqua_data('data_ionstar')$filtered()
-#' istar$config <- old2new(istar$config)
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)
 #'
@@ -322,11 +321,11 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
     tibble::tibble("row.names" := rownames(pdata)),
     tibble::as_tibble(pdata)
   )
-  pdata <- tidyr::pivot_longer(pdata, cols = -1, names_to = config$sampleName, values_to = value)
+  pdata <- tidyr::pivot_longer(pdata, cols = -1, names_to = config$sample_name, values_to = value)
   pdata <- tidyr::separate(
     pdata,
     "row.names",
-    unique(c(config$hierarchy_keys(), config$isotopeLabel)),
+    unique(c(config$hierarchy_keys(), config$isotope_label)),
     sep = sep
   )
   if (!is.null(data)) {
@@ -414,7 +413,7 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE) {
 #' stopifnot("abundance_base..scale" %in% colnames(res))
 #' stopifnot("abundance_base..scale" == conf$get_response())
 #' conf <- bb$config$clone(deep=TRUE)
-#' conf$workIntensity <- "abundance"
+#' conf$work_intensity <- "abundance"
 #' res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 #'
 #' # Normalize data using the vsn method from bioconductor
@@ -548,7 +547,7 @@ center_to_reference_cfg <- function(lfqdata, lfqdareference, summary = c("median
     resdata <- lfqdata
   }
   cfg <- resdata$config
-  data <- center_to_reference(lfqdata$data, lfqdareference$data, cfg$sampleName, cfg$get_response())
+  data <- center_to_reference(lfqdata$data, lfqdareference$data, cfg$sample_name, cfg$get_response())
   resdata$data <- data
   if (summary == "median") {
     cfg$set_response("centered_abundance_by_median")

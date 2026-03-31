@@ -4,6 +4,46 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-03-31 — Rename AnalysisConfiguration fields from camelCase to snake_case
+
+Normalized all 9 remaining camelCase/mixed-case fields in `AnalysisConfiguration` to snake_case: `fileName` → `file_name`, `sampleName` → `sample_name`, `normValue` → `norm_value`, `isotopeLabel` → `isotope_label`, `workIntensity` → `work_intensity`, `factorDepth` → `factor_depth`, `hierarchyDepth` → `hierarchy_depth`, `ident_qValue` → `ident_q_value`, `ident_Score` → `ident_score`.
+
+### Active binding aliases for backward compatibility
+
+Added 9 active bindings so old camelCase names still work (read + write) for downstream packages (prolfquapp, prophosqua, etc.). No deprecation warnings yet.
+
+### R6_extract_values() — serialization fix
+
+Added filtering via `.__enclos_env__$.__active__` to exclude active binding aliases from serialized output, preventing duplicate keys.
+
+### Constructor simplified
+
+Dropped `analysisTableAnnotation` / `analysisParameter` parameters. Constructor is now `initialize = function() {}`.
+
+### Dropped `table` / `parameter` active bindings
+
+Removed the deprecated `config$table` and `config$parameter` aliases that returned `self`.
+
+### Files modified
+
+| Area | Files | Changes |
+|------|-------|---------|
+| Core | `R/AnalysisConfiguration.R` | Field renames, 9 active bindings, `R6_extract_values()` fix, `make_reduced_hierarchy_config()` update |
+| R/ files | ~20 files across R/ | ~242 references migrated from camelCase to snake_case |
+| Tests | `tests/testthat/test-tidyconfig_functions.R`, `test-Contrasts.R`, `test-plotting_functions.R` | Config field references updated |
+| Vignettes | `CreatingConfigurations.Rmd`, `SimulateData.Rmd`, `ContrastFacade2Factor.Rmd`, `LimmaBackend.Rmd` | Config field references updated |
+| Other | `README.md`, `CLAUDE.md`, `data-raw/fix_deprecated_config.R`, `inst/issue71/prolfqua_contrast_testCode.R` | Config field references updated |
+
+### Downstream impact
+
+- Active binding aliases keep downstream packages working — no immediate breakage for field renames
+- `$new(atable)` constructor pattern broken (~17 calls in prolfquapp/prolfquappPTMreaders/prolfquasaint)
+- `config$table$X` / `config$parameter$X` now errors — fix: `config$X`
+
+All 618 tests pass (0 failures, 42 pre-existing warnings).
+
+---
+
 ## 2026-03-30 — Limpa Integration: AggregateLimpa, build_model_limpa, ContrastsLimpaFacade
 
 Full integration of the limpa package (Li & Smyth) into the prolfqua modelling pipeline. Limpa provides probabilistic protein quantification from precursor-level data with missing value handling via a Detection Probability Curve (DPC).

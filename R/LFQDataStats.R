@@ -94,8 +94,8 @@ LFQDataStats <- R6::R6Class(
 
       tb <- table_factors_size(lfqdata$data, lfqdata$config)
       if (all(tb$n == 1)) {
-        if (self$lfq$config$factorDepth > 1) {
-          self$lfq$config$factorDepth <- self$lfq$config$factorDepth - 1
+        if (self$lfq$config$factor_depth > 1) {
+          self$lfq$config$factor_depth <- self$lfq$config$factor_depth - 1
         } else {
           stats = "all"
         }

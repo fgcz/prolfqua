@@ -15,7 +15,7 @@
 #' @examples
 #'
 #' bb <- prolfqua_data('data_ionstar')$filtered()
-#' tmp <- prolfqua::separate_hierarchy(bb$data,old2new( bb$config))
+#' tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
 #' tmp$UniprotID <- NULL
 #' tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
 #' stopifnot("UniprotID" %in%  colnames(tmp))
@@ -604,7 +604,7 @@ prolfqua_data <- function(datastr, package = "prolfqua") {
 #' config <- bb$config
 #' analysis <- bb$data
 #'
-#' config$factorDepth <- 1
+#' config$factor_depth <- 1
 #' make_interaction_column(analysis,
 #'    config$factor_keys_depth())
 #'

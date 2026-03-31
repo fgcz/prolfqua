@@ -12,16 +12,14 @@ annot <- read.csv("prolfqua-inputAnnotation.csv")
 
 #### configuration ####
 startdata <- dplyr::inner_join(long_df, annot, by = "raw.file")
-atable <- prolfqua::AnalysisTableAnnotation$new()
-atable$fileName = "raw.file"
-atable$hierarchy[["protein_Id"]] <- c("protein_Id")
-atable$hierarchyDepth <- 1
-atable$set_response("medpolish")
-atable$factors[["condition_"]] = "condition"
-atable$factors[["replicate"]] = "replicate"
-atable$factorDepth <- 1
-
-config <- prolfqua::AnalysisConfiguration$new(atable)
+config <- prolfqua::AnalysisConfiguration$new()
+config$fileName = "raw.file"
+config$hierarchy[["protein_Id"]] <- c("protein_Id")
+config$hierarchyDepth <- 1
+config$set_response("medpolish")
+config$factors[["condition_"]] = "condition"
+config$factors[["replicate"]] = "replicate"
+config$factorDepth <- 1
 adata <- prolfqua::setup_analysis(startdata, config)
 lfqdata <- prolfqua::LFQData$new(adata, config)
 lfqdata$hierarchy_counts()
@@ -39,7 +37,7 @@ lfqdata <- lfqdata$complete_cases()
 mod <- prolfqua::build_model(
   lfqdata$data,
   formula_Condition,
-  subject_Id = lfqdata$config$table$hierarchy_keys())
+  subject_Id = lfqdata$config$hierarchy_keys())
 
 
 contr <- prolfqua::Contrasts$new(mod, Contrasts, global = FALSE)

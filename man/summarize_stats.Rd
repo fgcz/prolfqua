@@ -50,7 +50,7 @@ data <- bb$data
 res1 <- summarize_stats(data, config)
 
 res2 <- prolfqua::sim_lfq_data_2Factor_config()
-res2$config$factorDepth <- 2
+res2$config$factor_depth <- 2
 stats <- summarize_stats(res2$data, res2$config)
 stopifnot(nrow(stats) == 40)
 

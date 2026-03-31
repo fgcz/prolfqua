@@ -603,7 +603,7 @@ ContrastsRLMFacade <- R6::R6Class(
 #' @family modelling
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()
-#' istar$config <- old2new(istar$config)
+
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -1049,7 +1049,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #' @family modelling
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()
-#' istar$config <- old2new(istar$config)
+
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

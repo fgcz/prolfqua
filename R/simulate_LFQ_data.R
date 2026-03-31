@@ -176,7 +176,7 @@ sim_lfq_data_peptide_config <- function(
   data$qValue <- 0
 
   config <- AnalysisConfiguration$new()
-  config$fileName <- "sample"
+  config$file_name <- "sample"
 
   config$factors["group_"] <- "group"
   config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
@@ -232,7 +232,7 @@ sim_lfq_data_protein_config <- function(
   data$qValue <- 0
 
   config <- AnalysisConfiguration$new()
-  config$fileName <- "sample"
+  config$file_name <- "sample"
   config$nr_children <- "nr_peptides"
   config$factors["group_"] <- "group"
   if (paired) {
@@ -296,17 +296,17 @@ sim_lfq_data_2Factor_config <- function(
   data$isotopeLabel <- "light"
   data$qValue <- 0
   config <- AnalysisConfiguration$new()
-  config$fileName <- "sample"
+  config$file_name <- "sample"
   config$nr_children <- "nr_peptides"
 
   if (TWO) {
     config$factors["Treatment"] <- "Treatment"
     config$factors["Background"] <- "Background"
-    config$factorDepth <- 2
+    config$factor_depth <- 2
   } else {
     data <- data |> tidyr::unite(Group, c("Treatment", "Background"))
     config$factors["Group"] <- "Group"
-    config$factorDepth <- 1
+    config$factor_depth <- 1
   }
   config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
   if (PEPTIDE) {

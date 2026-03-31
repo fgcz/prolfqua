@@ -57,24 +57,24 @@ tidy_to_wide_config <- function(
   value = config$get_response()
 ) {
   if (fileName) {
-    newcolname <- config$fileName
+    newcolname <- config$file_name
   } else {
-    newcolname <- config$sampleName
+    newcolname <- config$sample_name
   }
 
   ids <- dplyr::select(
     data,
-    all_of(c(config$sampleName, config$fileName, config$factor_keys(), config$isotopeLabel))
+    all_of(c(config$sample_name, config$file_name, config$factor_keys(), config$isotope_label))
   ) |>
     dplyr::distinct() |>
     dplyr::arrange_at(newcolname)
 
-  res <- tidy_to_wide(data, c(config$hierarchy_keys(), config$isotopeLabel), newcolname, value = value)
-  rowdata <- res |> dplyr::select(all_of(c(config$hierarchy_keys(), config$isotopeLabel)))
+  res <- tidy_to_wide(data, c(config$hierarchy_keys(), config$isotope_label), newcolname, value = value)
+  rowdata <- res |> dplyr::select(all_of(c(config$hierarchy_keys(), config$isotope_label)))
   if (as.matrix) {
-    resMat <- as.matrix(dplyr::select(res, -dplyr::all_of(c(config$hierarchy_keys(), config$isotopeLabel))))
+    resMat <- as.matrix(dplyr::select(res, -dplyr::all_of(c(config$hierarchy_keys(), config$isotope_label))))
     names <- rowdata |>
-      tidyr::unite("newID", !!!dplyr::syms(c(config$hierarchy_keys(), config$isotopeLabel)), sep = sep) |>
+      tidyr::unite("newID", !!!dplyr::syms(c(config$hierarchy_keys(), config$isotope_label)), sep = sep) |>
       dplyr::pull("newID")
     rownames(resMat) <- names
     res <- resMat

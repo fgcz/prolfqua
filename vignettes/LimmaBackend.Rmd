@@ -279,7 +279,7 @@ data.frame(
   Property = c("Hierarchy", "Samples", "NAs"),
   Value = c(
     paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
-    length(unique(lfq_peptide$data[[lfq_peptide$config$sampleName]])),
+    length(unique(lfq_peptide$data[[lfq_peptide$config$sample_name]])),
     sum(is.na(lfq_peptide$data[[lfq_peptide$config$get_response()]]))
   )
 ) |> knitr::kable()

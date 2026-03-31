@@ -37,14 +37,14 @@ summarize_hierarchy(data, configur,
  hierarchy = configur$hierarchy_keys_depth() )
 summarize_hierarchy(data, configur,
  hierarchy = NULL, factors = configur$factor_keys_depth() )
-configur$hierarchyDepth = 1
+configur$hierarchy_depth = 1
 summarize_hierarchy(data, configur,
  factors = configur$factor_keys_depth())
-configur$hierarchyDepth = 2
+configur$hierarchy_depth = 2
 summarize_hierarchy(data, configur)
-configur$hierarchyDepth = 3
+configur$hierarchy_depth = 3
 summarize_hierarchy(data, configur )
-configur$hierarchyDepth = 4
+configur$hierarchy_depth = 4
 summarize_hierarchy(data, configur )
 
 }

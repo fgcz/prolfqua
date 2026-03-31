@@ -11,7 +11,7 @@
 #' @examples
 #'
 #' skylineconfig <- AnalysisConfiguration$new()
-#' skylineconfig$fileName <- "Replicate.Name"
+#' skylineconfig$file_name <- "Replicate.Name"
 #' skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
 #' skylineconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
 #' skylineconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
@@ -19,9 +19,9 @@
 #'   "Peptide.Sequence", "Precursor.Charge",
 #'   "Fragment.Ion", "Product.Charge"
 #' )
-#' skylineconfig$ident_qValue <- "Detection.Q.Value"
+#' skylineconfig$ident_q_value <- "Detection.Q.Value"
 #' skylineconfig$set_response("Area")
-#' skylineconfig$isotopeLabel <- "Isotope.Label.Type"
+#' skylineconfig$isotope_label <- "Isotope.Label.Type"
 #' skylineconfig$factors[["Time"]] = "Sampling.Time.Point"
 #' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
 #'
@@ -38,22 +38,22 @@
 #' data <- dplyr::inner_join(data, sample_creatinine, by = "sample")
 #'
 #' config <- AnalysisConfiguration$new()
-#' config$fileName = "sample"
+#' config$file_name = "sample"
 #' config$factors["group_"] = "group"
 #' config$hierarchy[["protein_Id"]] = c("proteinID", "idtype2")
 #' config$hierarchy[["peptide_Id"]] = "peptideID"
 #' config$set_response("abundance")
-#' config$normValue = "creatinine"
+#' config$norm_value = "creatinine"
 #'
 #' adata <- setup_analysis(data, config)
 #'
 setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE) {
   configuration <- configuration$clone(deep = TRUE)
-  if (is.null(configuration$fileName)) {
-    stop("fileName column is not specified in configuration.")
+  if (is.null(configuration$file_name)) {
+    stop("file_name column is not specified in configuration.")
   }
-  if (!configuration$fileName %in% colnames(data)) {
-    stop("File name column :", configuration$fileName, ", is missing in data.")
+  if (!configuration$file_name %in% colnames(data)) {
+    stop("File name column :", configuration$file_name, ", is missing in data.")
   }
 
   # extract hierarchy columns
@@ -95,7 +95,7 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
     }
   }
 
-  sampleName <- configuration$sampleName
+  sampleName <- configuration$sample_name
 
   if (from_factors && !sampleName %in% names(data)) {
     message("creating sampleName from factor columns")
@@ -106,15 +106,15 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
         remove = TRUE,
         sep = configuration$sep
       ) |>
-      dplyr::select(sampleName, configuration$fileName) |>
+      dplyr::select(sampleName, configuration$file_name) |>
       dplyr::distinct() |>
       dplyr::mutate(across(all_of(sampleName), function(x) {
         make.unique(x, sep = configuration$sep)
       })) |>
-      dplyr::inner_join(data, by = configuration$fileName)
+      dplyr::inner_join(data, by = configuration$file_name)
   } else if (!sampleName %in% names(data)) {
-    message("creating sampleName from fileName column")
-    data[[configuration$sampleName]] <- tools::file_path_sans_ext(basename(data[[configuration$fileName]]))
+    message("creating sampleName from file_name column")
+    data[[configuration$sample_name]] <- tools::file_path_sans_ext(basename(data[[configuration$file_name]]))
   } else {
     message("column sampleName already exists, using :", sampleName)
   }
@@ -123,15 +123,15 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
     dplyr::select(-dplyr::all_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
 
   # Make implicit NA's explicit
-  if (!(configuration$isotopeLabel %in% colnames(data))) {
+  if (!(configuration$isotope_label %in% colnames(data))) {
     warning(
       "no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'."
     )
-    data[[configuration$isotopeLabel]] <- "light"
+    data[[configuration$isotope_label]] <- "light"
   }
-  if (!(configuration$ident_qValue %in% colnames(data))) {
+  if (!(configuration$ident_q_value %in% colnames(data))) {
     warning("no qValue column specified in the data. Creating column qValue and setting qValues to 0.")
-    data[[configuration$ident_qValue]] <- 0
+    data[[configuration$ident_q_value]] <- 0
   }
 
   # Make implicit NA's explicit
@@ -144,7 +144,7 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
   data <- data |> dplyr::select(c(configuration$id_vars(), configuration$value_vars()))
 
   txd <- data |>
-    group_by(!!!syms(c(configuration$fileName, configuration$hierarchy_keys(), configuration$isotopeLabel))) |>
+    group_by(!!!syms(c(configuration$file_name, configuration$hierarchy_keys(), configuration$isotope_label))) |>
     summarize(n = n())
   if (any(txd$n > 1)) {
     str <- paste(
@@ -152,9 +152,9 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
       paste(configuration$hierarchy_keys(), collapse = ", "),
       ",\n",
       "and sample : ",
-      configuration$sampleName,
+      configuration$sample_name,
       "; (filename) : ",
-      configuration$fileName,
+      configuration$file_name,
       "\n"
     )
     warning(str)
@@ -213,8 +213,8 @@ separate_hierarchy <- function(data, config) {
 #'
 complete_cases <- function(pdata, config) {
   message("completing cases")
-  fkeys <- c(config$fileName, config$sampleName, config$factor_keys())
-  hkeys <- c(config$isotopeLabel, config$hierarchy_keys())
+  fkeys <- c(config$file_name, config$sample_name, config$factor_keys())
+  hkeys <- c(config$isotope_label, config$hierarchy_keys())
   res <- tidyr::complete(
     pdata,
     tidyr::nesting(!!!syms(fkeys)),

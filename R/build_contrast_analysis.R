@@ -58,7 +58,6 @@
 #' head(fa_deqms$get_contrasts())
 #'
 #' istar_pep <- sim_lfq_data_peptide_config()
-#' istar_pep$config <- old2new(istar_pep$config)
 #' lfqdata_pep <- LFQData$new(istar_pep$data, istar_pep$config)
 #' lfqdata_pep <- lfqdata_pep$get_Transformer()$log2()$lfq
 #'

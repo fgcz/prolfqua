@@ -129,7 +129,7 @@ missigness_histogram <- function(x, config, showempty = FALSE, factors = config$
   }
 
   factors <- config$factor_keys_depth()
-  formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
+  formula <- paste(config$isotope_label, "~", paste(factors, collapse = "+"))
   message(formula)
   meanAbundance <- paste0("mean_", config$get_response())
   missingPrec <- dplyr::rename(missingPrec, !!sym(meanAbundance) := .data$meanAbundance)
@@ -165,16 +165,16 @@ missingness_per_condition_cumsum <- function(x, config, factors = config$factor_
   missingPrec <- summarize_stats(x, config, factor_key = factors)
 
   xx <- missingPrec |>
-    group_by(across(all_of(c(config$isotopeLabel, factors, "nrNAs", "nrReplicates")))) |>
+    group_by(across(all_of(c(config$isotope_label, factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(nrTransitions = n())
 
   xxcs <- xx |>
-    group_by(across(all_of(c(config$isotopeLabel, factors)))) |>
+    group_by(across(all_of(c(config$isotope_label, factors)))) |>
     arrange(.data$nrNAs) |>
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
   res <- xxcs |> dplyr::select(-dplyr::all_of("nrTransitions"))
 
-  formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
+  formula <- paste(config$isotope_label, "~", paste(factors, collapse = "+"))
   message(formula)
 
   nudgeval <- mean(res$cumulative_sum) * 0.05
@@ -208,10 +208,10 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
   hierarchyKey <- tail(config$hierarchy_keys(), 1)
   hierarchyKey <- paste0("nr_", hierarchyKey)
   xx <- missingPrec |>
-    group_by(across(all_of(c(config$isotopeLabel, factors, "nrNAs", "nrReplicates")))) |>
+    group_by(across(all_of(c(config$isotope_label, factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(!!sym(hierarchyKey) := n())
 
-  formula <- paste(config$isotopeLabel, "~", paste(factors, collapse = "+"))
+  formula <- paste(config$isotope_label, "~", paste(factors, collapse = "+"))
 
   nudgeval <- max(xx[[hierarchyKey]]) * 0.05
 
@@ -280,7 +280,7 @@ UpSet_missing_stats <- function(data, config) {
   pups2 <- data |>
     tidyr::pivot_wider(
       id_cols = config$hierarchy_keys(),
-      names_from = config$sampleName,
+      names_from = config$sample_name,
       values_from = !!rlang::sym("isThere")
     )
   res <- list(data = as.data.frame(pups2), nsets = ncol(pups2) - length(config$hierarchy_keys()))

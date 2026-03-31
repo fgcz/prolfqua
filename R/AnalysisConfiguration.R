@@ -23,19 +23,19 @@ AnalysisConfiguration <- R6::R6Class(
     sep = "~",
 
     # --- fields from AnalysisTableAnnotation ---
-    #' @field fileName column name of column containing raw file names
-    fileName = NULL,
-    #' @field sampleName (will be generated from factors or fileName)
-    sampleName = "sampleName",
-    #' @field normValue optional column with normalization values (e.g., Creatinine)
-    normValue = NULL,
+    #' @field file_name column name of column containing raw file names
+    file_name = NULL,
+    #' @field sample_name (will be generated from factors or file_name)
+    sample_name = "sampleName",
+    #' @field norm_value optional column with normalization values (e.g., Creatinine)
+    norm_value = NULL,
 
-    #' @field isotopeLabel which column contains the isotope label (e.g. heavy or light), or light only if LFQ.
-    isotopeLabel = "isotopeLabel",
-    #' @field ident_qValue column name with identification QValues (smaller better)
-    ident_qValue = "qValue",
-    #' @field ident_Score column with identification score (larger better)
-    ident_Score = character(),
+    #' @field isotope_label which column contains the isotope label (e.g. heavy or light), or light only if LFQ.
+    isotope_label = "isotopeLabel",
+    #' @field ident_q_value column name with identification QValues (smaller better)
+    ident_q_value = "qValue",
+    #' @field ident_score column with identification score (larger better)
+    ident_score = character(),
 
     #' @field opt_rt optional column with rt information
     opt_rt = character(),
@@ -46,8 +46,8 @@ AnalysisConfiguration <- R6::R6Class(
     #' @field nr_children optional column containing for instance the number of peptides
     nr_children = "nr_children",
 
-    #' @field workIntensity column which contains the intensities
-    workIntensity = NULL,
+    #' @field work_intensity column which contains the intensities
+    work_intensity = NULL,
     #' @field is_response_transformed are the intensities transformed for constant variance
     is_response_transformed = FALSE,
     #' @field bin_resp column with encoded missing information
@@ -55,13 +55,13 @@ AnalysisConfiguration <- R6::R6Class(
 
     #' @field factors Names of columns containing factors (annotations)
     factors = list(),
-    #' @field factorDepth number of relevant factors (used by plotting functions etc)
-    factorDepth = 1,
+    #' @field factor_depth number of relevant factors (used by plotting functions etc)
+    factor_depth = 1,
 
     #' @field hierarchy list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)
     hierarchy = list(),
-    #' @field hierarchyDepth At which depth do you want to model i.e. protein than 1
-    hierarchyDepth = 1,
+    #' @field hierarchy_depth At which depth do you want to model i.e. protein than 1
+    hierarchy_depth = 1,
 
     # --- from AnalysisParameters ---
     #' @field min_peptides_protein minimum number of peptides per protein
@@ -69,63 +69,25 @@ AnalysisConfiguration <- R6::R6Class(
 
     #' @description
     #' create AnalysisConfiguration
-    #' @param analysisTableAnnotation optional, for backwards compatibility with old constructor
-    #' @param analysisParameter optional, for backwards compatibility with old constructor
-    initialize = function(analysisTableAnnotation = NULL, analysisParameter = NULL) {
-      if (!is.null(analysisTableAnnotation)) {
-        # Copy all fields from an AnalysisTableAnnotation or AnalysisConfiguration
-        fields <- c(
-          "fileName",
-          "sampleName",
-          "normValue",
-          "isotopeLabel",
-          "ident_qValue",
-          "ident_Score",
-          "opt_rt",
-          "opt_mz",
-          "opt_se",
-          "nr_children",
-          "workIntensity",
-          "is_response_transformed",
-          "bin_resp",
-          "factors",
-          "factorDepth",
-          "hierarchy",
-          "hierarchyDepth"
-        )
-        for (f in fields) {
-          val <- analysisTableAnnotation[[f]]
-          if (!is.null(val)) self[[f]] <- val
-        }
-        # Also copy min_peptides_protein if present on the source
-        if (!is.null(analysisTableAnnotation[["min_peptides_protein"]])) {
-          self$min_peptides_protein <- analysisTableAnnotation$min_peptides_protein
-        }
-      }
-      if (!is.null(analysisParameter)) {
-        if (!is.null(analysisParameter[["min_peptides_protein"]])) {
-          self$min_peptides_protein <- analysisParameter$min_peptides_protein
-        }
-      }
-    },
+    initialize = function() {},
 
     # --- methods from AnalysisTableAnnotation ---
     #' @description
     #' Add name of intensity column
     #' @param colName name of intensity column
     set_response = function(colName) {
-      self$workIntensity <- c(self$workIntensity, colName)
+      self$work_intensity <- c(self$work_intensity, colName)
     },
     #' @description
     #' Get name of working intensity column
     get_response = function() {
-      return(tail(self$workIntensity, n = 1))
+      return(tail(self$work_intensity, n = 1))
     },
     #' @description
     #' Remove last name in array of working intensity column names
     pop_response = function() {
-      res <- self$workIntensity[length(self$workIntensity)]
-      self$workIntensity <- self$workIntensity[-length(self$workIntensity)]
+      res <- self$work_intensity[length(self$work_intensity)]
+      self$work_intensity <- self$work_intensity[-length(self$work_intensity)]
       return(res)
     },
 
@@ -138,7 +100,7 @@ AnalysisConfiguration <- R6::R6Class(
     #' @description
     #' Get factor keys till factorDepth
     factor_keys_depth = function() {
-      res <- head(self$factors, n = self$factorDepth)
+      res <- head(self$factors, n = self$factor_depth)
       return(names(res))
     },
 
@@ -166,7 +128,7 @@ AnalysisConfiguration <- R6::R6Class(
     #' @param names if TRUE names only if FALSE key value pairs
     #' @return array of column names
     hierarchy_keys_depth = function(names = TRUE) {
-      res <- head(self$hierarchy, n = self$hierarchyDepth)
+      res <- head(self$hierarchy, n = self$hierarchy_depth)
       res <- if (names) {
         names(res)
       } else {
@@ -187,10 +149,10 @@ AnalysisConfiguration <- R6::R6Class(
     #' @return character array
     id_required = function() {
       id_vars <- c(
-        self$fileName,
+        self$file_name,
         unlist(self$factors),
         unlist(self$hierarchy),
-        self$isotopeLabel
+        self$isotope_label
       )
       return(id_vars)
     },
@@ -200,12 +162,12 @@ AnalysisConfiguration <- R6::R6Class(
     id_vars = function() {
       "Id Columns which must be in the output data frame"
       id_vars <- c(
-        self$fileName,
+        self$file_name,
         names(self$factors),
         names(self$hierarchy),
-        self$isotopeLabel,
-        self$sampleName,
-        self$normValue
+        self$isotope_label,
+        self$sample_name,
+        self$norm_value
       )
       return(id_vars)
     },
@@ -215,8 +177,8 @@ AnalysisConfiguration <- R6::R6Class(
       "Columns containing values"
       valueVars <- c(
         self$get_response(),
-        self$ident_qValue,
-        self$ident_Score,
+        self$ident_q_value,
+        self$ident_score,
         self$opt_mz,
         self$opt_rt,
         self$opt_se,
@@ -228,26 +190,82 @@ AnalysisConfiguration <- R6::R6Class(
     #' get names of columns with sample annotations
     #'
     annotation_vars = function() {
-      annotationVars <- c(self$fileName, self$sampleName, self$factor_keys(), self$normValue)
+      annotationVars <- c(self$file_name, self$sample_name, self$factor_keys(), self$norm_value)
       return(annotationVars)
     }
   ),
   active = list(
-    #' @field table deprecated, use config directly. Returns self for backwards compatibility.
-    table = function(value) {
+    #' @field fileName backward-compat alias for file_name
+    fileName = function(value) {
       if (!missing(value)) {
+        self$file_name <- value
         return(invisible(self))
       }
-      message("config$table is deprecated, use config directly")
-      self
+      self$file_name
     },
-    #' @field parameter deprecated, use config directly. Returns self for backwards compatibility.
-    parameter = function(value) {
+    #' @field sampleName backward-compat alias for sample_name
+    sampleName = function(value) {
       if (!missing(value)) {
+        self$sample_name <- value
         return(invisible(self))
       }
-      message("config$parameter is deprecated, use config directly")
-      self
+      self$sample_name
+    },
+    #' @field normValue backward-compat alias for norm_value
+    normValue = function(value) {
+      if (!missing(value)) {
+        self$norm_value <- value
+        return(invisible(self))
+      }
+      self$norm_value
+    },
+    #' @field isotopeLabel backward-compat alias for isotope_label
+    isotopeLabel = function(value) {
+      if (!missing(value)) {
+        self$isotope_label <- value
+        return(invisible(self))
+      }
+      self$isotope_label
+    },
+    #' @field workIntensity backward-compat alias for work_intensity
+    workIntensity = function(value) {
+      if (!missing(value)) {
+        self$work_intensity <- value
+        return(invisible(self))
+      }
+      self$work_intensity
+    },
+    #' @field factorDepth backward-compat alias for factor_depth
+    factorDepth = function(value) {
+      if (!missing(value)) {
+        self$factor_depth <- value
+        return(invisible(self))
+      }
+      self$factor_depth
+    },
+    #' @field hierarchyDepth backward-compat alias for hierarchy_depth
+    hierarchyDepth = function(value) {
+      if (!missing(value)) {
+        self$hierarchy_depth <- value
+        return(invisible(self))
+      }
+      self$hierarchy_depth
+    },
+    #' @field ident_qValue backward-compat alias for ident_q_value
+    ident_qValue = function(value) {
+      if (!missing(value)) {
+        self$ident_q_value <- value
+        return(invisible(self))
+      }
+      self$ident_q_value
+    },
+    #' @field ident_Score backward-compat alias for ident_score
+    ident_Score = function(value) {
+      if (!missing(value)) {
+        self$ident_score <- value
+        return(invisible(self))
+      }
+      self$ident_score
     }
   )
 )
@@ -259,7 +277,7 @@ AnalysisConfiguration <- R6::R6Class(
 #' @examples
 #'
 #' DEAconfig <- AnalysisConfiguration$new()
-#' DEAconfig$fileName <- "Replicate.Name"
+#' DEAconfig$file_name <- "Replicate.Name"
 #' DEAconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
 #' DEAconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
 #' DEAconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
@@ -267,9 +285,9 @@ AnalysisConfiguration <- R6::R6Class(
 #'   "Peptide.Sequence", "Precursor.Charge",
 #'   "Fragment.Ion", "Product.Charge"
 #' )
-#' DEAconfig$ident_qValue <- "annotation_QValue"
+#' DEAconfig$ident_q_value <- "annotation_QValue"
 #' DEAconfig$set_response("Area")
-#' DEAconfig$isotopeLabel <- "Isotope.Label"
+#' DEAconfig$isotope_label <- "Isotope.Label"
 #' configList <- prolfqua::R6_extract_values(DEAconfig)
 #' stopifnot(class(configList) == "list")
 #' config <- list_to_AnalysisConfiguration(configList)
@@ -322,7 +340,7 @@ list_to_AnalysisConfiguration <- function(dd) {
 make_reduced_hierarchy_config <- function(config, workIntensity, hierarchy) {
   newConfig <- config$clone(deep = TRUE)
   newConfig$hierarchy <- hierarchy
-  newConfig$workIntensity <- workIntensity
+  newConfig$work_intensity <- workIntensity
   return(newConfig)
 }
 
@@ -335,6 +353,9 @@ make_reduced_hierarchy_config <- function(config, workIntensity, hierarchy) {
 R6_extract_values <- function(r6class) {
   tmp <- sapply(r6class, class)
   slots <- tmp[!tmp %in% c("environment", "function")]
+  # Exclude active bindings (aliases) from serialization
+  active_names <- names(r6class$.__enclos_env__$.__active__)
+  slots <- slots[!names(slots) %in% active_names]
   res <- list()
   for (i in names(slots)) {
     val <- r6class[[i]]

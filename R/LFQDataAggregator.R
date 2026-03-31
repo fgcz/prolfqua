@@ -5,12 +5,12 @@
   if (length(lfq$config$hierarchy_keys()) == 1) {
     stop("no hierarchies to aggregate from: ", lfq$config$hierarchy_keys())
   }
-  if (length(lfq$config$hierarchy_keys()) == lfq$config$hierarchyDepth) {
+  if (length(lfq$config$hierarchy_keys()) == lfq$config$hierarchy_depth) {
     stop(
       "no hierarchies to aggregate from: ",
       lfq$config$hierarchy_keys(),
       ", hierarchyDepth :",
-      lfq$config$hierarchyDepth
+      lfq$config$hierarchy_depth
     )
   }
 }
@@ -89,7 +89,7 @@ AggregateMedpolish <- R6::R6Class(
           "You did not transform the intensities. ",
           "medpolish works best with already variance stabilized intensities. ",
           "Use LFQData$get_Transformer to transform the data: ",
-          lfq$config$workIntensity
+          lfq$config$work_intensity
         )
       }
       self$lfq <- lfq$clone(deep = TRUE)
@@ -165,7 +165,7 @@ AggregateRlm <- R6::R6Class(
           "You did not transform the intensities. ",
           "Robust regression works best with already variance stabilized intensities. ",
           "Use LFQData$get_Transformer to transform the data. ",
-          lfq$config$workIntensity
+          lfq$config$work_intensity
         )
       }
       self$lfq <- lfq$clone(deep = TRUE)
@@ -248,7 +248,7 @@ AggregateTopN <- R6::R6Class(
     initialize = function(lfq, prefix = "protein", N = 3, func = "sum") {
       .check_aggregatable(lfq)
       if (lfq$is_transformed()) {
-        warning("You did transform the intensities. top N works with raw data. ", lfq$config$workIntensity)
+        warning("You did transform the intensities. top N works with raw data. ", lfq$config$work_intensity)
       }
       match.arg(func, c("sum", "mean"))
       self$lfq <- lfq$clone(deep = TRUE)
@@ -306,7 +306,7 @@ AggregateTopN <- R6::R6Class(
 # Helper: convert limpa EList back to long-format LFQData
 .elist_to_lfqdata <- function(elist, wide, config, prefix, impute_only) {
   annotation <- wide$annotation
-  sample_col <- config$sampleName
+  sample_col <- config$sample_name
 
   intensity_name <- "limpa"
   se_name <- "limpa_se"
@@ -323,7 +323,7 @@ AggregateTopN <- R6::R6Class(
 
   # Parse row IDs back to hierarchy columns
   sep <- "~lfq~"
-  all_keys <- c(hierarchy_keys, config$isotopeLabel)
+  all_keys <- c(hierarchy_keys, config$isotope_label)
   if (length(all_keys) == 1) {
     row_ids <- data.frame(V1 = row_ids_raw, stringsAsFactors = FALSE)
     colnames(row_ids) <- all_keys
@@ -358,7 +358,7 @@ AggregateTopN <- R6::R6Class(
   # Exclude columns already parsed from row IDs to avoid .x/.y suffixes
   anno_cols <- intersect(
     colnames(annotation),
-    c(config$fileName, sample_col, config$factor_keys(), config$isotopeLabel, config$normValue)
+    c(config$file_name, sample_col, config$factor_keys(), config$isotope_label, config$norm_value)
   )
   anno_cols <- setdiff(anno_cols, c(colnames(long_data), sample_col))
   anno_cols <- c(sample_col, anno_cols)
@@ -367,7 +367,7 @@ AggregateTopN <- R6::R6Class(
   # Build new config
   if (impute_only) {
     newconfig <- config$clone(deep = TRUE)
-    newconfig$workIntensity <- intensity_name
+    newconfig$work_intensity <- intensity_name
   } else {
     newconfig <- make_reduced_hierarchy_config(
       config,

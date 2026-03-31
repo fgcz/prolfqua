@@ -12,7 +12,7 @@ holds results when contrasts are added.
 
 bb <-prolfqua::sim_lfq_data_peptide_config()
 configur <- bb$config$clone(deep=TRUE)
-configur$hierarchyDepth <- 2
+configur$hierarchy_depth <- 2
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)
 lfqdata$factors()

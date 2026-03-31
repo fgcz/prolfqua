@@ -54,7 +54,7 @@ data_subgroup <- dd$data |>
   )
 
 cfg_subgroup$factors <- c(Subgroup = "Subgroup")
-cfg_subgroup$factorDepth <- 1
+cfg_subgroup$factor_depth <- 1
 
 lfq_peptide_2f <- LFQData$new(data_subgroup, cfg_subgroup)
 lfq_peptide_2f <- lfq_peptide_2f$get_Transformer()$log2()$lfq

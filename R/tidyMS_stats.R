@@ -154,7 +154,7 @@ poolvar <- function(res1, config, method = c("V1", "V2")) {
 #' res1 <- summarize_stats(data, config)
 #'
 #' res2 <- prolfqua::sim_lfq_data_2Factor_config()
-#' res2$config$factorDepth <- 2
+#' res2$config$factor_depth <- 2
 #' stats <- summarize_stats(res2$data, res2$config)
 #' stopifnot(nrow(stats) == 40)
 #'
@@ -171,7 +171,7 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
   }
   intsym <- sym(config$get_response())
   hierarchyFactor <- pdata |>
-    dplyr::group_by(!!!syms(c(config$hierarchy_keys(), config$isotopeLabel, factor_key))) |>
+    dplyr::group_by(!!!syms(c(config$hierarchy_keys(), config$isotope_label, factor_key))) |>
     dplyr::summarize(
       nrReplicates = dplyr::n(),
       nrMeasured = sum(!is.na(!!intsym)),
@@ -223,7 +223,7 @@ summarize_stats_factors <- function(pdata, config) {
   )
   fac_res[["interaction"]] <- stats
 
-  if (config$factorDepth > 1) {
+  if (config$factor_depth > 1) {
     # if 1 only then done
     for (factor in config$factor_keys_depth()) {
       stats <- summarize_stats(

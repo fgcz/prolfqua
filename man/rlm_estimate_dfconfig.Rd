@@ -17,9 +17,9 @@ Estimate protein abundance from peptide abundances using MASS::rlm
 \examples{
 
 bb <- prolfqua_data("data_ionstar")$filtered()
-conf <- old2new(bb$config)
+conf <- bb$config
 data <- bb$data
-conf$hierarchyDepth <- 1
+conf$hierarchy_depth <- 1
 xnested <- data |>
   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
   tidyr::nest()

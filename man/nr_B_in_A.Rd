@@ -29,7 +29,7 @@ res$data |>
 
 
 bb <- prolfqua::prolfqua_data('data_skylineSRM_HL_A')
-config <- old2new(bb$config_f())
+config <- bb$config_f()
 data <- bb$data
 data$Area[data$Area == 0] <- NA
 analysis <- setup_analysis(data, config)
@@ -38,7 +38,7 @@ resDataStart <- bb$analysis(bb$data, config)
 
 nr_B_in_A(resDataStart, config)
 nr_B_in_A(resDataStart, config, merge = FALSE)
-config$hierarchyDepth <- 2
+config$hierarchy_depth <- 2
 nr_B_in_A(resDataStart, config, merge = FALSE)
 
 }

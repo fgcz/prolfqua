@@ -118,12 +118,12 @@ plot_hierarchies_line <- function(res, proteinName, config, separate = FALSE, sh
   res <- plot_hierarchies_line_default(
     res,
     proteinName = proteinName,
-    sample = config$sampleName,
+    sample = config$sample_name,
     intensity = config$get_response(),
     peptide = peptide,
     fragment = fragment,
     factor = config$factor_keys_depth(),
-    isotopeLabel = config$isotopeLabel,
+    isotopeLabel = config$isotope_label,
     separate = separate,
     log_y = !config$is_response_transformed,
     show.legend = show.legend
@@ -182,14 +182,14 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
   p +
     geom_line(
       data = data,
-      aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1),
+      aes(x = .data[[configuration$sample_name]], y = .data[[aes_y]], group = 1),
       linewidth = 1.3,
       color = "black",
       linetype = "solid"
     ) +
     geom_point(
       data = data,
-      aes(x = .data[[configuration$sampleName]], y = .data[[aes_y]], group = 1),
+      aes(x = .data[[configuration$sample_name]], y = .data[[aes_y]], group = 1),
       color = "black",
       shape = 10
     )
@@ -199,13 +199,13 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
 .reestablish_condition <- function(data, medpolishRes, config) {
   xx <- data |>
     dplyr::select(c(
-      config$sampleName,
+      config$sample_name,
       config$factor_keys(),
-      config$fileName,
-      config$isotopeLabel
+      config$file_name,
+      config$isotope_label
     )) |>
     dplyr::distinct()
-  res <- dplyr::inner_join(xx, medpolishRes, by = config$sampleName)
+  res <- dplyr::inner_join(xx, medpolishRes, by = config$sample_name)
   res
 }
 
@@ -267,12 +267,11 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #' @examples
 #'
 #' bb <- prolfqua_data("data_ionstar")$filtered()
-#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
 #'
-#' conf$hierarchyDepth <- 1
+#' conf$hierarchy_depth <- 1
 #' xnested <- data |>
 #'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
@@ -285,7 +284,7 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #' bb <- medpolish_estimate_df(x,
 #'   response = conf$get_response(),
 #'   feature = feature,
-#'   sampleName = conf$sampleName
+#'   sampleName = conf$sample_name
 #' )
 #' prolfqua:::.reestablish_condition(x, bb, conf)
 #'
@@ -306,11 +305,10 @@ medpolish_estimate_df <- function(pdata, response, feature, sampleName) {
 #' @examples
 #'
 #' bb <- prolfqua_data("data_ionstar")$filtered()
-#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
-#' conf$hierarchyDepth <- 1
+#' conf$hierarchy_depth <- 1
 #' xnested <- data |>
 #'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
@@ -330,7 +328,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
     pdata,
     response = config$get_response(),
     feature = feature,
-    sampleName = config$sampleName
+    sampleName = config$sample_name
   )
   return(res)
 }
@@ -451,11 +449,10 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #'
 #'
 #' bb <- prolfqua_data("data_ionstar")$filtered()
-#' bb$config <- old2new(bb$config)
 #' stopifnot(nrow(bb$data) == 25780)
 #' conf <- bb$config
 #' data <- bb$data
-#' conf$hierarchyDepth <- 1
+#' conf$hierarchy_depth <- 1
 #' xnested <- data |>
 #'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
@@ -465,7 +462,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' bb <- rlm_estimate(x,
 #'   response = conf$get_response(),
 #'   feature = feature,
-#'   samples = conf$sampleName
+#'   samples = conf$sample_name
 #' )
 #'
 rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
@@ -488,9 +485,9 @@ rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
 #' @examples
 #'
 #' bb <- prolfqua_data("data_ionstar")$filtered()
-#' conf <- old2new(bb$config)
+#' conf <- bb$config
 #' data <- bb$data
-#' conf$hierarchyDepth <- 1
+#' conf$hierarchy_depth <- 1
 #' xnested <- data |>
 #'   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
@@ -507,44 +504,13 @@ rlm_estimate_dfconfig <- function(pdata, config, name = FALSE) {
   }
 
   feature <- base::setdiff(config$hierarchy_keys(), config$hierarchy_keys_depth())
-  rlm_estimate(pdata, response = config$get_response(), feature = feature, samples = config$sampleName, maxIt = 20)
-}
-
-#' Convert old proflqua configurations (prolfqua 0.4) to new Analysis configurations
-#' prolfqua 0.5
-#' @param config an old (as stored in the example data) AnalysisConfiguration
-#' @return  a new AnalysisConfiguration
-#' @export
-#' @examples
-#' dd <- prolfqua_data("data_ionstar")$filtered()
-#' dd$config <- old2new(dd$config)
-#'
-old2new <- function(config) {
-  newconfig <- AnalysisConfiguration$new()
-  newconfig$factors <- config$factors
-  newconfig$factorDepth <- config$factorDepth
-  newconfig$workIntensity <- config$workIntensity
-  newconfig$hierarchyDepth <- config$hierarchyDepth
-  newconfig$hierarchy <- config$hierarchy
-  newconfig$isotopeLabel <- config$isotopeLabel
-  newconfig$is_response_transformed <- if (!is.null(config$is_response_transformed)) {
-    config$is_response_transformed
-  } else if (!is.null(config$is_intensity_transformed)) {
-    config$is_intensity_transformed
-  } else {
-    FALSE
-  }
-  newconfig$ident_qValue <- config$ident_qValue
-  newconfig$sampleName <- config$sampleName
-  newconfig$isotopeLabel <- config$isotopeLabel
-  newconfig$fileName <- config$fileName
-  return(newconfig)
+  rlm_estimate(pdata, response = config$get_response(), feature = feature, samples = config$sample_name, maxIt = 20)
 }
 
 .add_nr_children <- function(data, aggregated_data, config, newconfig) {
   new_child <- paste(c("nr_children", config$hierarchy_keys_depth()), collapse = "_")
   res_nr_children <- nr_obs_sample(data, config, new_child = new_child)
-  result <- inner_join(aggregated_data, res_nr_children, by = c(config$hierarchy_keys_depth(), config$fileName))
+  result <- inner_join(aggregated_data, res_nr_children, by = c(config$hierarchy_keys_depth(), config$file_name))
   newconfig$nr_children <- new_child
   return(list(data = result, config = newconfig))
 }
@@ -733,22 +699,22 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
   topInt <- topInt |>
     dplyr::group_by(across(all_of(c(
       config$hierarchy_keys_depth(),
-      config$sampleName,
-      config$fileName,
-      config$isotopeLabel,
+      config$sample_name,
+      config$file_name,
+      config$isotope_label,
       config$factor_keys()
     ))))
   sumTopInt <- topInt |>
     dplyr::summarize(
       !!newcol := .func(!!sym(config$get_response())),
-      ident_qValue = min(!!sym(config$ident_qValue)),
+      ident_qValue = min(!!sym(config$ident_q_value)),
       .groups = "drop"
     )
 
   newconfig <- make_reduced_hierarchy_config(
     config,
     workIntensity = newcol,
-    hierarchy = config$hierarchy[seq_len(config$hierarchyDepth)]
+    hierarchy = config$hierarchy[seq_len(config$hierarchy_depth)]
   )
 
   return(.add_nr_children(pdata, sumTopInt, config, newconfig))
@@ -789,7 +755,7 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
 nr_obs_sample <- function(data, config, new_child = config$nr_children) {
   data <- data[!is.na(data[[config$get_response()]]), ]
   nr_children <- data |>
-    group_by(!!!rlang::syms(c(config$hierarchy_keys_depth(), config$fileName))) |>
+    group_by(!!!rlang::syms(c(config$hierarchy_keys_depth(), config$file_name))) |>
     summarize(!!new_child := sum(!!sym(config$nr_children), na.rm = TRUE), .groups = "drop")
   return(nr_children)
 }
@@ -815,7 +781,7 @@ nr_obs_sample <- function(data, config, new_child = config$nr_children) {
 #'
 #'
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' dd$config$hierarchyDepth <- 2
+#' dd$config$hierarchy_depth <- 2
 #' xpep <- nr_obs_experiment(dd$data,dd$config)
 #' stopifnot(all(xpep$nr_child_exp == 1))
 #' xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)

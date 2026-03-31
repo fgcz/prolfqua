@@ -36,7 +36,7 @@ nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
 
 
 dd <- prolfqua::sim_lfq_data_peptide_config()
-dd$config$hierarchyDepth <- 2
+dd$config$hierarchy_depth <- 2
 xpep <- nr_obs_experiment(dd$data,dd$config)
 stopifnot(all(xpep$nr_child_exp == 1))
 xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)
