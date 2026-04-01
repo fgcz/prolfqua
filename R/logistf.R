@@ -285,6 +285,7 @@ sim_build_models_logistf <- function(
 #'
 #' @export
 #' @family modelling
+#' @importFrom logistf logistf
 #' @examples
 #' strat <- StrategyLogistf$new("bin_resp ~ condition")
 #' strat$model_fun(get_formula = TRUE)
