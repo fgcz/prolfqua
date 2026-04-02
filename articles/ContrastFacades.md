@@ -42,7 +42,7 @@ facades separately.
 options(prolfqua.vectorize = TRUE)
 
 istar <- sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
-istar$config <- old2new(istar$config)
+
 
 lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq

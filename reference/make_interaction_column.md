@@ -29,14 +29,14 @@ xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
 x <- make_interaction_column(xx, c("B","A"))
 x <- make_interaction_column(xx, c("A"))
 bb <- prolfqua::sim_lfq_data_protein_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
 config <- bb$config
 analysis <- bb$data
 
-config$factorDepth <- 1
+config$factor_depth <- 1
 make_interaction_column(analysis,
    config$factor_keys_depth())
 #> # A tibble: 120 × 9

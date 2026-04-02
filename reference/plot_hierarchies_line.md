@@ -74,7 +74,7 @@ Other plotting:
 ``` r
 
 istar <- sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -95,7 +95,7 @@ prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], conf
 bb <- prolfqua_data("data_skylineSRM_HL_A")
 conf <- bb$config_f()
 analysis <- bb$analysis(bb$data, conf)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases
 #> completing cases done

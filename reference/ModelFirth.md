@@ -309,7 +309,7 @@ The objects of this class are cloneable with this method.
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -361,9 +361,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/Rtmp39mMff/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/Rtmp39mMff/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/Rtmp39mMff/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -377,12 +377,12 @@ mod$write_coef_figures(tempdir())
 #>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_29f7442a0cdb 
+#> agg_record_2cfd32366863 
 #>                       2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -434,9 +434,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/Rtmp39mMff/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/Rtmp39mMff/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/Rtmp39mMff/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_Id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -450,6 +450,6 @@ mod$write_coef_figures(tempdir())
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
 #>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
 #> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
-#> agg_record_29f7442a0cdb 
+#> agg_record_2cfd32366863 
 #>                       2 
 ```

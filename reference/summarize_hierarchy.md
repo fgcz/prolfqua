@@ -45,7 +45,7 @@ Other summary:
 
 
 bb <- sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -103,7 +103,7 @@ summarize_hierarchy(data, configur,
 #> 1 A                   1           10           28
 #> 2 B                   1           10           28
 #> 3 Ctrl                1           10           28
-configur$hierarchyDepth = 1
+configur$hierarchy_depth = 1
 summarize_hierarchy(data, configur,
  factors = configur$factor_keys_depth())
 #> # A tibble: 30 × 4
@@ -121,7 +121,7 @@ summarize_hierarchy(data, configur,
 #>  9 A      JcKVfU~9653              1            7
 #> 10 A      SGIVBl~5782              1            6
 #> # ℹ 20 more rows
-configur$hierarchyDepth = 2
+configur$hierarchy_depth = 2
 summarize_hierarchy(data, configur)
 #> # A tibble: 28 × 3
 #> # Groups:   protein_Id [10]
@@ -138,7 +138,7 @@ summarize_hierarchy(data, configur)
 #>  9 DoWup2~5896 KVUnZ6oZ                1
 #> 10 Fl4JiV~8625 GsUIOl6Q                1
 #> # ℹ 18 more rows
-configur$hierarchyDepth = 3
+configur$hierarchy_depth = 3
 summarize_hierarchy(data, configur )
 #> # A tibble: 28 × 3
 #> # Groups:   protein_Id [10]
@@ -155,7 +155,7 @@ summarize_hierarchy(data, configur )
 #>  9 DoWup2~5896 KVUnZ6oZ                1
 #> 10 Fl4JiV~8625 GsUIOl6Q                1
 #> # ℹ 18 more rows
-configur$hierarchyDepth = 4
+configur$hierarchy_depth = 4
 summarize_hierarchy(data, configur )
 #> # A tibble: 28 × 3
 #> # Groups:   protein_Id [10]

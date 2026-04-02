@@ -100,11 +100,10 @@ rlm_estimate(xx2[xx2$sampleName == "a", ], "log2Area", "peptide_Id", "sampleName
 
 bb <- prolfqua_data("data_ionstar")$filtered()
 #> Column added : nr_peptide_Id_IN_protein_Id
-bb$config <- old2new(bb$config)
 stopifnot(nrow(bb$data) == 25780)
 conf <- bb$config
 data <- bb$data
-conf$hierarchyDepth <- 1
+conf$hierarchy_depth <- 1
 xnested <- data |>
   dplyr::group_by(across(all_of(conf$hierarchy_keys_depth()))) |>
   tidyr::nest()
@@ -114,6 +113,6 @@ x <- xnested$data[[1]]
 bb <- rlm_estimate(x,
   response = conf$get_response(),
   feature = feature,
-  samples = conf$sampleName
+  samples = conf$sample_name
 )
 ```

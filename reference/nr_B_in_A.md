@@ -22,7 +22,7 @@ nr_B_in_A(pdata, config, merge = TRUE)
 
 ``` r
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -42,18 +42,18 @@ res$data |>
 
 
 bb <- prolfqua::prolfqua_data('data_skylineSRM_HL_A')
-config <- old2new(bb$config_f())
+config <- bb$config_f()
 data <- bb$data
 data$Area[data$Area == 0] <- NA
 analysis <- setup_analysis(data, config)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases
 #> completing cases done
 #> setup done
 
 resDataStart <- bb$analysis(bb$data, config)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases
 #> completing cases done
@@ -100,7 +100,7 @@ nr_B_in_A(resDataStart, config, merge = FALSE)
 #> 11 sp|Q9C0K1|S39A8_HUMAN                           2
 #> 12 sp|Q9NP59|S40A1_HUMAN                           3
 #> 13 sp|Q9UHI5|LAT2_HUMAN                            3
-config$hierarchyDepth <- 2
+config$hierarchy_depth <- 2
 nr_B_in_A(resDataStart, config, merge = FALSE)
 #> # A tibble: 45 × 3
 #> # Groups:   protein_Id [13]

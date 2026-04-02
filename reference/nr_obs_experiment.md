@@ -36,7 +36,7 @@ nr_obs_experiment(
 
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -46,7 +46,7 @@ xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
 xd <- nr_obs_experiment(dd$data, dd$config, from_children = TRUE)
 stopifnot(min(xd$nr_child_exp) == 1)
 dp <- prolfqua::sim_lfq_data_protein_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -81,11 +81,11 @@ nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
 
 
 dd <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-dd$config$hierarchyDepth <- 2
+dd$config$hierarchy_depth <- 2
 xpep <- nr_obs_experiment(dd$data,dd$config)
 stopifnot(all(xpep$nr_child_exp == 1))
 xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)

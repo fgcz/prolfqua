@@ -268,12 +268,12 @@ The objects of this class are cloneable with this method.
 
 ``` r
 bb <-prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
 configur <- bb$config$clone(deep=TRUE)
-configur$hierarchyDepth <- 2
+configur$hierarchy_depth <- 2
 data <- bb$data
 lfqdata <- LFQData$new(data, configur)
 lfqdata$factors()

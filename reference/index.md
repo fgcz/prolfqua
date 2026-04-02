@@ -254,10 +254,6 @@
 - [`nr_obs_sample()`](https://wolski.github.io/prolfqua/reference/nr_obs_sample.md)
   : Aggregates e.g. protein abundances from peptide abundances
 
-- [`old2new()`](https://wolski.github.io/prolfqua/reference/old2new.md)
-  : Convert old proflqua configurations (prolfqua 0.4) to new Analysis
-  configurations prolfqua 0.5
-
 - [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md)
   : pivot model contrasts matrix to wide format produced by
   \`contrasts_linfct\` and ...

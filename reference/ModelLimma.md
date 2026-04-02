@@ -319,7 +319,7 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

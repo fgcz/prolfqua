@@ -246,7 +246,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- prolfqua_data('data_ionstar')$filtered()
 #> Column added : nr_peptide_Id_IN_protein_Id
-istar$config <- old2new(istar$config)
 data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 
@@ -358,7 +357,7 @@ quant <- function(y){
 #subset scaling
 
 istar2 <- sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

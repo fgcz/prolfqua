@@ -34,7 +34,7 @@ Other LFQData:
 
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -98,39 +98,37 @@ lfqdata$to_wide()
 #>     annotation_vars: function () 
 #>     bin_resp: 
 #>     clone: function (deep = FALSE) 
-#>     factorDepth: 1
+#>     factor_depth: 1
 #>     factor_keys: function () 
 #>     factor_keys_depth: function () 
 #>     factors: list
-#>     fileName: sample
+#>     file_name: sample
 #>     get_response: function () 
 #>     hierarchy: list
-#>     hierarchyDepth: 1
 #>     hierarchyKeys: function (rev = FALSE) 
+#>     hierarchy_depth: 1
 #>     hierarchy_keys: function (rev = FALSE) 
 #>     hierarchy_keys_depth: function (names = TRUE) 
 #>     hkeysDepth: function (names = TRUE) 
 #>     id_required: function () 
 #>     id_vars: function () 
-#>     ident_Score: 
-#>     ident_qValue: qValue
-#>     initialize: function (analysisTableAnnotation = NULL, analysisParameter = NULL) 
+#>     ident_q_value: qValue
+#>     ident_score: 
+#>     initialize: function () 
 #>     is_response_transformed: FALSE
-#>     isotopeLabel: isotopeLabel
+#>     isotope_label: isotopeLabel
 #>     min_peptides_protein: 2
-#>     normValue: NULL
+#>     norm_value: NULL
 #>     nr_children: nr_children
 #>     opt_mz: 
 #>     opt_rt: 
 #>     opt_se: 
-#>     parameter: active binding
 #>     pop_response: function () 
-#>     sampleName: sampleName
+#>     sample_name: sampleName
 #>     sep: ~
 #>     set_response: function (colName) 
-#>     table: active binding
 #>     value_vars: function () 
-#>     workIntensity: abundance
+#>     work_intensity: abundance
 #> 
 if(require("SummarizedExperiment")){
    tmp <- LFQDataToSummarizedExperiment(lfqdata)

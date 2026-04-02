@@ -110,7 +110,7 @@ Other modelling:
 
 ``` r
 mod <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -126,7 +126,7 @@ stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
 # Falls back to sigma if donor models have different coefficient counts.
 mod_no_missing <- sim_build_models_lm(model = "parallel3",
   Nprot = 10, with_missing = FALSE)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

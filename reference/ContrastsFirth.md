@@ -287,7 +287,7 @@ The objects of this class are cloneable with this method.
 
 ``` r
 modi <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -354,7 +354,7 @@ ctr$get_contrasts()
 #> #   avgAbd <dbl>
 
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

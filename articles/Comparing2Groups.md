@@ -50,39 +50,37 @@ xx
     ##     annotation_vars: function () 
     ##     bin_resp: 
     ##     clone: function (deep = FALSE) 
+    ##     factor_depth: 1
     ##     factor_keys: function () 
     ##     factor_keys_depth: function () 
-    ##     factorDepth: 1
     ##     factors: list
-    ##     fileName: sample
+    ##     file_name: sample
     ##     get_response: function () 
     ##     hierarchy: list
+    ##     hierarchy_depth: 1
     ##     hierarchy_keys: function (rev = FALSE) 
     ##     hierarchy_keys_depth: function (names = TRUE) 
-    ##     hierarchyDepth: 1
     ##     hierarchyKeys: function (rev = FALSE) 
     ##     hkeysDepth: function (names = TRUE) 
     ##     id_required: function () 
     ##     id_vars: function () 
-    ##     ident_qValue: qValue
-    ##     ident_Score: 
-    ##     initialize: function (analysisTableAnnotation = NULL, analysisParameter = NULL) 
+    ##     ident_q_value: qValue
+    ##     ident_score: 
+    ##     initialize: function () 
     ##     is_response_transformed: FALSE
-    ##     isotopeLabel: isotopeLabel
+    ##     isotope_label: isotopeLabel
     ##     min_peptides_protein: 2
-    ##     normValue: NULL
+    ##     norm_value: NULL
     ##     nr_children: nr_peptides
     ##     opt_mz: 
     ##     opt_rt: 
     ##     opt_se: 
-    ##     parameter: active binding
     ##     pop_response: function () 
-    ##     sampleName: sampleName
+    ##     sample_name: sampleName
     ##     sep: ~
     ##     set_response: function (colName) 
-    ##     table: active binding
     ##     value_vars: function () 
-    ##     workIntensity: abundance
+    ##     work_intensity: abundance
 
 Create the `LFQData` class instance and remove zeros from data (MaxQuant
 encodes missing values with zero).
@@ -519,31 +517,41 @@ sessionInfo()
     ## [1] prolfqua_1.6.1 dplyr_1.2.0   
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] gtable_0.3.6        xfun_0.57           bslib_0.10.0       
-    ##  [4] ggplot2_4.0.2       htmlwidgets_1.6.4   ggrepel_0.9.8      
-    ##  [7] vctrs_0.7.2         tools_4.5.2         crosstalk_1.2.2    
-    ## [10] generics_0.1.4      tibble_3.3.1        pkgconfig_2.0.3    
-    ## [13] pheatmap_1.0.13     KernSmooth_2.23-26  data.table_1.18.2.1
-    ## [16] RColorBrewer_1.1-3  S7_0.2.1            desc_1.4.3         
-    ## [19] lifecycle_1.0.5     compiler_4.5.2      farver_2.1.2       
-    ## [22] textshaping_1.0.5   progress_1.2.3      statmod_1.5.1      
-    ## [25] httpuv_1.6.17       htmltools_0.5.9     sass_0.4.10        
-    ## [28] yaml_2.3.12         lazyeval_0.2.2      plotly_4.12.0      
-    ## [31] later_1.4.8         pillar_1.11.1       pkgdown_2.2.0      
-    ## [34] crayon_1.5.3        jquerylib_0.1.4     tidyr_1.3.2        
-    ## [37] MASS_7.3-65         cachem_1.1.0        limma_3.66.0       
-    ## [40] mime_0.13           tidyselect_1.2.1    digest_0.6.39      
-    ## [43] stringi_1.8.7       purrr_1.2.1         labeling_0.4.3     
-    ## [46] forcats_1.0.1       fastmap_1.2.0       grid_4.5.2         
-    ## [49] cli_3.6.5           magrittr_2.0.4      utf8_1.2.6         
-    ## [52] withr_3.0.2         promises_1.5.0      prettyunits_1.2.0  
-    ## [55] scales_1.4.0        rmarkdown_2.31      httr_1.4.8         
-    ## [58] otel_0.2.0          gridExtra_2.3       ragg_1.5.2         
-    ## [61] hms_1.1.4           shiny_1.13.0        evaluate_1.0.5     
-    ## [64] knitr_1.51          UpSetR_1.4.0        viridisLite_0.4.3  
-    ## [67] rlang_1.1.7         Rcpp_1.1.1          xtable_1.8-8       
-    ## [70] glue_1.8.0          jsonlite_2.0.0      R6_2.6.1           
-    ## [73] plyr_1.8.9          systemfonts_1.3.2   fs_2.0.1
+    ##   [1] tidyselect_1.2.1       viridisLite_0.4.3      farver_2.1.2          
+    ##   [4] S7_0.2.1               fastmap_1.2.0          lazyeval_0.2.2        
+    ##   [7] promises_1.5.0         digest_0.6.39          rpart_4.1.24          
+    ##  [10] mime_0.13              lifecycle_1.0.5        survival_3.8-3        
+    ##  [13] statmod_1.5.1          magrittr_2.0.4         compiler_4.5.2        
+    ##  [16] progress_1.2.3         rlang_1.1.7            sass_0.4.10           
+    ##  [19] tools_4.5.2            utf8_1.2.6             yaml_2.3.12           
+    ##  [22] data.table_1.18.2.1    knitr_1.51             prettyunits_1.2.0     
+    ##  [25] labeling_0.4.3         htmlwidgets_1.6.4      plyr_1.8.9            
+    ##  [28] RColorBrewer_1.1-3     KernSmooth_2.23-26     withr_3.0.2           
+    ##  [31] purrr_1.2.1            desc_1.4.3             nnet_7.3-20           
+    ##  [34] grid_4.5.2             jomo_2.7-6             xtable_1.8-8          
+    ##  [37] mice_3.19.0            ggplot2_4.0.2          scales_1.4.0          
+    ##  [40] iterators_1.0.14       MASS_7.3-65            cli_3.6.5             
+    ##  [43] crayon_1.5.3           UpSetR_1.4.0           rmarkdown_2.31        
+    ##  [46] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
+    ##  [49] otel_0.2.0             httr_1.4.8             minqa_1.2.8           
+    ##  [52] cachem_1.1.0           operator.tools_1.6.3.1 splines_4.5.2         
+    ##  [55] vctrs_0.7.2            boot_1.3-32            glmnet_4.1-10         
+    ##  [58] Matrix_1.7-4           jsonlite_2.0.0         hms_1.1.4             
+    ##  [61] mitml_0.4-5            ggrepel_0.9.8          crosstalk_1.2.2       
+    ##  [64] systemfonts_1.3.2      foreach_1.5.2          limma_3.66.0          
+    ##  [67] plotly_4.12.0          tidyr_1.3.2            jquerylib_0.1.4       
+    ##  [70] glue_1.8.0             pkgdown_2.2.0          nloptr_2.2.1          
+    ##  [73] pan_1.9                codetools_0.2-20       stringi_1.8.7         
+    ##  [76] shape_1.4.6.1          gtable_0.3.6           later_1.4.8           
+    ##  [79] lme4_2.0-1             tibble_3.3.1           pillar_1.11.1         
+    ##  [82] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     
+    ##  [85] Rdpack_2.6.6           formula.tools_1.7.1    shiny_1.13.0          
+    ##  [88] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
+    ##  [91] backports_1.5.0        pheatmap_1.0.13        broom_1.0.12          
+    ##  [94] httpuv_1.6.17          bslib_0.10.0           Rcpp_1.1.1            
+    ##  [97] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
+    ## [100] logistf_1.26.1         xfun_0.57              fs_2.0.1              
+    ## [103] forcats_1.0.1          pkgconfig_2.0.3
 
 ## References
 

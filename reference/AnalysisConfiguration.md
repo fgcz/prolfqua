@@ -24,28 +24,28 @@ Other configuration:
 
   separator to use when uniting columns is necessary
 
-- `fileName`:
+- `file_name`:
 
   column name of column containing raw file names
 
-- `sampleName`:
+- `sample_name`:
 
-  (will be generated from factors or fileName)
+  (will be generated from factors or file_name)
 
-- `normValue`:
+- `norm_value`:
 
   optional column with normalization values (e.g., Creatinine)
 
-- `isotopeLabel`:
+- `isotope_label`:
 
   which column contains the isotope label (e.g. heavy or light), or
   light only if LFQ.
 
-- `ident_qValue`:
+- `ident_q_value`:
 
   column name with identification QValues (smaller better)
 
-- `ident_Score`:
+- `ident_score`:
 
   column with identification score (larger better)
 
@@ -65,7 +65,7 @@ Other configuration:
 
   optional column containing for instance the number of peptides
 
-- `workIntensity`:
+- `work_intensity`:
 
   column which contains the intensities
 
@@ -81,7 +81,7 @@ Other configuration:
 
   Names of columns containing factors (annotations)
 
-- `factorDepth`:
+- `factor_depth`:
 
   number of relevant factors (used by plotting functions etc)
 
@@ -90,25 +90,13 @@ Other configuration:
   list with columns describing the measurement hierarchy (i.e. protein
   peptide precursor fragment)
 
-- `hierarchyDepth`:
+- `hierarchy_depth`:
 
   At which depth do you want to model i.e. protein than 1
 
 - `min_peptides_protein`:
 
   minimum number of peptides per protein
-
-## Active bindings
-
-- `table`:
-
-  deprecated, use config directly. Returns self for backwards
-  compatibility.
-
-- `parameter`:
-
-  deprecated, use config directly. Returns self for backwards
-  compatibility.
 
 ## Methods
 
@@ -152,20 +140,7 @@ create AnalysisConfiguration
 
 #### Usage
 
-    AnalysisConfiguration$new(
-      analysisTableAnnotation = NULL,
-      analysisParameter = NULL
-    )
-
-#### Arguments
-
-- `analysisTableAnnotation`:
-
-  optional, for backwards compatibility with old constructor
-
-- `analysisParameter`:
-
-  optional, for backwards compatibility with old constructor
+    AnalysisConfiguration$new()
 
 ------------------------------------------------------------------------
 
@@ -377,7 +352,7 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

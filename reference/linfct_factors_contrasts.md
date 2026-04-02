@@ -95,7 +95,7 @@ Other modelling:
 
 ``` r
 m <- sim_make_model_lm( "interaction")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

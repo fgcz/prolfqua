@@ -39,7 +39,7 @@ Other utilities:
 ``` r
 bb <- prolfqua_data('data_ionstar')$filtered()
 #> Column added : nr_peptide_Id_IN_protein_Id
-tmp <- prolfqua::separate_hierarchy(bb$data,old2new( bb$config))
+tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
 tmp$UniprotID <- NULL
 tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
 stopifnot("UniprotID" %in%  colnames(tmp))

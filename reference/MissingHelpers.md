@@ -207,7 +207,7 @@ The objects of this class are cloneable with this method.
 ``` r
 Contrasts <- c("group.b-a" = "group_A - group_B", "group.a-ctrl" = "group_A - group_Ctrl")
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -252,7 +252,7 @@ mh$get_contrasts(Contrasts)
 #> #   p.value <dbl>, conf.low <dbl>, conf.high <dbl>
 
 dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

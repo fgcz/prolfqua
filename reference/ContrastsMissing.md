@@ -285,7 +285,7 @@ The objects of this class are cloneable with this method.
 ``` r
 Nprot <- 120
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot,weight_missing = .4)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -356,11 +356,11 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_29f7510aaa9c 
+#> agg_record_2cfd6420c61b 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -396,6 +396,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_29f7510aaa9c 
+#> agg_record_2cfd6420c61b 
 #>                       2 
 ```

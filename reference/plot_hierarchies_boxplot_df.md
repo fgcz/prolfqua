@@ -58,13 +58,13 @@ Other plotting:
 
 ``` r
  istar <- sim_lfq_data_peptide_config(with_missing = FALSE)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
  res <- plot_hierarchies_boxplot_df(istar$data,istar$config)
  istar <- sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -112,7 +112,7 @@ Other plotting:
 
 
  iostar <- sim_lfq_data_protein_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

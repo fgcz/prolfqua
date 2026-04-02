@@ -99,7 +99,7 @@ Other modelling:
 ``` r
 mf <- sim_make_model_lmer("factors")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -117,7 +117,7 @@ mf <- sim_make_model_lmer("factors")
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 mi <- sim_make_model_lmer("interaction")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

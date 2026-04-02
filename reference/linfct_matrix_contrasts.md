@@ -115,7 +115,7 @@ Other modelling:
 
 ``` r
 m <- sim_make_model_lm( "factors")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -134,7 +134,7 @@ stopifnot(sum(x["interactXZ",]) == 0 )
 stopifnot(sum(x["interactAB",]) == 0 )
 
 m <- sim_make_model_lm( "interaction")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

@@ -66,9 +66,9 @@ We create a `AnalysisConfiguration` and start annotating the data frame,
 that is specifying which column contains wich type of information.
 
 ``` r
-atable <- prolfqua::AnalysisConfiguration$new()
-atable$fileName = "Sample"
-atable$workIntensity = "Intensity"
+config <- prolfqua::AnalysisConfiguration$new()
+config$file_name = "Sample"
+config$work_intensity = "Intensity"
 ```
 
 The columns identifying the measured features, which are proteins,
@@ -81,12 +81,11 @@ The list `factors`, is used to point to the columns containing the
 factors of your analysis (Group).
 
 ``` r
-atable$hierarchy[["protein_Id"]]    <-  "protein_Id"
-atable$factors[["Group"]] <- "Group"
+config$hierarchy[["protein_Id"]]    <-  "protein_Id"
+config$factors[["Group"]] <- "Group"
 ```
 
 ``` r
-config <- prolfqua::AnalysisConfiguration$new(atable)
 analysis_data <- prolfqua::setup_analysis(table_long, config)
 lfqdata <- prolfqua::LFQData$new(analysis_data, config)
 ```
@@ -140,9 +139,9 @@ data quality we will also define the ident_qValue in this
 `AnalysisConfiguration`.
 
 ``` r
-atable <- prolfqua::AnalysisConfiguration$new()
-atable$fileName = "sample"
-atable$workIntensity = "abundance"
+config <- prolfqua::AnalysisConfiguration$new()
+config$file_name = "sample"
+config$work_intensity = "abundance"
 ```
 
 The columns identifying the measured features, which are proteins,
@@ -158,19 +157,16 @@ will then be used and not “R.Condition”. The data.frame can also contain
 more than one factor.
 
 ``` r
-atable$hierarchy[["proteinID"]]    <-  "proteinID"
-atable$hierarchy[["peptideID"]]    <-  "peptideID"
-atable$factors[["group"]] <- "group"
+config$hierarchy[["proteinID"]]    <-  "proteinID"
+config$hierarchy[["peptideID"]]    <-  "peptideID"
+config$factors[["group"]] <- "group"
 ```
 
-Lastly, we create an Analysis parameter object, and the Analysis
-Configuration. The function `setup_analysis`, creates from data frame in
-long format a data.frame compatible with your configuration. We can now
-run most of the function in the package using the data and
-configuration.
+Lastly, the function `setup_analysis`, creates from data frame in long
+format a data.frame compatible with your configuration. We can now run
+most of the function in the package using the data and configuration.
 
 ``` r
-config <- prolfqua::AnalysisConfiguration$new(atable)
 analysis_data <- prolfqua::setup_analysis(dataLongFormat, config)
 
 prolfqua::summarize_hierarchy(analysis_data, config)
@@ -249,28 +245,38 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] plotly_4.12.0       sass_0.4.10         utf8_1.2.6         
-    ##  [4] generics_0.1.4      tidyr_1.3.2         stringi_1.8.7      
-    ##  [7] digest_0.6.39       magrittr_2.0.4      evaluate_1.0.5     
-    ## [10] grid_4.5.2          RColorBrewer_1.1-3  fastmap_1.2.0      
-    ## [13] plyr_1.8.9          jsonlite_2.0.0      ggrepel_0.9.8      
-    ## [16] limma_3.66.0        prolfqua_1.6.1      gridExtra_2.3      
-    ## [19] httr_1.4.8          purrr_1.2.1         viridisLite_0.4.3  
-    ## [22] scales_1.4.0        UpSetR_1.4.0        lazyeval_0.2.2     
-    ## [25] textshaping_1.0.5   jquerylib_0.1.4     cli_3.6.5          
-    ## [28] rlang_1.1.7         withr_3.0.2         cachem_1.1.0       
-    ## [31] yaml_2.3.12         otel_0.2.0          tools_4.5.2        
-    ## [34] dplyr_1.2.0         ggplot2_4.0.2       forcats_1.0.1      
-    ## [37] vctrs_0.7.2         R6_2.6.1            lifecycle_1.0.5    
-    ## [40] fs_2.0.1            htmlwidgets_1.6.4   MASS_7.3-65        
-    ## [43] ragg_1.5.2          pkgconfig_2.0.3     desc_1.4.3         
-    ## [46] pkgdown_2.2.0       pillar_1.11.1       bslib_0.10.0       
-    ## [49] gtable_0.3.6        data.table_1.18.2.1 glue_1.8.0         
-    ## [52] Rcpp_1.1.1          statmod_1.5.1       systemfonts_1.3.2  
-    ## [55] xfun_0.57           tibble_3.3.1        tidyselect_1.2.1   
-    ## [58] knitr_1.51          farver_2.1.2        htmltools_0.5.9    
-    ## [61] labeling_0.4.3      rmarkdown_2.31      pheatmap_1.0.13    
-    ## [64] compiler_4.5.2      S7_0.2.1
+    ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.0           
+    ##  [4] farver_2.1.2           S7_0.2.1               lazyeval_0.2.2        
+    ##  [7] fastmap_1.2.0          digest_0.6.39          rpart_4.1.24          
+    ## [10] prolfqua_1.6.1         lifecycle_1.0.5        survival_3.8-3        
+    ## [13] statmod_1.5.1          magrittr_2.0.4         compiler_4.5.2        
+    ## [16] rlang_1.1.7            sass_0.4.10            tools_4.5.2           
+    ## [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.2.1   
+    ## [22] knitr_1.51             labeling_0.4.3         htmlwidgets_1.6.4     
+    ## [25] plyr_1.8.9             RColorBrewer_1.1-3     withr_3.0.2           
+    ## [28] purrr_1.2.1            desc_1.4.3             nnet_7.3-20           
+    ## [31] grid_4.5.2             jomo_2.7-6             mice_3.19.0           
+    ## [34] ggplot2_4.0.2          scales_1.4.0           iterators_1.0.14      
+    ## [37] MASS_7.3-65            cli_3.6.5              UpSetR_1.4.0          
+    ## [40] rmarkdown_2.31         ragg_1.5.2             reformulas_0.4.4      
+    ## [43] generics_0.1.4         otel_0.2.0             httr_1.4.8            
+    ## [46] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
+    ## [49] splines_4.5.2          vctrs_0.7.2            boot_1.3-32           
+    ## [52] glmnet_4.1-10          Matrix_1.7-4           jsonlite_2.0.0        
+    ## [55] mitml_0.4-5            ggrepel_0.9.8          systemfonts_1.3.2     
+    ## [58] foreach_1.5.2          limma_3.66.0           plotly_4.12.0         
+    ## [61] tidyr_1.3.2            jquerylib_0.1.4        glue_1.8.0            
+    ## [64] pkgdown_2.2.0          nloptr_2.2.1           pan_1.9               
+    ## [67] codetools_0.2-20       stringi_1.8.7          gtable_0.3.6          
+    ## [70] shape_1.4.6.1          lme4_2.0-1             tibble_3.3.1          
+    ## [73] pillar_1.11.1          htmltools_0.5.9        R6_2.6.1              
+    ## [76] textshaping_1.0.5      Rdpack_2.6.6           formula.tools_1.7.1   
+    ## [79] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
+    ## [82] backports_1.5.0        pheatmap_1.0.13        broom_1.0.12          
+    ## [85] bslib_0.10.0           Rcpp_1.1.1             gridExtra_2.3         
+    ## [88] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        
+    ## [91] xfun_0.57              fs_2.0.1               forcats_1.0.1         
+    ## [94] pkgconfig_2.0.3
 
 ## References
 

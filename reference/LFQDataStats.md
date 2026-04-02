@@ -318,7 +318,7 @@ runallfuncs <- function(x){
   }
 }
 bb <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -365,7 +365,7 @@ runallfuncs(lfqstats)
 
 # Group size 1
 bb <- prolfqua::sim_lfq_data_peptide_config(N=1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

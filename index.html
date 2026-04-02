@@ -106,13 +106,11 @@
 <span></span>
 <span><span class="co"># create TableAnnotation and AnalysisConfiguration</span></span>
 <span></span>
-<span><span class="va">atable</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">AnalysisTableAnnotation</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">atable</span><span class="op">$</span><span class="va">fileName</span> <span class="op">=</span> <span class="st">"Sample"</span></span>
-<span><span class="va">atable</span><span class="op">$</span><span class="va">workIntensity</span> <span class="op">=</span> <span class="st">"Intensity"</span></span>
-<span><span class="va">atable</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein_Id"</span><span class="op">]</span><span class="op">]</span>    <span class="op">&lt;-</span>  <span class="st">"protein_Id"</span></span>
-<span><span class="va">atable</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Group"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Group"</span></span>
-<span></span>
-<span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">atable</span><span class="op">)</span></span>
+<span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">config</span><span class="op">$</span><span class="va">file_name</span> <span class="op">=</span> <span class="st">"Sample"</span></span>
+<span><span class="va">config</span><span class="op">$</span><span class="va">work_intensity</span> <span class="op">=</span> <span class="st">"Intensity"</span></span>
+<span><span class="va">config</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein_Id"</span><span class="op">]</span><span class="op">]</span>    <span class="op">&lt;-</span>  <span class="st">"protein_Id"</span></span>
+<span><span class="va">config</span><span class="op">$</span><span class="va">factors</span><span class="op">[[</span><span class="st">"Group"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Group"</span></span>
 <span></span>
 <span><span class="co"># Build LFQData object</span></span>
 <span><span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">table_long</span>, <span class="va">config</span><span class="op">)</span></span>

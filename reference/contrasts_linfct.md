@@ -17,7 +17,7 @@ contrasts_linfct(
 
 ``` r
 modelSummary_A <- sim_build_models_lm()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

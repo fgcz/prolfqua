@@ -132,7 +132,7 @@ data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(
  Nprot = 200,
  with_missing = TRUE,
  weight_missing = 2)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

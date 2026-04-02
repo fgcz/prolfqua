@@ -45,7 +45,7 @@ plot_hierarchies_boxplot(
 bb <- prolfqua_data('data_skylineSRM_HL_A')
 config <- bb$config_f()
 analysis <- bb$analysis(bb$data, config)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases
 #> completing cases done

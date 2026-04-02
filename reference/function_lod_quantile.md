@@ -24,7 +24,7 @@ function_lod_quantile(data_matrix, percent = 10)
 # example code
 
 istar <- sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

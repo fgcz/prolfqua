@@ -95,7 +95,7 @@ Other modelling:
 
 ``` r
 m <- sim_make_model_lm( "interaction")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -103,7 +103,7 @@ linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 m <- sim_make_model_lm( "factor")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -111,7 +111,7 @@ linfct <- linfct_from_model(m)
 xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
 xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 m <- sim_make_model_lm( "parallel2")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -122,7 +122,7 @@ xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 stopifnot(all(xx == c(0,-1)))
 
 m <- sim_make_model_lm( "parallel3")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

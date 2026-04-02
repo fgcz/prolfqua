@@ -23,7 +23,7 @@ list with data, rowdata, and annotation (colData)
 
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -116,7 +116,7 @@ x <- res$aggregate()
 towide <- tidy_to_wide_config(x$data, x$config,  value = x$config$nr_children)
 
 dd <- prolfqua::sim_lfq_data_protein_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

@@ -62,13 +62,11 @@ table_long <- dplyr::inner_join(annot, table_long)
 
 # create TableAnnotation and AnalysisConfiguration
 
-atable <- prolfqua::AnalysisTableAnnotation$new()
-atable$fileName = "Sample"
-atable$workIntensity = "Intensity"
-atable$hierarchy[["protein_Id"]]    <-  "protein_Id"
-atable$factors[["Group"]] <- "Group"
-
-config <- prolfqua::AnalysisConfiguration$new(atable)
+config <- prolfqua::AnalysisConfiguration$new()
+config$file_name = "Sample"
+config$work_intensity = "Intensity"
+config$hierarchy[["protein_Id"]]    <-  "protein_Id"
+config$factors[["Group"]] <- "Group"
 
 # Build LFQData object
 analysis_data <- prolfqua::setup_analysis(table_long, config)

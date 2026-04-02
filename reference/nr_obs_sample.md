@@ -26,7 +26,7 @@ nr_obs_sample(data, config, new_child = config$nr_children)
 
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -40,7 +40,7 @@ xd$nr_children |> table()
 # xd |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_children)
 
 dp <- prolfqua::sim_lfq_data_protein_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

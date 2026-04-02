@@ -313,27 +313,35 @@ sessionInfo()
     ## [1] ggplot2_4.0.2  dplyr_1.2.0    prolfqua_1.6.1
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] gtable_0.3.6        xfun_0.57           bslib_0.10.0       
-    ##  [4] htmlwidgets_1.6.4   ggrepel_0.9.8       lattice_0.22-7     
-    ##  [7] vctrs_0.7.2         tools_4.5.2         generics_0.1.4     
-    ## [10] tibble_3.3.1        pkgconfig_2.0.3     Matrix_1.7-4       
-    ## [13] pheatmap_1.0.13     data.table_1.18.2.1 RColorBrewer_1.1-3 
-    ## [16] S7_0.2.1            desc_1.4.3          lifecycle_1.0.5    
-    ## [19] compiler_4.5.2      farver_2.1.2        textshaping_1.0.5  
-    ## [22] progress_1.2.3      statmod_1.5.1       htmltools_0.5.9    
-    ## [25] sass_0.4.10         yaml_2.3.12         lazyeval_0.2.2     
-    ## [28] plotly_4.12.0       pillar_1.11.1       pkgdown_2.2.0      
-    ## [31] crayon_1.5.3        jquerylib_0.1.4     tidyr_1.3.2        
-    ## [34] MASS_7.3-65         cachem_1.1.0        limma_3.66.0       
-    ## [37] nlme_3.1-168        tidyselect_1.2.1    digest_0.6.39      
-    ## [40] stringi_1.8.7       purrr_1.2.1         labeling_0.4.3     
-    ## [43] forcats_1.0.1       splines_4.5.2       fastmap_1.2.0      
-    ## [46] grid_4.5.2          cli_3.6.5           magrittr_2.0.4     
-    ## [49] utf8_1.2.6          withr_3.0.2         prettyunits_1.2.0  
-    ## [52] scales_1.4.0        rmarkdown_2.31      httr_1.4.8         
-    ## [55] otel_0.2.0          gridExtra_2.3       ragg_1.5.2         
-    ## [58] hms_1.1.4           evaluate_1.0.5      knitr_1.51         
-    ## [61] UpSetR_1.4.0        viridisLite_0.4.3   mgcv_1.9-3         
-    ## [64] rlang_1.1.7         Rcpp_1.1.1          glue_1.8.0         
-    ## [67] jsonlite_2.0.0      R6_2.6.1            plyr_1.8.9         
-    ## [70] systemfonts_1.3.2   fs_2.0.1
+    ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      farver_2.1.2          
+    ##  [4] S7_0.2.1               fastmap_1.2.0          lazyeval_0.2.2        
+    ##  [7] digest_0.6.39          rpart_4.1.24           lifecycle_1.0.5       
+    ## [10] survival_3.8-3         statmod_1.5.1          magrittr_2.0.4        
+    ## [13] compiler_4.5.2         progress_1.2.3         rlang_1.1.7           
+    ## [16] sass_0.4.10            tools_4.5.2            utf8_1.2.6            
+    ## [19] yaml_2.3.12            data.table_1.18.2.1    knitr_1.51            
+    ## [22] prettyunits_1.2.0      labeling_0.4.3         htmlwidgets_1.6.4     
+    ## [25] plyr_1.8.9             RColorBrewer_1.1-3     withr_3.0.2           
+    ## [28] purrr_1.2.1            desc_1.4.3             nnet_7.3-20           
+    ## [31] grid_4.5.2             jomo_2.7-6             mice_3.19.0           
+    ## [34] scales_1.4.0           iterators_1.0.14       MASS_7.3-65           
+    ## [37] cli_3.6.5              crayon_1.5.3           UpSetR_1.4.0          
+    ## [40] rmarkdown_2.31         ragg_1.5.2             reformulas_0.4.4      
+    ## [43] generics_0.1.4         otel_0.2.0             httr_1.4.8            
+    ## [46] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
+    ## [49] splines_4.5.2          vctrs_0.7.2            boot_1.3-32           
+    ## [52] glmnet_4.1-10          Matrix_1.7-4           jsonlite_2.0.0        
+    ## [55] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         
+    ## [58] systemfonts_1.3.2      foreach_1.5.2          limma_3.66.0          
+    ## [61] plotly_4.12.0          tidyr_1.3.2            jquerylib_0.1.4       
+    ## [64] glue_1.8.0             pkgdown_2.2.0          nloptr_2.2.1          
+    ## [67] pan_1.9                codetools_0.2-20       stringi_1.8.7         
+    ## [70] shape_1.4.6.1          gtable_0.3.6           lme4_2.0-1            
+    ## [73] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       
+    ## [76] R6_2.6.1               textshaping_1.0.5      Rdpack_2.6.6          
+    ## [79] formula.tools_1.7.1    evaluate_1.0.5         lattice_0.22-7        
+    ## [82] rbibutils_2.4.1        backports_1.5.0        pheatmap_1.0.13       
+    ## [85] broom_1.0.12           bslib_0.10.0           Rcpp_1.1.1            
+    ## [88] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
+    ## [91] logistf_1.26.1         xfun_0.57              fs_2.0.1              
+    ## [94] forcats_1.0.1          pkgconfig_2.0.3

@@ -38,7 +38,7 @@ center_to_reference_cfg(
 # example code
 
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

@@ -96,7 +96,7 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
@@ -154,7 +154,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A                   1           10           28</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B                   1           10           28</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Ctrl                1           10           28</span>
-<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">hierarchy_depth</span> <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span>,</span></span>
 <span class="r-in"><span> factors <span class="op">=</span> <span class="va">configur</span><span class="op">$</span><span class="fu">factor_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 30 × 4</span></span>
@@ -172,7 +172,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> A      JcKVfU~9653              1            7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> A      SGIVBl~5782              1            6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 20 more rows</span></span>
-<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">hierarchy_depth</span> <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [10]</span></span>
@@ -189,7 +189,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> DoWup2~5896 KVUnZ6oZ                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Fl4JiV~8625 GsUIOl6Q                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 18 more rows</span></span>
-<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">=</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">hierarchy_depth</span> <span class="op">=</span> <span class="fl">3</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [10]</span></span>
@@ -206,7 +206,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> DoWup2~5896 KVUnZ6oZ                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Fl4JiV~8625 GsUIOl6Q                1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 18 more rows</span></span>
-<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">hierarchyDepth</span> <span class="op">=</span> <span class="fl">4</span></span></span>
+<span class="r-in"><span><span class="va">configur</span><span class="op">$</span><span class="va">hierarchy_depth</span> <span class="op">=</span> <span class="fl">4</span></span></span>
 <span class="r-in"><span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="va">data</span>, <span class="va">configur</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [10]</span></span>

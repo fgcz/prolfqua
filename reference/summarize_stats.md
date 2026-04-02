@@ -93,7 +93,7 @@ Other stats:
 ``` r
 
 bb <- prolfqua::sim_lfq_data_protein_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -104,11 +104,11 @@ res1 <- summarize_stats(data, config)
 #> completing cases
 
 res2 <- prolfqua::sim_lfq_data_2Factor_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-res2$config$factorDepth <- 2
+res2$config$factor_depth <- 2
 stats <- summarize_stats(res2$data, res2$config)
 #> completing cases
 stopifnot(nrow(stats) == 40)
@@ -126,7 +126,7 @@ stopifnot(nrow(stats) == 10)
 
 
 bb <- prolfqua::sim_lfq_data_protein_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -136,7 +136,7 @@ res1 <- summarize_stats_all(bb$data, bb$config)
 
 stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
 res2 <- prolfqua::sim_lfq_data_2Factor_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -144,7 +144,7 @@ resSt <- summarize_stats_all(res2$data, res2$config)
 #> completing cases
 library(ggplot2)
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -155,7 +155,7 @@ stats_res <- summarize_stats(data, config)
 sq <- summarize_stats_quantiles(stats_res, config)
 sq <- summarize_stats_quantiles(stats_res, config, stats = "CV")
 bb <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

@@ -69,7 +69,7 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">DEAconfig</span> <span class="op">&lt;-</span> <span class="va"><a href="AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">fileName</span> <span class="op">&lt;-</span> <span class="st">"Replicate.Name"</span></span></span>
+<span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">file_name</span> <span class="op">&lt;-</span> <span class="st">"Replicate.Name"</span></span></span>
 <span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"protein_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Protein.Name"</span></span></span>
 <span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"peptide_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Peptide.Sequence"</span></span></span>
 <span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">hierarchy</span><span class="op">[[</span><span class="st">"precursor_Id"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Peptide.Sequence"</span>, <span class="st">"Precursor.Charge"</span><span class="op">)</span></span></span>
@@ -77,21 +77,13 @@
 <span class="r-in"><span>  <span class="st">"Peptide.Sequence"</span>, <span class="st">"Precursor.Charge"</span>,</span></span>
 <span class="r-in"><span>  <span class="st">"Fragment.Ion"</span>, <span class="st">"Product.Charge"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">ident_qValue</span> <span class="op">&lt;-</span> <span class="st">"annotation_QValue"</span></span></span>
+<span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">ident_q_value</span> <span class="op">&lt;-</span> <span class="st">"annotation_QValue"</span></span></span>
 <span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span><span class="st">"Area"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">isotopeLabel</span> <span class="op">&lt;-</span> <span class="st">"Isotope.Label"</span></span></span>
+<span class="r-in"><span><span class="va">DEAconfig</span><span class="op">$</span><span class="va">isotope_label</span> <span class="op">&lt;-</span> <span class="st">"Isotope.Label"</span></span></span>
 <span class="r-in"><span><span class="va">configList</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="R6_extract_values.html">R6_extract_values</a></span><span class="op">(</span><span class="va">DEAconfig</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> config$parameter is deprecated, use config directly</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> config$table is deprecated, use config directly</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> config$parameter is deprecated, use config directly</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> config$table is deprecated, use config directly</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">configList</span><span class="op">)</span> <span class="op">==</span> <span class="st">"list"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu">list_to_AnalysisConfiguration</span><span class="op">(</span><span class="va">configList</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="R6_extract_values.html">R6_extract_values</a></span><span class="op">(</span><span class="va">config</span><span class="op">)</span>, <span class="va">configList</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> config$parameter is deprecated, use config directly</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> config$table is deprecated, use config directly</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> config$parameter is deprecated, use config directly</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> config$table is deprecated, use config directly</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>

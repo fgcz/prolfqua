@@ -317,7 +317,6 @@ The objects of this class are cloneable with this method.
 
 
 istar <- prolfqua_data('data_ionstar')$normalized()
-istar$config <- old2new(istar$config)
 istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
 modelName <- "f_condtion_r_peptide"
 formula_randomPeptide <-

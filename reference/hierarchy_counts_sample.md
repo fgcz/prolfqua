@@ -39,7 +39,7 @@ Other summary:
 
 ``` r
 bb <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -53,7 +53,7 @@ res <- hierarchy_counts_sample(data, config, nr_children = 2)
 x2 <- res$long()
 # filters on protein level based on peptide count
 bb <- prolfqua::sim_lfq_data_protein_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

@@ -97,19 +97,19 @@ Other modelling:
 
 ``` r
 m <- sim_make_model_lm()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
 mi <- sim_make_model_lm("interaction")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
 stopifnot(length(coefficients(summary(mi))[,"Estimate"]) == 4)
 mf <- sim_make_model_lmer("factors")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -127,7 +127,7 @@ mf <- sim_make_model_lmer("factors")
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 m2 <- sim_make_model_lmer("parallel2")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -144,7 +144,7 @@ m2 <- sim_make_model_lmer("parallel2")
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 m3 <- sim_make_model_lmer("parallel3")
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

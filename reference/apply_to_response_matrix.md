@@ -40,7 +40,7 @@ Other preprocessing:
 ``` r
 
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -52,7 +52,7 @@ res <- apply_to_response_matrix(data, conf, .func = base::scale)
 stopifnot("abundance_base..scale" %in% colnames(res))
 stopifnot("abundance_base..scale" == conf$get_response())
 conf <- bb$config$clone(deep=TRUE)
-conf$workIntensity <- "abundance"
+conf$work_intensity <- "abundance"
 res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
 #> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 

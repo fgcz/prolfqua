@@ -28,7 +28,7 @@ data.frame
 dd <- prolfqua_data('data_spectronautDIA250_A')
 config <- dd$config_f()
 analysis <- dd$analysis(dd$data,config)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases
 #> completing cases done

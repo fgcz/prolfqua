@@ -12,7 +12,7 @@ contrasts_linfct_firth(models, subject_Id = "protein_Id")
 
 ``` r
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

@@ -163,7 +163,7 @@ Other modelling:
 
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 20)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -246,11 +246,10 @@ head(fa_deqms$get_contrasts())
 #> #   sigma <dbl>, FDR <dbl>
 
 istar_pep <- sim_lfq_data_peptide_config()
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-istar_pep$config <- old2new(istar_pep$config)
 lfqdata_pep <- LFQData$new(istar_pep$data, istar_pep$config)
 lfqdata_pep <- lfqdata_pep$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance

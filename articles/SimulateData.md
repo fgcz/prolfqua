@@ -33,14 +33,13 @@ peptideAbundances <- prolfqua::sim_lfq_data(PEPTIDE = TRUE)
 ``` r
 library(prolfqua)
 
-atable <- AnalysisConfiguration$new()
-atable$fileName = "sample"
-atable$factors["group_"] = "group"
-atable$hierarchy[["protein_Id"]] = "proteinID"
-atable$hierarchy[["peptide_Id"]] = "peptideID"
-atable$set_response("abundance")
+config <- AnalysisConfiguration$new()
+config$file_name = "sample"
+config$factors["group_"] = "group"
+config$hierarchy[["protein_Id"]] = "proteinID"
+config$hierarchy[["peptide_Id"]] = "peptideID"
+config$set_response("abundance")
 
-config <- AnalysisConfiguration$new(atable)
 adata <- setup_analysis(peptideAbundances, config)
 
 lfqdata <- prolfqua::LFQData$new(adata, config)
@@ -100,7 +99,7 @@ pl$intensity_distribution_density()
 
 ``` r
 formula_Condition <-  strategy_lm("abundance ~ group_")
-lfqdata$config$hierarchyDepth  <- 2
+lfqdata$config$hierarchy_depth  <- 2
 
 # specify model definition
 modelName  <- "Model"
@@ -133,7 +132,7 @@ signif$get_Plotter()$heatmap()
 ## Aggregate data
 
 ``` r
-lfqdata$config$hierarchyDepth <- 1
+lfqdata$config$hierarchy_depth <- 1
 protData <- lfqdata$get_Aggregator()$aggregate()
 ```
 

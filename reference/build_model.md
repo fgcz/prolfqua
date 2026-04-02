@@ -132,14 +132,14 @@ Other modelling:
 
 ``` r
 D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
 D$data$abundance |> is.na() |> sum()
 #> [1] 68
 D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

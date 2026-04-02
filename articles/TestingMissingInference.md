@@ -12,7 +12,7 @@ dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
     ##   method         from    
     ##   print.pheatmap pheatmap
 
-    ## creating sampleName from fileName column
+    ## creating sampleName from file_name column
 
     ## completing cases
 

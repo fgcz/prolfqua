@@ -78,27 +78,27 @@ flat object.</p>
 <dd><p>separator to use when uniting columns is necessary</p></dd>
 
 
-<dt><code>fileName</code></dt>
+<dt><code>file_name</code></dt>
 <dd><p>column name of column containing raw file names</p></dd>
 
 
-<dt><code>sampleName</code></dt>
-<dd><p>(will be generated from factors or fileName)</p></dd>
+<dt><code>sample_name</code></dt>
+<dd><p>(will be generated from factors or file_name)</p></dd>
 
 
-<dt><code>normValue</code></dt>
+<dt><code>norm_value</code></dt>
 <dd><p>optional column with normalization values (e.g., Creatinine)</p></dd>
 
 
-<dt><code>isotopeLabel</code></dt>
+<dt><code>isotope_label</code></dt>
 <dd><p>which column contains the isotope label (e.g. heavy or light), or light only if LFQ.</p></dd>
 
 
-<dt><code>ident_qValue</code></dt>
+<dt><code>ident_q_value</code></dt>
 <dd><p>column name with identification QValues (smaller better)</p></dd>
 
 
-<dt><code>ident_Score</code></dt>
+<dt><code>ident_score</code></dt>
 <dd><p>column with identification score (larger better)</p></dd>
 
 
@@ -118,7 +118,7 @@ flat object.</p>
 <dd><p>optional column containing for instance the number of peptides</p></dd>
 
 
-<dt><code>workIntensity</code></dt>
+<dt><code>work_intensity</code></dt>
 <dd><p>column which contains the intensities</p></dd>
 
 
@@ -134,7 +134,7 @@ flat object.</p>
 <dd><p>Names of columns containing factors (annotations)</p></dd>
 
 
-<dt><code>factorDepth</code></dt>
+<dt><code>factor_depth</code></dt>
 <dd><p>number of relevant factors (used by plotting functions etc)</p></dd>
 
 
@@ -142,24 +142,12 @@ flat object.</p>
 <dd><p>list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)</p></dd>
 
 
-<dt><code>hierarchyDepth</code></dt>
+<dt><code>hierarchy_depth</code></dt>
 <dd><p>At which depth do you want to model i.e. protein than 1</p></dd>
 
 
 <dt><code>min_peptides_protein</code></dt>
 <dd><p>minimum number of peptides per protein</p></dd>
-
-
-</dl><p></p></div>
-    </div>
-    <div class="section level2">
-    <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
-    <p></p><div class="r6-active-bindings"><dl><dt><code>table</code></dt>
-<dd><p>deprecated, use config directly. Returns self for backwards compatibility.</p></dd>
-
-
-<dt><code>parameter</code></dt>
-<dd><p>deprecated, use config directly. Returns self for backwards compatibility.</p></dd>
 
 
 </dl><p></p></div>
@@ -189,24 +177,9 @@ flat object.</p>
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>create AnalysisConfiguration</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>  analysisTableAnnotation <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  analysisParameter <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
-<div class="section">
-<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>analysisTableAnnotation</code></dt>
-<dd><p>optional, for backwards compatibility with old constructor</p></dd>
-
-
-<dt><code>analysisParameter</code></dt>
-<dd><p>optional, for backwards compatibility with old constructor</p></dd>
-
-
-</dl><p></p></div>
-</div>
 
 </div><p></p><hr><a id="method-AnalysisConfiguration-set_response"></a><div class="section">
 <h3 id="method-set-response-">Method <code>set_response()</code><a class="anchor" aria-label="anchor" href="#method-set-response-"></a></h3>
@@ -216,7 +189,7 @@ flat object.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>colName</code></dt>
 <dd><p>name of intensity column</p></dd>
 
@@ -268,7 +241,7 @@ flat object.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rev</code></dt>
 <dd><p>return in reverse order</p></dd>
 
@@ -288,7 +261,7 @@ flat object.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rev</code></dt>
 <dd><p>return in reverse order</p></dd>
 
@@ -308,7 +281,7 @@ flat object.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>names</code></dt>
 <dd><p>if TRUE names only if FALSE key value pairs</p></dd>
 
@@ -328,7 +301,7 @@ flat object.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>names</code></dt>
 <dd><p>if TRUE names only if FALSE key value pairs</p></dd>
 
@@ -388,7 +361,7 @@ flat object.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -403,7 +376,7 @@ flat object.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from fileName column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>

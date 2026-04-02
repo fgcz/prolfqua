@@ -101,7 +101,7 @@ Other modelling:
 
 ``` r
 modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -109,7 +109,7 @@ modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
 #> Joining with `by = join_by(protein_Id)`
 stopifnot(dim(modi$modelDF) == c(10,9))
 mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -118,14 +118,14 @@ mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
 mod2$modelDF$linear_model[[1]]
 #> NULL
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
 #> completing cases
 #> Joining with `by = join_by(protein_Id)`
 modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -133,7 +133,7 @@ modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
 #> Joining with `by = join_by(protein_Id)`
 
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -142,7 +142,7 @@ mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptid
 #> Joining with `by = join_by(protein_Id)`
 modf <- sim_build_models_logistf(model = "factors", weight_missing = 1, peptide=TRUE)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done

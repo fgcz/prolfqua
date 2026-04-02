@@ -47,7 +47,7 @@ sim_lfq_data_2Factor_config(
 
 ``` r
 x <- sim_lfq_data_2Factor_config(PEPTIDE= FALSE)
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -57,7 +57,7 @@ stopifnot("data.frame" %in% class(x$data))
 stopifnot("AnalysisConfiguration" %in% class(x$config))
 x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
@@ -75,7 +75,7 @@ head(x$data)
 #> # ℹ 3 more variables: abundance <dbl>, qValue <dbl>, nr_peptides <dbl>
 x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = TRUE)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
-#> creating sampleName from fileName column
+#> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
