@@ -8,7 +8,7 @@ scale_with_subset(
   data,
   subset,
   config,
-  preserveMean = FALSE,
+  preserve_mean = FALSE,
   get_scales = TRUE
 )
 }
@@ -19,7 +19,7 @@ scale_with_subset(
 
 \item{config}{configuration}
 
-\item{preserveMean}{default FALSE - sets mean to zero}
+\item{preserve_mean}{default FALSE - sets mean to zero}
 
 \item{get_scales}{return a list of transformed data and the scaling parameters}
 }

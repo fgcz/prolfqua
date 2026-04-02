@@ -323,12 +323,12 @@ summarize_stats_quantiles <- function(stats_res, config, stats = c("sd", "CV"), 
     mutate(sdtrimmed = dplyr::if_else(.data$quantiles < .env$minsd, .env$minsd, .data$quantiles))
 
   #, delta = delta, power = power, sig.level = sig.level
-  getSampleSize <- function(sd) {
+  get_sample_size <- function(sd) {
     power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n
   }
 
   sample_sizes <- quantile_sd |>
-    mutate(N_exact = purrr::map_dbl(!!sym("sdtrimmed"), getSampleSize), N = ceiling(!!sym("N_exact")))
+    mutate(N_exact = purrr::map_dbl(!!sym("sdtrimmed"), get_sample_size), N = ceiling(!!sym("N_exact")))
   return(sample_sizes)
 }
 #' estimate sample sizes
@@ -422,11 +422,11 @@ lfq_power_t_test_quantiles <- function(
     sample_sizes <- add_column(sample_sizes, sd = quantiles_sd, .before = 2)
     sample_sizes <- add_column(sample_sizes, quantile = names(quantiles_sd), .before = 1)
 
-    getSampleSize <- function(sd, delta) {
+    get_sample_size <- function(sd, delta) {
       power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n
     }
 
-    sample_sizes <- sample_sizes |> mutate(N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+    sample_sizes <- sample_sizes |> mutate(N_exact = purrr::map2_dbl(sd, delta, get_sample_size))
     sample_sizes <- sample_sizes |> mutate(N = ceiling(.data$N_exact))
     sample_sizes <- sample_sizes |> mutate(FC = round(2^delta, digits = 2))
 
@@ -467,11 +467,11 @@ lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 
   stats_res <- na.omit(stats_res)
   sd_delta <- tidyr::crossing(stats_res, delta = delta)
 
-  getSampleSize <- function(sd, delta) {
+  get_sample_size <- function(sd, delta) {
     sd_threshold <- power.t.test(delta = delta, n = min.n, sd = NULL, power = power, sig.level = sig.level)$sd
     power.t.test(delta = delta, sd = max(sd_threshold, sd), power = power, sig.level = sig.level)$n
   }
-  sample_sizes <- sd_delta |> dplyr::mutate(N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+  sample_sizes <- sd_delta |> dplyr::mutate(N_exact = purrr::map2_dbl(sd, delta, get_sample_size))
   sample_sizes <- sample_sizes |> dplyr::mutate(N = ceiling(.data$N_exact))
   return(sample_sizes)
 }

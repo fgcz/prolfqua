@@ -5,7 +5,7 @@
 \title{Extract response column of a protein into matrix
 Median polish estimates of e.g. protein abundances for entire data.frame}
 \usage{
-medpolish_estimate_df(pdata, response, feature, sampleName)
+medpolish_estimate_df(pdata, response, feature, sample_name)
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -14,7 +14,7 @@ medpolish_estimate_df(pdata, response, feature, sampleName)
 
 \item{feature}{column name e.g. peptide ids}
 
-\item{sampleName}{column name e.g. sampleName}
+\item{sample_name}{column name e.g. sample_name}
 }
 \value{
 data.frame
@@ -43,7 +43,7 @@ x <- xnested$data[[1]]
 bb <- medpolish_estimate_df(x,
   response = conf$get_response(),
   feature = feature,
-  sampleName = conf$sample_name
+  sample_name = conf$sample_name
 )
 prolfqua:::.reestablish_condition(x, bb, conf)
 

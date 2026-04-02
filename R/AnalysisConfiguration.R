@@ -74,9 +74,9 @@ AnalysisConfiguration <- R6::R6Class(
     # --- methods from AnalysisTableAnnotation ---
     #' @description
     #' Add name of intensity column
-    #' @param colName name of intensity column
-    set_response = function(colName) {
-      self$work_intensity <- c(self$work_intensity, colName)
+    #' @param col_name name of intensity column
+    set_response = function(col_name) {
+      self$work_intensity <- c(self$work_intensity, col_name)
     },
     #' @description
     #' Get name of working intensity column
@@ -251,7 +251,7 @@ list_to_AnalysisConfiguration <- function(dd) {
 #' @export
 #' @keywords internal
 #' @param config AnalysisConfiguration
-#' @param workIntensity work intensity column
+#' @param work_intensity work intensity column
 #' @param hierarchy new reduced hierarchy
 #' @family configuration
 #' @return AnalysisConfiguration with reduced hieararchy
@@ -263,10 +263,10 @@ list_to_AnalysisConfiguration <- function(dd) {
 #'  bb$config$hierarchy[1])
 #' stopifnot(red$get_response() == "testintensity")
 #' stopifnot(length(red$hierarchy) == 1)
-make_reduced_hierarchy_config <- function(config, workIntensity, hierarchy) {
+make_reduced_hierarchy_config <- function(config, work_intensity, hierarchy) {
   new_config <- config$clone(deep = TRUE)
   new_config$hierarchy <- hierarchy
-  new_config$work_intensity <- workIntensity
+  new_config$work_intensity <- work_intensity
   return(new_config)
 }
 

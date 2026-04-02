@@ -1,10 +1,10 @@
 #' Likelihood ratio test
 #' @family modelling
 #' @export
-#' @param modelProteinF table with models (see build model)
+#' @param complete_models table with models (see build model)
 #' @param modelName name of model
-#' @param modelProteinF_Int reduced model
-#' @param modelName_Int name of reduced model
+#' @param complete_models_int reduced model
+#' @param model_name_int name of reduced model
 #' @param subject_Id subject id typically Assession or protein_Id
 #' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
@@ -36,17 +36,17 @@
 #' hist(tmp$likelihood_ratio_test.pValue)
 #'
 LR_test <- function(
-  modelProteinF,
+  complete_models,
   modelName,
-  modelProteinF_Int,
-  modelName_Int,
+  complete_models_int,
+  model_name_int,
   subject_Id = "protein_Id",
   path = NULL
 ) {
   # Model Comparison
   reg <- dplyr::inner_join(
-    dplyr::select(modelProteinF, !!sym(subject_Id), "linear_model"),
-    dplyr::select(modelProteinF_Int, !!sym(subject_Id), "linear_model"),
+    dplyr::select(complete_models, !!sym(subject_Id), "linear_model"),
+    dplyr::select(complete_models_int, !!sym(subject_Id), "linear_model"),
     by = subject_Id
   )
 
@@ -65,7 +65,7 @@ LR_test <- function(
     dplyr::rename(likelihood_ratio_test.pValue = .data$modelComparisonLikelihoodRatioTest)
 
   if (!is.null(path)) {
-    plot_lrt_diagnostics(likelihood_ratio_test_result, modelName, modelName_Int, path)
+    plot_lrt_diagnostics(likelihood_ratio_test_result, modelName, model_name_int, path)
   }
 
   return(likelihood_ratio_test_result)
@@ -78,11 +78,11 @@ LR_test <- function(
 #'
 #' @param result tibble with a \code{likelihood_ratio_test.pValue} column
 #' @param modelName name of the full model
-#' @param modelName_Int name of the reduced/interaction model
+#' @param model_name_int name of the reduced/interaction model
 #' @param path directory to write the PDF into
 #' @keywords internal
-plot_lrt_diagnostics <- function(result, modelName, modelName_Int, path) {
-  file_name <- paste("hist_LRT_", modelName, "_", modelName_Int, ".pdf", sep = "")
+plot_lrt_diagnostics <- function(result, modelName, model_name_int, path) {
+  file_name <- paste("hist_LRT_", modelName, "_", model_name_int, ".pdf", sep = "")
   file_name <- file.path(path, file_name)
   message("writing figure : ", file_name, "\n")
   pdf(file_name)
@@ -581,13 +581,13 @@ isSingular_lm <- function(m) {
 #' x <- sim_build_models_lmer(model = "factors", Nprot = 10)
 #' cfits <- get_complete_model_fit(x$modelDF)
 #' stopifnot(nrow(cfits) == 6)
-get_complete_model_fit <- function(modelProteinF) {
-  modelProteinF <- modelProteinF |> dplyr::filter(.data$has_model_fit == TRUE)
-  modelProteinF <- modelProteinF |>
+get_complete_model_fit <- function(complete_models) {
+  complete_models <- complete_models |> dplyr::filter(.data$has_model_fit == TRUE)
+  complete_models <- complete_models |>
     dplyr::filter(.data$nr_coef_not_NA == max(.data$nr_coef_not_NA)) |>
     dplyr::arrange(dplyr::desc(.data$nr_coef_not_NA))
-  modelProteinF <- modelProteinF |> dplyr::filter(df.residual > 1)
-  return(modelProteinF)
+  complete_models <- complete_models |> dplyr::filter(df.residual > 1)
+  return(complete_models)
 }
 
 #' analyses lmer4 and lm models created using help function `strategy_lm` or `strategy_lmer`

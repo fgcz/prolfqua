@@ -167,7 +167,7 @@ list with means and mads
 robust scale data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale(
-  preserveMean = TRUE,
+  preserve_mean = TRUE,
   colname = "transformedIntensity"
 )}\if{html}{\out{</div>}}
 }
@@ -175,7 +175,7 @@ robust scale data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{preserveMean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
+\item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
 
 \item{\code{colname}}{new name of transformed column}
 }
@@ -193,7 +193,7 @@ log2 transform and robust scale data based on subset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale_subset(
   lfqsubset,
-  preserveMean = TRUE,
+  preserve_mean = TRUE,
   colname = "transformed_abundance"
 )}\if{html}{\out{</div>}}
 }
@@ -203,7 +203,7 @@ log2 transform and robust scale data based on subset
 \describe{
 \item{\code{lfqsubset}}{LFQData subset to use for normalization}
 
-\item{\code{preserveMean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
+\item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
 
 \item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
 }
@@ -227,7 +227,7 @@ log2 transform and robust scale data based on subset
 \describe{
 \item{\code{lfqsubset}}{LFQData subset to use for normalization}
 
-\item{\code{preserveMean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
+\item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
 
 \item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
 }

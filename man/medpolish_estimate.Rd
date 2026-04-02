@@ -4,7 +4,7 @@
 \alias{medpolish_estimate}
 \title{Median polish estimate of e.g. protein from peptide intensities}
 \usage{
-medpolish_estimate(x, name = FALSE, sampleName = "sampleName")
+medpolish_estimate(x, name = FALSE, sample_name = "sample_name")
 }
 \arguments{
 \item{x}{a matrix}

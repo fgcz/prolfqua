@@ -34,10 +34,10 @@ lfqdata$summarize_hierarchy()
 
 # filter for missing values
 
-f1 <- lfqdata$omit_NA(nrNA = 0)
+f1 <- lfqdata$omit_NA(nr_na = 0)
 stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
-f2 <- lfqdata$omit_NA(factorDepth = 0)
+f2 <- lfqdata$omit_NA(factor_depth = 0)
 stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
 lfqdata$response()
@@ -253,16 +253,16 @@ Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
 it will be removed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nrNA = 0, factorDepth = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nr_na = 0, factor_depth = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{nrNA}}{number of NA values}
+\item{\code{nr_na}}{number of NA values}
 
-\item{\code{factorDepth}}{control whether `nrNA` is applied per condition or more
-globally, e.g. `factorDepth = 0` means per experiment}
+\item{\code{factor_depth}}{control whether `nr_na` is applied per condition or more
+globally, e.g. `factor_depth = 0` means per experiment}
 }
 \if{html}{\out{</div>}}
 }

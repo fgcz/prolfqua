@@ -13,7 +13,7 @@ rlm_estimate(pdata, response, feature, samples, maxIt = 20)
 
 \item{feature}{e.g. peptideIDs.}
 
-\item{samples}{e.g. sampleName}
+\item{samples}{e.g. sample_name}
 }
 \description{
 Estimate e.g. protein abundance from peptides using MASS:rlm
@@ -26,20 +26,20 @@ xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4),
 bb <- rlm_estimate(xx, "response", "feature", "samples", maxIt = 20)
 
 xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4),
-  sampleName = rep(letters[1:4], 5))
-rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
+  sample_name = rep(letters[1:4], 5))
+rlm_estimate(xx2, "log2Area", "peptide_Id", "sample_name")
 rlm_estimate(prolfqua_data("data_checksummarizationrobust87"),
-  "log2Area", "peptide_Id", "sampleName")
+  "log2Area", "peptide_Id", "sample_name")
 rlm_estimate(prolfqua_data("data_checksummarizerobust69"),
-  "log2Area", "peptide_Id", "sampleName")
+  "log2Area", "peptide_Id", "sample_name")
 res <- vector(100, mode = "list")
 for (i in seq_len(100)) {
   xx3 <- xx2
   xx3$log2Area[sample(1:20, sample(1:15, 1))] <- NA
-  res[[i]] <- list(data = xx3, summary = rlm_estimate(xx3, "log2Area", "peptide_Id", "sampleName"))
+  res[[i]] <- list(data = xx3, summary = rlm_estimate(xx3, "log2Area", "peptide_Id", "sample_name"))
 }
-rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sampleName")
-rlm_estimate(xx2[xx2$sampleName == "a", ], "log2Area", "peptide_Id", "sampleName")
+rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sample_name")
+rlm_estimate(xx2[xx2$sample_name == "a", ], "log2Area", "peptide_Id", "sample_name")
 
 
 bb <- prolfqua_data("data_ionstar")$filtered()

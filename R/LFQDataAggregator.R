@@ -371,7 +371,7 @@ AggregateTopN <- R6::R6Class(
   } else {
     newconfig <- make_reduced_hierarchy_config(
       config,
-      workIntensity = intensity_name,
+      work_intensity = intensity_name,
       hierarchy = config$hierarchy_keys_depth(names = FALSE)
     )
   }

@@ -5,14 +5,14 @@
 \title{pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...}
 \usage{
 pivot_model_contrasts_2_Wide(
-  modelWithInteractionsContrasts,
+  model_interaction_contrasts,
   subject_Id = "protein_Id",
   columns = c("estimate", "p.value", "p.value.adjusted"),
   contrast = "lhs"
 )
 }
 \arguments{
-\item{modelWithInteractionsContrasts}{data.frame with contrast results in long format}
+\item{model_interaction_contrasts}{data.frame with contrast results in long format}
 
 \item{subject_Id}{column name(s) identifying subjects (e.g. protein_Id)}
 

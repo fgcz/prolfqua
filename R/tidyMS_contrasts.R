@@ -44,14 +44,14 @@
 }
 
 .coeff_weights_factor_levels <- function(coeff_matrix) {
-  getCoeffs <- function(factor_level, coeff_matrix) {
+  get_coeffs <- function(factor_level, coeff_matrix) {
     idx <- .get_match_idx(coeff_matrix, factor_level)
     x <- as.list(apply(coeff_matrix[idx, , drop = FALSE], 2, mean))
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level, .before = 1)
   }
   factor_levels <- unique(unlist(stringi::stri_split_fixed(rownames(coeff_matrix), ":")))
-  weights_by_factor <- purrr::map_df(factor_levels, getCoeffs, coeff_matrix)
+  weights_by_factor <- purrr::map_df(factor_levels, get_coeffs, coeff_matrix)
   return(weights_by_factor)
 }
 
@@ -615,7 +615,7 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
 #' pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
 #' @export
 #' @family modelling
-#' @param modelWithInteractionsContrasts data.frame with contrast results in long format
+#' @param model_interaction_contrasts data.frame with contrast results in long format
 #' @param subject_Id column name(s) identifying subjects (e.g. protein_Id)
 #' @param columns character vector of value columns to pivot wide
 #' @param contrast column name containing contrast labels
@@ -624,12 +624,12 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
 #' # this function is used by the contrast classes to implement the to wide method
 #'
 pivot_model_contrasts_2_Wide <- function(
-  modelWithInteractionsContrasts,
+  model_interaction_contrasts,
   subject_Id = "protein_Id",
   columns = c("estimate", "p.value", "p.value.adjusted"),
   contrast = "lhs"
 ) {
-  res <- modelWithInteractionsContrasts |>
+  res <- model_interaction_contrasts |>
     dplyr::select(dplyr::all_of(c(subject_Id, contrast, columns))) |>
     tidyr::pivot_wider(
       names_from = dplyr::all_of(contrast),

@@ -6,7 +6,7 @@
 \usage{
 plot_hierarchies_line(
   res,
-  proteinName,
+  protein_name,
   config,
   separate = FALSE,
   show.legend = FALSE
@@ -15,7 +15,7 @@ plot_hierarchies_line(
 \arguments{
 \item{res}{data.frame}
 
-\item{proteinName}{title of plot}
+\item{protein_name}{title of plot}
 
 \item{config}{AnalysisConfiguration}
 

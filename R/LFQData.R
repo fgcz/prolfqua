@@ -28,10 +28,10 @@
 #'
 #' # filter for missing values
 #'
-#' f1 <- lfqdata$omit_NA(nrNA = 0)
+#' f1 <- lfqdata$omit_NA(nr_na = 0)
 #' stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
 #'
-#' f2 <- lfqdata$omit_NA(factorDepth = 0)
+#' f2 <- lfqdata$omit_NA(factor_depth = 0)
 #' stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
 #'
 #' lfqdata$response()
@@ -137,24 +137,24 @@ LFQData <- R6::R6Class(
     #' Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
     #' For instance if a peptide has a missing value in more then nrNA of the samples within a condition
     #' it will be removed
-    #' @param nrNA number of NA values
-    #' @param factorDepth control whether `nrNA` is applied per condition or more
-    #'   globally, e.g. `factorDepth = 0` means per experiment
+    #' @param nr_na number of NA values
+    #' @param factor_depth control whether `nr_na` is applied per condition or more
+    #'   globally, e.g. `factor_depth = 0` means per experiment
     #' @return LFQData with NA omitted.
     #'
-    omit_NA = function(nrNA = 0, factorDepth = NULL) {
-      if (is.null(factorDepth)) {
+    omit_NA = function(nr_na = 0, factor_depth = NULL) {
+      if (is.null(factor_depth)) {
         missing <- prolfqua::summarize_stats_factors(self$data, self$config)
       } else {
-        if (factorDepth >= 1) {
+        if (factor_depth >= 1) {
           cfg <- self$config$clone(deep = TRUE)
-          cfg$factor_depth <- factorDepth
+          cfg$factor_depth <- factor_depth
           missing <- prolfqua::summarize_stats_factors(self$data, cfg)
         } else {
           missing <- prolfqua::summarize_stats_all(self$data, self$config)
         }
       }
-      notNA <- missing |> dplyr::filter(nrNAs <= nrNA)
+      notNA <- missing |> dplyr::filter(nrNAs <= nr_na)
       sumN <- notNA |> group_by(across(all_of(self$config$hierarchy_keys()))) |> summarise(n = n())
       notNA <- sumN |> dplyr::filter(n == max(n))
 

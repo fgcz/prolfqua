@@ -5,22 +5,22 @@
 \title{Likelihood ratio test}
 \usage{
 LR_test(
-  modelProteinF,
+  complete_models,
   modelName,
-  modelProteinF_Int,
-  modelName_Int,
+  complete_models_int,
+  model_name_int,
   subject_Id = "protein_Id",
   path = NULL
 )
 }
 \arguments{
-\item{modelProteinF}{table with models (see build model)}
+\item{complete_models}{table with models (see build model)}
 
 \item{modelName}{name of model}
 
-\item{modelProteinF_Int}{reduced model}
+\item{complete_models_int}{reduced model}
 
-\item{modelName_Int}{name of reduced model}
+\item{model_name_int}{name of reduced model}
 
 \item{subject_Id}{subject id typically Assession or protein_Id}
 

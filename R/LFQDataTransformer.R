@@ -118,26 +118,31 @@ LFQDataTransformer <- R6::R6Class(
     #' @description
     #' robust scale data
     #' @param colname new name of transformed column
-    #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
+    #' @param preserve_mean should original mean value be preserved TRUE, if FALSE then center at zero
     #' @return LFQDataTransformer (self)
-    robscale = function(preserveMean = TRUE, colname = "transformedIntensity") {
-      res <- self$robscale_subset(self$lfq, preserveMean = preserveMean, colname = colname)
+    robscale = function(preserve_mean = TRUE, colname = "transformedIntensity") {
+      res <- self$robscale_subset(self$lfq, preserve_mean = preserve_mean, colname = colname)
       invisible(res)
     },
     #' @description
     #' log2 transform and robust scale data based on subset
     #' @param lfqsubset LFQData subset to use for normalization
-    #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
+    #' @param preserve_mean should original mean value be preserved TRUE, if FALSE then center at zero
     #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQDataTransformer (self)
     #'
-    robscale_subset = function(lfqsubset, preserveMean = TRUE, colname = "transformed_abundance") {
+    robscale_subset = function(lfqsubset, preserve_mean = TRUE, colname = "transformed_abundance") {
       message("data is : ", self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
         invisible(NULL)
       }
-      scales <- prolfqua::scale_with_subset(self$lfq$data, lfqsubset$data, self$lfq$config, preserveMean = preserveMean)
+      scales <- prolfqua::scale_with_subset(
+        self$lfq$data,
+        lfqsubset$data,
+        self$lfq$config,
+        preserve_mean = preserve_mean
+      )
       self$lfq$data <- scales$data
       if (!is.null(colname)) {
         self$lfq$data <- self$lfq$data |>
@@ -150,7 +155,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @description
     #' log2 transform and robust scale data based on subset
     #' @param lfqsubset LFQData subset to use for normalization
-    #' @param preserveMean should original mean value be preserved TRUE, if FALSE then center at zero
+    #' @param preserve_mean should original mean value be preserved TRUE, if FALSE then center at zero
     #' @param colname - how to name the transformed intensities, default transformedIntensity
     #' @return LFQDataTransformer (self)
     #'
@@ -223,7 +228,7 @@ LFQDataTransformer <- R6::R6Class(
 #' @param config AnalysisConfiguration
 #' @param .func function to transform intensities e.g. log2
 #' @param .funcname generates new name from name of transformation and old working intensity column name.
-#' @param intesityNewName column name for new intensity, default NULL
+#' @param intensity_new_name column name for new intensity, default NULL
 #' @return data.frame
 #' @export
 #' @keywords internal
@@ -238,13 +243,13 @@ LFQDataTransformer <- R6::R6Class(
 #' x <- transform_work_intensity(analysis, config, .func = asinh)
 #' stopifnot("asinh_FG.Quantity" %in% colnames(x))
 #'
-transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, intesityNewName = NULL, deep = FALSE) {
+transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, intensity_new_name = NULL, deep = FALSE) {
   if (deep) {
     config <- config$clone(deep = TRUE)
   }
   .call <- as.list(match.call())
 
-  if (is.null(intesityNewName)) {
+  if (is.null(intensity_new_name)) {
     .funcname <- if (is.null(.funcname)) {
       deparse(.call$.func)
     } else {
@@ -252,7 +257,7 @@ transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, int
     }
     newcol <- paste(.funcname, config$get_response(), sep = "_")
   } else {
-    newcol <- intesityNewName
+    newcol <- intensity_new_name
   }
 
   #pdata <- pdata |> dplyr::mutate(across(all_of(config$get_response()),
@@ -374,7 +379,7 @@ get_robscales <- function(data, config) {
 #' @keywords internal
 #' @family preprocessing
 #' @export
-robust_scale <- function(data, dim = 2, preserveMean = FALSE) {
+robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
   scales <- .get_robscales(data, dim = dim)
   data <- sweep(data, dim, scales$medians, "-")
   if (!any(scales$mads == 0)) {
@@ -384,7 +389,7 @@ robust_scale <- function(data, dim = 2, preserveMean = FALSE) {
     warning("SKIPPING scaling step in robust_scale: one or more MAD values are zero.")
   }
   meanmed <- mean(scales$medians)
-  addmean <- if (preserveMean) {
+  addmean <- if (preserve_mean) {
     meanmed
   } else {
     0
@@ -445,7 +450,7 @@ apply_to_response_matrix <- function(data, config, .func, .funcname = NULL) {
 #' @param data the whole dataset
 #' @param subset a subset of the dataset
 #' @param config configuration
-#' @param preserveMean default FALSE - sets mean to zero
+#' @param preserve_mean default FALSE - sets mean to zero
 #' @param get_scales return a list of transformed data and the scaling parameters
 #' @family preprocessing
 #' @examples
@@ -461,7 +466,7 @@ apply_to_response_matrix <- function(data, config, .func, .funcname = NULL) {
 #' res <- scale_with_subset(res, res, conf)
 #' s2 <- get_robscales(res$data, conf)
 #' stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
-scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_scales = TRUE) {
+scale_with_subset <- function(data, subset, config, preserve_mean = FALSE, get_scales = TRUE) {
   colname <- make.names(paste(config$get_response(), "subset_scaled", sep = "_"))
   subset <- tidy_to_wide_config(subset, config, as.matrix = TRUE)$data
 
@@ -476,7 +481,7 @@ scale_with_subset <- function(data, subset, config, preserveMean = FALSE, get_sc
   }
 
   meanmed <- mean(scales$medians)
-  addmean <- if (preserveMean) {
+  addmean <- if (preserve_mean) {
     meanmed
   } else {
     0

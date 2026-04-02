@@ -4,12 +4,12 @@
 \alias{make_reduced_hierarchy_config}
 \title{Make reduced hierarchy configuration}
 \usage{
-make_reduced_hierarchy_config(config, workIntensity, hierarchy)
+make_reduced_hierarchy_config(config, work_intensity, hierarchy)
 }
 \arguments{
 \item{config}{AnalysisConfiguration}
 
-\item{workIntensity}{work intensity column}
+\item{work_intensity}{work intensity column}
 
 \item{hierarchy}{new reduced hierarchy}
 }

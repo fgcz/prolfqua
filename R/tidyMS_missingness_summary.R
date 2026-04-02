@@ -17,9 +17,9 @@ encode_bin_resp <- function(pdata, config, name = "bin_resp") {
 # Functions - Missigness ----
 
 .get_sides <- function(contrast) {
-  getAST <- function(ee) purrr::map_if(as.list(ee), is.call, getAST)
+  get_ast <- function(ee) purrr::map_if(as.list(ee), is.call, get_ast)
 
-  ast_list <- getAST(rlang::parse_expr(contrast))
+  ast_list <- get_ast(rlang::parse_expr(contrast))
   ast_array <- array(as.character(unlist(ast_list)))
   ast_array <- gsub("`", "", ast_array)
   return(ast_array)

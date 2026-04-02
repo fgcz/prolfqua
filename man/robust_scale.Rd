@@ -4,7 +4,7 @@
 \alias{robust_scale}
 \title{robust scale wrapper}
 \usage{
-robust_scale(data, dim = 2, preserveMean = FALSE)
+robust_scale(data, dim = 2, preserve_mean = FALSE)
 }
 \description{
 robust scale wrapper

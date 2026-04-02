@@ -2,7 +2,7 @@
 # Plot peptide and fragments
 plot_hierarchies_line_default <- function(
   data,
-  proteinName,
+  protein_name,
   sample,
   intensity,
   peptide,
@@ -56,7 +56,7 @@ plot_hierarchies_line_default <- function(
   #       color = .data[[peptide]], linetype = .data[[isotopeLabel]])
   # )
   p <- p + facet_grid(as.formula(formula), scales = "free_x")
-  p <- p + ggtitle(proteinName)
+  p <- p + ggtitle(protein_name)
   p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
   if (log_y) {
     p <- p + scale_y_continuous(trans = "log10")
@@ -68,7 +68,7 @@ plot_hierarchies_line_default <- function(
 #'
 #' @export
 #' @param res data.frame
-#' @param proteinName title of plot
+#' @param protein_name title of plot
 #' @param config AnalysisConfiguration
 #' @param separate if heavy and light show in one plot or with separate y axis?
 #' @family aggregation
@@ -107,7 +107,7 @@ plot_hierarchies_line_default <- function(
 #'   show.legend = TRUE
 #' )
 #'
-plot_hierarchies_line <- function(res, proteinName, config, separate = FALSE, show.legend = FALSE) {
+plot_hierarchies_line <- function(res, protein_name, config, separate = FALSE, show.legend = FALSE) {
   rev_hnames <- config$hierarchy_keys(TRUE)
   fragment <- rev_hnames[1]
   peptide <- rev_hnames[1]
@@ -117,7 +117,7 @@ plot_hierarchies_line <- function(res, proteinName, config, separate = FALSE, sh
   }
   res <- plot_hierarchies_line_default(
     res,
-    proteinName = proteinName,
+    protein_name = protein_name,
     sample = config$sample_name,
     intensity = config$get_response(),
     peptide = peptide,
@@ -230,23 +230,23 @@ plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
 #' gg
 #' mx <- medpolish_estimate(gg)
 #'
-medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
+medpolish_estimate <- function(x, name = FALSE, sample_name = "sample_name") {
   if (name) {
     return("medpolish")
   }
   X <- medpolish(x, na.rm = TRUE, trace.iter = FALSE, maxiter = 10)
-  res <- tibble(!!sampleName := names(X$col), medpolish = X$col + X$overall)
+  res <- tibble(!!sample_name := names(X$col), medpolish = X$col + X$overall)
   res
 }
 
-.extractInt <- function(pdata, response, feature, sampleName) {
+.extractInt <- function(pdata, response, feature, sample_name) {
   pdata <- pdata |>
     dplyr::select(all_of(c(
-      sampleName,
+      sample_name,
       feature,
       response
     ))) |>
-    tidyr::pivot_wider(names_from = all_of(sampleName), values_from = all_of(response)) |>
+    tidyr::pivot_wider(names_from = all_of(sample_name), values_from = all_of(response)) |>
     .ExtractMatrix()
   return(pdata)
 }
@@ -258,7 +258,7 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #' @param pdata data.frame
 #' @param response column name with intensities
 #' @param feature column name e.g. peptide ids
-#' @param sampleName column name e.g. sampleName
+#' @param sample_name column name e.g. sample_name
 #' @return data.frame
 #' @export
 #' @keywords internal
@@ -284,13 +284,13 @@ medpolish_estimate <- function(x, name = FALSE, sampleName = "sampleName") {
 #' bb <- medpolish_estimate_df(x,
 #'   response = conf$get_response(),
 #'   feature = feature,
-#'   sampleName = conf$sample_name
+#'   sample_name = conf$sample_name
 #' )
 #' prolfqua:::.reestablish_condition(x, bb, conf)
 #'
-medpolish_estimate_df <- function(pdata, response, feature, sampleName) {
-  bb <- .extractInt(pdata, response = response, feature = feature, sampleName = sampleName)
-  medpolish_estimate(bb, sampleName = sampleName)
+medpolish_estimate_df <- function(pdata, response, feature, sample_name) {
+  bb <- .extractInt(pdata, response = response, feature = feature, sample_name = sample_name)
+  medpolish_estimate(bb, sample_name = sample_name)
 }
 
 
@@ -328,7 +328,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
     pdata,
     response = config$get_response(),
     feature = feature,
-    sampleName = config$sample_name
+    sample_name = config$sample_name
   )
   return(res)
 }
@@ -421,7 +421,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' @param pdata data
 #' @param response intensities
 #' @param feature e.g. peptideIDs.
-#' @param samples e.g. sampleName
+#' @param samples e.g. sample_name
 #' @importFrom MASS rlm
 #' @export
 #' @examples
@@ -432,20 +432,20 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' bb <- rlm_estimate(xx, "response", "feature", "samples", maxIt = 20)
 #'
 #' xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4),
-#'   sampleName = rep(letters[1:4], 5))
-#' rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
+#'   sample_name = rep(letters[1:4], 5))
+#' rlm_estimate(xx2, "log2Area", "peptide_Id", "sample_name")
 #' rlm_estimate(prolfqua_data("data_checksummarizationrobust87"),
-#'   "log2Area", "peptide_Id", "sampleName")
+#'   "log2Area", "peptide_Id", "sample_name")
 #' rlm_estimate(prolfqua_data("data_checksummarizerobust69"),
-#'   "log2Area", "peptide_Id", "sampleName")
+#'   "log2Area", "peptide_Id", "sample_name")
 #' res <- vector(100, mode = "list")
 #' for (i in seq_len(100)) {
 #'   xx3 <- xx2
 #'   xx3$log2Area[sample(1:20, sample(1:15, 1))] <- NA
-#'   res[[i]] <- list(data = xx3, summary = rlm_estimate(xx3, "log2Area", "peptide_Id", "sampleName"))
+#'   res[[i]] <- list(data = xx3, summary = rlm_estimate(xx3, "log2Area", "peptide_Id", "sample_name"))
 #' }
-#' rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sampleName")
-#' rlm_estimate(xx2[xx2$sampleName == "a", ], "log2Area", "peptide_Id", "sampleName")
+#' rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sample_name")
+#' rlm_estimate(xx2[xx2$sample_name == "a", ], "log2Area", "peptide_Id", "sample_name")
 #'
 #'
 #' bb <- prolfqua_data("data_ionstar")$filtered()
@@ -562,7 +562,7 @@ estimate_intensity <- function(data, config, .func) {
   xnested[[make_name]] <- res
   newconfig <- make_reduced_hierarchy_config(
     config,
-    workIntensity = .func(name = TRUE),
+    work_intensity = .func(name = TRUE),
     hierarchy = config$hierarchy_keys_depth(names = FALSE)
   )
 
@@ -713,7 +713,7 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
 
   newconfig <- make_reduced_hierarchy_config(
     config,
-    workIntensity = newcol,
+    work_intensity = newcol,
     hierarchy = config$hierarchy[seq_len(config$hierarchy_depth)]
   )
 

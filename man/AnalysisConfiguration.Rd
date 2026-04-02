@@ -110,13 +110,13 @@ create AnalysisConfiguration
 \subsection{Method \code{set_response()}}{
 Add name of intensity column
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$set_response(colName)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$set_response(col_name)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{colName}}{name of intensity column}
+\item{\code{col_name}}{name of intensity column}
 }
 \if{html}{\out{</div>}}
 }
