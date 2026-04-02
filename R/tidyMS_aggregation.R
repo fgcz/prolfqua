@@ -383,8 +383,8 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
     fit <- MASS::rlm(X, y, maxit = maxIt)
     data$residuals <- fit$residuals
     usamples <- unique(data[[samples]])
-    coefNames <- paste0(samples, usamples)
-    lmrob <- tibble(!!samples := usamples, lmrob = fit$coefficients[coefNames])
+    coef_names <- paste0(samples, usamples)
+    lmrob <- tibble(!!samples := usamples, lmrob = fit$coefficients[coef_names])
 
     sumdata <- data |>
       select(-!!sym(feature)) |>
@@ -540,14 +540,14 @@ rlm_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' abline(0, 1, col = 2)
 #'
 estimate_intensity <- function(data, config, .func) {
-  makeName <- .func(name = TRUE)
+  make_name <- .func(name = TRUE)
   config <- config$clone(deep = TRUE)
 
   xnested <- data |>
     group_by(across(all_of(config$hierarchy_keys_depth()))) |>
     nest()
 
-  loopOverNested <- function(xnested, .func, config) {
+  loop_over_nested <- function(xnested, .func, config) {
     pb <- progress::progress_bar$new(total = nrow(xnested))
     message("starting aggregation")
     purrr::map(xnested$data, function(d) {
@@ -557,9 +557,9 @@ estimate_intensity <- function(data, config, .func) {
     })
   }
 
-  res <- loopOverNested(xnested, .func = .func, config = config)
+  res <- loop_over_nested(xnested, .func = .func, config = config)
 
-  xnested[[makeName]] <- res
+  xnested[[make_name]] <- res
   newconfig <- make_reduced_hierarchy_config(
     config,
     workIntensity = .func(name = TRUE),
@@ -567,8 +567,8 @@ estimate_intensity <- function(data, config, .func) {
   )
 
   unnested <- xnested |>
-    dplyr::select(all_of(c(config$hierarchy_keys_depth(), makeName))) |>
-    tidyr::unnest(cols = dplyr::all_of(makeName)) |>
+    dplyr::select(all_of(c(config$hierarchy_keys_depth(), make_name))) |>
+    tidyr::unnest(cols = dplyr::all_of(make_name)) |>
     dplyr::ungroup()
 
   return(.add_nr_children(data, unnested, config, newconfig))
@@ -693,10 +693,10 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend =
 aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
   newcol <- make.names(paste0("srm_", .func(name = TRUE), "_", N))
 
-  topInt <-
+  top_intensities <-
     pdata |> dplyr::filter(!!sym("srm_meanIntRank") <= N)
 
-  topInt <- topInt |>
+  top_intensities <- top_intensities |>
     dplyr::group_by(across(all_of(c(
       config$hierarchy_keys_depth(),
       config$sample_name,
@@ -704,7 +704,7 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
       config$isotope_label,
       config$factor_keys()
     ))))
-  sumTopInt <- topInt |>
+  sum_top_intensities <- top_intensities |>
     dplyr::summarize(
       !!newcol := .func(!!sym(config$get_response())),
       ident_qValue = min(!!sym(config$ident_q_value)),
@@ -717,7 +717,7 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
     hierarchy = config$hierarchy[seq_len(config$hierarchy_depth)]
   )
 
-  return(.add_nr_children(pdata, sumTopInt, config, newconfig))
+  return(.add_nr_children(pdata, sum_top_intensities, config, newconfig))
 }
 
 
@@ -822,17 +822,17 @@ nr_obs_experiment <- function(data, config, from_children = TRUE, name_nr_child 
     min_rank(desc(x))
   }
 ) {
-  summaryPerPrecursor <- data |>
+  summary_per_precursor <- data |>
     dplyr::group_by(!!!syms(config$hierarchy_keys())) |>
     dplyr::summarize(!!summaryColumn := fun(!!sym(column)))
 
-  groupedByProtein <- summaryPerPrecursor |>
+  grouped_by_protein <- summary_per_precursor |>
     dplyr::arrange(!!sym(config$hierarchy_keys()[1])) |>
     dplyr::group_by(!!sym(config$hierarchy_keys()[1]))
-  rankedBySummary <- groupedByProtein |>
+  ranked_by_summary <- grouped_by_protein |>
     dplyr::mutate(!!rankColumn := rankFunction(!!sym(summaryColumn)))
 
-  data <- dplyr::inner_join(data, rankedBySummary)
+  data <- dplyr::inner_join(data, ranked_by_summary)
   return(data)
 }
 

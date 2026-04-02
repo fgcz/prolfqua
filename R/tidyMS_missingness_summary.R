@@ -101,14 +101,14 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
 #' stopifnot("ggplot" %in% class(pl))
 #'
 missigness_histogram <- function(x, config, showempty = FALSE, factors = config$factor_keys_depth(), alpha = 0.1) {
-  missingPrec <- summarize_stats(x, config, factor_key = factors)
-  missingPrec <- missingPrec |>
+  missing_percent <- summarize_stats(x, config, factor_key = factors)
+  missing_percent <- missing_percent |>
     dplyr::ungroup() |>
     dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
 
   if (showempty) {
     if (config$is_response_transformed) {
-      missingPrec <- missingPrec |>
+      missing_percent <- missing_percent |>
         dplyr::mutate(
           meanAbundance = ifelse(
             is.na(.data$meanAbundance),
@@ -117,7 +117,7 @@ missigness_histogram <- function(x, config, showempty = FALSE, factors = config$
           )
         )
     } else {
-      missingPrec <- missingPrec |>
+      missing_percent <- missing_percent |>
         dplyr::mutate(
           meanAbundance = ifelse(
             is.na(.data$meanAbundance),
@@ -131,10 +131,13 @@ missigness_histogram <- function(x, config, showempty = FALSE, factors = config$
   factors <- config$factor_keys_depth()
   formula <- paste(config$isotope_label, "~", paste(factors, collapse = "+"))
   message(formula)
-  meanAbundance <- paste0("mean_", config$get_response())
-  missingPrec <- dplyr::rename(missingPrec, !!sym(meanAbundance) := .data$meanAbundance)
+  mean_abundance <- paste0("mean_", config$get_response())
+  missing_percent <- dplyr::rename(missing_percent, !!sym(mean_abundance) := .data$meanAbundance)
 
-  p <- ggplot2::ggplot(missingPrec, ggplot2::aes(x = !!sym(meanAbundance), fill = .data$nrNAs, colour = .data$nrNAs)) +
+  p <- ggplot2::ggplot(
+    missing_percent,
+    ggplot2::aes(x = !!sym(mean_abundance), fill = .data$nrNAs, colour = .data$nrNAs)
+  ) +
     ggplot2::geom_density(alpha = alpha, position = "identity") +
     ggplot2::facet_grid(as.formula(formula)) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -162,9 +165,9 @@ missigness_histogram <- function(x, config, showempty = FALSE, factors = config$
 #' stopifnot(ncol(res$data) >= 6)
 #'
 missingness_per_condition_cumsum <- function(x, config, factors = config$factor_keys_depth()) {
-  missingPrec <- summarize_stats(x, config, factor_key = factors)
+  missing_percent <- summarize_stats(x, config, factor_key = factors)
 
-  xx <- missingPrec |>
+  xx <- missing_percent |>
     group_by(across(all_of(c(config$isotope_label, factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(nrTransitions = n())
 
@@ -204,22 +207,22 @@ missingness_per_condition_cumsum <- function(x, config, factors = config$factor_
 #' stopifnot(ncol(res$data) >= 5)
 #'
 missingness_per_condition <- function(x, config, factors = config$factor_keys_depth()) {
-  missingPrec <- summarize_stats(x, config, factor_key = factors)
-  hierarchyKey <- tail(config$hierarchy_keys(), 1)
-  hierarchyKey <- paste0("nr_", hierarchyKey)
-  xx <- missingPrec |>
+  missing_percent <- summarize_stats(x, config, factor_key = factors)
+  hierarchy_key <- tail(config$hierarchy_keys(), 1)
+  hierarchy_key <- paste0("nr_", hierarchy_key)
+  xx <- missing_percent |>
     group_by(across(all_of(c(config$isotope_label, factors, "nrNAs", "nrReplicates")))) |>
-    dplyr::summarize(!!sym(hierarchyKey) := n())
+    dplyr::summarize(!!sym(hierarchy_key) := n())
 
   formula <- paste(config$isotope_label, "~", paste(factors, collapse = "+"))
 
-  nudgeval <- max(xx[[hierarchyKey]]) * 0.05
+  nudgeval <- max(xx[[hierarchy_key]]) * 0.05
 
-  p <- ggplot(xx, aes(x = .data$nrNAs, y = .data[[hierarchyKey]])) +
+  p <- ggplot(xx, aes(x = .data$nrNAs, y = .data[[hierarchy_key]])) +
     geom_bar(stat = "identity", color = "black", fill = "white") +
-    geom_text(aes(label = !!sym(hierarchyKey)), nudge_y = nudgeval, angle = 45) +
+    geom_text(aes(label = !!sym(hierarchy_key)), nudge_y = nudgeval, angle = 45) +
     facet_grid(as.formula(formula))
-  xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = hierarchyKey)
+  xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = hierarchy_key)
 
   return(list(data = xx, figure = p))
 }
@@ -243,7 +246,7 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
 #' UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::summarize_stats(data, cf)
-  nrMiss <- tmp |>
+  nr_missing <- tmp |>
     tidyr::pivot_wider(
       id_cols = cf$hierarchy_keys(),
       names_from = cf$factor_keys_depth(),
@@ -251,9 +254,9 @@ UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
     )
 
   hl <- length(cf$hierarchy_keys())
-  nrMiss[, -(1:hl)][nrMiss[, -(1:hl)] < tr] <- 0
-  nrMiss[, -(1:hl)][nrMiss[, -(1:hl)] >= tr] <- 1
-  return(list(data = as.data.frame(nrMiss), nsets = ncol(nrMiss) - length(cf$hierarchy_keys())))
+  nr_missing[, -(1:hl)][nr_missing[, -(1:hl)] < tr] <- 0
+  nr_missing[, -(1:hl)][nr_missing[, -(1:hl)] >= tr] <- 1
+  return(list(data = as.data.frame(nr_missing), nsets = ncol(nr_missing) - length(cf$hierarchy_keys())))
 }
 
 #' prepare dataframe for UpSetR plot for all samples

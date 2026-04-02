@@ -294,9 +294,9 @@ ContrastsPlotter <- R6::R6Class(
       if (missing(colour)) {
         colour <- self$modelName
       }
-      contrastDF <- self$contrastDF |> plotly::highlight_key(~subject_Id)
+      contrast_df <- self$contrastDF |> plotly::highlight_key(~subject_Id)
       res <- private$.score_plot(
-        contrastDF,
+        contrast_df,
         self$score_spec,
         colour = colour,
         legend = legend
@@ -311,24 +311,24 @@ ContrastsPlotter <- R6::R6Class(
     #' shows the number of significant proteins per contrasts
     #' @return list which contains ggplots and summary tables
     barplot_threshold = function() {
-      resBar <- list()
+      bar_results <- list()
       for (i in seq_along(self$volcano_spec)) {
-        scN <- self$volcano_spec[[i]]$score
-        scT <- self$volcano_spec[[i]]$thresh
+        score_name <- self$volcano_spec[[i]]$score
+        score_threshold <- self$volcano_spec[[i]]$thresh
         filt <- dplyr::filter(
           self$contrastDF,
-          !is.na(!!sym(scN)) & !!sym(scN) < scT
+          !is.na(!!sym(score_name)) & !!sym(score_name) < score_threshold
         )
         if (is.numeric(self$fcthresh)) {
           filt <- dplyr::filter(filt, abs(!!sym(self$diff)) > self$fcthresh)
         }
-        sumC <- group_by(filt, !!sym(self$contrast), !!sym(self$modelName)) |>
+        summary_counts <- group_by(filt, !!sym(self$contrast), !!sym(self$modelName)) |>
           dplyr::summarize(n = n())
-        p <- ggplot(sumC, aes(x = !!sym(self$contrast), y = n, fill = !!sym(self$modelName))) +
+        p <- ggplot(summary_counts, aes(x = !!sym(self$contrast), y = n, fill = !!sym(self$modelName))) +
           geom_bar(position = "stack", stat = "identity")
-        resBar[[scN]] <- list(plot = p, summary = sumC)
+        bar_results[[score_name]] <- list(plot = p, summary = summary_counts)
       }
-      return(resBar)
+      return(bar_results)
     }
   ),
   private = list(
@@ -339,16 +339,16 @@ ContrastsPlotter <- R6::R6Class(
         }
         return(NULL)
       }
-      xcol <- self$avg.abundance
+      abundance_col <- self$avg.abundance
       if (rank) {
-        xcol <- paste0("rank_", self$avg.abundance)
+        abundance_col <- paste0("rank_", self$avg.abundance)
         contrastDF <- contrastDF |>
           dplyr::group_by(!!sym(self$contrast)) |>
-          dplyr::mutate(!!xcol := rank(!!sym(self$avg.abundance)))
+          dplyr::mutate(!!abundance_col := rank(!!sym(self$avg.abundance)))
       } else if (plotly_mode) {
         contrastDF <- contrastDF |> plotly::highlight_key(~subject_Id)
       }
-      private$.ma_plot(contrastDF, xcol, self$diff, self$contrast, fc, colour = colour, legend = legend)
+      private$.ma_plot(contrastDF, abundance_col, self$diff, self$contrast, fc, colour = colour, legend = legend)
     },
     .volcano = function(
       contrasts,
@@ -431,13 +431,13 @@ ContrastsPlotter <- R6::R6Class(
         xlim = self$fcthresh
         ylim = score$thresh
         score = score$score
-        scoreVal <- if ("data.frame" %in% class(x)) {
+        score_values <- if ("data.frame" %in% class(x)) {
           x[[score]]
         } else {
           x$data()[[score]]
         }
 
-        ylims <- c(sign(min(scoreVal, na.rm = TRUE)) * ylim, sign(max(scoreVal, na.rm = TRUE)) * ylim)
+        ylims <- c(sign(min(score_values, na.rm = TRUE)) * ylim, sign(max(score_values, na.rm = TRUE)) * ylim)
         p <- ggplot(
           x,
           aes(x = !!sym(self$diff), y = !!sym(score), text = !!sym("subject_Id"), colour = !!sym(colour))

@@ -175,7 +175,7 @@ AnalysisConfiguration <- R6::R6Class(
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
     value_vars = function() {
       "Columns containing values"
-      valueVars <- c(
+      value_vars <- c(
         self$get_response(),
         self$ident_q_value,
         self$ident_score,
@@ -184,88 +184,14 @@ AnalysisConfiguration <- R6::R6Class(
         self$opt_se,
         self$nr_children
       )
-      return(valueVars)
+      return(value_vars)
     },
     #' @description
     #' get names of columns with sample annotations
     #'
     annotation_vars = function() {
-      annotationVars <- c(self$file_name, self$sample_name, self$factor_keys(), self$norm_value)
-      return(annotationVars)
-    }
-  ),
-  active = list(
-    #' @field fileName backward-compat alias for file_name
-    fileName = function(value) {
-      if (!missing(value)) {
-        self$file_name <- value
-        return(invisible(self))
-      }
-      self$file_name
-    },
-    #' @field sampleName backward-compat alias for sample_name
-    sampleName = function(value) {
-      if (!missing(value)) {
-        self$sample_name <- value
-        return(invisible(self))
-      }
-      self$sample_name
-    },
-    #' @field normValue backward-compat alias for norm_value
-    normValue = function(value) {
-      if (!missing(value)) {
-        self$norm_value <- value
-        return(invisible(self))
-      }
-      self$norm_value
-    },
-    #' @field isotopeLabel backward-compat alias for isotope_label
-    isotopeLabel = function(value) {
-      if (!missing(value)) {
-        self$isotope_label <- value
-        return(invisible(self))
-      }
-      self$isotope_label
-    },
-    #' @field workIntensity backward-compat alias for work_intensity
-    workIntensity = function(value) {
-      if (!missing(value)) {
-        self$work_intensity <- value
-        return(invisible(self))
-      }
-      self$work_intensity
-    },
-    #' @field factorDepth backward-compat alias for factor_depth
-    factorDepth = function(value) {
-      if (!missing(value)) {
-        self$factor_depth <- value
-        return(invisible(self))
-      }
-      self$factor_depth
-    },
-    #' @field hierarchyDepth backward-compat alias for hierarchy_depth
-    hierarchyDepth = function(value) {
-      if (!missing(value)) {
-        self$hierarchy_depth <- value
-        return(invisible(self))
-      }
-      self$hierarchy_depth
-    },
-    #' @field ident_qValue backward-compat alias for ident_q_value
-    ident_qValue = function(value) {
-      if (!missing(value)) {
-        self$ident_q_value <- value
-        return(invisible(self))
-      }
-      self$ident_q_value
-    },
-    #' @field ident_Score backward-compat alias for ident_score
-    ident_Score = function(value) {
-      if (!missing(value)) {
-        self$ident_score <- value
-        return(invisible(self))
-      }
-      self$ident_score
+      annotation_vars <- c(self$file_name, self$sample_name, self$factor_keys(), self$norm_value)
+      return(annotation_vars)
     }
   )
 )
@@ -338,10 +264,10 @@ list_to_AnalysisConfiguration <- function(dd) {
 #' stopifnot(red$get_response() == "testintensity")
 #' stopifnot(length(red$hierarchy) == 1)
 make_reduced_hierarchy_config <- function(config, workIntensity, hierarchy) {
-  newConfig <- config$clone(deep = TRUE)
-  newConfig$hierarchy <- hierarchy
-  newConfig$work_intensity <- workIntensity
-  return(newConfig)
+  new_config <- config$clone(deep = TRUE)
+  new_config$hierarchy <- hierarchy
+  new_config$work_intensity <- workIntensity
+  return(new_config)
 }
 
 
@@ -353,9 +279,6 @@ make_reduced_hierarchy_config <- function(config, workIntensity, hierarchy) {
 R6_extract_values <- function(r6class) {
   tmp <- sapply(r6class, class)
   slots <- tmp[!tmp %in% c("environment", "function")]
-  # Exclude active bindings (aliases) from serialization
-  active_names <- names(r6class$.__enclos_env__$.__active__)
-  slots <- slots[!names(slots) %in% active_names]
   res <- list()
   for (i in names(slots)) {
     val <- r6class[[i]]

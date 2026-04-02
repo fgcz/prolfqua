@@ -80,12 +80,12 @@ MissingHelpers <- R6::R6Class(
     impute_weighted_lod = function() {
       toimp <- self$get_stats()
       toimp$meanAbundanceZero <- ifelse(is.na(toimp$meanAbundance), 0, toimp$meanAbundance)
-      impDat <- toimp |>
+      imputed_data <- toimp |>
         mutate(
           meanAbundanceImp = (.data$nrMeasured * .data$meanAbundanceZero + .data$nrNAs * self$get_LOD()) /
             .data$nrReplicates
         )
-      return(impDat)
+      return(imputed_data)
     },
     #' @description
     #' if group average absent substitute with LOD
@@ -100,11 +100,11 @@ MissingHelpers <- R6::R6Class(
     #' @param prob prob of sd from proteins where it can be computed
     get_poolvar = function(prob = 0.75) {
       if (self$weighted) {
-        impDat <- self$impute_weighted_lod()
+        imputed_data <- self$impute_weighted_lod()
       } else {
-        impDat <- self$impute_lod()
+        imputed_data <- self$impute_lod()
       }
-      pooled <- prolfqua::poolvar(impDat, self$config, method = "V1")
+      pooled <- prolfqua::poolvar(imputed_data, self$config, method = "V1")
       pooled <- dplyr::select(pooled, -all_of(c(self$config$factor_keys_depth()[1], "var")))
 
       pooled_zero <- pooled[pooled$df > 0 & pooled$sd > 0, ]
@@ -166,16 +166,16 @@ MissingHelpers <- R6::R6Class(
       nrs <- nrs |> rename(indic = estimate)
       imputed <- inner_join(imputed, nrs, by = c(hierarchy_keys, "contrast"))
 
-      nrMeasured <- lt |>
+      nr_measured <- lt |>
         pivot_wider(
           id_cols = dplyr::all_of(hierarchy_keys),
           names_from = "interaction",
           values_from = nrMeasured
         )
-      nrMeasured <- prolfqua::get_contrast(ungroup(nrMeasured), hierarchy_keys, Contrasts)
-      nrMeasured <- nrMeasured |>
+      nr_measured <- prolfqua::get_contrast(ungroup(nr_measured), hierarchy_keys, Contrasts)
+      nr_measured <- nr_measured |>
         select(all_of(c(hierarchy_keys, "contrast", nrMeasured_group_1 = "group_1", nrMeasured_group_2 = "group_2")))
-      imputed <- inner_join(imputed, nrMeasured, by = c(hierarchy_keys, "contrast"))
+      imputed <- inner_join(imputed, nr_measured, by = c(hierarchy_keys, "contrast"))
 
       imputed2 <- imputed |> mutate(estimate = ifelse(.data$indic < 0 & .data$estimate < 0, 0, .data$estimate))
       imputed2 <- imputed2 |> mutate(estimate = ifelse(.data$indic > 0 & .data$estimate > 0, 0, .data$estimate))

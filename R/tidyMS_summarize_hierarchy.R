@@ -21,11 +21,11 @@
 #' stopifnot(all(xt$n == 4))
 #'
 table_factors <- function(pdata, configuration) {
-  factorsTab <- pdata |>
+  factors_table <- pdata |>
     dplyr::select(c(configuration$file_name, configuration$sample_name, configuration$factor_keys())) |>
     dplyr::distinct() |>
     arrange(!!sym(configuration$sample_name))
-  return(factorsTab)
+  return(factors_table)
 }
 
 #' Table of distinct factors (sample annotation)

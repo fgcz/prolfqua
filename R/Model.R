@@ -71,14 +71,14 @@ Model <- R6::R6Class(
     #' return model coefficient table
     get_coefficients = function() {
       lmermodel <- "linear_model"
-      modelProteinF <- get_complete_model_fit(self$modelDF)
+      complete_models <- get_complete_model_fit(self$modelDF)
       # Extract coefficients
       .coef_df <- function(x) {
         x <- coef(summary(x))
         x <- data.frame(factor = row.names(x), x)
         return(x)
       }
-      model_coeff <- modelProteinF |>
+      model_coeff <- complete_models |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
       model_coeff <- model_coeff |>
         dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nr_coef)
@@ -89,9 +89,9 @@ Model <- R6::R6Class(
     #' return anova table
     get_anova = function() {
       lmermodel <- "linear_model"
-      modelProteinF <- get_complete_model_fit(self$modelDF)
+      complete_models <- get_complete_model_fit(self$modelDF)
 
-      model_anova <- modelProteinF |>
+      model_anova <- complete_models |>
         dplyr::mutate(!!"Anova_model" := purrr::map(!!sym(lmermodel), self$model_strategy$anova_df$fun))
 
       model_anova <- model_anova |>

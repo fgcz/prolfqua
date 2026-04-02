@@ -183,18 +183,18 @@ LFQDataPlotter <- R6::R6Class(
     #' @param max maximal number of samples to show
     #' @return NULL
     pairs_smooth = function(max = 10) {
-      dataTransformed <- self$lfq$data
+      data_transformed <- self$lfq$data
       config <- self$lfq$config
       samples <- dplyr::select(self$lfq$data, config$sample_name) |>
         distinct() |>
         pull()
       if (length(samples) > max) {
         limit <- samples |> sample(max)
-        ldata <- dataTransformed |>
+        ldata <- data_transformed |>
           dplyr::filter(!!sym(config$sample_name) %in% limit)
         prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(ldata, config, as.matrix = TRUE)$data)
       } else {
-        prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(dataTransformed, config, as.matrix = TRUE)$data)
+        prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(data_transformed, config, as.matrix = TRUE)$data)
       }
       NULL
     },

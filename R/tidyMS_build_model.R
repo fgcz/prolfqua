@@ -82,10 +82,10 @@ LR_test <- function(
 #' @param path directory to write the PDF into
 #' @keywords internal
 plot_lrt_diagnostics <- function(result, modelName, modelName_Int, path) {
-  fileName <- paste("hist_LRT_", modelName, "_", modelName_Int, ".pdf", sep = "")
-  fileName <- file.path(path, fileName)
-  message("writing figure : ", fileName, "\n")
-  pdf(fileName)
+  file_name <- paste("hist_LRT_", modelName, "_", modelName_Int, ".pdf", sep = "")
+  file_name <- file.path(path, file_name)
+  message("writing figure : ", file_name, "\n")
+  pdf(file_name)
   par(mfrow = c(2, 1))
   hist(result$likelihood_ratio_test.pValue, breaks = 20)
   plot(ecdf(result$likelihood_ratio_test.pValue))
@@ -141,12 +141,12 @@ build_model <- function(
   },
   modelName = model_strategy$model_name
 ) {
-  dataX <- if ("LFQData" %in% class(data)) data$data else data
-  modellingResult <- model_analyse(dataX, model_strategy, modelName = modelName, subject_Id = subject_Id)
+  nested_data <- if ("LFQData" %in% class(data)) data$data else data
+  modelling_result <- model_analyse(nested_data, model_strategy, modelName = modelName, subject_Id = subject_Id)
   return(Model$new(
-    modelDF = modellingResult$modelDF,
+    modelDF = modelling_result$modelDF,
     model_strategy = model_strategy,
-    modelName = modellingResult$modelName,
+    modelName = modelling_result$modelName,
     subject_Id = subject_Id
   ))
 }
@@ -191,7 +191,7 @@ build_model_impute <- function(
   subject_Id <- lfqdata$subject_Id()
   response <- lfqdata$config$get_response()
 
-  modellingResult <- model_analyse(
+  modelling_result <- model_analyse(
     lfqdata$data,
     model_strategy,
     modelName = modelName,
@@ -220,8 +220,8 @@ build_model_impute <- function(
     nr_children_col <- NULL
   }
 
-  modellingResult$modelDF <- impute_refit_singular(
-    modellingResult$modelDF,
+  modelling_result$modelDF <- impute_refit_singular(
+    modelling_result$modelDF,
     model_strategy,
     lod = lod,
     response = response,
@@ -232,9 +232,9 @@ build_model_impute <- function(
   )
 
   return(Model$new(
-    modelDF = modellingResult$modelDF,
+    modelDF = modelling_result$modelDF,
     model_strategy = model_strategy,
-    modelName = modellingResult$modelName,
+    modelName = modelling_result$modelName,
     subject_Id = subject_Id
   ))
 }
@@ -562,8 +562,8 @@ impute_refit_singular <- function(
 #' @export
 #'
 isSingular_lm <- function(m) {
-  anyNA <- any(is.na(coefficients(m)))
-  if (anyNA) {
+  has_na <- any(is.na(coefficients(m)))
+  if (has_na) {
     return(TRUE)
   } else {
     if (df.residual(m) >= 2) {
@@ -613,17 +613,17 @@ model_analyse <- function(
   subject_Id = "protein_Id",
   modelName = "Model"
 ) {
-  nestProtein <- pepIntensity |>
+  nested_proteins <- pepIntensity |>
     dplyr::group_by(!!!syms(subject_Id)) |>
     tidyr::nest()
 
   lmermodel <- "linear_model"
 
-  pb <- progress::progress_bar$new(total = nrow(nestProtein))
-  modelProtein <- nestProtein |>
+  pb <- progress::progress_bar$new(total = nrow(nested_proteins))
+  model_proteins <- nested_proteins |>
     dplyr::mutate(!!lmermodel := purrr::map(data, model_strategy$model_fun, pb = pb))
 
-  modelProtein <- modelProtein |>
+  model_proteins <- model_proteins |>
     dplyr::mutate(
       !!"has_model_fit" := purrr::map_lgl(!!sym(lmermodel), function(x) {
         !is.character(x)
@@ -640,7 +640,7 @@ model_analyse <- function(
     if (inherits(cc, "numeric")) sum(!is.na(cc)) else ncol(cc[[1]])
   }
 
-  modelProtein <- modelProtein |>
+  model_proteins <- model_proteins |>
     dplyr::mutate(
       isSingular = purrr::map2_lgl(
         !!sym(lmermodel),
@@ -669,7 +669,7 @@ model_analyse <- function(
       )
     )
 
-  return(list(modelDF = modelProtein, modelName = modelName))
+  return(list(modelDF = model_proteins, modelName = modelName))
 }
 
 
@@ -687,8 +687,8 @@ model_analyse <- function(
 plot_lmer_peptide_predictions <- function(m, intensity = "abundance") {
   data <- m@frame
   data$prediction <- predict(m)
-  interactionColumns <- intersect(attributes(terms(m))$term.labels, colnames(data))
-  data <- make_interaction_column(data, interactionColumns, sep = ":")
+  interaction_columns <- intersect(attributes(terms(m))$term.labels, colnames(data))
+  data <- make_interaction_column(data, interaction_columns, sep = ":")
   gg <- ggplot(data, aes(x = .data$interaction, y = !!sym(intensity))) + geom_point()
   gg <- gg + geom_point(aes(x = .data$interaction, y = .data$prediction), color = 2) + facet_wrap(~peptide_Id)
   gg <- gg + theme(axis.text.x = element_text(angle = -90, hjust = 0))

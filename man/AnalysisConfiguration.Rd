@@ -74,29 +74,6 @@ Other configuration:
 }
 \if{html}{\out{</div>}}
 }
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{fileName}}{backward-compat alias for file_name}
-
-\item{\code{sampleName}}{backward-compat alias for sample_name}
-
-\item{\code{normValue}}{backward-compat alias for norm_value}
-
-\item{\code{isotopeLabel}}{backward-compat alias for isotope_label}
-
-\item{\code{workIntensity}}{backward-compat alias for work_intensity}
-
-\item{\code{factorDepth}}{backward-compat alias for factor_depth}
-
-\item{\code{hierarchyDepth}}{backward-compat alias for hierarchy_depth}
-
-\item{\code{ident_qValue}}{backward-compat alias for ident_q_value}
-
-\item{\code{ident_Score}}{backward-compat alias for ident_score}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

@@ -74,43 +74,43 @@ ContrastsInterface <- R6::R6Class(
 #' @family modelling
 #'
 merge_contrasts_results <- function(prefer, add, modelName = "mergedModel") {
-  cA <- prefer$get_contrasts()
-  cB <- add$get_contrasts()
+  c_a <- prefer$get_contrasts()
+  c_b <- add$get_contrasts()
 
-  if (length(colnames(cA)) < length(colnames(cB))) {
-    cB <- dplyr::select(cB, colnames(cA))
+  if (length(colnames(c_a)) < length(colnames(c_b))) {
+    c_b <- dplyr::select(c_b, colnames(c_a))
   }
 
-  cA <- dplyr::filter(cA, !is.na(.data$statistic))
-  moreID <- setdiff(
-    distinct(select(cB, c(prefer$subject_Id, "contrast"))),
-    distinct(select(cA, c(add$subject_Id, "contrast")))
+  c_a <- dplyr::filter(c_a, !is.na(.data$statistic))
+  more_id <- setdiff(
+    distinct(select(c_b, c(prefer$subject_Id, "contrast"))),
+    distinct(select(c_a, c(add$subject_Id, "contrast")))
   )
-  more <- inner_join(moreID, cB)
+  more <- inner_join(more_id, c_b)
 
-  sameID <- select(cA, c(add$subject_Id, "contrast"))
-  same <- inner_join(sameID, cB)
+  same_id <- select(c_a, c(add$subject_Id, "contrast"))
+  same <- inner_join(same_id, c_b)
 
-  merged <- bind_rows(cA, more)
+  merged <- bind_rows(c_a, more)
 
   if (prefer$modelName == add$modelName) {
-    prefermodelName <- paste0(prefer$modelName, "_prefer")
-    addmodelName <- paste0(add$modelName, "_add")
-    cA$modelName <- prefermodelName
-    more$modelName <- addmodelName
+    prefer_model_name <- paste0(prefer$modelName, "_prefer")
+    add_model_name <- paste0(add$modelName, "_add")
+    c_a$modelName <- prefer_model_name
+    more$modelName <- add_model_name
   } else {
-    prefermodelName <- prefer$modelName
-    addmodelName <- add$modelName
+    prefer_model_name <- prefer$modelName
+    add_model_name <- add$modelName
   }
 
-  merged$modelName <- factor(merged$modelName, levels = c(levels(factor(cA$modelName)), addmodelName))
+  merged$modelName <- factor(merged$modelName, levels = c(levels(factor(c_a$modelName)), add_model_name))
 
   merged <- ContrastsTable$new(
     merged,
     subject_Id = prefer$subject_Id,
-    modelName = paste0(prefermodelName, "_", addmodelName)
+    modelName = paste0(prefer_model_name, "_", add_model_name)
   )
-  more <- ContrastsTable$new(more, subject_Id = prefer$subject_Id, modelName = addmodelName)
-  same <- ContrastsTable$new(same, subject_Id = prefer$subject_Id, modelName = addmodelName)
+  more <- ContrastsTable$new(more, subject_Id = prefer$subject_Id, modelName = add_model_name)
+  same <- ContrastsTable$new(same, subject_Id = prefer$subject_Id, modelName = add_model_name)
   return(list(merged = merged, more = more, same = same))
 }

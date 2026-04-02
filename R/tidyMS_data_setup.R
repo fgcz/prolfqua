@@ -95,28 +95,28 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
     }
   }
 
-  sampleName <- configuration$sample_name
+  sample_name <- configuration$sample_name
 
-  if (from_factors && !sampleName %in% names(data)) {
+  if (from_factors && !sample_name %in% names(data)) {
     message("creating sampleName from factor columns")
     data <- data |>
       tidyr::unite(
-        !!sym(sampleName),
+        !!sym(sample_name),
         unique(unlist(configuration$factors)),
         remove = TRUE,
         sep = configuration$sep
       ) |>
-      dplyr::select(sampleName, configuration$file_name) |>
+      dplyr::select(sample_name, configuration$file_name) |>
       dplyr::distinct() |>
-      dplyr::mutate(across(all_of(sampleName), function(x) {
+      dplyr::mutate(across(all_of(sample_name), function(x) {
         make.unique(x, sep = configuration$sep)
       })) |>
       dplyr::inner_join(data, by = configuration$file_name)
-  } else if (!sampleName %in% names(data)) {
+  } else if (!sample_name %in% names(data)) {
     message("creating sampleName from file_name column")
     data[[configuration$sample_name]] <- tools::file_path_sans_ext(basename(data[[configuration$file_name]]))
   } else {
-    message("column sampleName already exists, using :", sampleName)
+    message("column sampleName already exists, using :", sample_name)
   }
 
   data <- data |>

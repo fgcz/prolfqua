@@ -186,13 +186,13 @@ Contrasts <- R6::R6Class(
         differences <- contrast_result |>
           dplyr::filter(contrast %in% names(self$contrasts))
 
-        avgAbd <- contrast_result |>
+        avg_abd <- contrast_result |>
           dplyr::select(dplyr::all_of(c(self$subject_Id, "contrast", "diff"))) |>
           dplyr::filter(startsWith(contrast, "avg_"))
 
-        avgAbd$contrast <- gsub("^avg_", "", avgAbd$contrast)
-        avgAbd <- avgAbd |> dplyr::rename(avgAbd = diff)
-        contrast_result <- left_join(differences, avgAbd)
+        avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
+        avg_abd <- avg_abd |> dplyr::rename(avgAbd = diff)
+        contrast_result <- left_join(differences, avg_abd)
 
         contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
         contrast_result <- contrast_result |> relocate("FDR", .after = "diff")

@@ -205,7 +205,7 @@ summary_ROPECA_median_p.scaled <- function(
   p.value = "moderated.p.value",
   max.n = 10
 ) {
-  nrpepsPerProt <- contrasts_data |>
+  nrpeps_per_prot <- contrasts_data |>
     group_by(across(all_of(c(subject_Id, contrast)))) |>
     dplyr::summarize(n = dplyr::n())
 
@@ -233,7 +233,7 @@ summary_ROPECA_median_p.scaled <- function(
   summarized.protein <- summarized.protein |>
     dplyr::mutate(n.beta = pmin(.data$n_not_na, max.n))
 
-  summarized.protein <- dplyr::inner_join(nrpepsPerProt, summarized.protein, by = c(subject_Id, contrast))
+  summarized.protein <- dplyr::inner_join(nrpeps_per_prot, summarized.protein, by = c(subject_Id, contrast))
 
   summarized.protein$isSingular <- FALSE
   # scale it back here.

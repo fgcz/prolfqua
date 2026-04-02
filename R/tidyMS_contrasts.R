@@ -10,8 +10,8 @@
     data <- m$model
     coeffs <- coef(m)
   }
-  interactionColumns <- intersect(attributes(terms(m))$term.labels, colnames(data))
-  data <- make_interaction_column(data, interactionColumns, sep = ":")
+  interaction_columns <- intersect(attributes(terms(m))$term.labels, colnames(data))
+  data <- make_interaction_column(data, interaction_columns, sep = ":")
 
   inter <- unique(data$interaction)
   coeff_matrix <- matrix(0, nrow = length(inter), ncol = length(coeffs))
@@ -22,8 +22,8 @@
   for (i in seq_along(non_intercept_coeffs)) {
     # the grep is needed to extract coefficients of interaction terms belonging to a factor
     # I am using wor boundaries "\\b" to allow for factor levels that are substrings.
-    positionIDX <- grep(paste0("\\b", names(non_intercept_coeffs)[i], "\\b"), inter)
-    coeff_matrix[positionIDX, i + 1] <- 1
+    position_index <- grep(paste0("\\b", names(non_intercept_coeffs)[i], "\\b"), inter)
+    coeff_matrix[position_index, i + 1] <- 1
   }
   return(list(coeff_matrix = coeff_matrix, coeffs = coeffs))
 }
@@ -363,11 +363,11 @@ linfct_factors_contrasts <- function(m) {
   ffac <- ffac[!grepl(":", ffac)] # remove interactions
   linfct_factors <- linfct_from_model(m)$linfct_factors
 
-  factorDepths <- rownames(linfct_factors)
+  factor_depths <- rownames(linfct_factors)
   res <- vector(length(ffac), mode = "list")
   for (i in seq_along(ffac)) {
     fac <- ffac[i]
-    idx <- grep(fac, factorDepths)
+    idx <- grep(fac, factor_depths)
     linfct_m <- linfct_factors[idx, ]
     res[[i]] <- linfct_all_possible_contrasts(linfct_m)
   }
@@ -705,10 +705,10 @@ contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrast
     tidyr::unnest(cols = c("contrast"))
 
   # take sigma and df from somewhere else.
-  modelInfos <- models |>
+  model_infos <- models |>
     dplyr::select(all_of(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
 
     dplyr::distinct()
-  contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
+  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_Id)
   return(ungroup(contrasts))
 }

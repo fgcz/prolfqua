@@ -63,9 +63,9 @@ sim_lfq_data <- function(
     FC <- rep(fcx, ceiling(propx / 100 * Nprot)) |> head(n = Nprot)
 
     # add regulation to group A.
-    groupMean <- paste0("mean_", name)
-    groupSize <- paste0("N_", name)
-    prot <- prot |> dplyr::mutate(!!groupMean := FC, !!groupSize := N)
+    group_mean <- paste0("mean_", name)
+    group_size <- paste0("N_", name)
+    prot <- prot |> dplyr::mutate(!!group_mean := FC, !!group_size := N)
   }
 
   if (PEPTIDE) {
@@ -110,15 +110,15 @@ sim_lfq_data <- function(
 
   x <- dplyr::bind_cols(peptide_df2, sampled_data)
 
-  peptideAbudances <- x |>
+  peptide_abundances <- x |>
     tidyr::pivot_longer(
       tidyselect::starts_with("V"),
       names_to = "Replicate",
       values_to = "abundance"
     )
-  peptideAbundances <- peptideAbudances |>
+  peptide_abundances <- peptide_abundances |>
     tidyr::unite("sample", group, Replicate, remove = FALSE)
-  return(peptideAbundances)
+  return(peptide_abundances)
 }
 
 
@@ -363,10 +363,10 @@ sim_build_models_lm <- function(
   } else {
     NULL
   }
-  modelFunction <- strategy_lm(paste0(istar$response(), model))
+  model_function <- strategy_lm(paste0(istar$response(), model))
   mod <- build_model(
     istar,
-    modelFunction
+    model_function
   )
   return(mod)
 }
@@ -415,10 +415,10 @@ sim_build_models_lmer <- function(
   } else {
     NULL
   }
-  modelFunction <- strategy_lmer(paste0(istar$response(), model))
+  model_function <- strategy_lmer(paste0(istar$response(), model))
   mod <- build_model(
     istar,
-    modelFunction
+    model_function
   )
   return(mod)
 }

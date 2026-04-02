@@ -146,14 +146,14 @@ plot_hierarchies_boxplot <- function(
     pb$tick()
   }
 
-  isotopeLabel <- config$isotope_label
-  lil <- length(unique(pdata[[isotopeLabel]]))
+  isotope_col <- config$isotope_label
+  lil <- length(unique(pdata[[isotope_col]]))
 
   pdata <- prolfqua::make_interaction_column(pdata, c(config$factor_keys_depth()))
   pdata$size <- ifelse(pdata[[config$nr_children]] == 0, 2, pdata[[config$nr_children]])
   pdata[[config$nr_children]] <- as.factor(pdata[[config$nr_children]])
   color <- if (lil > 1) {
-    isotopeLabel
+    isotope_col
   } else {
     NULL
   }
@@ -418,10 +418,10 @@ plot_raster <- function(data, config, arrange = c("mean", "var"), not_na = FALSE
     bb <- apply(resdata, 1, stats::var, na.rm = TRUE)
   }
   if (not_na) {
-    bNA <- apply(resdata, 1, function(x) {
+    na_counts <- apply(resdata, 1, function(x) {
       sum(is.na(x))
     })
-    resdata <- resdata[order(bNA, bb, decreasing = c(FALSE, TRUE)), , drop = FALSE]
+    resdata <- resdata[order(na_counts, bb, decreasing = c(FALSE, TRUE)), , drop = FALSE]
   } else {
     resdata <- resdata[order(bb, decreasing = TRUE), , drop = FALSE]
   }

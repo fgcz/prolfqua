@@ -122,10 +122,10 @@ multigroup_volcano <- function(
   scales = "fixed",
   maxNrOfSignificantText = 20
 ) {
-  misspX <- tidyr::unite(.data, "label", dplyr::all_of(label))
+  labeled_data <- tidyr::unite(.data, "label", dplyr::all_of(label))
 
   p <- .multigroup_volcano(
-    misspX,
+    labeled_data,
     effect = effect,
     significance = significance,
     contrast = contrast,
@@ -138,14 +138,17 @@ multigroup_volcano <- function(
   colname <- paste("-log10(", significance, ")", sep = "")
 
   if (!is.null(label)) {
-    effectX <- misspX[, effect]
-    typeX <- misspX[, significance]
-    subsetData <- subset(misspX, (effectX < xintercept[1] | xintercept[2] < effectX) & typeX < yintercept) |>
+    effect_values <- labeled_data[, effect]
+    significance_values <- labeled_data[, significance]
+    significant_subset <- subset(
+      labeled_data,
+      (effect_values < xintercept[1] | xintercept[2] < effect_values) & significance_values < yintercept
+    ) |>
       head(n = maxNrOfSignificantText)
-    if (nrow(subsetData) > 0) {
+    if (nrow(significant_subset) > 0) {
       p <- p +
         ggrepel::geom_text_repel(
-          data = subsetData,
+          data = significant_subset,
           aes(x = .data[[effect]], y = !!rlang::parse_expr(colname), label = .data$label),
           size = size,
           segment.size = segment.size,
@@ -312,8 +315,8 @@ pairs_smooth <- function(data, legend = FALSE, ...) {
         col = 2
       )
       if (legend) {
-        cR2 <- stats::cor(x, y, use = "pairwise.complete.obs")^2
-        graphics::legend("topleft", legend = paste("R^2=", round(cR2, digits = 2), sep = ""), text.col = 3)
+        r_squared <- stats::cor(x, y, use = "pairwise.complete.obs")^2
+        graphics::legend("topleft", legend = paste("R^2=", round(r_squared, digits = 2), sep = ""), text.col = 3)
       }
     },
     lower.panel = panel_cor,

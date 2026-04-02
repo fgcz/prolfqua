@@ -807,11 +807,11 @@ ModelLimma <- R6::R6Class(
     coef_pairs = function() {
       model_coeff <- self$get_coefficients()
       model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
-      forPairs <- model_coeff |>
+      for_pairs <- model_coeff |>
         dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
       fname <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
-      return(list(plot = forPairs, name = fname))
+      return(list(plot = for_pairs, name = fname))
     },
     #' @description
     #' histogram of ANOVA F-test p-values

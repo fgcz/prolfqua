@@ -26,7 +26,7 @@ pooled_V2 <- function(x) {
   pool.SS <- sum(SS) + sum(n * deviation^2)
   pool.var <- pool.SS / (pool.n - 1)
   n.groups <- length(sample.var)
-  sdT <- sqrt(pool.var * 2 / (pool.n / n.groups))
+  sd_total <- sqrt(pool.var * 2 / (pool.n / n.groups))
 
   res <- data.frame(
     n.groups = n.groups,
@@ -34,7 +34,7 @@ pooled_V2 <- function(x) {
     df = pool.n - n.groups,
     sd = sqrt(pool.var),
     var = pool.var,
-    sdT = sdT,
+    sdT = sd_total,
     mean = pool.mean
   )
   return(res)
@@ -55,14 +55,14 @@ pooled_V1 <- function(x) {
 
   pool.mean <- sum(sample.mean * n) / pool.n
 
-  sdT <- sqrt(pool.var * 2 / (pool.n / n.groups))
+  sd_total <- sqrt(pool.var * 2 / (pool.n / n.groups))
 
   res <- data.frame(
     n.groups = n.groups,
     n = pool.n,
     df = pool.n - n.groups,
     sd = sqrt(pool.var),
-    sdT = sdT,
+    sdT = sd_total,
     var = pool.var,
     mean = pool.mean
   )
@@ -93,8 +93,8 @@ pooled_V1 <- function(x) {
 compute_pooled <- function(x, method = c("V1", "V2")) {
   method <- match.arg(method)
   xm <- x |> dplyr::filter(.data$nrMeasured > 0)
-  meanAll <- sum(xm$meanAbundance * xm$nrMeasured) / sum(xm$nrMeasured)
-  nrMeasured <- sum(xm$nrMeasured)
+  mean_all <- sum(xm$meanAbundance * xm$nrMeasured) / sum(xm$nrMeasured)
+  nr_measured <- sum(xm$nrMeasured)
 
   func <- pooled_V1
   if (method == "V2") {
@@ -104,10 +104,10 @@ compute_pooled <- function(x, method = c("V1", "V2")) {
 
   res <- func(x)
   if (is.na(res$mean)) {
-    res$mean <- meanAll
+    res$mean <- mean_all
   }
-  res$meanAll <- meanAll
-  res$nrMeasured <- nrMeasured
+  res$meanAll <- mean_all
+  res$nrMeasured <- nr_measured
   return(res)
 }
 
@@ -170,7 +170,7 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
     pdata <- complete_cases(pdata, config)
   }
   intsym <- sym(config$get_response())
-  hierarchyFactor <- pdata |>
+  hierarchy_factor <- pdata |>
     dplyr::group_by(!!!syms(c(config$hierarchy_keys(), config$isotope_label, factor_key))) |>
     dplyr::summarize(
       nrReplicates = dplyr::n(),
@@ -184,21 +184,21 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
     ) |>
     dplyr::ungroup()
 
-  hierarchyFactor <- hierarchyFactor |>
+  hierarchy_factor <- hierarchy_factor |>
     dplyr::mutate(dplyr::across(all_of(factor_key), as.character))
   if (config$is_response_transformed == FALSE) {
-    hierarchyFactor <- hierarchyFactor |> dplyr::mutate(CV = sd / meanAbundance * 100)
+    hierarchy_factor <- hierarchy_factor |> dplyr::mutate(CV = sd / meanAbundance * 100)
   }
   if (is.null(factor_key) || length(factor_key) == 0) {
-    hierarchyFactor <- dplyr::mutate(hierarchyFactor, !!config$factor_keys()[1] := "All")
+    hierarchy_factor <- dplyr::mutate(hierarchy_factor, !!config$factor_keys()[1] := "All")
   }
-  hierarchyFactor <- ungroup(hierarchyFactor)
+  hierarchy_factor <- ungroup(hierarchy_factor)
   if (length(factor_key) > 0 && !is.null(factor_key)) {
-    hierarchyFactor <- prolfqua::make_interaction_column(hierarchyFactor, columns = factor_key, sep = ":")
+    hierarchy_factor <- prolfqua::make_interaction_column(hierarchy_factor, columns = factor_key, sep = ":")
   } else {
-    hierarchyFactor$interaction <- "All"
+    hierarchy_factor$interaction <- "All"
   }
-  return(hierarchyFactor)
+  return(hierarchy_factor)
 }
 
 
@@ -327,9 +327,9 @@ summarize_stats_quantiles <- function(stats_res, config, stats = c("sd", "CV"), 
     power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n
   }
 
-  sampleSizes <- quantile_sd |>
+  sample_sizes <- quantile_sd |>
     mutate(N_exact = purrr::map_dbl(!!sym("sdtrimmed"), getSampleSize), N = ceiling(!!sym("N_exact")))
-  return(sampleSizes)
+  return(sample_sizes)
 }
 #' estimate sample sizes
 #' @param quantile_sd output of `summarize_stats_quantiles`
@@ -415,25 +415,25 @@ lfq_power_t_test_quantiles <- function(
   sd <- na.omit(stats_res$sd)
 
   if (length(sd) > 0) {
-    quantilesSD <- quantile(sd, probs)
+    quantiles_sd <- quantile(sd, probs)
 
-    sampleSizes <- expand.grid(probs = probs, delta = delta)
-    quantilesSD <- quantile(sd, sampleSizes$probs)
-    sampleSizes <- add_column(sampleSizes, sd = quantilesSD, .before = 2)
-    sampleSizes <- add_column(sampleSizes, quantile = names(quantilesSD), .before = 1)
+    sample_sizes <- expand.grid(probs = probs, delta = delta)
+    quantiles_sd <- quantile(sd, sample_sizes$probs)
+    sample_sizes <- add_column(sample_sizes, sd = quantiles_sd, .before = 2)
+    sample_sizes <- add_column(sample_sizes, quantile = names(quantiles_sd), .before = 1)
 
     getSampleSize <- function(sd, delta) {
       power.t.test(delta = delta, sd = sd, power = power, sig.level = sig.level)$n
     }
 
-    sampleSizes <- sampleSizes |> mutate(N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
-    sampleSizes <- sampleSizes |> mutate(N = ceiling(.data$N_exact))
-    sampleSizes <- sampleSizes |> mutate(FC = round(2^delta, digits = 2))
+    sample_sizes <- sample_sizes |> mutate(N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+    sample_sizes <- sample_sizes |> mutate(N = ceiling(.data$N_exact))
+    sample_sizes <- sample_sizes |> mutate(FC = round(2^delta, digits = 2))
 
-    summary <- sampleSizes |>
+    summary <- sample_sizes |>
       dplyr::select(-dplyr::all_of(c("N_exact", "delta"))) |>
       tidyr::pivot_wider(names_from = "FC", values_from = "N", names_prefix = "FC=")
-    return(list(long = sampleSizes, summary = summary))
+    return(list(long = sample_sizes, summary = summary))
   } else {
     message(
       "!!! ERROR !!! No standard deviation is available,
@@ -471,9 +471,9 @@ lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 
     sd_threshold <- power.t.test(delta = delta, n = min.n, sd = NULL, power = power, sig.level = sig.level)$sd
     power.t.test(delta = delta, sd = max(sd_threshold, sd), power = power, sig.level = sig.level)$n
   }
-  sampleSizes <- sd_delta |> dplyr::mutate(N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
-  sampleSizes <- sampleSizes |> dplyr::mutate(N = ceiling(.data$N_exact))
-  return(sampleSizes)
+  sample_sizes <- sd_delta |> dplyr::mutate(N_exact = purrr::map2_dbl(sd, delta, getSampleSize))
+  sample_sizes <- sample_sizes |> dplyr::mutate(N = ceiling(.data$N_exact))
+  return(sample_sizes)
 }
 
 #' plot density distribution or ecdf of sd, mean or CV

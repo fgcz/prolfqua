@@ -18,26 +18,26 @@
 #' stopifnot(all(dim(tmp1) > 10))
 #' stopifnot(all(dim(tmp2) > 10))
 contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
-  modelDF <- models$modelDF
+  model_df <- models$modelDF
   #computeGroupAverages
   message("contrasts_linfct_firth")
   modelcol <- "linear_model"
 
-  interaction_models <- vector(mode = "list", length = nrow(modelDF))
-  pb <- progress::progress_bar$new(total = length(modelDF[[modelcol]]))
+  interaction_models <- vector(mode = "list", length = nrow(model_df))
+  pb <- progress::progress_bar$new(total = length(model_df[[modelcol]]))
 
-  for (i in seq_along(modelDF[[modelcol]])) {
+  for (i in seq_along(model_df[[modelcol]])) {
     # nolint start: object_usage_linter
     interaction_models[[i]] <- .compute_contrast(
-      modelDF[[modelcol]][[i]],
-      linfct = modelDF$linfct[[i]],
+      model_df[[modelcol]][[i]],
+      linfct = model_df$linfct[[i]],
       strategy = models$strategy
     )
     # nolint end
     pb$tick()
   }
 
-  interaction_model_matrix <- modelDF
+  interaction_model_matrix <- model_df
   interaction_model_matrix$contrast <- interaction_models
 
   mclass <- function(x) {
@@ -66,11 +66,11 @@ contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
     tidyr::unnest(cols = c("contrast"))
 
   # take sigma and df from somewhere else.
-  modelInfos <- modelDF |>
+  model_infos <- model_df |>
     dplyr::select(all_of(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
 
     dplyr::distinct()
-  contrasts <- dplyr::inner_join(contrasts, modelInfos, by = subject_Id)
+  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_Id)
   return(ungroup(contrasts))
 }
 
@@ -269,10 +269,10 @@ sim_build_models_logistf <- function(
   } else {
     NULL
   }
-  modelFunction <- paste0(istar$config$bin_resp, model)
+  model_function <- paste0(istar$config$bin_resp, model)
   mod <- build_model_logistf(
     istar,
-    modelFunction
+    model_function
   )
   return(mod)
 }
