@@ -381,8 +381,8 @@ remove_small_intensities <- function(pdata, config, threshold = 1) {
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
 nr_B_in_A <- function(pdata, config, merge = TRUE) {
-  levelA <- config$hkeysDepth()
-  levelB <- config$hierarchyKeys()[length(levelA) + 1]
+  levelA <- config$hierarchy_keys_depth()
+  levelB <- config$hierarchy_keys()[length(levelA) + 1]
   if (is.na(levelB)) {
     warning("here is no B in A")
     return(NULL)

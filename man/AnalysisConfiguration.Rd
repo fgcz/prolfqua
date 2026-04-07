@@ -84,9 +84,7 @@ Other configuration:
 \item \href{#method-AnalysisConfiguration-factor_keys}{\code{AnalysisConfiguration$factor_keys()}}
 \item \href{#method-AnalysisConfiguration-factor_keys_depth}{\code{AnalysisConfiguration$factor_keys_depth()}}
 \item \href{#method-AnalysisConfiguration-hierarchy_keys}{\code{AnalysisConfiguration$hierarchy_keys()}}
-\item \href{#method-AnalysisConfiguration-hierarchyKeys}{\code{AnalysisConfiguration$hierarchyKeys()}}
 \item \href{#method-AnalysisConfiguration-hierarchy_keys_depth}{\code{AnalysisConfiguration$hierarchy_keys_depth()}}
-\item \href{#method-AnalysisConfiguration-hkeysDepth}{\code{AnalysisConfiguration$hkeysDepth()}}
 \item \href{#method-AnalysisConfiguration-id_required}{\code{AnalysisConfiguration$id_required()}}
 \item \href{#method-AnalysisConfiguration-id_vars}{\code{AnalysisConfiguration$id_vars()}}
 \item \href{#method-AnalysisConfiguration-value_vars}{\code{AnalysisConfiguration$value_vars()}}
@@ -185,52 +183,12 @@ array of column names
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisConfiguration-hierarchyKeys"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisConfiguration-hierarchyKeys}{}}}
-\subsection{Method \code{hierarchyKeys()}}{
-get hierarchy keys (deprecated alias for hierarchy_keys)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$hierarchyKeys(rev = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rev}}{return in reverse order}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-array of column names
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-hierarchy_keys_depth"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-hierarchy_keys_depth}{}}}
 \subsection{Method \code{hierarchy_keys_depth()}}{
 get hierarchy keys up to depth
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$hierarchy_keys_depth(names = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{names}}{if TRUE names only if FALSE key value pairs}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-array of column names
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisConfiguration-hkeysDepth"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisConfiguration-hkeysDepth}{}}}
-\subsection{Method \code{hkeysDepth()}}{
-get hierarchy keys up to depth (deprecated alias for hierarchy_keys_depth)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$hkeysDepth(names = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

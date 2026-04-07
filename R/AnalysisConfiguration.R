@@ -115,13 +115,6 @@ AnalysisConfiguration <- R6::R6Class(
         return(names(self$hierarchy))
       }
     },
-    #' @description
-    #' get hierarchy keys (deprecated alias for hierarchy_keys)
-    #' @param rev return in reverse order
-    #' @return array of column names
-    hierarchyKeys = function(rev = FALSE) {
-      self$hierarchy_keys(rev = rev)
-    },
 
     #' @description
     #' get hierarchy keys up to depth
@@ -135,13 +128,6 @@ AnalysisConfiguration <- R6::R6Class(
         res
       }
       return(res)
-    },
-    #' @description
-    #' get hierarchy keys up to depth (deprecated alias for hierarchy_keys_depth)
-    #' @param names if TRUE names only if FALSE key value pairs
-    #' @return array of column names
-    hkeysDepth = function(names = TRUE) {
-      self$hierarchy_keys_depth(names = names)
     },
 
     #' @description
