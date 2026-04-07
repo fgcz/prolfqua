@@ -34,10 +34,10 @@ lfqdata$summarize_hierarchy()
 
 # filter for missing values
 
-f1 <- lfqdata$omit_NA(nr_na = 0)
+f1 <- lfqdata$omit_na(nr_na = 0)
 stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
-f2 <- lfqdata$omit_NA(factor_depth = 0)
+f2 <- lfqdata$omit_na(factor_depth = 0)
 stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
 lfqdata$response()
@@ -89,11 +89,11 @@ Other LFQData:
 \item \href{#method-LFQData-get_copy}{\code{LFQData$get_copy()}}
 \item \href{#method-LFQData-get_sample}{\code{LFQData$get_sample()}}
 \item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
-\item \href{#method-LFQData-subject_Id}{\code{LFQData$subject_Id()}}
+\item \href{#method-LFQData-subject_id}{\code{LFQData$subject_id()}}
 \item \href{#method-LFQData-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-LFQData-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-LFQData-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
-\item \href{#method-LFQData-omit_NA}{\code{LFQData$omit_NA()}}
+\item \href{#method-LFQData-omit_na}{\code{LFQData$omit_na()}}
 \item \href{#method-LFQData-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-LFQData-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-LFQData-factors}{\code{LFQData$factors()}}
@@ -183,12 +183,12 @@ get subset of data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-subject_Id"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-subject_Id}{}}}
-\subsection{Method \code{subject_Id()}}{
+\if{html}{\out{<a id="method-LFQData-subject_id"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-subject_id}{}}}
+\subsection{Method \code{subject_id()}}{
 get subject ID columns
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$subject_Id()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$subject_id()}\if{html}{\out{</div>}}
 }
 
 }
@@ -246,14 +246,14 @@ self
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-omit_NA"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-omit_NA}{}}}
-\subsection{Method \code{omit_NA()}}{
+\if{html}{\out{<a id="method-LFQData-omit_na"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-omit_na}{}}}
+\subsection{Method \code{omit_na()}}{
 Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
 it will be removed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_NA(nr_na = 0, factor_depth = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_na(nr_na = 0, factor_depth = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

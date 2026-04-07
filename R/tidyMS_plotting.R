@@ -453,13 +453,13 @@ plot_raster <- function(data, config, arrange = c("mean", "var"), not_na = FALSE
 #' analysis <- istar$data
 #'
 #'
-#' tmp <- plot_NA_heatmap(analysis, config)
+#' tmp <- plot_na_heatmap(analysis, config)
 #' stopifnot(class(tmp) == "pheatmap")
-#' tmp <- plot_NA_heatmap(analysis, config, distance = "euclidean")
+#' tmp <- plot_na_heatmap(analysis, config, distance = "euclidean")
 #' stopifnot(class(tmp) == "pheatmap")
 #'
 #'
-plot_NA_heatmap <- function(data, config, limitrows = 10000, distance = "binary") {
+plot_na_heatmap <- function(data, config, limitrows = 10000, distance = "binary") {
   res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
   annot <- res$annotation
   res <- res$data

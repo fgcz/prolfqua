@@ -57,7 +57,7 @@ lfqplotter$intensity_distribution_density()
 Often it also makes sense to look into the part of the data that is not quantified in all samples. Therefore several functions for the missingess are available. In the `NA_heatmap` function it is possible to see if some missing proteins are specific for one particular dilution or if they appear randomly in all samples.
 
 ```{r makeMissingHeatmap}
-nah <- lfqplotter$NA_heatmap()
+nah <- lfqplotter$na_heatmap()
 ```
 
 Prints missing heatmap:

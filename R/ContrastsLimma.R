@@ -319,7 +319,7 @@ build_model_limma_impute <- function(
   # Step 3: Compute LOD if not provided
   if (is.null(lod)) {
     mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
-    lod <- mh$get_LOD()
+    lod <- mh$get_lod()
   }
 
   # Step 4: Compute borrowed variance from successful proteins
@@ -579,7 +579,7 @@ build_model_limma_voom_impute <- function(
   # Step 3: Compute LOD if not provided
   if (is.null(lod)) {
     mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
-    lod <- mh$get_LOD()
+    lod <- mh$get_lod()
   }
 
   # Step 4: Borrow variance from successful proteins

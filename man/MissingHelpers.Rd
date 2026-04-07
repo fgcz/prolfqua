@@ -16,7 +16,7 @@ Contrasts <- c("group.b-a" = "group_A - group_B", "group.a-ctrl" = "group_A - gr
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
 xx <- mh$get_stats()
-xx <- mh$get_LOD()
+xx <- mh$get_lod()
 xx <- mh$impute_weighted_lod()
 xx <- mh$impute_lod()
 xx <- mh$get_poolvar()
@@ -55,7 +55,7 @@ mh$get_contrast_estimates(Contrasts)
 \itemize{
 \item \href{#method-MissingHelpers-new}{\code{MissingHelpers$new()}}
 \item \href{#method-MissingHelpers-get_stats}{\code{MissingHelpers$get_stats()}}
-\item \href{#method-MissingHelpers-get_LOD}{\code{MissingHelpers$get_LOD()}}
+\item \href{#method-MissingHelpers-get_lod}{\code{MissingHelpers$get_lod()}}
 \item \href{#method-MissingHelpers-impute_weighted_lod}{\code{MissingHelpers$impute_weighted_lod()}}
 \item \href{#method-MissingHelpers-impute_lod}{\code{MissingHelpers$impute_lod()}}
 \item \href{#method-MissingHelpers-get_poolvar}{\code{MissingHelpers$get_poolvar()}}
@@ -101,13 +101,13 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MissingHelpers-get_LOD"></a>}}
-\if{latex}{\out{\hypertarget{method-MissingHelpers-get_LOD}{}}}
-\subsection{Method \code{get_LOD()}}{
+\if{html}{\out{<a id="method-MissingHelpers-get_lod"></a>}}
+\if{latex}{\out{\hypertarget{method-MissingHelpers-get_lod}{}}}
+\subsection{Method \code{get_lod()}}{
 determine limit of detection
 computes quantile of abundances in groups with a single observation
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_LOD()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_lod()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

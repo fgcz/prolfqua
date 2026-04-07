@@ -1,13 +1,13 @@
 # ContrastsFacades -----
 
 .assert_aggregated_facade_input <- function(lfqdata, facade_name) {
-  subject_id <- lfqdata$subject_Id()
+  subject_id <- lfqdata$subject_id()
   hierarchy_keys <- lfqdata$config$hierarchy_keys()
   if (!identical(subject_id, hierarchy_keys)) {
     stop(
       facade_name,
       " requires aggregated LFQData. ",
-      "`lfqdata$subject_Id()` must equal `lfqdata$config$hierarchy_keys()`. ",
+      "`lfqdata$subject_id()` must equal `lfqdata$config$hierarchy_keys()`. ",
       "Aggregate first.",
       call. = FALSE
     )
@@ -15,13 +15,13 @@
 }
 
 .assert_nested_facade_input <- function(lfqdata, facade_name) {
-  subject_id <- lfqdata$subject_Id()
+  subject_id <- lfqdata$subject_id()
   hierarchy_keys <- lfqdata$config$hierarchy_keys()
   if (!(all(subject_id %in% hierarchy_keys) && length(subject_id) < length(hierarchy_keys))) {
     stop(
       facade_name,
-      " requires LFQData with additional hierarchy below `subject_Id()`. ",
-      "`lfqdata$subject_Id()` must be a strict subset of ",
+      " requires LFQData with additional hierarchy below `subject_id()`. ",
+      "`lfqdata$subject_id()` must be a strict subset of ",
       "`lfqdata$config$hierarchy_keys()`. Do not aggregate first.",
       call. = FALSE
     )
@@ -29,14 +29,14 @@
 }
 
 .assert_firth_facade_input <- function(lfqdata, facade_name) {
-  subject_id <- lfqdata$subject_Id()
+  subject_id <- lfqdata$subject_id()
   hierarchy_keys <- lfqdata$config$hierarchy_keys()
   is_aggregated <- identical(subject_id, hierarchy_keys)
   is_nested <- all(subject_id %in% hierarchy_keys) && length(subject_id) < length(hierarchy_keys)
   if (!(is_aggregated || is_nested)) {
     stop(
       facade_name,
-      " requires `lfqdata$subject_Id()` to equal `hierarchy_keys()` or be a strict subset. ",
+      " requires `lfqdata$subject_id()` to equal `hierarchy_keys()` or be a strict subset. ",
       "Received an incompatible LFQData shape.",
       call. = FALSE
     )
@@ -47,7 +47,7 @@
 # Compute protein × contrast pairs present in input but absent from output.
 # Returns a data.frame with hierarchy columns + contrast, or 0 rows if nothing missing.
 .compute_missing <- function(lfqdata, contrast_names, contrast_result) {
-  subject_id <- lfqdata$subject_Id()
+  subject_id <- lfqdata$subject_id()
   all_subjects <- lfqdata$data |>
     dplyr::select(dplyr::all_of(subject_id)) |>
     dplyr::distinct()

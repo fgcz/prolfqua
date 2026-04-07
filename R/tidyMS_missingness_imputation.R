@@ -8,7 +8,7 @@
 #' dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 #' mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
 #' xx <- mh$get_stats()
-#' xx <- mh$get_LOD()
+#' xx <- mh$get_lod()
 #' xx <- mh$impute_weighted_lod()
 #' xx <- mh$impute_lod()
 #' xx <- mh$get_poolvar()
@@ -65,7 +65,7 @@ MissingHelpers <- R6::R6Class(
     #' determine limit of detection
     #' computes quantile of abundances in groups with a single observation
     #' @return integer LOD
-    get_LOD = function() {
+    get_lod = function() {
       if (is.null(private$.lod_cache)) {
         private$.lod_cache <- self$get_stats() |>
           dplyr::filter(nrMeasured == 1) |>
@@ -82,7 +82,7 @@ MissingHelpers <- R6::R6Class(
       toimp$meanAbundanceZero <- ifelse(is.na(toimp$meanAbundance), 0, toimp$meanAbundance)
       imputed_data <- toimp |>
         mutate(
-          meanAbundanceImp = (.data$nrMeasured * .data$meanAbundanceZero + .data$nrNAs * self$get_LOD()) /
+          meanAbundanceImp = (.data$nrMeasured * .data$meanAbundanceZero + .data$nrNAs * self$get_lod()) /
             .data$nrReplicates
         )
       return(imputed_data)
@@ -92,7 +92,7 @@ MissingHelpers <- R6::R6Class(
     #'
     impute_lod = function() {
       toimp <- self$get_stats()
-      toimp$meanAbundanceImp <- ifelse(is.na(toimp$meanAbundance), self$get_LOD(), toimp$meanAbundance)
+      toimp$meanAbundanceImp <- ifelse(is.na(toimp$meanAbundance), self$get_lod(), toimp$meanAbundance)
       return(toimp)
     },
     #' @description

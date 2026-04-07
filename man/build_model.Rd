@@ -8,7 +8,7 @@ build_model(
   data,
   model_strategy,
   subject_Id = if ("LFQData" \%in\% class(data)) {
-     data$subject_Id()
+     data$subject_id()
  } else {
     
     "protein_Id"

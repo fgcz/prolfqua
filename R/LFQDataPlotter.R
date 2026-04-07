@@ -22,7 +22,7 @@
 #' stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
 #' stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
 #'
-#' stopifnot(class(lfqplotter$NA_heatmap()) == "pheatmap")
+#' stopifnot(class(lfqplotter$na_heatmap()) == "pheatmap")
 #' class(lfqplotter$intensity_distribution_density())
 #' class(lfqplotter$intensity_distribution_violin())
 #' stopifnot(is.null(lfqplotter$pairs_smooth()))
@@ -162,8 +162,8 @@ LFQDataPlotter <- R6::R6Class(
     #' @description
     #' heatmap of features with missing values
     #' @return ggplot
-    NA_heatmap = function() {
-      prolfqua::plot_NA_heatmap(self$lfq$data, self$lfq$config)
+    na_heatmap = function() {
+      prolfqua::plot_na_heatmap(self$lfq$data, self$lfq$config)
     },
     #' @description
     #' density distribution of intensities

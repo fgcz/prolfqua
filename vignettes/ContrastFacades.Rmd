@@ -86,7 +86,7 @@ how FDR correction propagates across contrasts.
 # Protein-input facades
 
 The following facades require aggregated input, which in practice means
-`lfqdata$subject_Id()` must match `lfqdata$config$hierarchy_keys()`. `firth`
+`lfqdata$subject_id()` must match `lfqdata$config$hierarchy_keys()`. `firth`
 is included here on purpose because it can be fitted directly on aggregated
 protein input.
 

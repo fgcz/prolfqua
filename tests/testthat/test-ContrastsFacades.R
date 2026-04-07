@@ -316,10 +316,10 @@ test_that("nested facades error on aggregated LFQData", {
 
   expect_error(
     prolfqua::ContrastsROPECAFacade$new(lfqdata, MODELSTR, CONTRASTS),
-    "requires LFQData with additional hierarchy below `subject_Id\\(\\)`"
+    "requires LFQData with additional hierarchy below `subject_id\\(\\)`"
   )
   expect_error(
     prolfqua::ContrastsLmerFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS),
-    "requires LFQData with additional hierarchy below `subject_Id\\(\\)`"
+    "requires LFQData with additional hierarchy below `subject_id\\(\\)`"
   )
 })

@@ -135,7 +135,7 @@ build_model <- function(
   data,
   model_strategy,
   subject_Id = if ("LFQData" %in% class(data)) {
-    data$subject_Id()
+    data$subject_id()
   } else {
     "protein_Id"
   },
@@ -188,7 +188,7 @@ build_model_impute <- function(
 ) {
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
-  subject_Id <- lfqdata$subject_Id()
+  subject_Id <- lfqdata$subject_id()
   response <- lfqdata$config$get_response()
 
   modelling_result <- model_analyse(
@@ -200,7 +200,7 @@ build_model_impute <- function(
 
   if (is.null(lod)) {
     mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
-    lod <- mh$get_LOD()
+    lod <- mh$get_lod()
   }
 
   # Build sample template from annotation columns only (fileName, sampleName,

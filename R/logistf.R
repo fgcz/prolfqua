@@ -181,7 +181,7 @@ build_model_logistf <- function(data, formula) {
     lfq2 <- pep$get_subset(df2)
     formula2 <- paste0(formula, "+", hkey)
     model_strategy2 <- prolfqua::strategy_logistf(formula2)
-    models2 <- model_analyse(lfq2$data, model_strategy2, model_name = "logistf_2", subject_Id = lfq2$subject_Id())
+    models2 <- model_analyse(lfq2$data, model_strategy2, model_name = "logistf_2", subject_Id = lfq2$subject_id())
     models2$strategy = model_strategy2
   }
 
@@ -190,7 +190,7 @@ build_model_logistf <- function(data, formula) {
   if (nrow(df1) > 0) {
     lfq1 <- pep$get_subset(df1)
     model_strategy1 <- prolfqua::strategy_logistf(formula)
-    models1 <- model_analyse(lfq1$data, model_strategy1, model_name = "logistf_1", subject_Id = lfq1$subject_Id())
+    models1 <- model_analyse(lfq1$data, model_strategy1, model_name = "logistf_1", subject_Id = lfq1$subject_id())
     models1$strategy = model_strategy1
   }
   res <- ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey))

@@ -89,7 +89,7 @@ lfqdata$config$hierarchy_depth  <- 2
 modelName  <- "Model"
 contr_spec <- c("B_over_Ctrl" = "group_B - group_Ctrl",
                "A_over_Ctrl" = "group_A - group_Ctrl")
-lfqdata$subject_Id()
+lfqdata$subject_id()
 
 mod <- prolfqua::build_model(
   lfqdata,

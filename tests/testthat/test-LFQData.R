@@ -8,7 +8,7 @@ test_that("LFQData creation and basic accessors", {
   expect_s3_class(lfqdata, "LFQData")
   expect_true("data.frame" %in% class(lfqdata$data))
   expect_s3_class(lfqdata$config, "AnalysisConfiguration")
-  expect_type(lfqdata$subject_Id(), "character")
+  expect_type(lfqdata$subject_id(), "character")
   expect_s3_class(lfqdata$hierarchy(), "data.frame")
   expect_s3_class(lfqdata$factors(), "data.frame")
   expect_type(lfqdata$response(), "character")
@@ -22,10 +22,10 @@ test_that("LFQData filtering and subsetting", {
   # After filtering, should have same or fewer hierarchy entries
   expect_true(nrow(lfq_copy$hierarchy()) <= nrow(orig_hier))
 
-  f1 <- lfqdata$omit_NA(nr_na = 0)
+  f1 <- lfqdata$omit_na(nr_na = 0)
   expect_true(nrow(f1$hierarchy()) <= nrow(lfqdata$hierarchy()))
 
-  f2 <- lfqdata$omit_NA(factor_depth = 0)
+  f2 <- lfqdata$omit_na(factor_depth = 0)
   expect_true(nrow(f2$hierarchy()) <= nrow(lfqdata$hierarchy()))
 
   cc <- lfqdata$get_copy()

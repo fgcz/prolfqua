@@ -33,7 +33,7 @@ imputed2 <- mh2$get_contrasts(Contrasts = contr_spec)
 plot(imputed$estimate, imputed2$estimate)
 abline(0 , 1 , col=2 , lwd=2)
 
-mh1$get_LOD()
+mh1$get_lod()
 plot( imputed$estimate, -log10(imputed$p.value), pch = "*" )
 points(imputed2$estimate, -log10(imputed2$p.value), col = 2, pch = "x")
 
@@ -89,7 +89,7 @@ sum_matrix/length(xx)
 ```{r lmod2}
 loddata <- dd$data
 
-loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), mh1$get_LOD(), abundance))
+loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), mh1$get_lod(), abundance))
 modI <- prolfqua::build_model(
   loddata,
   formula_Protein,

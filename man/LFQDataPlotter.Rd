@@ -28,7 +28,7 @@ tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" \%in\%  class(tmp$boxplot[[1]]))
 stopifnot("ggplot" \%in\% class(lfqplotter$missigness_histogram()))
 
-stopifnot(class(lfqplotter$NA_heatmap()) == "pheatmap")
+stopifnot(class(lfqplotter$na_heatmap()) == "pheatmap")
 class(lfqplotter$intensity_distribution_density())
 class(lfqplotter$intensity_distribution_violin())
 stopifnot(is.null(lfqplotter$pairs_smooth()))
@@ -80,7 +80,7 @@ Other LFQData:
 \item \href{#method-LFQDataPlotter-pca_plotly}{\code{LFQDataPlotter$pca_plotly()}}
 \item \href{#method-LFQDataPlotter-boxplots}{\code{LFQDataPlotter$boxplots()}}
 \item \href{#method-LFQDataPlotter-missigness_histogram}{\code{LFQDataPlotter$missigness_histogram()}}
-\item \href{#method-LFQDataPlotter-NA_heatmap}{\code{LFQDataPlotter$NA_heatmap()}}
+\item \href{#method-LFQDataPlotter-na_heatmap}{\code{LFQDataPlotter$na_heatmap()}}
 \item \href{#method-LFQDataPlotter-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
 \item \href{#method-LFQDataPlotter-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
 \item \href{#method-LFQDataPlotter-pairs_smooth}{\code{LFQDataPlotter$pairs_smooth()}}
@@ -270,12 +270,12 @@ ggplot
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataPlotter-NA_heatmap"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataPlotter-NA_heatmap}{}}}
-\subsection{Method \code{NA_heatmap()}}{
+\if{html}{\out{<a id="method-LFQDataPlotter-na_heatmap"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-na_heatmap}{}}}
+\subsection{Method \code{na_heatmap()}}{
 heatmap of features with missing values
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$NA_heatmap()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$na_heatmap()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

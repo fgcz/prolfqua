@@ -43,7 +43,6 @@ Other plotting:
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{missingness_per_condition_cumsum}()},
-\code{\link{plot_NA_heatmap}()},
 \code{\link{plot_estimate}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
@@ -52,6 +51,7 @@ Other plotting:
 \code{\link{plot_hierarchies_line}()},
 \code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_intensity_distribution_violin}()},
+\code{\link{plot_na_heatmap}()},
 \code{\link{plot_raster}()},
 \code{\link{plot_sample_correlation}()},
 \code{\link{upset_interaction_missing_stats}()}

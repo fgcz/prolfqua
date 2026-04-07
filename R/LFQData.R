@@ -28,10 +28,10 @@
 #'
 #' # filter for missing values
 #'
-#' f1 <- lfqdata$omit_NA(nr_na = 0)
+#' f1 <- lfqdata$omit_na(nr_na = 0)
 #' stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
 #'
-#' f2 <- lfqdata$omit_NA(factor_depth = 0)
+#' f2 <- lfqdata$omit_na(factor_depth = 0)
 #' stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
 #'
 #' lfqdata$response()
@@ -97,13 +97,13 @@ LFQData <- R6::R6Class(
     #' get subset of data
     #' @param x data frame with columns containing subject_Id
     get_subset = function(x) {
-      x <- select(x, any_of(self$subject_Id())) |> distinct()
+      x <- select(x, any_of(self$subject_id())) |> distinct()
       subset <- inner_join(x, self$data)
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
     #' get subject ID columns
-    subject_Id = function() {
+    subject_id = function() {
       return(self$config$hierarchy_keys_depth())
     },
     #' @description
@@ -142,7 +142,7 @@ LFQData <- R6::R6Class(
     #'   globally, e.g. `factor_depth = 0` means per experiment
     #' @return LFQData with NA omitted.
     #'
-    omit_NA = function(nr_na = 0, factor_depth = NULL) {
+    omit_na = function(nr_na = 0, factor_depth = NULL) {
       if (is.null(factor_depth)) {
         missing <- prolfqua::summarize_stats_factors(self$data, self$config)
       } else {

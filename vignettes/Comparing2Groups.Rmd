@@ -63,7 +63,7 @@ density_nn <- lfqplotter$intensity_distribution_density()
 ### Visualization of missing data
 
 ```{r makeMissingHeatmap, fig.cap="Heatmap where missing proteins (zero in case of MaxQuant reported intensities), black - missing protein intensities, white - present"}
-lfqplotter$NA_heatmap()
+lfqplotter$na_heatmap()
 ```
 
 ```{r missignessPerGroup, fig.cap="# of proteins with 0,1,...N missing values"}
