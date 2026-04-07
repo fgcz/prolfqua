@@ -241,7 +241,7 @@ test_that("build_model_limma passes weights from column name", {
 })
 
 test_that("ContrastsLimma works with 2-factor design", {
-  dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 30, with_missing = FALSE)
+  dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 30, with_missing = FALSE)
   lProt <- prolfqua::LFQData$new(dd$data, dd$config)
   lProt$rename_response("transformedIntensity")
 

@@ -223,7 +223,7 @@ sim_build_models_logistf <- function(
   model <- match.arg(model)
   if (!peptide) {
     if (model != "parallel3") {
-      istar <- prolfqua::sim_lfq_data_2Factor_config(
+      istar <- prolfqua::sim_lfq_data_2factor_config(
         Nprot = Nprot,
         with_missing = with_missing,
         weight_missing = weight_missing
@@ -240,7 +240,7 @@ sim_build_models_logistf <- function(
     istar <- prolfqua::LFQData$new(istar$data, istar$config)
   } else {
     if (model != "parallel3") {
-      istar <- prolfqua::sim_lfq_data_2Factor_config(
+      istar <- prolfqua::sim_lfq_data_2factor_config(
         Nprot = Nprot,
         with_missing = with_missing,
         weight_missing = weight_missing,

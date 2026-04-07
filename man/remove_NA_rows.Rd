@@ -31,7 +31,7 @@ stopifnot(all(c(10,10)==dim(x2)))
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{get_UniprotID_from_fasta_header}()},
+\code{\link{get_uniprot_id_from_fasta_header}()},
 \code{\link{matrix_to_tibble}()},
 \code{\link{multigroup_volcano}()},
 \code{\link{names_to_matrix}()},

@@ -20,7 +20,7 @@ find_package_file <- function(packagename, file) {
 #' copy script files and other from a package to workdir
 #' @export
 #' @keywords internal
-scriptCopyHelperVec <-
+script_copy_helper_vec <-
   function(runscripts, workdir = getwd(), packagename = "prolfqua") {
     res <- NULL
     for (scripts in runscripts) {

@@ -133,7 +133,7 @@ Concrete config factories (e.g. `create_config_Skyline()`, `create_config_Spectr
 - `R/tidyMS_summarize_hierarchy.R` — `table_factors`, `hierarchy_counts`, etc.
 - `R/tidyMS_R6_Modelling.R` — Strategy R6 classes (`StrategyLM`, `StrategyRLM`, `StrategyLmer`)
 - `R/tidyMS_build_model.R` — `build_model`, `model_analyse`, imputation internals
-- `R/tidyMS_contrasts.R` — `linfct_*` family, `compute_contrast`, `contrasts_linfct`, `pivot_model_contrasts_2_Wide`
+- `R/tidyMS_contrasts.R` — `linfct_*` family, `compute_contrast`, `contrasts_linfct`, `pivot_model_contrasts_to_wide`
 - `R/tidyMS_moderation.R` — `moderated_p_limma*`, `adjust_p_values`, ROPECA, Fisher
 - `R/tidyMS_*.R` — Other utility functions (plotting, stats, aggregation, missingness)
 - `R/utilities.R` — Shared helpers (`make_interaction_column`, `.error_handler`)

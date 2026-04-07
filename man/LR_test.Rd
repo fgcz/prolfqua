@@ -30,7 +30,7 @@ LR_test(
 Likelihood ratio test
 }
 \examples{
-data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(
+data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
  Nprot = 200,
  with_missing = TRUE,
  weight_missing = 2)
@@ -115,7 +115,7 @@ Other modelling:
 \code{\link{get_p_values_pbeta}()},
 \code{\link{group_label}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{isSingular_lm}()},
+\code{\link{is_singular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
@@ -128,7 +128,7 @@ Other modelling:
 \code{\link{moderated_p_limma}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{new_lm_imputed}()},
-\code{\link{pivot_model_contrasts_2_Wide}()},
+\code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},

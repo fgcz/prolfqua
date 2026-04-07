@@ -37,11 +37,11 @@ imputed <- get_contrast(imp, config$hierarchy_keys(), Contrasts)
 }
 \seealso{
 Other imputation: 
-\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{UpSet_missing_stats}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition}()},
-\code{\link{missingness_per_condition_cumsum}()}
+\code{\link{missingness_per_condition_cumsum}()},
+\code{\link{upset_interaction_missing_stats}()}
 }
 \concept{imputation}
 \keyword{internal}

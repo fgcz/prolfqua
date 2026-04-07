@@ -113,7 +113,7 @@ Other modelling:
 \code{\link{get_p_values_pbeta}()},
 \code{\link{group_label}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{isSingular_lm}()},
+\code{\link{is_singular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
@@ -126,7 +126,7 @@ Other modelling:
 \code{\link{moderated_p_limma}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{new_lm_imputed}()},
-\code{\link{pivot_model_contrasts_2_Wide}()},
+\code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
@@ -140,7 +140,6 @@ Other modelling:
 
 Other plotting: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{UpSet_missing_stats}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
@@ -157,7 +156,8 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+\code{\link{plot_sample_correlation}()},
+\code{\link{upset_interaction_missing_stats}()}
 }
 \concept{modelling}
 \concept{plotting}

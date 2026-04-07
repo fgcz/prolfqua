@@ -1158,7 +1158,7 @@ ContrastsROPECAFacade <- R6::R6Class(
     to_wide = function(columns = c("p.value", "FDR", "statistic")) {
       contrast_result <- self$get_contrasts()
       protein_Id <- self$contrast$subject_Id[1]
-      pivot_model_contrasts_2_Wide(
+      pivot_model_contrasts_to_wide(
         contrast_result,
         subject_Id = protein_Id,
         columns = c("diff", columns),

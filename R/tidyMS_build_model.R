@@ -8,7 +8,7 @@
 #' @param subject_Id subject id typically Assession or protein_Id
 #' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
-#' data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(
+#' data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
 #'  Nprot = 200,
 #'  with_missing = TRUE,
 #'  weight_missing = 2)
@@ -561,7 +561,7 @@ impute_refit_singular <- function(
 #' @family modelling
 #' @export
 #'
-isSingular_lm <- function(m) {
+is_singular_lm <- function(m) {
   has_na <- any(is.na(coefficients(m)))
   if (has_na) {
     return(TRUE)

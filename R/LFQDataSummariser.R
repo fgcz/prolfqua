@@ -66,7 +66,7 @@ LFQDataSummariser <- R6::R6Class(
     #' upset plot with missing information per protein and condition
     #' @param tr if less than tr observations in condition then missing
     upset_interaction_missing_stats = function(tr = 2) {
-      pups <- UpSet_interaction_missing_stats(self$lfq$data, self$lfq$config, tr = tr)
+      pups <- upset_interaction_missing_stats(self$lfq$data, self$lfq$config, tr = tr)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
       return(res)
     },

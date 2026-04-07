@@ -623,7 +623,7 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
 #'
 #' # this function is used by the contrast classes to implement the to wide method
 #'
-pivot_model_contrasts_2_Wide <- function(
+pivot_model_contrasts_to_wide <- function(
   model_interaction_contrasts,
   subject_Id = "protein_Id",
   columns = c("estimate", "p.value", "p.value.adjusted"),

@@ -88,7 +88,7 @@ Other modelling:
 \code{\link{get_p_values_pbeta}()},
 \code{\link{group_label}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{isSingular_lm}()},
+\code{\link{is_singular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
@@ -101,7 +101,7 @@ Other modelling:
 \code{\link{moderated_p_limma}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{new_lm_imputed}()},
-\code{\link{pivot_model_contrasts_2_Wide}()},
+\code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
@@ -115,7 +115,6 @@ Other modelling:
 
 Other plotting: 
 \code{\link{ContrastsPlotter}},
-\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{UpSet_missing_stats}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
@@ -132,7 +131,8 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+\code{\link{plot_sample_correlation}()},
+\code{\link{upset_interaction_missing_stats}()}
 
 Other preprocessing: 
 \code{\link{apply_to_response_matrix}()},
@@ -160,7 +160,7 @@ Other summary:
 \code{\link{summarize_hierarchy}()}
 
 Other utilities: 
-\code{\link{get_UniprotID_from_fasta_header}()},
+\code{\link{get_uniprot_id_from_fasta_header}()},
 \code{\link{matrix_to_tibble}()},
 \code{\link{multigroup_volcano}()},
 \code{\link{names_to_matrix}()},

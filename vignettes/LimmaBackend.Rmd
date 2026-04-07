@@ -165,7 +165,7 @@ head(wide)
 The limma backend handles multi-factor designs in the same way.
 
 ```{r two_factor}
-dd <- sim_lfq_data_2Factor_config(Nprot = 100, with_missing = FALSE)
+dd <- sim_lfq_data_2factor_config(Nprot = 100, with_missing = FALSE)
 lProt2 <- LFQData$new(dd$data, dd$config)
 lProt2$rename_response("transformedIntensity")
 

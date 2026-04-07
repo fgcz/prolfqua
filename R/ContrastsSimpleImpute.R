@@ -39,7 +39,7 @@
 #' print(p)
 #' dev.off()
 #'
-#' dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
+#' dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
 #'
 #' Contrasts <- c("c1" = "TreatmentA - TreatmentB",
 #'                "C2" = "BackgroundX- BackgroundZ",
@@ -154,7 +154,7 @@ ContrastsMissing <- R6::R6Class(
     #' @return data.frame
     to_wide = function(columns = c("p.value", "FDR", "statistic")) {
       contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(
+      contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
         subject_Id = self$subject_Id,
         columns = c("diff", columns),

@@ -254,7 +254,7 @@ moreProt$get_Plotter()$raster()
 
 After computing contrasts, proteins can be ranked by log2 fold change or t-statistic and subjected to gene set enrichment analysis. The typical workflow is:
 
-1. Extract UniProt IDs from the contrast results using `prolfqua::get_UniprotID_from_fasta_header()`
+1. Extract UniProt IDs from the contrast results using `prolfqua::get_uniprot_id_from_fasta_header()`
 2. Map UniProt IDs to Entrez Gene IDs using `AnnotationDbi::mapIds()` with a species-specific annotation package
 3. Create a named ranked list (statistic values named by gene IDs)
 4. Run GSEA using `clusterProfiler::gseGO()` or `clusterProfiler::gseKEGG()`

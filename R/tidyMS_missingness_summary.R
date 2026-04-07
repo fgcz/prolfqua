@@ -241,10 +241,10 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
 #' config <- istar$config
 #' analysis <- istar$data
 #'
-#' pups <- UpSet_interaction_missing_stats(analysis, config)
+#' pups <- upset_interaction_missing_stats(analysis, config)
 #' stopifnot(ncol(pups$data) == 5)
 #' UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
-UpSet_interaction_missing_stats <- function(data, cf, tr = 2) {
+upset_interaction_missing_stats <- function(data, cf, tr = 2) {
   tmp <- prolfqua::summarize_stats(data, cf)
   nr_missing <- tmp |>
     tidyr::pivot_wider(

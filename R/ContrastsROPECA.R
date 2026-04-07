@@ -164,7 +164,7 @@ ContrastsROPECA <- R6::R6Class(
     #' @return data.frame
     to_wide = function(columns = c("beta.based.significance", "FDR.beta.based.significance")) {
       contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_2_Wide(
+      contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
         subject_Id = self$subject_Id[length(self$subject_Id) - 1],
         columns = c("diff", columns),

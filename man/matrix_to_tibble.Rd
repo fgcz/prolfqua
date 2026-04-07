@@ -26,7 +26,7 @@ matrix_to_tibble(x)
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{get_UniprotID_from_fasta_header}()},
+\code{\link{get_uniprot_id_from_fasta_header}()},
 \code{\link{multigroup_volcano}()},
 \code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},

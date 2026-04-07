@@ -17,10 +17,10 @@
 #' bb <- prolfqua_data('data_ionstar')$filtered()
 #' tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
 #' tmp$UniprotID <- NULL
-#' tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
+#' tmp <- get_uniprot_id_from_fasta_header(tmp, idcolumn = "top_protein")
 #' stopifnot("UniprotID" %in%  colnames(tmp))
 #'
-get_UniprotID_from_fasta_header <- function(df, idcolumn = "protein_Id") {
+get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
   map <- df |>
     dplyr::select(dplyr::all_of(idcolumn)) |>
     distinct() |>

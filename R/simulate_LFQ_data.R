@@ -254,18 +254,18 @@ sim_lfq_data_protein_config <- function(
 #' @param TWO use two factors for modelling
 #' @export
 #' @examples
-#' x <- sim_lfq_data_2Factor_config(PEPTIDE= FALSE)
+#' x <- sim_lfq_data_2factor_config(PEPTIDE= FALSE)
 #' dim(x$data)
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
-#' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
+#' x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE)
 #'
 #' head(x$data)
-#' x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = TRUE)
+#' x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE, TWO = TRUE)
 #' names(x)
 #' nrow(x$data) > 10
 #' x$data$Treatment |> table()
-sim_lfq_data_2Factor_config <- function(
+sim_lfq_data_2factor_config <- function(
   Nprot = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
@@ -338,7 +338,7 @@ sim_build_models_lm <- function(
 ) {
   model <- match.arg(model)
   if (model != "parallel3") {
-    istar <- prolfqua::sim_lfq_data_2Factor_config(
+    istar <- prolfqua::sim_lfq_data_2factor_config(
       Nprot = Nprot,
       with_missing = with_missing,
       weight_missing = weight_missing
@@ -393,7 +393,7 @@ sim_build_models_lmer <- function(
 ) {
   model <- match.arg(model)
   if (model != "parallel3") {
-    istar <- prolfqua::sim_lfq_data_2Factor_config(
+    istar <- prolfqua::sim_lfq_data_2factor_config(
       Nprot = Nprot,
       with_missing = with_missing,
       PEPTIDE = TRUE,

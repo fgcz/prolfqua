@@ -197,7 +197,7 @@ StrategyLM <- R6::R6Class(
 
     #' @description Check if model is singular
     #' @param model fitted model
-    isSingular = function(model) isSingular_lm(model),
+    isSingular = function(model) is_singular_lm(model),
 
     #' @description Compute contrasts from fitted model
     #' @param ... passed to \code{\link{compute_contrast}}

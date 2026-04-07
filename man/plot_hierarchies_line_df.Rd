@@ -48,7 +48,6 @@ Other aggregation:
 Other plotting: 
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{UpSet_interaction_missing_stats}()},
 \code{\link{UpSet_missing_stats}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
@@ -64,7 +63,8 @@ Other plotting:
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()}
+\code{\link{plot_sample_correlation}()},
+\code{\link{upset_interaction_missing_stats}()}
 }
 \concept{aggregation}
 \concept{plotting}

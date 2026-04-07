@@ -81,7 +81,7 @@ Required methods:
 Rules:
 - Translate backend-specific names inside the adapter.
 - Keep downstream code unaware of backend-specific output conventions.
-- Reuse `pivot_model_contrasts_2_Wide()` for `to_wide()` unless a backend truly requires something else.
+- Reuse `pivot_model_contrasts_to_wide()` for `to_wide()` unless a backend truly requires something else.
 - Validate the final output against `ContrastsInterface$column_description()`.
 
 ## Step 4: Only Then Decide How To Fit The Model

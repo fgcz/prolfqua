@@ -45,7 +45,7 @@ pdf(file = NULL)
 print(p)
 dev.off()
 
-dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
+dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
 
 Contrasts <- c("c1" = "TreatmentA - TreatmentB",
                "C2" = "BackgroundX- BackgroundZ",
@@ -119,7 +119,7 @@ Other modelling:
 \code{\link{get_p_values_pbeta}()},
 \code{\link{group_label}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{isSingular_lm}()},
+\code{\link{is_singular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
@@ -132,7 +132,7 @@ Other modelling:
 \code{\link{moderated_p_limma}()},
 \code{\link{moderated_p_limma_long}()},
 \code{\link{new_lm_imputed}()},
-\code{\link{pivot_model_contrasts_2_Wide}()},
+\code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},

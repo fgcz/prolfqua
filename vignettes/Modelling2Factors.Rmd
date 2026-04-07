@@ -38,7 +38,7 @@ An in depth introduction to modelling and testing interactions using linear mode
 
 # Model Fitting
 
-We use simulated data generated using the function `sim_lfq_data_2Factor_config`.
+We use simulated data generated using the function `sim_lfq_data_2factor_config`.
 Interesting here is the definition of the model. If interaction shall be included in the model a _asterix_ should be used while if no interaction should be taken into account a _plus_ should be used in the model definition. Also we can directly specify what comparisons we are interested in by specifying the respective contrasts.
 
 
@@ -46,7 +46,7 @@ Interesting here is the definition of the model. If interaction shall be include
 library(dplyr)
 
 #data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
-data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(
+data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
   Nprot = 200,
   with_missing = TRUE,
   weight_missing = 2)
@@ -175,7 +175,7 @@ We compute the same contrasts as above but using only one factor and subgroups "
 We start by simulating the data.
 
 ```{r sim1factordata}
-data_1Factor <- prolfqua::sim_lfq_data_2Factor_config(
+data_1Factor <- prolfqua::sim_lfq_data_2factor_config(
   Nprot = 200,
   with_missing = TRUE,
   weight_missing = 2, TWO = FALSE)
