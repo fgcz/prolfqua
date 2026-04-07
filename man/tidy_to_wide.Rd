@@ -4,7 +4,7 @@
 \alias{tidy_to_wide}
 \title{Transform tidy table into a table with a column of responses for each sample}
 \usage{
-tidy_to_wide(data, rowIDs, columnLabels, value)
+tidy_to_wide(data, row_ids, column_labels, value)
 }
 \description{
 Transform tidy table into a table with a column of responses for each sample

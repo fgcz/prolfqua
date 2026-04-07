@@ -154,13 +154,13 @@ LFQData <- R6::R6Class(
           missing <- prolfqua::summarize_stats_all(self$data, self$config)
         }
       }
-      notNA <- missing |> dplyr::filter(nrNAs <= nr_na)
-      sumN <- notNA |> group_by(across(all_of(self$config$hierarchy_keys()))) |> summarise(n = n())
-      notNA <- sumN |> dplyr::filter(n == max(n))
+      not_na <- missing |> dplyr::filter(nrNAs <= nr_na)
+      sum_n <- not_na |> group_by(across(all_of(self$config$hierarchy_keys()))) |> summarise(n = n())
+      not_na <- sum_n |> dplyr::filter(n == max(n))
 
-      notNA <- notNA |> dplyr::select(dplyr::all_of(self$config$hierarchy_keys()))
-      notNAdata <- dplyr::inner_join(notNA, self$data) |> ungroup()
-      return(LFQData$new(notNAdata, self$config$clone(deep = TRUE)))
+      not_na <- not_na |> dplyr::select(dplyr::all_of(self$config$hierarchy_keys()))
+      not_na_data <- dplyr::inner_join(not_na, self$data) |> ungroup()
+      return(LFQData$new(not_na_data, self$config$clone(deep = TRUE)))
     },
 
     #'
@@ -315,8 +315,8 @@ LFQData <- R6::R6Class(
 #' stopifnot(nrow(res1) >  nrow(res1000))
 #'
 remove_small_intensities <- function(pdata, config, threshold = 1) {
-  resData <- pdata |> dplyr::filter(!!sym(config$get_response()) >= threshold)
-  return(resData)
+  res_data <- pdata |> dplyr::filter(!!sym(config$get_response()) >= threshold)
+  return(res_data)
 }
 
 # Hierarchy counting helpers ----
@@ -327,9 +327,9 @@ remove_small_intensities <- function(pdata, config, threshold = 1) {
 }
 
 .nr_B_in_A <- function(data, levelA, levelB, merge = TRUE) {
-  namA <- paste(levelA, collapse = "_")
-  namB <- paste(levelB, collapse = "_")
-  c_name <- .make_name_AinB(namA, namB)
+  nam_a <- paste(levelA, collapse = "_")
+  nam_b <- paste(levelB, collapse = "_")
+  c_name <- .make_name_AinB(nam_a, nam_b)
   if (!c_name %in% colnames(data)) {
     data$c_name <- NULL
   }

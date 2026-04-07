@@ -266,15 +266,15 @@ contrasts_fisher_exact <- function(
   samplesA = "samplesA",
   samplesB = "samplesB"
 ) {
-  relativeRisk <- function(observedA, observedB, samplesA, samplesB) {
+  relative_risk <- function(observedA, observedB, samplesA, samplesB) {
     rr <- (observedA / (observedA + observedB)) / (samplesA / (samplesA + samplesB))
     return(rr)
   }
-  odsRatio <- function(observedA, observedB, samplesA, samplesB) {
+  ods_ratio <- function(observedA, observedB, samplesA, samplesB) {
     rr <- (observedA / observedB) / (samplesA / samplesB)
     return(rr)
   }
-  apply_fischer <- function(proteinID, observedA, observedB, samplesA, samplesB) {
+  apply_fisher <- function(proteinID, observedA, observedB, samplesA, samplesB) {
     mat <- matrix(c(observedA, samplesA - observedA, observedB, samplesB - observedB), nrow = 2)
     fisher_result <- fisher.test(mat)
     return(data.frame(
@@ -286,13 +286,13 @@ contrasts_fisher_exact <- function(
     ))
   }
 
-  fisher_input$OdsRatioM <- odsRatio(
+  fisher_input$OdsRatioM <- ods_ratio(
     observedA = fisher_input[["observedA"]],
     observedB = fisher_input[["observedB"]],
     samplesA = fisher_input[["samplesA"]],
     samplesB = fisher_input[["samplesB"]]
   )
-  fisher_input$relativeRiskM <- relativeRisk(
+  fisher_input$relative_riskM <- relative_risk(
     observedA = fisher_input[["observedA"]],
     observedB = fisher_input[["observedB"]],
     samplesA = fisher_input[["samplesA"]],
@@ -302,7 +302,7 @@ contrasts_fisher_exact <- function(
   res <- vector(mode = "list", length(nrow(fisher_input)))
 
   for (i in seq_len(nrow(fisher_input))) {
-    res[[i]] <- apply_fischer(
+    res[[i]] <- apply_fisher(
       fisher_input[["proteinID"]][i],
       fisher_input[["observedA"]][i],
       fisher_input[["observedB"]][i],

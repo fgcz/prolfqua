@@ -49,12 +49,12 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 #' obj = matrix(rnorm(10*10),ncol=10)
 #' dim(obj)
 #' obj[3,3] = NA
-#' x1 = remove_NA_rows(obj, thresh=0)
+#' x1 = remove_na_rows(obj, thresh=0)
 #' stopifnot(all(c(9,10)==dim(x1)))
-#' x2 = remove_NA_rows(obj, thresh=1)
+#' x2 = remove_na_rows(obj, thresh=1)
 #' stopifnot(all(c(10,10)==dim(x2)))
 #'
-remove_NA_rows <- function(obj, thresh = 0) {
+remove_na_rows <- function(obj, thresh = 0) {
   x <- apply(obj, 1, function(x) {
     sum(is.na(x))
   })

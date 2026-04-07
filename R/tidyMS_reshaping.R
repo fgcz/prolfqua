@@ -4,12 +4,12 @@
 #'
 #' @export
 #' @keywords internal
-tidy_to_wide <- function(data, rowIDs, columnLabels, value) {
+tidy_to_wide <- function(data, row_ids, column_labels, value) {
   wide <- data |>
-    dplyr::select(all_of(c(rowIDs, columnLabels, value)))
+    dplyr::select(all_of(c(row_ids, column_labels, value)))
 
   wide_spread <- wide |>
-    tidyr::pivot_wider(names_from = all_of(columnLabels), values_from = all_of(value))
+    tidyr::pivot_wider(names_from = all_of(column_labels), values_from = all_of(value))
 
   return(wide_spread)
 }

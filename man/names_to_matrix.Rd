@@ -29,7 +29,7 @@ Other utilities:
 \code{\link{multigroup_volcano}()},
 \code{\link{pairs_smooth}()},
 \code{\link{panel_cor}()},
-\code{\link{remove_NA_rows}()},
+\code{\link{remove_na_rows}()},
 \code{\link{table_facade}()}
 }
 \concept{utilities}

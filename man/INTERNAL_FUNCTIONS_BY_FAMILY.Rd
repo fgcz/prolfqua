@@ -166,7 +166,7 @@ Other utilities:
 \code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
 \code{\link{panel_cor}()},
-\code{\link{remove_NA_rows}()},
+\code{\link{remove_na_rows}()},
 \code{\link{table_facade}()}
 }
 \concept{FragPipe}
