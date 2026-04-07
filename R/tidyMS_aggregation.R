@@ -435,9 +435,9 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #'   sample_name = rep(letters[1:4], 5))
 #' rlm_estimate(xx2, "log2Area", "peptide_Id", "sample_name")
 #' rlm_estimate(prolfqua_data("data_checksummarizationrobust87"),
-#'   "log2Area", "peptide_Id", "sample_name")
+#'   "log2Area", "peptide_Id", "sampleName")
 #' rlm_estimate(prolfqua_data("data_checksummarizerobust69"),
-#'   "log2Area", "peptide_Id", "sample_name")
+#'   "log2Area", "peptide_Id", "sampleName")
 #' res <- vector(100, mode = "list")
 #' for (i in seq_len(100)) {
 #'   xx3 <- xx2
