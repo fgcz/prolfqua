@@ -276,8 +276,8 @@ AggregateTopN <- R6::R6Class(
         }
       }
       ranked <- rank_peptide_by_intensity(self$lfq$data, self$lfq$config)
-      resTOPN <- aggregate_intensity_topN(ranked, self$lfq$config, .func = .func, N = self$N)
-      self$lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config, prefix = self$prefix)
+      res_topn <- aggregate_intensity_topN(ranked, self$lfq$config, .func = .func, N = self$N)
+      self$lfq_agg <- LFQData$new(res_topn$data, res_topn$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },
     #' @description

@@ -564,15 +564,15 @@ plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE
 
   text <- geom_text(aes(label = !!sym(config$sample_name)), check_overlap = TRUE, nudge_x = nudge, nudge_y = nudge)
 
-  PCx <- paste0("PC", PC[1])
-  PCy <- paste0("PC", PC[2])
+  pc_x <- paste0("PC", PC[1])
+  pc_y <- paste0("PC", PC[2])
   x <- ggplot(
     xx,
-    aes(x = !!sym(PCx), y = !!sym(PCy), color = !!sym(config$factor_keys()[1]), text = !!sym(config$sample_name))
+    aes(x = !!sym(pc_x), y = !!sym(pc_y), color = !!sym(config$factor_keys()[1]), text = !!sym(config$sample_name))
   ) +
     labs(
-      x = paste0(PCx, " (", round(variance_explained[PC[1]]), "% variance)"),
-      y = paste0(PCy, " (", round(variance_explained[PC[2]]), "% variance)")
+      x = paste0(pc_x, " (", round(variance_explained[PC[1]]), "% variance)"),
+      y = paste0(pc_y, " (", round(variance_explained[PC[2]]), "% variance)")
     ) +
     point +
     if (add_txt) {

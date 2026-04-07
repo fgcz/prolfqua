@@ -500,12 +500,12 @@ scale_with_subset <- function(data, subset, config, preserve_mean = FALSE, get_s
 center_to_reference <- function(
   df,
   df_reference,
-  sampleName,
+  sample_name,
   abundance_column = "normalized_abundance"
 ) {
   # Step 1: Calculate sample means for reference proteins
   sample_means <- df_reference |>
-    dplyr::group_by(!!rlang::sym(sampleName)) |> # Group by sample (Name column contains sample identifiers)
+    dplyr::group_by(!!rlang::sym(sample_name)) |>
     dplyr::summarise(
       reference_mean = mean(.data[[abundance_column]], na.rm = TRUE),
       reference_median = median(.data[[abundance_column]], na.rm = TRUE),
@@ -513,7 +513,7 @@ center_to_reference <- function(
     )
   # Step 2: Join back to original data and subtract sample means
   normalized_df <-
-    dplyr::left_join(df, sample_means, by = sampleName) |>
+    dplyr::left_join(df, sample_means, by = sample_name) |>
     dplyr::mutate(
       # Create normalized abundance column
       centered_abundance_by_mean = .data[[abundance_column]] - reference_mean,

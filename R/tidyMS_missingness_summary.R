@@ -269,9 +269,9 @@ upset_interaction_missing_stats <- function(data, cf, tr = 2) {
 #' istar <- sim_lfq_data_peptide_config()
 #' config <- istar$config
 #' analysis <- istar$data
-#' pups <- UpSet_missing_stats(analysis, config)
+#' pups <- upset_missing_stats(analysis, config)
 #' UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
-UpSet_missing_stats <- function(data, config) {
+upset_missing_stats <- function(data, config) {
   data <- prolfqua::complete_cases(data, config)
   data <- data |>
     dplyr::mutate(

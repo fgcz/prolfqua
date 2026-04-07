@@ -113,11 +113,11 @@ Model <- R6::R6Class(
       model_coeff <- self$get_coefficients()
       model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
       ## Coef_Histogram
-      fname_histogram_coeff_p.values <- paste0("Coef_Histogram_", self$modelName, ".pdf")
-      histogram_coeff_p.values <- ggplot(data = model_coeff, aes(x = Pr...t.., group = factor)) +
+      fname_histogram_coeff <- paste0("Coef_Histogram_", self$modelName, ".pdf")
+      histogram_coeff <- ggplot(data = model_coeff, aes(x = Pr...t.., group = factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
-      return(list(plot = histogram_coeff_p.values, name = fname_histogram_coeff_p.values))
+      return(list(plot = histogram_coeff, name = fname_histogram_coeff))
     },
     #' @description
     #' volcano plot of non intercept coefficients
@@ -143,11 +143,11 @@ Model <- R6::R6Class(
       model_coeff <- self$get_coefficients()
       model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
       ## Coef_Pairsplot
-      forPairs <- model_coeff |>
+      for_pairs <- model_coeff |>
         dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
-      fname_Pairsplot_Coef <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
-      return(list(plot = forPairs, name = fname_Pairsplot_Coef))
+      fname_pairsplot_coef <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
+      return(list(plot = for_pairs, name = fname_pairsplot_coef))
     },
     #' @description
     #' histogram of ANOVA results
@@ -156,12 +156,12 @@ Model <- R6::R6Class(
       ## Anova_p.values
       what <- match.arg(what)
       model_anova <- self$get_anova()
-      fname_histogram_anova_p.values <- paste0("Anova_p.values_", self$modelName, ".pdf")
-      histogram_anova_p.values <- model_anova |>
+      fname_histogram_anova <- paste0("Anova_p.values_", self$modelName, ".pdf")
+      histogram_anova <- model_anova |>
         ggplot(aes(x = !!sym(what), group = factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
-      return(list(plot = histogram_anova_p.values, name = fname_histogram_anova_p.values))
+      return(list(plot = histogram_anova, name = fname_histogram_anova))
     },
     #' @description
     #' write figures related to ANOVA into pdf file

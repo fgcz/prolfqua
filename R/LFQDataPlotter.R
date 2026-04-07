@@ -208,7 +208,7 @@ LFQDataPlotter <- R6::R6Class(
     #' upset plot based on presence absence information
     #' @return plot
     upset_missing = function() {
-      pups <- prolfqua::UpSet_missing_stats(self$lfq$data, self$lfq$config)
+      pups <- prolfqua::upset_missing_stats(self$lfq$data, self$lfq$config)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
       return(res)
     },

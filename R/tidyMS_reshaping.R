@@ -52,11 +52,11 @@ tidy_to_wide_config <- function(
   data,
   config,
   as.matrix = FALSE,
-  fileName = FALSE,
+  file_name = FALSE,
   sep = "~lfq~",
   value = config$get_response()
 ) {
-  if (fileName) {
+  if (file_name) {
     newcolname <- config$file_name
   } else {
     newcolname <- config$sample_name
@@ -72,12 +72,12 @@ tidy_to_wide_config <- function(
   res <- tidy_to_wide(data, c(config$hierarchy_keys(), config$isotope_label), newcolname, value = value)
   rowdata <- res |> dplyr::select(all_of(c(config$hierarchy_keys(), config$isotope_label)))
   if (as.matrix) {
-    resMat <- as.matrix(dplyr::select(res, -dplyr::all_of(c(config$hierarchy_keys(), config$isotope_label))))
+    res_mat <- as.matrix(dplyr::select(res, -dplyr::all_of(c(config$hierarchy_keys(), config$isotope_label))))
     names <- rowdata |>
       tidyr::unite("newID", !!!dplyr::syms(c(config$hierarchy_keys(), config$isotope_label)), sep = sep) |>
       dplyr::pull("newID")
-    rownames(resMat) <- names
-    res <- resMat
+    rownames(res_mat) <- names
+    res <- res_mat
   }
   return(list(data = res, annotation = ids, rowdata = rowdata))
 }

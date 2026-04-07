@@ -17,7 +17,7 @@ multigroup_volcano(
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
-  maxNrOfSignificantText = 20
+  max_nr_significant_text = 20
 )
 }
 \arguments{
@@ -45,7 +45,7 @@ multigroup_volcano(
 
 \item{scales}{parameter to ggplot2::facet_wrap}
 
-\item{maxNrOfSignificantText}{maximum number of significant labels to display}
+\item{max_nr_significant_text}{maximum number of significant labels to display}
 }
 \description{
 plot volcano given multiple contrasts
@@ -61,7 +61,7 @@ significance = "adj.P.Val",
 contrast="Condition",
 colour=NULL,
 label="Name",
-maxNrOfSignificantText = 300)
+max_nr_significant_text = 300)
 }
 \seealso{
 Other utilities: 

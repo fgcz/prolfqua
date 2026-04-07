@@ -8,14 +8,14 @@ plot_hierarchies_line_default <- function(
   peptide,
   fragment,
   factor,
-  isotopeLabel,
+  isotope_label,
   separate = FALSE,
   log_y = FALSE,
   show.legend = FALSE
 ) {
-  if (length(isotopeLabel)) {
+  if (length(isotope_label)) {
     if (separate) {
-      formula <- paste(paste(isotopeLabel, collapse = "+"), "~", paste(factor, collapse = "+"))
+      formula <- paste(paste(isotope_label, collapse = "+"), "~", paste(factor, collapse = "+"))
       p <- ggplot(
         data,
         aes(
@@ -27,7 +27,7 @@ plot_hierarchies_line_default <- function(
       )
     } else {
       formula <- sprintf("~%s", paste(factor, collapse = " + "))
-      data <- tidyr::unite(data, "fragment_label", dplyr::all_of(c(fragment, isotopeLabel)), remove = FALSE)
+      data <- tidyr::unite(data, "fragment_label", dplyr::all_of(c(fragment, isotope_label)), remove = FALSE)
       p <- ggplot(
         data,
         aes(
@@ -39,8 +39,8 @@ plot_hierarchies_line_default <- function(
       )
     }
     p <- p +
-      geom_point(aes(shape = .data[[isotopeLabel]]), show.legend = show.legend) +
-      geom_line(aes(linetype = .data[[isotopeLabel]]), show.legend = show.legend)
+      geom_point(aes(shape = .data[[isotope_label]]), show.legend = show.legend) +
+      geom_line(aes(linetype = .data[[isotope_label]]), show.legend = show.legend)
   } else {
     formula <- sprintf("~%s", paste(factor, collapse = " + "))
     p <- ggplot(
@@ -53,7 +53,7 @@ plot_hierarchies_line_default <- function(
   # p <- ggplot(
   #   data,
   #   aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]],
-  #       color = .data[[peptide]], linetype = .data[[isotopeLabel]])
+  #       color = .data[[peptide]], linetype = .data[[isotope_label]])
   # )
   p <- p + facet_grid(as.formula(formula), scales = "free_x")
   p <- p + ggtitle(protein_name)
@@ -123,7 +123,7 @@ plot_hierarchies_line <- function(res, protein_name, config, separate = FALSE, s
     peptide = peptide,
     fragment = fragment,
     factor = config$factor_keys_depth(),
-    isotopeLabel = config$isotope_label,
+    isotope_label = config$isotope_label,
     separate = separate,
     log_y = !config$is_response_transformed,
     show.legend = show.legend
@@ -156,16 +156,16 @@ plot_hierarchies_line <- function(res, protein_name, config, separate = FALSE, s
 #' # TODO make it work for other hiearachy levels.
 #'
 plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
-  hierarchy_ID <- "hierarchy_ID"
-  pdata <- pdata |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()), remove = FALSE)
+  hierarchy_id <- "hierarchy_id"
+  pdata <- pdata |> tidyr::unite(hierarchy_id, !!!syms(config$hierarchy_keys_depth()), remove = FALSE)
 
   xnested <- pdata |>
-    dplyr::group_by(across(all_of(hierarchy_ID))) |>
+    dplyr::group_by(across(all_of(hierarchy_id))) |>
     tidyr::nest()
 
   figs <- xnested |>
     dplyr::mutate(
-      plot = map2(data, !!sym(hierarchy_ID), plot_hierarchies_line, config = config, show.legend = show.legend)
+      plot = map2(data, !!sym(hierarchy_id), plot_hierarchies_line, config = config, show.legend = show.legend)
     )
   return(figs$plot)
 }
@@ -604,16 +604,16 @@ estimate_intensity <- function(data, config, .func) {
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[2]]))
 #'
 plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend = FALSE) {
-  hierarchy_ID <- "hierarchy_ID"
+  hierarchy_id <- "hierarchy_id"
   xnested <- data |>
     group_by(!!!syms(config$hierarchy_keys_depth())) |>
     nest()
-  xnested <- xnested |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()))
+  xnested <- xnested |> tidyr::unite(hierarchy_id, !!!syms(config$hierarchy_keys_depth()))
   xnested_aggr <- data_aggr |>
     group_by(!!!syms(config_reduced$hierarchy_keys_depth())) |>
     nest_by(.key = "other")
-  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_ID, !!!syms(config$hierarchy_keys_depth()))
-  xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_ID)
+  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_id, !!!syms(config$hierarchy_keys_depth()))
+  xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_id)
 
   plots <- vector(mode = "list", length = nrow(xnested_all))
 
@@ -621,7 +621,7 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend =
   for (i in seq_len(nrow(xnested_all))) {
     p1 <- plot_hierarchies_line(
       xnested_all$data[[i]],
-      xnested_all[[hierarchy_ID]][i],
+      xnested_all[[hierarchy_id]][i],
       config = config,
       show.legend = show.legend
     )
@@ -816,21 +816,21 @@ nr_obs_experiment <- function(data, config, from_children = TRUE, name_nr_child 
   fun = function(x) {
     sum(x, na.rm = TRUE)
   },
-  summaryColumn = "srm_meanInt",
-  rankColumn = "srm_meanIntRank",
-  rankFunction = function(x) {
+  summary_column = "srm_meanInt",
+  rank_column = "srm_meanIntRank",
+  rank_function = function(x) {
     min_rank(desc(x))
   }
 ) {
   summary_per_precursor <- data |>
     dplyr::group_by(!!!syms(config$hierarchy_keys())) |>
-    dplyr::summarize(!!summaryColumn := fun(!!sym(column)))
+    dplyr::summarize(!!summary_column := fun(!!sym(column)))
 
   grouped_by_protein <- summary_per_precursor |>
     dplyr::arrange(!!sym(config$hierarchy_keys()[1])) |>
     dplyr::group_by(!!sym(config$hierarchy_keys()[1]))
   ranked_by_summary <- grouped_by_protein |>
-    dplyr::mutate(!!rankColumn := rankFunction(!!sym(summaryColumn)))
+    dplyr::mutate(!!rank_column := rank_function(!!sym(summary_column)))
 
   data <- dplyr::inner_join(data, ranked_by_summary)
   return(data)
@@ -851,8 +851,8 @@ nr_obs_experiment <- function(data, config, from_children = TRUE, name_nr_child 
 #'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
 #' X |> dplyr::arrange(!!!rlang::syms(c(bb$config$hierarchy_keys()[1], "srm_meanIntRank"  )))
 rank_peptide_by_intensity <- function(pdata, config) {
-  summaryColumn <- "srm_meanInt"
-  rankColumn <- "srm_meanIntRank"
+  summary_column <- "srm_meanInt"
+  rank_column <- "srm_meanIntRank"
   pdata <- .rankProteinPrecursors(
     pdata,
     config,
@@ -860,13 +860,13 @@ rank_peptide_by_intensity <- function(pdata, config) {
     fun = function(x) {
       mean(x, na.rm = TRUE)
     },
-    summaryColumn = summaryColumn,
-    rankColumn = rankColumn,
-    rankFunction = function(x) {
+    summary_column = summary_column,
+    rank_column = rank_column,
+    rank_function = function(x) {
       min_rank(desc(x))
     }
   )
 
-  message("Columns added : ", summaryColumn, " ", rankColumn)
+  message("Columns added : ", summary_column, " ", rank_column)
   return(pdata)
 }

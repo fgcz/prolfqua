@@ -955,15 +955,15 @@ ContrastsLimma <- R6::R6Class(
       names(cntr_avg) <- namtmp
       all_contrasts <- c(self$contrasts, cntr_avg)
 
-      linfct_A <- linfct_matrix_contrasts(linfct, all_contrasts)
-      # linfct_A: rows = contrast names, cols = model coefficients
+      linfct_a <- linfct_matrix_contrasts(linfct, all_contrasts)
+      # linfct_a: rows = contrast names, cols = model coefficients
 
       # Split into difference contrasts and avg contrasts
       diff_names <- names(self$contrasts)
       avg_names <- namtmp
 
       # Transpose for limma: rows = coefficients, cols = contrasts
-      contrast_matrix <- t(linfct_A[diff_names, , drop = FALSE])
+      contrast_matrix <- t(linfct_a[diff_names, , drop = FALSE])
 
       # limma pipeline: contrasts.fit, optionally + eBayes
       fit2 <- limma::contrasts.fit(self$model$fit, contrast_matrix)
@@ -1014,7 +1014,7 @@ ContrastsLimma <- R6::R6Class(
       contrast_result <- dplyr::bind_rows(res_list)
 
       # Compute avgAbd from the avg linfct applied to the fit coefficients
-      avg_matrix <- t(linfct_A[avg_names, , drop = FALSE])
+      avg_matrix <- t(linfct_a[avg_names, , drop = FALSE])
       avg_vals <- self$model$fit$coefficients %*% avg_matrix
       # avg_vals: rows = proteins, cols = avg contrasts
 

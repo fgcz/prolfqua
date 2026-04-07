@@ -140,7 +140,6 @@ Other modelling:
 
 Other plotting: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{UpSet_missing_stats}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition}()},
@@ -157,7 +156,8 @@ Other plotting:
 \code{\link{plot_pca}()},
 \code{\link{plot_raster}()},
 \code{\link{plot_sample_correlation}()},
-\code{\link{upset_interaction_missing_stats}()}
+\code{\link{upset_interaction_missing_stats}()},
+\code{\link{upset_missing_stats}()}
 }
 \concept{modelling}
 \concept{plotting}

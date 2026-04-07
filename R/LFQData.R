@@ -321,28 +321,28 @@ remove_small_intensities <- function(pdata, config, threshold = 1) {
 
 # Hierarchy counting helpers ----
 
-.make_name_AinB <- function(levelA, levelB, prefix = "nr_") {
-  c_name <- paste(prefix, levelB, "_IN_", levelA, sep = "")
+.make_name_AinB <- function(level_a, level_b, prefix = "nr_") {
+  c_name <- paste(prefix, level_b, "_IN_", level_a, sep = "")
   return(c_name)
 }
 
-.nr_B_in_A <- function(data, levelA, levelB, merge = TRUE) {
-  nam_a <- paste(levelA, collapse = "_")
-  nam_b <- paste(levelB, collapse = "_")
+.nr_B_in_A <- function(data, level_a, level_b, merge = TRUE) {
+  nam_a <- paste(level_a, collapse = "_")
+  nam_b <- paste(level_b, collapse = "_")
   c_name <- .make_name_AinB(nam_a, nam_b)
   if (!c_name %in% colnames(data)) {
     data$c_name <- NULL
   }
   tmp <- data |>
-    dplyr::select(all_of(c(levelA, levelB))) |>
+    dplyr::select(all_of(c(level_a, level_b))) |>
     dplyr::distinct() |>
-    dplyr::group_by(across(all_of(levelA))) |>
+    dplyr::group_by(across(all_of(level_a))) |>
     dplyr::summarize(!!c_name := n())
 
   if (!merge) {
     return(tmp)
   }
-  data <- dplyr::inner_join(data, tmp, by = levelA)
+  data <- dplyr::inner_join(data, tmp, by = level_a)
   message("Column added : ", c_name)
   return(list(data = data, name = c_name))
 }
@@ -381,13 +381,13 @@ remove_small_intensities <- function(pdata, config, threshold = 1) {
 #' nr_B_in_A(resDataStart, config, merge = FALSE)
 #'
 nr_B_in_A <- function(pdata, config, merge = TRUE) {
-  levelA <- config$hierarchy_keys_depth()
-  levelB <- config$hierarchy_keys()[length(levelA) + 1]
-  if (is.na(levelB)) {
+  level_a <- config$hierarchy_keys_depth()
+  level_b <- config$hierarchy_keys()[length(level_a) + 1]
+  if (is.na(level_b)) {
     warning("here is no B in A")
     return(NULL)
   } else {
-    .nr_B_in_A(pdata, levelA, levelB, merge = merge)
+    .nr_B_in_A(pdata, level_a, level_b, merge = merge)
   }
 }
 

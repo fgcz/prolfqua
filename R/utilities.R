@@ -91,7 +91,7 @@ names_to_matrix <- function(names, split = "\\||\\_") {
 #' @param segment.size controls size of lines
 #' @param segment.alpha controls visibility of lines
 #' @param scales parameter to ggplot2::facet_wrap
-#' @param maxNrOfSignificantText maximum number of significant labels to display
+#' @param max_nr_significant_text maximum number of significant labels to display
 #' @export
 #' @keywords internal
 #' @family utilities
@@ -106,7 +106,7 @@ names_to_matrix <- function(names, split = "\\||\\_") {
 #' contrast="Condition",
 #' colour=NULL,
 #' label="Name",
-#' maxNrOfSignificantText = 300)
+#' max_nr_significant_text = 300)
 multigroup_volcano <- function(
   .data,
   effect = "fc",
@@ -120,7 +120,7 @@ multigroup_volcano <- function(
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
-  maxNrOfSignificantText = 20
+  max_nr_significant_text = 20
 ) {
   labeled_data <- tidyr::unite(.data, "label", dplyr::all_of(label))
 
@@ -144,7 +144,7 @@ multigroup_volcano <- function(
       labeled_data,
       (effect_values < xintercept[1] | xintercept[2] < effect_values) & significance_values < yintercept
     ) |>
-      head(n = maxNrOfSignificantText)
+      head(n = max_nr_significant_text)
     if (nrow(significant_subset) > 0) {
       p <- p +
         ggrepel::geom_text_repel(

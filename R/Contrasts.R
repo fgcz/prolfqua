@@ -7,8 +7,8 @@
     names(cntr_avg) <- namtmp
     contrast <- c(contrast, cntr_avg)
   }
-  linfct_A <- linfct_matrix_contrasts(linfct, contrast)
-  return(linfct_A)
+  linfct_a <- linfct_matrix_contrasts(linfct, contrast)
+  return(linfct_a)
 }
 
 # Contrasts -----

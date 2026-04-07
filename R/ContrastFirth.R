@@ -10,8 +10,8 @@
     names(cntr_avg) <- namtmp
     contrast <- c(contrast, cntr_avg)
   }
-  linfct_A <- linfct_matrix_contrasts(linfct, contrast)
-  return(linfct_A)
+  linfct_a <- linfct_matrix_contrasts(linfct, contrast)
+  return(linfct_a)
 }
 
 # Contrasts -----
@@ -82,32 +82,32 @@ ContrastsFirth <- R6::R6Class(
     #' @param avg logical TRUE - get also linfct for averages
     get_linfct = function(avg = TRUE) {
       if (!is.null(self$models$models$models1)) {
-        model1DF <- self$models$models$models1$modelDF
-        res1 <- vector(mode = "list", nrow(model1DF))
-        pb <- progress::progress_bar$new(total = length(model1DF$linear_model))
-        model <- get_complete_model_fit(model1DF)$linear_model[[1]]
+        model1_df <- self$models$models$models1$modelDF
+        res1 <- vector(mode = "list", nrow(model1_df))
+        pb <- progress::progress_bar$new(total = length(model1_df$linear_model))
+        model <- get_complete_model_fit(model1_df)$linear_model[[1]]
         compmodel <- .linfct(model, self$contrasts, avg = avg)
-        max_coef <- max(model1DF$nr_coef_not_NA)
+        max_coef <- max(model1_df$nr_coef_not_NA)
 
-        for (i in seq_along(model1DF$linear_model)) {
+        for (i in seq_along(model1_df$linear_model)) {
           pb$tick()
-          res1[[i]] <- if (model1DF$nr_coef_not_NA[[i]] == max_coef) {
+          res1[[i]] <- if (model1_df$nr_coef_not_NA[[i]] == max_coef) {
             compmodel
           } else {
-            .linfct(model1DF$linear_model[[i]], contrast = self$contrasts, avg = avg)
+            .linfct(model1_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
           }
         }
         self$models$models$models1$modelDF$linfct <- res1
       }
 
       if (!is.null(self$models$models$models2)) {
-        model2DF <- self$models$models$models2$modelDF
-        pb <- progress::progress_bar$new(total = length(model2DF$linear_model))
-        res2 <- vector(mode = "list", nrow(model2DF))
-        for (i in seq_along(model2DF$linear_model)) {
+        model2_df <- self$models$models$models2$modelDF
+        pb <- progress::progress_bar$new(total = length(model2_df$linear_model))
+        res2 <- vector(mode = "list", nrow(model2_df))
+        for (i in seq_along(model2_df$linear_model)) {
           pb$tick()
           res2[[i]] <-
-            .linfct(model2DF$linear_model[[i]], contrast = self$contrasts, avg = avg)
+            .linfct(model2_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
         }
         self$models$models$models2$modelDF$linfct <- res2
       }
