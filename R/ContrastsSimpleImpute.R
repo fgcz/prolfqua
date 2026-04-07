@@ -88,17 +88,17 @@ ContrastsMissing <- R6::R6Class(
     #' @param contrasts array of contrasts (see example)
     #' @param confint confidence interval
     #' @param p.adjust method for p-value adjustment - default Benjamini Hochberg
-    #' @param modelName default "groupAverage"
+    #' @param model_name default "groupAverage"
     initialize = function(
       lfqdata,
       contrasts,
       confint = 0.95,
       p.adjust = prolfqua::adjust_p_values,
-      modelName = "groupAverage"
+      model_name = "groupAverage"
     ) {
       self$subject_Id = lfqdata$config$hierarchy_keys_depth()
       self$contrasts = contrasts
-      self$modelName = modelName
+      self$modelName = model_name
       self$lfqdata = lfqdata
       self$confint = confint
       self$p.adjust = p.adjust

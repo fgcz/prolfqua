@@ -9,17 +9,17 @@
 #'
 #' istar <- prolfqua_data('data_ionstar')$normalized()
 #' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
-#' modelName <- "f_condtion_r_peptide"
+#' model_name <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
 #'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
-#'    model_name = modelName)
+#'    model_name = model_name)
 #' pepIntensity <- istar_data
 #' config <- istar$config
 #' config$hierarchy_keys_depth()
 #' mod <- prolfqua::build_model(
 #'  pepIntensity,
 #'  formula_randomPeptide,
-#'  modelName = modelName,
+#'  model_name = model_name,
 #'  subject_Id = config$hierarchy_keys_depth())
 #'
 #' mod$modelDF
@@ -50,20 +50,20 @@ Model <- R6::R6Class(
     #' initialize
     #' @param modelDF dataframe with modelling results
     #' @param model_strategy model_strategy see \code{\link{strategy_lmer}}
-    #' @param modelName name of model
+    #' @param model_name name of model
     #' @param subject_Id subject column name
     #' @param p.adjust method to adjust p-values
     #'
     initialize = function(
       modelDF,
       model_strategy,
-      modelName,
+      model_name,
       subject_Id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
       self$modelDF = modelDF
       self$model_strategy = model_strategy
-      self$modelName = modelName
+      self$modelName = model_name
       self$subject_Id = subject_Id
       self$p.adjust = p.adjust
     },

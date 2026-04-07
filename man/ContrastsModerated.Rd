@@ -182,7 +182,7 @@ initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(
   Contrast,
-  modelName = paste0(Contrast$modelName, "_moderated"),
+  model_name = paste0(Contrast$modelName, "_moderated"),
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }
@@ -192,7 +192,7 @@ initialize
 \describe{
 \item{\code{Contrast}}{class implementing the ContrastInterface}
 
-\item{\code{modelName}}{name of the model}
+\item{\code{model_name}}{name of the model}
 
 \item{\code{p.adjust}}{function to adjust p-values - default BH}
 }

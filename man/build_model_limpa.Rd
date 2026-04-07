@@ -4,7 +4,7 @@
 \alias{build_model_limpa}
 \title{Build limpa vooma model from aggregated LFQData}
 \usage{
-build_model_limpa(lfqdata, strategy, modelName = strategy$model_name)
+build_model_limpa(lfqdata, strategy, model_name = strategy$model_name)
 }
 \arguments{
 \item{lfqdata}{\code{\link{LFQData}} object from \code{\link{AggregateLimpa}}.
@@ -12,7 +12,7 @@ Must have \code{config$opt_se} and \code{config$nr_children} set.}
 
 \item{strategy}{\code{\link{StrategyLimpa}} object}
 
-\item{modelName}{model name (default from strategy)}
+\item{model_name}{model name (default from strategy)}
 }
 \value{
 \code{\link{ModelLimma}} object

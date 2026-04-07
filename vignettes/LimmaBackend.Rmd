@@ -343,7 +343,7 @@ Since `build_model_limpa` returns a standard `ModelLimma`, we reuse
 `ContrastsLimma` directly — same as for the limma and vooma backends.
 
 ```{r limpa_prot_contrasts, eval=requireNamespace("limpa", quietly = TRUE)}
-contr_limpa_prot <- ContrastsLimma$new(mod_limpa_prot, contr_spec, modelName = "limpa")
+contr_limpa_prot <- ContrastsLimma$new(mod_limpa_prot, contr_spec, model_name = "limpa")
 res_limpa_prot <- contr_limpa_prot$get_contrasts()
 head(res_limpa_prot) |> knitr::kable(digits = 3)
 ```
@@ -424,7 +424,7 @@ data.frame(
 ### Step 3: Compute contrasts
 
 ```{r limpa_pep_contrasts, eval=requireNamespace("limpa", quietly = TRUE)}
-contr_limpa_pep <- ContrastsLimma$new(mod_limpa_pep, contr_spec, modelName = "limpa_peptide")
+contr_limpa_pep <- ContrastsLimma$new(mod_limpa_pep, contr_spec, model_name = "limpa_peptide")
 res_limpa_pep <- contr_limpa_pep$get_contrasts()
 
 data.frame(

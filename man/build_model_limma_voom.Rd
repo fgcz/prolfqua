@@ -7,7 +7,7 @@
 build_model_limma_voom(
   lfqdata,
   strategy,
-  modelName = strategy$model_name,
+  model_name = strategy$model_name,
   span = 0.5,
   plot = FALSE
 )
@@ -17,7 +17,7 @@ build_model_limma_voom(
 
 \item{strategy}{output of \code{\link{strategy_limma}}}
 
-\item{modelName}{name of model (default from strategy)}
+\item{model_name}{name of model (default from strategy)}
 
 \item{span}{lowess smoother span for mean-variance trend (default 0.5)}
 

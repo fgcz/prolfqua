@@ -436,7 +436,7 @@ ContrastsLimpaFacade <- R6::R6Class(
       full_formula <- paste(response, modelstr)
       strat <- strategy_limpa(full_formula, plot = plot, span = span, ...)
       self$model <- build_model_limpa(lfqdata, strat)
-      self$contrast <- ContrastsLimma$new(self$model, contrasts, modelName = "limpa")
+      self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa")
     },
     #' @description get contrast results (rows with NA diff are filtered out)
     #' @param ... passed to ContrastsLimma$get_contrasts

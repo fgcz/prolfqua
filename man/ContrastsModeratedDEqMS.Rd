@@ -193,7 +193,7 @@ initialize
   count_df,
   count_column,
   loess_span = 0.75,
-  modelName = paste0(Contrast$modelName, "_DEqMS"),
+  model_name = paste0(Contrast$modelName, "_DEqMS"),
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }
@@ -209,7 +209,7 @@ initialize
 
 \item{\code{loess_span}}{span for LOESS variance fit (default 0.75)}
 
-\item{\code{modelName}}{name of the model}
+\item{\code{model_name}}{name of the model}
 
 \item{\code{p.adjust}}{function to adjust p-values - default BH}
 }

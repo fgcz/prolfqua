@@ -192,7 +192,7 @@ initialize ContrastsLimma
   model,
   contrasts,
   p.adjust = prolfqua::adjust_p_values,
-  modelName = NULL,
+  model_name = NULL,
   eBayes = TRUE
 )}\if{html}{\out{</div>}}
 }
@@ -206,7 +206,7 @@ initialize ContrastsLimma
 
 \item{\code{p.adjust}}{function to adjust p-values}
 
-\item{\code{modelName}}{name of the contrast method}
+\item{\code{model_name}}{name of the contrast method}
 
 \item{\code{eBayes}}{logical, apply limma eBayes moderation (default TRUE).
 Set to FALSE to return raw/unmoderated statistics suitable for

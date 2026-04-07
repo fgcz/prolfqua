@@ -6,7 +6,7 @@
 \usage{
 LR_test(
   complete_models,
-  modelName,
+  model_name,
   complete_models_int,
   model_name_int,
   subject_Id = "protein_Id",
@@ -16,7 +16,7 @@ LR_test(
 \arguments{
 \item{complete_models}{table with models (see build model)}
 
-\item{modelName}{name of model}
+\item{model_name}{name of model}
 
 \item{complete_models_int}{reduced model}
 

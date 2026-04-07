@@ -166,7 +166,7 @@ initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelFirth$new(
   models,
-  modelName = "modelFirth",
+  model_name = "modelFirth",
   subject_Id = "protein_Id",
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
@@ -177,7 +177,7 @@ initialize
 \describe{
 \item{\code{models}}{dataframe with modelling results}
 
-\item{\code{modelName}}{name of model}
+\item{\code{model_name}}{name of model}
 
 \item{\code{subject_Id}}{subject column name}
 

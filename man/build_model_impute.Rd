@@ -7,7 +7,7 @@
 build_model_impute(
   lfqdata,
   model_strategy,
-  modelName = paste0(model_strategy$model_name, "Imputed"),
+  model_name = paste0(model_strategy$model_name, "Imputed"),
   lod = NULL,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed")
@@ -18,7 +18,7 @@ build_model_impute(
 
 \item{model_strategy}{model strategy object (e.g. from strategy_lm)}
 
-\item{modelName}{model name (default appends "Imputed")}
+\item{model_name}{model name (default appends "Imputed")}
 
 \item{lod}{numeric limit of detection; if NULL, auto-computed from data}
 

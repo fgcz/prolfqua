@@ -54,18 +54,18 @@ ModelFirth <- R6::R6Class(
     #' @description
     #' initialize
     #' @param models dataframe with modelling results
-    #' @param modelName name of model
+    #' @param model_name name of model
     #' @param subject_Id subject column name
     #' @param p.adjust method to adjust p-values
     #'
     initialize = function(
       models,
-      modelName = "modelFirth",
+      model_name = "modelFirth",
       subject_Id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
       self$models = models
-      self$modelName = modelName
+      self$modelName = model_name
       self$subject_Id = subject_Id
       self$p.adjust = p.adjust
     },

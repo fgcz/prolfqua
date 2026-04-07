@@ -21,7 +21,7 @@ Contrasts <- c("aC" = "group_A - group_Ctrl",
 csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
 ctr <- csi$get_contrasts()
 csi$subject_Id
-xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")
+xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, model_name = "TableTest")
 xcx$get_contrasts()
 xcx$get_Plotter()$volcano()
 stopifnot(is.null(xcx$get_contrast_sides()))
@@ -157,7 +157,7 @@ intitialize
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$new(
   contrastsdf,
   subject_Id = "protein_Id",
-  modelName = "ContrastTable"
+  model_name = "ContrastTable"
 )}\if{html}{\out{</div>}}
 }
 
@@ -168,7 +168,7 @@ intitialize
 
 \item{\code{subject_Id}}{default protein_Id}
 
-\item{\code{modelName}}{default ContrastTable}
+\item{\code{model_name}}{default ContrastTable}
 }
 \if{html}{\out{</div>}}
 }

@@ -55,7 +55,7 @@ formula_Protein <-
 mod <- prolfqua::build_model(
   dd$data,
   formula_Protein,
-  modelName = modelName,
+  model_name = modelName,
   subject_Id = dd$config$hierarchy_keys_depth())
 
 mod$modelDF
@@ -93,7 +93,7 @@ loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), mh1$get
 modI <- prolfqua::build_model(
   loddata,
   formula_Protein,
-  modelName = modelName,
+  model_name = modelName,
   subject_Id = dd$config$hierarchy_keys_depth())
 
 

@@ -7,17 +7,17 @@
 #' @examples
 #'
 #' istar <- sim_lfq_data_peptide_config(Nprot = 20)
-#' modelName <- "Model"
+#' model_name <- "Model"
 #' modelFunction <-
 #'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1|sample)",
-#'    model_name = modelName)
+#'    model_name = model_name)
 #' pepIntensity <- istar$data
 #' config <- istar$config
 #'
 #' mod <- build_model(
 #'   pepIntensity,
 #'   modelFunction,
-#'   modelName = modelName,
+#'   model_name = model_name,
 #'   subject_Id = config$hierarchy_keys_depth())
 #'
 #'  Contr <- c("group_A_vs_Ctrl" = "group_A - group_Ctrl",

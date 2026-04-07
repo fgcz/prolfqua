@@ -131,7 +131,7 @@ test_that("ContrastsTable (passive container)", {
   csi <- ContrastsMissing$new(lProt, contrasts = Contr)
   ctr <- csi$get_contrasts()
 
-  ct <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")
+  ct <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, model_name = "TableTest")
 
   x <- ct$get_contrasts()
   expect_s3_class(x, "data.frame")

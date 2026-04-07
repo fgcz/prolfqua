@@ -69,11 +69,11 @@ ContrastsInterface <- R6::R6Class(
 #'
 #' @param prefer contrasts to use preferentially
 #' @param add contrasts to add from if missing in prefer
-#' @param modelName name of the merged model default "mergedModel"
+#' @param model_name name of the merged model default "mergedModel"
 #' @export
 #' @family modelling
 #'
-merge_contrasts_results <- function(prefer, add, modelName = "mergedModel") {
+merge_contrasts_results <- function(prefer, add, model_name = "mergedModel") {
   c_a <- prefer$get_contrasts()
   c_b <- add$get_contrasts()
 
@@ -108,9 +108,9 @@ merge_contrasts_results <- function(prefer, add, modelName = "mergedModel") {
   merged <- ContrastsTable$new(
     merged,
     subject_Id = prefer$subject_Id,
-    modelName = paste0(prefer_model_name, "_", add_model_name)
+    model_name = paste0(prefer_model_name, "_", add_model_name)
   )
-  more <- ContrastsTable$new(more, subject_Id = prefer$subject_Id, modelName = add_model_name)
-  same <- ContrastsTable$new(same, subject_Id = prefer$subject_Id, modelName = add_model_name)
+  more <- ContrastsTable$new(more, subject_Id = prefer$subject_Id, model_name = add_model_name)
+  same <- ContrastsTable$new(same, subject_Id = prefer$subject_Id, model_name = add_model_name)
   return(list(merged = merged, more = more, same = same))
 }

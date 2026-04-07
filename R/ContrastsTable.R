@@ -18,7 +18,7 @@
 #' csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
 #' ctr <- csi$get_contrasts()
 #' csi$subject_Id
-#' xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")
+#' xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, model_name = "TableTest")
 #' xcx$get_contrasts()
 #' xcx$get_Plotter()$volcano()
 #' stopifnot(is.null(xcx$get_contrast_sides()))
@@ -39,11 +39,11 @@ ContrastsTable <- R6::R6Class(
     #' intitialize
     #' @param contrastsdf data.frame
     #' @param subject_Id default protein_Id
-    #' @param modelName default ContrastTable
-    initialize = function(contrastsdf, subject_Id = "protein_Id", modelName = "ContrastTable") {
+    #' @param model_name default ContrastTable
+    initialize = function(contrastsdf, subject_Id = "protein_Id", model_name = "ContrastTable") {
       self$contrast_result = contrastsdf
       self$subject_Id = subject_Id
-      self$modelName = modelName
+      self$modelName = model_name
     },
     #' @description
     #' return sides of contrast

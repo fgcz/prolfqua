@@ -7,7 +7,7 @@
 build_model_limma_voom_impute(
   lfqdata,
   strategy,
-  modelName = paste0(strategy$model_name, "Imputed"),
+  model_name = paste0(strategy$model_name, "Imputed"),
   lod = NULL,
   df_method = c("observed", "borrowed"),
   span = 0.5,
@@ -19,7 +19,7 @@ build_model_limma_voom_impute(
 
 \item{strategy}{output of \code{\link{strategy_limma}}}
 
-\item{modelName}{name of model (default: strategy name + "Imputed")}
+\item{model_name}{name of model (default: strategy name + "Imputed")}
 
 \item{lod}{numeric limit of detection; if NULL, auto-computed from data}
 

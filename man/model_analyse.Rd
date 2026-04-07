@@ -8,7 +8,7 @@ model_analyse(
   pepIntensity,
   model_strategy,
   subject_Id = "protein_Id",
-  modelName = "Model"
+  model_name = "Model"
 )
 }
 \description{

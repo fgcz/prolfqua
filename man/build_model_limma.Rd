@@ -4,14 +4,14 @@
 \alias{build_model_limma}
 \title{Build limma model from LFQData}
 \usage{
-build_model_limma(lfqdata, strategy, modelName = strategy$model_name)
+build_model_limma(lfqdata, strategy, model_name = strategy$model_name)
 }
 \arguments{
 \item{lfqdata}{an \code{\link{LFQData}} object}
 
 \item{strategy}{output of \code{\link{strategy_limma}}}
 
-\item{modelName}{name of model (default from strategy)}
+\item{model_name}{name of model (default from strategy)}
 }
 \value{
 a \code{\link{ModelLimma}} object

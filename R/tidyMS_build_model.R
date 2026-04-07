@@ -2,7 +2,7 @@
 #' @family modelling
 #' @export
 #' @param complete_models table with models (see build model)
-#' @param modelName name of model
+#' @param model_name name of model
 #' @param complete_models_int reduced model
 #' @param model_name_int name of reduced model
 #' @param subject_Id subject id typically Assession or protein_Id
@@ -37,7 +37,7 @@
 #'
 LR_test <- function(
   complete_models,
-  modelName,
+  model_name,
   complete_models_int,
   model_name_int,
   subject_Id = "protein_Id",
@@ -65,7 +65,7 @@ LR_test <- function(
     dplyr::rename(likelihood_ratio_test.pValue = .data$modelComparisonLikelihoodRatioTest)
 
   if (!is.null(path)) {
-    plot_lrt_diagnostics(likelihood_ratio_test_result, modelName, model_name_int, path)
+    plot_lrt_diagnostics(likelihood_ratio_test_result, model_name, model_name_int, path)
   }
 
   return(likelihood_ratio_test_result)
@@ -77,12 +77,12 @@ LR_test <- function(
 #' Called by \code{\link{LR_test}} when \code{path} is non-NULL.
 #'
 #' @param result tibble with a \code{likelihood_ratio_test.pValue} column
-#' @param modelName name of the full model
+#' @param model_name name of the full model
 #' @param model_name_int name of the reduced/interaction model
 #' @param path directory to write the PDF into
 #' @keywords internal
-plot_lrt_diagnostics <- function(result, modelName, model_name_int, path) {
-  file_name <- paste("hist_LRT_", modelName, "_", model_name_int, ".pdf", sep = "")
+plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
+  file_name <- paste("hist_LRT_", model_name, "_", model_name_int, ".pdf", sep = "")
   file_name <- file.path(path, file_name)
   message("writing figure : ", file_name, "\n")
   pdf(file_name)
@@ -99,7 +99,7 @@ plot_lrt_diagnostics <- function(result, modelName, model_name_int, path) {
 #' @param data data - a data frame or LFQData object
 #' @param model_strategy model strategy object (e.g. from strategy_lmer or strategy_lm)
 #' @param subject_Id grouping variable
-#' @param modelName model name
+#' @param model_name model name
 #' @return
 #' a object of class \code{\link{Model}}
 #' @family modelling
@@ -111,23 +111,23 @@ plot_lrt_diagnostics <- function(result, modelName, model_name_int, path) {
 #' D$data$abundance |> is.na() |> sum()
 #' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
 #' D$data$abundance |> is.na() |> sum()
-#' modelName <- "f_condtion_r_peptide"
+#' model_name <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
 #'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sampleName)",
-#'    model_name = modelName)
+#'    model_name = model_name)
 #'
 #'
 #' mod <- prolfqua::build_model(
 #'  D$data,
 #'  formula_randomPeptide,
-#'  modelName = modelName,
+#'  model_name = model_name,
 #'  subject_Id = D$config$hierarchy_keys_depth())
 #' aovtable <- mod$get_anova()
 #'
 #' mod <- prolfqua::build_model(
 #'  LFQData$new(D$data, D$config),
 #'  formula_randomPeptide,
-#'  modelName = modelName)
+#'  model_name = model_name)
 #' model_summary(mod)
 #'
 #'
@@ -139,14 +139,14 @@ build_model <- function(
   } else {
     "protein_Id"
   },
-  modelName = model_strategy$model_name
+  model_name = model_strategy$model_name
 ) {
   nested_data <- if ("LFQData" %in% class(data)) data$data else data
-  modelling_result <- model_analyse(nested_data, model_strategy, modelName = modelName, subject_Id = subject_Id)
+  modelling_result <- model_analyse(nested_data, model_strategy, model_name = model_name, subject_Id = subject_Id)
   return(Model$new(
     modelDF = modelling_result$modelDF,
     model_strategy = model_strategy,
-    modelName = modelling_result$modelName,
+    model_name = modelling_result$modelName,
     subject_Id = subject_Id
   ))
 }
@@ -161,7 +161,7 @@ build_model <- function(
 #'
 #' @param lfqdata LFQData object (aggregated to protein level)
 #' @param model_strategy model strategy object (e.g. from strategy_lm)
-#' @param modelName model name (default appends "Imputed")
+#' @param model_name model name (default appends "Imputed")
 #' @param lod numeric limit of detection; if NULL, auto-computed from data
 #' @param borrow_method "sigma" borrows scalar sigma and uses per-protein
 #'   (X'X)^-1; "vcov" borrows element-wise median of full vcov matrices
@@ -181,7 +181,7 @@ build_model <- function(
 build_model_impute <- function(
   lfqdata,
   model_strategy,
-  modelName = paste0(model_strategy$model_name, "Imputed"),
+  model_name = paste0(model_strategy$model_name, "Imputed"),
   lod = NULL,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed")
@@ -194,7 +194,7 @@ build_model_impute <- function(
   modelling_result <- model_analyse(
     lfqdata$data,
     model_strategy,
-    modelName = modelName,
+    model_name = model_name,
     subject_Id = subject_Id
   )
 
@@ -234,7 +234,7 @@ build_model_impute <- function(
   return(Model$new(
     modelDF = modelling_result$modelDF,
     model_strategy = model_strategy,
-    modelName = modelling_result$modelName,
+    model_name = modelling_result$modelName,
     subject_Id = subject_Id
   ))
 }
@@ -338,7 +338,7 @@ df.residual.lm_imputed <- function(object, ...) {
 
 #' Compute borrowed variance from successful model fits
 #'
-#' @param modelDF tibble from model_analyse
+#' @param model_df tibble from model_analyse
 #' @param method "sigma" borrows scalar sigma and uses per-protein (X'X)^-1,
 #'   "vcov" borrows element-wise median of full vcov matrices
 #' @return list with sigma, df, method, and optionally vcov
@@ -362,9 +362,9 @@ df.residual.lm_imputed <- function(object, ...) {
 #'   mod_no_missing$modelDF, method = "vcov")
 #' stopifnot(borrowed_v$method == "vcov")
 #' stopifnot(is.matrix(borrowed_v$vcov))
-compute_borrowed_variance <- function(modelDF, method = c("sigma", "vcov")) {
+compute_borrowed_variance <- function(model_df, method = c("sigma", "vcov")) {
   method <- match.arg(method)
-  good <- get_complete_model_fit(modelDF)
+  good <- get_complete_model_fit(model_df)
   good <- good |> dplyr::filter(.data$isSingular == FALSE)
 
   if (nrow(good) == 0) {
@@ -400,7 +400,7 @@ compute_borrowed_variance <- function(modelDF, method = c("sigma", "vcov")) {
 #' For proteins where the initial lm fit failed or produced NA coefficients,
 #' impute missing values with LOD, clamp, refit, and attach borrowed covariance.
 #'
-#' @param modelDF tibble from model_analyse
+#' @param model_df tibble from model_analyse
 #' @param model_strategy strategy list from strategy_lm etc.
 #' @param lod numeric, limit of detection value
 #' @param response character, response column name in nested data
@@ -413,11 +413,11 @@ compute_borrowed_variance <- function(modelDF, method = c("sigma", "vcov")) {
 #' @param nr_children_col optional column name for nr_children (peptide counts);
 #'   NA values in this column are filled with 1 for imputed rows so that
 #'   weighted lm fits do not fail
-#' @return modified modelDF with imputed models replacing failed/singular ones
+#' @return modified model_df with imputed models replacing failed/singular ones
 #' @keywords internal
 #' @family modelling
 impute_refit_singular <- function(
-  modelDF,
+  model_df,
   model_strategy,
   lod,
   response,
@@ -429,23 +429,23 @@ impute_refit_singular <- function(
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
 
-  max_coef <- max(modelDF$nr_coef, na.rm = TRUE)
+  max_coef <- max(model_df$nr_coef, na.rm = TRUE)
 
-  needs_impute <- (!modelDF$has_model_fit) |
-    (!is.na(modelDF$isSingular) & modelDF$isSingular) |
-    (!is.na(modelDF$nr_coef) & modelDF$nr_coef < max_coef)
+  needs_impute <- (!model_df$has_model_fit) |
+    (!is.na(model_df$isSingular) & model_df$isSingular) |
+    (!is.na(model_df$nr_coef) & model_df$nr_coef < max_coef)
 
   if (!any(needs_impute)) {
-    return(modelDF)
+    return(model_df)
   }
 
-  borrowed <- compute_borrowed_variance(modelDF, method = borrow_method)
+  borrowed <- compute_borrowed_variance(model_df, method = borrow_method)
 
   impute_idx <- which(needs_impute)
   results <- vector("list", length(impute_idx))
   for (j in seq_along(impute_idx)) {
     results[[j]] <- .impute_one_protein(
-      modelDF$data[[impute_idx[j]]],
+      model_df$data[[impute_idx[j]]],
       model_strategy,
       lod,
       response,
@@ -462,17 +462,17 @@ impute_refit_singular <- function(
   results <- results[succeeded]
 
   if (length(idx) > 0) {
-    modelDF$linear_model[idx] <- lapply(results, `[[`, "linear_model")
-    modelDF$data[idx] <- lapply(results, `[[`, "data")
-    modelDF$has_model_fit[idx] <- TRUE
-    modelDF$isSingular[idx] <- FALSE
-    modelDF$sigma[idx] <- vapply(results, `[[`, numeric(1), "sigma")
-    modelDF$df.residual[idx] <- vapply(results, `[[`, numeric(1), "df.residual")
-    modelDF$nr_coef[idx] <- vapply(results, `[[`, numeric(1), "nr_coef")
-    modelDF$nr_coef_not_NA[idx] <- vapply(results, `[[`, numeric(1), "nr_coef_not_NA")
+    model_df$linear_model[idx] <- lapply(results, `[[`, "linear_model")
+    model_df$data[idx] <- lapply(results, `[[`, "data")
+    model_df$has_model_fit[idx] <- TRUE
+    model_df$isSingular[idx] <- FALSE
+    model_df$sigma[idx] <- vapply(results, `[[`, numeric(1), "sigma")
+    model_df$df.residual[idx] <- vapply(results, `[[`, numeric(1), "df.residual")
+    model_df$nr_coef[idx] <- vapply(results, `[[`, numeric(1), "nr_coef")
+    model_df$nr_coef_not_NA[idx] <- vapply(results, `[[`, numeric(1), "nr_coef_not_NA")
   }
 
-  return(modelDF)
+  return(model_df)
 }
 
 # Impute and refit a single protein's model
@@ -611,7 +611,7 @@ model_analyse <- function(
   pepIntensity,
   model_strategy,
   subject_Id = "protein_Id",
-  modelName = "Model"
+  model_name = "Model"
 ) {
   nested_proteins <- pepIntensity |>
     dplyr::group_by(!!!syms(subject_Id)) |>
@@ -669,7 +669,7 @@ model_analyse <- function(
       )
     )
 
-  return(list(modelDF = model_proteins, modelName = modelName))
+  return(list(modelDF = model_proteins, modelName = model_name))
 }
 
 

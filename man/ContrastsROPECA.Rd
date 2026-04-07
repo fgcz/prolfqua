@@ -180,7 +180,7 @@ initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$new(
   Contrast,
-  modelName = "ROPECA",
+  model_name = "ROPECA",
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }
@@ -190,7 +190,7 @@ initialize
 \describe{
 \item{\code{Contrast}}{e.g. instance of Contrasts class, or ContrastsModerated}
 
-\item{\code{modelName}}{default ROPECA}
+\item{\code{model_name}}{default ROPECA}
 
 \item{\code{p.adjust}}{function to use for p.value adjustement}
 }

@@ -4,14 +4,14 @@
 \alias{merge_contrasts_results}
 \title{Merge contrast results coming from two different model.}
 \usage{
-merge_contrasts_results(prefer, add, modelName = "mergedModel")
+merge_contrasts_results(prefer, add, model_name = "mergedModel")
 }
 \arguments{
 \item{prefer}{contrasts to use preferentially}
 
 \item{add}{contrasts to add from if missing in prefer}
 
-\item{modelName}{name of the merged model default "mergedModel"}
+\item{model_name}{name of the merged model default "mergedModel"}
 }
 \description{
 Typically used with results of \code{\link{Contrasts}} and \code{\link{ContrastsMissing}}

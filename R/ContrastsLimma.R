@@ -210,7 +210,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #'
 #' @param lfqdata an \code{\link{LFQData}} object
 #' @param strategy output of \code{\link{strategy_limma}}
-#' @param modelName name of model (default from strategy)
+#' @param model_name name of model (default from strategy)
 #' @return a \code{\link{ModelLimma}} object
 #' @export
 #' @family modelling
@@ -225,7 +225,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' mod_limma$get_coefficients()
 #' mod_limma$get_anova()
 #'
-build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name) {
+build_model_limma <- function(lfqdata, strategy, model_name = strategy$model_name) {
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
   wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
   fit <- limma::lmFit(setup$expr_matrix, setup$design, weights = wt)
@@ -235,7 +235,7 @@ build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name
     design = setup$design,
     formula = strategy$formula,
     subject_Id = setup$subject_Id,
-    modelName = modelName,
+    model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
     robust = strategy$robust,
@@ -261,7 +261,7 @@ build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name
 #'
 #' @param lfqdata an \code{\link{LFQData}} object (aggregated to protein level)
 #' @param strategy output of \code{\link{strategy_limma}}
-#' @param modelName name of model (default: strategy name + "Imputed")
+#' @param model_name name of model (default: strategy name + "Imputed")
 #' @param lod numeric limit of detection; if NULL, auto-computed from data
 #'   via \code{\link{MissingHelpers}}
 #' @param df_method how to set degrees of freedom for imputed proteins:
@@ -283,7 +283,7 @@ build_model_limma <- function(lfqdata, strategy, modelName = strategy$model_name
 build_model_limma_impute <- function(
   lfqdata,
   strategy,
-  modelName = paste0(strategy$model_name, "Imputed"),
+  model_name = paste0(strategy$model_name, "Imputed"),
   lod = NULL,
   df_method = c("observed", "borrowed")
 ) {
@@ -307,7 +307,7 @@ build_model_limma_impute <- function(
       design = design,
       formula = strategy$formula,
       subject_Id = setup$subject_Id,
-      modelName = modelName,
+      model_name = model_name,
       rowdata = setup$rowdata,
       trend = strategy$trend,
       robust = strategy$robust,
@@ -364,7 +364,7 @@ build_model_limma_impute <- function(
     design = design,
     formula = strategy$formula,
     subject_Id = setup$subject_Id,
-    modelName = modelName,
+    model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
     robust = strategy$robust,
@@ -390,7 +390,7 @@ build_model_limma_impute <- function(
 #'
 #' @param lfqdata an \code{\link{LFQData}} object (aggregated to protein level)
 #' @param strategy output of \code{\link{strategy_limma}}
-#' @param modelName name of model (default from strategy)
+#' @param model_name name of model (default from strategy)
 #' @param span lowess smoother span for mean-variance trend (default 0.5)
 #' @param plot logical; if TRUE, plot the mean-variance trend
 #' @return a \code{\link{ModelLimma}} object
@@ -409,7 +409,7 @@ build_model_limma_impute <- function(
 build_model_limma_voom <- function(
   lfqdata,
   strategy,
-  modelName = strategy$model_name,
+  model_name = strategy$model_name,
   span = 0.5,
   plot = FALSE
 ) {
@@ -465,7 +465,7 @@ build_model_limma_voom <- function(
     design = design,
     formula = strategy$formula,
     subject_Id = setup$subject_Id,
-    modelName = modelName,
+    model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
     robust = strategy$robust,
@@ -485,7 +485,7 @@ build_model_limma_voom <- function(
 #'
 #' @param lfqdata an \code{\link{LFQData}} object (aggregated to protein level)
 #' @param strategy output of \code{\link{strategy_limma}}
-#' @param modelName name of model (default: strategy name + "Imputed")
+#' @param model_name name of model (default: strategy name + "Imputed")
 #' @param lod numeric limit of detection; if NULL, auto-computed from data
 #' @param df_method how to set degrees of freedom for imputed proteins:
 #'   \code{"observed"} (default) uses \code{max(n_observed - p, 1)};
@@ -507,7 +507,7 @@ build_model_limma_voom <- function(
 build_model_limma_voom_impute <- function(
   lfqdata,
   strategy,
-  modelName = paste0(strategy$model_name, "Imputed"),
+  model_name = paste0(strategy$model_name, "Imputed"),
   lod = NULL,
   df_method = c("observed", "borrowed"),
   span = 0.5,
@@ -567,7 +567,7 @@ build_model_limma_voom_impute <- function(
       design = design,
       formula = strategy$formula,
       subject_Id = setup$subject_Id,
-      modelName = modelName,
+      model_name = model_name,
       rowdata = setup$rowdata,
       trend = strategy$trend,
       robust = strategy$robust,
@@ -623,7 +623,7 @@ build_model_limma_voom_impute <- function(
     design = design,
     formula = strategy$formula,
     subject_Id = setup$subject_Id,
-    modelName = modelName,
+    model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
     robust = strategy$robust,
@@ -688,7 +688,7 @@ ModelLimma <- R6::R6Class(
     #' @param design design matrix
     #' @param formula model formula
     #' @param subject_Id protein ID column name(s)
-    #' @param modelName model name
+    #' @param model_name model name
     #' @param rowdata protein ID mapping
     #' @param trend passed to eBayes
     #' @param robust passed to eBayes
@@ -699,7 +699,7 @@ ModelLimma <- R6::R6Class(
       design,
       formula,
       subject_Id,
-      modelName,
+      model_name,
       rowdata,
       trend = FALSE,
       robust = FALSE,
@@ -710,7 +710,7 @@ ModelLimma <- R6::R6Class(
       self$design <- design
       self$formula <- formula
       self$subject_Id <- subject_Id
-      self$modelName <- modelName
+      self$modelName <- model_name
       self$rowdata <- rowdata
       self$trend <- trend
       self$robust <- robust
@@ -906,16 +906,16 @@ ContrastsLimma <- R6::R6Class(
     #' @param model a \code{\link{ModelLimma}} object
     #' @param contrasts named character vector of contrasts
     #' @param p.adjust function to adjust p-values
-    #' @param modelName name of the contrast method
+    #' @param model_name name of the contrast method
     #' @param eBayes logical, apply limma eBayes moderation (default TRUE).
     #'   Set to FALSE to return raw/unmoderated statistics suitable for
     #'   wrapping with \code{\link{ContrastsModeratedDEqMS}}.
-    initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, modelName = NULL, eBayes = TRUE) {
+    initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, model_name = NULL, eBayes = TRUE) {
       self$model <- model
       self$contrasts <- contrasts
       self$subject_Id <- model$subject_Id
       self$eBayes <- eBayes
-      self$modelName <- modelName %||% if (eBayes) "limma" else "limma_raw"
+      self$modelName <- model_name %||% if (eBayes) "limma" else "limma_raw"
       self$p.adjust <- p.adjust
     },
     #' @description

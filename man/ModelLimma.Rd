@@ -164,7 +164,7 @@ initialize ModelLimma
   design,
   formula,
   subject_Id,
-  modelName,
+  model_name,
   rowdata,
   trend = FALSE,
   robust = FALSE,
@@ -184,7 +184,7 @@ initialize ModelLimma
 
 \item{\code{subject_Id}}{protein ID column name(s)}
 
-\item{\code{modelName}}{model name}
+\item{\code{model_name}}{model name}
 
 \item{\code{rowdata}}{protein ID mapping}
 

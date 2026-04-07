@@ -203,7 +203,7 @@ initialize
   contrasts,
   confint = 0.95,
   p.adjust = prolfqua::adjust_p_values,
-  modelName = "groupAverage"
+  model_name = "groupAverage"
 )}\if{html}{\out{</div>}}
 }
 
@@ -218,7 +218,7 @@ initialize
 
 \item{\code{p.adjust}}{method for p-value adjustment - default Benjamini Hochberg}
 
-\item{\code{modelName}}{default "groupAverage"}
+\item{\code{model_name}}{default "groupAverage"}
 }
 \if{html}{\out{</div>}}
 }

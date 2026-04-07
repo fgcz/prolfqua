@@ -162,7 +162,7 @@ create Contrast
   model,
   contrasts,
   p.adjust = prolfqua::adjust_p_values,
-  modelName = "WaldTestFirth"
+  model_name = "WaldTestFirth"
 )}\if{html}{\out{</div>}}
 }
 
@@ -175,7 +175,7 @@ create Contrast
 
 \item{\code{p.adjust}}{function to adjust the p-values}
 
-\item{\code{modelName}}{name of contrast method, default WaldTest}
+\item{\code{model_name}}{name of contrast method, default WaldTest}
 }
 \if{html}{\out{</div>}}
 }

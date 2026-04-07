@@ -61,12 +61,12 @@ ContrastsROPECA <- R6::R6Class(
     #' @description
     #' initialize
     #' @param Contrast e.g. instance of Contrasts class, or ContrastsModerated
-    #' @param modelName default ROPECA
+    #' @param model_name default ROPECA
     #' @param p.adjust function to use for p.value adjustement
-    initialize = function(Contrast, modelName = "ROPECA", p.adjust = prolfqua::adjust_p_values) {
+    initialize = function(Contrast, model_name = "ROPECA", p.adjust = prolfqua::adjust_p_values) {
       self$Contrast = Contrast
       stopifnot(length(Contrast$subject_Id) > 1)
-      self$modelName = modelName
+      self$modelName = model_name
       self$subject_Id = Contrast$subject_Id
       self$p.adjust = p.adjust
     },

@@ -4,12 +4,12 @@
 \alias{plot_lrt_diagnostics}
 \title{Write LRT diagnostic plots to PDF}
 \usage{
-plot_lrt_diagnostics(result, modelName, model_name_int, path)
+plot_lrt_diagnostics(result, model_name, model_name_int, path)
 }
 \arguments{
 \item{result}{tibble with a \code{likelihood_ratio_test.pValue} column}
 
-\item{modelName}{name of the full model}
+\item{model_name}{name of the full model}
 
 \item{model_name_int}{name of the reduced/interaction model}
 

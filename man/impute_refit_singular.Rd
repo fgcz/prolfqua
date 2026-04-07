@@ -5,7 +5,7 @@
 \title{Impute and refit singular/failed models}
 \usage{
 impute_refit_singular(
-  modelDF,
+  model_df,
   model_strategy,
   lod,
   response,
@@ -16,7 +16,7 @@ impute_refit_singular(
 )
 }
 \arguments{
-\item{modelDF}{tibble from model_analyse}
+\item{model_df}{tibble from model_analyse}
 
 \item{model_strategy}{strategy list from strategy_lm etc.}
 
@@ -38,7 +38,7 @@ NA values in this column are filled with 1 for imputed rows so that
 weighted lm fits do not fail}
 }
 \value{
-modified modelDF with imputed models replacing failed/singular ones
+modified model_df with imputed models replacing failed/singular ones
 }
 \description{
 For proteins where the initial lm fit failed or produced NA coefficients,

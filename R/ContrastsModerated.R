@@ -62,16 +62,16 @@ ContrastsModerated <- R6::R6Class(
     #' @description
     #' initialize
     #' @param Contrast class implementing the ContrastInterface
-    #' @param modelName name of the model
+    #' @param model_name name of the model
     #' @param p.adjust function to adjust p-values - default BH
     initialize = function(
       Contrast,
-      modelName = paste0(Contrast$modelName, "_moderated"),
+      model_name = paste0(Contrast$modelName, "_moderated"),
       p.adjust = prolfqua::adjust_p_values
     ) {
       self$Contrast = Contrast
       self$subject_Id = Contrast$subject_Id
-      self$modelName = modelName
+      self$modelName = model_name
       self$p.adjust = p.adjust
     },
     #' @description

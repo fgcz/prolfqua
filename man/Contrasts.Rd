@@ -209,7 +209,7 @@ create Contrast
   contrasts,
   p.adjust = prolfqua::adjust_p_values,
   global = FALSE,
-  modelName = "WaldTest"
+  model_name = "WaldTest"
 )}\if{html}{\out{</div>}}
 }
 
@@ -224,7 +224,7 @@ create Contrast
 
 \item{\code{global}}{development/internal argument (if FALSE determine linfct for each model.)}
 
-\item{\code{modelName}}{name of contrast method, default WaldTest}
+\item{\code{model_name}}{name of contrast method, default WaldTest}
 }
 \if{html}{\out{</div>}}
 }

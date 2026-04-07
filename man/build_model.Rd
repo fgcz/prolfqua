@@ -13,7 +13,7 @@ build_model(
     
     "protein_Id"
  },
-  modelName = model_strategy$model_name
+  model_name = model_strategy$model_name
 )
 }
 \arguments{
@@ -23,7 +23,7 @@ build_model(
 
 \item{subject_Id}{grouping variable}
 
-\item{modelName}{model name}
+\item{model_name}{model name}
 }
 \value{
 a object of class \code{\link{Model}}
@@ -36,23 +36,23 @@ D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
 D$data$abundance |> is.na() |> sum()
 D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
 D$data$abundance |> is.na() |> sum()
-modelName <- "f_condtion_r_peptide"
+model_name <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sampleName)",
-   model_name = modelName)
+   model_name = model_name)
 
 
 mod <- prolfqua::build_model(
  D$data,
  formula_randomPeptide,
- modelName = modelName,
+ model_name = model_name,
  subject_Id = D$config$hierarchy_keys_depth())
 aovtable <- mod$get_anova()
 
 mod <- prolfqua::build_model(
  LFQData$new(D$data, D$config),
  formula_randomPeptide,
- modelName = modelName)
+ model_name = model_name)
 model_summary(mod)
 
 

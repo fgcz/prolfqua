@@ -77,11 +77,11 @@ strategy_limpa <- function(modelstr, model_name = "limpa", trend = FALSE, robust
 #' @param lfqdata \code{\link{LFQData}} object from \code{\link{AggregateLimpa}}.
 #'   Must have \code{config$opt_se} and \code{config$nr_children} set.
 #' @param strategy \code{\link{StrategyLimpa}} object
-#' @param modelName model name (default from strategy)
+#' @param model_name model name (default from strategy)
 #' @return \code{\link{ModelLimma}} object
 #' @export
 #' @family modelling
-build_model_limpa <- function(lfqdata, strategy, modelName = strategy$model_name) {
+build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_name) {
   if (!requireNamespace("limpa", quietly = TRUE)) {
     stop(
       "Package 'limpa' is required for build_model_limpa. ",
@@ -124,7 +124,7 @@ build_model_limpa <- function(lfqdata, strategy, modelName = strategy$model_name
     design = setup$design,
     formula = strategy$formula,
     subject_Id = setup$subject_Id,
-    modelName = modelName,
+    model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
     robust = strategy$robust,

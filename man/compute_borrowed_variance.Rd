@@ -4,10 +4,10 @@
 \alias{compute_borrowed_variance}
 \title{Compute borrowed variance from successful model fits}
 \usage{
-compute_borrowed_variance(modelDF, method = c("sigma", "vcov"))
+compute_borrowed_variance(model_df, method = c("sigma", "vcov"))
 }
 \arguments{
-\item{modelDF}{tibble from model_analyse}
+\item{model_df}{tibble from model_analyse}
 
 \item{method}{"sigma" borrows scalar sigma and uses per-protein (X'X)^-1,
 "vcov" borrows element-wise median of full vcov matrices}

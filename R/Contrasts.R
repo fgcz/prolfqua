@@ -104,18 +104,18 @@ Contrasts <- R6::R6Class(
     #' @param contrasts a character vector with contrast specificiation
     #' @param p.adjust function to adjust the p-values
     #' @param global development/internal argument (if FALSE determine linfct for each model.)
-    #' @param modelName name of contrast method, default WaldTest
+    #' @param model_name name of contrast method, default WaldTest
     initialize = function(
       model,
       contrasts,
       p.adjust = prolfqua::adjust_p_values,
       global = FALSE,
-      modelName = "WaldTest"
+      model_name = "WaldTest"
     ) {
       self$models <- model$modelDF |> dplyr::filter(has_model_fit == TRUE)
       self$contrasts <- contrasts
       self$contrastfun <- model$model_strategy$contrast_fun
-      self$modelName <- modelName
+      self$modelName <- model_name
       self$subject_Id <- model$subject_Id
       self$p.adjust <- p.adjust
       self$global <- global

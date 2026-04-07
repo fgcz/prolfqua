@@ -278,14 +278,14 @@ ContrastsModeratedDEqMS <- R6::R6Class(
     #' @param count_df data.frame with subject_Id columns and a count column
     #' @param count_column name of the count column in count_df
     #' @param loess_span span for LOESS variance fit (default 0.75)
-    #' @param modelName name of the model
+    #' @param model_name name of the model
     #' @param p.adjust function to adjust p-values - default BH
     initialize = function(
       Contrast,
       count_df,
       count_column,
       loess_span = 0.75,
-      modelName = paste0(Contrast$modelName, "_DEqMS"),
+      model_name = paste0(Contrast$modelName, "_DEqMS"),
       p.adjust = prolfqua::adjust_p_values
     ) {
       self$Contrast = Contrast
@@ -299,7 +299,7 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       self$count_df = count_df
       self$count_column = count_column
       self$loess_span = loess_span
-      self$modelName = modelName
+      self$modelName = model_name
       self$p.adjust = p.adjust
     },
     #' @description
