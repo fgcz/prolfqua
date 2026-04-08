@@ -74,6 +74,31 @@ Open items from the 2026-02-19 code review not yet addressed:
 
 ---
 
+## 7. Fix `AnalysisTableAnnotation$new()` in prolfquasaint
+
+Two files in prolfquasaint still reference the removed `AnalysisTableAnnotation` class (should be `AnalysisConfiguration$new()`):
+
+- `prolfquasaint/inst/application/SE2_DIANN/DIANN_SE.R:54`
+- `prolfquasaint/inst/application/SE2/CreateSaintExpress_Report.R:63`
+
+---
+
+## 8. R6 Encapsulation (Deferred)
+
+From the camelCase migration plan Phase 6. Add accessor methods and make fields private:
+
+- AnalysisConfiguration: `add_hierarchy()`, `add_factor()` methods for structured fields
+- LFQData: `get_data()` / `get_config()` methods, then make `data`/`config` private
+- Contrasts/Model: make `model_df`, `model_name`, `subject_id` private (external code should use `get_contrasts()`, `get_coefficients()`, etc.)
+
+---
+
+## 9. Refactor `(data, config)` → `(lfqdata)` Signatures (Deferred)
+
+From the camelCase migration plan Phase 7. ~40 functions take separate `data` and `config` parameters. Many are only called from LFQData class methods that pass `self$data, self$config`. Refactor to accept an `lfqdata` object directly. Large effort, moderate benefit.
+
+---
+
 ## Cross-Project Reference
 
 The integration test infrastructure plan (previously `dazzling-greeting-nygaard.md`) belongs in `prolfqua_fml/integration_test/TODO/` — see `TODO_integration_test.md` in that directory.

@@ -4,6 +4,91 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-04-07/08 — Complete camelCase to snake_case migration (Phases 1–5)
+
+Completed the full snake_case migration across prolfqua and downstream packages (prolfquapp, prolfquasaint, prophosqua). 9 commits over 2 days.
+
+### Phase 1: Local variables (done prior)
+
+All camelCase local variables renamed across ~20 R files. Inner helper functions (`getCoeffs`, `getSampleSize`, `getAST`) also renamed.
+
+### Phase 2: Function parameters
+
+Renamed `modelName` → `model_name` parameter across 19 functions/constructors (16 R files). Renamed `modelDF` → `model_df` parameter in `compute_borrowed_variance()` and `impute_refit_singular()`. Also renamed `preserveMean`, `sampleName`, `proteinName`, `factorDepth`, `nrNA`, `intesityNewName`, `modelName_Int`, `modelWithInteractionsContrasts` (done in prior commit).
+
+### Phase 3: Exported function names
+
+| Old | New |
+|-----|-----|
+| `scriptCopyHelperVec` | `script_copy_helper_vec` |
+| `pivot_model_contrasts_2_Wide` | `pivot_model_contrasts_to_wide` |
+| `isSingular_lm` | `is_singular_lm` |
+| `sim_lfq_data_2Factor_config` | `sim_lfq_data_2factor_config` |
+| `UpSet_interaction_missing_stats` | `upset_interaction_missing_stats` |
+| `get_UniprotID_from_fasta_header` | `get_uniprot_id_from_fasta_header` |
+
+All internal callers, tests, vignettes, downstream packages updated. NAMESPACE regenerated.
+
+### Phase 4a: Delete deprecated R6 aliases
+
+Removed `hierarchyKeys()` and `hkeysDepth()` from AnalysisConfiguration. Fixed 2 internal callers in LFQData.R and 2 downstream callers in prolfquapp.
+
+### Phase 4b: R6 method renames
+
+| Old | New | Class |
+|-----|-----|-------|
+| `subject_Id()` | `subject_id()` | LFQData |
+| `omit_NA()` | `omit_na()` | LFQData |
+| `NA_heatmap()` | `na_heatmap()` | LFQDataPlotter |
+| `get_LOD()` | `get_lod()` | MissingHelpers |
+| `plot_NA_heatmap()` | `plot_na_heatmap()` | standalone function |
+
+### Additional parameter/local renames
+
+- `FCthreshold`/`FDRthreshold` → `fc_threshold`/`fdr_threshold` (8 `get_Plotter` methods)
+- `isotopeLabel` param → `isotope_label`, `sampleName` param → `sample_name`
+- `remove_NA_rows` → `remove_na_rows`, `UpSet_missing_stats` → `upset_missing_stats`
+- ~20 additional local variables: `relativeRisk`, `odsRatio`, `apply_fischer`, `hierarchy_ID`, `summaryColumn`, `rankColumn`, `PCx`/`PCy`, `forPairs`, `levelA`/`levelB`, `notNA`, `resData`, `resMat`, `fileName` param, `maxNrOfSignificantText`, etc.
+
+### Phase 5: R6 field names
+
+| Old field | New field | Classes affected |
+|-----------|-----------|-----------------|
+| `contrastDF` | `contrast_df` | ContrastsPlotter |
+| `modelDF` | `model_df` | Model (+ all callers) |
+| `modelName` | `model_name` | 12 classes (Contrasts, ContrastsLimma, Model, ModelFirth, ContrastsModerated, ContrastsDEqMS, ContrastsMissing, ContrastsROPECA, ContrastsFirth, ContrastsTable, ContrastsPlotter, ModelLimma) |
+| `subject_Id` | `subject_id` | Same 12 classes + function params in tidyMS_build_model.R, tidyMS_contrasts.R, tidyMS_moderation.R, logistf.R |
+
+**Critical:** `"modelName"` string literals (column names in output data frames) preserved unchanged.
+
+### Bug fix
+
+Fixed `rlm_estimate` roxygen example: built-in datasets use column `sampleName` (data frame column, not renamed), but examples incorrectly passed `"sample_name"`.
+
+### Verification
+
+- prolfqua: `make check-fast` → 0 errors, 0 warnings
+- prolfquapp: `make check-fast` → 0 errors, 0 warnings
+- prolfquasaint, prophosqua: all renamed callers updated, no stale references
+
+### Remaining camelCase (deliberately kept)
+
+- **R6 class names** — PascalCase by convention (`AnalysisConfiguration`, `ContrastsLimma`, etc.)
+- **Factory methods** — reference class names (`get_Plotter`, `get_Transformer`, `get_Aggregator`, etc.)
+- **R stats conventions** — `p.value`, `std.error`, `conf.low`, `p.adjust`, `sig.level`, `sample.var`, etc.
+- **squeezeVarRob.R** — ported from limma, matches upstream naming
+- **Simulation params/constants** — `Nprot`, `N`, `FC`, `PEPTIDE`, `TWO`
+- **Math/stats variables** — `Sigma.hat`, `X`, `M`, `SS`
+- **Data frame column name strings** — `"modelName"`, `"sampleName"`, `"isotopeLabel"`, etc.
+
+### Still outstanding (not part of snake_case migration)
+
+- Phase 6 (encapsulation): Add accessors for `hierarchy`, `factors` on AnalysisConfiguration; encapsulate `$data`/`$config` on LFQData — deferred
+- Phase 7 (`(data, config)` → `(lfqdata)` signatures): Large refactor — deferred
+- Phase 8 cross-package: 2 `AnalysisTableAnnotation$new()` references in prolfquasaint (DIANN_SE.R:54, CreateSaintExpress_Report.R:63) — should be `AnalysisConfiguration$new()`
+
+---
+
 ## 2026-03-31 — Rename AnalysisConfiguration fields from camelCase to snake_case
 
 Normalized all 9 remaining camelCase/mixed-case fields in `AnalysisConfiguration` to snake_case: `fileName` → `file_name`, `sampleName` → `sample_name`, `normValue` → `norm_value`, `isotopeLabel` → `isotope_label`, `workIntensity` → `work_intensity`, `factorDepth` → `factor_depth`, `hierarchyDepth` → `hierarchy_depth`, `ident_qValue` → `ident_q_value`, `ident_Score` → `ident_score`.
