@@ -266,8 +266,7 @@ medpolish_estimate <- function(x, name = FALSE, sample_name = "sample_name") {
 #' @family plotting
 #' @examples
 #'
-#' bb <- prolfqua_data("data_ionstar")$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
+#' bb <- sim_lfq_data_peptide_config(Nprot = 20)
 #' conf <- bb$config
 #' data <- bb$data
 #'
@@ -304,8 +303,7 @@ medpolish_estimate_df <- function(pdata, response, feature, sample_name) {
 #' @export
 #' @examples
 #'
-#' bb <- prolfqua_data("data_ionstar")$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
+#' bb <- sim_lfq_data_peptide_config(Nprot = 20)
 #' conf <- bb$config
 #' data <- bb$data
 #' conf$hierarchy_depth <- 1
@@ -448,8 +446,7 @@ medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' rlm_estimate(xx2[xx2$sample_name == "a", ], "log2Area", "peptide_Id", "sample_name")
 #'
 #'
-#' bb <- prolfqua_data("data_ionstar")$filtered()
-#' stopifnot(nrow(bb$data) == 25780)
+#' bb <- sim_lfq_data_peptide_config(Nprot = 20)
 #' conf <- bb$config
 #' data <- bb$data
 #' conf$hierarchy_depth <- 1
@@ -484,7 +481,7 @@ rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
 #' @keywords internal
 #' @examples
 #'
-#' bb <- prolfqua_data("data_ionstar")$filtered()
+#' bb <- sim_lfq_data_peptide_config(Nprot = 20)
 #' conf <- bb$config
 #' data <- bb$data
 #' conf$hierarchy_depth <- 1

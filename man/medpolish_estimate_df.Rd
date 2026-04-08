@@ -25,8 +25,7 @@ Median polish estimates of e.g. protein abundances for entire data.frame
 }
 \examples{
 
-bb <- prolfqua_data("data_ionstar")$filtered()
-stopifnot(nrow(bb$data) == 25780)
+bb <- sim_lfq_data_peptide_config(Nprot = 20)
 conf <- bb$config
 data <- bb$data
 

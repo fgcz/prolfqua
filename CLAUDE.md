@@ -38,6 +38,7 @@ Use the normal user / system R libraries for this workspace; `renv` autoload is 
 - `object_name_linter` is disabled — the codebase uses camelCase for R6 classes and snake_case/mixed for functions
 - NAMESPACE is **auto-generated** by roxygen2 — never edit directly; run `make document`
 - Roxygen is configured with `r6 = TRUE` for R6 class documentation
+- **Never use `\dontrun{}` or `\donttest{}` in `@examples`** — all examples must run during R CMD check. If an example is too slow, optimize it instead of skipping it.
 
 ## Architecture
 

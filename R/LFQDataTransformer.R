@@ -6,9 +6,8 @@
 #'
 #' @examples
 #'
-#' istar <- prolfqua_data('data_ionstar')$filtered()
-#' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-#' lfqdata <- LFQData$new(data, istar$config)
+#' istar <- sim_lfq_data_peptide_config(Nprot = 50)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
 #'
 #' lfqcopy <- lfqdata$get_copy()
 #' lfqTrans <- lfqcopy$get_Transformer()

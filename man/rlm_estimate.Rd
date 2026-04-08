@@ -42,8 +42,7 @@ rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sample_nam
 rlm_estimate(xx2[xx2$sample_name == "a", ], "log2Area", "peptide_Id", "sample_name")
 
 
-bb <- prolfqua_data("data_ionstar")$filtered()
-stopifnot(nrow(bb$data) == 25780)
+bb <- sim_lfq_data_peptide_config(Nprot = 20)
 conf <- bb$config
 data <- bb$data
 conf$hierarchy_depth <- 1

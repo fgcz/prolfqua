@@ -16,7 +16,7 @@ Estimate protein abundance from peptide abundances using MASS::rlm
 }
 \examples{
 
-bb <- prolfqua_data("data_ionstar")$filtered()
+bb <- sim_lfq_data_peptide_config(Nprot = 20)
 conf <- bb$config
 data <- bb$data
 conf$hierarchy_depth <- 1

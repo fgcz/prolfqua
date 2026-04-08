@@ -7,20 +7,17 @@
 #'
 #'
 #'
-#' istar <- prolfqua_data('data_ionstar')$normalized()
-#' istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
+#' istar <- sim_lfq_data_peptide_config(Nprot = 20)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #' model_name <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
-#'   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
+#'   strategy_lmer(paste0(lfqdata$response(), " ~ group_ + (1 | peptide_Id)"),
 #'    model_name = model_name)
-#' pepIntensity <- istar_data
-#' config <- istar$config
-#' config$hierarchy_keys_depth()
 #' mod <- prolfqua::build_model(
-#'  pepIntensity,
+#'  lfqdata,
 #'  formula_randomPeptide,
-#'  model_name = model_name,
-#'  subject_id = config$hierarchy_keys_depth())
+#'  model_name = model_name)
 #'
 #' mod$model_df
 #' aovtable  <- mod$get_anova()

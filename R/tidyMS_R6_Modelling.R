@@ -9,7 +9,7 @@
 #' @param ... ignored
 #' @return numeric scalar
 #' @keywords internal
-#' @export
+#' @exportS3Method
 df.residual.rlm <- function(object, ...) {
   sum(object$w) - object$rank
 }
@@ -23,7 +23,7 @@ df.residual.rlm <- function(object, ...) {
 #' @param ... ignored
 #' @return numeric scalar
 #' @keywords internal
-#' @export
+#' @exportS3Method
 sigma.rlm <- function(object, ...) {
   sqrt(sqrt(sum(object$w * object$resid^2) / (sum(object$w) - object$rank)))
 }
