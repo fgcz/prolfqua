@@ -1137,16 +1137,16 @@ ContrastsROPECAFacade <- R6::R6Class(
       .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
     },
     #' @description get ContrastsPlotter (uses standardized column names)
-    #' @param FCthreshold fold change threshold
-    #' @param FDRthreshold FDR threshold
-    get_Plotter = function(FCthreshold = 2, FDRthreshold = 0.1) {
+    #' @param fc_threshold fold change threshold
+    #' @param fdr_threshold FDR threshold
+    get_Plotter = function(fc_threshold = 2, fdr_threshold = 0.1) {
       contrast_result <- self$get_contrasts()
       protein_Id <- self$contrast$subject_Id[1]
       ContrastsPlotter$new(
         contrast_result,
         subject_Id = protein_Id,
-        fcthresh = FCthreshold,
-        volcano = list(list(score = "FDR", thresh = FDRthreshold)),
+        fcthresh = fc_threshold,
+        volcano = list(list(score = "FDR", thresh = fdr_threshold)),
         histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
         modelName = "modelName",
         diff = "diff",

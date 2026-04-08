@@ -251,15 +251,15 @@ data.frame
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{ContrastsPlotter}}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter(FDRthreshold = 0.1, FCthreshold = 2)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter(fdr_threshold = 0.1, fc_threshold = 2)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{FDRthreshold}}{FDR threshold}
+\item{\code{fdr_threshold}}{FDR threshold}
 
-\item{\code{FCthreshold}}{FC threshold}
+\item{\code{fc_threshold}}{FC threshold}
 }
 \if{html}{\out{</div>}}
 }

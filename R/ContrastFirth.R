@@ -168,19 +168,19 @@ ContrastsFirth <- R6::R6Class(
     #' @description
     #' return \code{\link{ContrastsPlotter}}
     #' creates Contrast_Plotter
-    #' @param FCthreshold fold change threshold to show in plots
-    #' @param FDRthreshold FDR threshold to show in plots
+    #' @param fc_threshold fold change threshold to show in plots
+    #' @param fdr_threshold FDR threshold to show in plots
     #' @return \code{\link{ContrastsPlotter}}
     get_Plotter = function(
-      FCthreshold = 1,
-      FDRthreshold = 0.1
+      fc_threshold = 1,
+      fdr_threshold = 0.1
     ) {
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id,
-        fcthresh = FCthreshold,
-        volcano = list(list(score = "p.value", thresh = FDRthreshold), list(score = "FDR", thresh = FDRthreshold)),
+        fcthresh = fc_threshold,
+        volcano = list(list(score = "p.value", thresh = fdr_threshold), list(score = "FDR", thresh = fdr_threshold)),
         histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
         score = list(list(score = "statistic", thresh = 5)),
         modelName = "modelName",

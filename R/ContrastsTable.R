@@ -66,16 +66,16 @@ ContrastsTable <- R6::R6Class(
     },
     #' @description
     #' get \code{\link{ContrastsPlotter}}
-    #' @param FCthreshold fold change threshold
-    #' @param FDRthreshold fdr threshold
+    #' @param fc_threshold fold change threshold
+    #' @param fdr_threshold fdr threshold
     #' @return \code{\link{ContrastsPlotter}}
     #'
-    get_Plotter = function(FCthreshold = 1, FDRthreshold = 0.1) {
+    get_Plotter = function(fc_threshold = 1, fdr_threshold = 0.1) {
       res <- ContrastsPlotter$new(
         self$contrast_result,
         subject_Id = self$subject_Id,
-        fcthresh = FCthreshold,
-        volcano = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", thresh = FDRthreshold)),
+        fcthresh = fc_threshold,
+        volcano = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", thresh = fdr_threshold)),
         histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
         modelName = "modelName",
         diff = "diff",

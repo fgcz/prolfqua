@@ -193,15 +193,15 @@ get protein × contrast pairs that could not be estimated
 \subsection{Method \code{get_Plotter()}}{
 get ContrastsPlotter (uses standardized column names)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECAFacade$get_Plotter(FCthreshold = 2, FDRthreshold = 0.1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECAFacade$get_Plotter(fc_threshold = 2, fdr_threshold = 0.1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{FCthreshold}}{fold change threshold}
+\item{\code{fc_threshold}}{fold change threshold}
 
-\item{\code{FDRthreshold}}{FDR threshold}
+\item{\code{fdr_threshold}}{FDR threshold}
 }
 \if{html}{\out{</div>}}
 }

@@ -221,15 +221,15 @@ get contrasts
 \subsection{Method \code{get_Plotter()}}{
 get \code{\link{ContrastsPlotter}}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_Plotter(FCthreshold = 1, FDRthreshold = 0.1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{FCthreshold}}{fold change threshold}
+\item{\code{fc_threshold}}{fold change threshold}
 
-\item{\code{FDRthreshold}}{fdr threshold}
+\item{\code{fdr_threshold}}{fdr threshold}
 }
 \if{html}{\out{</div>}}
 }

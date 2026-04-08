@@ -140,15 +140,15 @@ ContrastsROPECA <- R6::R6Class(
     #' @description
     #' get \code{\link{ContrastsPlotter}}
     #' @return \code{\link{ContrastsPlotter}}
-    #' @param FDRthreshold FDR threshold
-    #' @param FCthreshold FC threshold
-    get_Plotter = function(FDRthreshold = 0.1, FCthreshold = 2) {
+    #' @param fdr_threshold FDR threshold
+    #' @param fc_threshold FC threshold
+    get_Plotter = function(fdr_threshold = 0.1, fc_threshold = 2) {
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
         subject_Id = self$subject_Id[1],
-        fcthresh = FCthreshold,
-        volcano = list(list(score = "FDR.beta.based.significance", thresh = FDRthreshold)),
+        fcthresh = fc_threshold,
+        volcano = list(list(score = "FDR.beta.based.significance", thresh = fdr_threshold)),
         histogram = list(
           list(score = "beta.based.significance", xlim = c(0, 1, 0.05)),
           list(score = "FDR.beta.based.significance", xlim = c(0, 1, 0.05))
