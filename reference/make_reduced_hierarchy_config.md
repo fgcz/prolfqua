@@ -5,7 +5,7 @@ Make reduced hierarchy configuration
 ## Usage
 
 ``` r
-make_reduced_hierarchy_config(config, workIntensity, hierarchy)
+make_reduced_hierarchy_config(config, work_intensity, hierarchy)
 ```
 
 ## Arguments
@@ -14,7 +14,7 @@ make_reduced_hierarchy_config(config, workIntensity, hierarchy)
 
   AnalysisConfiguration
 
-- workIntensity:
+- work_intensity:
 
   work intensity column
 

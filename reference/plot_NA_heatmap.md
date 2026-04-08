@@ -5,7 +5,7 @@ plot heatmap of NA values
 ## Usage
 
 ``` r
-plot_NA_heatmap(data, config, limitrows = 10000, distance = "binary")
+plot_na_heatmap(data, config, limitrows = 10000, distance = "binary")
 ```
 
 ## See also
@@ -13,8 +13,6 @@ plot_NA_heatmap(data, config, limitrows = 10000, distance = "binary")
 Other plotting:
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`UpSet_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
-[`UpSet_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
 [`missigness_histogram()`](https://wolski.github.io/prolfqua/reference/missigness_histogram.md),
 [`missingness_per_condition()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition.md),
@@ -29,7 +27,9 @@ Other plotting:
 [`plot_intensity_distribution_violin()`](https://wolski.github.io/prolfqua/reference/plot_intensity_distribution_violin.md),
 [`plot_pca()`](https://wolski.github.io/prolfqua/reference/plot_pca.md),
 [`plot_raster()`](https://wolski.github.io/prolfqua/reference/plot_raster.md),
-[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md)
+[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md),
+[`upset_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
+[`upset_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.md)
 
 ## Examples
 
@@ -44,10 +44,10 @@ config <- istar$config
 analysis <- istar$data
 
 
-tmp <- plot_NA_heatmap(analysis, config)
+tmp <- plot_na_heatmap(analysis, config)
 #> rows with NA's: 16; all rows :28
 stopifnot(class(tmp) == "pheatmap")
-tmp <- plot_NA_heatmap(analysis, config, distance = "euclidean")
+tmp <- plot_na_heatmap(analysis, config, distance = "euclidean")
 #> rows with NA's: 16; all rows :28
 stopifnot(class(tmp) == "pheatmap")
 

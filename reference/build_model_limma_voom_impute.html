@@ -62,7 +62,7 @@ entire missing groups (NA coefficients). Mirrors
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">build_model_limma_voom_impute</span><span class="op">(</span></span>
 <span>  <span class="va">lfqdata</span>,</span>
 <span>  <span class="va">strategy</span>,</span>
-<span>  modelName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">strategy</span><span class="op">$</span><span class="va">model_name</span>, <span class="st">"Imputed"</span><span class="op">)</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">strategy</span><span class="op">$</span><span class="va">model_name</span>, <span class="st">"Imputed"</span><span class="op">)</span>,</span>
 <span>  lod <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  df_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span>, <span class="st">"borrowed"</span><span class="op">)</span>,</span>
 <span>  span <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -82,7 +82,7 @@ entire missing groups (NA coefficients). Mirrors
 <dd><p>output of <code><a href="strategy_limma.html">strategy_limma</a></code></p></dd>
 
 
-<dt id="arg-modelname">modelName<a class="anchor" aria-label="anchor" href="#arg-modelname"></a></dt>
+<dt id="arg-model-name">model_name<a class="anchor" aria-label="anchor" href="#arg-model-name"></a></dt>
 <dd><p>name of model (default: strategy name + "Imputed")</p></dd>
 
 
@@ -166,7 +166,7 @@ entire missing groups (NA coefficients). Mirrors
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -179,7 +179,7 @@ entire missing groups (NA coefficients). Mirrors
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,

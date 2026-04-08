@@ -200,7 +200,7 @@ downstream packages.
 - `R/tidyMS_build_model.R` — `build_model`, `model_analyse`, imputation
   internals
 - `R/tidyMS_contrasts.R` — `linfct_*` family, `compute_contrast`,
-  `contrasts_linfct`, `pivot_model_contrasts_2_Wide`
+  `contrasts_linfct`, `pivot_model_contrasts_to_wide`
 - `R/tidyMS_moderation.R` — `moderated_p_limma*`, `adjust_p_values`,
   ROPECA, Fisher
 - `R/tidyMS_*.R` — Other utility functions (plotting, stats,

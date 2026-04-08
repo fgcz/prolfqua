@@ -8,8 +8,8 @@ used in project p2901
 model_analyse(
   pepIntensity,
   model_strategy,
-  subject_Id = "protein_Id",
-  modelName = "Model"
+  subject_id = "protein_Id",
+  model_name = "Model"
 )
 ```
 
@@ -72,7 +72,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -84,7 +84,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
@@ -108,7 +108,7 @@ formula_randomPeptide <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)")
 mr <- model_analyse( x$data,
  formula_randomPeptide,
- subject_Id = x$config$hierarchy_keys_depth())
+ subject_id = x$config$hierarchy_keys_depth())
 #> Warning: There were 4 warnings in `dplyr::mutate()`.
 #> The first warning was:
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
@@ -117,5 +117,5 @@ mr <- model_analyse( x$data,
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-stopifnot(nrow(get_complete_model_fit(mr$modelDF)) == 6)
+stopifnot(nrow(get_complete_model_fit(mr$model_df)) == 6)
 ```

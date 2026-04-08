@@ -118,7 +118,7 @@ R6 class representing a limma modelling result"></head><body>
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -131,7 +131,7 @@ R6 class representing a limma modelling result"></head><body>
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -161,11 +161,11 @@ R6 class representing a limma modelling result"></head><body>
 <dd><p>model formula</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>protein ID column name(s)</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>model name</p></dd>
 
 
@@ -213,8 +213,8 @@ R6 class representing a limma modelling result"></head><body>
 <span>  <span class="va">fit</span>,</span>
 <span>  <span class="va">design</span>,</span>
 <span>  <span class="va">formula</span>,</span>
-<span>  <span class="va">subject_Id</span>,</span>
-<span>  <span class="va">modelName</span>,</span>
+<span>  <span class="va">subject_id</span>,</span>
+<span>  <span class="va">model_name</span>,</span>
 <span>  <span class="va">rowdata</span>,</span>
 <span>  trend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  robust <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -237,11 +237,11 @@ R6 class representing a limma modelling result"></head><body>
 <dd><p>model formula</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>protein ID column name(s)</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>model name</p></dd>
 
 

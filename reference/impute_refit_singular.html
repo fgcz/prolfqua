@@ -57,7 +57,7 @@ impute missing values with LOD, clamp, refit, and attach borrowed covariance.</p
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">impute_refit_singular</span><span class="op">(</span></span>
-<span>  <span class="va">modelDF</span>,</span>
+<span>  <span class="va">model_df</span>,</span>
 <span>  <span class="va">model_strategy</span>,</span>
 <span>  <span class="va">lod</span>,</span>
 <span>  <span class="va">response</span>,</span>
@@ -72,7 +72,7 @@ impute missing values with LOD, clamp, refit, and attach borrowed covariance.</p
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-modeldf">modelDF<a class="anchor" aria-label="anchor" href="#arg-modeldf"></a></dt>
+<dl><dt id="arg-model-df">model_df<a class="anchor" aria-label="anchor" href="#arg-model-df"></a></dt>
 <dd><p>tibble from model_analyse</p></dd>
 
 
@@ -111,7 +111,7 @@ weighted lm fits do not fail</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>modified modelDF with imputed models replacing failed/singular ones</p>
+    <p>modified model_df with imputed models replacing failed/singular ones</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -171,7 +171,7 @@ weighted lm fits do not fail</p></dd>
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -184,7 +184,7 @@ weighted lm fits do not fail</p></dd>
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,

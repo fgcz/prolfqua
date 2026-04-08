@@ -56,7 +56,7 @@ Median polish estimates of e.g. protein abundances for entire data.frame</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">medpolish_estimate_df</span><span class="op">(</span><span class="va">pdata</span>, <span class="va">response</span>, <span class="va">feature</span>, <span class="va">sampleName</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">medpolish_estimate_df</span><span class="op">(</span><span class="va">pdata</span>, <span class="va">response</span>, <span class="va">feature</span>, <span class="va">sample_name</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,8 +75,8 @@ Median polish estimates of e.g. protein abundances for entire data.frame</p>
 <dd><p>column name e.g. peptide ids</p></dd>
 
 
-<dt id="arg-samplename">sampleName<a class="anchor" aria-label="anchor" href="#arg-samplename"></a></dt>
-<dd><p>column name e.g. sampleName</p></dd>
+<dt id="arg-sample-name">sample_name<a class="anchor" aria-label="anchor" href="#arg-sample-name"></a></dt>
+<dd><p>column name e.g. sample_name</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -101,12 +101,9 @@ Median polish estimates of e.g. protein abundances for entire data.frame</p>
 <p>Other plotting:
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="UpSet_interaction_missing_stats.html">UpSet_interaction_missing_stats()</a></code>,
-<code><a href="UpSet_missing_stats.html">UpSet_missing_stats()</a></code>,
 <code><a href="missigness_histogram.html">missigness_histogram()</a></code>,
 <code><a href="missingness_per_condition.html">missingness_per_condition()</a></code>,
 <code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum()</a></code>,
-<code><a href="plot_NA_heatmap.html">plot_NA_heatmap()</a></code>,
 <code><a href="plot_estimate.html">plot_estimate()</a></code>,
 <code><a href="plot_heatmap.html">plot_heatmap()</a></code>,
 <code><a href="plot_heatmap_cor.html">plot_heatmap_cor()</a></code>,
@@ -115,9 +112,12 @@ Median polish estimates of e.g. protein abundances for entire data.frame</p>
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
 <code><a href="plot_hierarchies_line_df.html">plot_hierarchies_line_df()</a></code>,
 <code><a href="plot_intensity_distribution_violin.html">plot_intensity_distribution_violin()</a></code>,
+<code><a href="plot_NA_heatmap.html">plot_na_heatmap()</a></code>,
 <code><a href="plot_pca.html">plot_pca()</a></code>,
 <code><a href="plot_raster.html">plot_raster()</a></code>,
-<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code></p></div>
+<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code>,
+<code><a href="UpSet_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code>,
+<code><a href="UpSet_missing_stats.html">upset_missing_stats()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -142,7 +142,7 @@ Median polish estimates of e.g. protein abundances for entire data.frame</p>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">medpolish_estimate_df</span><span class="op">(</span><span class="va">x</span>,</span></span>
 <span class="r-in"><span>  response <span class="op">=</span> <span class="va">conf</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  feature <span class="op">=</span> <span class="va">feature</span>,</span></span>
-<span class="r-in"><span>  sampleName <span class="op">=</span> <span class="va">conf</span><span class="op">$</span><span class="va">sample_name</span></span></span>
+<span class="r-in"><span>  sample_name <span class="op">=</span> <span class="va">conf</span><span class="op">$</span><span class="va">sample_name</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">prolfqua</span><span class="fu">:::</span><span class="fu">.reestablish_condition</span><span class="op">(</span><span class="va">x</span>, <span class="va">bb</span>, <span class="va">conf</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 6</span></span>

@@ -70,7 +70,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -83,7 +83,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
@@ -110,11 +110,11 @@ Other modelling:
 
   contrast result
 
-- `modelName`:
+- `model_name`:
 
   model name
 
-- `subject_Id`:
+- `subject_id`:
 
   columns with protein ID's
 
@@ -155,7 +155,7 @@ initialize
 
     ContrastsROPECA$new(
       Contrast,
-      modelName = "ROPECA",
+      model_name = "ROPECA",
       p.adjust = prolfqua::adjust_p_values
     )
 
@@ -165,7 +165,7 @@ initialize
 
   e.g. instance of Contrasts class, or ContrastsModerated
 
-- `modelName`:
+- `model_name`:
 
   default ROPECA
 
@@ -234,15 +234,15 @@ get
 
 #### Usage
 
-    ContrastsROPECA$get_Plotter(FDRthreshold = 0.1, FCthreshold = 2)
+    ContrastsROPECA$get_Plotter(fdr_threshold = 0.1, fc_threshold = 2)
 
 #### Arguments
 
-- `FDRthreshold`:
+- `fdr_threshold`:
 
   FDR threshold
 
-- `FCthreshold`:
+- `fc_threshold`:
 
   FC threshold
 
@@ -308,7 +308,7 @@ config$hierarchy_keys_depth()
 mod <- build_model(
  pepIntensity,
  modelFunction,
- subject_Id = config$hierarchy_keys_depth())
+ subject_id = config$hierarchy_keys_depth())
 
  Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
 

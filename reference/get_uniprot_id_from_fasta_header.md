@@ -5,7 +5,7 @@ Extracts uniprot ID
 ## Usage
 
 ``` r
-get_UniprotID_from_fasta_header(df, idcolumn = "protein_Id")
+get_uniprot_id_from_fasta_header(df, idcolumn = "protein_Id")
 ```
 
 ## Arguments
@@ -31,7 +31,7 @@ Other utilities:
 [`names_to_matrix()`](https://wolski.github.io/prolfqua/reference/names_to_matrix.md),
 [`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
 [`panel_cor()`](https://wolski.github.io/prolfqua/reference/panel_cor.md),
-[`remove_NA_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md),
+[`remove_na_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md),
 [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
 
 ## Examples
@@ -41,6 +41,6 @@ bb <- prolfqua_data('data_ionstar')$filtered()
 #> Column added : nr_peptide_Id_IN_protein_Id
 tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
 tmp$UniprotID <- NULL
-tmp <- get_UniprotID_from_fasta_header(tmp, idcolumn = "top_protein")
+tmp <- get_uniprot_id_from_fasta_header(tmp, idcolumn = "top_protein")
 stopifnot("UniprotID" %in%  colnames(tmp))
 ```

@@ -60,8 +60,6 @@ xx
     ##     hierarchy_depth: 1
     ##     hierarchy_keys: function (rev = FALSE) 
     ##     hierarchy_keys_depth: function (names = TRUE) 
-    ##     hierarchyKeys: function (rev = FALSE) 
-    ##     hkeysDepth: function (names = TRUE) 
     ##     id_required: function () 
     ##     id_vars: function () 
     ##     ident_q_value: qValue
@@ -78,7 +76,7 @@ xx
     ##     pop_response: function () 
     ##     sample_name: sampleName
     ##     sep: ~
-    ##     set_response: function (colName) 
+    ##     set_response: function (col_name) 
     ##     value_vars: function () 
     ##     work_intensity: abundance
 
@@ -134,7 +132,7 @@ density_nn <- lfqplotter$intensity_distribution_density()
 #### Visualization of missing data
 
 ``` r
-lfqplotter$NA_heatmap()
+lfqplotter$na_heatmap()
 ```
 
 ![Heatmap where missing proteins (zero in case of MaxQuant reported
@@ -292,7 +290,7 @@ Here we have to build the model for each protein.
 mod <- prolfqua::build_model(
   transformed$data,
   formula_Condition,
-  subject_Id = transformed$config$hierarchy_keys() )
+  subject_id = transformed$config$hierarchy_keys() )
 ```
 
 In this plot we can see what factors in our model are mostly responsible
@@ -468,7 +466,7 @@ t-statistic and subjected to gene set enrichment analysis. The typical
 workflow is:
 
 1.  Extract UniProt IDs from the contrast results using
-    [`prolfqua::get_UniprotID_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_UniprotID_from_fasta_header.md)
+    [`prolfqua::get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md)
 2.  Map UniProt IDs to Entrez Gene IDs using `AnnotationDbi::mapIds()`
     with a species-specific annotation package
 3.  Create a named ranked list (statistic values named by gene IDs)
@@ -514,15 +512,15 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.6.1 dplyr_1.2.0   
+    ## [1] prolfqua_1.6.1 dplyr_1.2.1   
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] tidyselect_1.2.1       viridisLite_0.4.3      farver_2.1.2          
-    ##   [4] S7_0.2.1               fastmap_1.2.0          lazyeval_0.2.2        
+    ##   [4] S7_0.2.1               fastmap_1.2.0          lazyeval_0.2.3        
     ##   [7] promises_1.5.0         digest_0.6.39          rpart_4.1.24          
     ##  [10] mime_0.13              lifecycle_1.0.5        survival_3.8-3        
-    ##  [13] statmod_1.5.1          magrittr_2.0.4         compiler_4.5.2        
-    ##  [16] progress_1.2.3         rlang_1.1.7            sass_0.4.10           
+    ##  [13] statmod_1.5.1          magrittr_2.0.5         compiler_4.5.2        
+    ##  [16] progress_1.2.3         rlang_1.2.0            sass_0.4.10           
     ##  [19] tools_4.5.2            utf8_1.2.6             yaml_2.3.12           
     ##  [22] data.table_1.18.2.1    knitr_1.51             prettyunits_1.2.0     
     ##  [25] labeling_0.4.3         htmlwidgets_1.6.4      plyr_1.8.9            
@@ -547,7 +545,7 @@ sessionInfo()
     ##  [82] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     
     ##  [85] Rdpack_2.6.6           formula.tools_1.7.1    shiny_1.13.0          
     ##  [88] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
-    ##  [91] backports_1.5.0        pheatmap_1.0.13        broom_1.0.12          
+    ##  [91] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          
     ##  [94] httpuv_1.6.17          bslib_0.10.0           Rcpp_1.1.1            
     ##  [97] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
     ## [100] logistf_1.26.1         xfun_0.57              fs_2.0.1              

@@ -8,7 +8,7 @@ Called by
 ## Usage
 
 ``` r
-plot_lrt_diagnostics(result, modelName, modelName_Int, path)
+plot_lrt_diagnostics(result, model_name, model_name_int, path)
 ```
 
 ## Arguments
@@ -17,11 +17,11 @@ plot_lrt_diagnostics(result, modelName, modelName_Int, path)
 
   tibble with a `likelihood_ratio_test.pValue` column
 
-- modelName:
+- model_name:
 
   name of the full model
 
-- modelName_Int:
+- model_name_int:
 
   name of the reduced/interaction model
 

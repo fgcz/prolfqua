@@ -56,13 +56,13 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">build_model</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">model_strategy</span>,</span>
-<span>  subject_Id <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"LFQData"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>     <span class="va">data</span><span class="op">$</span><span class="fu">subject_Id</span><span class="op">(</span><span class="op">)</span></span>
+<span>  subject_id <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"LFQData"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>     <span class="va">data</span><span class="op">$</span><span class="fu">subject_id</span><span class="op">(</span><span class="op">)</span></span>
 <span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>    </span>
 <span>    <span class="st">"protein_Id"</span></span>
 <span> <span class="op">}</span>,</span>
-<span>  modelName <span class="op">=</span> <span class="va">model_strategy</span><span class="op">$</span><span class="va">model_name</span></span>
+<span>  model_name <span class="op">=</span> <span class="va">model_strategy</span><span class="op">$</span><span class="va">model_name</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -78,11 +78,11 @@
 <dd><p>model strategy object (e.g. from strategy_lmer or strategy_lm)</p></dd>
 
 
-<dt id="arg-subject-id">subject_Id<a class="anchor" aria-label="anchor" href="#arg-subject-id"></a></dt>
+<dt id="arg-subject-id">subject_id<a class="anchor" aria-label="anchor" href="#arg-subject-id"></a></dt>
 <dd><p>grouping variable</p></dd>
 
 
-<dt id="arg-modelname">modelName<a class="anchor" aria-label="anchor" href="#arg-modelname"></a></dt>
+<dt id="arg-model-name">model_name<a class="anchor" aria-label="anchor" href="#arg-model-name"></a></dt>
 <dd><p>model name</p></dd>
 
 </dl></div>
@@ -149,7 +149,7 @@
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -162,7 +162,7 @@
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -191,17 +191,17 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">D</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">abundance</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 59</span>
-<span class="r-in"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"f_condtion_r_peptide"</span></span></span>
+<span class="r-in"><span><span class="va">model_name</span> <span class="op">&lt;-</span> <span class="st">"f_condtion_r_peptide"</span></span></span>
 <span class="r-in"><span><span class="va">formula_randomPeptide</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="strategy.html">strategy_lmer</a></span><span class="op">(</span><span class="st">"abundance  ~ group_ + (1 | peptide_Id) + (1 | sampleName)"</span>,</span></span>
-<span class="r-in"><span>   model_name <span class="op">=</span> <span class="va">modelName</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu">build_model</span><span class="op">(</span></span></span>
 <span class="r-in"><span> <span class="va">D</span><span class="op">$</span><span class="va">data</span>,</span></span>
 <span class="r-in"><span> <span class="va">formula_randomPeptide</span>,</span></span>
-<span class="r-in"><span> modelName <span class="op">=</span> <span class="va">modelName</span>,</span></span>
-<span class="r-in"><span> subject_Id <span class="op">=</span> <span class="va">D</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span> model_name <span class="op">=</span> <span class="va">model_name</span>,</span></span>
+<span class="r-in"><span> subject_id <span class="op">=</span> <span class="va">D</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
@@ -229,7 +229,7 @@
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu">build_model</span><span class="op">(</span></span></span>
 <span class="r-in"><span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">D</span><span class="op">$</span><span class="va">data</span>, <span class="va">D</span><span class="op">$</span><span class="va">config</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span> <span class="va">formula_randomPeptide</span>,</span></span>
-<span class="r-in"><span> modelName <span class="op">=</span> <span class="va">modelName</span><span class="op">)</span></span></span>
+<span class="r-in"><span> model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>

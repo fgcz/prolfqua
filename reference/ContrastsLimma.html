@@ -120,7 +120,7 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -133,7 +133,7 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -159,12 +159,12 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <dd><p>named character vector of contrasts</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>model name</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
-<dd><p>columns with subject_Id (proteinID)</p></dd>
+<dt><code>subject_id</code></dt>
+<dd><p>columns with subject_id (proteinID)</p></dd>
 
 
 <dt><code>p.adjust</code></dt>
@@ -206,7 +206,7 @@ DEqMS moderation via <code><a href="ContrastsModeratedDEqMS.html">ContrastsModer
 <span>  <span class="va">model</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
 <span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
-<span>  modelName <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  eBayes <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -225,7 +225,7 @@ DEqMS moderation via <code><a href="ContrastsModeratedDEqMS.html">ContrastsModer
 <dd><p>function to adjust p-values</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>name of the contrast method</p></dd>
 
 
@@ -290,16 +290,16 @@ wrapping with <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEq
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
 <p>return <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLimma</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>FCthreshold <span class="op">=</span> <span class="fl">1</span>, FDRthreshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLimma</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>fc_threshold <span class="op">=</span> <span class="fl">1</span>, fdr_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>FCthreshold</code></dt>
+<p></p><div class="arguments"><dl><dt><code>fc_threshold</code></dt>
 <dd><p>fold change threshold to show in plots</p></dd>
 
 
-<dt><code>FDRthreshold</code></dt>
+<dt><code>fdr_threshold</code></dt>
 <dd><p>FDR threshold to show in plots</p></dd>
 
 

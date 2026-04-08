@@ -21,11 +21,11 @@ get_contrast(data, hierarchy_keys, contrasts)
 ## See also
 
 Other imputation:
-[`UpSet_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
-[`UpSet_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.md),
 [`missigness_histogram()`](https://wolski.github.io/prolfqua/reference/missigness_histogram.md),
 [`missingness_per_condition()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition.md),
-[`missingness_per_condition_cumsum()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition_cumsum.md)
+[`missingness_per_condition_cumsum()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
+[`upset_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
+[`upset_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.md)
 
 ## Examples
 

@@ -50,7 +50,7 @@ Other LFQData:
 
 - [`LFQData$get_subset()`](#method-LFQData-get_subset)
 
-- [`LFQData$subject_Id()`](#method-LFQData-subject_Id)
+- [`LFQData$subject_id()`](#method-LFQData-subject_id)
 
 - [`LFQData$is_transformed()`](#method-LFQData-is_transformed)
 
@@ -58,7 +58,7 @@ Other LFQData:
 
 - [`LFQData$filter_proteins_by_peptide_count()`](#method-LFQData-filter_proteins_by_peptide_count)
 
-- [`LFQData$omit_NA()`](#method-LFQData-omit_NA)
+- [`LFQData$omit_na()`](#method-LFQData-omit_na)
 
 - [`LFQData$complete_cases()`](#method-LFQData-complete_cases)
 
@@ -168,17 +168,17 @@ get subset of data
 
 - `x`:
 
-  data frame with columns containing subject_Id
+  data frame with columns containing subject_id
 
 ------------------------------------------------------------------------
 
-### Method `subject_Id()`
+### Method `subject_id()`
 
 get subject ID columns
 
 #### Usage
 
-    LFQData$subject_Id()
+    LFQData$subject_id()
 
 ------------------------------------------------------------------------
 
@@ -236,7 +236,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method `omit_NA()`
+### Method `omit_na()`
 
 Omit NA from intensities per hierarchy (e.g. protein or peptide), idea
 is to use it for normalization For instance if a peptide has a missing
@@ -245,18 +245,18 @@ removed
 
 #### Usage
 
-    LFQData$omit_NA(nrNA = 0, factorDepth = NULL)
+    LFQData$omit_na(nr_na = 0, factor_depth = NULL)
 
 #### Arguments
 
-- `nrNA`:
+- `nr_na`:
 
   number of NA values
 
-- `factorDepth`:
+- `factor_depth`:
 
-  control whether \`nrNA\` is applied per condition or more globally,
-  e.g. \`factorDepth = 0\` means per experiment
+  control whether \`nr_na\` is applied per condition or more globally,
+  e.g. \`factor_depth = 0\` means per experiment
 
 #### Returns
 
@@ -547,12 +547,12 @@ lfqdata$summarize_hierarchy()
 
 # filter for missing values
 
-f1 <- lfqdata$omit_NA(nrNA = 0)
+f1 <- lfqdata$omit_na(nr_na = 0)
 #> completing cases
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
-f2 <- lfqdata$omit_NA(factorDepth = 0)
+f2 <- lfqdata$omit_na(factor_depth = 0)
 #> completing cases
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())

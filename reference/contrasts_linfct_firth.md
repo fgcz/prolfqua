@@ -5,7 +5,7 @@ compute contrasts
 ## Usage
 
 ``` r
-contrasts_linfct_firth(models, subject_Id = "protein_Id")
+contrasts_linfct_firth(models, subject_id = "protein_Id")
 ```
 
 ## Examples

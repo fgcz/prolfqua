@@ -105,11 +105,9 @@ lfqdata$to_wide()
 #>     file_name: sample
 #>     get_response: function () 
 #>     hierarchy: list
-#>     hierarchyKeys: function (rev = FALSE) 
 #>     hierarchy_depth: 1
 #>     hierarchy_keys: function (rev = FALSE) 
 #>     hierarchy_keys_depth: function (names = TRUE) 
-#>     hkeysDepth: function (names = TRUE) 
 #>     id_required: function () 
 #>     id_vars: function () 
 #>     ident_q_value: qValue
@@ -126,7 +124,7 @@ lfqdata$to_wide()
 #>     pop_response: function () 
 #>     sample_name: sampleName
 #>     sep: ~
-#>     set_response: function (colName) 
+#>     set_response: function (col_name) 
 #>     value_vars: function () 
 #>     work_intensity: abundance
 #> 

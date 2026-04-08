@@ -9,7 +9,7 @@ tidy_to_wide_config(
   data,
   config,
   as.matrix = FALSE,
-  fileName = FALSE,
+  file_name = FALSE,
   sep = "~lfq~",
   value = config$get_response()
 )

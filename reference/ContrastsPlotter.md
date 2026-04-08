@@ -62,7 +62,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -75,7 +75,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
@@ -89,13 +89,10 @@ Other modelling:
 
 Other plotting:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`UpSet_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
-[`UpSet_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
 [`missigness_histogram()`](https://wolski.github.io/prolfqua/reference/missigness_histogram.md),
 [`missingness_per_condition()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
-[`plot_NA_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_NA_heatmap.md),
 [`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
 [`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md),
 [`plot_heatmap_cor()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor.md),
@@ -104,21 +101,24 @@ Other plotting:
 [`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md),
 [`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
 [`plot_intensity_distribution_violin()`](https://wolski.github.io/prolfqua/reference/plot_intensity_distribution_violin.md),
+[`plot_na_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_NA_heatmap.md),
 [`plot_pca()`](https://wolski.github.io/prolfqua/reference/plot_pca.md),
 [`plot_raster()`](https://wolski.github.io/prolfqua/reference/plot_raster.md),
-[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md)
+[`plot_sample_correlation()`](https://wolski.github.io/prolfqua/reference/plot_sample_correlation.md),
+[`upset_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
+[`upset_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.md)
 
 ## Public fields
 
-- `contrastDF`:
+- `contrast_df`:
 
   data frame with contrasts
 
-- `modelName`:
+- `model_name`:
 
   of column with model name
 
-- `subject_Id`:
+- `subject_id`:
 
   hierarchy key columns
 
@@ -195,8 +195,8 @@ create Crontrast_Plotter
 #### Usage
 
     ContrastsPlotter$new(
-      contrastDF,
-      subject_Id,
+      contrast_df,
+      subject_id,
       volcano = list(list(score = "FDR", thresh = 0.1)),
       histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
         xlim = c(0, 1, 0.05))),
@@ -211,11 +211,11 @@ create Crontrast_Plotter
 
 #### Arguments
 
-- `contrastDF`:
+- `contrast_df`:
 
   frame with contrast data
 
-- `subject_Id`:
+- `subject_id`:
 
   columns containing subject Identifier
 
@@ -539,18 +539,18 @@ istar <- sim_lfq_data_peptide_config(Nprot = 20)
 #> completing cases
 #> completing cases done
 #> setup done
-modelName <- "Model"
+model_name <- "Model"
 modelFunction <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1|sample)",
-   model_name = modelName)
+   model_name = model_name)
 pepIntensity <- istar$data
 config <- istar$config
 
 mod <- build_model(
   pepIntensity,
   modelFunction,
-  modelName = modelName,
-  subject_Id = config$hierarchy_keys_depth())
+  model_name = model_name,
+  subject_id = config$hierarchy_keys_depth())
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -584,7 +584,7 @@ contr <- contrast$get_contrasts()
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 cp <- ContrastsPlotter$new(contr,
-  contrast$subject_Id,
+  contrast$subject_id,
   volcano = list(list(score = "FDR", thresh = 0.1)),
   histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))),

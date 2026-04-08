@@ -161,7 +161,7 @@
 - [`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md)
   : Robust linear model strategy (R6 class)
 
-- [`UpSet_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
+- [`upset_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
   : UpSetR plot from interaction_missing_stats
 
 - [`adjust_p_values()`](https://wolski.github.io/prolfqua/reference/adjust_p_values.md)
@@ -218,7 +218,7 @@
 - [`generate_contrasts_for_factor()`](https://wolski.github.io/prolfqua/reference/generate_contrasts_for_factor.md)
   : Single-factor contrasts (pairwise comparisons)
 
-- [`get_UniprotID_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_UniprotID_from_fasta_header.md)
+- [`get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md)
   : Extracts uniprot ID
 
 - [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md)
@@ -254,7 +254,7 @@
 - [`nr_obs_sample()`](https://wolski.github.io/prolfqua/reference/nr_obs_sample.md)
   : Aggregates e.g. protein abundances from peptide abundances
 
-- [`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md)
+- [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md)
   : pivot model contrasts matrix to wide format produced by
   \`contrasts_linfct\` and ...
 
@@ -275,7 +275,7 @@
 - [`sim_lfq_data()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data.md)
   : simulate protein level data with two groups
 
-- [`sim_lfq_data_2Factor_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_2Factor_config.md)
+- [`sim_lfq_data_2factor_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_2Factor_config.md)
   : Simulate data, protein, with config with 2 factors Treatment and
   Background
 

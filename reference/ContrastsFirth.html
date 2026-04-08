@@ -113,7 +113,7 @@ Estimate contrasts using Wald Test"></head><body>
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -126,7 +126,7 @@ Estimate contrasts using Wald Test"></head><body>
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -152,11 +152,11 @@ Estimate contrasts using Wald Test"></head><body>
 <dd><p>character with contrasts</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>name of model</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>name of column containing e.g., protein Id's</p></dd>
 
 
@@ -194,7 +194,7 @@ create Contrast</p><div class="section">
 <span>  <span class="va">model</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
 <span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
-<span>  modelName <span class="op">=</span> <span class="st">"WaldTestFirth"</span></span>
+<span>  model_name <span class="op">=</span> <span class="st">"WaldTestFirth"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -212,7 +212,7 @@ create Contrast</p><div class="section">
 <dd><p>function to adjust the p-values</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>name of contrast method, default WaldTest</p></dd>
 
 
@@ -268,16 +268,16 @@ create Contrast</p><div class="section">
 <p>return <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>
 creates Contrast_Plotter</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFirth</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>FCthreshold <span class="op">=</span> <span class="fl">1</span>, FDRthreshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFirth</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>fc_threshold <span class="op">=</span> <span class="fl">1</span>, fdr_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>FCthreshold</code></dt>
+<p></p><div class="arguments"><dl><dt><code>fc_threshold</code></dt>
 <dd><p>fold change threshold to show in plots</p></dd>
 
 
-<dt><code>FDRthreshold</code></dt>
+<dt><code>fdr_threshold</code></dt>
 <dd><p>FDR threshold to show in plots</p></dd>
 
 
@@ -355,16 +355,16 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span>     column_description: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_result: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     contrasts: group_A - group_B group_A - group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Plotter: function (FCthreshold = 1, FDRthreshold = 0.1) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Plotter: function (fc_threshold = 1, fdr_threshold = 0.1) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_contrast_sides: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_contrasts: function (all = FALSE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_linfct: function (avg = TRUE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_missing: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (model, contrasts, p.adjust = prolfqua::adjust_p_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     modelName: WaldTestFirth</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     model_name: WaldTestFirth</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     models: ModelFirth, ModelInterface, R6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p.adjust: function (contrast_df, column = "p.value", group_by_col = "contrast", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     subject_Id: protein_Id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     subject_id: protein_Id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     to_wide: function (columns = c("p.value", "FDR", "statistic")) </span>
 <span class="r-in"><span><span class="va">ctr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
@@ -423,16 +423,16 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span>     column_description: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_result: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     contrasts: group_A - group_B group_A - group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Plotter: function (FCthreshold = 1, FDRthreshold = 0.1) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Plotter: function (fc_threshold = 1, fdr_threshold = 0.1) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_contrast_sides: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_contrasts: function (all = FALSE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_linfct: function (avg = TRUE) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_missing: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (model, contrasts, p.adjust = prolfqua::adjust_p_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     modelName: WaldTestFirth</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     model_name: WaldTestFirth</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     models: ModelFirth, ModelInterface, R6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     p.adjust: function (contrast_df, column = "p.value", group_by_col = "contrast", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     subject_Id: protein_Id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     subject_id: protein_Id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     to_wide: function (columns = c("p.value", "FDR", "statistic")) </span>
 <span class="r-in"><span><span class="va">ctrpep</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>

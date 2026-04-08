@@ -6,34 +6,34 @@ Likelihood ratio test
 
 ``` r
 LR_test(
-  modelProteinF,
-  modelName,
-  modelProteinF_Int,
-  modelName_Int,
-  subject_Id = "protein_Id",
+  complete_models,
+  model_name,
+  complete_models_int,
+  model_name_int,
+  subject_id = "protein_Id",
   path = NULL
 )
 ```
 
 ## Arguments
 
-- modelProteinF:
+- complete_models:
 
   table with models (see build model)
 
-- modelName:
+- model_name:
 
   name of model
 
-- modelProteinF_Int:
+- complete_models_int:
 
   reduced model
 
-- modelName_Int:
+- model_name_int:
 
   name of reduced model
 
-- subject_Id:
+- subject_id:
 
   subject id typically Assession or protein_Id
 
@@ -100,7 +100,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -113,7 +113,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
@@ -128,7 +128,7 @@ Other modelling:
 ## Examples
 
 ``` r
-data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(
+data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
  Nprot = 200,
  with_missing = TRUE,
  weight_missing = 2)
@@ -167,7 +167,7 @@ formula_condition_and_Batches <-
 modCB <- prolfqua::build_model(
   pMerged$data,
   formula_condition_and_Batches,
-  subject_Id = pMerged$config$hierarchy_keys() )
+  subject_id = pMerged$config$hierarchy_keys() )
 #> Warning: There were 25 warnings in `dplyr::mutate()`.
 #> The first warning was:
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
@@ -182,7 +182,7 @@ formula_condition <-
 modC <- prolfqua::build_model(
   pMerged$data,
   formula_condition,
-  subject_Id = pMerged$config$hierarchy_keys() )
+  subject_id = pMerged$config$hierarchy_keys() )
 #> Warning: There were 19 warnings in `dplyr::mutate()`.
 #> The first warning was:
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
@@ -192,7 +192,7 @@ modC <- prolfqua::build_model(
 #> ! WARN :Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 18 remaining warnings.
 
-tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
+tmp <- LR_test(modCB$model_df, "modCB", modC$model_df, "modB")
 hist(tmp$likelihood_ratio_test.pValue)
 
 ```

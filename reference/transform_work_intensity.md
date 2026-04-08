@@ -10,7 +10,7 @@ transform_work_intensity(
   config,
   .func,
   .funcname = NULL,
-  intesityNewName = NULL,
+  intensity_new_name = NULL,
   deep = FALSE
 )
 ```
@@ -34,7 +34,7 @@ transform_work_intensity(
   generates new name from name of transformation and old working
   intensity column name.
 
-- intesityNewName:
+- intensity_new_name:
 
   column name for new intensity, default NULL
 

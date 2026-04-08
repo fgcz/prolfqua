@@ -116,11 +116,7 @@ Other configuration:
 
 - [`AnalysisConfiguration$hierarchy_keys()`](#method-AnalysisConfiguration-hierarchy_keys)
 
-- [`AnalysisConfiguration$hierarchyKeys()`](#method-AnalysisConfiguration-hierarchyKeys)
-
 - [`AnalysisConfiguration$hierarchy_keys_depth()`](#method-AnalysisConfiguration-hierarchy_keys_depth)
-
-- [`AnalysisConfiguration$hkeysDepth()`](#method-AnalysisConfiguration-hkeysDepth)
 
 - [`AnalysisConfiguration$id_required()`](#method-AnalysisConfiguration-id_required)
 
@@ -150,11 +146,11 @@ Add name of intensity column
 
 #### Usage
 
-    AnalysisConfiguration$set_response(colName)
+    AnalysisConfiguration$set_response(col_name)
 
 #### Arguments
 
-- `colName`:
+- `col_name`:
 
   name of intensity column
 
@@ -224,26 +220,6 @@ array of column names
 
 ------------------------------------------------------------------------
 
-### Method `hierarchyKeys()`
-
-get hierarchy keys (deprecated alias for hierarchy_keys)
-
-#### Usage
-
-    AnalysisConfiguration$hierarchyKeys(rev = FALSE)
-
-#### Arguments
-
-- `rev`:
-
-  return in reverse order
-
-#### Returns
-
-array of column names
-
-------------------------------------------------------------------------
-
 ### Method `hierarchy_keys_depth()`
 
 get hierarchy keys up to depth
@@ -251,27 +227,6 @@ get hierarchy keys up to depth
 #### Usage
 
     AnalysisConfiguration$hierarchy_keys_depth(names = TRUE)
-
-#### Arguments
-
-- `names`:
-
-  if TRUE names only if FALSE key value pairs
-
-#### Returns
-
-array of column names
-
-------------------------------------------------------------------------
-
-### Method `hkeysDepth()`
-
-get hierarchy keys up to depth (deprecated alias for
-hierarchy_keys_depth)
-
-#### Usage
-
-    AnalysisConfiguration$hkeysDepth(names = TRUE)
 
 #### Arguments
 

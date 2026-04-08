@@ -18,7 +18,7 @@ multigroup_volcano(
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
-  maxNrOfSignificantText = 20
+  max_nr_significant_text = 20
 )
 ```
 
@@ -72,7 +72,7 @@ multigroup_volcano(
 
   parameter to ggplot2::facet_wrap
 
-- maxNrOfSignificantText:
+- max_nr_significant_text:
 
   maximum number of significant labels to display
 
@@ -80,12 +80,12 @@ multigroup_volcano(
 
 Other utilities:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`get_UniprotID_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_UniprotID_from_fasta_header.md),
+[`get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
 [`matrix_to_tibble()`](https://wolski.github.io/prolfqua/reference/matrix_to_tibble.md),
 [`names_to_matrix()`](https://wolski.github.io/prolfqua/reference/names_to_matrix.md),
 [`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
 [`panel_cor()`](https://wolski.github.io/prolfqua/reference/panel_cor.md),
-[`remove_NA_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md),
+[`remove_na_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md),
 [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
 
 ## Examples
@@ -100,5 +100,5 @@ significance = "adj.P.Val",
 contrast="Condition",
 colour=NULL,
 label="Name",
-maxNrOfSignificantText = 300)
+max_nr_significant_text = 300)
 ```

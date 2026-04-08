@@ -8,13 +8,13 @@ Build protein models from data
 build_model(
   data,
   model_strategy,
-  subject_Id = if ("LFQData" %in% class(data)) {
-     data$subject_Id()
+  subject_id = if ("LFQData" %in% class(data)) {
+     data$subject_id()
  } else {
     
     "protein_Id"
  },
-  modelName = model_strategy$model_name
+  model_name = model_strategy$model_name
 )
 ```
 
@@ -28,11 +28,11 @@ build_model(
 
   model strategy object (e.g. from strategy_lmer or strategy_lm)
 
-- subject_Id:
+- subject_id:
 
   grouping variable
 
-- modelName:
+- model_name:
 
   model name
 
@@ -103,7 +103,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -116,7 +116,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
@@ -145,17 +145,17 @@ D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, see
 #> setup done
 D$data$abundance |> is.na() |> sum()
 #> [1] 59
-modelName <- "f_condtion_r_peptide"
+model_name <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sampleName)",
-   model_name = modelName)
+   model_name = model_name)
 
 
 mod <- prolfqua::build_model(
  D$data,
  formula_randomPeptide,
- modelName = modelName,
- subject_Id = D$config$hierarchy_keys_depth())
+ model_name = model_name,
+ subject_id = D$config$hierarchy_keys_depth())
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -183,7 +183,7 @@ aovtable <- mod$get_anova()
 mod <- prolfqua::build_model(
  LFQData$new(D$data, D$config),
  formula_randomPeptide,
- modelName = modelName)
+ model_name = model_name)
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')

@@ -39,7 +39,7 @@ weight lod by nr of NA's \$(LOD \* nrNas + meanAbundance
 
 - [`MissingHelpers$get_stats()`](#method-MissingHelpers-get_stats)
 
-- [`MissingHelpers$get_LOD()`](#method-MissingHelpers-get_LOD)
+- [`MissingHelpers$get_lod()`](#method-MissingHelpers-get_lod)
 
 - [`MissingHelpers$impute_weighted_lod()`](#method-MissingHelpers-impute_weighted_lod)
 
@@ -97,14 +97,14 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_LOD()`
+### Method `get_lod()`
 
 determine limit of detection computes quantile of abundances in groups
 with a single observation
 
 #### Usage
 
-    MissingHelpers$get_LOD()
+    MissingHelpers$get_lod()
 
 #### Returns
 
@@ -214,7 +214,7 @@ dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
 xx <- mh$get_stats()
 #> completing cases
-xx <- mh$get_LOD()
+xx <- mh$get_lod()
 xx <- mh$impute_weighted_lod()
 xx <- mh$impute_lod()
 xx <- mh$get_poolvar()
@@ -251,7 +251,7 @@ mh$get_contrasts(Contrasts)
 #> #   nrMeasured_group_2 <int>, df <dbl>, sd <dbl>, sdT <dbl>, statistic <dbl>,
 #> #   p.value <dbl>, conf.low <dbl>, conf.high <dbl>
 
-dd <- prolfqua::sim_lfq_data_2Factor_config(Nprot = 100,weight_missing = 0.1)
+dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done

@@ -38,7 +38,7 @@ linear models can be found
 ## Model Fitting
 
 We use simulated data generated using the function
-`sim_lfq_data_2Factor_config`. Interesting here is the definition of the
+`sim_lfq_data_2factor_config`. Interesting here is the definition of the
 model. If interaction shall be included in the model a *asterix* should
 be used while if no interaction should be taken into account a *plus*
 should be used in the model definition. Also we can directly specify
@@ -49,7 +49,7 @@ contrasts.
 library(dplyr)
 
 #data_Yeast2Factor <- prolfqua::prolfqua_data("data_Yeast2Factor")
-data_2Factor <- prolfqua::sim_lfq_data_2Factor_config(
+data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
   Nprot = 200,
   with_missing = TRUE,
   weight_missing = 2)
@@ -96,7 +96,7 @@ protein.
 
 ``` r
 mod <- prolfqua::build_model(pMerged$data, formula_Batches,
-  subject_Id = pMerged$config$hierarchy_keys() )
+  subject_id = pMerged$config$hierarchy_keys() )
 ```
 
 Now, we can visualize the effect of our factors that are specified in
@@ -287,7 +287,7 @@ subgroups “A_X”, “A_Z”, “B_X”, “B_Z”.
 We start by simulating the data.
 
 ``` r
-data_1Factor <- prolfqua::sim_lfq_data_2Factor_config(
+data_1Factor <- prolfqua::sim_lfq_data_2factor_config(
   Nprot = 200,
   with_missing = TRUE,
   weight_missing = 2, TWO = FALSE)
@@ -342,7 +342,7 @@ contr_spec <- c("TA - TB" = "(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2",
 
 ``` r
 mod <- prolfqua::build_model(data_1Factor$data, formula_Batches,
-  subject_Id = pMerged$config$hierarchy_keys() )
+  subject_id = pMerged$config$hierarchy_keys() )
 ```
 
 ``` r
@@ -405,15 +405,15 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] dplyr_1.2.0    prolfqua_1.6.1
+    ## [1] dplyr_1.2.1    prolfqua_1.6.1
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      vipor_0.4.7           
     ##  [4] farver_2.1.2           S7_0.2.1               fastmap_1.2.0         
-    ##  [7] lazyeval_0.2.2         digest_0.6.39          rpart_4.1.24          
+    ##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          
     ## [10] lifecycle_1.0.5        survival_3.8-3         statmod_1.5.1         
-    ## [13] magrittr_2.0.4         compiler_4.5.2         progress_1.2.3        
-    ## [16] rlang_1.1.7            sass_0.4.10            tools_4.5.2           
+    ## [13] magrittr_2.0.5         compiler_4.5.2         progress_1.2.3        
+    ## [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           
     ## [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.2.1   
     ## [22] knitr_1.51             labeling_0.4.3         prettyunits_1.2.0     
     ## [25] htmlwidgets_1.6.4      plyr_1.8.9             RColorBrewer_1.1-3    
@@ -436,7 +436,7 @@ sessionInfo()
     ## [76] lme4_2.0-1             tibble_3.3.1           pillar_1.11.1         
     ## [79] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     
     ## [82] Rdpack_2.6.6           formula.tools_1.7.1    evaluate_1.0.5        
-    ## [85] lattice_0.22-7         rbibutils_2.4.1        backports_1.5.0       
+    ## [85] lattice_0.22-7         rbibutils_2.4.1        backports_1.5.1       
     ## [88] pheatmap_1.0.13        broom_1.0.12           bslib_0.10.0          
     ## [91] Rcpp_1.1.1             gridExtra_2.3          nlme_3.1-168          
     ## [94] mgcv_1.9-3             logistf_1.26.1         xfun_0.57             

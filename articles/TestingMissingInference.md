@@ -73,7 +73,7 @@ abline(0 , 1 , col=2 , lwd=2)
 ![](TestingMissingInference_files/figure-html/lookAtSummarizeStats-1.png)
 
 ``` r
-mh1$get_LOD()
+mh1$get_lod()
 ```
 
     ##      50% 
@@ -100,8 +100,8 @@ formula_Protein <-
 mod <- prolfqua::build_model(
   dd$data,
   formula_Protein,
-  modelName = modelName,
-  subject_Id = dd$config$hierarchy_keys_depth())
+  model_name = modelName,
+  subject_id = dd$config$hierarchy_keys_depth())
 ```
 
     ## Warning: There were 11 warnings in `dplyr::mutate()`.
@@ -114,7 +114,7 @@ mod <- prolfqua::build_model(
     ## ℹ Run `dplyr::last_dplyr_warnings()` to see the 10 remaining warnings.
 
 ``` r
-mod$modelDF
+mod$model_df
 ```
 
     ## # A tibble: 100 × 9
@@ -135,7 +135,7 @@ mod$modelDF
     ## # ℹ 2 more variables: nr_coef <int>, nr_coef_not_NA <int>
 
 ``` r
-mod$modelDF$nr_coef_not_NA |> table()
+mod$model_df$nr_coef_not_NA |> table()
 ```
 
     ## 
@@ -143,7 +143,7 @@ mod$modelDF$nr_coef_not_NA |> table()
     ## 15 74
 
 ``` r
-mod$modelDF$isSingular |> table()
+mod$model_df$isSingular |> table()
 ```
 
     ## 
@@ -151,7 +151,7 @@ mod$modelDF$isSingular |> table()
     ##    69    20
 
 ``` r
-mod$modelDF |> nrow()
+mod$model_df |> nrow()
 ```
 
     ## [1] 100
@@ -191,8 +191,8 @@ prolfqua::model_summary(mod)
     ##    69    20
 
 ``` r
-maxcoef <- max(mod$modelDF$nr_coef_not_NA, na.rm = TRUE)
-goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, has_model_fit == TRUE, nr_coef_not_NA == maxcoef)
+maxcoef <- max(mod$model_df$nr_coef_not_NA, na.rm = TRUE)
+goodmods <- mod$model_df |> dplyr::filter(isSingular == FALSE, has_model_fit == TRUE, nr_coef_not_NA == maxcoef)
 
 dim(goodmods)
 ```
@@ -233,15 +233,15 @@ sum_matrix/length(xx)
 ``` r
 loddata <- dd$data
 
-loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), mh1$get_LOD(), abundance))
+loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), mh1$get_lod(), abundance))
 modI <- prolfqua::build_model(
   loddata,
   formula_Protein,
-  modelName = modelName,
-  subject_Id = dd$config$hierarchy_keys_depth())
+  model_name = modelName,
+  subject_id = dd$config$hierarchy_keys_depth())
 
 
-modI$modelDF$nr_coef_not_NA |> table()
+modI$model_df$nr_coef_not_NA |> table()
 ```
 
     ## 
@@ -249,7 +249,7 @@ modI$modelDF$nr_coef_not_NA |> table()
     ## 100
 
 ``` r
-modI$modelDF$isSingular |> table()
+modI$model_df$isSingular |> table()
 ```
 
     ## 
@@ -257,13 +257,13 @@ modI$modelDF$isSingular |> table()
     ##   100
 
 ``` r
-modI$modelDF |> nrow()
+modI$model_df |> nrow()
 ```
 
     ## [1] 100
 
 ``` r
-allModels <- modI$modelDF$linear_model
+allModels <- modI$model_df$linear_model
 
 xx <- lapply(allModels, vcov)
 sum_matrix <- Reduce(`+`, xx)
@@ -276,7 +276,7 @@ sum_matrix/length(xx)
     ## group_Ctrl   -0.4759103  0.4759103  0.9518206
 
 ``` r
-m <- (modI$modelDF$linear_model[[1]])
+m <- (modI$model_df$linear_model[[1]])
 df.residual(m)
 ```
 

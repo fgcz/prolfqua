@@ -103,11 +103,11 @@ can bias fold-change estimates and inflate false discovery rates.</p>
 <li><p><a href="#method-LFQData-get_copy"><code>LFQData$get_copy()</code></a></p></li>
 <li><p><a href="#method-LFQData-get_sample"><code>LFQData$get_sample()</code></a></p></li>
 <li><p><a href="#method-LFQData-get_subset"><code>LFQData$get_subset()</code></a></p></li>
-<li><p><a href="#method-LFQData-subject_Id"><code>LFQData$subject_Id()</code></a></p></li>
+<li><p><a href="#method-LFQData-subject_id"><code>LFQData$subject_id()</code></a></p></li>
 <li><p><a href="#method-LFQData-is_transformed"><code>LFQData$is_transformed()</code></a></p></li>
 <li><p><a href="#method-LFQData-remove_small_intensities"><code>LFQData$remove_small_intensities()</code></a></p></li>
 <li><p><a href="#method-LFQData-filter_proteins_by_peptide_count"><code>LFQData$filter_proteins_by_peptide_count()</code></a></p></li>
-<li><p><a href="#method-LFQData-omit_NA"><code>LFQData$omit_NA()</code></a></p></li>
+<li><p><a href="#method-LFQData-omit_na"><code>LFQData$omit_na()</code></a></p></li>
 <li><p><a href="#method-LFQData-complete_cases"><code>LFQData$complete_cases()</code></a></p></li>
 <li><p><a href="#method-LFQData-to_wide"><code>LFQData$to_wide()</code></a></p></li>
 <li><p><a href="#method-LFQData-factors"><code>LFQData$factors()</code></a></p></li>
@@ -193,17 +193,17 @@ can bias fold-change estimates and inflate false discovery rates.</p>
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>x</code></dt>
-<dd><p>data frame with columns containing subject_Id</p></dd>
+<dd><p>data frame with columns containing subject_id</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-LFQData-subject_Id"></a><div class="section">
-<h3 id="method-subject-id-">Method <code>subject_Id()</code><a class="anchor" aria-label="anchor" href="#method-subject-id-"></a></h3>
+</div><p></p><hr><a id="method-LFQData-subject_id"></a><div class="section">
+<h3 id="method-subject-id-">Method <code>subject_id()</code><a class="anchor" aria-label="anchor" href="#method-subject-id-"></a></h3>
 <p>get subject ID columns</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">subject_Id</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">subject_id</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -259,24 +259,24 @@ can bias fold-change estimates and inflate false discovery rates.</p>
 <p>self</p>
 </div>
 
-</div><p></p><hr><a id="method-LFQData-omit_NA"></a><div class="section">
-<h3 id="method-omit-na-">Method <code>omit_NA()</code><a class="anchor" aria-label="anchor" href="#method-omit-na-"></a></h3>
+</div><p></p><hr><a id="method-LFQData-omit_na"></a><div class="section">
+<h3 id="method-omit-na-">Method <code>omit_na()</code><a class="anchor" aria-label="anchor" href="#method-omit-na-"></a></h3>
 <p>Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
 it will be removed</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>nrNA <span class="op">=</span> <span class="fl">0</span>, factorDepth <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">omit_na</span><span class="op">(</span>nr_na <span class="op">=</span> <span class="fl">0</span>, factor_depth <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>nrNA</code></dt>
+<p></p><div class="arguments"><dl><dt><code>nr_na</code></dt>
 <dd><p>number of NA values</p></dd>
 
 
-<dt><code>factorDepth</code></dt>
-<dd><p>control whether `nrNA` is applied per condition or more
-globally, e.g. `factorDepth = 0` means per experiment</p></dd>
+<dt><code>factor_depth</code></dt>
+<dd><p>control whether `nr_na` is applied per condition or more
+globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 
 
 </dl><p></p></div>
@@ -556,12 +556,12 @@ globally, e.g. `factorDepth = 0` means per experiment</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># filter for missing values</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>nrNA <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_na</span><span class="op">(</span>nr_na <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">f1</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_NA</span><span class="op">(</span>factorDepth <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">omit_na</span><span class="op">(</span>factor_depth <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id)`</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">f2</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>

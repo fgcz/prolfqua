@@ -22,7 +22,7 @@ one-factor introduction.
 ``` r
 options(prolfqua.vectorize = TRUE)
 
-dd <- sim_lfq_data_2Factor_config(
+dd <- sim_lfq_data_2factor_config(
   Nprot = 80,
   with_missing = TRUE,
   weight_missing = 1,

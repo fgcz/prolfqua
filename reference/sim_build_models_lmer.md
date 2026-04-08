@@ -72,7 +72,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -85,7 +85,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
@@ -118,7 +118,7 @@ modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-stopifnot(sum(modi$modelDF$has_model_fit) == 6)
+stopifnot(sum(modi$model_df$has_model_fit) == 6)
 mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
 #> creating sampleName from file_name column
@@ -137,7 +137,7 @@ mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-stopifnot(sum(mod2$modelDF$has_model_fit) == 6)
+stopifnot(sum(mod2$model_df$has_model_fit) == 6)
 mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
 #> creating sampleName from file_name column
 #> completing cases
@@ -156,7 +156,7 @@ mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-stopifnot(sum(mod4$modelDF$has_model_fit) == 6)
+stopifnot(sum(mod4$model_df$has_model_fit) == 6)
 modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
 #> creating sampleName from file_name column
@@ -174,5 +174,5 @@ modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
 #> Caused by warning in `value[[3L]]()`:
 #> ! WARN :Error: grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
-stopifnot(sum(modf$modelDF$has_model_fit) == 6)
+stopifnot(sum(modf$model_df$has_model_fit) == 6)
 ```

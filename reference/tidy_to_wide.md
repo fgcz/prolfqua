@@ -6,5 +6,5 @@ sample
 ## Usage
 
 ``` r
-tidy_to_wide(data, rowIDs, columnLabels, value)
+tidy_to_wide(data, row_ids, column_labels, value)
 ```

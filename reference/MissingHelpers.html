@@ -91,7 +91,7 @@ compute group mean by LOD"></head><body>
 
 <ul><li><p><a href="#method-MissingHelpers-new"><code>MissingHelpers$new()</code></a></p></li>
 <li><p><a href="#method-MissingHelpers-get_stats"><code>MissingHelpers$get_stats()</code></a></p></li>
-<li><p><a href="#method-MissingHelpers-get_LOD"><code>MissingHelpers$get_LOD()</code></a></p></li>
+<li><p><a href="#method-MissingHelpers-get_lod"><code>MissingHelpers$get_lod()</code></a></p></li>
 <li><p><a href="#method-MissingHelpers-impute_weighted_lod"><code>MissingHelpers$impute_weighted_lod()</code></a></p></li>
 <li><p><a href="#method-MissingHelpers-impute_lod"><code>MissingHelpers$impute_lod()</code></a></p></li>
 <li><p><a href="#method-MissingHelpers-get_poolvar"><code>MissingHelpers$get_poolvar()</code></a></p></li>
@@ -138,12 +138,12 @@ compute group mean by LOD"></head><body>
 <p>data.frame</p>
 </div>
 
-</div><p></p><hr><a id="method-MissingHelpers-get_LOD"></a><div class="section">
-<h3 id="method-get-lod-">Method <code>get_LOD()</code><a class="anchor" aria-label="anchor" href="#method-get-lod-"></a></h3>
+</div><p></p><hr><a id="method-MissingHelpers-get_lod"></a><div class="section">
+<h3 id="method-get-lod-">Method <code>get_lod()</code><a class="anchor" aria-label="anchor" href="#method-get-lod-"></a></h3>
 <p>determine limit of detection
 computes quantile of abundances in groups with a single observation</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">get_LOD</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">get_lod</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -254,7 +254,7 @@ computes quantile of abundances in groups with a single observation</p><div clas
 <span class="r-in"><span><span class="va">mh</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span>, prob <span class="op">=</span> <span class="fl">0.8</span>,weighted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">get_stats</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">get_LOD</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">get_lod</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">impute_weighted_lod</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">impute_lod</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="va">mh</span><span class="op">$</span><span class="fu">get_poolvar</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -291,7 +291,7 @@ computes quantile of abundances in groups with a single observation</p><div clas
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   nrMeasured_group_2 &lt;int&gt;, df &lt;dbl&gt;, sd &lt;dbl&gt;, sdT &lt;dbl&gt;, statistic &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_2Factor_config.html">sim_lfq_data_2Factor_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>,weight_missing <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_2Factor_config.html">sim_lfq_data_2factor_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>,weight_missing <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>

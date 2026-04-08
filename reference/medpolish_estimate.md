@@ -6,7 +6,7 @@ precursor intensities
 ## Usage
 
 ``` r
-medpolish_estimate(x, name = FALSE, sampleName = "sampleName")
+medpolish_estimate(x, name = FALSE, sample_name = "sample_name")
 ```
 
 ## Arguments

@@ -58,7 +58,7 @@ Other LFQData:
 
 - [`LFQDataPlotter$missigness_histogram()`](#method-LFQDataPlotter-missigness_histogram)
 
-- [`LFQDataPlotter$NA_heatmap()`](#method-LFQDataPlotter-NA_heatmap)
+- [`LFQDataPlotter$na_heatmap()`](#method-LFQDataPlotter-na_heatmap)
 
 - [`LFQDataPlotter$intensity_distribution_density()`](#method-LFQDataPlotter-intensity_distribution_density)
 
@@ -274,13 +274,13 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `NA_heatmap()`
+### Method `na_heatmap()`
 
 heatmap of features with missing values
 
 #### Usage
 
-    LFQDataPlotter$NA_heatmap()
+    LFQDataPlotter$na_heatmap()
 
 #### Returns
 
@@ -520,7 +520,7 @@ stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
 #> completing cases
 #> isotopeLabel ~ group_
 
-stopifnot(class(lfqplotter$NA_heatmap()) == "pheatmap")
+stopifnot(class(lfqplotter$na_heatmap()) == "pheatmap")
 #> rows with NA's: 16; all rows :28
 class(lfqplotter$intensity_distribution_density())
 #> [1] "ggplot2::ggplot" "ggplot"          "ggplot2::gg"     "S7_object"      

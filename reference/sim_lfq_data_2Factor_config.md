@@ -6,7 +6,7 @@ Background
 ## Usage
 
 ``` r
-sim_lfq_data_2Factor_config(
+sim_lfq_data_2factor_config(
   Nprot = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
@@ -46,7 +46,7 @@ sim_lfq_data_2Factor_config(
 ## Examples
 
 ``` r
-x <- sim_lfq_data_2Factor_config(PEPTIDE= FALSE)
+x <- sim_lfq_data_2factor_config(PEPTIDE= FALSE)
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
@@ -55,7 +55,7 @@ dim(x$data)
 #> [1] 160   9
 stopifnot("data.frame" %in% class(x$data))
 stopifnot("AnalysisConfiguration" %in% class(x$config))
-x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE)
+x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
 #> creating sampleName from file_name column
 #> completing cases
@@ -73,7 +73,7 @@ head(x$data)
 #> 5 A_V1   A_V1       A         X          light        9VUkAq~4703 eIC06D7g  
 #> 6 A_V1   A_V1       A         X          light        BEJI92~5282 HBkZvdhT  
 #> # ℹ 3 more variables: abundance <dbl>, qValue <dbl>, nr_peptides <dbl>
-x <- sim_lfq_data_2Factor_config(PEPTIDE = TRUE, TWO = TRUE)
+x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE, TWO = TRUE)
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
 #> creating sampleName from file_name column
 #> completing cases

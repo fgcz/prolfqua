@@ -6,9 +6,9 @@ pivot model contrasts matrix to wide format produced by
 ## Usage
 
 ``` r
-pivot_model_contrasts_2_Wide(
-  modelWithInteractionsContrasts,
-  subject_Id = "protein_Id",
+pivot_model_contrasts_to_wide(
+  model_interaction_contrasts,
+  subject_id = "protein_Id",
   columns = c("estimate", "p.value", "p.value.adjusted"),
   contrast = "lhs"
 )
@@ -16,11 +16,11 @@ pivot_model_contrasts_2_Wide(
 
 ## Arguments
 
-- modelWithInteractionsContrasts:
+- model_interaction_contrasts:
 
   data.frame with contrast results in long format
 
-- subject_Id:
+- subject_id:
 
   column name(s) identifying subjects (e.g. protein_Id)
 
@@ -91,7 +91,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),

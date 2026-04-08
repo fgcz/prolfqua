@@ -120,7 +120,7 @@ ROPECA reproducibility-optimization method"></head><body>
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -133,7 +133,7 @@ ROPECA reproducibility-optimization method"></head><body>
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -159,11 +159,11 @@ ROPECA reproducibility-optimization method"></head><body>
 <dd><p>contrast result</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>model name</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>columns with protein ID's</p></dd>
 
 
@@ -194,7 +194,7 @@ ROPECA reproducibility-optimization method"></head><body>
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsROPECA.html">ContrastsROPECA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">Contrast</span>,</span>
-<span>  modelName <span class="op">=</span> <span class="st">"ROPECA"</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"ROPECA"</span>,</span>
 <span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -205,7 +205,7 @@ ROPECA reproducibility-optimization method"></head><body>
 <dd><p>e.g. instance of Contrasts class, or ContrastsModerated</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>default ROPECA</p></dd>
 
 
@@ -268,16 +268,16 @@ ROPECA reproducibility-optimization method"></head><body>
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
 <p>get <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECA</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>FDRthreshold <span class="op">=</span> <span class="fl">0.1</span>, FCthreshold <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECA</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>fdr_threshold <span class="op">=</span> <span class="fl">0.1</span>, fc_threshold <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>FDRthreshold</code></dt>
+<p></p><div class="arguments"><dl><dt><code>fdr_threshold</code></dt>
 <dd><p>FDR threshold</p></dd>
 
 
-<dt><code>FCthreshold</code></dt>
+<dt><code>fc_threshold</code></dt>
 <dd><p>FC threshold</p></dd>
 
 
@@ -350,7 +350,7 @@ ROPECA reproducibility-optimization method"></head><body>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_model.html">build_model</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span> <span class="va">pepIntensity</span>,</span></span>
 <span class="r-in"><span> <span class="va">modelFunction</span>,</span></span>
-<span class="r-in"><span> subject_Id <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span> subject_id <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">Contr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AvsCtrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

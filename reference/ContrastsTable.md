@@ -64,7 +64,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -77,7 +77,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
@@ -100,11 +100,11 @@ Other modelling:
 
   contrast results
 
-- `modelName`:
+- `model_name`:
 
   model name
 
-- `subject_Id`:
+- `subject_id`:
 
   default protein_Id
 
@@ -141,8 +141,8 @@ intitialize
 
     ContrastsTable$new(
       contrastsdf,
-      subject_Id = "protein_Id",
-      modelName = "ContrastTable"
+      subject_id = "protein_Id",
+      model_name = "ContrastTable"
     )
 
 #### Arguments
@@ -151,11 +151,11 @@ intitialize
 
   data.frame
 
-- `subject_Id`:
+- `subject_id`:
 
   default protein_Id
 
-- `modelName`:
+- `model_name`:
 
   default ContrastTable
 
@@ -212,15 +212,15 @@ get
 
 #### Usage
 
-    ContrastsTable$get_Plotter(FCthreshold = 1, FDRthreshold = 0.1)
+    ContrastsTable$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)
 
 #### Arguments
 
-- `FCthreshold`:
+- `fc_threshold`:
 
   fold change threshold
 
-- `FDRthreshold`:
+- `fdr_threshold`:
 
   fdr threshold
 
@@ -303,9 +303,9 @@ ctr <- csi$get_contrasts()
 #> bC=group_A - group_Ctrl
 #> aC=group_A - group_Ctrl
 #> bC=group_A - group_Ctrl
-csi$subject_Id
+csi$subject_id
 #> [1] "protein_Id" "peptide_Id"
-xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, modelName = "TableTest")
+xcx <- ContrastsTable$new(ctr, subject_id = csi$subject_id, model_name = "TableTest")
 xcx$get_contrasts()
 #> # A tibble: 56 × 21
 #>    modelName protein_Id peptide_Id meanAbundanceImp_gro…¹ meanAbundanceImp_gro…²

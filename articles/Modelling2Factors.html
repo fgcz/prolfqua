@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-04-02</h4>
+            <h4 data-toc-skip class="date">2026-04-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/vignettes/Modelling2Factors.Rmd" class="external-link"><code>vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="d-none name"><code>Modelling2Factors.Rmd</code></div>
@@ -114,7 +114,7 @@ linear models can be found <a href="https://genomicsclass.github.io/book/pages/i
 <h2 id="model-fitting">Model Fitting<a class="anchor" aria-label="anchor" href="#model-fitting"></a>
 </h2>
 <p>We use simulated data generated using the function
-<code>sim_lfq_data_2Factor_config</code>. Interesting here is the
+<code>sim_lfq_data_2factor_config</code>. Interesting here is the
 definition of the model. If interaction shall be included in the model a
 <em>asterix</em> should be used while if no interaction should be taken
 into account a <em>plus</em> should be used in the model definition.
@@ -124,7 +124,7 @@ specifying the respective contrasts.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#data_Yeast2Factor &lt;- prolfqua::prolfqua_data("data_Yeast2Factor")</span></span>
-<span><span class="va">data_2Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2Factor_config</a></span><span class="op">(</span></span>
+<span><span class="va">data_2Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2factor_config</a></span><span class="op">(</span></span>
 <span>  Nprot <span class="op">=</span> <span class="fl">200</span>,</span>
 <span>  with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  weight_missing <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -165,7 +165,7 @@ specifying the respective contrasts.</p>
 protein.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">pMerged</span><span class="op">$</span><span class="va">data</span>, <span class="va">formula_Batches</span>,</span>
-<span>  subject_Id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
+<span>  subject_id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <p>Now, we can visualize the effect of our factors that are specified in
 the model. This indicates in an elegant way what factors are the most
 important ones.</p>
@@ -327,7 +327,7 @@ Proteinheatmap for proteins with significant Interactions
 subgroups “A_X”, “A_Z”, “B_X”, “B_Z”.</p>
 <p>We start by simulating the data.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_1Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2Factor_config</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">data_1Factor</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2factor_config</a></span><span class="op">(</span></span>
 <span>  Nprot <span class="op">=</span> <span class="fl">200</span>,</span>
 <span>  with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  weight_missing <span class="op">=</span> <span class="fl">2</span>, TWO <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -443,7 +443,7 @@ factor model but using only one factor and the subgroups.</p>
 <span>               <span class="st">"Interaction"</span> <span class="op">=</span> <span class="st">"AvsB_gv_BackgroundX - AvsB_gv_BackgroundZ"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">data_1Factor</span><span class="op">$</span><span class="va">data</span>, <span class="va">formula_Batches</span>,</span>
-<span>  subject_Id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
+<span>  subject_id <span class="op">=</span> <span class="va">pMerged</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contr</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod</span>, <span class="va">contr_spec</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">contrdfONE</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -499,15 +499,15 @@ open the documentation run <code><a href="../reference/LR_test.html">?LR_test</a
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] dplyr_1.2.0    prolfqua_1.6.1</span></span>
+<span><span class="co">## [1] dplyr_1.2.1    prolfqua_1.6.1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] tidyselect_1.2.1       viridisLite_0.4.3      vipor_0.4.7           </span></span>
 <span><span class="co">##  [4] farver_2.1.2           S7_0.2.1               fastmap_1.2.0         </span></span>
-<span><span class="co">##  [7] lazyeval_0.2.2         digest_0.6.39          rpart_4.1.24          </span></span>
+<span><span class="co">##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          </span></span>
 <span><span class="co">## [10] lifecycle_1.0.5        survival_3.8-3         statmod_1.5.1         </span></span>
-<span><span class="co">## [13] magrittr_2.0.4         compiler_4.5.2         progress_1.2.3        </span></span>
-<span><span class="co">## [16] rlang_1.1.7            sass_0.4.10            tools_4.5.2           </span></span>
+<span><span class="co">## [13] magrittr_2.0.5         compiler_4.5.2         progress_1.2.3        </span></span>
+<span><span class="co">## [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           </span></span>
 <span><span class="co">## [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.2.1   </span></span>
 <span><span class="co">## [22] knitr_1.51             labeling_0.4.3         prettyunits_1.2.0     </span></span>
 <span><span class="co">## [25] htmlwidgets_1.6.4      plyr_1.8.9             RColorBrewer_1.1-3    </span></span>
@@ -530,7 +530,7 @@ open the documentation run <code><a href="../reference/LR_test.html">?LR_test</a
 <span><span class="co">## [76] lme4_2.0-1             tibble_3.3.1           pillar_1.11.1         </span></span>
 <span><span class="co">## [79] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     </span></span>
 <span><span class="co">## [82] Rdpack_2.6.6           formula.tools_1.7.1    evaluate_1.0.5        </span></span>
-<span><span class="co">## [85] lattice_0.22-7         rbibutils_2.4.1        backports_1.5.0       </span></span>
+<span><span class="co">## [85] lattice_0.22-7         rbibutils_2.4.1        backports_1.5.1       </span></span>
 <span><span class="co">## [88] pheatmap_1.0.13        broom_1.0.12           bslib_0.10.0          </span></span>
 <span><span class="co">## [91] Rcpp_1.1.1             gridExtra_2.3          nlme_3.1-168          </span></span>
 <span><span class="co">## [94] mgcv_1.9-3             logistf_1.26.1         xfun_0.57             </span></span>

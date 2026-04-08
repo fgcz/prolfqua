@@ -92,13 +92,13 @@ robust scale data
 #### Usage
 
     LFQDataTransformer$robscale(
-      preserveMean = TRUE,
+      preserve_mean = TRUE,
       colname = "transformedIntensity"
     )
 
 #### Arguments
 
-- `preserveMean`:
+- `preserve_mean`:
 
   should original mean value be preserved TRUE, if FALSE then center at
   zero
@@ -121,7 +121,7 @@ log2 transform and robust scale data based on subset
 
     LFQDataTransformer$robscale_subset(
       lfqsubset,
-      preserveMean = TRUE,
+      preserve_mean = TRUE,
       colname = "transformed_abundance"
     )
 
@@ -131,7 +131,7 @@ log2 transform and robust scale data based on subset
 
   LFQData subset to use for normalization
 
-- `preserveMean`:
+- `preserve_mean`:
 
   should original mean value be preserved TRUE, if FALSE then center at
   zero
@@ -161,7 +161,7 @@ log2 transform and robust scale data based on subset
 
   LFQData subset to use for normalization
 
-- `preserveMean`:
+- `preserve_mean`:
 
   should original mean value be preserved TRUE, if FALSE then center at
   zero

@@ -9,7 +9,7 @@ scale_with_subset(
   data,
   subset,
   config,
-  preserveMean = FALSE,
+  preserve_mean = FALSE,
   get_scales = TRUE
 )
 ```
@@ -28,7 +28,7 @@ scale_with_subset(
 
   configuration
 
-- preserveMean:
+- preserve_mean:
 
   default FALSE - sets mean to zero
 

@@ -5,7 +5,7 @@ robust scale wrapper
 ## Usage
 
 ``` r
-robust_scale(data, dim = 2, preserveMean = FALSE)
+robust_scale(data, dim = 2, preserve_mean = FALSE)
 ```
 
 ## See also

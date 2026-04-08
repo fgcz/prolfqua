@@ -2,7 +2,7 @@
 
 Shared preamble for all `build_model_limma*` and `build_model_limpa`
 functions. Pivots LFQData to wide format, builds the design matrix from
-the formula, resolves the subject_Id / isotopeLabel, and creates a dummy
+the formula, resolves the subject_id / isotopeLabel, and creates a dummy
 lm for linfct extraction.
 
 ## Usage
@@ -42,13 +42,13 @@ a list with components:
 
   sample-level annotation data.frame
 
-- subject_Id:
+- subject_id:
 
   character vector of hierarchy keys (possibly including isotopeLabel)
 
 - rowdata:
 
-  data.frame with one row per feature, columns = subject_Id
+  data.frame with one row per feature, columns = subject_id
 
 - rhs_formula:
 

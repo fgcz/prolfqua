@@ -132,14 +132,14 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
 <p>robust scale data</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataTransformer</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span></span>
-<span>  preserveMean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  preserve_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  colname <span class="op">=</span> <span class="st">"transformedIntensity"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>preserveMean</code></dt>
+<p></p><div class="arguments"><dl><dt><code>preserve_mean</code></dt>
 <dd><p>should original mean value be preserved TRUE, if FALSE then center at zero</p></dd>
 
 
@@ -160,7 +160,7 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataTransformer</span><span class="op">$</span><span class="fu">robscale_subset</span><span class="op">(</span></span>
 <span>  <span class="va">lfqsubset</span>,</span>
-<span>  preserveMean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  preserve_mean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  colname <span class="op">=</span> <span class="st">"transformed_abundance"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -171,7 +171,7 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
 <dd><p>LFQData subset to use for normalization</p></dd>
 
 
-<dt><code>preserveMean</code></dt>
+<dt><code>preserve_mean</code></dt>
 <dd><p>should original mean value be preserved TRUE, if FALSE then center at zero</p></dd>
 
 
@@ -199,7 +199,7 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
 <dd><p>LFQData subset to use for normalization</p></dd>
 
 
-<dt><code>preserveMean</code></dt>
+<dt><code>preserve_mean</code></dt>
 <dd><p>should original mean value be preserved TRUE, if FALSE then center at zero</p></dd>
 
 

@@ -126,12 +126,12 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/function_lod_quantile.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/generate_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/generate_contrasts_for_factor.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/get_UniprotID_from_fasta_header.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/get_anova_df.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/get_complete_model_fit.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/get_contrast.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/get_robscales.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/group_label.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/hierarchy_counts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.html</loc></url>
@@ -139,7 +139,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/impute_with_zcomp.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/index.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/interaction_contrasts.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/isSingular_lm.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/is_singular_lm.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/level_specific_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/lfq_power_t_test_proteins.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/lfq_power_t_test_quantiles.html</loc></url>
@@ -175,7 +175,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_obs_sample.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/pairs_smooth.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/panel_cor.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/plot_NA_heatmap.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/plot_estimate.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/plot_heatmap.html</loc></url>
@@ -209,7 +209,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/sample_subset.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/scale_with_subset.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/scatter_plotly.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/scriptCopyHelperVec.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/script_copy_helper_vec.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/separate_hierarchy.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/setup_analysis.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/sigma.rlm.html</loc></url>

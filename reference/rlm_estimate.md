@@ -24,7 +24,7 @@ rlm_estimate(pdata, response, feature, samples, maxIt = 20)
 
 - samples:
 
-  e.g. sampleName
+  e.g. sample_name
 
 ## See also
 
@@ -50,13 +50,13 @@ xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4),
 bb <- rlm_estimate(xx, "response", "feature", "samples", maxIt = 20)
 
 xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4),
-  sampleName = rep(letters[1:4], 5))
-rlm_estimate(xx2, "log2Area", "peptide_Id", "sampleName")
-#>   sampleName mean.log2Area    weights     lmrob
-#> 1          a    -0.5323711 0.01276912 -1.674944
-#> 2          b    -3.5622039 0.01458104 -3.383001
-#> 3          c     2.9286124 0.02616560  2.928612
-#> 4          d    -1.8694154 0.02666118 -1.869415
+  sample_name = rep(letters[1:4], 5))
+rlm_estimate(xx2, "log2Area", "peptide_Id", "sample_name")
+#>   sample_name mean.log2Area    weights     lmrob
+#> 1           a    -0.5323711 0.01276912 -1.674944
+#> 2           b    -3.5622039 0.01458104 -3.383001
+#> 3           c     2.9286124 0.02616560  2.928612
+#> 4           d    -1.8694154 0.02666118 -1.869415
 rlm_estimate(prolfqua_data("data_checksummarizationrobust87"),
   "log2Area", "peptide_Id", "sampleName")
 #>   sampleName mean.log2Area weights      lmrob
@@ -75,7 +75,7 @@ res <- vector(100, mode = "list")
 for (i in seq_len(100)) {
   xx3 <- xx2
   xx3$log2Area[sample(1:20, sample(1:15, 1))] <- NA
-  res[[i]] <- list(data = xx3, summary = rlm_estimate(xx3, "log2Area", "peptide_Id", "sampleName"))
+  res[[i]] <- list(data = xx3, summary = rlm_estimate(xx3, "log2Area", "peptide_Id", "sample_name"))
 }
 #> Warning: 'rlm' failed to converge in 20 steps
 #> Warning: 'rlm' failed to converge in 20 steps
@@ -85,17 +85,17 @@ for (i in seq_len(100)) {
 #> Warning: 'rlm' failed to converge in 20 steps
 #> Warning: 'rlm' failed to converge in 20 steps
 #> Warning: 'rlm' failed to converge in 20 steps
-rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sampleName")
-#>    sampleName mean.log2Area       lmrob weights
-#> 1           a    4.06124230  4.06124230       1
-#> 6           b   -5.76691823 -5.76691823       1
-#> 11          c   12.40584606 12.40584606       1
-#> 16          d   -0.01408112 -0.01408112       1
-rlm_estimate(xx2[xx2$sampleName == "a", ], "log2Area", "peptide_Id", "sampleName")
+rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sample_name")
+#>    sample_name mean.log2Area       lmrob weights
+#> 1            a    4.06124230  4.06124230       1
+#> 6            b   -5.76691823 -5.76691823       1
+#> 11           c   12.40584606 12.40584606       1
+#> 16           d   -0.01408112 -0.01408112       1
+rlm_estimate(xx2[xx2$sample_name == "a", ], "log2Area", "peptide_Id", "sample_name")
 #> # A tibble: 1 × 4
-#>   sampleName  lmrob mean.log2Area weights
-#>   <chr>       <dbl>         <dbl>   <dbl>
-#> 1 a          -0.532        -0.532       1
+#>   sample_name  lmrob mean.log2Area weights
+#>   <chr>        <dbl>         <dbl>   <dbl>
+#> 1 a           -0.532        -0.532       1
 
 
 bb <- prolfqua_data("data_ionstar")$filtered()

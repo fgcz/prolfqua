@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-04-02</h4>
+            <h4 data-toc-skip class="date">2026-04-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/vignettes/LimmaBackend.Rmd" class="external-link"><code>vignettes/LimmaBackend.Rmd</code></a></small>
       <div class="d-none name"><code>LimmaBackend.Rmd</code></div>
@@ -313,7 +313,7 @@ Volcano plots from both backends.
 </h2>
 <p>The limma backend handles multi-factor designs in the same way.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2Factor_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>, with_missing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_2Factor_config.html">sim_lfq_data_2factor_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>, with_missing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">lProt2</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
 <span><span class="va">lProt2</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"transformedIntensity"</span><span class="op">)</span></span>
 <span></span>
@@ -588,7 +588,7 @@ for degree-of-freedom correction.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  Property <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Model class"</span>, <span class="st">"Model name"</span><span class="op">)</span>,</span>
-<span>  Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">mod_limpa_prot</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">mod_limpa_prot</span><span class="op">$</span><span class="va">modelName</span><span class="op">)</span></span>
+<span>  Value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">mod_limpa_prot</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">mod_limpa_prot</span><span class="op">$</span><span class="va">model_name</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -676,7 +676,7 @@ for degree-of-freedom correction.</p>
 <code>ModelLimma</code>, we reuse <code>ContrastsLimma</code> directly —
 same as for the limma and vooma backends.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contr_limpa_prot</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsLimma.html">ContrastsLimma</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod_limpa_prot</span>, <span class="va">contr_spec</span>, modelName <span class="op">=</span> <span class="st">"limpa"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contr_limpa_prot</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsLimma.html">ContrastsLimma</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod_limpa_prot</span>, <span class="va">contr_spec</span>, model_name <span class="op">=</span> <span class="st">"limpa"</span><span class="op">)</span></span>
 <span><span class="va">res_limpa_prot</span> <span class="op">&lt;-</span> <span class="va">contr_limpa_prot</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res_limpa_prot</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -1030,7 +1030,7 @@ aggregation to protein level is not desired.</p>
 <code>hierarchyDepth</code> so that <code>hierarchy_keys()</code>
 returns only <code>protein_Id</code> — this makes the data “aggregated”
 from the model’s perspective (one row per protein_Id × peptide_Id ×
-sample, with <code>subject_Id = protein_Id</code>).</p>
+sample, with <code>subject_id = protein_Id</code>).</p>
 <p>Since each peptide is a separate row in the wide matrix,
 <code>build_model_limpa</code> fits the model at the peptide level.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
@@ -1064,7 +1064,7 @@ sample, with <code>subject_Id = protein_Id</code>).</p>
 <h4 id="step-3-compute-contrasts">Step 3: Compute contrasts<a class="anchor" aria-label="anchor" href="#step-3-compute-contrasts"></a>
 </h4>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contr_limpa_pep</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsLimma.html">ContrastsLimma</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod_limpa_pep</span>, <span class="va">contr_spec</span>, modelName <span class="op">=</span> <span class="st">"limpa_peptide"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contr_limpa_pep</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsLimma.html">ContrastsLimma</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod_limpa_pep</span>, <span class="va">contr_spec</span>, model_name <span class="op">=</span> <span class="st">"limpa_peptide"</span><span class="op">)</span></span>
 <span><span class="va">res_limpa_pep</span> <span class="op">&lt;-</span> <span class="va">contr_limpa_pep</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -1296,14 +1296,14 @@ Limpa peptide-level volcano plot.
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] dplyr_1.2.0    prolfqua_1.6.1</span></span>
+<span><span class="co">## [1] dplyr_1.2.1    prolfqua_1.6.1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] tidyselect_1.2.1       viridisLite_0.4.3      farver_2.1.2          </span></span>
-<span><span class="co">##  [4] S7_0.2.1               fastmap_1.2.0          lazyeval_0.2.2        </span></span>
+<span><span class="co">##  [4] S7_0.2.1               fastmap_1.2.0          lazyeval_0.2.3        </span></span>
 <span><span class="co">##  [7] digest_0.6.39          rpart_4.1.24           lifecycle_1.0.5       </span></span>
-<span><span class="co">## [10] survival_3.8-3         statmod_1.5.1          magrittr_2.0.4        </span></span>
-<span><span class="co">## [13] compiler_4.5.2         progress_1.2.3         rlang_1.1.7           </span></span>
+<span><span class="co">## [10] survival_3.8-3         statmod_1.5.1          magrittr_2.0.5        </span></span>
+<span><span class="co">## [13] compiler_4.5.2         progress_1.2.3         rlang_1.2.0           </span></span>
 <span><span class="co">## [16] sass_0.4.10            tools_4.5.2            utf8_1.2.6            </span></span>
 <span><span class="co">## [19] yaml_2.3.12            data.table_1.18.2.1    limpa_1.2.5           </span></span>
 <span><span class="co">## [22] knitr_1.51             labeling_0.4.3         prettyunits_1.2.0     </span></span>
@@ -1327,7 +1327,7 @@ Limpa peptide-level volcano plot.
 <span><span class="co">## [76] pillar_1.11.1          htmltools_0.5.9        R6_2.6.1              </span></span>
 <span><span class="co">## [79] textshaping_1.0.5      Rdpack_2.6.6           formula.tools_1.7.1   </span></span>
 <span><span class="co">## [82] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       </span></span>
-<span><span class="co">## [85] backports_1.5.0        pheatmap_1.0.13        broom_1.0.12          </span></span>
+<span><span class="co">## [85] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          </span></span>
 <span><span class="co">## [88] bslib_0.10.0           Rcpp_1.1.1             gridExtra_2.3         </span></span>
 <span><span class="co">## [91] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        </span></span>
 <span><span class="co">## [94] xfun_0.57              fs_2.0.1               forcats_1.0.1         </span></span>

@@ -22,7 +22,7 @@ summarize_stats_factors(pdata, config)
 
 ``` r
 # example code
-res2 <- prolfqua::sim_lfq_data_2Factor_config()
+res2 <- prolfqua::sim_lfq_data_2factor_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done

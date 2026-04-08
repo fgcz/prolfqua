@@ -114,7 +114,7 @@
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -127,7 +127,7 @@
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -171,7 +171,7 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">xx</span><span class="op">$</span><span class="va">models</span><span class="op">$</span><span class="va">models1</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">xx</span><span class="op">$</span><span class="va">models</span><span class="op">$</span><span class="va">models1</span><span class="op">$</span><span class="va">model_df</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      (Intercept) group_B group_Ctrl</span>
@@ -181,7 +181,7 @@
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">xx2</span><span class="op">$</span><span class="va">models</span><span class="op">$</span><span class="va">models2</span><span class="op">$</span><span class="va">modelDF</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">xx2</span><span class="op">$</span><span class="va">models</span><span class="op">$</span><span class="va">models2</span><span class="op">$</span><span class="va">model_df</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_factors</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts</a></span><span class="op">(</span><span class="va">linfct</span><span class="op">$</span><span class="va">linfct_interactions</span><span class="op">)</span></span></span>

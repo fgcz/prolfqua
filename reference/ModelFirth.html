@@ -113,7 +113,7 @@ R6 class representing modelling result"></head><body>
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -126,7 +126,7 @@ R6 class representing modelling result"></head><body>
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -148,11 +148,11 @@ R6 class representing modelling result"></head><body>
 <dd><p>data.frame with modelling data and model.</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>name of model</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>e.g. protein_Id</p></dd>
 
 
@@ -188,8 +188,8 @@ R6 class representing modelling result"></head><body>
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ModelFirth.html">ModelFirth</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">models</span>,</span>
-<span>  modelName <span class="op">=</span> <span class="st">"modelFirth"</span>,</span>
-<span>  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"modelFirth"</span>,</span>
+<span>  subject_id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
 <span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -200,11 +200,11 @@ R6 class representing modelling result"></head><body>
 <dd><p>dataframe with modelling results</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>name of model</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>subject column name</p></dd>
 
 
@@ -369,7 +369,7 @@ R6 class representing modelling result"></head><body>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">coef_pairs</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    subject_Id  `(Intercept)`   group_B group_Ctrl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7IZdVV~0841       2.10     6.77<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>  -<span style="color: #BB0000;">6.66</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> AZPG26~2091       0.905    2.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>   1.82<span style="color: #949494;">e</span>+ 0</span>
@@ -399,11 +399,11 @@ R6 class representing modelling result"></head><body>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>not implemented</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">write_coef_figures</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_Histogram_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_volcano_plot_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_Pairsplot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsMOnwl/Coef_Histogram_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsMOnwl/Coef_volcano_plot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsMOnwl/Coef_Pairsplot_modelFirth.pdf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    subject_Id  `(Intercept)`   group_B group_Ctrl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7IZdVV~0841       2.10     6.77<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>  -<span style="color: #BB0000;">6.66</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> AZPG26~2091       0.905    2.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>   1.82<span style="color: #949494;">e</span>+ 0</span>
@@ -415,7 +415,7 @@ R6 class representing modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> XYrp6h~5793       2.20    -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> quTD7H~4566       0.847    1.35<span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231       0.847    1.35<span style="color: #949494;">e</span>+ 0   1.35<span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_2cfd32366863 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_2bd1566324f8 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       2 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
@@ -442,7 +442,7 @@ R6 class representing modelling result"></head><body>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">coef_pairs</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    subject_Id  `(Intercept)`   group_B group_Ctrl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7IZdVV~0841         2.20   5.61<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>  -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> AZPG26~2091         2.20  -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
@@ -472,11 +472,11 @@ R6 class representing modelling result"></head><body>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>not implemented</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">write_coef_figures</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_Histogram_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_volcano_plot_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp4zx6Aj/Coef_Pairsplot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsMOnwl/Coef_Histogram_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsMOnwl/Coef_volcano_plot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsMOnwl/Coef_Pairsplot_modelFirth.pdf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    subject_Id  `(Intercept)`   group_B group_Ctrl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7IZdVV~0841         2.20   5.61<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>  -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> AZPG26~2091         2.20  -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
@@ -488,7 +488,7 @@ R6 class representing modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> quTD7H~4566         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> tCZCHm~6695         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0   4.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231         0.847  1.35<span style="color: #949494;">e</span>+ 0   1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_2cfd32366863 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_2bd1566324f8 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       2 </span>
 </code></pre></div>
     </div>

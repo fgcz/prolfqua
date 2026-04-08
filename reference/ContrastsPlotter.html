@@ -113,7 +113,7 @@ plot contrasts"></head><body>
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -126,7 +126,7 @@ plot contrasts"></head><body>
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -139,13 +139,10 @@ plot contrasts"></head><body>
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code></p>
 <p>Other plotting:
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="UpSet_interaction_missing_stats.html">UpSet_interaction_missing_stats()</a></code>,
-<code><a href="UpSet_missing_stats.html">UpSet_missing_stats()</a></code>,
 <code><a href="medpolish_estimate_df.html">medpolish_estimate_df()</a></code>,
 <code><a href="missigness_histogram.html">missigness_histogram()</a></code>,
 <code><a href="missingness_per_condition.html">missingness_per_condition()</a></code>,
 <code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum()</a></code>,
-<code><a href="plot_NA_heatmap.html">plot_NA_heatmap()</a></code>,
 <code><a href="plot_estimate.html">plot_estimate()</a></code>,
 <code><a href="plot_heatmap.html">plot_heatmap()</a></code>,
 <code><a href="plot_heatmap_cor.html">plot_heatmap_cor()</a></code>,
@@ -154,21 +151,24 @@ plot contrasts"></head><body>
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
 <code><a href="plot_hierarchies_line_df.html">plot_hierarchies_line_df()</a></code>,
 <code><a href="plot_intensity_distribution_violin.html">plot_intensity_distribution_violin()</a></code>,
+<code><a href="plot_NA_heatmap.html">plot_na_heatmap()</a></code>,
 <code><a href="plot_pca.html">plot_pca()</a></code>,
 <code><a href="plot_raster.html">plot_raster()</a></code>,
-<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code></p></div>
+<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code>,
+<code><a href="UpSet_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code>,
+<code><a href="UpSet_missing_stats.html">upset_missing_stats()</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
-    <p></p><div class="r6-fields"><dl><dt><code>contrastDF</code></dt>
+    <p></p><div class="r6-fields"><dl><dt><code>contrast_df</code></dt>
 <dd><p>data frame with contrasts</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>of column with model name</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>hierarchy key columns</p></dd>
 
 
@@ -233,8 +233,8 @@ plot contrasts"></head><body>
 <p>create Crontrast_Plotter</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsPlotter.html">ContrastsPlotter</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>  <span class="va">contrastDF</span>,</span>
-<span>  <span class="va">subject_Id</span>,</span>
+<span>  <span class="va">contrast_df</span>,</span>
+<span>  <span class="va">subject_id</span>,</span>
 <span>  volcano <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"FDR"</span>, thresh <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  histogram <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"p.value"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"FDR"</span>,</span>
 <span>    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -250,11 +250,11 @@ plot contrasts"></head><body>
 
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>contrastDF</code></dt>
+<p></p><div class="arguments"><dl><dt><code>contrast_df</code></dt>
 <dd><p>frame with contrast data</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>columns containing subject Identifier</p></dd>
 
 
@@ -574,18 +574,18 @@ Such systematic effects can be explored using MA-plots.</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-in"><span><span class="va">modelName</span> <span class="op">&lt;-</span> <span class="st">"Model"</span></span></span>
+<span class="r-in"><span><span class="va">model_name</span> <span class="op">&lt;-</span> <span class="st">"Model"</span></span></span>
 <span class="r-in"><span><span class="va">modelFunction</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="strategy.html">strategy_lmer</a></span><span class="op">(</span><span class="st">"abundance  ~ group_ + (1 | peptide_Id) + (1|sample)"</span>,</span></span>
-<span class="r-in"><span>   model_name <span class="op">=</span> <span class="va">modelName</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   model_name <span class="op">=</span> <span class="va">model_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pepIntensity</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_model.html">build_model</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">pepIntensity</span>,</span></span>
 <span class="r-in"><span>  <span class="va">modelFunction</span>,</span></span>
-<span class="r-in"><span>  modelName <span class="op">=</span> <span class="va">modelName</span>,</span></span>
-<span class="r-in"><span>  subject_Id <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  model_name <span class="op">=</span> <span class="va">model_name</span>,</span></span>
+<span class="r-in"><span>  subject_id <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
@@ -619,7 +619,7 @@ Such systematic effects can be explored using MA-plots.</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-in"><span><span class="va">cp</span> <span class="op">&lt;-</span> <span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">contr</span>,</span></span>
-<span class="r-in"><span>  <span class="va">contrast</span><span class="op">$</span><span class="va">subject_Id</span>,</span></span>
+<span class="r-in"><span>  <span class="va">contrast</span><span class="op">$</span><span class="va">subject_id</span>,</span></span>
 <span class="r-in"><span>  volcano <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"FDR"</span>, thresh <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  histogram <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"p.value"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0.05</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                 <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"FDR"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0.05</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>

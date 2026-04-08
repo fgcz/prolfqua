@@ -5,12 +5,12 @@ Compute borrowed variance from successful model fits
 ## Usage
 
 ``` r
-compute_borrowed_variance(modelDF, method = c("sigma", "vcov"))
+compute_borrowed_variance(model_df, method = c("sigma", "vcov"))
 ```
 
 ## Arguments
 
-- modelDF:
+- model_df:
 
   tibble from model_analyse
 
@@ -81,7 +81,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -94,7 +94,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
@@ -117,7 +117,7 @@ mod <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 
 # Sigma method (default): returns median sigma and df from donors
 borrowed_s <- prolfqua:::compute_borrowed_variance(
-  mod$modelDF, method = "sigma")
+  mod$model_df, method = "sigma")
 stopifnot(borrowed_s$method == "sigma")
 stopifnot(is.numeric(borrowed_s$sigma) && borrowed_s$sigma > 0)
 stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
@@ -131,7 +131,7 @@ mod_no_missing <- sim_build_models_lm(model = "parallel3",
 #> completing cases done
 #> setup done
 borrowed_v <- prolfqua:::compute_borrowed_variance(
-  mod_no_missing$modelDF, method = "vcov")
+  mod_no_missing$model_df, method = "vcov")
 stopifnot(borrowed_v$method == "vcov")
 stopifnot(is.matrix(borrowed_v$vcov))
 ```

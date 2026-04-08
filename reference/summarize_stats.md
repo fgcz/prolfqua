@@ -103,7 +103,7 @@ data <- bb$data
 res1 <- summarize_stats(data, config)
 #> completing cases
 
-res2 <- prolfqua::sim_lfq_data_2Factor_config()
+res2 <- prolfqua::sim_lfq_data_2factor_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
@@ -135,7 +135,7 @@ res1 <- summarize_stats_all(bb$data, bb$config)
 #> completing cases
 
 stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
-res2 <- prolfqua::sim_lfq_data_2Factor_config()
+res2 <- prolfqua::sim_lfq_data_2factor_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done

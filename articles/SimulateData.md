@@ -105,7 +105,7 @@ lfqdata$config$hierarchy_depth  <- 2
 modelName  <- "Model"
 contr_spec <- c("B_over_Ctrl" = "group_B - group_Ctrl",
                "A_over_Ctrl" = "group_A - group_Ctrl")
-lfqdata$subject_Id()
+lfqdata$subject_id()
 ```
 
     ## [1] "protein_Id" "peptide_Id"

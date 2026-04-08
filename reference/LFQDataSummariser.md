@@ -131,7 +131,7 @@ missing per condition and protein
 
 ------------------------------------------------------------------------
 
-### Method `upset_interaction_missing_stats()`
+### Method [`upset_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
 
 upset plot with missing information per protein and condition
 

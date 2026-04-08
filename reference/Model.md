@@ -62,7 +62,7 @@ Other modelling:
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`isSingular_lm()`](https://wolski.github.io/prolfqua/reference/isSingular_lm.md),
+[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
@@ -75,7 +75,7 @@ Other modelling:
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
-[`pivot_model_contrasts_2_Wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_2_Wide.md),
+[`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
@@ -94,15 +94,15 @@ Other modelling:
 
 ## Public fields
 
-- `modelDF`:
+- `model_df`:
 
   data.frame with modelling data and model.
 
-- `modelName`:
+- `model_name`:
 
   name of model
 
-- `subject_Id`:
+- `subject_id`:
 
   e.g. protein_Id
 
@@ -151,16 +151,16 @@ initialize
 #### Usage
 
     Model$new(
-      modelDF,
+      model_df,
       model_strategy,
-      modelName,
-      subject_Id = "protein_Id",
+      model_name,
+      subject_id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     )
 
 #### Arguments
 
-- `modelDF`:
+- `model_df`:
 
   dataframe with modelling results
 
@@ -169,11 +169,11 @@ initialize
   model_strategy see
   [`strategy_lmer`](https://wolski.github.io/prolfqua/reference/strategy.md)
 
-- `modelName`:
+- `model_name`:
 
   name of model
 
-- `subject_Id`:
+- `subject_id`:
 
   subject column name
 
@@ -318,10 +318,10 @@ The objects of this class are cloneable with this method.
 
 istar <- prolfqua_data('data_ionstar')$normalized()
 istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
-modelName <- "f_condtion_r_peptide"
+model_name <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
-   model_name = modelName)
+   model_name = model_name)
 pepIntensity <- istar_data
 config <- istar$config
 config$hierarchy_keys_depth()
@@ -329,11 +329,11 @@ config$hierarchy_keys_depth()
 mod <- prolfqua::build_model(
  pepIntensity,
  formula_randomPeptide,
- modelName = modelName,
- subject_Id = config$hierarchy_keys_depth())
+ model_name = model_name,
+ subject_id = config$hierarchy_keys_depth())
 #> boundary (singular) fit: see help('isSingular')
 
-mod$modelDF
+mod$model_df
 #> # A tibble: 68 × 9
 #> # Groups:   protein_Id [68]
 #>    protein_Id   data     linear_model has_model_fit isSingular df.residual sigma
@@ -385,7 +385,7 @@ mod$coef_volcano()
 mod$coef_pairs()
 #> $plot
 #> # A tibble: 68 × 6
-#>    subject_Id          `(Intercept)` dilution.b dilution.c dilution.d dilution.e
+#>    subject_id          `(Intercept)` dilution.b dilution.c dilution.d dilution.e
 #>    <chr>                       <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
 #>  1 sp|P21589|5NTD_HUM…         0.883    0.0975     0.0700     -0.0232    0.127  
 #>  2 sp|Q9NZM3|ITSN2_HU…        -1.60    -0.299     -0.201      -0.250     0.0464 

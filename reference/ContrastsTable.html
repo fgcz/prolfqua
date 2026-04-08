@@ -114,7 +114,7 @@ holds results when contrasts are added."></head><body>
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="isSingular_lm.html">isSingular_lm()</a></code>,
+<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
 <code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
 <code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
@@ -127,7 +127,7 @@ holds results when contrasts are added."></head><body>
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
-<code><a href="pivot_model_contrasts_2_Wide.html">pivot_model_contrasts_2_Wide()</a></code>,
+<code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
@@ -149,11 +149,11 @@ holds results when contrasts are added."></head><body>
 <dd><p>contrast results</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>model name</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>default protein_Id</p></dd>
 
 
@@ -180,8 +180,8 @@ holds results when contrasts are added."></head><body>
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsTable.html">ContrastsTable</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">contrastsdf</span>,</span>
-<span>  subject_Id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
-<span>  modelName <span class="op">=</span> <span class="st">"ContrastTable"</span></span>
+<span>  subject_id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"ContrastTable"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -191,11 +191,11 @@ holds results when contrasts are added."></head><body>
 <dd><p>data.frame</p></dd>
 
 
-<dt><code>subject_Id</code></dt>
+<dt><code>subject_id</code></dt>
 <dd><p>default protein_Id</p></dd>
 
 
-<dt><code>modelName</code></dt>
+<dt><code>model_name</code></dt>
 <dd><p>default ContrastTable</p></dd>
 
 
@@ -246,16 +246,16 @@ holds results when contrasts are added."></head><body>
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
 <p>get <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>FCthreshold <span class="op">=</span> <span class="fl">1</span>, FDRthreshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>fc_threshold <span class="op">=</span> <span class="fl">1</span>, fdr_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>FCthreshold</code></dt>
+<p></p><div class="arguments"><dl><dt><code>fc_threshold</code></dt>
 <dd><p>fold change threshold</p></dd>
 
 
-<dt><code>FDRthreshold</code></dt>
+<dt><code>fdr_threshold</code></dt>
 <dd><p>fdr threshold</p></dd>
 
 
@@ -345,9 +345,9 @@ holds results when contrasts are added."></head><body>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> bC=group_A - group_Ctrl</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> aC=group_A - group_Ctrl</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> bC=group_A - group_Ctrl</span>
-<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="va">subject_Id</span></span></span>
+<span class="r-in"><span><span class="va">csi</span><span class="op">$</span><span class="va">subject_id</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "protein_Id" "peptide_Id"</span>
-<span class="r-in"><span><span class="va">xcx</span> <span class="op">&lt;-</span> <span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ctr</span>, subject_Id <span class="op">=</span> <span class="va">csi</span><span class="op">$</span><span class="va">subject_Id</span>, modelName <span class="op">=</span> <span class="st">"TableTest"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xcx</span> <span class="op">&lt;-</span> <span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ctr</span>, subject_id <span class="op">=</span> <span class="va">csi</span><span class="op">$</span><span class="va">subject_id</span>, model_name <span class="op">=</span> <span class="st">"TableTest"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 56 × 21</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    modelName protein_Id peptide_Id meanAbundanceImp_gro…¹ meanAbundanceImp_gro…²</span>
