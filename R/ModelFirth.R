@@ -43,10 +43,10 @@ ModelFirth <- R6::R6Class(
   public = list(
     #' @field models data.frame with modelling data and model.
     models = NULL,
-    #' @field modelName name of model
-    modelName = character(),
-    #' @field subject_Id e.g. protein_Id
-    subject_Id = character(),
+    #' @field model_name name of model
+    model_name = character(),
+    #' @field subject_id e.g. protein_Id
+    subject_id = character(),
     #' @field anova_df function to compute anova
     anova_df = NULL,
     #' @field p.adjust function to adjust p-values
@@ -55,18 +55,18 @@ ModelFirth <- R6::R6Class(
     #' initialize
     #' @param models dataframe with modelling results
     #' @param model_name name of model
-    #' @param subject_Id subject column name
+    #' @param subject_id subject column name
     #' @param p.adjust method to adjust p-values
     #'
     initialize = function(
       models,
       model_name = "modelFirth",
-      subject_Id = "protein_Id",
+      subject_id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
       self$models = models
-      self$modelName = model_name
-      self$subject_Id = subject_Id
+      self$model_name = model_name
+      self$subject_id = subject_id
       self$p.adjust = p.adjust
     },
     #' @description
@@ -94,12 +94,12 @@ ModelFirth <- R6::R6Class(
         return(out)
       }
 
-      models <- dplyr::bind_rows(self$models[[1]]$modelDF, self$models[[2]]$modelDF)
+      models <- dplyr::bind_rows(self$models[[1]]$model_df, self$models[[2]]$model_df)
       res <- vector(mode = "list", nrow(models))
       model_coeff <- models |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
       model_coeff <- model_coeff |>
-        dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nr_coef)
+        dplyr::select(!!!syms(self$subject_id), !!sym("Coeffs_model"), isSingular, nr_coef)
       model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
       if (!is.null(self$models$hkey)) {
         model_coeff <- model_coeff |> dplyr::filter(!grepl(self$models$hkey, factor))
@@ -117,9 +117,9 @@ ModelFirth <- R6::R6Class(
     #' histogram of model coefficient
     coef_histogram = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
       ## Coef_Histogram
-      fname_histogram_coeff <- paste0("Coef_Histogram_", self$modelName, ".pdf")
+      fname_histogram_coeff <- paste0("Coef_Histogram_", self$model_name, ".pdf")
       histogram_coeff <- ggplot(data = model_coeff, aes(x = p, group = factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
@@ -129,15 +129,15 @@ ModelFirth <- R6::R6Class(
     #' volcano plot of non intercept coefficients
     coef_volcano = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
-      fname_volcano_plot <- paste0("Coef_volcano_plot_", self$modelName, ".pdf")
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
+      fname_volcano_plot <- paste0("Coef_volcano_plot_", self$model_name, ".pdf")
       volcano_plot <- model_coeff |>
         dplyr::filter(factor != "(Intercept)") |>
         prolfqua::multigroup_volcano(
           effect = "Estimate",
           significance = "p",
           contrast = "factor",
-          label = "subject_Id",
+          label = "subject_id",
           xintercept = c(-1, 1),
           colour = "isSingular"
         )
@@ -147,12 +147,12 @@ ModelFirth <- R6::R6Class(
     #' pairs-plot of coefficients
     coef_pairs = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
       ## Coef_Pairsplot
       for_pairs <- model_coeff |>
-        dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
+        dplyr::select(all_of(c("subject_id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
-      fname_pairsplot_coef <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
+      fname_pairsplot_coef <- paste0("Coef_Pairsplot_", self$model_name, ".pdf")
       return(list(plot = for_pairs, name = fname_pairsplot_coef))
     },
     #' @description

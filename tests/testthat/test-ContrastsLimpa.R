@@ -94,7 +94,7 @@ test_that("build_model_limpa returns ModelLimma", {
   expect_true(!is.null(mod$fit))
   expect_true(!is.null(mod$dummy_model))
   expect_true(!is.null(mod$rowdata))
-  expect_equal(mod$modelName, "limpa")
+  expect_equal(mod$model_name, "limpa")
 
   # Coefficients should work
   coeffs <- mod$get_coefficients()

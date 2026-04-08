@@ -616,7 +616,7 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
 #' @export
 #' @family modelling
 #' @param model_interaction_contrasts data.frame with contrast results in long format
-#' @param subject_Id column name(s) identifying subjects (e.g. protein_Id)
+#' @param subject_id column name(s) identifying subjects (e.g. protein_Id)
 #' @param columns character vector of value columns to pivot wide
 #' @param contrast column name containing contrast labels
 #' @examples
@@ -625,12 +625,12 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
 #'
 pivot_model_contrasts_to_wide <- function(
   model_interaction_contrasts,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   columns = c("estimate", "p.value", "p.value.adjusted"),
   contrast = "lhs"
 ) {
   res <- model_interaction_contrasts |>
-    dplyr::select(dplyr::all_of(c(subject_Id, contrast, columns))) |>
+    dplyr::select(dplyr::all_of(c(subject_id, contrast, columns))) |>
     tidyr::pivot_wider(
       names_from = dplyr::all_of(contrast),
       values_from = dplyr::all_of(columns),
@@ -646,15 +646,15 @@ pivot_model_contrasts_to_wide <- function(
 #' @keywords internal
 #' @examples
 #' modelSummary_A <- sim_build_models_lm()
-#' m <- get_complete_model_fit(modelSummary_A$modelDF)
+#' m <- get_complete_model_fit(modelSummary_A$model_df)
 #'
 #' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
 #'
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         factor_contrasts,
-#'         subject_Id = "protein_Id",
+#'         subject_id = "protein_Id",
 #'         contrastfun = prolfqua::compute_contrast)
-contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrastfun = prolfqua::compute_lmer_contrast) {
+contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrastfun = prolfqua::compute_lmer_contrast) {
   message("contrasts_linfct")
   modelcol <- "linear_model"
 
@@ -685,7 +685,7 @@ contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrast
   failed_mask <- interaction_model_matrix$classC == "logical"
   n_failed <- sum(failed_mask)
   if (n_failed > 0) {
-    failed_ids <- interaction_model_matrix[[subject_Id[1]]][failed_mask]
+    failed_ids <- interaction_model_matrix[[subject_id[1]]][failed_mask]
     warning(
       "contrasts_linfct: dropped ",
       n_failed,
@@ -701,14 +701,14 @@ contrasts_linfct <- function(models, linfct, subject_Id = "protein_Id", contrast
     dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix |>
-    dplyr::select(all_of(c(subject_Id, "contrast"))) |>
+    dplyr::select(all_of(c(subject_id, "contrast"))) |>
     tidyr::unnest(cols = c("contrast"))
 
   # take sigma and df from somewhere else.
   model_infos <- models |>
-    dplyr::select(all_of(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
+    dplyr::select(all_of(c(subject_id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
 
     dplyr::distinct()
-  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_Id)
+  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_id)
   return(ungroup(contrasts))
 }

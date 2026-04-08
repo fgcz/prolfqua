@@ -6,7 +6,7 @@
 \usage{
 pivot_model_contrasts_to_wide(
   model_interaction_contrasts,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   columns = c("estimate", "p.value", "p.value.adjusted"),
   contrast = "lhs"
 )
@@ -14,7 +14,7 @@ pivot_model_contrasts_to_wide(
 \arguments{
 \item{model_interaction_contrasts}{data.frame with contrast results in long format}
 
-\item{subject_Id}{column name(s) identifying subjects (e.g. protein_Id)}
+\item{subject_id}{column name(s) identifying subjects (e.g. protein_Id)}
 
 \item{columns}{character vector of value columns to pivot wide}
 

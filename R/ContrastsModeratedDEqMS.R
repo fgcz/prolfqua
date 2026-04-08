@@ -260,22 +260,22 @@ ContrastsModeratedDEqMS <- R6::R6Class(
   public = list(
     #' @field Contrast Class implementing the Contrast interface
     Contrast = NULL,
-    #' @field count_df data.frame with subject_Id + count column
+    #' @field count_df data.frame with subject_id + count column
     count_df = NULL,
     #' @field count_column name of the count column in count_df
     count_column = character(),
     #' @field loess_span span parameter for LOESS fit
     loess_span = numeric(),
-    #' @field modelName name of model
-    modelName = character(),
-    #' @field subject_Id columns with subject_Id (proteinID)
-    subject_Id = character(),
+    #' @field model_name name of model
+    model_name = character(),
+    #' @field subject_id columns with subject_id (proteinID)
+    subject_id = character(),
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
     #' @description
     #' initialize
     #' @param Contrast class implementing the ContrastInterface
-    #' @param count_df data.frame with subject_Id columns and a count column
+    #' @param count_df data.frame with subject_id columns and a count column
     #' @param count_column name of the count column in count_df
     #' @param loess_span span for LOESS variance fit (default 0.75)
     #' @param model_name name of the model
@@ -285,21 +285,21 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       count_df,
       count_column,
       loess_span = 0.75,
-      model_name = paste0(Contrast$modelName, "_DEqMS"),
+      model_name = paste0(Contrast$model_name, "_DEqMS"),
       p.adjust = prolfqua::adjust_p_values
     ) {
       self$Contrast = Contrast
-      self$subject_Id = Contrast$subject_Id
-      # Aggregate count_df to one row per subject_Id (max count)
+      self$subject_id = Contrast$subject_id
+      # Aggregate count_df to one row per subject_id (max count)
       count_df <- count_df |>
-        dplyr::group_by(dplyr::across(dplyr::all_of(Contrast$subject_Id))) |>
+        dplyr::group_by(dplyr::across(dplyr::all_of(Contrast$subject_id))) |>
         dplyr::summarise(!!count_column := max(!!rlang::sym(count_column), na.rm = TRUE), .groups = "drop")
       # Replace -Inf (from all-NA groups) with NA
       count_df[[count_column]][is.infinite(count_df[[count_column]])] <- NA
       self$count_df = count_df
       self$count_column = count_column
       self$loess_span = loess_span
-      self$modelName = model_name
+      self$model_name = model_name
       self$p.adjust = p.adjust
     },
     #' @description
@@ -324,7 +324,7 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       contrast_result <- dplyr::inner_join(
         contrast_result,
         self$count_df,
-        by = self$subject_Id
+        by = self$subject_id
       )
 
       # Ensure count >= 1 to avoid log2(0)
@@ -413,7 +413,7 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         fcthresh = fc_threshold,
         volcano = list(list(score = "FDR", thresh = fdr_threshold)),
         histogram = list(
@@ -435,7 +435,7 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         columns = c("diff", columns),
         contrast = "contrast"
       )

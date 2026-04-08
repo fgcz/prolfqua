@@ -29,7 +29,7 @@ config$hierarchy_keys_depth()
 mod <- build_model(
   istar$data,
   modelFunction,
-  subject_Id = config$hierarchy_keys_depth()
+  subject_id = config$hierarchy_keys_depth()
 )
 
 ref_lfc <- data.frame(
@@ -61,7 +61,7 @@ modelFunction <-
 mod <- build_model(
   istar$data,
   modelFunction,
-  subject_Id = config$hierarchy_keys_depth()
+  subject_id = config$hierarchy_keys_depth()
 )
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 y <- contrastX$get_linfct(avg = FALSE)
@@ -163,9 +163,9 @@ Other modelling:
 
 \item{\code{contrastfun}}{function to compute contrasts}
 
-\item{\code{modelName}}{model name}
+\item{\code{model_name}}{model name}
 
-\item{\code{subject_Id}}{name of column containing e.g., protein Id's}
+\item{\code{subject_id}}{name of column containing e.g., protein Id's}
 
 \item{\code{p.adjust}}{function to adjust p-values (default prolfqua::adjust_p_values)}
 

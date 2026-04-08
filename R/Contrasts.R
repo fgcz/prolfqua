@@ -37,7 +37,7 @@
 #' mod <- build_model(
 #'   istar$data,
 #'   modelFunction,
-#'   subject_Id = config$hierarchy_keys_depth()
+#'   subject_id = config$hierarchy_keys_depth()
 #' )
 #'
 #' ref_lfc <- data.frame(
@@ -69,7 +69,7 @@
 #' mod <- build_model(
 #'   istar$data,
 #'   modelFunction,
-#'   subject_Id = config$hierarchy_keys_depth()
+#'   subject_id = config$hierarchy_keys_depth()
 #' )
 #' contrastX <- prolfqua::Contrasts$new(mod, Contr)
 #' y <- contrastX$get_linfct(avg = FALSE)
@@ -85,10 +85,10 @@ Contrasts <- R6::R6Class(
     contrasts = character(),
     #' @field contrastfun function to compute contrasts
     contrastfun = NULL,
-    #' @field modelName model name
-    modelName = character(),
-    #' @field subject_Id name of column containing e.g., protein Id's
-    subject_Id = character(),
+    #' @field model_name model name
+    model_name = character(),
+    #' @field subject_id name of column containing e.g., protein Id's
+    subject_id = character(),
     #' @field p.adjust function to adjust p-values (default prolfqua::adjust_p_values)
     p.adjust = NULL,
     #' @field contrast_result data frame containing results of contrast computation
@@ -112,11 +112,11 @@ Contrasts <- R6::R6Class(
       global = FALSE,
       model_name = "WaldTest"
     ) {
-      self$models <- model$modelDF |> dplyr::filter(has_model_fit == TRUE)
+      self$models <- model$model_df |> dplyr::filter(has_model_fit == TRUE)
       self$contrasts <- contrasts
       self$contrastfun <- model$model_strategy$contrast_fun
-      self$modelName <- model_name
-      self$subject_Id <- model$subject_Id
+      self$model_name <- model_name
+      self$subject_id <- model$subject_id
       self$p.adjust <- p.adjust
       self$global <- global
     },
@@ -176,7 +176,7 @@ Contrasts <- R6::R6Class(
         contrast_result <- contrasts_linfct(
           self$models,
           linfct,
-          subject_Id = self$subject_Id,
+          subject_id = self$subject_id,
           contrastfun = self$contrastfun
         )
         contrast_result <- ungroup(contrast_result)
@@ -187,7 +187,7 @@ Contrasts <- R6::R6Class(
           dplyr::filter(contrast %in% names(self$contrasts))
 
         avg_abd <- contrast_result |>
-          dplyr::select(dplyr::all_of(c(self$subject_Id, "contrast", "diff"))) |>
+          dplyr::select(dplyr::all_of(c(self$subject_id, "contrast", "diff"))) |>
           dplyr::filter(startsWith(contrast, "avg_"))
 
         avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
@@ -196,7 +196,7 @@ Contrasts <- R6::R6Class(
 
         contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
         contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
-        contrast_result <- mutate(contrast_result, modelName = self$modelName, .before = 1)
+        contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
         self$contrast_result <- contrast_result
       }
       res <- if (!all) {
@@ -228,7 +228,7 @@ Contrasts <- R6::R6Class(
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         fcthresh = fc_threshold,
         volcano = list(
           list(score = "p.value", thresh = fdr_threshold),
@@ -253,7 +253,7 @@ Contrasts <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         columns = c("diff", columns),
         contrast = "contrast"
       )

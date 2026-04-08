@@ -146,9 +146,9 @@ Other modelling:
 \describe{
 \item{\code{Contrast}}{Class implementing the Contrast interface}
 
-\item{\code{modelName}}{name of model}
+\item{\code{model_name}}{name of model}
 
-\item{\code{subject_Id}}{columns with subject_Id (proteinID)}
+\item{\code{subject_id}}{columns with subject_id (proteinID)}
 
 \item{\code{p.adjust}}{function to adjust p-values}
 }
@@ -182,7 +182,7 @@ initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(
   Contrast,
-  model_name = paste0(Contrast$modelName, "_moderated"),
+  model_name = paste0(Contrast$model_name, "_moderated"),
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }

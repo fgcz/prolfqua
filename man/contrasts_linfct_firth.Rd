@@ -4,7 +4,7 @@
 \alias{contrasts_linfct_firth}
 \title{compute contrasts}
 \usage{
-contrasts_linfct_firth(models, subject_Id = "protein_Id")
+contrasts_linfct_firth(models, subject_id = "protein_Id")
 }
 \description{
 compute contrasts

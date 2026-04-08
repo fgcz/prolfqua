@@ -133,9 +133,9 @@ Other modelling:
 \describe{
 \item{\code{models}}{data.frame with modelling data and model.}
 
-\item{\code{modelName}}{name of model}
+\item{\code{model_name}}{name of model}
 
-\item{\code{subject_Id}}{e.g. protein_Id}
+\item{\code{subject_id}}{e.g. protein_Id}
 
 \item{\code{anova_df}}{function to compute anova}
 
@@ -167,7 +167,7 @@ initialize
 \if{html}{\out{<div class="r">}}\preformatted{ModelFirth$new(
   models,
   model_name = "modelFirth",
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }
@@ -179,7 +179,7 @@ initialize
 
 \item{\code{model_name}}{name of model}
 
-\item{\code{subject_Id}}{subject column name}
+\item{\code{subject_id}}{subject column name}
 
 \item{\code{p.adjust}}{method to adjust p-values}
 }

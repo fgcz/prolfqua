@@ -27,7 +27,7 @@ config$hierarchy_keys_depth()
 mod <- build_model(
  pepIntensity,
  modelFunction,
- subject_Id = config$hierarchy_keys_depth())
+ subject_id = config$hierarchy_keys_depth())
 
  Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
 
@@ -144,9 +144,9 @@ Other modelling:
 
 \item{\code{contrast_result}}{contrast result}
 
-\item{\code{modelName}}{model name}
+\item{\code{model_name}}{model name}
 
-\item{\code{subject_Id}}{columns with protein ID's}
+\item{\code{subject_id}}{columns with protein ID's}
 
 \item{\code{p.adjust}}{method to use for p.value adjustment}
 }

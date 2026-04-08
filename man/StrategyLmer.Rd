@@ -20,7 +20,7 @@ istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
 strat <- StrategyLmer$new("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 mod <- build_model(istar, strat)
-sum(mod$modelDF$has_model_fit)
+sum(mod$model_df$has_model_fit)
 }
 \seealso{
 Other modelling: 

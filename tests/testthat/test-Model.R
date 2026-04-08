@@ -8,7 +8,7 @@ test_that("Model (lm strategy)", {
   mod <- build_model(
     istar$data,
     modelFunction,
-    subject_Id = config$hierarchy_keys_depth()
+    subject_id = config$hierarchy_keys_depth()
   )
 
   # get_coefficients
@@ -55,14 +55,14 @@ test_that("Model (lm strategy with weights)", {
   mod_unw <- build_model(
     istar$data,
     strategy_lm("abundance ~ group_"),
-    subject_Id = config$hierarchy_keys_depth()
+    subject_id = config$hierarchy_keys_depth()
   )
 
   # Fit weighted model
   mod_w <- build_model(
     istar$data,
     strategy_lm("abundance ~ group_", weights = "wt_col"),
-    subject_Id = config$hierarchy_keys_depth()
+    subject_id = config$hierarchy_keys_depth()
   )
 
   coefs_unw <- mod_unw$get_coefficients()

@@ -22,7 +22,7 @@ mod <- build_model(
   pepIntensity,
   modelFunction,
   model_name = model_name,
-  subject_Id = config$hierarchy_keys_depth())
+  subject_id = config$hierarchy_keys_depth())
 
  Contr <- c("group_A_vs_Ctrl" = "group_A - group_Ctrl",
  "group_B_vs_Ctrl" = "group_B - group_Ctrl"
@@ -31,7 +31,7 @@ contrast <- prolfqua::Contrasts$new(mod,
   Contr)
 contr <- contrast$get_contrasts()
 cp <- ContrastsPlotter$new(contr,
-  contrast$subject_Id,
+  contrast$subject_id,
   volcano = list(list(score = "FDR", thresh = 0.1)),
   histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
                  list(score = "FDR", xlim = c(0,1,0.05))),
@@ -164,11 +164,11 @@ Other plotting:
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{contrastDF}}{data frame with contrasts}
+\item{\code{contrast_df}}{data frame with contrasts}
 
-\item{\code{modelName}}{of column with model name}
+\item{\code{model_name}}{of column with model name}
 
-\item{\code{subject_Id}}{hierarchy key columns}
+\item{\code{subject_id}}{hierarchy key columns}
 
 \item{\code{prefix}}{default Contrasts - used to generate file names}
 
@@ -214,8 +214,8 @@ Other plotting:
 create Crontrast_Plotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$new(
-  contrastDF,
-  subject_Id,
+  contrast_df,
+  subject_id,
   volcano = list(list(score = "FDR", thresh = 0.1)),
   histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
     xlim = c(0, 1, 0.05))),
@@ -232,9 +232,9 @@ create Crontrast_Plotter
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{contrastDF}}{frame with contrast data}
+\item{\code{contrast_df}}{frame with contrast data}
 
-\item{\code{subject_Id}}{columns containing subject Identifier}
+\item{\code{subject_id}}{columns containing subject Identifier}
 
 \item{\code{volcano}}{which score to plot and which ablines to add.}
 

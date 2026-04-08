@@ -46,10 +46,10 @@ ContrastsFirth <- R6::R6Class(
     models = NULL,
     #' @field contrasts character with contrasts
     contrasts = character(),
-    #' @field modelName name of model
-    modelName = character(),
-    #' @field subject_Id name of column containing e.g., protein Id's
-    subject_Id = character(),
+    #' @field model_name name of model
+    model_name = character(),
+    #' @field subject_id name of column containing e.g., protein Id's
+    subject_id = character(),
     #' @field p.adjust function to adjust p-values (default prolfqua::adjust_p_values)
     p.adjust = NULL,
     #' @field contrast_result data frame containing results of contrast computation
@@ -64,8 +64,8 @@ ContrastsFirth <- R6::R6Class(
     initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, model_name = "WaldTestFirth") {
       self$models = model
       self$contrasts = contrasts
-      self$modelName = model_name
-      self$subject_Id = model$subject_Id
+      self$model_name = model_name
+      self$subject_id = model$subject_id
       self$p.adjust = p.adjust
     },
     #' @description
@@ -82,7 +82,7 @@ ContrastsFirth <- R6::R6Class(
     #' @param avg logical TRUE - get also linfct for averages
     get_linfct = function(avg = TRUE) {
       if (!is.null(self$models$models$models1)) {
-        model1_df <- self$models$models$models1$modelDF
+        model1_df <- self$models$models$models1$model_df
         res1 <- vector(mode = "list", nrow(model1_df))
         pb <- progress::progress_bar$new(total = length(model1_df$linear_model))
         model <- get_complete_model_fit(model1_df)$linear_model[[1]]
@@ -97,11 +97,11 @@ ContrastsFirth <- R6::R6Class(
             .linfct(model1_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
           }
         }
-        self$models$models$models1$modelDF$linfct <- res1
+        self$models$models$models1$model_df$linfct <- res1
       }
 
       if (!is.null(self$models$models$models2)) {
-        model2_df <- self$models$models$models2$modelDF
+        model2_df <- self$models$models$models2$model_df
         pb <- progress::progress_bar$new(total = length(model2_df$linear_model))
         res2 <- vector(mode = "list", nrow(model2_df))
         for (i in seq_along(model2_df$linear_model)) {
@@ -109,7 +109,7 @@ ContrastsFirth <- R6::R6Class(
           res2[[i]] <-
             .linfct(model2_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
         }
-        self$models$models$models2$modelDF$linfct <- res2
+        self$models$models$models2$model_df$linfct <- res2
       }
       return(self)
     },
@@ -143,7 +143,7 @@ ContrastsFirth <- R6::R6Class(
           dplyr::filter(contrast %in% names(self$contrasts))
 
         avg_abd <- contrast_result |>
-          dplyr::select(dplyr::all_of(c(self$subject_Id, "contrast", "diff"))) |>
+          dplyr::select(dplyr::all_of(c(self$subject_id, "contrast", "diff"))) |>
           dplyr::filter(startsWith(contrast, "avg_"))
 
         avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
@@ -152,7 +152,7 @@ ContrastsFirth <- R6::R6Class(
 
         contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
         contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
-        contrast_result <- mutate(contrast_result, modelName = self$modelName, .before = 1)
+        contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
         self$contrast_result <- contrast_result
       }
       res <- if (!all) {
@@ -178,7 +178,7 @@ ContrastsFirth <- R6::R6Class(
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         fcthresh = fc_threshold,
         volcano = list(list(score = "p.value", thresh = fdr_threshold), list(score = "FDR", thresh = fdr_threshold)),
         histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
@@ -197,7 +197,7 @@ ContrastsFirth <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         columns = c("diff", columns),
         contrast = "contrast"
       )

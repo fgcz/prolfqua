@@ -9,7 +9,7 @@ LR_test(
   model_name,
   complete_models_int,
   model_name_int,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   path = NULL
 )
 }
@@ -22,7 +22,7 @@ LR_test(
 
 \item{model_name_int}{name of reduced model}
 
-\item{subject_Id}{subject id typically Assession or protein_Id}
+\item{subject_id}{subject id typically Assession or protein_Id}
 
 \item{path}{default NULL, set to a directory if you need to write diagnostic plots.}
 }
@@ -45,16 +45,16 @@ formula_condition_and_Batches <-
 modCB <- prolfqua::build_model(
   pMerged$data,
   formula_condition_and_Batches,
-  subject_Id = pMerged$config$hierarchy_keys() )
+  subject_id = pMerged$config$hierarchy_keys() )
 
 formula_condition <-
   prolfqua::strategy_lm("abundance ~ Treatment")
 modC <- prolfqua::build_model(
   pMerged$data,
   formula_condition,
-  subject_Id = pMerged$config$hierarchy_keys() )
+  subject_id = pMerged$config$hierarchy_keys() )
 
-tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
+tmp <- LR_test(modCB$model_df, "modCB", modC$model_df, "modB")
 hist(tmp$likelihood_ratio_test.pValue)
 
 }

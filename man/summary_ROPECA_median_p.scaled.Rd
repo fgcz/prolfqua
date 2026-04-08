@@ -8,7 +8,7 @@ takes p-value of the scaled p-value}
 summary_ROPECA_median_p.scaled(
   contrasts_data,
   contrast = "contrast",
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   estimate = "diff",
   statistic = "statistic",
   p.value = "moderated.p.value",
@@ -20,7 +20,7 @@ summary_ROPECA_median_p.scaled(
 
 \item{contrast}{name of column with contrast identifier}
 
-\item{subject_Id}{name of column with typically protein Id}
+\item{subject_id}{name of column with typically protein Id}
 
 \item{estimate}{name of column with effect size estimate}
 
@@ -58,13 +58,13 @@ testdata <- data.frame(contrast = "contrast1",
   avgAbd = avgAbd )
 
 xx30 <- summary_ROPECA_median_p.scaled(testdata,
-                                    subject_Id = "protein_Id",
+                                    subject_id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",
                                     max.n = 30)
 
 xx2 <- summary_ROPECA_median_p.scaled(testdata,
-                                    subject_Id = "protein_Id",
+                                    subject_id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",
                                     max.n = 1)

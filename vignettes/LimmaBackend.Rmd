@@ -331,7 +331,7 @@ mod_limpa_prot <- build_model_limpa(lfq_protein_limpa, strat_limpa)
 
 data.frame(
   Property = c("Model class", "Model name"),
-  Value = c(class(mod_limpa_prot)[1], mod_limpa_prot$modelName)
+  Value = c(class(mod_limpa_prot)[1], mod_limpa_prot$model_name)
 ) |> knitr::kable()
 
 mod_limpa_prot$get_coefficients() |> head() |> knitr::kable(digits = 3)
@@ -405,7 +405,7 @@ data.frame(
 The peptide-level data still has `protein_Id` and `peptide_Id` in its
 hierarchy. We set `hierarchyDepth` so that `hierarchy_keys()` returns only
 `protein_Id` — this makes the data "aggregated" from the model's perspective
-(one row per protein_Id × peptide_Id × sample, with `subject_Id = protein_Id`).
+(one row per protein_Id × peptide_Id × sample, with `subject_id = protein_Id`).
 
 Since each peptide is a separate row in the wide matrix, `build_model_limpa`
 fits the model at the peptide level.

@@ -939,7 +939,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
       base_contrast <- Contrasts$new(self$model, contrasts)
       count_column <- lfqdata$config$nr_children
       count_df <- lfqdata$data |>
-        dplyr::select(dplyr::all_of(c(base_contrast$subject_Id, count_column)))
+        dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
     },
     #' @description get contrast results
@@ -1013,7 +1013,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
       base_contrast <- ContrastsLimma$new(self$model, contrasts, eBayes = FALSE)
       count_column <- lfqdata$config$nr_children
       count_df <- lfqdata$data |>
-        dplyr::select(dplyr::all_of(c(base_contrast$subject_Id, count_column)))
+        dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
     },
     #' @description get contrast results
@@ -1080,10 +1080,10 @@ ContrastsROPECAFacade <- R6::R6Class(
       response <- lfqdata$config$get_response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, ...)
-      # ROPECA requires subject_Id with >1 element (protein + peptide level).
+      # ROPECA requires subject_id with >1 element (protein + peptide level).
       # Use all hierarchy keys, not just those at hierarchyDepth.
-      subject_Id <- lfqdata$config$hierarchy_keys()
-      self$model <- build_model(lfqdata, strat, subject_Id = subject_Id)
+      subject_id <- lfqdata$config$hierarchy_keys()
+      self$model <- build_model(lfqdata, strat, subject_id = subject_id)
       self$contrast <- ContrastsROPECA$new(Contrasts$new(self$model, contrasts))
     },
     #' @description
@@ -1113,7 +1113,7 @@ ContrastsROPECAFacade <- R6::R6Class(
       res$conf.low <- res$diff - prqt * abs(res$std.error)
       res$conf.high <- res$diff + prqt * abs(res$std.error)
       # Select standard columns only
-      protein_Id <- self$contrast$subject_Id[1]
+      protein_Id <- self$contrast$subject_id[1]
       standard_cols <- c(
         protein_Id,
         "modelName",
@@ -1141,10 +1141,10 @@ ContrastsROPECAFacade <- R6::R6Class(
     #' @param fdr_threshold FDR threshold
     get_Plotter = function(fc_threshold = 2, fdr_threshold = 0.1) {
       contrast_result <- self$get_contrasts()
-      protein_Id <- self$contrast$subject_Id[1]
+      protein_Id <- self$contrast$subject_id[1]
       ContrastsPlotter$new(
         contrast_result,
-        subject_Id = protein_Id,
+        subject_id = protein_Id,
         fcthresh = fc_threshold,
         volcano = list(list(score = "FDR", thresh = fdr_threshold)),
         histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
@@ -1157,10 +1157,10 @@ ContrastsROPECAFacade <- R6::R6Class(
     #' @param columns value columns to pivot, default \code{c("p.value", "FDR", "statistic")}
     to_wide = function(columns = c("p.value", "FDR", "statistic")) {
       contrast_result <- self$get_contrasts()
-      protein_Id <- self$contrast$subject_Id[1]
+      protein_Id <- self$contrast$subject_id[1]
       pivot_model_contrasts_to_wide(
         contrast_result,
-        subject_Id = protein_Id,
+        subject_id = protein_Id,
         columns = c("diff", columns),
         contrast = "contrast"
       )

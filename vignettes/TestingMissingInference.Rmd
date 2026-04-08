@@ -56,18 +56,18 @@ mod <- prolfqua::build_model(
   dd$data,
   formula_Protein,
   model_name = modelName,
-  subject_Id = dd$config$hierarchy_keys_depth())
+  subject_id = dd$config$hierarchy_keys_depth())
 
-mod$modelDF
-mod$modelDF$nr_coef_not_NA |> table()
+mod$model_df
+mod$model_df$nr_coef_not_NA |> table()
 
-mod$modelDF$isSingular |> table()
-mod$modelDF |> nrow()
+mod$model_df$isSingular |> table()
+mod$model_df |> nrow()
 mod$get_anova()
 prolfqua::model_summary(mod)
 
-maxcoef <- max(mod$modelDF$nr_coef_not_NA, na.rm = TRUE)
-goodmods <- mod$modelDF |> dplyr::filter(isSingular == FALSE, has_model_fit == TRUE, nr_coef_not_NA == maxcoef)
+maxcoef <- max(mod$model_df$nr_coef_not_NA, na.rm = TRUE)
+goodmods <- mod$model_df |> dplyr::filter(isSingular == FALSE, has_model_fit == TRUE, nr_coef_not_NA == maxcoef)
 
 dim(goodmods)
 xx <- lapply(goodmods$linear_model, vcov)
@@ -94,14 +94,14 @@ modI <- prolfqua::build_model(
   loddata,
   formula_Protein,
   model_name = modelName,
-  subject_Id = dd$config$hierarchy_keys_depth())
+  subject_id = dd$config$hierarchy_keys_depth())
 
 
-modI$modelDF$nr_coef_not_NA |> table()
-modI$modelDF$isSingular |> table()
-modI$modelDF |> nrow()
+modI$model_df$nr_coef_not_NA |> table()
+modI$model_df$isSingular |> table()
+modI$model_df |> nrow()
 
-allModels <- modI$modelDF$linear_model
+allModels <- modI$model_df$linear_model
 
 xx <- lapply(allModels, vcov)
 sum_matrix <- Reduce(`+`, xx)
@@ -112,7 +112,7 @@ sum_matrix/length(xx)
 
 
 ```{r}
-m <- (modI$modelDF$linear_model[[1]])
+m <- (modI$model_df$linear_model[[1]])
 df.residual(m)
 sigma(m)
 vcov(m)

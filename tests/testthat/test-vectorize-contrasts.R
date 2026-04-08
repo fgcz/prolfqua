@@ -223,7 +223,7 @@ test_that("compute_contrast_vectorized matches original: simulated incomplete mo
   mod <- sim_build_models_lm("parallel3", Nprot = 50, with_missing = TRUE, weight_missing = 2)
 
   has_na <- vapply(
-    mod$modelDF$linear_model,
+    mod$model_df$linear_model,
     function(m) {
       inherits(m, "lm") && any(is.na(coefficients(m)))
     },
@@ -233,7 +233,7 @@ test_that("compute_contrast_vectorized matches original: simulated incomplete mo
   skip_if(!any(has_na), "No models with NA coefficients in simulated data")
 
   idx <- which(has_na)[1]
-  m <- mod$modelDF$linear_model[[idx]]
+  m <- mod$model_df$linear_model[[idx]]
 
   linfct_list <- linfct_from_model(m)
   all_pairs <- linfct_all_possible_contrasts(linfct_list$linfct_factors)

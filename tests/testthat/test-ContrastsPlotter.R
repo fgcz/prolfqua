@@ -7,7 +7,7 @@ test_that("ContrastsPlotter produces correct plot types", {
   modelFunction <- strategy_lmer(
     "abundance ~ group_ + (1 | peptide_Id) + (1 | sample)"
   )
-  mod <- build_model(istar$data, modelFunction, subject_Id = config$hierarchy_keys_depth())
+  mod <- build_model(istar$data, modelFunction, subject_id = config$hierarchy_keys_depth())
 
   Contr <- c(
     "groupA_vs_Ctrl" = "group_A - group_Ctrl",
@@ -18,7 +18,7 @@ test_that("ContrastsPlotter produces correct plot types", {
 
   cp <- ContrastsPlotter$new(
     contr,
-    contrast$subject_Id,
+    contrast$subject_id,
     volcano = list(list(score = "FDR", thresh = 0.1)),
     histogram = list(
       list(score = "p.value", xlim = c(0, 1, 0.05)),

@@ -10,7 +10,7 @@ test_that("Contrasts (Wald test)", {
   mod <- build_model(
     istar$data,
     modelFunction,
-    subject_Id = config$hierarchy_keys_depth()
+    subject_id = config$hierarchy_keys_depth()
   )
 
   Contr <- c(
@@ -81,7 +81,7 @@ test_that("ContrastsROPECA", {
   mod <- build_model(
     istar$data,
     modelFunction,
-    subject_Id = config$hierarchy_keys_depth()
+    subject_id = config$hierarchy_keys_depth()
   )
 
   Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
@@ -131,7 +131,7 @@ test_that("ContrastsTable (passive container)", {
   csi <- ContrastsMissing$new(lProt, contrasts = Contr)
   ctr <- csi$get_contrasts()
 
-  ct <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, model_name = "TableTest")
+  ct <- ContrastsTable$new(ctr, subject_id = csi$subject_id, model_name = "TableTest")
 
   x <- ct$get_contrasts()
   expect_s3_class(x, "data.frame")

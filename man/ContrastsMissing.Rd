@@ -151,11 +151,11 @@ Other modelling:
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{subject_Id}}{subject_id e.g. protein_ID column}
+\item{\code{subject_id}}{subject_id e.g. protein_ID column}
 
 \item{\code{contrasts}}{array with contrasts (see example)}
 
-\item{\code{modelName}}{model name}
+\item{\code{model_name}}{model name}
 
 \item{\code{contrast_result}}{data frame with results of contrast computation}
 

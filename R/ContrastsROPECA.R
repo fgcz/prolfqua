@@ -23,7 +23,7 @@
 #' mod <- build_model(
 #'  pepIntensity,
 #'  modelFunction,
-#'  subject_Id = config$hierarchy_keys_depth())
+#'  subject_id = config$hierarchy_keys_depth())
 #'
 #'  Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
 #'
@@ -52,10 +52,10 @@ ContrastsROPECA <- R6::R6Class(
     Contrast = NULL,
     #' @field contrast_result contrast result
     contrast_result = NULL,
-    #' @field modelName model name
-    modelName = character(),
-    #' @field subject_Id columns with protein ID's
-    subject_Id = character(),
+    #' @field model_name model name
+    model_name = character(),
+    #' @field subject_id columns with protein ID's
+    subject_id = character(),
     #' @field p.adjust method to use for p.value adjustment
     p.adjust = NULL,
     #' @description
@@ -65,9 +65,9 @@ ContrastsROPECA <- R6::R6Class(
     #' @param p.adjust function to use for p.value adjustement
     initialize = function(Contrast, model_name = "ROPECA", p.adjust = prolfqua::adjust_p_values) {
       self$Contrast = Contrast
-      stopifnot(length(Contrast$subject_Id) > 1)
-      self$modelName = model_name
-      self$subject_Id = Contrast$subject_Id
+      stopifnot(length(Contrast$subject_id) > 1)
+      self$model_name = model_name
+      self$subject_id = Contrast$subject_id
       self$p.adjust = p.adjust
     },
     #' @description
@@ -95,7 +95,7 @@ ContrastsROPECA <- R6::R6Class(
         contrast_result <- summary_ROPECA_median_p.scaled(
           contrast_result,
           contrast = "contrast",
-          subject_Id = self$subject_Id[length(self$subject_Id) - 1],
+          subject_id = self$subject_id[length(self$subject_id) - 1],
           estimate = "diff",
           statistic = "statistic",
           p.value = "p.value",
@@ -114,7 +114,7 @@ ContrastsROPECA <- R6::R6Class(
           group_by_col = "contrast",
           newname = "FDR.median.p.value"
         )
-        contrast_result <- mutate(contrast_result, modelName = self$modelName, .before = 1)
+        contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
         self$contrast_result <- contrast_result
       }
 
@@ -146,7 +146,7 @@ ContrastsROPECA <- R6::R6Class(
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
-        subject_Id = self$subject_Id[1],
+        subject_id = self$subject_id[1],
         fcthresh = fc_threshold,
         volcano = list(list(score = "FDR.beta.based.significance", thresh = fdr_threshold)),
         histogram = list(
@@ -166,7 +166,7 @@ ContrastsROPECA <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
-        subject_Id = self$subject_Id[length(self$subject_Id) - 1],
+        subject_id = self$subject_id[length(self$subject_id) - 1],
         columns = c("diff", columns),
         contrast = "contrast"
       )

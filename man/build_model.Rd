@@ -7,7 +7,7 @@
 build_model(
   data,
   model_strategy,
-  subject_Id = if ("LFQData" \%in\% class(data)) {
+  subject_id = if ("LFQData" \%in\% class(data)) {
      data$subject_id()
  } else {
     
@@ -21,7 +21,7 @@ build_model(
 
 \item{model_strategy}{model strategy object (e.g. from strategy_lmer or strategy_lm)}
 
-\item{subject_Id}{grouping variable}
+\item{subject_id}{grouping variable}
 
 \item{model_name}{model name}
 }
@@ -46,7 +46,7 @@ mod <- prolfqua::build_model(
  D$data,
  formula_randomPeptide,
  model_name = model_name,
- subject_Id = D$config$hierarchy_keys_depth())
+ subject_id = D$config$hierarchy_keys_depth())
 aovtable <- mod$get_anova()
 
 mod <- prolfqua::build_model(

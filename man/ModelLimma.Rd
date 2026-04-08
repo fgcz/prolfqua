@@ -124,9 +124,9 @@ Other modelling:
 
 \item{\code{formula}}{model formula}
 
-\item{\code{subject_Id}}{protein ID column name(s)}
+\item{\code{subject_id}}{protein ID column name(s)}
 
-\item{\code{modelName}}{model name}
+\item{\code{model_name}}{model name}
 
 \item{\code{rowdata}}{protein ID mapping from to_wide()$rowdata}
 
@@ -163,7 +163,7 @@ initialize ModelLimma
   fit,
   design,
   formula,
-  subject_Id,
+  subject_id,
   model_name,
   rowdata,
   trend = FALSE,
@@ -182,7 +182,7 @@ initialize ModelLimma
 
 \item{\code{formula}}{model formula}
 
-\item{\code{subject_Id}}{protein ID column name(s)}
+\item{\code{subject_id}}{protein ID column name(s)}
 
 \item{\code{model_name}}{model name}
 

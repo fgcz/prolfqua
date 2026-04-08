@@ -324,9 +324,9 @@ sim_lfq_data_2factor_config <- function(
 #' @keywords internal
 #' @examples
 #' modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
-#' stopifnot(dim(modi$modelDF) == c(10,9))
+#' stopifnot(dim(modi$model_df) == c(10,9))
 #' mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
-#' mod2$modelDF$linear_model[[1]]
+#' mod2$model_df$linear_model[[1]]
 #' mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 #' modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 #'
@@ -377,13 +377,13 @@ sim_build_models_lm <- function(
 #' @keywords internal
 #' @examples
 #' modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
-#' stopifnot(sum(modi$modelDF$has_model_fit) == 6)
+#' stopifnot(sum(modi$model_df$has_model_fit) == 6)
 #' mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
-#' stopifnot(sum(mod2$modelDF$has_model_fit) == 6)
+#' stopifnot(sum(mod2$model_df$has_model_fit) == 6)
 #' mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
-#' stopifnot(sum(mod4$modelDF$has_model_fit) == 6)
+#' stopifnot(sum(mod4$model_df$has_model_fit) == 6)
 #' modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
-#' stopifnot(sum(modf$modelDF$has_model_fit) == 6)
+#' stopifnot(sum(modf$model_df$has_model_fit) == 6)
 #'
 sim_build_models_lmer <- function(
   model = c("parallel2", "parallel3", "factors", "interaction"),
@@ -438,7 +438,7 @@ sim_build_models_lmer <- function(
 sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "interaction")) {
   model <- match.arg(model)
   mod <- sim_build_models_lm(model = model, Nprot = 1, with_missing = FALSE)
-  return(mod$modelDF$linear_model[[1]])
+  return(mod$model_df$linear_model[[1]])
 }
 
 
@@ -453,6 +453,6 @@ sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "in
 sim_make_model_lmer <- function(model = c("parallel2", "parallel3", "factors", "interaction"), singular = FALSE) {
   model <- match.arg(model)
   mod <- sim_build_models_lmer(model = model, Nprot = 10, with_missing = FALSE)
-  m <- mod$modelDF |> dplyr::filter(isSingular == isSingular) |> dplyr::pull(linear_model)
+  m <- mod$model_df |> dplyr::filter(isSingular == isSingular) |> dplyr::pull(linear_model)
   return(m[[1]])
 }

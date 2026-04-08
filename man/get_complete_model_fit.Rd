@@ -11,7 +11,7 @@ retrieve complete models.
 }
 \examples{
 x <- sim_build_models_lmer(model = "factors", Nprot = 10)
-cfits <- get_complete_model_fit(x$modelDF)
+cfits <- get_complete_model_fit(x$model_df)
 stopifnot(nrow(cfits) == 6)
 }
 \seealso{

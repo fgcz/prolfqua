@@ -25,9 +25,9 @@ mod <- prolfqua::build_model(
  pepIntensity,
  formula_randomPeptide,
  model_name = model_name,
- subject_Id = config$hierarchy_keys_depth())
+ subject_id = config$hierarchy_keys_depth())
 
-mod$modelDF
+mod$model_df
 aovtable  <- mod$get_anova()
 mod$get_coefficients()
 mod$coef_histogram()
@@ -125,11 +125,11 @@ Other modelling:
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{modelDF}}{data.frame with modelling data and model.}
+\item{\code{model_df}}{data.frame with modelling data and model.}
 
-\item{\code{modelName}}{name of model}
+\item{\code{model_name}}{name of model}
 
-\item{\code{subject_Id}}{e.g. protein_Id}
+\item{\code{subject_id}}{e.g. protein_Id}
 
 \item{\code{model_strategy}}{function to create the models}
 
@@ -161,10 +161,10 @@ Other modelling:
 initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$new(
-  modelDF,
+  model_df,
   model_strategy,
   model_name,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }
@@ -172,13 +172,13 @@ initialize
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{modelDF}}{dataframe with modelling results}
+\item{\code{model_df}}{dataframe with modelling results}
 
 \item{\code{model_strategy}}{model_strategy see \code{\link{strategy_lmer}}}
 
 \item{\code{model_name}}{name of model}
 
-\item{\code{subject_Id}}{subject column name}
+\item{\code{subject_id}}{subject column name}
 
 \item{\code{p.adjust}}{method to adjust p-values}
 }

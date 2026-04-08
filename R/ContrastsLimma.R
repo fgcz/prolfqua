@@ -97,7 +97,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #'
 #' Shared preamble for all \code{build_model_limma*} and \code{build_model_limpa}
 #' functions. Pivots LFQData to wide format, builds the design matrix from the
-#' formula, resolves the subject_Id / isotopeLabel, and creates a dummy lm for
+#' formula, resolves the subject_id / isotopeLabel, and creates a dummy lm for
 #' linfct extraction.
 #'
 #' @param lfqdata an \code{\link{LFQData}} object
@@ -108,8 +108,8 @@ compute_borrowed_variance_limma <- function(fit) {
 #'   \item{expr_matrix}{the expression matrix (same as \code{elist$E})}
 #'   \item{design}{the design matrix}
 #'   \item{annotation}{sample-level annotation data.frame}
-#'   \item{subject_Id}{character vector of hierarchy keys (possibly including isotopeLabel)}
-#'   \item{rowdata}{data.frame with one row per feature, columns = subject_Id}
+#'   \item{subject_id}{character vector of hierarchy keys (possibly including isotopeLabel)}
+#'   \item{rowdata}{data.frame with one row per feature, columns = subject_id}
 #'   \item{rhs_formula}{the RHS-only formula}
 #'   \item{dummy_model}{a dummy \code{lm} fitted on one complete row}
 #' }
@@ -119,12 +119,12 @@ compute_borrowed_variance_limma <- function(fit) {
   wide <- lfqdata$to_wide(as.matrix = TRUE)
   expr_matrix <- wide$data
   annotation <- wide$annotation
-  subject_Id <- lfqdata$config$hierarchy_keys()
-  rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_Id))
+  subject_id <- lfqdata$config$hierarchy_keys()
+  rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_id))
   if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotope_label)) {
     rowdata <- wide$rowdata |>
-      dplyr::select(dplyr::all_of(unique(c(subject_Id, lfqdata$config$isotope_label))))
-    subject_Id <- colnames(rowdata)
+      dplyr::select(dplyr::all_of(unique(c(subject_id, lfqdata$config$isotope_label))))
+    subject_id <- colnames(rowdata)
   }
 
   rhs_formula <- formula(delete.response(terms(formula)))
@@ -148,7 +148,7 @@ compute_borrowed_variance_limma <- function(fit) {
     expr_matrix = expr_matrix,
     design = design,
     annotation = annotation,
-    subject_Id = subject_Id,
+    subject_id = subject_id,
     rowdata = rowdata,
     rhs_formula = rhs_formula,
     dummy_model = dummy_model
@@ -234,7 +234,7 @@ build_model_limma <- function(lfqdata, strategy, model_name = strategy$model_nam
     fit = fit,
     design = setup$design,
     formula = strategy$formula,
-    subject_Id = setup$subject_Id,
+    subject_id = setup$subject_id,
     model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
@@ -306,7 +306,7 @@ build_model_limma_impute <- function(
       fit = fit_na,
       design = design,
       formula = strategy$formula,
-      subject_Id = setup$subject_Id,
+      subject_id = setup$subject_id,
       model_name = model_name,
       rowdata = setup$rowdata,
       trend = strategy$trend,
@@ -363,7 +363,7 @@ build_model_limma_impute <- function(
     fit = fit_na,
     design = design,
     formula = strategy$formula,
-    subject_Id = setup$subject_Id,
+    subject_id = setup$subject_id,
     model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
@@ -464,7 +464,7 @@ build_model_limma_voom <- function(
     fit = fit,
     design = design,
     formula = strategy$formula,
-    subject_Id = setup$subject_Id,
+    subject_id = setup$subject_id,
     model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
@@ -566,7 +566,7 @@ build_model_limma_voom_impute <- function(
       fit = fit_na,
       design = design,
       formula = strategy$formula,
-      subject_Id = setup$subject_Id,
+      subject_id = setup$subject_id,
       model_name = model_name,
       rowdata = setup$rowdata,
       trend = strategy$trend,
@@ -622,7 +622,7 @@ build_model_limma_voom_impute <- function(
     fit = fit_na,
     design = design,
     formula = strategy$formula,
-    subject_Id = setup$subject_Id,
+    subject_id = setup$subject_id,
     model_name = model_name,
     rowdata = setup$rowdata,
     trend = strategy$trend,
@@ -668,10 +668,10 @@ ModelLimma <- R6::R6Class(
     design = NULL,
     #' @field formula model formula
     formula = NULL,
-    #' @field subject_Id protein ID column name(s)
-    subject_Id = character(),
-    #' @field modelName model name
-    modelName = character(),
+    #' @field subject_id protein ID column name(s)
+    subject_id = character(),
+    #' @field model_name model name
+    model_name = character(),
     #' @field rowdata protein ID mapping from to_wide()$rowdata
     rowdata = NULL,
     #' @field trend passed to eBayes
@@ -687,7 +687,7 @@ ModelLimma <- R6::R6Class(
     #' @param fit limma MArrayLM from lmFit
     #' @param design design matrix
     #' @param formula model formula
-    #' @param subject_Id protein ID column name(s)
+    #' @param subject_id protein ID column name(s)
     #' @param model_name model name
     #' @param rowdata protein ID mapping
     #' @param trend passed to eBayes
@@ -698,7 +698,7 @@ ModelLimma <- R6::R6Class(
       fit,
       design,
       formula,
-      subject_Id,
+      subject_id,
       model_name,
       rowdata,
       trend = FALSE,
@@ -709,8 +709,8 @@ ModelLimma <- R6::R6Class(
       self$fit <- fit
       self$design <- design
       self$formula <- formula
-      self$subject_Id <- subject_Id
-      self$modelName <- model_name
+      self$subject_id <- subject_id
+      self$model_name <- model_name
       self$rowdata <- rowdata
       self$trend <- trend
       self$robust <- robust
@@ -777,8 +777,8 @@ ModelLimma <- R6::R6Class(
     #' histogram of model coefficient p-values
     coef_histogram = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
-      fname <- paste0("Coef_Histogram_", self$modelName, ".pdf")
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
+      fname <- paste0("Coef_Histogram_", self$model_name, ".pdf")
       p <- ggplot(data = model_coeff, aes(x = .data$Pr...t.., group = .data$factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
@@ -788,15 +788,15 @@ ModelLimma <- R6::R6Class(
     #' volcano plot of non-intercept coefficients
     coef_volcano = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
-      fname <- paste0("Coef_VolcanoPlot_", self$modelName, ".pdf")
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
+      fname <- paste0("Coef_VolcanoPlot_", self$model_name, ".pdf")
       p <- model_coeff |>
         dplyr::filter(.data$factor != "(Intercept)") |>
         prolfqua::multigroup_volcano(
           effect = "Estimate",
           significance = "Pr...t..",
           contrast = "factor",
-          label = "subject_Id",
+          label = "subject_id",
           xintercept = c(-1, 1),
           colour = NULL
         )
@@ -806,11 +806,11 @@ ModelLimma <- R6::R6Class(
     #' pairs plot of coefficients
     coef_pairs = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
       for_pairs <- model_coeff |>
-        dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
+        dplyr::select(all_of(c("subject_id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
-      fname <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
+      fname <- paste0("Coef_Pairsplot_", self$model_name, ".pdf")
       return(list(plot = for_pairs, name = fname))
     },
     #' @description
@@ -819,7 +819,7 @@ ModelLimma <- R6::R6Class(
     anova_histogram = function(what = c("p.value", "FDR")) {
       what <- match.arg(what)
       model_anova <- self$get_anova()
-      fname <- paste0("Anova_p.values_", self$modelName, ".pdf")
+      fname <- paste0("Anova_p.values_", self$model_name, ".pdf")
       p <- model_anova |>
         ggplot(aes(x = !!sym(what), group = .data$factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
@@ -889,10 +889,10 @@ ContrastsLimma <- R6::R6Class(
     model = NULL,
     #' @field contrasts named character vector of contrasts
     contrasts = character(),
-    #' @field modelName model name
-    modelName = character(),
-    #' @field subject_Id columns with subject_Id (proteinID)
-    subject_Id = character(),
+    #' @field model_name model name
+    model_name = character(),
+    #' @field subject_id columns with subject_id (proteinID)
+    subject_id = character(),
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
     #' @field contrast_result cached contrast results
@@ -913,9 +913,9 @@ ContrastsLimma <- R6::R6Class(
     initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, model_name = NULL, eBayes = TRUE) {
       self$model <- model
       self$contrasts <- contrasts
-      self$subject_Id <- model$subject_Id
+      self$subject_id <- model$subject_id
       self$eBayes <- eBayes
-      self$modelName <- model_name %||% if (eBayes) "limma" else "limma_raw"
+      self$model_name <- model_name %||% if (eBayes) "limma" else "limma_raw"
       self$p.adjust <- p.adjust
     },
     #' @description
@@ -1030,13 +1030,13 @@ ContrastsLimma <- R6::R6Class(
       contrast_result <- dplyr::left_join(
         contrast_result,
         avg_df,
-        by = c(self$subject_Id, "contrast")
+        by = c(self$subject_id, "contrast")
       )
 
       # Adjust p-values per contrast
       contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast", newname = "FDR")
       contrast_result <- contrast_result |> dplyr::relocate("FDR", .after = "diff")
-      contrast_result <- dplyr::mutate(contrast_result, modelName = self$modelName, .before = 1)
+      contrast_result <- dplyr::mutate(contrast_result, modelName = self$model_name, .before = 1)
       contrast_result <- dplyr::ungroup(contrast_result)
       self$contrast_result <- contrast_result
 
@@ -1052,7 +1052,7 @@ ContrastsLimma <- R6::R6Class(
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         fcthresh = fc_threshold,
         volcano = list(
           list(score = "p.value", thresh = fdr_threshold),
@@ -1077,7 +1077,7 @@ ContrastsLimma <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         columns = c("diff", columns),
         contrast = "contrast"
       )

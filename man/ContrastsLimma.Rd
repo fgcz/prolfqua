@@ -148,9 +148,9 @@ Other modelling:
 
 \item{\code{contrasts}}{named character vector of contrasts}
 
-\item{\code{modelName}}{model name}
+\item{\code{model_name}}{model name}
 
-\item{\code{subject_Id}}{columns with subject_Id (proteinID)}
+\item{\code{subject_id}}{columns with subject_id (proteinID)}
 
 \item{\code{p.adjust}}{function to adjust p-values}
 

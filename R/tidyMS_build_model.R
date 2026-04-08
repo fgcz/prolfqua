@@ -5,7 +5,7 @@
 #' @param model_name name of model
 #' @param complete_models_int reduced model
 #' @param model_name_int name of reduced model
-#' @param subject_Id subject id typically Assession or protein_Id
+#' @param subject_id subject id typically Assession or protein_Id
 #' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
 #' data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
@@ -23,16 +23,16 @@
 #' modCB <- prolfqua::build_model(
 #'   pMerged$data,
 #'   formula_condition_and_Batches,
-#'   subject_Id = pMerged$config$hierarchy_keys() )
+#'   subject_id = pMerged$config$hierarchy_keys() )
 #'
 #' formula_condition <-
 #'   prolfqua::strategy_lm("abundance ~ Treatment")
 #' modC <- prolfqua::build_model(
 #'   pMerged$data,
 #'   formula_condition,
-#'   subject_Id = pMerged$config$hierarchy_keys() )
+#'   subject_id = pMerged$config$hierarchy_keys() )
 #'
-#' tmp <- LR_test(modCB$modelDF, "modCB", modC$modelDF, "modB")
+#' tmp <- LR_test(modCB$model_df, "modCB", modC$model_df, "modB")
 #' hist(tmp$likelihood_ratio_test.pValue)
 #'
 LR_test <- function(
@@ -40,14 +40,14 @@ LR_test <- function(
   model_name,
   complete_models_int,
   model_name_int,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   path = NULL
 ) {
   # Model Comparison
   reg <- dplyr::inner_join(
-    dplyr::select(complete_models, !!sym(subject_Id), "linear_model"),
-    dplyr::select(complete_models_int, !!sym(subject_Id), "linear_model"),
-    by = subject_Id
+    dplyr::select(complete_models, !!sym(subject_id), "linear_model"),
+    dplyr::select(complete_models_int, !!sym(subject_id), "linear_model"),
+    by = subject_id
   )
 
   reg <- reg |>
@@ -59,7 +59,7 @@ LR_test <- function(
       )
     )
   likelihood_ratio_test_result <- reg |>
-    dplyr::select(!!sym(subject_Id), dplyr::all_of("modelComparisonLikelihoodRatioTest")) |>
+    dplyr::select(!!sym(subject_id), dplyr::all_of("modelComparisonLikelihoodRatioTest")) |>
     tidyr::unnest(cols = c("modelComparisonLikelihoodRatioTest"))
   likelihood_ratio_test_result <- likelihood_ratio_test_result |>
     dplyr::rename(likelihood_ratio_test.pValue = .data$modelComparisonLikelihoodRatioTest)
@@ -98,7 +98,7 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 #'
 #' @param data data - a data frame or LFQData object
 #' @param model_strategy model strategy object (e.g. from strategy_lmer or strategy_lm)
-#' @param subject_Id grouping variable
+#' @param subject_id grouping variable
 #' @param model_name model name
 #' @return
 #' a object of class \code{\link{Model}}
@@ -121,7 +121,7 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 #'  D$data,
 #'  formula_randomPeptide,
 #'  model_name = model_name,
-#'  subject_Id = D$config$hierarchy_keys_depth())
+#'  subject_id = D$config$hierarchy_keys_depth())
 #' aovtable <- mod$get_anova()
 #'
 #' mod <- prolfqua::build_model(
@@ -134,7 +134,7 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 build_model <- function(
   data,
   model_strategy,
-  subject_Id = if ("LFQData" %in% class(data)) {
+  subject_id = if ("LFQData" %in% class(data)) {
     data$subject_id()
   } else {
     "protein_Id"
@@ -142,12 +142,12 @@ build_model <- function(
   model_name = model_strategy$model_name
 ) {
   nested_data <- if ("LFQData" %in% class(data)) data$data else data
-  modelling_result <- model_analyse(nested_data, model_strategy, model_name = model_name, subject_Id = subject_Id)
+  modelling_result <- model_analyse(nested_data, model_strategy, model_name = model_name, subject_id = subject_id)
   return(Model$new(
-    modelDF = modelling_result$modelDF,
+    model_df = modelling_result$model_df,
     model_strategy = model_strategy,
-    model_name = modelling_result$modelName,
-    subject_Id = subject_Id
+    model_name = modelling_result$model_name,
+    subject_id = subject_id
   ))
 }
 
@@ -188,14 +188,14 @@ build_model_impute <- function(
 ) {
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
-  subject_Id <- lfqdata$subject_id()
+  subject_id <- lfqdata$subject_id()
   response <- lfqdata$config$get_response()
 
   modelling_result <- model_analyse(
     lfqdata$data,
     model_strategy,
     model_name = model_name,
-    subject_Id = subject_Id
+    subject_id = subject_id
   )
 
   if (is.null(lod)) {
@@ -220,8 +220,8 @@ build_model_impute <- function(
     nr_children_col <- NULL
   }
 
-  modelling_result$modelDF <- impute_refit_singular(
-    modelling_result$modelDF,
+  modelling_result$model_df <- impute_refit_singular(
+    modelling_result$model_df,
     model_strategy,
     lod = lod,
     response = response,
@@ -232,10 +232,10 @@ build_model_impute <- function(
   )
 
   return(Model$new(
-    modelDF = modelling_result$modelDF,
+    model_df = modelling_result$model_df,
     model_strategy = model_strategy,
-    model_name = modelling_result$modelName,
-    subject_Id = subject_Id
+    model_name = modelling_result$model_name,
+    subject_id = subject_id
   ))
 }
 
@@ -255,8 +255,8 @@ build_model_impute <- function(
 #' stopifnot(all(c("exists", "isSingular") %in% names(res)))
 model_summary <- function(mod) {
   res <- list()
-  res$exists <- table(mod$modelDF$has_model_fit)
-  res$isSingular <- table(mod$modelDF$isSingular)
+  res$exists <- table(mod$model_df$has_model_fit)
+  res$isSingular <- table(mod$model_df$isSingular)
   return(res)
 }
 
@@ -349,7 +349,7 @@ df.residual.lm_imputed <- function(object, ...) {
 #'
 #' # Sigma method (default): returns median sigma and df from donors
 #' borrowed_s <- prolfqua:::compute_borrowed_variance(
-#'   mod$modelDF, method = "sigma")
+#'   mod$model_df, method = "sigma")
 #' stopifnot(borrowed_s$method == "sigma")
 #' stopifnot(is.numeric(borrowed_s$sigma) && borrowed_s$sigma > 0)
 #' stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
@@ -359,7 +359,7 @@ df.residual.lm_imputed <- function(object, ...) {
 #' mod_no_missing <- sim_build_models_lm(model = "parallel3",
 #'   Nprot = 10, with_missing = FALSE)
 #' borrowed_v <- prolfqua:::compute_borrowed_variance(
-#'   mod_no_missing$modelDF, method = "vcov")
+#'   mod_no_missing$model_df, method = "vcov")
 #' stopifnot(borrowed_v$method == "vcov")
 #' stopifnot(is.matrix(borrowed_v$vcov))
 compute_borrowed_variance <- function(model_df, method = c("sigma", "vcov")) {
@@ -579,7 +579,7 @@ is_singular_lm <- function(m) {
 #' @export
 #' @examples
 #' x <- sim_build_models_lmer(model = "factors", Nprot = 10)
-#' cfits <- get_complete_model_fit(x$modelDF)
+#' cfits <- get_complete_model_fit(x$model_df)
 #' stopifnot(nrow(cfits) == 6)
 get_complete_model_fit <- function(complete_models) {
   complete_models <- complete_models |> dplyr::filter(.data$has_model_fit == TRUE)
@@ -604,17 +604,17 @@ get_complete_model_fit <- function(complete_models) {
 #'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)")
 #' mr <- model_analyse( x$data,
 #'  formula_randomPeptide,
-#'  subject_Id = x$config$hierarchy_keys_depth())
-#' stopifnot(nrow(get_complete_model_fit(mr$modelDF)) == 6)
+#'  subject_id = x$config$hierarchy_keys_depth())
+#' stopifnot(nrow(get_complete_model_fit(mr$model_df)) == 6)
 #'
 model_analyse <- function(
   pepIntensity,
   model_strategy,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   model_name = "Model"
 ) {
   nested_proteins <- pepIntensity |>
-    dplyr::group_by(!!!syms(subject_Id)) |>
+    dplyr::group_by(!!!syms(subject_id)) |>
     tidyr::nest()
 
   lmermodel <- "linear_model"
@@ -669,7 +669,7 @@ model_analyse <- function(
       )
     )
 
-  return(list(modelDF = model_proteins, modelName = model_name))
+  return(list(model_df = model_proteins, model_name = model_name))
 }
 
 

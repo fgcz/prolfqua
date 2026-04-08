@@ -177,7 +177,7 @@ get subset of data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{data frame with columns containing subject_Id}
+\item{\code{x}}{data frame with columns containing subject_id}
 }
 \if{html}{\out{</div>}}
 }

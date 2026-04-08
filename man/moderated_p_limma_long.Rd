@@ -22,12 +22,12 @@ Moderate p-value for long table
 \examples{
 
 mod <- sim_build_models_lm()
-m <- get_complete_model_fit(mod$modelDF)
+m <- get_complete_model_fit(mod$model_df)
 factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 factor_levelContrasts <- contrasts_linfct(
-  mod$modelDF,
+  mod$model_df,
   factor_contrasts,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   contrastfun = compute_contrast)
 
 mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")

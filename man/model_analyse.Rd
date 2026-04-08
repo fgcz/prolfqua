@@ -7,7 +7,7 @@
 model_analyse(
   pepIntensity,
   model_strategy,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   model_name = "Model"
 )
 }
@@ -21,8 +21,8 @@ formula_randomPeptide <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)")
 mr <- model_analyse( x$data,
  formula_randomPeptide,
- subject_Id = x$config$hierarchy_keys_depth())
-stopifnot(nrow(get_complete_model_fit(mr$modelDF)) == 6)
+ subject_id = x$config$hierarchy_keys_depth())
+stopifnot(nrow(get_complete_model_fit(mr$model_df)) == 6)
 
 }
 \seealso{

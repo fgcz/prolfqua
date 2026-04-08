@@ -121,9 +121,9 @@ Other modelling:
 
 \item{\code{contrasts}}{character with contrasts}
 
-\item{\code{modelName}}{name of model}
+\item{\code{model_name}}{name of model}
 
-\item{\code{subject_Id}}{name of column containing e.g., protein Id's}
+\item{\code{subject_id}}{name of column containing e.g., protein Id's}
 
 \item{\code{p.adjust}}{function to adjust p-values (default prolfqua::adjust_p_values)}
 

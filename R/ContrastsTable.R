@@ -17,8 +17,8 @@
 #' "bC" = "group_A - group_Ctrl")
 #' csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
 #' ctr <- csi$get_contrasts()
-#' csi$subject_Id
-#' xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, model_name = "TableTest")
+#' csi$subject_id
+#' xcx <- ContrastsTable$new(ctr, subject_id = csi$subject_id, model_name = "TableTest")
 #' xcx$get_contrasts()
 #' xcx$get_Plotter()$volcano()
 #' stopifnot(is.null(xcx$get_contrast_sides()))
@@ -31,19 +31,19 @@ ContrastsTable <- R6::R6Class(
   public = list(
     #' @field contrast_result contrast results
     contrast_result = NULL,
-    #' @field modelName model name
-    modelName = character(),
-    #' @field subject_Id default protein_Id
-    subject_Id = character(),
+    #' @field model_name model name
+    model_name = character(),
+    #' @field subject_id default protein_Id
+    subject_id = character(),
     #' @description
     #' intitialize
     #' @param contrastsdf data.frame
-    #' @param subject_Id default protein_Id
+    #' @param subject_id default protein_Id
     #' @param model_name default ContrastTable
-    initialize = function(contrastsdf, subject_Id = "protein_Id", model_name = "ContrastTable") {
+    initialize = function(contrastsdf, subject_id = "protein_Id", model_name = "ContrastTable") {
       self$contrast_result = contrastsdf
-      self$subject_Id = subject_Id
-      self$modelName = model_name
+      self$subject_id = subject_id
+      self$model_name = model_name
     },
     #' @description
     #' return sides of contrast
@@ -73,7 +73,7 @@ ContrastsTable <- R6::R6Class(
     get_Plotter = function(fc_threshold = 1, fdr_threshold = 0.1) {
       res <- ContrastsPlotter$new(
         self$contrast_result,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         fcthresh = fc_threshold,
         volcano = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", thresh = fdr_threshold)),
         histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
@@ -90,7 +90,7 @@ ContrastsTable <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         columns = c("diff", columns),
         contrast = "contrast"
       )

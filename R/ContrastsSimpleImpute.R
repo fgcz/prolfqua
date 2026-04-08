@@ -62,12 +62,12 @@ ContrastsMissing <- R6::R6Class(
     method = "V1"
   ),
   public = list(
-    #' @field subject_Id subject_id e.g. protein_ID column
-    subject_Id = character(),
+    #' @field subject_id subject_id e.g. protein_ID column
+    subject_id = character(),
     #' @field contrasts array with contrasts (see example)
     contrasts = character(),
-    #' @field modelName model name
-    modelName = character(),
+    #' @field model_name model name
+    model_name = character(),
     #' @field contrast_result data frame with results of contrast computation
     contrast_result = NULL,
     #' @field lfqdata data frame
@@ -96,9 +96,9 @@ ContrastsMissing <- R6::R6Class(
       p.adjust = prolfqua::adjust_p_values,
       model_name = "groupAverage"
     ) {
-      self$subject_Id = lfqdata$config$hierarchy_keys_depth()
+      self$subject_id = lfqdata$config$hierarchy_keys_depth()
       self$contrasts = contrasts
-      self$modelName = model_name
+      self$model_name = model_name
       self$lfqdata = lfqdata
       self$confint = confint
       self$p.adjust = p.adjust
@@ -126,7 +126,7 @@ ContrastsMissing <- R6::R6Class(
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
         }
         result <- result |> rename(diff = estimate, sigma = sd, std.error = sdT)
-        result <- mutate(result, modelName = self$modelName, .before = 1)
+        result <- mutate(result, modelName = self$model_name, .before = 1)
         self$contrast_result <- ungroup(result)
       }
       res <- self$contrast_result
@@ -139,7 +139,7 @@ ContrastsMissing <- R6::R6Class(
     get_Plotter = function() {
       res <- ContrastsPlotter$new(
         self$get_contrasts(),
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         volcano = list(list(score = "p.value", thresh = 0.1), list(score = "FDR", thresh = 0.1)),
         histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
         modelName = "modelName",
@@ -156,7 +156,7 @@ ContrastsMissing <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         columns = c("diff", columns),
         contrast = "contrast"
       )

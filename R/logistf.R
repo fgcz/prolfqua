@@ -17,8 +17,8 @@
 #' tmp2 <- contrasts_linfct_firth(models2)
 #' stopifnot(all(dim(tmp1) > 10))
 #' stopifnot(all(dim(tmp2) > 10))
-contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
-  model_df <- models$modelDF
+contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
+  model_df <- models$model_df
   #computeGroupAverages
   message("contrasts_linfct_firth")
   modelcol <- "linear_model"
@@ -62,15 +62,15 @@ contrasts_linfct_firth <- function(models, subject_Id = "protein_Id") {
     dplyr::filter(.data$classC != "logical")
 
   contrasts <- interaction_model_matrix |>
-    dplyr::select(all_of(c(subject_Id, "contrast"))) |>
+    dplyr::select(all_of(c(subject_id, "contrast"))) |>
     tidyr::unnest(cols = c("contrast"))
 
   # take sigma and df from somewhere else.
   model_infos <- model_df |>
-    dplyr::select(all_of(c(subject_Id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
+    dplyr::select(all_of(c(subject_id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
 
     dplyr::distinct()
-  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_Id)
+  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_id)
   return(ungroup(contrasts))
 }
 
@@ -155,13 +155,13 @@ build_model_glm_peptide <- function(lfqdata, modelstr) {
 #'
 #'
 #'
-#' m <- xx$models$models1$modelDF$linear_model[[1]]
+#' m <- xx$models$models1$model_df$linear_model[[1]]
 #' linfct <- linfct_from_model(m)
 #' linfct_all_possible_contrasts(linfct$linfct_factors)
 #' x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 #' linfct <- linfct_factors_contrasts(m)
 #'
-#' m <- xx2$models$models2$modelDF$linear_model[[1]]
+#' m <- xx2$models$models2$model_df$linear_model[[1]]
 #' linfct <- linfct_from_model(m)
 #' x <- linfct_all_possible_contrasts(linfct$linfct_factors)
 #' x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
@@ -181,7 +181,7 @@ build_model_logistf <- function(data, formula) {
     lfq2 <- pep$get_subset(df2)
     formula2 <- paste0(formula, "+", hkey)
     model_strategy2 <- prolfqua::strategy_logistf(formula2)
-    models2 <- model_analyse(lfq2$data, model_strategy2, model_name = "logistf_2", subject_Id = lfq2$subject_id())
+    models2 <- model_analyse(lfq2$data, model_strategy2, model_name = "logistf_2", subject_id = lfq2$subject_id())
     models2$strategy = model_strategy2
   }
 
@@ -190,7 +190,7 @@ build_model_logistf <- function(data, formula) {
   if (nrow(df1) > 0) {
     lfq1 <- pep$get_subset(df1)
     model_strategy1 <- prolfqua::strategy_logistf(formula)
-    models1 <- model_analyse(lfq1$data, model_strategy1, model_name = "logistf_1", subject_Id = lfq1$subject_id())
+    models1 <- model_analyse(lfq1$data, model_strategy1, model_name = "logistf_1", subject_id = lfq1$subject_id())
     models1$strategy = model_strategy1
   }
   res <- ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey))
@@ -204,9 +204,9 @@ build_model_logistf <- function(data, formula) {
 #' @keywords internal
 #' @examples
 #' modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
-#' stopifnot(dim(modi$modelDF) == c(10,9))
+#' stopifnot(dim(modi$model_df) == c(10,9))
 #' mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
-#' mod2$modelDF$linear_model[[1]]
+#' mod2$model_df$linear_model[[1]]
 #' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #' modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
 #'

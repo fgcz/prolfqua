@@ -20,9 +20,9 @@
 #'  pepIntensity,
 #'  formula_randomPeptide,
 #'  model_name = model_name,
-#'  subject_Id = config$hierarchy_keys_depth())
+#'  subject_id = config$hierarchy_keys_depth())
 #'
-#' mod$modelDF
+#' mod$model_df
 #' aovtable  <- mod$get_anova()
 #' mod$get_coefficients()
 #' mod$coef_histogram()
@@ -34,12 +34,12 @@ Model <- R6::R6Class(
   "Model",
   inherit = ModelInterface,
   public = list(
-    #' @field modelDF data.frame with modelling data and model.
-    modelDF = NULL,
-    #' @field modelName name of model
-    modelName = character(),
-    #' @field subject_Id e.g. protein_Id
-    subject_Id = character(),
+    #' @field model_df data.frame with modelling data and model.
+    model_df = NULL,
+    #' @field model_name name of model
+    model_name = character(),
+    #' @field subject_id e.g. protein_Id
+    subject_id = character(),
     #' @field model_strategy function to create the models
     model_strategy = NULL,
     #' @field anova_df function to compute anova
@@ -48,30 +48,30 @@ Model <- R6::R6Class(
     p.adjust = NULL,
     #' @description
     #' initialize
-    #' @param modelDF dataframe with modelling results
+    #' @param model_df dataframe with modelling results
     #' @param model_strategy model_strategy see \code{\link{strategy_lmer}}
     #' @param model_name name of model
-    #' @param subject_Id subject column name
+    #' @param subject_id subject column name
     #' @param p.adjust method to adjust p-values
     #'
     initialize = function(
-      modelDF,
+      model_df,
       model_strategy,
       model_name,
-      subject_Id = "protein_Id",
+      subject_id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
-      self$modelDF = modelDF
+      self$model_df = model_df
       self$model_strategy = model_strategy
-      self$modelName = model_name
-      self$subject_Id = subject_Id
+      self$model_name = model_name
+      self$subject_id = subject_id
       self$p.adjust = p.adjust
     },
     #' @description
     #' return model coefficient table
     get_coefficients = function() {
       lmermodel <- "linear_model"
-      complete_models <- get_complete_model_fit(self$modelDF)
+      complete_models <- get_complete_model_fit(self$model_df)
       # Extract coefficients
       .coef_df <- function(x) {
         x <- coef(summary(x))
@@ -81,7 +81,7 @@ Model <- R6::R6Class(
       model_coeff <- complete_models |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
       model_coeff <- model_coeff |>
-        dplyr::select(!!!syms(self$subject_Id), !!sym("Coeffs_model"), isSingular, nr_coef)
+        dplyr::select(!!!syms(self$subject_id), !!sym("Coeffs_model"), isSingular, nr_coef)
       model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
       return(model_coeff)
     },
@@ -89,13 +89,13 @@ Model <- R6::R6Class(
     #' return anova table
     get_anova = function() {
       lmermodel <- "linear_model"
-      complete_models <- get_complete_model_fit(self$modelDF)
+      complete_models <- get_complete_model_fit(self$model_df)
 
       model_anova <- complete_models |>
         dplyr::mutate(!!"Anova_model" := purrr::map(!!sym(lmermodel), self$model_strategy$anova_df$fun))
 
       model_anova <- model_anova |>
-        dplyr::select(!!!syms(self$subject_Id), !!sym("Anova_model"), isSingular, nr_coef)
+        dplyr::select(!!!syms(self$subject_id), !!sym("Anova_model"), isSingular, nr_coef)
       model_anova <- tidyr::unnest(model_anova, cols = c(Anova_model))
 
       model_anova <- model_anova |> dplyr::filter(factor != "Residuals")
@@ -111,9 +111,9 @@ Model <- R6::R6Class(
     #' histogram of model coefficient
     coef_histogram = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
       ## Coef_Histogram
-      fname_histogram_coeff <- paste0("Coef_Histogram_", self$modelName, ".pdf")
+      fname_histogram_coeff <- paste0("Coef_Histogram_", self$model_name, ".pdf")
       histogram_coeff <- ggplot(data = model_coeff, aes(x = Pr...t.., group = factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
@@ -123,15 +123,15 @@ Model <- R6::R6Class(
     #' volcano plot of non intercept coefficients
     coef_volcano = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
-      fname_volcano_plot <- paste0("Coef_volcano_plot_", self$modelName, ".pdf")
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
+      fname_volcano_plot <- paste0("Coef_volcano_plot_", self$model_name, ".pdf")
       volcano_plot <- model_coeff |>
         dplyr::filter(factor != "(Intercept)") |>
         prolfqua::multigroup_volcano(
           effect = "Estimate",
           significance = "Pr...t..",
           contrast = "factor",
-          label = "subject_Id",
+          label = "subject_id",
           xintercept = c(-1, 1),
           colour = "isSingular"
         )
@@ -141,12 +141,12 @@ Model <- R6::R6Class(
     #' pairs-plot of coefficients
     coef_pairs = function() {
       model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_Id", self$subject_Id)
+      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
       ## Coef_Pairsplot
       for_pairs <- model_coeff |>
-        dplyr::select(all_of(c("subject_Id", "factor", "Estimate"))) |>
+        dplyr::select(all_of(c("subject_id", "factor", "Estimate"))) |>
         tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
-      fname_pairsplot_coef <- paste0("Coef_Pairsplot_", self$modelName, ".pdf")
+      fname_pairsplot_coef <- paste0("Coef_Pairsplot_", self$model_name, ".pdf")
       return(list(plot = for_pairs, name = fname_pairsplot_coef))
     },
     #' @description
@@ -156,7 +156,7 @@ Model <- R6::R6Class(
       ## Anova_p.values
       what <- match.arg(what)
       model_anova <- self$get_anova()
-      fname_histogram_anova <- paste0("Anova_p.values_", self$modelName, ".pdf")
+      fname_histogram_anova <- paste0("Anova_p.values_", self$model_name, ".pdf")
       histogram_anova <- model_anova |>
         ggplot(aes(x = !!sym(what), group = factor)) +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +

@@ -53,10 +53,10 @@ ContrastsModerated <- R6::R6Class(
   public = list(
     #' @field Contrast Class implementing the Contrast interface
     Contrast = NULL,
-    #' @field modelName name of model
-    modelName = character(),
-    #' @field subject_Id columns with subject_Id (proteinID)
-    subject_Id = character(),
+    #' @field model_name name of model
+    model_name = character(),
+    #' @field subject_id columns with subject_id (proteinID)
+    subject_id = character(),
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
     #' @description
@@ -66,12 +66,12 @@ ContrastsModerated <- R6::R6Class(
     #' @param p.adjust function to adjust p-values - default BH
     initialize = function(
       Contrast,
-      model_name = paste0(Contrast$modelName, "_moderated"),
+      model_name = paste0(Contrast$model_name, "_moderated"),
       p.adjust = prolfqua::adjust_p_values
     ) {
       self$Contrast = Contrast
-      self$subject_Id = Contrast$subject_Id
-      self$modelName = model_name
+      self$subject_id = Contrast$subject_id
+      self$model_name = model_name
       self$p.adjust = p.adjust
     },
     #' @description
@@ -161,7 +161,7 @@ ContrastsModerated <- R6::R6Class(
       contrast_result <- self$get_contrasts()
       res <- ContrastsPlotter$new(
         contrast_result,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         fcthresh = fc_threshold,
         volcano = list(list(score = "FDR", thresh = fdr_threshold)),
         histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
@@ -180,7 +180,7 @@ ContrastsModerated <- R6::R6Class(
       contrast_minimal <- self$get_contrasts()
       contrasts_wide <- pivot_model_contrasts_to_wide(
         contrast_minimal,
-        subject_Id = self$subject_Id,
+        subject_id = self$subject_id,
         columns = c("diff", columns),
         contrast = "contrast"
       )

@@ -40,12 +40,12 @@ moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust 
 #' @examples
 #'
 #' mod <- sim_build_models_lm()
-#' m <- get_complete_model_fit(mod$modelDF)
+#' m <- get_complete_model_fit(mod$model_df)
 #' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
 #' factor_levelContrasts <- contrasts_linfct(
-#'   mod$modelDF,
+#'   mod$model_df,
 #'   factor_contrasts,
-#'   subject_Id = "protein_Id",
+#'   subject_id = "protein_Id",
 #'   contrastfun = compute_contrast)
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
@@ -134,7 +134,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 #'
 #' @param contrasts_data data frame
 #' @param contrast name of column with contrast identifier
-#' @param subject_Id name of column with typically protein Id
+#' @param subject_id name of column with typically protein Id
 #' @param estimate name of column with effect size estimate
 #' @param statistic statistic name of column with statistic (typically t-statistics)
 #' @param p.value name of column with moderated.p.value
@@ -166,13 +166,13 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 #'   avgAbd = avgAbd )
 #'
 #' xx30 <- summary_ROPECA_median_p.scaled(testdata,
-#'                                     subject_Id = "protein_Id",
+#'                                     subject_id = "protein_Id",
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
 #'                                     max.n = 30)
 #'
 #' xx2 <- summary_ROPECA_median_p.scaled(testdata,
-#'                                     subject_Id = "protein_Id",
+#'                                     subject_id = "protein_Id",
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
 #'                                     max.n = 1)
@@ -199,14 +199,14 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 summary_ROPECA_median_p.scaled <- function(
   contrasts_data,
   contrast = "contrast",
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   estimate = "diff",
   statistic = "statistic",
   p.value = "moderated.p.value",
   max.n = 10
 ) {
   nrpeps_per_prot <- contrasts_data |>
-    group_by(across(all_of(c(subject_Id, contrast)))) |>
+    group_by(across(all_of(c(subject_id, contrast)))) |>
     dplyr::summarize(n = dplyr::n())
 
   contrasts_data <- contrasts_data |>
@@ -215,7 +215,7 @@ summary_ROPECA_median_p.scaled <- function(
     )
 
   summarized.protein <- contrasts_data |>
-    group_by(across(all_of(c(subject_Id, contrast)))) |>
+    group_by(across(all_of(c(subject_id, contrast)))) |>
     dplyr::summarize(
       n_not_na = n(),
       mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
@@ -233,7 +233,7 @@ summary_ROPECA_median_p.scaled <- function(
   summarized.protein <- summarized.protein |>
     dplyr::mutate(n.beta = pmin(.data$n_not_na, max.n))
 
-  summarized.protein <- dplyr::inner_join(nrpeps_per_prot, summarized.protein, by = c(subject_Id, contrast))
+  summarized.protein <- dplyr::inner_join(nrpeps_per_prot, summarized.protein, by = c(subject_id, contrast))
 
   summarized.protein$isSingular <- FALSE
   # scale it back here.

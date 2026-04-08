@@ -148,15 +148,15 @@ Other modelling:
 \describe{
 \item{\code{Contrast}}{Class implementing the Contrast interface}
 
-\item{\code{count_df}}{data.frame with subject_Id + count column}
+\item{\code{count_df}}{data.frame with subject_id + count column}
 
 \item{\code{count_column}}{name of the count column in count_df}
 
 \item{\code{loess_span}}{span parameter for LOESS fit}
 
-\item{\code{modelName}}{name of model}
+\item{\code{model_name}}{name of model}
 
-\item{\code{subject_Id}}{columns with subject_Id (proteinID)}
+\item{\code{subject_id}}{columns with subject_id (proteinID)}
 
 \item{\code{p.adjust}}{function to adjust p-values}
 }
@@ -193,7 +193,7 @@ initialize
   count_df,
   count_column,
   loess_span = 0.75,
-  model_name = paste0(Contrast$modelName, "_DEqMS"),
+  model_name = paste0(Contrast$model_name, "_DEqMS"),
   p.adjust = prolfqua::adjust_p_values
 )}\if{html}{\out{</div>}}
 }
@@ -203,7 +203,7 @@ initialize
 \describe{
 \item{\code{Contrast}}{class implementing the ContrastInterface}
 
-\item{\code{count_df}}{data.frame with subject_Id columns and a count column}
+\item{\code{count_df}}{data.frame with subject_id columns and a count column}
 
 \item{\code{count_column}}{name of the count column in count_df}
 

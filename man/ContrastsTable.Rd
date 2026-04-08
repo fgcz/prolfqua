@@ -20,8 +20,8 @@ Contrasts <- c("aC" = "group_A - group_Ctrl",
 "bC" = "group_A - group_Ctrl")
 csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
 ctr <- csi$get_contrasts()
-csi$subject_Id
-xcx <- ContrastsTable$new(ctr, subject_Id = csi$subject_Id, model_name = "TableTest")
+csi$subject_id
+xcx <- ContrastsTable$new(ctr, subject_id = csi$subject_id, model_name = "TableTest")
 xcx$get_contrasts()
 xcx$get_Plotter()$volcano()
 stopifnot(is.null(xcx$get_contrast_sides()))
@@ -122,9 +122,9 @@ Other modelling:
 \describe{
 \item{\code{contrast_result}}{contrast results}
 
-\item{\code{modelName}}{model name}
+\item{\code{model_name}}{model name}
 
-\item{\code{subject_Id}}{default protein_Id}
+\item{\code{subject_id}}{default protein_Id}
 }
 \if{html}{\out{</div>}}
 }
@@ -156,7 +156,7 @@ intitialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$new(
   contrastsdf,
-  subject_Id = "protein_Id",
+  subject_id = "protein_Id",
   model_name = "ContrastTable"
 )}\if{html}{\out{</div>}}
 }
@@ -166,7 +166,7 @@ intitialize
 \describe{
 \item{\code{contrastsdf}}{data.frame}
 
-\item{\code{subject_Id}}{default protein_Id}
+\item{\code{subject_id}}{default protein_Id}
 
 \item{\code{model_name}}{default ContrastTable}
 }

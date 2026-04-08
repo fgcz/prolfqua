@@ -18,8 +18,8 @@ a list with components:
   \item{expr_matrix}{the expression matrix (same as \code{elist$E})}
   \item{design}{the design matrix}
   \item{annotation}{sample-level annotation data.frame}
-  \item{subject_Id}{character vector of hierarchy keys (possibly including isotopeLabel)}
-  \item{rowdata}{data.frame with one row per feature, columns = subject_Id}
+  \item{subject_id}{character vector of hierarchy keys (possibly including isotopeLabel)}
+  \item{rowdata}{data.frame with one row per feature, columns = subject_id}
   \item{rhs_formula}{the RHS-only formula}
   \item{dummy_model}{a dummy \code{lm} fitted on one complete row}
 }
@@ -27,7 +27,7 @@ a list with components:
 \description{
 Shared preamble for all \code{build_model_limma*} and \code{build_model_limpa}
 functions. Pivots LFQData to wide format, builds the design matrix from the
-formula, resolves the subject_Id / isotopeLabel, and creates a dummy lm for
+formula, resolves the subject_id / isotopeLabel, and creates a dummy lm for
 linfct extraction.
 }
 \keyword{internal}

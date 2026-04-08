@@ -23,7 +23,7 @@ mod <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 
 # Sigma method (default): returns median sigma and df from donors
 borrowed_s <- prolfqua:::compute_borrowed_variance(
-  mod$modelDF, method = "sigma")
+  mod$model_df, method = "sigma")
 stopifnot(borrowed_s$method == "sigma")
 stopifnot(is.numeric(borrowed_s$sigma) && borrowed_s$sigma > 0)
 stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
@@ -33,7 +33,7 @@ stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
 mod_no_missing <- sim_build_models_lm(model = "parallel3",
   Nprot = 10, with_missing = FALSE)
 borrowed_v <- prolfqua:::compute_borrowed_variance(
-  mod_no_missing$modelDF, method = "vcov")
+  mod_no_missing$model_df, method = "vcov")
 stopifnot(borrowed_v$method == "vcov")
 stopifnot(is.matrix(borrowed_v$vcov))
 }

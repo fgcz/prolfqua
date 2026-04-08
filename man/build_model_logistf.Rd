@@ -26,13 +26,13 @@ xx <- build_model_logistf(tmp, formula)
 
 
 
-m <- xx$models$models1$modelDF$linear_model[[1]]
+m <- xx$models$models1$model_df$linear_model[[1]]
 linfct <- linfct_from_model(m)
 linfct_all_possible_contrasts(linfct$linfct_factors)
 x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
 linfct <- linfct_factors_contrasts(m)
 
-m <- xx2$models$models2$modelDF$linear_model[[1]]
+m <- xx2$models$models2$model_df$linear_model[[1]]
 linfct <- linfct_from_model(m)
 x <- linfct_all_possible_contrasts(linfct$linfct_factors)
 x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
