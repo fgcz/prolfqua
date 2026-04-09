@@ -126,7 +126,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param PC default c(1,2) - first and second principal component
     #' @return plotly
     pca_plotly = function(PC = c(1, 2), add_txt = FALSE) {
-      fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$config$sample_name)
+      fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$sample_name())
       return(fig)
     },
     #' @description
@@ -134,19 +134,20 @@ LFQDataPlotter <- R6::R6Class(
     #' @param facet enable facet wrap if hierarchy_depth less then hierarchy lenght.
     #' @return tibble with column boxplots containing ggplot objects
     boxplots = function(facet = TRUE) {
-      config <- self$lfq$config
-      if (config$hierarchy_depth < length(config$hierarchy) && facet) {
+      rhk <- self$lfq$relevant_hierarchy_keys()
+      hk <- self$lfq$hierarchy_keys()
+      if (length(rhk) < length(hk) && facet) {
         bb <- prolfqua::plot_hierarchies_boxplot_df(
           self$lfq$data,
-          config,
-          hierarchy = config$hierarchy_keys_depth(),
-          facet_grid_on = config$hierarchy_keys()[config$hierarchy_depth + 1]
+          self$lfq$config,
+          hierarchy = rhk,
+          facet_grid_on = hk[length(rhk) + 1]
         )
       } else {
         bb <- prolfqua::plot_hierarchies_boxplot_df(
           self$lfq$data,
-          config,
-          hierarchy = config$hierarchy_keys_depth(),
+          self$lfq$config,
+          hierarchy = rhk,
           facet_grid_on = NULL
         )
       }
@@ -183,18 +184,18 @@ LFQDataPlotter <- R6::R6Class(
     #' @param max maximal number of samples to show
     #' @return NULL
     pairs_smooth = function(max = 10) {
-      data_transformed <- self$lfq$data
-      config <- self$lfq$config
-      samples <- dplyr::select(self$lfq$data, config$sample_name) |>
+      data_transformed <- self$lfq$get_data()
+      sample_col <- self$lfq$sample_name()
+      samples <- dplyr::select(data_transformed, sample_col) |>
         distinct() |>
         pull()
       if (length(samples) > max) {
         limit <- samples |> sample(max)
         ldata <- data_transformed |>
-          dplyr::filter(!!sym(config$sample_name) %in% limit)
-        prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(ldata, config, as.matrix = TRUE)$data)
+          dplyr::filter(!!sym(sample_col) %in% limit)
+        prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(ldata, self$lfq$config, as.matrix = TRUE)$data)
       } else {
-        prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(data_transformed, config, as.matrix = TRUE)$data)
+        prolfqua::pairs_smooth(prolfqua::tidy_to_wide_config(data_transformed, self$lfq$config, as.matrix = TRUE)$data)
       }
       NULL
     },

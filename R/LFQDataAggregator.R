@@ -2,15 +2,15 @@
 
 # Shared helper: validate hierarchy is aggregatable
 .check_aggregatable <- function(lfq) {
-  if (length(lfq$config$hierarchy_keys()) == 1) {
-    stop("no hierarchies to aggregate from: ", lfq$config$hierarchy_keys())
+  if (length(lfq$hierarchy_keys()) == 1) {
+    stop("no hierarchies to aggregate from: ", lfq$hierarchy_keys())
   }
-  if (length(lfq$config$hierarchy_keys()) == lfq$config$hierarchy_depth) {
+  if (length(lfq$hierarchy_keys()) == length(lfq$relevant_hierarchy_keys())) {
     stop(
       "no hierarchies to aggregate from: ",
-      lfq$config$hierarchy_keys(),
+      lfq$hierarchy_keys(),
       ", hierarchyDepth :",
-      lfq$config$hierarchy_depth
+      length(lfq$relevant_hierarchy_keys())
     )
   }
 }
@@ -481,7 +481,7 @@ AggregateLimpa <- R6::R6Class(
       } else {
         # Build protein ID vector from hierarchy_keys_depth in rowdata
         rowdata <- wide$rowdata
-        hierarchy_keys_depth <- self$lfq$config$hierarchy_keys_depth()
+        hierarchy_keys_depth <- self$lfq$relevant_hierarchy_keys()
         if (length(hierarchy_keys_depth) == 1) {
           protein_ids <- rowdata[[hierarchy_keys_depth]]
         } else {

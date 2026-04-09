@@ -99,6 +99,14 @@ Other LFQData:
 \item \href{#method-LFQData-factors}{\code{LFQData$factors()}}
 \item \href{#method-LFQData-hierarchy}{\code{LFQData$hierarchy()}}
 \item \href{#method-LFQData-response}{\code{LFQData$response()}}
+\item \href{#method-LFQData-hierarchy_keys}{\code{LFQData$hierarchy_keys()}}
+\item \href{#method-LFQData-relevant_hierarchy_keys}{\code{LFQData$relevant_hierarchy_keys()}}
+\item \href{#method-LFQData-factor_keys}{\code{LFQData$factor_keys()}}
+\item \href{#method-LFQData-relevant_factor_keys}{\code{LFQData$relevant_factor_keys()}}
+\item \href{#method-LFQData-sample_name}{\code{LFQData$sample_name()}}
+\item \href{#method-LFQData-file_name}{\code{LFQData$file_name()}}
+\item \href{#method-LFQData-nr_children_col}{\code{LFQData$nr_children_col()}}
+\item \href{#method-LFQData-get_data}{\code{LFQData$get_data()}}
 \item \href{#method-LFQData-rename_response}{\code{LFQData$rename_response()}}
 \item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
 \item \href{#method-LFQData-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
@@ -347,6 +355,86 @@ name of response variable
 \subsection{Returns}{
 data.frame
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-hierarchy_keys"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-hierarchy_keys}{}}}
+\subsection{Method \code{hierarchy_keys()}}{
+return all hierarchy column names
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$hierarchy_keys()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-relevant_hierarchy_keys"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-relevant_hierarchy_keys}{}}}
+\subsection{Method \code{relevant_hierarchy_keys()}}{
+return hierarchy column names at current depth (alias for subject_id)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$relevant_hierarchy_keys()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-factor_keys"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-factor_keys}{}}}
+\subsection{Method \code{factor_keys()}}{
+return all factor column names
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$factor_keys()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-relevant_factor_keys"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-relevant_factor_keys}{}}}
+\subsection{Method \code{relevant_factor_keys()}}{
+return factor column names at current depth
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$relevant_factor_keys()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-sample_name"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-sample_name}{}}}
+\subsection{Method \code{sample_name()}}{
+return sample name column
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$sample_name()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-file_name"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-file_name}{}}}
+\subsection{Method \code{file_name()}}{
+return file name column
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$file_name()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-nr_children_col"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-nr_children_col}{}}}
+\subsection{Method \code{nr_children_col()}}{
+return name of nr_children column
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$nr_children_col()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-get_data"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_data}{}}}
+\subsection{Method \code{get_data()}}{
+return the tidy data frame
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_data()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-rename_response"></a>}}

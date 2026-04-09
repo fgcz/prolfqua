@@ -213,6 +213,46 @@ LFQData <- R6::R6Class(
       self$config$get_response()
     },
     #' @description
+    #' return all hierarchy column names
+    hierarchy_keys = function() {
+      self$config$hierarchy_keys()
+    },
+    #' @description
+    #' return hierarchy column names at current depth (alias for subject_id)
+    relevant_hierarchy_keys = function() {
+      self$config$hierarchy_keys_depth()
+    },
+    #' @description
+    #' return all factor column names
+    factor_keys = function() {
+      self$config$factor_keys()
+    },
+    #' @description
+    #' return factor column names at current depth
+    relevant_factor_keys = function() {
+      self$config$factor_keys_depth()
+    },
+    #' @description
+    #' return sample name column
+    sample_name = function() {
+      self$config$sample_name
+    },
+    #' @description
+    #' return file name column
+    file_name = function() {
+      self$config$file_name
+    },
+    #' @description
+    #' return name of nr_children column
+    nr_children_col = function() {
+      self$config$nr_children
+    },
+    #' @description
+    #' return the tidy data frame
+    get_data = function() {
+      self$data
+    },
+    #' @description
     #' new name of response variable
     #' @param newname default Intensity
     rename_response = function(newname = "Intensity") {
