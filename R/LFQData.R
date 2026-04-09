@@ -201,7 +201,7 @@ LFQData <- R6::R6Class(
     #' Annotation table
     #' @return data.frame
     factors = function() {
-      prolfqua::table_factors(self$data, self$config)
+      prolfqua::table_factors(self$get_data(), self$file_name(), self$sample_name(), self$factor_keys())
     },
     #' @description
     #' Hierarchy table
@@ -277,13 +277,18 @@ LFQData <- R6::R6Class(
     #' @description
     #' number of elements at each level
     hierarchy_counts = function() {
-      prolfqua::hierarchy_counts(self$data, self$config)
+      prolfqua::hierarchy_counts(self$get_data(), self$hierarchy_keys(), self$isotope_label())
     },
     #' @description
     #' e.g. number of peptides per protein etc
     #' @return data.frame
     summarize_hierarchy = function() {
-      prolfqua::summarize_hierarchy(self$data, self$config)
+      prolfqua::summarize_hierarchy(
+        self$get_data(),
+        self$hierarchy_keys(),
+        self$isotope_label(),
+        hierarchy = self$relevant_hierarchy_keys()
+      )
     },
     #' @description
     #' get Plotter
@@ -449,8 +454,10 @@ nr_B_in_A <- function(pdata, config, merge = TRUE) {
 #' @examples
 #'
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
-#' filterPep <- prolfqua::filter_proteins_by_peptide_count( istar$data ,  istar$config )
-#' x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' filterPep <- prolfqua::filter_proteins_by_peptide_count(istar$data, istar$config)
+#' x <- prolfqua::summarize_hierarchy(filterPep$data,
+#'   lfq$hierarchy_keys(), lfq$isotope_label())
 #' stopifnot(x$peptide_Id_n >= istar$config$min_peptides_protein)
 #'
 filter_proteins_by_peptide_count <-

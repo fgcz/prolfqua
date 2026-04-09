@@ -4,27 +4,27 @@
 \alias{table_factors}
 \title{Table of distinct factors (sample annotation)}
 \usage{
-table_factors(pdata, configuration)
+table_factors(pdata, file_name, sample_name, factor_keys)
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{configuration}{AnalysisConfiguration}
+\item{file_name}{character — file name column}
+
+\item{sample_name}{character — sample name column}
+
+\item{factor_keys}{character vector — factor column names}
 }
 \description{
 Table of distinct factors (sample annotation)
 }
 \examples{
 
-
 istar <- sim_lfq_data_peptide_config()
-
-
-xx <- table_factors(istar$data,istar$config )
-xx
-xt <- xx |> dplyr::group_by(!!!rlang::syms(istar$config$factor_keys())) |>
+lfq <- LFQData$new(istar$data, istar$config)
+xx <- table_factors(lfq$get_data(), lfq$file_name(), lfq$sample_name(), lfq$factor_keys())
+xt <- xx |> dplyr::group_by(!!!rlang::syms(lfq$factor_keys())) |>
  dplyr::summarize(n = dplyr::n())
-xt
 stopifnot(all(xt$n == 4))
 
 }

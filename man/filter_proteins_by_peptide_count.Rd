@@ -20,8 +20,10 @@ Keep only those proteins with 2 IDENTIFIED peptides
 \examples{
 
 istar <- prolfqua::sim_lfq_data_peptide_config()
-filterPep <- prolfqua::filter_proteins_by_peptide_count( istar$data ,  istar$config )
-x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+filterPep <- prolfqua::filter_proteins_by_peptide_count(istar$data, istar$config)
+x <- prolfqua::summarize_hierarchy(filterPep$data,
+  lfq$hierarchy_keys(), lfq$isotope_label())
 stopifnot(x$peptide_Id_n >= istar$config$min_peptides_protein)
 
 }

@@ -6,46 +6,35 @@
 \usage{
 summarize_hierarchy(
   pdata,
-  config,
-  hierarchy = config$hierarchy_keys_depth(),
+  hierarchy_keys,
+  isotope_label = "isotopeLabel",
+  hierarchy = hierarchy_keys,
   factors = character()
 )
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{hierarchy_keys}{character vector — all hierarchy column names}
 
-\item{hierarchy}{for which hierarchy level (default up to hierarchy depth)}
+\item{isotope_label}{character — isotope label column name}
 
-\item{factors}{which factors to include}
+\item{hierarchy}{character vector — hierarchy level to group by (default hierarchy_keys)}
+
+\item{factors}{character vector — factor columns to include}
 }
 \description{
 E.g compute number of peptides for each protein
 }
 \examples{
 
-
-
 bb <- sim_lfq_data_peptide_config()
-data <- bb$data
-configur <- bb$config
-summarize_hierarchy(data, configur)
-summarize_hierarchy(data, configur, factors = character())
-
-summarize_hierarchy(data, configur,
- hierarchy = configur$hierarchy_keys_depth() )
-summarize_hierarchy(data, configur,
- hierarchy = NULL, factors = configur$factor_keys_depth() )
-configur$hierarchy_depth = 1
-summarize_hierarchy(data, configur,
- factors = configur$factor_keys_depth())
-configur$hierarchy_depth = 2
-summarize_hierarchy(data, configur)
-configur$hierarchy_depth = 3
-summarize_hierarchy(data, configur )
-configur$hierarchy_depth = 4
-summarize_hierarchy(data, configur )
+lfq <- LFQData$new(bb$data, bb$config)
+summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label())
+summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label(),
+ factors = character())
+summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label(),
+ hierarchy = lfq$relevant_hierarchy_keys())
 
 }
 \seealso{

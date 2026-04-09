@@ -2,85 +2,84 @@
 
 #' Table of distinct factors (sample annotation)
 #' @param pdata data.frame
-#' @param configuration AnalysisConfiguration
+#' @param file_name character — file name column
+#' @param sample_name character — sample name column
+#' @param factor_keys character vector — factor column names
 #'
 #' @export
 #' @keywords internal
 #' @family configuration
 #' @examples
 #'
-#'
 #' istar <- sim_lfq_data_peptide_config()
-#'
-#'
-#' xx <- table_factors(istar$data,istar$config )
-#' xx
-#' xt <- xx |> dplyr::group_by(!!!rlang::syms(istar$config$factor_keys())) |>
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' xx <- table_factors(lfq$get_data(), lfq$file_name(), lfq$sample_name(), lfq$factor_keys())
+#' xt <- xx |> dplyr::group_by(!!!rlang::syms(lfq$factor_keys())) |>
 #'  dplyr::summarize(n = dplyr::n())
-#' xt
 #' stopifnot(all(xt$n == 4))
 #'
-table_factors <- function(pdata, configuration) {
+table_factors <- function(pdata, file_name, sample_name, factor_keys) {
   factors_table <- pdata |>
-    dplyr::select(c(configuration$file_name, configuration$sample_name, configuration$factor_keys())) |>
+    dplyr::select(c(file_name, sample_name, factor_keys)) |>
     dplyr::distinct() |>
-    arrange(!!sym(configuration$sample_name))
+    arrange(!!sym(sample_name))
   return(factors_table)
 }
 
-#' Table of distinct factors (sample annotation)
+#' Table of distinct factors with group sizes
 #' @param pdata data.frame
-#' @param configuration AnalysisConfiguration
+#' @param file_name character — file name column
+#' @param sample_name character — sample name column
+#' @param factor_keys character vector — all factor column names
+#' @param factor_keys_depth character vector — factor columns at current depth
 #'
 #' @export
 #' @keywords internal
 #' @family configuration
 #' @examples
 #'
-#'
 #' istar <- sim_lfq_data_peptide_config()
-#'
-#'
-#' xx <- table_factors_size(istar$data,istar$config )
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' xx <- table_factors_size(lfq$get_data(), lfq$file_name(),
+#'   lfq$sample_name(), lfq$factor_keys(), lfq$relevant_factor_keys())
 #' stopifnot(all(xx$n == 4))
 #'
-table_factors_size <- function(pdata, configuration) {
-  xx <- table_factors(pdata, configuration)
-  xx <- xx |> dplyr::group_by(dplyr::across(configuration$factor_keys_depth())) |> dplyr::summarize(n = dplyr::n())
+table_factors_size <- function(pdata, file_name, sample_name, factor_keys, factor_keys_depth) {
+  xx <- table_factors(pdata, file_name, sample_name, factor_keys)
+  xx <- xx |>
+    dplyr::group_by(dplyr::across(factor_keys_depth)) |>
+    dplyr::summarize(n = dplyr::n())
   return(xx)
 }
 
 # Functions - summarize hierarchies
 
-#' Count distinct elements for each level of hierarchy and istope
+#' Count distinct elements for each level of hierarchy and isotope
 #'
 #' E.g. number of proteins, peptides, precursors in the dataset
 #'
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param hierarchy_keys character vector — all hierarchy column names
+#' @param isotope_label character — isotope label column name
 #' @export
 #' @keywords internal
 #' @family summary
 #' @examples
 #'
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
+#' lfq <- LFQData$new(bb$data, bb$config)
 #'
-#' config <- bb$config$clone(deep=TRUE)
-#' data <- bb$data
-#'
-#' x <- hierarchy_counts(data, config)
+#' x <- hierarchy_counts(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label())
 #' x$protein_Id
-#' stopifnot(ncol(x) == length(config$hierarchy_keys()) + 1)
+#' stopifnot(ncol(x) == length(lfq$hierarchy_keys()) + 1)
 #' # select non existing protein
-#' data0 <- data |> dplyr::filter( protein_Id == "XYZ")
-#' tmp <- hierarchy_counts(data0, config)
+#' data0 <- lfq$get_data() |> dplyr::filter(protein_Id == "XYZ")
+#' tmp <- hierarchy_counts(data0, lfq$hierarchy_keys(), lfq$isotope_label())
 #' stopifnot(nrow(tmp) == 0)
-hierarchy_counts <- function(pdata, config) {
-  hierarchy <- config$hierarchy_keys()
+hierarchy_counts <- function(pdata, hierarchy_keys, isotope_label = "isotopeLabel") {
   res <- pdata |>
-    dplyr::group_by(across(all_of(config$isotope_label))) |>
-    dplyr::summarise(across(all_of(hierarchy), n_distinct))
-
+    dplyr::group_by(across(all_of(isotope_label))) |>
+    dplyr::summarise(across(all_of(hierarchy_keys), n_distinct))
   return(res)
 }
 
@@ -193,36 +192,29 @@ hierarchy_counts_sample <- function(
 #' @keywords internal
 #' @family summary
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @param hierarchy for which hierarchy level (default up to hierarchy depth)
-#' @param factors which factors to include
+#' @param hierarchy_keys character vector — all hierarchy column names
+#' @param isotope_label character — isotope label column name
+#' @param hierarchy character vector — hierarchy level to group by (default hierarchy_keys)
+#' @param factors character vector — factor columns to include
 #'
 #' @examples
 #'
-#'
-#'
 #' bb <- sim_lfq_data_peptide_config()
-#' data <- bb$data
-#' configur <- bb$config
-#' summarize_hierarchy(data, configur)
-#' summarize_hierarchy(data, configur, factors = character())
+#' lfq <- LFQData$new(bb$data, bb$config)
+#' summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label())
+#' summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label(),
+#'  factors = character())
+#' summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label(),
+#'  hierarchy = lfq$relevant_hierarchy_keys())
 #'
-#' summarize_hierarchy(data, configur,
-#'  hierarchy = configur$hierarchy_keys_depth() )
-#' summarize_hierarchy(data, configur,
-#'  hierarchy = NULL, factors = configur$factor_keys_depth() )
-#' configur$hierarchy_depth = 1
-#' summarize_hierarchy(data, configur,
-#'  factors = configur$factor_keys_depth())
-#' configur$hierarchy_depth = 2
-#' summarize_hierarchy(data, configur)
-#' configur$hierarchy_depth = 3
-#' summarize_hierarchy(data, configur )
-#' configur$hierarchy_depth = 4
-#' summarize_hierarchy(data, configur )
-#'
-summarize_hierarchy <- function(pdata, config, hierarchy = config$hierarchy_keys_depth(), factors = character()) {
-  all_hierarchy <- c(config$isotope_label, config$hierarchy_keys())
+summarize_hierarchy <- function(
+  pdata,
+  hierarchy_keys,
+  isotope_label = "isotopeLabel",
+  hierarchy = hierarchy_keys,
+  factors = character()
+) {
+  all_hierarchy <- c(isotope_label, hierarchy_keys)
 
   precursor <- pdata |> dplyr::select(dplyr::all_of(c(factors, all_hierarchy))) |> dplyr::distinct()
   x3 <- precursor |>

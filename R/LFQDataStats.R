@@ -60,7 +60,9 @@
 #'
 #' # Group size 1
 #' bb <- prolfqua::sim_lfq_data_peptide_config(N=1)
-#' table_factors_size(bb$data,bb$config )
+#' lfq1 <- LFQData$new(bb$data, bb$config)
+#' table_factors_size(lfq1$get_data(), lfq1$file_name(),
+#'   lfq1$sample_name(), lfq1$factor_keys(), lfq1$relevant_factor_keys())
 #' lfqdata <- LFQData$new(bb$data, bb$config)
 #' lfqstats <- lfqdata$get_Stats()
 #'
@@ -92,7 +94,13 @@ LFQDataStats <- R6::R6Class(
         "sd"
       }
 
-      tb <- table_factors_size(lfqdata$data, lfqdata$config)
+      tb <- table_factors_size(
+        lfqdata$get_data(),
+        lfqdata$file_name(),
+        lfqdata$sample_name(),
+        lfqdata$factor_keys(),
+        lfqdata$relevant_factor_keys()
+      )
       if (all(tb$n == 1)) {
         if (self$lfq$config$factor_depth > 1) {
           self$lfq$config$factor_depth <- self$lfq$config$factor_depth - 1

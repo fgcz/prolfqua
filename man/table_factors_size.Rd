@@ -2,25 +2,36 @@
 % Please edit documentation in R/tidyMS_summarize_hierarchy.R
 \name{table_factors_size}
 \alias{table_factors_size}
-\title{Table of distinct factors (sample annotation)}
+\title{Table of distinct factors with group sizes}
 \usage{
-table_factors_size(pdata, configuration)
+table_factors_size(
+  pdata,
+  file_name,
+  sample_name,
+  factor_keys,
+  factor_keys_depth
+)
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{configuration}{AnalysisConfiguration}
+\item{file_name}{character — file name column}
+
+\item{sample_name}{character — sample name column}
+
+\item{factor_keys}{character vector — all factor column names}
+
+\item{factor_keys_depth}{character vector — factor columns at current depth}
 }
 \description{
-Table of distinct factors (sample annotation)
+Table of distinct factors with group sizes
 }
 \examples{
 
-
 istar <- sim_lfq_data_peptide_config()
-
-
-xx <- table_factors_size(istar$data,istar$config )
+lfq <- LFQData$new(istar$data, istar$config)
+xx <- table_factors_size(lfq$get_data(), lfq$file_name(),
+  lfq$sample_name(), lfq$factor_keys(), lfq$relevant_factor_keys())
 stopifnot(all(xx$n == 4))
 
 }
