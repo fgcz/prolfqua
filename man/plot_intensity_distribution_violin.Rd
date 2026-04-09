@@ -5,14 +5,29 @@
 \alias{plot_intensity_distribution_density}
 \title{visualize intensity distributions}
 \usage{
-plot_intensity_distribution_violin(pdata, config)
+plot_intensity_distribution_violin(
+  pdata,
+  sample_name,
+  response,
+  is_transformed = FALSE
+)
 
-plot_intensity_distribution_density(pdata, config, legend = TRUE)
+plot_intensity_distribution_density(
+  pdata,
+  sample_name,
+  response,
+  is_transformed = FALSE,
+  legend = TRUE
+)
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{sample_name}{character — sample column name}
+
+\item{response}{character — intensity column name}
+
+\item{is_transformed}{logical — is intensity log-transformed?}
 
 \item{legend}{do not show legend}
 }
@@ -23,10 +38,14 @@ visualize intensity distributions
 }
 \examples{
 istar <- sim_lfq_data_peptide_config()
-plot_intensity_distribution_violin(istar$data, istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+plot_intensity_distribution_violin(
+  lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 
 istar <- sim_lfq_data_peptide_config()
-plot_intensity_distribution_density(istar$data, istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+plot_intensity_distribution_density(
+  lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 
 }
 \seealso{

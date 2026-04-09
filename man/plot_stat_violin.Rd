@@ -4,12 +4,16 @@
 \alias{plot_stat_violin}
 \title{plot Violin plot of sd CV or mean}
 \usage{
-plot_stat_violin(pdata, config, stat = c("CV", "meanAbundance", "sd"))
+plot_stat_violin(
+  pdata,
+  factor_keys_depth,
+  stat = c("CV", "meanAbundance", "sd")
+)
 }
 \arguments{
-\item{pdata}{data.frame}
+\item{pdata}{data.frame with statistics}
 
-\item{config}{AnalysisConfiguration}
+\item{factor_keys_depth}{character vector — factor columns for grouping}
 
 \item{stat}{either CV, mean or sd}
 }
@@ -18,15 +22,12 @@ plot Violin plot of sd CV or mean
 }
 \examples{
 
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-config <- bb1$config
-data <- bb1$data
-res <- summarize_stats(data, config)
-res <- summarize_stats(data, config)
-plot_stat_violin(res, config, stat = "meanAbundance")
-plot_stat_violin(res, config, stat = "sd")
-plot_stat_violin(res, config, stat = "CV")
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "meanAbundance")
+plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "sd")
+plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "CV")
 
 }
 \seealso{

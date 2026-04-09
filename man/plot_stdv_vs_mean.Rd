@@ -4,12 +4,12 @@
 \alias{plot_stdv_vs_mean}
 \title{plot stddev vs mean to asses stability of variance}
 \usage{
-plot_stdv_vs_mean(pdata, config, size = 2000)
+plot_stdv_vs_mean(pdata, factor_keys_depth, size = 2000)
 }
 \arguments{
-\item{pdata}{data.frame}
+\item{pdata}{data.frame with statistics}
 
-\item{config}{AnalysisConfiguration}
+\item{factor_keys_depth}{character vector — factor columns for faceting}
 
 \item{size}{how many points to sample (since scatter plot to slow for all)}
 }
@@ -18,22 +18,10 @@ plot stddev vs mean to asses stability of variance
 }
 \examples{
 
-
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-config <- bb1$config
-data <- bb1$data
-res <- summarize_stats(data, config)
-
-plot_stdv_vs_mean(res, config)
-datalog2 <- transform_work_intensity(data, config, log2)
-statlog2 <- summarize_stats(datalog2, config)
-plot_stdv_vs_mean(statlog2, config)
-config$get_response()
-config$pop_response()
-datasqrt <- transform_work_intensity(data, config, sqrt)
-ressqrt <- summarize_stats(datasqrt, config)
-plot_stdv_vs_mean(ressqrt, config)
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stdv_vs_mean(res, lfq$relevant_factor_keys())
 
 }
 \seealso{

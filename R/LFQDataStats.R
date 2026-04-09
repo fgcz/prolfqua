@@ -161,7 +161,7 @@ LFQDataStats <- R6::R6Class(
     density = function(ggstat = c("density", "ecdf")) {
       prolfqua::plot_stat_density(
         self$stats(),
-        self$lfq$config,
+        self$lfq$factor_keys()[1],
         stat = self$stat,
         ggstat = ggstat
       )
@@ -173,7 +173,7 @@ LFQDataStats <- R6::R6Class(
     density_median = function(ggstat = c("density", "ecdf")) {
       prolfqua::plot_stat_density_median(
         self$stats(),
-        self$lfq$config,
+        self$lfq$factor_keys()[1],
         stat = self$stat,
         ggstat = ggstat
       )
@@ -183,7 +183,7 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density of ecdf
     #' @return ggplot
     violin = function() {
-      prolfqua::plot_stat_violin(self$stats(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_violin(self$stats(), self$lfq$relevant_factor_keys(), stat = self$stat)
     },
     #' @description
     #' plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
@@ -191,7 +191,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     #'
     violin_median = function() {
-      prolfqua::plot_stat_violin_median(self$stats(), self$lfq$config, stat = self$stat)
+      prolfqua::plot_stat_violin_median(self$stats(), self$lfq$factor_keys()[1], stat = self$stat)
     },
     #' @description
     #' plot sd vs mean
@@ -199,7 +199,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     #'
     stdv_vs_mean = function(size = 200) {
-      prolfqua::plot_stdv_vs_mean(self$stats(), self$lfq$config, size = size)
+      prolfqua::plot_stdv_vs_mean(self$stats(), self$lfq$relevant_factor_keys(), size = size)
     },
     #' @description
     #' compute sample size for entire dataset

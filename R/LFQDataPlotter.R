@@ -171,13 +171,24 @@ LFQDataPlotter <- R6::R6Class(
     #' @param legend show legend TRUE, FALSE do not show.
     #' @return ggplot
     intensity_distribution_density = function(legend = TRUE) {
-      prolfqua::plot_intensity_distribution_density(self$lfq$data, self$lfq$config, legend = legend)
+      prolfqua::plot_intensity_distribution_density(
+        self$lfq$get_data(),
+        self$lfq$sample_name(),
+        self$lfq$response(),
+        self$lfq$is_transformed(),
+        legend = legend
+      )
     },
     #' @description
     #' Violinplot showing distribution of intensities in all samples
     #' @return ggplot
     intensity_distribution_violin = function() {
-      prolfqua::plot_intensity_distribution_violin(self$lfq$data, self$lfq$config)
+      prolfqua::plot_intensity_distribution_violin(
+        self$lfq$get_data(),
+        self$lfq$sample_name(),
+        self$lfq$response(),
+        self$lfq$is_transformed()
+      )
     },
     #' @description
     #' pairsplot of intensities

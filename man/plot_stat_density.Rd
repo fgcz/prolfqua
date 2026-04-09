@@ -6,33 +6,31 @@
 \usage{
 plot_stat_density(
   pdata,
-  config,
+  factor_key,
   stat = c("CV", "meanAbundance", "sd"),
   ggstat = c("density", "ecdf")
 )
 }
 \arguments{
-\item{pdata}{data.frame}
+\item{pdata}{data.frame with statistics}
 
-\item{config}{AnalysisConfiguration}
+\item{factor_key}{character — factor column name for colouring}
 
 \item{stat}{sd, mean or CV}
 
-\item{ggstat}{either density of ecdf}
+\item{ggstat}{either density or ecdf}
 }
 \description{
 plot density distribution or ecdf of sd, mean or CV
 }
 \examples{
 
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-config <-  bb1$config
-data <- bb1$data
-res <- summarize_stats(data, config)
-plot_stat_density(res, config, stat = "meanAbundance")
-plot_stat_density(res, config, stat = "sd")
-plot_stat_density(res, config, stat = "CV")
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stat_density(res, lfq$factor_keys()[1], stat = "meanAbundance")
+plot_stat_density(res, lfq$factor_keys()[1], stat = "sd")
+plot_stat_density(res, lfq$factor_keys()[1], stat = "CV")
 }
 \seealso{
 Other stats: 

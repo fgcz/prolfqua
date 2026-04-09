@@ -477,54 +477,49 @@ lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 
 }
 
 #' plot density distribution or ecdf of sd, mean or CV
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param pdata data.frame with statistics
+#' @param factor_key character — factor column name for colouring
 #' @param stat sd, mean or CV
-#' @param ggstat either density of ecdf
+#' @param ggstat either density or ecdf
 #'
 #' @export
 #' @keywords internal
 #' @family stats
 #' @examples
 #'
-#'
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' config <-  bb1$config
-#' data <- bb1$data
-#' res <- summarize_stats(data, config)
-#' plot_stat_density(res, config, stat = "meanAbundance")
-#' plot_stat_density(res, config, stat = "sd")
-#' plot_stat_density(res, config, stat = "CV")
-plot_stat_density <- function(pdata, config, stat = c("CV", "meanAbundance", "sd"), ggstat = c("density", "ecdf")) {
+#' lfq <- LFQData$new(bb1$data, bb1$config)
+#' res <- lfq$get_Stats()$stats()
+#' plot_stat_density(res, lfq$factor_keys()[1], stat = "meanAbundance")
+#' plot_stat_density(res, lfq$factor_keys()[1], stat = "sd")
+#' plot_stat_density(res, lfq$factor_keys()[1], stat = "CV")
+plot_stat_density <- function(pdata, factor_key, stat = c("CV", "meanAbundance", "sd"), ggstat = c("density", "ecdf")) {
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[config$factor_keys()[1]]])) +
+  p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[factor_key]])) +
     geom_line(stat = ggstat)
   return(p)
 }
 #' plot density distribution or ecdf of sd, mean or cv given intensity below and above median
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param pdata data.frame with statistics
+#' @param factor_key character — factor column name for faceting
 #' @param stat sd, mean or CV
-#' @param ggstat either density of ecdf
+#' @param ggstat either density or ecdf
 #'
 #' @export
 #' @keywords internal
 #' @family stats
 #' @examples
 #'
-#'
-#'
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb1$config
-#' data2 <- bb1$data
-#' res <- summarize_stats(data2, config)
-#' plot_stat_density_median(res, config, "CV")
-#' plot_stat_density_median(res, config, "meanAbundance")
-#' plot_stat_density_median(res, config, "sd")
+#' lfq <- LFQData$new(bb1$data, bb1$config)
+#' res <- lfq$get_Stats()$stats()
+#' plot_stat_density_median(res, lfq$factor_keys()[1], "CV")
+#' plot_stat_density_median(res, lfq$factor_keys()[1], "meanAbundance")
+#' plot_stat_density_median(res, lfq$factor_keys()[1], "sd")
 plot_stat_density_median <- function(
   pdata,
-  config,
+  factor_key,
   stat = c("CV", "meanAbundance", "sd"),
   ggstat = c("density", "ecdf")
 ) {
@@ -535,42 +530,38 @@ plot_stat_density_median <- function(
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))
   p <- ggplot(top50, aes(x = .data[[stat]], colour = .data$top)) +
     geom_line(stat = ggstat) +
-    facet_wrap(config$factor_keys()[1])
+    facet_wrap(factor_key)
   return(p)
 }
 
 #' plot Violin plot of sd CV or mean
 #'
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param pdata data.frame with statistics
+#' @param factor_keys_depth character vector — factor columns for grouping
 #' @param stat either CV, mean or sd
 #' @export
 #' @keywords internal
 #' @family stats
 #' @examples
 #'
-#'
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb1$config
-#' data <- bb1$data
-#' res <- summarize_stats(data, config)
-#' res <- summarize_stats(data, config)
-#' plot_stat_violin(res, config, stat = "meanAbundance")
-#' plot_stat_violin(res, config, stat = "sd")
-#' plot_stat_violin(res, config, stat = "CV")
+#' lfq <- LFQData$new(bb1$data, bb1$config)
+#' res <- lfq$get_Stats()$stats()
+#' plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "meanAbundance")
+#' plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "sd")
+#' plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "CV")
 #'
-plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd")) {
+plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbundance", "sd")) {
   stat <- match.arg(stat)
-  pdata <- pdata |> tidyr::unite("groups", config$factor_keys_depth())
+  pdata <- pdata |> tidyr::unite("groups", factor_keys_depth)
   p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]])) +
     geom_violin() +
     ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black")
-
   return(p)
 }
 #' plot Violin plot of sd CV or mean given intensity lower or above median
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param pdata data.frame with statistics
+#' @param factor_key character — factor column name for x-axis
 #' @param stat either CV, mean or sd
 #'
 #' @export
@@ -578,13 +569,11 @@ plot_stat_violin <- function(pdata, config, stat = c("CV", "meanAbundance", "sd"
 #' @family stats
 #' @examples
 #'
-#'
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb1$config
-#' data <- bb1$data
-#' res <- summarize_stats(data, config)
-#' plot_stat_violin_median(res, config, stat = "meanAbundance")
-plot_stat_violin_median <- function(pdata, config, stat = c("CV", "meanAbundance", "sd")) {
+#' lfq <- LFQData$new(bb1$data, bb1$config)
+#' res <- lfq$get_Stats()$stats()
+#' plot_stat_violin_median(res, lfq$factor_keys()[1], stat = "meanAbundance")
+plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbundance", "sd")) {
   median.quartile <- function(x) {
     out <- quantile(x, probs = c(0.25, 0.5, 0.75))
     names(out) <- c("ymin", "y", "ymax")
@@ -595,7 +584,7 @@ plot_stat_violin_median <- function(pdata, config, stat = c("CV", "meanAbundance
   top50 <- pdata |>
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))
 
-  p <- ggplot(top50, aes(x = .data[[config$factor_keys()[1]]], y = .data[[stat]])) +
+  p <- ggplot(top50, aes(x = .data[[factor_key]], y = .data[[stat]])) +
     geom_violin() +
     stat_summary(fun = median.quartile, geom = "point", shape = 3) +
     stat_summary(fun = median, geom = "point", shape = 1) +
@@ -604,8 +593,8 @@ plot_stat_violin_median <- function(pdata, config, stat = c("CV", "meanAbundance
 }
 
 #' plot stddev vs mean to asses stability of variance
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param pdata data.frame with statistics
+#' @param factor_keys_depth character vector — factor columns for faceting
 #' @param size how many points to sample (since scatter plot to slow for all)
 #'
 #' @export
@@ -613,38 +602,26 @@ plot_stat_violin_median <- function(pdata, config, stat = c("CV", "meanAbundance
 #' @family stats
 #' @examples
 #'
-#'
-#'
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb1$config
-#' data <- bb1$data
-#' res <- summarize_stats(data, config)
+#' lfq <- LFQData$new(bb1$data, bb1$config)
+#' res <- lfq$get_Stats()$stats()
+#' plot_stdv_vs_mean(res, lfq$relevant_factor_keys())
 #'
-#' plot_stdv_vs_mean(res, config)
-#' datalog2 <- transform_work_intensity(data, config, log2)
-#' statlog2 <- summarize_stats(datalog2, config)
-#' plot_stdv_vs_mean(statlog2, config)
-#' config$get_response()
-#' config$pop_response()
-#' datasqrt <- transform_work_intensity(data, config, sqrt)
-#' ressqrt <- summarize_stats(datasqrt, config)
-#' plot_stdv_vs_mean(ressqrt, config)
-#'
-plot_stdv_vs_mean <- function(pdata, config, size = 2000) {
+plot_stdv_vs_mean <- function(pdata, factor_keys_depth, size = 2000) {
   summary <- pdata |>
-    group_by(across(all_of(config$factor_keys_depth()))) |>
+    group_by(across(all_of(factor_keys_depth))) |>
     dplyr::summarize(n = n(), .groups = "drop")
   size <- min(size, min(summary$n))
 
   pdata <- pdata |>
-    dplyr::group_by(across(all_of(config$factor_keys_depth()))) |>
+    dplyr::group_by(across(all_of(factor_keys_depth))) |>
     dplyr::sample_n(size = size) |>
     dplyr::ungroup()
 
   p <- ggplot(pdata, aes(x = meanAbundance, y = sd)) +
     geom_point() +
     geom_smooth(method = "loess") +
-    facet_wrap(config$factor_keys_depth(), nrow = 1) +
+    facet_wrap(factor_keys_depth, nrow = 1) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
   return(p)
 }

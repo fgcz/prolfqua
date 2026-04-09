@@ -15,7 +15,9 @@ print.pheatmap <- function(x, ...) {
 
 #' visualize intensity distributions
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param sample_name character — sample column name
+#' @param response character — intensity column name
+#' @param is_transformed logical — is intensity log-transformed?
 #'
 #' @export
 #'
@@ -24,14 +26,16 @@ print.pheatmap <- function(x, ...) {
 #' @family plotting
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()
-#' plot_intensity_distribution_violin(istar$data, istar$config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' plot_intensity_distribution_violin(
+#'   lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #'
-plot_intensity_distribution_violin <- function(pdata, config) {
-  p <- ggplot(pdata, aes(x = .data[[config$sample_name]], y = .data[[config$get_response()]])) +
+plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_transformed = FALSE) {
+  p <- ggplot(pdata, aes(x = .data[[sample_name]], y = .data[[response]])) +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
-  if (!config$is_response_transformed) {
+  if (!is_transformed) {
     p <- p + scale_y_continuous(trans = "log10")
   }
   return(p)
@@ -39,7 +43,9 @@ plot_intensity_distribution_violin <- function(pdata, config) {
 
 #' visualize intensity distributions
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param sample_name character — sample column name
+#' @param response character — intensity column name
+#' @param is_transformed logical — is intensity log-transformed?
 #' @param legend do not show legend
 #' @export
 #' @keywords internal
@@ -47,12 +53,14 @@ plot_intensity_distribution_violin <- function(pdata, config) {
 #' @rdname plot_intensity_distribution_violin
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()
-#' plot_intensity_distribution_density(istar$data, istar$config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' plot_intensity_distribution_density(
+#'   lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #'
-plot_intensity_distribution_density <- function(pdata, config, legend = TRUE) {
-  p <- ggplot(pdata, aes(x = .data[[config$get_response()]], colour = .data[[config$sample_name]])) +
+plot_intensity_distribution_density <- function(pdata, sample_name, response, is_transformed = FALSE, legend = TRUE) {
+  p <- ggplot(pdata, aes(x = .data[[response]], colour = .data[[sample_name]])) +
     geom_line(stat = "density")
-  if (!config$is_response_transformed) {
+  if (!is_transformed) {
     p <- p + scale_x_continuous(trans = "log10")
   }
   if (!legend) {

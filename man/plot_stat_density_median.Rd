@@ -6,34 +6,31 @@
 \usage{
 plot_stat_density_median(
   pdata,
-  config,
+  factor_key,
   stat = c("CV", "meanAbundance", "sd"),
   ggstat = c("density", "ecdf")
 )
 }
 \arguments{
-\item{pdata}{data.frame}
+\item{pdata}{data.frame with statistics}
 
-\item{config}{AnalysisConfiguration}
+\item{factor_key}{character — factor column name for faceting}
 
 \item{stat}{sd, mean or CV}
 
-\item{ggstat}{either density of ecdf}
+\item{ggstat}{either density or ecdf}
 }
 \description{
 plot density distribution or ecdf of sd, mean or cv given intensity below and above median
 }
 \examples{
 
-
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-config <- bb1$config
-data2 <- bb1$data
-res <- summarize_stats(data2, config)
-plot_stat_density_median(res, config, "CV")
-plot_stat_density_median(res, config, "meanAbundance")
-plot_stat_density_median(res, config, "sd")
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stat_density_median(res, lfq$factor_keys()[1], "CV")
+plot_stat_density_median(res, lfq$factor_keys()[1], "meanAbundance")
+plot_stat_density_median(res, lfq$factor_keys()[1], "sd")
 }
 \seealso{
 Other stats: 

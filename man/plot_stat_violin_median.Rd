@@ -4,12 +4,16 @@
 \alias{plot_stat_violin_median}
 \title{plot Violin plot of sd CV or mean given intensity lower or above median}
 \usage{
-plot_stat_violin_median(pdata, config, stat = c("CV", "meanAbundance", "sd"))
+plot_stat_violin_median(
+  pdata,
+  factor_key,
+  stat = c("CV", "meanAbundance", "sd")
+)
 }
 \arguments{
-\item{pdata}{data.frame}
+\item{pdata}{data.frame with statistics}
 
-\item{config}{AnalysisConfiguration}
+\item{factor_key}{character — factor column name for x-axis}
 
 \item{stat}{either CV, mean or sd}
 }
@@ -18,12 +22,10 @@ plot Violin plot of sd CV or mean given intensity lower or above median
 }
 \examples{
 
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-config <- bb1$config
-data <- bb1$data
-res <- summarize_stats(data, config)
-plot_stat_violin_median(res, config, stat = "meanAbundance")
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stat_violin_median(res, lfq$factor_keys()[1], stat = "meanAbundance")
 }
 \seealso{
 Other stats: 
