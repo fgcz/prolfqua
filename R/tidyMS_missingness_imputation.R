@@ -57,7 +57,9 @@ MissingHelpers <- R6::R6Class(
     #' @return data.frame
     get_stats = function() {
       if (is.null(self$stats)) {
-        self$stats = prolfqua::summarize_stats_factors(self$data, self$config)
+        self$stats = prolfqua::summarize_stats_factors(
+          LFQData$new(self$data, self$config)
+        )
       }
       return(self$stats)
     },

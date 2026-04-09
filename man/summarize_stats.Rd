@@ -6,28 +6,25 @@
 \alias{summarize_stats_quantiles}
 \title{Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.}
 \usage{
-summarize_stats(
-  pdata,
-  config,
-  factor_key = config$factor_keys_depth(),
-  .completed = FALSE
-)
+summarize_stats(lfqdata, factor_key = lfqdata$relevant_factor_keys())
 
-summarize_stats_all(pdata, config, .completed = FALSE)
+summarize_stats_all(lfqdata)
 
 summarize_stats_quantiles(
   stats_res,
-  config,
+  factor_keys_depth,
   stats = c("sd", "CV"),
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9)
 )
 }
 \arguments{
-\item{pdata}{data.frame}
+\item{lfqdata}{LFQData object}
 
-\item{config}{AnalysisConfiguration}
+\item{factor_key}{character vector — factor columns to group by (default: relevant_factor_keys)}
 
 \item{stats_res}{result of running `summarize_stats`}
+
+\item{factor_keys_depth}{character vector — factor columns at current depth}
 
 \item{stats}{summarize either sd or CV}
 
@@ -42,52 +39,36 @@ summarize stats output (compute quantiles)
 }
 \examples{
 
-
 bb <- prolfqua::sim_lfq_data_protein_config()
-config <- bb$config
-data <- bb$data
-
-res1 <- summarize_stats(data, config)
+lfq <- LFQData$new(bb$data, bb$config)
+res1 <- summarize_stats(lfq)
 
 res2 <- prolfqua::sim_lfq_data_2factor_config()
 res2$config$factor_depth <- 2
-stats <- summarize_stats(res2$data, res2$config)
+lfq2 <- LFQData$new(res2$data, res2$config)
+stats <- summarize_stats(lfq2)
 stopifnot(nrow(stats) == 40)
 
-stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$factor_keys()[1])
+stats <- summarize_stats(lfq2, factor_key = lfq2$factor_keys()[1])
 stopifnot(nrow(stats) == 20)
-stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$factor_keys()[2])
+stats <- summarize_stats(lfq2, factor_key = lfq2$factor_keys()[2])
 stopifnot(nrow(stats) == 20)
-stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
+stats <- summarize_stats(lfq2, factor_key = NULL)
 stopifnot(nrow(stats) == 10)
-# TODO (WEW) add test when there is one level per group.
-
 
 bb <- prolfqua::sim_lfq_data_protein_config()
-
-res1 <- summarize_stats_all(bb$data, bb$config)
-
+lfq <- LFQData$new(bb$data, bb$config)
+res1 <- summarize_stats_all(lfq)
 stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
-res2 <- prolfqua::sim_lfq_data_2factor_config()
-resSt <- summarize_stats_all(res2$data, res2$config)
 library(ggplot2)
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-config <- bb1$config
-data <- bb1$data
-stats_res <- summarize_stats(data, config)
-sq <- summarize_stats_quantiles(stats_res, config)
-sq <- summarize_stats_quantiles(stats_res, config, stats = "CV")
-bb <- prolfqua::sim_lfq_data_peptide_config()
-config <- bb$config
-data <- bb$data
-config$get_response()
-stats_res <- summarize_stats(data, config)
-sq <- summarize_stats_quantiles(stats_res, config)
-sq <- summarize_stats_quantiles(stats_res, config, stats = "sd")
-stats_res <- summarize_stats(data, config)
-xx <- summarize_stats_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
+lfq <- LFQData$new(bb1$data, bb1$config)
+stats_res <- summarize_stats(lfq)
+sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys())
+sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), stats = "CV")
+sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), stats = "sd")
+xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = seq(0, 1, by = 0.1))
 ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_line() + geom_point()
-
 
 }
 \seealso{

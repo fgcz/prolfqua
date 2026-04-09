@@ -4,7 +4,12 @@
 \alias{encode_bin_resp}
 \title{convert to binary response}
 \usage{
-encode_bin_resp(pdata, config, name = "bin_resp")
+encode_bin_resp(lfqdata, name = "bin_resp")
+}
+\arguments{
+\item{lfqdata}{LFQData object}
+
+\item{name}{column name for binary response}
 }
 \description{
 convert to binary response
@@ -12,8 +17,9 @@ convert to binary response
 \examples{
 
 istar <- sim_lfq_data_peptide_config()
-istar$data <- encode_bin_resp(istar$data, istar$config)
-istar$config$bin_resp == "bin_resp"
-istar$data[["bin_resp"]]
+lfq <- LFQData$new(istar$data, istar$config)
+lfq$data <- encode_bin_resp(lfq)
+lfq$config$bin_resp <- "bin_resp"
+lfq$data[["bin_resp"]]
 }
 \keyword{internal}

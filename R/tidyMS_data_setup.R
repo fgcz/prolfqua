@@ -162,7 +162,14 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
     return(txd)
   }
   if (cc) {
-    data <- complete_cases(data, configuration)
+    data <- .complete_cases_impl(
+      data,
+      configuration$file_name,
+      configuration$sample_name,
+      configuration$factor_keys(),
+      configuration$isotope_label,
+      configuration$hierarchy_keys()
+    )
   }
   message("completing cases done")
   message("setup done")
@@ -194,33 +201,44 @@ separate_hierarchy <- function(data, config) {
   return(data)
 }
 
-#' Complete cases
-#'
-#' The tidy table does not need to contain missing data.
-#' This function re-establishes the missing observations in a sample.
-#'
-#' @export
-#' @param pdata data.frame
-#' @param config AnlalysisConfiguration
-#' @keywords internal
-#' @family configuration
-#' @examples
-#'
-#' bb <- sim_lfq_data_protein_config()
-#'
-#' xx <- complete_cases(bb$data, bb$config)
-#' stopifnot(nrow(bb$data) <= nrow(xx))
-#'
-complete_cases <- function(pdata, config) {
+# Internal implementation for complete_cases (used by setup_analysis before LFQData exists)
+.complete_cases_impl <- function(pdata, file_name, sample_name, factor_keys, isotope_label, hierarchy_keys) {
   message("completing cases")
-  fkeys <- c(config$file_name, config$sample_name, config$factor_keys())
-  hkeys <- c(config$isotope_label, config$hierarchy_keys())
+  fkeys <- c(file_name, sample_name, factor_keys)
+  hkeys <- c(isotope_label, hierarchy_keys)
   res <- tidyr::complete(
     pdata,
     tidyr::nesting(!!!syms(fkeys)),
     tidyr::nesting(!!!syms(hkeys))
   )
   return(res)
+}
+
+#' Complete cases
+#'
+#' The tidy table does not need to contain missing data.
+#' This function re-establishes the missing observations in a sample.
+#'
+#' @export
+#' @param lfqdata LFQData object
+#' @keywords internal
+#' @family configuration
+#' @examples
+#'
+#' bb <- sim_lfq_data_protein_config()
+#' lfq <- LFQData$new(bb$data, bb$config)
+#' xx <- complete_cases(lfq)
+#' stopifnot(nrow(bb$data) <= nrow(xx))
+#'
+complete_cases <- function(lfqdata) {
+  .complete_cases_impl(
+    lfqdata$get_data(),
+    lfqdata$file_name(),
+    lfqdata$sample_name(),
+    lfqdata$factor_keys(),
+    lfqdata$isotope_label(),
+    lfqdata$hierarchy_keys()
+  )
 }
 
 

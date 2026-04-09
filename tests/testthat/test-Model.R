@@ -80,8 +80,9 @@ test_that("Model (lm strategy with weights)", {
 
 test_that("ModelFirth", {
   istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
-  istar$data <- encode_bin_resp(istar$data, istar$config)
   lfq <- LFQData$new(istar$data, istar$config)
+  lfq$data <- encode_bin_resp(lfq)
+  lfq$config$bin_resp <- "bin_resp"
   formula <- paste0(lfq$config$bin_resp, "~ group_")
   mod <- build_model_logistf(lfq, formula)
 

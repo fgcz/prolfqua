@@ -5,22 +5,23 @@
 \title{cumulative sums of missing}
 \usage{
 missingness_per_condition_cumsum(
-  x,
-  config,
-  factors = config$factor_keys_depth()
+  lfqdata,
+  factors = lfqdata$relevant_factor_keys()
 )
+}
+\arguments{
+\item{lfqdata}{LFQData object}
+
+\item{factors}{factor columns to use}
 }
 \description{
 cumulative sums of missing
 }
 \examples{
 
-
 istar <- sim_lfq_data_peptide_config()
-config <- istar$config
-analysis <- istar$data
-
-res <- missingness_per_condition_cumsum(analysis,config)
+lfq <- LFQData$new(istar$data, istar$config)
+res <- missingness_per_condition_cumsum(lfq)
 stopifnot("ggplot" \%in\% class(res$figure))
 stopifnot(ncol(res$data) >= 6)
 

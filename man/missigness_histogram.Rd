@@ -5,12 +5,20 @@
 \title{Histogram summarizing missigness}
 \usage{
 missigness_histogram(
-  x,
-  config,
+  lfqdata,
   showempty = FALSE,
-  factors = config$factor_keys_depth(),
+  factors = lfqdata$relevant_factor_keys(),
   alpha = 0.1
 )
+}
+\arguments{
+\item{lfqdata}{LFQData object}
+
+\item{showempty}{show empty values}
+
+\item{factors}{factor columns to use}
+
+\item{alpha}{transparency}
 }
 \description{
 Histogram summarizing missigness
@@ -18,14 +26,10 @@ Histogram summarizing missigness
 \examples{
 
 istar <- sim_lfq_data_peptide_config()
-config <- istar$config
-analysis <- istar$data
-xx <- complete_cases(analysis, config)
-pl <- missigness_histogram(xx, config)
-
-pl <- missigness_histogram(analysis, config, showempty=FALSE)
+lfq <- LFQData$new(istar$data, istar$config)
+pl <- missigness_histogram(lfq, showempty = FALSE)
 stopifnot("ggplot" \%in\% class(pl))
-pl <- missigness_histogram(analysis, config, showempty=TRUE)
+pl <- missigness_histogram(lfq, showempty = TRUE)
 stopifnot("ggplot" \%in\% class(pl))
 
 }

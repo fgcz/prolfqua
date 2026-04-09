@@ -148,22 +148,22 @@ LFQData <- R6::R6Class(
     #'
     omit_na = function(nr_na = 0, factor_depth = NULL) {
       if (is.null(factor_depth)) {
-        missing <- prolfqua::summarize_stats_factors(self$data, self$config)
+        missing <- prolfqua::summarize_stats_factors(self)
       } else {
         if (factor_depth >= 1) {
-          cfg <- self$config$clone(deep = TRUE)
-          cfg$factor_depth <- factor_depth
-          missing <- prolfqua::summarize_stats_factors(self$data, cfg)
+          lfq_copy <- self$get_copy()
+          lfq_copy$config$factor_depth <- factor_depth
+          missing <- prolfqua::summarize_stats_factors(lfq_copy)
         } else {
-          missing <- prolfqua::summarize_stats_all(self$data, self$config)
+          missing <- prolfqua::summarize_stats_all(self)
         }
       }
       not_na <- missing |> dplyr::filter(nrNAs <= nr_na)
-      sum_n <- not_na |> group_by(across(all_of(self$config$hierarchy_keys()))) |> summarise(n = n())
+      sum_n <- not_na |> group_by(across(all_of(self$hierarchy_keys()))) |> summarise(n = n())
       not_na <- sum_n |> dplyr::filter(n == max(n))
 
-      not_na <- not_na |> dplyr::select(dplyr::all_of(self$config$hierarchy_keys()))
-      not_na_data <- dplyr::inner_join(not_na, self$data) |> ungroup()
+      not_na <- not_na |> dplyr::select(dplyr::all_of(self$hierarchy_keys()))
+      not_na_data <- dplyr::inner_join(not_na, self$get_data()) |> ungroup()
       return(LFQData$new(not_na_data, self$config$clone(deep = TRUE)))
     },
 
@@ -173,7 +173,7 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     #' @return self
     complete_cases = function() {
-      self$data <- prolfqua::complete_cases(self$data, self$config)
+      self$data <- prolfqua::complete_cases(self)
       invisible(self)
     },
     #' @description

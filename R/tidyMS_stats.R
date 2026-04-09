@@ -119,12 +119,10 @@ compute_pooled <- function(x, method = c("V1", "V2")) {
 #' @examples
 #'
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb$config
-#' data <- bb$data
-#'
-#' res1 <- summarize_stats(data, config)
-#' pv <- poolvar(res1, config)
-#' stopifnot(nrow(pv) == nrow(res1)/3)
+#' lfq <- LFQData$new(bb$data, bb$config)
+#' res1 <- summarize_stats(lfq)
+#' pv <- poolvar(res1, bb$config)
+#' stopifnot(nrow(pv) == nrow(res1) / 3)
 #'
 poolvar <- function(res1, config, method = c("V1", "V2")) {
   method <- match.arg(method)
@@ -138,40 +136,35 @@ poolvar <- function(res1, config, method = c("V1", "V2")) {
 
 #' Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
 #'
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param lfqdata LFQData object
+#' @param factor_key character vector — factor columns to group by (default: relevant_factor_keys)
 #' @export
 #' @rdname summarize_stats
 #' @keywords internal
 #' @family stats
 #' @examples
 #'
-#'
 #' bb <- prolfqua::sim_lfq_data_protein_config()
-#' config <- bb$config
-#' data <- bb$data
-#'
-#' res1 <- summarize_stats(data, config)
+#' lfq <- LFQData$new(bb$data, bb$config)
+#' res1 <- summarize_stats(lfq)
 #'
 #' res2 <- prolfqua::sim_lfq_data_2factor_config()
 #' res2$config$factor_depth <- 2
-#' stats <- summarize_stats(res2$data, res2$config)
+#' lfq2 <- LFQData$new(res2$data, res2$config)
+#' stats <- summarize_stats(lfq2)
 #' stopifnot(nrow(stats) == 40)
 #'
-#' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$factor_keys()[1])
+#' stats <- summarize_stats(lfq2, factor_key = lfq2$factor_keys()[1])
 #' stopifnot(nrow(stats) == 20)
-#' stats <- summarize_stats(res2$data, res2$config, factor_key = res2$config$factor_keys()[2])
+#' stats <- summarize_stats(lfq2, factor_key = lfq2$factor_keys()[2])
 #' stopifnot(nrow(stats) == 20)
-#' stats <- summarize_stats(res2$data, res2$config, factor_key = NULL)
+#' stats <- summarize_stats(lfq2, factor_key = NULL)
 #' stopifnot(nrow(stats) == 10)
-#' # TODO (WEW) add test when there is one level per group.
-summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth(), .completed = FALSE) {
-  if (!.completed) {
-    pdata <- complete_cases(pdata, config)
-  }
-  intsym <- sym(config$get_response())
+summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()) {
+  intsym <- sym(lfqdata$response())
+  pdata <- lfqdata$get_data()
   hierarchy_factor <- pdata |>
-    dplyr::group_by(!!!syms(c(config$hierarchy_keys(), config$isotope_label, factor_key))) |>
+    dplyr::group_by(!!!syms(c(lfqdata$hierarchy_keys(), lfqdata$isotope_label(), factor_key))) |>
     dplyr::summarize(
       nrReplicates = dplyr::n(),
       nrMeasured = sum(!is.na(!!intsym)),
@@ -186,11 +179,11 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
 
   hierarchy_factor <- hierarchy_factor |>
     dplyr::mutate(dplyr::across(all_of(factor_key), as.character))
-  if (config$is_response_transformed == FALSE) {
+  if (!lfqdata$is_transformed()) {
     hierarchy_factor <- hierarchy_factor |> dplyr::mutate(CV = sd / meanAbundance * 100)
   }
   if (is.null(factor_key) || length(factor_key) == 0) {
-    hierarchy_factor <- dplyr::mutate(hierarchy_factor, !!config$factor_keys()[1] := "All")
+    hierarchy_factor <- dplyr::mutate(hierarchy_factor, !!lfqdata$factor_keys()[1] := "All")
   }
   hierarchy_factor <- ungroup(hierarchy_factor)
   if (length(factor_key) > 0 && !is.null(factor_key)) {
@@ -204,68 +197,52 @@ summarize_stats <- function(pdata, config, factor_key = config$factor_keys_depth
 
 #' compute var sd etc for all factor levels
 #'
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param lfqdata LFQData object
 #' @export
 #' @examples
-#' # example code
 #' res2 <- prolfqua::sim_lfq_data_2factor_config()
-#' xx <- summarize_stats_factors(res2$data, res2$config)
+#' res2$config$factor_depth <- 2
+#' lfq2 <- LFQData$new(res2$data, res2$config)
+#' xx <- summarize_stats_factors(lfq2)
 #' stopifnot(nrow(xx) == 80)
-#' stopifnot( length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
-summarize_stats_factors <- function(pdata, config) {
-  pdata <- complete_cases(pdata, config)
+#' stopifnot(length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
+summarize_stats_factors <- function(lfqdata) {
   fac_res <- list()
-  stats <- summarize_stats(
-    pdata,
-    config,
-    .completed = TRUE
-  )
+  stats <- summarize_stats(lfqdata)
   fac_res[["interaction"]] <- stats
 
-  if (config$factor_depth > 1) {
-    # if 1 only then done
-    for (factor in config$factor_keys_depth()) {
-      stats <- summarize_stats(
-        pdata,
-        config,
-        factor_key = factor,
-        .completed = TRUE
-      )
+  rfk <- lfqdata$relevant_factor_keys()
+  if (length(rfk) > 1) {
+    for (factor in rfk) {
+      stats <- summarize_stats(lfqdata, factor_key = factor)
       fac_res[[factor]] <- stats
     }
   }
-  intfact <- dplyr::bind_rows(fac_res)
-  return(intfact)
+  dplyr::bind_rows(fac_res)
 }
 
 
 #' Compute mean, sd, and CV for e.g. Peptides, or proteins, for all samples.
 #'
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param lfqdata LFQData object
 #' @export
 #' @rdname summarize_stats
 #' @keywords internal
 #' @family stats
 #' @examples
 #'
-#'
 #' bb <- prolfqua::sim_lfq_data_protein_config()
-#'
-#' res1 <- summarize_stats_all(bb$data, bb$config)
-#'
+#' lfq <- LFQData$new(bb$data, bb$config)
+#' res1 <- summarize_stats_all(lfq)
 #' stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
-#' res2 <- prolfqua::sim_lfq_data_2factor_config()
-#' resSt <- summarize_stats_all(res2$data, res2$config)
-summarize_stats_all <- function(pdata, config, .completed = FALSE) {
-  summarize_stats(pdata, config, factor_key = NULL, .completed = .completed)
+summarize_stats_all <- function(lfqdata) {
+  summarize_stats(lfqdata, factor_key = NULL)
 }
 
 
 #' summarize stats output (compute quantiles)
 #' @param stats_res result of running `summarize_stats`
-#' @param config AnalysisConfiguration
+#' @param factor_keys_depth character vector — factor columns at current depth
 #' @param stats summarize either sd or CV
 #' @param probs for which quantiles 10, 20 etc.
 #' @rdname summarize_stats
@@ -275,30 +252,26 @@ summarize_stats_all <- function(pdata, config, .completed = FALSE) {
 #' @examples
 #' library(ggplot2)
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb1$config
-#' data <- bb1$data
-#' stats_res <- summarize_stats(data, config)
-#' sq <- summarize_stats_quantiles(stats_res, config)
-#' sq <- summarize_stats_quantiles(stats_res, config, stats = "CV")
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb$config
-#' data <- bb$data
-#' config$get_response()
-#' stats_res <- summarize_stats(data, config)
-#' sq <- summarize_stats_quantiles(stats_res, config)
-#' sq <- summarize_stats_quantiles(stats_res, config, stats = "sd")
-#' stats_res <- summarize_stats(data, config)
-#' xx <- summarize_stats_quantiles(stats_res, config, probs = seq(0,1,by = 0.1))
+#' lfq <- LFQData$new(bb1$data, bb1$config)
+#' stats_res <- summarize_stats(lfq)
+#' sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys())
+#' sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), stats = "CV")
+#' sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), stats = "sd")
+#' xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = seq(0, 1, by = 0.1))
 #' ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_line() + geom_point()
 #'
-#'
-summarize_stats_quantiles <- function(stats_res, config, stats = c("sd", "CV"), probs = c(0.1, 0.25, 0.5, 0.75, 0.9)) {
+summarize_stats_quantiles <- function(
+  stats_res,
+  factor_keys_depth,
+  stats = c("sd", "CV"),
+  probs = c(0.1, 0.25, 0.5, 0.75, 0.9)
+) {
   stats <- match.arg(stats)
   q_column <- paste0(stats, "_quantiles")
 
   stats_res <- stats_res |> dplyr::filter(!is.na(!!sym(stats)))
   xx2 <- stats_res |>
-    dplyr::group_by(!!!syms(config$factor_keys_depth())) |>
+    dplyr::group_by(!!!syms(factor_keys_depth)) |>
     tidyr::nest()
 
   sd_quantile_res2 <- xx2 |>
@@ -308,10 +281,10 @@ summarize_stats_quantiles <- function(stats_res, config, stats = c("sd", "CV"), 
         ~ tibble(probs = probs, quantiles = quantile(.[[stats]], probs, na.rm = TRUE))
       )
     ) |>
-    dplyr::select(!!!syms(c(config$factor_keys_depth(), q_column))) |>
+    dplyr::select(!!!syms(c(factor_keys_depth, q_column))) |>
     tidyr::unnest(cols = dplyr::all_of(q_column))
 
-  xx <- sd_quantile_res2 |> tidyr::unite("interaction", dplyr::all_of(config$factor_keys_depth()))
+  xx <- sd_quantile_res2 |> tidyr::unite("interaction", dplyr::all_of(factor_keys_depth))
   wide <- xx |> tidyr::pivot_wider(names_from = "interaction", values_from = "quantiles")
   return(list(long = sd_quantile_res2, wide = wide))
 }
@@ -347,10 +320,9 @@ summarize_stats_quantiles <- function(stats_res, config, stats = c("sd", "CV"), 
 #'
 #'
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb1$config
-#' data2 <- bb1$data
-#' stats_res <- summarize_stats(data2, config)
-#' xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
+#' lfq <- LFQData$new(bb1$data, bb1$config)
+#' stats_res <- summarize_stats(lfq)
+#' xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = c(0.5, 0.8))
 #' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 #' bbb <- dplyr::bind_rows(bbb)
 #' summary <- bbb |>
@@ -376,8 +348,7 @@ lfq_power_t_test_quantiles_V2 <-
 
 
 #' Compute theoretical sample sizes from factor level standard deviations
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param lfqdata LFQData object
 #' @param delta effect size you are interested in
 #' @param power of test
 #' @param sig.level P-Value
@@ -389,29 +360,24 @@ lfq_power_t_test_quantiles_V2 <-
 #' @examples
 #'
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- bb1$config
-#' data2 <- bb1$data
-#'
-#' res <- lfq_power_t_test_quantiles(data2, config)
+#' lfq <- LFQData$new(bb1$data, bb1$config)
+#' res <- lfq_power_t_test_quantiles(lfq)
 #' res$summary
-#' stats_res <- summarize_stats(data2, config)
-#' res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
-#' res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
-#'
+#' res <- lfq_power_t_test_quantiles(lfq, delta = 2)
+#' res <- lfq_power_t_test_quantiles(lfq, delta = c(0.5, 1, 2))
 #'
 lfq_power_t_test_quantiles <- function(
-  pdata,
-  config,
+  lfqdata,
   delta = 1,
   power = 0.8,
   sig.level = 0.05,
   probs = seq(0.5, 0.9, by = 0.1)
 ) {
-  if (!config$is_response_transformed) {
+  if (!lfqdata$is_transformed()) {
     warning("Intensities are not transformed yet.")
   }
 
-  stats_res <- summarize_stats(pdata, config)
+  stats_res <- summarize_stats(lfqdata)
   sd <- na.omit(stats_res$sd)
 
   if (length(sd) > 0) {
@@ -458,9 +424,8 @@ lfq_power_t_test_quantiles <- function(
 #' @examples
 #'
 #' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#'
 #' ldata <- LFQData$new(bb1$data, bb1$config)
-#' stats_res <- summarize_stats(ldata$data, ldata$config)
+#' stats_res <- summarize_stats(ldata)
 #' bb <- lfq_power_t_test_proteins(stats_res)
 #'
 lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05, min.n = 1.5) {

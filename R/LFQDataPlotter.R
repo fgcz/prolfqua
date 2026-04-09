@@ -157,7 +157,7 @@ LFQDataPlotter <- R6::R6Class(
     #' histogram of intensities given number of missing in conditions
     #' @return ggplot
     missigness_histogram = function() {
-      prolfqua::missigness_histogram(self$lfq$data, self$lfq$config)
+      prolfqua::missigness_histogram(self$lfq)
     },
 
     #' @description
@@ -220,7 +220,7 @@ LFQDataPlotter <- R6::R6Class(
     #' upset plot based on presence absence information
     #' @return plot
     upset_missing = function() {
-      pups <- prolfqua::upset_missing_stats(self$lfq$data, self$lfq$config)
+      pups <- prolfqua::upset_missing_stats(self$lfq)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
       return(res)
     },

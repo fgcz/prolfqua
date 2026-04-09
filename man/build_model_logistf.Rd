@@ -12,14 +12,16 @@ build_model_logistf
 \examples{
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
-istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
+istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
+istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$config$bin_resp , "~ group_")
 xx2 <- build_model_logistf(tmp, formula)
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
-istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
+istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
+istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$config$bin_resp , "~ group_")
 xx <- build_model_logistf(tmp, formula)

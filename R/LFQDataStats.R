@@ -110,15 +110,13 @@ LFQDataStats <- R6::R6Class(
       }
 
       if (stats == "interaction") {
-        self$statsdf <- prolfqua::summarize_stats(self$lfq$data, self$lfq$config)
+        self$statsdf <- prolfqua::summarize_stats(self$lfq)
       } else if (stats == "all") {
-        self$statsdf <-
-          prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
+        self$statsdf <- prolfqua::summarize_stats_all(self$lfq)
       } else if (stats == "everything") {
-        completed_data <- complete_cases(self$lfq$data, self$lfq$config)
         self$statsdf <- bind_rows(
-          prolfqua::summarize_stats(completed_data, self$lfq$config, .completed = TRUE),
-          prolfqua::summarize_stats_all(completed_data, self$lfq$config, .completed = TRUE)
+          prolfqua::summarize_stats(self$lfq),
+          prolfqua::summarize_stats_all(self$lfq)
         )
       }
     },
@@ -148,7 +146,7 @@ LFQDataStats <- R6::R6Class(
     stats_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)) {
       res <- prolfqua::summarize_stats_quantiles(
         self$stats(),
-        self$lfq$config,
+        self$lfq$relevant_factor_keys(),
         stats = self$stat,
         probs = probs
       )

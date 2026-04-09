@@ -74,7 +74,8 @@ tmp$model_fun(get_formula = TRUE)
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
-istar$data <- encode_bin_resp(istar$data, istar$config)
+istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
+istar$config$bin_resp <- "bin_resp"
 istar <- LFQData$new(istar$data, istar$config)
 df <- istar$summarize_hierarchy()
 df2 <- df[df[[ncol(df)]] > 1, ]

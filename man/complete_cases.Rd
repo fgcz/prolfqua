@@ -4,12 +4,10 @@
 \alias{complete_cases}
 \title{Complete cases}
 \usage{
-complete_cases(pdata, config)
+complete_cases(lfqdata)
 }
 \arguments{
-\item{pdata}{data.frame}
-
-\item{config}{AnlalysisConfiguration}
+\item{lfqdata}{LFQData object}
 }
 \description{
 The tidy table does not need to contain missing data.
@@ -18,8 +16,8 @@ This function re-establishes the missing observations in a sample.
 \examples{
 
 bb <- sim_lfq_data_protein_config()
-
-xx <- complete_cases(bb$data, bb$config)
+lfq <- LFQData$new(bb$data, bb$config)
+xx <- complete_cases(lfq)
 stopifnot(nrow(bb$data) <= nrow(xx))
 
 }

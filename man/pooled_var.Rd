@@ -48,12 +48,10 @@ compute_pooled(y)
 yb <- y |> dplyr::filter(nrMeasured > 1)
 
 bb <- prolfqua::sim_lfq_data_peptide_config()
-config <- bb$config
-data <- bb$data
-
-res1 <- summarize_stats(data, config)
-pv <- poolvar(res1, config)
-stopifnot(nrow(pv) == nrow(res1)/3)
+lfq <- LFQData$new(bb$data, bb$config)
+res1 <- summarize_stats(lfq)
+pv <- poolvar(res1, bb$config)
+stopifnot(nrow(pv) == nrow(res1) / 3)
 
 }
 \seealso{

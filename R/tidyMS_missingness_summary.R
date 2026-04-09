@@ -1,16 +1,18 @@
 #' convert to binary response
+#' @param lfqdata LFQData object
+#' @param name column name for binary response
 #' @export
 #' @keywords internal
 #' @examples
 #'
 #' istar <- sim_lfq_data_peptide_config()
-#' istar$data <- encode_bin_resp(istar$data, istar$config)
-#' istar$config$bin_resp == "bin_resp"
-#' istar$data[["bin_resp"]]
-encode_bin_resp <- function(pdata, config, name = "bin_resp") {
-  config$bin_resp <- "bin_resp"
-  pdata <- complete_cases(pdata, config)
-  pdata[[config$bin_resp]] <- as.integer(!is.na(pdata[[config$get_response()]]))
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' lfq$data <- encode_bin_resp(lfq)
+#' lfq$config$bin_resp <- "bin_resp"
+#' lfq$data[["bin_resp"]]
+encode_bin_resp <- function(lfqdata, name = "bin_resp") {
+  pdata <- lfqdata$get_data()
+  pdata[[name]] <- as.integer(!is.na(pdata[[lfqdata$response()]]))
   return(pdata)
 }
 
@@ -36,20 +38,19 @@ encode_bin_resp <- function(pdata, config, name = "bin_resp") {
 #'
 #'
 #' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#' data <- complete_cases(analysis, config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' lfq$complete_cases()
 #'
 #' Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
 #'
-#' var = summarize_stats(data, config)
-#' var <- prolfqua::make_interaction_column(var, columns = config$factor_keys_depth())
+#' var <- summarize_stats(lfq)
+#' var <- prolfqua::make_interaction_column(var, columns = lfq$relevant_factor_keys())
 #'
-#' imp <- var |> tidyr::pivot_wider(id_cols = config$hierarchy_keys(),
+#' imp <- var |> tidyr::pivot_wider(id_cols = lfq$hierarchy_keys(),
 #'                         names_from = interaction,
 #'                         values_from = !!rlang::sym("meanAbundance"))
 #'
-#' imputed <- get_contrast(imp, config$hierarchy_keys(), Contrasts)
+#' imputed <- get_contrast(imp, lfq$hierarchy_keys(), Contrasts)
 #'
 #'
 get_contrast <- function(data, hierarchy_keys, contrasts) {
@@ -83,6 +84,10 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
 
 
 #' Histogram summarizing missigness
+#' @param lfqdata LFQData object
+#' @param showempty show empty values
+#' @param factors factor columns to use
+#' @param alpha transparency
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -90,24 +95,20 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
 #' @examples
 #'
 #' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#' xx <- complete_cases(analysis, config)
-#' pl <- missigness_histogram(xx, config)
-#'
-#' pl <- missigness_histogram(analysis, config, showempty=FALSE)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' pl <- missigness_histogram(lfq, showempty = FALSE)
 #' stopifnot("ggplot" %in% class(pl))
-#' pl <- missigness_histogram(analysis, config, showempty=TRUE)
+#' pl <- missigness_histogram(lfq, showempty = TRUE)
 #' stopifnot("ggplot" %in% class(pl))
 #'
-missigness_histogram <- function(x, config, showempty = FALSE, factors = config$factor_keys_depth(), alpha = 0.1) {
-  missing_percent <- summarize_stats(x, config, factor_key = factors)
+missigness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$relevant_factor_keys(), alpha = 0.1) {
+  missing_percent <- summarize_stats(lfqdata, factor_key = factors)
   missing_percent <- missing_percent |>
     dplyr::ungroup() |>
     dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
 
   if (showempty) {
-    if (config$is_response_transformed) {
+    if (lfqdata$is_transformed()) {
       missing_percent <- missing_percent |>
         dplyr::mutate(
           meanAbundance = ifelse(
@@ -128,10 +129,10 @@ missigness_histogram <- function(x, config, showempty = FALSE, factors = config$
     }
   }
 
-  factors <- config$factor_keys_depth()
-  formula <- paste(config$isotope_label, "~", paste(factors, collapse = "+"))
+  factors <- lfqdata$relevant_factor_keys()
+  formula <- paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
   message(formula)
-  mean_abundance <- paste0("mean_", config$get_response())
+  mean_abundance <- paste0("mean_", lfqdata$response())
   missing_percent <- dplyr::rename(missing_percent, !!sym(mean_abundance) := .data$meanAbundance)
 
   p <- ggplot2::ggplot(
@@ -142,42 +143,41 @@ missigness_histogram <- function(x, config, showempty = FALSE, factors = config$
     ggplot2::facet_grid(as.formula(formula)) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-  if (!config$is_response_transformed) {
+  if (!lfqdata$is_transformed()) {
     p <- p + ggplot2::scale_x_log10()
   }
   p
 }
 
 #' cumulative sums of missing
+#' @param lfqdata LFQData object
+#' @param factors factor columns to use
 #' @export
 #' @keywords internal
 #' @family plotting
 #' @family imputation
 #' @examples
 #'
-#'
 #' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' res <- missingness_per_condition_cumsum(analysis,config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' res <- missingness_per_condition_cumsum(lfq)
 #' stopifnot("ggplot" %in% class(res$figure))
 #' stopifnot(ncol(res$data) >= 6)
 #'
-missingness_per_condition_cumsum <- function(x, config, factors = config$factor_keys_depth()) {
-  missing_percent <- summarize_stats(x, config, factor_key = factors)
+missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant_factor_keys()) {
+  missing_percent <- summarize_stats(lfqdata, factor_key = factors)
 
   xx <- missing_percent |>
-    group_by(across(all_of(c(config$isotope_label, factors, "nrNAs", "nrReplicates")))) |>
+    group_by(across(all_of(c(lfqdata$isotope_label(), factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(nrTransitions = n())
 
   xxcs <- xx |>
-    group_by(across(all_of(c(config$isotope_label, factors)))) |>
+    group_by(across(all_of(c(lfqdata$isotope_label(), factors)))) |>
     arrange(.data$nrNAs) |>
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
   res <- xxcs |> dplyr::select(-dplyr::all_of("nrTransitions"))
 
-  formula <- paste(config$isotope_label, "~", paste(factors, collapse = "+"))
+  formula <- paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
   message(formula)
 
   nudgeval <- mean(res$cumulative_sum) * 0.05
@@ -190,7 +190,9 @@ missingness_per_condition_cumsum <- function(x, config, factors = config$factor_
   return(list(data = res, figure = p))
 }
 
-#' Summarize missing in condtion as barplot
+#' Summarize missing in condition as barplot
+#' @param lfqdata LFQData object
+#' @param factors factor columns to use
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -198,23 +200,20 @@ missingness_per_condition_cumsum <- function(x, config, factors = config$factor_
 #' @examples
 #'
 #' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' res <- missingness_per_condition(analysis, config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' res <- missingness_per_condition(lfq)
 #' stopifnot("ggplot" %in% class(res$figure))
-#'
 #' stopifnot(ncol(res$data) >= 5)
 #'
-missingness_per_condition <- function(x, config, factors = config$factor_keys_depth()) {
-  missing_percent <- summarize_stats(x, config, factor_key = factors)
-  hierarchy_key <- tail(config$hierarchy_keys(), 1)
+missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor_keys()) {
+  missing_percent <- summarize_stats(lfqdata, factor_key = factors)
+  hierarchy_key <- tail(lfqdata$hierarchy_keys(), 1)
   hierarchy_key <- paste0("nr_", hierarchy_key)
   xx <- missing_percent |>
-    group_by(across(all_of(c(config$isotope_label, factors, "nrNAs", "nrReplicates")))) |>
+    group_by(across(all_of(c(lfqdata$isotope_label(), factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(!!sym(hierarchy_key) := n())
 
-  formula <- paste(config$isotope_label, "~", paste(factors, collapse = "+"))
+  formula <- paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
 
   nudgeval <- max(xx[[hierarchy_key]]) * 0.05
 
@@ -233,59 +232,56 @@ missingness_per_condition <- function(x, config, factors = config$factor_keys_de
 #' @export
 #' @family plotting
 #' @family imputation
-#' @param data data.frame
-#' @param cf AnalysisConfiguration
+#' @param lfqdata LFQData object
 #' @param tr if less than tr observations in condition then missing
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' pups <- upset_interaction_missing_stats(analysis, config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' pups <- upset_interaction_missing_stats(lfq)
 #' stopifnot(ncol(pups$data) == 5)
 #' UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
-upset_interaction_missing_stats <- function(data, cf, tr = 2) {
-  tmp <- prolfqua::summarize_stats(data, cf)
+upset_interaction_missing_stats <- function(lfqdata, tr = 2) {
+  tmp <- prolfqua::summarize_stats(lfqdata)
   nr_missing <- tmp |>
     tidyr::pivot_wider(
-      id_cols = cf$hierarchy_keys(),
-      names_from = cf$factor_keys_depth(),
+      id_cols = lfqdata$hierarchy_keys(),
+      names_from = lfqdata$relevant_factor_keys(),
       values_from = !!rlang::sym("nrMeasured")
     )
 
-  hl <- length(cf$hierarchy_keys())
+  hl <- length(lfqdata$hierarchy_keys())
   nr_missing[, -(1:hl)][nr_missing[, -(1:hl)] < tr] <- 0
   nr_missing[, -(1:hl)][nr_missing[, -(1:hl)] >= tr] <- 1
-  return(list(data = as.data.frame(nr_missing), nsets = ncol(nr_missing) - length(cf$hierarchy_keys())))
+  return(list(data = as.data.frame(nr_missing), nsets = ncol(nr_missing) - hl))
 }
 
 #' prepare dataframe for UpSetR plot for all samples
 #'
+#' @param lfqdata LFQData object
 #' @export
 #' @keywords internal
 #' @family plotting
 #' @family imputation
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#' pups <- upset_missing_stats(analysis, config)
-#' UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
-upset_missing_stats <- function(data, config) {
-  data <- prolfqua::complete_cases(data, config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' pups <- upset_missing_stats(lfq)
+#' UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
+upset_missing_stats <- function(lfqdata) {
+  data <- lfqdata$get_data()
   data <- data |>
     dplyr::mutate(
       isThere = dplyr::case_when(
-        !is.na(!!rlang::sym(config$get_response())) ~ 1,
+        !is.na(!!rlang::sym(lfqdata$response())) ~ 1,
         TRUE ~ 0
       )
     )
   pups2 <- data |>
     tidyr::pivot_wider(
-      id_cols = config$hierarchy_keys(),
-      names_from = config$sample_name,
+      id_cols = lfqdata$hierarchy_keys(),
+      names_from = lfqdata$sample_name(),
       values_from = !!rlang::sym("isThere")
     )
-  res <- list(data = as.data.frame(pups2), nsets = ncol(pups2) - length(config$hierarchy_keys()))
+  res <- list(data = as.data.frame(pups2), nsets = ncol(pups2) - length(lfqdata$hierarchy_keys()))
   return(res)
 }

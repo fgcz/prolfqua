@@ -78,7 +78,8 @@ contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
 .prepare_logistf_lfqdata <- function(lfqdata) {
   stopifnot("LFQData" %in% class(lfqdata))
   lfq_missing <- lfqdata$get_copy()
-  lfq_missing$data <- prolfqua::encode_bin_resp(lfq_missing$data, lfq_missing$config)
+  lfq_missing$data <- prolfqua::encode_bin_resp(lfq_missing)
+  lfq_missing$config$bin_resp <- "bin_resp"
   lfq_missing
 }
 
@@ -141,14 +142,16 @@ build_model_glm_peptide <- function(lfqdata, modelstr) {
 #' @examples
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
-#' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
+#' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
+#' istar$config$bin_resp <- "bin_resp"
 #' tmp <- LFQData$new(istar$data, istar$config)
 #' formula <- paste0(tmp$config$bin_resp , "~ group_")
 #' xx2 <- build_model_logistf(tmp, formula)
 #'
 #' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
-#' istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
+#' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
+#' istar$config$bin_resp <- "bin_resp"
 #' tmp <- LFQData$new(istar$data, istar$config)
 #' formula <- paste0(tmp$config$bin_resp , "~ group_")
 #' xx <- build_model_logistf(tmp, formula)
@@ -228,14 +231,16 @@ sim_build_models_logistf <- function(
         with_missing = with_missing,
         weight_missing = weight_missing
       )
-      istar$data <- encode_bin_resp(istar$data, istar$config)
+      istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
+      istar$config$bin_resp <- "bin_resp"
     } else {
       istar <- prolfqua::sim_lfq_data_protein_config(
         Nprot = Nprot,
         with_missing = with_missing,
         weight_missing = weight_missing
       )
-      istar$data <- encode_bin_resp(istar$data, istar$config)
+      istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
+      istar$config$bin_resp <- "bin_resp"
     }
     istar <- prolfqua::LFQData$new(istar$data, istar$config)
   } else {
@@ -246,14 +251,16 @@ sim_build_models_logistf <- function(
         weight_missing = weight_missing,
         PEPTIDE = TRUE
       )
-      istar$data <- encode_bin_resp(istar$data, istar$config)
+      istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
+      istar$config$bin_resp <- "bin_resp"
     } else {
       istar <- prolfqua::sim_lfq_data_peptide_config(
         Nprot = Nprot,
         with_missing = with_missing,
         weight_missing = weight_missing
       )
-      istar$data <- encode_bin_resp(istar$data, istar$config)
+      istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
+      istar$config$bin_resp <- "bin_resp"
     }
     istar <- prolfqua::LFQData$new(istar$data, istar$config)
   }
@@ -384,7 +391,8 @@ StrategyLogistf <- R6::R6Class(
 #'
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
-#' istar$data <- encode_bin_resp(istar$data, istar$config)
+#' istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
+#' istar$config$bin_resp <- "bin_resp"
 #' istar <- LFQData$new(istar$data, istar$config)
 #' df <- istar$summarize_hierarchy()
 #' df2 <- df[df[[ncol(df)]] > 1, ]

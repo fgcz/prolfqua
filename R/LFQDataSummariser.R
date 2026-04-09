@@ -59,46 +59,46 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' missing per condition and protein
     interaction_missing_stats = function() {
-      x2 <- prolfqua::summarize_stats_factors(self$lfq$data, self$lfq$config)
+      x2 <- prolfqua::summarize_stats_factors(self$lfq)
       return(x2)
     },
     #' @description
     #' upset plot with missing information per protein and condition
     #' @param tr if less than tr observations in condition then missing
     upset_interaction_missing_stats = function(tr = 2) {
-      pups <- upset_interaction_missing_stats(self$lfq$data, self$lfq$config, tr = tr)
+      pups <- upset_interaction_missing_stats(self$lfq, tr = tr)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
       return(res)
     },
     #' @description
     #' missing stats per condition
     missingness_per_group = function() {
-      prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$data
+      prolfqua::missingness_per_condition(self$lfq)$data
     },
     #' @description
     #' missing stats per condition as cumulative sum
     missingness_per_group_cumsum = function() {
-      prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$data
+      prolfqua::missingness_per_condition_cumsum(self$lfq)$data
     },
     #' @description
     #' barplot with number of features with 1,2, etc missing in condition
     #' @return ggplot
     plot_missingness_per_group = function() {
-      prolfqua::missingness_per_condition(self$lfq$data, self$lfq$config)$figure
+      prolfqua::missingness_per_condition(self$lfq)$figure
     },
     #' @description
     #' barplot with cumulative sum of features with 1,2, etc missing in condition
     #' @return ggplot
     plot_missingness_per_group_cumsum = function() {
-      prolfqua::missingness_per_condition_cumsum(self$lfq$data, self$lfq$config)$figure
+      prolfqua::missingness_per_condition_cumsum(self$lfq)$figure
     },
     #' @description
     #' Does roll up to highest hierarchy and
     #' Computes the percent abundance of proteins overall and within each group
     #' @return data frame
     percentage_abundance = function() {
-      dall <- prolfqua::summarize_stats_all(self$lfq$data, self$lfq$config)
-      dfac <- prolfqua::summarize_stats_factors(self$lfq$data, self$lfq$config)
+      dall <- prolfqua::summarize_stats_all(self$lfq)
+      dfac <- prolfqua::summarize_stats_factors(self$lfq)
       all <- dplyr::bind_rows(dfac, dall)
       res <- all |>
         dplyr::group_by(!!sym("interaction")) |>

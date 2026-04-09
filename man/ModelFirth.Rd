@@ -15,7 +15,8 @@ R6 class representing modelling result
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
-istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
+istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
+istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$config$bin_resp , "~ group_")
 mod <- build_model_logistf(tmp, formula)
@@ -29,7 +30,8 @@ mod$write_coef_figures(tempdir())
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
-istar$data <- prolfqua::encode_bin_resp(istar$data, istar$config)
+istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
+istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$config$bin_resp , "~ group_")
 mod <- build_model_logistf(tmp, formula)

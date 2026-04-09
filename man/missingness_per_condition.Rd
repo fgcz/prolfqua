@@ -2,22 +2,24 @@
 % Please edit documentation in R/tidyMS_missingness_summary.R
 \name{missingness_per_condition}
 \alias{missingness_per_condition}
-\title{Summarize missing in condtion as barplot}
+\title{Summarize missing in condition as barplot}
 \usage{
-missingness_per_condition(x, config, factors = config$factor_keys_depth())
+missingness_per_condition(lfqdata, factors = lfqdata$relevant_factor_keys())
+}
+\arguments{
+\item{lfqdata}{LFQData object}
+
+\item{factors}{factor columns to use}
 }
 \description{
-Summarize missing in condtion as barplot
+Summarize missing in condition as barplot
 }
 \examples{
 
 istar <- sim_lfq_data_peptide_config()
-config <- istar$config
-analysis <- istar$data
-
-res <- missingness_per_condition(analysis, config)
+lfq <- LFQData$new(istar$data, istar$config)
+res <- missingness_per_condition(lfq)
 stopifnot("ggplot" \%in\% class(res$figure))
-
 stopifnot(ncol(res$data) >= 5)
 
 }

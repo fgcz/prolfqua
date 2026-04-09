@@ -29,9 +29,8 @@ Compute theoretical sample sizes from factor level standard deviations
 \examples{
 
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-
 ldata <- LFQData$new(bb1$data, bb1$config)
-stats_res <- summarize_stats(ldata$data, ldata$config)
+stats_res <- summarize_stats(ldata)
 bb <- lfq_power_t_test_proteins(stats_res)
 
 }

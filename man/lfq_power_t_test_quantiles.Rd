@@ -5,8 +5,7 @@
 \title{Compute theoretical sample sizes from factor level standard deviations}
 \usage{
 lfq_power_t_test_quantiles(
-  pdata,
-  config,
+  lfqdata,
   delta = 1,
   power = 0.8,
   sig.level = 0.05,
@@ -14,9 +13,7 @@ lfq_power_t_test_quantiles(
 )
 }
 \arguments{
-\item{pdata}{data.frame}
-
-\item{config}{AnalysisConfiguration}
+\item{lfqdata}{LFQData object}
 
 \item{delta}{effect size you are interested in}
 
@@ -32,15 +29,11 @@ Compute theoretical sample sizes from factor level standard deviations
 \examples{
 
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
-config <- bb1$config
-data2 <- bb1$data
-
-res <- lfq_power_t_test_quantiles(data2, config)
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq_power_t_test_quantiles(lfq)
 res$summary
-stats_res <- summarize_stats(data2, config)
-res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
-res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
-
+res <- lfq_power_t_test_quantiles(lfq, delta = 2)
+res <- lfq_power_t_test_quantiles(lfq, delta = c(0.5, 1, 2))
 
 }
 \seealso{

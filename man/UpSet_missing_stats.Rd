@@ -4,17 +4,19 @@
 \alias{upset_missing_stats}
 \title{prepare dataframe for UpSetR plot for all samples}
 \usage{
-upset_missing_stats(data, config)
+upset_missing_stats(lfqdata)
+}
+\arguments{
+\item{lfqdata}{LFQData object}
 }
 \description{
 prepare dataframe for UpSetR plot for all samples
 }
 \examples{
 istar <- sim_lfq_data_peptide_config()
-config <- istar$config
-analysis <- istar$data
-pups <- upset_missing_stats(analysis, config)
-UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
+lfq <- LFQData$new(istar$data, istar$config)
+pups <- upset_missing_stats(lfq)
+UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 }
 \seealso{
 Other plotting: 

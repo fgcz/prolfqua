@@ -4,20 +4,19 @@
 \alias{summarize_stats_factors}
 \title{compute var sd etc for all factor levels}
 \usage{
-summarize_stats_factors(pdata, config)
+summarize_stats_factors(lfqdata)
 }
 \arguments{
-\item{pdata}{data.frame}
-
-\item{config}{AnalysisConfiguration}
+\item{lfqdata}{LFQData object}
 }
 \description{
 compute var sd etc for all factor levels
 }
 \examples{
-# example code
 res2 <- prolfqua::sim_lfq_data_2factor_config()
-xx <- summarize_stats_factors(res2$data, res2$config)
+res2$config$factor_depth <- 2
+lfq2 <- LFQData$new(res2$data, res2$config)
+xx <- summarize_stats_factors(lfq2)
 stopifnot(nrow(xx) == 80)
-stopifnot( length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
+stopifnot(length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
 }
