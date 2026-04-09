@@ -5,12 +5,29 @@
 \title{plot correlation heatmap with annotations}
 \usage{
 plot_heatmap_cor(
-  data,
-  config,
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
   R2 = FALSE,
   color = colorRampPalette(c("white", "red"))(1024),
   ...
 )
+}
+\arguments{
+\item{matrix}{numeric matrix — wide-format intensity data}
+
+\item{annotation}{data.frame — sample annotation}
+
+\item{factor_keys}{character vector — factor column names for annotation}
+
+\item{sample_name}{character — sample name column}
+
+\item{R2}{logical — plot R-squared instead of correlation}
+
+\item{color}{color palette}
+
+\item{...}{passed to pheatmap}
 }
 \description{
 plot correlation heatmap with annotations
@@ -18,12 +35,13 @@ plot correlation heatmap with annotations
 \examples{
 
 istar <- sim_lfq_data_protein_config()
-config <- istar$config
-analysis <- istar$data
-
-pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
+  lfq$factor_keys(), lfq$sample_name())
 stopifnot("pheatmap" \%in\% class(pheat_map))
-pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
+pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
+  lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
 stopifnot("pheatmap" \%in\% class(pheat_map))
 
 }

@@ -4,24 +4,38 @@
 \alias{plot_na_heatmap}
 \title{plot heatmap of NA values}
 \usage{
-plot_na_heatmap(data, config, limitrows = 10000, distance = "binary")
+plot_na_heatmap(
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
+  limitrows = 10000,
+  distance = "binary"
+)
+}
+\arguments{
+\item{matrix}{numeric matrix — wide-format intensity data}
+
+\item{annotation}{data.frame — sample annotation}
+
+\item{factor_keys}{character vector — factor column names for annotation}
+
+\item{sample_name}{character — sample name column}
+
+\item{limitrows}{max rows to display}
+
+\item{distance}{distance method for clustering}
 }
 \description{
 plot heatmap of NA values
 }
 \examples{
 
-
 istar <- sim_lfq_data_peptide_config()
-config <- istar$config
-analysis <- istar$data
-
-
-tmp <- plot_na_heatmap(analysis, config)
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+tmp <- plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(class(tmp) == "pheatmap")
-tmp <- plot_na_heatmap(analysis, config, distance = "euclidean")
-stopifnot(class(tmp) == "pheatmap")
-
 
 }
 \seealso{

@@ -145,6 +145,8 @@ Concrete config factories (e.g. `create_config_Skyline()`, `create_config_Spectr
 
 ## Testing
 
+- **When fixing a bug, first add a test that reproduces it**, then fix. This ensures regressions are caught.
+
 11 test files in `tests/testthat/`:
 - `test-LFQData.R` — Core data container and decorators
 - `test-Model.R` — Model fitting and coefficient extraction

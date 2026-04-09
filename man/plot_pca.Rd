@@ -5,33 +5,43 @@
 \title{plot PCA}
 \usage{
 plot_pca(
-  data,
-  config,
+  matrix,
+  annotation,
+  sample_name,
+  factor_keys,
   PC = c(1, 2),
   add_txt = FALSE,
-  plotly = FALSE,
   nudge = 0.1
 )
+}
+\arguments{
+\item{matrix}{numeric matrix — wide-format intensity data}
+
+\item{annotation}{data.frame — sample annotation}
+
+\item{sample_name}{character — sample name column}
+
+\item{factor_keys}{character vector — factor column names (first for color, second for shape)}
+
+\item{PC}{which principal components to plot}
+
+\item{add_txt}{show sample labels}
+
+\item{nudge}{label nudge distance}
 }
 \description{
 plot PCA
 }
 \examples{
 
-
 istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
-config <- istar$config
-analysis <- istar$data
-tmp <- plot_pca(analysis, config, add_txt= TRUE, nudge = 0.01)
-print(tmp)
-
-stopifnot("ggplot" \%in\% class(tmp) )
-tmp <- plot_pca(analysis, config, add_txt= FALSE)
-stopifnot("ggplot" \%in\% class(tmp) )
-tmp <- plot_pca(analysis, config, PC = c(1,2))
-stopifnot("ggplot" \%in\% class(tmp) )
-tmp <- plot_pca(analysis, config, PC = c(2,40))
-print(tmp)
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
+  add_txt = TRUE, nudge = 0.01)
+stopifnot("ggplot" \%in\% class(tmp))
+tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys())
+stopifnot("ggplot" \%in\% class(tmp))
 
 }
 \seealso{

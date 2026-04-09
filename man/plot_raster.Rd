@@ -5,8 +5,10 @@
 \title{plot heatmap without any clustering (use to show NA's)}
 \usage{
 plot_raster(
-  data,
-  config,
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
   arrange = c("mean", "var"),
   not_na = FALSE,
   show_rownames = FALSE,
@@ -14,9 +16,13 @@ plot_raster(
 )
 }
 \arguments{
-\item{data}{dataframe}
+\item{matrix}{numeric matrix — wide-format intensity data}
 
-\item{config}{dataframe configuration}
+\item{annotation}{data.frame — sample annotation}
+
+\item{factor_keys}{character vector — factor column names for annotation}
+
+\item{sample_name}{character — sample name column}
 
 \item{arrange}{either mean or var}
 
@@ -32,15 +38,11 @@ plot heatmap without any clustering (use to show NA's)
 \examples{
 
 istar <- sim_lfq_data_protein_config()
-config <- istar$config
-analysis <- istar$data
-rs <- plot_raster(analysis, config, show_rownames=FALSE)
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(class(rs) == "pheatmap")
-rs <- plot_raster(analysis[1,], config)
-stopifnot(is.null(rs))
-rs <- plot_raster(analysis, config, "var")
-stopifnot(class(rs) == "pheatmap")
-rs <- plot_raster(analysis, config, show_rownames = TRUE)
+rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")
 stopifnot(class(rs) == "pheatmap")
 
 }

@@ -4,20 +4,19 @@
 \alias{plot_sample_correlation}
 \title{visualize correlation among samples}
 \usage{
-plot_sample_correlation(pdata, config)
+plot_sample_correlation(matrix)
 }
 \arguments{
-\item{pdata}{data.frame}
-
-\item{config}{AnalysisConfiguration}
+\item{matrix}{numeric matrix — wide-format intensity data (samples as columns)}
 }
 \description{
 visualize correlation among samples
 }
 \examples{
 istar <- sim_lfq_data_peptide_config()
-analysis <- transform_work_intensity(istar$data, istar$config, log2)
-plot_sample_correlation(analysis, istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+lfq <- lfq$get_Transformer()$log2()$lfq
+plot_sample_correlation(lfq$to_wide(as.matrix = TRUE)$data)
 }
 \seealso{
 Other plotting: 

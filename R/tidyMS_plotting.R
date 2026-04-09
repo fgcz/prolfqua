@@ -70,8 +70,7 @@ plot_intensity_distribution_density <- function(pdata, sample_name, response, is
 }
 
 #' visualize correlation among samples
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param matrix numeric matrix — wide-format intensity data (samples as columns)
 #'
 #' @export
 #' @keywords internal
@@ -79,10 +78,10 @@ plot_intensity_distribution_density <- function(pdata, sample_name, response, is
 #' @rdname plot_sample_correlation
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()
-#' analysis <- transform_work_intensity(istar$data, istar$config, log2)
-#' plot_sample_correlation(analysis, istar$config)
-plot_sample_correlation <- function(pdata, config) {
-  matrix <- tidy_to_wide_config(pdata, config, as.matrix = TRUE)$data
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' lfq <- lfq$get_Transformer()$log2()$lfq
+#' plot_sample_correlation(lfq$to_wide(as.matrix = TRUE)$data)
+plot_sample_correlation <- function(matrix) {
   M <- cor(matrix, use = "pairwise.complete.obs")
   if (nrow(M) > 12) {
     res <- corrplot::corrplot.mixed(
@@ -271,33 +270,45 @@ plot_hierarchies_boxplot_df <- function(
 
 #' plot correlation heatmap with annotations
 #'
+#' @param matrix numeric matrix — wide-format intensity data
+#' @param annotation data.frame — sample annotation
+#' @param factor_keys character vector — factor column names for annotation
+#' @param sample_name character — sample name column
+#' @param R2 logical — plot R-squared instead of correlation
+#' @param color color palette
+#' @param ... passed to pheatmap
 #' @export
 #' @keywords internal
 #' @family plotting
 #' @examples
 #'
 #' istar <- sim_lfq_data_protein_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
+#'   lfq$factor_keys(), lfq$sample_name())
 #' stopifnot("pheatmap" %in% class(pheat_map))
-#' pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
+#' pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
+#'   lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
 #' stopifnot("pheatmap" %in% class(pheat_map))
 #'
-plot_heatmap_cor <- function(data, config, R2 = FALSE, color = colorRampPalette(c("white", "red"))(1024), ...) {
-  res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-  annot <- res$annotation
-  res <- res$data
-
-  cres <- cor(res, use = "pa")
+plot_heatmap_cor <- function(
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
+  R2 = FALSE,
+  color = colorRampPalette(c("white", "red"))(1024),
+  ...
+) {
+  cres <- cor(matrix, use = "pa")
   if (R2) {
     cres <- cres^2
   }
 
-  factors <- dplyr::select(annot, all_of(config$factor_keys()))
+  factors <- dplyr::select(annotation, all_of(factor_keys))
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sample_name]]
+  rownames(factors) <- annotation[[sample_name]]
 
   gg <- stats::hclust(stats::dist(cres))
   res <- pheatmap::pheatmap(
@@ -318,36 +329,34 @@ plot_heatmap_cor <- function(data, config, R2 = FALSE, color = colorRampPalette(
 
 #' plot heatmap with annotations
 #'
-#' @export
+#' @param matrix numeric matrix — wide-format intensity data
+#' @param annotation data.frame — sample annotation
+#' @param factor_keys character vector — factor column names for annotation
+#' @param sample_name character — sample name column
 #' @param na_fraction fraction of NA values per row
 #' @param show_rownames if TRUE shows row names, default FALSE
+#' @param ... passed to pheatmap
+#' @export
 #' @keywords internal
 #' @family plotting
 #' @examples
 #'
 #' istar <- sim_lfq_data_protein_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#'
-#' p  <- plot_heatmap(analysis, config)
-#' stopifnot(class(p) == "pheatmap")
-#' p2 <- plot_heatmap(analysis, config, show_rownames = TRUE)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' p <- plot_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #' stopifnot(class(p) == "pheatmap")
 #'
-plot_heatmap <- function(data, config, na_fraction = 0.4, show_rownames = FALSE, ...) {
-  if (nrow(data) == 0) {
-    warning("The dataset has :", nrow(data), "")
+plot_heatmap <- function(matrix, annotation, factor_keys, sample_name, na_fraction = 0.4, show_rownames = FALSE, ...) {
+  if (nrow(matrix) == 0) {
+    warning("The dataset has :", nrow(matrix), "")
     return(NULL)
   }
 
-  wide <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-  annot <- wide$annotation
-
-  factors <- dplyr::select(annot, all_of(config$factor_keys()))
+  factors <- dplyr::select(annotation, all_of(factor_keys))
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sample_name]]
-  resdata <- t(scale(t(wide$data)))
+  rownames(factors) <- annotation[[sample_name]]
+  resdata <- t(scale(t(matrix)))
   resdataf <- prolfqua::remove_na_rows(resdata, floor(ncol(resdata) * na_fraction))
 
   if (nrow(resdataf) >= 3) {
@@ -382,8 +391,10 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, show_rownames = FALSE,
 
 
 #' plot heatmap without any clustering (use to show NA's)
-#' @param data dataframe
-#' @param config dataframe configuration
+#' @param matrix numeric matrix — wide-format intensity data
+#' @param annotation data.frame — sample annotation
+#' @param factor_keys character vector — factor column names for annotation
+#' @param sample_name character — sample name column
 #' @param arrange either mean or var
 #' @param not_na if true than arrange by nr of NA's first and then by arrange
 #' @param show_rownames logical, show row names in heatmap
@@ -395,47 +406,49 @@ plot_heatmap <- function(data, config, na_fraction = 0.4, show_rownames = FALSE,
 #' @examples
 #'
 #' istar <- sim_lfq_data_protein_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#' rs <- plot_raster(analysis, config, show_rownames=FALSE)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #' stopifnot(class(rs) == "pheatmap")
-#' rs <- plot_raster(analysis[1,], config)
-#' stopifnot(is.null(rs))
-#' rs <- plot_raster(analysis, config, "var")
-#' stopifnot(class(rs) == "pheatmap")
-#' rs <- plot_raster(analysis, config, show_rownames = TRUE)
+#' rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")
 #' stopifnot(class(rs) == "pheatmap")
 #'
-plot_raster <- function(data, config, arrange = c("mean", "var"), not_na = FALSE, show_rownames = FALSE, ...) {
-  if (nrow(data) <= 1) {
-    warning("The dataset has :", nrow(data), "")
+plot_raster <- function(
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
+  arrange = c("mean", "var"),
+  not_na = FALSE,
+  show_rownames = FALSE,
+  ...
+) {
+  if (nrow(matrix) <= 1) {
+    warning("The dataset has :", nrow(matrix), "")
     return(NULL)
   }
   arrange <- match.arg(arrange)
-  res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-  annot <- res$annotation
-  resdata <- res$data
 
-  factors <- dplyr::select(annot, all_of(config$factor_keys()))
+  factors <- dplyr::select(annotation, all_of(factor_keys))
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sample_name]]
+  rownames(factors) <- annotation[[sample_name]]
 
   if (arrange == "mean") {
-    bb <- apply(resdata, 1, mean, na.rm = TRUE)
+    bb <- apply(matrix, 1, mean, na.rm = TRUE)
   } else if (arrange == "var") {
-    bb <- apply(resdata, 1, stats::var, na.rm = TRUE)
+    bb <- apply(matrix, 1, stats::var, na.rm = TRUE)
   }
   if (not_na) {
-    na_counts <- apply(resdata, 1, function(x) {
+    na_counts <- apply(matrix, 1, function(x) {
       sum(is.na(x))
     })
-    resdata <- resdata[order(na_counts, bb, decreasing = c(FALSE, TRUE)), , drop = FALSE]
+    matrix <- matrix[order(na_counts, bb, decreasing = c(FALSE, TRUE)), , drop = FALSE]
   } else {
-    resdata <- resdata[order(bb, decreasing = TRUE), , drop = FALSE]
+    matrix <- matrix[order(bb, decreasing = TRUE), , drop = FALSE]
   }
 
   res <- pheatmap::pheatmap(
-    resdata,
+    matrix,
     cluster_rows = FALSE,
     cluster_cols = FALSE,
     annotation_col = factors,
@@ -450,51 +463,48 @@ plot_raster <- function(data, config, arrange = c("mean", "var"), not_na = FALSE
 
 
 #' plot heatmap of NA values
+#' @param matrix numeric matrix — wide-format intensity data
+#' @param annotation data.frame — sample annotation
+#' @param factor_keys character vector — factor column names for annotation
+#' @param sample_name character — sample name column
+#' @param limitrows max rows to display
+#' @param distance distance method for clustering
 #' @export
 #' @keywords internal
 #' @family plotting
 #' @examples
 #'
-#'
 #' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#'
-#' tmp <- plot_na_heatmap(analysis, config)
-#' stopifnot(class(tmp) == "pheatmap")
-#' tmp <- plot_na_heatmap(analysis, config, distance = "euclidean")
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' tmp <- plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #' stopifnot(class(tmp) == "pheatmap")
 #'
-#'
-plot_na_heatmap <- function(data, config, limitrows = 10000, distance = "binary") {
-  res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-  annot <- res$annotation
-  res <- res$data
-  stopifnot(annot[[config$sample_name]] %in% colnames(res))
+plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitrows = 10000, distance = "binary") {
+  stopifnot(annotation[[sample_name]] %in% colnames(matrix))
 
-  factors <- dplyr::select(annot, all_of(config$factor_keys()))
+  factors <- dplyr::select(annotation, all_of(factor_keys))
   factors <- as.data.frame(factors)
-  rownames(factors) <- annot[[config$sample_name]]
+  rownames(factors) <- annotation[[sample_name]]
 
-  res[!is.na(res)] <- 0
-  res[is.na(res)] <- 1
-  allrows <- nrow(res)
-  res <- res[apply(res, 1, sum) > 0, , drop = FALSE]
+  matrix[!is.na(matrix)] <- 0
+  matrix[is.na(matrix)] <- 1
+  allrows <- nrow(matrix)
+  matrix <- matrix[apply(matrix, 1, sum) > 0, , drop = FALSE]
 
-  message("rows with NA's: ", nrow(res), "; all rows :", allrows, "\n")
+  message("rows with NA's: ", nrow(matrix), "; all rows :", allrows, "\n")
 
-  if (nrow(res) > 1) {
-    res <- if (nrow(res) > limitrows) {
+  if (nrow(matrix) > 1) {
+    matrix <- if (nrow(matrix) > limitrows) {
       message("limiting nr of rows to:", limitrows, "\n")
-      res[sample(seq_len(nrow(res)), limitrows), ]
+      matrix[sample(seq_len(nrow(matrix)), limitrows), ]
     } else {
-      res
+      matrix
     }
 
-    gg <- stats::hclust(stats::dist(res, method = distance))
+    gg <- stats::hclust(stats::dist(matrix, method = distance))
     resclust <- pheatmap::pheatmap(
-      res[gg$order, ],
+      matrix[gg$order, ],
       cluster_rows = FALSE,
       clustering_distance_cols = distance,
       scale = "none",
@@ -513,31 +523,31 @@ plot_na_heatmap <- function(data, config, limitrows = 10000, distance = "binary"
 
 
 #' plot PCA
+#' @param matrix numeric matrix — wide-format intensity data
+#' @param annotation data.frame — sample annotation
+#' @param sample_name character — sample name column
+#' @param factor_keys character vector — factor column names (first for color, second for shape)
+#' @param PC which principal components to plot
+#' @param add_txt show sample labels
+#' @param nudge label nudge distance
 #' @export
 #' @keywords internal
 #' @family plotting
 #' @examples
 #'
-#'
 #' istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
-#' config <- istar$config
-#' analysis <- istar$data
-#' tmp <- plot_pca(analysis, config, add_txt= TRUE, nudge = 0.01)
-#' print(tmp)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
+#'   add_txt = TRUE, nudge = 0.01)
+#' stopifnot("ggplot" %in% class(tmp))
+#' tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys())
+#' stopifnot("ggplot" %in% class(tmp))
 #'
-#' stopifnot("ggplot" %in% class(tmp) )
-#' tmp <- plot_pca(analysis, config, add_txt= FALSE)
-#' stopifnot("ggplot" %in% class(tmp) )
-#' tmp <- plot_pca(analysis, config, PC = c(1,2))
-#' stopifnot("ggplot" %in% class(tmp) )
-#' tmp <- plot_pca(analysis, config, PC = c(2,40))
-#' print(tmp)
-#'
-plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE, nudge = 0.1) {
+plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2), add_txt = FALSE, nudge = 0.1) {
   stopifnot(length(PC) == 2)
 
-  wide <- tidy_to_wide_config(data, config, as.matrix = TRUE)
-  ff <- wide$data
+  ff <- matrix
   if (any(is.na(ff))) {
     n_before <- nrow(ff)
     ff <- na.omit(ff)
@@ -553,7 +563,7 @@ plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE
   }
   ff <- t(ff)
   pca_result <- prcomp(ff)
-  xx <- as_tibble(pca_result$x, rownames = config$sample_name)
+  xx <- as_tibble(pca_result$x, rownames = sample_name)
   variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
 
   if (max(PC) > (ncol(xx) - 1)) {
@@ -561,22 +571,22 @@ plot_pca <- function(data, config, PC = c(1, 2), add_txt = FALSE, plotly = FALSE
     return(NULL)
   }
 
-  xx <- inner_join(wide$annotation, xx)
+  xx <- inner_join(annotation, xx)
 
-  sh <- config$factor_keys()[2]
+  sh <- factor_keys[2]
   point <- (if (!is.na(sh)) {
     geom_point(aes(shape = !!sym(sh)))
   } else {
     geom_point()
   })
 
-  text <- geom_text(aes(label = !!sym(config$sample_name)), check_overlap = TRUE, nudge_x = nudge, nudge_y = nudge)
+  text <- geom_text(aes(label = !!sym(sample_name)), check_overlap = TRUE, nudge_x = nudge, nudge_y = nudge)
 
   pc_x <- paste0("PC", PC[1])
   pc_y <- paste0("PC", PC[2])
   x <- ggplot(
     xx,
-    aes(x = !!sym(pc_x), y = !!sym(pc_y), color = !!sym(config$factor_keys()[1]), text = !!sym(config$sample_name))
+    aes(x = !!sym(pc_x), y = !!sym(pc_y), color = !!sym(factor_keys[1]), text = !!sym(sample_name))
   ) +
     labs(
       x = paste0(pc_x, " (", round(variance_explained[PC[1]]), "% variance)"),
