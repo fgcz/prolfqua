@@ -106,6 +106,7 @@ Other LFQData:
 \item \href{#method-LFQData-sample_name}{\code{LFQData$sample_name()}}
 \item \href{#method-LFQData-file_name}{\code{LFQData$file_name()}}
 \item \href{#method-LFQData-nr_children_col}{\code{LFQData$nr_children_col()}}
+\item \href{#method-LFQData-isotope_label}{\code{LFQData$isotope_label()}}
 \item \href{#method-LFQData-get_data}{\code{LFQData$get_data()}}
 \item \href{#method-LFQData-rename_response}{\code{LFQData$rename_response()}}
 \item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
@@ -423,6 +424,16 @@ return file name column
 return name of nr_children column
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$nr_children_col()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-isotope_label"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-isotope_label}{}}}
+\subsection{Method \code{isotope_label()}}{
+return isotope label column name
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$isotope_label()}\if{html}{\out{</div>}}
 }
 
 }

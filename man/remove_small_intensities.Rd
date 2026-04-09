@@ -4,12 +4,14 @@
 \alias{remove_small_intensities}
 \title{Remove rows when intensity lower then threshold}
 \usage{
-remove_small_intensities(pdata, config, threshold = 1)
+remove_small_intensities(pdata, response, threshold = 1)
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{response}{character — name of the intensity column}
+
+\item{threshold}{numeric — minimum intensity to keep (default 1)}
 }
 \value{
 data.frame
@@ -19,15 +21,11 @@ Remove rows when intensity lower then threshold
 }
 \examples{
 
-dd <- prolfqua_data('data_spectronautDIA250_A')
-config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
-
-config$get_response()
-
-res1 <- remove_small_intensities(analysis, config, threshold=1 )
-res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
-stopifnot(nrow(res1) >  nrow(res1000))
+istar <- sim_lfq_data_peptide_config(Nprot = 20)
+lfqdata <- LFQData$new(istar$data, istar$config)
+res1 <- remove_small_intensities(lfqdata$get_data(), lfqdata$response(), threshold = 1)
+res1000 <- remove_small_intensities(lfqdata$get_data(), lfqdata$response(), threshold = 1000)
+stopifnot(nrow(res1) > nrow(res1000))
 
 }
 \concept{filtering}

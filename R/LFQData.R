@@ -90,7 +90,7 @@ LFQData <- R6::R6Class(
       if (!is.null(seed)) {
         set.seed(seed)
       }
-      subset <- prolfqua::sample_subset(size = size, self$data, self$config)
+      subset <- prolfqua::sample_subset(size = size, self$get_data(), self$relevant_hierarchy_keys())
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
@@ -122,7 +122,11 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     #' @return self
     remove_small_intensities = function(threshold = 4) {
-      self$data <- prolfqua::remove_small_intensities(self$data, self$config, threshold = threshold)
+      self$data <- prolfqua::remove_small_intensities(
+        self$get_data(),
+        self$response(),
+        threshold = threshold
+      )
       invisible(self)
     },
     #' @description
@@ -248,6 +252,11 @@ LFQData <- R6::R6Class(
       self$config$nr_children
     },
     #' @description
+    #' return isotope label column name
+    isotope_label = function() {
+      self$config$isotope_label
+    },
+    #' @description
     #' return the tidy data frame
     get_data = function() {
       self$data
@@ -337,25 +346,22 @@ LFQData <- R6::R6Class(
 
 #' Remove rows when intensity lower then threshold
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param response character — name of the intensity column
+#' @param threshold numeric — minimum intensity to keep (default 1)
 #' @return data.frame
 #' @export
 #' @keywords internal
 #' @family filtering
 #' @examples
 #'
-#' dd <- prolfqua_data('data_spectronautDIA250_A')
-#' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
+#' istar <- sim_lfq_data_peptide_config(Nprot = 20)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' res1 <- remove_small_intensities(lfqdata$get_data(), lfqdata$response(), threshold = 1)
+#' res1000 <- remove_small_intensities(lfqdata$get_data(), lfqdata$response(), threshold = 1000)
+#' stopifnot(nrow(res1) > nrow(res1000))
 #'
-#' config$get_response()
-#'
-#' res1 <- remove_small_intensities(analysis, config, threshold=1 )
-#' res1000 <- remove_small_intensities(analysis, config, threshold=1000 )
-#' stopifnot(nrow(res1) >  nrow(res1000))
-#'
-remove_small_intensities <- function(pdata, config, threshold = 1) {
-  res_data <- pdata |> dplyr::filter(!!sym(config$get_response()) >= threshold)
+remove_small_intensities <- function(pdata, response, threshold = 1) {
+  res_data <- pdata |> dplyr::filter(!!sym(response) >= threshold)
   return(res_data)
 }
 

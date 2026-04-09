@@ -227,15 +227,14 @@ complete_cases <- function(pdata, config) {
 #' Sample subset of proteins/peptides/precursors
 #' @param size size of sample
 #' @param pdata tidy table
-#' @param config \code{\link{AnalysisConfiguration}}
+#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
 #' @export
 #' @keywords internal
 #' @family configuration
 #'
-sample_subset <- function(size, pdata, config) {
-  hk <- config$hierarchy_keys_depth()
-  message("Sampling ", size, paste(hk, collapse = ","))
-  hkdf <- pdata |> select(all_of(hk)) |> distinct() |> sample_n(size = size)
+sample_subset <- function(size, pdata, hierarchy_keys_depth) {
+  message("Sampling ", size, paste(hierarchy_keys_depth, collapse = ","))
+  hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> sample_n(size = size)
   sdata <- inner_join(hkdf, pdata)
   return(sdata)
 }

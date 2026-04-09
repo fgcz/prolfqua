@@ -151,6 +151,8 @@ get_data()              # data.frame — the tidy intensity data
 
 Note: No `get_config()`. Config is not exposed. All config access goes through the API methods above.
 
+**Pending rename:** `get_data()` → `data_long()`, and add `data_wide()` wrapping `to_wide(as.matrix = TRUE)` (returning `list(data, annotation, rowdata)` — no config in the return). Deferred to avoid churn during Phase 4.
+
 ### Tier 3: State queries (return scalars)
 
 ```r
@@ -284,18 +286,18 @@ Updated decorators to use API methods where they accessed config fields directly
 
 Pass-throughs `func(self$lfq$data, self$lfq$config)` left unchanged — standalone function signatures haven't changed yet.
 
-### Phase 2: Refactor Transformer to return new LFQData — NEXT
-
-Each transform method (`log2()`, `robscale()`, `vsn()`, etc.) returns a new LFQData instance instead of mutating the clone. The `$lfq` field becomes the result of the last transformation. No setters needed on LFQData.
-
-### Phase 4: Refactor standalone function signatures
+### Phase 4: Refactor standalone function signatures — NEXT
 
 For functions with 1-3 config fields: replace `config` with individual named arguments.
 For functions with 4+ fields (complete_cases, aggregate_intensity_top_n, summarize_stats): accept `lfqdata` and call API methods internally.
 
+### Phase 2: Refactor Transformer to return new LFQData
+
+Each transform method (`log2()`, `robscale()`, `vsn()`, etc.) returns a new LFQData instance instead of mutating the clone. The `$lfq` field becomes the result of the last transformation. No setters needed on LFQData. Deferred until all read-side refactoring is complete.
+
 ### Phase 5: Make `data` and `config` private
 
-Use active bindings that warn on direct access (deprecation period), then error.
+Use active bindings that warn on direct access (deprecation period), then error. Last step — only after all reads go through API and writes are handled.
 
 ---
 

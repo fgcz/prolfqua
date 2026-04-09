@@ -4,14 +4,14 @@
 \alias{sample_subset}
 \title{Sample subset of proteins/peptides/precursors}
 \usage{
-sample_subset(size, pdata, config)
+sample_subset(size, pdata, hierarchy_keys_depth)
 }
 \arguments{
 \item{size}{size of sample}
 
 \item{pdata}{tidy table}
 
-\item{config}{\code{\link{AnalysisConfiguration}}}
+\item{hierarchy_keys_depth}{character vector — hierarchy columns at current depth}
 }
 \description{
 Sample subset of proteins/peptides/precursors
