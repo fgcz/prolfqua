@@ -7,7 +7,7 @@
 plot_hierarchies_boxplot(
   pdata,
   title,
-  config,
+  lfqdata,
   facet_grid_on = NULL,
   beeswarm = TRUE,
   show_mean = TRUE,
@@ -19,33 +19,32 @@ plot_hierarchies_boxplot(
 
 \item{title}{name to show}
 
-\item{config}{AnalysisConfiguration}
+\item{lfqdata}{LFQData object}
 
 \item{facet_grid_on}{on which variable to run facet_grid}
 
 \item{beeswarm}{use beeswarm default FALSE}
+
+\item{show_mean}{show mean values}
+
+\item{pb}{progress bar}
 }
 \description{
 plot peptides by factors and it's levels.
 }
 \examples{
 
-
-bb <- prolfqua_data('data_skylineSRM_HL_A')
-config <- bb$config_f()
-analysis <- bb$analysis(bb$data, config)
-data <- prolfqua::transform_work_intensity(analysis, config, log2)
-res <- plot_hierarchies_boxplot_df(data, config)
+istar <- sim_lfq_data_peptide_config()
+lfq <- LFQData$new(istar$data, istar$config)
+res <- plot_hierarchies_boxplot_df(lfq$get_data(), lfq)
 res$boxplot[[1]]
 
-hierarchy = config$hierarchy_keys_depth()
-xnested <- data |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
+xnested <- lfq$get_data() |>
+  dplyr::group_by(across(all_of(lfq$relevant_hierarchy_keys()))) |> tidyr::nest()
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-  config, beeswarm = FALSE, show_mean = TRUE)
+  lfq, beeswarm = FALSE, show_mean = TRUE)
 p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-  config, beeswarm = TRUE)
-p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-  config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
+  lfq, beeswarm = TRUE)
 p
 }
 \keyword{internal}

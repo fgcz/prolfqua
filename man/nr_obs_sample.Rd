@@ -4,14 +4,27 @@
 \alias{nr_obs_sample}
 \title{Aggregates e.g. protein abundances from peptide abundances}
 \usage{
-nr_obs_sample(data, config, new_child = config$nr_children)
+nr_obs_sample(
+  data,
+  response,
+  hierarchy_keys_depth,
+  file_name,
+  nr_children_col,
+  new_child = nr_children_col
+)
 }
 \arguments{
-\item{data}{data.frame with peptide-level data}
+\item{data}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{response}{character — intensity column name}
 
-\item{new_child}{column name for the nr_children count}
+\item{hierarchy_keys_depth}{character vector — hierarchy columns at current depth}
+
+\item{file_name}{character — file name column}
+
+\item{nr_children_col}{character — nr_children column name}
+
+\item{new_child}{character — output column name}
 }
 \description{
 Aggregates e.g. protein abundances from peptide abundances
@@ -20,12 +33,14 @@ Aggregates e.g. protein abundances from peptide abundances
 dd <- prolfqua::sim_lfq_data_peptide_config()
 dd$data <- na.omit(dd$data)
 
-xd <- nr_obs_sample(dd$data, dd$config)
+xd <- nr_obs_sample(na.omit(dd$data), dd$config$get_response(),
+  dd$config$hierarchy_keys_depth(), dd$config$file_name, dd$config$nr_children)
 xd$nr_children |> table()
 # xd |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_children)
 
 dp <- prolfqua::sim_lfq_data_protein_config()
-xp <- nr_obs_sample(dp$data, dp$config)
+xp <- nr_obs_sample(dp$data, dp$config$get_response(),
+  dp$config$hierarchy_keys_depth(), dp$config$file_name, dp$config$nr_children)
 # xp
 # xp |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_peptides)
 xp$nr_peptides |> table()

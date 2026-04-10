@@ -4,12 +4,14 @@
 \alias{rank_peptide_by_intensity}
 \title{ranks precursor - peptide by intensity.}
 \usage{
-rank_peptide_by_intensity(pdata, config)
+rank_peptide_by_intensity(pdata, response, hierarchy_keys)
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{response}{character — intensity column name}
+
+\item{hierarchy_keys}{character vector — all hierarchy column names}
 }
 \value{
 data.frame
@@ -19,11 +21,11 @@ ranks precursor - peptide by intensity.
 }
 \examples{
 
-
 bb <- prolfqua::sim_lfq_data_peptide_config()
-res <- rank_peptide_by_intensity(bb$data, bb$config)
-X <-res |> dplyr::select(c(bb$config$hierarchy_keys(),
+lfq <- LFQData$new(bb$data, bb$config)
+res <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
+X <- res |> dplyr::select(c(lfq$hierarchy_keys(),
  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-X |> dplyr::arrange(!!!rlang::syms(c(bb$config$hierarchy_keys()[1], "srm_meanIntRank"  )))
+X |> dplyr::arrange(!!!rlang::syms(c(lfq$hierarchy_keys()[1], "srm_meanIntRank")))
 }
 \keyword{internal}

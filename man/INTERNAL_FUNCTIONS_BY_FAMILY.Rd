@@ -8,7 +8,7 @@ Internal Functions by category
 }
 \seealso{
 Other aggregation: 
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},

@@ -69,7 +69,7 @@ plot_hierarchies_line_default <- function(
 #' @export
 #' @param res data.frame
 #' @param protein_name title of plot
-#' @param config AnalysisConfiguration
+#' @param lfqdata LFQData object
 #' @param separate if heavy and light show in one plot or with separate y axis?
 #' @family aggregation
 #' @family plotting
@@ -86,29 +86,12 @@ plot_hierarchies_line_default <- function(
 #'   dplyr::group_by(across(all_of(config$hierarchy_keys_depth()))) |>
 #'   tidyr::nest()
 #'
-#' prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)
+#' lfq <- LFQData$new(analysis, config)
+#' prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], lfq)
 #'
-#' bb <- prolfqua_data("data_skylineSRM_HL_A")
-#' conf <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, conf)
-#'
-#' nest <- analysis |>
-#'   dplyr::group_by(conf$hierarchy_keys_depth()) |>
-#'   tidyr::nest()
-#' prolfqua::plot_hierarchies_line(nest$data[[1]],
-#'   "DUM",
-#'   conf,
-#'   separate = TRUE
-#' )
-#' prolfqua::plot_hierarchies_line(nest$data[[1]],
-#'   "DUM",
-#'   conf,
-#'   separate = TRUE,
-#'   show.legend = TRUE
-#' )
-#'
-plot_hierarchies_line <- function(res, protein_name, config, separate = FALSE, show.legend = FALSE) {
-  rev_hnames <- config$hierarchy_keys(TRUE)
+plot_hierarchies_line <- function(res, protein_name, lfqdata, separate = FALSE, show.legend = FALSE) {
+  rev_hnames <- lfqdata$hierarchy_keys()
+  rev_hnames <- rev(rev_hnames)
   fragment <- rev_hnames[1]
   peptide <- rev_hnames[1]
 
@@ -118,14 +101,14 @@ plot_hierarchies_line <- function(res, protein_name, config, separate = FALSE, s
   res <- plot_hierarchies_line_default(
     res,
     protein_name = protein_name,
-    sample = config$sample_name,
-    intensity = config$get_response(),
+    sample = lfqdata$sample_name(),
+    intensity = lfqdata$response(),
     peptide = peptide,
     fragment = fragment,
-    factor = config$factor_keys_depth(),
-    isotope_label = config$isotope_label,
+    factor = lfqdata$relevant_factor_keys(),
+    isotope_label = lfqdata$isotope_label(),
     separate = separate,
-    log_y = !config$is_response_transformed,
+    log_y = !lfqdata$is_transformed(),
     show.legend = show.legend
   )
   return(res)
@@ -137,7 +120,7 @@ plot_hierarchies_line <- function(res, protein_name, config, separate = FALSE, s
 #' @seealso \code{\link{plot_hierarchies_line}}
 #' @export
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param lfqdata LFQData object
 #' @family aggregation
 #' @family plotting
 #' @keywords internal
@@ -145,19 +128,13 @@ plot_hierarchies_line <- function(res, protein_name, config, separate = FALSE, s
 #'
 #'
 #' istar <- sim_lfq_data_peptide_config()
-#'
-#' istar$config$is_response_transformed <- FALSE
-#' res <- plot_hierarchies_line_df(istar$data, istar$config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' res <- plot_hierarchies_line_df(lfq$get_data(), lfq)
 #' res[[1]]
-#' istar$config$is_response_transformed <- TRUE
-#' res <- plot_hierarchies_line_df(istar$data, istar$config)
-#' res[[2]]
 #'
-#' # TODO make it work for other hiearachy levels.
-#'
-plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
+plot_hierarchies_line_df <- function(pdata, lfqdata, show.legend = FALSE) {
   hierarchy_id <- "hierarchy_id"
-  pdata <- pdata |> tidyr::unite(hierarchy_id, !!!syms(config$hierarchy_keys_depth()), remove = FALSE)
+  pdata <- pdata |> tidyr::unite(hierarchy_id, !!!syms(lfqdata$relevant_hierarchy_keys()), remove = FALSE)
 
   xnested <- pdata |>
     dplyr::group_by(across(all_of(hierarchy_id))) |>
@@ -165,7 +142,7 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
 
   figs <- xnested |>
     dplyr::mutate(
-      plot = map2(data, !!sym(hierarchy_id), plot_hierarchies_line, config = config, show.legend = show.legend)
+      plot = map2(data, !!sym(hierarchy_id), plot_hierarchies_line, lfqdata = lfqdata, show.legend = show.legend)
     )
   return(figs$plot)
 }
@@ -178,34 +155,29 @@ plot_hierarchies_line_df <- function(pdata, config, show.legend = FALSE) {
 #' @keywords internal
 #' @examples
 #' # todo
-plot_hierarchies_add_quantline <- function(p, data, aes_y, configuration) {
+plot_hierarchies_add_quantline <- function(p, data, aes_y, sample_name) {
   p +
     geom_line(
       data = data,
-      aes(x = .data[[configuration$sample_name]], y = .data[[aes_y]], group = 1),
+      aes(x = .data[[sample_name]], y = .data[[aes_y]], group = 1),
       linewidth = 1.3,
       color = "black",
       linetype = "solid"
     ) +
     geom_point(
       data = data,
-      aes(x = .data[[configuration$sample_name]], y = .data[[aes_y]], group = 1),
+      aes(x = .data[[sample_name]], y = .data[[aes_y]], group = 1),
       color = "black",
       shape = 10
     )
 }
 
 
-.reestablish_condition <- function(data, medpolishRes, config) {
+.reestablish_condition <- function(data, medpolishRes, sample_name, factor_keys, file_name, isotope_label) {
   xx <- data |>
-    dplyr::select(c(
-      config$sample_name,
-      config$factor_keys(),
-      config$file_name,
-      config$isotope_label
-    )) |>
+    dplyr::select(c(sample_name, factor_keys, file_name, isotope_label)) |>
     dplyr::distinct()
-  res <- dplyr::inner_join(xx, medpolishRes, by = config$sample_name)
+  res <- dplyr::inner_join(xx, medpolishRes, by = sample_name)
   res
 }
 
@@ -285,7 +257,8 @@ medpolish_estimate <- function(x, name = FALSE, sample_name = "sample_name") {
 #'   feature = feature,
 #'   sample_name = conf$sample_name
 #' )
-#' prolfqua:::.reestablish_condition(x, bb, conf)
+#' prolfqua:::.reestablish_condition(x, bb, conf$sample_name,
+#'   conf$factor_keys(), conf$file_name, conf$isotope_label)
 #'
 medpolish_estimate_df <- function(pdata, response, feature, sample_name) {
   bb <- .extractInt(pdata, response = response, feature = feature, sample_name = sample_name)
@@ -297,7 +270,11 @@ medpolish_estimate_df <- function(pdata, response, feature, sample_name) {
 #'
 #' @seealso \code{\link{medpolish_estimate_df}}
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param response character — intensity column name
+#' @param hierarchy_keys character vector — all hierarchy column names
+#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
+#' @param sample_name character — sample name column
+#' @param name if TRUE return function name only
 #' @family aggregation
 #' @keywords internal
 #' @export
@@ -313,20 +290,29 @@ medpolish_estimate_df <- function(pdata, response, feature, sample_name) {
 #'
 #' feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
-#' bb <- medpolish_estimate_dfconfig(x, conf)
-#' prolfqua:::.reestablish_condition(x, bb, conf)
+#' bb <- medpolish_estimate_dfconfig(x, conf$get_response(),
+#'   conf$hierarchy_keys(), conf$hierarchy_keys_depth(), conf$sample_name)
+#' prolfqua:::.reestablish_condition(x, bb, conf$sample_name,
+#'   conf$factor_keys(), conf$file_name, conf$isotope_label)
 #'
-medpolish_estimate_dfconfig <- function(pdata, config, name = FALSE) {
+medpolish_estimate_dfconfig <- function(
+  pdata,
+  response,
+  hierarchy_keys,
+  hierarchy_keys_depth,
+  sample_name,
+  name = FALSE
+) {
   if (name) {
     return("medpolish")
   }
 
-  feature <- base::setdiff(config$hierarchy_keys(), config$hierarchy_keys_depth())
+  feature <- base::setdiff(hierarchy_keys, hierarchy_keys_depth)
   res <- medpolish_estimate_df(
     pdata,
-    response = config$get_response(),
+    response = response,
     feature = feature,
-    sample_name = config$sample_name
+    sample_name = sample_name
   )
   return(res)
 }
@@ -476,7 +462,11 @@ rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
 #' @seealso \code{\link{rlm_estimate}}
 #' @export
 #' @param pdata data.frame
-#' @param config \code{\link{AnalysisConfiguration}}
+#' @param response character — intensity column name
+#' @param hierarchy_keys character vector — all hierarchy column names
+#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
+#' @param sample_name character — sample name column
+#' @param name if TRUE return function name only
 #' @family aggregation
 #' @keywords internal
 #' @examples
@@ -491,23 +481,39 @@ rlm_estimate <- function(pdata, response, feature, samples, maxIt = 20) {
 #'
 #' feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 #' x <- xnested$data[[1]]
-#' bb <- rlm_estimate_dfconfig(x, conf)
+#' bb <- rlm_estimate_dfconfig(x, conf$get_response(),
+#'   conf$hierarchy_keys(), conf$hierarchy_keys_depth(), conf$sample_name)
+#' prolfqua:::.reestablish_condition(x, bb, conf$sample_name,
+#'   conf$factor_keys(), conf$file_name, conf$isotope_label)
 #'
-#' prolfqua:::.reestablish_condition(x, bb, conf)
-#'
-rlm_estimate_dfconfig <- function(pdata, config, name = FALSE) {
+rlm_estimate_dfconfig <- function(pdata, response, hierarchy_keys, hierarchy_keys_depth, sample_name, name = FALSE) {
   if (name) {
     return("lmrob")
   }
 
-  feature <- base::setdiff(config$hierarchy_keys(), config$hierarchy_keys_depth())
-  rlm_estimate(pdata, response = config$get_response(), feature = feature, samples = config$sample_name, maxIt = 20)
+  feature <- base::setdiff(hierarchy_keys, hierarchy_keys_depth)
+  rlm_estimate(pdata, response = response, feature = feature, samples = sample_name, maxIt = 20)
 }
 
-.add_nr_children <- function(data, aggregated_data, config, newconfig) {
-  new_child <- paste(c("nr_children", config$hierarchy_keys_depth()), collapse = "_")
-  res_nr_children <- nr_obs_sample(data, config, new_child = new_child)
-  result <- inner_join(aggregated_data, res_nr_children, by = c(config$hierarchy_keys_depth(), config$file_name))
+.add_nr_children <- function(
+  data,
+  aggregated_data,
+  hierarchy_keys_depth,
+  file_name,
+  response,
+  nr_children_col,
+  newconfig
+) {
+  new_child <- paste(c("nr_children", hierarchy_keys_depth), collapse = "_")
+  res_nr_children <- nr_obs_sample(
+    data,
+    response,
+    hierarchy_keys_depth,
+    file_name,
+    nr_children_col,
+    new_child = new_child
+  )
+  result <- inner_join(aggregated_data, res_nr_children, by = c(hierarchy_keys_depth, file_name))
   newconfig$nr_children <- new_child
   return(list(data = result, config = newconfig))
 }
@@ -523,38 +529,42 @@ rlm_estimate_dfconfig <- function(pdata, config, name = FALSE) {
 #' @examples
 #'
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- dd$config
-#' data <- dd$data
-#' data <- prolfqua::transform_work_intensity(data, config, log2)
-#' bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
-#' bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)
+#' lfq <- LFQData$new(dd$data, dd$config)
+#' lfq <- lfq$get_Transformer()$log2()$lfq
+#' bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
+#' bbRob <- estimate_intensity(lfq, .func = rlm_estimate_dfconfig)
 #' nrow(bbMed$data)
 #' nrow(bbRob$data)
-#' length(bbMed$data$medpolish)
-#' length(bbRob$data$lmrob)
 #' xt <- dplyr::inner_join(bbMed$data, bbRob$data)
 #' plot(xt$medpolish, xt$lmrob, log = "xy", pch = "*")
 #' abline(0, 1, col = 2)
 #'
-estimate_intensity <- function(data, config, .func) {
+estimate_intensity <- function(lfqdata, .func) {
   make_name <- .func(name = TRUE)
-  config <- config$clone(deep = TRUE)
+  config <- lfqdata$config$clone(deep = TRUE)
+  data <- lfqdata$get_data()
+
+  # Extract column names once for passing to sub-functions
+  response <- lfqdata$response()
+  hkeys <- lfqdata$hierarchy_keys()
+  hkeysd <- lfqdata$relevant_hierarchy_keys()
+  sname <- lfqdata$sample_name()
+  fname <- lfqdata$file_name()
+  fkeys <- lfqdata$factor_keys()
+  iso <- lfqdata$isotope_label()
+  nrc <- lfqdata$nr_children_col()
 
   xnested <- data |>
-    group_by(across(all_of(config$hierarchy_keys_depth()))) |>
+    group_by(across(all_of(hkeysd))) |>
     nest()
 
-  loop_over_nested <- function(xnested, .func, config) {
-    pb <- progress::progress_bar$new(total = nrow(xnested))
-    message("starting aggregation")
-    purrr::map(xnested$data, function(d) {
-      pb$tick()
-      aggr <- .func(d, config)
-      .reestablish_condition(d, aggr, config)
-    })
-  }
-
-  res <- loop_over_nested(xnested, .func = .func, config = config)
+  pb <- progress::progress_bar$new(total = nrow(xnested))
+  message("starting aggregation")
+  res <- purrr::map(xnested$data, function(d) {
+    pb$tick()
+    aggr <- .func(d, response, hkeys, hkeysd, sname)
+    .reestablish_condition(d, aggr, sname, fkeys, fname, iso)
+  })
 
   xnested[[make_name]] <- res
   newconfig <- make_reduced_hierarchy_config(
@@ -564,20 +574,18 @@ estimate_intensity <- function(data, config, .func) {
   )
 
   unnested <- xnested |>
-    dplyr::select(all_of(c(config$hierarchy_keys_depth(), make_name))) |>
+    dplyr::select(all_of(c(hkeysd, make_name))) |>
     tidyr::unnest(cols = dplyr::all_of(make_name)) |>
     dplyr::ungroup()
 
-  return(.add_nr_children(data, unnested, config, newconfig))
+  return(.add_nr_children(data, unnested, hkeysd, fname, response, nrc, newconfig))
 }
 
 
 #' Plot feature data and result of aggregation
 #'
-#' @param data data.frame before aggregation
-#' @param config AnalysisConfiguration
-#' @param data_aggr data.frame after aggregation
-#' @param config_reduced AnalysisConfiguration of aggregated data
+#' @param lfqdata LFQData object (original data)
+#' @param lfqdata_agg LFQData object (aggregated data)
 #' @param show.legend logical, show legend in plot
 #' @family plotting
 #' @family aggregation
@@ -586,30 +594,25 @@ estimate_intensity <- function(data, config, .func) {
 #' @examples
 #'
 #' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' analysis <- prolfqua::transform_work_intensity(analysis, config, log2)
-#' bbMed <- estimate_intensity(analysis, config, .func = medpolish_estimate_dfconfig)
-#' tmpMed <- plot_estimate(analysis, config, bbMed$data, bbMed$config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' lfq <- lfq$get_Transformer()$log2()$lfq
+#' bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
+#' lfq_med <- LFQData$new(bbMed$data, bbMed$config)
+#' tmpMed <- plot_estimate(lfq, lfq_med)
 #' stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))
-#' stopifnot("ggplot" %in% class(tmpMed$plots[[2]]))
 #'
-#' bbRob <- estimate_intensity(analysis, config, .func = rlm_estimate_dfconfig)
-#' tmpRob <- plot_estimate(analysis, config, bbRob$data, bbRob$config)
-#' stopifnot("ggplot" %in% class(tmpRob$plots[[1]]))
-#' stopifnot("ggplot" %in% class(tmpRob$plots[[2]]))
-#'
-plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend = FALSE) {
+plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
   hierarchy_id <- "hierarchy_id"
-  xnested <- data |>
-    group_by(!!!syms(config$hierarchy_keys_depth())) |>
+  hkeysd <- lfqdata$relevant_hierarchy_keys()
+
+  xnested <- lfqdata$get_data() |>
+    group_by(!!!syms(hkeysd)) |>
     nest()
-  xnested <- xnested |> tidyr::unite(hierarchy_id, !!!syms(config$hierarchy_keys_depth()))
-  xnested_aggr <- data_aggr |>
-    group_by(!!!syms(config_reduced$hierarchy_keys_depth())) |>
+  xnested <- xnested |> tidyr::unite(hierarchy_id, !!!syms(hkeysd))
+  xnested_aggr <- lfqdata_agg$get_data() |>
+    group_by(!!!syms(lfqdata_agg$relevant_hierarchy_keys())) |>
     nest_by(.key = "other")
-  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_id, !!!syms(config$hierarchy_keys_depth()))
+  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_id, !!!syms(hkeysd))
   xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_id)
 
   plots <- vector(mode = "list", length = nrow(xnested_all))
@@ -619,14 +622,14 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend =
     p1 <- plot_hierarchies_line(
       xnested_all$data[[i]],
       xnested_all[[hierarchy_id]][i],
-      config = config,
+      lfqdata = lfqdata,
       show.legend = show.legend
     )
     p2 <- plot_hierarchies_add_quantline(
       p1,
       xnested_all$other[[i]],
-      config_reduced$get_response(),
-      config
+      lfqdata_agg$response(),
+      lfqdata$sample_name()
     )
     plots[[i]] <- p2
     pb$tick()
@@ -640,9 +643,9 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend =
 #' Aggregates top N intensities
 #'
 #' run \link{rank_peptide_by_intensity} first
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @param func function to use for aggregation
+#' @param ranked_data data.frame with ranked peptides
+#' @param lfqdata LFQData object
+#' @param .func function to use for aggregation
 #' @param N default 3 top intensities.
 #' @return list with data and new reduced configuration (config)
 #' @family aggregation
@@ -651,59 +654,38 @@ plot_estimate <- function(data, config, data_aggr, config_reduced, show.legend =
 #' @examples
 #'
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- dd$config
-#' res <- dd$data
-#' ranked <- rank_peptide_by_intensity(res, config)
+#' lfq <- LFQData$new(dd$data, dd$config)
+#' ranked <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
 #'
 #' mean_f <- function(x, name = FALSE) {
-#'   if (name) {
-#'     return("mean")
-#'   }
+#'   if (name) return("mean")
 #'   mean(x, na.rm = TRUE)
 #' }
-#' sum_f <- function(x, name = FALSE) {
-#'   if (name) {
-#'     return("sum")
-#'   }
-#'   sum(x, na.rm = TRUE)
-#' }
 #'
-#' resTOPN <- aggregate_intensity_topN(
-#'   ranked,
-#'   config,
-#'   .func = mean_f,
-#'   N = 3
-#' )
-#'
-#' print(dim(resTOPN$data))
-#' # stopifnot(dim(resTOPN$data) == c(3260, 8))
+#' resTOPN <- aggregate_intensity_top_n(ranked, lfq, .func = mean_f, N = 3)
 #' stopifnot(names(resTOPN) %in% c("data", "config"))
-#' config$get_response()
-#' tmpRob <- plot_estimate(ranked,
-#'   config,
-#'   resTOPN$data,
-#'   resTOPN$config,
-#'   show.legend = TRUE
-#' )
+#' lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config)
+#' tmpRob <- plot_estimate(lfq, lfq_agg, show.legend = TRUE)
 #' stopifnot("ggplot" %in% class(tmpRob$plots[[4]]))
 #'
-aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
+aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
   newcol <- make.names(paste0("srm_", .func(name = TRUE), "_", N))
+  config <- lfqdata$config$clone(deep = TRUE)
 
   top_intensities <-
-    pdata |> dplyr::filter(!!sym("srm_meanIntRank") <= N)
+    ranked_data |> dplyr::filter(!!sym("srm_meanIntRank") <= N)
 
   top_intensities <- top_intensities |>
     dplyr::group_by(across(all_of(c(
-      config$hierarchy_keys_depth(),
-      config$sample_name,
-      config$file_name,
-      config$isotope_label,
-      config$factor_keys()
+      lfqdata$relevant_hierarchy_keys(),
+      lfqdata$sample_name(),
+      lfqdata$file_name(),
+      lfqdata$isotope_label(),
+      lfqdata$factor_keys()
     ))))
   sum_top_intensities <- top_intensities |>
     dplyr::summarize(
-      !!newcol := .func(!!sym(config$get_response())),
+      !!newcol := .func(!!sym(lfqdata$response())),
       ident_qValue = min(!!sym(config$ident_q_value)),
       .groups = "drop"
     )
@@ -714,7 +696,15 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
     hierarchy = config$hierarchy[seq_len(config$hierarchy_depth)]
   )
 
-  return(.add_nr_children(pdata, sum_top_intensities, config, newconfig))
+  return(.add_nr_children(
+    ranked_data,
+    sum_top_intensities,
+    lfqdata$relevant_hierarchy_keys(),
+    lfqdata$file_name(),
+    lfqdata$response(),
+    lfqdata$nr_children_col(),
+    newconfig
+  ))
 }
 
 
@@ -731,74 +721,88 @@ aggregate_intensity_topN <- function(pdata, config, .func, N = 3) {
 
 #' Aggregates e.g. protein abundances from peptide abundances
 #'
-#' @param data data.frame with peptide-level data
-#' @param config AnalysisConfiguration
-#' @param new_child column name for the nr_children count
+#' @param data data.frame
+#' @param response character — intensity column name
+#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
+#' @param file_name character — file name column
+#' @param nr_children_col character — nr_children column name
+#' @param new_child character — output column name
 #' @export
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' dd$data <- na.omit(dd$data)
 #'
-#' xd <- nr_obs_sample(dd$data, dd$config)
+#' xd <- nr_obs_sample(na.omit(dd$data), dd$config$get_response(),
+#'   dd$config$hierarchy_keys_depth(), dd$config$file_name, dd$config$nr_children)
 #' xd$nr_children |> table()
 #' # xd |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_children)
 #'
 #' dp <- prolfqua::sim_lfq_data_protein_config()
-#' xp <- nr_obs_sample(dp$data, dp$config)
+#' xp <- nr_obs_sample(dp$data, dp$config$get_response(),
+#'   dp$config$hierarchy_keys_depth(), dp$config$file_name, dp$config$nr_children)
 #' # xp
 #' # xp |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_peptides)
 #' xp$nr_peptides |> table()
 #'
-nr_obs_sample <- function(data, config, new_child = config$nr_children) {
-  data <- data[!is.na(data[[config$get_response()]]), ]
+nr_obs_sample <- function(
+  data,
+  response,
+  hierarchy_keys_depth,
+  file_name,
+  nr_children_col,
+  new_child = nr_children_col
+) {
+  data <- data[!is.na(data[[response]]), ]
   nr_children <- data |>
-    group_by(!!!rlang::syms(c(config$hierarchy_keys_depth(), config$file_name))) |>
-    summarize(!!new_child := sum(!!sym(config$nr_children), na.rm = TRUE), .groups = "drop")
+    group_by(!!!rlang::syms(c(hierarchy_keys_depth, file_name))) |>
+    summarize(!!new_child := sum(!!sym(nr_children_col), na.rm = TRUE), .groups = "drop")
   return(nr_children)
 }
 
 
-#' Aggregates e.g. protein abundances from peptide abundances
+#' Count observations per experiment (max nr_children across samples)
 #'
 #' @export
-#' @param data tidy data
-#' @param config prolfqua config
-#' @param from_children TRUE compute from nr_children column, FALSE - do not use nr_children column
-#' @param name_nr_child how to name column
+#' @param data data.frame
+#' @param hierarchy_keys character vector — all hierarchy column names
+#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
+#' @param nr_children_col character — nr_children column name
+#' @param response character — intensity column name (needed when from_children = TRUE)
+#' @param file_name character — file name column (needed when from_children = TRUE)
+#' @param from_children TRUE compute from nr_children column, FALSE count distinct hierarchy entries
+#' @param name_nr_child how to name output column
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
-#'
-#'
-#' xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
-#' xd <- nr_obs_experiment(dd$data, dd$config, from_children = TRUE)
+#' lfq <- LFQData$new(dd$data, dd$config)
+#' xd <- nr_obs_experiment(lfq$get_data(), lfq$hierarchy_keys(),
+#'   lfq$relevant_hierarchy_keys(), lfq$nr_children_col(),
+#'   response = lfq$response(), file_name = lfq$file_name())
 #' stopifnot(min(xd$nr_child_exp) == 1)
-#' dp <- prolfqua::sim_lfq_data_protein_config()
-#' nr_obs_experiment(dp$data, dp$config)
-#' nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
+#' xd2 <- nr_obs_experiment(lfq$get_data(), lfq$hierarchy_keys(),
+#'   lfq$relevant_hierarchy_keys(), lfq$nr_children_col(), from_children = FALSE)
 #'
-#'
-#' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' dd$config$hierarchy_depth <- 2
-#' xpep <- nr_obs_experiment(dd$data,dd$config)
-#' stopifnot(all(xpep$nr_child_exp == 1))
-#' xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)
-#' stopifnot(all(xpep$nr_child_exp == 1))
-#'
-nr_obs_experiment <- function(data, config, from_children = TRUE, name_nr_child = "nr_child_exp") {
-  hkeys <- config$hierarchy_keys()
-  hkeysd <- config$hierarchy_keys_depth()
-  nr_children <- config$nr_children
+nr_obs_experiment <- function(
+  data,
+  hierarchy_keys,
+  hierarchy_keys_depth,
+  nr_children_col,
+  response = NULL,
+  file_name = NULL,
+  from_children = TRUE,
+  name_nr_child = "nr_child_exp"
+) {
   if (from_children) {
-    xz <- nr_obs_sample(data, config)
+    stopifnot(!is.null(response), !is.null(file_name))
+    xz <- nr_obs_sample(data, response, hierarchy_keys_depth, file_name, nr_children_col)
     xz <- xz |>
-      group_by(!!!syms(hkeysd)) |>
-      dplyr::summarize(!!name_nr_child := max(!!sym(nr_children)), .groups = "drop")
+      group_by(!!!syms(hierarchy_keys_depth)) |>
+      dplyr::summarize(!!name_nr_child := max(!!sym(nr_children_col)), .groups = "drop")
     return(xz)
   } else {
     xq <- data |>
-      dplyr::select(hkeys) |>
+      dplyr::select(hierarchy_keys) |>
       distinct() |>
-      dplyr::group_by(!!!syms(hkeysd)) |>
+      dplyr::group_by(!!!syms(hierarchy_keys_depth)) |>
       dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
     return(xq)
   }
@@ -808,8 +812,8 @@ nr_obs_experiment <- function(data, config, from_children = TRUE, name_nr_child 
 # Summarize Intensities by Intensity or NAs ----
 .rankProteinPrecursors <- function(
   data,
-  config,
-  column = config$get_response(),
+  hierarchy_keys,
+  column,
   fun = function(x) {
     sum(x, na.rm = TRUE)
   },
@@ -820,12 +824,12 @@ nr_obs_experiment <- function(data, config, from_children = TRUE, name_nr_child 
   }
 ) {
   summary_per_precursor <- data |>
-    dplyr::group_by(!!!syms(config$hierarchy_keys())) |>
+    dplyr::group_by(!!!syms(hierarchy_keys)) |>
     dplyr::summarize(!!summary_column := fun(!!sym(column)))
 
   grouped_by_protein <- summary_per_precursor |>
-    dplyr::arrange(!!sym(config$hierarchy_keys()[1])) |>
-    dplyr::group_by(!!sym(config$hierarchy_keys()[1]))
+    dplyr::arrange(!!sym(hierarchy_keys[1])) |>
+    dplyr::group_by(!!sym(hierarchy_keys[1]))
   ranked_by_summary <- grouped_by_protein |>
     dplyr::mutate(!!rank_column := rank_function(!!sym(summary_column)))
 
@@ -835,25 +839,26 @@ nr_obs_experiment <- function(data, config, from_children = TRUE, name_nr_child 
 
 #' ranks precursor - peptide by intensity.
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param response character — intensity column name
+#' @param hierarchy_keys character vector — all hierarchy column names
 #' @return data.frame
 #' @export
 #' @keywords internal
 #' @examples
 #'
-#'
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' res <- rank_peptide_by_intensity(bb$data, bb$config)
-#' X <-res |> dplyr::select(c(bb$config$hierarchy_keys(),
+#' lfq <- LFQData$new(bb$data, bb$config)
+#' res <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
+#' X <- res |> dplyr::select(c(lfq$hierarchy_keys(),
 #'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-#' X |> dplyr::arrange(!!!rlang::syms(c(bb$config$hierarchy_keys()[1], "srm_meanIntRank"  )))
-rank_peptide_by_intensity <- function(pdata, config) {
+#' X |> dplyr::arrange(!!!rlang::syms(c(lfq$hierarchy_keys()[1], "srm_meanIntRank")))
+rank_peptide_by_intensity <- function(pdata, response, hierarchy_keys) {
   summary_column <- "srm_meanInt"
   rank_column <- "srm_meanIntRank"
   pdata <- .rankProteinPrecursors(
     pdata,
-    config,
-    column = config$get_response(),
+    hierarchy_keys,
+    column = response,
     fun = function(x) {
       mean(x, na.rm = TRUE)
     },

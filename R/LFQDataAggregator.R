@@ -26,10 +26,8 @@
     lfqagg <- lfq_agg
   }
   df <- prolfqua::plot_estimate(
-    lfq$data,
-    lfq$config,
-    lfqagg$data,
-    lfqagg$config,
+    lfq,
+    lfqagg,
     show.legend = show.legend
   )
   invisible(df)
@@ -99,7 +97,7 @@ AggregateMedpolish <- R6::R6Class(
     #' run median polish aggregation
     #' @return LFQData
     aggregate = function() {
-      res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = medpolish_estimate_dfconfig)
+      res <- estimate_intensity(self$lfq, .func = medpolish_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },
@@ -175,7 +173,7 @@ AggregateRlm <- R6::R6Class(
     #' run robust regression aggregation
     #' @return LFQData
     aggregate = function() {
-      res <- estimate_intensity(self$lfq$data, self$lfq$config, .func = rlm_estimate_dfconfig)
+      res <- estimate_intensity(self$lfq, .func = rlm_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },
@@ -275,8 +273,12 @@ AggregateTopN <- R6::R6Class(
           mean(x, na.rm = TRUE)
         }
       }
-      ranked <- rank_peptide_by_intensity(self$lfq$data, self$lfq$config)
-      res_topn <- aggregate_intensity_topN(ranked, self$lfq$config, .func = .func, N = self$N)
+      ranked <- rank_peptide_by_intensity(
+        self$lfq$get_data(),
+        self$lfq$response(),
+        self$lfq$hierarchy_keys()
+      )
+      res_topn <- aggregate_intensity_top_n(ranked, self$lfq, .func = .func, N = self$N)
       self$lfq_agg <- LFQData$new(res_topn$data, res_topn$config, prefix = self$prefix)
       invisible(self$lfq_agg)
     },

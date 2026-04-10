@@ -62,7 +62,7 @@ bb <- rlm_estimate(x,
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},

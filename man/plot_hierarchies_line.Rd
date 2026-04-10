@@ -7,7 +7,7 @@
 plot_hierarchies_line(
   res,
   protein_name,
-  config,
+  lfqdata,
   separate = FALSE,
   show.legend = FALSE
 )
@@ -17,7 +17,7 @@ plot_hierarchies_line(
 
 \item{protein_name}{title of plot}
 
-\item{config}{AnalysisConfiguration}
+\item{lfqdata}{LFQData object}
 
 \item{separate}{if heavy and light show in one plot or with separate y axis?}
 }
@@ -35,32 +35,14 @@ xnested <- analysis |>
   dplyr::group_by(across(all_of(config$hierarchy_keys_depth()))) |>
   tidyr::nest()
 
-prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)
-
-bb <- prolfqua_data("data_skylineSRM_HL_A")
-conf <- bb$config_f()
-analysis <- bb$analysis(bb$data, conf)
-
-nest <- analysis |>
-  dplyr::group_by(conf$hierarchy_keys_depth()) |>
-  tidyr::nest()
-prolfqua::plot_hierarchies_line(nest$data[[1]],
-  "DUM",
-  conf,
-  separate = TRUE
-)
-prolfqua::plot_hierarchies_line(nest$data[[1]],
-  "DUM",
-  conf,
-  separate = TRUE,
-  show.legend = TRUE
-)
+lfq <- LFQData$new(analysis, config)
+prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], lfq)
 
 }
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},

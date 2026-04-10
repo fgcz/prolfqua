@@ -4,7 +4,7 @@
 \alias{estimate_intensity}
 \title{Aggregates e.g. protein abundances from peptide abundances}
 \usage{
-estimate_intensity(data, config, .func)
+estimate_intensity(lfqdata, .func)
 }
 \arguments{
 \item{func}{- a function working on a matrix of intensities for each protein.}
@@ -18,15 +18,12 @@ Aggregates e.g. protein abundances from peptide abundances
 \examples{
 
 dd <- prolfqua::sim_lfq_data_peptide_config()
-config <- dd$config
-data <- dd$data
-data <- prolfqua::transform_work_intensity(data, config, log2)
-bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
-bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)
+lfq <- LFQData$new(dd$data, dd$config)
+lfq <- lfq$get_Transformer()$log2()$lfq
+bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
+bbRob <- estimate_intensity(lfq, .func = rlm_estimate_dfconfig)
 nrow(bbMed$data)
 nrow(bbRob$data)
-length(bbMed$data$medpolish)
-length(bbRob$data$lmrob)
 xt <- dplyr::inner_join(bbMed$data, bbRob$data)
 plot(xt$medpolish, xt$lmrob, log = "xy", pch = "*")
 abline(0, 1, col = 2)
@@ -37,7 +34,7 @@ abline(0, 1, col = 2)
 
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},
 \code{\link{medpolish_estimate_dfconfig}()},

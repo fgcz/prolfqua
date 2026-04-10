@@ -1,28 +1,25 @@
 test_that("plot_hierarchies_boxplot", {
   istar <- sim_lfq_data_peptide_config()
-  analysis <- istar$data
-  config <- istar$config
-  config$hierarchy_depth
-  config$hierarchy_keys_depth()
-  #'
-  xnested <- analysis |>
-    dplyr::group_by_at(config$hierarchy_keys_depth()) |>
+  lfq <- LFQData$new(istar$data, istar$config)
+
+  xnested <- lfq$get_data() |>
+    dplyr::group_by_at(lfq$relevant_hierarchy_keys()) |>
     tidyr::nest()
-  #'
+
   p <- plot_hierarchies_boxplot(
     xnested$data[[3]],
     xnested$protein_Id[[3]],
-    config,
-    facet_grid_on = tail(config$hierarchy_keys(), 1)
+    lfq,
+    facet_grid_on = tail(lfq$hierarchy_keys(), 1)
   )
   expect_true("ggplot" %in% class(p))
 
-  p <- plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]], config)
+  p <- plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]], lfq)
   expect_true("ggplot" %in% class(p))
   p <- plot_hierarchies_boxplot(
     xnested$data[[3]],
     xnested$protein_Id[[3]],
-    config,
+    lfq,
     beeswarm = FALSE
   )
   expect_true("ggplot" %in% class(p))

@@ -4,12 +4,12 @@
 \alias{plot_hierarchies_line_df}
 \title{Generates peptide level plots for all proteins}
 \usage{
-plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
+plot_hierarchies_line_df(pdata, lfqdata, show.legend = FALSE)
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{lfqdata}{LFQData object}
 }
 \description{
 Generates peptide level plots for all proteins
@@ -18,15 +18,9 @@ Generates peptide level plots for all proteins
 
 
 istar <- sim_lfq_data_peptide_config()
-
-istar$config$is_response_transformed <- FALSE
-res <- plot_hierarchies_line_df(istar$data, istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+res <- plot_hierarchies_line_df(lfq$get_data(), lfq)
 res[[1]]
-istar$config$is_response_transformed <- TRUE
-res <- plot_hierarchies_line_df(istar$data, istar$config)
-res[[2]]
-
-# TODO make it work for other hiearachy levels.
 
 }
 \seealso{
@@ -34,7 +28,7 @@ res[[2]]
 
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},

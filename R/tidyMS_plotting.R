@@ -115,35 +115,32 @@ plot_sample_correlation <- function(matrix) {
 #'
 #' @param pdata data.frame
 #' @param title name to show
-#' @param config AnalysisConfiguration
+#' @param lfqdata LFQData object
 #' @param facet_grid_on on which variable to run facet_grid
 #' @param beeswarm use beeswarm default FALSE
+#' @param show_mean show mean values
+#' @param pb progress bar
 #'
 #' @export
 #' @keywords internal
 #' @examples
 #'
-#'
-#' bb <- prolfqua_data('data_skylineSRM_HL_A')
-#' config <- bb$config_f()
-#' analysis <- bb$analysis(bb$data, config)
-#' data <- prolfqua::transform_work_intensity(analysis, config, log2)
-#' res <- plot_hierarchies_boxplot_df(data, config)
+#' istar <- sim_lfq_data_peptide_config()
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' res <- plot_hierarchies_boxplot_df(lfq$get_data(), lfq)
 #' res$boxplot[[1]]
 #'
-#' hierarchy = config$hierarchy_keys_depth()
-#' xnested <- data |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
+#' xnested <- lfq$get_data() |>
+#'   dplyr::group_by(across(all_of(lfq$relevant_hierarchy_keys()))) |> tidyr::nest()
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-#'   config, beeswarm = FALSE, show_mean = TRUE)
+#'   lfq, beeswarm = FALSE, show_mean = TRUE)
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-#'   config, beeswarm = TRUE)
-#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-#'   config, beeswarm = TRUE, facet_grid_on = "precursor_Id")
+#'   lfq, beeswarm = TRUE)
 #' p
 plot_hierarchies_boxplot <- function(
   pdata,
   title,
-  config,
+  lfqdata,
   facet_grid_on = NULL,
   beeswarm = TRUE,
   show_mean = TRUE,
@@ -153,31 +150,34 @@ plot_hierarchies_boxplot <- function(
     pb$tick()
   }
 
-  isotope_col <- config$isotope_label
+  isotope_col <- lfqdata$isotope_label()
+  nr_children_col <- lfqdata$nr_children_col()
+  response <- lfqdata$response()
+
   lil <- length(unique(pdata[[isotope_col]]))
 
-  pdata <- prolfqua::make_interaction_column(pdata, c(config$factor_keys_depth()))
-  pdata$size <- ifelse(pdata[[config$nr_children]] == 0, 2, pdata[[config$nr_children]])
-  pdata[[config$nr_children]] <- as.factor(pdata[[config$nr_children]])
+  pdata <- prolfqua::make_interaction_column(pdata, c(lfqdata$relevant_factor_keys()))
+  pdata$size <- ifelse(pdata[[nr_children_col]] == 0, 2, pdata[[nr_children_col]])
+  pdata[[nr_children_col]] <- as.factor(pdata[[nr_children_col]])
   color <- if (lil > 1) {
     isotope_col
   } else {
     NULL
   }
-  p <- ggplot(pdata, aes(x = .data[["interaction"]], y = .data[[config$get_response()]])) +
+  p <- ggplot(pdata, aes(x = .data[["interaction"]], y = .data[[response]])) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
   if (!is.null(color)) {
     p <- p + aes(colour = .data[[color]])
   }
 
-  if (!config$is_response_transformed) {
+  if (!lfqdata$is_transformed()) {
     p <- p + scale_y_continuous(trans = "log10")
   }
   p <- p + geom_boxplot()
   if (beeswarm) {
-    if (length(levels(pdata[[config$nr_children]])) > 1) {
-      shape_values <- c(4, rep(16, length(levels(pdata[[config$nr_children]])) - 1))
+    if (length(levels(pdata[[nr_children_col]])) > 1) {
+      shape_values <- c(4, rep(16, length(levels(pdata[[nr_children_col]])) - 1))
     } else {
       shape_values <- 16
     }
@@ -185,7 +185,7 @@ plot_hierarchies_boxplot <- function(
       ggbeeswarm::geom_quasirandom(
         aes(
           size = .data[["size"]],
-          shape = .data[[config$nr_children]]
+          shape = .data[[nr_children_col]]
         ),
         dodge.width = 0.7
       ) +
@@ -214,44 +214,27 @@ plot_hierarchies_boxplot <- function(
 #' generates peptide level plots for all Proteins
 #' @export
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @param hierarchy e.g. protein_Id default hierarchy_keys_depth
+#' @param lfqdata LFQData object
+#' @param hierarchy e.g. protein_Id default relevant_hierarchy_keys
 #' @param facet_grid_on default NULL
 #' @family plotting
 #' @keywords internal
 #' @examples
 #'
-#'  istar <- sim_lfq_data_peptide_config(with_missing = FALSE)
-#'  res <- plot_hierarchies_boxplot_df(istar$data,istar$config)
-#'  istar <- sim_lfq_data_peptide_config()
-#'  config <- istar$config
-#'  analysis <- istar$data
-#'  analysis <- analysis |>
-#'    dplyr::filter(protein_Id %in% sample(protein_Id, 2))
+#' istar <- sim_lfq_data_peptide_config()
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' res <- plot_hierarchies_boxplot_df(lfq$get_data(), lfq)
+#' res$boxplot[[1]]
 #'
-#'  res <- plot_hierarchies_boxplot_df(analysis,config)
-#'  res$boxplot[[1]]
-#'  res <- plot_hierarchies_boxplot_df(analysis,config,config$hierarchy_keys()[1])
-#'  res$boxplot[[1]]
-#'  res <- plot_hierarchies_boxplot_df(analysis,config,
-#'                                     config$hierarchy_keys()[1],
-#'                                     facet_grid_on = config$hierarchy_keys()[2])
-#'  res$boxplot[[1]]
-#'  res$boxplot[[2]]
-#'
-#'  iostar <- sim_lfq_data_protein_config()
-#'  iostar$data <- iostar$data |>
-#'    dplyr::filter(protein_Id %in% sample(protein_Id, 4))
-#'  unique(iostar$data$protein_Id)
-#'
-#'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
-#'  res$boxplot[[1]]
-#'  res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-#'                                     iostar$config$hierarchy_keys()[1])
+#' lfq2 <- LFQData$new(
+#'   istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 2)),
+#'   istar$config)
+#' res <- plot_hierarchies_boxplot_df(lfq2$get_data(), lfq2)
+#' res$boxplot[[1]]
 plot_hierarchies_boxplot_df <- function(
   pdata,
-  config,
-  hierarchy = config$hierarchy_keys_depth(),
+  lfqdata,
+  hierarchy = lfqdata$relevant_hierarchy_keys(),
   facet_grid_on = NULL
 ) {
   xnested <- pdata |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
@@ -262,7 +245,14 @@ plot_hierarchies_boxplot_df <- function(
 
   figs <- xnested |>
     dplyr::mutate(
-      boxplot = map2(data, !!sym(newcol), plot_hierarchies_boxplot, config, facet_grid_on = facet_grid_on, pb = pb)
+      boxplot = map2(
+        data,
+        !!sym(newcol),
+        plot_hierarchies_boxplot,
+        lfqdata = lfqdata,
+        facet_grid_on = facet_grid_on,
+        pb = pb
+      )
     )
   return(dplyr::select(figs, all_of(c(newcol, "boxplot"))))
 }

@@ -4,16 +4,12 @@
 \alias{plot_estimate}
 \title{Plot feature data and result of aggregation}
 \usage{
-plot_estimate(data, config, data_aggr, config_reduced, show.legend = FALSE)
+plot_estimate(lfqdata, lfqdata_agg, show.legend = FALSE)
 }
 \arguments{
-\item{data}{data.frame before aggregation}
+\item{lfqdata}{LFQData object (original data)}
 
-\item{config}{AnalysisConfiguration}
-
-\item{data_aggr}{data.frame after aggregation}
-
-\item{config_reduced}{AnalysisConfiguration of aggregated data}
+\item{lfqdata_agg}{LFQData object (aggregated data)}
 
 \item{show.legend}{logical, show legend in plot}
 }
@@ -23,19 +19,12 @@ Plot feature data and result of aggregation
 \examples{
 
 istar <- sim_lfq_data_peptide_config()
-config <- istar$config
-analysis <- istar$data
-
-analysis <- prolfqua::transform_work_intensity(analysis, config, log2)
-bbMed <- estimate_intensity(analysis, config, .func = medpolish_estimate_dfconfig)
-tmpMed <- plot_estimate(analysis, config, bbMed$data, bbMed$config)
+lfq <- LFQData$new(istar$data, istar$config)
+lfq <- lfq$get_Transformer()$log2()$lfq
+bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
+lfq_med <- LFQData$new(bbMed$data, bbMed$config)
+tmpMed <- plot_estimate(lfq, lfq_med)
 stopifnot("ggplot" \%in\% class(tmpMed$plots[[1]]))
-stopifnot("ggplot" \%in\% class(tmpMed$plots[[2]]))
-
-bbRob <- estimate_intensity(analysis, config, .func = rlm_estimate_dfconfig)
-tmpRob <- plot_estimate(analysis, config, bbRob$data, bbRob$config)
-stopifnot("ggplot" \%in\% class(tmpRob$plots[[1]]))
-stopifnot("ggplot" \%in\% class(tmpRob$plots[[2]]))
 
 }
 \seealso{
@@ -62,7 +51,7 @@ Other plotting:
 
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},

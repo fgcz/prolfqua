@@ -4,12 +4,27 @@
 \alias{rlm_estimate_dfconfig}
 \title{Estimate protein abundance from peptide abundances using MASS::rlm}
 \usage{
-rlm_estimate_dfconfig(pdata, config, name = FALSE)
+rlm_estimate_dfconfig(
+  pdata,
+  response,
+  hierarchy_keys,
+  hierarchy_keys_depth,
+  sample_name,
+  name = FALSE
+)
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{\code{\link{AnalysisConfiguration}}}
+\item{response}{character — intensity column name}
+
+\item{hierarchy_keys}{character vector — all hierarchy column names}
+
+\item{hierarchy_keys_depth}{character vector — hierarchy columns at current depth}
+
+\item{sample_name}{character — sample name column}
+
+\item{name}{if TRUE return function name only}
 }
 \description{
 Estimate protein abundance from peptide abundances using MASS::rlm
@@ -26,9 +41,10 @@ xnested <- data |>
 
 feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 x <- xnested$data[[1]]
-bb <- rlm_estimate_dfconfig(x, conf)
-
-prolfqua:::.reestablish_condition(x, bb, conf)
+bb <- rlm_estimate_dfconfig(x, conf$get_response(),
+  conf$hierarchy_keys(), conf$hierarchy_keys_depth(), conf$sample_name)
+prolfqua:::.reestablish_condition(x, bb, conf$sample_name,
+  conf$factor_keys(), conf$file_name, conf$isotope_label)
 
 }
 \seealso{
@@ -36,7 +52,7 @@ prolfqua:::.reestablish_condition(x, bb, conf)
 
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},

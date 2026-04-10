@@ -6,17 +6,17 @@
 \usage{
 plot_hierarchies_boxplot_df(
   pdata,
-  config,
-  hierarchy = config$hierarchy_keys_depth(),
+  lfqdata,
+  hierarchy = lfqdata$relevant_hierarchy_keys(),
   facet_grid_on = NULL
 )
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{lfqdata}{LFQData object}
 
-\item{hierarchy}{e.g. protein_Id default hierarchy_keys_depth}
+\item{hierarchy}{e.g. protein_Id default relevant_hierarchy_keys}
 
 \item{facet_grid_on}{default NULL}
 }
@@ -25,33 +25,16 @@ generates peptide level plots for all Proteins
 }
 \examples{
 
- istar <- sim_lfq_data_peptide_config(with_missing = FALSE)
- res <- plot_hierarchies_boxplot_df(istar$data,istar$config)
- istar <- sim_lfq_data_peptide_config()
- config <- istar$config
- analysis <- istar$data
- analysis <- analysis |>
-   dplyr::filter(protein_Id \%in\% sample(protein_Id, 2))
+istar <- sim_lfq_data_peptide_config()
+lfq <- LFQData$new(istar$data, istar$config)
+res <- plot_hierarchies_boxplot_df(lfq$get_data(), lfq)
+res$boxplot[[1]]
 
- res <- plot_hierarchies_boxplot_df(analysis,config)
- res$boxplot[[1]]
- res <- plot_hierarchies_boxplot_df(analysis,config,config$hierarchy_keys()[1])
- res$boxplot[[1]]
- res <- plot_hierarchies_boxplot_df(analysis,config,
-                                    config$hierarchy_keys()[1],
-                                    facet_grid_on = config$hierarchy_keys()[2])
- res$boxplot[[1]]
- res$boxplot[[2]]
-
- iostar <- sim_lfq_data_protein_config()
- iostar$data <- iostar$data |>
-   dplyr::filter(protein_Id \%in\% sample(protein_Id, 4))
- unique(iostar$data$protein_Id)
-
- res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config)
- res$boxplot[[1]]
- res <- plot_hierarchies_boxplot_df(iostar$data,iostar$config,
-                                    iostar$config$hierarchy_keys()[1])
+lfq2 <- LFQData$new(
+  istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 2)),
+  istar$config)
+res <- plot_hierarchies_boxplot_df(lfq2$get_data(), lfq2)
+res$boxplot[[1]]
 }
 \seealso{
 Other plotting: 

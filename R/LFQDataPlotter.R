@@ -163,21 +163,13 @@ LFQDataPlotter <- R6::R6Class(
     boxplots = function(facet = TRUE) {
       rhk <- self$lfq$relevant_hierarchy_keys()
       hk <- self$lfq$hierarchy_keys()
-      if (length(rhk) < length(hk) && facet) {
-        bb <- prolfqua::plot_hierarchies_boxplot_df(
-          self$lfq$data,
-          self$lfq$config,
-          hierarchy = rhk,
-          facet_grid_on = hk[length(rhk) + 1]
-        )
-      } else {
-        bb <- prolfqua::plot_hierarchies_boxplot_df(
-          self$lfq$data,
-          self$lfq$config,
-          hierarchy = rhk,
-          facet_grid_on = NULL
-        )
-      }
+      fg <- if (length(rhk) < length(hk) && facet) hk[length(rhk) + 1] else NULL
+      bb <- prolfqua::plot_hierarchies_boxplot_df(
+        self$lfq$get_data(),
+        self$lfq,
+        hierarchy = rhk,
+        facet_grid_on = fg
+      )
       return(bb)
     },
     #' @description

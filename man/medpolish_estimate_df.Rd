@@ -44,7 +44,8 @@ bb <- medpolish_estimate_df(x,
   feature = feature,
   sample_name = conf$sample_name
 )
-prolfqua:::.reestablish_condition(x, bb, conf)
+prolfqua:::.reestablish_condition(x, bb, conf$sample_name,
+  conf$factor_keys(), conf$file_name, conf$isotope_label)
 
 }
 \seealso{
@@ -52,7 +53,7 @@ prolfqua:::.reestablish_condition(x, bb, conf)
 
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_dfconfig}()},

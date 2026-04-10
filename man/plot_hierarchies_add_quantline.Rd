@@ -4,7 +4,7 @@
 \alias{plot_hierarchies_add_quantline}
 \title{Add protein estimate to plot of peptide intensities}
 \usage{
-plot_hierarchies_add_quantline(p, data, aes_y, configuration)
+plot_hierarchies_add_quantline(p, data, aes_y, sample_name)
 }
 \description{
 Add protein estimate to plot of peptide intensities
@@ -15,7 +15,7 @@ Add protein estimate to plot of peptide intensities
 \seealso{
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_topN}()},
+\code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
 \code{\link{medpolish_estimate}()},
 \code{\link{medpolish_estimate_df}()},
