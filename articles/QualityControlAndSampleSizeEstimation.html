@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-04-08</h4>
+            <h4 data-toc-skip class="date">2026-04-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/vignettes/QualityControlAndSampleSizeEstimation.Rmd" class="external-link"><code>vignettes/QualityControlAndSampleSizeEstimation.Rmd</code></a></small>
       <div class="d-none name"><code>QualityControlAndSampleSizeEstimation.Rmd</code></div>
@@ -578,12 +578,12 @@ standard deviation, variance, mean.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 12</span></span></span>
 <span><span class="co">##   protein_Id  peptide_Id isotopeLabel group_ nrReplicates nrMeasured nrNAs</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~0087 ITLb4x1q   light        A                 4          3     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~0087 ITLb4x1q   light        A                 3          3     0</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> 0EfVhX~0087 ahQLlQY7   light        A                 4          4     0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0EfVhX~0087 dJkdz7so   light        A                 4          2     2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0EfVhX~0087 dJkdz7so   light        A                 2          2     0</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> 7cbcrd~5725 D5dQ4nKk   light        A                 4          4     0</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">5</span> 9VUkAq~4703 eIC06D7g   light        A                 4          4     0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> BEJI92~5282 HBkZvdhT   light        A                 4          2     2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> BEJI92~5282 HBkZvdhT   light        A                 2          2     0</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 5 more variables: sd &lt;dbl&gt;, var &lt;dbl&gt;, meanAbundance &lt;dbl&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   medianAbundance &lt;dbl&gt;, interaction &lt;chr&gt;</span></span></span></code></pre>
 <p>You can also estimate the sample size needed to perform differential
@@ -637,9 +637,9 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">dJkdz7so</td>
 <td align="left">light</td>
 <td align="left">A</td>
-<td align="right">4</td>
 <td align="right">2</td>
 <td align="right">2</td>
+<td align="right">0</td>
 <td align="right">0.1816806</td>
 <td align="right">0.0330078</td>
 <td align="right">3.971469</td>
@@ -654,9 +654,9 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">opjydeWJ</td>
 <td align="left">light</td>
 <td align="left">A</td>
-<td align="right">4</td>
 <td align="right">3</td>
-<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0</td>
 <td align="right">0.2392614</td>
 <td align="right">0.0572460</td>
 <td align="right">4.094835</td>
@@ -705,9 +705,9 @@ the distribution of needed sample sizes for all proteins with a power of
 <td align="left">ITLb4x1q</td>
 <td align="left">light</td>
 <td align="left">A</td>
-<td align="right">4</td>
 <td align="right">3</td>
-<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0</td>
 <td align="right">0.1535287</td>
 <td align="right">0.0235710</td>
 <td align="right">4.190351</td>
@@ -805,7 +805,7 @@ for all the proteins.
 <span><span class="co">## [28] withr_3.0.2            purrr_1.2.1            desc_1.4.3            </span></span>
 <span><span class="co">## [31] nnet_7.3-20            grid_4.5.2             jomo_2.7-6            </span></span>
 <span><span class="co">## [34] mice_3.19.0            ggplot2_4.0.2          scales_1.4.0          </span></span>
-<span><span class="co">## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.5             </span></span>
+<span><span class="co">## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             </span></span>
 <span><span class="co">## [40] UpSetR_1.4.0           rmarkdown_2.31         ragg_1.5.2            </span></span>
 <span><span class="co">## [43] reformulas_0.4.4       generics_0.1.4         otel_0.2.0            </span></span>
 <span><span class="co">## [46] httr_1.4.8             minqa_1.2.8            cachem_1.1.0          </span></span>

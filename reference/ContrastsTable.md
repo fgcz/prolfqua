@@ -296,7 +296,6 @@ Contrasts <- c("aC" = "group_A - group_Ctrl",
 "bC" = "group_A - group_Ctrl")
 csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
 ctr <- csi$get_contrasts()
-#> completing cases
 #> aC=group_A - group_Ctrl
 #> bC=group_A - group_Ctrl
 #> aC=group_A - group_Ctrl

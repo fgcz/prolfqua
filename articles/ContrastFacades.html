@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-04-08</h4>
+            <h4 data-toc-skip class="date">2026-04-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/vignettes/ContrastFacades.Rmd" class="external-link"><code>vignettes/ContrastFacades.Rmd</code></a></small>
       <div class="d-none name"><code>ContrastFacades.Rmd</code></div>
@@ -277,7 +277,7 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span><span class="co">##   facade       n_results</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> deqms              157</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> firth              160</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> firth              157</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> limma              155</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> limma_impute       160</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">5</span> limpa              160</span></span>
@@ -295,8 +295,8 @@ you where individual rows came from.</p>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span> deqms        A_vs_Ctrl WaldTest_DEqMS            78</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 2</span> deqms        B_vs_Ctrl WaldTest_DEqMS            79</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> firth        A_vs_Ctrl WaldTestFirth             80</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> firth        B_vs_Ctrl WaldTestFirth             80</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> firth        A_vs_Ctrl WaldTestFirth             78</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> firth        B_vs_Ctrl WaldTestFirth             79</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 5</span> limma        A_vs_Ctrl limma                     78</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 6</span> limma        B_vs_Ctrl limma                     77</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 7</span> limma_impute A_vs_Ctrl limma                     80</span></span>
@@ -439,6 +439,16 @@ each method fails on and to compare coverage.</p>
 </tr>
 <tr class="even">
 <td align="left">deqms</td>
+<td align="left">B_vs_Ctrl</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">firth</td>
+<td align="left">A_vs_Ctrl</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">firth</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">1</td>
 </tr>
@@ -678,18 +688,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">A_vs_Ctrl</td>
-<td align="right">3.697</td>
-<td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">0.000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.102</td>
 <td align="right">2.000</td>
-<td align="right">1.000</td>
-<td align="right">-0.437</td>
-<td align="right">0.437</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.102</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
@@ -822,18 +832,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">A_vs_Ctrl</td>
-<td align="right">3.902</td>
-<td align="right">-0.253</td>
-<td align="right">0.032</td>
-<td align="right">-4.417</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.057</td>
 <td align="right">4.000</td>
-<td align="right">0.012</td>
-<td align="right">-0.412</td>
-<td align="right">-0.094</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.070</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
@@ -1038,18 +1048,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">B_vs_Ctrl</td>
-<td align="right">3.879</td>
-<td align="right">-0.207</td>
-<td align="right">0.094</td>
-<td align="right">-3.473</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.060</td>
 <td align="right">2.000</td>
-<td align="right">0.074</td>
-<td align="right">-0.463</td>
-<td align="right">0.049</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.073</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 </tbody>
 </table>

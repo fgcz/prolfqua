@@ -248,7 +248,6 @@ istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5)
 lfqdata <- LFQData$new(istar$data, istar$config)
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsFirthFacade$new(lfqdata, "~ group_", contrasts)
-#> completing cases
 #> Joining with `by = join_by(protein_Id)`
 head(fa$get_contrasts())
 #> determine linear functions:

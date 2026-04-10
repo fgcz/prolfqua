@@ -277,7 +277,6 @@ fa <- ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts)
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> completing cases
 #> A_vs_Ctrl=group_A - group_Ctrl
 #> A_vs_Ctrl=group_A - group_Ctrl
 #> A_vs_Ctrl=group_A - group_Ctrl

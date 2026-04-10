@@ -121,7 +121,6 @@ istar <- sim_lfq_data_protein_config(
 #> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 mod <- build_model_glm_protein(lfqdata, "~ group_")
-#> completing cases
 #> Joining with `by = join_by(protein_Id)`
 head(mod$get_coefficients())
 #> # A tibble: 6 × 11

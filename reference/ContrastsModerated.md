@@ -301,7 +301,6 @@ csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 contrast$get_contrasts() |> dim()
 #> [1] 49 13
 (xx <- csi$get_contrasts())   |> dim()
-#> completing cases
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl

@@ -5,18 +5,22 @@ plot Violin plot of sd CV or mean
 ## Usage
 
 ``` r
-plot_stat_violin(pdata, config, stat = c("CV", "meanAbundance", "sd"))
+plot_stat_violin(
+  pdata,
+  factor_keys_depth,
+  stat = c("CV", "meanAbundance", "sd")
+)
 ```
 
 ## Arguments
 
 - pdata:
 
-  data.frame
+  data.frame with statistics
 
-- config:
+- factor_keys_depth:
 
-  AnalysisConfiguration
+  character vector — factor columns for grouping
 
 - stat:
 
@@ -39,27 +43,22 @@ Other stats:
 ## Examples
 
 ``` r
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-config <- bb1$config
-data <- bb1$data
-res <- summarize_stats(data, config)
-#> completing cases
-res <- summarize_stats(data, config)
-#> completing cases
-plot_stat_violin(res, config, stat = "meanAbundance")
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "meanAbundance")
 
-plot_stat_violin(res, config, stat = "sd")
+plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "sd")
 #> Warning: Removed 2 rows containing non-finite outside the scale range
 #> (`stat_ydensity()`).
 #> Warning: Removed 2 rows containing non-finite outside the scale range
 #> (`stat_summary()`).
 
-plot_stat_violin(res, config, stat = "CV")
+plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "CV")
 #> Warning: Removed 2 rows containing non-finite outside the scale range
 #> (`stat_ydensity()`).
 #> Warning: Removed 2 rows containing non-finite outside the scale range

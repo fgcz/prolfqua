@@ -53,7 +53,14 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">nr_obs_sample</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, new_child <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">nr_obs_sample</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">response</span>,</span>
+<span>  <span class="va">hierarchy_keys_depth</span>,</span>
+<span>  <span class="va">file_name</span>,</span>
+<span>  <span class="va">nr_children_col</span>,</span>
+<span>  new_child <span class="op">=</span> <span class="va">nr_children_col</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -61,15 +68,27 @@
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>data.frame with peptide-level data</p></dd>
+<dd><p>data.frame</p></dd>
 
 
-<dt id="arg-config">config<a class="anchor" aria-label="anchor" href="#arg-config"></a></dt>
-<dd><p>AnalysisConfiguration</p></dd>
+<dt id="arg-response">response<a class="anchor" aria-label="anchor" href="#arg-response"></a></dt>
+<dd><p>character — intensity column name</p></dd>
+
+
+<dt id="arg-hierarchy-keys-depth">hierarchy_keys_depth<a class="anchor" aria-label="anchor" href="#arg-hierarchy-keys-depth"></a></dt>
+<dd><p>character vector — hierarchy columns at current depth</p></dd>
+
+
+<dt id="arg-file-name">file_name<a class="anchor" aria-label="anchor" href="#arg-file-name"></a></dt>
+<dd><p>character — file name column</p></dd>
+
+
+<dt id="arg-nr-children-col">nr_children_col<a class="anchor" aria-label="anchor" href="#arg-nr-children-col"></a></dt>
+<dd><p>character — nr_children column name</p></dd>
 
 
 <dt id="arg-new-child">new_child<a class="anchor" aria-label="anchor" href="#arg-new-child"></a></dt>
-<dd><p>column name for the nr_children count</p></dd>
+<dd><p>character — output column name</p></dd>
 
 </dl></div>
 
@@ -82,7 +101,8 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">xd</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_sample</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xd</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_sample</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">file_name</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xd</span><span class="op">$</span><span class="va">nr_children</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1  2  3  4  5  6  7 </span>
@@ -94,7 +114,8 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-in"><span><span class="va">xp</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_sample</span><span class="op">(</span><span class="va">dp</span><span class="op">$</span><span class="va">data</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xp</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_sample</span><span class="op">(</span><span class="va">dp</span><span class="op">$</span><span class="va">data</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">file_name</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># xp</span></span></span>
 <span class="r-in"><span><span class="co"># xp |&gt; pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_peptides)</span></span></span>
 <span class="r-in"><span><span class="va">xp</span><span class="op">$</span><span class="va">nr_peptides</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></span>

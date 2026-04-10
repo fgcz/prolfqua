@@ -244,16 +244,18 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-istar <- prolfqua_data('data_ionstar')$filtered()
-#> Column added : nr_peptide_Id_IN_protein_Id
-data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
-lfqdata <- LFQData$new(data, istar$config)
+istar <- sim_lfq_data_peptide_config(Nprot = 50)
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
+lfqdata <- LFQData$new(istar$data, istar$config)
 
 lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 
 x <- lfqTrans$intensity_array(log2)
-#> Column added : log2_peptide.intensity
+#> Column added : log2_abundance
 
 x$lfq$config$is_response_transformed
 #> [1] TRUE
@@ -268,10 +270,10 @@ plotter$intensity_distribution_density()
 lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(asinh)
-#> Column added : asinh_peptide.intensity
+#> Column added : asinh_abundance
 mads1 <- mean(x$get_scales()$mads)
 x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
-#> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 mads2 <- mean(x$get_scales()$mads)
 stopifnot(abs(mads1 - mads2) < 1e-8)
 
@@ -280,11 +282,11 @@ stopifnot(abs(mean(x$get_scales()$medians)) < 1e-8)
 lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 lfqTrans$log2()
-#> Column added : log2_peptide.intensity
+#> Column added : log2_abundance
 before <- lfqTrans$get_scales()
 lfqTrans$robscale()
 #> data is : TRUE
-#> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 after <- lfqTrans$get_scales()
 stopifnot(abs(mean(before$medians) - mean(after$medians)) < 1e-8)
 stopifnot(abs(mean(before$mads) - mean(after$mads)) < 1e-8)
@@ -295,23 +297,19 @@ lfqTrans <- lfqcopy$get_Transformer()
 lfqTransCheck <- lfqcopy$get_Transformer()
 
 lfqTransCheck$log2()
-#> Column added : log2_peptide.intensity
+#> Column added : log2_abundance
 lfqTransCheck$get_scales()
 #> $medians
-#>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 
-#> 24.83373 24.90253 24.82138 24.72917 24.72036 24.70535 24.72028 24.76536 
-#>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 
-#> 24.72115 25.15540 25.13049 24.84177 25.06052 25.11136 25.13985 25.17819 
-#>     c~18     b~19     a~20     a~21 
-#> 25.19270 25.13891 25.16233 25.17072 
+#>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
+#> 4.463740 4.450835 4.444549 4.463231 4.537348 4.568077 4.495236 4.519219 
+#>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 
+#> 4.500299 4.453443 4.491344 4.464994 
 #> 
 #> $mads
-#>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 
-#> 2.212583 2.275791 2.171028 2.142237 2.196353 2.127855 2.302519 2.312846 
-#>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 
-#> 2.238950 2.243746 2.220689 2.222436 2.126487 2.162166 2.148171 2.265475 
-#>     c~18     b~19     a~20     a~21 
-#> 2.234537 2.214160 2.196464 2.227671 
+#>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 
+#> 0.3515227 0.3699336 0.3679643 0.3853720 0.3884622 0.3747087 0.3602410 0.3672785 
+#>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 
+#> 0.3507487 0.3606693 0.3632381 0.3691903 
 #> 
 lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
 
@@ -322,22 +320,18 @@ if(require("vsn")){
  res$get_scales()
 }
 #> Loading required package: vsn
-#> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 #> $medians
-#>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 
-#> 24.85800 24.97357 24.94905 24.94858 24.95029 24.94866 24.98283 24.95805 
-#>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 
-#> 24.89048 24.92424 24.91216 25.01958 24.90674 24.99417 25.00696 25.02897 
-#>     c~18     b~19     a~20     a~21 
-#> 25.00426 24.97514 24.96236 25.00745 
+#>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
+#> 5.057603 5.050276 5.042556 5.053200 5.097080 5.119346 5.079693 5.090355 
+#>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 
+#> 5.089038 5.057453 5.079671 5.062745 
 #> 
 #> $mads
-#>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 
-#> 2.212583 2.275791 2.171028 2.142237 2.196353 2.127855 2.302519 2.312846 
-#>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 
-#> 2.238950 2.243746 2.220689 2.222436 2.126487 2.162166 2.148171 2.265475 
-#>     c~18     b~19     a~20     a~21 
-#> 2.234537 2.214160 2.196464 2.227671 
+#>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 
+#> 0.2370482 0.2559391 0.2406615 0.2473880 0.2620343 0.2563651 0.2238271 0.2357968 
+#>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 
+#> 0.2646918 0.2331200 0.2431564 0.2435988 
 #> 
 if(require("preprocessCore")){
 quant <- function(y){

@@ -7,9 +7,20 @@ visualize intensity distributions
 ## Usage
 
 ``` r
-plot_intensity_distribution_violin(pdata, config)
+plot_intensity_distribution_violin(
+  pdata,
+  sample_name,
+  response,
+  is_transformed = FALSE
+)
 
-plot_intensity_distribution_density(pdata, config, legend = TRUE)
+plot_intensity_distribution_density(
+  pdata,
+  sample_name,
+  response,
+  is_transformed = FALSE,
+  legend = TRUE
+)
 ```
 
 ## Arguments
@@ -18,9 +29,17 @@ plot_intensity_distribution_density(pdata, config, legend = TRUE)
 
   data.frame
 
-- config:
+- sample_name:
 
-  AnalysisConfiguration
+  character — sample column name
+
+- response:
+
+  character — intensity column name
+
+- is_transformed:
+
+  logical — is intensity log-transformed?
 
 - legend:
 
@@ -78,7 +97,9 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-plot_intensity_distribution_violin(istar$data, istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+plot_intensity_distribution_violin(
+  lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #> Warning: Removed 36 rows containing non-finite outside the scale range
 #> (`stat_ydensity()`).
 #> Warning: Removed 36 rows containing non-finite outside the scale range
@@ -90,7 +111,9 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-plot_intensity_distribution_density(istar$data, istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+plot_intensity_distribution_density(
+  lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #> Warning: Removed 36 rows containing non-finite outside the scale range
 #> (`stat_density()`).
 

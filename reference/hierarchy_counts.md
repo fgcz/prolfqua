@@ -1,11 +1,11 @@
-# Count distinct elements for each level of hierarchy and istope
+# Count distinct elements for each level of hierarchy and isotope
 
 E.g. number of proteins, peptides, precursors in the dataset
 
 ## Usage
 
 ``` r
-hierarchy_counts(pdata, config)
+hierarchy_counts(pdata, hierarchy_keys, isotope_label = "isotopeLabel")
 ```
 
 ## Arguments
@@ -14,9 +14,13 @@ hierarchy_counts(pdata, config)
 
   data.frame
 
-- config:
+- hierarchy_keys:
 
-  AnalysisConfiguration
+  character vector — all hierarchy column names
+
+- isotope_label:
+
+  character — isotope label column name
 
 ## See also
 
@@ -34,16 +38,14 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
+lfq <- LFQData$new(bb$data, bb$config)
 
-config <- bb$config$clone(deep=TRUE)
-data <- bb$data
-
-x <- hierarchy_counts(data, config)
+x <- hierarchy_counts(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label())
 x$protein_Id
 #> [1] 10
-stopifnot(ncol(x) == length(config$hierarchy_keys()) + 1)
+stopifnot(ncol(x) == length(lfq$hierarchy_keys()) + 1)
 # select non existing protein
-data0 <- data |> dplyr::filter( protein_Id == "XYZ")
-tmp <- hierarchy_counts(data0, config)
+data0 <- lfq$get_data() |> dplyr::filter(protein_Id == "XYZ")
+tmp <- hierarchy_counts(data0, lfq$hierarchy_keys(), lfq$isotope_label())
 stopifnot(nrow(tmp) == 0)
 ```

@@ -53,7 +53,11 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">pdata</span>, <span class="va">config</span>, stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CV"</span>, <span class="st">"meanAbundance"</span>, <span class="st">"sd"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_stat_violin</span><span class="op">(</span></span>
+<span>  <span class="va">pdata</span>,</span>
+<span>  <span class="va">factor_keys_depth</span>,</span>
+<span>  stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CV"</span>, <span class="st">"meanAbundance"</span>, <span class="st">"sd"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -61,11 +65,11 @@
 
 
 <dl><dt id="arg-pdata">pdata<a class="anchor" aria-label="anchor" href="#arg-pdata"></a></dt>
-<dd><p>data.frame</p></dd>
+<dd><p>data.frame with statistics</p></dd>
 
 
-<dt id="arg-config">config<a class="anchor" aria-label="anchor" href="#arg-config"></a></dt>
-<dd><p>AnalysisConfiguration</p></dd>
+<dt id="arg-factor-keys-depth">factor_keys_depth<a class="anchor" aria-label="anchor" href="#arg-factor-keys-depth"></a></dt>
+<dd><p>character vector — factor columns for grouping</p></dd>
 
 
 <dt id="arg-stat">stat<a class="anchor" aria-label="anchor" href="#arg-stat"></a></dt>
@@ -90,27 +94,22 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bb1</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">config</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">bb1</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="summarize_stats.html">summarize_stats</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">config</span>, stat <span class="op">=</span> <span class="st">"meanAbundance"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">bb1</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb1</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">stats</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">relevant_factor_keys</span><span class="op">(</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"meanAbundance"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_stat_violin-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">config</span>, stat <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">relevant_factor_keys</span><span class="op">(</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 2 rows containing non-finite outside the scale range</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_ydensity()`).</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 2 rows containing non-finite outside the scale range</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_summary()`).</span>
 <span class="r-plt img"><img src="plot_stat_violin-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">config</span>, stat <span class="op">=</span> <span class="st">"CV"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_stat_violin</span><span class="op">(</span><span class="va">res</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">relevant_factor_keys</span><span class="op">(</span><span class="op">)</span>, stat <span class="op">=</span> <span class="st">"CV"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 2 rows containing non-finite outside the scale range</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_ydensity()`).</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 2 rows containing non-finite outside the scale range</span>

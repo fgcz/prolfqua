@@ -5,18 +5,14 @@ visualize correlation among samples
 ## Usage
 
 ``` r
-plot_sample_correlation(pdata, config)
+plot_sample_correlation(matrix)
 ```
 
 ## Arguments
 
-- pdata:
+- matrix:
 
-  data.frame
-
-- config:
-
-  AnalysisConfiguration
+  numeric matrix — wide-format intensity data (samples as columns)
 
 ## See also
 
@@ -49,7 +45,8 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-analysis <- transform_work_intensity(istar$data, istar$config, log2)
+lfq <- LFQData$new(istar$data, istar$config)
+lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
-plot_sample_correlation(analysis, istar$config)
+plot_sample_correlation(lfq$to_wide(as.matrix = TRUE)$data)
 ```

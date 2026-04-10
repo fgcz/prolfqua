@@ -7,7 +7,7 @@ plot density distribution or ecdf of sd, mean or CV
 ``` r
 plot_stat_density(
   pdata,
-  config,
+  factor_key,
   stat = c("CV", "meanAbundance", "sd"),
   ggstat = c("density", "ecdf")
 )
@@ -17,11 +17,11 @@ plot_stat_density(
 
 - pdata:
 
-  data.frame
+  data.frame with statistics
 
-- config:
+- factor_key:
 
-  AnalysisConfiguration
+  character — factor column name for colouring
 
 - stat:
 
@@ -29,7 +29,7 @@ plot_stat_density(
 
 - ggstat:
 
-  either density of ecdf
+  either density or ecdf
 
 ## See also
 
@@ -48,23 +48,20 @@ Other stats:
 ## Examples
 
 ``` r
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-config <-  bb1$config
-data <- bb1$data
-res <- summarize_stats(data, config)
-#> completing cases
-plot_stat_density(res, config, stat = "meanAbundance")
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stat_density(res, lfq$factor_keys()[1], stat = "meanAbundance")
 
-plot_stat_density(res, config, stat = "sd")
+plot_stat_density(res, lfq$factor_keys()[1], stat = "sd")
 #> Warning: Removed 2 rows containing non-finite outside the scale range
 #> (`stat_density()`).
 
-plot_stat_density(res, config, stat = "CV")
+plot_stat_density(res, lfq$factor_keys()[1], stat = "CV")
 #> Warning: Removed 2 rows containing non-finite outside the scale range
 #> (`stat_density()`).
 ```

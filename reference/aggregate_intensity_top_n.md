@@ -7,26 +7,26 @@ first
 ## Usage
 
 ``` r
-aggregate_intensity_topN(pdata, config, .func, N = 3)
+aggregate_intensity_top_n(ranked_data, lfqdata, .func, N = 3)
 ```
 
 ## Arguments
 
-- pdata:
+- ranked_data:
 
-  data.frame
+  data.frame with ranked peptides
 
-- config:
+- lfqdata:
 
-  AnalysisConfiguration
+  LFQData object
+
+- .func:
+
+  function to use for aggregation
 
 - N:
 
   default 3 top intensities.
-
-- func:
-
-  function to use for aggregation
 
 ## Value
 
@@ -55,43 +55,19 @@ dd <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- dd$config
-res <- dd$data
-ranked <- rank_peptide_by_intensity(res, config)
+lfq <- LFQData$new(dd$data, dd$config)
+ranked <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
 
 mean_f <- function(x, name = FALSE) {
-  if (name) {
-    return("mean")
-  }
+  if (name) return("mean")
   mean(x, na.rm = TRUE)
 }
-sum_f <- function(x, name = FALSE) {
-  if (name) {
-    return("sum")
-  }
-  sum(x, na.rm = TRUE)
-}
 
-resTOPN <- aggregate_intensity_topN(
-  ranked,
-  config,
-  .func = mean_f,
-  N = 3
-)
-
-print(dim(resTOPN$data))
-#> [1] 116   8
-# stopifnot(dim(resTOPN$data) == c(3260, 8))
+resTOPN <- aggregate_intensity_top_n(ranked, lfq, .func = mean_f, N = 3)
 stopifnot(names(resTOPN) %in% c("data", "config"))
-config$get_response()
-#> [1] "abundance"
-tmpRob <- plot_estimate(ranked,
-  config,
-  resTOPN$data,
-  resTOPN$config,
-  show.legend = TRUE
-)
+lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config)
+tmpRob <- plot_estimate(lfq, lfq_agg, show.legend = TRUE)
 stopifnot("ggplot" %in% class(tmpRob$plots[[4]]))
 ```

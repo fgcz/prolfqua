@@ -6,13 +6,30 @@ Histogram summarizing missigness
 
 ``` r
 missigness_histogram(
-  x,
-  config,
+  lfqdata,
   showempty = FALSE,
-  factors = config$factor_keys_depth(),
+  factors = lfqdata$relevant_factor_keys(),
   alpha = 0.1
 )
 ```
+
+## Arguments
+
+- lfqdata:
+
+  LFQData object
+
+- showempty:
+
+  show empty values
+
+- factors:
+
+  factor columns to use
+
+- alpha:
+
+  transparency
 
 ## See also
 
@@ -52,20 +69,11 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-xx <- complete_cases(analysis, config)
-#> completing cases
-pl <- missigness_histogram(xx, config)
-#> completing cases
-#> isotopeLabel ~ group_
-
-pl <- missigness_histogram(analysis, config, showempty=FALSE)
-#> completing cases
+lfq <- LFQData$new(istar$data, istar$config)
+pl <- missigness_histogram(lfq, showempty = FALSE)
 #> isotopeLabel ~ group_
 stopifnot("ggplot" %in% class(pl))
-pl <- missigness_histogram(analysis, config, showempty=TRUE)
-#> completing cases
+pl <- missigness_histogram(lfq, showempty = TRUE)
 #> isotopeLabel ~ group_
 stopifnot("ggplot" %in% class(pl))
 ```

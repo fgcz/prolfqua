@@ -249,7 +249,7 @@
   : Merge contrast results coming from two different model.
 
 - [`nr_obs_experiment()`](https://wolski.github.io/prolfqua/reference/nr_obs_experiment.md)
-  : Aggregates e.g. protein abundances from peptide abundances
+  : Count observations per experiment (max nr_children across samples)
 
 - [`nr_obs_sample()`](https://wolski.github.io/prolfqua/reference/nr_obs_sample.md)
   : Aggregates e.g. protein abundances from peptide abundances

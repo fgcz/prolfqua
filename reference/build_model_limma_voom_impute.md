@@ -156,7 +156,6 @@ lfqdata$rename_response("transformedIntensity")
 strat <- strategy_limma("transformedIntensity ~ group_")
 mod <- build_model_limma_voom_impute(lfqdata, strat)
 #> Warning: Partial NA coefficients for 2 probe(s)
-#> completing cases
 mod$get_coefficients()
 #> # A tibble: 147 × 6
 #>    protein_Id  factor      Estimate Std..Error t.value  Pr...t..

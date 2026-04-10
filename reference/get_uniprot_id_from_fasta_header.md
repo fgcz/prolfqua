@@ -37,10 +37,12 @@ Other utilities:
 ## Examples
 
 ``` r
-bb <- prolfqua_data('data_ionstar')$filtered()
-#> Column added : nr_peptide_Id_IN_protein_Id
-tmp <- prolfqua::separate_hierarchy(bb$data, bb$config)
-tmp$UniprotID <- NULL
-tmp <- get_uniprot_id_from_fasta_header(tmp, idcolumn = "top_protein")
-stopifnot("UniprotID" %in%  colnames(tmp))
+df <- data.frame(
+  protein_Id = c("sp|P12345|PROT1_HUMAN", "sp|Q67890|PROT2_HUMAN",
+                 "tr|A0A0A0|PROT3_HUMAN", "NOFASTA_ID"),
+  value = 1:4
+)
+result <- get_uniprot_id_from_fasta_header(df, idcolumn = "protein_Id")
+stopifnot("UniprotID" %in% colnames(result))
+stopifnot(sum(!is.na(result$UniprotID)) == 3)
 ```

@@ -282,7 +282,6 @@ lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimmaVoomImputeFacade$new(lfqdata, "~ group_", contrasts)
 #> Warning: Partial NA coefficients for 4 probe(s)
-#> completing cases
 head(fa$get_contrasts())
 #> # A tibble: 6 × 14
 #>   facade modelName protein_Id contrast    diff   FDR std.error statistic p.value

@@ -287,16 +287,18 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="prolfqua_data.html">prolfqua_data</a></span><span class="op">(</span><span class="st">'data_ionstar'</span><span class="op">)</span><span class="op">$</span><span class="fu">filtered</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
+<span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lfqcopy</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqTrans</span> <span class="op">&lt;-</span> <span class="va">lfqcopy</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">intensity_array</span><span class="op">(</span><span class="va">log2</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_peptide.intensity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">is_response_transformed</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
@@ -311,10 +313,10 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
 <span class="r-in"><span><span class="va">lfqcopy</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqTrans</span> <span class="op">&lt;-</span> <span class="va">lfqcopy</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">intensity_array</span><span class="op">(</span><span class="va">asinh</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : asinh_peptide.intensity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : asinh_abundance</span>
 <span class="r-in"><span><span class="va">mads1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">intensity_matrix</span><span class="op">(</span><span class="va">robust_scale</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`</span>
 <span class="r-in"><span><span class="va">mads2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">mads1</span> <span class="op">-</span> <span class="va">mads2</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1e-8</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -323,11 +325,11 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
 <span class="r-in"><span><span class="va">lfqcopy</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqTrans</span> <span class="op">&lt;-</span> <span class="va">lfqcopy</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqTrans</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_peptide.intensity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span><span class="va">before</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqTrans</span><span class="op">$</span><span class="fu">robscale</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> data is : TRUE</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`</span>
 <span class="r-in"><span><span class="va">after</span> <span class="op">&lt;-</span> <span class="va">lfqTrans</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">before</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">after</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1e-8</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">before</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">after</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1e-8</span><span class="op">)</span></span></span>
@@ -338,23 +340,19 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
 <span class="r-in"><span><span class="va">lfqTransCheck</span> <span class="op">&lt;-</span> <span class="va">lfqcopy</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lfqTransCheck</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_peptide.intensity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span><span class="va">lfqTransCheck</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.83373 24.90253 24.82138 24.72917 24.72036 24.70535 24.72028 24.76536 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.72115 25.15540 25.13049 24.84177 25.06052 25.11136 25.13985 25.17819 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     c~18     b~19     a~20     a~21 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.19270 25.13891 25.16233 25.17072 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.463740 4.450835 4.444549 4.463231 4.537348 4.568077 4.495236 4.519219 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.500299 4.453443 4.491344 4.464994 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.212583 2.275791 2.171028 2.142237 2.196353 2.127855 2.302519 2.312846 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.238950 2.243746 2.220689 2.222436 2.126487 2.162166 2.148171 2.265475 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     c~18     b~19     a~20     a~21 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.234537 2.214160 2.196464 2.227671 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3515227 0.3699336 0.3679643 0.3853720 0.3884622 0.3747087 0.3602410 0.3672785 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.3507487 0.3606693 0.3632381 0.3691903 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">lfqTransCheck</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="LFQDataTransformer-2.png" alt="" width="700" height="433"></span>
@@ -365,22 +363,18 @@ transformed a second time. `TRUE` forces log transformation</p></dd>
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: vsn</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, sampleName, isotope, peptide_Id)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.85800 24.97357 24.94905 24.94858 24.95029 24.94866 24.98283 24.95805 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24.89048 24.92424 24.91216 25.01958 24.90674 24.99417 25.00696 25.02897 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     c~18     b~19     a~20     a~21 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25.00426 24.97514 24.96236 25.00745 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.057603 5.050276 5.042556 5.053200 5.097080 5.119346 5.079693 5.090355 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.089038 5.057453 5.079671 5.062745 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mads</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     b~02     c~03     d~04     e~05     e~06     d~07     c~08     b~09 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.212583 2.275791 2.171028 2.142237 2.196353 2.127855 2.302519 2.312846 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     a~10     a~11     b~12     c~13     d~14     e~15     e~16     d~17 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.238950 2.243746 2.220689 2.222436 2.126487 2.162166 2.148171 2.265475 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     c~18     b~19     a~20     a~21 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.234537 2.214160 2.196464 2.227671 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2370482 0.2559391 0.2406615 0.2473880 0.2620343 0.2563651 0.2238271 0.2357968 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.2646918 0.2331200 0.2431564 0.2435988 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bmbolstad/preprocessCore" class="external-link">"preprocessCore"</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">quant</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">{</span></span></span>

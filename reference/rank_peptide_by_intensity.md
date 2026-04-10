@@ -5,7 +5,7 @@ ranks precursor - peptide by intensity.
 ## Usage
 
 ``` r
-rank_peptide_by_intensity(pdata, config)
+rank_peptide_by_intensity(pdata, response, hierarchy_keys)
 ```
 
 ## Arguments
@@ -14,9 +14,13 @@ rank_peptide_by_intensity(pdata, config)
 
   data.frame
 
-- config:
+- response:
 
-  AnalysisConfiguration
+  character — intensity column name
+
+- hierarchy_keys:
+
+  character vector — all hierarchy column names
 
 ## Value
 
@@ -25,18 +29,18 @@ data.frame
 ## Examples
 
 ``` r
-
 bb <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-res <- rank_peptide_by_intensity(bb$data, bb$config)
+lfq <- LFQData$new(bb$data, bb$config)
+res <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
-X <-res |> dplyr::select(c(bb$config$hierarchy_keys(),
+X <- res |> dplyr::select(c(lfq$hierarchy_keys(),
  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-X |> dplyr::arrange(!!!rlang::syms(c(bb$config$hierarchy_keys()[1], "srm_meanIntRank"  )))
+X |> dplyr::arrange(!!!rlang::syms(c(lfq$hierarchy_keys()[1], "srm_meanIntRank")))
 #> # A tibble: 28 × 4
 #>    protein_Id  peptide_Id srm_meanInt srm_meanIntRank
 #>    <chr>       <chr>            <dbl>           <int>

@@ -5,7 +5,7 @@ Internal Functions by category
 ## See also
 
 Other aggregation:
-[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),

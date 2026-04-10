@@ -5,7 +5,14 @@ Median polish estimates of e.g. protein abundances for entire data.frame
 ## Usage
 
 ``` r
-medpolish_estimate_dfconfig(pdata, config, name = FALSE)
+medpolish_estimate_dfconfig(
+  pdata,
+  response,
+  hierarchy_keys,
+  hierarchy_keys_depth,
+  sample_name,
+  name = FALSE
+)
 ```
 
 ## Arguments
@@ -14,9 +21,25 @@ medpolish_estimate_dfconfig(pdata, config, name = FALSE)
 
   data.frame
 
-- config:
+- response:
 
-  AnalysisConfiguration
+  character — intensity column name
+
+- hierarchy_keys:
+
+  character vector — all hierarchy column names
+
+- hierarchy_keys_depth:
+
+  character vector — hierarchy columns at current depth
+
+- sample_name:
+
+  character — sample name column
+
+- name:
+
+  if TRUE return function name only
 
 ## See also
 
@@ -24,7 +47,7 @@ medpolish_estimate_dfconfig(pdata, config, name = FALSE)
 
 Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
@@ -38,9 +61,11 @@ Other aggregation:
 ## Examples
 
 ``` r
-bb <- prolfqua_data("data_ionstar")$filtered()
-#> Column added : nr_peptide_Id_IN_protein_Id
-stopifnot(nrow(bb$data) == 25780)
+bb <- sim_lfq_data_peptide_config(Nprot = 20)
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
 conf <- bb$config
 data <- bb$data
 conf$hierarchy_depth <- 1
@@ -50,29 +75,23 @@ xnested <- data |>
 
 feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 x <- xnested$data[[1]]
-bb <- medpolish_estimate_dfconfig(x, conf)
-prolfqua:::.reestablish_condition(x, bb, conf)
-#> # A tibble: 20 × 6
-#>    sampleName dilution. run_Id raw.file                        isotope medpolish
-#>    <chr>      <chr>     <chr>  <chr>                           <chr>       <dbl>
-#>  1 b~02       b         02     b03_02_150304_human_ecoli_b_3u… light   53281919.
-#>  2 c~03       c         03     b03_03_150304_human_ecoli_c_3u… light   53108622.
-#>  3 d~04       d         04     b03_04_150304_human_ecoli_d_3u… light   51768575 
-#>  4 e~05       e         05     b03_05_150304_human_ecoli_e_3u… light   48923212.
-#>  5 e~06       e         06     b03_06_150304_human_ecoli_e_3u… light   46757962.
-#>  6 d~07       d         07     b03_07_150304_human_ecoli_d_3u… light   43139562.
-#>  7 c~08       c         08     b03_08_150304_human_ecoli_c_3u… light   49301991.
-#>  8 b~09       b         09     b03_09_150304_human_ecoli_b_3u… light   46173388.
-#>  9 a~10       a         10     b03_10_150304_human_ecoli_a_3u… light   47789438.
-#> 10 a~11       a         11     b03_11_150304_human_ecoli_a_3u… light   61505569.
-#> 11 b~12       b         12     b03_12_150304_human_ecoli_b_3u… light   57534412.
-#> 12 c~13       c         13     b03_13_150304_human_ecoli_c_3u… light   50100838.
-#> 13 d~14       d         14     b03_14_150304_human_ecoli_d_3u… light   58970725 
-#> 14 e~15       e         15     b03_15_150304_human_ecoli_e_3u… light   61280338.
-#> 15 e~16       e         16     b03_16_150304_human_ecoli_e_3u… light   56780612.
-#> 16 d~17       d         17     b03_17_150304_human_ecoli_d_3u… light   59887225 
-#> 17 c~18       c         18     b03_18_150304_human_ecoli_c_3u… light   57788409.
-#> 18 b~19       b         19     b03_19_150304_human_ecoli_b_3u… light   60040838.
-#> 19 a~20       a         20     b03_20_150304_human_ecoli_a_3u… light   57032150 
-#> 20 a~21       a         21     b03_21_150304_human_ecoli_a_3u… light   55993412.
+bb <- medpolish_estimate_dfconfig(x, conf$get_response(),
+  conf$hierarchy_keys(), conf$hierarchy_keys_depth(), conf$sample_name)
+prolfqua:::.reestablish_condition(x, bb, conf$sample_name,
+  conf$factor_keys(), conf$file_name, conf$isotope_label)
+#> # A tibble: 12 × 5
+#>    sampleName group_ sample  isotopeLabel medpolish
+#>    <chr>      <chr>  <chr>   <chr>            <dbl>
+#>  1 A_V1       A      A_V1    light             30.0
+#>  2 A_V2       A      A_V2    light             29.8
+#>  3 A_V3       A      A_V3    light             29.1
+#>  4 A_V4       A      A_V4    light             29.9
+#>  5 B_V1       B      B_V1    light             32.1
+#>  6 B_V2       B      B_V2    light             32.4
+#>  7 B_V3       B      B_V3    light             31.7
+#>  8 B_V4       B      B_V4    light             33.5
+#>  9 Ctrl_V1    Ctrl   Ctrl_V1 light             22.1
+#> 10 Ctrl_V2    Ctrl   Ctrl_V2 light             18.5
+#> 11 Ctrl_V3    Ctrl   Ctrl_V3 light             19.8
+#> 12 Ctrl_V4    Ctrl   Ctrl_V4 light             21.4
 ```

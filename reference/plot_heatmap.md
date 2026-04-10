@@ -5,10 +5,34 @@ plot heatmap with annotations
 ## Usage
 
 ``` r
-plot_heatmap(data, config, na_fraction = 0.4, show_rownames = FALSE, ...)
+plot_heatmap(
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
+  na_fraction = 0.4,
+  show_rownames = FALSE,
+  ...
+)
 ```
 
 ## Arguments
+
+- matrix:
+
+  numeric matrix — wide-format intensity data
+
+- annotation:
+
+  data.frame — sample annotation
+
+- factor_keys:
+
+  character vector — factor column names for annotation
+
+- sample_name:
+
+  character — sample name column
 
 - na_fraction:
 
@@ -17,6 +41,10 @@ plot_heatmap(data, config, na_fraction = 0.4, show_rownames = FALSE, ...)
 - show_rownames:
 
   if TRUE shows row names, default FALSE
+
+- ...:
+
+  passed to pheatmap
 
 ## See also
 
@@ -49,12 +77,8 @@ istar <- sim_lfq_data_protein_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-
-
-p  <- plot_heatmap(analysis, config)
-stopifnot(class(p) == "pheatmap")
-p2 <- plot_heatmap(analysis, config, show_rownames = TRUE)
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+p <- plot_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(class(p) == "pheatmap")
 ```

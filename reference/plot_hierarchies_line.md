@@ -9,7 +9,7 @@ factor
 plot_hierarchies_line(
   res,
   protein_name,
-  config,
+  lfqdata,
   separate = FALSE,
   show.legend = FALSE
 )
@@ -25,9 +25,9 @@ plot_hierarchies_line(
 
   title of plot
 
-- config:
+- lfqdata:
 
-  AnalysisConfiguration
+  LFQData object
 
 - separate:
 
@@ -37,7 +37,7 @@ plot_hierarchies_line(
 
 Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
@@ -85,44 +85,11 @@ xnested <- analysis |>
   dplyr::group_by(across(all_of(config$hierarchy_keys_depth()))) |>
   tidyr::nest()
 
-prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], config)
+lfq <- LFQData$new(analysis, config)
+prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], lfq)
 #> Warning: Removed 7 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-
-
-bb <- prolfqua_data("data_skylineSRM_HL_A")
-conf <- bb$config_f()
-analysis <- bb$analysis(bb$data, conf)
-#> creating sampleName from file_name column
-#> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
-#> completing cases
-#> completing cases done
-#> setup done
-
-nest <- analysis |>
-  dplyr::group_by(conf$hierarchy_keys_depth()) |>
-  tidyr::nest()
-prolfqua::plot_hierarchies_line(nest$data[[1]],
-  "DUM",
-  conf,
-  separate = TRUE
-)
-#> Warning: Removed 802 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 750 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-
-prolfqua::plot_hierarchies_line(nest$data[[1]],
-  "DUM",
-  conf,
-  separate = TRUE,
-  show.legend = TRUE
-)
-#> Warning: Removed 802 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 750 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 
 ```

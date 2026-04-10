@@ -5,8 +5,41 @@ plot heatmap of NA values
 ## Usage
 
 ``` r
-plot_na_heatmap(data, config, limitrows = 10000, distance = "binary")
+plot_na_heatmap(
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
+  limitrows = 10000,
+  distance = "binary"
+)
 ```
+
+## Arguments
+
+- matrix:
+
+  numeric matrix — wide-format intensity data
+
+- annotation:
+
+  data.frame — sample annotation
+
+- factor_keys:
+
+  character vector — factor column names for annotation
+
+- sample_name:
+
+  character — sample name column
+
+- limitrows:
+
+  max rows to display
+
+- distance:
+
+  distance method for clustering
 
 ## See also
 
@@ -34,21 +67,14 @@ Other plotting:
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-
-
-tmp <- plot_na_heatmap(analysis, config)
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+tmp <- plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #> rows with NA's: 16; all rows :28
 stopifnot(class(tmp) == "pheatmap")
-tmp <- plot_na_heatmap(analysis, config, distance = "euclidean")
-#> rows with NA's: 16; all rows :28
-stopifnot(class(tmp) == "pheatmap")
-
 ```

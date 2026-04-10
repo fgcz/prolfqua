@@ -379,7 +379,6 @@ head(wide)
 Contr2 <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 csi <- ContrastsMissing$new(lProt, contrasts = Contr2)
 merged_res <- merge_contrasts_results(contr_limma, csi)
-#> completing cases
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl

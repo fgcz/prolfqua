@@ -1,12 +1,22 @@
-# Summarize missing in condtion as barplot
+# Summarize missing in condition as barplot
 
-Summarize missing in condtion as barplot
+Summarize missing in condition as barplot
 
 ## Usage
 
 ``` r
-missingness_per_condition(x, config, factors = config$factor_keys_depth())
+missingness_per_condition(lfqdata, factors = lfqdata$relevant_factor_keys())
 ```
+
+## Arguments
+
+- lfqdata:
+
+  LFQData object
+
+- factors:
+
+  factor columns to use
 
 ## See also
 
@@ -46,12 +56,8 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-
-res <- missingness_per_condition(analysis, config)
-#> completing cases
+lfq <- LFQData$new(istar$data, istar$config)
+res <- missingness_per_condition(lfq)
 stopifnot("ggplot" %in% class(res$figure))
-
 stopifnot(ncol(res$data) >= 5)
 ```

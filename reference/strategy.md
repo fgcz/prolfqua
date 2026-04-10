@@ -424,7 +424,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x559d1f1c3538>
+#> <environment: 0x5572124ed210>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -432,8 +432,8 @@ istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
 #> completing cases
 #> completing cases done
 #> setup done
-istar$data <- encode_bin_resp(istar$data, istar$config)
-#> completing cases
+istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
+istar$config$bin_resp <- "bin_resp"
 istar <- LFQData$new(istar$data, istar$config)
 df <- istar$summarize_hierarchy()
 df2 <- df[df[[ncol(df)]] > 1, ]
@@ -476,15 +476,15 @@ modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$model_fun(get_formula = TRUE)
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x559d11f32128>
+#> <environment: 0x55722f65d688>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x559d106df898>
+#> <environment: 0x557229de77d0>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x559d18857d00>
+#> <environment: 0x55722f2f1e38>
 ```

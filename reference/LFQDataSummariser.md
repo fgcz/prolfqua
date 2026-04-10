@@ -296,10 +296,8 @@ sum$plot_hierarchy_counts_sample()
 sum$plot_hierarchy_counts_sample()
 
 tmp <- sum$interaction_missing_stats()
-#> completing cases
 
 sum$missingness_per_group()
-#> completing cases
 #> # A tibble: 3 × 7
 #> # Groups:   isotopeLabel, group_ [3]
 #>   isotopeLabel group_ nrReplicates   `0`   `1`   `2`   `3`
@@ -308,7 +306,6 @@ sum$missingness_per_group()
 #> 2 light        B                 4    21     7    NA    NA
 #> 3 light        Ctrl              4    17     8     3    NA
 sum$missingness_per_group_cumsum()
-#> completing cases
 #> isotopeLabel ~ group_
 #> # A tibble: 3 × 7
 #> # Groups:   isotopeLabel, group_ [3]
@@ -318,18 +315,13 @@ sum$missingness_per_group_cumsum()
 #> 2 light        B                 4    21    28    NA    NA
 #> 3 light        Ctrl              4    17    25    28    NA
 sum$plot_missingness_per_group()
-#> completing cases
 
 sum$plot_missingness_per_group_cumsum()
-#> completing cases
 #> isotopeLabel ~ group_
 
 sum$upset_interaction_missing_stats()
-#> completing cases
 
 sum$percentage_abundance()
-#> completing cases
-#> completing cases
 #> # A tibble: 112 × 17
 #>    protein_Id peptide_Id isotopeLabel group_ nrReplicates nrMeasured nrNAs    sd
 #>    <chr>      <chr>      <chr>        <chr>         <int>      <int> <int> <dbl>

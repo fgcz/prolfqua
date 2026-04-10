@@ -341,7 +341,6 @@ stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
 csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 merged <- merge_contrasts_results(deqms, csi)
 #> Warning: moderated_p_deqms_long: warnings in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
-#> completing cases
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl

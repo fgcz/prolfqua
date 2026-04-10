@@ -54,15 +54,48 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_pca</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">config</span>,</span>
+<span>  <span class="va">matrix</span>,</span>
+<span>  <span class="va">annotation</span>,</span>
+<span>  <span class="va">sample_name</span>,</span>
+<span>  <span class="va">factor_keys</span>,</span>
 <span>  PC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  add_txt <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  plotly <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  nudge <span class="op">=</span> <span class="fl">0.1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-matrix">matrix<a class="anchor" aria-label="anchor" href="#arg-matrix"></a></dt>
+<dd><p>numeric matrix — wide-format intensity data</p></dd>
+
+
+<dt id="arg-annotation">annotation<a class="anchor" aria-label="anchor" href="#arg-annotation"></a></dt>
+<dd><p>data.frame — sample annotation</p></dd>
+
+
+<dt id="arg-sample-name">sample_name<a class="anchor" aria-label="anchor" href="#arg-sample-name"></a></dt>
+<dd><p>character — sample name column</p></dd>
+
+
+<dt id="arg-factor-keys">factor_keys<a class="anchor" aria-label="anchor" href="#arg-factor-keys"></a></dt>
+<dd><p>character vector — factor column names (first for color, second for shape)</p></dd>
+
+
+<dt id="arg-pc">PC<a class="anchor" aria-label="anchor" href="#arg-pc"></a></dt>
+<dd><p>which principal components to plot</p></dd>
+
+
+<dt id="arg-add-txt">add_txt<a class="anchor" aria-label="anchor" href="#arg-add-txt"></a></dt>
+<dd><p>show sample labels</p></dd>
+
+
+<dt id="arg-nudge">nudge<a class="anchor" aria-label="anchor" href="#arg-nudge"></a></dt>
+<dd><p>label nudge distance</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other plotting:
@@ -90,34 +123,22 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>with_missing <span class="op">=</span> <span class="cn">TRUE</span>, weight_missing <span class="op">=</span> <span class="fl">.8</span>, Nprot <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span></span></span>
-<span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">plot_pca</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, add_txt<span class="op">=</span> <span class="cn">TRUE</span>, nudge <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">wide</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">plot_pca</span><span class="op">(</span><span class="va">wide</span><span class="op">$</span><span class="va">data</span>, <span class="va">wide</span><span class="op">$</span><span class="va">annotation</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  add_txt <span class="op">=</span> <span class="cn">TRUE</span>, nudge <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName)`</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_pca-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">plot_pca</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, add_txt<span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">plot_pca</span><span class="op">(</span><span class="va">wide</span><span class="op">$</span><span class="va">data</span>, <span class="va">wide</span><span class="op">$</span><span class="va">annotation</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName)`</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">plot_pca</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, PC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName)`</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">plot_pca</span><span class="op">(</span><span class="va">analysis</span>, <span class="va">config</span>, PC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">40</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>nr of PCs: 13</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

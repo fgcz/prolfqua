@@ -54,14 +54,48 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_heatmap_cor</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">config</span>,</span>
+<span>  <span class="va">matrix</span>,</span>
+<span>  <span class="va">annotation</span>,</span>
+<span>  <span class="va">factor_keys</span>,</span>
+<span>  <span class="va">sample_name</span>,</span>
 <span>  R2 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html" class="external-link">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="fl">1024</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-matrix">matrix<a class="anchor" aria-label="anchor" href="#arg-matrix"></a></dt>
+<dd><p>numeric matrix — wide-format intensity data</p></dd>
+
+
+<dt id="arg-annotation">annotation<a class="anchor" aria-label="anchor" href="#arg-annotation"></a></dt>
+<dd><p>data.frame — sample annotation</p></dd>
+
+
+<dt id="arg-factor-keys">factor_keys<a class="anchor" aria-label="anchor" href="#arg-factor-keys"></a></dt>
+<dd><p>character vector — factor column names for annotation</p></dd>
+
+
+<dt id="arg-sample-name">sample_name<a class="anchor" aria-label="anchor" href="#arg-sample-name"></a></dt>
+<dd><p>character — sample name column</p></dd>
+
+
+<dt id="arg-r-">R2<a class="anchor" aria-label="anchor" href="#arg-r-"></a></dt>
+<dd><p>logical — plot R-squared instead of correlation</p></dd>
+
+
+<dt id="arg-color">color<a class="anchor" aria-label="anchor" href="#arg-color"></a></dt>
+<dd><p>color palette</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>passed to pheatmap</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other plotting:
@@ -94,12 +128,13 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">config</span></span></span>
-<span class="r-in"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">pheat_map</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu">plot_heatmap_cor</span><span class="op">(</span> <span class="va">analysis</span>, <span class="va">config</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">wide</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pheat_map</span> <span class="op">&lt;-</span> <span class="fu">plot_heatmap_cor</span><span class="op">(</span><span class="va">wide</span><span class="op">$</span><span class="va">data</span>, <span class="va">wide</span><span class="op">$</span><span class="va">annotation</span>,</span></span>
+<span class="r-in"><span>  <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"pheatmap"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">pheat_map</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">pheat_map</span> <span class="op">&lt;-</span> <span class="fu">plot_heatmap_cor</span><span class="op">(</span> <span class="va">analysis</span>, <span class="va">config</span>, R2 <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pheat_map</span> <span class="op">&lt;-</span> <span class="fu">plot_heatmap_cor</span><span class="op">(</span><span class="va">wide</span><span class="op">$</span><span class="va">data</span>, <span class="va">wide</span><span class="op">$</span><span class="va">annotation</span>,</span></span>
+<span class="r-in"><span>  <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span>, R2 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"pheatmap"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">pheat_map</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

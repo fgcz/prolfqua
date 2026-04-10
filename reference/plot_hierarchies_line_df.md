@@ -5,7 +5,7 @@ Generates peptide level plots for all proteins
 ## Usage
 
 ``` r
-plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
+plot_hierarchies_line_df(pdata, lfqdata, show.legend = FALSE)
 ```
 
 ## Arguments
@@ -14,9 +14,9 @@ plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
 
   data.frame
 
-- config:
+- lfqdata:
 
-  AnalysisConfiguration
+  LFQData object
 
 ## See also
 
@@ -24,7 +24,7 @@ plot_hierarchies_line_df(pdata, config, show.legend = FALSE)
 
 Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
@@ -65,23 +65,12 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-
-istar$config$is_response_transformed <- FALSE
-res <- plot_hierarchies_line_df(istar$data, istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+res <- plot_hierarchies_line_df(lfq$get_data(), lfq)
 res[[1]]
 #> Warning: Removed 7 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 4 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 
-istar$config$is_response_transformed <- TRUE
-res <- plot_hierarchies_line_df(istar$data, istar$config)
-res[[2]]
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_line()`).
-
-
-# TODO make it work for other hiearachy levels.
 ```

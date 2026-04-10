@@ -316,57 +316,78 @@ The objects of this class are cloneable with this method.
 ``` r
 
 
-istar <- prolfqua_data('data_ionstar')$normalized()
-istar_data <- dplyr::filter(istar$data ,protein_Id %in% sample(protein_Id, 100))
+istar <- sim_lfq_data_peptide_config(Nprot = 20)
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
+lfqdata <- LFQData$new(istar$data, istar$config)
+lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#> Column added : log2_abundance
 model_name <- "f_condtion_r_peptide"
 formula_randomPeptide <-
-  strategy_lmer("transformedIntensity  ~ dilution. + (1 | peptide_Id)",
+  strategy_lmer(paste0(lfqdata$response(), " ~ group_ + (1 | peptide_Id)"),
    model_name = model_name)
-pepIntensity <- istar_data
-config <- istar$config
-config$hierarchy_keys_depth()
-#> [1] "protein_Id"
 mod <- prolfqua::build_model(
- pepIntensity,
+ lfqdata,
  formula_randomPeptide,
- model_name = model_name,
- subject_id = config$hierarchy_keys_depth())
+ model_name = model_name)
 #> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> boundary (singular) fit: see help('isSingular')
+#> Warning: There were 7 warnings in `dplyr::mutate()`.
+#> The first warning was:
+#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+#>   pb)`.
+#> ℹ In group 1: `protein_Id = "0EfVhX~5954"`.
+#> Caused by warning in `value[[3L]]()`:
+#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 6 remaining warnings.
 
 mod$model_df
-#> # A tibble: 68 × 9
-#> # Groups:   protein_Id [68]
-#>    protein_Id   data     linear_model has_model_fit isSingular df.residual sigma
-#>    <chr>        <list>   <list>       <lgl>         <lgl>            <dbl> <dbl>
-#>  1 sp|P21589|5… <tibble> <lmrMdLmT>   TRUE          FALSE              276 0.298
-#>  2 sp|Q9NZM3|I… <tibble> <lmrMdLmT>   TRUE          FALSE               18 0.250
-#>  3 sp|O43660|P… <tibble> <lmrMdLmT>   TRUE          FALSE               79 0.367
-#>  4 sp|P0A908|M… <tibble> <lmrMdLmT>   TRUE          FALSE               26 0.312
-#>  5 sp|P62857|R… <tibble> <lmrMdLmT>   TRUE          FALSE               53 0.695
-#>  6 sp|Q9Y3A5|S… <tibble> <lmrMdLmT>   TRUE          FALSE              172 0.287
-#>  7 sp|Q13838|D… <tibble> <lmrMdLmT>   TRUE          FALSE              199 0.305
-#>  8 sp|O00148|D… <tibble> <lmrMdLmT>   TRUE          FALSE              178 0.338
-#>  9 sp|P25789|P… <tibble> <lmrMdLmT>   TRUE          FALSE              142 0.435
-#> 10 sp|P41252|S… <tibble> <lmrMdLmT>   TRUE          FALSE              508 0.299
-#> # ℹ 58 more rows
+#> # A tibble: 20 × 9
+#> # Groups:   protein_Id [20]
+#>    protein_Id data     linear_model has_model_fit isSingular df.residual   sigma
+#>    <chr>      <list>   <list>       <lgl>         <lgl>            <dbl>   <dbl>
+#>  1 0EfVhX~59… <tibble> <chr [1]>    FALSE         NA                  NA NA     
+#>  2 0m5WN4~14… <tibble> <lmrMdLmT>   TRUE          FALSE               15  0.120 
+#>  3 7cbcrd~83… <tibble> <chr [1]>    FALSE         NA                  NA NA     
+#>  4 9VUkAq~45… <tibble> <lmrMdLmT>   TRUE          FALSE              156  0.203 
+#>  5 At886V~32… <tibble> <lmrMdLmT>   TRUE          FALSE               51  0.118 
+#>  6 BEJI92~91… <tibble> <lmrMdLmT>   TRUE          TRUE                39  0.460 
+#>  7 CGzoYe~28… <tibble> <chr [1]>    FALSE         NA                  NA NA     
+#>  8 CtOJ9t~28… <tibble> <lmrMdLmT>   TRUE          FALSE               54  0.123 
+#>  9 DoWup2~29… <tibble> <lmrMdLmT>   TRUE          FALSE               75  0.239 
+#> 10 DuwH7n~34… <tibble> <lmrMdLmT>   TRUE          FALSE               28  0.215 
+#> 11 Fl4JiV~75… <tibble> <chr [1]>    FALSE         NA                  NA NA     
+#> 12 HC8K98~49… <tibble> <lmrMdLmT>   TRUE          TRUE                15  0.222 
+#> 13 HvIpHG~40… <tibble> <lmrMdLmT>   TRUE          TRUE                18  0.158 
+#> 14 I1Jk2Z~08… <tibble> <lmrMdLmT>   TRUE          FALSE               79  0.189 
+#> 15 JV3Z7t~29… <tibble> <chr [1]>    FALSE         NA                  NA NA     
+#> 16 JcKVfU~08… <tibble> <chr [1]>    FALSE         NA                  NA NA     
+#> 17 JfvT8X~27… <tibble> <lmrMdLmT>   TRUE          FALSE              121  0.210 
+#> 18 R2i6w7~02… <tibble> <lmrMdLmT>   TRUE          TRUE                15  0.124 
+#> 19 SGIVBl~95… <tibble> <lmrMdLmT>   TRUE          FALSE               19  0.0997
+#> 20 r2J0Eh~26… <tibble> <chr [1]>    FALSE         NA                  NA NA     
 #> # ℹ 2 more variables: nr_coef <int>, nr_coef_not_NA <int>
 aovtable  <- mod$get_anova()
 mod$get_coefficients()
-#> # A tibble: 340 × 9
-#> # Groups:   protein_Id [68]
-#>    protein_Id      factor Estimate Std..Error     df t.value Pr...t.. isSingular
-#>    <chr>           <chr>     <dbl>      <dbl>  <dbl>   <dbl>    <dbl> <lgl>     
-#>  1 sp|P21589|5NTD… (Inte…   0.883      0.358   15.3    2.47   0.0258  FALSE     
-#>  2 sp|P21589|5NTD… dilut…   0.0975     0.0559 263.     1.74   0.0825  FALSE     
-#>  3 sp|P21589|5NTD… dilut…   0.0700     0.0557 263.     1.26   0.210   FALSE     
-#>  4 sp|P21589|5NTD… dilut…  -0.0232     0.0564 263.    -0.412  0.681   FALSE     
-#>  5 sp|P21589|5NTD… dilut…   0.127      0.0557 263.     2.27   0.0238  FALSE     
-#>  6 sp|Q9NZM3|ITSN… (Inte…  -1.60       0.124    2.71 -12.9    0.00164 FALSE     
-#>  7 sp|Q9NZM3|ITSN… dilut…  -0.299      0.139   19.0   -2.15   0.0444  FALSE     
-#>  8 sp|Q9NZM3|ITSN… dilut…  -0.201      0.146   19.0   -1.38   0.184   FALSE     
-#>  9 sp|Q9NZM3|ITSN… dilut…  -0.250      0.206   19.8   -1.21   0.240   FALSE     
-#> 10 sp|Q9NZM3|ITSN… dilut…   0.0464     0.146   19.0    0.318  0.754   FALSE     
-#> # ℹ 330 more rows
+#> # A tibble: 39 × 9
+#> # Groups:   protein_Id [13]
+#>    protein_Id  factor     Estimate Std..Error     df t.value Pr...t.. isSingular
+#>    <chr>       <chr>         <dbl>      <dbl>  <dbl>   <dbl>    <dbl> <lgl>     
+#>  1 0m5WN4~1448 (Intercep…   4.16       0.0440   4.58  94.6   1.01e- 8 FALSE     
+#>  2 0m5WN4~1448 group_B     -0.0614     0.0686  16.2   -0.896 3.83e- 1 FALSE     
+#>  3 0m5WN4~1448 group_Ctrl   0.0815     0.0622  16.1    1.31  2.09e- 1 FALSE     
+#>  4 9VUkAq~4562 (Intercep…   4.22       0.0449  27.8   94.0   2.49e-36 FALSE     
+#>  5 9VUkAq~4562 group_B     -0.0902     0.0395 144.    -2.29  2.38e- 2 FALSE     
+#>  6 9VUkAq~4562 group_Ctrl  -0.0699     0.0400 145.    -1.75  8.26e- 2 FALSE     
+#>  7 At886V~3296 (Intercep…   4.12       0.0434   7.61  94.9   5.63e-13 FALSE     
+#>  8 At886V~3296 group_B      0.0771     0.0393  49.1    1.96  5.55e- 2 FALSE     
+#>  9 At886V~3296 group_Ctrl   0.122      0.0383  49.1    3.19  2.52e- 3 FALSE     
+#> 10 BEJI92~9143 (Intercep…   4.51       0.123   41.0   36.7   5.60e-33 TRUE      
+#> # ℹ 29 more rows
 #> # ℹ 1 more variable: nr_coef <int>
 mod$coef_histogram()
 #> $plot
@@ -384,20 +405,22 @@ mod$coef_volcano()
 #> 
 mod$coef_pairs()
 #> $plot
-#> # A tibble: 68 × 6
-#>    subject_id          `(Intercept)` dilution.b dilution.c dilution.d dilution.e
-#>    <chr>                       <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
-#>  1 sp|P21589|5NTD_HUM…         0.883    0.0975     0.0700     -0.0232    0.127  
-#>  2 sp|Q9NZM3|ITSN2_HU…        -1.60    -0.299     -0.201      -0.250     0.0464 
-#>  3 sp|O43660|PLRG1_HU…        -1.15     0.0266    -0.0128      0.0302    0.00359
-#>  4 sp|P0A908|MIPA_ECO…        -1.55     0.997      0.974       1.78      1.79   
-#>  5 sp|P62857|RS28_HUM…         2.39    -0.325     -0.570      -0.0864   -0.155  
-#>  6 sp|Q9Y3A5|SBDS_HUM…        -0.130   -0.0601    -0.108      -0.0289   -0.106  
-#>  7 sp|Q13838|DX39B_HU…         1.89     0.00453    0.0587      0.0638    0.0208 
-#>  8 sp|O00148|DX39A_HU…         1.34     0.0791     0.146       0.0983   -0.0395 
-#>  9 sp|P25789|PSA4_HUM…         0.955   -0.0780    -0.0389     -0.188    -0.153  
-#> 10 sp|P41252|SYIC_HUM…        -0.146    0.0179    -0.00398    -0.0451   -0.0704 
-#> # ℹ 58 more rows
+#> # A tibble: 13 × 4
+#>    subject_id  `(Intercept)`  group_B group_Ctrl
+#>    <chr>               <dbl>    <dbl>      <dbl>
+#>  1 0m5WN4~1448          4.16 -0.0614      0.0815
+#>  2 9VUkAq~4562          4.22 -0.0902     -0.0699
+#>  3 At886V~3296          4.12  0.0771      0.122 
+#>  4 BEJI92~9143          4.51  0.204       0.115 
+#>  5 CtOJ9t~2837          4.84 -0.0838     -0.387 
+#>  6 DoWup2~2934          4.43  0.316      -0.0374
+#>  7 DuwH7n~3402          4.11 -0.00356     0.0990
+#>  8 HC8K98~4958          3.89  0.322       0.0752
+#>  9 HvIpHG~4015          4.11  0.661      -0.161 
+#> 10 I1Jk2Z~0821          3.84  0.219       0.276 
+#> 11 JfvT8X~2727          4.48 -0.0844     -0.194 
+#> 12 R2i6w7~0288          4.65 -0.410      -0.396 
+#> 13 SGIVBl~9558          5.12 -0.158      -0.344 
 #> 
 #> $name
 #> [1] "Coef_Pairsplot_f_condtion_r_peptide.pdf"

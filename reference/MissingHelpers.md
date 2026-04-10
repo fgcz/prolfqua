@@ -213,7 +213,6 @@ dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 #> setup done
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
 xx <- mh$get_stats()
-#> completing cases
 xx <- mh$get_lod()
 xx <- mh$impute_weighted_lod()
 xx <- mh$impute_lod()
@@ -264,7 +263,6 @@ Contrasts <- c("c1" = "TreatmentA - TreatmentB",
                )
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
 mh$get_stats()$interaction |> table()
-#> completing cases
 #> 
 #> TreatmentA:BackgroundX TreatmentB:BackgroundX TreatmentA:BackgroundZ 
 #>                    100                    100                    100 

@@ -517,7 +517,6 @@ stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
 tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
 stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
-#> completing cases
 #> isotopeLabel ~ group_
 
 stopifnot(class(lfqplotter$na_heatmap()) == "pheatmap")
@@ -534,7 +533,6 @@ stopifnot(class(lfqplotter$sample_correlation()) == "list")
 
 stopifnot(class(lfqplotter$raster()) == "pheatmap")
 stopifnot("upset" == class(lfqplotter$upset_missing()))
-#> completing cases
 #> Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
 #> ℹ Please use tidy evaluation idioms with `aes()`.
 #> ℹ See also `vignette("ggplot2-in-packages")` for more information.
@@ -548,6 +546,9 @@ stopifnot("upset" == class(lfqplotter$upset_missing()))
 #> ℹ Please use the `linewidth` argument instead.
 #> ℹ The deprecated feature was likely used in the UpSetR package.
 #>   Please report the issue to the authors.
-stopifnot(class(prolfqua::plot_sample_correlation(istar$data, istar$config)) == "list")
+#> Warning: Removed 12 rows containing missing values or values outside the scale range
+#> (`geom_bar()`).
+wide <- lfqdata$to_wide(as.matrix = TRUE)
+stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 
 ```

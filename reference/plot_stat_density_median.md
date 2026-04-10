@@ -8,7 +8,7 @@ below and above median
 ``` r
 plot_stat_density_median(
   pdata,
-  config,
+  factor_key,
   stat = c("CV", "meanAbundance", "sd"),
   ggstat = c("density", "ecdf")
 )
@@ -18,11 +18,11 @@ plot_stat_density_median(
 
 - pdata:
 
-  data.frame
+  data.frame with statistics
 
-- config:
+- factor_key:
 
-  AnalysisConfiguration
+  character — factor column name for faceting
 
 - stat:
 
@@ -30,7 +30,7 @@ plot_stat_density_median(
 
 - ggstat:
 
-  either density of ecdf
+  either density or ecdf
 
 ## See also
 
@@ -49,20 +49,16 @@ Other stats:
 ## Examples
 
 ``` r
-
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-config <- bb1$config
-data2 <- bb1$data
-res <- summarize_stats(data2, config)
-#> completing cases
-plot_stat_density_median(res, config, "CV")
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stat_density_median(res, lfq$factor_keys()[1], "CV")
 
-plot_stat_density_median(res, config, "meanAbundance")
+plot_stat_density_median(res, lfq$factor_keys()[1], "meanAbundance")
 
-plot_stat_density_median(res, config, "sd")
+plot_stat_density_median(res, lfq$factor_keys()[1], "sd")
 ```

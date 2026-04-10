@@ -70,6 +70,24 @@ Other LFQData:
 
 - [`LFQData$response()`](#method-LFQData-response)
 
+- [`LFQData$hierarchy_keys()`](#method-LFQData-hierarchy_keys)
+
+- [`LFQData$relevant_hierarchy_keys()`](#method-LFQData-relevant_hierarchy_keys)
+
+- [`LFQData$factor_keys()`](#method-LFQData-factor_keys)
+
+- [`LFQData$relevant_factor_keys()`](#method-LFQData-relevant_factor_keys)
+
+- [`LFQData$sample_name()`](#method-LFQData-sample_name)
+
+- [`LFQData$file_name()`](#method-LFQData-file_name)
+
+- [`LFQData$nr_children_col()`](#method-LFQData-nr_children_col)
+
+- [`LFQData$isotope_label()`](#method-LFQData-isotope_label)
+
+- [`LFQData$get_data()`](#method-LFQData-get_data)
+
 - [`LFQData$rename_response()`](#method-LFQData-rename_response)
 
 - [`LFQData$hierarchy_counts()`](#method-LFQData-hierarchy_counts)
@@ -346,6 +364,96 @@ data.frame
 
 ------------------------------------------------------------------------
 
+### Method `hierarchy_keys()`
+
+return all hierarchy column names
+
+#### Usage
+
+    LFQData$hierarchy_keys()
+
+------------------------------------------------------------------------
+
+### Method `relevant_hierarchy_keys()`
+
+return hierarchy column names at current depth (alias for subject_id)
+
+#### Usage
+
+    LFQData$relevant_hierarchy_keys()
+
+------------------------------------------------------------------------
+
+### Method `factor_keys()`
+
+return all factor column names
+
+#### Usage
+
+    LFQData$factor_keys()
+
+------------------------------------------------------------------------
+
+### Method `relevant_factor_keys()`
+
+return factor column names at current depth
+
+#### Usage
+
+    LFQData$relevant_factor_keys()
+
+------------------------------------------------------------------------
+
+### Method `sample_name()`
+
+return sample name column
+
+#### Usage
+
+    LFQData$sample_name()
+
+------------------------------------------------------------------------
+
+### Method `file_name()`
+
+return file name column
+
+#### Usage
+
+    LFQData$file_name()
+
+------------------------------------------------------------------------
+
+### Method `nr_children_col()`
+
+return name of nr_children column
+
+#### Usage
+
+    LFQData$nr_children_col()
+
+------------------------------------------------------------------------
+
+### Method `isotope_label()`
+
+return isotope label column name
+
+#### Usage
+
+    LFQData$isotope_label()
+
+------------------------------------------------------------------------
+
+### Method `get_data()`
+
+return the tidy data frame
+
+#### Usage
+
+    LFQData$get_data()
+
+------------------------------------------------------------------------
+
 ### Method `rename_response()`
 
 new name of response variable
@@ -548,12 +656,10 @@ lfqdata$summarize_hierarchy()
 # filter for missing values
 
 f1 <- lfqdata$omit_na(nr_na = 0)
-#> completing cases
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
 f2 <- lfqdata$omit_na(factor_depth = 0)
-#> completing cases
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
 
@@ -565,7 +671,6 @@ lfqdata$response()
 stopifnot("LFQData" %in% class(lfqdata$get_copy()))
 stopifnot("LFQDataTransformer" %in% class(lfqdata$get_Transformer()))
 stopifnot("LFQDataStats" %in% class(lfqdata$get_Stats()))
-#> completing cases
 stopifnot("LFQDataSummariser" %in% class(lfqdata$get_Summariser()))
 stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
 stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))

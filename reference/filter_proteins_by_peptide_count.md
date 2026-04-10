@@ -39,8 +39,11 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-filterPep <- prolfqua::filter_proteins_by_peptide_count( istar$data ,  istar$config )
+lfq <- LFQData$new(istar$data, istar$config)
+filterPep <- prolfqua::filter_proteins_by_peptide_count(istar$data, istar$config)
 #> Column added : nr_peptide_Id_IN_protein_Id
-x <- prolfqua::summarize_hierarchy(filterPep$data , istar$config)
+x <- prolfqua::summarize_hierarchy(filterPep$data,
+  lfq$hierarchy_keys(), lfq$isotope_label())
 stopifnot(x$peptide_Id_n >= istar$config$min_peptides_protein)
+#> Warning: Unknown or uninitialised column: `peptide_Id_n`.
 ```

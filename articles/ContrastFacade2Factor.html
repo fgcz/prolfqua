@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-04-08</h4>
+            <h4 data-toc-skip class="date">2026-04-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/vignettes/ContrastFacade2Factor.Rmd" class="external-link"><code>vignettes/ContrastFacade2Factor.Rmd</code></a></small>
       <div class="d-none name"><code>ContrastFacade2Factor.Rmd</code></div>
@@ -236,7 +236,7 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span><span class="co">##   facade       n_results</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> deqms              232</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> firth              240</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> firth              232</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> limma              232</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> limma_impute       240</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">5</span> lm                 232</span></span>
@@ -254,9 +254,9 @@ you where individual rows came from.</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span> deqms        T_C_gv_KO  WaldTest_DEqMS        79</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 2</span> deqms        T_C_gv_WT  WaldTest_DEqMS        77</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 3</span> deqms        WT_KO_comp WaldTest_DEqMS        76</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> firth        T_C_gv_KO  WaldTestFirth         80</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> firth        T_C_gv_WT  WaldTestFirth         80</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> firth        WT_KO_comp WaldTestFirth         80</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> firth        T_C_gv_KO  WaldTestFirth         79</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> firth        T_C_gv_WT  WaldTestFirth         77</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> firth        WT_KO_comp WaldTestFirth         76</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 7</span> limma        T_C_gv_KO  limma                 79</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> limma        T_C_gv_WT  limma                 77</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> limma        WT_KO_comp limma                 76</span></span>
@@ -390,31 +390,46 @@ each method fails on and to compare coverage.</p>
 <td align="right">4</td>
 </tr>
 <tr class="even">
-<td align="left">limma</td>
+<td align="left">firth</td>
 <td align="left">T_C_gv_KO</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td align="left">limma</td>
+<td align="left">firth</td>
 <td align="left">T_C_gv_WT</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
-<td align="left">limma</td>
+<td align="left">firth</td>
 <td align="left">WT_KO_comp</td>
 <td align="right">4</td>
 </tr>
 <tr class="odd">
-<td align="left">lm</td>
+<td align="left">limma</td>
 <td align="left">T_C_gv_KO</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td align="left">lm</td>
+<td align="left">limma</td>
 <td align="left">T_C_gv_WT</td>
 <td align="right">3</td>
 </tr>
 <tr class="odd">
+<td align="left">limma</td>
+<td align="left">WT_KO_comp</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">lm</td>
+<td align="left">T_C_gv_KO</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">lm</td>
+<td align="left">T_C_gv_WT</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
 <td align="left">lm</td>
 <td align="left">WT_KO_comp</td>
 <td align="right">4</td>
@@ -719,18 +734,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">QQg7IC~3558</td>
 <td align="left">T_C_gv_WT</td>
-<td align="right">4.075</td>
-<td align="right">0.351</td>
-<td align="right">0.001</td>
-<td align="right">8.081</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.043</td>
 <td align="right">6.000</td>
-<td align="right">0.000</td>
-<td align="right">0.245</td>
-<td align="right">0.457</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.053</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
@@ -773,18 +788,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">QQg7IC~3558</td>
 <td align="left">WT_KO_comp</td>
-<td align="right">0.389</td>
-<td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">0.000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.043</td>
 <td align="right">6.000</td>
-<td align="right">1.000</td>
-<td align="right">-0.106</td>
-<td align="right">0.106</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.053</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left">limma_impute</td>
@@ -881,18 +896,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">hjVK4f~9433</td>
 <td align="left">T_C_gv_WT</td>
-<td align="right">3.868</td>
-<td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">0.000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.069</td>
 <td align="right">4.000</td>
-<td align="right">1.000</td>
-<td align="right">-0.192</td>
-<td align="right">0.192</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.085</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left">limma_impute</td>
@@ -935,18 +950,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">hjVK4f~9433</td>
 <td align="left">WT_KO_comp</td>
-<td align="right">0.252</td>
-<td align="right">-0.376</td>
-<td align="right">0.012</td>
-<td align="right">-5.444</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.069</td>
 <td align="right">4.000</td>
-<td align="right">0.006</td>
-<td align="right">-0.567</td>
-<td align="right">-0.184</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.085</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
@@ -1043,18 +1058,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">mVseto~9392</td>
 <td align="left">T_C_gv_WT</td>
-<td align="right">4.264</td>
-<td align="right">0.729</td>
-<td align="right">0.000</td>
-<td align="right">17.721</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.041</td>
 <td align="right">8.000</td>
-<td align="right">0.000</td>
-<td align="right">0.634</td>
-<td align="right">0.823</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.056</td>
 <td align="left">TRUE</td>
-<td align="left">TRUE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
@@ -1097,18 +1112,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">mVseto~9392</td>
 <td align="left">WT_KO_comp</td>
-<td align="right">0.535</td>
-<td align="right">0.387</td>
-<td align="right">0.000</td>
-<td align="right">9.424</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.041</td>
 <td align="right">8.000</td>
-<td align="right">0.000</td>
-<td align="right">0.293</td>
-<td align="right">0.482</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.056</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="even">
 <td align="left">limma_impute</td>
@@ -1151,18 +1166,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">zvzYsk~2881</td>
 <td align="left">T_C_gv_KO</td>
-<td align="right">3.889</td>
-<td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">0.000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.063</td>
 <td align="right">3.000</td>
-<td align="right">1.000</td>
-<td align="right">-0.200</td>
-<td align="right">0.200</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.063</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
@@ -1259,18 +1274,18 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">groupAverage</td>
 <td align="left">zvzYsk~2881</td>
 <td align="left">WT_KO_comp</td>
-<td align="right">-0.064</td>
-<td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">0.000</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.063</td>
 <td align="right">3.000</td>
-<td align="right">1.000</td>
-<td align="right">-0.200</td>
-<td align="right">0.200</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0.063</td>
 <td align="left">TRUE</td>
-<td align="left">FALSE</td>
+<td align="left">NA</td>
 </tr>
 </tbody>
 </table>

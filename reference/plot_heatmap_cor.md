@@ -6,13 +6,45 @@ plot correlation heatmap with annotations
 
 ``` r
 plot_heatmap_cor(
-  data,
-  config,
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
   R2 = FALSE,
   color = colorRampPalette(c("white", "red"))(1024),
   ...
 )
 ```
+
+## Arguments
+
+- matrix:
+
+  numeric matrix — wide-format intensity data
+
+- annotation:
+
+  data.frame — sample annotation
+
+- factor_keys:
+
+  character vector — factor column names for annotation
+
+- sample_name:
+
+  character — sample name column
+
+- R2:
+
+  logical — plot R-squared instead of correlation
+
+- color:
+
+  color palette
+
+- ...:
+
+  passed to pheatmap
 
 ## See also
 
@@ -45,11 +77,12 @@ istar <- sim_lfq_data_protein_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-
-pheat_map <- prolfqua::plot_heatmap_cor( analysis, config )
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
+  lfq$factor_keys(), lfq$sample_name())
 stopifnot("pheatmap" %in% class(pheat_map))
-pheat_map <- plot_heatmap_cor( analysis, config, R2 = TRUE )
+pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
+  lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
 stopifnot("pheatmap" %in% class(pheat_map))
 ```

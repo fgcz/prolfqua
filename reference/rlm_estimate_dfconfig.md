@@ -5,7 +5,14 @@ Estimate protein abundance from peptide abundances using MASS::rlm
 ## Usage
 
 ``` r
-rlm_estimate_dfconfig(pdata, config, name = FALSE)
+rlm_estimate_dfconfig(
+  pdata,
+  response,
+  hierarchy_keys,
+  hierarchy_keys_depth,
+  sample_name,
+  name = FALSE
+)
 ```
 
 ## Arguments
@@ -14,9 +21,25 @@ rlm_estimate_dfconfig(pdata, config, name = FALSE)
 
   data.frame
 
-- config:
+- response:
 
-  [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md)
+  character — intensity column name
+
+- hierarchy_keys:
+
+  character vector — all hierarchy column names
+
+- hierarchy_keys_depth:
+
+  character vector — hierarchy columns at current depth
+
+- sample_name:
+
+  character — sample name column
+
+- name:
+
+  if TRUE return function name only
 
 ## See also
 
@@ -24,7 +47,7 @@ rlm_estimate_dfconfig(pdata, config, name = FALSE)
 
 Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
@@ -38,8 +61,11 @@ Other aggregation:
 ## Examples
 
 ``` r
-bb <- prolfqua_data("data_ionstar")$filtered()
-#> Column added : nr_peptide_Id_IN_protein_Id
+bb <- sim_lfq_data_peptide_config(Nprot = 20)
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
 conf <- bb$config
 data <- bb$data
 conf$hierarchy_depth <- 1
@@ -49,31 +75,23 @@ xnested <- data |>
 
 feature <- base::setdiff(conf$hierarchy_keys(), conf$hierarchy_keys_depth())
 x <- xnested$data[[1]]
-bb <- rlm_estimate_dfconfig(x, conf)
-
-prolfqua:::.reestablish_condition(x, bb, conf)
-#> # A tibble: 20 × 8
-#>    sampleName dilution. run_Id raw.file  isotope mean.peptide.intensity  weights
-#>    <chr>      <chr>     <chr>  <chr>     <chr>                    <dbl>    <dbl>
-#>  1 b~02       b         02     b03_02_1… light                70845993. 3.98e-14
-#>  2 c~03       c         03     b03_03_1… light                69363043. 1.21e-14
-#>  3 d~04       d         04     b03_04_1… light                67994529. 1.49e-14
-#>  4 e~05       e         05     b03_05_1… light                62812643. 1.16e-14
-#>  5 e~06       e         06     b03_06_1… light                67705308. 1.80e-14
-#>  6 d~07       d         07     b03_07_1… light                54308813. 1.00e-14
-#>  7 c~08       c         08     b03_08_1… light                61674100  8.96e-15
-#>  8 b~09       b         09     b03_09_1… light                70944417. 3.09e-14
-#>  9 a~10       a         10     b03_10_1… light                66899623. 8.27e-15
-#> 10 a~11       a         11     b03_11_1… light                75611447. 1.13e-14
-#> 11 b~12       b         12     b03_12_1… light                79307067. 6.70e-15
-#> 12 c~13       c         13     b03_13_1… light                67809215. 3.96e-14
-#> 13 d~14       d         14     b03_14_1… light                78312000  2.70e-14
-#> 14 e~15       e         15     b03_15_1… light                77760429. 3.99e-14
-#> 15 e~16       e         16     b03_16_1… light                70743500  7.85e-15
-#> 16 d~17       d         17     b03_17_1… light                81735462. 9.39e-15
-#> 17 c~18       c         18     b03_18_1… light                74486688. 3.50e-15
-#> 18 b~19       b         19     b03_19_1… light                74329840  1.19e-14
-#> 19 a~20       a         20     b03_20_1… light                73915533. 5.14e-15
-#> 20 a~21       a         21     b03_21_1… light                70448067. 7.99e-15
-#> # ℹ 1 more variable: lmrob <dbl>
+bb <- rlm_estimate_dfconfig(x, conf$get_response(),
+  conf$hierarchy_keys(), conf$hierarchy_keys_depth(), conf$sample_name)
+prolfqua:::.reestablish_condition(x, bb, conf$sample_name,
+  conf$factor_keys(), conf$file_name, conf$isotope_label)
+#> # A tibble: 12 × 7
+#>    sampleName group_ sample  isotopeLabel mean.abundance lmrob weights
+#>    <chr>      <chr>  <chr>   <chr>                 <dbl> <dbl>   <dbl>
+#>  1 A_V1       A      A_V1    light                  30.0  30.0       1
+#>  2 A_V2       A      A_V2    light                  29.8  29.8       1
+#>  3 A_V3       A      A_V3    light                  29.1  29.1       1
+#>  4 A_V4       A      A_V4    light                  29.9  29.9       1
+#>  5 B_V1       B      B_V1    light                  32.1  32.1       1
+#>  6 B_V2       B      B_V2    light                  32.4  32.4       1
+#>  7 B_V3       B      B_V3    light                  31.7  31.7       1
+#>  8 B_V4       B      B_V4    light                  33.5  33.5       1
+#>  9 Ctrl_V1    Ctrl   Ctrl_V1 light                  22.1  22.1       1
+#> 10 Ctrl_V2    Ctrl   Ctrl_V2 light                  18.5  18.5       1
+#> 11 Ctrl_V3    Ctrl   Ctrl_V3 light                  19.8  19.8       1
+#> 12 Ctrl_V4    Ctrl   Ctrl_V4 light                  21.4  21.4       1
 ```

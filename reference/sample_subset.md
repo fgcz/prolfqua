@@ -5,7 +5,7 @@ Sample subset of proteins/peptides/precursors
 ## Usage
 
 ``` r
-sample_subset(size, pdata, config)
+sample_subset(size, pdata, hierarchy_keys_depth)
 ```
 
 ## Arguments
@@ -18,9 +18,9 @@ sample_subset(size, pdata, config)
 
   tidy table
 
-- config:
+- hierarchy_keys_depth:
 
-  [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md)
+  character vector — hierarchy columns at current depth
 
 ## See also
 

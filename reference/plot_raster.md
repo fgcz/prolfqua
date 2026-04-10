@@ -6,8 +6,10 @@ plot heatmap without any clustering (use to show NA's)
 
 ``` r
 plot_raster(
-  data,
-  config,
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
   arrange = c("mean", "var"),
   not_na = FALSE,
   show_rownames = FALSE,
@@ -17,13 +19,21 @@ plot_raster(
 
 ## Arguments
 
-- data:
+- matrix:
 
-  dataframe
+  numeric matrix — wide-format intensity data
 
-- config:
+- annotation:
 
-  dataframe configuration
+  data.frame — sample annotation
+
+- factor_keys:
+
+  character vector — factor column names for annotation
+
+- sample_name:
+
+  character — sample name column
 
 - arrange:
 
@@ -72,15 +82,10 @@ istar <- sim_lfq_data_protein_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-rs <- plot_raster(analysis, config, show_rownames=FALSE)
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(class(rs) == "pheatmap")
-rs <- plot_raster(analysis[1,], config)
-#> Warning: The dataset has :1
-stopifnot(is.null(rs))
-rs <- plot_raster(analysis, config, "var")
-stopifnot(class(rs) == "pheatmap")
-rs <- plot_raster(analysis, config, show_rownames = TRUE)
+rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")
 stopifnot(class(rs) == "pheatmap")
 ```

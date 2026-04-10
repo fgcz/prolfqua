@@ -5,26 +5,18 @@ Plot feature data and result of aggregation
 ## Usage
 
 ``` r
-plot_estimate(data, config, data_aggr, config_reduced, show.legend = FALSE)
+plot_estimate(lfqdata, lfqdata_agg, show.legend = FALSE)
 ```
 
 ## Arguments
 
-- data:
+- lfqdata:
 
-  data.frame before aggregation
+  LFQData object (original data)
 
-- config:
+- lfqdata_agg:
 
-  AnalysisConfiguration
-
-- data_aggr:
-
-  data.frame after aggregation
-
-- config_reduced:
-
-  AnalysisConfiguration of aggregated data
+  LFQData object (aggregated data)
 
 - show.legend:
 
@@ -55,7 +47,7 @@ Other plotting:
 
 Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
@@ -74,22 +66,12 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-
-analysis <- prolfqua::transform_work_intensity(analysis, config, log2)
+lfq <- LFQData$new(istar$data, istar$config)
+lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
-bbMed <- estimate_intensity(analysis, config, .func = medpolish_estimate_dfconfig)
+bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
 #> starting aggregation
-tmpMed <- plot_estimate(analysis, config, bbMed$data, bbMed$config)
+lfq_med <- LFQData$new(bbMed$data, bbMed$config)
+tmpMed <- plot_estimate(lfq, lfq_med)
 stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))
-stopifnot("ggplot" %in% class(tmpMed$plots[[2]]))
-
-bbRob <- estimate_intensity(analysis, config, .func = rlm_estimate_dfconfig)
-#> starting aggregation
-#> Warning: 'rlm' failed to converge in 20 steps
-#> Warning: 'rlm' failed to converge in 20 steps
-tmpRob <- plot_estimate(analysis, config, bbRob$data, bbRob$config)
-stopifnot("ggplot" %in% class(tmpRob$plots[[1]]))
-stopifnot("ggplot" %in% class(tmpRob$plots[[2]]))
 ```

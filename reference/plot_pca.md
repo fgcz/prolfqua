@@ -6,14 +6,46 @@ plot PCA
 
 ``` r
 plot_pca(
-  data,
-  config,
+  matrix,
+  annotation,
+  sample_name,
+  factor_keys,
   PC = c(1, 2),
   add_txt = FALSE,
-  plotly = FALSE,
   nudge = 0.1
 )
 ```
+
+## Arguments
+
+- matrix:
+
+  numeric matrix — wide-format intensity data
+
+- annotation:
+
+  data.frame — sample annotation
+
+- sample_name:
+
+  character — sample name column
+
+- factor_keys:
+
+  character vector — factor column names (first for color, second for
+  shape)
+
+- PC:
+
+  which principal components to plot
+
+- add_txt:
+
+  show sample labels
+
+- nudge:
+
+  label nudge distance
 
 ## See also
 
@@ -41,32 +73,20 @@ Other plotting:
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-tmp <- plot_pca(analysis, config, add_txt= TRUE, nudge = 0.01)
+lfq <- LFQData$new(istar$data, istar$config)
+wide <- lfq$to_wide(as.matrix = TRUE)
+tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
+  add_txt = TRUE, nudge = 0.01)
 #> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
 #> Joining with `by = join_by(sampleName)`
-print(tmp)
-
-
-stopifnot("ggplot" %in% class(tmp) )
-tmp <- plot_pca(analysis, config, add_txt= FALSE)
+stopifnot("ggplot" %in% class(tmp))
+tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys())
 #> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
 #> Joining with `by = join_by(sampleName)`
-stopifnot("ggplot" %in% class(tmp) )
-tmp <- plot_pca(analysis, config, PC = c(1,2))
-#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
-#> Joining with `by = join_by(sampleName)`
-stopifnot("ggplot" %in% class(tmp) )
-tmp <- plot_pca(analysis, config, PC = c(2,40))
-#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
-#> Warning: nr of PCs: 13
-print(tmp)
-#> NULL
+stopifnot("ggplot" %in% class(tmp))
 ```

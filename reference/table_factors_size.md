@@ -1,11 +1,17 @@
-# Table of distinct factors (sample annotation)
+# Table of distinct factors with group sizes
 
-Table of distinct factors (sample annotation)
+Table of distinct factors with group sizes
 
 ## Usage
 
 ``` r
-table_factors_size(pdata, configuration)
+table_factors_size(
+  pdata,
+  file_name,
+  sample_name,
+  factor_keys,
+  factor_keys_depth
+)
 ```
 
 ## Arguments
@@ -14,9 +20,21 @@ table_factors_size(pdata, configuration)
 
   data.frame
 
-- configuration:
+- file_name:
 
-  AnalysisConfiguration
+  character — file name column
+
+- sample_name:
+
+  character — sample name column
+
+- factor_keys:
+
+  character vector — all factor column names
+
+- factor_keys_depth:
+
+  character vector — factor columns at current depth
 
 ## See also
 
@@ -35,14 +53,13 @@ Other configuration:
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-
-
-xx <- table_factors_size(istar$data,istar$config )
+lfq <- LFQData$new(istar$data, istar$config)
+xx <- table_factors_size(lfq$get_data(), lfq$file_name(),
+  lfq$sample_name(), lfq$factor_keys(), lfq$relevant_factor_keys())
 stopifnot(all(xx$n == 4))
 ```

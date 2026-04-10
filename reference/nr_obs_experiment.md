@@ -1,13 +1,17 @@
-# Aggregates e.g. protein abundances from peptide abundances
+# Count observations per experiment (max nr_children across samples)
 
-Aggregates e.g. protein abundances from peptide abundances
+Count observations per experiment (max nr_children across samples)
 
 ## Usage
 
 ``` r
 nr_obs_experiment(
   data,
-  config,
+  hierarchy_keys,
+  hierarchy_keys_depth,
+  nr_children_col,
+  response = NULL,
+  file_name = NULL,
   from_children = TRUE,
   name_nr_child = "nr_child_exp"
 )
@@ -17,20 +21,36 @@ nr_obs_experiment(
 
 - data:
 
-  tidy data
+  data.frame
 
-- config:
+- hierarchy_keys:
 
-  prolfqua config
+  character vector — all hierarchy column names
+
+- hierarchy_keys_depth:
+
+  character vector — hierarchy columns at current depth
+
+- nr_children_col:
+
+  character — nr_children column name
+
+- response:
+
+  character — intensity column name (needed when from_children = TRUE)
+
+- file_name:
+
+  character — file name column (needed when from_children = TRUE)
 
 - from_children:
 
-  TRUE compute from nr_children column, FALSE - do not use nr_children
-  column
+  TRUE compute from nr_children column, FALSE count distinct hierarchy
+  entries
 
 - name_nr_child:
 
-  how to name column
+  how to name output column
 
 ## Examples
 
@@ -40,54 +60,11 @@ dd <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-
-
-xd <- nr_obs_experiment(dd$data, dd$config, from_children = FALSE)
-xd <- nr_obs_experiment(dd$data, dd$config, from_children = TRUE)
+lfq <- LFQData$new(dd$data, dd$config)
+xd <- nr_obs_experiment(lfq$get_data(), lfq$hierarchy_keys(),
+  lfq$relevant_hierarchy_keys(), lfq$nr_children_col(),
+  response = lfq$response(), file_name = lfq$file_name())
 stopifnot(min(xd$nr_child_exp) == 1)
-dp <- prolfqua::sim_lfq_data_protein_config()
-#> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
-nr_obs_experiment(dp$data, dp$config)
-#> # A tibble: 10 × 2
-#>    protein_Id  nr_child_exp
-#>    <chr>              <dbl>
-#>  1 0EfVhX~0087            3
-#>  2 7cbcrd~5725            1
-#>  3 9VUkAq~4703            1
-#>  4 BEJI92~5282            2
-#>  5 CGzoYe~2147            1
-#>  6 DoWup2~5896            1
-#>  7 Fl4JiV~8625            4
-#>  8 HvIpHG~9079            2
-#>  9 JcKVfU~9653            7
-#> 10 SGIVBl~5782            6
-nr_obs_experiment(dp$data, dp$config, from_children = FALSE)
-#> # A tibble: 10 × 2
-#>    protein_Id  nr_child_exp
-#>    <chr>              <int>
-#>  1 0EfVhX~0087            1
-#>  2 7cbcrd~5725            1
-#>  3 9VUkAq~4703            1
-#>  4 BEJI92~5282            1
-#>  5 CGzoYe~2147            1
-#>  6 DoWup2~5896            1
-#>  7 Fl4JiV~8625            1
-#>  8 HvIpHG~9079            1
-#>  9 JcKVfU~9653            1
-#> 10 SGIVBl~5782            1
-
-
-dd <- prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
-dd$config$hierarchy_depth <- 2
-xpep <- nr_obs_experiment(dd$data,dd$config)
-stopifnot(all(xpep$nr_child_exp == 1))
-xpep <- nr_obs_experiment(dd$data,dd$config, from_children = FALSE)
-stopifnot(all(xpep$nr_child_exp == 1))
+xd2 <- nr_obs_experiment(lfq$get_data(), lfq$hierarchy_keys(),
+  lfq$relevant_hierarchy_keys(), lfq$nr_children_col(), from_children = FALSE)
 ```

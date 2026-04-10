@@ -204,7 +204,7 @@ results_protein |>
     ##   facade       n_results
     ##   <chr>            <int>
     ## 1 deqms              157
-    ## 2 firth              160
+    ## 2 firth              157
     ## 3 limma              155
     ## 4 limma_impute       160
     ## 5 limpa              160
@@ -226,8 +226,8 @@ results_protein |>
     ##    <chr>        <chr>     <chr>                  <int>
     ##  1 deqms        A_vs_Ctrl WaldTest_DEqMS            78
     ##  2 deqms        B_vs_Ctrl WaldTest_DEqMS            79
-    ##  3 firth        A_vs_Ctrl WaldTestFirth             80
-    ##  4 firth        B_vs_Ctrl WaldTestFirth             80
+    ##  3 firth        A_vs_Ctrl WaldTestFirth             78
+    ##  4 firth        B_vs_Ctrl WaldTestFirth             79
     ##  5 limma        A_vs_Ctrl limma                     78
     ##  6 limma        B_vs_Ctrl limma                     77
     ##  7 limma_impute A_vs_Ctrl limma                     80
@@ -360,6 +360,8 @@ missing_all |>
 |:-------|:----------|----------:|
 | deqms  | A_vs_Ctrl |         2 |
 | deqms  | B_vs_Ctrl |         1 |
+| firth  | A_vs_Ctrl |         2 |
+| firth  | B_vs_Ctrl |         1 |
 | limma  | A_vs_Ctrl |         2 |
 | limma  | B_vs_Ctrl |         3 |
 | lm     | A_vs_Ctrl |         2 |
@@ -430,7 +432,7 @@ if (length(lm_missing_proteins) > 0) {
 | limma_impute | limma              | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
 | limpa        | limpa              | 8mS8sK~0150 | A_vs_Ctrl |  2.798 | -0.615 | 0.226 |    -1.435 |     0.429 | 30.965 |   0.161 |   -1.489 |     0.259 | 0.965 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.065 |  4.310 |   1.000 |   -0.234 |     0.234 | 0.087 | TRUE    | FALSE       |
-| lm_missing   | groupAverage       | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 |  2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | TRUE    | FALSE       |
+| lm_missing   | groupAverage       | 8mS8sK~0150 | A_vs_Ctrl |     NA |     NA |    NA |        NA |     0.102 |  2.000 |      NA |       NA |        NA | 0.102 | TRUE    | NA          |
 | limma_impute | limma              | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
 | limpa        | limpa              | 8mS8sK~0150 | B_vs_Ctrl |  3.245 |  0.279 | 0.578 |     0.662 |     0.422 | 30.965 |   0.513 |   -0.581 |     1.140 | 0.965 | FALSE   | FALSE       |
 | lm_impute    | WaldTest_moderated | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.798 |     0.286 |     0.065 |  4.310 |   0.788 |   -0.217 |     0.252 | 0.087 | FALSE   | FALSE       |
@@ -438,7 +440,7 @@ if (length(lm_missing_proteins) > 0) {
 | limma_impute | limma              | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.996 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
 | limpa        | limpa              | DTCi0N~0734 | A_vs_Ctrl |  3.550 | -0.982 | 0.020 |    -2.714 |     0.362 | 30.965 |   0.011 |   -1.719 |    -0.244 | 0.991 | TRUE    | TRUE        |
 | lm_impute    | WaldTest_moderated | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -4.057 |     0.065 |  6.310 |   0.006 |   -0.467 |    -0.040 | 0.088 | TRUE    | FALSE       |
-| lm_missing   | groupAverage       | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 |  4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | TRUE    | FALSE       |
+| lm_missing   | groupAverage       | DTCi0N~0734 | A_vs_Ctrl |     NA |     NA |    NA |        NA |     0.057 |  4.000 |      NA |       NA |        NA | 0.070 | TRUE    | NA          |
 | limma_impute | limma              | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
 | limpa        | limpa              | DTCi0N~0734 | B_vs_Ctrl |  4.145 |  0.208 | 0.619 |     0.581 |     0.358 | 30.965 |   0.565 |   -0.522 |     0.939 | 0.991 | FALSE   | FALSE       |
 | lm_impute    | WaldTest_moderated | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.049 |     2.665 |     0.065 |  6.310 |   0.035 |   -0.047 |     0.380 | 0.088 | FALSE   | FALSE       |
@@ -450,7 +452,7 @@ if (length(lm_missing_proteins) > 0) {
 | limma_impute | limma              | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
 | limpa        | limpa              | OrL0ux~1369 | B_vs_Ctrl |  3.297 | -1.281 | 0.006 |    -3.200 |     0.400 | 30.965 |   0.003 |   -2.097 |    -0.464 | 0.960 | TRUE    | TRUE        |
 | lm_impute    | WaldTest_moderated | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.036 |    -3.369 |     0.065 |  4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | TRUE    | FALSE       |
-| lm_missing   | groupAverage       | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 |  2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | TRUE    | FALSE       |
+| lm_missing   | groupAverage       | OrL0ux~1369 | B_vs_Ctrl |     NA |     NA |    NA |        NA |     0.060 |  2.000 |      NA |       NA |        NA | 0.073 | TRUE    | NA          |
 
 Contrast estimates from lm_missing, lm_impute, and limma_impute for
 proteins that plain lm could not estimate

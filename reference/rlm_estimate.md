@@ -30,7 +30,7 @@ rlm_estimate(pdata, response, feature, samples, maxIt = 20)
 
 Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
@@ -98,9 +98,11 @@ rlm_estimate(xx2[xx2$sample_name == "a", ], "log2Area", "peptide_Id", "sample_na
 #> 1 a           -0.532        -0.532       1
 
 
-bb <- prolfqua_data("data_ionstar")$filtered()
-#> Column added : nr_peptide_Id_IN_protein_Id
-stopifnot(nrow(bb$data) == 25780)
+bb <- sim_lfq_data_peptide_config(Nprot = 20)
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
 conf <- bb$config
 data <- bb$data
 conf$hierarchy_depth <- 1

@@ -5,8 +5,18 @@ convert to binary response
 ## Usage
 
 ``` r
-encode_bin_resp(pdata, config, name = "bin_resp")
+encode_bin_resp(lfqdata, name = "bin_resp")
 ```
+
+## Arguments
+
+- lfqdata:
+
+  LFQData object
+
+- name:
+
+  column name for binary response
 
 ## Examples
 
@@ -16,11 +26,10 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-istar$data <- encode_bin_resp(istar$data, istar$config)
-#> completing cases
-istar$config$bin_resp == "bin_resp"
-#> [1] TRUE
-istar$data[["bin_resp"]]
+lfq <- LFQData$new(istar$data, istar$config)
+lfq$data <- encode_bin_resp(lfq)
+lfq$config$bin_resp <- "bin_resp"
+lfq$data[["bin_resp"]]
 #>   [1] 1 1 0 1 1 1 1 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1
 #>  [38] 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1
 #>  [75] 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1

@@ -79,6 +79,8 @@
 <li>NAMESPACE is <strong>auto-generated</strong> by roxygen2 — never edit directly; run <code>make document</code>
 </li>
 <li>Roxygen is configured with <code>r6 = TRUE</code> for R6 class documentation</li>
+<li>
+<strong>Never use <code>\dontrun{}</code> or <code>\donttest{}</code> in <code>@examples</code></strong> — all examples must run during R CMD check. If an example is too slow, optimize it instead of skipping it.</li>
 </ul></div>
 <div class="section level2">
 <h2 id="architecture">Architecture<a class="anchor" aria-label="anchor" href="#architecture"></a></h2>
@@ -210,7 +212,9 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 </div>
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h2>
-<p>11 test files in <code>tests/testthat/</code>: - <code>test-LFQData.R</code> — Core data container and decorators - <code>test-Model.R</code> — Model fitting and coefficient extraction - <code>test-Contrasts.R</code> — Contrast computation (Wald test path) - <code>test-ContrastsFacades.R</code> — All facade classes and <code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> - <code>test-ContrastsLimma.R</code> — Limma backend (ModelLimma, ContrastsLimma, merge, 2-factor) - <code>test-ContrastsModeratedDEqMS.R</code> — DEqMS moderation and facade - <code>test-ContrastsPlotter.R</code> — Contrast visualization - <code>test-ImputeModel.R</code> — LOD imputation with borrowed covariance - <code>test-plotting_functions.R</code> — Low-level plots - <code>test-tidyconfig_functions.R</code> — Configuration and utilities - <code>test-vectorize-contrasts.R</code> — Side-by-side original vs vectorized contrast functions</p>
+<ul><li>
+<strong>When fixing a bug, first add a test that reproduces it</strong>, then fix. This ensures regressions are caught.</li>
+</ul><p>11 test files in <code>tests/testthat/</code>: - <code>test-LFQData.R</code> — Core data container and decorators - <code>test-Model.R</code> — Model fitting and coefficient extraction - <code>test-Contrasts.R</code> — Contrast computation (Wald test path) - <code>test-ContrastsFacades.R</code> — All facade classes and <code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> - <code>test-ContrastsLimma.R</code> — Limma backend (ModelLimma, ContrastsLimma, merge, 2-factor) - <code>test-ContrastsModeratedDEqMS.R</code> — DEqMS moderation and facade - <code>test-ContrastsPlotter.R</code> — Contrast visualization - <code>test-ImputeModel.R</code> — LOD imputation with borrowed covariance - <code>test-plotting_functions.R</code> — Low-level plots - <code>test-tidyconfig_functions.R</code> — Configuration and utilities - <code>test-vectorize-contrasts.R</code> — Side-by-side original vs vectorized contrast functions</p>
 </div>
 <div class="section level2">
 <h2 id="cross-package-context">Cross-Package Context<a class="anchor" aria-label="anchor" href="#cross-package-context"></a></h2>

@@ -6,18 +6,14 @@ re-establishes the missing observations in a sample.
 ## Usage
 
 ``` r
-complete_cases(pdata, config)
+complete_cases(lfqdata)
 ```
 
 ## Arguments
 
-- pdata:
+- lfqdata:
 
-  data.frame
-
-- config:
-
-  AnlalysisConfiguration
+  LFQData object
 
 ## See also
 
@@ -41,8 +37,8 @@ bb <- sim_lfq_data_protein_config()
 #> completing cases
 #> completing cases done
 #> setup done
-
-xx <- complete_cases(bb$data, bb$config)
+lfq <- LFQData$new(bb$data, bb$config)
+xx <- complete_cases(lfq)
 #> completing cases
 stopifnot(nrow(bb$data) <= nrow(xx))
 ```

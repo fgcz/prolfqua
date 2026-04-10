@@ -327,7 +327,6 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqstats <- lfqdata$get_Stats()
-#> completing cases
 stopifnot(ncol(lfqstats$stats_wide()) == 30)
 lfqstats$violin()
 #> Warning: Removed 2 rows containing non-finite outside the scale range
@@ -346,7 +345,6 @@ x <- lfqstats
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata$is_transformed(TRUE)
 lfqstats <- lfqdata$get_Stats()
-#> completing cases
 stopifnot(ncol(lfqstats$stats_wide()) == 26)
 runallfuncs(lfqstats)
 
@@ -355,11 +353,9 @@ runallfuncs(lfqstats)
 
 # estimates statistics for all samples
 lfqstats <- lfqdata$get_Stats(stats = "all")
-#> completing cases
 stopifnot(ncol(lfqstats$stats_wide()) == 8)
 runallfuncs(lfqstats)
 lfqstats <- lfqdata$get_Stats(stats = "interaction")
-#> completing cases
 stopifnot(ncol(lfqstats$stats_wide()) == 20)
 runallfuncs(lfqstats)
 
@@ -369,7 +365,9 @@ bb <- prolfqua::sim_lfq_data_peptide_config(N=1)
 #> completing cases
 #> completing cases done
 #> setup done
-table_factors_size(bb$data,bb$config )
+lfq1 <- LFQData$new(bb$data, bb$config)
+table_factors_size(lfq1$get_data(), lfq1$file_name(),
+  lfq1$sample_name(), lfq1$factor_keys(), lfq1$relevant_factor_keys())
 #> # A tibble: 3 × 2
 #>   group_     n
 #>   <chr>  <int>
@@ -378,7 +376,6 @@ table_factors_size(bb$data,bb$config )
 #> 3 Ctrl       1
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqstats <- lfqdata$get_Stats()
-#> completing cases
 
 # stopifnot(ncol(lfqstats$stats_wide()) == 30)
 lfqstats$violin()

@@ -48,6 +48,9 @@ autoload is disabled.
 - NAMESPACE is **auto-generated** by roxygen2 — never edit directly; run
   `make document`
 - Roxygen is configured with `r6 = TRUE` for R6 class documentation
+- **Never use `\dontrun{}` or `\donttest{}` in `@examples`** — all
+  examples must run during R CMD check. If an example is too slow,
+  optimize it instead of skipping it.
 
 ## Architecture
 
@@ -217,6 +220,9 @@ facades (lm, rlm, firth, lmer) and limma’s linfct path. Results are
 numerically identical. Default is `FALSE`.
 
 ## Testing
+
+- **When fixing a bug, first add a test that reproduces it**, then fix.
+  This ensures regressions are caught.
 
 11 test files in `tests/testthat/`: - `test-LFQData.R` — Core data
 container and decorators - `test-Model.R` — Model fitting and

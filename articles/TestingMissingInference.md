@@ -32,8 +32,6 @@ mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = TR
 imputed <- mh1$get_contrasts(Contrasts = contr_spec)
 ```
 
-    ## completing cases
-
     ## dilution.b-a=group_A - group_B
 
     ## dilution.c-e=group_A - group_Ctrl
@@ -51,10 +49,8 @@ mh2 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = FA
 imputed2 <- mh2$get_contrasts(Contrasts = contr_spec)
 ```
 
-    ## completing cases
-
     ## dilution.b-a=group_A - group_B
-
+    ## 
     ## dilution.c-e=group_A - group_Ctrl
 
     ## dilution.b-a=group_A - group_B

@@ -5,7 +5,7 @@ Table of distinct factors (sample annotation)
 ## Usage
 
 ``` r
-table_factors(pdata, configuration)
+table_factors(pdata, file_name, sample_name, factor_keys)
 ```
 
 ## Arguments
@@ -14,9 +14,17 @@ table_factors(pdata, configuration)
 
   data.frame
 
-- configuration:
+- file_name:
 
-  AnalysisConfiguration
+  character — file name column
+
+- sample_name:
+
+  character — sample name column
+
+- factor_keys:
+
+  character vector — factor column names
 
 ## See also
 
@@ -35,39 +43,14 @@ Other configuration:
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-
-
-xx <- table_factors(istar$data,istar$config )
-xx
-#> # A tibble: 12 × 3
-#>    sample  sampleName group_
-#>    <chr>   <chr>      <chr> 
-#>  1 A_V1    A_V1       A     
-#>  2 A_V2    A_V2       A     
-#>  3 A_V3    A_V3       A     
-#>  4 A_V4    A_V4       A     
-#>  5 B_V1    B_V1       B     
-#>  6 B_V2    B_V2       B     
-#>  7 B_V3    B_V3       B     
-#>  8 B_V4    B_V4       B     
-#>  9 Ctrl_V1 Ctrl_V1    Ctrl  
-#> 10 Ctrl_V2 Ctrl_V2    Ctrl  
-#> 11 Ctrl_V3 Ctrl_V3    Ctrl  
-#> 12 Ctrl_V4 Ctrl_V4    Ctrl  
-xt <- xx |> dplyr::group_by(!!!rlang::syms(istar$config$factor_keys())) |>
+lfq <- LFQData$new(istar$data, istar$config)
+xx <- table_factors(lfq$get_data(), lfq$file_name(), lfq$sample_name(), lfq$factor_keys())
+xt <- xx |> dplyr::group_by(!!!rlang::syms(lfq$factor_keys())) |>
  dplyr::summarize(n = dplyr::n())
-xt
-#> # A tibble: 3 × 2
-#>   group_     n
-#>   <chr>  <int>
-#> 1 A          4
-#> 2 B          4
-#> 3 Ctrl       4
 stopifnot(all(xt$n == 4))
 ```

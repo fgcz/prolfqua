@@ -122,7 +122,6 @@ istar <- sim_lfq_data_peptide_config(
 #> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 mod <- build_model_glm_peptide(lfqdata, "~ group_")
-#> completing cases
 #> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 head(mod$get_coefficients())

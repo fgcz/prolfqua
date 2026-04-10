@@ -208,7 +208,6 @@ fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> completing cases
 #> A_vs_Ctrl=group_A - group_Ctrl
 #> A_vs_Ctrl=group_A - group_Ctrl
 #> A_vs_Ctrl=group_A - group_Ctrl
@@ -310,7 +309,6 @@ head(fa_ropeca$get_contrasts())
 #> #   conf.high <dbl>, sigma <dbl>
 
 fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
-#> completing cases
 #> Joining with `by = join_by(protein_Id)`
 head(fa_firth$get_contrasts())
 #> determine linear functions:

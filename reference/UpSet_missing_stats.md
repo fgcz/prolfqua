@@ -5,8 +5,14 @@ prepare dataframe for UpSetR plot for all samples
 ## Usage
 
 ``` r
-upset_missing_stats(data, config)
+upset_missing_stats(lfqdata)
 ```
+
+## Arguments
+
+- lfqdata:
+
+  LFQData object
 
 ## See also
 
@@ -46,9 +52,7 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-pups <- upset_missing_stats(analysis, config)
-#> completing cases
-UpSetR::upset(pups$data , order.by = "freq", nsets = pups$nsets)
+lfq <- LFQData$new(istar$data, istar$config)
+pups <- upset_missing_stats(lfq)
+UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 ```

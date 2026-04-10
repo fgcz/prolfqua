@@ -95,11 +95,8 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- bb$config
-data <- bb$data
-
-res1 <- summarize_stats(data, config)
-#> completing cases
-pv <- poolvar(res1, config)
-stopifnot(nrow(pv) == nrow(res1)/3)
+lfq <- LFQData$new(bb$data, bb$config)
+res1 <- summarize_stats(lfq)
+pv <- poolvar(res1, bb$config)
+stopifnot(nrow(pv) == nrow(res1) / 3)
 ```

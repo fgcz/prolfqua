@@ -5,18 +5,18 @@ plot stddev vs mean to asses stability of variance
 ## Usage
 
 ``` r
-plot_stdv_vs_mean(pdata, config, size = 2000)
+plot_stdv_vs_mean(pdata, factor_keys_depth, size = 2000)
 ```
 
 ## Arguments
 
 - pdata:
 
-  data.frame
+  data.frame with statistics
 
-- config:
+- factor_keys_depth:
 
-  AnalysisConfiguration
+  character vector — factor columns for faceting
 
 - size:
 
@@ -39,43 +39,14 @@ Other stats:
 ## Examples
 
 ``` r
-
-
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-config <- bb1$config
-data <- bb1$data
-res <- summarize_stats(data, config)
-#> completing cases
-
-plot_stdv_vs_mean(res, config)
-#> `geom_smooth()` using formula = 'y ~ x'
-#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_smooth()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-
-datalog2 <- transform_work_intensity(data, config, log2)
-#> Column added : log2_abundance
-statlog2 <- summarize_stats(datalog2, config)
-#> completing cases
-plot_stdv_vs_mean(statlog2, config)
-#> `geom_smooth()` using formula = 'y ~ x'
-#> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_smooth()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-
-config$get_response()
-#> [1] "log2_abundance"
-config$pop_response()
-#> [1] "log2_abundance"
-datasqrt <- transform_work_intensity(data, config, sqrt)
-#> Column added : sqrt_abundance
-ressqrt <- summarize_stats(datasqrt, config)
-#> completing cases
-plot_stdv_vs_mean(ressqrt, config)
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq$get_Stats()$stats()
+plot_stdv_vs_mean(res, lfq$relevant_factor_keys())
 #> `geom_smooth()` using formula = 'y ~ x'
 #> Warning: Removed 2 rows containing non-finite outside the scale range (`stat_smooth()`).
 #> Warning: Removed 2 rows containing missing values or values outside the scale range

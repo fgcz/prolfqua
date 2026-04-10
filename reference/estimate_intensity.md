@@ -5,7 +5,7 @@ Aggregates e.g. protein abundances from peptide abundances
 ## Usage
 
 ``` r
-estimate_intensity(data, config, .func)
+estimate_intensity(lfqdata, .func)
 ```
 
 ## Arguments
@@ -25,7 +25,7 @@ returns list with data (data.frame) and config (AnalysisConfiguration)
 
 Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`aggregate_intensity_topN()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_topN.md),
+[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
 [`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
 [`medpolish_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_dfconfig.md),
@@ -44,23 +44,18 @@ dd <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- dd$config
-data <- dd$data
-data <- prolfqua::transform_work_intensity(data, config, log2)
+lfq <- LFQData$new(dd$data, dd$config)
+lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
-bbMed <- estimate_intensity(data, config, .func = medpolish_estimate_dfconfig)
+bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
 #> starting aggregation
-bbRob <- estimate_intensity(data, config, .func = rlm_estimate_dfconfig)
+bbRob <- estimate_intensity(lfq, .func = rlm_estimate_dfconfig)
 #> starting aggregation
 #> Warning: 'rlm' failed to converge in 20 steps
 #> Warning: 'rlm' failed to converge in 20 steps
 nrow(bbMed$data)
 #> [1] 116
 nrow(bbRob$data)
-#> [1] 116
-length(bbMed$data$medpolish)
-#> [1] 116
-length(bbRob$data$lmrob)
 #> [1] 116
 xt <- dplyr::inner_join(bbMed$data, bbRob$data)
 #> Joining with `by = join_by(protein_Id, sampleName, group_, sample,

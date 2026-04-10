@@ -5,18 +5,14 @@ UpSetR plot from interaction_missing_stats
 ## Usage
 
 ``` r
-upset_interaction_missing_stats(data, cf, tr = 2)
+upset_interaction_missing_stats(lfqdata, tr = 2)
 ```
 
 ## Arguments
 
-- data:
+- lfqdata:
 
-  data.frame
-
-- cf:
-
-  AnalysisConfiguration
+  LFQData object
 
 - tr:
 
@@ -60,11 +56,8 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-
-pups <- upset_interaction_missing_stats(analysis, config)
-#> completing cases
+lfq <- LFQData$new(istar$data, istar$config)
+pups <- upset_interaction_missing_stats(lfq)
 stopifnot(ncol(pups$data) == 5)
 UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 ```

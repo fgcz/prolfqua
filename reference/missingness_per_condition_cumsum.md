@@ -6,11 +6,20 @@ cumulative sums of missing
 
 ``` r
 missingness_per_condition_cumsum(
-  x,
-  config,
-  factors = config$factor_keys_depth()
+  lfqdata,
+  factors = lfqdata$relevant_factor_keys()
 )
 ```
+
+## Arguments
+
+- lfqdata:
+
+  LFQData object
+
+- factors:
+
+  factor columns to use
 
 ## See also
 
@@ -45,17 +54,13 @@ Other imputation:
 ## Examples
 
 ``` r
-
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-config <- istar$config
-analysis <- istar$data
-
-res <- missingness_per_condition_cumsum(analysis,config)
-#> completing cases
+lfq <- LFQData$new(istar$data, istar$config)
+res <- missingness_per_condition_cumsum(lfq)
 #> isotopeLabel ~ group_
 stopifnot("ggplot" %in% class(res$figure))
 stopifnot(ncol(res$data) >= 6)

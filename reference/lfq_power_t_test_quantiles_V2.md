@@ -61,11 +61,9 @@ bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- bb1$config
-data2 <- bb1$data
-stats_res <- summarize_stats(data2, config)
-#> completing cases
-xx <- summarize_stats_quantiles(stats_res, config, probs = c(0.5,0.8))
+lfq <- LFQData$new(bb1$data, bb1$config)
+stats_res <- summarize_stats(lfq)
+xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = c(0.5, 0.8))
 bbb <- lfq_power_t_test_quantiles_V2(xx$long)
 bbb <- dplyr::bind_rows(bbb)
 summary <- bbb |>

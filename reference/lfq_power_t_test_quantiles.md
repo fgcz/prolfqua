@@ -6,8 +6,7 @@ Compute theoretical sample sizes from factor level standard deviations
 
 ``` r
 lfq_power_t_test_quantiles(
-  pdata,
-  config,
+  lfqdata,
   delta = 1,
   power = 0.8,
   sig.level = 0.05,
@@ -17,13 +16,9 @@ lfq_power_t_test_quantiles(
 
 ## Arguments
 
-- pdata:
+- lfqdata:
 
-  data.frame
-
-- config:
-
-  AnalysisConfiguration
+  LFQData object
 
 - delta:
 
@@ -63,12 +58,9 @@ bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- bb1$config
-data2 <- bb1$data
-
-res <- lfq_power_t_test_quantiles(data2, config)
+lfq <- LFQData$new(bb1$data, bb1$config)
+res <- lfq_power_t_test_quantiles(lfq)
 #> Warning: Intensities are not transformed yet.
-#> completing cases
 res$summary
 #> # A tibble: 5 × 4
 #>   quantile probs    sd `FC=2`
@@ -78,13 +70,8 @@ res$summary
 #> 3 70%        0.7 1.08      20
 #> 4 80%        0.8 1.28      27
 #> 5 90%        0.9 1.48      36
-stats_res <- summarize_stats(data2, config)
-#> completing cases
-res <- lfq_power_t_test_quantiles(data2, config, delta = 2)
+res <- lfq_power_t_test_quantiles(lfq, delta = 2)
 #> Warning: Intensities are not transformed yet.
-#> completing cases
-res <- lfq_power_t_test_quantiles(data2, config, delta = c(0.5,1,2))
+res <- lfq_power_t_test_quantiles(lfq, delta = c(0.5, 1, 2))
 #> Warning: Intensities are not transformed yet.
-#> completing cases
-
 ```
