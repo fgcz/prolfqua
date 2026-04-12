@@ -216,7 +216,7 @@ LFQDataTransformer (self)
 \if{html}{\out{<a id="method-LFQDataTransformer-center_to_reference"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-center_to_reference}{}}}
 \subsection{Method \code{center_to_reference()}}{
-log2 transform and robust scale data based on subset
+center data to a reference subset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$center_to_reference(lfqsubset)}\if{html}{\out{</div>}}
 }
@@ -224,11 +224,7 @@ log2 transform and robust scale data based on subset
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{lfqsubset}}{LFQData subset to use for normalization}
-
-\item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
-
-\item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
+\item{\code{lfqsubset}}{LFQData subset to use as reference}
 }
 \if{html}{\out{</div>}}
 }

@@ -4,6 +4,85 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-04-10 — LFQData API & Config Decoupling (Phase 4 complete)
+
+Major refactoring to decouple standalone functions from AnalysisConfiguration. Functions no longer receive `config` — they get either individual column name arguments (≤5 fields) or an `lfqdata` object (>5 fields).
+
+### Phase 1+3: LFQData API methods + decorator updates
+
+Added 9 accessor methods to LFQData: `hierarchy_keys()`, `relevant_hierarchy_keys()`, `factor_keys()`, `relevant_factor_keys()`, `sample_name()`, `file_name()`, `nr_children_col()`, `isotope_label()`, `get_data()`.
+
+Updated LFQDataPlotter, LFQDataStats, LFQDataAggregator to use API methods instead of `self$lfq$config$...` for direct config field reads.
+
+### Phase 4: Standalone function signature refactoring (8 batches)
+
+**Batch 0+1 — Trivial 1-field functions:**
+- `remove_small_intensities(pdata, config)` → `(pdata, response, threshold)`
+- `sample_subset(size, pdata, config)` → `(size, pdata, hierarchy_keys_depth)`
+
+**Batch 2 — Hierarchy/factor summaries:**
+- `table_factors(pdata, config)` → `(pdata, file_name, sample_name, factor_keys)`
+- `table_factors_size(pdata, config)` → `(pdata, file_name, sample_name, factor_keys, factor_keys_depth)`
+- `hierarchy_counts(pdata, config)` → `(pdata, hierarchy_keys, isotope_label)`
+- `summarize_hierarchy(pdata, config)` → `(pdata, hierarchy_keys, isotope_label, hierarchy, factors)`
+
+**Batch 3+4 — Stat plots + intensity distribution:**
+- `plot_stat_density/density_median/violin/violin_median` — `config` → `factor_key` or `factor_keys_depth`
+- `plot_stdv_vs_mean` — `config` → `factor_keys_depth`
+- `plot_intensity_distribution_violin/density` — `config` → `(sample_name, response, is_transformed)`
+
+**Batch 5+7 — Stats core + missingness (merged, accept lfqdata):**
+- `complete_cases(pdata, config)` → `(lfqdata)` + internal `.complete_cases_impl` for bootstrap
+- `summarize_stats(pdata, config, ...)` → `(lfqdata, factor_key)` — dropped `.completed` flag
+- `summarize_stats_all/factors` → `(lfqdata)`
+- `summarize_stats_quantiles(stats_res, config)` → `(stats_res, factor_keys_depth)`
+- `encode_bin_resp(pdata, config)` → `(lfqdata)` — `config$bin_resp` side-effect moved to callers
+- `missigness_histogram`, `upset_missing_stats`, `missingness_per_condition`, `missingness_per_condition_cumsum`, `upset_interaction_missing_stats` — all `(data, config)` → `(lfqdata)`
+- `lfq_power_t_test_quantiles(pdata, config)` → `(lfqdata)`
+
+**Batch 6 — Heatmap/PCA plots (pre-computed wide data):**
+- `plot_heatmap_cor/heatmap/raster/na_heatmap` — `(data, config)` → `(matrix, annotation, factor_keys, sample_name)`
+- `plot_pca` — `(data, config)` → `(matrix, annotation, sample_name, factor_keys)`
+- `plot_sample_correlation` — `(pdata, config)` → `(matrix)`
+- LFQDataPlotter now calls `self$lfq$to_wide(as.matrix = TRUE)` and passes decomposed parts
+
+**Batch 8 — Aggregation + nr_obs + boxplots:**
+- `estimate_intensity(data, config, .func)` → `(lfqdata, .func)` — `.func` callback interface changed
+- `medpolish_estimate_dfconfig/rlm_estimate_dfconfig` → individual args `(pdata, response, hierarchy_keys, hierarchy_keys_depth, sample_name)`
+- `aggregate_intensity_topN` → renamed to `aggregate_intensity_top_n`, accepts `(ranked_data, lfqdata, .func, N)`
+- `nr_obs_sample/nr_obs_experiment` → individual args
+- `rank_peptide_by_intensity` → `(pdata, response, hierarchy_keys)`
+- `plot_estimate` → `(lfqdata, lfqdata_agg)`
+- `plot_hierarchies_line/line_df` → `(pdata, lfqdata)`
+- `plot_hierarchies_boxplot/boxplot_df` → `(pdata, lfqdata)`
+- `.reestablish_condition`, `.add_nr_children`, `plot_hierarchies_add_quantline` → individual args
+
+**Cross-package (prolfquapp):**
+- `R6_ProteinAnnotation.R`: `nr_obs_experiment` call updated to individual args
+- `R6_DEAReportGenerator.R`: `upset_interaction_missing_stats` call updated to `(lfqdata)`
+- Vignette `Grp2Analysis_V2_R6.Rmd` + `doc/` + `inst/doc/` copies updated
+
+### Design decisions recorded
+
+- Functions needing >5 config fields get `lfqdata`; otherwise data frame + column names
+- `complete_cases` runs at LFQData lifecycle only — dropped `.completed` flag from all functions
+- Heatmap/PCA functions receive pre-computed wide data from decorator
+- `get_data()` → `data_long()` rename deferred to avoid churn
+
+### Verification
+
+- prolfqua: `make check` (full, with vignettes) — 0 errors, 0 warnings
+- prolfquapp: `devtools::check(vignettes = FALSE)` — 0 errors, 0 warnings
+
+### Remaining (not part of this phase)
+
+- Phase 2: Refactor Transformer to return new LFQData (writes)
+- Phase 5: Make `data`/`config` private with active bindings
+- Deferred: `get_data()` → `data_long()` + add `data_wide()`
+- S3 method exports: `sigma.rlm`, `df.residual.rlm` changed to `@exportS3Method` (done)
+
+---
+
 ## 2026-04-07/08 — Complete camelCase to snake_case migration (Phases 1–5)
 
 Completed the full snake_case migration across prolfqua and downstream packages (prolfquapp, prolfquasaint, prophosqua). 9 commits over 2 days.

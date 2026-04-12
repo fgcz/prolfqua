@@ -286,14 +286,13 @@ Updated decorators to use API methods where they accessed config fields directly
 
 Pass-throughs `func(self$lfq$data, self$lfq$config)` left unchanged — standalone function signatures haven't changed yet.
 
-### Phase 4: Refactor standalone function signatures — NEXT
+### Phase 4: Refactor standalone function signatures — DONE (2026-04-10)
 
-For functions with 1-3 config fields: replace `config` with individual named arguments.
-For functions with 4+ fields (complete_cases, aggregate_intensity_top_n, summarize_stats): accept `lfqdata` and call API methods internally.
+All ~40 functions refactored across 8 batches. Rule: >5 config fields → `lfqdata`, otherwise data frame + column names. Cross-package update in prolfquapp completed. Details in `TODO/DONE_summary.md`.
 
-### Phase 2: Refactor Transformer to return new LFQData
+### Phase 2: Refactor Transformer to return new LFQData — NEXT
 
-Each transform method (`log2()`, `robscale()`, `vsn()`, etc.) returns a new LFQData instance instead of mutating the clone. The `$lfq` field becomes the result of the last transformation. No setters needed on LFQData. Deferred until all read-side refactoring is complete.
+Each transform method (`log2()`, `robscale()`, `vsn()`, etc.) returns a new LFQData instance instead of mutating the clone. The `$lfq` field becomes the result of the last transformation. No setters needed on LFQData.
 
 ### Phase 5: Make `data` and `config` private
 
@@ -301,14 +300,12 @@ Use active bindings that warn on direct access (deprecation period), then error.
 
 ---
 
-## 7. Pending Rename: `aggregate_intensity_topN` → `aggregate_intensity_top_n`
+## 7. ~~Pending Rename: `aggregate_intensity_topN` → `aggregate_intensity_top_n`~~ — DONE
 
-This function is still camelCase. Rename to snake_case as part of this work.
+Renamed in Batch 8.
 
 ---
 
-## 8. Key Dependency: `tidy_to_wide_config()`
+## 8. ~~Key Dependency: `tidy_to_wide_config()`~~ — RESOLVED
 
-Multiple plotting functions (heatmaps, PCA, correlation) call `tidy_to_wide_config(data, config, ...)` which is the main config-heavy conversion. Refactoring this function — or having LFQData's `to_wide()` method serve the same purpose — is a prerequisite for removing config from plotting functions.
-
-**Proposal:** The Plotter decorator calls `self$lfq$to_wide(as.matrix = TRUE)` once, then passes the resulting matrix + annotation to plotting functions. This eliminates the `tidy_to_wide_config` dependency in individual plot functions.
+Resolved in Batch 6. Plotting functions now accept pre-computed `(matrix, annotation, factor_keys, sample_name)`. LFQDataPlotter calls `self$lfq$to_wide(as.matrix = TRUE)` and passes the decomposed parts. `tidy_to_wide_config` is only called from `LFQData$to_wide()` and Transformer internals.
