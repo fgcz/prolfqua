@@ -15,22 +15,20 @@
 #'
 #' pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
 #'
-#' pMerged$config$get_response()
+#' pMerged$response()
 #' pMerged$factors()
 #'
 #' formula_condition_and_Batches <-
 #'   prolfqua::strategy_lm("abundance ~ Treatment + Background")
 #' modCB <- prolfqua::build_model(
-#'   pMerged$data,
-#'   formula_condition_and_Batches,
-#'   subject_id = pMerged$config$hierarchy_keys() )
+#'   pMerged,
+#'   formula_condition_and_Batches)
 #'
 #' formula_condition <-
 #'   prolfqua::strategy_lm("abundance ~ Treatment")
 #' modC <- prolfqua::build_model(
-#'   pMerged$data,
-#'   formula_condition,
-#'   subject_id = pMerged$config$hierarchy_keys() )
+#'   pMerged,
+#'   formula_condition)
 #'
 #' tmp <- LR_test(modCB$model_df, "modCB", modC$model_df, "modB")
 #' hist(tmp$likelihood_ratio_test.pValue)
@@ -141,7 +139,7 @@ build_model <- function(
   },
   model_name = model_strategy$model_name
 ) {
-  nested_data <- if ("LFQData" %in% class(data)) data$data else data
+  nested_data <- if ("LFQData" %in% class(data)) data$data_long() else data
   modelling_result <- model_analyse(nested_data, model_strategy, model_name = model_name, subject_id = subject_id)
   return(Model$new(
     model_df = modelling_result$model_df,
@@ -175,7 +173,7 @@ build_model <- function(
 #' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
-#' strat <- strategy_lm(paste(lfqdata$config$get_response(), "~ group_"))
+#' strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
 #' mod <- build_model_impute(lfqdata, strat)
 #'
 build_model_impute <- function(
@@ -189,17 +187,17 @@ build_model_impute <- function(
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
   subject_id <- lfqdata$subject_id()
-  response <- lfqdata$config$get_response()
+  response <- lfqdata$response()
 
   modelling_result <- model_analyse(
-    lfqdata$data,
+    lfqdata$data_long(),
     model_strategy,
     model_name = model_name,
     subject_id = subject_id
   )
 
   if (is.null(lod)) {
-    mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
+    mh <- MissingHelpers$new(lfqdata$data_long(), lfqdata$get_config())
     lod <- mh$get_lod()
   }
 
@@ -207,16 +205,16 @@ build_model_impute <- function(
   # factors). These don't vary per protein, so distinct() gives one row per sample.
   # Value columns like nr_children are protein-specific and come from dat via join.
   annotation_cols <- intersect(
-    lfqdata$config$annotation_vars(),
-    colnames(lfqdata$data)
+    lfqdata$get_config()$annotation_vars(),
+    colnames(lfqdata$data_long())
   )
-  sample_template <- lfqdata$data |>
+  sample_template <- lfqdata$data_long() |>
     dplyr::select(dplyr::all_of(annotation_cols)) |>
     dplyr::distinct()
 
   # Resolve nr_children column name (used as lm weights; must be filled for imputed rows)
-  nr_children_col <- lfqdata$config$nr_children
-  if (!is.null(nr_children_col) && !nr_children_col %in% colnames(lfqdata$data)) {
+  nr_children_col <- lfqdata$nr_children_col()
+  if (!is.null(nr_children_col) && !nr_children_col %in% colnames(lfqdata$data_long())) {
     nr_children_col <- NULL
   }
 

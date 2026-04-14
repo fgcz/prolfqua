@@ -6,11 +6,11 @@ make_peptide_lfqdata <- function(Nprot = 30) {
 
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-  keep <- lfqdata$data |>
+  keep <- lfqdata$data_long() |>
     dplyr::group_by(protein_Id) |>
     dplyr::summarise(n_peptides = dplyr::n_distinct(peptide_Id), .groups = "drop") |>
     dplyr::filter(n_peptides > 1)
-  lfqdata$data <- dplyr::semi_join(lfqdata$data, keep, by = "protein_Id")
+  lfqdata$set_data(dplyr::semi_join(lfqdata$data_long(), keep, by = "protein_Id"))
   lfqdata
 }
 
@@ -293,7 +293,7 @@ test_that("get_missing returns non-empty for data with missing groups", {
   expect_true(nrow(lm_missing_missing) <= nrow(lm_missing))
 
   # get_missing + get_contrasts should cover all input proteins × contrasts
-  n_input_proteins <- dplyr::n_distinct(lfq_protein$data$protein_Id)
+  n_input_proteins <- dplyr::n_distinct(lfq_protein$data_long()$protein_Id)
   n_contrasts <- length(contrasts2)
   for (fa in list(fa_lm, fa_limma, fa_lm_missing)) {
     n_estimated <- nrow(fa$get_contrasts())

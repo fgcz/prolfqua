@@ -37,11 +37,10 @@ tidy_to_wide_config(data, config,  value = config$nr_children)
 
 
 xt <- prolfqua::LFQData$new(dd$data, dd$config)
-xt$data$nr_children
-#xt$config$is_response_transformed <- TRUE
+xt$data_long()$nr_children
 res <- xt$get_Aggregator("medpolish")
 x <- res$aggregate()
-towide <- tidy_to_wide_config(x$data, x$config,  value = x$config$nr_children)
+towide <- tidy_to_wide_config(x$data_long(), x$get_config(), value = x$nr_children_col())
 
 dd <- prolfqua::sim_lfq_data_protein_config()
 dd$config$nr_children

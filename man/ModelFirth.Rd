@@ -18,7 +18,7 @@ istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
 istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
 istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)
-formula <- paste0(tmp$config$bin_resp , "~ group_")
+formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 mod <- build_model_logistf(tmp, formula)
 tmp <- mod$get_coefficients()
 mod$coef_histogram()
@@ -33,7 +33,7 @@ istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
 istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
 istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)
-formula <- paste0(tmp$config$bin_resp , "~ group_")
+formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 mod <- build_model_logistf(tmp, formula)
 tmp <- mod$get_coefficients()
 stopifnot(nrow(tmp) == 30)

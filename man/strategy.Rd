@@ -80,7 +80,7 @@ istar <- LFQData$new(istar$data, istar$config)
 df <- istar$summarize_hierarchy()
 df2 <- df[df[[ncol(df)]] > 1, ]
 istar2 <- istar$get_subset(df2)
-istar2$data |>
+istar2$data_long() |>
   dplyr::group_by(protein_Id) |>
   tidyr::nest() -> nestProtein
 modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",

@@ -107,12 +107,12 @@ impute_with_zcomp <- function(
     imputed_data <- zCompositions::cmultRepl(data_matrix, label = NA, method = method)
   }
 
-  lfqdata$data <- response_matrix_as_tibble(
+  lfqdata$set_data(response_matrix_as_tibble(
     imputed_data,
     paste0(lfqdata$response(), "_imputed"),
-    lfqdata$config,
-    lfqdata$data
-  )
+    lfqdata$get_config(),
+    lfqdata$data_long()
+  ))
 
   return(lfqdata)
 }

@@ -45,7 +45,7 @@ LFQDataSummariser <- R6::R6Class(
     #' @param nr_children get summary for 1,2 or more number of children
     hierarchy_counts_sample = function(value = c("wide", "long"), nr_children = 1) {
       value <- match.arg(value)
-      hcs <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config, nr_children = nr_children)
+      hcs <- prolfqua::hierarchy_counts_sample(self$lfq$data_long(), self$lfq$get_config(), nr_children = nr_children)
       if (value == "wide") return(hcs$wide()) else return(hcs$long())
     },
     #' @description
@@ -53,7 +53,7 @@ LFQDataSummariser <- R6::R6Class(
     #' @param value wide - wide format, long - long format, plot - ggplot
     #' @param nr_children get summary for 1,2 or more number of children
     plot_hierarchy_counts_sample = function(nr_children = 1) {
-      hcs <- prolfqua::hierarchy_counts_sample(self$lfq$data, self$lfq$config, nr_children = nr_children)
+      hcs <- prolfqua::hierarchy_counts_sample(self$lfq$data_long(), self$lfq$get_config(), nr_children = nr_children)
       return(hcs$plot())
     },
     #' @description

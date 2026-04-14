@@ -7,9 +7,9 @@
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' lfq$data <- encode_bin_resp(lfq)
-#' lfq$config$bin_resp <- "bin_resp"
-#' lfq$data[["bin_resp"]]
+#' lfq$set_data(encode_bin_resp(lfq))
+#' lfq$set_config_value("bin_resp", "bin_resp")
+#' lfq$data_long()[["bin_resp"]]
 encode_bin_resp <- function(lfqdata, name = "bin_resp") {
   pdata <- lfqdata$data_long()
   pdata[[name]] <- as.integer(!is.na(pdata[[lfqdata$response()]]))

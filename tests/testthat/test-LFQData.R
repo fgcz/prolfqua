@@ -6,8 +6,8 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 
 test_that("LFQData creation and basic accessors", {
   expect_s3_class(lfqdata, "LFQData")
-  expect_true("data.frame" %in% class(lfqdata$data))
-  expect_s3_class(lfqdata$config, "AnalysisConfiguration")
+  expect_true("data.frame" %in% class(lfqdata$data_long()))
+  expect_s3_class(lfqdata$get_config(), "AnalysisConfiguration")
   expect_type(lfqdata$subject_id(), "character")
   expect_s3_class(lfqdata$hierarchy(), "data.frame")
   expect_s3_class(lfqdata$factors(), "data.frame")
@@ -44,9 +44,9 @@ test_that("LFQData filtering and subsetting", {
   expect_s3_class(sub, "LFQData")
 
   lfq2 <- lfqdata$get_copy()
-  lfq2$data <- lfq2$data[1:100, ]
+  lfq2$set_data(lfq2$data_long()[1:100, ])
   res <- lfqdata$filter_difference(lfq2)
-  expect_equal(nrow(res$data), nrow(lfqdata$data) - 100)
+  expect_equal(nrow(res$data_long()), nrow(lfqdata$data_long()) - 100)
 })
 
 test_that("LFQData to_wide conversion", {
@@ -140,7 +140,7 @@ test_that("AggregateMedpolish", {
   agg <- AggregateMedpolish$new(tr$lfq, "protein")
   result <- agg$aggregate()
   expect_s3_class(result, "LFQData")
-  expect_true(nrow(result$data) < nrow(lfqdata$data))
+  expect_true(nrow(result$data_long()) < nrow(lfqdata$data_long()))
 
   pl <- agg$plot()
   expect_true("plots" %in% names(pl))

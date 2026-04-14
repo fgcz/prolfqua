@@ -19,25 +19,25 @@ test_that("AggregateLimpa produces protein-level LFQData with SE and n_obs", {
   lfq_agg <- agg$aggregate()
 
   # Should be protein-level (reduced hierarchy)
-  expect_equal(length(lfq_agg$config$hierarchy_keys()), 1)
-  expect_equal(lfq_agg$config$hierarchy_keys(), "protein_Id")
+  expect_equal(length(lfq_agg$get_config()$hierarchy_keys()), 1)
+  expect_equal(lfq_agg$get_config()$hierarchy_keys(), "protein_Id")
 
   # Should have no NAs in intensity
-  expect_equal(sum(is.na(lfq_agg$data[[lfq_agg$config$get_response()]])), 0)
+  expect_equal(sum(is.na(lfq_agg$data_long()[[lfq_agg$get_config()$get_response()]])), 0)
 
   # Response column should be "limpa"
-  expect_equal(lfq_agg$config$get_response(), "limpa")
+  expect_equal(lfq_agg$get_config()$get_response(), "limpa")
 
   # Should have SE column
-  se_col <- lfq_agg$config$opt_se
+  se_col <- lfq_agg$get_config()$opt_se
   expect_true(nchar(se_col) > 0)
-  expect_true(se_col %in% colnames(lfq_agg$data))
-  expect_equal(sum(is.na(lfq_agg$data[[se_col]])), 0)
+  expect_true(se_col %in% colnames(lfq_agg$data_long()))
+  expect_equal(sum(is.na(lfq_agg$data_long()[[se_col]])), 0)
 
   # Should have nr_children (observation counts)
-  nr_col <- lfq_agg$config$nr_children
+  nr_col <- lfq_agg$get_config()$nr_children
   expect_true(nchar(nr_col) > 0)
-  expect_true(nr_col %in% colnames(lfq_agg$data))
+  expect_true(nr_col %in% colnames(lfq_agg$data_long()))
 
   # DPC should be estimated
   expect_true(!is.null(agg$dpc_result))
@@ -65,15 +65,15 @@ test_that("AggregateLimpa impute_only mode preserves hierarchy", {
 
   # Hierarchy should be the same as input (not reduced)
   expect_equal(
-    length(lfq_imp$config$hierarchy_keys()),
-    length(lfqdata$config$hierarchy_keys())
+    length(lfq_imp$get_config()$hierarchy_keys()),
+    length(lfqdata$get_config()$hierarchy_keys())
   )
 
   # Should have no NAs in intensity
-  expect_equal(sum(is.na(lfq_imp$data[[lfq_imp$config$get_response()]])), 0)
+  expect_equal(sum(is.na(lfq_imp$data_long()[[lfq_imp$get_config()$get_response()]])), 0)
 
   # Should have SE column
-  expect_true(nchar(lfq_imp$config$opt_se) > 0)
+  expect_true(nchar(lfq_imp$get_config()$opt_se) > 0)
 })
 
 

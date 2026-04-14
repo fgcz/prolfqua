@@ -19,7 +19,7 @@ build_contrast_analysis(
 
 \item{modelstr}{model formula string without the response variable
 (e.g. \code{"~ group_"}). The response is taken automatically from
-\code{lfqdata$config$get_response()}.}
+\code{lfqdata$get_config()$get_response()}.}
 
 \item{contrasts}{named character vector of contrasts
 (e.g. \code{c("A_vs_B" = "group_A - group_B")})}

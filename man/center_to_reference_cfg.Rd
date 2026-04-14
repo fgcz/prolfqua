@@ -29,7 +29,7 @@ takes the mean or median of the lfqdareference per sample and subtracts from lfq
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 x <- LFQData$new(bb$data, bb$config)
 xc <- x$get_copy()
-xc$data <- xc$data |> dplyr::filter(protein_Id == "0EfVhX~3967")
+xc$set_data(xc$data_long() |> dplyr::filter(protein_Id == "0EfVhX~3967"))
 xxd <- center_to_reference_cfg(x, xc, summary="median")
 xxd$response()
 xxd$data

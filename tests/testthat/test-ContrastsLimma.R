@@ -204,9 +204,11 @@ test_that("build_model_limma passes weights from column name", {
 
   # Add a weight column to the underlying data (per-sample weights)
   set.seed(42)
-  sample_ids <- unique(lProt$data$sampleName)
+  sample_ids <- unique(lProt$data_long()$sampleName)
   wt_map <- stats::setNames(runif(length(sample_ids), 0.1, 1.0), sample_ids)
-  lProt$data$sample_weight <- wt_map[lProt$data$sampleName]
+  lProt$set_data(
+    lProt$data_long() |> dplyr::mutate(sample_weight = wt_map[sampleName])
+  )
 
   # Fit with weights
   strat_wt <- prolfqua::strategy_limma("transformedIntensity ~ group_", weights = "sample_weight")

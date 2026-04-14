@@ -51,9 +51,9 @@ stopifnot("LFQDataPlotter" \%in\% class(lfqdata$get_Plotter()))
 stopifnot("AggregateMedpolish" \%in\% class(lfqdata$get_Aggregator("medpolish")))
 
 lfqdata2 <- lfqdata$get_copy()
-lfqdata2$data <- lfqdata2$data[1:100,]
+lfqdata2$set_data(lfqdata2$data_long()[1:100, ])
 res <- lfqdata$filter_difference(lfqdata2)
-stopifnot(nrow(res$data) == nrow(lfqdata$data) - 100)
+stopifnot(nrow(res$data_long()) == nrow(lfqdata$data_long()) - 100)
 
 tmp <- lfqdata$get_sample(5, seed = 4)
 stopifnot(nrow(tmp$hierarchy()) == 5)
@@ -78,20 +78,13 @@ Other LFQData:
 }
 \if{html}{\out{</div>}}
 }
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{data}}{use data_long() for reading, set_data() for writing}
-
-\item{\code{config}}{use API methods (response(), hierarchy_keys(), etc.) where possible}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-LFQData-new}{\code{LFQData$new()}}
 \item \href{#method-LFQData-set_data}{\code{LFQData$set_data()}}
+\item \href{#method-LFQData-get_config}{\code{LFQData$get_config()}}
+\item \href{#method-LFQData-set_config_value}{\code{LFQData$set_config_value()}}
 \item \href{#method-LFQData-get_copy}{\code{LFQData$get_copy()}}
 \item \href{#method-LFQData-get_sample}{\code{LFQData$get_sample()}}
 \item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
@@ -171,6 +164,38 @@ set data (replaces the internal data frame)
 }
 \subsection{Returns}{
 self (invisible)
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-get_config"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_config}{}}}
+\subsection{Method \code{get_config()}}{
+return the AnalysisConfiguration object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_config()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+AnalysisConfiguration
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-set_config_value"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-set_config_value}{}}}
+\subsection{Method \code{set_config_value()}}{
+set a config field value
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$set_config_value(field, value)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{field}}{character — field name}
+
+\item{\code{value}}{the value to set}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -341,7 +366,7 @@ converts the data to wide
 \describe{
 \item{\code{as.matrix}}{return as data.frame or matrix}
 
-\item{\code{value}}{see possible lfqdata$config$value_vars()}
+\item{\code{value}}{see possible lfqdata$get_config()$value_vars()}
 }
 \if{html}{\out{</div>}}
 }

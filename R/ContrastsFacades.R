@@ -2,12 +2,12 @@
 
 .assert_aggregated_facade_input <- function(lfqdata, facade_name) {
   subject_id <- lfqdata$subject_id()
-  hierarchy_keys <- lfqdata$config$hierarchy_keys()
+  hierarchy_keys <- lfqdata$hierarchy_keys()
   if (!identical(subject_id, hierarchy_keys)) {
     stop(
       facade_name,
       " requires aggregated LFQData. ",
-      "`lfqdata$subject_id()` must equal `lfqdata$config$hierarchy_keys()`. ",
+      "`lfqdata$subject_id()` must equal `lfqdata$hierarchy_keys()`. ",
       "Aggregate first.",
       call. = FALSE
     )
@@ -16,13 +16,13 @@
 
 .assert_nested_facade_input <- function(lfqdata, facade_name) {
   subject_id <- lfqdata$subject_id()
-  hierarchy_keys <- lfqdata$config$hierarchy_keys()
+  hierarchy_keys <- lfqdata$hierarchy_keys()
   if (!(all(subject_id %in% hierarchy_keys) && length(subject_id) < length(hierarchy_keys))) {
     stop(
       facade_name,
       " requires LFQData with additional hierarchy below `subject_id()`. ",
       "`lfqdata$subject_id()` must be a strict subset of ",
-      "`lfqdata$config$hierarchy_keys()`. Do not aggregate first.",
+      "`lfqdata$hierarchy_keys()`. Do not aggregate first.",
       call. = FALSE
     )
   }
@@ -30,7 +30,7 @@
 
 .assert_firth_facade_input <- function(lfqdata, facade_name) {
   subject_id <- lfqdata$subject_id()
-  hierarchy_keys <- lfqdata$config$hierarchy_keys()
+  hierarchy_keys <- lfqdata$hierarchy_keys()
   is_aggregated <- identical(subject_id, hierarchy_keys)
   is_nested <- all(subject_id %in% hierarchy_keys) && length(subject_id) < length(hierarchy_keys)
   if (!(is_aggregated || is_nested)) {
@@ -48,7 +48,7 @@
 # Returns a data.frame with hierarchy columns + contrast, or 0 rows if nothing missing.
 .compute_missing <- function(lfqdata, contrast_names, contrast_result) {
   subject_id <- lfqdata$subject_id()
-  all_subjects <- lfqdata$data |>
+  all_subjects <- lfqdata$data_long() |>
     dplyr::select(dplyr::all_of(subject_id)) |>
     dplyr::distinct()
   expected <- tidyr::crossing(all_subjects, contrast = contrast_names)
@@ -101,13 +101,13 @@ ContrastsLimmaFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
-    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$config$nr_children, ...) {
+    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma(lfqdata, strat)
@@ -174,7 +174,7 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
     #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
     initialize = function(
       lfqdata,
@@ -182,13 +182,13 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
       contrasts,
       lod = NULL,
       df_method = c("observed", "borrowed"),
-      weights = lfqdata$config$nr_children,
+      weights = lfqdata$nr_children_col(),
       ...
     ) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaImputeFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_impute(lfqdata, strat, lod = lod, df_method = df_method)
@@ -249,7 +249,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param span lowess smoother span for vooma trend (default 0.5)
     #' @param plot logical; if TRUE, plot the mean-variance trend
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
@@ -257,7 +257,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
       lfqdata,
       modelstr,
       contrasts,
-      weights = lfqdata$config$nr_children,
+      weights = lfqdata$nr_children_col(),
       span = 0.5,
       plot = FALSE,
       ...
@@ -265,7 +265,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
       .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaVoomFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
@@ -329,7 +329,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
     #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param span lowess smoother span for vooma trend (default 0.5)
     #' @param plot logical; if TRUE, plot the mean-variance trend
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
@@ -339,7 +339,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
       contrasts,
       lod = NULL,
       df_method = c("observed", "borrowed"),
-      weights = lfqdata$config$nr_children,
+      weights = lfqdata$nr_children_col(),
       span = 0.5,
       plot = FALSE,
       ...
@@ -347,7 +347,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
       .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaVoomImputeFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_voom_impute(
@@ -424,7 +424,7 @@ ContrastsLimpaFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_limpa}} (e.g. trend, robust)
     initialize = function(lfqdata, modelstr, contrasts, plot = FALSE, span = NULL, ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLimpaFacade")
-      if (length(lfqdata$config$opt_se) == 0 || nchar(lfqdata$config$opt_se) == 0) {
+      if (length(lfqdata$get_config()$opt_se) == 0 || nchar(lfqdata$get_config()$opt_se) == 0) {
         stop(
           "ContrastsLimpaFacade requires LFQData with config$opt_se set. ",
           "Use AggregateLimpa to produce the input."
@@ -432,7 +432,7 @@ ContrastsLimpaFacade <- R6::R6Class(
       }
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_limpa(full_formula, plot = plot, span = span, ...)
       self$model <- build_model_limpa(lfqdata, strat)
@@ -494,13 +494,13 @@ ContrastsLMFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_lm}}
-    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$config$nr_children, ...) {
+    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLMFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
@@ -565,7 +565,7 @@ ContrastsRLMFacade <- R6::R6Class(
       .assert_aggregated_facade_input(lfqdata, "ContrastsRLMFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_rlm(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
@@ -635,7 +635,7 @@ ContrastsLmerFacade <- R6::R6Class(
       .assert_nested_facade_input(lfqdata, "ContrastsLmerFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lmer(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
@@ -702,13 +702,13 @@ ContrastsLMMissingFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_lm}}
-    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$config$nr_children, ...) {
+    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLMMissingFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
@@ -779,7 +779,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
     #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(
       lfqdata,
@@ -788,13 +788,13 @@ ContrastsLMImputeFacade <- R6::R6Class(
       lod = NULL,
       borrow_method = c("sigma", "vcov"),
       df_method = c("observed", "borrowed"),
-      weights = lfqdata$config$nr_children,
+      weights = lfqdata$nr_children_col(),
       ...
     ) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLMImputeFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model_impute(
@@ -926,19 +926,19 @@ ContrastsDEqMSFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.
+    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_lm}}
-    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$config$nr_children, ...) {
+    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsDEqMSFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
       base_contrast <- Contrasts$new(self$model, contrasts)
-      count_column <- lfqdata$config$nr_children
-      count_df <- lfqdata$data |>
+      count_column <- lfqdata$nr_children_col()
+      count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
     },
@@ -1004,15 +1004,15 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
       .assert_aggregated_facade_input(lfqdata, "ContrastsDEqMSVoomFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       # No external weights — vooma handles mean-variance only
       strat <- strategy_limma(full_formula, weights = NULL, ...)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
       # eBayes = FALSE: DEqMS replaces eBayes moderation
       base_contrast <- ContrastsLimma$new(self$model, contrasts, eBayes = FALSE)
-      count_column <- lfqdata$config$nr_children
-      count_df <- lfqdata$data |>
+      count_column <- lfqdata$nr_children_col()
+      count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
     },
@@ -1077,12 +1077,12 @@ ContrastsROPECAFacade <- R6::R6Class(
       .assert_nested_facade_input(lfqdata, "ContrastsROPECAFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
-      response <- lfqdata$config$get_response()
+      response <- lfqdata$response()
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, ...)
       # ROPECA requires subject_id with >1 element (protein + peptide level).
       # Use all hierarchy keys, not just those at hierarchyDepth.
-      subject_id <- lfqdata$config$hierarchy_keys()
+      subject_id <- lfqdata$hierarchy_keys()
       self$model <- build_model(lfqdata, strat, subject_id = subject_id)
       self$contrast <- ContrastsROPECA$new(Contrasts$new(self$model, contrasts))
     },

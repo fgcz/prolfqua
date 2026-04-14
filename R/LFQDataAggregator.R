@@ -87,7 +87,7 @@ AggregateMedpolish <- R6::R6Class(
           "You did not transform the intensities. ",
           "medpolish works best with already variance stabilized intensities. ",
           "Use LFQData$get_Transformer to transform the data: ",
-          lfq$config$work_intensity
+          lfq$get_config()$work_intensity
         )
       }
       self$lfq <- lfq$clone(deep = TRUE)
@@ -163,7 +163,7 @@ AggregateRlm <- R6::R6Class(
           "You did not transform the intensities. ",
           "Robust regression works best with already variance stabilized intensities. ",
           "Use LFQData$get_Transformer to transform the data. ",
-          lfq$config$work_intensity
+          lfq$get_config()$work_intensity
         )
       }
       self$lfq <- lfq$clone(deep = TRUE)
@@ -246,7 +246,7 @@ AggregateTopN <- R6::R6Class(
     initialize = function(lfq, prefix = "protein", N = 3, func = "sum") {
       .check_aggregatable(lfq)
       if (lfq$is_transformed()) {
-        warning("You did transform the intensities. top N works with raw data. ", lfq$config$work_intensity)
+        warning("You did transform the intensities. top N works with raw data. ", lfq$get_config()$work_intensity)
       }
       match.arg(func, c("sum", "mean"))
       self$lfq <- lfq$clone(deep = TRUE)
@@ -504,7 +504,7 @@ AggregateLimpa <- R6::R6Class(
       self$lfq_agg <- .elist_to_lfqdata(
         elist,
         wide,
-        self$lfq$config,
+        self$lfq$get_config(),
         self$prefix,
         self$impute_only
       )

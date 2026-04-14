@@ -541,7 +541,7 @@ rlm_estimate_dfconfig <- function(pdata, response, hierarchy_keys, hierarchy_key
 #'
 estimate_intensity <- function(lfqdata, .func) {
   make_name <- .func(name = TRUE)
-  config <- lfqdata$config$clone(deep = TRUE)
+  config <- lfqdata$get_config()$clone(deep = TRUE)
   data <- lfqdata$data_long()
 
   # Extract column names once for passing to sub-functions
@@ -670,7 +670,7 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
 #'
 aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
   newcol <- make.names(paste0("srm_", .func(name = TRUE), "_", N))
-  config <- lfqdata$config$clone(deep = TRUE)
+  config <- lfqdata$get_config()$clone(deep = TRUE)
 
   top_intensities <-
     ranked_data |> dplyr::filter(!!sym("srm_meanIntRank") <= N)

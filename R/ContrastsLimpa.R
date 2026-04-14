@@ -89,8 +89,8 @@ build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_nam
     )
   }
 
-  se_col <- lfqdata$config$opt_se
-  nr_col <- lfqdata$config$nr_children
+  se_col <- lfqdata$get_config()$opt_se
+  nr_col <- lfqdata$nr_children_col()
   stopifnot(
     "LFQData must have config$opt_se set (from AggregateLimpa)" = length(se_col) > 0 && nchar(se_col) > 0,
     "LFQData must have config$nr_children set" = length(nr_col) > 0 && nchar(nr_col) > 0

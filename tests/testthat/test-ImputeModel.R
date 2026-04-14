@@ -24,7 +24,7 @@ test_that("build_model_impute recovers singular proteins", {
   lfqdata <- LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
 
-  response <- lfqdata$config$get_response()
+  response <- lfqdata$response()
   strat <- strategy_lm(paste(response, "~ group_"))
 
   mod_no_impute <- build_model(lfqdata, strat)
@@ -50,7 +50,7 @@ test_that("Contrasts work on imputed model", {
   lfqdata <- LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
 
-  strat <- strategy_lm(paste(lfqdata$config$get_response(), "~ group_"))
+  strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
   mod <- build_model_impute(lfqdata, strat)
 
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

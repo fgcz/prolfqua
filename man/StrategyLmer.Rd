@@ -15,8 +15,8 @@ via \code{\link[lmerTest]{lmer}} and extract contrasts.
 \examples{
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
 istar <- prolfqua::LFQData$new(istar$data, istar$config)
-istar$data <- istar$data |> dplyr::group_by(protein_Id) |>
-  dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup()
+istar$set_data(istar$data_long() |> dplyr::group_by(protein_Id) |>
+  dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup())
 strat <- StrategyLmer$new("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 mod <- build_model(istar, strat)

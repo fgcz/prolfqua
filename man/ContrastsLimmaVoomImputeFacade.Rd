@@ -143,7 +143,7 @@ initialize
   contrasts,
   lod = NULL,
   df_method = c("observed", "borrowed"),
-  weights = lfqdata$config$nr_children,
+  weights = lfqdata$nr_children_col(),
   span = 0.5,
   plot = FALSE,
   ...
@@ -165,7 +165,7 @@ initialize
 "borrowed" uses median df from successful fits}
 
 \item{\code{weights}}{column name for per-observation weights (default:
-\code{lfqdata$config$nr_children}). Pass \code{NULL} for unweighted.}
+\code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.}
 
 \item{\code{span}}{lowess smoother span for vooma trend (default 0.5)}
 

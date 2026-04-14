@@ -79,7 +79,7 @@ contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
   stopifnot("LFQData" %in% class(lfqdata))
   lfq_missing <- lfqdata$get_copy()
   lfq_missing$set_data(prolfqua::encode_bin_resp(lfq_missing))
-  lfq_missing$config$bin_resp <- "bin_resp"
+  lfq_missing$set_config_value("bin_resp", "bin_resp")
   lfq_missing
 }
 
@@ -104,7 +104,7 @@ contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
 build_model_glm_protein <- function(lfqdata, modelstr) {
   .assert_aggregated_facade_input(lfqdata, "build_model_glm_protein")
   lfq_missing <- .prepare_logistf_lfqdata(lfqdata)
-  formula <- paste(lfq_missing$config$bin_resp, modelstr)
+  formula <- paste(lfq_missing$get_config()$bin_resp, modelstr)
   build_model_logistf(lfq_missing, formula)
 }
 
@@ -130,7 +130,7 @@ build_model_glm_protein <- function(lfqdata, modelstr) {
 build_model_glm_peptide <- function(lfqdata, modelstr) {
   .assert_nested_facade_input(lfqdata, "build_model_glm_peptide")
   lfq_missing <- .prepare_logistf_lfqdata(lfqdata)
-  formula <- paste(lfq_missing$config$bin_resp, modelstr)
+  formula <- paste(lfq_missing$get_config()$bin_resp, modelstr)
   build_model_logistf(lfq_missing, formula)
 }
 
@@ -145,7 +145,7 @@ build_model_glm_peptide <- function(lfqdata, modelstr) {
 #' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
 #' istar$config$bin_resp <- "bin_resp"
 #' tmp <- LFQData$new(istar$data, istar$config)
-#' formula <- paste0(tmp$config$bin_resp , "~ group_")
+#' formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 #' xx2 <- build_model_logistf(tmp, formula)
 #'
 #' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
@@ -153,7 +153,7 @@ build_model_glm_peptide <- function(lfqdata, modelstr) {
 #' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
 #' istar$config$bin_resp <- "bin_resp"
 #' tmp <- LFQData$new(istar$data, istar$config)
-#' formula <- paste0(tmp$config$bin_resp , "~ group_")
+#' formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 #' xx <- build_model_logistf(tmp, formula)
 #'
 #'
@@ -180,11 +180,16 @@ build_model_logistf <- function(data, formula) {
   models2 <- NULL
   hkey <- NULL
   if (nrow(df2) > 0) {
-    hkey <- tail(pep$config$hierarchy_keys(), n = 1)
+    hkey <- tail(pep$get_config()$hierarchy_keys(), n = 1)
     lfq2 <- pep$get_subset(df2)
     formula2 <- paste0(formula, "+", hkey)
     model_strategy2 <- prolfqua::strategy_logistf(formula2)
-    models2 <- model_analyse(lfq2$data, model_strategy2, model_name = "logistf_2", subject_id = lfq2$subject_id())
+    models2 <- model_analyse(
+      lfq2$data_long(),
+      model_strategy2,
+      model_name = "logistf_2",
+      subject_id = lfq2$subject_id()
+    )
     models2$strategy = model_strategy2
   }
 
@@ -193,7 +198,12 @@ build_model_logistf <- function(data, formula) {
   if (nrow(df1) > 0) {
     lfq1 <- pep$get_subset(df1)
     model_strategy1 <- prolfqua::strategy_logistf(formula)
-    models1 <- model_analyse(lfq1$data, model_strategy1, model_name = "logistf_1", subject_id = lfq1$subject_id())
+    models1 <- model_analyse(
+      lfq1$data_long(),
+      model_strategy1,
+      model_name = "logistf_1",
+      subject_id = lfq1$subject_id()
+    )
     models1$strategy = model_strategy1
   }
   res <- ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey))
@@ -276,7 +286,7 @@ sim_build_models_logistf <- function(
   } else {
     NULL
   }
-  model_function <- paste0(istar$config$bin_resp, model)
+  model_function <- paste0(istar$get_config()$bin_resp, model)
   mod <- build_model_logistf(
     istar,
     model_function
@@ -397,7 +407,7 @@ StrategyLogistf <- R6::R6Class(
 #' df <- istar$summarize_hierarchy()
 #' df2 <- df[df[[ncol(df)]] > 1, ]
 #' istar2 <- istar$get_subset(df2)
-#' istar2$data |>
+#' istar2$data_long() |>
 #'   dplyr::group_by(protein_Id) |>
 #'   tidyr::nest() -> nestProtein
 #' modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",

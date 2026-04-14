@@ -119,11 +119,11 @@ compute_borrowed_variance_limma <- function(fit) {
   wide <- lfqdata$to_wide(as.matrix = TRUE)
   expr_matrix <- wide$data
   annotation <- wide$annotation
-  subject_id <- lfqdata$config$hierarchy_keys()
+  subject_id <- lfqdata$hierarchy_keys()
   rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_id))
-  if (anyDuplicated(rowdata) && !is.null(lfqdata$config$isotope_label)) {
+  if (anyDuplicated(rowdata) && !is.null(lfqdata$isotope_label())) {
     rowdata <- wide$rowdata |>
-      dplyr::select(dplyr::all_of(unique(c(subject_id, lfqdata$config$isotope_label))))
+      dplyr::select(dplyr::all_of(unique(c(subject_id, lfqdata$isotope_label()))))
     subject_id <- colnames(rowdata)
   }
 
@@ -182,13 +182,13 @@ compute_borrowed_variance_limma <- function(fit) {
     if (wcol %in% colnames(annotation)) {
       return(annotation[[wcol]])
     }
-    if (wcol %in% colnames(lfqdata$data)) {
-      if (wcol %in% lfqdata$config$value_vars()) {
+    if (wcol %in% colnames(lfqdata$data_long())) {
+      if (wcol %in% lfqdata$get_config()$value_vars()) {
         wt_wide <- lfqdata$to_wide(as.matrix = TRUE, value = wcol)
         return(wt_wide$data)
       } else {
-        fname_col <- lfqdata$config$file_name
-        wt_df <- unique(lfqdata$data[, c(fname_col, wcol)])
+        fname_col <- lfqdata$file_name()
+        wt_df <- unique(lfqdata$data_long()[, c(fname_col, wcol)])
         wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
         return(wt_df[[wcol]])
       }
@@ -318,7 +318,7 @@ build_model_limma_impute <- function(
 
   # Step 3: Compute LOD if not provided
   if (is.null(lod)) {
-    mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
+    mh <- MissingHelpers$new(lfqdata$data_long(), lfqdata$get_config())
     lod <- mh$get_lod()
   }
 
@@ -578,7 +578,7 @@ build_model_limma_voom_impute <- function(
 
   # Step 3: Compute LOD if not provided
   if (is.null(lod)) {
-    mh <- MissingHelpers$new(lfqdata$data, lfqdata$config)
+    mh <- MissingHelpers$new(lfqdata$data_long(), lfqdata$get_config())
     lod <- mh$get_lod()
   }
 

@@ -45,9 +45,9 @@
 #' stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))
 #'
 #' lfqdata2 <- lfqdata$get_copy()
-#' lfqdata2$data <- lfqdata2$data[1:100,]
+#' lfqdata2$set_data(lfqdata2$data_long()[1:100, ])
 #' res <- lfqdata$filter_difference(lfqdata2)
-#' stopifnot(nrow(res$data) == nrow(lfqdata$data) - 100)
+#' stopifnot(nrow(res$data_long()) == nrow(lfqdata$data_long()) - 100)
 #'
 #' tmp <- lfqdata$get_sample(5, seed = 4)
 #' stopifnot(nrow(tmp$hierarchy()) == 5)
@@ -57,24 +57,6 @@ LFQData <- R6::R6Class(
   private = list(
     .data = NULL,
     .config = NULL
-  ),
-  active = list(
-    #' @field data use data_long() for reading, set_data() for writing
-    data = function(value) {
-      if (missing(value)) {
-        return(private$.data)
-      } else {
-        private$.data <- value
-      }
-    },
-    #' @field config use API methods (response(), hierarchy_keys(), etc.) where possible
-    config = function(value) {
-      if (missing(value)) {
-        return(private$.config)
-      } else {
-        private$.config <- value
-      }
-    }
   ),
   public = list(
     #' @field prefix e.g. "peptide_", "protein_", "compound_"
@@ -101,6 +83,20 @@ LFQData <- R6::R6Class(
     #' @return self (invisible)
     set_data = function(new_data) {
       private$.data <- new_data
+      invisible(self)
+    },
+    #' @description
+    #' return the AnalysisConfiguration object
+    #' @return AnalysisConfiguration
+    get_config = function() {
+      private$.config
+    },
+    #' @description
+    #' set a config field value
+    #' @param field character — field name
+    #' @param value the value to set
+    set_config_value = function(field, value) {
+      private$.config[[field]] <- value
       invisible(self)
     },
     #' @description
@@ -178,7 +174,7 @@ LFQData <- R6::R6Class(
       } else {
         if (factor_depth >= 1) {
           lfq_copy <- self$get_copy()
-          lfq_copy$config$factor_depth <- factor_depth
+          lfq_copy$set_config_value("factor_depth", factor_depth)
           missing <- prolfqua::summarize_stats_factors(lfq_copy)
         } else {
           missing <- prolfqua::summarize_stats_all(self)
@@ -205,7 +201,7 @@ LFQData <- R6::R6Class(
     #' @description
     #' converts the data to wide
     #' @param as.matrix return as data.frame or matrix
-    #' @param value see possible lfqdata$config$value_vars()
+    #' @param value see possible lfqdata$get_config()$value_vars()
     #' @return list with data, annotation, and configuration
     #'
     to_wide = function(as.matrix = FALSE, value = NULL) {
@@ -384,7 +380,7 @@ LFQData <- R6::R6Class(
     #' @return LFQData
     #'
     filter_difference = function(other) {
-      diffdata <- prolfqua::filter_difference(private$.data, other$data, private$.config)
+      diffdata <- prolfqua::filter_difference(private$.data, other$data_long(), private$.config)
       res <- LFQData$new(diffdata, private$.config$clone(deep = TRUE))
       return(res)
     }
@@ -570,9 +566,9 @@ LFQDataToSummarizedExperiment <- function(lfqdata) {
   if (requireNamespace("SummarizedExperiment")) {
     wide <- lfqdata$to_wide(as.matrix = TRUE)
     ann <- data.frame(wide$annotation)
-    rownames(ann) <- wide$annotation[[lfqdata$config$sample_name]]
+    rownames(ann) <- wide$annotation[[lfqdata$sample_name()]]
     assays <- S4Vectors::SimpleList(LFQ = wide$data)
-    if ("nr_children" %in% lfqdata$config$value_vars()) {
+    if ("nr_children" %in% lfqdata$get_config()$value_vars()) {
       nr_children <- lfqdata$to_wide(as.matrix = TRUE, value = "nr_children")
       assays[["nr_children"]] <- nr_children$data
     }

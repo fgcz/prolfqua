@@ -101,7 +101,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @return LFQDataTransformer
     log2 = function(force = FALSE) {
       if (!self$lfq$is_transformed() | force) {
-        cfg <- self$lfq$config$clone(deep = TRUE)
+        cfg <- self$lfq$get_config()$clone(deep = TRUE)
         new_data <- prolfqua::transform_work_intensity(self$lfq$data_long(), cfg, log2)
         self$lfq <- LFQData$new(new_data, cfg)
       } else {
@@ -113,7 +113,7 @@ LFQDataTransformer <- R6::R6Class(
     #' get mean and variance and standard deviation in each sample
     #' @return list with means and mads
     get_scales = function() {
-      get_robscales(self$lfq$data_long(), self$lfq$config)
+      get_robscales(self$lfq$data_long(), self$lfq$get_config())
     },
     #' @description
     #' robust scale data
@@ -137,7 +137,7 @@ LFQDataTransformer <- R6::R6Class(
         warning("the subset must have the same config as self")
         invisible(NULL)
       }
-      cfg <- self$lfq$config$clone(deep = TRUE)
+      cfg <- self$lfq$get_config()$clone(deep = TRUE)
       scales <- prolfqua::scale_with_subset(
         self$lfq$data_long(),
         lfqsubset$data_long(),
@@ -181,7 +181,7 @@ LFQDataTransformer <- R6::R6Class(
     intensity_array = function(.func = log2, force = FALSE) {
       if (!self$lfq$is_transformed() | force) {
         .call <- as.list(match.call())
-        cfg <- self$lfq$config$clone(deep = TRUE)
+        cfg <- self$lfq$get_config()$clone(deep = TRUE)
         new_data <- prolfqua::transform_work_intensity(
           self$lfq$data_long(),
           cfg,
@@ -205,7 +205,7 @@ LFQDataTransformer <- R6::R6Class(
     intensity_matrix = function(.func = robust_scale, force = FALSE) {
       if (!self$lfq$is_transformed() | force) {
         .call <- as.list(match.call())
-        cfg <- self$lfq$config$clone(deep = TRUE)
+        cfg <- self$lfq$get_config()$clone(deep = TRUE)
         new_data <- prolfqua::apply_to_response_matrix(
           self$lfq$data_long(),
           cfg,
@@ -537,7 +537,7 @@ center_to_reference <- function(
 #' bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #' x <- LFQData$new(bb$data, bb$config)
 #' xc <- x$get_copy()
-#' xc$data <- xc$data |> dplyr::filter(protein_Id == "0EfVhX~3967")
+#' xc$set_data(xc$data_long() |> dplyr::filter(protein_Id == "0EfVhX~3967"))
 #' xxd <- center_to_reference_cfg(x, xc, summary="median")
 #' xxd$response()
 #' xxd$data
@@ -551,9 +551,9 @@ center_to_reference_cfg <- function(lfqdata, lfqdareference, summary = c("median
   } else {
     resdata <- lfqdata
   }
-  cfg <- resdata$config
-  data <- center_to_reference(lfqdata$data, lfqdareference$data, cfg$sample_name, cfg$get_response())
-  resdata$data <- data
+  cfg <- resdata$get_config()
+  data <- center_to_reference(lfqdata$data_long(), lfqdareference$data_long(), cfg$sample_name, cfg$get_response())
+  resdata$set_data(data)
   if (summary == "median") {
     cfg$set_response("centered_abundance_by_median")
   } else if (summary == "mean") {
