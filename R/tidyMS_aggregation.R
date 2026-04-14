@@ -760,51 +760,74 @@ nr_obs_sample <- function(
 }
 
 
-#' Count observations per experiment (max nr_children across samples)
+#' Max nr_children across samples per hierarchy unit
 #'
-#' @export
+#' Aggregates nr_children per sample (via nr_obs_sample), then takes the max per hierarchy unit.
+#'
 #' @param data data.frame
-#' @param hierarchy_keys character vector — all hierarchy column names
+#' @param response character — intensity column name
 #' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
+#' @param file_name character — file name column
 #' @param nr_children_col character — nr_children column name
-#' @param response character — intensity column name (needed when from_children = TRUE)
-#' @param file_name character — file name column (needed when from_children = TRUE)
-#' @param from_children TRUE compute from nr_children column, FALSE count distinct hierarchy entries
-#' @param name_nr_child how to name output column
+#' @param name_nr_child character — output column name
+#' @export
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(dd$data, dd$config)
-#' xd <- nr_obs_experiment(lfq$data_long(), lfq$hierarchy_keys(),
-#'   lfq$relevant_hierarchy_keys(), lfq$nr_children_col(),
-#'   response = lfq$response(), file_name = lfq$file_name())
+#' xd <- nr_children_experiment(lfq$data_long(), lfq$response(),
+#'   lfq$relevant_hierarchy_keys(), lfq$file_name(), lfq$nr_children_col())
 #' stopifnot(min(xd$nr_child_exp) == 1)
-#' xd2 <- nr_obs_experiment(lfq$data_long(), lfq$hierarchy_keys(),
-#'   lfq$relevant_hierarchy_keys(), lfq$nr_children_col(), from_children = FALSE)
 #'
-nr_obs_experiment <- function(
+nr_children_experiment <- function(
   data,
-  hierarchy_keys,
+  response,
   hierarchy_keys_depth,
+  file_name,
   nr_children_col,
-  response = NULL,
-  file_name = NULL,
-  from_children = TRUE,
   name_nr_child = "nr_child_exp"
 ) {
+  xz <- nr_obs_sample(data, response, hierarchy_keys_depth, file_name, nr_children_col)
+  xz |>
+    group_by(!!!syms(hierarchy_keys_depth)) |>
+    dplyr::summarize(!!name_nr_child := max(!!sym(nr_children_col)), .groups = "drop")
+}
+
+#' Count distinct child features per hierarchy unit
+#'
+#' Counts the number of distinct child-level entries (e.g. peptides per protein).
+#'
+#' @param data data.frame
+#' @param hierarchy_keys character vector — all hierarchy column names
+#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
+#' @param name_nr_child character — output column name
+#' @export
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' lfq <- LFQData$new(dd$data, dd$config)
+#' xd <- nr_features_experiment(lfq$data_long(), lfq$hierarchy_keys(),
+#'   lfq$relevant_hierarchy_keys())
+#' stopifnot(min(xd$nr_child_exp) == 1)
+#'
+nr_features_experiment <- function(data, hierarchy_keys, hierarchy_keys_depth, name_nr_child = "nr_child_exp") {
+  data |>
+    dplyr::select(hierarchy_keys) |>
+    distinct() |>
+    dplyr::group_by(!!!syms(hierarchy_keys_depth)) |>
+    dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
+}
+
+#' deprecated — use nr_children_experiment or nr_features_experiment
+#' @param ... passed to the new function
+#' @param from_children if TRUE use nr_children_experiment, otherwise nr_features_experiment
+#' @export
+#' @keywords internal
+nr_obs_experiment <- function(..., from_children = TRUE) {
   if (from_children) {
-    stopifnot(!is.null(response), !is.null(file_name))
-    xz <- nr_obs_sample(data, response, hierarchy_keys_depth, file_name, nr_children_col)
-    xz <- xz |>
-      group_by(!!!syms(hierarchy_keys_depth)) |>
-      dplyr::summarize(!!name_nr_child := max(!!sym(nr_children_col)), .groups = "drop")
-    return(xz)
+    .Deprecated("nr_children_experiment")
+    nr_children_experiment(...)
   } else {
-    xq <- data |>
-      dplyr::select(hierarchy_keys) |>
-      distinct() |>
-      dplyr::group_by(!!!syms(hierarchy_keys_depth)) |>
-      dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
-    return(xq)
+    .Deprecated("nr_features_experiment")
+    nr_features_experiment(...)
   }
 }
 

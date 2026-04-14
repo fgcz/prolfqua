@@ -2,47 +2,16 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{nr_obs_experiment}
 \alias{nr_obs_experiment}
-\title{Count observations per experiment (max nr_children across samples)}
+\title{deprecated — use nr_children_experiment or nr_features_experiment}
 \usage{
-nr_obs_experiment(
-  data,
-  hierarchy_keys,
-  hierarchy_keys_depth,
-  nr_children_col,
-  response = NULL,
-  file_name = NULL,
-  from_children = TRUE,
-  name_nr_child = "nr_child_exp"
-)
+nr_obs_experiment(..., from_children = TRUE)
 }
 \arguments{
-\item{data}{data.frame}
+\item{...}{passed to the new function}
 
-\item{hierarchy_keys}{character vector — all hierarchy column names}
-
-\item{hierarchy_keys_depth}{character vector — hierarchy columns at current depth}
-
-\item{nr_children_col}{character — nr_children column name}
-
-\item{response}{character — intensity column name (needed when from_children = TRUE)}
-
-\item{file_name}{character — file name column (needed when from_children = TRUE)}
-
-\item{from_children}{TRUE compute from nr_children column, FALSE count distinct hierarchy entries}
-
-\item{name_nr_child}{how to name output column}
+\item{from_children}{if TRUE use nr_children_experiment, otherwise nr_features_experiment}
 }
 \description{
-Count observations per experiment (max nr_children across samples)
+deprecated — use nr_children_experiment or nr_features_experiment
 }
-\examples{
-dd <- prolfqua::sim_lfq_data_peptide_config()
-lfq <- LFQData$new(dd$data, dd$config)
-xd <- nr_obs_experiment(lfq$data_long(), lfq$hierarchy_keys(),
-  lfq$relevant_hierarchy_keys(), lfq$nr_children_col(),
-  response = lfq$response(), file_name = lfq$file_name())
-stopifnot(min(xd$nr_child_exp) == 1)
-xd2 <- nr_obs_experiment(lfq$data_long(), lfq$hierarchy_keys(),
-  lfq$relevant_hierarchy_keys(), lfq$nr_children_col(), from_children = FALSE)
-
-}
+\keyword{internal}
