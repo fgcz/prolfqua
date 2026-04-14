@@ -74,11 +74,16 @@ Other LFQData:
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{config}}{AnalysisConfiguration}
-
-\item{\code{data}}{data.frame or tibble matching AnalysisConfiguration.}
-
 \item{\code{prefix}}{e.g. "peptide_", "protein_", "compound_"}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{data}}{use data_long() for reading, set_data() for writing}
+
+\item{\code{config}}{use API methods (response(), hierarchy_keys(), etc.) where possible}
 }
 \if{html}{\out{</div>}}
 }
@@ -86,6 +91,7 @@ Other LFQData:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-LFQData-new}{\code{LFQData$new()}}
+\item \href{#method-LFQData-set_data}{\code{LFQData$set_data()}}
 \item \href{#method-LFQData-get_copy}{\code{LFQData$get_copy()}}
 \item \href{#method-LFQData-get_sample}{\code{LFQData$get_sample()}}
 \item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
@@ -145,6 +151,26 @@ initialize
 \item{\code{is_pep}}{todo}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-set_data"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-set_data}{}}}
+\subsection{Method \code{set_data()}}{
+set data (replaces the internal data frame)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$set_data(new_data)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{new_data}}{data.frame}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+self (invisible)
 }
 }
 \if{html}{\out{<hr>}}
@@ -445,9 +471,16 @@ return isotope label column name
 \subsection{Method \code{data_long()}}{
 return the tidy (long-format) data frame
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$data_long()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$data_long(na.omit = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{na.omit}}{if TRUE, remove rows with NA in response column}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-data_wide"></a>}}

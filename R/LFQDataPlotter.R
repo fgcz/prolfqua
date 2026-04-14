@@ -51,7 +51,6 @@ LFQDataPlotter <- R6::R6Class(
     initialize = function(lfqdata, prefix = "ms_") {
       self$lfq = lfqdata$clone(deep = TRUE)
       self$prefix = prefix
-      self$lfq$data <- na.omit(self$lfq$data)
     },
 
     #' @description
@@ -227,8 +226,10 @@ LFQDataPlotter <- R6::R6Class(
       if (length(samples) > max) {
         limit <- samples |> sample(max)
         lfq_sub <- self$lfq$get_copy()
-        lfq_sub$data <- lfq_sub$data_long() |>
-          dplyr::filter(!!sym(sample_col) %in% limit)
+        lfq_sub$set_data(
+          lfq_sub$data_long() |>
+            dplyr::filter(!!sym(sample_col) %in% limit)
+        )
         prolfqua::pairs_smooth(lfq_sub$to_wide(as.matrix = TRUE)$data)
       } else {
         prolfqua::pairs_smooth(self$lfq$to_wide(as.matrix = TRUE)$data)

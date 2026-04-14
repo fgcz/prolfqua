@@ -54,11 +54,29 @@
 #'
 LFQData <- R6::R6Class(
   "LFQData",
+  private = list(
+    .data = NULL,
+    .config = NULL
+  ),
+  active = list(
+    #' @field data use data_long() for reading, set_data() for writing
+    data = function(value) {
+      if (missing(value)) {
+        return(private$.data)
+      } else {
+        private$.data <- value
+      }
+    },
+    #' @field config use API methods (response(), hierarchy_keys(), etc.) where possible
+    config = function(value) {
+      if (missing(value)) {
+        return(private$.config)
+      } else {
+        private$.config <- value
+      }
+    }
+  ),
   public = list(
-    #' @field config AnalysisConfiguration
-    config = NULL,
-    #' @field data data.frame or tibble matching AnalysisConfiguration.
-    data = NULL,
     #' @field prefix e.g. "peptide_", "protein_", "compound_"
     prefix = "",
     #' @description
@@ -69,13 +87,21 @@ LFQData <- R6::R6Class(
     #' @param prefix will be use as output prefix
     #' @param setup is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.
     initialize = function(data, config, prefix = "ms_", setup = FALSE) {
-      self$data <- if (setup) {
+      private$.data <- if (setup) {
         setup_analysis(data, config)
       } else {
         data
       }
-      self$config <- config$clone(deep = TRUE)
+      private$.config <- config$clone(deep = TRUE)
       self$prefix <- prefix
+    },
+    #' @description
+    #' set data (replaces the internal data frame)
+    #' @param new_data data.frame
+    #' @return self (invisible)
+    set_data = function(new_data) {
+      private$.data <- new_data
+      invisible(self)
     },
     #' @description
     #' get deep copy
@@ -91,20 +117,20 @@ LFQData <- R6::R6Class(
         set.seed(seed)
       }
       subset <- prolfqua::sample_subset(size = size, self$data_long(), self$relevant_hierarchy_keys())
-      return(LFQData$new(subset, self$config$clone(deep = TRUE)))
+      return(LFQData$new(subset, private$.config$clone(deep = TRUE)))
     },
     #' @description
     #' get subset of data
     #' @param x data frame with columns containing subject_id
     get_subset = function(x) {
       x <- select(x, any_of(self$subject_id())) |> distinct()
-      subset <- inner_join(x, self$data)
-      return(LFQData$new(subset, self$config$clone(deep = TRUE)))
+      subset <- inner_join(x, private$.data)
+      return(LFQData$new(subset, private$.config$clone(deep = TRUE)))
     },
     #' @description
     #' get subject ID columns
     subject_id = function() {
-      return(self$config$hierarchy_keys_depth())
+      return(private$.config$hierarchy_keys_depth())
     },
     #' @description
     #' is data transformed
@@ -112,9 +138,9 @@ LFQData <- R6::R6Class(
     #' @return logical
     is_transformed = function(is_transformed) {
       if (missing(is_transformed)) {
-        return(self$config$is_response_transformed)
+        return(private$.config$is_response_transformed)
       } else {
-        self$config$is_response_transformed = is_transformed
+        private$.config$is_response_transformed = is_transformed
       }
     },
     #' @description
@@ -122,7 +148,7 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     #' @return self
     remove_small_intensities = function(threshold = 4) {
-      self$data <- prolfqua::remove_small_intensities(
+      private$.data <- prolfqua::remove_small_intensities(
         self$data_long(),
         self$response(),
         threshold = threshold
@@ -133,8 +159,8 @@ LFQData <- R6::R6Class(
     #' remove proteins with less than X peptides
     #' @return self
     filter_proteins_by_peptide_count = function() {
-      message("removing proteins with less than: ", self$config$min_peptides_protein, " peptpides")
-      self$data <- prolfqua::filter_proteins_by_peptide_count(self$data, self$config)$data
+      message("removing proteins with less than: ", private$.config$min_peptides_protein, " peptpides")
+      private$.data <- prolfqua::filter_proteins_by_peptide_count(private$.data, private$.config)$data
       invisible(self)
     },
     #' @description
@@ -164,7 +190,7 @@ LFQData <- R6::R6Class(
 
       not_na <- not_na |> dplyr::select(dplyr::all_of(self$hierarchy_keys()))
       not_na_data <- dplyr::inner_join(not_na, self$data_long()) |> ungroup()
-      return(LFQData$new(not_na_data, self$config$clone(deep = TRUE)))
+      return(LFQData$new(not_na_data, private$.config$clone(deep = TRUE)))
     },
 
     #'
@@ -173,7 +199,7 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     #' @return self
     complete_cases = function() {
-      self$data <- prolfqua::complete_cases(self)
+      private$.data <- prolfqua::complete_cases(self)
       invisible(self)
     },
     #' @description
@@ -184,17 +210,17 @@ LFQData <- R6::R6Class(
     #'
     to_wide = function(as.matrix = FALSE, value = NULL) {
       if (is.null(value)) {
-        wide <- prolfqua::tidy_to_wide_config(self$data, self$config, as.matrix = as.matrix)
+        wide <- prolfqua::tidy_to_wide_config(private$.data, private$.config, as.matrix = as.matrix)
       } else {
-        stopifnot(value %in% self$config$value_vars())
+        stopifnot(value %in% private$.config$value_vars())
         wide <- prolfqua::tidy_to_wide_config(
-          self$data,
-          self$config,
+          private$.data,
+          private$.config,
           as.matrix = as.matrix,
           value = value
         )
       }
-      wide$config <- self$config$clone(deep = TRUE)
+      wide$config <- private$.config$clone(deep = TRUE)
       return(wide)
     },
     #' @description
@@ -206,60 +232,64 @@ LFQData <- R6::R6Class(
     #' @description
     #' Hierarchy table
     hierarchy = function() {
-      hk <- self$config$hierarchy_keys_depth()
-      hkdf <- self$data |> select(all_of(hk)) |> distinct()
+      hk <- private$.config$hierarchy_keys_depth()
+      hkdf <- private$.data |> select(all_of(hk)) |> distinct()
       return(hkdf)
     },
     #' @description
     #' name of response variable
     #' @return data.frame
     response = function() {
-      self$config$get_response()
+      private$.config$get_response()
     },
     #' @description
     #' return all hierarchy column names
     hierarchy_keys = function() {
-      self$config$hierarchy_keys()
+      private$.config$hierarchy_keys()
     },
     #' @description
     #' return hierarchy column names at current depth (alias for subject_id)
     relevant_hierarchy_keys = function() {
-      self$config$hierarchy_keys_depth()
+      private$.config$hierarchy_keys_depth()
     },
     #' @description
     #' return all factor column names
     factor_keys = function() {
-      self$config$factor_keys()
+      private$.config$factor_keys()
     },
     #' @description
     #' return factor column names at current depth
     relevant_factor_keys = function() {
-      self$config$factor_keys_depth()
+      private$.config$factor_keys_depth()
     },
     #' @description
     #' return sample name column
     sample_name = function() {
-      self$config$sample_name
+      private$.config$sample_name
     },
     #' @description
     #' return file name column
     file_name = function() {
-      self$config$file_name
+      private$.config$file_name
     },
     #' @description
     #' return name of nr_children column
     nr_children_col = function() {
-      self$config$nr_children
+      private$.config$nr_children
     },
     #' @description
     #' return isotope label column name
     isotope_label = function() {
-      self$config$isotope_label
+      private$.config$isotope_label
     },
     #' @description
     #' return the tidy (long-format) data frame
-    data_long = function() {
-      self$data
+    #' @param na.omit if TRUE, remove rows with NA in response column
+    data_long = function(na.omit = FALSE) {
+      if (na.omit) {
+        return(stats::na.omit(private$.data))
+      }
+      private$.data
     },
     #' @description
     #' return wide-format data (matrix + annotation + rowdata, no config)
@@ -279,13 +309,13 @@ LFQData <- R6::R6Class(
     #' new name of response variable
     #' @param newname default Intensity
     rename_response = function(newname = "Intensity") {
-      if ((newname %in% colnames(self$data))) {
-        msg <- paste(newname, " already in data :", paste(colnames(self$data), collapse = " "), ".")
+      if ((newname %in% colnames(private$.data))) {
+        msg <- paste(newname, " already in data :", paste(colnames(private$.data), collapse = " "), ".")
         message(msg)
       } else {
-        old <- self$config$pop_response()
-        self$config$set_response(newname)
-        self$data <- self$data |> dplyr::rename(!!newname := !!sym(old))
+        old <- private$.config$pop_response()
+        private$.config$set_response(newname)
+        private$.data <- private$.data |> dplyr::rename(!!newname := !!sym(old))
       }
     },
     #' @description
@@ -354,8 +384,8 @@ LFQData <- R6::R6Class(
     #' @return LFQData
     #'
     filter_difference = function(other) {
-      diffdata <- prolfqua::filter_difference(self$data, other$data, self$config)
-      res <- LFQData$new(diffdata, self$config$clone(deep = TRUE))
+      diffdata <- prolfqua::filter_difference(private$.data, other$data, private$.config)
+      res <- LFQData$new(diffdata, private$.config$clone(deep = TRUE))
       return(res)
     }
   )

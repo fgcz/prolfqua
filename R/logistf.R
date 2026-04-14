@@ -78,7 +78,7 @@ contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
 .prepare_logistf_lfqdata <- function(lfqdata) {
   stopifnot("LFQData" %in% class(lfqdata))
   lfq_missing <- lfqdata$get_copy()
-  lfq_missing$data <- prolfqua::encode_bin_resp(lfq_missing)
+  lfq_missing$set_data(prolfqua::encode_bin_resp(lfq_missing))
   lfq_missing$config$bin_resp <- "bin_resp"
   lfq_missing
 }
