@@ -69,8 +69,8 @@ contr_spec <- c("TA - TB" = "TreatmentA - TreatmentB",
 We are then building our model as we specified it before for each protein.
 
 ```{r buildModel}
-mod <- prolfqua::build_model(pMerged$data, formula_Batches,
-  subject_id = pMerged$config$hierarchy_keys() )
+mod <- prolfqua::build_model(pMerged$data_long(), formula_Batches,
+  subject_id = pMerged$hierarchy_keys() )
 ```
 
 Now, we can visualize the effect of our factors that are specified in the model. This indicates in an elegant way what factors are the most important ones.
@@ -89,7 +89,7 @@ ANOVA |> dplyr::filter(factor == "Treatment:Background") |> dplyr::arrange(FDR) 
 protIntSig <- ANOVA |> dplyr::filter(factor == "Treatment:Background") |>
   dplyr::filter(FDR < 0.01)
 protInt <-  pMerged$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id[1:6],]
+protInt$set_data(protInt$data_long()[protInt$data_long()$protein_Id %in% protIntSig$protein_Id[1:6],])
 
 ```
 
@@ -154,7 +154,7 @@ sigInteraction <- mergedContrasts$contrast_result |>
   dplyr::filter(contrast == "Interaction" & FDR < 0.2)
 
 protInt <-  pMerged$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
+protInt$set_data(protInt$data_long()[protInt$data_long()$protein_Id %in% sigInteraction$protein_Id,])
 
 protInt$get_Plotter()$raster()
 
@@ -208,8 +208,8 @@ contr_spec <- c("TA - TB" = "(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2",
 ```
 
 ```{r buildModel1factor}
-mod <- prolfqua::build_model(data_1Factor$data, formula_Batches,
-  subject_id = pMerged$config$hierarchy_keys() )
+mod <- prolfqua::build_model(data_1Factor$data_long(), formula_Batches,
+  subject_id = pMerged$hierarchy_keys() )
 
 ```
 

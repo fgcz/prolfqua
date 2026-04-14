@@ -113,7 +113,7 @@ The $log_2$ stabilizes the variance, while the z-scaling removes systematic diff
 ```{r normalizeData}
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
-transformed$config$is_response_transformed
+transformed$is_transformed()
 ```
 
 Again we want to look into the distribution of the intensities in our samples after normalization.
@@ -183,7 +183,7 @@ Like this we can estimate how many samples are necessary per group to quantify p
 First, we need to filter our data for `group_` _A_ only.
 ```{r}
 transformedA <- transformed$get_copy()
-transformedA$data <- transformedA$data |> dplyr::filter(group_  == "A")
+transformedA$set_data(transformedA$data_long() |> dplyr::filter(group_ == "A"))
 stats <- transformedA$get_Stats()
 ```
 

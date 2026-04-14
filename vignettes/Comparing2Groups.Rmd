@@ -98,7 +98,7 @@ We normalize the data by $\log_2$ transforming and then $z-scaling$.
 ```{r normalizedata}
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
-transformed$config$is_response_transformed
+transformed$is_transformed()
 
 ```
 
@@ -150,9 +150,9 @@ Here we have to build the model for each protein.
 
 ```{r buildModel}
 mod <- prolfqua::build_model(
-  transformed$data,
+  transformed$data_long(),
   formula_Condition,
-  subject_id = transformed$config$hierarchy_keys() )
+  subject_id = transformed$hierarchy_keys() )
 
 ```
 
@@ -170,7 +170,7 @@ head(aovtable)
 dim(aovtable)
 xx <- aovtable |> dplyr::filter(FDR < 0.2)
 signif <- transformed$get_copy()
-signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
+signif$set_data(signif$data_long() |> dplyr::filter(protein_Id %in% xx$protein_Id))
 hmSig <- signif$get_Plotter()$heatmap()
 
 ```
@@ -244,7 +244,7 @@ Look at proteins which could not be fitted using the linear model, if any.
 merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)
 
 moreProt <- transformed$get_copy()
-moreProt$data <- moreProt$data |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id)
+moreProt$set_data(moreProt$data_long() |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id))
 moreProt$get_Plotter()$raster()
 
 # here we do not get anything because there is nothing imputed!

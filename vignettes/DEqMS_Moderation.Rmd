@@ -84,9 +84,9 @@ via `config$nr_children`. In this simulated data set the count variable is
 `nr_peptides`.
 
 ```{r count_df}
-count_per_prot <- transformed$data |>
+count_per_prot <- transformed$data_long() |>
   group_by(protein_Id) |>
-  summarise(nr_peptides = max(.data[[transformed$config$nr_children]], na.rm = TRUE))
+  summarise(nr_peptides = max(.data[[transformed$nr_children_col()]], na.rm = TRUE))
 
 ggplot(count_per_prot, aes(x = nr_peptides)) +
   geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +

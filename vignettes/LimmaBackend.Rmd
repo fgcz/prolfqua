@@ -278,9 +278,9 @@ lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 data.frame(
   Property = c("Hierarchy", "Samples", "NAs"),
   Value = c(
-    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
-    length(unique(lfq_peptide$data[[lfq_peptide$config$sample_name]])),
-    sum(is.na(lfq_peptide$data[[lfq_peptide$config$get_response()]]))
+    paste(lfq_peptide$hierarchy_keys(), collapse = " > "),
+    length(unique(lfq_peptide$data_long()[[lfq_peptide$sample_name()]])),
+    sum(is.na(lfq_peptide$data_long()[[lfq_peptide$response()]]))
   )
 ) |> knitr::kable()
 ```
@@ -304,12 +304,12 @@ data.frame(
                "SE column", "Nr children column", "NAs in output",
                "DPC beta0", "DPC beta1"),
   Value = c(
-    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
-    paste(lfq_protein_limpa$config$hierarchy_keys(), collapse = " > "),
-    lfq_protein_limpa$config$get_response(),
-    lfq_protein_limpa$config$opt_se,
-    lfq_protein_limpa$config$nr_children,
-    sum(is.na(lfq_protein_limpa$data[[lfq_protein_limpa$config$get_response()]])),
+    paste(lfq_peptide$hierarchy_keys(), collapse = " > "),
+    paste(lfq_protein_limpa$hierarchy_keys(), collapse = " > "),
+    lfq_protein_limpa$response(),
+    lfq_protein_limpa$get_config()$opt_se,
+    lfq_protein_limpa$nr_children_col(),
+    sum(is.na(lfq_protein_limpa$data_long()[[lfq_protein_limpa$response()]])),
     round(agg$dpc_result$dpc[1], 3),
     round(agg$dpc_result$dpc[2], 3)
   )
@@ -325,7 +325,7 @@ intensity + log SE), and the observation counts identify imputed entries for
 degree-of-freedom correction.
 
 ```{r limpa_prot_model, eval=requireNamespace("limpa", quietly = TRUE)}
-response <- lfq_protein_limpa$config$get_response()
+response <- lfq_protein_limpa$response()
 strat_limpa <- strategy_limpa(paste(response, "~ group_"), plot = TRUE)
 mod_limpa_prot <- build_model_limpa(lfq_protein_limpa, strat_limpa)
 
@@ -391,11 +391,11 @@ data.frame(
   Property = c("Input hierarchy", "Output hierarchy",
                "NAs in input", "NAs in output", "SE column"),
   Value = c(
-    paste(lfq_peptide$config$hierarchy_keys(), collapse = " > "),
-    paste(lfq_peptide_limpa$config$hierarchy_keys(), collapse = " > "),
-    sum(is.na(lfq_peptide$data[[lfq_peptide$config$get_response()]])),
-    sum(is.na(lfq_peptide_limpa$data[[lfq_peptide_limpa$config$get_response()]])),
-    lfq_peptide_limpa$config$opt_se
+    paste(lfq_peptide$hierarchy_keys(), collapse = " > "),
+    paste(lfq_peptide_limpa$hierarchy_keys(), collapse = " > "),
+    sum(is.na(lfq_peptide$data_long()[[lfq_peptide$response()]])),
+    sum(is.na(lfq_peptide_limpa$data_long()[[lfq_peptide_limpa$response()]])),
+    lfq_peptide_limpa$get_config()$opt_se
   )
 ) |> knitr::kable()
 ```
@@ -411,7 +411,7 @@ Since each peptide is a separate row in the wide matrix, `build_model_limpa`
 fits the model at the peptide level.
 
 ```{r limpa_pep_model, eval=requireNamespace("limpa", quietly = TRUE)}
-response_pep <- lfq_peptide_limpa$config$get_response()
+response_pep <- lfq_peptide_limpa$response()
 strat_limpa_pep <- strategy_limpa(paste(response_pep, "~ group_"), plot = TRUE)
 mod_limpa_pep <- build_model_limpa(lfq_peptide_limpa, strat_limpa_pep)
 
