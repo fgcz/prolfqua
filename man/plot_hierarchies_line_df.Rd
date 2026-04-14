@@ -19,7 +19,7 @@ Generates peptide level plots for all proteins
 
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
-res <- plot_hierarchies_line_df(lfq$get_data(), lfq)
+res <- plot_hierarchies_line_df(lfq$data_long(), lfq)
 res[[1]]
 
 }

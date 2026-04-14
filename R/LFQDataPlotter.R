@@ -165,7 +165,7 @@ LFQDataPlotter <- R6::R6Class(
       hk <- self$lfq$hierarchy_keys()
       fg <- if (length(rhk) < length(hk) && facet) hk[length(rhk) + 1] else NULL
       bb <- prolfqua::plot_hierarchies_boxplot_df(
-        self$lfq$get_data(),
+        self$lfq$data_long(),
         self$lfq,
         hierarchy = rhk,
         facet_grid_on = fg
@@ -197,7 +197,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return ggplot
     intensity_distribution_density = function(legend = TRUE) {
       prolfqua::plot_intensity_distribution_density(
-        self$lfq$get_data(),
+        self$lfq$data_long(),
         self$lfq$sample_name(),
         self$lfq$response(),
         self$lfq$is_transformed(),
@@ -209,7 +209,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return ggplot
     intensity_distribution_violin = function() {
       prolfqua::plot_intensity_distribution_violin(
-        self$lfq$get_data(),
+        self$lfq$data_long(),
         self$lfq$sample_name(),
         self$lfq$response(),
         self$lfq$is_transformed()
@@ -221,13 +221,13 @@ LFQDataPlotter <- R6::R6Class(
     #' @return NULL
     pairs_smooth = function(max = 10) {
       sample_col <- self$lfq$sample_name()
-      samples <- dplyr::select(self$lfq$get_data(), sample_col) |>
+      samples <- dplyr::select(self$lfq$data_long(), sample_col) |>
         distinct() |>
         pull()
       if (length(samples) > max) {
         limit <- samples |> sample(max)
         lfq_sub <- self$lfq$get_copy()
-        lfq_sub$data <- lfq_sub$get_data() |>
+        lfq_sub$data <- lfq_sub$data_long() |>
           dplyr::filter(!!sym(sample_col) %in% limit)
         prolfqua::pairs_smooth(lfq_sub$to_wide(as.matrix = TRUE)$data)
       } else {

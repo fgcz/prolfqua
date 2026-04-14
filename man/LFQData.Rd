@@ -107,6 +107,8 @@ Other LFQData:
 \item \href{#method-LFQData-file_name}{\code{LFQData$file_name()}}
 \item \href{#method-LFQData-nr_children_col}{\code{LFQData$nr_children_col()}}
 \item \href{#method-LFQData-isotope_label}{\code{LFQData$isotope_label()}}
+\item \href{#method-LFQData-data_long}{\code{LFQData$data_long()}}
+\item \href{#method-LFQData-data_wide}{\code{LFQData$data_wide()}}
 \item \href{#method-LFQData-get_data}{\code{LFQData$get_data()}}
 \item \href{#method-LFQData-rename_response}{\code{LFQData$rename_response()}}
 \item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
@@ -438,10 +440,37 @@ return isotope label column name
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-data_long"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-data_long}{}}}
+\subsection{Method \code{data_long()}}{
+return the tidy (long-format) data frame
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$data_long()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-data_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-data_wide}{}}}
+\subsection{Method \code{data_wide()}}{
+return wide-format data (matrix + annotation + rowdata, no config)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$data_wide(as.matrix = TRUE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{as.matrix}}{if TRUE return numeric matrix, otherwise data.frame}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_data"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_data}{}}}
 \subsection{Method \code{get_data()}}{
-return the tidy data frame
+deprecated — use data_long() instead
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQData$get_data()}\if{html}{\out{</div>}}
 }

@@ -30,10 +30,10 @@ E.g compute number of peptides for each protein
 
 bb <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(bb$data, bb$config)
-summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label())
-summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label(),
+summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
+summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label(),
  factors = character())
-summarize_hierarchy(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label(),
+summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label(),
  hierarchy = lfq$relevant_hierarchy_keys())
 
 }

@@ -232,7 +232,7 @@ separate_hierarchy <- function(data, config) {
 #'
 complete_cases <- function(lfqdata) {
   .complete_cases_impl(
-    lfqdata$get_data(),
+    lfqdata$data_long(),
     lfqdata$file_name(),
     lfqdata$sample_name(),
     lfqdata$factor_keys(),

@@ -102,7 +102,7 @@ LFQDataTransformer <- R6::R6Class(
     log2 = function(force = FALSE) {
       if (!self$lfq$is_transformed() | force) {
         cfg <- self$lfq$config$clone(deep = TRUE)
-        new_data <- prolfqua::transform_work_intensity(self$lfq$get_data(), cfg, log2)
+        new_data <- prolfqua::transform_work_intensity(self$lfq$data_long(), cfg, log2)
         self$lfq <- LFQData$new(new_data, cfg)
       } else {
         warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
@@ -113,7 +113,7 @@ LFQDataTransformer <- R6::R6Class(
     #' get mean and variance and standard deviation in each sample
     #' @return list with means and mads
     get_scales = function() {
-      get_robscales(self$lfq$get_data(), self$lfq$config)
+      get_robscales(self$lfq$data_long(), self$lfq$config)
     },
     #' @description
     #' robust scale data
@@ -139,8 +139,8 @@ LFQDataTransformer <- R6::R6Class(
       }
       cfg <- self$lfq$config$clone(deep = TRUE)
       scales <- prolfqua::scale_with_subset(
-        self$lfq$get_data(),
-        lfqsubset$get_data(),
+        self$lfq$data_long(),
+        lfqsubset$data_long(),
         cfg,
         preserve_mean = preserve_mean
       )
@@ -183,7 +183,7 @@ LFQDataTransformer <- R6::R6Class(
         .call <- as.list(match.call())
         cfg <- self$lfq$config$clone(deep = TRUE)
         new_data <- prolfqua::transform_work_intensity(
-          self$lfq$get_data(),
+          self$lfq$data_long(),
           cfg,
           .func = .func,
           .funcname = deparse(.call$.func)
@@ -207,7 +207,7 @@ LFQDataTransformer <- R6::R6Class(
         .call <- as.list(match.call())
         cfg <- self$lfq$config$clone(deep = TRUE)
         new_data <- prolfqua::apply_to_response_matrix(
-          self$lfq$get_data(),
+          self$lfq$data_long(),
           cfg,
           .func = .func,
           .funcname = deparse(.call$.func)

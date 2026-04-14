@@ -38,11 +38,11 @@ Count observations per experiment (max nr_children across samples)
 \examples{
 dd <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(dd$data, dd$config)
-xd <- nr_obs_experiment(lfq$get_data(), lfq$hierarchy_keys(),
+xd <- nr_obs_experiment(lfq$data_long(), lfq$hierarchy_keys(),
   lfq$relevant_hierarchy_keys(), lfq$nr_children_col(),
   response = lfq$response(), file_name = lfq$file_name())
 stopifnot(min(xd$nr_child_exp) == 1)
-xd2 <- nr_obs_experiment(lfq$get_data(), lfq$hierarchy_keys(),
+xd2 <- nr_obs_experiment(lfq$data_long(), lfq$hierarchy_keys(),
   lfq$relevant_hierarchy_keys(), lfq$nr_children_col(), from_children = FALSE)
 
 }

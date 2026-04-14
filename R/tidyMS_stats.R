@@ -162,7 +162,7 @@ poolvar <- function(res1, config, method = c("V1", "V2")) {
 #' stopifnot(nrow(stats) == 10)
 summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()) {
   intsym <- sym(lfqdata$response())
-  pdata <- lfqdata$get_data()
+  pdata <- lfqdata$data_long()
   hierarchy_factor <- pdata |>
     dplyr::group_by(!!!syms(c(lfqdata$hierarchy_keys(), lfqdata$isotope_label(), factor_key))) |>
     dplyr::summarize(

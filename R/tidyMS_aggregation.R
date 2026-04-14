@@ -129,7 +129,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, separate = FALSE, 
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' res <- plot_hierarchies_line_df(lfq$get_data(), lfq)
+#' res <- plot_hierarchies_line_df(lfq$data_long(), lfq)
 #' res[[1]]
 #'
 plot_hierarchies_line_df <- function(pdata, lfqdata, show.legend = FALSE) {
@@ -542,7 +542,7 @@ rlm_estimate_dfconfig <- function(pdata, response, hierarchy_keys, hierarchy_key
 estimate_intensity <- function(lfqdata, .func) {
   make_name <- .func(name = TRUE)
   config <- lfqdata$config$clone(deep = TRUE)
-  data <- lfqdata$get_data()
+  data <- lfqdata$data_long()
 
   # Extract column names once for passing to sub-functions
   response <- lfqdata$response()
@@ -605,11 +605,11 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
   hierarchy_id <- "hierarchy_id"
   hkeysd <- lfqdata$relevant_hierarchy_keys()
 
-  xnested <- lfqdata$get_data() |>
+  xnested <- lfqdata$data_long() |>
     group_by(!!!syms(hkeysd)) |>
     nest()
   xnested <- xnested |> tidyr::unite(hierarchy_id, !!!syms(hkeysd))
-  xnested_aggr <- lfqdata_agg$get_data() |>
+  xnested_aggr <- lfqdata_agg$data_long() |>
     group_by(!!!syms(lfqdata_agg$relevant_hierarchy_keys())) |>
     nest_by(.key = "other")
   xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_id, !!!syms(hkeysd))
@@ -655,7 +655,7 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
 #'
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(dd$data, dd$config)
-#' ranked <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
+#' ranked <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
 #'
 #' mean_f <- function(x, name = FALSE) {
 #'   if (name) return("mean")
@@ -774,11 +774,11 @@ nr_obs_sample <- function(
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(dd$data, dd$config)
-#' xd <- nr_obs_experiment(lfq$get_data(), lfq$hierarchy_keys(),
+#' xd <- nr_obs_experiment(lfq$data_long(), lfq$hierarchy_keys(),
 #'   lfq$relevant_hierarchy_keys(), lfq$nr_children_col(),
 #'   response = lfq$response(), file_name = lfq$file_name())
 #' stopifnot(min(xd$nr_child_exp) == 1)
-#' xd2 <- nr_obs_experiment(lfq$get_data(), lfq$hierarchy_keys(),
+#' xd2 <- nr_obs_experiment(lfq$data_long(), lfq$hierarchy_keys(),
 #'   lfq$relevant_hierarchy_keys(), lfq$nr_children_col(), from_children = FALSE)
 #'
 nr_obs_experiment <- function(
@@ -848,7 +848,7 @@ nr_obs_experiment <- function(
 #'
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(bb$data, bb$config)
-#' res <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
+#' res <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
 #' X <- res |> dplyr::select(c(lfq$hierarchy_keys(),
 #'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
 #' X |> dplyr::arrange(!!!rlang::syms(c(lfq$hierarchy_keys()[1], "srm_meanIntRank")))

@@ -74,12 +74,33 @@ Updated LFQDataPlotter, LFQDataStats, LFQDataAggregator to use API methods inste
 - prolfqua: `make check` (full, with vignettes) — 0 errors, 0 warnings
 - prolfquapp: `devtools::check(vignettes = FALSE)` — 0 errors, 0 warnings
 
-### Remaining (not part of this phase)
+### Remaining
 
-- Phase 2: Refactor Transformer to return new LFQData (writes)
 - Phase 5: Make `data`/`config` private with active bindings
 - Deferred: `get_data()` → `data_long()` + add `data_wide()`
-- S3 method exports: `sigma.rlm`, `df.residual.rlm` changed to `@exportS3Method` (done)
+
+---
+
+## 2026-04-12 — Phase 2: Refactor Transformer to Return New LFQData
+
+Each transform method now creates a new LFQData instance instead of mutating a clone's data and config in place. Constructor stores reference (not clone). User-facing API unchanged: `$get_Transformer()$log2()$robscale()$lfq`.
+
+### Methods refactored
+
+| Method | Change |
+|--------|--------|
+| `initialize` | Reference instead of deep clone |
+| `log2` | Clone config → `transform_work_intensity` → new LFQData |
+| `intensity_array` | Same pattern as log2 |
+| `intensity_matrix` | Clone config → `apply_to_response_matrix` → new LFQData |
+| `robscale` / `robscale_subset` | Clone config → `scale_with_subset` → rename → new LFQData |
+| `center_to_reference` | Switch from `copy = FALSE` to `copy = TRUE` → store result |
+| `get_scales` | Read-only, no changes |
+
+### Verification
+
+- `make check-fast` — 0 errors, 0 warnings, 0 notes
+- No caller changes needed — API identical
 
 ---
 

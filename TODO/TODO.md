@@ -32,25 +32,15 @@ Open items from the 2026-02-19 code review:
 
 ---
 
-## 5. Refactor `(data, config)` → `(lfqdata)` Signatures (Deferred)
+## 4. R6 Encapsulation — Make `data`/`config` Private (Phase 5)
 
-COMMENT: I want a change to the item. I want you to go through all the functions with the signature (data, config) and analyse the access patterns to LFQData, the function then must only get what they need. not the entire LFQData object. basically expose to them only the essentials. This relates to item 4 which I moved behind item 5. Because once we know what are the access patterns, we can encapsulate, and design an interface, servicing the access patterns. 
-Write down you analysis, with interface suggestions for LFQData in a file TODO/TODO_LFQData_access_patterns.md.
-All decorators, that is, LFQPlotter, LFQAggregator, etc, must access the LFQData object throught the API. The API return types are data frames, arrays, strings, or lists.
+LFQData API methods added (Phase 1+3), standalone functions refactored (Phase 4), Transformer refactored (Phase 2). Remaining step: make `data` and `config` private using active bindings with deprecation warnings.
 
+See `TODO/TODO_LFQData_access_patterns.md` for full analysis.
 
-
-~40 functions take separate `data` and `config` parameters. Many are only called from LFQData class methods that pass `self$data, self$config`. Refactor to accept an `lfqdata` object directly. Large effort, moderate benefit.
-
----
-
-## 4. R6 Encapsulation (Deferred)
-
-Add accessor methods and make fields private:
-
+Still to consider:
 - AnalysisConfiguration: `add_hierarchy()`, `add_factor()` methods for structured fields
-- LFQData: `get_data()` / `get_config()` methods, then make `data`/`config` private
-- Contrasts/Model: make `model_df`, `model_name`, `subject_id` private (external code should use `get_contrasts()`, `get_coefficients()`, etc.)
+- Contrasts/Model: make `model_df`, `model_name`, `subject_id` private
 
 ---
 

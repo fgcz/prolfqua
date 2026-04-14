@@ -290,13 +290,15 @@ Pass-throughs `func(self$lfq$data, self$lfq$config)` left unchanged — standalo
 
 All ~40 functions refactored across 8 batches. Rule: >5 config fields → `lfqdata`, otherwise data frame + column names. Cross-package update in prolfquapp completed. Details in `TODO/DONE_summary.md`.
 
-### Phase 2: Refactor Transformer to return new LFQData — NEXT
+### Phase 2: Refactor Transformer to return new LFQData — DONE (2026-04-12)
 
-Each transform method (`log2()`, `robscale()`, `vsn()`, etc.) returns a new LFQData instance instead of mutating the clone. The `$lfq` field becomes the result of the last transformation. No setters needed on LFQData.
+Each transform method creates a new LFQData instance instead of mutating the clone. Constructor stores reference (not clone). User-facing API unchanged.
 
-### Phase 5: Make `data` and `config` private
+### Phase 5: Make `data` and `config` private — NEXT
 
 Use active bindings that warn on direct access (deprecation period), then error. Last step — only after all reads go through API and writes are handled.
+
+Prerequisite: audit remaining direct `$data` and `$config` accesses (LFQData methods, `setup_analysis`, `filter_proteins_by_peptide_count`, `.elist_to_lfqdata`, `MissingHelpers`, `tidy_to_wide_config`).
 
 ---
 

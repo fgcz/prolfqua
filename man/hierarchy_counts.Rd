@@ -21,11 +21,11 @@ E.g. number of proteins, peptides, precursors in the dataset
 bb <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(bb$data, bb$config)
 
-x <- hierarchy_counts(lfq$get_data(), lfq$hierarchy_keys(), lfq$isotope_label())
+x <- hierarchy_counts(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
 x$protein_Id
 stopifnot(ncol(x) == length(lfq$hierarchy_keys()) + 1)
 # select non existing protein
-data0 <- lfq$get_data() |> dplyr::filter(protein_Id == "XYZ")
+data0 <- lfq$data_long() |> dplyr::filter(protein_Id == "XYZ")
 tmp <- hierarchy_counts(data0, lfq$hierarchy_keys(), lfq$isotope_label())
 stopifnot(nrow(tmp) == 0)
 }

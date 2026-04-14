@@ -40,12 +40,12 @@ visualize intensity distributions
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
 plot_intensity_distribution_violin(
-  lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
+  lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
 plot_intensity_distribution_density(
-  lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
+  lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 
 }
 \seealso{

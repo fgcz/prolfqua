@@ -30,7 +30,7 @@ Table of distinct factors with group sizes
 
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
-xx <- table_factors_size(lfq$get_data(), lfq$file_name(),
+xx <- table_factors_size(lfq$data_long(), lfq$file_name(),
   lfq$sample_name(), lfq$factor_keys(), lfq$relevant_factor_keys())
 stopifnot(all(xx$n == 4))
 

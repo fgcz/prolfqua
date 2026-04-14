@@ -28,7 +28,7 @@ print.pheatmap <- function(x, ...) {
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' plot_intensity_distribution_violin(
-#'   lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
+#'   lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #'
 plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_transformed = FALSE) {
   p <- ggplot(pdata, aes(x = .data[[sample_name]], y = .data[[response]])) +
@@ -55,7 +55,7 @@ plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' plot_intensity_distribution_density(
-#'   lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
+#'   lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #'
 plot_intensity_distribution_density <- function(pdata, sample_name, response, is_transformed = FALSE, legend = TRUE) {
   p <- ggplot(pdata, aes(x = .data[[response]], colour = .data[[sample_name]])) +
@@ -127,10 +127,10 @@ plot_sample_correlation <- function(matrix) {
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' res <- plot_hierarchies_boxplot_df(lfq$get_data(), lfq)
+#' res <- plot_hierarchies_boxplot_df(lfq$data_long(), lfq)
 #' res$boxplot[[1]]
 #'
-#' xnested <- lfq$get_data() |>
+#' xnested <- lfq$data_long() |>
 #'   dplyr::group_by(across(all_of(lfq$relevant_hierarchy_keys()))) |> tidyr::nest()
 #' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
 #'   lfq, beeswarm = FALSE, show_mean = TRUE)
@@ -223,13 +223,13 @@ plot_hierarchies_boxplot <- function(
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' res <- plot_hierarchies_boxplot_df(lfq$get_data(), lfq)
+#' res <- plot_hierarchies_boxplot_df(lfq$data_long(), lfq)
 #' res$boxplot[[1]]
 #'
 #' lfq2 <- LFQData$new(
 #'   istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 2)),
 #'   istar$config)
-#' res <- plot_hierarchies_boxplot_df(lfq2$get_data(), lfq2)
+#' res <- plot_hierarchies_boxplot_df(lfq2$data_long(), lfq2)
 #' res$boxplot[[1]]
 plot_hierarchies_boxplot_df <- function(
   pdata,

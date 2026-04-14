@@ -2,7 +2,7 @@ test_that("plot_hierarchies_boxplot", {
   istar <- sim_lfq_data_peptide_config()
   lfq <- LFQData$new(istar$data, istar$config)
 
-  xnested <- lfq$get_data() |>
+  xnested <- lfq$data_long() |>
     dplyr::group_by_at(lfq$relevant_hierarchy_keys()) |>
     tidyr::nest()
 

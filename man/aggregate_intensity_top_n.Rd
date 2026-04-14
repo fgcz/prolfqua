@@ -25,7 +25,7 @@ run \link{rank_peptide_by_intensity} first
 
 dd <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(dd$data, dd$config)
-ranked <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
+ranked <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
 
 mean_f <- function(x, name = FALSE) {
   if (name) return("mean")

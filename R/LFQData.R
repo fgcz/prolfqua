@@ -90,7 +90,7 @@ LFQData <- R6::R6Class(
       if (!is.null(seed)) {
         set.seed(seed)
       }
-      subset <- prolfqua::sample_subset(size = size, self$get_data(), self$relevant_hierarchy_keys())
+      subset <- prolfqua::sample_subset(size = size, self$data_long(), self$relevant_hierarchy_keys())
       return(LFQData$new(subset, self$config$clone(deep = TRUE)))
     },
     #' @description
@@ -123,7 +123,7 @@ LFQData <- R6::R6Class(
     #' @return self
     remove_small_intensities = function(threshold = 4) {
       self$data <- prolfqua::remove_small_intensities(
-        self$get_data(),
+        self$data_long(),
         self$response(),
         threshold = threshold
       )
@@ -163,7 +163,7 @@ LFQData <- R6::R6Class(
       not_na <- sum_n |> dplyr::filter(n == max(n))
 
       not_na <- not_na |> dplyr::select(dplyr::all_of(self$hierarchy_keys()))
-      not_na_data <- dplyr::inner_join(not_na, self$get_data()) |> ungroup()
+      not_na_data <- dplyr::inner_join(not_na, self$data_long()) |> ungroup()
       return(LFQData$new(not_na_data, self$config$clone(deep = TRUE)))
     },
 
@@ -201,7 +201,7 @@ LFQData <- R6::R6Class(
     #' Annotation table
     #' @return data.frame
     factors = function() {
-      prolfqua::table_factors(self$get_data(), self$file_name(), self$sample_name(), self$factor_keys())
+      prolfqua::table_factors(self$data_long(), self$file_name(), self$sample_name(), self$factor_keys())
     },
     #' @description
     #' Hierarchy table
@@ -257,9 +257,23 @@ LFQData <- R6::R6Class(
       self$config$isotope_label
     },
     #' @description
-    #' return the tidy data frame
-    get_data = function() {
+    #' return the tidy (long-format) data frame
+    data_long = function() {
       self$data
+    },
+    #' @description
+    #' return wide-format data (matrix + annotation + rowdata, no config)
+    #' @param as.matrix if TRUE return numeric matrix, otherwise data.frame
+    data_wide = function(as.matrix = TRUE) {
+      wide <- self$to_wide(as.matrix = as.matrix)
+      wide$config <- NULL
+      return(wide)
+    },
+    #' @description
+    #' deprecated — use data_long() instead
+    get_data = function() {
+      .Deprecated("data_long")
+      self$data_long()
     },
     #' @description
     #' new name of response variable
@@ -277,14 +291,14 @@ LFQData <- R6::R6Class(
     #' @description
     #' number of elements at each level
     hierarchy_counts = function() {
-      prolfqua::hierarchy_counts(self$get_data(), self$hierarchy_keys(), self$isotope_label())
+      prolfqua::hierarchy_counts(self$data_long(), self$hierarchy_keys(), self$isotope_label())
     },
     #' @description
     #' e.g. number of peptides per protein etc
     #' @return data.frame
     summarize_hierarchy = function() {
       prolfqua::summarize_hierarchy(
-        self$get_data(),
+        self$data_long(),
         self$hierarchy_keys(),
         self$isotope_label(),
         hierarchy = self$relevant_hierarchy_keys()
@@ -361,8 +375,8 @@ LFQData <- R6::R6Class(
 #'
 #' istar <- sim_lfq_data_peptide_config(Nprot = 20)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' res1 <- remove_small_intensities(lfqdata$get_data(), lfqdata$response(), threshold = 1)
-#' res1000 <- remove_small_intensities(lfqdata$get_data(), lfqdata$response(), threshold = 1000)
+#' res1 <- remove_small_intensities(lfqdata$data_long(), lfqdata$response(), threshold = 1)
+#' res1000 <- remove_small_intensities(lfqdata$data_long(), lfqdata$response(), threshold = 1000)
 #' stopifnot(nrow(res1) > nrow(res1000))
 #'
 remove_small_intensities <- function(pdata, response, threshold = 1) {

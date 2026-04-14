@@ -11,7 +11,7 @@
 #' lfq$config$bin_resp <- "bin_resp"
 #' lfq$data[["bin_resp"]]
 encode_bin_resp <- function(lfqdata, name = "bin_resp") {
-  pdata <- lfqdata$get_data()
+  pdata <- lfqdata$data_long()
   pdata[[name]] <- as.integer(!is.na(pdata[[lfqdata$response()]]))
   return(pdata)
 }
@@ -268,7 +268,7 @@ upset_interaction_missing_stats <- function(lfqdata, tr = 2) {
 #' pups <- upset_missing_stats(lfq)
 #' UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 upset_missing_stats <- function(lfqdata) {
-  data <- lfqdata$get_data()
+  data <- lfqdata$data_long()
   data <- data |>
     dplyr::mutate(
       isThere = dplyr::case_when(

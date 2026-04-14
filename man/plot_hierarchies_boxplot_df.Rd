@@ -27,13 +27,13 @@ generates peptide level plots for all Proteins
 
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
-res <- plot_hierarchies_boxplot_df(lfq$get_data(), lfq)
+res <- plot_hierarchies_boxplot_df(lfq$data_long(), lfq)
 res$boxplot[[1]]
 
 lfq2 <- LFQData$new(
   istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 2)),
   istar$config)
-res <- plot_hierarchies_boxplot_df(lfq2$get_data(), lfq2)
+res <- plot_hierarchies_boxplot_df(lfq2$data_long(), lfq2)
 res$boxplot[[1]]
 }
 \seealso{

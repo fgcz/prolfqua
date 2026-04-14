@@ -23,7 +23,7 @@ ranks precursor - peptide by intensity.
 
 bb <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(bb$data, bb$config)
-res <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
+res <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
 X <- res |> dplyr::select(c(lfq$hierarchy_keys(),
  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
 X |> dplyr::arrange(!!!rlang::syms(c(lfq$hierarchy_keys()[1], "srm_meanIntRank")))

@@ -23,8 +23,8 @@ Remove rows when intensity lower then threshold
 
 istar <- sim_lfq_data_peptide_config(Nprot = 20)
 lfqdata <- LFQData$new(istar$data, istar$config)
-res1 <- remove_small_intensities(lfqdata$get_data(), lfqdata$response(), threshold = 1)
-res1000 <- remove_small_intensities(lfqdata$get_data(), lfqdata$response(), threshold = 1000)
+res1 <- remove_small_intensities(lfqdata$data_long(), lfqdata$response(), threshold = 1)
+res1000 <- remove_small_intensities(lfqdata$data_long(), lfqdata$response(), threshold = 1000)
 stopifnot(nrow(res1) > nrow(res1000))
 
 }

@@ -274,7 +274,7 @@ AggregateTopN <- R6::R6Class(
         }
       }
       ranked <- rank_peptide_by_intensity(
-        self$lfq$get_data(),
+        self$lfq$data_long(),
         self$lfq$response(),
         self$lfq$hierarchy_keys()
       )
