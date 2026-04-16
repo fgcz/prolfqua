@@ -5,13 +5,23 @@
 \title{transform long to wide}
 \usage{
 tidy_to_wide_config(
-  data,
-  config,
+  lfqdata,
   as.matrix = FALSE,
   file_name = FALSE,
   sep = "~lfq~",
-  value = config$get_response()
+  value = lfqdata$response()
 )
+}
+\arguments{
+\item{lfqdata}{LFQData object}
+
+\item{as.matrix}{if TRUE return matrix, otherwise data.frame}
+
+\item{file_name}{if TRUE use file_name as column labels, otherwise sample_name}
+
+\item{sep}{separator for row IDs when as.matrix = TRUE}
+
+\item{value}{column name to pivot (default: lfqdata$response())}
 }
 \value{
 list with data, rowdata, and annotation (colData)
@@ -22,30 +32,25 @@ transform long to wide
 \examples{
 
 dd <- prolfqua::sim_lfq_data_peptide_config()
-config <- dd$config
-data <- dd$data
-res <- tidy_to_wide_config(data, config)
+lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
+res <- tidy_to_wide_config(lfqdata)
 testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
-res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
+res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 stopifnot(all(dim(res$data) == c(28,  12)))
 stopifnot(all(dim(res$annotation) == c(12,  4)))
 stopifnot(all(dim(res$rowdata) == c(28, 3)))
 
 res <- scale(res$data)
-tidy_to_wide_config(data, config,  value = config$nr_children)
+tidy_to_wide_config(lfqdata, value = lfqdata$nr_children_col())
 
-
-xt <- prolfqua::LFQData$new(dd$data, dd$config)
-xt$data_long()$nr_children
-res <- xt$get_Aggregator("medpolish")
+res <- lfqdata$get_Aggregator("medpolish")
 x <- res$aggregate()
-towide <- tidy_to_wide_config(x$data_long(), x$get_config(), value = x$nr_children_col())
+towide <- tidy_to_wide_config(x, value = x$nr_children_col())
 
 dd <- prolfqua::sim_lfq_data_protein_config()
-dd$config$nr_children
-dd$data
-xt <- tidy_to_wide_config(dd$data, dd$config,  value = dd$config$nr_children)
+lfqprot <- prolfqua::LFQData$new(dd$data, dd$config)
+xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
 xt$data
 
 }

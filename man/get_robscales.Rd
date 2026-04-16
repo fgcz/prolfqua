@@ -4,7 +4,7 @@
 \alias{get_robscales}
 \title{compute median and standard deviation for each sample}
 \usage{
-get_robscales(data, config)
+get_robscales(lfqdata)
 }
 \description{
 compute median and standard deviation for each sample
@@ -13,13 +13,13 @@ compute median and standard deviation for each sample
 
 
 bb <- prolfqua::sim_lfq_data_peptide_config()
-conf <- bb$config
-sample_analysis <- bb$data
-pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
-s1 <- get_robscales(pepIntensityNormalized, conf)
+lfqdata <- prolfqua::LFQData$new(bb$data, bb$config)
+lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+s1 <- get_robscales(lfqdata)
 
-res <- scale_with_subset(pepIntensityNormalized, pepIntensityNormalized, conf)
-s2 <- get_robscales(res$data, conf)
+res <- scale_with_subset(lfqdata, lfqdata)
+lfqres <- prolfqua::LFQData$new(res$data, lfqdata$get_config()$clone(deep = TRUE))
+s2 <- get_robscales(lfqres)
 abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 
 

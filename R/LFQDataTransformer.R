@@ -14,7 +14,7 @@
 #'
 #' x <- lfqTrans$intensity_array(log2)
 #'
-#' x$lfq$config$is_response_transformed
+#' x$lfq$is_transformed()
 #' x <- x$intensity_matrix(robust_scale)
 #' plotter <- x$lfq$get_Plotter()
 #' plotter$intensity_distribution_density()
@@ -102,8 +102,14 @@ LFQDataTransformer <- R6::R6Class(
     log2 = function(force = FALSE) {
       if (!self$lfq$is_transformed() | force) {
         cfg <- self$lfq$get_config()$clone(deep = TRUE)
-        new_data <- prolfqua::transform_work_intensity(self$lfq$data_long(), cfg, log2)
-        self$lfq <- LFQData$new(new_data, cfg)
+        res <- prolfqua::transform_work_intensity(
+          self$lfq$data_long(),
+          cfg$get_response(),
+          log2
+        )
+        cfg$set_response(res$colname)
+        cfg$is_response_transformed <- TRUE
+        self$lfq <- LFQData$new(res$data, cfg)
       } else {
         warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
       }
@@ -113,7 +119,7 @@ LFQDataTransformer <- R6::R6Class(
     #' get mean and variance and standard deviation in each sample
     #' @return list with means and mads
     get_scales = function() {
-      get_robscales(self$lfq$data_long(), self$lfq$get_config())
+      get_robscales(self$lfq)
     },
     #' @description
     #' robust scale data
@@ -139,15 +145,16 @@ LFQDataTransformer <- R6::R6Class(
       }
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
       scales <- prolfqua::scale_with_subset(
-        self$lfq$data_long(),
-        lfqsubset$data_long(),
-        cfg,
+        self$lfq,
+        lfqsubset,
         preserve_mean = preserve_mean
       )
       new_data <- scales$data
+      new_colname <- scales$colname
+      cfg$set_response(new_colname)
       if (!is.null(colname)) {
         new_data <- new_data |>
-          dplyr::rename(!!colname := cfg$get_response())
+          dplyr::rename(!!colname := !!new_colname)
         cfg$pop_response()
         cfg$set_response(colname)
       }
@@ -182,13 +189,15 @@ LFQDataTransformer <- R6::R6Class(
       if (!self$lfq$is_transformed() | force) {
         .call <- as.list(match.call())
         cfg <- self$lfq$get_config()$clone(deep = TRUE)
-        new_data <- prolfqua::transform_work_intensity(
+        res <- prolfqua::transform_work_intensity(
           self$lfq$data_long(),
-          cfg,
+          cfg$get_response(),
           .func = .func,
           .funcname = deparse(.call$.func)
         )
-        self$lfq <- LFQData$new(new_data, cfg)
+        cfg$set_response(res$colname)
+        cfg$is_response_transformed <- TRUE
+        self$lfq <- LFQData$new(res$data, cfg)
       } else {
         warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
       }
@@ -206,13 +215,14 @@ LFQDataTransformer <- R6::R6Class(
       if (!self$lfq$is_transformed() | force) {
         .call <- as.list(match.call())
         cfg <- self$lfq$get_config()$clone(deep = TRUE)
-        new_data <- prolfqua::apply_to_response_matrix(
-          self$lfq$data_long(),
-          cfg,
+        res <- prolfqua::apply_to_response_matrix(
+          self$lfq,
           .func = .func,
           .funcname = deparse(.call$.func)
         )
-        self$lfq <- LFQData$new(new_data, cfg)
+        cfg$set_response(res$colname)
+        cfg$is_response_transformed <- TRUE
+        self$lfq <- LFQData$new(res$data, cfg)
       } else {
         warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
       }
@@ -223,30 +233,37 @@ LFQDataTransformer <- R6::R6Class(
 
 # Intensity transformation helpers ----
 
-#' Transform intensity
+#' Transform intensity column by applying a function
 #' @param pdata data.frame
-#' @param config AnalysisConfiguration
+#' @param response character, name of the response column to transform
 #' @param .func function to transform intensities e.g. log2
-#' @param .funcname generates new name from name of transformation and old working intensity column name.
+#' @param .funcname name of function (used for creating new column name)
 #' @param intensity_new_name column name for new intensity, default NULL
-#' @return data.frame
+#' @return list with `data` (data.frame) and `colname` (new column name)
 #' @export
 #' @keywords internal
 #' @examples
 #'
 #' dd <- prolfqua_data('data_spectronautDIA250_A')
 #' config <- dd$config_f()
-#' analysis <- dd$analysis(dd$data,config)
-#' x <- transform_work_intensity(analysis, config, .func = log2)
-#' stopifnot("log2_FG.Quantity" %in% colnames(x))
+#' analysis <- dd$analysis(dd$data, config)
+#' res <- transform_work_intensity(
+#'   analysis, config$get_response(), .func = log2
+#' )
+#' stopifnot("log2_FG.Quantity" %in% colnames(res$data))
 #' config <- dd$config_f()
-#' x <- transform_work_intensity(analysis, config, .func = asinh)
-#' stopifnot("asinh_FG.Quantity" %in% colnames(x))
+#' res <- transform_work_intensity(
+#'   analysis, config$get_response(), .func = asinh
+#' )
+#' stopifnot("asinh_FG.Quantity" %in% colnames(res$data))
 #'
-transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, intensity_new_name = NULL, deep = FALSE) {
-  if (deep) {
-    config <- config$clone(deep = TRUE)
-  }
+transform_work_intensity <- function(
+  pdata,
+  response,
+  .func,
+  .funcname = NULL,
+  intensity_new_name = NULL
+) {
   .call <- as.list(match.call())
 
   if (is.null(intensity_new_name)) {
@@ -255,15 +272,12 @@ transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, int
     } else {
       .funcname
     }
-    newcol <- paste(.funcname, config$get_response(), sep = "_")
+    newcol <- paste(.funcname, response, sep = "_")
   } else {
     newcol <- intensity_new_name
   }
 
-  #pdata <- pdata |> dplyr::mutate(across(all_of(config$get_response()),
-  #                                    .fns = list(!!newcol := .func)))
-  response_col <- config$get_response()
-  vals <- pdata[[response_col]]
+  vals <- pdata[[response]]
   if (identical(.func, log2) || identical(.func, log) || identical(.func, log10)) {
     n_zero <- sum(vals == 0, na.rm = TRUE)
     n_neg <- sum(vals < 0, na.rm = TRUE)
@@ -272,7 +286,7 @@ transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, int
         "log transform: ",
         n_neg,
         " negative values in '",
-        response_col,
+        response,
         "' will produce NaN. Consider filtering or using asinh."
       )
     }
@@ -281,52 +295,55 @@ transform_work_intensity <- function(pdata, config, .func, .funcname = NULL, int
         "log transform: ",
         n_zero,
         " zeros in '",
-        response_col,
+        response,
         "' will produce -Inf. Consider replacing zeros with NA first."
       )
     }
   }
 
-  pdata <- pdata |> dplyr::mutate(!!sym(newcol) := .func(!!sym(response_col)))
-
-  config$set_response(newcol)
+  pdata <- pdata |>
+    dplyr::mutate(
+      !!sym(newcol) := .func(!!sym(response))
+    )
   message("Column added : ", newcol)
-  config$is_response_transformed <- TRUE
-
-  if (deep) {
-    return(list(data = pdata, config = config))
-  } else {
-    return(pdata)
-  }
+  return(list(data = pdata, colname = newcol))
 }
 
 #' Takes matrix of responses and converts into tibble
 #'
-#' @param pdata (matrix)
-#' @param value name of column to store values in. (see `gather`)
-#' @param config AnalysisConfiguration
-#' @param data lfqdata
-#' @param sep separater to unite the hierarchy keys.
+#' @param pdata matrix with rownames encoding hierarchy keys
+#' @param value name of column to store values in
+#' @param config AnalysisConfiguration (needed for column name mapping)
+#' @param data optional data.frame to join back to
+#' @param sep separator used to unite the hierarchy keys
 #' @export
 #'
 #' @keywords internal
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' data <- dd$data
-#' conf <- dd$config
-#' res <- tidy_to_wide_config(data, conf, as.matrix = TRUE)
+#' lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
+#' res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 #'
-#' res <- scale(res$data)
-#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
-#' xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf, data)
-#' conf$get_response() == "srm_intensityScaled"
+#' res_scaled <- scale(res$data)
+#' xx <- response_matrix_as_tibble(
+#'   res_scaled, "srm_intensityScaled", lfqdata$get_config()
+#' )
+#' xx <- response_matrix_as_tibble(
+#'   res_scaled, "srm_intensityScaled",
+#'   lfqdata$get_config(), lfqdata$data_long()
+#' )
 #'
 response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "~lfq~") {
   pdata <- dplyr::bind_cols(
     tibble::tibble("row.names" := rownames(pdata)),
     tibble::as_tibble(pdata)
   )
-  pdata <- tidyr::pivot_longer(pdata, cols = -1, names_to = config$sample_name, values_to = value)
+  pdata <- tidyr::pivot_longer(
+    pdata,
+    cols = -1,
+    names_to = config$sample_name,
+    values_to = value
+  )
   pdata <- tidyr::separate(
     pdata,
     "row.names",
@@ -335,7 +352,6 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
   )
   if (!is.null(data)) {
     pdata <- dplyr::inner_join(data, pdata)
-    config$set_response(value)
   }
   return(pdata)
 }
@@ -358,18 +374,18 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #'
 #'
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' conf <- bb$config
-#' sample_analysis <- bb$data
-#' pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
-#' s1 <- get_robscales(pepIntensityNormalized, conf)
+#' lfqdata <- prolfqua::LFQData$new(bb$data, bb$config)
+#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' s1 <- get_robscales(lfqdata)
 #'
-#' res <- scale_with_subset(pepIntensityNormalized, pepIntensityNormalized, conf)
-#' s2 <- get_robscales(res$data, conf)
+#' res <- scale_with_subset(lfqdata, lfqdata)
+#' lfqres <- prolfqua::LFQData$new(res$data, lfqdata$get_config()$clone(deep = TRUE))
+#' s2 <- get_robscales(lfqres)
 #' abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 #'
 #'
-get_robscales <- function(data, config) {
-  data <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
+get_robscales <- function(lfqdata) {
+  data <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
   scales <- .get_robscales(data)
   return(scales)
 }
@@ -400,45 +416,43 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
 
 #' Apply function requiring a matrix to tidy table
 #'
-#' @param data data.frame
-#' @param config AnalysisConfiguration
-#' @param .func function
+#' @param lfqdata LFQData object
+#' @param .func function taking and returning a matrix
 #' @param .funcname name of function (used for creating new column)
+#' @return list with `data` (data.frame) and `colname` (new column name)
 #' @export
 #' @keywords internal
 #' @family preprocessing
 #' @examples
 #'
-#'
 #' bb <- sim_lfq_data_peptide_config(Nprot = 100)
-#' data <- bb$data
-#' conf <- bb$config
-#' res <- apply_to_response_matrix(data, conf, .func = base::scale)
+#' lfqdata <- LFQData$new(bb$data, bb$config)
+#' res <- apply_to_response_matrix(lfqdata, .func = base::scale)
+#' stopifnot("abundance_base..scale" %in% colnames(res$data))
 #'
-#' stopifnot("abundance_base..scale" %in% colnames(res))
-#' stopifnot("abundance_base..scale" == conf$get_response())
-#' conf <- bb$config$clone(deep=TRUE)
-#' conf$work_intensity <- "abundance"
-#' res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
+#' res <- apply_to_response_matrix(lfqdata, .func = robust_scale)
 #'
-#' # Normalize data using the vsn method from bioconductor
-#'
-#' if( require("vsn")){
-#'  res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
+#' if (require("vsn")) {
+#'   res <- apply_to_response_matrix(lfqdata, .func = vsn::justvsn)
 #' }
 #'
-apply_to_response_matrix <- function(data, config, .func, .funcname = NULL) {
+apply_to_response_matrix <- function(lfqdata, .func, .funcname = NULL) {
   .call <- as.list(match.call())
   .funcname <- if (is.null(.funcname)) {
     deparse(.call$.func)
   } else {
     .funcname
   }
-  colname <- make.names(paste(config$get_response(), .funcname, sep = "_"))
-  mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
+  colname <- make.names(paste(lfqdata$response(), .funcname, sep = "_"))
+  mat <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
   mat <- .func(mat)
-  data <- response_matrix_as_tibble(mat, colname, config, data)
-  return(data)
+  data <- response_matrix_as_tibble(
+    mat,
+    colname,
+    lfqdata$get_config(),
+    lfqdata$data_long()
+  )
+  return(list(data = data, colname = colname))
 }
 
 #' Scale data using a subset of the data
@@ -447,31 +461,30 @@ apply_to_response_matrix <- function(data, config, .func, .funcname = NULL) {
 #'
 #' @export
 #' @keywords internal
-#' @param data the whole dataset
-#' @param subset a subset of the dataset
-#' @param config configuration
+#' @param lfqdata LFQData object with full dataset
+#' @param lfqsubset LFQData object with subset for computing scales
 #' @param preserve_mean default FALSE - sets mean to zero
 #' @param get_scales return a list of transformed data and the scaling parameters
 #' @family preprocessing
+#' @return list with data, scales, and colname
 #' @examples
 #'
-#'
-#'
-#' bb <-sim_lfq_data_peptide_config(Nprot = 100)
-#' conf <- bb$config$clone(deep=TRUE)
-#' sample_analysis <- bb$data
-#'
-#' res <- transform_work_intensity(sample_analysis, conf, log2)
-#' s1 <- get_robscales(res, conf)
-#' res <- scale_with_subset(res, res, conf)
-#' s2 <- get_robscales(res$data, conf)
+#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' lfqdata <- LFQData$new(bb$data, bb$config)
+#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' s1 <- get_robscales(lfqdata)
+#' res <- scale_with_subset(lfqdata, lfqdata)
+#' cfg <- lfqdata$get_config()$clone(deep = TRUE)
+#' cfg$set_response(res$colname)
+#' lfqres <- LFQData$new(res$data, cfg)
+#' s2 <- get_robscales(lfqres)
 #' stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
-scale_with_subset <- function(data, subset, config, preserve_mean = FALSE, get_scales = TRUE) {
-  colname <- make.names(paste(config$get_response(), "subset_scaled", sep = "_"))
-  subset <- tidy_to_wide_config(subset, config, as.matrix = TRUE)$data
+scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, get_scales = TRUE) {
+  colname <- make.names(paste(lfqdata$response(), "subset_scaled", sep = "_"))
+  subset_mat <- tidy_to_wide_config(lfqsubset, as.matrix = TRUE)$data
 
-  scales <- .get_robscales(subset)
-  mat <- tidy_to_wide_config(data, config, as.matrix = TRUE)$data
+  scales <- .get_robscales(subset_mat)
+  mat <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
   mat <- sweep(mat, 2, scales$medians, "-")
   if (!any(scales$mads == 0)) {
     mads <- scales$mads / mean(scales$mads)
@@ -487,11 +500,16 @@ scale_with_subset <- function(data, subset, config, preserve_mean = FALSE, get_s
     0
   }
   mat <- mat + addmean
-  data <- response_matrix_as_tibble(mat, colname, config, data)
+  data <- response_matrix_as_tibble(
+    mat,
+    colname,
+    lfqdata$get_config(),
+    lfqdata$data_long()
+  )
   if (get_scales) {
-    return(list(data = data, scales = scales))
+    return(list(data = data, scales = scales, colname = colname))
   } else {
-    return(data)
+    return(list(data = data, colname = colname))
   }
 }
 

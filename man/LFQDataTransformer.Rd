@@ -18,7 +18,7 @@ lfqTrans <- lfqcopy$get_Transformer()
 
 x <- lfqTrans$intensity_array(log2)
 
-x$lfq$config$is_response_transformed
+x$lfq$is_transformed()
 x <- x$intensity_matrix(robust_scale)
 plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()

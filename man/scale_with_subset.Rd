@@ -4,40 +4,34 @@
 \alias{scale_with_subset}
 \title{Scale data using a subset of the data}
 \usage{
-scale_with_subset(
-  data,
-  subset,
-  config,
-  preserve_mean = FALSE,
-  get_scales = TRUE
-)
+scale_with_subset(lfqdata, lfqsubset, preserve_mean = FALSE, get_scales = TRUE)
 }
 \arguments{
-\item{data}{the whole dataset}
+\item{lfqdata}{LFQData object with full dataset}
 
-\item{subset}{a subset of the dataset}
-
-\item{config}{configuration}
+\item{lfqsubset}{LFQData object with subset for computing scales}
 
 \item{preserve_mean}{default FALSE - sets mean to zero}
 
 \item{get_scales}{return a list of transformed data and the scaling parameters}
+}
+\value{
+list with data, scales, and colname
 }
 \description{
 this should reduce the overall variance.
 }
 \examples{
 
-
-
-bb <-sim_lfq_data_peptide_config(Nprot = 100)
-conf <- bb$config$clone(deep=TRUE)
-sample_analysis <- bb$data
-
-res <- transform_work_intensity(sample_analysis, conf, log2)
-s1 <- get_robscales(res, conf)
-res <- scale_with_subset(res, res, conf)
-s2 <- get_robscales(res$data, conf)
+bb <- sim_lfq_data_peptide_config(Nprot = 100)
+lfqdata <- LFQData$new(bb$data, bb$config)
+lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+s1 <- get_robscales(lfqdata)
+res <- scale_with_subset(lfqdata, lfqdata)
+cfg <- lfqdata$get_config()$clone(deep = TRUE)
+cfg$set_response(res$colname)
+lfqres <- LFQData$new(res$data, cfg)
+s2 <- get_robscales(lfqres)
 stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 }
 \seealso{

@@ -207,12 +207,11 @@ LFQData <- R6::R6Class(
     to_wide = function(as.matrix = FALSE, value = NULL) {
       cfg <- self$get_config()
       if (is.null(value)) {
-        wide <- prolfqua::tidy_to_wide_config(self$data_long(), cfg, as.matrix = as.matrix)
+        wide <- prolfqua::tidy_to_wide_config(self, as.matrix = as.matrix)
       } else {
         stopifnot(value %in% cfg$value_vars())
         wide <- prolfqua::tidy_to_wide_config(
-          self$data_long(),
-          cfg,
+          self,
           as.matrix = as.matrix,
           value = value
         )

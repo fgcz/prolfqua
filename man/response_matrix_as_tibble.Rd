@@ -7,29 +7,32 @@
 response_matrix_as_tibble(pdata, value, config, data = NULL, sep = "~lfq~")
 }
 \arguments{
-\item{pdata}{(matrix)}
+\item{pdata}{matrix with rownames encoding hierarchy keys}
 
-\item{value}{name of column to store values in. (see `gather`)}
+\item{value}{name of column to store values in}
 
-\item{config}{AnalysisConfiguration}
+\item{config}{AnalysisConfiguration (needed for column name mapping)}
 
-\item{data}{lfqdata}
+\item{data}{optional data.frame to join back to}
 
-\item{sep}{separater to unite the hierarchy keys.}
+\item{sep}{separator used to unite the hierarchy keys}
 }
 \description{
 Takes matrix of responses and converts into tibble
 }
 \examples{
 dd <- prolfqua::sim_lfq_data_peptide_config()
-data <- dd$data
-conf <- dd$config
-res <- tidy_to_wide_config(data, conf, as.matrix = TRUE)
+lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
+res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 
-res <- scale(res$data)
-xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
-xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf, data)
-conf$get_response() == "srm_intensityScaled"
+res_scaled <- scale(res$data)
+xx <- response_matrix_as_tibble(
+  res_scaled, "srm_intensityScaled", lfqdata$get_config()
+)
+xx <- response_matrix_as_tibble(
+  res_scaled, "srm_intensityScaled",
+  lfqdata$get_config(), lfqdata$data_long()
+)
 
 }
 \keyword{internal}

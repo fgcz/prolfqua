@@ -275,7 +275,7 @@ These are called exclusively from LFQDataPlotter. Config is NOT to be exposed �
 
 ### Phase 1+3: Add API methods & update decorators — DONE (2026-04-08)
 
-Added 8 API methods to LFQData (`hierarchy_keys()`, `relevant_hierarchy_keys()`, `factor_keys()`, `relevant_factor_keys()`, `sample_name()`, `file_name()`, `nr_children_col()`, `get_data()`).
+Added 9 API methods to LFQData (`hierarchy_keys()`, `relevant_hierarchy_keys()`, `factor_keys()`, `relevant_factor_keys()`, `sample_name()`, `file_name()`, `nr_children_col()`, `isotope_label()`, `data_long()`).
 
 Updated decorators to use API methods where they accessed config fields directly:
 - **LFQDataPlotter** — `config$sample_name` → `self$lfq$sample_name()`, hierarchy depth logic → `self$lfq$relevant_hierarchy_keys()`/`hierarchy_keys()`, `pairs_smooth` → `self$lfq$get_data()`/`sample_name()`
@@ -294,11 +294,16 @@ All ~40 functions refactored across 8 batches. Rule: >5 config fields → `lfqda
 
 Each transform method creates a new LFQData instance instead of mutating the clone. Constructor stores reference (not clone). User-facing API unchanged.
 
-### Phase 5: Make `data` and `config` private — NEXT
+### Phase 5: Make `data` and `config` truly private — DONE (2026-04-14)
 
-Use active bindings that warn on direct access (deprecation period), then error. Last step — only after all reads go through API and writes are handled.
-
-Prerequisite: audit remaining direct `$data` and `$config` accesses (LFQData methods, `setup_analysis`, `filter_proteins_by_peptide_count`, `.elist_to_lfqdata`, `MissingHelpers`, `tidy_to_wide_config`).
+- Removed active bindings — `data` and `config` are strictly private (no `$data` or `$config` access)
+- Renamed `get_data()` → `data_long(na.omit = FALSE)`, added `data_wide()`
+- Added `set_data()`, `get_config()`, `set_config_value(field, value)` methods
+- All internal LFQData methods use API (`self$data_long()`, `self$response()`, etc.)
+- Only core infrastructure (`initialize`, `set_data`, `data_long`, `get_config`, accessor wrappers) touches `private$.data`/`private$.config`
+- All prolfqua R/, tests, vignettes migrated — 0 errors, 0 warnings
+- prolfquapp fully migrated — 0 errors, 0 warnings
+- Split `nr_obs_experiment` → `nr_children_experiment` + `nr_features_experiment`
 
 ---
 

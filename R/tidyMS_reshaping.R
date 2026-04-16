@@ -15,65 +15,66 @@ tidy_to_wide <- function(data, row_ids, column_labels, value) {
 }
 
 #' transform long to wide
+#' @param lfqdata LFQData object
+#' @param as.matrix if TRUE return matrix, otherwise data.frame
+#' @param file_name if TRUE use file_name as column labels, otherwise sample_name
+#' @param sep separator for row IDs when as.matrix = TRUE
+#' @param value column name to pivot (default: lfqdata$response())
 #' @export
 #' @keywords internal
 #' @return list with data, rowdata, and annotation (colData)
 #' @examples
 #'
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' config <- dd$config
-#' data <- dd$data
-#' res <- tidy_to_wide_config(data, config)
+#' lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
+#' res <- tidy_to_wide_config(lfqdata)
 #' testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 #' testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
-#' res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
+#' res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 #' stopifnot(all(dim(res$data) == c(28,  12)))
 #' stopifnot(all(dim(res$annotation) == c(12,  4)))
 #' stopifnot(all(dim(res$rowdata) == c(28, 3)))
 #'
 #' res <- scale(res$data)
-#' tidy_to_wide_config(data, config,  value = config$nr_children)
+#' tidy_to_wide_config(lfqdata, value = lfqdata$nr_children_col())
 #'
-#'
-#' xt <- prolfqua::LFQData$new(dd$data, dd$config)
-#' xt$data_long()$nr_children
-#' res <- xt$get_Aggregator("medpolish")
+#' res <- lfqdata$get_Aggregator("medpolish")
 #' x <- res$aggregate()
-#' towide <- tidy_to_wide_config(x$data_long(), x$get_config(), value = x$nr_children_col())
+#' towide <- tidy_to_wide_config(x, value = x$nr_children_col())
 #'
 #' dd <- prolfqua::sim_lfq_data_protein_config()
-#' dd$config$nr_children
-#' dd$data
-#' xt <- tidy_to_wide_config(dd$data, dd$config,  value = dd$config$nr_children)
+#' lfqprot <- prolfqua::LFQData$new(dd$data, dd$config)
+#' xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
 #' xt$data
 #'
 tidy_to_wide_config <- function(
-  data,
-  config,
+  lfqdata,
   as.matrix = FALSE,
   file_name = FALSE,
   sep = "~lfq~",
-  value = config$get_response()
+  value = lfqdata$response()
 ) {
+  data <- lfqdata$data_long()
   if (file_name) {
-    newcolname <- config$file_name
+    newcolname <- lfqdata$file_name()
   } else {
-    newcolname <- config$sample_name
+    newcolname <- lfqdata$sample_name()
   }
 
   ids <- dplyr::select(
     data,
-    all_of(c(config$sample_name, config$file_name, config$factor_keys(), config$isotope_label))
+    all_of(c(lfqdata$sample_name(), lfqdata$file_name(), lfqdata$factor_keys(), lfqdata$isotope_label()))
   ) |>
     dplyr::distinct() |>
     dplyr::arrange_at(newcolname)
 
-  res <- tidy_to_wide(data, c(config$hierarchy_keys(), config$isotope_label), newcolname, value = value)
-  rowdata <- res |> dplyr::select(all_of(c(config$hierarchy_keys(), config$isotope_label)))
+  hierarchy_isotope <- c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
+  res <- tidy_to_wide(data, hierarchy_isotope, newcolname, value = value)
+  rowdata <- res |> dplyr::select(all_of(hierarchy_isotope))
   if (as.matrix) {
-    res_mat <- as.matrix(dplyr::select(res, -dplyr::all_of(c(config$hierarchy_keys(), config$isotope_label))))
+    res_mat <- as.matrix(dplyr::select(res, -dplyr::all_of(hierarchy_isotope)))
     names <- rowdata |>
-      tidyr::unite("newID", !!!dplyr::syms(c(config$hierarchy_keys(), config$isotope_label)), sep = sep) |>
+      tidyr::unite("newID", !!!dplyr::syms(hierarchy_isotope), sep = sep) |>
       dplyr::pull("newID")
     rownames(res_mat) <- names
     res <- res_mat

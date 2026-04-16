@@ -2,44 +2,47 @@
 % Please edit documentation in R/LFQDataTransformer.R
 \name{transform_work_intensity}
 \alias{transform_work_intensity}
-\title{Transform intensity}
+\title{Transform intensity column by applying a function}
 \usage{
 transform_work_intensity(
   pdata,
-  config,
+  response,
   .func,
   .funcname = NULL,
-  intensity_new_name = NULL,
-  deep = FALSE
+  intensity_new_name = NULL
 )
 }
 \arguments{
 \item{pdata}{data.frame}
 
-\item{config}{AnalysisConfiguration}
+\item{response}{character, name of the response column to transform}
 
 \item{.func}{function to transform intensities e.g. log2}
 
-\item{.funcname}{generates new name from name of transformation and old working intensity column name.}
+\item{.funcname}{name of function (used for creating new column name)}
 
 \item{intensity_new_name}{column name for new intensity, default NULL}
 }
 \value{
-data.frame
+list with `data` (data.frame) and `colname` (new column name)
 }
 \description{
-Transform intensity
+Transform intensity column by applying a function
 }
 \examples{
 
 dd <- prolfqua_data('data_spectronautDIA250_A')
 config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
-x <- transform_work_intensity(analysis, config, .func = log2)
-stopifnot("log2_FG.Quantity" \%in\% colnames(x))
+analysis <- dd$analysis(dd$data, config)
+res <- transform_work_intensity(
+  analysis, config$get_response(), .func = log2
+)
+stopifnot("log2_FG.Quantity" \%in\% colnames(res$data))
 config <- dd$config_f()
-x <- transform_work_intensity(analysis, config, .func = asinh)
-stopifnot("asinh_FG.Quantity" \%in\% colnames(x))
+res <- transform_work_intensity(
+  analysis, config$get_response(), .func = asinh
+)
+stopifnot("asinh_FG.Quantity" \%in\% colnames(res$data))
 
 }
 \keyword{internal}
