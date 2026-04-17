@@ -29,7 +29,7 @@
 #' stopifnot(class(lfqplotter$sample_correlation()) == "list")
 #' stopifnot(class(lfqplotter$raster()) == "pheatmap")
 #' stopifnot("upset" == class(lfqplotter$upset_missing()))
-#' wide <- lfqdata$to_wide(as.matrix = TRUE)
+#' wide <- lfqdata$data_wide(as.matrix = TRUE)
 #' stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 #'
 #'
@@ -61,7 +61,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return ggplot
     raster = function(arrange = c("mean", "var"), not_na = FALSE, rownames = FALSE) {
       arrange <- match.arg(arrange)
-      wide <- self$lfq$to_wide(as.matrix = TRUE)
+      wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_raster(
         wide$data,
         wide$annotation,
@@ -89,7 +89,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param rownames show rownames (default FALSE - do not show.)
     #' @return pheatmap
     heatmap = function(na_fraction = 0.3, rownames = FALSE) {
-      wide <- self$lfq$to_wide(as.matrix = TRUE)
+      wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_heatmap(
         wide$data,
         wide$annotation,
@@ -111,7 +111,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return pheatmap
     #'
     heatmap_cor = function() {
-      wide <- self$lfq$to_wide(as.matrix = TRUE)
+      wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_heatmap_cor(
         wide$data,
         wide$annotation,
@@ -134,7 +134,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param nudge default 0.1 nudge point labels
     #' @return ggplot
     pca = function(PC = c(1, 2), add_txt = TRUE, nudge = 0.1) {
-      wide <- self$lfq$to_wide(as.matrix = TRUE)
+      wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_pca(
         wide$data,
         wide$annotation,
@@ -182,7 +182,7 @@ LFQDataPlotter <- R6::R6Class(
     #' heatmap of features with missing values
     #' @return ggplot
     na_heatmap = function() {
-      wide <- self$lfq$to_wide(as.matrix = TRUE)
+      wide <- self$lfq$data_wide(as.matrix = TRUE)
       prolfqua::plot_na_heatmap(
         wide$data,
         wide$annotation,
@@ -230,9 +230,9 @@ LFQDataPlotter <- R6::R6Class(
           lfq_sub$data_long() |>
             dplyr::filter(!!sym(sample_col) %in% limit)
         )
-        prolfqua::pairs_smooth(lfq_sub$to_wide(as.matrix = TRUE)$data)
+        prolfqua::pairs_smooth(lfq_sub$data_wide(as.matrix = TRUE)$data)
       } else {
-        prolfqua::pairs_smooth(self$lfq$to_wide(as.matrix = TRUE)$data)
+        prolfqua::pairs_smooth(self$lfq$data_wide(as.matrix = TRUE)$data)
       }
       NULL
     },
@@ -240,7 +240,7 @@ LFQDataPlotter <- R6::R6Class(
     #' plot of sample correlations
     #' @return NULL
     sample_correlation = function() {
-      prolfqua::plot_sample_correlation(self$lfq$to_wide(as.matrix = TRUE)$data)
+      prolfqua::plot_sample_correlation(self$lfq$data_wide(as.matrix = TRUE)$data)
     },
     #' @description
     #' upset plot based on presence absence information

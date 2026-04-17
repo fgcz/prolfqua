@@ -36,7 +36,7 @@ plot PCA
 
 istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
 lfq <- LFQData$new(istar$data, istar$config)
-wide <- lfq$to_wide(as.matrix = TRUE)
+wide <- lfq$data_wide(as.matrix = TRUE)
 tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
   add_txt = TRUE, nudge = 0.01)
 stopifnot("ggplot" \%in\% class(tmp))

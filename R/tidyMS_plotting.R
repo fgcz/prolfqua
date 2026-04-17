@@ -80,7 +80,7 @@ plot_intensity_distribution_density <- function(pdata, sample_name, response, is
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' lfq <- lfq$get_Transformer()$log2()$lfq
-#' plot_sample_correlation(lfq$to_wide(as.matrix = TRUE)$data)
+#' plot_sample_correlation(lfq$data_wide(as.matrix = TRUE)$data)
 plot_sample_correlation <- function(matrix) {
   M <- cor(matrix, use = "pairwise.complete.obs")
   if (nrow(M) > 12) {
@@ -274,7 +274,7 @@ plot_hierarchies_boxplot_df <- function(
 #'
 #' istar <- sim_lfq_data_protein_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' wide <- lfq$data_wide(as.matrix = TRUE)
 #' pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
 #'   lfq$factor_keys(), lfq$sample_name())
 #' stopifnot("pheatmap" %in% class(pheat_map))
@@ -333,7 +333,7 @@ plot_heatmap_cor <- function(
 #'
 #' istar <- sim_lfq_data_protein_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' wide <- lfq$data_wide(as.matrix = TRUE)
 #' p <- plot_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #' stopifnot(class(p) == "pheatmap")
 #'
@@ -397,7 +397,7 @@ plot_heatmap <- function(matrix, annotation, factor_keys, sample_name, na_fracti
 #'
 #' istar <- sim_lfq_data_protein_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' wide <- lfq$data_wide(as.matrix = TRUE)
 #' rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #' stopifnot(class(rs) == "pheatmap")
 #' rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")
@@ -466,7 +466,7 @@ plot_raster <- function(
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' wide <- lfq$data_wide(as.matrix = TRUE)
 #' tmp <- plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #' stopifnot(class(tmp) == "pheatmap")
 #'
@@ -527,7 +527,7 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 #'
 #' istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$to_wide(as.matrix = TRUE)
+#' wide <- lfq$data_wide(as.matrix = TRUE)
 #' tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
 #'   add_txt = TRUE, nudge = 0.01)
 #' stopifnot("ggplot" %in% class(tmp))

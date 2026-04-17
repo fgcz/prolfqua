@@ -35,7 +35,7 @@ stopifnot(is.null(lfqplotter$pairs_smooth()))
 stopifnot(class(lfqplotter$sample_correlation()) == "list")
 stopifnot(class(lfqplotter$raster()) == "pheatmap")
 stopifnot("upset" == class(lfqplotter$upset_missing()))
-wide <- lfqdata$to_wide(as.matrix = TRUE)
+wide <- lfqdata$data_wide(as.matrix = TRUE)
 stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 
 

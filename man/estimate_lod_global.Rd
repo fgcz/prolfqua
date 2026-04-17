@@ -18,7 +18,7 @@ esitmate lod
 # example code
 istar <- sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(istar$data, istar$config)
-xx <- lfqdata$to_wide(as.matrix=TRUE)
+xx <- lfqdata$data_wide(as.matrix=TRUE)
 stopifnot(length(estimate_lod_global(xx$data, prop_na = 90)) == 0)
 stopifnot(length(estimate_lod_global(xx$data, prop_na = 10)) > 0)
 }

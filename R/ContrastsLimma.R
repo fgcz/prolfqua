@@ -116,7 +116,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' @importFrom methods new
 #' @keywords internal
 .lfqdata_to_elist <- function(lfqdata, formula) {
-  wide <- lfqdata$to_wide(as.matrix = TRUE)
+  wide <- lfqdata$data_wide(as.matrix = TRUE)
   expr_matrix <- wide$data
   annotation <- wide$annotation
   subject_id <- lfqdata$hierarchy_keys()
@@ -184,7 +184,7 @@ compute_borrowed_variance_limma <- function(fit) {
     }
     if (wcol %in% colnames(lfqdata$data_long())) {
       if (wcol %in% lfqdata$get_config()$value_vars()) {
-        wt_wide <- lfqdata$to_wide(as.matrix = TRUE, value = wcol)
+        wt_wide <- lfqdata$data_wide(as.matrix = TRUE, value = wcol)
         return(wt_wide$data)
       } else {
         fname_col <- lfqdata$file_name()

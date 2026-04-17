@@ -20,7 +20,7 @@ For compatibility with Bioconductor
 istar <- prolfqua::sim_lfq_data_peptide_config()
 data <- istar$data
 lfqdata <- LFQData$new(data, istar$config)
-lfqdata$to_wide()
+lfqdata$data_wide()
 if(require("SummarizedExperiment")){
    tmp <- LFQDataToSummarizedExperiment(lfqdata)
 }

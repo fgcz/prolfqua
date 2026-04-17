@@ -33,7 +33,7 @@ plot heatmap of NA values
 
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
-wide <- lfq$to_wide(as.matrix = TRUE)
+wide <- lfq$data_wide(as.matrix = TRUE)
 tmp <- plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(class(tmp) == "pheatmap")
 

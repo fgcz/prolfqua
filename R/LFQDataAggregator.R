@@ -459,7 +459,7 @@ AggregateLimpa <- R6::R6Class(
     #' run limpa DPC-based aggregation (or imputation)
     #' @return LFQData
     aggregate = function() {
-      wide <- self$lfq$to_wide(as.matrix = TRUE)
+      wide <- self$lfq$data_wide(as.matrix = TRUE)
       expr_matrix <- wide$data
 
       # Estimate DPC

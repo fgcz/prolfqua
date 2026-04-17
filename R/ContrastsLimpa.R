@@ -99,11 +99,11 @@ build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_nam
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
 
   # Extract SE matrix for vooma predictor
-  se_wide <- lfqdata$to_wide(as.matrix = TRUE, value = se_col)
+  se_wide <- lfqdata$data_wide(as.matrix = TRUE, value = se_col)
   predictor <- log(se_wide$data + 1e-6)
 
   # Extract n_observations for imputed flag
-  n_obs_wide <- lfqdata$to_wide(as.matrix = TRUE, value = nr_col)
+  n_obs_wide <- lfqdata$data_wide(as.matrix = TRUE, value = nr_col)
   imputed <- (n_obs_wide$data == 0)
 
   # Fit vooma model with imputation-aware precision weights

@@ -37,10 +37,10 @@ This function assumes that missing values are Missing Completely
 dd <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(dd$data, dd$config)
 if (requireNamespace("zCompositions", quietly = TRUE)) {
-  wide_before <- lfqdata$to_wide(as.matrix = TRUE)
+  wide_before <- lfqdata$data_wide(as.matrix = TRUE)
   has_na_before <- any(is.na(wide_before$data))
   lfqdata <- impute_with_zcomp(lfqdata, method = "multRepl", lod = "global")
-  wide_after <- lfqdata$to_wide(as.matrix = TRUE)
+  wide_after <- lfqdata$data_wide(as.matrix = TRUE)
   has_na_after <- any(is.na(wide_after$data))
   stopifnot(has_na_before || !has_na_after)
   stopifnot(!has_na_after)

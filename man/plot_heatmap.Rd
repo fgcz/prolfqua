@@ -36,7 +36,7 @@ plot heatmap with annotations
 
 istar <- sim_lfq_data_protein_config()
 lfq <- LFQData$new(istar$data, istar$config)
-wide <- lfq$to_wide(as.matrix = TRUE)
+wide <- lfq$data_wide(as.matrix = TRUE)
 p <- plot_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(class(p) == "pheatmap")
 

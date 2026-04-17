@@ -6,7 +6,7 @@
 #' # example code
 #' istar <- sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' xx <- lfqdata$to_wide(as.matrix=TRUE)
+#' xx <- lfqdata$data_wide(as.matrix=TRUE)
 #' stopifnot(length(estimate_lod_global(xx$data, prop_na = 90)) == 0)
 #' stopifnot(length(estimate_lod_global(xx$data, prop_na = 10)) > 0)
 estimate_lod_global <- function(data_matrix, prop_na = 90) {
@@ -25,7 +25,7 @@ estimate_lod_global <- function(data_matrix, prop_na = 90) {
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
-#' xx <- lfqdata$to_wide(as.matrix=TRUE)
+#' xx <- lfqdata$data_wide(as.matrix=TRUE)
 #' s <- function_lod_quantile(xx$data)
 #' sapply(s, median)
 #' sapply(s, mean)
@@ -69,10 +69,10 @@ function_lod_quantile <- function(data_matrix, percent = 10) {
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(dd$data, dd$config)
 #' if (requireNamespace("zCompositions", quietly = TRUE)) {
-#'   wide_before <- lfqdata$to_wide(as.matrix = TRUE)
+#'   wide_before <- lfqdata$data_wide(as.matrix = TRUE)
 #'   has_na_before <- any(is.na(wide_before$data))
 #'   lfqdata <- impute_with_zcomp(lfqdata, method = "multRepl", lod = "global")
-#'   wide_after <- lfqdata$to_wide(as.matrix = TRUE)
+#'   wide_after <- lfqdata$data_wide(as.matrix = TRUE)
 #'   has_na_after <- any(is.na(wide_after$data))
 #'   stopifnot(has_na_before || !has_na_after)
 #'   stopifnot(!has_na_after)
@@ -85,7 +85,7 @@ impute_with_zcomp <- function(
 ) {
   lod <- match.arg(lod)
   method <- match.arg(method)
-  wide <- lfqdata$to_wide(as.matrix = TRUE)
+  wide <- lfqdata$data_wide(as.matrix = TRUE)
 
   if (!any(is.na(wide$data))) {
     return(lfqdata)

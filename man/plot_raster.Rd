@@ -39,7 +39,7 @@ plot heatmap without any clustering (use to show NA's)
 
 istar <- sim_lfq_data_protein_config()
 lfq <- LFQData$new(istar$data, istar$config)
-wide <- lfq$to_wide(as.matrix = TRUE)
+wide <- lfq$data_wide(as.matrix = TRUE)
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(class(rs) == "pheatmap")
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")

@@ -16,12 +16,12 @@
 #' istar <- sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$filter_proteins_by_peptide_count()
-#' tmp <- lfqdata$to_wide()
+#' tmp <- lfqdata$data_wide()
 #' testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))
 #' testthat::expect_equal(ncol(tmp$data) , nrow(tmp$annotation) + ncol(tmp$rowdata))
 #'
 #' stopifnot("data.frame" %in% class(tmp$data))
-#' tmp <- lfqdata$to_wide(as.matrix = TRUE)
+#' tmp <- lfqdata$data_wide(as.matrix = TRUE)
 #' stopifnot("matrix" %in% class(tmp$data))
 #' stopifnot(lfqdata$is_transformed()==FALSE)
 #' lfqdata$summarize_hierarchy()
@@ -204,7 +204,7 @@ LFQData <- R6::R6Class(
     #' @param value see possible lfqdata$get_config()$value_vars()
     #' @return list with data, annotation, and configuration
     #'
-    to_wide = function(as.matrix = FALSE, value = NULL) {
+    data_wide = function(as.matrix = FALSE, value = NULL) {
       cfg <- self$get_config()
       if (is.null(value)) {
         wide <- prolfqua::tidy_to_wide_config(self, as.matrix = as.matrix)
@@ -218,6 +218,14 @@ LFQData <- R6::R6Class(
       }
       wide$config <- cfg$clone(deep = TRUE)
       return(wide)
+    },
+    #' @description
+    #' deprecated — use data_wide() instead
+    #' @param as.matrix return as data.frame or matrix
+    #' @param value see possible lfqdata$get_config()$value_vars()
+    to_wide = function(as.matrix = FALSE, value = NULL) {
+      .Deprecated("data_wide")
+      self$data_wide(as.matrix = as.matrix, value = value)
     },
     #' @description
     #' Annotation table
@@ -286,14 +294,6 @@ LFQData <- R6::R6Class(
         return(stats::na.omit(private$.data))
       }
       private$.data
-    },
-    #' @description
-    #' return wide-format data (matrix + annotation + rowdata, no config)
-    #' @param as.matrix if TRUE return numeric matrix, otherwise data.frame
-    data_wide = function(as.matrix = TRUE) {
-      wide <- self$to_wide(as.matrix = as.matrix)
-      wide$config <- NULL
-      return(wide)
     },
     #' @description
     #' deprecated — use data_long() instead
@@ -561,19 +561,19 @@ filter_difference <- function(x, y, config) {
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #' data <- istar$data
 #' lfqdata <- LFQData$new(data, istar$config)
-#' lfqdata$to_wide()
+#' lfqdata$data_wide()
 #' if(require("SummarizedExperiment")){
 #'    tmp <- LFQDataToSummarizedExperiment(lfqdata)
 #' }
 #'
 LFQDataToSummarizedExperiment <- function(lfqdata) {
   if (requireNamespace("SummarizedExperiment")) {
-    wide <- lfqdata$to_wide(as.matrix = TRUE)
+    wide <- lfqdata$data_wide(as.matrix = TRUE)
     ann <- data.frame(wide$annotation)
     rownames(ann) <- wide$annotation[[lfqdata$sample_name()]]
     assays <- S4Vectors::SimpleList(LFQ = wide$data)
     if ("nr_children" %in% lfqdata$get_config()$value_vars()) {
-      nr_children <- lfqdata$to_wide(as.matrix = TRUE, value = "nr_children")
+      nr_children <- lfqdata$data_wide(as.matrix = TRUE, value = "nr_children")
       assays[["nr_children"]] <- nr_children$data
     }
     se <- SummarizedExperiment::SummarizedExperiment(
