@@ -49,7 +49,7 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 lfq <- LFQData$new(istar$data, istar$config)
-xx <- table_factors(lfq$get_data(), lfq$file_name(), lfq$sample_name(), lfq$factor_keys())
+xx <- table_factors(lfq$data_long(), lfq$file_name(), lfq$sample_name(), lfq$factor_keys())
 xt <- xx |> dplyr::group_by(!!!rlang::syms(lfq$factor_keys())) |>
  dplyr::summarize(n = dplyr::n())
 stopifnot(all(xt$n == 4))

@@ -29,7 +29,7 @@ build_contrast_analysis(
 
   model formula string without the response variable (e.g.
   `"~ group_"`). The response is taken automatically from
-  `lfqdata$config$get_response()`.
+  `lfqdata$get_config()$get_response()`.
 
 - contrasts:
 

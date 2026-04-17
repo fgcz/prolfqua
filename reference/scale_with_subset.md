@@ -5,28 +5,18 @@ this should reduce the overall variance.
 ## Usage
 
 ``` r
-scale_with_subset(
-  data,
-  subset,
-  config,
-  preserve_mean = FALSE,
-  get_scales = TRUE
-)
+scale_with_subset(lfqdata, lfqsubset, preserve_mean = FALSE, get_scales = TRUE)
 ```
 
 ## Arguments
 
-- data:
+- lfqdata:
 
-  the whole dataset
+  LFQData object with full dataset
 
-- subset:
+- lfqsubset:
 
-  a subset of the dataset
-
-- config:
-
-  configuration
+  LFQData object with subset for computing scales
 
 - preserve_mean:
 
@@ -35,6 +25,10 @@ scale_with_subset(
 - get_scales:
 
   return a list of transformed data and the scaling parameters
+
+## Value
+
+list with data, scales, and colname
 
 ## See also
 
@@ -48,21 +42,20 @@ Other preprocessing:
 ## Examples
 
 ``` r
-
-
-bb <-sim_lfq_data_peptide_config(Nprot = 100)
+bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-conf <- bb$config$clone(deep=TRUE)
-sample_analysis <- bb$data
-
-res <- transform_work_intensity(sample_analysis, conf, log2)
+lfqdata <- LFQData$new(bb$data, bb$config)
+lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
-s1 <- get_robscales(res, conf)
-res <- scale_with_subset(res, res, conf)
+s1 <- get_robscales(lfqdata)
+res <- scale_with_subset(lfqdata, lfqdata)
 #> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
-s2 <- get_robscales(res$data, conf)
+cfg <- lfqdata$get_config()$clone(deep = TRUE)
+cfg$set_response(res$colname)
+lfqres <- LFQData$new(res$data, cfg)
+s2 <- get_robscales(lfqres)
 stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 ```

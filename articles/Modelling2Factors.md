@@ -95,8 +95,8 @@ We are then building our model as we specified it before for each
 protein.
 
 ``` r
-mod <- prolfqua::build_model(pMerged$data, formula_Batches,
-  subject_id = pMerged$config$hierarchy_keys() )
+mod <- prolfqua::build_model(pMerged$data_long(), formula_Batches,
+  subject_id = pMerged$hierarchy_keys() )
 ```
 
 Now, we can visualize the effect of our factors that are specified in
@@ -137,7 +137,7 @@ ANOVA |> dplyr::filter(factor == "Treatment:Background") |> dplyr::arrange(FDR) 
 protIntSig <- ANOVA |> dplyr::filter(factor == "Treatment:Background") |>
   dplyr::filter(FDR < 0.01)
 protInt <-  pMerged$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% protIntSig$protein_Id[1:6],]
+protInt$set_data(protInt$data_long()[protInt$data_long()$protein_Id %in% protIntSig$protein_Id[1:6],])
 ```
 
 These proteins can easily be visualized using the `boxplot` function
@@ -255,7 +255,7 @@ sigInteraction <- mergedContrasts$contrast_result |>
   dplyr::filter(contrast == "Interaction" & FDR < 0.2)
 
 protInt <-  pMerged$get_copy()
-protInt$data <- protInt$data[protInt$data$protein_Id %in% sigInteraction$protein_Id,]
+protInt$set_data(protInt$data_long()[protInt$data_long()$protein_Id %in% sigInteraction$protein_Id,])
 
 protInt$get_Plotter()$raster()
 ```
@@ -341,8 +341,8 @@ contr_spec <- c("TA - TB" = "(GroupA_X + GroupA_Z)/2 - (GroupB_X + GroupB_Z)/2",
 ```
 
 ``` r
-mod <- prolfqua::build_model(data_1Factor$data, formula_Batches,
-  subject_id = pMerged$config$hierarchy_keys() )
+mod <- prolfqua::build_model(data_1Factor$data_long(), formula_Batches,
+  subject_id = pMerged$hierarchy_keys() )
 ```
 
 ``` r
@@ -409,7 +409,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      vipor_0.4.7           
-    ##  [4] farver_2.1.2           S7_0.2.1               fastmap_1.2.0         
+    ##  [4] farver_2.1.2           S7_0.2.1-1             fastmap_1.2.0         
     ##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          
     ## [10] lifecycle_1.0.5        survival_3.8-3         statmod_1.5.1         
     ## [13] magrittr_2.0.5         compiler_4.5.2         progress_1.2.3        
@@ -417,7 +417,7 @@ sessionInfo()
     ## [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.2.1   
     ## [22] knitr_1.51             labeling_0.4.3         prettyunits_1.2.0     
     ## [25] htmlwidgets_1.6.4      plyr_1.8.9             RColorBrewer_1.1-3    
-    ## [28] withr_3.0.2            purrr_1.2.1            desc_1.4.3            
+    ## [28] withr_3.0.2            purrr_1.2.2            desc_1.4.3            
     ## [31] nnet_7.3-20            grid_4.5.2             jomo_2.7-6            
     ## [34] mice_3.19.0            ggplot2_4.0.2          scales_1.4.0          
     ## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
@@ -425,12 +425,12 @@ sessionInfo()
     ## [43] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
     ## [46] otel_0.2.0             httr_1.4.8             ggbeeswarm_0.7.3      
     ## [49] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
-    ## [52] splines_4.5.2          vctrs_0.7.2            boot_1.3-32           
+    ## [52] splines_4.5.2          vctrs_0.7.3            boot_1.3-32           
     ## [55] glmnet_4.1-10          Matrix_1.7-4           jsonlite_2.0.0        
     ## [58] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         
     ## [61] beeswarm_0.4.0         systemfonts_1.3.2      foreach_1.5.2         
     ## [64] limma_3.66.0           plotly_4.12.0          tidyr_1.3.2           
-    ## [67] jquerylib_0.1.4        glue_1.8.0             pkgdown_2.2.0         
+    ## [67] jquerylib_0.1.4        glue_1.8.1             pkgdown_2.2.0         
     ## [70] nloptr_2.2.1           pan_1.9                codetools_0.2-20      
     ## [73] stringi_1.8.7          shape_1.4.6.1          gtable_0.3.6          
     ## [76] lme4_2.0-1             tibble_3.3.1           pillar_1.11.1         
@@ -438,7 +438,7 @@ sessionInfo()
     ## [82] Rdpack_2.6.6           formula.tools_1.7.1    evaluate_1.0.5        
     ## [85] lattice_0.22-7         rbibutils_2.4.1        backports_1.5.1       
     ## [88] pheatmap_1.0.13        broom_1.0.12           bslib_0.10.0          
-    ## [91] Rcpp_1.1.1             gridExtra_2.3          nlme_3.1-168          
+    ## [91] Rcpp_1.1.1-1           gridExtra_2.3          nlme_3.1-168          
     ## [94] mgcv_1.9-3             logistf_1.26.1         xfun_0.57             
     ## [97] fs_2.0.1               forcats_1.0.1          pkgconfig_2.0.3
 

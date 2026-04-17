@@ -54,15 +54,38 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tidy_to_wide_config</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">config</span>,</span>
+<span>  <span class="va">lfqdata</span>,</span>
 <span>  as.matrix <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  file_name <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  sep <span class="op">=</span> <span class="st">"~lfq~"</span>,</span>
-<span>  value <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span></span>
+<span>  value <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-lfqdata">lfqdata<a class="anchor" aria-label="anchor" href="#arg-lfqdata"></a></dt>
+<dd><p>LFQData object</p></dd>
+
+
+<dt id="arg-as-matrix">as.matrix<a class="anchor" aria-label="anchor" href="#arg-as-matrix"></a></dt>
+<dd><p>if TRUE return matrix, otherwise data.frame</p></dd>
+
+
+<dt id="arg-file-name">file_name<a class="anchor" aria-label="anchor" href="#arg-file-name"></a></dt>
+<dd><p>if TRUE use file_name as column labels, otherwise sample_name</p></dd>
+
+
+<dt id="arg-sep">sep<a class="anchor" aria-label="anchor" href="#arg-sep"></a></dt>
+<dd><p>separator for row IDs when as.matrix = TRUE</p></dd>
+
+
+<dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
+<dd><p>column name to pivot (default: lfqdata$response())</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>list with data, rowdata, and annotation (colData)</p>
@@ -76,18 +99,17 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dd</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span> , <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">annotation</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">lfqdata</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>,  <span class="fl">12</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">annotation</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>,  <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span>,  value <span class="op">=</span> <span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">lfqdata</span>, value <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  peptide_Id isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3</span>
@@ -140,53 +162,19 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 18 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">xt</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">xt</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">nr_children</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  1  1 NA  1  1  1  1  1  1  1  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [26] NA  1 NA NA  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [51]  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1 NA  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [76]  1  1  1  1  1  1  1  1 NA  1  1 NA  1  1 NA  1  1  1 NA  1 NA  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [101]  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1 NA  1  1  1 NA  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [126]  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [151]  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [176]  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [201]  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [226]  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1 NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [251]  1  1  1 NA  1  1  1  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [276]  1  1  1  1  1 NA  1  1 NA  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [301]  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1 NA  1  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [326]  1  1  1  1  1 NA  1  1  1  1  1</span>
-<span class="r-in"><span><span class="co">#xt$config$is_response_transformed &lt;- TRUE</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">xt</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="st">"medpolish"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="st">"medpolish"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: abundance</span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> starting aggregation</span>
-<span class="r-in"><span><span class="va">towide</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">data</span>, <span class="va">x</span><span class="op">$</span><span class="va">config</span>,  value <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">towide</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">x</span>, value <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "nr_peptides"</span>
-<span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 120 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    sample sampleName group_ isotopeLabel protein_Id abundance qValue nr_peptides</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A_V1   A_V1       A      light        0EfVhX~00…      20.1      0           3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A_V1   A_V1       A      light        7cbcrd~57…      22.0      0           1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A_V1   A_V1       A      light        9VUkAq~47…      19.8      0           1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A_V1   A_V1       A      light        BEJI92~52…      21.2      0           2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> A_V1   A_V1       A      light        CGzoYe~21…      29.4      0           1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> A_V1   A_V1       A      light        DoWup2~58…      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> A_V1   A_V1       A      light        Fl4JiV~86…      20.1      0           4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> A_V1   A_V1       A      light        HvIpHG~90…      21.7      0           2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> A_V1   A_V1       A      light        JcKVfU~96…      34.5      0           7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> A_V1   A_V1       A      light        SGIVBl~57…      23.9      0           6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 110 more rows</span></span>
-<span class="r-in"><span><span class="va">xt</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span>,  value <span class="op">=</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfqprot</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">xt</span> <span class="op">&lt;-</span> <span class="fu">tidy_to_wide_config</span><span class="op">(</span><span class="va">lfqprot</span>, value <span class="op">=</span> <span class="va">lfqprot</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xt</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4</span>

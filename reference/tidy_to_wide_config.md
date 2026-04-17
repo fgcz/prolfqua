@@ -6,14 +6,35 @@ transform long to wide
 
 ``` r
 tidy_to_wide_config(
-  data,
-  config,
+  lfqdata,
   as.matrix = FALSE,
   file_name = FALSE,
   sep = "~lfq~",
-  value = config$get_response()
+  value = lfqdata$response()
 )
 ```
+
+## Arguments
+
+- lfqdata:
+
+  LFQData object
+
+- as.matrix:
+
+  if TRUE return matrix, otherwise data.frame
+
+- file_name:
+
+  if TRUE use file_name as column labels, otherwise sample_name
+
+- sep:
+
+  separator for row IDs when as.matrix = TRUE
+
+- value:
+
+  column name to pivot (default: lfqdata\$response())
 
 ## Value
 
@@ -27,18 +48,17 @@ dd <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-config <- dd$config
-data <- dd$data
-res <- tidy_to_wide_config(data, config)
+lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
+res <- tidy_to_wide_config(lfqdata)
 testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
 testthat::expect_equal(ncol(res$data) - ncol(res$rowdata) , nrow(res$annotation))
-res <- tidy_to_wide_config(data, config, as.matrix = TRUE)
+res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 stopifnot(all(dim(res$data) == c(28,  12)))
 stopifnot(all(dim(res$annotation) == c(12,  4)))
 stopifnot(all(dim(res$rowdata) == c(28, 3)))
 
 res <- scale(res$data)
-tidy_to_wide_config(data, config,  value = config$nr_children)
+tidy_to_wide_config(lfqdata, value = lfqdata$nr_children_col())
 #> $data
 #> # A tibble: 28 × 15
 #>    protein_Id  peptide_Id isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3
@@ -91,53 +111,19 @@ tidy_to_wide_config(data, config,  value = config$nr_children)
 #> # ℹ 18 more rows
 #> 
 
-
-xt <- prolfqua::LFQData$new(dd$data, dd$config)
-xt$data$nr_children
-#>   [1]  1  1 NA  1  1  1  1  1  1  1  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1
-#>  [26] NA  1 NA NA  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1
-#>  [51]  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1 NA  1  1  1  1  1
-#>  [76]  1  1  1  1  1  1  1  1 NA  1  1 NA  1  1 NA  1  1  1 NA  1 NA  1  1  1  1
-#> [101]  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1 NA  1  1  1 NA  1  1  1  1  1
-#> [126]  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1
-#> [151]  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1
-#> [176]  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1
-#> [201]  1  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1
-#> [226]  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1 NA
-#> [251]  1  1  1 NA  1  1  1  1 NA  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1
-#> [276]  1  1  1  1  1 NA  1  1 NA  1 NA  1  1  1  1  1  1  1  1  1  1  1  1  1  1
-#> [301]  1  1  1  1  1 NA  1  1  1  1  1  1  1  1  1  1  1  1 NA  1  1  1 NA  1  1
-#> [326]  1  1  1  1  1 NA  1  1  1  1  1
-#xt$config$is_response_transformed <- TRUE
-res <- xt$get_Aggregator("medpolish")
+res <- lfqdata$get_Aggregator("medpolish")
 #> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: abundance
 x <- res$aggregate()
 #> starting aggregation
-towide <- tidy_to_wide_config(x$data, x$config,  value = x$config$nr_children)
+towide <- tidy_to_wide_config(x, value = x$nr_children_col())
 
 dd <- prolfqua::sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-dd$config$nr_children
-#> [1] "nr_peptides"
-dd$data
-#> # A tibble: 120 × 8
-#>    sample sampleName group_ isotopeLabel protein_Id abundance qValue nr_peptides
-#>    <chr>  <chr>      <chr>  <chr>        <chr>          <dbl>  <dbl>       <dbl>
-#>  1 A_V1   A_V1       A      light        0EfVhX~00…      20.1      0           3
-#>  2 A_V1   A_V1       A      light        7cbcrd~57…      22.0      0           1
-#>  3 A_V1   A_V1       A      light        9VUkAq~47…      19.8      0           1
-#>  4 A_V1   A_V1       A      light        BEJI92~52…      21.2      0           2
-#>  5 A_V1   A_V1       A      light        CGzoYe~21…      29.4      0           1
-#>  6 A_V1   A_V1       A      light        DoWup2~58…      NA       NA          NA
-#>  7 A_V1   A_V1       A      light        Fl4JiV~86…      20.1      0           4
-#>  8 A_V1   A_V1       A      light        HvIpHG~90…      21.7      0           2
-#>  9 A_V1   A_V1       A      light        JcKVfU~96…      34.5      0           7
-#> 10 A_V1   A_V1       A      light        SGIVBl~57…      23.9      0           6
-#> # ℹ 110 more rows
-xt <- tidy_to_wide_config(dd$data, dd$config,  value = dd$config$nr_children)
+lfqprot <- prolfqua::LFQData$new(dd$data, dd$config)
+xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
 xt$data
 #> # A tibble: 10 × 14
 #>    protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4

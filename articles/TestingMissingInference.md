@@ -93,11 +93,11 @@ formula_Protein <-
               model_name = modelName)
 
 
+dd_lfq <- prolfqua::LFQData$new(dd$data, dd$config)
 mod <- prolfqua::build_model(
-  dd$data,
+  dd_lfq,
   formula_Protein,
-  model_name = modelName,
-  subject_id = dd$config$hierarchy_keys_depth())
+  model_name = modelName)
 ```
 
     ## Warning: There were 11 warnings in `dplyr::mutate()`.
@@ -234,7 +234,7 @@ modI <- prolfqua::build_model(
   loddata,
   formula_Protein,
   model_name = modelName,
-  subject_id = dd$config$hierarchy_keys_depth())
+  subject_id = dd_lfq$relevant_hierarchy_keys())
 
 
 modI$model_df$nr_coef_not_NA |> table()

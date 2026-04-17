@@ -27,9 +27,9 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 lfq <- LFQData$new(istar$data, istar$config)
-lfq$data <- encode_bin_resp(lfq)
-lfq$config$bin_resp <- "bin_resp"
-lfq$data[["bin_resp"]]
+lfq$set_data(encode_bin_resp(lfq))
+lfq$set_config_value("bin_resp", "bin_resp")
+lfq$data_long()[["bin_resp"]]
 #>   [1] 1 1 0 1 1 1 1 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1
 #>  [38] 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1
 #>  [75] 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1

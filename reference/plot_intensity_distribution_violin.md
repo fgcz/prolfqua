@@ -99,7 +99,7 @@ istar <- sim_lfq_data_peptide_config()
 #> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 plot_intensity_distribution_violin(
-  lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
+  lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #> Warning: Removed 36 rows containing non-finite outside the scale range
 #> (`stat_ydensity()`).
 #> Warning: Removed 36 rows containing non-finite outside the scale range
@@ -113,7 +113,7 @@ istar <- sim_lfq_data_peptide_config()
 #> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 plot_intensity_distribution_density(
-  lfq$get_data(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
+  lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #> Warning: Removed 36 rows containing non-finite outside the scale range
 #> (`stat_density()`).
 

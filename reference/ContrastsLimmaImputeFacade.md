@@ -150,7 +150,7 @@ initialize
       contrasts,
       lod = NULL,
       df_method = c("observed", "borrowed"),
-      weights = lfqdata$config$nr_children,
+      weights = lfqdata$nr_children_col(),
       ...
     )
 
@@ -180,7 +180,7 @@ initialize
 - `weights`:
 
   column name for per-observation weights (default:
-  `lfqdata$config$nr_children`). Pass `NULL` for unweighted.
+  `lfqdata$nr_children_col()`). Pass `NULL` for unweighted.
 
 - `...`:
 

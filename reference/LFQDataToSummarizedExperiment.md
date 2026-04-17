@@ -40,7 +40,7 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 #> setup done
 data <- istar$data
 lfqdata <- LFQData$new(data, istar$config)
-lfqdata$to_wide()
+lfqdata$data_wide()
 #> $data
 #> # A tibble: 28 × 15
 #>    protein_Id  peptide_Id isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3

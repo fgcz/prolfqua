@@ -78,7 +78,7 @@ istar <- sim_lfq_data_protein_config()
 #> completing cases done
 #> setup done
 lfq <- LFQData$new(istar$data, istar$config)
-wide <- lfq$to_wide(as.matrix = TRUE)
+wide <- lfq$data_wide(as.matrix = TRUE)
 pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
   lfq$factor_keys(), lfq$sample_name())
 stopifnot("pheatmap" %in% class(pheat_map))

@@ -1,17 +1,16 @@
-# Transform intensity
+# Transform intensity column by applying a function
 
-Transform intensity
+Transform intensity column by applying a function
 
 ## Usage
 
 ``` r
 transform_work_intensity(
   pdata,
-  config,
+  response,
   .func,
   .funcname = NULL,
-  intensity_new_name = NULL,
-  deep = FALSE
+  intensity_new_name = NULL
 )
 ```
 
@@ -21,9 +20,9 @@ transform_work_intensity(
 
   data.frame
 
-- config:
+- response:
 
-  AnalysisConfiguration
+  character, name of the response column to transform
 
 - .func:
 
@@ -31,8 +30,7 @@ transform_work_intensity(
 
 - .funcname:
 
-  generates new name from name of transformation and old working
-  intensity column name.
+  name of function (used for creating new column name)
 
 - intensity_new_name:
 
@@ -40,24 +38,28 @@ transform_work_intensity(
 
 ## Value
 
-data.frame
+list with \`data\` (data.frame) and \`colname\` (new column name)
 
 ## Examples
 
 ``` r
 dd <- prolfqua_data('data_spectronautDIA250_A')
 config <- dd$config_f()
-analysis <- dd$analysis(dd$data,config)
+analysis <- dd$analysis(dd$data, config)
 #> creating sampleName from file_name column
 #> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases
 #> completing cases done
 #> setup done
-x <- transform_work_intensity(analysis, config, .func = log2)
+res <- transform_work_intensity(
+  analysis, config$get_response(), .func = log2
+)
 #> Column added : log2_FG.Quantity
-stopifnot("log2_FG.Quantity" %in% colnames(x))
+stopifnot("log2_FG.Quantity" %in% colnames(res$data))
 config <- dd$config_f()
-x <- transform_work_intensity(analysis, config, .func = asinh)
+res <- transform_work_intensity(
+  analysis, config$get_response(), .func = asinh
+)
 #> Column added : asinh_FG.Quantity
-stopifnot("asinh_FG.Quantity" %in% colnames(x))
+stopifnot("asinh_FG.Quantity" %in% colnames(res$data))
 ```

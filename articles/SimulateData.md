@@ -78,7 +78,7 @@ lfqdata$hierarchy_counts()
     ## 1 light                16         60
 
 ``` r
-lfqdata$config$hierarchy_keys_depth()
+lfqdata$relevant_hierarchy_keys()
 ```
 
     ## [1] "protein_Id"
@@ -99,7 +99,7 @@ pl$intensity_distribution_density()
 
 ``` r
 formula_Condition <-  strategy_lm("abundance ~ group_")
-lfqdata$config$hierarchy_depth  <- 2
+lfqdata$set_config_value("hierarchy_depth", 2)
 
 # specify model definition
 modelName  <- "Model"
@@ -123,7 +123,7 @@ mod$anova_histogram()$plot
 ``` r
 xx <- aovtable |> dplyr::filter(FDR < 0.05)
 signif <- lfqdata$get_copy()
-signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
+signif$set_data(signif$data_long() |> dplyr::filter(protein_Id %in% xx$protein_Id))
 signif$get_Plotter()$heatmap()
 ```
 
@@ -132,7 +132,7 @@ signif$get_Plotter()$heatmap()
 ## Aggregate data
 
 ``` r
-lfqdata$config$hierarchy_depth <- 1
+lfqdata$set_config_value("hierarchy_depth", 1)
 protData <- lfqdata$get_Aggregator()$aggregate()
 ```
 

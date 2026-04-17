@@ -46,19 +46,19 @@ lfq_peptide_2f <- lfq_peptide_2f$get_Transformer()$log2()$lfq
 
 lfq_protein_2f <- lfq_peptide_2f$get_Aggregator()$aggregate()
 
-lfq_peptide_2f$config$hierarchy_keys()
+lfq_peptide_2f$hierarchy_keys()
 ```
 
     ## [1] "protein_Id" "peptide_Id"
 
 ``` r
-lfq_protein_2f$config$hierarchy_keys()
+lfq_protein_2f$hierarchy_keys()
 ```
 
     ## [1] "protein_Id"
 
 ``` r
-lfq_protein_2f$config$nr_children
+lfq_protein_2f$nr_children_col()
 ```
 
     ## [1] "nr_children_protein_Id"
@@ -328,12 +328,12 @@ Number of missing protein x contrast pairs per facade
 missing_proteins_2f <- unique(missing_all_2f$protein_Id)
 
 if (length(missing_proteins_2f) > 0) {
-  lfq_protein_2f$data |>
+  lfq_protein_2f$data_long() |>
     dplyr::filter(protein_Id %in% missing_proteins_2f) |>
     dplyr::select(protein_Id, sampleName,
-                  !!rlang::sym(lfq_protein_2f$config$get_response())) |>
+                  !!rlang::sym(lfq_protein_2f$response())) |>
     tidyr::pivot_wider(names_from = sampleName,
-                       values_from = !!rlang::sym(lfq_protein_2f$config$get_response())) |>
+                       values_from = !!rlang::sym(lfq_protein_2f$response())) |>
     knitr::kable(digits = 2, caption = "Per-sample intensities of proteins that could not be estimated")
 }
 ```

@@ -191,7 +191,7 @@ variance is not underestimated by the constant imputation.</p>
 <span>  lod <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  borrow_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sigma"</span>, <span class="st">"vcov"</span><span class="op">)</span>,</span>
 <span>  df_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span>, <span class="st">"borrowed"</span><span class="op">)</span>,</span>
-<span>  weights <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -226,7 +226,7 @@ variance is not underestimated by the constant imputation.</p>
 
 <dt><code>weights</code></dt>
 <dd><p>column name for per-observation weights (default:
-<code>lfqdata$config$nr_children</code>). Pass <code>NULL</code> for unweighted.</p></dd>
+<code>lfqdata$nr_children_col()</code>). Pass <code>NULL</code> for unweighted.</p></dd>
 
 
 <dt><code>...</code></dt>

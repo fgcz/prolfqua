@@ -135,11 +135,11 @@
 <span>              model_name <span class="op">=</span> <span class="va">modelName</span><span class="op">)</span></span>
 <span></span>
 <span></span>
+<span><span class="va">dd_lfq</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span></span>
-<span>  <span class="va">dd</span><span class="op">$</span><span class="va">data</span>,</span>
+<span>  <span class="va">dd_lfq</span>,</span>
 <span>  <span class="va">formula_Protein</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="va">modelName</span>,</span>
-<span>  subject_id <span class="op">=</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  model_name <span class="op">=</span> <span class="va">modelName</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning: There were 11 warnings in `dplyr::mutate()`.</span></span>
 <span><span class="co">## The first warning was:</span></span>
 <span><span class="co">## <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =</span></span>
@@ -246,7 +246,7 @@
 <span>  <span class="va">loddata</span>,</span>
 <span>  <span class="va">formula_Protein</span>,</span>
 <span>  model_name <span class="op">=</span> <span class="va">modelName</span>,</span>
-<span>  subject_id <span class="op">=</span> <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  subject_id <span class="op">=</span> <span class="va">dd_lfq</span><span class="op">$</span><span class="fu">relevant_hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">modI</span><span class="op">$</span><span class="va">model_df</span><span class="op">$</span><span class="va">nr_coef_not_NA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>

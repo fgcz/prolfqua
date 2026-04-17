@@ -158,7 +158,7 @@ z-scaling removes systematic differences from the samples.
 ``` r
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
-transformed$config$is_response_transformed
+transformed$is_transformed()
 ```
 
     ## [1] TRUE
@@ -286,7 +286,7 @@ First, we need to filter our data for `group_` *A* only.
 
 ``` r
 transformedA <- transformed$get_copy()
-transformedA$data <- transformedA$data |> dplyr::filter(group_  == "A")
+transformedA$set_data(transformedA$data_long() |> dplyr::filter(group_ == "A"))
 stats <- transformedA$get_Stats()
 ```
 
@@ -438,7 +438,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.1           
-    ##  [4] farver_2.1.2           S7_0.2.1               fastmap_1.2.0         
+    ##  [4] farver_2.1.2           S7_0.2.1-1             fastmap_1.2.0         
     ##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          
     ## [10] prolfqua_1.6.1         lifecycle_1.0.5        survival_3.8-3        
     ## [13] statmod_1.5.1          magrittr_2.0.5         compiler_4.5.2        
@@ -446,26 +446,26 @@ sessionInfo()
     ## [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.2.1   
     ## [22] knitr_1.51             labeling_0.4.3         htmlwidgets_1.6.4     
     ## [25] plyr_1.8.9             RColorBrewer_1.1-3     KernSmooth_2.23-26    
-    ## [28] withr_3.0.2            purrr_1.2.1            desc_1.4.3            
+    ## [28] withr_3.0.2            purrr_1.2.2            desc_1.4.3            
     ## [31] nnet_7.3-20            grid_4.5.2             jomo_2.7-6            
     ## [34] mice_3.19.0            ggplot2_4.0.2          scales_1.4.0          
     ## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
     ## [40] UpSetR_1.4.0           rmarkdown_2.31         ragg_1.5.2            
     ## [43] reformulas_0.4.4       generics_0.1.4         otel_0.2.0            
     ## [46] httr_1.4.8             minqa_1.2.8            cachem_1.1.0          
-    ## [49] operator.tools_1.6.3.1 splines_4.5.2          vctrs_0.7.2           
+    ## [49] operator.tools_1.6.3.1 splines_4.5.2          vctrs_0.7.3           
     ## [52] boot_1.3-32            glmnet_4.1-10          Matrix_1.7-4          
     ## [55] jsonlite_2.0.0         mitml_0.4-5            ggrepel_0.9.8         
     ## [58] systemfonts_1.3.2      foreach_1.5.2          limma_3.66.0          
     ## [61] plotly_4.12.0          tidyr_1.3.2            jquerylib_0.1.4       
-    ## [64] glue_1.8.0             pkgdown_2.2.0          nloptr_2.2.1          
+    ## [64] glue_1.8.1             pkgdown_2.2.0          nloptr_2.2.1          
     ## [67] pan_1.9                codetools_0.2-20       stringi_1.8.7         
     ## [70] shape_1.4.6.1          gtable_0.3.6           lme4_2.0-1            
     ## [73] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       
     ## [76] R6_2.6.1               textshaping_1.0.5      Rdpack_2.6.6          
     ## [79] formula.tools_1.7.1    evaluate_1.0.5         lattice_0.22-7        
     ## [82] rbibutils_2.4.1        backports_1.5.1        pheatmap_1.0.13       
-    ## [85] broom_1.0.12           bslib_0.10.0           Rcpp_1.1.1            
+    ## [85] broom_1.0.12           bslib_0.10.0           Rcpp_1.1.1-1          
     ## [88] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
     ## [91] logistf_1.26.1         xfun_0.57              fs_2.0.1              
     ## [94] forcats_1.0.1          pkgconfig_2.0.3

@@ -66,7 +66,7 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 lfq <- LFQData$new(istar$data, istar$config)
-res <- plot_hierarchies_line_df(lfq$get_data(), lfq)
+res <- plot_hierarchies_line_df(lfq$data_long(), lfq)
 res[[1]]
 #> Warning: Removed 7 rows containing missing values or values outside the scale range
 #> (`geom_point()`).

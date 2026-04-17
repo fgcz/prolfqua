@@ -185,7 +185,7 @@ optionally combined with external weights (e.g. peptide/precursor counts).</p>
 <span>  <span class="va">lfqdata</span>,</span>
 <span>  <span class="va">modelstr</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
-<span>  weights <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span>,</span>
+<span>  weights <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  span <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -208,7 +208,7 @@ optionally combined with external weights (e.g. peptide/precursor counts).</p>
 
 <dt><code>weights</code></dt>
 <dd><p>column name for per-observation weights (default:
-<code>lfqdata$config$nr_children</code>). Pass <code>NULL</code> for unweighted.</p></dd>
+<code>lfqdata$nr_children_col()</code>). Pass <code>NULL</code> for unweighted.</p></dd>
 
 
 <dt><code>span</code></dt>

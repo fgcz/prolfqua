@@ -206,7 +206,7 @@ We normalize the data by $\log_{2}$ transforming and then $z - scaling$.
 ``` r
 lt <- lfqdata$get_Transformer()
 transformed <- lt$log2()$robscale()$lfq
-transformed$config$is_response_transformed
+transformed$is_transformed()
 ```
 
     ## [1] TRUE
@@ -288,9 +288,9 @@ Here we have to build the model for each protein.
 
 ``` r
 mod <- prolfqua::build_model(
-  transformed$data,
+  transformed$data_long(),
   formula_Condition,
-  subject_id = transformed$config$hierarchy_keys() )
+  subject_id = transformed$hierarchy_keys() )
 ```
 
 In this plot we can see what factors in our model are mostly responsible
@@ -339,7 +339,7 @@ dim(aovtable)
 ``` r
 xx <- aovtable |> dplyr::filter(FDR < 0.2)
 signif <- transformed$get_copy()
-signif$data <- signif$data |> dplyr::filter(protein_Id %in% xx$protein_Id)
+signif$set_data(signif$data_long() |> dplyr::filter(protein_Id %in% xx$protein_Id))
 hmSig <- signif$get_Plotter()$heatmap()
 ```
 
@@ -449,7 +449,7 @@ any.
 merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)
 
 moreProt <- transformed$get_copy()
-moreProt$data <- moreProt$data |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id)
+moreProt$set_data(moreProt$data_long() |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id))
 moreProt$get_Plotter()$raster()
 ```
 
@@ -516,7 +516,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] tidyselect_1.2.1       viridisLite_0.4.3      farver_2.1.2          
-    ##   [4] S7_0.2.1               fastmap_1.2.0          lazyeval_0.2.3        
+    ##   [4] S7_0.2.1-1             fastmap_1.2.0          lazyeval_0.2.3        
     ##   [7] promises_1.5.0         digest_0.6.39          rpart_4.1.24          
     ##  [10] mime_0.13              lifecycle_1.0.5        survival_3.8-3        
     ##  [13] statmod_1.5.1          magrittr_2.0.5         compiler_4.5.2        
@@ -525,7 +525,7 @@ sessionInfo()
     ##  [22] data.table_1.18.2.1    knitr_1.51             prettyunits_1.2.0     
     ##  [25] labeling_0.4.3         htmlwidgets_1.6.4      plyr_1.8.9            
     ##  [28] RColorBrewer_1.1-3     KernSmooth_2.23-26     withr_3.0.2           
-    ##  [31] purrr_1.2.1            desc_1.4.3             nnet_7.3-20           
+    ##  [31] purrr_1.2.2            desc_1.4.3             nnet_7.3-20           
     ##  [34] grid_4.5.2             jomo_2.7-6             xtable_1.8-8          
     ##  [37] mice_3.19.0            ggplot2_4.0.2          scales_1.4.0          
     ##  [40] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
@@ -533,12 +533,12 @@ sessionInfo()
     ##  [46] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
     ##  [49] otel_0.2.0             httr_1.4.8             minqa_1.2.8           
     ##  [52] cachem_1.1.0           operator.tools_1.6.3.1 splines_4.5.2         
-    ##  [55] vctrs_0.7.2            boot_1.3-32            glmnet_4.1-10         
+    ##  [55] vctrs_0.7.3            boot_1.3-32            glmnet_4.1-10         
     ##  [58] Matrix_1.7-4           jsonlite_2.0.0         hms_1.1.4             
     ##  [61] mitml_0.4-5            ggrepel_0.9.8          crosstalk_1.2.2       
     ##  [64] systemfonts_1.3.2      foreach_1.5.2          limma_3.66.0          
     ##  [67] plotly_4.12.0          tidyr_1.3.2            jquerylib_0.1.4       
-    ##  [70] glue_1.8.0             pkgdown_2.2.0          nloptr_2.2.1          
+    ##  [70] glue_1.8.1             pkgdown_2.2.0          nloptr_2.2.1          
     ##  [73] pan_1.9                codetools_0.2-20       stringi_1.8.7         
     ##  [76] shape_1.4.6.1          gtable_0.3.6           later_1.4.8           
     ##  [79] lme4_2.0-1             tibble_3.3.1           pillar_1.11.1         
@@ -546,7 +546,7 @@ sessionInfo()
     ##  [85] Rdpack_2.6.6           formula.tools_1.7.1    shiny_1.13.0          
     ##  [88] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
     ##  [91] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          
-    ##  [94] httpuv_1.6.17          bslib_0.10.0           Rcpp_1.1.1            
+    ##  [94] httpuv_1.6.17          bslib_0.10.0           Rcpp_1.1.1-1          
     ##  [97] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
     ## [100] logistf_1.26.1         xfun_0.57              fs_2.0.1              
     ## [103] forcats_1.0.1          pkgconfig_2.0.3

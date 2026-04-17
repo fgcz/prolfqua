@@ -35,7 +35,7 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 lfq <- LFQData$new(bb$data, bb$config)
-res <- rank_peptide_by_intensity(lfq$get_data(), lfq$response(), lfq$hierarchy_keys())
+res <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
 X <- res |> dplyr::select(c(lfq$hierarchy_keys(),

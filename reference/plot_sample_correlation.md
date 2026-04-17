@@ -48,5 +48,5 @@ istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
-plot_sample_correlation(lfq$to_wide(as.matrix = TRUE)$data)
+plot_sample_correlation(lfq$data_wide(as.matrix = TRUE)$data)
 ```

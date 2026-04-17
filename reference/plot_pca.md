@@ -79,7 +79,7 @@ istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, N
 #> completing cases done
 #> setup done
 lfq <- LFQData$new(istar$data, istar$config)
-wide <- lfq$to_wide(as.matrix = TRUE)
+wide <- lfq$data_wide(as.matrix = TRUE)
 tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
   add_txt = TRUE, nudge = 0.01)
 #> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().

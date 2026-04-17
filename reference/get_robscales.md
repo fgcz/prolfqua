@@ -5,7 +5,7 @@ compute median and standard deviation for each sample
 ## Usage
 
 ``` r
-get_robscales(data, config)
+get_robscales(lfqdata)
 ```
 
 ## See also
@@ -26,15 +26,15 @@ bb <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-conf <- bb$config
-sample_analysis <- bb$data
-pepIntensityNormalized <- transform_work_intensity(sample_analysis, conf, log2)
+lfqdata <- prolfqua::LFQData$new(bb$data, bb$config)
+lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
-s1 <- get_robscales(pepIntensityNormalized, conf)
+s1 <- get_robscales(lfqdata)
 
-res <- scale_with_subset(pepIntensityNormalized, pepIntensityNormalized, conf)
+res <- scale_with_subset(lfqdata, lfqdata)
 #> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
-s2 <- get_robscales(res$data, conf)
+lfqres <- prolfqua::LFQData$new(res$data, lfqdata$get_config()$clone(deep = TRUE))
+s2 <- get_robscales(lfqres)
 abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 #> [1] TRUE
 

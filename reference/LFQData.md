@@ -26,14 +26,6 @@ Other LFQData:
 
 ## Public fields
 
-- `config`:
-
-  AnalysisConfiguration
-
-- `data`:
-
-  data.frame or tibble matching AnalysisConfiguration.
-
 - `prefix`:
 
   e.g. "peptide\_", "protein\_", "compound\_"
@@ -43,6 +35,12 @@ Other LFQData:
 ### Public methods
 
 - [`LFQData$new()`](#method-LFQData-new)
+
+- [`LFQData$set_data()`](#method-LFQData-set_data)
+
+- [`LFQData$get_config()`](#method-LFQData-get_config)
+
+- [`LFQData$set_config_value()`](#method-LFQData-set_config_value)
 
 - [`LFQData$get_copy()`](#method-LFQData-get_copy)
 
@@ -61,6 +59,8 @@ Other LFQData:
 - [`LFQData$omit_na()`](#method-LFQData-omit_na)
 
 - [`LFQData$complete_cases()`](#method-LFQData-complete_cases)
+
+- [`LFQData$data_wide()`](#method-LFQData-data_wide)
 
 - [`LFQData$to_wide()`](#method-LFQData-to_wide)
 
@@ -85,6 +85,8 @@ Other LFQData:
 - [`LFQData$nr_children_col()`](#method-LFQData-nr_children_col)
 
 - [`LFQData$isotope_label()`](#method-LFQData-isotope_label)
+
+- [`LFQData$data_long()`](#method-LFQData-data_long)
 
 - [`LFQData$get_data()`](#method-LFQData-get_data)
 
@@ -141,6 +143,60 @@ initialize
 - `is_pep`:
 
   todo
+
+------------------------------------------------------------------------
+
+### Method `set_data()`
+
+set data (replaces the internal data frame)
+
+#### Usage
+
+    LFQData$set_data(new_data)
+
+#### Arguments
+
+- `new_data`:
+
+  data.frame
+
+#### Returns
+
+self (invisible)
+
+------------------------------------------------------------------------
+
+### Method `get_config()`
+
+return the AnalysisConfiguration object
+
+#### Usage
+
+    LFQData$get_config()
+
+#### Returns
+
+AnalysisConfiguration
+
+------------------------------------------------------------------------
+
+### Method `set_config_value()`
+
+set a config field value
+
+#### Usage
+
+    LFQData$set_config_value(field, value)
+
+#### Arguments
+
+- `field`:
+
+  character — field name
+
+- `value`:
+
+  the value to set
 
 ------------------------------------------------------------------------
 
@@ -302,9 +358,33 @@ self
 
 ------------------------------------------------------------------------
 
-### Method `to_wide()`
+### Method `data_wide()`
 
 converts the data to wide
+
+#### Usage
+
+    LFQData$data_wide(as.matrix = FALSE, value = NULL)
+
+#### Arguments
+
+- `as.matrix`:
+
+  return as data.frame or matrix
+
+- `value`:
+
+  see possible lfqdata\$get_config()\$value_vars()
+
+#### Returns
+
+list with data, annotation, and configuration
+
+------------------------------------------------------------------------
+
+### Method `to_wide()`
+
+deprecated — use data_wide() instead
 
 #### Usage
 
@@ -318,11 +398,7 @@ converts the data to wide
 
 - `value`:
 
-  see possible lfqdata\$config\$value_vars()
-
-#### Returns
-
-list with data, annotation, and configuration
+  see possible lfqdata\$get_config()\$value_vars()
 
 ------------------------------------------------------------------------
 
@@ -444,9 +520,25 @@ return isotope label column name
 
 ------------------------------------------------------------------------
 
+### Method `data_long()`
+
+return the tidy (long-format) data frame
+
+#### Usage
+
+    LFQData$data_long(na.omit = FALSE)
+
+#### Arguments
+
+- `na.omit`:
+
+  if TRUE, remove rows with NA in response column
+
+------------------------------------------------------------------------
+
 ### Method `get_data()`
 
-return the tidy data frame
+deprecated — use data_long() instead
 
 #### Usage
 
@@ -634,12 +726,12 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$filter_proteins_by_peptide_count()
 #> removing proteins with less than: 2 peptpides
 #> Column added : nr_peptide_Id_IN_protein_Id
-tmp <- lfqdata$to_wide()
+tmp <- lfqdata$data_wide()
 testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))
 testthat::expect_equal(ncol(tmp$data) , nrow(tmp$annotation) + ncol(tmp$rowdata))
 
 stopifnot("data.frame" %in% class(tmp$data))
-tmp <- lfqdata$to_wide(as.matrix = TRUE)
+tmp <- lfqdata$data_wide(as.matrix = TRUE)
 stopifnot("matrix" %in% class(tmp$data))
 stopifnot(lfqdata$is_transformed()==FALSE)
 lfqdata$summarize_hierarchy()
@@ -677,9 +769,9 @@ stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))
 #> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: peptide.intensity
 
 lfqdata2 <- lfqdata$get_copy()
-lfqdata2$data <- lfqdata2$data[1:100,]
+lfqdata2$set_data(lfqdata2$data_long()[1:100, ])
 res <- lfqdata$filter_difference(lfqdata2)
-stopifnot(nrow(res$data) == nrow(lfqdata$data) - 100)
+stopifnot(nrow(res$data_long()) == nrow(lfqdata$data_long()) - 100)
 
 tmp <- lfqdata$get_sample(5, seed = 4)
 #> Sampling 5protein_Id

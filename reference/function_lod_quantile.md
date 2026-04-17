@@ -29,7 +29,7 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
-xx <- lfqdata$to_wide(as.matrix=TRUE)
+xx <- lfqdata$data_wide(as.matrix=TRUE)
 s <- function_lod_quantile(xx$data)
 sapply(s, median)
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 

@@ -149,7 +149,7 @@ LFQDataTransformer (self)
 
 ### Method `center_to_reference()`
 
-log2 transform and robust scale data based on subset
+center data to a reference subset
 
 #### Usage
 
@@ -159,17 +159,7 @@ log2 transform and robust scale data based on subset
 
 - `lfqsubset`:
 
-  LFQData subset to use for normalization
-
-- `preserve_mean`:
-
-  should original mean value be preserved TRUE, if FALSE then center at
-  zero
-
-- `colname`:
-
-  \- how to name the transformed intensities, default
-  transformedIntensity
+  LFQData subset to use as reference
 
 #### Returns
 
@@ -257,12 +247,14 @@ lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(log2)
 #> Column added : log2_abundance
 
-x$lfq$config$is_response_transformed
+x$lfq$is_transformed()
 #> [1] TRUE
 x <- x$intensity_matrix(robust_scale)
 #> Warning: data already transformed. If you still want to log2 tranform, set force = TRUE
 plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
+#> Warning: Removed 225 rows containing non-finite outside the scale range
+#> (`stat_density()`).
 
 
 # transform by asinh root and scale
@@ -312,6 +304,8 @@ lfqTransCheck$get_scales()
 #> 0.3507487 0.3606693 0.3632381 0.3691903 
 #> 
 lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
+#> Warning: Removed 225 rows containing non-finite outside the scale range
+#> (`stat_density()`).
 
 
 if(require("vsn")){
@@ -345,6 +339,8 @@ quant <- function(y){
 }
 #> Loading required package: preprocessCore
 #> Warning: data already transformed. If you still want to log2 tranform, set force = TRUE
+#> Warning: Removed 225 rows containing non-finite outside the scale range
+#> (`stat_density()`).
 
 
 
@@ -382,15 +378,21 @@ internal$hierarchy()
 #> 6 DoWup2~5896
 tr <- lfqdata2$get_Transformer()
 tr$center_to_reference(internal)
-#> data is transoformed: TRUE
+#> data is transformed: TRUE
 pl <- tr$lfq$get_Plotter()
 pl$intensity_distribution_density()
+#> Warning: Removed 36 rows containing non-finite outside the scale range
+#> (`stat_density()`).
 
 lfqdata2$get_Plotter()$intensity_distribution_density()
+#> Warning: Removed 36 rows containing non-finite outside the scale range
+#> (`stat_density()`).
 
 robscale <- lfqdata2$get_Transformer()$robscale_subset(internal)$lfq
 #> data is : TRUE
 #> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 robscale$get_Plotter()$intensity_distribution_density()
+#> Warning: Removed 36 rows containing non-finite outside the scale range
+#> (`stat_density()`).
 
 ```

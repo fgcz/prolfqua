@@ -49,27 +49,27 @@ lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 
 lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
 
-lfq_peptide$config$hierarchy_keys()
+lfq_peptide$hierarchy_keys()
 ```
 
     ## [1] "protein_Id" "peptide_Id"
 
 ``` r
-lfq_protein$config$hierarchy_keys()
+lfq_protein$hierarchy_keys()
 ```
 
     ## [1] "protein_Id"
 
 ``` r
-lfq_protein$config$nr_children
+lfq_protein$nr_children_col()
 ```
 
     ## [1] "nr_children_protein_Id"
 
 The aggregation step produces protein-level intensities while keeping
 count metadata in the `LFQData` object. The DEqMS facade uses
-`lfq_protein$config$nr_children` directly, so no extra count table has
-to be passed around.
+`lfq_protein$nr_children_col()` directly, so no extra count table has to
+be passed around.
 
 ## Define contrasts
 
@@ -86,9 +86,9 @@ and how FDR correction propagates across contrasts.
 ## Protein-input facades
 
 The following facades require aggregated input, which in practice means
-`lfqdata$subject_id()` must match `lfqdata$config$hierarchy_keys()`.
-`firth` is included here on purpose because it can be fitted directly on
-aggregated protein input.
+`lfqdata$subject_id()` must match `lfqdata$hierarchy_keys()`. `firth` is
+included here on purpose because it can be fitted directly on aggregated
+protein input.
 
 ``` r
 fa_lm <- build_contrast_analysis(
@@ -375,12 +375,12 @@ Number of missing protein × contrast pairs per facade
 missing_proteins <- unique(missing_all$protein_Id)
 
 if (length(missing_proteins) > 0) {
-  lfq_protein$data |>
+  lfq_protein$data_long() |>
     dplyr::filter(protein_Id %in% missing_proteins) |>
     dplyr::select(protein_Id, sampleName,
-                  !!rlang::sym(lfq_protein$config$get_response())) |>
+                  !!rlang::sym(lfq_protein$response())) |>
     tidyr::pivot_wider(names_from = sampleName,
-                       values_from = !!rlang::sym(lfq_protein$config$get_response())) |>
+                       values_from = !!rlang::sym(lfq_protein$response())) |>
     knitr::kable(digits = 2, caption = "Per-sample intensities of proteins that could not be estimated")
 }
 ```

@@ -147,6 +147,6 @@ istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
 #> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
-strat <- strategy_lm(paste(lfqdata$config$get_response(), "~ group_"))
+strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
 mod <- build_model_impute(lfqdata, strat)
 ```

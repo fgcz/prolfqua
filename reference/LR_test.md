@@ -139,7 +139,7 @@ data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
 
 pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
 
-pMerged$config$get_response()
+pMerged$response()
 #> [1] "abundance"
 pMerged$factors()
 #> # A tibble: 16 × 4
@@ -165,9 +165,8 @@ pMerged$factors()
 formula_condition_and_Batches <-
   prolfqua::strategy_lm("abundance ~ Treatment + Background")
 modCB <- prolfqua::build_model(
-  pMerged$data,
-  formula_condition_and_Batches,
-  subject_id = pMerged$config$hierarchy_keys() )
+  pMerged,
+  formula_condition_and_Batches)
 #> Warning: There were 25 warnings in `dplyr::mutate()`.
 #> The first warning was:
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
@@ -180,9 +179,8 @@ modCB <- prolfqua::build_model(
 formula_condition <-
   prolfqua::strategy_lm("abundance ~ Treatment")
 modC <- prolfqua::build_model(
-  pMerged$data,
-  formula_condition,
-  subject_id = pMerged$config$hierarchy_keys() )
+  pMerged,
+  formula_condition)
 #> Warning: There were 19 warnings in `dplyr::mutate()`.
 #> The first warning was:
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =

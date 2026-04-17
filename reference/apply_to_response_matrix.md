@@ -5,26 +5,26 @@ Apply function requiring a matrix to tidy table
 ## Usage
 
 ``` r
-apply_to_response_matrix(data, config, .func, .funcname = NULL)
+apply_to_response_matrix(lfqdata, .func, .funcname = NULL)
 ```
 
 ## Arguments
 
-- data:
+- lfqdata:
 
-  data.frame
-
-- config:
-
-  AnalysisConfiguration
+  LFQData object
 
 - .func:
 
-  function
+  function taking and returning a matrix
 
 - .funcname:
 
   name of function (used for creating new column)
+
+## Value
+
+list with \`data\` (data.frame) and \`colname\` (new column name)
 
 ## See also
 
@@ -38,28 +38,21 @@ Other preprocessing:
 ## Examples
 
 ``` r
-
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-data <- bb$data
-conf <- bb$config
-res <- apply_to_response_matrix(data, conf, .func = base::scale)
+lfqdata <- LFQData$new(bb$data, bb$config)
+res <- apply_to_response_matrix(lfqdata, .func = base::scale)
+#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
+stopifnot("abundance_base..scale" %in% colnames(res$data))
+
+res <- apply_to_response_matrix(lfqdata, .func = robust_scale)
 #> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 
-stopifnot("abundance_base..scale" %in% colnames(res))
-stopifnot("abundance_base..scale" == conf$get_response())
-conf <- bb$config$clone(deep=TRUE)
-conf$work_intensity <- "abundance"
-res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = robust_scale)
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
-
-# Normalize data using the vsn method from bioconductor
-
-if( require("vsn")){
- res <- apply_to_response_matrix(data, conf$clone(deep=TRUE), .func = vsn::justvsn)
+if (require("vsn")) {
+  res <- apply_to_response_matrix(lfqdata, .func = vsn::justvsn)
 }
 #> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 ```

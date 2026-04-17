@@ -546,9 +546,7 @@ stopifnot("upset" == class(lfqplotter$upset_missing()))
 #> ℹ Please use the `linewidth` argument instead.
 #> ℹ The deprecated feature was likely used in the UpSetR package.
 #>   Please report the issue to the authors.
-#> Warning: Removed 12 rows containing missing values or values outside the scale range
-#> (`geom_bar()`).
-wide <- lfqdata$to_wide(as.matrix = TRUE)
+wide <- lfqdata$data_wide(as.matrix = TRUE)
 stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 
 ```

@@ -53,29 +53,19 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">scale_with_subset</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">subset</span>,</span>
-<span>  <span class="va">config</span>,</span>
-<span>  preserve_mean <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  get_scales <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">scale_with_subset</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="va">lfqsubset</span>, preserve_mean <span class="op">=</span> <span class="cn">FALSE</span>, get_scales <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>the whole dataset</p></dd>
+<dl><dt id="arg-lfqdata">lfqdata<a class="anchor" aria-label="anchor" href="#arg-lfqdata"></a></dt>
+<dd><p>LFQData object with full dataset</p></dd>
 
 
-<dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
-<dd><p>a subset of the dataset</p></dd>
-
-
-<dt id="arg-config">config<a class="anchor" aria-label="anchor" href="#arg-config"></a></dt>
-<dd><p>configuration</p></dd>
+<dt id="arg-lfqsubset">lfqsubset<a class="anchor" aria-label="anchor" href="#arg-lfqsubset"></a></dt>
+<dd><p>LFQData object with subset for computing scales</p></dd>
 
 
 <dt id="arg-preserve-mean">preserve_mean<a class="anchor" aria-label="anchor" href="#arg-preserve-mean"></a></dt>
@@ -86,6 +76,10 @@
 <dd><p>return a list of transformed data and the scaling parameters</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>list with data, scales, and colname</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other preprocessing:
@@ -99,22 +93,21 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
-<span class="r-in"><span><span class="va">conf</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sample_analysis</span> <span class="op">&lt;-</span> <span class="va">bb</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="transform_work_intensity.html">transform_work_intensity</a></span><span class="op">(</span><span class="va">sample_analysis</span>, <span class="va">conf</span>, <span class="va">log2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
-<span class="r-in"><span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_robscales.html">get_robscales</a></span><span class="op">(</span><span class="va">res</span>, <span class="va">conf</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">scale_with_subset</span><span class="op">(</span><span class="va">res</span>, <span class="va">res</span>, <span class="va">conf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_robscales.html">get_robscales</a></span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">scale_with_subset</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="va">lfqdata</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`</span>
-<span class="r-in"><span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_robscales.html">get_robscales</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span>, <span class="va">conf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_config</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cfg</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">colname</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfqres</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span>, <span class="va">cfg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_robscales.html">get_robscales</a></span><span class="op">(</span><span class="va">lfqres</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s1</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">s2</span><span class="op">$</span><span class="va">mads</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">1e-6</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>

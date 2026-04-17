@@ -73,7 +73,7 @@ istar <- sim_lfq_data_peptide_config()
 #> completing cases done
 #> setup done
 lfq <- LFQData$new(istar$data, istar$config)
-wide <- lfq$to_wide(as.matrix = TRUE)
+wide <- lfq$data_wide(as.matrix = TRUE)
 tmp <- plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #> rows with NA's: 16; all rows :28
 stopifnot(class(tmp) == "pheatmap")

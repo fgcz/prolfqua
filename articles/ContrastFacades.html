@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-04-10</h4>
+            <h4 data-toc-skip class="date">2026-04-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/vignettes/ContrastFacades.Rmd" class="external-link"><code>vignettes/ContrastFacades.Rmd</code></a></small>
       <div class="d-none name"><code>ContrastFacades.Rmd</code></div>
@@ -137,17 +137,17 @@ facades separately.</p>
 <span></span>
 <span><span class="va">lfq_protein</span> <span class="op">&lt;-</span> <span class="va">lfq_peptide</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">lfq_peptide</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">lfq_peptide</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "protein_Id" "peptide_Id"</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lfq_protein</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lfq_protein</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "protein_Id"</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lfq_protein</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lfq_protein</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "nr_children_protein_Id"</span></span></code></pre>
 <p>The aggregation step produces protein-level intensities while keeping
 count metadata in the <code>LFQData</code> object. The DEqMS facade uses
-<code>lfq_protein$config$nr_children</code> directly, so no extra count
+<code>lfq_protein$nr_children_col()</code> directly, so no extra count
 table has to be passed around.</p>
 </div>
 <div class="section level2">
@@ -166,9 +166,9 @@ comparisons and how FDR correction propagates across contrasts.</p>
 </h2>
 <p>The following facades require aggregated input, which in practice
 means <code>lfqdata$subject_id()</code> must match
-<code>lfqdata$config$hierarchy_keys()</code>. <code>firth</code> is
-included here on purpose because it can be fitted directly on aggregated
-protein input.</p>
+<code>lfqdata$hierarchy_keys()</code>. <code>firth</code> is included
+here on purpose because it can be fitted directly on aggregated protein
+input.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fa_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span></span>
 <span>  <span class="va">lfq_protein</span>,</span>
@@ -481,12 +481,12 @@ each method fails on and to compare coverage.</p>
 <code class="sourceCode R"><span><span class="va">missing_proteins</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">missing_all</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">missing_proteins</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">lfq_protein</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="va">lfq_protein</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">missing_proteins</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="va">sampleName</span>,</span>
-<span>                  <span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">lfq_protein</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>                  <span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">lfq_protein</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">sampleName</span>,</span>
-<span>                       values_from <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">lfq_protein</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>                       values_from <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">lfq_protein</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Per-sample intensities of proteins that could not be estimated"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <table style="width:100%;" class="table">

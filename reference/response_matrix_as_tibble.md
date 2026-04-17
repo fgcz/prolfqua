@@ -12,23 +12,23 @@ response_matrix_as_tibble(pdata, value, config, data = NULL, sep = "~lfq~")
 
 - pdata:
 
-  (matrix)
+  matrix with rownames encoding hierarchy keys
 
 - value:
 
-  name of column to store values in. (see \`gather\`)
+  name of column to store values in
 
 - config:
 
-  AnalysisConfiguration
+  AnalysisConfiguration (needed for column name mapping)
 
 - data:
 
-  lfqdata
+  optional data.frame to join back to
 
 - sep:
 
-  separater to unite the hierarchy keys.
+  separator used to unite the hierarchy keys
 
 ## Examples
 
@@ -38,14 +38,16 @@ dd <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-data <- dd$data
-conf <- dd$config
-res <- tidy_to_wide_config(data, conf, as.matrix = TRUE)
+lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
+res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 
-res <- scale(res$data)
-xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf)
-xx <- response_matrix_as_tibble(res,"srm_intensityScaled", conf, data)
+res_scaled <- scale(res$data)
+xx <- response_matrix_as_tibble(
+  res_scaled, "srm_intensityScaled", lfqdata$get_config()
+)
+xx <- response_matrix_as_tibble(
+  res_scaled, "srm_intensityScaled",
+  lfqdata$get_config(), lfqdata$data_long()
+)
 #> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
-conf$get_response() == "srm_intensityScaled"
-#> [1] TRUE
 ```
