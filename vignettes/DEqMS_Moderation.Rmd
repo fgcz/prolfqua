@@ -234,6 +234,6 @@ in `ContrastsModerated` where it is constant.
 
 # Session Info
 
-```{r}
+```{r session_info}
 sessionInfo()
 ```

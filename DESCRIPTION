@@ -51,6 +51,7 @@ Imports:
     tibble,
     UpSetR
 Suggests:
+    BiocCheck,
     corrplot,
     covr,
     crosstalk,

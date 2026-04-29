@@ -181,13 +181,13 @@ In this condition all samples have the same concentration and we want to check v
 Like this we can estimate how many samples are necessary per group to quantify properly a two-fold change (delta of 1) for 90% of all the proteins with a power of 0.8 and significance level of 0.05.
 
 First, we need to filter our data for `group_` _A_ only.
-```{r}
+```{r filter_condition_a}
 transformedA <- transformed$get_copy()
 transformedA$set_data(transformedA$data_long() |> dplyr::filter(group_ == "A"))
 stats <- transformedA$get_Stats()
 ```
 
-```{r fig.cap="Empirical cumulative density function of the standard deviation for all the proteins in the dataset."}
+```{r plot_sd_ecdf, fig.cap="Empirical cumulative density function of the standard deviation for all the proteins in the dataset."}
 stats$density(ggstat = "ecdf")
 ```
 
@@ -202,7 +202,7 @@ prolfqua::table_facade(sampleSize, "Sample sizes. delta - Effect size, N - sampl
 
 The table summarises visually how many samples are needed for different expected differences (in log2-scale) and different portions of all proteins. 
 
-```{r fig.cap="Estimated sample sizes for various FC levels and various quantiles of the standard deviation."}
+```{r plot_sample_size_quantiles, fig.cap="Estimated sample sizes for various FC levels and various quantiles of the standard deviation."}
 sampleSize |>
   ggplot2::ggplot(ggplot2::aes(x = factor(probs) , y = N)) +
   ggplot2::facet_wrap(~delta) +
@@ -237,10 +237,9 @@ The `prolfqua` package is described in [@Wolski2022.06.07.494524].
 
 # Session Info
 
-```{r}
+```{r session_info}
 sessionInfo()
 ```
 
 # References
-
 

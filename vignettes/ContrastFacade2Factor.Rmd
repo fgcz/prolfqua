@@ -382,3 +382,9 @@ rewriting the analysis pipeline:
 
 The results are comparable at the API level, but the comparison is only
 meaningful when methods using the same biological unit are plotted together.
+
+# Session Info
+
+```{r session_info}
+sessionInfo()
+```

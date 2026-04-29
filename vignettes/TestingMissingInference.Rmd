@@ -111,10 +111,16 @@ sum_matrix/length(xx)
 ```
 
 
-```{r}
+```{r inspect_imputed_model}
 m <- (modI$model_df$linear_model[[1]])
 df.residual(m)
 sigma(m)
 vcov(m)
 
+```
+
+# Session Info
+
+```{r session_info}
+sessionInfo()
 ```

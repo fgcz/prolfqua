@@ -1,11 +1,12 @@
 .DEFAULT_GOAL := check
 
-.PHONY: check check-fast build build-vignettes document coverage install lint format clean help site deploy install-pre-commit-hook
+.PHONY: check check-fast check-bioc build build-vignettes document coverage install lint format clean help site deploy install-pre-commit-hook
 
 DOCUMENT_CMD = Rscript -e "devtools::document()"
 BUILD_CMD = Rscript -e "devtools::build()"
 CHECK_CMD = Rscript -e "devtools::check()"
 CHECK_FAST_CMD = Rscript -e "devtools::check(build_args = '--no-build-vignettes', args = '--no-vignettes', vignettes = FALSE)"
+CHECK_BIOC_CMD = Rscript -e "BiocCheck::BiocCheck()"
 BUILD_VIGNETTES_CMD = Rscript -e "devtools::build_vignettes()"
 TEST_CMD = Rscript -e "devtools::test()"
 COVERAGE_CMD = Rscript -e "covr::package_coverage() |> print()"
@@ -18,6 +19,7 @@ help:
 	@echo "prolfqua development targets:"
 	@echo "  make check     - R CMD check (runs document, build first)"
 	@echo "  make check-fast - R CMD check without rebuilding vignettes during check"
+	@echo "  make check-bioc - run BiocCheck::BiocCheck()"
 	@echo "  make install   - install package locally"
 	@echo "  make lint      - run lintr"
 	@echo "  make format    - format package with air"
@@ -47,6 +49,9 @@ build-vignettes: document
 
 check-fast: document
 	$(CHECK_FAST_CMD)
+
+check-bioc:
+	$(CHECK_BIOC_CMD)
 
 coverage: document
 	$(COVERAGE_CMD)

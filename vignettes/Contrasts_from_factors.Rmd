@@ -149,3 +149,9 @@ result2 <- annotation_add_contrasts(
 knitr::kable(head(result2$annot[, c("Name", "Group", "ContrastName", "Contrast")], 10),
              row.names = FALSE)
 ```
+
+# Session Info
+
+```{r session_info}
+sessionInfo()
+```

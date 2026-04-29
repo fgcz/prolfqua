@@ -1,0 +1,9 @@
+.git
+.Rproj.user
+.Rhistory
+.RData
+.DS_Store
+*.Rcheck
+check-logs
+doc
+Meta

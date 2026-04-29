@@ -658,3 +658,9 @@ knitr::kable(comparison, col.names = c("Method", "Sig. A vs Ctrl", "Sig. B vs Ct
   observation-level precision weights `w = 1/f(fitted)^4`. This captures both the classical
   mean-variance relationship and the additional heteroscedasticity from missing values.
   It also corrects residual DF for proteins where entire groups were imputed.
+
+# Session Info
+
+```{r session_info}
+sessionInfo()
+```
