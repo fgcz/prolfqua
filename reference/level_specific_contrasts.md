@@ -18,6 +18,10 @@ level_specific_contrasts(primary_levels, secondary_levels)
 
   character vector of secondary factor levels
 
+## Value
+
+Contrast definitions or contrast results.
+
 ## See also
 
 Other contrasts:

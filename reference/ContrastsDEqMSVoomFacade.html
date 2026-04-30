@@ -56,6 +56,10 @@ DEqMS contrast analysis with vooma weights facade"></head><body>
 
 
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>An R6 class generator.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Combines vooma precision weights (mean-variance trend) with DEqMS
 count-dependent variance moderation. Vooma runs <strong>without</strong> external
@@ -313,7 +317,7 @@ count enters solely through DEqMS moderation, avoiding double-counting.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Partial NA coefficients for 1 probe(s)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: warnings in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17; 'newdata' had 1 row but variables found have 49 rows; number of items to replace is not a multiple of replacement length; NaNs produced)</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17; 'newdata' had 1 row but variables found have 49 rows; number of items to replace is not a multiple of replacement length; NaNs produced)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   facade   contrast modelName protein_Id   diff std.error avgAbd statistic    df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -332,7 +336,7 @@ count enters solely through DEqMS moderation, avoiding double-counting.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich, Christian Panse.</p>
 </div>
 
 <div class="pkgdown-footer-right">

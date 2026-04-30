@@ -18,6 +18,10 @@ find_package_file(packagename, file)
 
   relative path to the file within the package
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r

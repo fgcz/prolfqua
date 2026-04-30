@@ -32,6 +32,10 @@ pivot_model_contrasts_to_wide(
 
   column name containing contrast labels
 
+## Value
+
+Contrast definitions or contrast results.
+
 ## See also
 
 Other modelling:
@@ -119,4 +123,19 @@ Other modelling:
 
 ``` r
 # this function is used by the contrast classes to implement the to wide method
+contrast_df <- data.frame(
+  protein_Id = c("P1", "P1", "P2", "P2"),
+  lhs = c("A_vs_B", "C_vs_D", "A_vs_B", "C_vs_D"),
+  estimate = c(1.0, 0.5, -0.2, 0.7),
+  p.value = c(0.01, 0.2, 0.4, 0.05),
+  p.value.adjusted = c(0.02, 0.25, 0.4, 0.08)
+)
+pivot_model_contrasts_to_wide(contrast_df)
+#> # A tibble: 2 × 7
+#>   protein_Id estimate.A_vs_B estimate.C_vs_D p.value.A_vs_B p.value.C_vs_D
+#>   <chr>                <dbl>           <dbl>          <dbl>          <dbl>
+#> 1 P1                     1               0.5           0.01           0.2 
+#> 2 P2                    -0.2             0.7           0.4            0.05
+#> # ℹ 2 more variables: p.value.adjusted.A_vs_B <dbl>,
+#> #   p.value.adjusted.C_vs_D <dbl>
 ```

@@ -4,6 +4,10 @@ Estimate contrasts using Wald Test
 
 Estimate contrasts using Wald Test
 
+## Value
+
+An R6 class generator.
+
 ## See also
 
 Other modelling:

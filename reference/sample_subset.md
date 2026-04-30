@@ -35,3 +35,18 @@ Other configuration:
 [`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md),
 [`table_factors()`](https://wolski.github.io/prolfqua/reference/table_factors.md),
 [`table_factors_size()`](https://wolski.github.io/prolfqua/reference/table_factors_size.md)
+
+## Examples
+
+``` r
+bb <- sim_lfq_data_peptide_config(Nprot = 5)
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
+subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
+#> Sampling 2protein_Id
+#> Joining with `by = join_by(protein_Id)`
+length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
+#> [1] 2
+```

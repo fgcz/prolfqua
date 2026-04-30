@@ -128,3 +128,23 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+if (requireNamespace("limpa", quietly = TRUE)) {
+  istar <- sim_lfq_data_peptide_config(Nprot = 10)
+  lfq <- LFQData$new(istar$data, istar$config)
+  lfq <- lfq$get_Transformer()$log2()$lfq
+  lfq <- AggregateLimpa$new(lfq, "protein")$aggregate()
+  strat <- strategy_limpa("limpa ~ group_")
+  mod <- build_model_limpa(lfq, strat)
+  mod$model_name
+}
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
+#> Column added : log2_abundance
+#> [1] "limpa"
+```

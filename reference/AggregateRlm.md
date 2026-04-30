@@ -4,6 +4,10 @@ AggregateRlm
 
 AggregateRlm
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Aggregates peptide intensities to protein level using robust regression

@@ -4,6 +4,10 @@ Limpa contrast analysis facade
 
 Limpa contrast analysis facade
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates the pipeline:
@@ -258,14 +262,28 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 istar <- prolfqua::sim_lfq_data_peptide_config()
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#> Column added : log2_abundance
 agg <- AggregateLimpa$new(lfqdata, "protein")
 lfq_agg <- agg$aggregate()
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)
 head(fa$get_contrasts())
-} # }
+#> # A tibble: 6 × 14
+#>   facade modelName protein_Id  contrast     diff       FDR std.error statistic
+#>   <chr>  <chr>     <chr>       <chr>       <dbl>     <dbl>     <dbl>     <dbl>
+#> 1 limpa  limpa     0EfVhX~0087 A_vs_Ctrl -0.0244 0.407        0.0283    -0.862
+#> 2 limpa  limpa     7cbcrd~5725 A_vs_Ctrl  0.725  0.00458      0.185      3.91 
+#> 3 limpa  limpa     9VUkAq~4703 A_vs_Ctrl -0.572  0.000276     0.0991    -5.78 
+#> 4 limpa  limpa     BEJI92~5282 A_vs_Ctrl  0.236  0.0138       0.0739     3.19 
+#> 5 limpa  limpa     CGzoYe~2147 A_vs_Ctrl -0.296  0.146        0.175     -1.70 
+#> 6 limpa  limpa     DoWup2~5896 A_vs_Ctrl  0.282  0.0000889    0.0417     6.77 
+#> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, avgAbd <dbl>
 ```

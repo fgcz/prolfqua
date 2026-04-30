@@ -22,6 +22,10 @@ matrix_to_tibble(x, preserve_row_names = "row.names", ...)
 
   further parameters passed to as_tibble
 
+## Value
+
+The computed result.
+
 ## See also
 
 Other utilities:
@@ -46,13 +50,13 @@ matrix_to_tibble(x)
 #> ℹ The deprecated feature was likely used in the prolfqua package.
 #>   Please report the issue at <https://github.com/fgcz/prolfqua/issues>.
 #> # A tibble: 5 × 5
-#>   row.names       V1      V2      V3     V4
-#>   <chr>        <dbl>   <dbl>   <dbl>  <dbl>
-#> 1 A         -2.52    -1.61    0.545  -1.26 
-#> 2 B         -1.49    -0.0719  1.06    0.707
-#> 3 C         -1.38    -1.55    0.0597  0.508
-#> 4 D         -0.511    0.0988 -0.359   1.62 
-#> 5 E          0.00332  1.03   -0.764  -0.252
+#>   row.names       V1      V2      V3      V4
+#>   <chr>        <dbl>   <dbl>   <dbl>   <dbl>
+#> 1 A          0.0324  -1.81   -0.103   0.972 
+#> 2 B         -0.00624  1.25   -0.0252  0.0103
+#> 3 C         -0.505   -0.651   1.01   -0.598 
+#> 4 D          0.471   -0.0453  0.223   0.621 
+#> 5 E          1.56     1.15    0.747  -0.107 
 !(is.matrix(x) || is.data.frame(x))
 #> [1] FALSE
 ```

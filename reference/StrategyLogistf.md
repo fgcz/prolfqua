@@ -4,6 +4,10 @@ Firth's logistic regression strategy (R6 class)
 
 Firth's logistic regression strategy (R6 class)
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates everything needed to fit per-protein Firth's bias-reduced
@@ -279,5 +283,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x55b5de3a85b0>
+#> <environment: 0x55581ccd92e0>
 ```

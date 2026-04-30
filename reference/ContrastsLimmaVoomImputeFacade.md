@@ -4,6 +4,10 @@ Limma-voom contrast analysis with LOD imputation facade
 
 Limma-voom contrast analysis with LOD imputation facade
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates the pipeline:

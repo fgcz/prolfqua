@@ -65,6 +65,10 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>The computed result.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other configuration:
 <code><a href="AnalysisConfiguration.html">AnalysisConfiguration</a></code>,
@@ -79,12 +83,32 @@
 <code><a href="table_factors_size.html">table_factors_size()</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
+<span class="r-in"><span><span class="va">values</span> <span class="op">&lt;-</span> <span class="fu">R6_extract_values</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">values</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "min_peptides_protein"    "hierarchy_depth"        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "hierarchy"               "factor_depth"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "factors"                 "bin_resp"               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "is_response_transformed" "work_intensity"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "nr_children"             "opt_se"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "opt_mz"                  "opt_rt"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ident_score"             "ident_q_value"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "isotope_label"           "sample_name"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "file_name"               "sep"                    </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich, Christian Panse.</p>
 </div>
 
 <div class="pkgdown-footer-right">

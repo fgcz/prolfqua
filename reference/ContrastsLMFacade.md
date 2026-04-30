@@ -4,6 +4,10 @@ LM contrast analysis facade
 
 LM contrast analysis facade
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates the pipeline:

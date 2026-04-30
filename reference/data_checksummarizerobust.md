@@ -10,7 +10,7 @@ data_checksummarizerobust
 
 ## Format
 
-An object of class `data.frame` with 20 rows and 3 columns.
+An object of class `NULL` of length 0.
 
 ## See also
 

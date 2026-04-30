@@ -47,5 +47,15 @@ Other plotting:
 ## Examples
 
 ``` r
-# todo
+p <- ggplot2::ggplot(
+  data.frame(sample = c("S1", "S2"), abundance = c(1, 2)),
+  ggplot2::aes(x = sample, y = abundance, group = 1)
+) +
+  ggplot2::geom_line()
+plot_hierarchies_add_quantline(
+  p,
+  data.frame(sample = c("S1", "S2"), estimate = c(1.1, 1.8)),
+  aes_y = "estimate",
+  sample_name = "sample"
+)
 ```

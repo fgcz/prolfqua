@@ -2,6 +2,10 @@
 
 Package Data
 
+## Value
+
+A documentation topic.
+
 ## See also
 
 Other data:

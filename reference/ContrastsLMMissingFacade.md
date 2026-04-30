@@ -4,6 +4,10 @@ LM + missing-value imputation contrast analysis facade
 
 LM + missing-value imputation contrast analysis facade
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates the pipeline:

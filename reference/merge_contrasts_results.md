@@ -25,6 +25,10 @@ merge_contrasts_results(prefer, add, model_name = "mergedModel")
 
   name of the merged model default "mergedModel"
 
+## Value
+
+Contrast definitions or contrast results.
+
 ## See also
 
 Other modelling:
@@ -107,3 +111,35 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+prefer_df <- data.frame(
+  protein_Id = c("P1", "P2"),
+  contrast = "A_vs_B",
+  modelName = "prefer",
+  diff = c(1, 2),
+  p.value = c(0.01, 0.2),
+  FDR = c(0.02, 0.2),
+  statistic = c(3, NA)
+)
+add_df <- data.frame(
+  protein_Id = c("P1", "P2"),
+  contrast = "A_vs_B",
+  modelName = "add",
+  diff = c(1.1, 2.1),
+  p.value = c(0.02, 0.03),
+  FDR = c(0.03, 0.04),
+  statistic = c(2.8, 2.5)
+)
+prefer <- ContrastsTable$new(prefer_df, subject_id = "protein_Id", model_name = "prefer")
+add <- ContrastsTable$new(add_df, subject_id = "protein_Id", model_name = "add")
+merged <- merge_contrasts_results(prefer, add)
+#> Joining with `by = join_by(protein_Id, contrast)`
+#> Joining with `by = join_by(protein_Id, contrast)`
+merged$merged$get_contrasts()
+#>   protein_Id contrast modelName diff p.value  FDR statistic
+#> 1         P1   A_vs_B    prefer  1.0    0.01 0.02       3.0
+#> 2         P2   A_vs_B       add  2.1    0.03 0.04       2.5
+```

@@ -310,11 +310,11 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.2  dplyr_1.2.1    prolfqua_1.6.1
+    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.6.1
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      farver_2.1.2          
-    ##  [4] S7_0.2.1-1             fastmap_1.2.0          lazyeval_0.2.3        
+    ##  [4] S7_0.2.2               fastmap_1.2.0          lazyeval_0.2.3        
     ##  [7] digest_0.6.39          rpart_4.1.24           lifecycle_1.0.5       
     ## [10] survival_3.8-3         statmod_1.5.1          magrittr_2.0.5        
     ## [13] compiler_4.5.2         progress_1.2.3         rlang_1.2.0           
@@ -341,7 +341,7 @@ sessionInfo()
     ## [76] R6_2.6.1               textshaping_1.0.5      Rdpack_2.6.6          
     ## [79] formula.tools_1.7.1    evaluate_1.0.5         lattice_0.22-7        
     ## [82] rbibutils_2.4.1        backports_1.5.1        pheatmap_1.0.13       
-    ## [85] broom_1.0.12           bslib_0.10.0           Rcpp_1.1.1-1          
+    ## [85] broom_1.0.12           bslib_0.10.0           Rcpp_1.1.1-1.1        
     ## [88] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
-    ## [91] logistf_1.26.1         xfun_0.57              fs_2.0.1              
+    ## [91] logistf_1.26.1         xfun_0.57              fs_2.1.0              
     ## [94] forcats_1.0.1          pkgconfig_2.0.3

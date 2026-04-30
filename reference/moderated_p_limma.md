@@ -96,3 +96,17 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+contrast_df <- data.frame(
+  sigma = c(0.25, 0.32, 0.28, 0.40, 0.35),
+  df = rep(6, 5),
+  statistic = c(2.1, -1.8, 0.5, 3.0, -2.2),
+  diff = c(0.8, -0.6, 0.2, 1.2, -0.9)
+)
+res <- moderated_p_limma(contrast_df)
+"moderated.p.value" %in% colnames(res)
+#> [1] TRUE
+```

@@ -14,6 +14,10 @@ generate_contrasts_for_factor(levels)
 
   character vector of factor levels
 
+## Value
+
+Contrast definitions or contrast results.
+
 ## See also
 
 Other contrasts:

@@ -43,6 +43,10 @@ strategy_limma(
   [`lmFit`](https://rdrr.io/pkg/limma/man/lmFit.html). Default `NULL`
   (no weights).
 
+## Value
+
+The computed result.
+
 ## See also
 
 Other modelling:
@@ -132,7 +136,7 @@ Other modelling:
 strat <- strategy_limma("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x55b5db3b05a0>
+#> <environment: 0x55582743bff0>
 strat$model_name
 #> [1] "limma"
 ```

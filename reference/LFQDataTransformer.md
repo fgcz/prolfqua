@@ -4,6 +4,10 @@ Decorate LFQData with Methods for transforming Intensities
 
 Decorate LFQData with Methods for transforming Intensities
 
+## Value
+
+An R6 class generator.
+
 ## Public fields
 
 - `lfq`:

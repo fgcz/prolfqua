@@ -52,6 +52,10 @@ sim_lfq_data(
 
   if TRUE, simulate peptide-level data; if FALSE, protein-level
 
+## Value
+
+A data frame containing simulated LFQ data.
+
 ## Examples
 
 ``` r

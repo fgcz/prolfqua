@@ -4,6 +4,10 @@ Count distinct elements for each level of hierarchy per sample
 
 Count distinct elements for each level of hierarchy per sample
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Provides wide, long, and plot views of hierarchy counts.
@@ -109,3 +113,25 @@ The objects of this class are cloneable with this method.
 - `deep`:
 
   Whether to make a deep clone.
+
+## Examples
+
+``` r
+bb <- sim_lfq_data_protein_config()
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
+counts <- HierarchyCountsSample$new(bb$data, bb$config)
+head(counts$wide())
+#> # A tibble: 6 × 3
+#> # Groups:   isotopeLabel [1]
+#>   isotopeLabel sampleName protein_Id
+#>   <chr>        <chr>           <int>
+#> 1 light        A_V1                9
+#> 2 light        A_V2                9
+#> 3 light        A_V3                7
+#> 4 light        A_V4               10
+#> 5 light        B_V1                9
+#> 6 light        B_V2                9
+```

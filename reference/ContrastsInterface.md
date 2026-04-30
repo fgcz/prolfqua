@@ -4,6 +4,10 @@ Base class for all Contrasts classes
 
 Base class for all Contrasts classes
 
+## Value
+
+An R6 class generator.
+
 ## Methods
 
 ### Public methods

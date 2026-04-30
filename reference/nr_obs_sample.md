@@ -41,6 +41,10 @@ nr_obs_sample(
 
   character — output column name
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r

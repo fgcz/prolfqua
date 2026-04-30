@@ -10,7 +10,7 @@ data_ionstar
 
 ## Format
 
-An object of class `IonstarData` (inherits from `R6`) of length 11.
+An object of class `NULL` of length 0.
 
 ## See also
 

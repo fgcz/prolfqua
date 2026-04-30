@@ -10,7 +10,7 @@ data_IonstarProtein_subsetNorm
 
 ## Format
 
-An object of class `list` of length 2.
+An object of class `NULL` of length 0.
 
 ## See also
 

@@ -43,6 +43,10 @@ sim_lfq_data_2factor_config(
 
   use two factors for modelling
 
+## Value
+
+A list containing simulated data and an analysis configuration.
+
 ## Examples
 
 ``` r

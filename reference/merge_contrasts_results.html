@@ -73,6 +73,10 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>Contrast definitions or contrast results.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other modelling:
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
@@ -156,12 +160,43 @@
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">prefer_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  protein_Id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P1"</span>, <span class="st">"P2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  contrast <span class="op">=</span> <span class="st">"A_vs_B"</span>,</span></span>
+<span class="r-in"><span>  modelName <span class="op">=</span> <span class="st">"prefer"</span>,</span></span>
+<span class="r-in"><span>  diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  p.value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  FDR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">0.2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  statistic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">add_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  protein_Id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P1"</span>, <span class="st">"P2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  contrast <span class="op">=</span> <span class="st">"A_vs_B"</span>,</span></span>
+<span class="r-in"><span>  modelName <span class="op">=</span> <span class="st">"add"</span>,</span></span>
+<span class="r-in"><span>  diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">2.1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  p.value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">0.03</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  FDR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.03</span>, <span class="fl">0.04</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  statistic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.8</span>, <span class="fl">2.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">prefer</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsTable.html">ContrastsTable</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">prefer_df</span>, subject_id <span class="op">=</span> <span class="st">"protein_Id"</span>, model_name <span class="op">=</span> <span class="st">"prefer"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">add</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsTable.html">ContrastsTable</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">add_df</span>, subject_id <span class="op">=</span> <span class="st">"protein_Id"</span>, model_name <span class="op">=</span> <span class="st">"add"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">merged</span> <span class="op">&lt;-</span> <span class="fu">merge_contrasts_results</span><span class="op">(</span><span class="va">prefer</span>, <span class="va">add</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
+<span class="r-in"><span><span class="va">merged</span><span class="op">$</span><span class="va">merged</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id contrast modelName diff p.value  FDR statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         P1   A_vs_B    prefer  1.0    0.01 0.02       3.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         P2   A_vs_B       add  2.1    0.03 0.04       2.5</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich, Christian Panse.</p>
 </div>
 
 <div class="pkgdown-footer-right">

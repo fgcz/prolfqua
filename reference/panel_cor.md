@@ -38,3 +38,10 @@ Other utilities:
 [`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
 [`remove_na_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md),
 [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
+
+## Examples
+
+``` r
+graphics::plot(1:3, 1:3, type = "n")
+panel_cor(1:3, 1:3)
+```

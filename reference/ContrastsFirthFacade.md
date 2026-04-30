@@ -4,6 +4,10 @@ Firth logistic missingness contrast analysis facade
 
 Firth logistic missingness contrast analysis facade
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates the pipeline: encode missingness -\>

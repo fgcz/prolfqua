@@ -37,6 +37,10 @@ sim_lfq_data_protein_config(
 
   if TRUE, add a paired subject factor to the design
 
+## Value
+
+A list containing simulated data and an analysis configuration.
+
 ## Examples
 
 ``` r

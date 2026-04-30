@@ -32,6 +32,10 @@ center_to_reference_cfg(
 
   logical, if TRUE return a copy, otherwise modify in place
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r

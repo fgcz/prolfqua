@@ -2,8 +2,12 @@
 
 ## Authors
 
-- **Witold Wolski**. Author, maintainer.
-  [](https://orcid.org/0000-0002-6468-120X)
+- **Witold Wolski**. Author. [](https://orcid.org/0000-0002-6468-120X)
+
+- **Functional Genomics Center Zurich**. Funder.
+
+- **Christian Panse**. Maintainer.
+  [](https://orcid.org/0000-0003-1975-3064)
 
 ## Citation
 

@@ -4,6 +4,10 @@ Analysis Configuration — holds all table annotations, hierarchy
 definitions, factor definitions, and analysis parameters in a single
 flat object.
 
+## Value
+
+An R6 class generator.
+
 ## See also
 
 Other configuration:

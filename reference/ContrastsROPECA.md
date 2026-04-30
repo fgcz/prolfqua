@@ -4,6 +4,10 @@ ROPECA reproducibility-optimization method
 
 ROPECA reproducibility-optimization method
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 ROPECA optimizes the reproducibility of statistical testing on

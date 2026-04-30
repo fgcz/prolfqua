@@ -4,6 +4,10 @@ Compute contrasts with group mean imputation
 
 Compute contrasts with group mean imputation
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 If there are no observations in one of the groups for some of the
@@ -355,7 +359,7 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_2b503c5053dc 
+#> agg_record_8e4911c6ea76 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
@@ -394,6 +398,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_2b503c5053dc 
+#> agg_record_8e4911c6ea76 
 #>                       2 
 ```

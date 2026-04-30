@@ -4,6 +4,10 @@ Summarize LFQData
 
 Summarize LFQData
 
+## Value
+
+An R6 class generator.
+
 ## See also
 
 Other LFQData:

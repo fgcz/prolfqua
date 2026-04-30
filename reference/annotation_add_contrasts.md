@@ -46,6 +46,10 @@ annotation_add_contrasts(
 
   logical, if TRUE include interaction contrasts
 
+## Value
+
+Contrast definitions or contrast results.
+
 ## See also
 
 Other contrasts:
@@ -58,7 +62,8 @@ Other contrasts:
 ## Examples
 
 ``` r
-annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "primary")
+data("x5463yzwer453bbb", package = "prolfqua")
+annotation_add_contrasts(x5463yzwer453bbb, "factor_A", "factor_B", "primary")
 #> $annot
 #> # A tibble: 36 × 5
 #>    `Relative Path`                             Name  Group ContrastName Contrast
@@ -78,7 +83,7 @@ annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "pr
 #> $name
 #> [1] "DEA_primary_dataset.csv"
 #> 
-annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
+annotation_add_contrasts(x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
 #> $annot
 #> # A tibble: 36 × 5
 #>    `Relative Path`                             Name  Group ContrastName Contrast

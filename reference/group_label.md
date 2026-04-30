@@ -18,6 +18,10 @@ group_label(primary, secondary)
 
   character, secondary factor level
 
+## Value
+
+A character vector with combined group labels.
+
 ## See also
 
 Other modelling:

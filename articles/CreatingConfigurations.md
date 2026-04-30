@@ -247,7 +247,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.1           
-    ##  [4] farver_2.1.2           S7_0.2.1-1             lazyeval_0.2.3        
+    ##  [4] farver_2.1.2           S7_0.2.2               lazyeval_0.2.3        
     ##  [7] fastmap_1.2.0          digest_0.6.39          rpart_4.1.24          
     ## [10] prolfqua_1.6.1         lifecycle_1.0.5        survival_3.8-3        
     ## [13] statmod_1.5.1          magrittr_2.0.5         compiler_4.5.2        
@@ -257,7 +257,7 @@ sessionInfo()
     ## [25] plyr_1.8.9             RColorBrewer_1.1-3     withr_3.0.2           
     ## [28] purrr_1.2.2            desc_1.4.3             nnet_7.3-20           
     ## [31] grid_4.5.2             jomo_2.7-6             mice_3.19.0           
-    ## [34] ggplot2_4.0.2          scales_1.4.0           iterators_1.0.14      
+    ## [34] ggplot2_4.0.3          scales_1.4.0           iterators_1.0.14      
     ## [37] MASS_7.3-65            cli_3.6.6              UpSetR_1.4.0          
     ## [40] rmarkdown_2.31         ragg_1.5.2             reformulas_0.4.4      
     ## [43] generics_0.1.4         otel_0.2.0             httr_1.4.8            
@@ -274,9 +274,9 @@ sessionInfo()
     ## [76] textshaping_1.0.5      Rdpack_2.6.6           formula.tools_1.7.1   
     ## [79] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
     ## [82] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          
-    ## [85] bslib_0.10.0           Rcpp_1.1.1-1           gridExtra_2.3         
+    ## [85] bslib_0.10.0           Rcpp_1.1.1-1.1         gridExtra_2.3         
     ## [88] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        
-    ## [91] xfun_0.57              fs_2.0.1               forcats_1.0.1         
+    ## [91] xfun_0.57              fs_2.1.0               forcats_1.0.1         
     ## [94] pkgconfig_2.0.3
 
 ## References

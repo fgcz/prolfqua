@@ -4,6 +4,10 @@ R6 interface class representing modelling result
 
 R6 interface class representing modelling result
 
+## Value
+
+An R6 class generator.
+
 ## Methods
 
 ### Public methods

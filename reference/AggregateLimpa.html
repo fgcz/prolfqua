@@ -56,6 +56,10 @@ AggregateLimpa"></head><body>
 
 
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>An R6 class generator.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Aggregates peptide/precursor intensities to protein level using limpa's
 probabilistic DPC-based quantification (<code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" class="external-link">limpa::dpcQuant</a></code>).
@@ -249,15 +253,101 @@ aggregation using <code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" cl
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">agg</span> <span class="op">&lt;-</span> <span class="va">AggregateLimpa</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"protein"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">agg</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">agg</span><span class="op">$</span><span class="va">lfq_agg</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="va">agg</span><span class="op">$</span><span class="va">lfq_agg</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087 light         4.40  4.32  4.26  4.34  4.74  4.68  4.73  4.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7cbcrd~5725 light         4.90  4.90  4.87  4.78  3.64  4.43  4.38  4.39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 9VUkAq~4703 light         4.10  4.12  4.25  4.24  4.04  3.59  4.13  4.14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282 light         4.31  4.37  4.36  4.37  4.54  4.47  4.47  4.40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CGzoYe~2147 light         4.60  4.60  4.65  4.58  3.93  4.96  4.95  4.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> DoWup2~5896 light         4.59  4.60  4.54  4.54  4.21  4.22  4.21  4.15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625 light         4.35  4.41  4.29  4.35  4.54  4.56  4.65  4.54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079 light         4.15  4.29  4.10  4.24  4.74  4.78  4.78  4.74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653 light         4.97  5.00  5.01  5.02  5.22  5.23  5.22  5.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782 light         4.67  4.61  4.76  4.73  4.73  4.69  4.71  4.74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: Ctrl_V1 &lt;dbl&gt;, Ctrl_V2 &lt;dbl&gt;, Ctrl_V3 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Ctrl_V4 &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $annotation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName  sample group_ isotopeLabel</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        A_V1    A_V1      A        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        A_V2    A_V2      A        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        A_V3    A_V3      A        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        A_V4    A_V4      A        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        B_V1    B_V1      B        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        B_V2    B_V2      B        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        B_V3    B_V3      B        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        B_V4    B_V4      B        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     Ctrl_V1 Ctrl_V1   Ctrl        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    Ctrl_V2 Ctrl_V2   Ctrl        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    Ctrl_V3 Ctrl_V3   Ctrl        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    Ctrl_V4 Ctrl_V4   Ctrl        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rowdata</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  isotopeLabel</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7cbcrd~5725 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 9VUkAq~4703 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CGzoYe~2147 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> DoWup2~5896 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782 light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $config</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;AnalysisConfiguration&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Public:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     annotation_vars: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     bin_resp: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     clone: function (deep = FALSE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     factor_depth: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     factor_keys: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     factor_keys_depth: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     factors: list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     file_name: sample</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     get_response: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy: list</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_depth: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_keys: function (rev = FALSE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_keys_depth: function (names = TRUE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     id_required: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     id_vars: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ident_q_value: qValue</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ident_score: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     is_response_transformed: TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     isotope_label: isotopeLabel</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     min_peptides_protein: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     norm_value: NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     nr_children: nr_children_protein_Id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     opt_mz: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     opt_rt: </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     opt_se: limpa_se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     pop_response: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     sample_name: sampleName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     sep: ~</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     set_response: function (col_name) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     value_vars: function () </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     work_intensity: limpa</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -265,7 +355,7 @@ aggregation using <code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" cl
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich, Christian Panse.</p>
 </div>
 
 <div class="pkgdown-footer-right">

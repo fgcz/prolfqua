@@ -4,6 +4,10 @@ holds results when contrasts are added.
 
 holds results when contrasts are added.
 
+## Value
+
+An R6 class generator.
+
 ## See also
 
 [`summary_ROPECA_median_p.scaled`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)

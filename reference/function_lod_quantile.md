@@ -18,6 +18,10 @@ function_lod_quantile(data_matrix, percent = 10)
 
   numeric, percentile cutoff for smallest values
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r

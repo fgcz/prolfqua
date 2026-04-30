@@ -26,6 +26,10 @@ table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 
   if TRUE use knitr::kable
 
+## Value
+
+The requested plot, table, or transformed object.
+
 ## See also
 
 Other utilities:
@@ -37,3 +41,18 @@ Other utilities:
 [`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
 [`panel_cor()`](https://wolski.github.io/prolfqua/reference/panel_cor.md),
 [`remove_na_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md)
+
+## Examples
+
+``` r
+table_facade(head(iris, 3), caption = "Iris preview")
+#> 
+#> 
+#> Table: Iris preview
+#> 
+#> | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+#> |------------:|-----------:|------------:|-----------:|:-------|
+#> |          5.1|         3.5|          1.4|         0.2|setosa  |
+#> |          4.9|         3.0|          1.4|         0.2|setosa  |
+#> |          4.7|         3.2|          1.3|         0.2|setosa  |
+```

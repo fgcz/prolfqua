@@ -10,7 +10,7 @@ data_correlatedPeptideList
 
 ## Format
 
-An object of class `by` of length 12.
+An object of class `NULL` of length 0.
 
 ## See also
 

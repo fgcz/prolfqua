@@ -4,6 +4,10 @@ Limma contrast analysis facade
 
 Limma contrast analysis facade
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates the pipeline:

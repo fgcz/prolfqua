@@ -4,6 +4,10 @@ Limma-based contrasts (direct limma pipeline)
 
 Limma-based contrasts (direct limma pipeline)
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Uses limma's `contrasts.fit` + `eBayes` pipeline directly, rather than

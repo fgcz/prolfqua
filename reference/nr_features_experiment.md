@@ -32,6 +32,10 @@ nr_features_experiment(
 
   character — output column name
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r

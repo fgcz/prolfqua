@@ -2,6 +2,10 @@
 
 Internal Functions by category
 
+## Value
+
+A documentation topic.
+
 ## See also
 
 Other aggregation:

@@ -18,6 +18,10 @@ upset_interaction_missing_stats(lfqdata, tr = 2)
 
   if less than tr observations in condition then missing
 
+## Value
+
+The computed result.
+
 ## See also
 
 Other plotting:

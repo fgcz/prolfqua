@@ -4,6 +4,10 @@ Robust linear model strategy (R6 class)
 
 Robust linear model strategy (R6 class)
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates everything needed to fit per-protein robust linear models
@@ -273,5 +277,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x55b5e384b500>
+#> <environment: 0x555814146bc8>
 ```

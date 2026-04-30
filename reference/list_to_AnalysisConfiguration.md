@@ -15,6 +15,10 @@ list_to_AnalysisConfiguration(dd)
   list with table and parameter elements as produced by
   R6_extract_values
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r

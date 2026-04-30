@@ -4,6 +4,10 @@ DEqMS contrast analysis with vooma weights facade
 
 DEqMS contrast analysis with vooma weights facade
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Combines vooma precision weights (mean-variance trend) with DEqMS
@@ -271,7 +275,7 @@ fa <- ContrastsDEqMSVoomFacade$new(lfqdata, "~ group_", contrasts)
 #> Warning: Partial NA coefficients for 1 probe(s)
 head(fa$get_contrasts())
 #> Warning: NaNs produced
-#> Warning: moderated_p_deqms_long: warnings in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17; 'newdata' had 1 row but variables found have 49 rows; number of items to replace is not a multiple of replacement length; NaNs produced)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17; 'newdata' had 1 row but variables found have 49 rows; number of items to replace is not a multiple of replacement length; NaNs produced)
 #> # A tibble: 6 × 14
 #>   facade   contrast modelName protein_Id   diff std.error avgAbd statistic    df
 #>   <chr>    <chr>    <chr>     <chr>       <dbl>     <dbl>  <dbl>     <dbl> <dbl>

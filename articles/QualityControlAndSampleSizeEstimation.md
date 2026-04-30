@@ -25,7 +25,7 @@ You can convert the data into a data frame in a wide format, where the
 intensities of each sample occupy their columns.
 
 ``` r
-lfqdata$to_wide()$data[1:3,1:8]
+lfqdata$data_wide()$data[1:3,1:8]
 ```
 
     ## # A tibble: 3 × 8
@@ -296,7 +296,7 @@ stats$density(ggstat = "ecdf")
 
 ![Empirical cumulative density function of the standard deviation for
 all the proteins in the
-dataset.](QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-2-1.png)
+dataset.](QualityControlAndSampleSizeEstimation_files/figure-html/plot_sd_ecdf-1.png)
 
 Empirical cumulative density function of the standard deviation for all
 the proteins in the dataset.
@@ -345,7 +345,7 @@ sampleSize |>
 
 ![Estimated sample sizes for various FC levels and various quantiles of
 the standard
-deviation.](QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-3-1.png)
+deviation.](QualityControlAndSampleSizeEstimation_files/figure-html/plot_sample_size_quantiles-1.png)
 
 Estimated sample sizes for various FC levels and various quantiles of
 the standard deviation.
@@ -403,7 +403,7 @@ x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
 
 ![Distribution of the required sample sizes for two fold change
 thresholds for all the
-proteins.](QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-4-1.png)
+proteins.](QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk-1-1.png)
 
 Distribution of the required sample sizes for two fold change thresholds
 for all the proteins.
@@ -438,7 +438,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.1           
-    ##  [4] farver_2.1.2           S7_0.2.1-1             fastmap_1.2.0         
+    ##  [4] farver_2.1.2           S7_0.2.2               fastmap_1.2.0         
     ##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          
     ## [10] prolfqua_1.6.1         lifecycle_1.0.5        survival_3.8-3        
     ## [13] statmod_1.5.1          magrittr_2.0.5         compiler_4.5.2        
@@ -448,7 +448,7 @@ sessionInfo()
     ## [25] plyr_1.8.9             RColorBrewer_1.1-3     KernSmooth_2.23-26    
     ## [28] withr_3.0.2            purrr_1.2.2            desc_1.4.3            
     ## [31] nnet_7.3-20            grid_4.5.2             jomo_2.7-6            
-    ## [34] mice_3.19.0            ggplot2_4.0.2          scales_1.4.0          
+    ## [34] mice_3.19.0            ggplot2_4.0.3          scales_1.4.0          
     ## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
     ## [40] UpSetR_1.4.0           rmarkdown_2.31         ragg_1.5.2            
     ## [43] reformulas_0.4.4       generics_0.1.4         otel_0.2.0            
@@ -465,9 +465,9 @@ sessionInfo()
     ## [76] R6_2.6.1               textshaping_1.0.5      Rdpack_2.6.6          
     ## [79] formula.tools_1.7.1    evaluate_1.0.5         lattice_0.22-7        
     ## [82] rbibutils_2.4.1        backports_1.5.1        pheatmap_1.0.13       
-    ## [85] broom_1.0.12           bslib_0.10.0           Rcpp_1.1.1-1          
+    ## [85] broom_1.0.12           bslib_0.10.0           Rcpp_1.1.1-1.1        
     ## [88] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
-    ## [91] logistf_1.26.1         xfun_0.57              fs_2.0.1              
+    ## [91] logistf_1.26.1         xfun_0.57              fs_2.1.0              
     ## [94] forcats_1.0.1          pkgconfig_2.0.3
 
 ## References

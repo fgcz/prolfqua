@@ -4,6 +4,10 @@ LFQDataPlotter —- Create various visualization of the LFQdata
 
 LFQDataPlotter —- Create various visualization of the LFQdata
 
+## Value
+
+An R6 class generator.
+
 ## See also
 
 [`plot_heatmap_cor`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor.md)

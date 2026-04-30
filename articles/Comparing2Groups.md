@@ -108,7 +108,7 @@ lfqdata$factors()
 You can always convert the data into wide format.
 
 ``` r
-lfqdata$to_wide()$data[1:3,1:7]
+lfqdata$data_wide()$data[1:3,1:7]
 ```
 
     ## # A tibble: 3 × 7
@@ -516,7 +516,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] tidyselect_1.2.1       viridisLite_0.4.3      farver_2.1.2          
-    ##   [4] S7_0.2.1-1             fastmap_1.2.0          lazyeval_0.2.3        
+    ##   [4] S7_0.2.2               fastmap_1.2.0          lazyeval_0.2.3        
     ##   [7] promises_1.5.0         digest_0.6.39          rpart_4.1.24          
     ##  [10] mime_0.13              lifecycle_1.0.5        survival_3.8-3        
     ##  [13] statmod_1.5.1          magrittr_2.0.5         compiler_4.5.2        
@@ -527,7 +527,7 @@ sessionInfo()
     ##  [28] RColorBrewer_1.1-3     KernSmooth_2.23-26     withr_3.0.2           
     ##  [31] purrr_1.2.2            desc_1.4.3             nnet_7.3-20           
     ##  [34] grid_4.5.2             jomo_2.7-6             xtable_1.8-8          
-    ##  [37] mice_3.19.0            ggplot2_4.0.2          scales_1.4.0          
+    ##  [37] mice_3.19.0            ggplot2_4.0.3          scales_1.4.0          
     ##  [40] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
     ##  [43] crayon_1.5.3           UpSetR_1.4.0           rmarkdown_2.31        
     ##  [46] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
@@ -546,9 +546,9 @@ sessionInfo()
     ##  [85] Rdpack_2.6.6           formula.tools_1.7.1    shiny_1.13.0          
     ##  [88] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
     ##  [91] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          
-    ##  [94] httpuv_1.6.17          bslib_0.10.0           Rcpp_1.1.1-1          
+    ##  [94] httpuv_1.6.17          bslib_0.10.0           Rcpp_1.1.1-1.1        
     ##  [97] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
-    ## [100] logistf_1.26.1         xfun_0.57              fs_2.0.1              
+    ## [100] logistf_1.26.1         xfun_0.57              fs_2.1.0              
     ## [103] forcats_1.0.1          pkgconfig_2.0.3
 
 ## References

@@ -4,6 +4,10 @@ Decorates LFQData with methods to compute statistics of interactions
 
 Decorates LFQData with methods to compute statistics of interactions
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 compute stdv, mean and CV per peptide or protein and condition.

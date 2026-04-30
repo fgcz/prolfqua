@@ -4,6 +4,10 @@ Limma moderated contrasts
 
 Limma moderated contrasts
 
+## Value
+
+An R6 class generator.
+
 ## See also
 
 [`moderated_p_limma_long`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md)

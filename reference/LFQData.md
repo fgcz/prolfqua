@@ -4,6 +4,10 @@ LFQData R6 class
 
 LFQData R6 class
 
+## Value
+
+An R6 class generator.
+
 ## Missing Data Assumptions
 
 The filtering and imputation methods in this package assume that missing
@@ -62,8 +66,6 @@ Other LFQData:
 
 - [`LFQData$data_wide()`](#method-LFQData-data_wide)
 
-- [`LFQData$to_wide()`](#method-LFQData-to_wide)
-
 - [`LFQData$factors()`](#method-LFQData-factors)
 
 - [`LFQData$hierarchy()`](#method-LFQData-hierarchy)
@@ -87,8 +89,6 @@ Other LFQData:
 - [`LFQData$isotope_label()`](#method-LFQData-isotope_label)
 
 - [`LFQData$data_long()`](#method-LFQData-data_long)
-
-- [`LFQData$get_data()`](#method-LFQData-get_data)
 
 - [`LFQData$rename_response()`](#method-LFQData-rename_response)
 
@@ -382,26 +382,6 @@ list with data, annotation, and configuration
 
 ------------------------------------------------------------------------
 
-### Method `to_wide()`
-
-deprecated — use data_wide() instead
-
-#### Usage
-
-    LFQData$to_wide(as.matrix = FALSE, value = NULL)
-
-#### Arguments
-
-- `as.matrix`:
-
-  return as data.frame or matrix
-
-- `value`:
-
-  see possible lfqdata\$get_config()\$value_vars()
-
-------------------------------------------------------------------------
-
 ### Method `factors()`
 
 Annotation table
@@ -533,16 +513,6 @@ return the tidy (long-format) data frame
 - `na.omit`:
 
   if TRUE, remove rows with NA in response column
-
-------------------------------------------------------------------------
-
-### Method `get_data()`
-
-deprecated — use data_long() instead
-
-#### Usage
-
-    LFQData$get_data()
 
 ------------------------------------------------------------------------
 

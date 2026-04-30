@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-04-17</h4>
+            <h4 data-toc-skip class="date">2026-04-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/Modelling2R6/vignettes/limpa_example.Rmd" class="external-link"><code>vignettes/limpa_example.Rmd</code></a></small>
       <div class="d-none name"><code>limpa_example.Rmd</code></div>
@@ -92,9 +92,9 @@ the peptide level (no protein aggregation)</li>
 <strong>limpa protein-level</strong> — limpa aggregates peptides to
 proteins via <code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" class="external-link">dpcQuant()</a></code>, then tests for DE</li>
 </ol>
-<div class="section level2">
-<h2 id="setup-and-data-simulation">Setup and Data Simulation<a class="anchor" aria-label="anchor" href="#setup-and-data-simulation"></a>
-</h2>
+<div class="section level3">
+<h3 id="setup-and-data-simulation">Setup and Data Simulation<a class="anchor" aria-label="anchor" href="#setup-and-data-simulation"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fgcz/prolfqua" class="external-link">prolfqua</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SmythLab/limpa" class="external-link">limpa</a></span><span class="op">)</span></span>
@@ -110,7 +110,7 @@ per group, and 50 proteins with realistic missing values.</p>
 limpa.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span>
-<span><span class="va">wide</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">wide</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">expr_matrix</span> <span class="op">&lt;-</span> <span class="va">wide</span><span class="op">$</span><span class="va">data</span></span>
 <span><span class="va">annotation</span> <span class="op">&lt;-</span> <span class="va">wide</span><span class="op">$</span><span class="va">annotation</span></span>
@@ -126,9 +126,9 @@ limpa.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Proteins:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">rowdata</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Proteins: 50</span></span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="design-matrix-and-contrasts">Design Matrix and Contrasts<a class="anchor" aria-label="anchor" href="#design-matrix-and-contrasts"></a>
-</h2>
+<div class="section level3">
+<h3 id="design-matrix-and-contrasts">Design Matrix and Contrasts<a class="anchor" aria-label="anchor" href="#design-matrix-and-contrasts"></a>
+</h3>
 <p>All analyses below use the same design matrix: a cell-means model
 with three groups.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -142,15 +142,15 @@ with three groups.</p>
 <span>  levels <span class="op">=</span> <span class="va">design</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="baseline-standard-limma-analysis-no-limpa">Baseline: Standard limma Analysis (no limpa)<a class="anchor" aria-label="anchor" href="#baseline-standard-limma-analysis-no-limpa"></a>
-</h2>
+<div class="section level3">
+<h3 id="baseline-standard-limma-analysis-no-limpa">Baseline: Standard limma Analysis (no limpa)<a class="anchor" aria-label="anchor" href="#baseline-standard-limma-analysis-no-limpa"></a>
+</h3>
 <p>As a baseline, aggregate peptides to proteins using prolfqua’s
 medpolish aggregator, then run a plain <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">limma::lmFit()</a></code> +
 <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> analysis. NAs are simply ignored by limma.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata_protein</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">wide_prot</span> <span class="op">&lt;-</span> <span class="va">lfqdata_protein</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">wide_prot</span> <span class="op">&lt;-</span> <span class="va">lfqdata_protein</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">expr_protein_baseline</span> <span class="op">&lt;-</span> <span class="va">wide_prot</span><span class="op">$</span><span class="va">data</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Protein matrix:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">expr_protein_baseline</span><span class="op">)</span>, <span class="st">"proteins x"</span>,</span>
@@ -176,9 +176,9 @@ its available samples only.</p>
 <span>    <span class="st">"significant proteins at FDR &lt; 0.05\n"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Baseline limma — B vs Ctrl:  36 significant proteins at FDR &lt; 0.05</span></span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="estimate-the-detection-probability-curve-dpc">Estimate the Detection Probability Curve (DPC)<a class="anchor" aria-label="anchor" href="#estimate-the-detection-probability-curve-dpc"></a>
-</h2>
+<div class="section level3">
+<h3 id="estimate-the-detection-probability-curve-dpc">Estimate the Detection Probability Curve (DPC)<a class="anchor" aria-label="anchor" href="#estimate-the-detection-probability-curve-dpc"></a>
+</h3>
 <p>The DPC models the probability of observing a peptide as a
 logit-linear function of its intensity:
 <code>logit P(detected) = beta0 + beta1 * intensity</code>. This is a
@@ -201,12 +201,12 @@ curve left/right</li>
 <code class="sourceCode R"><span><span class="fu">limpa</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limpa/man/plotDPC.html" class="external-link">plotDPC</a></span><span class="op">(</span><span class="va">dpc_est</span><span class="op">)</span></span></code></pre></div>
 <p><img src="limpa_example_files/figure-html/dpc-1.png" class="r-plt" alt="" width="700"></p>
 </div>
-<div class="section level2">
-<h2 id="example-1-peptide-level-analysis-with-limpa">Example 1: Peptide-Level Analysis with limpa<a class="anchor" aria-label="anchor" href="#example-1-peptide-level-analysis-with-limpa"></a>
-</h2>
 <div class="section level3">
-<h3 id="quantify-peptides-with-dpcquantbyrow">Quantify peptides with <code>dpcQuantByRow()</code><a class="anchor" aria-label="anchor" href="#quantify-peptides-with-dpcquantbyrow"></a>
+<h3 id="example-1-peptide-level-analysis-with-limpa">Example 1: Peptide-Level Analysis with limpa<a class="anchor" aria-label="anchor" href="#example-1-peptide-level-analysis-with-limpa"></a>
 </h3>
+<div class="section level4">
+<h4 id="quantify-peptides-with-dpcquantbyrow">Quantify peptides with <code>dpcQuantByRow()</code><a class="anchor" aria-label="anchor" href="#quantify-peptides-with-dpcquantbyrow"></a>
+</h4>
 <p><code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" class="external-link">dpcQuantByRow()</a></code> quantifies each peptide row
 independently (no protein aggregation). Internally it calls
 <code><a href="https://rdrr.io/pkg/limpa/man/peptide2Proteins.html" class="external-link">peptides2Proteins()</a></code> with each row as its own “protein”
@@ -288,9 +288,9 @@ contributed (1 = observed, 0 = was missing).</li>
 was observed.</li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="fit-the-de-model-with-dpcde">Fit the DE model with <code>dpcDE()</code><a class="anchor" aria-label="anchor" href="#fit-the-de-model-with-dpcde"></a>
-</h3>
+<div class="section level4">
+<h4 id="fit-the-de-model-with-dpcde">Fit the DE model with <code>dpcDE()</code><a class="anchor" aria-label="anchor" href="#fit-the-de-model-with-dpcde"></a>
+</h4>
 <p><code><a href="https://rdrr.io/pkg/limpa/man/dpcDE.html" class="external-link">dpcDE()</a></code> is a thin wrapper (9 lines of code) that calls
 <code><a href="https://rdrr.io/pkg/limpa/man/voomaLmFitWithImputation.html" class="external-link">voomaLmFitWithImputation()</a></code>. Here is what it passes and
 why:</p>
@@ -348,9 +348,9 @@ missing (all values imputed), preventing overconfident inference.</p>
 (average intensity + log SE). The red line is the lowess trend used to
 derive precision weights.</p>
 </div>
-<div class="section level3">
-<h3 id="test-contrasts">Test contrasts<a class="anchor" aria-label="anchor" href="#test-contrasts"></a>
-</h3>
+<div class="section level4">
+<h4 id="test-contrasts">Test contrasts<a class="anchor" aria-label="anchor" href="#test-contrasts"></a>
+</h4>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_pep2</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/contrasts.fit.html" class="external-link">contrasts.fit</a></span><span class="op">(</span><span class="va">fit_pep</span>, <span class="va">cont_matrix</span><span class="op">)</span></span>
 <span><span class="va">fit_pep2</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit_pep2</span><span class="op">)</span></span></code></pre></div>
@@ -417,16 +417,16 @@ derive precision weights.</p>
 <pre><code><span><span class="co">## B vs Ctrl:  115 significant peptides at FDR &lt; 0.05</span></span></code></pre>
 </div>
 </div>
-<div class="section level2">
-<h2 id="low-level-api-step-by-step-peptide-analysis">Low-Level API: Step-by-Step Peptide Analysis<a class="anchor" aria-label="anchor" href="#low-level-api-step-by-step-peptide-analysis"></a>
-</h2>
+<div class="section level3">
+<h3 id="low-level-api-step-by-step-peptide-analysis">Low-Level API: Step-by-Step Peptide Analysis<a class="anchor" aria-label="anchor" href="#low-level-api-step-by-step-peptide-analysis"></a>
+</h3>
 <p>This section decomposes the limpa pipeline into individual function
 calls, showing exactly what happens at each stage. We reuse the same
 <code>expr_matrix</code>, <code>dpc_est</code>, and <code>design</code>
 from above.</p>
-<div class="section level3">
-<h3 id="step-1-estimate-the-dpc">Step 1: Estimate the DPC<a class="anchor" aria-label="anchor" href="#step-1-estimate-the-dpc"></a>
-</h3>
+<div class="section level4">
+<h4 id="step-1-estimate-the-dpc">Step 1: Estimate the DPC<a class="anchor" aria-label="anchor" href="#step-1-estimate-the-dpc"></a>
+</h4>
 <p>Already done above, but for completeness:</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dpc_est</span> <span class="op">&lt;-</span> <span class="fu">limpa</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limpa/man/dpc.html" class="external-link">dpc</a></span><span class="op">(</span><span class="va">expr_matrix</span><span class="op">)</span></span>
@@ -445,9 +445,9 @@ estimated from the data:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"s2.prior  (prior variance):"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">dpc_est</span><span class="op">$</span><span class="va">s2.prior</span>, <span class="fl">3</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## s2.prior  (prior variance): 0.032</span></span></code></pre>
 </div>
-<div class="section level3">
-<h3 id="step-2-quantify-peptides-row-level-no-aggregation">Step 2: Quantify peptides (row-level, no aggregation)<a class="anchor" aria-label="anchor" href="#step-2-quantify-peptides-row-level-no-aggregation"></a>
-</h3>
+<div class="section level4">
+<h4 id="step-2-quantify-peptides-row-level-no-aggregation">Step 2: Quantify peptides (row-level, no aggregation)<a class="anchor" aria-label="anchor" href="#step-2-quantify-peptides-row-level-no-aggregation"></a>
+</h4>
 <p><code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" class="external-link">dpcQuantByRow()</a></code> calls <code><a href="https://rdrr.io/pkg/limpa/man/peptide2Proteins.html" class="external-link">peptides2Proteins()</a></code>
 internally, treating each row as its own “protein” (i.e.,
 <code>protein.id = 1:nrow(y)</code>). The result is an
@@ -455,9 +455,9 @@ internally, treating each row as its own “protein” (i.e.,
 <div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y_pep</span> <span class="op">&lt;-</span> <span class="fu">limpa</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" class="external-link">dpcQuantByRow</a></span><span class="op">(</span><span class="va">expr_matrix</span>, dpc <span class="op">=</span> <span class="va">dpc_est</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="step-3-prepare-inputs-for-the-variance-model">Step 3: Prepare inputs for the variance model<a class="anchor" aria-label="anchor" href="#step-3-prepare-inputs-for-the-variance-model"></a>
-</h3>
+<div class="section level4">
+<h4 id="step-3-prepare-inputs-for-the-variance-model">Step 3: Prepare inputs for the variance model<a class="anchor" aria-label="anchor" href="#step-3-prepare-inputs-for-the-variance-model"></a>
+</h4>
 <p><code><a href="https://rdrr.io/pkg/limpa/man/dpcDE.html" class="external-link">dpcDE()</a></code> is just 3 lines. Here we do what it does
 manually:</p>
 <div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
@@ -474,16 +474,16 @@ manually:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Predictor (log SE) range:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">predictor</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Predictor (log SE) range: -4.61 -1.09</span></span></code></pre>
 </div>
-<div class="section level3">
-<h3 id="step-4-what-voomalmfitwithimputation-does-internally">Step 4: What <code>voomaLmFitWithImputation()</code> does
+<div class="section level4">
+<h4 id="step-4-what-voomalmfitwithimputation-does-internally">Step 4: What <code>voomaLmFitWithImputation()</code> does
 internally<a class="anchor" aria-label="anchor" href="#step-4-what-voomalmfitwithimputation-does-internally"></a>
-</h3>
+</h4>
 <p>Below we manually replicate the internals of
 <code><a href="https://rdrr.io/pkg/limpa/man/voomaLmFitWithImputation.html" class="external-link">voomaLmFitWithImputation()</a></code>. This is the core of limpa’s DE
 pipeline.</p>
-<div class="section level4">
-<h4 id="step-4a-initial-linear-model-fit-unweighted">Step 4a: Initial linear model fit (unweighted)<a class="anchor" aria-label="anchor" href="#step-4a-initial-linear-model-fit-unweighted"></a>
-</h4>
+<div class="section level5">
+<h5 id="step-4a-initial-linear-model-fit-unweighted">Step 4a: Initial linear model fit (unweighted)<a class="anchor" aria-label="anchor" href="#step-4a-initial-linear-model-fit-unweighted"></a>
+</h5>
 <p>First, fit a standard <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit()</a></code> without any precision
 weights. This gives per-peptide residual standard deviations
 (<code>sigma</code>) and fitted values.</p>
@@ -507,9 +507,9 @@ weights. This gives per-peptide residual standard deviations
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"  Fitted values:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">fitted_values</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   Fitted values: 152 15</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="step-4b-df-correction-for-fully-imputed-groups">Step 4b: DF correction for fully imputed groups<a class="anchor" aria-label="anchor" href="#step-4b-df-correction-for-fully-imputed-groups"></a>
-</h4>
+<div class="section level5">
+<h5 id="step-4b-df-correction-for-fully-imputed-groups">Step 4b: DF correction for fully imputed groups<a class="anchor" aria-label="anchor" href="#step-4b-df-correction-for-fully-imputed-groups"></a>
+</h5>
 <p>If a peptide has ALL values imputed within a design-matrix group, its
 fitted value for that group is determined entirely by imputed data — so
 the residual df should be reduced. This uses the hat matrix to detect
@@ -538,10 +538,10 @@ such cases.</p>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## Corrected df.residual for affected peptides: 7 7 6 7 6</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="step-4c-bivariate-linear-predictor-average-intensity-log-se">Step 4c: Bivariate linear predictor (average intensity + log
+<div class="section level5">
+<h5 id="step-4c-bivariate-linear-predictor-average-intensity-log-se">Step 4c: Bivariate linear predictor (average intensity + log
 SE)<a class="anchor" aria-label="anchor" href="#step-4c-bivariate-linear-predictor-average-intensity-log-se"></a>
-</h4>
+</h5>
 <p>This is the key innovation over standard <code>vooma</code>. Instead
 of modelling variance as a function of average intensity alone, limpa
 uses TWO predictors:</p>
@@ -587,9 +587,9 @@ a single predictor.</p>
 <span><span class="co"># Per-observation combined predictor (for computing weights later)</span></span>
 <span><span class="va">mu_combined</span> <span class="op">&lt;-</span> <span class="va">beta</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">beta</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">fitted_values</span> <span class="op">+</span> <span class="va">beta</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">predictor</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="step-4d-lowess-smoothing-of-the-variance-trend">Step 4d: Lowess smoothing of the variance trend<a class="anchor" aria-label="anchor" href="#step-4d-lowess-smoothing-of-the-variance-trend"></a>
-</h4>
+<div class="section level5">
+<h5 id="step-4d-lowess-smoothing-of-the-variance-trend">Step 4d: Lowess smoothing of the variance trend<a class="anchor" aria-label="anchor" href="#step-4d-lowess-smoothing-of-the-variance-trend"></a>
+</h5>
 <p>Smooth the <code>sqrt(sigma) ~ combined_predictor</code> relationship
 with lowess. The smoothed trend function <code>f()</code> will be used
 to derive weights.</p>
@@ -609,9 +609,9 @@ to derive weights.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">l</span>, col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="limpa_example_files/figure-html/lowlevel_4d_lowess-1.png" class="r-plt" alt="" width="700"></p>
 </div>
-<div class="section level4">
-<h4 id="step-4e-derive-precision-weights">Step 4e: Derive precision weights<a class="anchor" aria-label="anchor" href="#step-4e-derive-precision-weights"></a>
-</h4>
+<div class="section level5">
+<h5 id="step-4e-derive-precision-weights">Step 4e: Derive precision weights<a class="anchor" aria-label="anchor" href="#step-4e-derive-precision-weights"></a>
+</h5>
 <p>The lowess trend gives a function <code>f()</code> that predicts
 <code>sqrt(sigma)</code> from the combined predictor. Weights are the
 inverse fourth power: <code>w = 1/f(mu)^4</code>. This means
@@ -643,9 +643,9 @@ observations with higher predicted variance get lower weight.</p>
 <p>Imputed values get systematically lower weights because they have
 larger SEs, which pushes them to the high-variance end of the trend.</p>
 </div>
-<div class="section level4">
-<h4 id="step-4f-final-weighted-linear-model-fit">Step 4f: Final weighted linear model fit<a class="anchor" aria-label="anchor" href="#step-4f-final-weighted-linear-model-fit"></a>
-</h4>
+<div class="section level5">
+<h5 id="step-4f-final-weighted-linear-model-fit">Step 4f: Final weighted linear model fit<a class="anchor" aria-label="anchor" href="#step-4f-final-weighted-linear-model-fit"></a>
+</h5>
 <p>Refit <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">lmFit()</a></code> using the vooma weights. This is the final
 model — coefficients now reflect precision-weighted estimates.</p>
 <div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
@@ -672,9 +672,9 @@ precision-weighted coefficient estimates but no empirical Bayes
 moderation yet.</p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="step-5-empirical-bayes-moderation-with-ebayes">Step 5: Empirical Bayes moderation with <code>eBayes()</code><a class="anchor" aria-label="anchor" href="#step-5-empirical-bayes-moderation-with-ebayes"></a>
-</h3>
+<div class="section level4">
+<h4 id="step-5-empirical-bayes-moderation-with-ebayes">Step 5: Empirical Bayes moderation with <code>eBayes()</code><a class="anchor" aria-label="anchor" href="#step-5-empirical-bayes-moderation-with-ebayes"></a>
+</h4>
 <p><code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes()</a></code> shrinks the per-peptide variance estimates
 toward a common prior, producing moderated t-statistics with increased
 degrees of freedom:</p>
@@ -693,9 +693,9 @@ degrees of freedom:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Prior variance (s2.prior):"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">fit_eb</span><span class="op">$</span><span class="va">s2.prior</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Prior variance (s2.prior): 1.1021</span></span></code></pre>
 </div>
-<div class="section level3">
-<h3 id="step-6-compute-contrasts-with-contrasts-fit">Step 6: Compute contrasts with <code>contrasts.fit()</code><a class="anchor" aria-label="anchor" href="#step-6-compute-contrasts-with-contrasts-fit"></a>
-</h3>
+<div class="section level4">
+<h4 id="step-6-compute-contrasts-with-contrasts-fit">Step 6: Compute contrasts with <code>contrasts.fit()</code><a class="anchor" aria-label="anchor" href="#step-6-compute-contrasts-with-contrasts-fit"></a>
+</h4>
 <p><code><a href="https://rdrr.io/pkg/limma/man/contrasts.fit.html" class="external-link">contrasts.fit()</a></code> re-parameterizes the fitted model from
 design-matrix coefficients to the contrasts of interest:</p>
 <div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
@@ -710,9 +710,9 @@ re-computes moderated statistics for the contrast coefficients):</p>
 <div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_contr</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit_contr</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="step-7-extract-results-with-toptable">Step 7: Extract results with <code>topTable()</code><a class="anchor" aria-label="anchor" href="#step-7-extract-results-with-toptable"></a>
-</h3>
+<div class="section level4">
+<h4 id="step-7-extract-results-with-toptable">Step 7: Extract results with <code>topTable()</code><a class="anchor" aria-label="anchor" href="#step-7-extract-results-with-toptable"></a>
+</h4>
 <div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tt_A</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/toptable.html" class="external-link">topTable</a></span><span class="op">(</span><span class="va">fit_contr</span>, coef <span class="op">=</span> <span class="st">"A_vs_Ctrl"</span>, number <span class="op">=</span> <span class="fl">10</span>, sort.by <span class="op">=</span> <span class="st">"P"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">tt_A</span><span class="op">)</span></span></code></pre></div>
@@ -754,9 +754,9 @@ re-computes moderated statistics for the contrast coefficients):</p>
 <code>B</code> — log-odds of differential expression</li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="step-8-verify-equivalence-with-dpcde-wrapper">Step 8: Verify equivalence with <code>dpcDE()</code> wrapper<a class="anchor" aria-label="anchor" href="#step-8-verify-equivalence-with-dpcde-wrapper"></a>
-</h3>
+<div class="section level4">
+<h4 id="step-8-verify-equivalence-with-dpcde-wrapper">Step 8: Verify equivalence with <code>dpcDE()</code> wrapper<a class="anchor" aria-label="anchor" href="#step-8-verify-equivalence-with-dpcde-wrapper"></a>
+</h4>
 <p>The low-level pipeline should give identical results to
 <code><a href="https://rdrr.io/pkg/limpa/man/dpcDE.html" class="external-link">dpcDE()</a></code>:</p>
 <div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
@@ -771,12 +771,12 @@ re-computes moderated statistics for the contrast coefficients):</p>
 <pre><code><span><span class="co">## Max logFC difference between high-level and low-level: 0.1740179</span></span></code></pre>
 </div>
 </div>
-<div class="section level2">
-<h2 id="example-2-protein-level-analysis-with-limpa">Example 2: Protein-Level Analysis with limpa<a class="anchor" aria-label="anchor" href="#example-2-protein-level-analysis-with-limpa"></a>
-</h2>
 <div class="section level3">
-<h3 id="quantify-proteins-with-dpcquant">Quantify proteins with <code>dpcQuant()</code><a class="anchor" aria-label="anchor" href="#quantify-proteins-with-dpcquant"></a>
+<h3 id="example-2-protein-level-analysis-with-limpa">Example 2: Protein-Level Analysis with limpa<a class="anchor" aria-label="anchor" href="#example-2-protein-level-analysis-with-limpa"></a>
 </h3>
+<div class="section level4">
+<h4 id="quantify-proteins-with-dpcquant">Quantify proteins with <code>dpcQuant()</code><a class="anchor" aria-label="anchor" href="#quantify-proteins-with-dpcquant"></a>
+</h4>
 <p><code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" class="external-link">dpcQuant()</a></code> aggregates peptides to proteins using
 Bayesian maximum posterior estimation. For each protein it fits an
 additive model: <code>y_ij = mu_j + alpha_i + epsilon_ij</code> where
@@ -860,9 +860,9 @@ Here multiple peptide rows are aggregated into one protein row. The
 variance and the impact of missing peptides. <code>$genes$NPrec</code>
 records how many peptides each protein had.</p>
 </div>
-<div class="section level3">
-<h3 id="fit-the-de-model">Fit the DE model<a class="anchor" aria-label="anchor" href="#fit-the-de-model"></a>
-</h3>
+<div class="section level4">
+<h4 id="fit-the-de-model">Fit the DE model<a class="anchor" aria-label="anchor" href="#fit-the-de-model"></a>
+</h4>
 <p>Same <code><a href="https://rdrr.io/pkg/limpa/man/dpcDE.html" class="external-link">dpcDE()</a></code> call — it passes <code>log(SE)</code> as a
 precision predictor and the <code>!n.observations</code> matrix as the
 imputation indicator to <code><a href="https://rdrr.io/pkg/limpa/man/voomaLmFitWithImputation.html" class="external-link">voomaLmFitWithImputation()</a></code>.</p>
@@ -872,9 +872,9 @@ imputation indicator to <code><a href="https://rdrr.io/pkg/limpa/man/voomaLmFitW
 <div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_prot</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit_prot</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="test-contrasts-1">Test contrasts<a class="anchor" aria-label="anchor" href="#test-contrasts-1"></a>
-</h3>
+<div class="section level4">
+<h4 id="test-contrasts-1">Test contrasts<a class="anchor" aria-label="anchor" href="#test-contrasts-1"></a>
+</h4>
 <div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_prot2</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/contrasts.fit.html" class="external-link">contrasts.fit</a></span><span class="op">(</span><span class="va">fit_prot</span>, <span class="va">cont_matrix</span><span class="op">)</span></span>
 <span><span class="va">fit_prot2</span> <span class="op">&lt;-</span> <span class="fu">limma</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></span><span class="op">(</span><span class="va">fit_prot2</span><span class="op">)</span></span></code></pre></div>
@@ -943,9 +943,9 @@ imputation indicator to <code><a href="https://rdrr.io/pkg/limpa/man/voomaLmFitW
 <pre><code><span><span class="co">## limpa protein — B vs Ctrl:  39 significant proteins at FDR &lt; 0.05</span></span></code></pre>
 </div>
 </div>
-<div class="section level2">
-<h2 id="summary-comparison">Summary Comparison<a class="anchor" aria-label="anchor" href="#summary-comparison"></a>
-</h2>
+<div class="section level3">
+<h3 id="summary-comparison">Summary Comparison<a class="anchor" aria-label="anchor" href="#summary-comparison"></a>
+</h3>
 <div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"baseline limma (medpolish + lmFit)"</span>,</span>
@@ -993,9 +993,9 @@ imputation indicator to <code><a href="https://rdrr.io/pkg/limpa/man/voomaLmFitW
 </tbody>
 </table>
 </div>
-<div class="section level2">
-<h2 id="key-takeaways">Key Takeaways<a class="anchor" aria-label="anchor" href="#key-takeaways"></a>
-</h2>
+<div class="section level3">
+<h3 id="key-takeaways">Key Takeaways<a class="anchor" aria-label="anchor" href="#key-takeaways"></a>
+</h3>
 <ul>
 <li><p><strong><code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" class="external-link">dpcQuantByRow()</a></code></strong> quantifies each
 peptide independently, returning an <code>EList</code> with
@@ -1030,6 +1030,68 @@ additional heteroscedasticity from missing values. It also corrects
 residual DF for proteins where entire groups were imputed.</p></li>
 </ul>
 </div>
+<div class="section level2">
+<h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
+<div class="sourceCode" id="cb194"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## R version 4.5.2 (2025-10-31)</span></span>
+<span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
+<span><span class="co">## Running under: Ubuntu 24.04.4 LTS</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Matrix products: default</span></span>
+<span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## locale:</span></span>
+<span><span class="co">##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
+<span><span class="co">##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   </span></span>
+<span><span class="co">##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          </span></span>
+<span><span class="co">## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## time zone: UTC</span></span>
+<span><span class="co">## tzcode source: system (glibc)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attached base packages:</span></span>
+<span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## other attached packages:</span></span>
+<span><span class="co">## [1] limpa_1.2.5    limma_3.66.0   prolfqua_1.6.1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span><span class="co">##  [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.1           </span></span>
+<span><span class="co">##  [4] farver_2.1.2           S7_0.2.2               fastmap_1.2.0         </span></span>
+<span><span class="co">##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          </span></span>
+<span><span class="co">## [10] lifecycle_1.0.5        survival_3.8-3         statmod_1.5.1         </span></span>
+<span><span class="co">## [13] magrittr_2.0.5         compiler_4.5.2         progress_1.2.3        </span></span>
+<span><span class="co">## [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           </span></span>
+<span><span class="co">## [19] yaml_2.3.12            data.table_1.18.2.1    knitr_1.51            </span></span>
+<span><span class="co">## [22] prettyunits_1.2.0      htmlwidgets_1.6.4      plyr_1.8.9            </span></span>
+<span><span class="co">## [25] RColorBrewer_1.1-3     withr_3.0.2            purrr_1.2.2           </span></span>
+<span><span class="co">## [28] desc_1.4.3             nnet_7.3-20            grid_4.5.2            </span></span>
+<span><span class="co">## [31] jomo_2.7-6             mice_3.19.0            ggplot2_4.0.3         </span></span>
+<span><span class="co">## [34] scales_1.4.0           iterators_1.0.14       MASS_7.3-65           </span></span>
+<span><span class="co">## [37] cli_3.6.6              crayon_1.5.3           UpSetR_1.4.0          </span></span>
+<span><span class="co">## [40] rmarkdown_2.31         ragg_1.5.2             reformulas_0.4.4      </span></span>
+<span><span class="co">## [43] generics_0.1.4         otel_0.2.0             httr_1.4.8            </span></span>
+<span><span class="co">## [46] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1</span></span>
+<span><span class="co">## [49] splines_4.5.2          vctrs_0.7.3            boot_1.3-32           </span></span>
+<span><span class="co">## [52] glmnet_4.1-10          Matrix_1.7-4           jsonlite_2.0.0        </span></span>
+<span><span class="co">## [55] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         </span></span>
+<span><span class="co">## [58] systemfonts_1.3.2      foreach_1.5.2          plotly_4.12.0         </span></span>
+<span><span class="co">## [61] tidyr_1.3.2            jquerylib_0.1.4        glue_1.8.1            </span></span>
+<span><span class="co">## [64] pkgdown_2.2.0          nloptr_2.2.1           pan_1.9               </span></span>
+<span><span class="co">## [67] codetools_0.2-20       stringi_1.8.7          shape_1.4.6.1         </span></span>
+<span><span class="co">## [70] gtable_0.3.6           lme4_2.0-1             tibble_3.3.1          </span></span>
+<span><span class="co">## [73] pillar_1.11.1          htmltools_0.5.9        R6_2.6.1              </span></span>
+<span><span class="co">## [76] textshaping_1.0.5      Rdpack_2.6.6           formula.tools_1.7.1   </span></span>
+<span><span class="co">## [79] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       </span></span>
+<span><span class="co">## [82] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          </span></span>
+<span><span class="co">## [85] bslib_0.10.0           Rcpp_1.1.1-1.1         gridExtra_2.3         </span></span>
+<span><span class="co">## [88] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        </span></span>
+<span><span class="co">## [91] xfun_0.57              fs_2.1.0               forcats_1.0.1         </span></span>
+<span><span class="co">## [94] pkgconfig_2.0.3</span></span></code></pre>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
@@ -1037,7 +1099,7 @@ residual DF for proteins where entire groups were imputed.</p></li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich, Christian Panse.</p>
 </div>
 
 <div class="pkgdown-footer-right">

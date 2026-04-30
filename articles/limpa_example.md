@@ -12,7 +12,7 @@ prolfqua. Three analyses are shown:
     [`dpcQuant()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html), then
     tests for DE
 
-## Setup and Data Simulation
+### Setup and Data Simulation
 
 ``` r
 library(prolfqua)
@@ -35,7 +35,7 @@ limpa.
 
 ``` r
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-wide <- lfqdata$to_wide(as.matrix = TRUE)
+wide <- lfqdata$data_wide(as.matrix = TRUE)
 
 expr_matrix <- wide$data
 annotation <- wide$annotation
@@ -59,7 +59,7 @@ cat("Proteins:", length(unique(rowdata$protein_Id)), "\n")
 
     ## Proteins: 50
 
-## Design Matrix and Contrasts
+### Design Matrix and Contrasts
 
 All analyses below use the same design matrix: a cell-means model with
 three groups.
@@ -76,7 +76,7 @@ cont_matrix <- limma::makeContrasts(
 )
 ```
 
-## Baseline: Standard limma Analysis (no limpa)
+### Baseline: Standard limma Analysis (no limpa)
 
 As a baseline, aggregate peptides to proteins using prolfqua’s medpolish
 aggregator, then run a plain
@@ -86,7 +86,7 @@ are simply ignored by limma.
 
 ``` r
 lfqdata_protein <- lfqdata$get_Aggregator()$aggregate()
-wide_prot <- lfqdata_protein$to_wide(as.matrix = TRUE)
+wide_prot <- lfqdata_protein$data_wide(as.matrix = TRUE)
 expr_protein_baseline <- wide_prot$data
 
 cat("Protein matrix:", nrow(expr_protein_baseline), "proteins x",
@@ -124,7 +124,7 @@ cat("Baseline limma — B vs Ctrl: ", sum(results_baseline_B$adj.P.Val < 0.05),
 
     ## Baseline limma — B vs Ctrl:  36 significant proteins at FDR < 0.05
 
-## Estimate the Detection Probability Curve (DPC)
+### Estimate the Detection Probability Curve (DPC)
 
 The DPC models the probability of observing a peptide as a logit-linear
 function of its intensity:
@@ -149,9 +149,9 @@ limpa::plotDPC(dpc_est)
 
 ![](limpa_example_files/figure-html/dpc-1.png)
 
-## Example 1: Peptide-Level Analysis with limpa
+### Example 1: Peptide-Level Analysis with limpa
 
-### Quantify peptides with `dpcQuantByRow()`
+#### Quantify peptides with `dpcQuantByRow()`
 
 [`dpcQuantByRow()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html)
 quantifies each peptide row independently (no protein aggregation).
@@ -283,7 +283,7 @@ print(y_peptide$dpc)
 - `$genes$PropObs`: Proportion of samples where the peptide was
   observed.
 
-### Fit the DE model with `dpcDE()`
+#### Fit the DE model with `dpcDE()`
 
 [`dpcDE()`](https://rdrr.io/pkg/limpa/man/dpcDE.html) is a thin wrapper
 (9 lines of code) that calls
@@ -350,7 +350,7 @@ The plot shows `sqrt(sigma)` vs the combined predictor (average
 intensity + log SE). The red line is the lowess trend used to derive
 precision weights.
 
-### Test contrasts
+#### Test contrasts
 
 ``` r
 fit_pep2 <- limma::contrasts.fit(fit_pep, cont_matrix)
@@ -433,13 +433,13 @@ cat("B vs Ctrl: ", sum(res_all_pep_B$adj.P.Val < 0.05), "significant peptides at
 
     ## B vs Ctrl:  115 significant peptides at FDR < 0.05
 
-## Low-Level API: Step-by-Step Peptide Analysis
+### Low-Level API: Step-by-Step Peptide Analysis
 
 This section decomposes the limpa pipeline into individual function
 calls, showing exactly what happens at each stage. We reuse the same
 `expr_matrix`, `dpc_est`, and `design` from above.
 
-### Step 1: Estimate the DPC
+#### Step 1: Estimate the DPC
 
 Already done above, but for completeness:
 
@@ -472,7 +472,7 @@ cat("s2.prior  (prior variance):", round(dpc_est$s2.prior, 3), "\n")
 
     ## s2.prior  (prior variance): 0.032
 
-### Step 2: Quantify peptides (row-level, no aggregation)
+#### Step 2: Quantify peptides (row-level, no aggregation)
 
 [`dpcQuantByRow()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html) calls
 [`peptides2Proteins()`](https://rdrr.io/pkg/limpa/man/peptide2Proteins.html)
@@ -483,7 +483,7 @@ internally, treating each row as its own “protein” (i.e.,
 y_pep <- limpa::dpcQuantByRow(expr_matrix, dpc = dpc_est)
 ```
 
-### Step 3: Prepare inputs for the variance model
+#### Step 3: Prepare inputs for the variance model
 
 [`dpcDE()`](https://rdrr.io/pkg/limpa/man/dpcDE.html) is just 3 lines.
 Here we do what it does manually:
@@ -507,13 +507,13 @@ cat("Predictor (log SE) range:", round(range(predictor), 2), "\n")
 
     ## Predictor (log SE) range: -4.61 -1.09
 
-### Step 4: What `voomaLmFitWithImputation()` does internally
+#### Step 4: What `voomaLmFitWithImputation()` does internally
 
 Below we manually replicate the internals of
 [`voomaLmFitWithImputation()`](https://rdrr.io/pkg/limpa/man/voomaLmFitWithImputation.html).
 This is the core of limpa’s DE pipeline.
 
-#### Step 4a: Initial linear model fit (unweighted)
+##### Step 4a: Initial linear model fit (unweighted)
 
 First, fit a standard
 [`lmFit()`](https://rdrr.io/pkg/limma/man/lmFit.html) without any
@@ -554,7 +554,7 @@ cat("  Fitted values:", dim(fitted_values), "\n")
 
     ##   Fitted values: 152 15
 
-#### Step 4b: DF correction for fully imputed groups
+##### Step 4b: DF correction for fully imputed groups
 
 If a peptide has ALL values imputed within a design-matrix group, its
 fitted value for that group is determined entirely by imputed data — so
@@ -590,7 +590,7 @@ if (n_affected > 0) {
 
     ## Corrected df.residual for affected peptides: 7 7 6 7 6
 
-#### Step 4c: Bivariate linear predictor (average intensity + log SE)
+##### Step 4c: Bivariate linear predictor (average intensity + log SE)
 
 This is the key innovation over standard `vooma`. Instead of modelling
 variance as a function of average intensity alone, limpa uses TWO
@@ -648,7 +648,7 @@ sx_combined <- vartrend$fitted.values
 mu_combined <- beta[1] + beta[2] * fitted_values + beta[3] * predictor
 ```
 
-#### Step 4d: Lowess smoothing of the variance trend
+##### Step 4d: Lowess smoothing of the variance trend
 
 Smooth the `sqrt(sigma) ~ combined_predictor` relationship with lowess.
 The smoothed trend function `f()` will be used to derive weights.
@@ -674,7 +674,7 @@ lines(l, col = "red", lwd = 2)
 
 ![](limpa_example_files/figure-html/lowlevel_4d_lowess-1.png)
 
-#### Step 4e: Derive precision weights
+##### Step 4e: Derive precision weights
 
 The lowess trend gives a function `f()` that predicts `sqrt(sigma)` from
 the combined predictor. Weights are the inverse fourth power:
@@ -723,7 +723,7 @@ cat("Mean weight for imputed values:", round(mean(w_manual[imputed_matrix]), 2),
 Imputed values get systematically lower weights because they have larger
 SEs, which pushes them to the high-variance end of the trend.
 
-#### Step 4f: Final weighted linear model fit
+##### Step 4f: Final weighted linear model fit
 
 Refit [`lmFit()`](https://rdrr.io/pkg/limma/man/lmFit.html) using the
 vooma weights. This is the final model — coefficients now reflect
@@ -760,7 +760,7 @@ cat("  df.residual range:", range(fit_vooma$df.residual), "\n")
 At this point `fit_vooma` is an `MArrayLM` with precision-weighted
 coefficient estimates but no empirical Bayes moderation yet.
 
-### Step 5: Empirical Bayes moderation with `eBayes()`
+#### Step 5: Empirical Bayes moderation with `eBayes()`
 
 [`eBayes()`](https://rdrr.io/pkg/limma/man/ebayes.html) shrinks the
 per-peptide variance estimates toward a common prior, producing
@@ -792,7 +792,7 @@ cat("Prior variance (s2.prior):", round(fit_eb$s2.prior, 4), "\n")
 
     ## Prior variance (s2.prior): 1.1021
 
-### Step 6: Compute contrasts with `contrasts.fit()`
+#### Step 6: Compute contrasts with `contrasts.fit()`
 
 [`contrasts.fit()`](https://rdrr.io/pkg/limma/man/contrasts.fit.html)
 re-parameterizes the fitted model from design-matrix coefficients to the
@@ -819,7 +819,7 @@ contrast coefficients):
 fit_contr <- limma::eBayes(fit_contr)
 ```
 
-### Step 7: Extract results with `topTable()`
+#### Step 7: Extract results with `topTable()`
 
 ``` r
 tt_A <- limma::topTable(fit_contr, coef = "A_vs_Ctrl", number = 10, sort.by = "P")
@@ -858,7 +858,7 @@ print(tt_A)
 - `adj.P.Val` — BH-adjusted p-value (FDR)
 - `B` — log-odds of differential expression
 
-### Step 8: Verify equivalence with `dpcDE()` wrapper
+#### Step 8: Verify equivalence with `dpcDE()` wrapper
 
 The low-level pipeline should give identical results to
 [`dpcDE()`](https://rdrr.io/pkg/limpa/man/dpcDE.html):
@@ -876,9 +876,9 @@ cat("Max logFC difference between high-level and low-level:", max_diff, "\n")
 
     ## Max logFC difference between high-level and low-level: 0.1740179
 
-## Example 2: Protein-Level Analysis with limpa
+### Example 2: Protein-Level Analysis with limpa
 
-### Quantify proteins with `dpcQuant()`
+#### Quantify proteins with `dpcQuant()`
 
 [`dpcQuant()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html) aggregates
 peptides to proteins using Bayesian maximum posterior estimation. For
@@ -1032,7 +1032,7 @@ multiple peptide rows are aggregated into one protein row. The
 and the impact of missing peptides. `$genes$NPrec` records how many
 peptides each protein had.
 
-### Fit the DE model
+#### Fit the DE model
 
 Same [`dpcDE()`](https://rdrr.io/pkg/limpa/man/dpcDE.html) call — it
 passes `log(SE)` as a precision predictor and the `!n.observations`
@@ -1049,7 +1049,7 @@ fit_prot <- limpa::dpcDE(y_protein, design, plot = TRUE)
 fit_prot <- limma::eBayes(fit_prot)
 ```
 
-### Test contrasts
+#### Test contrasts
 
 ``` r
 fit_prot2 <- limma::contrasts.fit(fit_prot, cont_matrix)
@@ -1134,7 +1134,7 @@ cat("limpa protein — B vs Ctrl: ", sum(res_all_prot_B$adj.P.Val < 0.05),
 
     ## limpa protein — B vs Ctrl:  39 significant proteins at FDR < 0.05
 
-## Summary Comparison
+### Summary Comparison
 
 ``` r
 comparison <- data.frame(
@@ -1161,7 +1161,7 @@ knitr::kable(comparison, col.names = c("Method", "Sig. A vs Ctrl", "Sig. B vs Ct
 | limpa peptide-level (dpcQuantByRow + dpcDE) |            122 |            115 |
 | limpa protein-level (dpcQuant + dpcDE)      |             41 |             39 |
 
-## Key Takeaways
+### Key Takeaways
 
 - **[`dpcQuantByRow()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html)**
   quantifies each peptide independently, returning an `EList` with `$E`
@@ -1194,3 +1194,66 @@ knitr::kable(comparison, col.names = c("Method", "Sig. A vs Ctrl", "Sig. B vs Ct
   classical mean-variance relationship and the additional
   heteroscedasticity from missing values. It also corrects residual DF
   for proteins where entire groups were imputed.
+
+## Session Info
+
+``` r
+sessionInfo()
+```
+
+    ## R version 4.5.2 (2025-10-31)
+    ## Platform: x86_64-pc-linux-gnu
+    ## Running under: Ubuntu 24.04.4 LTS
+    ## 
+    ## Matrix products: default
+    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## 
+    ## locale:
+    ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+    ##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+    ##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+    ## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+    ## 
+    ## time zone: UTC
+    ## tzcode source: system (glibc)
+    ## 
+    ## attached base packages:
+    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
+    ## 
+    ## other attached packages:
+    ## [1] limpa_1.2.5    limma_3.66.0   prolfqua_1.6.1
+    ## 
+    ## loaded via a namespace (and not attached):
+    ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.1           
+    ##  [4] farver_2.1.2           S7_0.2.2               fastmap_1.2.0         
+    ##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          
+    ## [10] lifecycle_1.0.5        survival_3.8-3         statmod_1.5.1         
+    ## [13] magrittr_2.0.5         compiler_4.5.2         progress_1.2.3        
+    ## [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           
+    ## [19] yaml_2.3.12            data.table_1.18.2.1    knitr_1.51            
+    ## [22] prettyunits_1.2.0      htmlwidgets_1.6.4      plyr_1.8.9            
+    ## [25] RColorBrewer_1.1-3     withr_3.0.2            purrr_1.2.2           
+    ## [28] desc_1.4.3             nnet_7.3-20            grid_4.5.2            
+    ## [31] jomo_2.7-6             mice_3.19.0            ggplot2_4.0.3         
+    ## [34] scales_1.4.0           iterators_1.0.14       MASS_7.3-65           
+    ## [37] cli_3.6.6              crayon_1.5.3           UpSetR_1.4.0          
+    ## [40] rmarkdown_2.31         ragg_1.5.2             reformulas_0.4.4      
+    ## [43] generics_0.1.4         otel_0.2.0             httr_1.4.8            
+    ## [46] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
+    ## [49] splines_4.5.2          vctrs_0.7.3            boot_1.3-32           
+    ## [52] glmnet_4.1-10          Matrix_1.7-4           jsonlite_2.0.0        
+    ## [55] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         
+    ## [58] systemfonts_1.3.2      foreach_1.5.2          plotly_4.12.0         
+    ## [61] tidyr_1.3.2            jquerylib_0.1.4        glue_1.8.1            
+    ## [64] pkgdown_2.2.0          nloptr_2.2.1           pan_1.9               
+    ## [67] codetools_0.2-20       stringi_1.8.7          shape_1.4.6.1         
+    ## [70] gtable_0.3.6           lme4_2.0-1             tibble_3.3.1          
+    ## [73] pillar_1.11.1          htmltools_0.5.9        R6_2.6.1              
+    ## [76] textshaping_1.0.5      Rdpack_2.6.6           formula.tools_1.7.1   
+    ## [79] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
+    ## [82] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          
+    ## [85] bslib_0.10.0           Rcpp_1.1.1-1.1         gridExtra_2.3         
+    ## [88] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        
+    ## [91] xfun_0.57              fs_2.1.0               forcats_1.0.1         
+    ## [94] pkgconfig_2.0.3

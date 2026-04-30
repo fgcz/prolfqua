@@ -122,8 +122,8 @@ mf <- sim_make_model_lmer("factors")
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
 #>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> Caused by warning:
+#> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 m2 <- sim_make_model_lmer("parallel2")
 #> Warning: Unknown or uninitialised column: `nr_peptides`.
@@ -140,8 +140,8 @@ m2 <- sim_make_model_lmer("parallel2")
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
 #>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> Caused by warning:
+#> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 m3 <- sim_make_model_lmer("parallel3")
 #> creating sampleName from file_name column
@@ -158,7 +158,7 @@ m3 <- sim_make_model_lmer("parallel3")
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
 #>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> Caused by warning:
+#> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 ```

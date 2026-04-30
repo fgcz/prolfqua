@@ -18,6 +18,10 @@ estimate_lod_global(data_matrix, prop_na = 90)
 
   numeric, percentage threshold for NA proportion per row
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r

@@ -32,6 +32,10 @@ adjust_p_values(
 
   name of the new column with adjusted p-values
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r
@@ -40,7 +44,7 @@ length(bb)
 #> [1] 2500
 bb <- bb[bb < 1]
 length(bb)
-#> [1] 2490
+#> [1] 2492
 bb <- bb[1:2000]
 hist(bb)
 

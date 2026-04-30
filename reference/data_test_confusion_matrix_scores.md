@@ -10,8 +10,7 @@ data_test_confusion_matrix_scores
 
 ## Format
 
-An object of class `spec_tbl_df` (inherits from `tbl_df`, `tbl`,
-`data.frame`) with 4043 rows and 5 columns.
+An object of class `NULL` of length 0.
 
 ## See also
 

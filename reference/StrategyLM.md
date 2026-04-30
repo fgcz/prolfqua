@@ -4,6 +4,10 @@ Linear model strategy (R6 class)
 
 Linear model strategy (R6 class)
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates everything needed to fit per-protein linear models and
@@ -285,7 +289,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x55b5db957f70>
+#> <environment: 0x55582d842a28>
 strat$weights
 #> NULL
 ```

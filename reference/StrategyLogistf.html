@@ -56,6 +56,10 @@ Firth's logistic regression strategy (R6 class)"></head><body>
 
 
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>An R6 class generator.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Encapsulates everything needed to fit per-protein Firth's bias-reduced
 logistic regression via <code><a href="https://rdrr.io/pkg/logistf/man/logistf.html" class="external-link">logistf</a></code> and extract contrasts.</p>
@@ -327,7 +331,7 @@ logistic regression via <code><a href="https://rdrr.io/pkg/logistf/man/logistf.h
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="va">StrategyLogistf</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"bin_resp ~ condition"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bin_resp ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b5de3a85b0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55581ccd92e0&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -335,7 +339,7 @@ logistic regression via <code><a href="https://rdrr.io/pkg/logistf/man/logistf.h
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich, Christian Panse.</p>
 </div>
 
 <div class="pkgdown-footer-right">

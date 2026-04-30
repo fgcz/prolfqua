@@ -4,6 +4,10 @@ ROPECA contrast analysis facade
 
 ROPECA contrast analysis facade
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Encapsulates the pipeline:

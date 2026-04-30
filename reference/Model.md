@@ -4,6 +4,10 @@ R6 class representing modelling result
 
 R6 class representing modelling result
 
+## Value
+
+An R6 class generator.
+
 ## See also
 
 Other modelling:
@@ -341,8 +345,8 @@ mod <- prolfqua::build_model(
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
 #>   pb)`.
 #> ℹ In group 1: `protein_Id = "0EfVhX~5954"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> Caused by warning:
+#> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 6 remaining warnings.
 
 mod$model_df

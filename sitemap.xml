@@ -20,6 +20,7 @@
 <url><loc>https://wolski.github.io/prolfqua/articles/limpa_example.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/authors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/index.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/news/index.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AggregateLimpa.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AggregateMedpolish.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AggregateRlm.html</loc></url>
@@ -173,7 +174,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_B_in_A.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_children_experiment.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_features_experiment.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/nr_obs_experiment.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_obs_sample.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/pairs_smooth.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/panel_cor.html</loc></url>

@@ -18,6 +18,10 @@ prolfqua_data(datastr, package = "prolfqua")
 
   default prolfqua
 
+## Value
+
+The computed result.
+
 ## See also
 
 Other data:
@@ -35,3 +39,14 @@ Other data:
 [`data_spectronautDIA250_A`](https://wolski.github.io/prolfqua/reference/data_spectronautDIA250_A.md),
 [`data_test_confusion_matrix_scores`](https://wolski.github.io/prolfqua/reference/data_test_confusion_matrix_scores.md),
 [`x5463yzwer453bbb`](https://wolski.github.io/prolfqua/reference/x5463yzwer453bbb.md)
+
+## Examples
+
+``` r
+ionstar <- prolfqua_data("data_ionstar")
+names(ionstar)
+#>  [1] ".__enclos_env__"   "subset_normalized" "normalized"       
+#>  [4] "data_N"            "clone"             "initialize"       
+#>  [7] "config"            "data"              "Pep"              
+#> [10] "config_N"          "filtered"         
+```

@@ -4,6 +4,10 @@ AggregateLimpa
 
 AggregateLimpa
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Aggregates peptide/precursor intensities to protein level using limpa's
@@ -208,13 +212,99 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 istar <- prolfqua::sim_lfq_data_peptide_config()
+#> creating sampleName from file_name column
+#> completing cases
+#> completing cases done
+#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#> Column added : log2_abundance
 
 agg <- AggregateLimpa$new(lfqdata, "protein")
 agg$aggregate()
-agg$lfq_agg$to_wide()
-} # }
+agg$lfq_agg$data_wide()
+#> $data
+#> # A tibble: 10 × 14
+#>    protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4
+#>    <chr>       <chr>        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#>  1 0EfVhX~0087 light         4.40  4.32  4.26  4.34  4.74  4.68  4.73  4.85
+#>  2 7cbcrd~5725 light         4.90  4.90  4.87  4.78  3.64  4.43  4.38  4.39
+#>  3 9VUkAq~4703 light         4.10  4.12  4.25  4.24  4.04  3.59  4.13  4.14
+#>  4 BEJI92~5282 light         4.31  4.37  4.36  4.37  4.54  4.47  4.47  4.40
+#>  5 CGzoYe~2147 light         4.60  4.60  4.65  4.58  3.93  4.96  4.95  4.95
+#>  6 DoWup2~5896 light         4.59  4.60  4.54  4.54  4.21  4.22  4.21  4.15
+#>  7 Fl4JiV~8625 light         4.35  4.41  4.29  4.35  4.54  4.56  4.65  4.54
+#>  8 HvIpHG~9079 light         4.15  4.29  4.10  4.24  4.74  4.78  4.78  4.74
+#>  9 JcKVfU~9653 light         4.97  5.00  5.01  5.02  5.22  5.23  5.22  5.27
+#> 10 SGIVBl~5782 light         4.67  4.61  4.76  4.73  4.73  4.69  4.71  4.74
+#> # ℹ 4 more variables: Ctrl_V1 <dbl>, Ctrl_V2 <dbl>, Ctrl_V3 <dbl>,
+#> #   Ctrl_V4 <dbl>
+#> 
+#> $annotation
+#>    sampleName  sample group_ isotopeLabel
+#> 1        A_V1    A_V1      A        light
+#> 2        A_V2    A_V2      A        light
+#> 3        A_V3    A_V3      A        light
+#> 4        A_V4    A_V4      A        light
+#> 5        B_V1    B_V1      B        light
+#> 6        B_V2    B_V2      B        light
+#> 7        B_V3    B_V3      B        light
+#> 8        B_V4    B_V4      B        light
+#> 9     Ctrl_V1 Ctrl_V1   Ctrl        light
+#> 10    Ctrl_V2 Ctrl_V2   Ctrl        light
+#> 11    Ctrl_V3 Ctrl_V3   Ctrl        light
+#> 12    Ctrl_V4 Ctrl_V4   Ctrl        light
+#> 
+#> $rowdata
+#> # A tibble: 10 × 2
+#>    protein_Id  isotopeLabel
+#>    <chr>       <chr>       
+#>  1 0EfVhX~0087 light       
+#>  2 7cbcrd~5725 light       
+#>  3 9VUkAq~4703 light       
+#>  4 BEJI92~5282 light       
+#>  5 CGzoYe~2147 light       
+#>  6 DoWup2~5896 light       
+#>  7 Fl4JiV~8625 light       
+#>  8 HvIpHG~9079 light       
+#>  9 JcKVfU~9653 light       
+#> 10 SGIVBl~5782 light       
+#> 
+#> $config
+#> <AnalysisConfiguration>
+#>   Public:
+#>     annotation_vars: function () 
+#>     bin_resp: 
+#>     clone: function (deep = FALSE) 
+#>     factor_depth: 1
+#>     factor_keys: function () 
+#>     factor_keys_depth: function () 
+#>     factors: list
+#>     file_name: sample
+#>     get_response: function () 
+#>     hierarchy: list
+#>     hierarchy_depth: 1
+#>     hierarchy_keys: function (rev = FALSE) 
+#>     hierarchy_keys_depth: function (names = TRUE) 
+#>     id_required: function () 
+#>     id_vars: function () 
+#>     ident_q_value: qValue
+#>     ident_score: 
+#>     initialize: function () 
+#>     is_response_transformed: TRUE
+#>     isotope_label: isotopeLabel
+#>     min_peptides_protein: 2
+#>     norm_value: NULL
+#>     nr_children: nr_children_protein_Id
+#>     opt_mz: 
+#>     opt_rt: 
+#>     opt_se: limpa_se
+#>     pop_response: function () 
+#>     sample_name: sampleName
+#>     sep: ~
+#>     set_response: function (col_name) 
+#>     value_vars: function () 
+#>     work_intensity: limpa
+#> 
 ```

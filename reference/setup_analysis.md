@@ -27,6 +27,10 @@ setup_analysis(data, configuration, cc = TRUE, from_factors = FALSE)
 
   if TRUE, create sampleName from factor columns
 
+## Value
+
+The computed result.
+
 ## See also
 
 Other configuration:

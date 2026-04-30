@@ -20,3 +20,16 @@ FACADE_REGISTRY
 ## Format
 
 An object of class `list` of length 14.
+
+## Examples
+
+``` r
+names(FACADE_REGISTRY)
+#>  [1] "lm"                "lm_impute"         "lm_missing"       
+#>  [4] "limma"             "limma_impute"      "limma_voom"       
+#>  [7] "limma_voom_impute" "limpa"             "rlm"              
+#> [10] "deqms"             "deqms_voom"        "firth"            
+#> [13] "lmer"              "ropeca"           
+FACADE_REGISTRY$limma$class
+#> [1] "ContrastsLimmaFacade"
+```

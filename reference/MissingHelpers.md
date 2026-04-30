@@ -4,6 +4,10 @@ compute group mean by LOD
 
 compute group mean by LOD
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 weight lod by nr of NA's \$(LOD \* nrNas + meanAbundance

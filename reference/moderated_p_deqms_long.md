@@ -124,3 +124,22 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+mm <- data.frame(
+  contrast = rep(c("A_vs_B", "C_vs_D"), each = 5),
+  sigma = rep(c(0.25, 0.32, 0.28, 0.40, 0.35), 2),
+  df = rep(6, 10),
+  statistic = rep(c(2.1, -1.8, 0.5, 3.0, -2.2), 2),
+  diff = rep(c(0.8, -0.6, 0.2, 1.2, -0.9), 2),
+  count = rep(c(2, 3, 4, 6, 8), 2)
+)
+res <- moderated_p_deqms_long(mm, count_col = "count")
+#> Warning: moderated_p_deqms_long: condition messages in 2/2 groups. contrast=A_vs_B (span too small.   fewer data values than degrees of freedom.; pseudoinverse used at 0.99; neighborhood radius 1.01; reciprocal condition number  0; There are other near singularities as well. 1.0201); contrast=C_vs_D (span too small.   fewer data values than degrees of freedom.; pseudoinverse used at 0.99; neighborhood radius 1.01; reciprocal condition number  0; There are other near singularities as well. 1.0201)
+table(res$contrast)
+#> 
+#> A_vs_B C_vs_D 
+#>      5      5 
+```

@@ -4,6 +4,10 @@ R6 class representing a limma modelling result
 
 R6 class representing a limma modelling result
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Same API as

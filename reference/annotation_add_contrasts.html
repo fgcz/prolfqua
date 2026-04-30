@@ -97,6 +97,10 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>Contrast definitions or contrast results.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other contrasts:
 <code><a href="generate_contrasts.html">generate_contrasts()</a></code>,
@@ -109,7 +113,8 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">annotation_add_contrasts</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="x5463yzwer453bbb.html">x5463yzwer453bbb</a></span>, <span class="st">"factor_A"</span>, <span class="st">"factor_B"</span>, <span class="st">"primary"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"x5463yzwer453bbb"</span>, package <span class="op">=</span> <span class="st">"prolfqua"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">annotation_add_contrasts</span><span class="op">(</span><span class="va">x5463yzwer453bbb</span>, <span class="st">"factor_A"</span>, <span class="st">"factor_B"</span>, <span class="st">"primary"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $annot</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 36 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    `Relative Path`                             Name  Group ContrastName Contrast</span>
@@ -129,7 +134,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "DEA_primary_dataset.csv"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">annotation_add_contrasts</span><span class="op">(</span><span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="x5463yzwer453bbb.html">x5463yzwer453bbb</a></span>, <span class="st">"factor_B"</span>, <span class="st">"factor_A"</span>, <span class="st">"secondary"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">annotation_add_contrasts</span><span class="op">(</span><span class="va">x5463yzwer453bbb</span>, <span class="st">"factor_B"</span>, <span class="st">"factor_A"</span>, <span class="st">"secondary"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $annot</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 36 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    `Relative Path`                             Name  Group ContrastName Contrast</span>
@@ -156,7 +161,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich, Christian Panse.</p>
 </div>
 
 <div class="pkgdown-footer-right">

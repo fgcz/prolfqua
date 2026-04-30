@@ -56,6 +56,10 @@ R6 class for limpa modelling strategy"></head><body>
 
 
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>An R6 class generator.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Consumed by <code><a href="build_model_limpa.html">build_model_limpa</a></code>. Configures the
 <code><a href="https://rdrr.io/pkg/limpa/man/voomaLmFitWithImputation.html" class="external-link">limpa::voomaLmFitWithImputation</a></code> call: formula for the design matrix,
@@ -244,12 +248,22 @@ plotting parameters.</p>
 
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="va">StrategyLimpa</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"abundance ~ group_"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">formula</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> abundance ~ group_</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x555812d976c0&gt;</span>
+<span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">model_name</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "limpa"</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich, Christian Panse.</p>
 </div>
 
 <div class="pkgdown-footer-right">

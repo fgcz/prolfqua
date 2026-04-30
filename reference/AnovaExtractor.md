@@ -4,6 +4,10 @@ R6 class for extracting ANOVA results as a data frame
 
 R6 class for extracting ANOVA results as a data frame
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Wraps the ANOVA extraction logic and associated column names.
@@ -166,3 +170,12 @@ The objects of this class are cloneable with this method.
 - `deep`:
 
   Whether to make a deep clone.
+
+## Examples
+
+``` r
+extractor <- AnovaExtractor$new(test = "F")
+fit <- stats::lm(Sepal.Length ~ Species, data = iris)
+res <- extractor$fun(fit)
+stopifnot("factor" %in% colnames(res))
+```

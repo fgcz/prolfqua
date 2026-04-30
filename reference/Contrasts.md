@@ -4,6 +4,10 @@ Estimate contrasts using Wald Test
 
 Estimate contrasts using Wald Test
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 The per-protein contrast computation uses
@@ -349,8 +353,8 @@ mod <- build_model(
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
 #>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> Caused by warning:
+#> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 
 ref_lfc <- data.frame(

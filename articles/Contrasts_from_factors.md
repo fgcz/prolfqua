@@ -179,7 +179,8 @@ alongside the annotation:
 ``` r
 # x5463yzwer453bbb is a bundled example annotation table
 # with factor_A (MI / MINOCA) and factor_B (T0 / T150 / T300)
-head(prolfqua::x5463yzwer453bbb[, c("Name", "Group", "factor_A", "factor_B")])
+data("x5463yzwer453bbb", package = "prolfqua")
+head(x5463yzwer453bbb[, c("Name", "Group", "factor_A", "factor_B")])
 ```
 
     ## # A tibble: 6 × 4
@@ -194,7 +195,7 @@ head(prolfqua::x5463yzwer453bbb[, c("Name", "Group", "factor_A", "factor_B")])
 
 ``` r
 result <- annotation_add_contrasts(
-  prolfqua::x5463yzwer453bbb,
+  x5463yzwer453bbb,
   primary_col = "factor_A",
   secondary_col = "factor_B",
   prefix = "primary"
@@ -230,7 +231,7 @@ perspective:
 
 ``` r
 result2 <- annotation_add_contrasts(
-  prolfqua::x5463yzwer453bbb,
+  x5463yzwer453bbb,
   primary_col = "factor_B",
   secondary_col = "factor_A",
   prefix = "secondary"
@@ -251,3 +252,65 @@ knitr::kable(head(result2$annot[, c("Name", "Group", "ContrastName", "Contrast")
 | MI_300_2     | T300_MI     | T300_vs_T150_at_MI                     | G_T300_MI - G_T150_MI                                             |
 | MINOCA_150_5 | T150_MINOCA | T300_vs_T150_at_MINOCA                 | G_T300_MINOCA - G_T150_MINOCA                                     |
 | MI_300_3     | T300_MI     | interaction_T150_vs_T0_at_MINOCA_vs_MI | (G_T150_MINOCA - G_T0_MINOCA) - (G_T150_MI - G_T0_MI)             |
+
+## Session Info
+
+``` r
+sessionInfo()
+```
+
+    ## R version 4.5.2 (2025-10-31)
+    ## Platform: x86_64-pc-linux-gnu
+    ## Running under: Ubuntu 24.04.4 LTS
+    ## 
+    ## Matrix products: default
+    ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## 
+    ## locale:
+    ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+    ##  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+    ##  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+    ## [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+    ## 
+    ## time zone: UTC
+    ## tzcode source: system (glibc)
+    ## 
+    ## attached base packages:
+    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
+    ## 
+    ## other attached packages:
+    ## [1] prolfqua_1.6.1
+    ## 
+    ## loaded via a namespace (and not attached):
+    ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.1           
+    ##  [4] farver_2.1.2           S7_0.2.2               fastmap_1.2.0         
+    ##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          
+    ## [10] lifecycle_1.0.5        survival_3.8-3         statmod_1.5.1         
+    ## [13] magrittr_2.0.5         compiler_4.5.2         rlang_1.2.0           
+    ## [16] sass_0.4.10            tools_4.5.2            utf8_1.2.6            
+    ## [19] yaml_2.3.12            data.table_1.18.2.1    knitr_1.51            
+    ## [22] htmlwidgets_1.6.4      plyr_1.8.9             RColorBrewer_1.1-3    
+    ## [25] withr_3.0.2            purrr_1.2.2            desc_1.4.3            
+    ## [28] nnet_7.3-20            grid_4.5.2             jomo_2.7-6            
+    ## [31] mice_3.19.0            ggplot2_4.0.3          scales_1.4.0          
+    ## [34] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
+    ## [37] UpSetR_1.4.0           rmarkdown_2.31         ragg_1.5.2            
+    ## [40] reformulas_0.4.4       generics_0.1.4         otel_0.2.0            
+    ## [43] httr_1.4.8             minqa_1.2.8            cachem_1.1.0          
+    ## [46] operator.tools_1.6.3.1 splines_4.5.2          vctrs_0.7.3           
+    ## [49] boot_1.3-32            glmnet_4.1-10          Matrix_1.7-4          
+    ## [52] jsonlite_2.0.0         mitml_0.4-5            ggrepel_0.9.8         
+    ## [55] systemfonts_1.3.2      foreach_1.5.2          limma_3.66.0          
+    ## [58] plotly_4.12.0          tidyr_1.3.2            jquerylib_0.1.4       
+    ## [61] glue_1.8.1             pkgdown_2.2.0          nloptr_2.2.1          
+    ## [64] pan_1.9                codetools_0.2-20       shape_1.4.6.1         
+    ## [67] gtable_0.3.6           lme4_2.0-1             tibble_3.3.1          
+    ## [70] pillar_1.11.1          htmltools_0.5.9        R6_2.6.1              
+    ## [73] textshaping_1.0.5      Rdpack_2.6.6           formula.tools_1.7.1   
+    ## [76] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
+    ## [79] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          
+    ## [82] bslib_0.10.0           Rcpp_1.1.1-1.1         gridExtra_2.3         
+    ## [85] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        
+    ## [88] xfun_0.57              fs_2.1.0               forcats_1.0.1         
+    ## [91] pkgconfig_2.0.3

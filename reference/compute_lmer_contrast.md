@@ -125,8 +125,8 @@ mb <- sim_make_model_lmer("interaction")
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
 #>   pb)`.
 #> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> Caused by warning:
+#> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 summary(mb)
 #> Linear mixed model fit by REML. t-tests use Satterthwaite's method [
@@ -184,7 +184,7 @@ compute_lmer_contrast(mb, linfct$linfct_interactions)
 #> 2 Treatment…     26.2      1.01  3.19      26.0     23.1      29.3 8.08e-5  1.84
 #> 3 Treatment…     22.7      1.01  3.19      22.6     19.6      25.8 1.26e-4  1.84
 #> 4 Treatment…     22.8      1.01  3.19      22.6     19.7      25.9 1.26e-4  1.84
-length(mb@beta)
+length(lme4::fixef(mb))
 #> [1] 4
 lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 #>   Estimate Std. Error df  t value    lower    upper     Pr(>|t|)

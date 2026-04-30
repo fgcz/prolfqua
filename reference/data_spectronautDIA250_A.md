@@ -10,7 +10,7 @@ data_spectronautDIA250_A
 
 ## Format
 
-An object of class `list` of length 3.
+An object of class `NULL` of length 0.
 
 ## See also
 

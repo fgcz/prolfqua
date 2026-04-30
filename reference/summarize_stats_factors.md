@@ -14,6 +14,10 @@ summarize_stats_factors(lfqdata)
 
   LFQData object
 
+## Value
+
+The computed result.
+
 ## Examples
 
 ``` r

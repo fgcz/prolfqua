@@ -37,6 +37,10 @@ sim_lfq_data_peptide_config(
 
   number of replicates per group
 
+## Value
+
+A list containing simulated data and an analysis configuration.
+
 ## Examples
 
 ``` r

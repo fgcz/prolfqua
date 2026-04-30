@@ -45,6 +45,10 @@ strategy_limpa(
 
   lowess smoother span (NULL = auto)
 
+## Value
+
+The computed result.
+
 ## See also
 
 Other modelling:
@@ -127,3 +131,14 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+
+## Examples
+
+``` r
+strat <- strategy_limpa("abundance ~ group_")
+strat$formula
+#> abundance ~ group_
+#> <environment: 0x5558258055d0>
+strat$model_name
+#> [1] "limpa"
+```

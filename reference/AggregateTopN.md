@@ -4,6 +4,10 @@ AggregateTopN
 
 AggregateTopN
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Aggregates peptide intensities to protein level using top N peptides.

@@ -4,6 +4,10 @@ R6 class for limpa modelling strategy
 
 R6 class for limpa modelling strategy
 
+## Value
+
+An R6 class generator.
+
 ## Details
 
 Consumed by
@@ -193,3 +197,14 @@ The objects of this class are cloneable with this method.
 - `deep`:
 
   Whether to make a deep clone.
+
+## Examples
+
+``` r
+strat <- StrategyLimpa$new("abundance ~ group_")
+strat$formula
+#> abundance ~ group_
+#> <environment: 0x555812d976c0>
+strat$model_name
+#> [1] "limpa"
+```

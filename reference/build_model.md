@@ -175,8 +175,8 @@ mod <- prolfqua::build_model(
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
 #>   pb)`.
 #> ℹ In group 1: `protein_Id = "0GRprF~7339"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> Caused by warning:
+#> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.
 aovtable <- mod$get_anova()
 
@@ -203,8 +203,8 @@ mod <- prolfqua::build_model(
 #> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
 #>   pb)`.
 #> ℹ In group 1: `protein_Id = "0GRprF~7339"`.
-#> Caused by warning in `value[[3L]]()`:
-#> ! WARN :Error: grouping factors must have > 1 sampled level
+#> Caused by warning:
+#> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.
 model_summary(mod)
 #> $exists

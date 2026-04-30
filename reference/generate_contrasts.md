@@ -22,6 +22,10 @@ generate_contrasts(primary_levels, secondary_levels, interactions = TRUE)
 
   logical, if TRUE include interaction contrasts
 
+## Value
+
+Contrast definitions or contrast results.
+
 ## See also
 
 Other contrasts:
