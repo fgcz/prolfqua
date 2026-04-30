@@ -3,6 +3,9 @@
 \name{INTERNAL_FUNCTIONS_BY_FAMILY}
 \alias{INTERNAL_FUNCTIONS_BY_FAMILY}
 \title{Internal Functions by category}
+\value{
+A documentation topic.
+}
 \description{
 Internal Functions by category
 }

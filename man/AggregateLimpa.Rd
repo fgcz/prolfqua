@@ -3,6 +3,9 @@
 \name{AggregateLimpa}
 \alias{AggregateLimpa}
 \title{AggregateLimpa}
+\value{
+An R6 class generator.
+}
 \description{
 AggregateLimpa
 
@@ -22,15 +25,13 @@ The output LFQData contains three value columns:
 }
 }
 \examples{
-\dontrun{
 istar <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
 agg <- AggregateLimpa$new(lfqdata, "protein")
 agg$aggregate()
-agg$lfq_agg$to_wide()
-}
+agg$lfq_agg$data_wide()
 }
 \seealso{
 Other LFQData: 

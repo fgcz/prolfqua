@@ -4,6 +4,13 @@
 #'
 #' @export
 #' @keywords internal
+#' @examples
+#' pdata <- data.frame(
+#'   protein_Id = c("P1", "P1", "P2", "P2"),
+#'   sampleName = c("S1", "S2", "S1", "S2"),
+#'   abundance = c(10, 12, 20, 25)
+#' )
+#' tidy_to_wide(pdata, row_ids = "protein_Id", column_labels = "sampleName", value = "abundance")
 tidy_to_wide <- function(data, row_ids, column_labels, value) {
   wide <- data |>
     dplyr::select(all_of(c(row_ids, column_labels, value)))

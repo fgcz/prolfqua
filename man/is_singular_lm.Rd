@@ -9,6 +9,11 @@ is_singular_lm(m)
 \description{
 check if lm model is singular
 }
+\examples{
+fit <- stats::lm(Sepal.Length ~ Species, data = iris)
+is_singular_lm(fit)
+
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

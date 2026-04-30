@@ -229,6 +229,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
 
 #' UpSetR plot from interaction_missing_stats
 #'
+#' @return The computed result.
 #' @export
 #' @family plotting
 #' @family imputation
@@ -250,8 +251,8 @@ upset_interaction_missing_stats <- function(lfqdata, tr = 2) {
     )
 
   hl <- length(lfqdata$hierarchy_keys())
-  nr_missing[, -(1:hl)][nr_missing[, -(1:hl)] < tr] <- 0
-  nr_missing[, -(1:hl)][nr_missing[, -(1:hl)] >= tr] <- 1
+  nr_missing[, -seq_len(hl)][nr_missing[, -seq_len(hl)] < tr] <- 0
+  nr_missing[, -seq_len(hl)][nr_missing[, -seq_len(hl)] >= tr] <- 1
   return(list(data = as.data.frame(nr_missing), nsets = ncol(nr_missing) - hl))
 }
 

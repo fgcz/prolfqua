@@ -3,6 +3,9 @@
 \name{ContrastsLMImputeFacade}
 \alias{ContrastsLMImputeFacade}
 \title{LM contrast analysis with LOD imputation facade}
+\value{
+An R6 class generator.
+}
 \description{
 LM contrast analysis with LOD imputation facade
 

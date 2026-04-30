@@ -38,6 +38,7 @@
 #' mod$coef_volcano()
 #' mod$anova_histogram()
 #' mod$write_coef_figures(tempdir())
+#' @return An R6 class generator.
 
 ModelFirth <- R6::R6Class(
   "ModelFirth",
@@ -66,10 +67,10 @@ ModelFirth <- R6::R6Class(
       subject_id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
-      self$models = models
-      self$model_name = model_name
-      self$subject_id = subject_id
-      self$p.adjust = p.adjust
+      self$models <- models
+      self$model_name <- model_name
+      self$subject_id <- subject_id
+      self$p.adjust <- p.adjust
     },
     #' @description
     #' return model coefficient table
@@ -191,7 +192,7 @@ ModelFirth <- R6::R6Class(
       fpath <- file.path(path, res$name)
       message("Writing figure into : ", fpath, "\n")
       pdf(fpath, width = width, height = height)
-      print(res$plot)
+      .render_plot_to_device(res$plot)
       dev.off()
     }
   )

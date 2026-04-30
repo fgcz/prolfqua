@@ -5,8 +5,13 @@
 #' Analogous to \code{\link{strategy_lm}} but for limma's matrix-based pipeline.
 #' Consumed by \code{\link{build_model_limma}}.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
+#' @examples
+#' strat <- StrategyLimma$new("abundance ~ group_")
+#' strat$formula
+#' strat$model_name
 StrategyLimma <- R6::R6Class(
   "StrategyLimma",
   public = list(
@@ -49,6 +54,7 @@ StrategyLimma <- R6::R6Class(
 #' @param weights either a character string (column name in annotation for
 #'   per-sample weights) or a numeric matrix (proteins x samples) passed to
 #'   \code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).
+#' @return The computed result.
 #' @export
 #' @family modelling
 #' @examples
@@ -640,6 +646,7 @@ build_model_limma_voom_impute <- function(
 #' Same API as \code{\link{Model}}: \code{get_anova()}, \code{get_coefficients()},
 #' \code{coef_histogram()}, \code{coef_volcano()}, \code{anova_histogram()}.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -839,6 +846,7 @@ ModelLimma <- R6::R6Class(
 #' Inherits from \code{\link{ContrastsInterface}} with the same API as
 #' \code{\link{Contrasts}}.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples

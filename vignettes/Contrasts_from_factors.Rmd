@@ -118,12 +118,13 @@ In a typical prolfquapp workflow, you start with a sample annotation table that 
 ```{r annotation_example}
 # x5463yzwer453bbb is a bundled example annotation table
 # with factor_A (MI / MINOCA) and factor_B (T0 / T150 / T300)
-head(prolfqua::x5463yzwer453bbb[, c("Name", "Group", "factor_A", "factor_B")])
+data("x5463yzwer453bbb", package = "prolfqua")
+head(x5463yzwer453bbb[, c("Name", "Group", "factor_A", "factor_B")])
 ```
 
 ```{r annotation_add_contrasts}
 result <- annotation_add_contrasts(
-  prolfqua::x5463yzwer453bbb,
+  x5463yzwer453bbb,
   primary_col = "factor_A",
   secondary_col = "factor_B",
   prefix = "primary"
@@ -141,7 +142,7 @@ Swapping primary and secondary factors gives contrasts from the other perspectiv
 
 ```{r annotation_swapped}
 result2 <- annotation_add_contrasts(
-  prolfqua::x5463yzwer453bbb,
+  x5463yzwer453bbb,
   primary_col = "factor_B",
   secondary_col = "factor_A",
   prefix = "secondary"

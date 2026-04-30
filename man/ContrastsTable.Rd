@@ -3,6 +3,9 @@
 \name{ContrastsTable}
 \alias{ContrastsTable}
 \title{holds results when contrasts are added.}
+\value{
+An R6 class generator.
+}
 \description{
 holds results when contrasts are added.
 

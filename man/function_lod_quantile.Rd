@@ -11,6 +11,9 @@ function_lod_quantile(data_matrix, percent = 10)
 
 \item{percent}{numeric, percentile cutoff for smallest values}
 }
+\value{
+The computed result.
+}
 \description{
 get smallest values per sample
 }

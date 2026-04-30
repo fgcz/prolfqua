@@ -11,6 +11,9 @@ find_package_file(packagename, file)
 
 \item{file}{relative path to the file within the package}
 }
+\value{
+The computed result.
+}
 \description{
 find file stored in package
 }

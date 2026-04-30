@@ -3,6 +3,9 @@
 \name{StrategyLimpa}
 \alias{StrategyLimpa}
 \title{R6 class for limpa modelling strategy}
+\value{
+An R6 class generator.
+}
 \description{
 R6 class for limpa modelling strategy
 
@@ -13,6 +16,11 @@ Consumed by \code{\link{build_model_limpa}}. Configures the
 \code{limpa::voomaLmFitWithImputation} call: formula for the design matrix,
 trend/robust flags for \code{\link[limma]{eBayes}}, and optional vooma
 plotting parameters.
+}
+\examples{
+strat <- StrategyLimpa$new("abundance ~ group_")
+strat$formula
+strat$model_name
 }
 \seealso{
 Other modelling: 

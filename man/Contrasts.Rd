@@ -3,6 +3,9 @@
 \name{Contrasts}
 \alias{Contrasts}
 \title{Estimate contrasts using Wald Test}
+\value{
+An R6 class generator.
+}
 \description{
 Estimate contrasts using Wald Test
 

@@ -3,6 +3,9 @@
 \name{ModelLimma}
 \alias{ModelLimma}
 \title{R6 class representing a limma modelling result}
+\value{
+An R6 class generator.
+}
 \description{
 R6 class representing a limma modelling result
 

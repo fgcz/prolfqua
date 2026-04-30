@@ -3,6 +3,9 @@
 \name{AggregateMedpolish}
 \alias{AggregateMedpolish}
 \title{AggregateMedpolish}
+\value{
+An R6 class generator.
+}
 \description{
 AggregateMedpolish
 

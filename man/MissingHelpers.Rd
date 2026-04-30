@@ -3,6 +3,9 @@
 \name{MissingHelpers}
 \alias{MissingHelpers}
 \title{compute group mean by LOD}
+\value{
+An R6 class generator.
+}
 \description{
 compute group mean by LOD
 

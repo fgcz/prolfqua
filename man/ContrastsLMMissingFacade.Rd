@@ -3,6 +3,9 @@
 \name{ContrastsLMMissingFacade}
 \alias{ContrastsLMMissingFacade}
 \title{LM + missing-value imputation contrast analysis facade}
+\value{
+An R6 class generator.
+}
 \description{
 LM + missing-value imputation contrast analysis facade
 

@@ -49,13 +49,13 @@ test_that("LFQData filtering and subsetting", {
   expect_equal(nrow(res$data_long()), nrow(lfqdata$data_long()) - 100)
 })
 
-test_that("LFQData to_wide conversion", {
-  tmp <- lfqdata$to_wide()
+test_that("LFQData data_wide conversion", {
+  tmp <- lfqdata$data_wide()
   expect_equal(nrow(tmp$data), nrow(tmp$rowdata))
   expect_equal(ncol(tmp$data), nrow(tmp$annotation) + ncol(tmp$rowdata))
   expect_true("data.frame" %in% class(tmp$data))
 
-  tmp_mat <- lfqdata$to_wide(as.matrix = TRUE)
+  tmp_mat <- lfqdata$data_wide(as.matrix = TRUE)
   expect_true("matrix" %in% class(tmp_mat$data))
 })
 

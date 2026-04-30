@@ -3,6 +3,9 @@
 \name{ContrastsLimpaFacade}
 \alias{ContrastsLimpaFacade}
 \title{Limpa contrast analysis facade}
+\value{
+An R6 class generator.
+}
 \description{
 Limpa contrast analysis facade
 
@@ -18,7 +21,6 @@ count (\code{config$nr_children}) columns needed for limpa's vooma
 precision weighting and imputation-aware DF correction.
 }
 \examples{
-\dontrun{
 istar <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
@@ -27,7 +29,6 @@ lfq_agg <- agg$aggregate()
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)
 head(fa$get_contrasts())
-}
 }
 \seealso{
 Other modelling: 

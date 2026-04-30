@@ -188,21 +188,15 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
       failure_names <- paste(failure_df$contrast, collapse = ", ")
       failure_messages <- unique(failure_df$message)
       failure_summary <- paste(utils::head(failure_messages, 3), collapse = "; ")
-      warning(
-        paste0(
-          "linfct_matrix_contrasts: computed ",
-          ncol(res) - 1,
-          "/",
-          length(contrasts),
-          " contrasts; failed ",
-          nrow(failure_df),
-          ": ",
-          failure_names,
-          ". ",
-          failure_summary
-        ),
-        call. = FALSE
+      msg <- sprintf(
+        "linfct_matrix_contrasts: computed %d/%d contrasts; failed %d: %s. %s",
+        ncol(res) - 1,
+        length(contrasts),
+        nrow(failure_df),
+        failure_names,
+        failure_summary
       )
+      warning(msg, call. = FALSE)
     }
     return(res)
   }
@@ -283,21 +277,15 @@ linfct_matrix_contrasts_vectorized <- function(linfct, contrasts, p.message = FA
       failure_names <- paste(failure_df$contrast, collapse = ", ")
       failure_messages <- unique(failure_df$message)
       failure_summary <- paste(utils::head(failure_messages, 3), collapse = "; ")
-      warning(
-        paste0(
-          "linfct_matrix_contrasts: computed ",
-          ncol(res) - 1,
-          "/",
-          length(contrasts),
-          " contrasts; failed ",
-          nrow(failure_df),
-          ": ",
-          failure_names,
-          ". ",
-          failure_summary
-        ),
-        call. = FALSE
+      msg <- sprintf(
+        "linfct_matrix_contrasts: computed %d/%d contrasts; failed %d: %s. %s",
+        ncol(res) - 1,
+        length(contrasts),
+        nrow(failure_df),
+        failure_names,
+        failure_summary
       )
+      warning(msg, call. = FALSE)
     }
     return(res)
   }
@@ -585,7 +573,7 @@ compute_contrast_vectorized <- function(m, linfct, confint = 0.95) {
 #' names(linfct)
 #' compute_lmer_contrast(mb, linfct$linfct_factors)
 #' compute_lmer_contrast(mb, linfct$linfct_interactions)
-#' length(mb@beta)
+#' length(lme4::fixef(mb))
 #' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 #' summary(mb)
 #'
@@ -613,6 +601,7 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
 
 # computing contrast ----
 #' pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
+#' @return Contrast definitions or contrast results.
 #' @export
 #' @family modelling
 #' @param model_interaction_contrasts data.frame with contrast results in long format
@@ -622,6 +611,14 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
 #' @examples
 #'
 #' # this function is used by the contrast classes to implement the to wide method
+#' contrast_df <- data.frame(
+#'   protein_Id = c("P1", "P1", "P2", "P2"),
+#'   lhs = c("A_vs_B", "C_vs_D", "A_vs_B", "C_vs_D"),
+#'   estimate = c(1.0, 0.5, -0.2, 0.7),
+#'   p.value = c(0.01, 0.2, 0.4, 0.05),
+#'   p.value.adjusted = c(0.02, 0.25, 0.4, 0.08)
+#' )
+#' pivot_model_contrasts_to_wide(contrast_df)
 #'
 pivot_model_contrasts_to_wide <- function(
   model_interaction_contrasts,

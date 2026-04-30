@@ -29,13 +29,17 @@ annotation_add_contrasts(
 
 \item{interactions}{logical, if TRUE include interaction contrasts}
 }
+\value{
+Contrast definitions or contrast results.
+}
 \description{
 DRY function: process and export annotated contrasts
 }
 \examples{
 
-annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "primary")
-annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
+data("x5463yzwer453bbb", package = "prolfqua")
+annotation_add_contrasts(x5463yzwer453bbb, "factor_A", "factor_B", "primary")
+annotation_add_contrasts(x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
 }
 \seealso{
 Other contrasts: 

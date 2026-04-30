@@ -23,6 +23,9 @@ sim_lfq_data_peptide_config(
 
 \item{N}{number of replicates per group}
 }
+\value{
+A list containing simulated data and an analysis configuration.
+}
 \description{
 Simulate data, protein and peptide, with config
 }

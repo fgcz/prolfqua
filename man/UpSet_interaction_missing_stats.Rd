@@ -11,6 +11,9 @@ upset_interaction_missing_stats(lfqdata, tr = 2)
 
 \item{tr}{if less than tr observations in condition then missing}
 }
+\value{
+The computed result.
+}
 \description{
 UpSetR plot from interaction_missing_stats
 }

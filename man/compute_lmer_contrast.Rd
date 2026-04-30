@@ -25,7 +25,7 @@ linfct <- linfct_from_model(mb)
 names(linfct)
 compute_lmer_contrast(mb, linfct$linfct_factors)
 compute_lmer_contrast(mb, linfct$linfct_interactions)
-length(mb@beta)
+length(lme4::fixef(mb))
 lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 summary(mb)
 

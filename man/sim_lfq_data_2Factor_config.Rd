@@ -26,6 +26,9 @@ sim_lfq_data_2factor_config(
 
 \item{TWO}{use two factors for modelling}
 }
+\value{
+A list containing simulated data and an analysis configuration.
+}
 \description{
 Simulate data, protein, with config with 2 factors Treatment and Background
 }

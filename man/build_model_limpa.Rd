@@ -30,6 +30,17 @@ Returns a \code{\link{ModelLimma}} object (since the output is a standard
 \code{MArrayLM}), which can be passed directly to
 \code{\link{ContrastsLimma}}.
 }
+\examples{
+if (requireNamespace("limpa", quietly = TRUE)) {
+  istar <- sim_lfq_data_peptide_config(Nprot = 10)
+  lfq <- LFQData$new(istar$data, istar$config)
+  lfq <- lfq$get_Transformer()$log2()$lfq
+  lfq <- AggregateLimpa$new(lfq, "protein")$aggregate()
+  strat <- strategy_limpa("limpa ~ group_")
+  mod <- build_model_limpa(lfq, strat)
+  mod$model_name
+}
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

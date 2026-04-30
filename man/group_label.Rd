@@ -11,6 +11,9 @@ group_label(primary, secondary)
 
 \item{secondary}{character, secondary factor level}
 }
+\value{
+A character vector with combined group labels.
+}
 \description{
 group label function
 }

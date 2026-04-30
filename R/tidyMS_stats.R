@@ -198,6 +198,7 @@ summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()
 #' compute var sd etc for all factor levels
 #'
 #' @param lfqdata LFQData object
+#' @return The computed result.
 #' @export
 #' @examples
 #' res2 <- prolfqua::sim_lfq_data_2factor_config()
@@ -402,10 +403,8 @@ lfq_power_t_test_quantiles <- function(
     return(list(long = sample_sizes, summary = summary))
   } else {
     message(
-      "!!! ERROR !!! No standard deviation is available,
-            check if model is saturated (factor level variable).
-            lfq_power_t_test_quantiles.
-            !!! ERROR !!!"
+      "No standard deviation is available; check if the model is saturated ",
+      "(factor level variable) in lfq_power_t_test_quantiles()."
     )
     return(NULL)
   }

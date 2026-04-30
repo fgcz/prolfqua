@@ -25,6 +25,9 @@ strategy_limma(
 per-sample weights) or a numeric matrix (proteins x samples) passed to
 \code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).}
 }
+\value{
+The computed result.
+}
 \description{
 Wrapper that returns a \code{\link{StrategyLimma}} R6 object.
 }

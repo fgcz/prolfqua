@@ -15,6 +15,9 @@ setup_analysis(data, configuration, cc = TRUE, from_factors = FALSE)
 
 \item{from_factors}{if TRUE, create sampleName from factor columns}
 }
+\value{
+The computed result.
+}
 \description{
 Extracts columns relevant for a configuration from a data frame
 and create new columns e.g. sampleName column etc.

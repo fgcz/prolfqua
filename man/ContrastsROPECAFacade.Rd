@@ -3,6 +3,9 @@
 \name{ContrastsROPECAFacade}
 \alias{ContrastsROPECAFacade}
 \title{ROPECA contrast analysis facade}
+\value{
+An R6 class generator.
+}
 \description{
 ROPECA contrast analysis facade
 

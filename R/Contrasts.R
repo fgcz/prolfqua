@@ -11,6 +11,13 @@
   return(linfct_a)
 }
 
+.linfct_partial_model <- function(model, contrast, avg = TRUE) {
+  withCallingHandlers(
+    .linfct(model, contrast = contrast, avg = avg),
+    warning = function(w) invokeRestart("muffleWarning")
+  )
+}
+
 # Contrasts -----
 
 #' Estimate contrasts using Wald Test
@@ -21,6 +28,7 @@
 #' give a significant speed-up for large datasets. The vectorized path produces
 #' numerically identical results.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -154,9 +162,7 @@ Contrasts <- R6::R6Class(
           res[[i]] <- if (self$models$nr_coef_not_NA[[i]] == max_coef) {
             compmodel
           } else {
-            suppressWarnings(
-              .linfct(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
-            )
+            .linfct_partial_model(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
           }
         }
         return(res)

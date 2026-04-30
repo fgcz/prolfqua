@@ -9,6 +9,7 @@
 #' in DDA proteomics, is not modelled. Users should be aware that MNAR
 #' can bias fold-change estimates and inflate false discovery rates.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family LFQData
 #' @examples
@@ -109,10 +110,14 @@ LFQData <- R6::R6Class(
     #' @param size size of subset default 100
     #' @param seed set seed
     get_sample = function(size = 100, seed = NULL) {
-      if (!is.null(seed)) {
-        set.seed(seed)
+      sample_data <- function() {
+        prolfqua::sample_subset(size = size, self$data_long(), self$relevant_hierarchy_keys())
       }
-      subset <- prolfqua::sample_subset(size = size, self$data_long(), self$relevant_hierarchy_keys())
+      subset <- if (is.null(seed)) {
+        sample_data()
+      } else {
+        withr::with_seed(seed, sample_data())
+      }
       return(LFQData$new(subset, self$get_config()))
     },
     #' @description
@@ -136,7 +141,7 @@ LFQData <- R6::R6Class(
       if (missing(is_transformed)) {
         return(private$.config$is_response_transformed)
       } else {
-        private$.config$is_response_transformed = is_transformed
+        private$.config$is_response_transformed <- is_transformed
       }
     },
     #' @description
@@ -220,14 +225,6 @@ LFQData <- R6::R6Class(
       return(wide)
     },
     #' @description
-    #' deprecated — use data_wide() instead
-    #' @param as.matrix return as data.frame or matrix
-    #' @param value see possible lfqdata$get_config()$value_vars()
-    to_wide = function(as.matrix = FALSE, value = NULL) {
-      .Deprecated("data_wide")
-      self$data_wide(as.matrix = as.matrix, value = value)
-    },
-    #' @description
     #' Annotation table
     #' @return data.frame
     factors = function() {
@@ -294,12 +291,6 @@ LFQData <- R6::R6Class(
         return(stats::na.omit(private$.data))
       }
       private$.data
-    },
-    #' @description
-    #' deprecated — use data_long() instead
-    get_data = function() {
-      .Deprecated("data_long")
-      self$data_long()
     },
     #' @description
     #' new name of response variable

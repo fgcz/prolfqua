@@ -367,7 +367,7 @@ test_that("df correction: imputed proteins do not use inflated df", {
 
   if (length(failed) > 0) {
     p <- ncol(mod_imp$fit$coefficients)
-    wide <- lfqdata$to_wide(as.matrix = TRUE)
+    wide <- lfqdata$data_wide(as.matrix = TRUE)
     n_observed <- rowSums(!is.na(wide$data))
     max_df_full <- ncol(wide$data) - p
 

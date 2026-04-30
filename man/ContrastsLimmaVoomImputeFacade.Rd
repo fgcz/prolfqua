@@ -3,6 +3,9 @@
 \name{ContrastsLimmaVoomImputeFacade}
 \alias{ContrastsLimmaVoomImputeFacade}
 \title{Limma-voom contrast analysis with LOD imputation facade}
+\value{
+An R6 class generator.
+}
 \description{
 Limma-voom contrast analysis with LOD imputation facade
 

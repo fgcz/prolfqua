@@ -3,6 +3,9 @@
 \name{ContrastsMissing}
 \alias{ContrastsMissing}
 \title{Compute contrasts with group mean imputation}
+\value{
+An R6 class generator.
+}
 \description{
 Compute contrasts with group mean imputation
 

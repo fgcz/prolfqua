@@ -30,3 +30,5 @@ R/tidyMS_stanr\.R
 ^\.cursor$
 ^\.githooks$
 ^air\.toml$
+^Dockerfile$
+^\.dockerignore$

@@ -16,6 +16,11 @@ sample_subset(size, pdata, hierarchy_keys_depth)
 \description{
 Sample subset of proteins/peptides/precursors
 }
+\examples{
+bb <- sim_lfq_data_peptide_config(Nprot = 5)
+subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
+length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
+}
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},

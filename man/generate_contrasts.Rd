@@ -13,6 +13,9 @@ generate_contrasts(primary_levels, secondary_levels, interactions = TRUE)
 
 \item{interactions}{logical, if TRUE include interaction contrasts}
 }
+\value{
+Contrast definitions or contrast results.
+}
 \description{
 Combined generate_contrasts
 }

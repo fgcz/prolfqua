@@ -3,6 +3,9 @@
 \name{ModelInterface}
 \alias{ModelInterface}
 \title{R6 interface class representing modelling result}
+\value{
+An R6 class generator.
+}
 \description{
 R6 interface class representing modelling result
 

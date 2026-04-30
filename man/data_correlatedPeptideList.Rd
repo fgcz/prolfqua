@@ -5,7 +5,7 @@
 \alias{data_correlatedPeptideList}
 \title{example data for check}
 \format{
-An object of class \code{by} of length 12.
+An object of class \code{NULL} of length 0.
 }
 \usage{
 data_correlatedPeptideList

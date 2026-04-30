@@ -9,6 +9,7 @@
 
 
 #' simulate protein level data with two groups
+#' @return A data frame containing simulated LFQ data.
 #' @export
 #' @param Nprot number of proteins
 #' @param N group size
@@ -123,6 +124,7 @@ sim_lfq_data <- function(
 
 
 #' add missing values to x vector based on the values of x
+#' @return A logical vector indicating which values are missing.
 #' @export
 #' @param x vector of intensities
 #' @param weight_missing greater weight more missing
@@ -138,7 +140,7 @@ which_missing <- function(x, weight_missing = 0.2) {
     sample(c(TRUE, FALSE), size = 1, replace = TRUE, prob = mp)
   }
 
-  missing_values <- sapply(missing_prop, samplemiss)
+  missing_values <- vapply(missing_prop, samplemiss, logical(1))
   return(missing_values)
 }
 
@@ -149,6 +151,7 @@ which_missing <- function(x, weight_missing = 0.2) {
 #' @param weight_missing controls proportion of missing values; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param N number of replicates per group
+#' @return A list containing simulated data and an analysis configuration.
 #' @export
 #' @examples
 #'
@@ -162,28 +165,32 @@ sim_lfq_data_peptide_config <- function(
   seed = 1234,
   N = 4
 ) {
-  if (!is.null(seed)) {
-    set.seed(seed)
+  simulate <- function() {
+    data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE, N = N)
+
+    not_missing <- !which_missing(data$abundance, weight_missing = weight_missing)
+    data$nr_children <- as.numeric(not_missing)
+    if (with_missing) {
+      data <- data[data$nr_children > 0, ]
+    }
+    data$isotopeLabel <- "light"
+    data$qValue <- 0
+
+    config <- AnalysisConfiguration$new()
+    config$file_name <- "sample"
+
+    config$factors["group_"] <- "group"
+    config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
+    config$hierarchy[["peptide_Id"]] <- "peptideID"
+    config$set_response("abundance")
+    adata <- setup_analysis(data, config)
+    return(list(data = adata, config = config))
   }
-  data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE, N = N)
-
-  not_missing <- !which_missing(data$abundance, weight_missing = weight_missing)
-  data$nr_children <- as.numeric(not_missing)
-  if (with_missing) {
-    data <- data[data$nr_children > 0, ]
+  if (is.null(seed)) {
+    simulate()
+  } else {
+    withr::with_seed(seed, simulate())
   }
-  data$isotopeLabel <- "light"
-  data$qValue <- 0
-
-  config <- AnalysisConfiguration$new()
-  config$file_name <- "sample"
-
-  config$factors["group_"] <- "group"
-  config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
-  config$hierarchy[["peptide_Id"]] <- "peptideID"
-  config$set_response("abundance")
-  adata <- setup_analysis(data, config)
-  return(list(data = adata, config = config))
 }
 #' Simulate data, protein, with config
 #' @param Nprot number of proteins to simulate
@@ -191,6 +198,7 @@ sim_lfq_data_peptide_config <- function(
 #' @param weight_missing controls proportion of missing values; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param paired if TRUE, add a paired subject factor to the design
+#' @return A list containing simulated data and an analysis configuration.
 #' @export
 #' @examples
 #'
@@ -210,38 +218,42 @@ sim_lfq_data_protein_config <- function(
   seed = 1234,
   paired = FALSE
 ) {
-  if (!is.null(seed)) {
-    set.seed(seed)
-  }
-  data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
-  if (paired) {
-    annot <- data |> select(sample, group) |> distinct()
-    annot <- annot |>
-      group_by(group) |>
-      mutate(subject = row_number()) |>
-      ungroup() |>
-      mutate(subject = paste0("P", subject))
-    data <- inner_join(annot, data, by = c("group", "sample"))
-  }
-  data$nr_peptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
-  if (with_missing) {
-    data <- data[data$nr_peptides > 0, ]
-  }
+  simulate <- function() {
+    data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
+    if (paired) {
+      annot <- data |> select(sample, group) |> distinct()
+      annot <- annot |>
+        group_by(group) |>
+        mutate(subject = row_number()) |>
+        ungroup() |>
+        mutate(subject = paste0("P", subject))
+      data <- inner_join(annot, data, by = c("group", "sample"))
+    }
+    data$nr_peptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
+    if (with_missing) {
+      data <- data[data$nr_peptides > 0, ]
+    }
 
-  data$isotopeLabel <- "light"
-  data$qValue <- 0
+    data$isotopeLabel <- "light"
+    data$qValue <- 0
 
-  config <- AnalysisConfiguration$new()
-  config$file_name <- "sample"
-  config$nr_children <- "nr_peptides"
-  config$factors["group_"] <- "group"
-  if (paired) {
-    config$factors["subject_"] <- "subject"
+    config <- AnalysisConfiguration$new()
+    config$file_name <- "sample"
+    config$nr_children <- "nr_peptides"
+    config$factors["group_"] <- "group"
+    if (paired) {
+      config$factors["subject_"] <- "subject"
+    }
+    config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
+    config$set_response("abundance")
+    adata <- setup_analysis(data, config)
+    return(list(data = adata, config = config))
   }
-  config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
-  config$set_response("abundance")
-  adata <- setup_analysis(data, config)
-  return(list(data = adata, config = config))
+  if (is.null(seed)) {
+    simulate()
+  } else {
+    withr::with_seed(seed, simulate())
+  }
 }
 
 
@@ -252,6 +264,7 @@ sim_lfq_data_protein_config <- function(
 #' @param PEPTIDE if TRUE, simulate peptide-level data; if FALSE, protein-level
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param TWO use two factors for modelling
+#' @return A list containing simulated data and an analysis configuration.
 #' @export
 #' @examples
 #' x <- sim_lfq_data_2factor_config(PEPTIDE= FALSE)
@@ -273,48 +286,52 @@ sim_lfq_data_2factor_config <- function(
   seed = 1234,
   TWO = TRUE
 ) {
-  if (!is.null(seed)) {
-    set.seed(seed)
-  }
-  res <- sim_lfq_data(
-    Nprot = Nprot,
-    PEPTIDE = PEPTIDE,
-    fc = list(A = c(D = -2, U = 2, N = 0), B = c(D = 1, U = -4), C = c(D = -1, U = -4)),
-    prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20), C = c(D = 15, U = 25))
-  )
-  res <- res |> mutate(Treatment = case_when(group %in% c("Ctrl", "A") ~ "A", TRUE ~ "B"))
-  data <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
+  simulate <- function() {
+    res <- sim_lfq_data(
+      Nprot = Nprot,
+      PEPTIDE = PEPTIDE,
+      fc = list(A = c(D = -2, U = 2, N = 0), B = c(D = 1, U = -4), C = c(D = -1, U = -4)),
+      prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20), C = c(D = 15, U = 25))
+    )
+    res <- res |> mutate(Treatment = case_when(group %in% c("Ctrl", "A") ~ "A", TRUE ~ "B"))
+    data <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
 
-  if (is.null(data$nr_peptides)) {
-    data$nr_peptides <- 1
-  }
-  data$nr_peptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
-  if (with_missing) {
-    data <- data[data$nr_peptides > 0, ]
-  }
+    if (is.null(data$nr_peptides)) {
+      data$nr_peptides <- 1
+    }
+    data$nr_peptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
+    if (with_missing) {
+      data <- data[data$nr_peptides > 0, ]
+    }
 
-  data$isotopeLabel <- "light"
-  data$qValue <- 0
-  config <- AnalysisConfiguration$new()
-  config$file_name <- "sample"
-  config$nr_children <- "nr_peptides"
+    data$isotopeLabel <- "light"
+    data$qValue <- 0
+    config <- AnalysisConfiguration$new()
+    config$file_name <- "sample"
+    config$nr_children <- "nr_peptides"
 
-  if (TWO) {
-    config$factors["Treatment"] <- "Treatment"
-    config$factors["Background"] <- "Background"
-    config$factor_depth <- 2
+    if (TWO) {
+      config$factors["Treatment"] <- "Treatment"
+      config$factors["Background"] <- "Background"
+      config$factor_depth <- 2
+    } else {
+      data <- data |> tidyr::unite(Group, c("Treatment", "Background"))
+      config$factors["Group"] <- "Group"
+      config$factor_depth <- 1
+    }
+    config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
+    if (PEPTIDE) {
+      config$hierarchy[["peptide_Id"]] <- c("peptideID")
+    }
+    config$set_response("abundance")
+    adata <- setup_analysis(data, config)
+    return(list(data = adata, config = config))
+  }
+  if (is.null(seed)) {
+    simulate()
   } else {
-    data <- data |> tidyr::unite(Group, c("Treatment", "Background"))
-    config$factors["Group"] <- "Group"
-    config$factor_depth <- 1
+    withr::with_seed(seed, simulate())
   }
-  config$hierarchy[["protein_Id"]] <- c("proteinID", "idtype2")
-  if (PEPTIDE) {
-    config$hierarchy[["peptide_Id"]] <- c("peptideID")
-  }
-  config$set_response("abundance")
-  adata <- setup_analysis(data, config)
-  return(list(data = adata, config = config))
 }
 
 

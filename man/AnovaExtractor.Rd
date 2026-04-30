@@ -3,6 +3,9 @@
 \name{AnovaExtractor}
 \alias{AnovaExtractor}
 \title{R6 class for extracting ANOVA results as a data frame}
+\value{
+An R6 class generator.
+}
 \description{
 R6 class for extracting ANOVA results as a data frame
 
@@ -10,6 +13,12 @@ R6 class for extracting ANOVA results as a data frame
 }
 \details{
 Wraps the ANOVA extraction logic and associated column names.
+}
+\examples{
+extractor <- AnovaExtractor$new(test = "F")
+fit <- stats::lm(Sepal.Length ~ Species, data = iris)
+res <- extractor$fun(fit)
+stopifnot("factor" \%in\% colnames(res))
 }
 \seealso{
 Other modelling: 

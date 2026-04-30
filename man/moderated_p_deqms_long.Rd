@@ -30,6 +30,18 @@ data.frame with moderated columns added
 Splits by contrast group and applies \code{\link{moderated_p_deqms}} to
 each group independently.
 }
+\examples{
+mm <- data.frame(
+  contrast = rep(c("A_vs_B", "C_vs_D"), each = 5),
+  sigma = rep(c(0.25, 0.32, 0.28, 0.40, 0.35), 2),
+  df = rep(6, 10),
+  statistic = rep(c(2.1, -1.8, 0.5, 3.0, -2.2), 2),
+  diff = rep(c(0.8, -0.6, 0.2, 1.2, -0.9), 2),
+  count = rep(c(2, 3, 4, 6, 8), 2)
+)
+res <- moderated_p_deqms_long(mm, count_col = "count")
+table(res$contrast)
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

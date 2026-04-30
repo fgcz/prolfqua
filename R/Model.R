@@ -1,6 +1,7 @@
 # Model -----
 #' R6 class representing modelling result
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -58,11 +59,11 @@ Model <- R6::R6Class(
       subject_id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
-      self$model_df = model_df
-      self$model_strategy = model_strategy
-      self$model_name = model_name
-      self$subject_id = subject_id
-      self$p.adjust = p.adjust
+      self$model_df <- model_df
+      self$model_strategy <- model_strategy
+      self$model_name <- model_name
+      self$subject_id <- subject_id
+      self$p.adjust <- p.adjust
     },
     #' @description
     #' return model coefficient table
@@ -186,7 +187,7 @@ Model <- R6::R6Class(
       fpath <- file.path(path, res$name)
       message("Writing figure into : ", fpath, "\n")
       pdf(fpath, width = width, height = height)
-      print(res$plot)
+      .render_plot_to_device(res$plot)
       dev.off()
     }
   )

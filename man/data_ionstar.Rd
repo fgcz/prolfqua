@@ -5,7 +5,7 @@
 \alias{data_ionstar}
 \title{example data for check}
 \format{
-An object of class \code{IonstarData} (inherits from \code{R6}) of length 11.
+An object of class \code{NULL} of length 0.
 }
 \usage{
 data_ionstar

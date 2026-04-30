@@ -26,6 +26,9 @@ LR_test(
 
 \item{path}{default NULL, set to a directory if you need to write diagnostic plots.}
 }
+\value{
+The computed result.
+}
 \description{
 Likelihood ratio test
 }

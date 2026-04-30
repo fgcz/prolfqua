@@ -17,6 +17,7 @@
 # Contrasts -----
 
 #' Estimate contrasts using Wald Test
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -62,11 +63,11 @@ ContrastsFirth <- R6::R6Class(
     #' @param p.adjust function to adjust the p-values
     #' @param model_name name of contrast method, default WaldTest
     initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, model_name = "WaldTestFirth") {
-      self$models = model
-      self$contrasts = contrasts
-      self$model_name = model_name
-      self$subject_id = model$subject_id
-      self$p.adjust = p.adjust
+      self$models <- model
+      self$contrasts <- contrasts
+      self$model_name <- model_name
+      self$subject_id <- model$subject_id
+      self$p.adjust <- p.adjust
     },
     #' @description
     #' get both sides of contrasts

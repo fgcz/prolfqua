@@ -5,83 +5,43 @@ Generated from `make check-bioc` with BiocCheck 1.46.3.
 Current result:
 
 ```text
-1 ERROR | 3 WARNINGS | 21 NOTES
+1 ERROR | 0 WARNINGS | 4 NOTES
 ```
 
 ## Error
 
-- [ ] Register or verify the maintainer email on the Bioconductor Support Site.
-  - BiocCheck error: `Unable to find your email in the Support Site: HTTP 404 Not Found.`
-
-## Warnings
-
-- [ ] Remove or justify `set.seed()` usage in package code.
-  - `R/LFQData.R:113`
-  - `R/simulate_LFQ_data.R:166`
-  - `R/simulate_LFQ_data.R:214`
-  - `R/simulate_LFQ_data.R:277`
-
-- [ ] Review deprecated API usage and replace where possible.
-  - `.Deprecated()` in `R/LFQData.R:227`
-  - `.Deprecated()` in `R/LFQData.R:301`
-  - `.Deprecated()` in `R/tidyMS_aggregation.R:826`
-  - `.Deprecated()` in `R/tidyMS_aggregation.R:829`
-
-- [ ] Add missing `@return` / value documentation and regenerate Rd files.
-  - BiocCheck reports empty or missing `\value` sections across many man pages.
-  - Do not edit `man/` directly; update roxygen comments in `R/` and run `make document`.
+- [ ] Ask the maintainer to add `prolfqua` to Watched Tags in the Bioconductor Support Site profile.
+  - BiocCheck now recognizes the maintainer as registered at the Support Site.
+  - Latest BiocCheck error: `Add package to Watched Tags in your Support Site profile`.
+  - Visit: <https://support.bioconductor.org/accounts/edit/profile>
 
 ## Package Metadata Notes
 
-- [ ] Remove `LazyData: true` from `DESCRIPTION` or set it to false.
-- [ ] Decide whether to update `Depends: R (>= 4.1)` to Bioconductor's recommended `R (>= 4.5.0)`.
-- [ ] Add an `Authors@R` `fnd` role if grant or institutional funding should be credited.
-- [ ] Add a `NEWS` file for Bioconductor release announcements.
+- [ ] Confirm the maintainer is subscribed to the Bioc-Devel mailing list.
+  - BiocCheck cannot determine this automatically because it requires admin credentials.
+  - Subscribe/check here: <https://stat.ethz.ch/mailman/listinfo/bioc-devel>
 
 ## Coding Practice Notes
 
-- [ ] Replace `sapply()` with `vapply()` where practical.
-  - `R/AnalysisConfiguration.R:266`
-  - `R/LFQDataImp.R:95`
-  - `R/simulate_LFQ_data.R:141`
-  - `R/tidyMS_aggregation.R:712`
-
-- [ ] Replace `1:...` sequences with `seq_len()` or `seq_along()`.
-  - `R/LFQDataImp.R:46`
-  - `R/squeezeVarRob.R:175`
-  - `R/squeezeVarRob.R:452`
-  - `R/squeezeVarRob.R:454`
-  - `R/tidyMS_missingness_summary.R:253`
-  - `R/tidyMS_missingness_summary.R:254`
-
-- [ ] Review `cat()` and `print()` calls outside `show` methods.
-  - `R/LFQDataAggregator.R:43`
-  - `R/LFQDataPlotter.R:274`
-  - `R/LFQDataPlotter.R:307`
-  - `R/Model.R:189`
-  - `R/ModelFirth.R:194`
-  - `R/squeezeVarRob.R:338`
-  - `R/squeezeVarRob.R:394`
-
-- [ ] Replace `=` assignment with `<-` where BiocCheck flagged it.
-- [ ] Replace `paste()` in condition signals with clearer condition message construction.
-- [ ] Remove redundant `stop` / warning calls in condition signals.
-- [ ] Avoid direct S4 slot access with `@` in examples and vignettes; use accessors.
-- [ ] Remove or justify `<<-` in `R/ContrastsModeratedDEqMS.R:148`.
-- [ ] Remove or justify `suppressWarnings()` / message suppression.
-  - `R/Contrasts.R:157`
-  - `R/tidyMS_build_model.R:267`
+All coding-practice notes discussed above have been addressed. BiocCheck now reports `OK` for coding practice and parsed
+R code checks.
 
 ## Documentation and Formatting Notes
 
-- [ ] Add runnable examples to exported-object documentation where feasible.
-- [ ] Replace `\dontrun{}` with `\donttest{}` in examples.
-  - `AggregateLimpa.Rd`
-  - `ContrastsLimpaFacade.Rd`
-  - Update roxygen sources, not generated `man/` files.
-- [ ] Review long functions; BiocCheck reports 38 functions over 50 lines.
-  - Longest: `fitFDistRobustly_LG()` in `R/squeezeVarRob.R` at 267 lines.
-- [ ] Review Bioconductor formatting notes separately from the package's local 120-character `.lintr` convention.
-  - BiocCheck reports 992 lines over 80 characters.
-  - BiocCheck reports 60 lines containing tabs.
-  - BiocCheck reports 5434 lines whose indentation is not a multiple of 4 spaces.
+- [x] Add runnable examples to exported-object documentation where feasible.
+  - Addressed for the objects BiocCheck listed:
+    `AnovaExtractor.Rd`, `build_model_limpa.Rd`, `FACADE_REGISTRY.Rd`, `HierarchyCountsSample.Rd`, `is_singular_lm.Rd`,
+    `merge_contrasts_results.Rd`, `moderated_p_deqms_long.Rd`, `moderated_p_deqms.Rd`, `moderated_p_limma.Rd`,
+    `panel_cor.Rd`, `pivot_model_contrasts_to_wide.Rd`, `plot_hierarchies_add_quantline.Rd`, `prolfqua_data.Rd`,
+    `R6_extract_values.Rd`, `robust_scale.Rd`, `sample_subset.Rd`, `script_copy_helper_vec.Rd`, `strategy_limpa.Rd`,
+    `StrategyLimma.Rd`, `StrategyLimpa.Rd`, `table_facade.Rd`, and `tidy_to_wide.Rd`.
+  - Latest BiocCheck no longer reports missing examples.
+- [ ] Review long functions; BiocCheck reports 37 functions over 50 lines.
+  - Addressed: `fitFDistRobustly_LG()` in `R/squeezeVarRob.R` was covered by regression tests and split into helpers.
+  - Current longest: `fitFDist_LG()` in `R/squeezeVarRob.R` at 136 lines.
+- [ ] Decide whether to adopt Bioconductor formatting conventions over the package's local convention.
+  - BiocCheck reports 1002 lines over 80 characters.
+  - BiocCheck reports 5407 lines whose indentation is not a multiple of 4 spaces.
+  - The tab note has been addressed; BiocCheck no longer reports tab-indented lines.
+  - Do not bulk-reformat these remaining line-length/indentation notes without an explicit convention decision because the
+    workspace AGENTS.md states 120-character lines and 2-space indentation.

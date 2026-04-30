@@ -1,5 +1,6 @@
 #' LFQDataPlotter ----
 #' Create various visualization of the LFQdata
+#' @return An R6 class generator.
 #' @export
 #'
 #' @family LFQData
@@ -49,8 +50,8 @@ LFQDataPlotter <- R6::R6Class(
     #' @param lfqdata LFQData
     #' @param prefix will be prepended to outputs written
     initialize = function(lfqdata, prefix = "ms_") {
-      self$lfq = lfqdata$clone(deep = TRUE)
-      self$prefix = prefix
+      self$lfq <- lfqdata$clone(deep = TRUE)
+      self$prefix <- prefix
     },
 
     #' @description
@@ -259,7 +260,7 @@ LFQDataPlotter <- R6::R6Class(
     #'
     write_boxplots = function(path_qc, filename = NULL, width = 6, height = 6) {
       if (is.null(filename)) {
-        filename = self$prefix
+        filename <- self$prefix
       }
       fpath <- file.path(path_qc, paste0(filename, "boxplot.pdf"))
       message("generating boxplots")
@@ -271,7 +272,7 @@ LFQDataPlotter <- R6::R6Class(
       pdf(fpath, width = width, height = height)
       lapply(bb$boxplot, function(x) {
         pb$tick()
-        print(x)
+        .render_plot_to_device(x)
       })
       dev.off()
     },
@@ -304,7 +305,7 @@ LFQDataPlotter <- R6::R6Class(
       message("writing ", fpath)
       graphics.off()
       pdf(fpath, width = width, height = height)
-      print(fig)
+      .render_plot_to_device(fig)
       graphics.off()
       self$file_paths_pdf[[fig_name]] <- fpath
       invisible(fpath)

@@ -3,6 +3,9 @@
 \name{PACKAGE_DATA}
 \alias{PACKAGE_DATA}
 \title{Package Data}
+\value{
+A documentation topic.
+}
 \description{
 Package Data
 }

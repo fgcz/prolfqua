@@ -11,8 +11,15 @@ prolfqua_data(datastr, package = "prolfqua")
 
 \item{package}{default prolfqua}
 }
+\value{
+The computed result.
+}
 \description{
 load data from prolfqua
+}
+\examples{
+ionstar <- prolfqua_data("data_ionstar")
+names(ionstar)
 }
 \seealso{
 Other data: 

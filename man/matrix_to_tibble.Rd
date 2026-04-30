@@ -13,6 +13,9 @@ matrix_to_tibble(x, preserve_row_names = "row.names", ...)
 
 \item{...}{further parameters passed to as_tibble}
 }
+\value{
+The computed result.
+}
 \description{
 matrix or data.frame to tibble (taken from tidyquant)
 }

@@ -3,6 +3,7 @@
 #'
 #' holds results when contrasts are added.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -41,9 +42,9 @@ ContrastsTable <- R6::R6Class(
     #' @param subject_id default protein_Id
     #' @param model_name default ContrastTable
     initialize = function(contrastsdf, subject_id = "protein_Id", model_name = "ContrastTable") {
-      self$contrast_result = contrastsdf
-      self$subject_id = subject_id
-      self$model_name = model_name
+      self$contrast_result <- contrastsdf
+      self$subject_id <- subject_id
+      self$model_name <- model_name
     },
     #' @description
     #' return sides of contrast

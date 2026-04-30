@@ -3,6 +3,9 @@
 \name{ContrastsROPECA}
 \alias{ContrastsROPECA}
 \title{ROPECA reproducibility-optimization method}
+\value{
+An R6 class generator.
+}
 \description{
 ROPECA reproducibility-optimization method
 

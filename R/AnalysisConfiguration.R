@@ -7,6 +7,7 @@
 #' flat object.
 #'
 #' @family configuration
+#' @return An R6 class generator.
 #' @export
 #' @examples
 #' istar <- sim_lfq_data_peptide_config()
@@ -185,6 +186,7 @@ AnalysisConfiguration <- R6::R6Class(
 
 #' read minimal yaml to reconstruct configuration
 #' @param dd list with table and parameter elements as produced by R6_extract_values
+#' @return The computed result.
 #' @export
 #' @examples
 #'
@@ -261,9 +263,14 @@ make_reduced_hierarchy_config <- function(config, work_intensity, hierarchy) {
 #' Extract all value slots in an R6 object
 #' @param r6class r6 class
 #' @family configuration
+#' @return The computed result.
 #' @export
+#' @examples
+#' bb <- sim_lfq_data_peptide_config()
+#' values <- R6_extract_values(bb$config)
+#' names(values)
 R6_extract_values <- function(r6class) {
-  tmp <- sapply(r6class, class)
+  tmp <- vapply(r6class, function(x) class(x)[1], character(1))
   slots <- tmp[!tmp %in% c("environment", "function")]
   res <- list()
   for (i in names(slots)) {

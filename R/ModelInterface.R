@@ -1,6 +1,7 @@
 # ModelInterface -----
 #' R6 interface class representing modelling result
 #'
+#' @return An R6 class generator.
 #' @export
 #' @examples
 #'

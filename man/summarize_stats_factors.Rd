@@ -9,6 +9,9 @@ summarize_stats_factors(lfqdata)
 \arguments{
 \item{lfqdata}{LFQData object}
 }
+\value{
+The computed result.
+}
 \description{
 compute var sd etc for all factor levels
 }

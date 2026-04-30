@@ -20,6 +20,9 @@ center_to_reference_cfg(
 
 \item{copy}{logical, if TRUE return a copy, otherwise modify in place}
 }
+\value{
+The computed result.
+}
 \description{
 takes the mean or median of the lfqdareference per sample and subtracts from lfqdata
 }

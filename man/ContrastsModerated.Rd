@@ -3,6 +3,9 @@
 \name{ContrastsModerated}
 \alias{ContrastsModerated}
 \title{Limma moderated contrasts}
+\value{
+An R6 class generator.
+}
 \description{
 Limma moderated contrasts
 

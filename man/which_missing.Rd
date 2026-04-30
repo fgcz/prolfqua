@@ -11,6 +11,9 @@ which_missing(x, weight_missing = 0.2)
 
 \item{weight_missing}{greater weight more missing}
 }
+\value{
+A logical vector indicating which values are missing.
+}
 \description{
 add missing values to x vector based on the values of x
 }

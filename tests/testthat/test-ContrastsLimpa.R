@@ -43,12 +43,12 @@ test_that("AggregateLimpa produces protein-level LFQData with SE and n_obs", {
   expect_true(!is.null(agg$dpc_result))
 
   # Should be pivotable to wide
-  wide <- lfq_agg$to_wide(as.matrix = TRUE)
+  wide <- lfq_agg$data_wide(as.matrix = TRUE)
   expect_true(is.matrix(wide$data))
   expect_equal(sum(is.na(wide$data)), 0)
 
   # SE should also be pivotable
-  se_wide <- lfq_agg$to_wide(as.matrix = TRUE, value = se_col)
+  se_wide <- lfq_agg$data_wide(as.matrix = TRUE, value = se_col)
   expect_true(is.matrix(se_wide$data))
   expect_equal(dim(se_wide$data), dim(wide$data))
 })

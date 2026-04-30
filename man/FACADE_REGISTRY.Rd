@@ -18,4 +18,8 @@ requirements. Each entry has:
   \item{needs}{One of \code{"aggregated"}, \code{"nested"}, or \code{"either"}}
 }
 }
+\examples{
+names(FACADE_REGISTRY)
+FACADE_REGISTRY$limma$class
+}
 \keyword{datasets}

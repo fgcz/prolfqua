@@ -34,6 +34,16 @@ find_d0_deqms <- function(mean_myfct) {
 #' @export
 #' @family modelling
 #' @keywords internal
+#' @examples
+#' mm <- data.frame(
+#'   sigma = c(0.25, 0.32, 0.28, 0.40, 0.35),
+#'   df = rep(6, 5),
+#'   statistic = c(2.1, -1.8, 0.5, 3.0, -2.2),
+#'   diff = c(0.8, -0.6, 0.2, 1.2, -0.9),
+#'   count = c(2, 3, 4, 6, 8)
+#' )
+#' res <- moderated_p_deqms(mm, count_col = "count")
+#' "moderated.p.value" %in% colnames(res)
 moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess_span = 0.75, confint = 0.95) {
   logvar <- log(mm$sigma^2)
   log2count <- log2(mm[[count_col]])
@@ -126,6 +136,17 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess
 #' @export
 #' @family modelling
 #' @keywords internal
+#' @examples
+#' mm <- data.frame(
+#'   contrast = rep(c("A_vs_B", "C_vs_D"), each = 5),
+#'   sigma = rep(c(0.25, 0.32, 0.28, 0.40, 0.35), 2),
+#'   df = rep(6, 10),
+#'   statistic = rep(c(2.1, -1.8, 0.5, 3.0, -2.2), 2),
+#'   diff = rep(c(0.8, -0.6, 0.2, 1.2, -0.9), 2),
+#'   count = rep(c(2, 3, 4, 6, 8), 2)
+#' )
+#' res <- moderated_p_deqms_long(mm, count_col = "count")
+#' table(res$contrast)
 moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", estimate = "diff", loess_span = 0.75) {
   dfg <- mm |>
     dplyr::group_by(dplyr::across(dplyr::all_of(group_by_col))) |>
@@ -135,7 +156,8 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
   warning_rows <- list()
 
   for (i in seq_len(nrow(dfg))) {
-    warnings_i <- character()
+    warning_env <- new.env(parent = emptyenv())
+    warning_env$messages <- character()
     group_data <- dfg[i, setdiff(names(dfg), "data"), drop = FALSE]
     result_i <- withCallingHandlers(
       moderated_p_deqms(
@@ -145,10 +167,11 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
         loess_span = loess_span
       ),
       warning = function(w) {
-        warnings_i <<- c(warnings_i, conditionMessage(w))
+        warning_env$messages <- c(warning_env$messages, conditionMessage(w))
         invokeRestart("muffleWarning")
       }
     )
+    warnings_i <- warning_env$messages
     results[[i]] <- dplyr::bind_cols(
       group_data[rep(1, nrow(result_i)), , drop = FALSE],
       result_i
@@ -188,17 +211,13 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
       ),
       collapse = "; "
     )
-    warning(
-      paste0(
-        "moderated_p_deqms_long: warnings in ",
-        nrow(warning_df),
-        "/",
-        nrow(dfg),
-        " groups. ",
-        warning_examples
-      ),
-      call. = FALSE
+    msg <- sprintf(
+      "moderated_p_deqms_long: condition messages in %d/%d groups. %s",
+      nrow(warning_df),
+      nrow(dfg),
+      warning_examples
     )
+    warning(msg, call. = FALSE)
   }
 
   return(xx)
@@ -213,6 +232,7 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
 #' per protein: proteins with many peptides get less shrinkage, proteins with
 #' few peptides get more.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -288,19 +308,19 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       model_name = paste0(Contrast$model_name, "_DEqMS"),
       p.adjust = prolfqua::adjust_p_values
     ) {
-      self$Contrast = Contrast
-      self$subject_id = Contrast$subject_id
+      self$Contrast <- Contrast
+      self$subject_id <- Contrast$subject_id
       # Aggregate count_df to one row per subject_id (max count)
       count_df <- count_df |>
         dplyr::group_by(dplyr::across(dplyr::all_of(Contrast$subject_id))) |>
         dplyr::summarise(!!count_column := max(!!rlang::sym(count_column), na.rm = TRUE), .groups = "drop")
       # Replace -Inf (from all-NA groups) with NA
       count_df[[count_column]][is.infinite(count_df[[count_column]])] <- NA
-      self$count_df = count_df
-      self$count_column = count_column
-      self$loess_span = loess_span
-      self$model_name = model_name
-      self$p.adjust = p.adjust
+      self$count_df <- count_df
+      self$count_column <- count_column
+      self$loess_span <- loess_span
+      self$model_name <- model_name
+      self$p.adjust <- p.adjust
     },
     #' @description
     #' get both sides of contrasts

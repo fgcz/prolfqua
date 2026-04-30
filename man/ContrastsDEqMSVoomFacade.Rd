@@ -3,6 +3,9 @@
 \name{ContrastsDEqMSVoomFacade}
 \alias{ContrastsDEqMSVoomFacade}
 \title{DEqMS contrast analysis with vooma weights facade}
+\value{
+An R6 class generator.
+}
 \description{
 DEqMS contrast analysis with vooma weights facade
 

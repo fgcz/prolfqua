@@ -1,6 +1,7 @@
 #' group label function
 #' @param primary character, primary factor level
 #' @param secondary character, secondary factor level
+#' @return A character vector with combined group labels.
 #' @export
 #' @family modelling
 #' @examples
@@ -13,6 +14,7 @@ group_label <- function(primary, secondary) paste0("G_", primary, "_", secondary
 #' main effects contrasts
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
+#' @return Contrast definitions or contrast results.
 #' @export
 #' @family contrasts
 #' @examples
@@ -43,6 +45,7 @@ main_effect_contrasts <- function(primary_levels, secondary_levels) {
 #' Level-specific contrasts (per secondary level)
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
+#' @return Contrast definitions or contrast results.
 #' @export
 #' @family contrasts
 #' @examples
@@ -73,6 +76,7 @@ level_specific_contrasts <- function(primary_levels, secondary_levels) {
 #' Interaction contrasts (difference of differences)
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
+#' @return Contrast definitions or contrast results.
 #' @export
 #' @family contrasts
 #' @examples
@@ -103,6 +107,7 @@ interaction_contrasts <- function(primary_levels, secondary_levels) {
 
 #' Single-factor contrasts (pairwise comparisons)
 #' @param levels character vector of factor levels
+#' @return Contrast definitions or contrast results.
 #' @export
 #' @family contrasts
 #' @examples
@@ -129,6 +134,7 @@ generate_contrasts_for_factor <- function(levels) {
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
 #' @param interactions logical, if TRUE include interaction contrasts
+#' @return Contrast definitions or contrast results.
 #' @export
 #' @family contrasts
 #' @examples
@@ -358,12 +364,14 @@ x5463yzwer453bbb <- structure(
 #' @param dataset_id character, dataset identifier for output naming
 #' @param decreasing logical, if TRUE sort factor levels in decreasing order
 #' @param interactions logical, if TRUE include interaction contrasts
+#' @return Contrast definitions or contrast results.
 #' @export
 #' @family contrasts
 #' @examples
 #'
-#' annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_A", "factor_B", "primary")
-#' annotation_add_contrasts(prolfqua::x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
+#' data("x5463yzwer453bbb", package = "prolfqua")
+#' annotation_add_contrasts(x5463yzwer453bbb, "factor_A", "factor_B", "primary")
+#' annotation_add_contrasts(x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
 annotation_add_contrasts <- function(
   df,
   primary_col,

@@ -3,6 +3,9 @@
 \name{StrategyLogistf}
 \alias{StrategyLogistf}
 \title{Firth's logistic regression strategy (R6 class)}
+\value{
+An R6 class generator.
+}
 \description{
 Firth's logistic regression strategy (R6 class)
 

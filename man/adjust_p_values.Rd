@@ -20,6 +20,9 @@ adjust_p_values(
 
 \item{newname}{name of the new column with adjusted p-values}
 }
+\value{
+The computed result.
+}
 \description{
 adjust columns
 }

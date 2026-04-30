@@ -9,8 +9,16 @@ R6_extract_values(r6class)
 \arguments{
 \item{r6class}{r6 class}
 }
+\value{
+The computed result.
+}
 \description{
 Extract all value slots in an R6 object
+}
+\examples{
+bb <- sim_lfq_data_peptide_config()
+values <- R6_extract_values(bb$config)
+names(values)
 }
 \seealso{
 Other configuration: 

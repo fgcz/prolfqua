@@ -7,8 +7,13 @@
 #' trend/robust flags for \code{\link[limma]{eBayes}}, and optional vooma
 #' plotting parameters.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
+#' @examples
+#' strat <- StrategyLimpa$new("abundance ~ group_")
+#' strat$formula
+#' strat$model_name
 StrategyLimpa <- R6::R6Class(
   "StrategyLimpa",
   public = list(
@@ -52,8 +57,13 @@ StrategyLimpa <- R6::R6Class(
 #' @param robust logical, passed to \code{\link[limma]{eBayes}}
 #' @param plot logical, plot the vooma mean-variance trend
 #' @param span lowess smoother span (NULL = auto)
+#' @return The computed result.
 #' @export
 #' @family modelling
+#' @examples
+#' strat <- strategy_limpa("abundance ~ group_")
+#' strat$formula
+#' strat$model_name
 strategy_limpa <- function(modelstr, model_name = "limpa", trend = FALSE, robust = FALSE, plot = FALSE, span = NULL) {
   StrategyLimpa$new(modelstr, model_name = model_name, trend = trend, robust = robust, plot = plot, span = span)
 }
@@ -81,6 +91,16 @@ strategy_limpa <- function(modelstr, model_name = "limpa", trend = FALSE, robust
 #' @return \code{\link{ModelLimma}} object
 #' @export
 #' @family modelling
+#' @examples
+#' if (requireNamespace("limpa", quietly = TRUE)) {
+#'   istar <- sim_lfq_data_peptide_config(Nprot = 10)
+#'   lfq <- LFQData$new(istar$data, istar$config)
+#'   lfq <- lfq$get_Transformer()$log2()$lfq
+#'   lfq <- AggregateLimpa$new(lfq, "protein")$aggregate()
+#'   strat <- strategy_limpa("limpa ~ group_")
+#'   mod <- build_model_limpa(lfq, strat)
+#'   mod$model_name
+#' }
 build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_name) {
   if (!requireNamespace("limpa", quietly = TRUE)) {
     stop(

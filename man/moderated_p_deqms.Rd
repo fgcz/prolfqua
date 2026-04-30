@@ -35,6 +35,17 @@ Applies count-dependent empirical Bayes variance shrinkage to a contrast
 result table. Proteins quantified from many peptides get less shrinkage;
 proteins from few peptides get more.
 }
+\examples{
+mm <- data.frame(
+  sigma = c(0.25, 0.32, 0.28, 0.40, 0.35),
+  df = rep(6, 5),
+  statistic = c(2.1, -1.8, 0.5, 3.0, -2.2),
+  diff = c(0.8, -0.6, 0.2, 1.2, -0.9),
+  count = c(2, 3, 4, 6, 8)
+)
+res <- moderated_p_deqms(mm, count_col = "count")
+"moderated.p.value" \%in\% colnames(res)
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

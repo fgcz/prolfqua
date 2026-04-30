@@ -33,6 +33,7 @@ sigma.rlm <- function(object, ...) {
 #' Encapsulates everything needed to fit per-protein linear mixed-effects models
 #' via \code{\link[lmerTest]{lmer}} and extract contrasts.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -134,6 +135,7 @@ strategy_lmer <- function(
 #' contrasts: the formula, model fitting function, singularity check, contrast
 #' computation, ANOVA, and residual statistics.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -246,6 +248,7 @@ strategy_lm <- function(
 #' Encapsulates everything needed to fit per-protein robust linear models
 #' via \code{\link[MASS]{rlm}} and extract contrasts.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -348,8 +351,14 @@ strategy_rlm <- function(
 #'
 #' Wraps the ANOVA extraction logic and associated column names.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
+#' @examples
+#' extractor <- AnovaExtractor$new(test = "F")
+#' fit <- stats::lm(Sepal.Length ~ Species, data = iris)
+#' res <- extractor$fun(fit)
+#' stopifnot("factor" %in% colnames(res))
 AnovaExtractor <- R6::R6Class(
   "AnovaExtractor",
   public = list(

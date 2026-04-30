@@ -2,6 +2,7 @@
 
 #' Decorate LFQData with Methods for transforming Intensities
 #'
+#' @return An R6 class generator.
 #' @export
 #'
 #' @examples
@@ -92,7 +93,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @param lfqdata
     #' LFQData object to transform
     initialize = function(lfqdata) {
-      self$lfq = lfqdata
+      self$lfq <- lfqdata
     },
     #' @description
     #' log2 transform data
@@ -395,12 +396,16 @@ get_robscales <- function(lfqdata) {
 #' @keywords internal
 #' @family preprocessing
 #' @export
+#' @examples
+#' mat <- matrix(c(1, 2, 3, 4, 10, 12), nrow = 3)
+#' scaled <- robust_scale(mat)
+#' dim(scaled)
 robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
   scales <- .get_robscales(data, dim = dim)
   data <- sweep(data, dim, scales$medians, "-")
   if (!any(scales$mads == 0)) {
     mads <- scales$mads / mean(scales$mads)
-    data = sweep(data, dim, mads, "/")
+    data <- sweep(data, dim, mads, "/")
   } else {
     warning("SKIPPING scaling step in robust_scale: one or more MAD values are zero.")
   }
@@ -548,6 +553,7 @@ center_to_reference <- function(
 #' @param lfqdareference LFQData object containing the reference subset
 #' @param summary character, summary statistic to use ("median" or "mean")
 #' @param copy logical, if TRUE return a copy, otherwise modify in place
+#' @return The computed result.
 #' @export
 #' @examples
 #' # example code

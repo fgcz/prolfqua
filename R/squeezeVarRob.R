@@ -62,17 +62,17 @@ trigammaInverse <- function(x) {
 }
 
 fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
-  #	Moment estimation of the parameters of a scaled F-distribution.
-  #	The numerator degrees of freedom are given, the denominator is to be estimated.
-  #	Gordon Smyth and Belinda Phipson
-  #	8 Sept 2002.  Last revised 25 Jan 2017.
-  #	Check x
+  #  Moment estimation of the parameters of a scaled F-distribution.
+  #  The numerator degrees of freedom are given, the denominator is to be estimated.
+  #  Gordon Smyth and Belinda Phipson
+  #  8 Sept 2002.  Last revised 25 Jan 2017.
+  #  Check x
   n <- length(x)
   if (n <= 1L) {
     return(list(scale = NA, df2 = NA))
   }
 
-  #	Check df1
+  #  Check df1
   ok <- is.finite(df1) & df1 > min_df #1e-15
   if (length(df1) == 1L) {
     if (!ok) {
@@ -84,7 +84,7 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
     if (length(df1) != n) stop("x and df1 have different lengths")
   }
 
-  #	Check covariate
+  #  Check covariate
   if (is.null(covariate)) {
     splinedf <- 1L
   } else {
@@ -105,7 +105,7 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
       }
     }
     splinedf <- min(4L, length(unique(covariate)))
-    #		If covariate takes only one value, recall with NULL covariate
+    #    If covariate takes only one value, recall with NULL covariate
     if (splinedf < 2L) {
       out <- Recall(x = x, df1 = df1)
       out$scale <- rep_len(out$scale, n)
@@ -113,7 +113,7 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
     }
   }
 
-  #	Remove missing or infinite values and zero degrees of freedom
+  #  Remove missing or infinite values and zero degrees of freedom
   ok <- ok & is.finite(x) & (x > -1e-15)
   nok <- sum(ok)
   notallok <- !all(ok)
@@ -128,7 +128,7 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
     }
   }
 
-  #	Check whether enough observations to estimate variance around trend
+  #  Check whether enough observations to estimate variance around trend
   if (nok <= splinedf) {
     s20 <- NA
     if (!is.null(covariate)) {
@@ -137,7 +137,7 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
     return(list(scale = s20, df2 = NA))
   }
 
-  #	Avoid exactly zero values
+  #  Avoid exactly zero values
   x <- pmax(x, 0)
   m <- median(x)
   if (m == 0) {
@@ -148,7 +148,7 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
   }
   x <- pmax(x, 1e-5 * m)
 
-  #	Better to work on with log(F)
+  #  Better to work on with log(F)
   z <- log(x)
   e <- z - digamma(df1 / 2) + log(df1 / 2)
 
@@ -172,7 +172,7 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
     } else {
       emean <- fit$fitted
     }
-    evar <- mean(fit$effects[-(1:fit$rank)]^2)
+    evar <- mean(fit$effects[-seq_len(fit$rank)]^2)
   }
 
   #MSqRob added: avoid NaN in evar
@@ -187,8 +187,8 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
   } else {
     df2 <- Inf
     if (is.null(covariate)) {
-      #			Use simple pooled variance, which is MLE of the scale in this case.
-      #			Versions of limma before Jan 2017 returned the limiting value of the evar>0 estimate, which is larger.
+      #      Use simple pooled variance, which is MLE of the scale in this case.
+      #      Versions of limma before Jan 2017 returned the limiting value of the evar>0 estimate, which is larger.
       s20 <- mean(x)
     } else {
       s20 <- exp(emean)
@@ -199,65 +199,55 @@ fitFDist_LG <- function(x, df1, covariate = NULL, min_df = 1) {
 }
 
 
-#Just adapted to use fitFDist_LG internally instead of fitFDist
-fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05, 0.1), trace = FALSE, min_df = 1) {
-  #	Robust estimation of the parameters of a scaled F-distribution,
-  #	given the first degrees of freedom, using first and second
-  #	moments of Winsorized z-values
-  #	Gordon Smyth and Belinda Phipson
-  #	Created 7 Oct 2012.  Last revised 25 November 2016.
-  #	Check x
+.validate_fit_f_dist_robustly <- function(x, df1, covariate) {
   n <- length(x)
-
-  #	Eliminate cases of no useful data
-  if (n < 2) {
-    return(list(scale = NA, df2 = NA, df2.shrunk = NA))
-  }
-  if (n == 2) {
-    return(fitFDist_LG(x = x, df1 = df1, covariate = covariate, min_df = min_df))
-  } #fitFDist_LG instead of fitFDist
-
-  #	Check df1
   if (all(length(df1) != c(1, n))) {
     stop("x and df1 are different lengths")
   }
-
-  #	Check covariate
   if (!is.null(covariate)) {
     if (length(covariate) != n) {
       stop("x and covariate are different lengths")
     }
-    if (!all(is.finite(covariate))) stop("covariate contains NA or infinite values")
+    if (!all(is.finite(covariate))) {
+      stop("covariate contains NA or infinite values")
+    }
+  }
+}
+
+.filter_fit_f_dist_robustly <- function(x, df1, covariate, ok, winsor.tail.p, trace) {
+  df2.shrunk <- x
+  x_ok <- x[ok]
+  df1_ok <- df1
+  if (length(df1) > 1) {
+    df1_ok <- df1[ok]
+  }
+  covariate_ok <- covariate
+  covariate_not_ok <- NULL
+  if (!is.null(covariate)) {
+    covariate_not_ok <- covariate[!ok]
+    covariate_ok <- covariate[ok]
   }
 
-  #	Treat zero df1 values as non-informative cases
-  #	Similarly for missing values or x or df1
-  ok <- !is.na(x) & is.finite(df1) & (df1 > min_df) #min_df instead of 1e-6
-  notallok <- !all(ok)
-  if (notallok) {
-    df2.shrunk <- x
-    x <- x[ok]
-    if (length(df1) > 1) {
-      df1 <- df1[ok]
-    }
-    if (!is.null(covariate)) {
-      covariate2 <- covariate[!ok]
-      covariate <- covariate[ok]
-    }
-    fit <- Recall(x = x, df1 = df1, covariate = covariate, winsor.tail.p = winsor.tail.p, trace = trace)
-    df2.shrunk[ok] <- fit$df2.shrunk
-    df2.shrunk[!ok] <- fit$df2
-    if (is.null(covariate)) {
-      scale <- fit$scale
-    } else {
-      scale <- x
-      scale[ok] <- fit$scale
-      scale[!ok] <- exp(approx(covariate, log(fit$scale), xout = covariate2, rule = 2)$y)
-    }
-    return(list(scale = scale, df2 = fit$df2, df2.shrunk = df2.shrunk))
+  fit <- fitFDistRobustly_LG(
+    x = x_ok,
+    df1 = df1_ok,
+    covariate = covariate_ok,
+    winsor.tail.p = winsor.tail.p,
+    trace = trace
+  )
+  df2.shrunk[ok] <- fit$df2.shrunk
+  df2.shrunk[!ok] <- fit$df2
+  if (is.null(covariate)) {
+    scale <- fit$scale
+  } else {
+    scale <- x_ok
+    scale[ok] <- fit$scale
+    scale[!ok] <- exp(approx(covariate_ok, log(fit$scale), xout = covariate_not_ok, rule = 2)$y)
   }
+  list(scale = scale, df2 = fit$df2, df2.shrunk = df2.shrunk)
+}
 
-  #	Avoid zero or negative x values
+.offset_small_variances <- function(x) {
   m <- median(x)
   if (m <= 0) {
     stop("x values are mostly <= 0")
@@ -272,50 +262,41 @@ fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05
     }
     x[i] <- m * 1e-12
   }
+  x
+}
 
-  #	Store non-robust estimates
-  NonRobust <- fitFDist_LG(x = x, df1 = df1, covariate = covariate, min_df = min_df) #fitFDist_LG instead of fitFDist
-
-  #	Check winsor.tail.p
-  prob <- winsor.tail.p <- rep(winsor.tail.p, length = 2)
-  prob[2] <- 1 - winsor.tail.p[2]
-  if (all(winsor.tail.p < 1 / n)) {
-    NonRobust$df2.shrunk <- rep.int(NonRobust$df2, n)
-    return(NonRobust)
+.transform_to_constant_df1 <- function(x, df1, covariate, non_robust) {
+  if (length(df1) <= 1) {
+    return(list(x = x, df1 = df1))
   }
 
-  #	Transform x to constant df1
-  if (length(df1) > 1) {
-    df1max <- max(df1)
-    i <- (df1 < (df1max - 1e-14))
-    if (any(i)) {
-      if (is.null(covariate)) {
-        s <- NonRobust$scale
-      } else {
-        s <- NonRobust$scale[i]
-      }
-      f <- x[i] / s
-      df2 <- NonRobust$df2
-      pupper <- pf(f, df1 = df1[i], df2 = df2, lower.tail = FALSE, log.p = TRUE)
-      plower <- pf(f, df1 = df1[i], df2 = df2, lower.tail = TRUE, log.p = TRUE)
-      up <- pupper < plower
-      if (any(up)) {
-        f[up] <- qf(pupper[up], df1 = df1max, df2 = df2, lower.tail = FALSE, log.p = TRUE)
-      }
-      if (any(!up)) {
-        f[!up] <- qf(plower[!up], df1 = df1max, df2 = df2, lower.tail = TRUE, log.p = TRUE)
-      }
-      x[i] <- f * s
-      df1 <- df1max
-    } else {
-      df1 <- df1[1]
-    }
+  df1max <- max(df1)
+  i <- (df1 < (df1max - 1e-14))
+  if (!any(i)) {
+    return(list(x = x, df1 = df1[1]))
   }
 
-  #	Better to work with log(F)
-  z <- log(x)
+  if (is.null(covariate)) {
+    s <- non_robust$scale
+  } else {
+    s <- non_robust$scale[i]
+  }
+  f <- x[i] / s
+  df2 <- non_robust$df2
+  pupper <- pf(f, df1 = df1[i], df2 = df2, lower.tail = FALSE, log.p = TRUE)
+  plower <- pf(f, df1 = df1[i], df2 = df2, lower.tail = TRUE, log.p = TRUE)
+  up <- pupper < plower
+  if (any(up)) {
+    f[up] <- qf(pupper[up], df1 = df1max, df2 = df2, lower.tail = FALSE, log.p = TRUE)
+  }
+  if (any(!up)) {
+    f[!up] <- qf(plower[!up], df1 = df1max, df2 = df2, lower.tail = TRUE, log.p = TRUE)
+  }
+  x[i] <- f * s
+  list(x = x, df1 = df1max)
+}
 
-  #	Demean or Detrend
+.winsorized_residual_moments <- function(z, covariate, winsor.tail.p, prob, trace) {
   if (is.null(covariate)) {
     ztrend <- mean(z, trim = winsor.tail.p[2])
     zresid <- z - ztrend
@@ -325,133 +306,117 @@ fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05
     zresid <- lo$residual
   }
 
-  #	Moments of Winsorized residuals
   zrq <- quantile(zresid, prob = prob)
   zwins <- pmin(pmax(zresid, zrq[1]), zrq[2])
-
-  # !!! Changed to make it more robust (mainly variance was a problem!)
-
   zwmean <- median(zwins)
   zwvar <- mad(zwins)
-
   if (trace) {
-    cat("Variance of Winsorized Fisher-z", zwvar, "\n")
+    message("Variance of Winsorized Fisher-z ", zwvar)
   }
+  list(ztrend = ztrend, zwmean = zwmean, zwvar = zwvar)
+}
 
-  #	Theoretical Winsorized moments
+.winsorized_moments_function <- function() {
   if (!requireNamespace("statmod", quietly = TRUE)) {
     stop("statmod package required but is not installed")
   }
   g <- statmod::gauss.quad.prob(128, dist = "uniform")
   linkfun <- function(x) x / (1 + x)
   linkinv <- function(x) x / (1 - x)
-  winsorizedMoments <- function(df1 = df1, df2 = df2, winsor.tail.p = winsor.tail.p) {
-    fq <- qf(p = c(winsor.tail.p[1], 1 - winsor.tail.p[2]), df1 = df1, df2 = df2)
-    zq <- log(fq)
-    q <- linkfun(fq)
-    nodes <- q[1] + (q[2] - q[1]) * g$nodes
-    fnodes <- linkinv(nodes)
-    znodes <- log(fnodes)
-    f <- df(fnodes, df1 = df1, df2 = df2) / (1 - nodes)^2
-    q21 <- q[2] - q[1]
-    m <- q21 * sum(g$weights * f * znodes) + sum(zq * winsor.tail.p)
-    v <- q21 * sum(g$weights * f * (znodes - m)^2) + sum((zq - m)^2 * winsor.tail.p)
-    list(mean = m, var = v)
-  }
 
-  #	Try df2==Inf
-  mom <- winsorizedMoments(df1 = df1, df2 = Inf, winsor.tail.p = winsor.tail.p)
-  funvalInf <- log(zwvar / mom$var)
-  if (funvalInf <= 0) {
-    df2 <- Inf
-    #		Correct trend for bias
-    ztrendcorrected <- ztrend + zwmean - mom$mean
-    s20 <- exp(ztrendcorrected)
-    #		Posterior df for outliers
-    Fstat <- exp(z - ztrendcorrected)
-    TailP <- pchisq(Fstat * df1, df = df1, lower.tail = FALSE)
-    r <- rank(Fstat)
-    EmpiricalTailProb <- (n - r + 0.5) / n
-    ProbNotOutlier <- pmin(TailP / EmpiricalTailProb, 1)
-    df.pooled <- n * df1
-    df2.shrunk <- rep.int(df2, n)
-    O <- ProbNotOutlier < 1
-    if (any(O)) {
-      df2.shrunk[O] <- ProbNotOutlier[O] * df.pooled
-      o <- order(TailP)
-      df2.shrunk[o] <- cummax(df2.shrunk[o])
+  list(
+    linkfun = linkfun,
+    linkinv = linkinv,
+    moments = function(df1, df2, winsor.tail.p) {
+      fq <- qf(p = c(winsor.tail.p[1], 1 - winsor.tail.p[2]), df1 = df1, df2 = df2)
+      zq <- log(fq)
+      q <- linkfun(fq)
+      nodes <- q[1] + (q[2] - q[1]) * g$nodes
+      fnodes <- linkinv(nodes)
+      znodes <- log(fnodes)
+      f <- df(fnodes, df1 = df1, df2 = df2) / (1 - nodes)^2
+      q21 <- q[2] - q[1]
+      m <- q21 * sum(g$weights * f * znodes) + sum(zq * winsor.tail.p)
+      v <- q21 * sum(g$weights * f * (znodes - m)^2) + sum((zq - m)^2 * winsor.tail.p)
+      list(mean = m, var = v)
     }
-    return(list(scale = s20, df2 = df2, df2.shrunk = df2.shrunk))
+  )
+}
+
+.fit_infinite_df2 <- function(z, ztrend, zwmean, mom, df1, n) {
+  df2 <- Inf
+  ztrendcorrected <- ztrend + zwmean - mom$mean
+  s20 <- exp(ztrendcorrected)
+  fstat <- exp(z - ztrendcorrected)
+  tail_p <- pchisq(fstat * df1, df = df1, lower.tail = FALSE)
+  r <- rank(fstat)
+  empirical_tail_prob <- (n - r + 0.5) / n
+  prob_not_outlier <- pmin(tail_p / empirical_tail_prob, 1)
+  df_pooled <- n * df1
+  df2.shrunk <- rep.int(df2, n)
+  outlier <- prob_not_outlier < 1
+  if (any(outlier)) {
+    df2.shrunk[outlier] <- prob_not_outlier[outlier] * df_pooled
+    o <- order(tail_p)
+    df2.shrunk[o] <- cummax(df2.shrunk[o])
+  }
+  list(scale = s20, df2 = df2, df2.shrunk = df2.shrunk)
+}
+
+.estimate_robust_df2 <- function(non_robust, df1, winsor.tail.p, zwvar, funval_inf, moments, trace, n) {
+  if (non_robust$df2 == Inf) {
+    non_robust$df2.shrunk <- rep.int(non_robust$df2, n)
+    return(non_robust)
   }
 
-  #	Estimate df2 by matching variance of zwins
-  #	Use beta distribution Gaussian quadrature to find mean and variance
-  #	of Winsorized F-distribution
   fun <- function(x) {
-    df2 <- linkinv(x)
-    mom <- winsorizedMoments(df1 = df1, df2 = df2, winsor.tail.p = winsor.tail.p)
+    df2 <- moments$linkinv(x)
+    mom <- moments$moments(df1 = df1, df2 = df2, winsor.tail.p = winsor.tail.p)
     if (trace) {
-      cat("df2=", df2, ", Working Var=", mom$var, "\n")
+      message("df2=", df2, ", Working Var=", mom$var)
     }
     log(zwvar / mom$var)
   }
 
-  #	Use non-robust estimate as lower bound for df2
-  if (NonRobust$df2 == Inf) {
-    NonRobust$df2.shrunk <- rep.int(NonRobust$df2, n)
-    return(NonRobust)
-  }
-  rbx <- linkfun(NonRobust$df2)
-  funvalLow <- fun(rbx)
-  if (funvalLow >= 0) {
-    df2 <- NonRobust$df2
-  } else {
-    u <- uniroot(fun, interval = c(rbx, 1), tol = 1e-8, f.lower = funvalLow, f.upper = funvalInf)
-    df2 <- linkinv(u$root)
+  rbx <- moments$linkfun(non_robust$df2)
+  funval_low <- fun(rbx)
+  if (funval_low >= 0) {
+    return(non_robust$df2)
   }
 
-  #	Correct ztrend for bias
-  mom <- winsorizedMoments(df1 = df1, df2 = df2, winsor.tail.p = winsor.tail.p)
-  ztrendcorrected <- ztrend + zwmean - mom$mean
-  s20 <- exp(ztrendcorrected)
+  u <- uniroot(fun, interval = c(rbx, 1), tol = 1e-8, f.lower = funval_low, f.upper = funval_inf)
+  moments$linkinv(u$root)
+}
 
-  #	Posterior df for outliers
+.shrink_outlier_df2 <- function(z, ztrendcorrected, df1, df2, n) {
   zresid <- z - ztrendcorrected
-  Fstat <- exp(zresid)
-  LogTailP <- pf(Fstat, df1 = df1, df2 = df2, lower.tail = FALSE, log.p = TRUE)
-  TailP <- exp(LogTailP)
-  r <- rank(Fstat)
-  LogEmpiricalTailProb <- log(n - r + 0.5) - log(n)
-  LogProbNotOutlier <- pmin(LogTailP - LogEmpiricalTailProb, 0)
-  ProbNotOutlier <- exp(LogProbNotOutlier)
-  ProbOutlier <- -expm1(LogProbNotOutlier)
+  fstat <- exp(zresid)
+  log_tail_p <- pf(fstat, df1 = df1, df2 = df2, lower.tail = FALSE, log.p = TRUE)
+  tail_p <- exp(log_tail_p)
+  r <- rank(fstat)
+  log_empirical_tail_prob <- log(n - r + 0.5) - log(n)
+  log_prob_not_outlier <- pmin(log_tail_p - log_empirical_tail_prob, 0)
+  prob_not_outlier <- exp(log_prob_not_outlier)
+  prob_outlier <- -expm1(log_prob_not_outlier)
 
-  if (any(ProbNotOutlier < 1)) {
-    o <- order(TailP)
-
-    #		New calculation for df2.outlier
-    #		Find df2.outlier to make maxFstat the median of the distribution
-    #		Exploit fact that log(TailP) is nearly linearly with positive 2nd deriv as a function of df2
-    #		Note that minTailP and NewTailP are always less than 0.5
-    minLogTailP <- min(LogTailP)
-    if (minLogTailP == -Inf) {
+  if (any(prob_not_outlier < 1)) {
+    min_log_tail_p <- min(log_tail_p)
+    if (min_log_tail_p == -Inf) {
       df2.outlier <- 0
-      df2.shrunk <- ProbNotOutlier * df2
+      df2.shrunk <- prob_not_outlier * df2
     } else {
-      df2.outlier <- log(0.5) / minLogTailP * df2
-      #			Iterate for accuracy
-      NewLogTailP <- pf(max(Fstat), df1 = df1, df2 = df2.outlier, lower.tail = FALSE, log.p = TRUE)
-      df2.outlier <- log(0.5) / NewLogTailP * df2.outlier
-      df2.shrunk <- ProbNotOutlier * df2 + ProbOutlier * df2.outlier
+      df2.outlier <- log(0.5) / min_log_tail_p * df2
+      new_log_tail_p <- pf(max(fstat), df1 = df1, df2 = df2.outlier, lower.tail = FALSE, log.p = TRUE)
+      df2.outlier <- log(0.5) / new_log_tail_p * df2.outlier
+      df2.shrunk <- prob_not_outlier * df2 + prob_outlier * df2.outlier
     }
 
-    #		Force df2.shrunk to be monotonic in TailP
-    o <- order(LogTailP)
+    o <- order(log_tail_p)
     df2.ordered <- df2.shrunk[o]
     m <- cumsum(df2.ordered)
-    m <- m / (1:n)
+    m <- m / seq_len(n)
     imin <- which.min(m)
-    df2.ordered[1:imin] <- m[imin]
+    df2.ordered[seq_len(imin)] <- m[imin]
     df2.shrunk[o] <- cummax(df2.ordered)
   } else {
     df2.outlier <- df2
@@ -459,20 +424,83 @@ fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05
   }
 
   list(
-    scale = s20,
-    df2 = df2,
-    tail.p.value = TailP,
-    prob.outlier = ProbOutlier,
+    tail.p.value = tail_p,
+    prob.outlier = prob_outlier,
     df2.outlier = df2.outlier,
     df2.shrunk = df2.shrunk
   )
 }
 
+.fit_f_dist_robustly_complete <- function(x, df1, covariate, winsor.tail.p, trace, min_df, n) {
+  x <- .offset_small_variances(x)
+  non_robust <- fitFDist_LG(x = x, df1 = df1, covariate = covariate, min_df = min_df)
+
+  prob <- winsor.tail.p <- rep(winsor.tail.p, length = 2)
+  prob[2] <- 1 - winsor.tail.p[2]
+  if (all(winsor.tail.p < 1 / n)) {
+    non_robust$df2.shrunk <- rep.int(non_robust$df2, n)
+    return(non_robust)
+  }
+
+  transformed <- .transform_to_constant_df1(x, df1, covariate, non_robust)
+  x <- transformed$x
+  df1 <- transformed$df1
+
+  z <- log(x)
+  residual_moments <- .winsorized_residual_moments(z, covariate, winsor.tail.p, prob, trace)
+  moments <- .winsorized_moments_function()
+  mom <- moments$moments(df1 = df1, df2 = Inf, winsor.tail.p = winsor.tail.p)
+  funval_inf <- log(residual_moments$zwvar / mom$var)
+  if (funval_inf <= 0) {
+    return(.fit_infinite_df2(z, residual_moments$ztrend, residual_moments$zwmean, mom, df1, n))
+  }
+
+  df2 <- .estimate_robust_df2(
+    non_robust,
+    df1,
+    winsor.tail.p,
+    residual_moments$zwvar,
+    funval_inf,
+    moments,
+    trace,
+    n
+  )
+  if (is.list(df2)) {
+    return(df2)
+  }
+
+  mom <- moments$moments(df1 = df1, df2 = df2, winsor.tail.p = winsor.tail.p)
+  ztrendcorrected <- residual_moments$ztrend + residual_moments$zwmean - mom$mean
+  outlier_fit <- .shrink_outlier_df2(z, ztrendcorrected, df1, df2, n)
+  c(list(scale = exp(ztrendcorrected), df2 = df2), outlier_fit)
+}
+
+# Just adapted to use fitFDist_LG internally instead of fitFDist
+fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05, 0.1), trace = FALSE, min_df = 1) {
+  n <- length(x)
+
+  if (n < 2) {
+    return(list(scale = NA, df2 = NA, df2.shrunk = NA))
+  }
+  if (n == 2) {
+    return(fitFDist_LG(x = x, df1 = df1, covariate = covariate, min_df = min_df))
+  }
+
+  .validate_fit_f_dist_robustly(x, df1, covariate)
+
+  ok <- !is.na(x) & is.finite(df1) & (df1 > min_df)
+  if (!all(ok)) {
+    return(.filter_fit_f_dist_robustly(x, df1, covariate, ok, winsor.tail.p, trace))
+  }
+
+  .fit_f_dist_robustly_complete(x, df1, covariate, winsor.tail.p, trace, min_df, n)
+}
+
 .squeezeVarRob <- function(var, df, var.prior, df.prior) {
-  #	Squeeze posterior variances given hyperparameters
-  #	NAs not allowed in df.prior
-  #	Gordon Smyth
-  #	Created 5 May 2016
+  #  Squeeze posterior variances given hyperparameters
+  #  NAs not allowed in df.prior
+  #  Gordon Smyth
+  #  Created 5 May 2016
 
   n <- length(var)
   isfin <- is.finite(df.prior)
@@ -480,16 +508,16 @@ fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05
     return((df * var + df.prior * var.prior) / (df + df.prior))
   }
 
-  #	From here, at least some df.prior are infinite
+  #  From here, at least some df.prior are infinite
 
-  #	For infinite df.prior, return var.prior
+  #  For infinite df.prior, return var.prior
   if (length(var.prior) == n) {
     var.post <- var.prior
   } else {
     var.post <- rep_len(var.prior, length.out = n)
   }
 
-  #	Maybe some df.prior are finite
+  #  Maybe some df.prior are finite
   if (any(isfin)) {
     i <- which(isfin)
     if (length(df) > 1) {
@@ -535,11 +563,11 @@ fitFDistRobustly_LG <- function(x, df1, covariate = NULL, winsor.tail.p = c(0.05
 #'
 squeezeVarRob <- function(var, df, covariate = NULL, robust = FALSE, winsor.tail.p = c(0.05, 0.1), min_df = 1) {
   # Empirical Bayes posterior variances
-  #	Adapted from Gordon Smyth
+  #  Adapted from Gordon Smyth
   # Based on version created 2 March 2004.  Last modified 5 May 2016.
   n <- length(var)
 
-  #	Degenerate special case
+  #  Degenerate special case
   if (n == 0) {
     stop("var is empty")
   }
@@ -560,7 +588,7 @@ squeezeVarRob <- function(var, df, covariate = NULL, robust = FALSE, winsor.tail
     if (length(df) != n) stop("lengths differ")
   }
 
-  #	Estimate prior var and df
+  #  Estimate prior var and df
   if (robust) {
     fit <- fitFDistRobustly_LG(var, df1 = df, covariate = covariate, winsor.tail.p = winsor.tail.p, min_df = min_df)
     df.prior <- fit$df2.shrunk
@@ -568,9 +596,9 @@ squeezeVarRob <- function(var, df, covariate = NULL, robust = FALSE, winsor.tail
     fit <- fitFDist_LG(var, df1 = df, covariate = covariate, min_df = min_df)
     df.prior <- fit$df2
   }
-  #	if(anyNA(df.prior)) stop("Could not estimate prior df") -> we want NA's to stay where they are!
+  #  if(anyNA(df.prior)) stop("Could not estimate prior df") -> we want NA's to stay where they are!
 
-  #	Posterior variances
+  #  Posterior variances
   var.post <- .squeezeVarRob(var = var, df = df, var.prior = fit$scale, df.prior = df.prior)
 
   list(df.prior = df.prior, var.prior = fit$scale, var.post = var.post)

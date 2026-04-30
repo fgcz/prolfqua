@@ -3,6 +3,9 @@
 \name{LFQDataTransformer}
 \alias{LFQDataTransformer}
 \title{Decorate LFQData with Methods for transforming Intensities}
+\value{
+An R6 class generator.
+}
 \description{
 Decorate LFQData with Methods for transforming Intensities
 

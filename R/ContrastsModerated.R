@@ -1,6 +1,7 @@
 # ContrastsModerated -----
 
 #' Limma moderated contrasts
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -69,10 +70,10 @@ ContrastsModerated <- R6::R6Class(
       model_name = paste0(Contrast$model_name, "_moderated"),
       p.adjust = prolfqua::adjust_p_values
     ) {
-      self$Contrast = Contrast
-      self$subject_id = Contrast$subject_id
-      self$model_name = model_name
-      self$p.adjust = p.adjust
+      self$Contrast <- Contrast
+      self$subject_id <- Contrast$subject_id
+      self$model_name <- model_name
+      self$p.adjust <- p.adjust
     },
     #' @description
     #' get both sides of contrasts

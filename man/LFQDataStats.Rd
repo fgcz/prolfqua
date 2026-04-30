@@ -3,6 +3,9 @@
 \name{LFQDataStats}
 \alias{LFQDataStats}
 \title{Decorates LFQData with methods to compute statistics of interactions}
+\value{
+An R6 class generator.
+}
 \description{
 Decorates LFQData with methods to compute statistics of interactions
 

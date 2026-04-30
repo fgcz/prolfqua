@@ -3,6 +3,9 @@
 \name{AggregateRlm}
 \alias{AggregateRlm}
 \title{AggregateRlm}
+\value{
+An R6 class generator.
+}
 \description{
 AggregateRlm
 

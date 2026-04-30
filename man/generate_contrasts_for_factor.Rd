@@ -9,6 +9,9 @@ generate_contrasts_for_factor(levels)
 \arguments{
 \item{levels}{character vector of factor levels}
 }
+\value{
+Contrast definitions or contrast results.
+}
 \description{
 Single-factor contrasts (pairwise comparisons)
 }

@@ -26,6 +26,9 @@ nr_children_experiment(
 
 \item{name_nr_child}{character — output column name}
 }
+\value{
+The computed result.
+}
 \description{
 Aggregates nr_children per sample (via nr_obs_sample), then takes the max per hierarchy unit.
 }

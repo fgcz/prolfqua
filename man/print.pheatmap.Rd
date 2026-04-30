@@ -11,6 +11,9 @@
 
 \item{...}{ignored}
 }
+\value{
+The computed result.
+}
 \description{
 Fixes pheatmap's print method which omits \code{grid.newpage()},
 causing the heatmap to draw on top of the previous plot when

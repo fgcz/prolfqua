@@ -3,6 +3,9 @@
 \name{ContrastsLimma}
 \alias{ContrastsLimma}
 \title{Limma-based contrasts (direct limma pipeline)}
+\value{
+An R6 class generator.
+}
 \description{
 Limma-based contrasts (direct limma pipeline)
 

@@ -11,6 +11,9 @@ interaction_contrasts(primary_levels, secondary_levels)
 
 \item{secondary_levels}{character vector of secondary factor levels}
 }
+\value{
+Contrast definitions or contrast results.
+}
 \description{
 Interaction contrasts (difference of differences)
 }

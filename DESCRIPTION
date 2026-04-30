@@ -2,10 +2,17 @@ Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
 Version: 1.6.1
-Authors@R: c(person("Witold", "Wolski",
+Authors@R: c(
+    person("Witold", "Wolski",
         email = "witold.wolski@fgcz.uzh.ch",
-        role = c("aut", "cre"),
-        comment = c(ORCID = "0000-0002-6468-120X")))
+        role = "aut",
+        comment = c(ORCID = "0000-0002-6468-120X")),
+    person("Functional Genomics Center Zurich",
+        role = "fnd"),
+    person("Christian", "Panse",
+        email = "cp@fgcz.ethz.ch",
+        role = "cre",
+        comment = c(ORCID = "0000-0003-1975-3064")))
 Description: The prolfqua package integrates essential steps
     of the mass spectrometry based label free quantification data
     analysis workflow: quality control, data normalization, protein aggregation,
@@ -20,14 +27,11 @@ Description: The prolfqua package integrates essential steps
     when analysing dozens of proteomics datasets.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
-LazyDataCompression: xz
 VignetteBuilder: knitr
 URL: https://github.com/fgcz/prolfqua,
     https://fgcz.github.io/prolfqua/
 BugReports: https://github.com/fgcz/prolfqua/issues
 Imports:
-    broom,
     dplyr,
     forcats,
     ggplot2,
@@ -49,7 +53,8 @@ Imports:
     tidyselect,
     tidyr,
     tibble,
-    UpSetR
+    UpSetR,
+    withr
 Suggests:
     BiocCheck,
     corrplot,
@@ -74,5 +79,5 @@ Suggests:
 RoxygenNote: 7.3.3
 Roxygen: list(r6 = TRUE)
 Depends: 
-    R (>= 4.1)
+    R (>= 4.5.0)
 biocViews: MassSpectrometry, Proteomics, Metabolomics, ExperimentHubSoftware, Normalization, Preprocessing, QualityControl

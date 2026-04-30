@@ -1,6 +1,7 @@
 # ContrastsPlotter ----
 #' plot contrasts
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @family plotting
@@ -112,16 +113,16 @@ ContrastsPlotter <- R6::R6Class(
         remove = FALSE
       )
 
-      self$model_name = modelName
-      self$subject_id = subject_id
-      self$diff = diff
-      self$volcano_spec = volcano
-      self$score_spec = score
-      self$histogram_spec = histogram
-      self$fcthresh = fcthresh
-      self$contrast = contrast
-      self$avg.abundance = avg.abundance
-      self$protein_annot = protein_annot
+      self$model_name <- modelName
+      self$subject_id <- subject_id
+      self$diff <- diff
+      self$volcano_spec <- volcano
+      self$score_spec <- score
+      self$histogram_spec <- histogram
+      self$fcthresh <- fcthresh
+      self$contrast <- contrast
+      self$avg.abundance <- avg.abundance
+      self$protein_annot <- protein_annot
     },
     #' @description
     #' plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
@@ -395,8 +396,8 @@ ContrastsPlotter <- R6::R6Class(
       return(fig)
     },
     .histogram = function(score) {
-      xlim = score$xlim
-      score = score$score
+      xlim <- score$xlim
+      score <- score$score
       plot <- self$contrast_df |>
         ggplot(aes(x = !!sym(score))) +
         geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
@@ -428,9 +429,9 @@ ContrastsPlotter <- R6::R6Class(
     .score_plot = function(x, scores, colour, legend = TRUE) {
       fig <- list()
       for (score in scores) {
-        xlim = self$fcthresh
-        ylim = score$thresh
-        score = score$score
+        xlim <- self$fcthresh
+        ylim <- score$thresh
+        score <- score$score
         score_values <- if ("data.frame" %in% class(x)) {
           x[[score]]
         } else {

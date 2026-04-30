@@ -2,6 +2,7 @@
 #'
 #' weight lod by nr of NA's $(LOD * nrNas + meanAbundance *nrObs)/(nrMeasured)$
 #'
+#' @return An R6 class generator.
 #' @export
 #' @examples
 #' Contrasts <- c("group.b-a" = "group_A - group_B", "group.a-ctrl" = "group_A - group_Ctrl")
@@ -47,17 +48,17 @@ MissingHelpers <- R6::R6Class(
     #' @param prob default 0.5, median of groups with one observed value
     #' @param weighted should group average be computed used weighting, default TRUE.
     initialize = function(data, config, prob = 0.5, weighted = TRUE) {
-      self$data = data
-      self$config = config
-      self$prob = prob
-      self$weighted = weighted
+      self$data <- data
+      self$config <- config
+      self$prob <- prob
+      self$weighted <- weighted
     },
     #' @description
     #' get data.frame with statistics
     #' @return data.frame
     get_stats = function() {
       if (is.null(self$stats)) {
-        self$stats = prolfqua::summarize_stats_factors(
+        self$stats <- prolfqua::summarize_stats_factors(
           LFQData$new(self$data, self$config)
         )
       }

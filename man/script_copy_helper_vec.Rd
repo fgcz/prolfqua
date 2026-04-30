@@ -9,4 +9,8 @@ script_copy_helper_vec(runscripts, workdir = getwd(), packagename = "prolfqua")
 \description{
 copy script files and other from a package to workdir
 }
+\examples{
+copied <- script_copy_helper_vec("extdata/metadata.csv", workdir = tempdir())
+basename(copied)
+}
 \keyword{internal}

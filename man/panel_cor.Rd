@@ -18,6 +18,10 @@ panel_cor(x, y, digits = 2, ...)
 \description{
 correlation panel for pairs plot function (used as default in pairs_smooth)
 }
+\examples{
+graphics::plot(1:3, 1:3, type = "n")
+panel_cor(1:3, 1:3)
+}
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

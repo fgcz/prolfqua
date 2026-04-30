@@ -1,7 +1,14 @@
 # Internal error handler for tryCatch in model fitting and plotting
 .error_handler <- function(e) {
-  warning("WARN :", e)
+  warning(conditionMessage(e), call. = FALSE)
   as.character(e)
+}
+
+# Internal helper for rendering ggplot/pheatmap objects to an open graphics device.
+.render_plot_to_device <- function(x) {
+  print_fun <- base::get("print")
+  print_fun(x)
+  invisible(x)
 }
 
 #' Extracts uniprot ID
@@ -223,6 +230,7 @@ multigroup_volcano <- function(
 #' @param x a matrix
 #' @param preserve_row_names give name to rownames column, if NULL discard rownames
 #' @param ... further parameters passed to as_tibble
+#' @return The computed result.
 #' @export
 #' @family utilities
 #' @examples
@@ -233,7 +241,7 @@ multigroup_volcano <- function(
 #'
 matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
   if (!(is.matrix(x) || is.data.frame(x))) {
-    stop("Error: `x` is not a matrix or data.frame object.")
+    stop("`x` is not a matrix or data.frame object.", call. = FALSE)
   }
   if (!is.null(preserve_row_names)) {
     row.names <- rownames(x)
@@ -243,7 +251,7 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
         tibble::as_tibble(x, ...)
       )
     } else {
-      warning("Warning: No row names to preserve. ", "Object otherwise converted to tibble successfully.")
+      warning("No row names to preserve. Object otherwise converted to tibble successfully.", call. = FALSE)
       tibble::as_tibble(x, ...)
     }
   } else {
@@ -259,6 +267,9 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
 #' @param y numeric data
 #' @param ... not used
 #' @param digits number of digits to display
+#' @examples
+#' graphics::plot(1:3, 1:3, type = "n")
+#' panel_cor(1:3, 1:3)
 panel_cor <- function(x, y, digits = 2, ...) {
   usr <- par("usr")
   on.exit(par(usr = usr))
@@ -329,12 +340,15 @@ pairs_smooth <- function(data, legend = FALSE, ...) {
 
 
 #' table facade to easily switch implementations
+#' @return The requested plot, table, or transformed object.
 #' @export
 #' @family utilities
 #' @param df data.frame to display
 #' @param caption table caption
 #' @param digits number of digits (default from options)
 #' @param kable if TRUE use knitr::kable
+#' @examples
+#' table_facade(head(iris, 3), caption = "Iris preview")
 table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE) {
   if (kable) {
     knitr::kable(df, digits = digits, caption = caption)
@@ -419,6 +433,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 #' @param minsignificance minimum significance value (floor for -log10 axis)
 #' @param title_size font size of the subplot title annotation
 #' @param group crosstalk group name for linked brushing
+#' @return The requested plot, table, or transformed object.
 #' @export
 #' @examples
 #'
@@ -525,6 +540,7 @@ volcano_plotly <- function(
 #' @param palette named colour vector for the colour aesthetic
 #' @param title_size font size of the subplot title annotation
 #' @param group crosstalk group name for linked brushing
+#' @return The requested plot, table, or transformed object.
 #' @export
 #' @examples
 #'
@@ -589,8 +605,12 @@ scatter_plotly <- function(
 #' load data from prolfqua
 #' @param datastr name of dataset
 #' @param package default prolfqua
+#' @return The computed result.
 #' @export
 #' @family data
+#' @examples
+#' ionstar <- prolfqua_data("data_ionstar")
+#' names(ionstar)
 prolfqua_data <- function(datastr, package = "prolfqua") {
   e <- new.env(parent = emptyenv())
   data(list = datastr, package = package, envir = e)

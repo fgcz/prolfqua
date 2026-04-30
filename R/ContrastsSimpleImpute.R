@@ -10,6 +10,7 @@
 #' of all observations of all groups.
 #'
 #' @family modelling
+#' @return An R6 class generator.
 #' @export
 #' @examples
 #' Nprot <- 120
@@ -96,12 +97,12 @@ ContrastsMissing <- R6::R6Class(
       p.adjust = prolfqua::adjust_p_values,
       model_name = "groupAverage"
     ) {
-      self$subject_id = lfqdata$relevant_hierarchy_keys()
-      self$contrasts = contrasts
-      self$model_name = model_name
-      self$lfqdata = lfqdata
-      self$confint = confint
-      self$p.adjust = p.adjust
+      self$subject_id <- lfqdata$relevant_hierarchy_keys()
+      self$contrasts <- contrasts
+      self$model_name <- model_name
+      self$lfqdata <- lfqdata
+      self$confint <- confint
+      self$p.adjust <- p.adjust
     },
     #' @description
     #' get contrasts sides

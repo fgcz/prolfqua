@@ -40,9 +40,9 @@ lfqdata <- prolfqua::LFQData$new(sim$data, sim$config)
 
 Log2-transform and pivot to a wide matrix (peptides x samples) for limpa.
 
-```{r to_wide}
+```{r data_wide}
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-wide <- lfqdata$to_wide(as.matrix = TRUE)
+wide <- lfqdata$data_wide(as.matrix = TRUE)
 
 expr_matrix <- wide$data
 annotation <- wide$annotation
@@ -78,7 +78,7 @@ then run a plain `limma::lmFit()` + `eBayes()` analysis. NAs are simply ignored 
 
 ```{r baseline_aggregate}
 lfqdata_protein <- lfqdata$get_Aggregator()$aggregate()
-wide_prot <- lfqdata_protein$to_wide(as.matrix = TRUE)
+wide_prot <- lfqdata_protein$data_wide(as.matrix = TRUE)
 expr_protein_baseline <- wide_prot$data
 
 cat("Protein matrix:", nrow(expr_protein_baseline), "proteins x",

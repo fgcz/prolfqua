@@ -3,6 +3,9 @@
 \name{LFQData}
 \alias{LFQData}
 \title{LFQData R6 class}
+\value{
+An R6 class generator.
+}
 \description{
 LFQData R6 class
 
@@ -95,7 +98,6 @@ Other LFQData:
 \item \href{#method-LFQData-omit_na}{\code{LFQData$omit_na()}}
 \item \href{#method-LFQData-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-LFQData-data_wide}{\code{LFQData$data_wide()}}
-\item \href{#method-LFQData-to_wide}{\code{LFQData$to_wide()}}
 \item \href{#method-LFQData-factors}{\code{LFQData$factors()}}
 \item \href{#method-LFQData-hierarchy}{\code{LFQData$hierarchy()}}
 \item \href{#method-LFQData-response}{\code{LFQData$response()}}
@@ -108,7 +110,6 @@ Other LFQData:
 \item \href{#method-LFQData-nr_children_col}{\code{LFQData$nr_children_col()}}
 \item \href{#method-LFQData-isotope_label}{\code{LFQData$isotope_label()}}
 \item \href{#method-LFQData-data_long}{\code{LFQData$data_long()}}
-\item \href{#method-LFQData-get_data}{\code{LFQData$get_data()}}
 \item \href{#method-LFQData-rename_response}{\code{LFQData$rename_response()}}
 \item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
 \item \href{#method-LFQData-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
@@ -375,25 +376,6 @@ list with data, annotation, and configuration
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-to_wide}{}}}
-\subsection{Method \code{to_wide()}}{
-deprecated — use data_wide() instead
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$to_wide(as.matrix = FALSE, value = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{as.matrix}}{return as data.frame or matrix}
-
-\item{\code{value}}{see possible lfqdata$get_config()$value_vars()}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-factors"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-factors}{}}}
 \subsection{Method \code{factors()}}{
@@ -525,16 +507,6 @@ return the tidy (long-format) data frame
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-get_data"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-get_data}{}}}
-\subsection{Method \code{get_data()}}{
-deprecated — use data_long() instead
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_data()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-rename_response"></a>}}

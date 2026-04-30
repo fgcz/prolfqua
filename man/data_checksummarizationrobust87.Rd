@@ -5,7 +5,7 @@
 \alias{data_checksummarizationrobust87}
 \title{example data for check}
 \format{
-An object of class \code{data.frame} with 20 rows and 3 columns.
+An object of class \code{NULL} of length 0.
 }
 \usage{
 data_checksummarizationrobust87

@@ -9,6 +9,11 @@ robust_scale(data, dim = 2, preserve_mean = FALSE)
 \description{
 robust scale wrapper
 }
+\examples{
+mat <- matrix(c(1, 2, 3, 4, 10, 12), nrow = 3)
+scaled <- robust_scale(mat)
+dim(scaled)
+}
 \seealso{
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

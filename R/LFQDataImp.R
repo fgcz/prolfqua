@@ -1,6 +1,7 @@
 #' esitmate lod
 #' @param data_matrix numeric matrix of abundance values
 #' @param prop_na numeric, percentage threshold for NA proportion per row
+#' @return The computed result.
 #' @export
 #' @examples
 #' # example code
@@ -19,6 +20,7 @@ estimate_lod_global <- function(data_matrix, prop_na = 90) {
 #' get smallest values per sample
 #' @param data_matrix numeric matrix or data.frame of abundance values
 #' @param percent numeric, percentile cutoff for smallest values
+#' @return The computed result.
 #' @export
 #' @examples
 #' # example code
@@ -43,7 +45,7 @@ function_lod_quantile <- function(data_matrix, percent = 10) {
       next
     }
     n_select <- ceiling(length(col_data) * percent / 100)
-    result_list[[col_name]] <- sort(col_data, partial = n_select)[1:n_select]
+    result_list[[col_name]] <- sort(col_data, partial = n_select)[seq_len(n_select)]
   }
   return(result_list)
 }
@@ -92,7 +94,7 @@ impute_with_zcomp <- function(
   }
 
   data_matrix <- wide$data
-  dl <- sapply(function_lod_quantile(data_matrix), median)
+  dl <- vapply(function_lod_quantile(data_matrix), median, numeric(1))
 
   if (lod == "global") {
     lod_value <- estimate_lod_global(data_matrix)

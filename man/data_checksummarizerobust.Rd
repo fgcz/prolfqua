@@ -5,7 +5,7 @@
 \alias{data_checksummarizerobust}
 \title{example data for check}
 \format{
-An object of class \code{data.frame} with 20 rows and 3 columns.
+An object of class \code{NULL} of length 0.
 }
 \usage{
 data_checksummarizerobust

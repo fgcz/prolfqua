@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := check
 
-.PHONY: check check-fast check-bioc build build-vignettes document coverage install lint format clean help site deploy install-pre-commit-hook
+.PHONY: check check-fast check-bioc test build build-vignettes document coverage install lint format clean help site deploy install-pre-commit-hook
 
 DOCUMENT_CMD = Rscript -e "devtools::document()"
 BUILD_CMD = Rscript -e "devtools::build()"
@@ -20,6 +20,7 @@ help:
 	@echo "  make check     - R CMD check (runs document, build first)"
 	@echo "  make check-fast - R CMD check without rebuilding vignettes during check"
 	@echo "  make check-bioc - run BiocCheck::BiocCheck()"
+	@echo "  make test      - run testthat tests"
 	@echo "  make install   - install package locally"
 	@echo "  make lint      - run lintr"
 	@echo "  make format    - format package with air"
@@ -52,6 +53,9 @@ check-fast: document
 
 check-bioc:
 	$(CHECK_BIOC_CMD)
+
+test: document
+	$(TEST_CMD)
 
 coverage: document
 	$(COVERAGE_CMD)

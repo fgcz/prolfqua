@@ -1,4 +1,5 @@
 #' find file stored in package
+#' @return The computed result.
 #' @export
 #' @param packagename name of the R package
 #' @param file relative path to the file within the package
@@ -20,6 +21,9 @@ find_package_file <- function(packagename, file) {
 #' copy script files and other from a package to workdir
 #' @export
 #' @keywords internal
+#' @examples
+#' copied <- script_copy_helper_vec("extdata/metadata.csv", workdir = tempdir())
+#' basename(copied)
 script_copy_helper_vec <-
   function(runscripts, workdir = getwd(), packagename = "prolfqua") {
     res <- NULL
@@ -30,20 +34,17 @@ script_copy_helper_vec <-
       if (!file.exists(src_script)) {
         src_script <- file.path(find.package(packagename), "inst", scripts)
         if (!file.exists(src_script)) {
-          warning(paste("could not copy script file.", dest_script, sep = " "))
+          msg <- sprintf("could not copy script file. %s", dest_script)
+          warning(msg, call. = FALSE)
         }
       }
       if (!file.copy(src_script, dest_script, overwrite = TRUE)) {
-        warning(paste("could not copy script file.", src_script, " to ", dest_script, sep = " "))
+        msg <- sprintf("could not copy script file. %s to %s", src_script, dest_script)
+        warning(msg, call. = FALSE)
       } else {
         res <- c(res, dest_script)
       }
     }
-    message(paste(
-      "your working directory now should contain: ",
-      length(res),
-      "new files :\n",
-      sep = " "
-    ))
+    message(sprintf("your working directory now should contain: %d new files:\n", length(res)))
     return(res)
   }

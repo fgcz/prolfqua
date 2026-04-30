@@ -40,7 +40,7 @@
   filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
   pdf(filepath, width = width, height = height)
   for (i in seq_len(nrow(pl))) {
-    print(pl$plots[[i]])
+    .render_plot_to_device(pl$plots[[i]])
     pb$tick()
   }
   dev.off()
@@ -53,6 +53,7 @@
 #' Aggregates peptide intensities to protein level using median polish.
 #' Works best with variance-stabilized (log-transformed) intensities.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family LFQData
 #'
@@ -129,6 +130,7 @@ AggregateMedpolish <- R6::R6Class(
 #' Aggregates peptide intensities to protein level using robust regression (rlm).
 #' Works best with variance-stabilized (log-transformed) intensities.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family LFQData
 #'
@@ -205,6 +207,7 @@ AggregateRlm <- R6::R6Class(
 #' Aggregates peptide intensities to protein level using top N peptides.
 #' Works with raw (untransformed) intensities.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family LFQData
 #'
@@ -404,19 +407,18 @@ AggregateTopN <- R6::R6Class(
 #'   \item observation count (in \code{config$nr_children}) — number of observed precursors
 #' }
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family LFQData
 #'
 #' @examples
-#' \dontrun{
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #'
 #' agg <- AggregateLimpa$new(lfqdata, "protein")
 #' agg$aggregate()
-#' agg$lfq_agg$to_wide()
-#' }
+#' agg$lfq_agg$data_wide()
 AggregateLimpa <- R6::R6Class(
   "AggregateLimpa",
   public = list(

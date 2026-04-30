@@ -3,6 +3,9 @@
 \name{ContrastsPlotter}
 \alias{ContrastsPlotter}
 \title{plot contrasts}
+\value{
+An R6 class generator.
+}
 \description{
 plot contrasts
 

@@ -15,8 +15,14 @@ table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 
 \item{kable}{if TRUE use knitr::kable}
 }
+\value{
+The requested plot, table, or transformed object.
+}
 \description{
 table facade to easily switch implementations
+}
+\examples{
+table_facade(head(iris, 3), caption = "Iris preview")
 }
 \seealso{
 Other utilities: 

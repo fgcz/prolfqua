@@ -5,7 +5,7 @@
 \alias{data_IonstarProtein_subsetNorm}
 \title{example data for check}
 \format{
-An object of class \code{list} of length 2.
+An object of class \code{NULL} of length 0.
 }
 \usage{
 data_IonstarProtein_subsetNorm

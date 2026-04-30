@@ -20,12 +20,23 @@ pivot_model_contrasts_to_wide(
 
 \item{contrast}{column name containing contrast labels}
 }
+\value{
+Contrast definitions or contrast results.
+}
 \description{
 pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
 }
 \examples{
 
 # this function is used by the contrast classes to implement the to wide method
+contrast_df <- data.frame(
+  protein_Id = c("P1", "P1", "P2", "P2"),
+  lhs = c("A_vs_B", "C_vs_D", "A_vs_B", "C_vs_D"),
+  estimate = c(1.0, 0.5, -0.2, 0.7),
+  p.value = c(0.01, 0.2, 0.4, 0.05),
+  p.value.adjusted = c(0.02, 0.25, 0.4, 0.08)
+)
+pivot_model_contrasts_to_wide(contrast_df)
 
 }
 \seealso{

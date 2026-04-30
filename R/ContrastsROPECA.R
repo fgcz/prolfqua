@@ -7,6 +7,7 @@
 #'  on peptide-level and aggregates the peptide-level changes
 #'   to determine differential protein-level expression.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -64,11 +65,11 @@ ContrastsROPECA <- R6::R6Class(
     #' @param model_name default ROPECA
     #' @param p.adjust function to use for p.value adjustement
     initialize = function(Contrast, model_name = "ROPECA", p.adjust = prolfqua::adjust_p_values) {
-      self$Contrast = Contrast
+      self$Contrast <- Contrast
       stopifnot(length(Contrast$subject_id) > 1)
-      self$model_name = model_name
-      self$subject_id = Contrast$subject_id
-      self$p.adjust = p.adjust
+      self$model_name <- model_name
+      self$subject_id <- Contrast$subject_id
+      self$p.adjust <- p.adjust
     },
     #' @description
     #' show names of contrasts

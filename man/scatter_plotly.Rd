@@ -35,6 +35,9 @@ scatter_plotly(
 
 \item{group}{crosstalk group name for linked brushing}
 }
+\value{
+The requested plot, table, or transformed object.
+}
 \description{
 scatter plotly
 }

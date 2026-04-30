@@ -40,7 +40,7 @@ You can convert the data into a data frame in a wide format, where the
 intensities of each sample occupy their columns.
 
 ```{r showHowToWide}
-lfqdata$to_wide()$data[1:3,1:8]
+lfqdata$data_wide()$data[1:3,1:8]
 ```
 
 ## Visualization of not normalized data
@@ -242,4 +242,3 @@ sessionInfo()
 ```
 
 # References
-

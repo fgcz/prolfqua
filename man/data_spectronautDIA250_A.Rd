@@ -5,7 +5,7 @@
 \alias{data_spectronautDIA250_A}
 \title{example data for check}
 \format{
-An object of class \code{list} of length 3.
+An object of class \code{NULL} of length 0.
 }
 \usage{
 data_spectronautDIA250_A

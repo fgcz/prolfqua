@@ -26,8 +26,16 @@ strategy_limpa(
 
 \item{span}{lowess smoother span (NULL = auto)}
 }
+\value{
+The computed result.
+}
 \description{
 Wrapper that returns a \code{\link{StrategyLimpa}} R6 object.
+}
+\examples{
+strat <- strategy_limpa("abundance ~ group_")
+strat$formula
+strat$model_name
 }
 \seealso{
 Other modelling: 

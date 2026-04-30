@@ -5,6 +5,15 @@
 #' @family modelling
 #' @keywords internal
 #'
+#' @examples
+#' contrast_df <- data.frame(
+#'   sigma = c(0.25, 0.32, 0.28, 0.40, 0.35),
+#'   df = rep(6, 5),
+#'   statistic = c(2.1, -1.8, 0.5, 3.0, -2.2),
+#'   diff = c(0.8, -0.6, 0.2, 1.2, -0.9)
+#' )
+#' res <- moderated_p_limma(contrast_df)
+#' "moderated.p.value" %in% colnames(res)
 moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust = FALSE, confint = 0.95) {
   squeezed_var <- prolfqua::squeezeVarRob(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
 
@@ -61,6 +70,7 @@ moderated_p_limma_long <- function(contrast_df, group_by_col = "lhs", estimate =
 
 #' adjust columns
 #'
+#' @return The computed result.
 #' @export
 #' @param contrast_df data.frame with p-values to adjust
 #' @param column name of column containing p-values

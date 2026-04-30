@@ -57,7 +57,6 @@ modg99273$linear_model[1]
 
 
 # check protein g99273
-lfqdata$to_wide()$data %>% filter(protein_Id == "g99273")
+lfqdata$data_wide()$data %>% filter(protein_Id == "g99273")
 v1$FDR$data %>% filter(protein_Id == "g99273")
-
 

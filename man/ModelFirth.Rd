@@ -3,6 +3,9 @@
 \name{ModelFirth}
 \alias{ModelFirth}
 \title{R6 class representing modelling result}
+\value{
+An R6 class generator.
+}
 \description{
 R6 class representing modelling result
 

@@ -3,6 +3,9 @@
 \name{ContrastsFirthFacade}
 \alias{ContrastsFirthFacade}
 \title{Firth logistic missingness contrast analysis facade}
+\value{
+An R6 class generator.
+}
 \description{
 Firth logistic missingness contrast analysis facade
 

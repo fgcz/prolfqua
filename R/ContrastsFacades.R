@@ -74,6 +74,7 @@
 #' \code{\link{linfct_matrix_contrasts}} evaluation.
 #' See \code{\link{build_contrast_analysis}} for details.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -144,6 +145,7 @@ ContrastsLimmaFacade <- R6::R6Class(
 #' and degrees of freedom are corrected so that inference is not artificially
 #' precise from the constant imputation.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -222,6 +224,7 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
 #' Uses vooma-style precision weights derived from a mean-variance trend,
 #' optionally combined with external weights (e.g. peptide/precursor counts).
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -299,6 +302,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
 #' Combines vooma precision weights with LOD imputation for proteins whose
 #' fit produces NA coefficients (typically from entire missing groups).
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -390,10 +394,10 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
 #' count (\code{config$nr_children}) columns needed for limpa's vooma
 #' precision weighting and imputation-aware DF correction.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
-#' \dontrun{
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
@@ -402,7 +406,6 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 #' fa <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)
 #' head(fa$get_contrasts())
-#' }
 ContrastsLimpaFacade <- R6::R6Class(
   "ContrastsLimpaFacade",
   public = list(
@@ -467,6 +470,7 @@ ContrastsLimpaFacade <- R6::R6Class(
 #' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
 #' computation. See \code{\link{build_contrast_analysis}} for details.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -534,6 +538,7 @@ ContrastsLMFacade <- R6::R6Class(
 #' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
 #' computation. See \code{\link{build_contrast_analysis}} for details.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -614,6 +619,7 @@ ContrastsRLMFacade <- R6::R6Class(
 #' )
 #' head(fa$get_contrasts())
 #' fa$to_wide()
+#' @return An R6 class generator.
 ContrastsLmerFacade <- R6::R6Class(
   "ContrastsLmerFacade",
   public = list(
@@ -670,6 +676,7 @@ ContrastsLmerFacade <- R6::R6Class(
 #' Proteins without a fitted model get their contrasts filled in from the
 #' group-mean imputation method (\code{\link{ContrastsMissing}}).
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -747,6 +754,7 @@ ContrastsLMMissingFacade <- R6::R6Class(
 #' The covariance matrix is borrowed from successful fits so that the
 #' variance is not underestimated by the constant imputation.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -837,6 +845,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
 #' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
 #' computation. See \code{\link{build_contrast_analysis}} for details.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -899,6 +908,7 @@ ContrastsFirthFacade <- R6::R6Class(
 #' merge with \code{\link{ContrastsMissing}} ->
 #' \code{\link{ContrastsModeratedDEqMS}}.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -972,6 +982,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
 #' \code{\link{build_model_limma_voom}} -> \code{\link{ContrastsLimma}}
 #' (eBayes = FALSE) -> \code{\link{ContrastsModeratedDEqMS}}.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @examples
@@ -1056,6 +1067,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #' fa <- ContrastsROPECAFacade$new(lfqdata, "~ group_", contrasts)
 #' head(fa$get_contrasts())
 #' fa$to_wide()
+#' @return An R6 class generator.
 ContrastsROPECAFacade <- R6::R6Class(
   "ContrastsROPECAFacade",
   public = list(
@@ -1179,6 +1191,9 @@ ContrastsROPECAFacade <- R6::R6Class(
 #' }
 #'
 #' @export
+#' @examples
+#' names(FACADE_REGISTRY)
+#' FACADE_REGISTRY$limma$class
 FACADE_REGISTRY <- list(
   lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
   lm_impute = list(class = "ContrastsLMImputeFacade", needs = "aggregated"),

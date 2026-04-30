@@ -6,6 +6,7 @@
 #'
 #' @param x a pheatmap object
 #' @param ... ignored
+#' @return The computed result.
 #' @export
 #' @method print pheatmap
 print.pheatmap <- function(x, ...) {

@@ -3,6 +3,9 @@
 \name{StrategyLmer}
 \alias{StrategyLmer}
 \title{Linear mixed-effects model strategy (R6 class)}
+\value{
+An R6 class generator.
+}
 \description{
 Linear mixed-effects model strategy (R6 class)
 

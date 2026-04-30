@@ -4,6 +4,9 @@
 \alias{LFQDataPlotter}
 \title{LFQDataPlotter ----
 Create various visualization of the LFQdata}
+\value{
+An R6 class generator.
+}
 \description{
 LFQDataPlotter ----
 Create various visualization of the LFQdata

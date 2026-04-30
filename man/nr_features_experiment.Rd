@@ -20,6 +20,9 @@ nr_features_experiment(
 
 \item{name_nr_child}{character — output column name}
 }
+\value{
+The computed result.
+}
 \description{
 Counts the number of distinct child-level entries (e.g. peptides per protein).
 }

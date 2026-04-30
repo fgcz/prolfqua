@@ -6,6 +6,7 @@
 #' @param configuration AnalysisConfiguration
 #' @param cc complete cases default TRUE
 #' @param from_factors if TRUE, create sampleName from factor columns
+#' @return The computed result.
 #' @export
 #' @family configuration
 #' @examples
@@ -250,6 +251,10 @@ complete_cases <- function(lfqdata) {
 #' @keywords internal
 #' @family configuration
 #'
+#' @examples
+#' bb <- sim_lfq_data_peptide_config(Nprot = 5)
+#' subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
+#' length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 sample_subset <- function(size, pdata, hierarchy_keys_depth) {
   message("Sampling ", size, paste(hierarchy_keys_depth, collapse = ","))
   hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> sample_n(size = size)

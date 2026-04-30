@@ -3,6 +3,9 @@
 \name{ContrastsInterface}
 \alias{ContrastsInterface}
 \title{Base class for all Contrasts classes}
+\value{
+An R6 class generator.
+}
 \description{
 Base class for all Contrasts classes
 

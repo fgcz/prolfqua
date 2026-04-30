@@ -13,8 +13,35 @@ merge_contrasts_results(prefer, add, model_name = "mergedModel")
 
 \item{model_name}{name of the merged model default "mergedModel"}
 }
+\value{
+Contrast definitions or contrast results.
+}
 \description{
 Typically used with results of \code{\link{Contrasts}} and \code{\link{ContrastsMissing}}
+}
+\examples{
+prefer_df <- data.frame(
+  protein_Id = c("P1", "P2"),
+  contrast = "A_vs_B",
+  modelName = "prefer",
+  diff = c(1, 2),
+  p.value = c(0.01, 0.2),
+  FDR = c(0.02, 0.2),
+  statistic = c(3, NA)
+)
+add_df <- data.frame(
+  protein_Id = c("P1", "P2"),
+  contrast = "A_vs_B",
+  modelName = "add",
+  diff = c(1.1, 2.1),
+  p.value = c(0.02, 0.03),
+  FDR = c(0.03, 0.04),
+  statistic = c(2.8, 2.5)
+)
+prefer <- ContrastsTable$new(prefer_df, subject_id = "protein_Id", model_name = "prefer")
+add <- ContrastsTable$new(add_df, subject_id = "protein_Id", model_name = "add")
+merged <- merge_contrasts_results(prefer, add)
+merged$merged$get_contrasts()
 }
 \seealso{
 Other modelling: 

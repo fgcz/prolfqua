@@ -87,8 +87,13 @@ hierarchy_counts <- function(pdata, hierarchy_keys, isotope_label = "isotopeLabe
 #'
 #' Provides wide, long, and plot views of hierarchy counts.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family summary
+#' @examples
+#' bb <- sim_lfq_data_protein_config()
+#' counts <- HierarchyCountsSample$new(bb$data, bb$config)
+#' head(counts$wide())
 HierarchyCountsSample <- R6::R6Class(
   "HierarchyCountsSample",
   public = list(

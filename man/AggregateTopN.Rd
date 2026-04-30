@@ -3,6 +3,9 @@
 \name{AggregateTopN}
 \alias{AggregateTopN}
 \title{AggregateTopN}
+\value{
+An R6 class generator.
+}
 \description{
 AggregateTopN
 

@@ -26,6 +26,9 @@ nr_obs_sample(
 
 \item{new_child}{character — output column name}
 }
+\value{
+The computed result.
+}
 \description{
 Aggregates e.g. protein abundances from peptide abundances
 }

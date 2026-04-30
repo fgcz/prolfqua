@@ -3,6 +3,9 @@
 \name{HierarchyCountsSample}
 \alias{HierarchyCountsSample}
 \title{Count distinct elements for each level of hierarchy per sample}
+\value{
+An R6 class generator.
+}
 \description{
 Count distinct elements for each level of hierarchy per sample
 
@@ -10,6 +13,11 @@ Count distinct elements for each level of hierarchy per sample
 }
 \details{
 Provides wide, long, and plot views of hierarchy counts.
+}
+\examples{
+bb <- sim_lfq_data_protein_config()
+counts <- HierarchyCountsSample$new(bb$data, bb$config)
+head(counts$wide())
 }
 \seealso{
 Other summary: 

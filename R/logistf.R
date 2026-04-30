@@ -190,7 +190,7 @@ build_model_logistf <- function(data, formula) {
       model_name = "logistf_2",
       subject_id = lfq2$subject_id()
     )
-    models2$strategy = model_strategy2
+    models2$strategy <- model_strategy2
   }
 
   df1 <- df[df[[ncol(df)]] == 1, ]
@@ -204,7 +204,7 @@ build_model_logistf <- function(data, formula) {
       model_name = "logistf_1",
       subject_id = lfq1$subject_id()
     )
-    models1$strategy = model_strategy1
+    models1$strategy <- model_strategy1
   }
   res <- ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey))
   return(res)
@@ -300,6 +300,7 @@ sim_build_models_logistf <- function(
 #' Encapsulates everything needed to fit per-protein Firth's bias-reduced
 #' logistic regression via \code{\link[logistf]{logistf}} and extract contrasts.
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family modelling
 #' @importFrom logistf logistf

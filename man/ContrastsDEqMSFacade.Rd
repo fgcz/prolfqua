@@ -3,6 +3,9 @@
 \name{ContrastsDEqMSFacade}
 \alias{ContrastsDEqMSFacade}
 \title{DEqMS contrast analysis facade}
+\value{
+An R6 class generator.
+}
 \description{
 DEqMS contrast analysis facade
 

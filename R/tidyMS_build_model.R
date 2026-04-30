@@ -1,5 +1,6 @@
 #' Likelihood ratio test
 #' @family modelling
+#' @return The computed result.
 #' @export
 #' @param complete_models table with models (see build model)
 #' @param model_name name of model
@@ -264,10 +265,13 @@ model_summary <- function(mod) {
 .likelihood_ratio_test <- function(modelNO, model) {
   res <- tryCatch(anova(modelNO, model), error = function(x) NULL)
   if (!is.null(res)) {
-    res <- suppressWarnings(broom::tidy(res))[2, "p.value"]
-    return(as.numeric(res))
+    p_value_col <- grep("^Pr\\(", colnames(res), value = TRUE)
+    if (length(p_value_col) == 0 || nrow(res) < 2) {
+      return(NA_real_)
+    }
+    return(as.numeric(res[[p_value_col[1]]][2]))
   } else {
-    return(NA)
+    return(NA_real_)
   }
 }
 
@@ -558,6 +562,9 @@ impute_refit_singular <- function(
 #' @keywords internal
 #' @family modelling
 #' @export
+#' @examples
+#' fit <- stats::lm(Sepal.Length ~ Species, data = iris)
+#' is_singular_lm(fit)
 #'
 is_singular_lm <- function(m) {
   has_na <- any(is.na(coefficients(m)))

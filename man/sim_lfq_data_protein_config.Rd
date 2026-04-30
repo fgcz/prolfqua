@@ -23,6 +23,9 @@ sim_lfq_data_protein_config(
 
 \item{paired}{if TRUE, add a paired subject factor to the design}
 }
+\value{
+A list containing simulated data and an analysis configuration.
+}
 \description{
 Simulate data, protein, with config
 }

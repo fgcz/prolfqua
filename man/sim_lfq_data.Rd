@@ -32,6 +32,9 @@ sim_lfq_data(
 
 \item{PEPTIDE}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
 }
+\value{
+A data frame containing simulated LFQ data.
+}
 \description{
 simulate protein level data with two groups
 }

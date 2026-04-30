@@ -11,6 +11,9 @@ estimate_lod_global(data_matrix, prop_na = 90)
 
 \item{prop_na}{numeric, percentage threshold for NA proportion per row}
 }
+\value{
+The computed result.
+}
 \description{
 esitmate lod
 }

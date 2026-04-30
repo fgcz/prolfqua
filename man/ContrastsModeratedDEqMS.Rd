@@ -3,6 +3,9 @@
 \name{ContrastsModeratedDEqMS}
 \alias{ContrastsModeratedDEqMS}
 \title{DEqMS count-dependent moderated contrasts}
+\value{
+An R6 class generator.
+}
 \description{
 DEqMS count-dependent moderated contrasts
 

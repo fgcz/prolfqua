@@ -71,11 +71,13 @@ utils::globalVariables(c(
 #' @family workflows
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
+#' @return A documentation topic.
 NULL
 
 #' Package Data
 #' @family data
 #' @name PACKAGE_DATA
+#' @return A documentation topic.
 NULL
 
 
@@ -88,14 +90,14 @@ NULL
 #' @keywords internal
 #' @docType data
 #' @format a linear model
-"data_SAINTe_output"
+data_SAINTe_output <- NULL
 
 #' example dataset for testing
 #' @family data
 #' @docType data
 #' @keywords internal
 #' @format a data frame
-"x5463yzwer453bbb"
+x5463yzwer453bbb <- NULL
 
 
 #' Benchmark data Example
@@ -103,67 +105,67 @@ NULL
 #' @family data
 #' @docType data
 #' @keywords internal
-"data_benchmarkExample"
+data_benchmarkExample <- NULL
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
-"data_checksummarizationrobust87"
+data_checksummarizationrobust87 <- NULL
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
-"data_checksummarizerobust"
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-#'
-"data_checksummarizerobust69"
+data_checksummarizerobust <- NULL
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 #'
-"data_correlatedPeptideList"
+data_checksummarizerobust69 <- NULL
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
 #'
-"data_IonstarProtein_subsetNorm"
+data_correlatedPeptideList <- NULL
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
-"data_ionstar"
+#'
+data_IonstarProtein_subsetNorm <- NULL
+
+#' example data for check
+#' @family data
+#' @docType data
+#' @keywords internal
+data_ionstar <- NULL
 
 #' example data for check of scores produced based on confusion matrix
 #' @family data
 #' @docType data
 #' @keywords internal
-"data_test_confusion_matrix_scores"
+data_test_confusion_matrix_scores <- NULL
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
-"data_skylinePRMSample_A"
+data_skylinePRMSample_A <- NULL
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
-"data_skylineSRM_HL_A"
+data_skylineSRM_HL_A <- NULL
 
 #' example data for check
 #' @family data
 #' @docType data
 #' @keywords internal
-"data_spectronautDIA250_A"
+data_spectronautDIA250_A <- NULL

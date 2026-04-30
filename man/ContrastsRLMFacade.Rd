@@ -3,6 +3,9 @@
 \name{ContrastsRLMFacade}
 \alias{ContrastsRLMFacade}
 \title{RLM contrast analysis facade}
+\value{
+An R6 class generator.
+}
 \description{
 RLM contrast analysis facade
 

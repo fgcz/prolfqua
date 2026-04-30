@@ -69,6 +69,7 @@
 #' # stopifnot(ncol(lfqstats$stats_wide()) == 30)
 #' lfqstats$violin()
 #' runallfuncs(lfqstats)
+#' @return An R6 class generator.
 
 LFQDataStats <- R6::R6Class(
   "LFQDataStats",
@@ -87,7 +88,7 @@ LFQDataStats <- R6::R6Class(
     #'   information
     initialize = function(lfqdata, stats = c("everything", "interaction", "all")) {
       stats <- match.arg(stats)
-      self$lfq = lfqdata$clone(deep = TRUE)
+      self$lfq <- lfqdata$clone(deep = TRUE)
       self$stat <- if (!self$lfq$is_transformed()) {
         "CV"
       } else {
@@ -105,7 +106,7 @@ LFQDataStats <- R6::R6Class(
         if (self$lfq$get_config()$factor_depth > 1) {
           self$lfq$set_config_value("factor_depth", self$lfq$get_config()$factor_depth - 1)
         } else {
-          stats = "all"
+          stats <- "all"
         }
       }
 

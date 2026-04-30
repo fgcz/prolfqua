@@ -3,6 +3,9 @@
 \name{StrategyRLM}
 \alias{StrategyRLM}
 \title{Robust linear model strategy (R6 class)}
+\value{
+An R6 class generator.
+}
 \description{
 Robust linear model strategy (R6 class)
 

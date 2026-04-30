@@ -1,6 +1,7 @@
 # LFQDataSummariser ----
 #' Summarize LFQData
 #'
+#' @return An R6 class generator.
 #' @export
 #' @family LFQData
 #' @examples

@@ -3,6 +3,9 @@
 \name{StrategyLimma}
 \alias{StrategyLimma}
 \title{R6 class for limma modelling strategy}
+\value{
+An R6 class generator.
+}
 \description{
 R6 class for limma modelling strategy
 
@@ -11,6 +14,11 @@ R6 class for limma modelling strategy
 \details{
 Analogous to \code{\link{strategy_lm}} but for limma's matrix-based pipeline.
 Consumed by \code{\link{build_model_limma}}.
+}
+\examples{
+strat <- StrategyLimma$new("abundance ~ group_")
+strat$formula
+strat$model_name
 }
 \seealso{
 Other modelling: 

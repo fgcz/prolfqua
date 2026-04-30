@@ -154,7 +154,17 @@ plot_hierarchies_line_df <- function(pdata, lfqdata, show.legend = FALSE) {
 #' @family plotting
 #' @keywords internal
 #' @examples
-#' # todo
+#' p <- ggplot2::ggplot(
+#'   data.frame(sample = c("S1", "S2"), abundance = c(1, 2)),
+#'   ggplot2::aes(x = sample, y = abundance, group = 1)
+#' ) +
+#'   ggplot2::geom_line()
+#' plot_hierarchies_add_quantline(
+#'   p,
+#'   data.frame(sample = c("S1", "S2"), estimate = c(1.1, 1.8)),
+#'   aes_y = "estimate",
+#'   sample_name = "sample"
+#' )
 plot_hierarchies_add_quantline <- function(p, data, aes_y, sample_name) {
   p +
     geom_line(
@@ -709,7 +719,7 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
 
 
 .ExtractMatrix <- function(x, sep = "~lfq~") {
-  idx <- sapply(x, is.numeric)
+  idx <- vapply(x, is.numeric, logical(1))
   xmat <- as.matrix(x[, idx])
   idcols <- x |> dplyr::select(which(!idx == TRUE))
   if (ncol(idcols) > 0) {
@@ -727,6 +737,7 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
 #' @param file_name character — file name column
 #' @param nr_children_col character — nr_children column name
 #' @param new_child character — output column name
+#' @return The computed result.
 #' @export
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
@@ -770,6 +781,7 @@ nr_obs_sample <- function(
 #' @param file_name character — file name column
 #' @param nr_children_col character — nr_children column name
 #' @param name_nr_child character — output column name
+#' @return The computed result.
 #' @export
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
@@ -800,6 +812,7 @@ nr_children_experiment <- function(
 #' @param hierarchy_keys character vector — all hierarchy column names
 #' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
 #' @param name_nr_child character — output column name
+#' @return The computed result.
 #' @export
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
@@ -815,22 +828,6 @@ nr_features_experiment <- function(data, hierarchy_keys, hierarchy_keys_depth, n
     dplyr::group_by(!!!syms(hierarchy_keys_depth)) |>
     dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
 }
-
-#' deprecated — use nr_children_experiment or nr_features_experiment
-#' @param ... passed to the new function
-#' @param from_children if TRUE use nr_children_experiment, otherwise nr_features_experiment
-#' @export
-#' @keywords internal
-nr_obs_experiment <- function(..., from_children = TRUE) {
-  if (from_children) {
-    .Deprecated("nr_children_experiment")
-    nr_children_experiment(...)
-  } else {
-    .Deprecated("nr_features_experiment")
-    nr_features_experiment(...)
-  }
-}
-
 
 # Summarize Intensities by Intensity or NAs ----
 .rankProteinPrecursors <- function(

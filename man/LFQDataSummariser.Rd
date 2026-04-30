@@ -3,6 +3,9 @@
 \name{LFQDataSummariser}
 \alias{LFQDataSummariser}
 \title{Summarize LFQData}
+\value{
+An R6 class generator.
+}
 \description{
 Summarize LFQData
 
