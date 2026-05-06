@@ -330,7 +330,7 @@ sessionInfo()
     ## [43] generics_0.1.4         otel_0.2.0             httr_1.4.8            
     ## [46] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
     ## [49] splines_4.5.2          vctrs_0.7.3            boot_1.3-32           
-    ## [52] glmnet_4.1-10          Matrix_1.7-4           jsonlite_2.0.0        
+    ## [52] glmnet_5.0             Matrix_1.7-4           jsonlite_2.0.0        
     ## [55] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         
     ## [58] systemfonts_1.3.2      foreach_1.5.2          limma_3.66.0          
     ## [61] plotly_4.12.0          tidyr_1.3.2            jquerylib_0.1.4       

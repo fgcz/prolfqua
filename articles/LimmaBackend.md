@@ -735,7 +735,7 @@ sessionInfo()
     ## [43] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
     ## [46] otel_0.2.0             httr_1.4.8             minqa_1.2.8           
     ## [49] cachem_1.1.0           operator.tools_1.6.3.1 splines_4.5.2         
-    ## [52] vctrs_0.7.3            boot_1.3-32            glmnet_4.1-10         
+    ## [52] vctrs_0.7.3            boot_1.3-32            glmnet_5.0            
     ## [55] Matrix_1.7-4           jsonlite_2.0.0         hms_1.1.4             
     ## [58] mitml_0.4-5            ggrepel_0.9.8          systemfonts_1.3.2     
     ## [61] foreach_1.5.2          limma_3.66.0           plotly_4.12.0         
