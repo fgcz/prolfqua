@@ -151,7 +151,9 @@ Create various visualization of the LFQdata</p>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">raster</span><span class="op">(</span></span>
 <span>  arrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"var"</span><span class="op">)</span>,</span>
 <span>  not_na <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  rownames <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  max_rownames_chars <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  max_sample_label_chars <span class="op">=</span> <span class="fl">20</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -167,6 +169,15 @@ Create various visualization of the LFQdata</p>
 
 <dt><code>rownames</code></dt>
 <dd><p>show rownames (default FALSE - do not show.)</p></dd>
+
+
+<dt><code>max_rownames_chars</code></dt>
+<dd><p>maximum displayed row label length</p></dd>
+
+
+<dt><code>max_sample_label_chars</code></dt>
+<dd><p>maximum displayed sample label length.
+Labels keep their suffix because sample prefixes are often shared.</p></dd>
 
 
 </dl><p></p></div>
@@ -187,7 +198,12 @@ to the difference in the expression in the samples.
 Without the z-scoring, the proteins would group according
 to their abundance, e.g., high abundant proteins would be one cluster.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span>na_fraction <span class="op">=</span> <span class="fl">0.3</span>, rownames <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span></span>
+<span>  na_fraction <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  max_rownames_chars <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  max_sample_label_chars <span class="op">=</span> <span class="fl">20</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -198,6 +214,15 @@ to their abundance, e.g., high abundant proteins would be one cluster.</p><div c
 
 <dt><code>rownames</code></dt>
 <dd><p>show rownames (default FALSE - do not show.)</p></dd>
+
+
+<dt><code>max_rownames_chars</code></dt>
+<dd><p>maximum displayed row label length</p></dd>
+
+
+<dt><code>max_sample_label_chars</code></dt>
+<dd><p>maximum displayed sample label length.
+Labels keep their suffix because sample prefixes are often shared.</p></dd>
 
 
 </dl><p></p></div>
@@ -213,9 +238,18 @@ to their abundance, e.g., high abundant proteins would be one cluster.</p><div c
 <p>The Spearman correlation among all samples
 is computed. Then the euclidean distance is used to compute the distances.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">heatmap_cor</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">heatmap_cor</span><span class="op">(</span>max_sample_label_chars <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>max_sample_label_chars</code></dt>
+<dd><p>maximum displayed sample label length.
+Labels keep their suffix because sample prefixes are often shared.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 <div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>pheatmap</p>
@@ -232,7 +266,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>PC</code></dt>
 <dd><p>default c(1,2) - first and second principal component</p></dd>
 
@@ -260,7 +294,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>PC</code></dt>
 <dd><p>default c(1,2) - first and second principal component</p></dd>
 
@@ -284,7 +318,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>facet</code></dt>
 <dd><p>enable facet wrap if hierarchy_depth less then hierarchy lenght.</p></dd>
 
@@ -324,13 +358,22 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 <h3 id="method-intensity-distribution-density-">Method <code>intensity_distribution_density()</code><a class="anchor" aria-label="anchor" href="#method-intensity-distribution-density-"></a></h3>
 <p>density distribution of intensities</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span>legend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span></span>
+<span>  legend <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  max_legend_samples <span class="op">=</span> <span class="fl">16</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>legend</code></dt>
-<dd><p>show legend TRUE, FALSE do not show.</p></dd>
+<dd><p>show legend TRUE, FALSE do not show, NA selects
+automatically based on sample count.</p></dd>
+
+
+<dt><code>max_legend_samples</code></dt>
+<dd><p>maximum number of samples for automatic legend
+display.</p></dd>
 
 
 </dl><p></p></div>
@@ -360,7 +403,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>max</code></dt>
 <dd><p>maximal number of samples to show</p></dd>
 
@@ -404,7 +447,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path_qc</code></dt>
 <dd><p>path to write to</p></dd>
 
@@ -432,7 +475,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fig</code></dt>
 <dd><p>pltly figure</p></dd>
 
@@ -460,7 +503,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fig</code></dt>
 <dd><p>ggplot or pheatmap</p></dd>
 
@@ -496,7 +539,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>path_qc</code></dt>
 <dd><p>path to write to</p></dd>
 
@@ -512,7 +555,7 @@ impute first using <code><a href="impute_with_zcomp.html">impute_with_zcomp</a><
 </div>
 
 <div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

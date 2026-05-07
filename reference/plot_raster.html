@@ -61,6 +61,8 @@
 <span>  arrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"var"</span><span class="op">)</span>,</span>
 <span>  not_na <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  max_rownames_chars <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  max_sample_label_chars <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -95,6 +97,15 @@
 
 <dt id="arg-show-rownames">show_rownames<a class="anchor" aria-label="anchor" href="#arg-show-rownames"></a></dt>
 <dd><p>logical, show row names in heatmap</p></dd>
+
+
+<dt id="arg-max-rownames-chars">max_rownames_chars<a class="anchor" aria-label="anchor" href="#arg-max-rownames-chars"></a></dt>
+<dd><p>maximum displayed row label length</p></dd>
+
+
+<dt id="arg-max-sample-label-chars">max_sample_label_chars<a class="anchor" aria-label="anchor" href="#arg-max-sample-label-chars"></a></dt>
+<dd><p>maximum displayed sample label length. Labels
+keep their suffix because sample prefixes are often shared.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

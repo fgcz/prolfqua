@@ -1239,7 +1239,7 @@ sessionInfo()
     ## [10] lifecycle_1.0.5        survival_3.8-3         statmod_1.5.1         
     ## [13] magrittr_2.0.5         compiler_4.5.2         progress_1.2.3        
     ## [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           
-    ## [19] yaml_2.3.12            data.table_1.18.2.1    knitr_1.51            
+    ## [19] yaml_2.3.12            data.table_1.18.4      knitr_1.51            
     ## [22] prettyunits_1.2.0      htmlwidgets_1.6.4      plyr_1.8.9            
     ## [25] RColorBrewer_1.1-3     withr_3.0.2            purrr_1.2.2           
     ## [28] desc_1.4.3             nnet_7.3-20            grid_4.5.2            

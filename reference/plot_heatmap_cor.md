@@ -12,6 +12,7 @@ plot_heatmap_cor(
   sample_name,
   R2 = FALSE,
   color = colorRampPalette(c("white", "red"))(1024),
+  max_sample_label_chars = 20,
   ...
 )
 ```
@@ -41,6 +42,11 @@ plot_heatmap_cor(
 - color:
 
   color palette
+
+- max_sample_label_chars:
+
+  maximum displayed sample label length. Labels keep their suffix
+  because sample prefixes are often shared.
 
 - ...:
 

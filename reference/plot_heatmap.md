@@ -12,6 +12,8 @@ plot_heatmap(
   sample_name,
   na_fraction = 0.4,
   show_rownames = FALSE,
+  max_rownames_chars = 60,
+  max_sample_label_chars = 20,
   ...
 )
 ```
@@ -41,6 +43,15 @@ plot_heatmap(
 - show_rownames:
 
   if TRUE shows row names, default FALSE
+
+- max_rownames_chars:
+
+  maximum displayed row label length
+
+- max_sample_label_chars:
+
+  maximum displayed sample label length. Labels keep their suffix
+  because sample prefixes are often shared.
 
 - ...:
 

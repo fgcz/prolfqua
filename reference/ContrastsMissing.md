@@ -359,7 +359,7 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1bf6322ca5a7 
+#> agg_record_1da144b4ffd0 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
@@ -398,6 +398,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1bf6322ca5a7 
+#> agg_record_1da144b4ffd0 
 #>                       2 
 ```

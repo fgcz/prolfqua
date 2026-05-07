@@ -522,7 +522,7 @@ sessionInfo()
     ##  [13] statmod_1.5.1          magrittr_2.0.5         compiler_4.5.2        
     ##  [16] progress_1.2.3         rlang_1.2.0            sass_0.4.10           
     ##  [19] tools_4.5.2            utf8_1.2.6             yaml_2.3.12           
-    ##  [22] data.table_1.18.2.1    knitr_1.51             prettyunits_1.2.0     
+    ##  [22] data.table_1.18.4      knitr_1.51             prettyunits_1.2.0     
     ##  [25] labeling_0.4.3         htmlwidgets_1.6.4      plyr_1.8.9            
     ##  [28] RColorBrewer_1.1-3     KernSmooth_2.23-26     withr_3.0.2           
     ##  [31] purrr_1.2.2            desc_1.4.3             nnet_7.3-20           

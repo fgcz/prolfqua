@@ -19,7 +19,8 @@ plot_intensity_distribution_density(
   sample_name,
   response,
   is_transformed = FALSE,
-  legend = TRUE
+  legend = NA,
+  max_legend_samples = 16
 )
 ```
 
@@ -43,7 +44,12 @@ plot_intensity_distribution_density(
 
 - legend:
 
-  do not show legend
+  show legend. If \`NA\`, hide automatically when the number of samples
+  is larger than \`max_legend_samples\`.
+
+- max_legend_samples:
+
+  maximum number of samples for automatic legend display.
 
 ## See also
 

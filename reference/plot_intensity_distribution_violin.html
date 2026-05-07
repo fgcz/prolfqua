@@ -68,7 +68,8 @@ visualize intensity distributions"></head><body>
 <span>  <span class="va">sample_name</span>,</span>
 <span>  <span class="va">response</span>,</span>
 <span>  is_transformed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  legend <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  legend <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  max_legend_samples <span class="op">=</span> <span class="fl">16</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -93,7 +94,13 @@ visualize intensity distributions"></head><body>
 
 
 <dt id="arg-legend">legend<a class="anchor" aria-label="anchor" href="#arg-legend"></a></dt>
-<dd><p>do not show legend</p></dd>
+<dd><p>show legend. If `NA`, hide automatically when the number of
+samples is larger than `max_legend_samples`.</p></dd>
+
+
+<dt id="arg-max-legend-samples">max_legend_samples<a class="anchor" aria-label="anchor" href="#arg-max-legend-samples"></a></dt>
+<dd><p>maximum number of samples for automatic legend
+display.</p></dd>
 
 </dl></div>
     <div class="section level2">

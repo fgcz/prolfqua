@@ -115,7 +115,9 @@ plot intensities in raster
     LFQDataPlotter$raster(
       arrange = c("mean", "var"),
       not_na = FALSE,
-      rownames = FALSE
+      rownames = FALSE,
+      max_rownames_chars = 60,
+      max_sample_label_chars = 20
     )
 
 #### Arguments
@@ -131,6 +133,15 @@ plot intensities in raster
 - `rownames`:
 
   show rownames (default FALSE - do not show.)
+
+- `max_rownames_chars`:
+
+  maximum displayed row label length
+
+- `max_sample_label_chars`:
+
+  maximum displayed sample label length. Labels keep their suffix
+  because sample prefixes are often shared.
 
 #### Returns
 
@@ -152,7 +163,12 @@ proteins would be one cluster.
 
 #### Usage
 
-    LFQDataPlotter$heatmap(na_fraction = 0.3, rownames = FALSE)
+    LFQDataPlotter$heatmap(
+      na_fraction = 0.3,
+      rownames = FALSE,
+      max_rownames_chars = 60,
+      max_sample_label_chars = 20
+    )
 
 #### Arguments
 
@@ -163,6 +179,15 @@ proteins would be one cluster.
 - `rownames`:
 
   show rownames (default FALSE - do not show.)
+
+- `max_rownames_chars`:
+
+  maximum displayed row label length
+
+- `max_sample_label_chars`:
+
+  maximum displayed sample label length. Labels keep their suffix
+  because sample prefixes are often shared.
 
 #### Returns
 
@@ -179,7 +204,14 @@ euclidean distance is used to compute the distances.
 
 #### Usage
 
-    LFQDataPlotter$heatmap_cor()
+    LFQDataPlotter$heatmap_cor(max_sample_label_chars = 20)
+
+#### Arguments
+
+- `max_sample_label_chars`:
+
+  maximum displayed sample label length. Labels keep their suffix
+  because sample prefixes are often shared.
 
 #### Returns
 
@@ -298,13 +330,21 @@ density distribution of intensities
 
 #### Usage
 
-    LFQDataPlotter$intensity_distribution_density(legend = TRUE)
+    LFQDataPlotter$intensity_distribution_density(
+      legend = NA,
+      max_legend_samples = 16
+    )
 
 #### Arguments
 
 - `legend`:
 
-  show legend TRUE, FALSE do not show.
+  show legend TRUE, FALSE do not show, NA selects automatically based on
+  sample count.
+
+- `max_legend_samples`:
+
+  maximum number of samples for automatic legend display.
 
 #### Returns
 

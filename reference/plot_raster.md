@@ -13,6 +13,8 @@ plot_raster(
   arrange = c("mean", "var"),
   not_na = FALSE,
   show_rownames = FALSE,
+  max_rownames_chars = 60,
+  max_sample_label_chars = 20,
   ...
 )
 ```
@@ -46,6 +48,15 @@ plot_raster(
 - show_rownames:
 
   logical, show row names in heatmap
+
+- max_rownames_chars:
+
+  maximum displayed row label length
+
+- max_sample_label_chars:
+
+  maximum displayed sample label length. Labels keep their suffix
+  because sample prefixes are often shared.
 
 - ...:
 
