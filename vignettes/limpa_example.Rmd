@@ -270,9 +270,17 @@ cat("DPC: beta0 =", round(dpc_est$dpc["beta0"], 3),
 The `dpc()` return value also contains hyperparameters estimated from the data:
 
 ```{r lowlevel_dpc_hyper}
-cat("mu.prior  (prior mean of row means):", round(dpc_est$mu.prior, 3), "\n")
-cat("df.prior  (prior df for variance):", round(dpc_est$df.prior, 3), "\n")
-cat("s2.prior  (prior variance):", round(dpc_est$s2.prior, 3), "\n")
+format_dpc_hyperparameter <- function(dpc_result, field) {
+  value <- dpc_result[[field]]
+  if (is.numeric(value) && length(value) == 1 && !is.na(value)) {
+    return(round(value, 3))
+  }
+  "not available"
+}
+
+cat("mu.prior  (prior mean of row means):", format_dpc_hyperparameter(dpc_est, "mu.prior"), "\n")
+cat("df.prior  (prior df for variance):", format_dpc_hyperparameter(dpc_est, "df.prior"), "\n")
+cat("s2.prior  (prior variance):", format_dpc_hyperparameter(dpc_est, "s2.prior"), "\n")
 ```
 
 ### Step 2: Quantify peptides (row-level, no aggregation)
