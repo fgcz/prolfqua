@@ -11,6 +11,7 @@ plot_heatmap_cor(
   sample_name,
   R2 = FALSE,
   color = colorRampPalette(c("white", "red"))(1024),
+  max_sample_label_chars = 20,
   ...
 )
 }
@@ -26,6 +27,9 @@ plot_heatmap_cor(
 \item{R2}{logical — plot R-squared instead of correlation}
 
 \item{color}{color palette}
+
+\item{max_sample_label_chars}{maximum displayed sample label length. Labels
+keep their suffix because sample prefixes are often shared.}
 
 \item{...}{passed to pheatmap}
 }

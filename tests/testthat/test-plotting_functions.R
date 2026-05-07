@@ -79,3 +79,85 @@ test_that("heatmap row labels are truncated without changing matrix row names", 
   expect_false(any(original_labels[1] %in% labels))
   expect_true(all(nchar(labels[grepl("[.][.][.]", labels)]) <= 20))
 })
+
+test_long_sample_heatmap_data <- function() {
+  matrix <- matrix(stats::rnorm(30), nrow = 5)
+  sample_names <- paste0(
+    "20250225_0",
+    seq_len(6),
+    "_C37649_S8852",
+    seq_len(6),
+    "_neg_Dig_14_D3_",
+    rep(c("A", "B"), length.out = 6)
+  )
+  colnames(matrix) <- sample_names
+  rownames(matrix) <- paste0("feature", seq_len(5))
+  annotation <- data.frame(
+    sample = sample_names,
+    group = rep(c("control", "treated"), each = 3)
+  )
+  list(matrix = matrix, sample_names = sample_names, annotation = annotation)
+}
+
+test_that("correlation heatmap sample labels keep informative suffixes", {
+  data <- test_long_sample_heatmap_data()
+
+  p <- plot_heatmap_cor(
+    data$matrix,
+    data$annotation,
+    factor_keys = "group",
+    sample_name = "sample",
+    max_sample_label_chars = 20
+  )
+
+  text_grobs <- Filter(function(grob) inherits(grob, "text"), p$gtable$grobs)
+  labels <- unlist(lapply(text_grobs, function(grob) grob$label), use.names = FALSE)
+  suffixes <- prolfqua:::.suffix_plot_labels(data$sample_names, 20)
+
+  expect_s3_class(p, "pheatmap")
+  expect_true(all(suffixes %in% labels))
+  expect_false(any(data$sample_names %in% labels))
+  expect_true(all(nchar(suffixes) <= 20))
+})
+
+test_that("abundance heatmap sample labels keep informative suffixes", {
+  data <- test_long_sample_heatmap_data()
+
+  p <- plot_heatmap(
+    data$matrix,
+    data$annotation,
+    factor_keys = "group",
+    sample_name = "sample",
+    max_sample_label_chars = 20
+  )
+
+  text_grobs <- Filter(function(grob) inherits(grob, "text"), p$gtable$grobs)
+  labels <- unlist(lapply(text_grobs, function(grob) grob$label), use.names = FALSE)
+  suffixes <- prolfqua:::.suffix_plot_labels(data$sample_names, 20)
+
+  expect_s3_class(p, "pheatmap")
+  expect_true(all(suffixes %in% labels))
+  expect_false(any(data$sample_names %in% labels))
+  expect_true(all(nchar(suffixes) <= 20))
+})
+
+test_that("raster sample labels keep informative suffixes", {
+  data <- test_long_sample_heatmap_data()
+
+  p <- plot_raster(
+    data$matrix,
+    data$annotation,
+    factor_keys = "group",
+    sample_name = "sample",
+    max_sample_label_chars = 20
+  )
+
+  text_grobs <- Filter(function(grob) inherits(grob, "text"), p$gtable$grobs)
+  labels <- unlist(lapply(text_grobs, function(grob) grob$label), use.names = FALSE)
+  suffixes <- prolfqua:::.suffix_plot_labels(data$sample_names, 20)
+
+  expect_s3_class(p, "pheatmap")
+  expect_true(all(suffixes %in% labels))
+  expect_false(any(data$sample_names %in% labels))
+  expect_true(all(nchar(suffixes) <= 20))
+})

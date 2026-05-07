@@ -126,7 +126,8 @@ plot intensities in raster
   arrange = c("mean", "var"),
   not_na = FALSE,
   rownames = FALSE,
-  max_rownames_chars = 60
+  max_rownames_chars = 60,
+  max_sample_label_chars = 20
 )}\if{html}{\out{</div>}}
 }
 
@@ -140,6 +141,9 @@ plot intensities in raster
 \item{\code{rownames}}{show rownames (default FALSE - do not show.)}
 
 \item{\code{max_rownames_chars}}{maximum displayed row label length}
+
+\item{\code{max_sample_label_chars}}{maximum displayed sample label length.
+Labels keep their suffix because sample prefixes are often shared.}
 }
 \if{html}{\out{</div>}}
 }
@@ -164,7 +168,8 @@ to their abundance, e.g., high abundant proteins would be one cluster.
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(
   na_fraction = 0.3,
   rownames = FALSE,
-  max_rownames_chars = 60
+  max_rownames_chars = 60,
+  max_sample_label_chars = 20
 )}\if{html}{\out{</div>}}
 }
 
@@ -176,6 +181,9 @@ to their abundance, e.g., high abundant proteins would be one cluster.
 \item{\code{rownames}}{show rownames (default FALSE - do not show.)}
 
 \item{\code{max_rownames_chars}}{maximum displayed row label length}
+
+\item{\code{max_sample_label_chars}}{maximum displayed sample label length.
+Labels keep their suffix because sample prefixes are often shared.}
 }
 \if{html}{\out{</div>}}
 }
@@ -192,9 +200,17 @@ heatmap of sample correlations.
 The Spearman correlation among all samples
 is computed. Then the euclidean distance is used to compute the distances.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap_cor()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap_cor(max_sample_label_chars = 20)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{max_sample_label_chars}}{maximum displayed sample label length.
+Labels keep their suffix because sample prefixes are often shared.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 pheatmap
 }

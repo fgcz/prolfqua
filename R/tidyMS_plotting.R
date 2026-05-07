@@ -53,6 +53,26 @@ print.pheatmap <- function(x, ...) {
   labels
 }
 
+.suffix_plot_labels <- function(labels, max_chars = 20) {
+  if (is.null(max_chars) || !is.finite(max_chars)) {
+    return(as.character(labels))
+  }
+  max_chars <- as.integer(max_chars)
+  if (max_chars < 1) {
+    stop("max_chars must be at least 1.", call. = FALSE)
+  }
+
+  labels <- as.character(labels)
+  label_width <- nchar(labels, type = "chars", allowNA = FALSE)
+  too_long <- label_width > max_chars
+  labels[too_long] <- substr(
+    labels[too_long],
+    label_width[too_long] - max_chars + 1,
+    label_width[too_long]
+  )
+  labels
+}
+
 #' visualize intensity distributions
 #' @param pdata data.frame
 #' @param sample_name character — sample column name
@@ -316,6 +336,8 @@ plot_hierarchies_boxplot_df <- function(
 #' @param sample_name character — sample name column
 #' @param R2 logical — plot R-squared instead of correlation
 #' @param color color palette
+#' @param max_sample_label_chars maximum displayed sample label length. Labels
+#'   keep their suffix because sample prefixes are often shared.
 #' @param ... passed to pheatmap
 #' @export
 #' @keywords internal
@@ -339,6 +361,7 @@ plot_heatmap_cor <- function(
   sample_name,
   R2 = FALSE,
   color = colorRampPalette(c("white", "red"))(1024),
+  max_sample_label_chars = 20,
   ...
 ) {
   cres <- cor(matrix, use = "pa")
@@ -357,6 +380,7 @@ plot_heatmap_cor <- function(
     cluster_rows = FALSE,
     annotation_col = factors,
     show_rownames = FALSE,
+    labels_col = .suffix_plot_labels(colnames(cres), max_sample_label_chars),
     border_color = NA,
     main = ifelse(R2, "R^2", "correlation"),
     silent = TRUE,
@@ -376,6 +400,8 @@ plot_heatmap_cor <- function(
 #' @param na_fraction fraction of NA values per row
 #' @param show_rownames if TRUE shows row names, default FALSE
 #' @param max_rownames_chars maximum displayed row label length
+#' @param max_sample_label_chars maximum displayed sample label length. Labels
+#'   keep their suffix because sample prefixes are often shared.
 #' @param ... passed to pheatmap
 #' @export
 #' @keywords internal
@@ -396,6 +422,7 @@ plot_heatmap <- function(
   na_fraction = 0.4,
   show_rownames = FALSE,
   max_rownames_chars = 60,
+  max_sample_label_chars = 20,
   ...
 ) {
   if (nrow(matrix) == 0) {
@@ -419,6 +446,7 @@ plot_heatmap <- function(
       annotation_col = factors,
       show_rownames = show_rownames,
       labels_row = .truncate_plot_labels(rownames(plot_data), max_rownames_chars),
+      labels_col = .suffix_plot_labels(colnames(plot_data), max_sample_label_chars),
       border_color = NA,
       silent = TRUE,
       ... = ...
@@ -432,6 +460,7 @@ plot_heatmap <- function(
         annotation_col = factors,
         show_rownames = show_rownames,
         labels_row = .truncate_plot_labels(rownames(resdata), max_rownames_chars),
+        labels_col = .suffix_plot_labels(colnames(resdata), max_sample_label_chars),
         border_color = NA,
         silent = TRUE,
         ... = ...
@@ -452,6 +481,8 @@ plot_heatmap <- function(
 #' @param not_na if true than arrange by nr of NA's first and then by arrange
 #' @param show_rownames logical, show row names in heatmap
 #' @param max_rownames_chars maximum displayed row label length
+#' @param max_sample_label_chars maximum displayed sample label length. Labels
+#'   keep their suffix because sample prefixes are often shared.
 #' @param ... additional arguments passed to pheatmap
 #' @keywords internal
 #'
@@ -476,6 +507,7 @@ plot_raster <- function(
   not_na = FALSE,
   show_rownames = FALSE,
   max_rownames_chars = 60,
+  max_sample_label_chars = 20,
   ...
 ) {
   if (nrow(matrix) <= 1) {
@@ -509,6 +541,7 @@ plot_raster <- function(
     annotation_col = factors,
     show_rownames = show_rownames,
     labels_row = .truncate_plot_labels(rownames(matrix), max_rownames_chars),
+    labels_col = .suffix_plot_labels(colnames(matrix), max_sample_label_chars),
     border_color = NA,
     silent = TRUE,
     ... = ...

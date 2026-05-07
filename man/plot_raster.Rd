@@ -13,6 +13,7 @@ plot_raster(
   not_na = FALSE,
   show_rownames = FALSE,
   max_rownames_chars = 60,
+  max_sample_label_chars = 20,
   ...
 )
 }
@@ -32,6 +33,9 @@ plot_raster(
 \item{show_rownames}{logical, show row names in heatmap}
 
 \item{max_rownames_chars}{maximum displayed row label length}
+
+\item{max_sample_label_chars}{maximum displayed sample label length. Labels
+keep their suffix because sample prefixes are often shared.}
 
 \item{...}{additional arguments passed to pheatmap}
 }

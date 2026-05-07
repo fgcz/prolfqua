@@ -60,8 +60,16 @@ LFQDataPlotter <- R6::R6Class(
     #' @param not_na TRUE arrange by number of NA's, FALSE by arrange by intensity
     #' @param rownames show rownames (default FALSE - do not show.)
     #' @param max_rownames_chars maximum displayed row label length
+    #' @param max_sample_label_chars maximum displayed sample label length.
+    #'   Labels keep their suffix because sample prefixes are often shared.
     #' @return ggplot
-    raster = function(arrange = c("mean", "var"), not_na = FALSE, rownames = FALSE, max_rownames_chars = 60) {
+    raster = function(
+      arrange = c("mean", "var"),
+      not_na = FALSE,
+      rownames = FALSE,
+      max_rownames_chars = 60,
+      max_sample_label_chars = 20
+    ) {
       arrange <- match.arg(arrange)
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_raster(
@@ -72,7 +80,8 @@ LFQDataPlotter <- R6::R6Class(
         arrange = arrange,
         not_na = not_na,
         show_rownames = rownames,
-        max_rownames_chars = max_rownames_chars
+        max_rownames_chars = max_rownames_chars,
+        max_sample_label_chars = max_sample_label_chars
       )
       return(fig)
     },
@@ -91,8 +100,10 @@ LFQDataPlotter <- R6::R6Class(
     #' @param na_fraction max fraction of NA's per row
     #' @param rownames show rownames (default FALSE - do not show.)
     #' @param max_rownames_chars maximum displayed row label length
+    #' @param max_sample_label_chars maximum displayed sample label length.
+    #'   Labels keep their suffix because sample prefixes are often shared.
     #' @return pheatmap
-    heatmap = function(na_fraction = 0.3, rownames = FALSE, max_rownames_chars = 60) {
+    heatmap = function(na_fraction = 0.3, rownames = FALSE, max_rownames_chars = 60, max_sample_label_chars = 20) {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_heatmap(
         wide$data,
@@ -101,7 +112,8 @@ LFQDataPlotter <- R6::R6Class(
         self$lfq$sample_name(),
         na_fraction = na_fraction,
         show_rownames = rownames,
-        max_rownames_chars = max_rownames_chars
+        max_rownames_chars = max_rownames_chars,
+        max_sample_label_chars = max_sample_label_chars
       )
       return(fig)
     },
@@ -113,15 +125,18 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' @seealso \code{\link{plot_heatmap_cor}}
     #'
+    #' @param max_sample_label_chars maximum displayed sample label length.
+    #'   Labels keep their suffix because sample prefixes are often shared.
     #' @return pheatmap
     #'
-    heatmap_cor = function() {
+    heatmap_cor = function(max_sample_label_chars = 20) {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_heatmap_cor(
         wide$data,
         wide$annotation,
         self$lfq$factor_keys(),
-        self$lfq$sample_name()
+        self$lfq$sample_name(),
+        max_sample_label_chars = max_sample_label_chars
       )
       return(fig)
     },
