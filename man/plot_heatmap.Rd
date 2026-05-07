@@ -11,6 +11,7 @@ plot_heatmap(
   sample_name,
   na_fraction = 0.4,
   show_rownames = FALSE,
+  max_rownames_chars = 60,
   ...
 )
 }
@@ -26,6 +27,8 @@ plot_heatmap(
 \item{na_fraction}{fraction of NA values per row}
 
 \item{show_rownames}{if TRUE shows row names, default FALSE}
+
+\item{max_rownames_chars}{maximum displayed row label length}
 
 \item{...}{passed to pheatmap}
 }

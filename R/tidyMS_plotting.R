@@ -14,6 +14,45 @@ print.pheatmap <- function(x, ...) {
   grid::grid.draw(x$gtable)
 }
 
+.show_sample_legend <- function(pdata, sample_name, legend, max_legend_samples) {
+  if (is.logical(legend) && length(legend) == 1 && !is.na(legend)) {
+    return(legend)
+  }
+  n_samples <- length(unique(stats::na.omit(pdata[[sample_name]])))
+  n_samples <= max_legend_samples
+}
+
+.truncate_plot_labels <- function(labels, max_chars = 60) {
+  if (is.null(max_chars) || !is.finite(max_chars)) {
+    return(as.character(labels))
+  }
+  max_chars <- as.integer(max_chars)
+  if (max_chars < 4) {
+    stop("max_chars must be at least 4.", call. = FALSE)
+  }
+
+  labels <- as.character(labels)
+  label_width <- nchar(labels, type = "chars", allowNA = FALSE)
+  too_long <- label_width > max_chars
+  if (!any(too_long)) {
+    return(labels)
+  }
+
+  keep_chars <- max_chars - 3
+  left_chars <- ceiling(keep_chars / 2)
+  right_chars <- floor(keep_chars / 2)
+  labels[too_long] <- paste0(
+    substr(labels[too_long], 1, left_chars),
+    "...",
+    substr(
+      labels[too_long],
+      label_width[too_long] - right_chars + 1,
+      label_width[too_long]
+    )
+  )
+  labels
+}
+
 #' visualize intensity distributions
 #' @param pdata data.frame
 #' @param sample_name character — sample column name
@@ -47,7 +86,10 @@ plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_
 #' @param sample_name character — sample column name
 #' @param response character — intensity column name
 #' @param is_transformed logical — is intensity log-transformed?
-#' @param legend do not show legend
+#' @param legend show legend. If `NA`, hide automatically when the number of
+#'   samples is larger than `max_legend_samples`.
+#' @param max_legend_samples maximum number of samples for automatic legend
+#'   display.
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -58,14 +100,21 @@ plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_
 #' plot_intensity_distribution_density(
 #'   lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
 #'
-plot_intensity_distribution_density <- function(pdata, sample_name, response, is_transformed = FALSE, legend = TRUE) {
+plot_intensity_distribution_density <- function(
+  pdata,
+  sample_name,
+  response,
+  is_transformed = FALSE,
+  legend = NA,
+  max_legend_samples = 16
+) {
   p <- ggplot(pdata, aes(x = .data[[response]], colour = .data[[sample_name]])) +
     geom_line(stat = "density")
   if (!is_transformed) {
     p <- p + scale_x_continuous(trans = "log10")
   }
-  if (!legend) {
-    p <- p + ggplot2::guides(colour = FALSE)
+  if (!.show_sample_legend(pdata, sample_name, legend, max_legend_samples)) {
+    p <- p + ggplot2::guides(colour = "none")
   }
   return(p)
 }
@@ -326,6 +375,7 @@ plot_heatmap_cor <- function(
 #' @param sample_name character — sample name column
 #' @param na_fraction fraction of NA values per row
 #' @param show_rownames if TRUE shows row names, default FALSE
+#' @param max_rownames_chars maximum displayed row label length
 #' @param ... passed to pheatmap
 #' @export
 #' @keywords internal
@@ -338,7 +388,16 @@ plot_heatmap_cor <- function(
 #' p <- plot_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 #' stopifnot(class(p) == "pheatmap")
 #'
-plot_heatmap <- function(matrix, annotation, factor_keys, sample_name, na_fraction = 0.4, show_rownames = FALSE, ...) {
+plot_heatmap <- function(
+  matrix,
+  annotation,
+  factor_keys,
+  sample_name,
+  na_fraction = 0.4,
+  show_rownames = FALSE,
+  max_rownames_chars = 60,
+  ...
+) {
   if (nrow(matrix) == 0) {
     warning("The dataset has :", nrow(matrix), "")
     return(NULL)
@@ -352,12 +411,14 @@ plot_heatmap <- function(matrix, annotation, factor_keys, sample_name, na_fracti
 
   if (nrow(resdataf) >= 3) {
     gg <- stats::hclust(stats::dist(resdataf))
+    plot_data <- resdataf[gg$order, ]
     res <- pheatmap::pheatmap(
-      resdataf[gg$order, ],
+      plot_data,
       cluster_rows = FALSE,
       scale = "row",
       annotation_col = factors,
       show_rownames = show_rownames,
+      labels_row = .truncate_plot_labels(rownames(plot_data), max_rownames_chars),
       border_color = NA,
       silent = TRUE,
       ... = ...
@@ -370,6 +431,7 @@ plot_heatmap <- function(matrix, annotation, factor_keys, sample_name, na_fracti
         scale = "row",
         annotation_col = factors,
         show_rownames = show_rownames,
+        labels_row = .truncate_plot_labels(rownames(resdata), max_rownames_chars),
         border_color = NA,
         silent = TRUE,
         ... = ...
@@ -389,6 +451,7 @@ plot_heatmap <- function(matrix, annotation, factor_keys, sample_name, na_fracti
 #' @param arrange either mean or var
 #' @param not_na if true than arrange by nr of NA's first and then by arrange
 #' @param show_rownames logical, show row names in heatmap
+#' @param max_rownames_chars maximum displayed row label length
 #' @param ... additional arguments passed to pheatmap
 #' @keywords internal
 #'
@@ -412,6 +475,7 @@ plot_raster <- function(
   arrange = c("mean", "var"),
   not_na = FALSE,
   show_rownames = FALSE,
+  max_rownames_chars = 60,
   ...
 ) {
   if (nrow(matrix) <= 1) {
@@ -444,6 +508,7 @@ plot_raster <- function(
     cluster_cols = FALSE,
     annotation_col = factors,
     show_rownames = show_rownames,
+    labels_row = .truncate_plot_labels(rownames(matrix), max_rownames_chars),
     border_color = NA,
     silent = TRUE,
     ... = ...

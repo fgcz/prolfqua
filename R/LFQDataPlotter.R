@@ -59,8 +59,9 @@ LFQDataPlotter <- R6::R6Class(
     #' @param arrange arrange by either mean or var
     #' @param not_na TRUE arrange by number of NA's, FALSE by arrange by intensity
     #' @param rownames show rownames (default FALSE - do not show.)
+    #' @param max_rownames_chars maximum displayed row label length
     #' @return ggplot
-    raster = function(arrange = c("mean", "var"), not_na = FALSE, rownames = FALSE) {
+    raster = function(arrange = c("mean", "var"), not_na = FALSE, rownames = FALSE, max_rownames_chars = 60) {
       arrange <- match.arg(arrange)
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_raster(
@@ -70,7 +71,8 @@ LFQDataPlotter <- R6::R6Class(
         self$lfq$sample_name(),
         arrange = arrange,
         not_na = not_na,
-        show_rownames = rownames
+        show_rownames = rownames,
+        max_rownames_chars = max_rownames_chars
       )
       return(fig)
     },
@@ -88,8 +90,9 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' @param na_fraction max fraction of NA's per row
     #' @param rownames show rownames (default FALSE - do not show.)
+    #' @param max_rownames_chars maximum displayed row label length
     #' @return pheatmap
-    heatmap = function(na_fraction = 0.3, rownames = FALSE) {
+    heatmap = function(na_fraction = 0.3, rownames = FALSE, max_rownames_chars = 60) {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_heatmap(
         wide$data,
@@ -97,7 +100,8 @@ LFQDataPlotter <- R6::R6Class(
         self$lfq$factor_keys(),
         self$lfq$sample_name(),
         na_fraction = na_fraction,
-        show_rownames = rownames
+        show_rownames = rownames,
+        max_rownames_chars = max_rownames_chars
       )
       return(fig)
     },
@@ -193,15 +197,19 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' density distribution of intensities
-    #' @param legend show legend TRUE, FALSE do not show.
+    #' @param legend show legend TRUE, FALSE do not show, NA selects
+    #'   automatically based on sample count.
+    #' @param max_legend_samples maximum number of samples for automatic legend
+    #'   display.
     #' @return ggplot
-    intensity_distribution_density = function(legend = TRUE) {
+    intensity_distribution_density = function(legend = NA, max_legend_samples = 16) {
       prolfqua::plot_intensity_distribution_density(
         self$lfq$data_long(),
         self$lfq$sample_name(),
         self$lfq$response(),
         self$lfq$is_transformed(),
-        legend = legend
+        legend = legend,
+        max_legend_samples = max_legend_samples
       )
     },
     #' @description

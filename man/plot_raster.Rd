@@ -12,6 +12,7 @@ plot_raster(
   arrange = c("mean", "var"),
   not_na = FALSE,
   show_rownames = FALSE,
+  max_rownames_chars = 60,
   ...
 )
 }
@@ -29,6 +30,8 @@ plot_raster(
 \item{not_na}{if true than arrange by nr of NA's first and then by arrange}
 
 \item{show_rownames}{logical, show row names in heatmap}
+
+\item{max_rownames_chars}{maximum displayed row label length}
 
 \item{...}{additional arguments passed to pheatmap}
 }

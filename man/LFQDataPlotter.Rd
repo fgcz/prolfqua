@@ -125,7 +125,8 @@ plot intensities in raster
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$raster(
   arrange = c("mean", "var"),
   not_na = FALSE,
-  rownames = FALSE
+  rownames = FALSE,
+  max_rownames_chars = 60
 )}\if{html}{\out{</div>}}
 }
 
@@ -137,6 +138,8 @@ plot intensities in raster
 \item{\code{not_na}}{TRUE arrange by number of NA's, FALSE by arrange by intensity}
 
 \item{\code{rownames}}{show rownames (default FALSE - do not show.)}
+
+\item{\code{max_rownames_chars}}{maximum displayed row label length}
 }
 \if{html}{\out{</div>}}
 }
@@ -158,7 +161,11 @@ to the difference in the expression in the samples.
 Without the z-scoring, the proteins would group according
 to their abundance, e.g., high abundant proteins would be one cluster.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(na_fraction = 0.3, rownames = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(
+  na_fraction = 0.3,
+  rownames = FALSE,
+  max_rownames_chars = 60
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -167,6 +174,8 @@ to their abundance, e.g., high abundant proteins would be one cluster.
 \item{\code{na_fraction}}{max fraction of NA's per row}
 
 \item{\code{rownames}}{show rownames (default FALSE - do not show.)}
+
+\item{\code{max_rownames_chars}}{maximum displayed row label length}
 }
 \if{html}{\out{</div>}}
 }
@@ -292,13 +301,20 @@ ggplot
 \subsection{Method \code{intensity_distribution_density()}}{
 density distribution of intensities
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density(legend = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density(
+  legend = NA,
+  max_legend_samples = 16
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{legend}}{show legend TRUE, FALSE do not show.}
+\item{\code{legend}}{show legend TRUE, FALSE do not show, NA selects
+automatically based on sample count.}
+
+\item{\code{max_legend_samples}}{maximum number of samples for automatic legend
+display.}
 }
 \if{html}{\out{</div>}}
 }
