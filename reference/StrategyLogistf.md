@@ -283,5 +283,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x56448b0e5ee0>
+#> <environment: 0x55ddbf605b90>
 ```
