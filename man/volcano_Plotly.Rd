@@ -14,7 +14,7 @@ volcano_plotly(
   palette = NULL,
   xintercept = c(-2, 2),
   yintercept = 0.1,
-  minsignificance = 1e-04,
+  minsignificance = NULL,
   title_size = 25,
   group = "BB"
 )
@@ -38,7 +38,9 @@ volcano_plotly(
 
 \item{yintercept}{horizontal abline at y}
 
-\item{minsignificance}{minimum significance value (floor for -log10 axis)}
+\item{minsignificance}{optional minimum significance value (floor for
+-log10 axis). If NULL, only exact zero and negative values are replaced
+with the smallest positive observed value in the same score column.}
 
 \item{title_size}{font size of the subplot title annotation}
 

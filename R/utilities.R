@@ -169,6 +169,20 @@ multigroup_volcano <- function(
   return(p)
 }
 
+.floor_significance_values <- function(values, min_score = NULL) {
+  if (!is.null(min_score)) {
+    return(pmax(values, min_score))
+  }
+
+  positive_values <- values[is.finite(values) & values > 0]
+  zero_floor <- if (length(positive_values) > 0) {
+    min(positive_values, na.rm = TRUE)
+  } else {
+    .Machine$double.xmin
+  }
+  ifelse(values <= 0, zero_floor, values)
+}
+
 .multigroup_volcano <- function(
   data,
   effect = "fc",
@@ -430,7 +444,9 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 #' @param palette named colour vector for the colour aesthetic
 #' @param xintercept vertical abline at x
 #' @param yintercept horizontal abline at y
-#' @param minsignificance minimum significance value (floor for -log10 axis)
+#' @param minsignificance optional minimum significance value (floor for
+#'   -log10 axis). If NULL, only exact zero and negative values are replaced
+#'   with the smallest positive observed value in the same score column.
 #' @param title_size font size of the subplot title annotation
 #' @param group crosstalk group name for linked brushing
 #' @return The requested plot, table, or transformed object.
@@ -456,11 +472,11 @@ volcano_plotly <- function(
   palette = NULL,
   xintercept = c(-2, 2),
   yintercept = 0.1,
-  minsignificance = 1e-4,
+  minsignificance = NULL,
   title_size = 25,
   group = "BB"
 ) {
-  .data[[significance]] <- pmax(.data[[significance]], minsignificance)
+  .data[[significance]] <- .floor_significance_values(.data[[significance]], minsignificance)
 
   xx <- .data |>
     dplyr::group_by(!!dplyr::sym(contrast)) |>
@@ -472,7 +488,7 @@ volcano_plotly <- function(
   xx <- dplyr::mutate(xx, shared_data = purrr::map(data, makeshared, proteinID = proteinID))
 
   x_annot <- min(.data[[effect]], na.rm = TRUE)
-  y_annot <- max(minsignificance, min(.data[[significance]], na.rm = TRUE))
+  y_annot <- min(.data[[significance]], na.rm = TRUE)
 
   xd <- purrr::map2(
     xx$shared_data,

@@ -168,8 +168,10 @@ ContrastsPlotter <- R6::R6Class(
     #' @param colour column name with color information default modelName
     #' @param legend default TRUE
     #' @param scales default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument
-    #' @param min_score replace p.values or FDR's smaller then min_score with min_score (default 0.0001).
-    volcano = function(colour, legend = TRUE, scales = c("fixed", "free", "free_x", "free_y"), min_score = 0.0001) {
+    #' @param min_score optional lower bound for p-values or FDR values. If NULL,
+    #' only exact zero and negative values are replaced with the smallest positive
+    #' observed value in the same score column.
+    volcano = function(colour, legend = TRUE, scales = c("fixed", "free", "free_x", "free_y"), min_score = NULL) {
       if (missing(colour)) {
         colour <- self$model_name
       }
@@ -190,12 +192,14 @@ ContrastsPlotter <- R6::R6Class(
     #' @return list of ggplots
     #' @param legend default TRUE
     #' @param scales default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument
-    #' @param min_score replace p.values or FDR's smaller then min_score with min_score (default 0.0001).
+    #' @param min_score optional lower bound for p-values or FDR values. If NULL,
+    #' only exact zero and negative values are replaced with the smallest positive
+    #' observed value in the same score column.
     volcano_plotly = function(
       colour,
       legend = TRUE,
       scales = c("fixed", "free", "free_x", "free_y"),
-      min_score = 0.0001
+      min_score = NULL
     ) {
       if (missing(colour)) {
         colour <- self$model_name
@@ -358,7 +362,7 @@ ContrastsPlotter <- R6::R6Class(
       legend = TRUE,
       scales = "free_y",
       plotly = FALSE,
-      min_score = 0.0001
+      min_score = NULL
     ) {
       fig <- list()
       for (score in scores) {
@@ -366,7 +370,7 @@ ContrastsPlotter <- R6::R6Class(
         contrasts2 <- contrasts |>
           dplyr::filter(!is.na(!!sym(self$diff))) |>
           dplyr::filter(!is.na(!!sym(column))) |>
-          dplyr::mutate(!!column := case_when(!!sym(column) < min_score ~ min_score, TRUE ~ !!sym(column)))
+          dplyr::mutate(!!column := .floor_significance_values(!!sym(column), min_score))
         if (plotly) {
           contrasts2 <- contrasts2 |> plotly::highlight_key(~subject_id)
         }

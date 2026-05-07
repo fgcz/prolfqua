@@ -69,3 +69,29 @@ test_that("ContrastsPlotter produces correct plot types", {
   expect_type(bt, "list")
   expect_s3_class(bt$FDR$plot, "ggplot")
 })
+
+test_that("volcano plots do not cap small non-zero FDR values by default", {
+  contrast_df <- data.frame(
+    protein_Id = c("P1", "P2", "P3"),
+    contrast = "A_vs_B",
+    modelName = "model",
+    diff = c(-2, 0, 2),
+    FDR = c(1e-8, 1e-3, 0)
+  )
+  cp <- ContrastsPlotter$new(
+    contrast_df,
+    subject_id = "protein_Id",
+    volcano = list(list(score = "FDR", thresh = 0.1))
+  )
+
+  default_plot <- cp$volcano()$FDR
+  default_y <- ggplot2::ggplot_build(default_plot)$data[[1]]$y
+
+  expect_gt(max(default_y[is.finite(default_y)]), 7.9)
+  expect_true(all(is.finite(default_y)))
+
+  capped_plot <- cp$volcano(min_score = 1e-4)$FDR
+  capped_y <- ggplot2::ggplot_build(capped_plot)$data[[1]]$y
+
+  expect_equal(max(capped_y), 4)
+})

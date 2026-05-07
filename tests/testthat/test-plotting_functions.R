@@ -161,3 +161,24 @@ test_that("raster sample labels keep informative suffixes", {
   expect_false(any(data$sample_names %in% labels))
   expect_true(all(nchar(suffixes) <= 20))
 })
+
+test_that("volcano_plotly does not cap small non-zero FDR values by default", {
+  data <- data.frame(
+    fc = c(-2, 0, 2),
+    BFDR = c(1e-8, 1e-3, 0),
+    condition = "A",
+    Prey = c("P1", "P2", "P3"),
+    modelName = "model"
+  )
+
+  default_plot <- volcano_plotly(data)[[1]]
+  default_y <- unlist(lapply(plotly::plotly_build(default_plot)$x$data, function(trace) trace$y))
+
+  expect_gt(max(default_y[is.finite(default_y)]), 7.9)
+  expect_true(all(is.finite(default_y)))
+
+  capped_plot <- volcano_plotly(data, minsignificance = 1e-4)[[1]]
+  capped_y <- unlist(lapply(plotly::plotly_build(capped_plot)$x$data, function(trace) trace$y))
+
+  expect_equal(max(capped_y), 4)
+})
