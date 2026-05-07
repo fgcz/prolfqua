@@ -338,13 +338,13 @@ mod$coef_pairs()
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
 #>  1 7IZdVV~0841       2.10     6.77e- 1  -6.66e- 1
-#>  2 AZPG26~2091       0.905    2.23e-16   1.82e+ 0
+#>  2 AZPG26~2091       0.905    5.38e-16   1.82e+ 0
 #>  3 AoNKbb~6908       1.01    -7.77e- 1  -4.25e- 1
 #>  4 JnEDsz~4938       0.00838  8.36e-11   9.37e- 1
 #>  5 tCZCHm~6695       2.16     1.23e+ 0   1.23e+ 0
 #>  6 EnbuYk~0350       0.847    1.35e+ 0  -3.04e+ 0
-#>  7 NNASGK~1417       2.20    -1.35e+ 0   4.13e-16
-#>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
+#>  7 NNASGK~1417       2.20    -1.35e+ 0  -2.16e-15
+#>  8 XYrp6h~5793       2.20     1.26e-15  -4.27e-16
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
 #> 
@@ -365,23 +365,23 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpIkakXP/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpIkakXP/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpIkakXP/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpDPBW9m/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpDPBW9m/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpDPBW9m/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
 #>  1 7IZdVV~0841       2.10     6.77e- 1  -6.66e- 1
-#>  2 AZPG26~2091       0.905    2.23e-16   1.82e+ 0
+#>  2 AZPG26~2091       0.905    5.38e-16   1.82e+ 0
 #>  3 AoNKbb~6908       1.01    -7.77e- 1  -4.25e- 1
 #>  4 JnEDsz~4938       0.00838  8.36e-11   9.37e- 1
 #>  5 tCZCHm~6695       2.16     1.23e+ 0   1.23e+ 0
 #>  6 EnbuYk~0350       0.847    1.35e+ 0  -3.04e+ 0
-#>  7 NNASGK~1417       2.20    -1.35e+ 0   4.13e-16
-#>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
+#>  7 NNASGK~1417       2.20    -1.35e+ 0  -2.16e-15
+#>  8 XYrp6h~5793       2.20     1.26e-15  -4.27e-16
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_1bf572ec452b 
+#> agg_record_1b2b678001f9 
 #>                       2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
@@ -410,16 +410,16 @@ mod$coef_pairs()
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841         2.20   5.61e-16  -2.20e+ 0
-#>  2 AZPG26~2091         2.20  -1.52e-15  -1.07e-15
-#>  3 AoNKbb~6908         2.20   6.16e-16  -1.35e+ 0
-#>  4 EnbuYk~0350         0.847 -8.47e- 1  -6.83e-16
-#>  5 JnEDsz~4938        -0.847 -1.35e+ 0   1.18e-16
-#>  6 NNASGK~1417         2.20  -1.52e-15  -1.07e-15
-#>  7 XYrp6h~5793         2.20  -1.52e-15  -1.07e-15
+#>  1 7IZdVV~0841         2.20   9.70e-16  -2.20e+ 0
+#>  2 AZPG26~2091         2.20   1.26e-15  -4.27e-16
+#>  3 AoNKbb~6908         2.20  -1.69e-16  -1.35e+ 0
+#>  4 EnbuYk~0350         0.847 -8.47e- 1   4.14e-16
+#>  5 JnEDsz~4938        -0.847 -1.35e+ 0  -4.18e-17
+#>  6 NNASGK~1417         2.20   1.26e-15  -4.27e-16
+#>  7 XYrp6h~5793         2.20   1.26e-15  -4.27e-16
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
-#>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
-#> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
+#>  9 tCZCHm~6695         2.20  -1.35e+ 0  -2.16e-15
+#> 10 tHE075~8231         0.847  1.35e+ 0   1.59e-16
 #> 
 #> $name
 #> [1] "Coef_Pairsplot_modelFirth.pdf"
@@ -438,22 +438,22 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpIkakXP/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpIkakXP/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpIkakXP/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpDPBW9m/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpDPBW9m/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpDPBW9m/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841         2.20   5.61e-16  -2.20e+ 0
-#>  2 AZPG26~2091         2.20  -1.52e-15  -1.07e-15
-#>  3 AoNKbb~6908         2.20   6.16e-16  -1.35e+ 0
-#>  4 EnbuYk~0350         0.847 -8.47e- 1  -6.83e-16
-#>  5 JnEDsz~4938        -0.847 -1.35e+ 0   1.18e-16
-#>  6 NNASGK~1417         2.20  -1.52e-15  -1.07e-15
-#>  7 XYrp6h~5793         2.20  -1.52e-15  -1.07e-15
+#>  1 7IZdVV~0841         2.20   9.70e-16  -2.20e+ 0
+#>  2 AZPG26~2091         2.20   1.26e-15  -4.27e-16
+#>  3 AoNKbb~6908         2.20  -1.69e-16  -1.35e+ 0
+#>  4 EnbuYk~0350         0.847 -8.47e- 1   4.14e-16
+#>  5 JnEDsz~4938        -0.847 -1.35e+ 0  -4.18e-17
+#>  6 NNASGK~1417         2.20   1.26e-15  -4.27e-16
+#>  7 XYrp6h~5793         2.20   1.26e-15  -4.27e-16
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
-#>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
-#> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
-#> agg_record_1bf572ec452b 
+#>  9 tCZCHm~6695         2.20  -1.35e+ 0  -2.16e-15
+#> 10 tHE075~8231         0.847  1.35e+ 0   1.59e-16
+#> agg_record_1b2b678001f9 
 #>                       2 
 ```
