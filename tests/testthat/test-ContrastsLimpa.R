@@ -1,3 +1,24 @@
+test_that(".call_limpa_dpc supports limpa versions with and without b1.upper", {
+  expr_matrix <- matrix(seq_len(6), nrow = 2)
+
+  dpc_without_b1_upper <- function(y) {
+    list(y = y)
+  }
+  expect_equal(
+    prolfqua:::.call_limpa_dpc(expr_matrix, dpc_fun = dpc_without_b1_upper)$y,
+    expr_matrix
+  )
+
+  dpc_with_b1_upper <- function(y, b1.upper = NULL) {
+    list(y = y, b1.upper = b1.upper)
+  }
+  expect_equal(
+    prolfqua:::.call_limpa_dpc(expr_matrix, b1.upper = 1, dpc_fun = dpc_with_b1_upper)$b1.upper,
+    1
+  )
+})
+
+
 test_that("strategy_limpa returns StrategyLimpa R6 object", {
   skip_if_not_installed("limpa")
   strat <- prolfqua::strategy_limpa("abundance ~ group_")

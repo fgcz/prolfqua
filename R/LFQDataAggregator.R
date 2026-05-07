@@ -392,6 +392,14 @@ AggregateTopN <- R6::R6Class(
   LFQData$new(long_data, newconfig, prefix = prefix)
 }
 
+.call_limpa_dpc <- function(expr_matrix, b1.upper = 1, dpc_fun = limpa::dpc) {
+  dpc_args <- list(y = expr_matrix)
+  if ("b1.upper" %in% names(formals(dpc_fun))) {
+    dpc_args$b1.upper <- b1.upper
+  }
+  do.call(dpc_fun, dpc_args)
+}
+
 
 #' AggregateLimpa
 #'
@@ -464,8 +472,8 @@ AggregateLimpa <- R6::R6Class(
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       expr_matrix <- wide$data
 
-      # Estimate DPC
-      self$dpc_result <- limpa::dpc(expr_matrix, b1.upper = 1)
+      # Estimate DPC. Older limpa versions do not expose the b1.upper argument.
+      self$dpc_result <- .call_limpa_dpc(expr_matrix, b1.upper = 1)
 
       if (self$impute_only) {
         elist <- limpa::dpcQuantByRow(
