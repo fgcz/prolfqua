@@ -313,7 +313,7 @@ volcano plots (fold change vs FDR)
       colour,
       legend = TRUE,
       scales = c("fixed", "free", "free_x", "free_y"),
-      min_score = 1e-04
+      min_score = NULL
     )
 
 #### Arguments
@@ -334,8 +334,9 @@ volcano plots (fold change vs FDR)
 
 - `min_score`:
 
-  replace p.values or FDR's smaller then min_score with min_score
-  (default 0.0001).
+  optional lower bound for p-values or FDR values. If NULL, only exact
+  zero and negative values are replaced with the smallest positive
+  observed value in the same score column.
 
 ------------------------------------------------------------------------
 
@@ -349,7 +350,7 @@ plotly volcano plots
       colour,
       legend = TRUE,
       scales = c("fixed", "free", "free_x", "free_y"),
-      min_score = 1e-04
+      min_score = NULL
     )
 
 #### Arguments
@@ -370,8 +371,9 @@ plotly volcano plots
 
 - `min_score`:
 
-  replace p.values or FDR's smaller then min_score with min_score
-  (default 0.0001).
+  optional lower bound for p-values or FDR values. If NULL, only exact
+  zero and negative values are replaced with the smallest positive
+  observed value in the same score column.
 
 #### Returns
 

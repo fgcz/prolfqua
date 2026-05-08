@@ -5,6 +5,9 @@
 - Added a `check-bioc` Makefile target and a Bioconductor Docker check
   image.
 - Updated BiocCheck-related documentation and vignette metadata.
+- `ContrastsPlotter$volcano()` and
+  [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_Plotly.md)
+  no longer cap positive FDR/p-value scores at `1e-4` by default.
 - Renamed `LFQData$to_wide()` to `data_wide()` and removed deprecated
   compatibility wrappers.
 - Split `nr_obs_experiment()` into

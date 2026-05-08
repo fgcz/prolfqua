@@ -50,6 +50,8 @@
 <h2 class="pkg-version" data-toc-text="1.6.1" id="prolfqua-161">prolfqua 1.6.1<a class="anchor" aria-label="anchor" href="#prolfqua-161"></a></h2>
 <ul><li>Added a <code>check-bioc</code> Makefile target and a Bioconductor Docker check image.</li>
 <li>Updated BiocCheck-related documentation and vignette metadata.</li>
+<li>
+<code>ContrastsPlotter$volcano()</code> and <code><a href="../reference/volcano_Plotly.html">volcano_plotly()</a></code> no longer cap positive FDR/p-value scores at <code>1e-4</code> by default.</li>
 <li>Renamed <code>LFQData$to_wide()</code> to <code>data_wide()</code> and removed deprecated compatibility wrappers.</li>
 <li>Split <code>nr_obs_experiment()</code> into <code><a href="../reference/nr_children_experiment.html">nr_children_experiment()</a></code> and <code><a href="../reference/nr_features_experiment.html">nr_features_experiment()</a></code>.</li>
 <li>Made <code>LFQData</code> data/config internals private and moved callers to accessor methods.</li>

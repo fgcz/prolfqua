@@ -349,7 +349,7 @@ plot contrasts"></head><body>
 <span>  <span class="va">colour</span>,</span>
 <span>  legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"free"</span>, <span class="st">"free_x"</span>, <span class="st">"free_y"</span><span class="op">)</span>,</span>
-<span>  min_score <span class="op">=</span> <span class="fl">1e-04</span></span>
+<span>  min_score <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -368,7 +368,9 @@ plot contrasts"></head><body>
 
 
 <dt><code>min_score</code></dt>
-<dd><p>replace p.values or FDR's smaller then min_score with min_score (default 0.0001).</p></dd>
+<dd><p>optional lower bound for p-values or FDR values. If NULL,
+only exact zero and negative values are replaced with the smallest positive
+observed value in the same score column.</p></dd>
 
 
 </dl><p></p></div>
@@ -382,7 +384,7 @@ plot contrasts"></head><body>
 <span>  <span class="va">colour</span>,</span>
 <span>  legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"free"</span>, <span class="st">"free_x"</span>, <span class="st">"free_y"</span><span class="op">)</span>,</span>
-<span>  min_score <span class="op">=</span> <span class="fl">1e-04</span></span>
+<span>  min_score <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -401,7 +403,9 @@ plot contrasts"></head><body>
 
 
 <dt><code>min_score</code></dt>
-<dd><p>replace p.values or FDR's smaller then min_score with min_score (default 0.0001).</p></dd>
+<dd><p>optional lower bound for p-values or FDR values. If NULL,
+only exact zero and negative values are replaced with the smallest positive
+observed value in the same score column.</p></dd>
 
 
 </dl><p></p></div>
