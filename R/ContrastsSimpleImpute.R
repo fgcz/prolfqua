@@ -1,16 +1,42 @@
 # ContrastsMissing----
-#' Compute contrasts with group mean imputation
+#' Compute contrasts with group mean imputation (DEPRECATED)
 #'
-#' If there are no observations in one of the groups for some of the proteins,
-#' the group mean cannot be estimated. Therefore, assuming that the observation
-#' is missing because the protein abundance is below the detection limit,
-#' we substitute the unobserved group with the median of protein abundances
-#'  observed only in one sample of the group.
-#' The variance of a protein is estimated using the pooled variance
-#' of all observations of all groups.
+#' `r lifecycle::badge("deprecated")` (placeholder — prolfqua does not
+#' yet depend on the lifecycle package; consider this a soft
+#' deprecation notice. See \emph{Deprecated} below.)
+#'
+#' If there are no observations in one of the groups for some of the
+#' proteins, the group mean cannot be estimated. Therefore, assuming
+#' that the observation is missing because the protein abundance is
+#' below the detection limit, we substitute the unobserved group with
+#' the median of protein abundances observed only in one sample of the
+#' group. The variance of a protein is estimated using the pooled
+#' variance of all observations of all groups.
+#'
+#' @section Deprecated:
+#' `ContrastsMissing` is a pre-fitting group-mean substitution: it does
+#' not fit a per-protein model, just stamps the group-mean delta with a
+#' pooled-variance t-test. It is superseded by
+#' \code{\link{build_model_impute}} which refits failed/singular
+#' proteins with LOD-imputed values and borrowed variance per protein.
+#' New code should prefer the \code{lm_impute} facade
+#' (\code{\link{ContrastsLMImputeFacade}}) or any of its
+#' \code{limma_impute} / \code{limma_voom_impute} cousins. Constructing
+#' \code{ContrastsMissing} emits a \code{.Deprecated} warning at
+#' \code{initialize} time.
+#'
+#' Still reachable via \code{model = "lm_missing"} for users who want
+#' to explicitly run the group-mean fallback; the construction emits a
+#' \code{.Deprecated} warning each time. Will be removed once a
+#' merge-style replacement (e.g. an \code{lm_impute_missing} facade
+#' composing \code{build_model} with \code{build_model_impute}) lands.
+#'
+#' @seealso \code{\link{build_model_impute}},
+#'   \code{\link{ContrastsLMImputeFacade}}
 #'
 #' @family modelling
 #' @return An R6 class generator.
+#' @keywords internal
 #' @export
 #' @examples
 #' Nprot <- 120
@@ -97,6 +123,16 @@ ContrastsMissing <- R6::R6Class(
       p.adjust = prolfqua::adjust_p_values,
       model_name = "groupAverage"
     ) {
+      .Deprecated(
+        new = "build_model_impute() + ContrastsLMImputeFacade",
+        msg = paste(
+          "ContrastsMissing is deprecated: it substitutes group means",
+          "rather than fitting a model. Prefer build_model_impute",
+          "(LOD-imputed per-protein refit with borrowed variance) via",
+          "the lm_impute / limma_impute facades. See ?ContrastsMissing",
+          "for details."
+        )
+      )
       self$subject_id <- lfqdata$relevant_hierarchy_keys()
       self$contrasts <- contrasts
       self$model_name <- model_name

@@ -138,12 +138,25 @@ ContrastsModerated <- R6::R6Class(
       }
       contrast_result <- dplyr::ungroup(contrast_result)
       if (inherits(contrast_result$modelName, "factor")) {
+        moderated_levels <- ifelse(
+          grepl("_imputed$", levels(contrast_result$modelName)),
+          sub("_imputed$", "_moderated_imputed", levels(contrast_result$modelName)),
+          paste0(levels(contrast_result$modelName), "_moderated")
+        )
         mname <- factor(
-          paste0(contrast_result$modelName, "_moderated"),
-          levels = paste0(levels(contrast_result$modelName), "_moderated")
+          ifelse(
+            grepl("_imputed$", contrast_result$modelName),
+            sub("_imputed$", "_moderated_imputed", contrast_result$modelName),
+            paste0(contrast_result$modelName, "_moderated")
+          ),
+          levels = moderated_levels
         )
       } else {
-        mname <- paste0(contrast_result$modelName, "_moderated")
+        mname <- ifelse(
+          grepl("_imputed$", contrast_result$modelName),
+          sub("_imputed$", "_moderated_imputed", contrast_result$modelName),
+          paste0(contrast_result$modelName, "_moderated")
+        )
       }
       contrast_result$modelName <- mname
       stopifnot(all(super$column_description()$column_name %in% colnames(contrast_result)))

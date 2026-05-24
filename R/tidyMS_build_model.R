@@ -463,11 +463,21 @@ impute_refit_singular <- function(
   idx <- impute_idx[succeeded]
   results <- results[succeeded]
 
+  # Track which proteins got the LOD-refit rescue. The contrast layer
+  # (Contrasts$get_contrasts) reads this column to tag refit rows with
+  # a "_imputed" modelName suffix, so downstream consumers can tell
+  # rescued proteins apart from cleanly-fitted ones without a separate
+  # facade.
+  if (!"imputed" %in% colnames(model_df)) {
+    model_df$imputed <- FALSE
+  }
+
   if (length(idx) > 0) {
     model_df$linear_model[idx] <- lapply(results, `[[`, "linear_model")
     model_df$data[idx] <- lapply(results, `[[`, "data")
     model_df$has_model_fit[idx] <- TRUE
     model_df$isSingular[idx] <- FALSE
+    model_df$imputed[idx] <- TRUE
     model_df$sigma[idx] <- vapply(results, `[[`, numeric(1), "sigma")
     model_df$df.residual[idx] <- vapply(results, `[[`, numeric(1), "df.residual")
     model_df$nr_coef[idx] <- vapply(results, `[[`, numeric(1), "nr_coef")

@@ -534,3 +534,76 @@ test_that("limma_voom with external weights (nr_children)", {
   expect_true(nrow(res_wt) > 0)
   expect_true(nrow(res_nowt) > 0)
 })
+
+
+test_that("limma_impute tags LOD-rescued proteins with _imputed modelName", {
+  # Same fixture as the lm_impute regression test in test-ImputeModel.R;
+  # weight_missing = 0.5 guarantees some proteins have NA limma
+  # coefficients, which build_model_limma_impute then refits at LOD.
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5, seed = 42)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  # Plain limma: no imputed_proteins, uniform modelName.
+  fa_plain <- prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
+  res_plain <- fa_plain$get_contrasts()
+  expect_setequal(unique(res_plain$modelName), "limma")
+  expect_length(fa_plain$model$imputed_proteins, 0)
+
+  # limma_impute: refit proteins should produce a "_imputed" modelName.
+  # ContrastsLimma overrides the wrapped ModelLimma's model_name to
+  # the literal "limma" (or "limma_raw" when eBayes = FALSE), so the
+  # suffix is applied to "limma" not to "limmaImputed".
+  fa_imp <- prolfqua::ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
+  expect_gt(length(fa_imp$model$imputed_proteins), 0)
+  res_imp <- fa_imp$get_contrasts()
+  expect_setequal(unique(res_imp$modelName), c("limma", "limma_imputed"))
+  # Refit count should match imputed_proteins (one row per contrast,
+  # and we asked for one contrast).
+  expect_equal(
+    sum(res_imp$modelName == "limma_imputed"),
+    length(fa_imp$model$imputed_proteins)
+  )
+})
+
+
+test_that("limma_voom_impute also tags LOD-rescued proteins", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5, seed = 42)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  fa <- prolfqua::ContrastsLimmaVoomImputeFacade$new(lfqdata, "~ group_", contrasts)
+  expect_gt(length(fa$model$imputed_proteins), 0)
+  res <- fa$get_contrasts()
+  # Two modelName levels: base name and base name + "_imputed".
+  expect_equal(length(unique(res$modelName)), 2)
+  expect_true(any(grepl("_imputed$", res$modelName)))
+})
+
+
+test_that("ContrastsLMMissingFacade emits a deprecation warning", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  expect_warning(
+    prolfqua::ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts),
+    "deprecated"
+  )
+})
+
+
+test_that("ContrastsMissing emits a deprecation warning at construction", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  expect_warning(
+    prolfqua::ContrastsMissing$new(lfqdata, contrasts = contrasts),
+    "deprecated"
+  )
+})

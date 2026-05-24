@@ -202,7 +202,28 @@ Contrasts <- R6::R6Class(
 
         contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
         contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
-        contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
+        # Stamp modelName per row. If the underlying model_df carries
+        # an `imputed` column (set by impute_refit_singular for LOD-
+        # rescued proteins), suffix the modelName so the rescue is
+        # visible at the contrast level. Otherwise stamp uniformly.
+        if ("imputed" %in% colnames(self$models)) {
+          imputed_lookup <- self$models |>
+            dplyr::select(dplyr::all_of(c(self$subject_id, "imputed")))
+          contrast_result <- dplyr::left_join(
+            contrast_result,
+            imputed_lookup,
+            by = self$subject_id
+          )
+          contrast_result$modelName <- ifelse(
+            !is.na(contrast_result$imputed) & contrast_result$imputed,
+            paste0(self$model_name, "_imputed"),
+            self$model_name
+          )
+          contrast_result$imputed <- NULL
+          contrast_result <- contrast_result |> dplyr::relocate("modelName", .before = 1)
+        } else {
+          contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
+        }
         self$contrast_result <- contrast_result
       }
       res <- if (!all) {

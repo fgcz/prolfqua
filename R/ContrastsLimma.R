@@ -375,7 +375,8 @@ build_model_limma_impute <- function(
     trend = strategy$trend,
     robust = strategy$robust,
     dummy_model = dummy_model,
-    p.adjust = prolfqua::adjust_p_values
+    p.adjust = prolfqua::adjust_p_values,
+    imputed_proteins = setup$rowdata[failed, setup$subject_id[1], drop = TRUE]
   )
 }
 
@@ -634,7 +635,8 @@ build_model_limma_voom_impute <- function(
     trend = strategy$trend,
     robust = strategy$robust,
     dummy_model = dummy_model,
-    p.adjust = prolfqua::adjust_p_values
+    p.adjust = prolfqua::adjust_p_values,
+    imputed_proteins = setup$rowdata[failed, setup$subject_id[1], drop = TRUE]
   )
 }
 
@@ -689,6 +691,13 @@ ModelLimma <- R6::R6Class(
     dummy_model = NULL,
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
+    #' @field imputed_proteins character vector of protein ids (matching
+    #'   \code{rownames(fit$coefficients)}) that were rescued via LOD
+    #'   imputation. \code{ContrastsLimma$get_contrasts()} reads this to
+    #'   tag refit rows with a \code{"_imputed"} modelName suffix so the
+    #'   rescue is visible downstream. Empty for builders that do not
+    #'   impute.
+    imputed_proteins = character(0),
     #' @description
     #' initialize ModelLimma
     #' @param fit limma MArrayLM from lmFit
@@ -701,6 +710,7 @@ ModelLimma <- R6::R6Class(
     #' @param robust passed to eBayes
     #' @param dummy_model one fitted lm for linfct extraction
     #' @param p.adjust function to adjust p-values
+    #' @param imputed_proteins character vector of LOD-rescued protein ids
     initialize = function(
       fit,
       design,
@@ -711,7 +721,8 @@ ModelLimma <- R6::R6Class(
       trend = FALSE,
       robust = FALSE,
       dummy_model = NULL,
-      p.adjust = prolfqua::adjust_p_values
+      p.adjust = prolfqua::adjust_p_values,
+      imputed_proteins = character(0)
     ) {
       self$fit <- fit
       self$design <- design
@@ -723,6 +734,7 @@ ModelLimma <- R6::R6Class(
       self$robust <- robust
       self$dummy_model <- dummy_model
       self$p.adjust <- p.adjust
+      self$imputed_proteins <- imputed_proteins
     },
     #' @description
     #' return model coefficient table in long format
@@ -1044,7 +1056,26 @@ ContrastsLimma <- R6::R6Class(
       # Adjust p-values per contrast
       contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast", newname = "FDR")
       contrast_result <- contrast_result |> dplyr::relocate("FDR", .after = "diff")
-      contrast_result <- dplyr::mutate(contrast_result, modelName = self$model_name, .before = 1)
+      # Stamp modelName per row. Refit proteins (recorded as bare
+      # subject_id values on ModelLimma$imputed_proteins by
+      # build_model_limma_impute and build_model_limma_voom_impute) get
+      # a "_imputed" suffix so the rescue is visible in the contrast
+      # output; everything else gets the base model name uniformly.
+      imp_ids <- self$model$imputed_proteins
+      if (length(imp_ids) > 0 && length(self$subject_id) >= 1) {
+        # Match on the primary subject_id column. Multi-key subject_ids
+        # would require a paste-key join but no current backend uses
+        # that with limma.
+        is_imputed <- contrast_result[[self$subject_id[1]]] %in% imp_ids
+        contrast_result$modelName <- ifelse(
+          is_imputed,
+          paste0(self$model_name, "_imputed"),
+          self$model_name
+        )
+        contrast_result <- contrast_result |> dplyr::relocate("modelName", .before = 1)
+      } else {
+        contrast_result <- dplyr::mutate(contrast_result, modelName = self$model_name, .before = 1)
+      }
       contrast_result <- dplyr::ungroup(contrast_result)
       self$contrast_result <- contrast_result
 
