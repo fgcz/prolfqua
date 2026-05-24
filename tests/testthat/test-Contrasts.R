@@ -219,3 +219,23 @@ test_that("ContrastsFirth and ContrastsFirthFacade", {
   expect_true("facade" %in% colnames(fa_res))
   expect_true(all(fa_res$facade == "firth"))
 })
+
+test_that("ContrastsFirth drops failed logistf fits before contrasts", {
+  istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
+  lfqdata <- LFQData$new(istar$data, istar$config)
+  Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  mod <- build_model_glm_protein(lfqdata, "~ group_")
+  model_df <- mod$models$models1$model_df
+  failed_idx <- which(model_df$has_model_fit)[1]
+  mod$models$models1$model_df$linear_model[[failed_idx]] <- "failed fit"
+  mod$models$models1$model_df$has_model_fit[[failed_idx]] <- FALSE
+  mod$models$models1$model_df$nr_coef_not_NA[[failed_idx]] <- NA_integer_
+
+  ctr <- ContrastsFirth$new(mod, Contr)
+  res <- ctr$get_contrasts()
+
+  expect_s3_class(res, "data.frame")
+  expect_true(all(c("protein_Id", "contrast", "diff", "p.value", "FDR") %in% colnames(res)))
+  expect_false(any(is.na(res$protein_Id)))
+})

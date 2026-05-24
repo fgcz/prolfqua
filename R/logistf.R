@@ -18,9 +18,17 @@
 #' stopifnot(all(dim(tmp1) > 10))
 #' stopifnot(all(dim(tmp2) > 10))
 contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
-  model_df <- models$model_df
+  model_df <- models$model_df |>
+    dplyr::filter(
+      .data$has_model_fit,
+      !is.na(.data$nr_coef_not_NA),
+      !purrr::map_lgl(.data$linear_model, is.character)
+    )
   #computeGroupAverages
   message("contrasts_linfct_firth")
+  if (nrow(model_df) == 0) {
+    return(tibble::tibble())
+  }
   modelcol <- "linear_model"
 
   interaction_models <- vector(mode = "list", length = nrow(model_df))
@@ -28,10 +36,13 @@ contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
 
   for (i in seq_along(model_df[[modelcol]])) {
     # nolint start: object_usage_linter
-    interaction_models[[i]] <- .compute_contrast(
-      model_df[[modelcol]][[i]],
-      linfct = model_df$linfct[[i]],
-      strategy = models$strategy
+    interaction_models[[i]] <- tryCatch(
+      .compute_contrast(
+        model_df[[modelcol]][[i]],
+        linfct = model_df$linfct[[i]],
+        strategy = models$strategy
+      ),
+      error = function(e) FALSE
     )
     # nolint end
     pb$tick()

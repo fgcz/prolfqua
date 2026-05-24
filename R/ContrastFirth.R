@@ -14,6 +14,15 @@
   return(linfct_a)
 }
 
+.filter_fitted_firth_models <- function(model_df) {
+  model_df |>
+    dplyr::filter(
+      .data$has_model_fit,
+      !is.na(.data$nr_coef_not_NA),
+      !purrr::map_lgl(.data$linear_model, is.character)
+    )
+}
+
 # Contrasts -----
 
 #' Estimate contrasts using Wald Test
@@ -83,34 +92,38 @@ ContrastsFirth <- R6::R6Class(
     #' @param avg logical TRUE - get also linfct for averages
     get_linfct = function(avg = TRUE) {
       if (!is.null(self$models$models$models1)) {
-        model1_df <- self$models$models$models1$model_df
+        model1_df <- .filter_fitted_firth_models(self$models$models$models1$model_df)
         res1 <- vector(mode = "list", nrow(model1_df))
-        pb <- progress::progress_bar$new(total = length(model1_df$linear_model))
-        model <- get_complete_model_fit(model1_df)$linear_model[[1]]
-        compmodel <- .linfct(model, self$contrasts, avg = avg)
-        max_coef <- max(model1_df$nr_coef_not_NA)
+        pb <- progress::progress_bar$new(total = nrow(model1_df))
+        if (nrow(model1_df) > 0) {
+          model <- get_complete_model_fit(model1_df)$linear_model[[1]]
+          compmodel <- .linfct(model, self$contrasts, avg = avg)
+          max_coef <- max(model1_df$nr_coef_not_NA, na.rm = TRUE)
 
-        for (i in seq_along(model1_df$linear_model)) {
-          pb$tick()
-          res1[[i]] <- if (model1_df$nr_coef_not_NA[[i]] == max_coef) {
-            compmodel
-          } else {
-            .linfct(model1_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
+          for (i in seq_along(model1_df$linear_model)) {
+            pb$tick()
+            res1[[i]] <- if (model1_df$nr_coef_not_NA[[i]] == max_coef) {
+              compmodel
+            } else {
+              .linfct(model1_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
+            }
           }
         }
-        self$models$models$models1$model_df$linfct <- res1
+        model1_df$linfct <- res1
+        self$models$models$models1$model_df <- model1_df
       }
 
       if (!is.null(self$models$models$models2)) {
-        model2_df <- self$models$models$models2$model_df
-        pb <- progress::progress_bar$new(total = length(model2_df$linear_model))
+        model2_df <- .filter_fitted_firth_models(self$models$models$models2$model_df)
+        pb <- progress::progress_bar$new(total = nrow(model2_df))
         res2 <- vector(mode = "list", nrow(model2_df))
         for (i in seq_along(model2_df$linear_model)) {
           pb$tick()
           res2[[i]] <-
             .linfct(model2_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
         }
-        self$models$models$models2$model_df$linfct <- res2
+        model2_df$linfct <- res2
+        self$models$models$models2$model_df <- model2_df
       }
       return(self)
     },
