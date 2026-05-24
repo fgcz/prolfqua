@@ -72,12 +72,28 @@ ContrastsTable <- R6::R6Class(
     #' @return \code{\link{ContrastsPlotter}}
     #'
     get_Plotter = function(fc_threshold = 1, fdr_threshold = 0.1) {
+      score_columns <- colnames(self$contrast_result)
+      volcano <- list()
+      histogram <- list()
+      score <- list()
+      if ("p.value" %in% score_columns) {
+        volcano <- c(volcano, list(list(score = "p.value")))
+        histogram <- c(histogram, list(list(score = "p.value", xlim = c(0, 1, 0.05))))
+      }
+      if ("FDR" %in% score_columns) {
+        volcano <- c(volcano, list(list(score = "FDR", thresh = fdr_threshold)))
+        histogram <- c(histogram, list(list(score = "FDR", xlim = c(0, 1, 0.05))))
+      }
+      if ("statistic" %in% score_columns) {
+        score <- list(list(score = "statistic", thresh = NULL))
+      }
       res <- ContrastsPlotter$new(
         self$contrast_result,
         subject_id = self$subject_id,
         fcthresh = fc_threshold,
-        volcano = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", thresh = fdr_threshold)),
-        histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
+        volcano = volcano,
+        histogram = histogram,
+        score = score,
         modelName = "modelName",
         diff = "diff",
         contrast = "contrast"

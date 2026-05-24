@@ -26,6 +26,7 @@ test_that("ContrastsPlotter produces correct plot types", {
     ),
     score = list(list(score = "statistic", thresh = 5))
   )
+  expect_setequal(intersect("contrast_df", names(cp)), character())
 
   # volcano returns list of ggplots
   res <- cp$volcano()
@@ -68,6 +69,30 @@ test_that("ContrastsPlotter produces correct plot types", {
   bt <- cp$barplot_threshold()
   expect_type(bt, "list")
   expect_s3_class(bt$FDR$plot, "ggplot")
+})
+
+test_that("volcano score names can differ from score columns", {
+  contrast_df <- data.frame(
+    protein_Id = c("P1", "P2", "P3"),
+    contrast = "A_vs_B",
+    modelName = "model",
+    diff = c(-2, 0, 2),
+    BFDR = c(0.01, 0.1, 0.2)
+  )
+  cp <- ContrastsPlotter$new(
+    contrast_df,
+    subject_id = "protein_Id",
+    volcano = list(list(score = "BFDR", name = "FDR", thresh = 0.1))
+  )
+
+  volcano <- cp$volcano()
+  expect_named(volcano, "FDR")
+  expect_s3_class(volcano$FDR, "ggplot")
+  expect_equal(volcano$FDR$labels$y, "-log10(BFDR)")
+
+  volcano_plotly <- cp$volcano_plotly()
+  expect_named(volcano_plotly, "FDR")
+  expect_s3_class(volcano_plotly$FDR, "plotly")
 })
 
 test_that("volcano plots do not cap small non-zero FDR values by default", {

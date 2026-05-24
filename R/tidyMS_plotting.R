@@ -669,7 +669,16 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
     geom_point()
   })
 
-  text <- geom_text(aes(label = !!sym(sample_name)), check_overlap = TRUE, nudge_x = nudge, nudge_y = nudge)
+  text <- ggrepel::geom_text_repel(
+    aes(label = !!sym(sample_name)),
+    min.segment.length = 0,
+    box.padding = 0.35,
+    point.padding = 0.25,
+    seed = 1,
+    nudge_x = nudge,
+    nudge_y = nudge,
+    show.legend = FALSE
+  )
 
   pc_x <- paste0("PC", PC[1])
   pc_y <- paste0("PC", PC[2])
@@ -682,6 +691,10 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
       y = paste0(pc_y, " (", round(variance_explained[PC[2]]), "% variance)")
     ) +
     point +
+    ggplot2::scale_x_continuous(expand = ggplot2::expansion(mult = 0.12)) +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = 0.12)) +
+    ggplot2::coord_cartesian(clip = "off") +
+    ggplot2::theme(plot.margin = ggplot2::margin(8, 24, 8, 24)) +
     if (add_txt) {
       text
     }

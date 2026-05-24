@@ -47,6 +47,33 @@ test_that("density legend is suppressed automatically for many samples", {
   expect_equal(length(p$guides$guides), 1)
 })
 
+test_that("PCA sample labels repel and are not clipped", {
+  matrix <- matrix(stats::rnorm(60), nrow = 10)
+  colnames(matrix) <- paste0("sample_", seq_len(6))
+  annotation <- data.frame(
+    sample = colnames(matrix),
+    group = rep(c("control", "treated"), each = 3)
+  )
+
+  p <- plot_pca(
+    matrix,
+    annotation,
+    sample_name = "sample",
+    factor_keys = "group",
+    add_txt = TRUE
+  )
+
+  geom_classes <- vapply(
+    p$layers,
+    function(layer) class(layer$geom)[[1]],
+    character(1)
+  )
+
+  expect_s3_class(p, "ggplot")
+  expect_contains(geom_classes, "GeomTextRepel")
+  expect_equal(p$coordinates$clip, "off")
+})
+
 test_that("heatmap row labels are truncated without changing matrix row names", {
   matrix <- matrix(stats::rnorm(12), nrow = 3)
   original_labels <- c(

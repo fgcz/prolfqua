@@ -87,6 +87,7 @@
 #' fa$to_wide()
 ContrastsLimmaFacade <- R6::R6Class(
   "ContrastsLimmaFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model ModelLimma object
     model = NULL,
@@ -113,6 +114,7 @@ ContrastsLimmaFacade <- R6::R6Class(
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma(lfqdata, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts)
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results (rows with NA diff are filtered out)
     #' @param ... passed to ContrastsLimma$get_contrasts
@@ -158,6 +160,7 @@ ContrastsLimmaFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLimmaImputeFacade <- R6::R6Class(
   "ContrastsLimmaImputeFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model ModelLimma object (with imputed proteins)
     model = NULL,
@@ -195,6 +198,7 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_impute(lfqdata, strat, lod = lod, df_method = df_method)
       self$contrast <- ContrastsLimma$new(self$model, contrasts)
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results (rows with NA diff are filtered out)
     #' @param ... passed to ContrastsLimma$get_contrasts
@@ -237,6 +241,7 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLimmaVoomFacade <- R6::R6Class(
   "ContrastsLimmaVoomFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model ModelLimma object
     model = NULL,
@@ -273,6 +278,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
       self$contrast <- ContrastsLimma$new(self$model, contrasts)
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results (rows with NA diff are filtered out)
     #' @param ... passed to ContrastsLimma$get_contrasts
@@ -315,6 +321,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLimmaVoomImputeFacade <- R6::R6Class(
   "ContrastsLimmaVoomImputeFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model ModelLimma object (with imputed proteins)
     model = NULL,
@@ -363,6 +370,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
         plot = plot
       )
       self$contrast <- ContrastsLimma$new(self$model, contrasts)
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results (rows with NA diff are filtered out)
     #' @param ... passed to ContrastsLimma$get_contrasts
@@ -408,6 +416,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
 #' head(fa$get_contrasts())
 ContrastsLimpaFacade <- R6::R6Class(
   "ContrastsLimpaFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model ModelLimma object (from build_model_limpa)
     model = NULL,
@@ -440,6 +449,7 @@ ContrastsLimpaFacade <- R6::R6Class(
       strat <- strategy_limpa(full_formula, plot = plot, span = span, ...)
       self$model <- build_model_limpa(lfqdata, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa")
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results (rows with NA diff are filtered out)
     #' @param ... passed to ContrastsLimma$get_contrasts
@@ -483,6 +493,7 @@ ContrastsLimpaFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLMFacade <- R6::R6Class(
   "ContrastsLMFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -509,6 +520,7 @@ ContrastsLMFacade <- R6::R6Class(
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModerated$get_contrasts
@@ -551,6 +563,7 @@ ContrastsLMFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsRLMFacade <- R6::R6Class(
   "ContrastsRLMFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -575,6 +588,7 @@ ContrastsRLMFacade <- R6::R6Class(
       strat <- strategy_rlm(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModerated$get_contrasts
@@ -622,6 +636,7 @@ ContrastsRLMFacade <- R6::R6Class(
 #' @return An R6 class generator.
 ContrastsLmerFacade <- R6::R6Class(
   "ContrastsLmerFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -646,6 +661,7 @@ ContrastsLmerFacade <- R6::R6Class(
       strat <- strategy_lmer(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModerated$get_contrasts
@@ -676,20 +692,37 @@ ContrastsLmerFacade <- R6::R6Class(
 #' Proteins without a fitted model get their contrasts filled in from the
 #' group-mean imputation method (\code{\link{ContrastsMissing}}).
 #'
+#' @section Deprecated:
+#' This facade is deprecated because its missing-data leg uses
+#' \code{\link{ContrastsMissing}} — a pre-fitting group-mean
+#' substitution, not a refit. Prefer the \code{lm_impute} facade
+#' (\code{\link{ContrastsLMImputeFacade}}), which fits an LM for every
+#' protein and refits failed/singular fits with LOD imputation and
+#' borrowed per-protein variance, surfacing rescued rows as
+#' \code{modelName = "WaldTest_moderated_imputed"} in the output.
+#' Construction emits a \code{.Deprecated} warning; the entry is kept
+#' in \code{\link{FACADE_REGISTRY}} so historical YAMLs continue to
+#' work.
+#'
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
+#' @seealso \code{\link{ContrastsLMImputeFacade}},
+#'   \code{\link{build_model_impute}}, \code{\link{ContrastsMissing}}
 #' @examples
 #' # ContrastsMissing requires protein-level data (hierarchyDepth == len(hierarchy_keys()))
 #' istar <- sim_lfq_data_protein_config(Nprot = 30)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-#' fa <- ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts)
+#' suppressWarnings(
+#'   fa <- ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts)
+#' )
 #' head(fa$get_contrasts())
 #' fa$to_wide()
 ContrastsLMMissingFacade <- R6::R6Class(
   "ContrastsLMMissingFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -712,6 +745,17 @@ ContrastsLMMissingFacade <- R6::R6Class(
     #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
+      .Deprecated(
+        new = "ContrastsLMImputeFacade",
+        msg = paste(
+          "ContrastsLMMissingFacade (method = 'lm_missing') is",
+          "deprecated: its second leg uses ContrastsMissing (group-mean",
+          "substitution, no model fit). Prefer 'lm_impute' which refits",
+          "failed/singular proteins with LOD imputation and borrowed",
+          "variance, tagging rescued rows as 'WaldTest_moderated_imputed'.",
+          "See ?ContrastsLMMissingFacade for migration."
+        )
+      )
       .assert_aggregated_facade_input(lfqdata, "ContrastsLMMissingFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
@@ -720,9 +764,12 @@ ContrastsLMMissingFacade <- R6::R6Class(
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
       base_contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
-      self$missing_contrast <- ContrastsMissing$new(lfqdata, contrasts = contrasts)
+      self$missing_contrast <- suppressWarnings(
+        ContrastsMissing$new(lfqdata, contrasts = contrasts)
+      )
       self$merged <- merge_contrasts_results(base_contrast, self$missing_contrast)
       self$contrast <- self$merged$merged
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsTable$get_contrasts
@@ -767,6 +814,7 @@ ContrastsLMMissingFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLMImputeFacade <- R6::R6Class(
   "ContrastsLMImputeFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model Model object (with imputed proteins)
     model = NULL,
@@ -813,6 +861,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
         df_method = df_method
       )
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModerated$get_contrasts
@@ -857,6 +906,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsFirthFacade <- R6::R6Class(
   "ContrastsFirthFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model ModelFirth object
     model = NULL,
@@ -881,6 +931,7 @@ ContrastsFirthFacade <- R6::R6Class(
         build_model_glm_peptide(lfqdata, modelstr)
       }
       self$contrast <- ContrastsFirth$new(self$model, contrasts)
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsFirth$get_contrasts
@@ -921,6 +972,7 @@ ContrastsFirthFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsDEqMSFacade <- R6::R6Class(
   "ContrastsDEqMSFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -951,6 +1003,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModeratedDEqMS$get_contrasts
@@ -994,6 +1047,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
 #' head(fa$get_contrasts())
 ContrastsDEqMSVoomFacade <- R6::R6Class(
   "ContrastsDEqMSVoomFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model ModelLimma object
     model = NULL,
@@ -1026,6 +1080,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
+      self$config <- self$contrast$get_config()
     },
     #' @description get contrast results
     #' @param ... passed to ContrastsModeratedDEqMS$get_contrasts
@@ -1070,6 +1125,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #' @return An R6 class generator.
 ContrastsROPECAFacade <- R6::R6Class(
   "ContrastsROPECAFacade",
+  inherit = ContrastsInterface,
   public = list(
     #' @field model Model object (peptide-level)
     model = NULL,
@@ -1097,6 +1153,8 @@ ContrastsROPECAFacade <- R6::R6Class(
       subject_id <- lfqdata$hierarchy_keys()
       self$model <- build_model(lfqdata, strat, subject_id = subject_id)
       self$contrast <- ContrastsROPECA$new(Contrasts$new(self$model, contrasts))
+      self$config <- self$contrast$get_config()
+      self$config$subject_id <- self$contrast$subject_id[1]
     },
     #' @description
     #' Get contrast results with standardized column names.
@@ -1181,32 +1239,182 @@ ContrastsROPECAFacade <- R6::R6Class(
 )
 
 
+.facade_registry_env <- new.env(parent = emptyenv())
+
+.seed_facade_registry <- function() {
+  entries <- list(
+    lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
+    lm_impute = list(class = "ContrastsLMImputeFacade", needs = "aggregated"),
+    lm_missing = list(class = "ContrastsLMMissingFacade", needs = "aggregated"),
+    limma = list(class = "ContrastsLimmaFacade", needs = "aggregated"),
+    limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "aggregated"),
+    limma_voom = list(class = "ContrastsLimmaVoomFacade", needs = "aggregated"),
+    limma_voom_impute = list(class = "ContrastsLimmaVoomImputeFacade", needs = "aggregated"),
+    limpa = list(class = "ContrastsLimpaFacade", needs = "aggregated_limpa"),
+    rlm = list(class = "ContrastsRLMFacade", needs = "aggregated"),
+    deqms = list(class = "ContrastsDEqMSFacade", needs = "aggregated"),
+    deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "aggregated"),
+    firth = list(class = "ContrastsFirthFacade", needs = "either"),
+    lmer = list(class = "ContrastsLmerFacade", needs = "nested"),
+    ropeca = list(class = "ContrastsROPECAFacade", needs = "nested")
+  )
+  for (nm in names(entries)) {
+    entry <- entries[[nm]]
+    entry$package <- "prolfqua"
+    entry$needs_saint_annotation <- FALSE
+    assign(nm, entry, envir = .facade_registry_env)
+  }
+}
+.seed_facade_registry()
+
+#' Register a contrast facade class
+#'
+#' Adds an entry to the prolfqua facade registry so that
+#' \code{\link{lookup_facade}} (and downstream consumers such as
+#' \code{prolfquapp::R6_DEAnalyse$build_facade()}) can resolve it by
+#' short name. Intended for downstream packages that ship additional
+#' modelling backends (e.g. \code{prolfquasaint}) and want to plug into
+#' the same dispatch path as the built-in facades.
+#'
+#' @param name short method name, e.g. \code{"saint"}.
+#' @param class character; R6 facade class name to instantiate.
+#' @param needs one of \code{"aggregated"}, \code{"nested"},
+#'   \code{"either"} (or a package-specific shape like
+#'   \code{"aggregated_limpa"}).
+#' @param package package the facade class lives in. Defaults to
+#'   \code{"prolfqua"}.
+#' @param needs_saint_annotation \code{TRUE} if the backend requires
+#'   annotation reading in SAINT mode (bait / control columns).
+#'   Default \code{FALSE}.
+#' @param ... additional fields stored on the registry entry, available
+#'   to consumers via \code{\link{lookup_facade}}.
+#' @return The registered entry (invisibly).
+#' @export
+#' @family modelling
+#' @examples
+#' lookup_facade("lm")$class
+#' # downstream packages call this from .onLoad():
+#' # prolfqua::register_facade("saint", class = "ContrastsSAINTFacade",
+#' #                           needs = "aggregated", package = "prolfquasaint",
+#' #                           needs_saint_annotation = TRUE)
+register_facade <- function(name, class, needs, package = "prolfqua", needs_saint_annotation = FALSE, ...) {
+  stopifnot(
+    is.character(name),
+    length(name) == 1,
+    nzchar(name),
+    is.character(class),
+    length(class) == 1,
+    nzchar(class),
+    is.character(needs),
+    length(needs) == 1,
+    is.character(package),
+    length(package) == 1
+  )
+  entry <- list(
+    class = class,
+    needs = needs,
+    package = package,
+    needs_saint_annotation = isTRUE(needs_saint_annotation),
+    ...
+  )
+  assign(name, entry, envir = .facade_registry_env)
+  invisible(entry)
+}
+
+#' Unregister a contrast facade class
+#'
+#' @param name short method name registered via
+#'   \code{\link{register_facade}}.
+#' @return Invisibly \code{TRUE} if the entry was removed, \code{FALSE}
+#'   if no entry existed.
+#' @export
+#' @family modelling
+unregister_facade <- function(name) {
+  if (exists(name, envir = .facade_registry_env, inherits = FALSE)) {
+    rm(list = name, envir = .facade_registry_env)
+    invisible(TRUE)
+  } else {
+    invisible(FALSE)
+  }
+}
+
+#' Look up a contrast facade by short name
+#'
+#' @param name short method name (e.g. \code{"lm"}, \code{"saint"}).
+#' @return Registry entry list with at least \code{class},
+#'   \code{needs}, \code{package}, \code{needs_saint_annotation}; or
+#'   \code{NULL} if no entry exists.
+#' @export
+#' @family modelling
+#' @examples
+#' lookup_facade("lm")$class
+#' is.null(lookup_facade("does-not-exist"))
+lookup_facade <- function(name) {
+  if (length(name) != 1 || is.na(name) || !nzchar(name)) {
+    return(NULL)
+  }
+  if (!exists(name, envir = .facade_registry_env, inherits = FALSE)) {
+    return(NULL)
+  }
+  get(name, envir = .facade_registry_env, inherits = FALSE)
+}
+
+.builtin_facade_entry <- function(class, needs) {
+  list(
+    class = class,
+    needs = needs,
+    package = "prolfqua",
+    needs_saint_annotation = FALSE
+  )
+}
+
 #' Registry of available contrast facade classes
 #'
-#' A named list mapping short names to facade class names and their data
-#' requirements. Each entry has:
-#' \describe{
-#'   \item{class}{Character string naming the R6 facade class}
-#'   \item{needs}{One of \code{"aggregated"}, \code{"nested"}, or \code{"either"}}
-#' }
+#' Read-only snapshot of the prolfqua facade registry. Use
+#' \code{\link{register_facade}} to add entries from downstream
+#' packages, \code{\link{lookup_facade}} to resolve a single entry, and
+#' \code{list_facades()} to enumerate the current registry.
+#'
+#' Each entry has fields \code{class}, \code{needs}, \code{package},
+#' and \code{needs_saint_annotation}.
 #'
 #' @export
 #' @examples
 #' names(FACADE_REGISTRY)
 #' FACADE_REGISTRY$limma$class
-FACADE_REGISTRY <- list(
-  lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
-  lm_impute = list(class = "ContrastsLMImputeFacade", needs = "aggregated"),
-  lm_missing = list(class = "ContrastsLMMissingFacade", needs = "aggregated"),
-  limma = list(class = "ContrastsLimmaFacade", needs = "aggregated"),
-  limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "aggregated"),
-  limma_voom = list(class = "ContrastsLimmaVoomFacade", needs = "aggregated"),
-  limma_voom_impute = list(class = "ContrastsLimmaVoomImputeFacade", needs = "aggregated"),
-  limpa = list(class = "ContrastsLimpaFacade", needs = "aggregated_limpa"),
-  rlm = list(class = "ContrastsRLMFacade", needs = "aggregated"),
-  deqms = list(class = "ContrastsDEqMSFacade", needs = "aggregated"),
-  deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "aggregated"),
-  firth = list(class = "ContrastsFirthFacade", needs = "either"),
-  lmer = list(class = "ContrastsLmerFacade", needs = "nested"),
-  ropeca = list(class = "ContrastsROPECAFacade", needs = "nested")
+FACADE_REGISTRY <- structure(
+  list(
+    lm = .builtin_facade_entry("ContrastsLMFacade", "aggregated"),
+    lm_impute = .builtin_facade_entry("ContrastsLMImputeFacade", "aggregated"),
+    lm_missing = .builtin_facade_entry("ContrastsLMMissingFacade", "aggregated"),
+    limma = .builtin_facade_entry("ContrastsLimmaFacade", "aggregated"),
+    limma_impute = .builtin_facade_entry("ContrastsLimmaImputeFacade", "aggregated"),
+    limma_voom = .builtin_facade_entry("ContrastsLimmaVoomFacade", "aggregated"),
+    limma_voom_impute = .builtin_facade_entry(
+      "ContrastsLimmaVoomImputeFacade",
+      "aggregated"
+    ),
+    limpa = .builtin_facade_entry("ContrastsLimpaFacade", "aggregated_limpa"),
+    rlm = .builtin_facade_entry("ContrastsRLMFacade", "aggregated"),
+    deqms = .builtin_facade_entry("ContrastsDEqMSFacade", "aggregated"),
+    deqms_voom = .builtin_facade_entry("ContrastsDEqMSVoomFacade", "aggregated"),
+    firth = .builtin_facade_entry("ContrastsFirthFacade", "either"),
+    lmer = .builtin_facade_entry("ContrastsLmerFacade", "nested"),
+    ropeca = .builtin_facade_entry("ContrastsROPECAFacade", "nested")
+  ),
+  class = c("facade_registry", "list")
 )
+
+#' List currently registered contrast facades
+#'
+#' @return A list mirroring \code{\link{FACADE_REGISTRY}} but reflecting
+#'   any entries added via \code{\link{register_facade}} from downstream
+#'   packages.
+#' @export
+#' @family modelling
+list_facades <- function() {
+  names_ <- ls(envir = .facade_registry_env, sorted = TRUE)
+  out <- lapply(names_, function(nm) get(nm, envir = .facade_registry_env, inherits = FALSE))
+  names(out) <- names_
+  out
+}

@@ -146,6 +146,55 @@ test_that("ContrastsTable (passive container)", {
   expect_s3_class(pl, "ContrastsPlotter")
 })
 
+test_that("ContrastsTable plotter uses available score columns", {
+  ctr <- data.frame(
+    protein_Id = paste0("P", seq_len(4)),
+    contrast = "A_vs_B",
+    diff = c(-2, -0.5, 0.5, 2),
+    FDR = c(0.01, 0.2, 0.3, 0.02),
+    modelName = "TableTest"
+  )
+
+  ct <- ContrastsTable$new(ctr, subject_id = "protein_Id", model_name = "TableTest")
+  pl <- ct$get_Plotter()
+
+  volcano_scores <- vapply(pl$volcano_spec, `[[`, character(1), "score")
+  histogram_scores <- vapply(pl$histogram_spec, `[[`, character(1), "score")
+
+  expect_equal(volcano_scores, "FDR")
+  expect_equal(histogram_scores, "FDR")
+  expect_named(pl$volcano(), "FDR")
+  expect_s3_class(pl$volcano()$FDR, "ggplot")
+})
+
+test_that("ContrastsTable provides rank and ORA input tables", {
+  ctr <- data.frame(
+    protein_Id = paste0("P", seq_len(6)),
+    contrast = c(rep("A_vs_B", 3), rep("C_vs_D", 3)),
+    diff = c(1.5, -1.4, 0.2, 2.1, -2.2, 1.2),
+    FDR = c(0.01, 0.02, 0.01, 0.2, 0.03, 0.04),
+    statistic = c(5, -4, 1, 3, -6, 7),
+    modelName = "TableTest"
+  )
+
+  ct <- ContrastsTable$new(ctr, subject_id = "protein_Id", model_name = "TableTest")
+
+  rank_table <- ct$get_rank(score = "statistic")
+  expect_named(rank_table, c("protein_Id", "contrast", "score"))
+  expect_equal(rank_table$score, ctr$statistic)
+
+  # Default rank score: falls back to the effect column (diff) when no p.value
+  # column is present in the contrast table.
+  rank_default <- ct$get_rank()
+  expect_equal(rank_default$score, ctr$diff)
+
+  ora_up <- ct$get_ora(up = TRUE, FDR_threshold = 0.05, diff_threshold = 1)
+  expect_equal(ora_up$protein_Id, c("P1", "P6"))
+
+  ora_down <- ct$get_ora(up = FALSE, FDR_threshold = 0.05, diff_threshold = 1)
+  expect_equal(ora_down$protein_Id, c("P2", "P5"))
+})
+
 test_that("ContrastsFirth and ContrastsFirthFacade", {
   istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)

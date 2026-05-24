@@ -55,8 +55,6 @@
 ContrastsPlotter <- R6::R6Class(
   "ContrastsPlotter",
   public = list(
-    #' @field contrast_df data frame with contrasts
-    contrast_df = NULL,
     #' @field model_name of column with model name
     model_name = character(),
     #' @field subject_id hierarchy key columns
@@ -105,7 +103,7 @@ ContrastsPlotter <- R6::R6Class(
       avg.abundance = "avgAbd",
       protein_annot = NULL
     ) {
-      self$contrast_df <- tidyr::unite(
+      private$.contrast_df <- tidyr::unite(
         contrast_df,
         "subject_id",
         dplyr::all_of(subject_id),
@@ -140,11 +138,11 @@ ContrastsPlotter <- R6::R6Class(
     #' plot histogram of effect size - difference between groups
     #' @param binwidth with of bin in histogram
     histogram_estimate = function(binwidth = 0.05) {
-      re <- range(self$contrast_df[[self$diff]], na.rm = TRUE)
+      re <- range(private$.contrast_df[[self$diff]], na.rm = TRUE)
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
 
-      fig <- ggplot(self$contrast_df, aes(x = !!sym(self$diff))) +
+      fig <- ggplot(private$.contrast_df, aes(x = !!sym(self$diff))) +
         geom_histogram(breaks = seq(from = re[1], to = re[2], by = binwidth)) +
         geom_vline(
           aes(xintercept = median(!!sym(self$diff), na.rm = TRUE)), # Ignore NA values for mean
@@ -177,7 +175,7 @@ ContrastsPlotter <- R6::R6Class(
       }
       scales <- match.arg(scales)
       fig <- private$.volcano(
-        self$contrast_df,
+        private$.contrast_df,
         self$volcano_spec,
         colour = colour,
         legend = legend,
@@ -206,7 +204,7 @@ ContrastsPlotter <- R6::R6Class(
       }
       scales <- match.arg(scales)
       res <- private$.volcano(
-        self$contrast_df,
+        private$.contrast_df,
         self$volcano_spec,
         colour = colour,
         legend = legend,
@@ -240,7 +238,7 @@ ContrastsPlotter <- R6::R6Class(
       if (missing(colour)) {
         colour <- self$model_name
       }
-      private$.ma_fig(self$contrast_df, fc, colour, legend, rank)
+      private$.ma_fig(private$.contrast_df, fc, colour, legend, rank)
     },
     #' @description
     #' ma plotly
@@ -256,7 +254,7 @@ ContrastsPlotter <- R6::R6Class(
       if (missing(colour)) {
         colour <- self$model_name
       }
-      fig <- private$.ma_fig(self$contrast_df, fc, colour, legend, rank, plotly_mode = TRUE)
+      fig <- private$.ma_fig(private$.contrast_df, fc, colour, legend, rank, plotly_mode = TRUE)
       if (!is.null(fig)) {
         fig <- fig |> plotly::ggplotly(tooltip = "subject_id")
       }
@@ -278,7 +276,7 @@ ContrastsPlotter <- R6::R6Class(
       res <- list()
       if (length(self$score_spec) > 0) {
         res <- private$.score_plot(
-          self$contrast_df,
+          private$.contrast_df,
           self$score_spec,
           colour = colour,
           legend = legend
@@ -299,7 +297,7 @@ ContrastsPlotter <- R6::R6Class(
       if (missing(colour)) {
         colour <- self$model_name
       }
-      contrast_df <- self$contrast_df |> plotly::highlight_key(~subject_id)
+      contrast_df <- private$.contrast_df |> plotly::highlight_key(~subject_id)
       res <- private$.score_plot(
         contrast_df,
         self$score_spec,
@@ -321,7 +319,7 @@ ContrastsPlotter <- R6::R6Class(
         score_name <- self$volcano_spec[[i]]$score
         score_threshold <- self$volcano_spec[[i]]$thresh
         filt <- dplyr::filter(
-          self$contrast_df,
+          private$.contrast_df,
           !is.na(!!sym(score_name)) & !!sym(score_name) < score_threshold
         )
         if (is.numeric(self$fcthresh)) {
@@ -337,6 +335,7 @@ ContrastsPlotter <- R6::R6Class(
     }
   ),
   private = list(
+    .contrast_df = NULL,
     .ma_fig = function(contrast_df, fc, colour, legend, rank, plotly_mode = FALSE) {
       if (is.null(contrast_df[[self$avg.abundance]])) {
         if (!plotly_mode) {
@@ -367,6 +366,10 @@ ContrastsPlotter <- R6::R6Class(
       fig <- list()
       for (score in scores) {
         column <- score$score
+        plot_name <- score$name
+        if (is.null(plot_name)) {
+          plot_name <- column
+        }
         contrasts2 <- contrasts |>
           dplyr::filter(!is.na(!!sym(self$diff))) |>
           dplyr::filter(!is.na(!!sym(column))) |>
@@ -395,14 +398,14 @@ ContrastsPlotter <- R6::R6Class(
         if (plotly) {
           p <- plotly::ggplotly(p, tooltip = "subject_id")
         }
-        fig[[column]] <- p
+        fig[[plot_name]] <- p
       }
       return(fig)
     },
     .histogram = function(score) {
       xlim <- score$xlim
       score <- score$score
-      plot <- self$contrast_df |>
+      plot <- private$.contrast_df |>
         ggplot(aes(x = !!sym(score))) +
         geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
         facet_wrap(vars(!!sym(self$contrast)))
