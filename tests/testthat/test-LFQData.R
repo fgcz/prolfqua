@@ -59,6 +59,25 @@ test_that("LFQData data_wide conversion", {
   expect_true("matrix" %in% class(tmp_mat$data))
 })
 
+test_that("LFQData data_wide aligns matrix columns and annotation rows", {
+  shuffled <- lfqdata$get_copy()
+  sample_order <- unique(lfqdata$data_long()$sampleName)
+  interleaved <- sample_order[c(9, 2, 10, 1, 11, 3, 5, 12, 4, 6, 7, 8)]
+  shuffled$set_data(
+    lfqdata$data_long() |>
+      dplyr::mutate(.sample_order = match(.data$sampleName, interleaved)) |>
+      dplyr::arrange(.data$.sample_order) |>
+      dplyr::select(-".sample_order")
+  )
+
+  tmp <- shuffled$data_wide()
+  sample_cols <- setdiff(colnames(tmp$data), colnames(tmp$rowdata))
+  expect_equal(sample_cols, tmp$annotation[[shuffled$sample_name()]])
+
+  tmp_mat <- shuffled$data_wide(as.matrix = TRUE)
+  expect_equal(colnames(tmp_mat$data), tmp_mat$annotation[[shuffled$sample_name()]])
+})
+
 test_that("LFQData get_copy and rename", {
   copy <- lfqdata$get_copy()
   expect_s3_class(copy, "LFQData")

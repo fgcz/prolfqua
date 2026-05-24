@@ -118,6 +118,43 @@ test_that("ContrastsLimma fold changes match prolfqua lm", {
   expect_gt(cc, 0.99)
 })
 
+test_that("limma_impute contrasts use annotation matched to matrix columns", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 8)
+  data <- istar$data |>
+    dplyr::mutate(
+      abundance = dplyr::case_when(
+        .data$group_ == "A" ~ 20,
+        .data$group_ == "Ctrl" ~ 17,
+        TRUE ~ 12
+      ) +
+        as.numeric(factor(.data$protein_Id)) / 10 +
+        as.numeric(factor(.data$sampleName)) / 100
+    )
+  sample_order <- unique(data$sampleName)
+  interleaved <- sample_order[c(9, 2, 10, 1, 11, 3, 5, 12, 4, 6, 7, 8)]
+  data <- data |>
+    dplyr::mutate(.sample_order = match(.data$sampleName, interleaved)) |>
+    dplyr::arrange(.data$.sample_order) |>
+    dplyr::select(-".sample_order")
+
+  lProt <- prolfqua::LFQData$new(data, istar$config)
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+  fa <- prolfqua::ContrastsLimmaImputeFacade$new(lProt, "~ group_", contrasts, weights = NULL)
+  res <- fa$get_contrasts()
+  observed <- data |>
+    dplyr::filter(.data$group_ %in% c("A", "Ctrl")) |>
+    dplyr::summarise(mean_abundance = mean(.data$abundance), .by = c("protein_Id", "group_")) |>
+    tidyr::pivot_wider(names_from = "group_", values_from = "mean_abundance") |>
+    dplyr::mutate(expected_diff = .data$A - .data$Ctrl)
+
+  comparison <- dplyr::inner_join(
+    dplyr::select(res, "protein_Id", diff_limma = "diff"),
+    dplyr::select(observed, "protein_Id", "expected_diff"),
+    by = "protein_Id"
+  )
+  expect_equal(comparison$diff_limma, comparison$expected_diff, tolerance = 1e-8)
+})
+
 test_that("ContrastsLimma get_Plotter works", {
   istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)

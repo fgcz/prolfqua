@@ -77,6 +77,9 @@ tidy_to_wide_config <- function(
 
   hierarchy_isotope <- c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
   res <- tidy_to_wide(data, hierarchy_isotope, newcolname, value = value)
+  sample_cols <- ids[[newcolname]]
+  res <- res |>
+    dplyr::select(dplyr::all_of(c(hierarchy_isotope, sample_cols)))
   rowdata <- res |> dplyr::select(all_of(hierarchy_isotope))
   if (as.matrix) {
     res_mat <- as.matrix(dplyr::select(res, -dplyr::all_of(hierarchy_isotope)))
