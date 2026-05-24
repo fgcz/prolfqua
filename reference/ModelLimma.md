@@ -78,6 +78,8 @@ Other modelling:
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
+[`lookup_facade()`](https://wolski.github.io/prolfqua/reference/lookup_facade.md),
 [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
@@ -88,6 +90,7 @@ Other modelling:
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
 [`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
@@ -96,7 +99,8 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
+[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
 
 ## Super class
 
@@ -145,6 +149,14 @@ Other modelling:
 
   function to adjust p-values
 
+- `imputed_proteins`:
+
+  character vector of protein ids (matching
+  `rownames(fit$coefficients)`) that were rescued via LOD imputation.
+  `ContrastsLimma$get_contrasts()` reads this to tag refit rows with a
+  `"_imputed"` modelName suffix so the rescue is visible downstream.
+  Empty for builders that do not impute.
+
 ## Methods
 
 ### Public methods
@@ -183,7 +195,8 @@ initialize ModelLimma
       trend = FALSE,
       robust = FALSE,
       dummy_model = NULL,
-      p.adjust = prolfqua::adjust_p_values
+      p.adjust = prolfqua::adjust_p_values,
+      imputed_proteins = character(0)
     )
 
 #### Arguments
@@ -227,6 +240,10 @@ initialize ModelLimma
 - `p.adjust`:
 
   function to adjust p-values
+
+- `imputed_proteins`:
+
+  character vector of LOD-rescued protein ids
 
 ------------------------------------------------------------------------
 

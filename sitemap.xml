@@ -28,6 +28,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/AggregateTopN.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/AnovaExtractor.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastConfiguration.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/Contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.html</loc></url>
@@ -151,7 +152,9 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/linfct_from_model.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts_vectorized.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/list_facades.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/list_to_AnalysisConfiguration.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/lookup_facade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/main_effect_contrasts.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/make_interaction_column.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/make_reduced_hierarchy_config.html</loc></url>
@@ -203,6 +206,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/print.pheatmap.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/prolfqua_data.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/rank_peptide_by_intensity.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/register_facade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/remove_NA_rows.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/remove_small_intensities.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/response_matrix_as_tibble.html</loc></url>
@@ -239,6 +243,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/tidy_to_wide.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/tidy_to_wide_config.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/transform_work_intensity.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/unregister_facade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/volcano_Plotly.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/which_missing.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/x5463yzwer453bbb.html</loc></url>

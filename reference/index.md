@@ -20,6 +20,9 @@
 - [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md)
   : R6 class for extracting ANOVA results as a data frame
 
+- [`ContrastConfiguration`](https://wolski.github.io/prolfqua/reference/ContrastConfiguration.md)
+  : Contrast Configuration
+
 - [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md)
   : Estimate contrasts using Wald Test
 
@@ -67,9 +70,6 @@
 
 - [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md)
   : Lmer contrast analysis facade
-
-- [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md)
-  : Compute contrasts with group mean imputation
 
 - [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md)
   : Limma moderated contrasts
@@ -236,8 +236,14 @@
 - [`level_specific_contrasts()`](https://wolski.github.io/prolfqua/reference/level_specific_contrasts.md)
   : Level-specific contrasts (per secondary level)
 
+- [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md)
+  : List currently registered contrast facades
+
 - [`list_to_AnalysisConfiguration()`](https://wolski.github.io/prolfqua/reference/list_to_AnalysisConfiguration.md)
   : read minimal yaml to reconstruct configuration
+
+- [`lookup_facade()`](https://wolski.github.io/prolfqua/reference/lookup_facade.md)
+  : Look up a contrast facade by short name
 
 - [`main_effect_contrasts()`](https://wolski.github.io/prolfqua/reference/main_effect_contrasts.md)
   : main effects contrasts
@@ -266,6 +272,9 @@
 
 - [`prolfqua_data()`](https://wolski.github.io/prolfqua/reference/prolfqua_data.md)
   : load data from prolfqua
+
+- [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md)
+  : Register a contrast facade class
 
 - [`scatter_plotly()`](https://wolski.github.io/prolfqua/reference/scatter_plotly.md)
   : scatter plotly
@@ -308,6 +317,9 @@
 
 - [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
   : table facade to easily switch implementations
+
+- [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
+  : Unregister a contrast facade class
 
 - [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_Plotly.md)
   : volcano plotly

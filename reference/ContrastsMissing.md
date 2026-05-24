@@ -1,14 +1,18 @@
-# Compute contrasts with group mean imputation
+# Compute contrasts with group mean imputation (DEPRECATED)
 
-Compute contrasts with group mean imputation
+Compute contrasts with group mean imputation (DEPRECATED)
 
-Compute contrasts with group mean imputation
+Compute contrasts with group mean imputation (DEPRECATED)
 
 ## Value
 
 An R6 class generator.
 
 ## Details
+
+\`r lifecycle::badge("deprecated")\` (placeholder — prolfqua does not
+yet depend on the lifecycle package; consider this a soft deprecation
+notice. See *Deprecated* below.)
 
 If there are no observations in one of the groups for some of the
 proteins, the group mean cannot be estimated. Therefore, assuming that
@@ -18,7 +22,29 @@ protein abundances observed only in one sample of the group. The
 variance of a protein is estimated using the pooled variance of all
 observations of all groups.
 
+## Deprecated
+
+\`ContrastsMissing\` is a pre-fitting group-mean substitution: it does
+not fit a per-protein model, just stamps the group-mean delta with a
+pooled-variance t-test. It is superseded by
+[`build_model_impute`](https://wolski.github.io/prolfqua/reference/build_model_impute.md)
+which refits failed/singular proteins with LOD-imputed values and
+borrowed variance per protein. New code should prefer the `lm_impute`
+facade
+([`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md))
+or any of its `limma_impute` / `limma_voom_impute` cousins. Constructing
+`ContrastsMissing` emits a `.Deprecated` warning at `initialize` time.
+
+Still reachable via `model = "lm_missing"` for users who want to
+explicitly run the group-mean fallback; the construction emits a
+`.Deprecated` warning each time. Will be removed once a merge-style
+replacement (e.g. an `lm_impute_missing` facade composing `build_model`
+with `build_model_impute`) lands.
+
 ## See also
+
+[`build_model_impute`](https://wolski.github.io/prolfqua/reference/build_model_impute.md),
+[`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md)
 
 Other modelling:
 [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
@@ -81,6 +107,8 @@ Other modelling:
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
+[`lookup_facade()`](https://wolski.github.io/prolfqua/reference/lookup_facade.md),
 [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
@@ -91,6 +119,7 @@ Other modelling:
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
 [`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
@@ -99,7 +128,8 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
+[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
 
 ## Super class
 
@@ -168,7 +198,13 @@ Other modelling:
 Inherited methods
 
 - [`prolfqua::ContrastsInterface$column_description()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`prolfqua::ContrastsInterface$filter_significant()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`prolfqua::ContrastsInterface$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
 - [`prolfqua::ContrastsInterface$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
+- [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
 
 ------------------------------------------------------------------------
 
@@ -304,6 +340,7 @@ lProt$rename_response("transformedIntensity")
 
 Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 csi <- ContrastsMissing$new(lProt, contrasts = Contr)
+#> Warning: ContrastsMissing is deprecated: it substitutes group means rather than fitting a model. Prefer build_model_impute (LOD-imputed per-protein refit with borrowed variance) via the lm_impute / limma_impute facades. See ?ContrastsMissing for details.
 csi$get_contrast_sides()
 #> # A tibble: 1 × 3
 #>   contrast   group_1 group_2   
@@ -359,7 +396,7 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1d152e443c2a 
+#> agg_record_2c901db433a8 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
@@ -377,6 +414,7 @@ lProt <- LFQData$new(dd$data, dd$config)
 lProt$rename_response("transformedIntensity")
 
 csi <- ContrastsMissing$new(lProt, contrasts = Contrasts)
+#> Warning: ContrastsMissing is deprecated: it substitutes group means rather than fitting a model. Prefer build_model_impute (LOD-imputed per-protein refit with borrowed variance) via the lm_impute / limma_impute facades. See ?ContrastsMissing for details.
 res <- csi$get_contrasts()
 #> c1=TreatmentA - TreatmentB
 #> C2=BackgroundX- BackgroundZ
@@ -398,6 +436,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1d152e443c2a 
+#> agg_record_2c901db433a8 
 #>                       2 
 ```

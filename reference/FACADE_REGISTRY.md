@@ -1,15 +1,12 @@
 # Registry of available contrast facade classes
 
-A named list mapping short names to facade class names and their data
-requirements. Each entry has:
-
-- class:
-
-  Character string naming the R6 facade class
-
-- needs:
-
-  One of `"aggregated"`, `"nested"`, or `"either"`
+Read-only snapshot of the prolfqua facade registry. Use
+[`register_facade`](https://wolski.github.io/prolfqua/reference/register_facade.md)
+to add entries from downstream packages,
+[`lookup_facade`](https://wolski.github.io/prolfqua/reference/lookup_facade.md)
+to resolve a single entry, and
+[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md)
+to enumerate the current registry.
 
 ## Usage
 
@@ -19,7 +16,13 @@ FACADE_REGISTRY
 
 ## Format
 
-An object of class `list` of length 14.
+An object of class `facade_registry` (inherits from `list`) of length
+14.
+
+## Details
+
+Each entry has fields `class`, `needs`, `package`, and
+`needs_saint_annotation`.
 
 ## Examples
 

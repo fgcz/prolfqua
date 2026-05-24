@@ -79,6 +79,8 @@ Other modelling:
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
+[`lookup_facade()`](https://wolski.github.io/prolfqua/reference/lookup_facade.md),
 [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
@@ -89,6 +91,7 @@ Other modelling:
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
 [`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
@@ -97,7 +100,8 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
+[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
 
 ## Super class
 
@@ -158,7 +162,13 @@ Other modelling:
 Inherited methods
 
 - [`prolfqua::ContrastsInterface$column_description()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`prolfqua::ContrastsInterface$filter_significant()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`prolfqua::ContrastsInterface$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
 - [`prolfqua::ContrastsInterface$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
+- [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
 
 ------------------------------------------------------------------------
 
@@ -382,6 +392,7 @@ head(wide)
 # merge_contrasts_results works
 Contr2 <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 csi <- ContrastsMissing$new(lProt, contrasts = Contr2)
+#> Warning: ContrastsMissing is deprecated: it substitutes group means rather than fitting a model. Prefer build_model_impute (LOD-imputed per-protein refit with borrowed variance) via the lm_impute / limma_impute facades. See ?ContrastsMissing for details.
 merged_res <- merge_contrasts_results(contr_limma, csi)
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl

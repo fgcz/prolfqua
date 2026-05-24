@@ -139,6 +139,8 @@ Other modelling:
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
+[`lookup_facade()`](https://wolski.github.io/prolfqua/reference/lookup_facade.md),
 [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
@@ -149,6 +151,7 @@ Other modelling:
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
 [`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
@@ -157,7 +160,8 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
+[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
 
 ## Examples
 
@@ -204,6 +208,7 @@ head(fa_limma$get_contrasts())
 #> #   conf.high <dbl>, avgAbd <dbl>
 
 fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_missing")
+#> Warning: ContrastsLMMissingFacade (method = 'lm_missing') is deprecated: its second leg uses ContrastsMissing (group-mean substitution, no model fit). Prefer 'lm_impute' which refits failed/singular proteins with LOD imputation and borrowed variance, tagging rescued rows as 'WaldTest_moderated_imputed'. See ?ContrastsLMMissingFacade for migration.
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct

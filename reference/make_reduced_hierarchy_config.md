@@ -30,6 +30,7 @@ AnalysisConfiguration with reduced hieararchy
 
 Other configuration:
 [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md),
+[`ContrastConfiguration`](https://wolski.github.io/prolfqua/reference/ContrastConfiguration.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`R6_extract_values()`](https://wolski.github.io/prolfqua/reference/R6_extract_values.md),
 [`complete_cases()`](https://wolski.github.io/prolfqua/reference/complete_cases.md),

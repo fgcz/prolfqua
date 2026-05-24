@@ -71,6 +71,8 @@ Other modelling:
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
+[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
+[`lookup_facade()`](https://wolski.github.io/prolfqua/reference/lookup_facade.md),
 [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://wolski.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://wolski.github.io/prolfqua/reference/model_summary.md),
@@ -81,6 +83,7 @@ Other modelling:
 [`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
+[`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
 [`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
@@ -89,7 +92,8 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
+[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
 
 ## Super class
 
@@ -365,9 +369,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpRLwDR0/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpRLwDR0/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpRLwDR0/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpQ16HS9/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpQ16HS9/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpQ16HS9/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -381,8 +385,8 @@ mod$write_coef_figures(tempdir())
 #>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_1d154ef931d 
-#>                      2 
+#> agg_record_2c9053416914 
+#>                       2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -438,9 +442,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpRLwDR0/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpRLwDR0/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpRLwDR0/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpQ16HS9/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpQ16HS9/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpQ16HS9/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -454,6 +458,6 @@ mod$write_coef_figures(tempdir())
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
 #>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
 #> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
-#> agg_record_1d154ef931d 
-#>                      2 
+#> agg_record_2c9053416914 
+#>                       2 
 ```

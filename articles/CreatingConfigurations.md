@@ -249,8 +249,8 @@ sessionInfo()
     ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.1           
     ##  [4] farver_2.1.2           S7_0.2.2               lazyeval_0.2.3        
     ##  [7] fastmap_1.2.0          digest_0.6.39          rpart_4.1.24          
-    ## [10] prolfqua_1.6.1         lifecycle_1.0.5        survival_3.8-3        
-    ## [13] statmod_1.5.1          magrittr_2.0.5         compiler_4.5.2        
+    ## [10] prolfqua_1.6.2         lifecycle_1.0.5        survival_3.8-3        
+    ## [13] statmod_1.5.2          magrittr_2.0.5         compiler_4.5.2        
     ## [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           
     ## [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.4     
     ## [22] knitr_1.51             labeling_0.4.3         htmlwidgets_1.6.4     
@@ -273,8 +273,8 @@ sessionInfo()
     ## [73] pillar_1.11.1          htmltools_0.5.9        R6_2.6.1              
     ## [76] textshaping_1.0.5      Rdpack_2.6.6           formula.tools_1.7.1   
     ## [79] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
-    ## [82] backports_1.5.1        pheatmap_1.0.13        broom_1.0.12          
-    ## [85] bslib_0.10.0           Rcpp_1.1.1-1.1         gridExtra_2.3         
+    ## [82] backports_1.5.1        pheatmap_1.0.13        broom_1.0.13          
+    ## [85] bslib_0.11.0           Rcpp_1.1.1-1.1         gridExtra_2.3         
     ## [88] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        
     ## [91] xfun_0.57              fs_2.1.0               forcats_1.0.1         
     ## [94] pkgconfig_2.0.3
