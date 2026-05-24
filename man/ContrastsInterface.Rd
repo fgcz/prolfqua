@@ -18,19 +18,52 @@ testthat::expect_error(int$get_contrasts())
 testthat::expect_error(int$get_missing())
 testthat::expect_error(int$get_Plotter())
 testthat::expect_error(int$to_wide())
+# get_rank / get_ora / filter_significant call get_contrasts() internally,
+# which is not implemented on the bare interface, so they surface that error.
+testthat::expect_error(int$get_rank())
+testthat::expect_error(int$get_ora())
+testthat::expect_error(int$filter_significant())
+identical(int$extra_artifacts(), list())
 int$column_description()
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{config}}{\code{\link{ContrastConfiguration}} describing the
+backend's column-role mapping and behaviour flags. Subclasses
+should populate this in \code{initialize()} so generic consumers
+can resolve column names without hard-coding them.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-ContrastsInterface-get_config}{\code{ContrastsInterface$get_config()}}
 \item \href{#method-ContrastsInterface-get_contrast_sides}{\code{ContrastsInterface$get_contrast_sides()}}
 \item \href{#method-ContrastsInterface-get_contrasts}{\code{ContrastsInterface$get_contrasts()}}
 \item \href{#method-ContrastsInterface-get_Plotter}{\code{ContrastsInterface$get_Plotter()}}
 \item \href{#method-ContrastsInterface-to_wide}{\code{ContrastsInterface$to_wide()}}
 \item \href{#method-ContrastsInterface-get_missing}{\code{ContrastsInterface$get_missing()}}
+\item \href{#method-ContrastsInterface-get_rank}{\code{ContrastsInterface$get_rank()}}
+\item \href{#method-ContrastsInterface-get_ora}{\code{ContrastsInterface$get_ora()}}
+\item \href{#method-ContrastsInterface-filter_significant}{\code{ContrastsInterface$filter_significant()}}
+\item \href{#method-ContrastsInterface-contrast_summary_table}{\code{ContrastsInterface$contrast_summary_table()}}
+\item \href{#method-ContrastsInterface-extra_artifacts}{\code{ContrastsInterface$extra_artifacts()}}
 \item \href{#method-ContrastsInterface-column_description}{\code{ContrastsInterface$column_description()}}
 \item \href{#method-ContrastsInterface-clone}{\code{ContrastsInterface$clone()}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsInterface-get_config"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-get_config}{}}}
+\subsection{Method \code{get_config()}}{
+Return the \code{\link{ContrastConfiguration}}, constructing an
+LM-flavoured default on demand if a subclass has not set one.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_config()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsInterface-get_contrast_sides"></a>}}
@@ -80,6 +113,119 @@ get protein × contrast pairs that could not be estimated.
 Returns a data.frame with hierarchy columns and contrast, or 0 rows.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_missing()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsInterface-get_rank"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-get_rank}{}}}
+\subsection{Method \code{get_rank()}}{
+get rank-list input table for enrichment tools.
+
+If the backend's \code{\link{ContrastConfiguration}} has a p-value
+column the default rank score is signed
+\code{sign(effect) * -log10(p.value)}. Otherwise the default is the
+effect column itself.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_rank(score = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{score}}{column name to use as rank score, or \code{NULL} to
+pick from the config}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data.frame with subject id, contrast, and score columns.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsInterface-get_ora"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-get_ora}{}}}
+\subsection{Method \code{get_ora()}}{
+get ORA input table — features passing the FDR and absolute
+effect-size threshold in the requested direction.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_ora(up = TRUE, FDR_threshold = 0.05, diff_threshold = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{up}}{if TRUE return positive effects, otherwise negative effects}
+
+\item{\code{FDR_threshold}}{false discovery rate threshold}
+
+\item{\code{diff_threshold}}{absolute effect-size threshold}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+filtered contrast data.frame for ORA input.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsInterface-filter_significant"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-filter_significant}{}}}
+\subsection{Method \code{filter_significant()}}{
+Filter contrast rows that pass the FDR and effect-size threshold.
+
+By default this is symmetric on the effect column
+(\code{|effect| > diff_threshold}). For backends whose
+\code{\link{ContrastConfiguration}} has
+\code{significance_directional = TRUE} (e.g. SAINTexpress, where
+only positive enrichment is biologically meaningful), the filter
+is one-sided (\code{effect > diff_threshold}).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$filter_significant(FDR_threshold = 0.05, diff_threshold = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{FDR_threshold}}{false discovery rate threshold}
+
+\item{\code{diff_threshold}}{effect-size threshold}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+filtered contrast data.frame.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsInterface-contrast_summary_table"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-contrast_summary_table}{}}}
+\subsection{Method \code{contrast_summary_table()}}{
+Per-subject summary table for downstream report grobs. Returns a
+small data.frame with canonical column names
+\code{contrast}, \code{effect}, \code{score}, \code{fdr}
+regardless of backend.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$contrast_summary_table(rounded = TRUE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rounded}}{if TRUE round numeric columns to 3 significant
+digits (matches the prolfquapp report convention)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsInterface-extra_artifacts"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsInterface-extra_artifacts}{}}}
+\subsection{Method \code{extra_artifacts()}}{
+Backend-specific extra artifacts that a report should carry
+along with the contrast results (e.g. SAINT input tables).
+Default returns an empty named list.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$extra_artifacts()}\if{html}{\out{</div>}}
 }
 
 }

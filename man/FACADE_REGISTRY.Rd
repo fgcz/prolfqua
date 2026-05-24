@@ -5,18 +5,20 @@
 \alias{FACADE_REGISTRY}
 \title{Registry of available contrast facade classes}
 \format{
-An object of class \code{list} of length 14.
+An object of class \code{facade_registry} (inherits from \code{list}) of length 14.
 }
 \usage{
 FACADE_REGISTRY
 }
 \description{
-A named list mapping short names to facade class names and their data
-requirements. Each entry has:
-\describe{
-  \item{class}{Character string naming the R6 facade class}
-  \item{needs}{One of \code{"aggregated"}, \code{"nested"}, or \code{"either"}}
+Read-only snapshot of the prolfqua facade registry. Use
+\code{\link{register_facade}} to add entries from downstream
+packages, \code{\link{lookup_facade}} to resolve a single entry, and
+\code{list_facades()} to enumerate the current registry.
 }
+\details{
+Each entry has fields \code{class}, \code{needs}, \code{package},
+and \code{needs_saint_annotation}.
 }
 \examples{
 names(FACADE_REGISTRY)

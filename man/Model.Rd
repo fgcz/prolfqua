@@ -98,6 +98,8 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{list_facades}()},
+\code{\link{lookup_facade}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},
@@ -108,6 +110,7 @@ Other modelling:
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
+\code{\link{register_facade}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
 \code{\link{sim_build_models_logistf}()},
@@ -116,7 +119,8 @@ Other modelling:
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p.scaled}()}
+\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{unregister_facade}()}
 }
 \concept{modelling}
 \section{Super class}{

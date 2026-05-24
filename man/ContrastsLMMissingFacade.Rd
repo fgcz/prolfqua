@@ -20,17 +20,36 @@ merge with \code{\link{ContrastsMissing}} ->
 Proteins without a fitted model get their contrasts filled in from the
 group-mean imputation method (\code{\link{ContrastsMissing}}).
 }
+\section{Deprecated}{
+
+This facade is deprecated because its missing-data leg uses
+\code{\link{ContrastsMissing}} — a pre-fitting group-mean
+substitution, not a refit. Prefer the \code{lm_impute} facade
+(\code{\link{ContrastsLMImputeFacade}}), which fits an LM for every
+protein and refits failed/singular fits with LOD imputation and
+borrowed per-protein variance, surfacing rescued rows as
+\code{modelName = "WaldTest_moderated_imputed"} in the output.
+Construction emits a \code{.Deprecated} warning; the entry is kept
+in \code{\link{FACADE_REGISTRY}} so historical YAMLs continue to
+work.
+}
+
 \examples{
 # ContrastsMissing requires protein-level data (hierarchyDepth == len(hierarchy_keys()))
 istar <- sim_lfq_data_protein_config(Nprot = 30)
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-fa <- ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts)
+suppressWarnings(
+  fa <- ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts)
+)
 head(fa$get_contrasts())
 fa$to_wide()
 }
 \seealso{
+\code{\link{ContrastsLMImputeFacade}},
+  \code{\link{build_model_impute}}, \code{\link{ContrastsMissing}}
+
 Other modelling: 
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
@@ -92,6 +111,8 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{list_facades}()},
+\code{\link{lookup_facade}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},
@@ -102,6 +123,7 @@ Other modelling:
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
+\code{\link{register_facade}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
 \code{\link{sim_build_models_logistf}()},
@@ -110,9 +132,13 @@ Other modelling:
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p.scaled}()}
+\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{unregister_facade}()}
 }
 \concept{modelling}
+\section{Super class}{
+\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsLMMissingFacade}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -141,6 +167,20 @@ Other modelling:
 \item \href{#method-ContrastsLMMissingFacade-clone}{\code{ContrastsLMMissingFacade$clone()}}
 }
 }
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description'><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table'><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="extra_artifacts"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts'><code>prolfqua::ContrastsInterface$extra_artifacts()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="filter_significant"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant'><code>prolfqua::ContrastsInterface$filter_significant()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_config"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config'><code>prolfqua::ContrastsInterface$get_config()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides'><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsLMMissingFacade-new"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsLMMissingFacade-new}{}}}

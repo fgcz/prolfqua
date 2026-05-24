@@ -23,6 +23,7 @@ names(values)
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
+\code{\link{ContrastConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{complete_cases}()},
 \code{\link{make_interaction_column}()},

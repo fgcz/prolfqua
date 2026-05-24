@@ -24,6 +24,7 @@ length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 \seealso{
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
+\code{\link{ContrastConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{R6_extract_values}()},
 \code{\link{complete_cases}()},

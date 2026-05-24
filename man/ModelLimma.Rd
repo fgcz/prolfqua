@@ -94,6 +94,8 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{list_facades}()},
+\code{\link{lookup_facade}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},
@@ -104,6 +106,7 @@ Other modelling:
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
+\code{\link{register_facade}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
 \code{\link{sim_build_models_logistf}()},
@@ -112,7 +115,8 @@ Other modelling:
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p.scaled}()}
+\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{unregister_facade}()}
 }
 \concept{modelling}
 \section{Super class}{
@@ -140,6 +144,13 @@ Other modelling:
 \item{\code{dummy_model}}{one fitted lm for linfct extraction}
 
 \item{\code{p.adjust}}{function to adjust p-values}
+
+\item{\code{imputed_proteins}}{character vector of protein ids (matching
+\code{rownames(fit$coefficients)}) that were rescued via LOD
+imputation. \code{ContrastsLimma$get_contrasts()} reads this to
+tag refit rows with a \code{"_imputed"} modelName suffix so the
+rescue is visible downstream. Empty for builders that do not
+impute.}
 }
 \if{html}{\out{</div>}}
 }
@@ -172,7 +183,8 @@ initialize ModelLimma
   trend = FALSE,
   robust = FALSE,
   dummy_model = NULL,
-  p.adjust = prolfqua::adjust_p_values
+  p.adjust = prolfqua::adjust_p_values,
+  imputed_proteins = character(0)
 )}\if{html}{\out{</div>}}
 }
 
@@ -198,6 +210,8 @@ initialize ModelLimma
 \item{\code{dummy_model}}{one fitted lm for linfct extraction}
 
 \item{\code{p.adjust}}{function to adjust p-values}
+
+\item{\code{imputed_proteins}}{character vector of LOD-rescued protein ids}
 }
 \if{html}{\out{</div>}}
 }

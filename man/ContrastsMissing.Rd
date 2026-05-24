@@ -2,24 +2,48 @@
 % Please edit documentation in R/ContrastsSimpleImpute.R
 \name{ContrastsMissing}
 \alias{ContrastsMissing}
-\title{Compute contrasts with group mean imputation}
+\title{Compute contrasts with group mean imputation (DEPRECATED)}
 \value{
 An R6 class generator.
 }
 \description{
-Compute contrasts with group mean imputation
+Compute contrasts with group mean imputation (DEPRECATED)
 
-Compute contrasts with group mean imputation
+Compute contrasts with group mean imputation (DEPRECATED)
 }
 \details{
-If there are no observations in one of the groups for some of the proteins,
-the group mean cannot be estimated. Therefore, assuming that the observation
-is missing because the protein abundance is below the detection limit,
-we substitute the unobserved group with the median of protein abundances
- observed only in one sample of the group.
-The variance of a protein is estimated using the pooled variance
-of all observations of all groups.
+`r lifecycle::badge("deprecated")` (placeholder — prolfqua does not
+yet depend on the lifecycle package; consider this a soft
+deprecation notice. See \emph{Deprecated} below.)
+
+If there are no observations in one of the groups for some of the
+proteins, the group mean cannot be estimated. Therefore, assuming
+that the observation is missing because the protein abundance is
+below the detection limit, we substitute the unobserved group with
+the median of protein abundances observed only in one sample of the
+group. The variance of a protein is estimated using the pooled
+variance of all observations of all groups.
 }
+\section{Deprecated}{
+
+`ContrastsMissing` is a pre-fitting group-mean substitution: it does
+not fit a per-protein model, just stamps the group-mean delta with a
+pooled-variance t-test. It is superseded by
+\code{\link{build_model_impute}} which refits failed/singular
+proteins with LOD-imputed values and borrowed variance per protein.
+New code should prefer the \code{lm_impute} facade
+(\code{\link{ContrastsLMImputeFacade}}) or any of its
+\code{limma_impute} / \code{limma_voom_impute} cousins. Constructing
+\code{ContrastsMissing} emits a \code{.Deprecated} warning at
+\code{initialize} time.
+
+Still reachable via \code{model = "lm_missing"} for users who want
+to explicitly run the group-mean fallback; the construction emits a
+\code{.Deprecated} warning each time. Will be removed once a
+merge-style replacement (e.g. an \code{lm_impute_missing} facade
+composing \code{build_model} with \code{build_model_impute}) lands.
+}
+
 \examples{
 Nprot <- 120
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot,weight_missing = .4)
@@ -66,6 +90,9 @@ pl$volcano()
 dev.off()
 }
 \seealso{
+\code{\link{build_model_impute}},
+  \code{\link{ContrastsLMImputeFacade}}
+
 Other modelling: 
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
@@ -127,6 +154,8 @@ Other modelling:
 \code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
+\code{\link{list_facades}()},
+\code{\link{lookup_facade}()},
 \code{\link{merge_contrasts_results}()},
 \code{\link{model_analyse}()},
 \code{\link{model_summary}()},
@@ -137,6 +166,7 @@ Other modelling:
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
+\code{\link{register_facade}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
 \code{\link{sim_build_models_logistf}()},
@@ -145,9 +175,11 @@ Other modelling:
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p.scaled}()}
+\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{unregister_facade}()}
 }
 \concept{modelling}
+\keyword{internal}
 \section{Super class}{
 \code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsMissing}
 }
@@ -188,10 +220,16 @@ Other modelling:
 }
 }
 \if{html}{\out{
-<details open><summary>Inherited methods</summary>
+<details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description'><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table'><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="extra_artifacts"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts'><code>prolfqua::ContrastsInterface$extra_artifacts()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="filter_significant"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant'><code>prolfqua::ContrastsInterface$filter_significant()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_config"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config'><code>prolfqua::ContrastsInterface$get_config()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_missing"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing'><code>prolfqua::ContrastsInterface$get_missing()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
 </ul>
 </details>
 }}
