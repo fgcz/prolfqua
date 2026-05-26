@@ -64,8 +64,8 @@ construction through modelling to contrast computation.</p>
 <span>  <span class="va">modelstr</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"lm_impute"</span>, <span class="st">"lm_missing"</span>, <span class="st">"limma"</span>, <span class="st">"limma_impute"</span>, <span class="st">"limma_voom"</span>,</span>
-<span>    <span class="st">"limma_voom_impute"</span>, <span class="st">"limpa"</span>, <span class="st">"rlm"</span>, <span class="st">"deqms"</span>, <span class="st">"deqms_voom"</span>, <span class="st">"firth"</span>, <span class="st">"lmer"</span>,</span>
-<span>    <span class="st">"ropeca"</span><span class="op">)</span>,</span>
+<span>    <span class="st">"limma_voom_impute"</span>, <span class="st">"limpa"</span>, <span class="st">"limpa_nested"</span>, <span class="st">"rlm"</span>, <span class="st">"deqms"</span>, <span class="st">"deqms_voom"</span>, <span class="st">"firth"</span>,</span>
+<span>    <span class="st">"firth_nested"</span>, <span class="st">"lmer_nested"</span>, <span class="st">"ropeca_nested"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -92,9 +92,9 @@ construction through modelling to contrast computation.</p>
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>one of <code>"lm"</code>, <code>"lm_impute"</code>, <code>"lm_missing"</code>,
 <code>"limma"</code>, <code>"limma_impute"</code>, <code>"limma_voom"</code>,
-<code>"limma_voom_impute"</code>, <code>"limpa"</code>, <code>"rlm"</code>,
-<code>"deqms"</code>, <code>"deqms_voom"</code>, <code>"firth"</code>,
-<code>"lmer"</code>, <code>"ropeca"</code></p></dd>
+<code>"limma_voom_impute"</code>, <code>"limpa"</code>, <code>"limpa_nested"</code>,
+<code>"rlm"</code>, <code>"deqms"</code>, <code>"deqms_voom"</code>, <code>"firth"</code>,
+<code>"firth_nested"</code>, <code>"lmer_nested"</code>, <code>"ropeca_nested"</code></p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -106,10 +106,12 @@ construction through modelling to contrast computation.</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>one of <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
   <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>, <code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
-  <code><a href="ContrastsLmerFacade.html">ContrastsLmerFacade</a></code>,
+  <code><a href="ContrastsLmerNestedFacade.html">ContrastsLmerNestedFacade</a></code>,
   <code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>, <code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>,
   <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
-  <code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>, or <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code></p>
+  <code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>, <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
+  <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>, <code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>,
+  or <code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code></p>
     </div>
     <div class="section level2">
     <h2 id="vectorized-mode">Vectorized mode<a class="anchor" aria-label="anchor" href="#vectorized-mode"></a></h2>
@@ -134,6 +136,7 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
+<code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
 <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
 <code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>,
 <code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>,
@@ -143,14 +146,15 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <code><a href="ContrastsLimmaVoomFacade.html">ContrastsLimmaVoomFacade</a></code>,
 <code><a href="ContrastsLimmaVoomImputeFacade.html">ContrastsLimmaVoomImputeFacade</a></code>,
 <code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>,
-<code><a href="ContrastsLmerFacade.html">ContrastsLmerFacade</a></code>,
+<code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code>,
+<code><a href="ContrastsLmerNestedFacade.html">ContrastsLmerNestedFacade</a></code>,
 <code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
-<code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
+<code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test()</a></code>,
@@ -311,7 +315,7 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <span class="r-in"><span>  <span class="va">lfqdata_pep</span>,</span></span>
 <span class="r-in"><span>  <span class="st">"~ group_ + (1 | peptide_Id) + (1 | sampleName)"</span>,</span></span>
 <span class="r-in"><span>  <span class="va">contrasts</span>,</span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"lmer"</span></span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"lmer_nested"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
@@ -334,16 +338,16 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   facade modelName protein_Id contrast     diff std.error avgAbd statistic    df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lmer   WaldTest… 0EfVhX~00… A_vs_Ct… -<span style="color: #BB0000;">8.32</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>    0.073<span style="text-decoration: underline;">0</span>   4.34   -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">5</span>  28.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lmer   WaldTest… BEJI92~52… A_vs_Ct…  3.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.083<span style="text-decoration: underline;">2</span>   4.22    2.81    11.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lmer   WaldTest… Fl4JiV~86… A_vs_Ct… -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>    0.085<span style="text-decoration: underline;">0</span>   4.38   -<span style="color: #BB0000;">0.503</span>   39.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lmer   WaldTest… HvIpHG~90… A_vs_Ct… -<span style="color: #BB0000;">3.72</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.061<span style="text-decoration: underline;">6</span>   4.40   -<span style="color: #BB0000;">5.65</span>    21.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lmer   WaldTest… JcKVfU~96… A_vs_Ct… -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.057<span style="text-decoration: underline;">7</span>   5.05   -<span style="color: #BB0000;">1.88</span>    79.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lmer   WaldTest… SGIVBl~57… A_vs_Ct…  3.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>    0.069<span style="text-decoration: underline;">5</span>   4.68    0.452   61.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lmer_… WaldTest… 0EfVhX~00… A_vs_Ct… -<span style="color: #BB0000;">8.32</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>    0.073<span style="text-decoration: underline;">0</span>   4.34   -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">5</span>  28.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lmer_… WaldTest… BEJI92~52… A_vs_Ct…  3.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.083<span style="text-decoration: underline;">2</span>   4.22    2.81    11.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lmer_… WaldTest… Fl4JiV~86… A_vs_Ct… -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>    0.085<span style="text-decoration: underline;">0</span>   4.38   -<span style="color: #BB0000;">0.503</span>   39.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lmer_… WaldTest… HvIpHG~90… A_vs_Ct… -<span style="color: #BB0000;">3.72</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.061<span style="text-decoration: underline;">6</span>   4.40   -<span style="color: #BB0000;">5.65</span>    21.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lmer_… WaldTest… JcKVfU~96… A_vs_Ct… -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.057<span style="text-decoration: underline;">7</span>   5.05   -<span style="color: #BB0000;">1.88</span>    79.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lmer_… WaldTest… SGIVBl~57… A_vs_Ct…  3.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>    0.069<span style="text-decoration: underline;">5</span>   4.68    0.452   61.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">fa_ropeca</span> <span class="op">&lt;-</span> <span class="fu">build_contrast_analysis</span><span class="op">(</span><span class="va">lfqdata_pep</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"ropeca"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fa_ropeca</span> <span class="op">&lt;-</span> <span class="fu">build_contrast_analysis</span><span class="op">(</span><span class="va">lfqdata_pep</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"ropeca_nested"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa_ropeca</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
@@ -351,14 +355,14 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   facade protein_Id  modelName contrast  avgAbd    diff        FDR statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ropeca 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -<span style="color: #BB0000;">0.074</span><span style="color: #BB0000; text-decoration: underline;">2</span> 0.052<span style="text-decoration: underline;">8</span>         -<span style="color: #BB0000;">1.75</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ropeca 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  0.000<span style="text-decoration: underline;">099</span>1       8.79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ropeca 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -<span style="color: #BB0000;">0.598</span>  0.000<span style="text-decoration: underline;">006</span>91    -<span style="color: #BB0000;">12.7</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ropeca BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  0.001<span style="text-decoration: underline;">87</span>         3.94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> ropeca CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -<span style="color: #BB0000;">0.310</span>  0.000<span style="text-decoration: underline;">037</span>4      -<span style="color: #BB0000;">9.26</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> ropeca DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  0.000<span style="text-decoration: underline;">001</span>38     14.7 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   facade        protein_Id  modelName contrast  avgAbd    diff     FDR statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ropeca_nested 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -<span style="color: #BB0000;">0.074</span><span style="color: #BB0000; text-decoration: underline;">2</span> 5.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>     -<span style="color: #BB0000;">1.75</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ropeca_nested 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  9.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>      8.79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ropeca_nested 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -<span style="color: #BB0000;">0.598</span>  6.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>    -<span style="color: #BB0000;">12.7</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ropeca_nested BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  1.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>      3.94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> ropeca_nested CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -<span style="color: #BB0000;">0.310</span>  3.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>     -<span style="color: #BB0000;">9.26</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> ropeca_nested DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  1.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>     14.7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: std.error &lt;dbl&gt;, df &lt;int&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, sigma &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>

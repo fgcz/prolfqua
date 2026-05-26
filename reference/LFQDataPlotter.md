@@ -581,15 +581,15 @@ stopifnot("upset" == class(lfqplotter$upset_missing()))
 #> ℹ Please use tidy evaluation idioms with `aes()`.
 #> ℹ See also `vignette("ggplot2-in-packages")` for more information.
 #> ℹ The deprecated feature was likely used in the UpSetR package.
-#>   Please report the issue to the authors.
+#>   Please report the issue at <https://github.com/hms-dbmi/UpSetR/issues>.
 #> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 #> ℹ Please use `linewidth` instead.
 #> ℹ The deprecated feature was likely used in the UpSetR package.
-#>   Please report the issue to the authors.
+#>   Please report the issue at <https://github.com/hms-dbmi/UpSetR/issues>.
 #> Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
 #> ℹ Please use the `linewidth` argument instead.
 #> ℹ The deprecated feature was likely used in the UpSetR package.
-#>   Please report the issue to the authors.
+#>   Please report the issue at <https://github.com/hms-dbmi/UpSetR/issues>.
 wide <- lfqdata$data_wide(as.matrix = TRUE)
 stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 

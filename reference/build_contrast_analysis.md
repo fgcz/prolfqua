@@ -12,8 +12,8 @@ build_contrast_analysis(
   modelstr,
   contrasts,
   method = c("lm", "lm_impute", "lm_missing", "limma", "limma_impute", "limma_voom",
-    "limma_voom_impute", "limpa", "rlm", "deqms", "deqms_voom", "firth", "lmer",
-    "ropeca"),
+    "limma_voom_impute", "limpa", "limpa_nested", "rlm", "deqms", "deqms_voom", "firth",
+    "firth_nested", "lmer_nested", "ropeca_nested"),
   ...
 )
 ```
@@ -40,7 +40,8 @@ build_contrast_analysis(
 
   one of `"lm"`, `"lm_impute"`, `"lm_missing"`, `"limma"`,
   `"limma_impute"`, `"limma_voom"`, `"limma_voom_impute"`, `"limpa"`,
-  `"rlm"`, `"deqms"`, `"deqms_voom"`, `"firth"`, `"lmer"`, `"ropeca"`
+  `"limpa_nested"`, `"rlm"`, `"deqms"`, `"deqms_voom"`, `"firth"`,
+  `"firth_nested"`, `"lmer_nested"`, `"ropeca_nested"`
 
 - ...:
 
@@ -53,13 +54,16 @@ one of
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
-[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
+[`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
-[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
+[`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
+[`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
+[`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
+[`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
 or
-[`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md)
+[`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md)
 
 ## Vectorized mode
 
@@ -85,6 +89,7 @@ Other modelling:
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
+[`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
@@ -94,14 +99,15 @@ Other modelling:
 [`ContrastsLimmaVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomFacade.md),
 [`ContrastsLimmaVoomImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomImputeFacade.md),
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
-[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
+[`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md),
+[`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
-[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
+[`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
@@ -262,7 +268,7 @@ fa_lmer <- build_contrast_analysis(
   lfqdata_pep,
   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
   contrasts,
-  method = "lmer"
+  method = "lmer_nested"
 )
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -285,16 +291,16 @@ head(fa_lmer$get_contrasts())
 #> # A tibble: 6 × 14
 #>   facade modelName protein_Id contrast     diff std.error avgAbd statistic    df
 #>   <chr>  <chr>     <chr>      <chr>       <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lmer   WaldTest… 0EfVhX~00… A_vs_Ct… -8.32e-4    0.0730   4.34   -0.0115  28.9
-#> 2 lmer   WaldTest… BEJI92~52… A_vs_Ct…  3.22e-1    0.0832   4.22    2.81    11.6
-#> 3 lmer   WaldTest… Fl4JiV~86… A_vs_Ct… -4.13e-2    0.0850   4.38   -0.503   39.5
-#> 4 lmer   WaldTest… HvIpHG~90… A_vs_Ct… -3.72e-1    0.0616   4.40   -5.65    21.8
-#> 5 lmer   WaldTest… JcKVfU~96… A_vs_Ct… -1.07e-1    0.0577   5.05   -1.88    79.8
-#> 6 lmer   WaldTest… SGIVBl~57… A_vs_Ct…  3.07e-2    0.0695   4.68    0.452   61.0
+#> 1 lmer_… WaldTest… 0EfVhX~00… A_vs_Ct… -8.32e-4    0.0730   4.34   -0.0115  28.9
+#> 2 lmer_… WaldTest… BEJI92~52… A_vs_Ct…  3.22e-1    0.0832   4.22    2.81    11.6
+#> 3 lmer_… WaldTest… Fl4JiV~86… A_vs_Ct… -4.13e-2    0.0850   4.38   -0.503   39.5
+#> 4 lmer_… WaldTest… HvIpHG~90… A_vs_Ct… -3.72e-1    0.0616   4.40   -5.65    21.8
+#> 5 lmer_… WaldTest… JcKVfU~96… A_vs_Ct… -1.07e-1    0.0577   5.05   -1.88    79.8
+#> 6 lmer_… WaldTest… SGIVBl~57… A_vs_Ct…  3.07e-2    0.0695   4.68    0.452   61.0
 #> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 
-fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca")
+fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca_nested")
 head(fa_ropeca$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
@@ -302,14 +308,14 @@ head(fa_ropeca$get_contrasts())
 #> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]
-#>   facade protein_Id  modelName contrast  avgAbd    diff        FDR statistic
-#>   <chr>  <chr>       <chr>     <chr>      <dbl>   <dbl>      <dbl>     <dbl>
-#> 1 ropeca 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -0.0742 0.0528         -1.75
-#> 2 ropeca 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  0.0000991       8.79
-#> 3 ropeca 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -0.598  0.00000691    -12.7 
-#> 4 ropeca BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  0.00187         3.94
-#> 5 ropeca CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -0.310  0.0000374      -9.26
-#> 6 ropeca DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  0.00000138     14.7 
+#>   facade        protein_Id  modelName contrast  avgAbd    diff     FDR statistic
+#>   <chr>         <chr>       <chr>     <chr>      <dbl>   <dbl>   <dbl>     <dbl>
+#> 1 ropeca_nested 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -0.0742 5.28e-2     -1.75
+#> 2 ropeca_nested 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  9.91e-5      8.79
+#> 3 ropeca_nested 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -0.598  6.91e-6    -12.7 
+#> 4 ropeca_nested BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  1.87e-3      3.94
+#> 5 ropeca_nested CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -0.310  3.74e-5     -9.26
+#> 6 ropeca_nested DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  1.38e-6     14.7 
 #> # ℹ 6 more variables: std.error <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>
 

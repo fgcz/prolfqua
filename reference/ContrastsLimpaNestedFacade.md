@@ -1,50 +1,34 @@
-# Likelihood ratio test
+# Limpa contrast analysis facade for nested input
 
-Likelihood ratio test
+Limpa contrast analysis facade for nested input
 
-## Usage
-
-``` r
-LR_test(
-  complete_models,
-  model_name,
-  complete_models_int,
-  model_name_int,
-  subject_id = "protein_Id",
-  path = NULL
-)
-```
-
-## Arguments
-
-- complete_models:
-
-  table with models (see build model)
-
-- model_name:
-
-  name of model
-
-- complete_models_int:
-
-  reduced model
-
-- model_name_int:
-
-  name of reduced model
-
-- subject_id:
-
-  subject id typically Assession or protein_Id
-
-- path:
-
-  default NULL, set to a directory if you need to write diagnostic
-  plots.
+Limpa contrast analysis facade for nested input
 
 ## Value
 
-The computed result.
+An R6 class generator.
+
+## Details
+
+Encapsulates the full precursor -\> protein pipeline:
+[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)
+-\>
+[`strategy_limpa`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md)
+-\>
+[`build_model_limpa`](https://wolski.github.io/prolfqua/reference/build_model_limpa.md)
+-\>
+[`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md).
+
+Takes nested (precursor/peptide-level) LFQData, runs limpa's DPC-based
+aggregation internally to produce protein-level expression with
+posterior standard errors, then fits a vooma model with imputation-aware
+precision weights.
+
+For protein-level input that was already aggregated upstream via
+[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
+use
+[`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md)
+instead.
 
 ## See also
 
@@ -65,7 +49,6 @@ Other modelling:
 [`ContrastsLimmaVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomFacade.md),
 [`ContrastsLimmaVoomImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomImputeFacade.md),
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
-[`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md),
 [`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
@@ -76,6 +59,7 @@ Other modelling:
 [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://wolski.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://wolski.github.io/prolfqua/reference/ModelLimma.md),
@@ -135,72 +119,216 @@ Other modelling:
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
 
+## Super class
+
+[`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\> `ContrastsLimpaNestedFacade`
+
+## Public fields
+
+- `model`:
+
+  ModelLimma object (from build_model_limpa)
+
+- `contrast`:
+
+  ContrastsLimma object
+
+- `.lfqdata`:
+
+  stored reference to the aggregated protein-level LFQData
+
+- `.lfqdata_nested`:
+
+  stored reference to the original nested input
+
+- `.contrast_names`:
+
+  names of the requested contrasts
+
+## Methods
+
+### Public methods
+
+- [`ContrastsLimpaNestedFacade$new()`](#method-ContrastsLimpaNestedFacade-new)
+
+- [`ContrastsLimpaNestedFacade$get_contrasts()`](#method-ContrastsLimpaNestedFacade-get_contrasts)
+
+- [`ContrastsLimpaNestedFacade$get_missing()`](#method-ContrastsLimpaNestedFacade-get_missing)
+
+- [`ContrastsLimpaNestedFacade$get_Plotter()`](#method-ContrastsLimpaNestedFacade-get_Plotter)
+
+- [`ContrastsLimpaNestedFacade$to_wide()`](#method-ContrastsLimpaNestedFacade-to_wide)
+
+- [`ContrastsLimpaNestedFacade$clone()`](#method-ContrastsLimpaNestedFacade-clone)
+
+Inherited methods
+
+- [`prolfqua::ContrastsInterface$column_description()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`prolfqua::ContrastsInterface$filter_significant()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`prolfqua::ContrastsInterface$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
+- [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
+- [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+
+------------------------------------------------------------------------
+
+### Method `new()`
+
+initialize
+
+#### Usage
+
+    ContrastsLimpaNestedFacade$new(
+      lfqdata,
+      modelstr,
+      contrasts,
+      prefix = "protein",
+      dpc_slope = 0.8,
+      plot = FALSE,
+      span = NULL,
+      ...
+    )
+
+#### Arguments
+
+- `lfqdata`:
+
+  nested LFQData (precursor/peptide-level, log2-transformed)
+
+- `modelstr`:
+
+  model formula string (e.g. "~ group\_")
+
+- `contrasts`:
+
+  named character vector of contrasts
+
+- `prefix`:
+
+  prefix for the aggregated hierarchy level (default "protein")
+
+- `dpc_slope`:
+
+  DPC slope parameter passed to
+  [`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)
+  (default 0.8)
+
+- `plot`:
+
+  logical; if TRUE, plot the vooma mean-variance trend
+
+- `span`:
+
+  lowess smoother span (NULL = auto)
+
+- `...`:
+
+  passed to
+  [`strategy_limpa`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md)
+  (e.g. trend, robust)
+
+------------------------------------------------------------------------
+
+### Method `get_contrasts()`
+
+get contrast results (rows with NA diff are filtered out)
+
+#### Usage
+
+    ContrastsLimpaNestedFacade$get_contrasts(...)
+
+#### Arguments
+
+- `...`:
+
+  passed to ContrastsLimma\$get_contrasts
+
+------------------------------------------------------------------------
+
+### Method `get_missing()`
+
+get protein x contrast pairs that could not be estimated
+
+#### Usage
+
+    ContrastsLimpaNestedFacade$get_missing()
+
+------------------------------------------------------------------------
+
+### Method `get_Plotter()`
+
+get ContrastsPlotter
+
+#### Usage
+
+    ContrastsLimpaNestedFacade$get_Plotter(...)
+
+#### Arguments
+
+- `...`:
+
+  passed to ContrastsLimma\$get_Plotter
+
+------------------------------------------------------------------------
+
+### Method `to_wide()`
+
+convert results to wide format
+
+#### Usage
+
+    ContrastsLimpaNestedFacade$to_wide(...)
+
+#### Arguments
+
+- `...`:
+
+  passed to ContrastsLimma\$to_wide
+
+------------------------------------------------------------------------
+
+### Method `clone()`
+
+The objects of this class are cloneable with this method.
+
+#### Usage
+
+    ContrastsLimpaNestedFacade$clone(deep = FALSE)
+
+#### Arguments
+
+- `deep`:
+
+  Whether to make a deep clone.
+
 ## Examples
 
 ``` r
-data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
- Nprot = 200,
- with_missing = TRUE,
- weight_missing = 2)
+if (requireNamespace("limpa", quietly = TRUE)) {
+  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10)
+  lfqdata <- LFQData$new(istar$data, istar$config)
+  lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+  fa <- ContrastsLimpaNestedFacade$new(lfqdata, "~ group_", contrasts)
+  head(fa$get_contrasts())
+}
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-
-pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
-
-pMerged$response()
-#> [1] "abundance"
-pMerged$factors()
-#> # A tibble: 16 × 4
-#>    sample  sampleName Treatment Background
-#>    <chr>   <chr>      <chr>     <chr>     
-#>  1 A_V1    A_V1       A         X         
-#>  2 A_V2    A_V2       A         X         
-#>  3 A_V3    A_V3       A         X         
-#>  4 A_V4    A_V4       A         X         
-#>  5 B_V1    B_V1       B         X         
-#>  6 B_V2    B_V2       B         X         
-#>  7 B_V3    B_V3       B         X         
-#>  8 B_V4    B_V4       B         X         
-#>  9 C_V1    C_V1       B         Z         
-#> 10 C_V2    C_V2       B         Z         
-#> 11 C_V3    C_V3       B         Z         
-#> 12 C_V4    C_V4       B         Z         
-#> 13 Ctrl_V1 Ctrl_V1    A         Z         
-#> 14 Ctrl_V2 Ctrl_V2    A         Z         
-#> 15 Ctrl_V3 Ctrl_V3    A         Z         
-#> 16 Ctrl_V4 Ctrl_V4    A         Z         
-
-formula_condition_and_Batches <-
-  prolfqua::strategy_lm("abundance ~ Treatment + Background")
-modCB <- prolfqua::build_model(
-  pMerged,
-  formula_condition_and_Batches)
-#> Warning: There were 25 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 33: `protein_Id = "Br6sVH~3679"`.
-#> Caused by warning:
-#> ! contrasts can be applied only to factors with 2 or more levels
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 24 remaining warnings.
-
-formula_condition <-
-  prolfqua::strategy_lm("abundance ~ Treatment")
-modC <- prolfqua::build_model(
-  pMerged,
-  formula_condition)
-#> Warning: There were 19 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 33: `protein_Id = "Br6sVH~3679"`.
-#> Caused by warning:
-#> ! contrasts can be applied only to factors with 2 or more levels
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 18 remaining warnings.
-
-tmp <- LR_test(modCB$model_df, "modCB", modC$model_df, "modB")
-hist(tmp$likelihood_ratio_test.pValue)
-
+#> Column added : log2_abundance
+#> # A tibble: 6 × 14
+#>   facade       modelName protein_Id contrast    diff     FDR std.error statistic
+#>   <chr>        <chr>     <chr>      <chr>      <dbl>   <dbl>     <dbl>     <dbl>
+#> 1 limpa_nested limpa     0EfVhX~00… A_vs_Ct… -0.0244 4.07e-1    0.0283    -0.862
+#> 2 limpa_nested limpa     7cbcrd~57… A_vs_Ct…  0.725  4.58e-3    0.185      3.91 
+#> 3 limpa_nested limpa     9VUkAq~47… A_vs_Ct… -0.572  2.76e-4    0.0991    -5.78 
+#> 4 limpa_nested limpa     BEJI92~52… A_vs_Ct…  0.236  1.38e-2    0.0739     3.19 
+#> 5 limpa_nested limpa     CGzoYe~21… A_vs_Ct… -0.296  1.46e-1    0.175     -1.70 
+#> 6 limpa_nested limpa     DoWup2~58… A_vs_Ct…  0.282  8.89e-5    0.0417     6.77 
+#> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, avgAbd <dbl>
 ```

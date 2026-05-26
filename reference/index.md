@@ -38,6 +38,9 @@
 - [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md)
   : Firth logistic missingness contrast analysis facade
 
+- [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md)
+  : Firth logistic missingness contrast analysis facade for nested input
+
 - [`ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
   : Base class for all Contrasts classes
 
@@ -68,8 +71,11 @@
 - [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md)
   : Limpa contrast analysis facade
 
-- [`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md)
-  : Lmer contrast analysis facade
+- [`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md)
+  : Limpa contrast analysis facade for nested input
+
+- [`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md)
+  : Lmer (mixed-model) contrast analysis facade for nested input
 
 - [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md)
   : Limma moderated contrasts
@@ -86,8 +92,8 @@
 - [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md)
   : ROPECA reproducibility-optimization method
 
-- [`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md)
-  : ROPECA contrast analysis facade
+- [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md)
+  : ROPECA contrast analysis facade for nested input
 
 - [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md)
   : holds results when contrasts are added.

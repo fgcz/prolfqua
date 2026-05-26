@@ -529,7 +529,7 @@ sessionInfo()
     ##  [34] grid_4.5.2             jomo_2.7-6             xtable_1.8-8          
     ##  [37] mice_3.19.0            ggplot2_4.0.3          scales_1.4.0          
     ##  [40] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
-    ##  [43] crayon_1.5.3           UpSetR_1.4.0           rmarkdown_2.31        
+    ##  [43] crayon_1.5.3           UpSetR_1.4.1           rmarkdown_2.31        
     ##  [46] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
     ##  [49] otel_0.2.0             httr_1.4.8             minqa_1.2.8           
     ##  [52] cachem_1.1.0           operator.tools_1.6.3.1 splines_4.5.2         

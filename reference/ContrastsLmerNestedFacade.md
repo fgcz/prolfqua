@@ -1,8 +1,8 @@
-# Lmer contrast analysis facade
+# Lmer (mixed-model) contrast analysis facade for nested input
 
-Lmer contrast analysis facade
+Lmer (mixed-model) contrast analysis facade for nested input
 
-Lmer contrast analysis facade
+Lmer (mixed-model) contrast analysis facade for nested input
 
 ## Value
 
@@ -19,8 +19,8 @@ Encapsulates the pipeline:
 -\>
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md).
 
-This facade requires data with hierarchy below the analysis subject, for
-example peptide-level measurements nested within proteins.
+Takes child-hierarchy LFQData (e.g. peptide-level measurements nested
+within proteins) and returns protein-level fold-change estimates.
 
 ## See also
 
@@ -31,6 +31,7 @@ Other modelling:
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
+[`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
@@ -40,13 +41,14 @@ Other modelling:
 [`ContrastsLimmaVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomFacade.md),
 [`ContrastsLimmaVoomImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomImputeFacade.md),
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
+[`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
-[`ContrastsROPECAFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECAFacade.md),
+[`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
@@ -112,7 +114,7 @@ Other modelling:
 ## Super class
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
--\> `ContrastsLmerFacade`
+-\> `ContrastsLmerNestedFacade`
 
 ## Public fields
 
@@ -136,17 +138,17 @@ Other modelling:
 
 ### Public methods
 
-- [`ContrastsLmerFacade$new()`](#method-ContrastsLmerFacade-new)
+- [`ContrastsLmerNestedFacade$new()`](#method-ContrastsLmerNestedFacade-new)
 
-- [`ContrastsLmerFacade$get_contrasts()`](#method-ContrastsLmerFacade-get_contrasts)
+- [`ContrastsLmerNestedFacade$get_contrasts()`](#method-ContrastsLmerNestedFacade-get_contrasts)
 
-- [`ContrastsLmerFacade$get_missing()`](#method-ContrastsLmerFacade-get_missing)
+- [`ContrastsLmerNestedFacade$get_missing()`](#method-ContrastsLmerNestedFacade-get_missing)
 
-- [`ContrastsLmerFacade$get_Plotter()`](#method-ContrastsLmerFacade-get_Plotter)
+- [`ContrastsLmerNestedFacade$get_Plotter()`](#method-ContrastsLmerNestedFacade-get_Plotter)
 
-- [`ContrastsLmerFacade$to_wide()`](#method-ContrastsLmerFacade-to_wide)
+- [`ContrastsLmerNestedFacade$to_wide()`](#method-ContrastsLmerNestedFacade-to_wide)
 
-- [`ContrastsLmerFacade$clone()`](#method-ContrastsLmerFacade-clone)
+- [`ContrastsLmerNestedFacade$clone()`](#method-ContrastsLmerNestedFacade-clone)
 
 Inherited methods
 
@@ -167,13 +169,13 @@ initialize
 
 #### Usage
 
-    ContrastsLmerFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsLmerNestedFacade$new(lfqdata, modelstr, contrasts, ...)
 
 #### Arguments
 
 - `lfqdata`:
 
-  LFQData object
+  nested LFQData (subject_id strict subset of hierarchy_keys)
 
 - `modelstr`:
 
@@ -196,7 +198,7 @@ get contrast results
 
 #### Usage
 
-    ContrastsLmerFacade$get_contrasts(...)
+    ContrastsLmerNestedFacade$get_contrasts(...)
 
 #### Arguments
 
@@ -208,11 +210,11 @@ get contrast results
 
 ### Method `get_missing()`
 
-get protein × contrast pairs that could not be estimated
+get protein x contrast pairs that could not be estimated
 
 #### Usage
 
-    ContrastsLmerFacade$get_missing()
+    ContrastsLmerNestedFacade$get_missing()
 
 ------------------------------------------------------------------------
 
@@ -222,7 +224,7 @@ get ContrastsPlotter
 
 #### Usage
 
-    ContrastsLmerFacade$get_Plotter(...)
+    ContrastsLmerNestedFacade$get_Plotter(...)
 
 #### Arguments
 
@@ -238,7 +240,7 @@ convert results to wide format
 
 #### Usage
 
-    ContrastsLmerFacade$to_wide(...)
+    ContrastsLmerNestedFacade$to_wide(...)
 
 #### Arguments
 
@@ -254,7 +256,7 @@ The objects of this class are cloneable with this method.
 
 #### Usage
 
-    ContrastsLmerFacade$clone(deep = FALSE)
+    ContrastsLmerNestedFacade$clone(deep = FALSE)
 
 #### Arguments
 
@@ -274,7 +276,7 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-fa <- ContrastsLmerFacade$new(
+fa <- ContrastsLmerNestedFacade$new(
   lfqdata,
   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
   contrasts
@@ -300,12 +302,12 @@ head(fa$get_contrasts())
 #> # A tibble: 6 × 14
 #>   facade modelName protein_Id contrast     diff std.error avgAbd statistic    df
 #>   <chr>  <chr>     <chr>      <chr>       <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lmer   WaldTest… 0EfVhX~00… A_vs_Ct… -8.32e-4    0.0730   4.34   -0.0115  28.9
-#> 2 lmer   WaldTest… BEJI92~52… A_vs_Ct…  3.22e-1    0.0832   4.22    2.81    11.6
-#> 3 lmer   WaldTest… Fl4JiV~86… A_vs_Ct… -4.13e-2    0.0850   4.38   -0.503   39.5
-#> 4 lmer   WaldTest… HvIpHG~90… A_vs_Ct… -3.72e-1    0.0616   4.40   -5.65    21.8
-#> 5 lmer   WaldTest… JcKVfU~96… A_vs_Ct… -1.07e-1    0.0577   5.05   -1.88    79.8
-#> 6 lmer   WaldTest… SGIVBl~57… A_vs_Ct…  3.07e-2    0.0695   4.68    0.452   61.0
+#> 1 lmer_… WaldTest… 0EfVhX~00… A_vs_Ct… -8.32e-4    0.0730   4.34   -0.0115  28.9
+#> 2 lmer_… WaldTest… BEJI92~52… A_vs_Ct…  3.22e-1    0.0832   4.22    2.81    11.6
+#> 3 lmer_… WaldTest… Fl4JiV~86… A_vs_Ct… -4.13e-2    0.0850   4.38   -0.503   39.5
+#> 4 lmer_… WaldTest… HvIpHG~90… A_vs_Ct… -3.72e-1    0.0616   4.40   -5.65    21.8
+#> 5 lmer_… WaldTest… JcKVfU~96… A_vs_Ct… -1.07e-1    0.0577   5.05   -1.88    79.8
+#> 6 lmer_… WaldTest… SGIVBl~57… A_vs_Ct…  3.07e-2    0.0695   4.68    0.452   61.0
 #> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 fa$to_wide()

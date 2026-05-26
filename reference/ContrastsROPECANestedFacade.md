@@ -1,8 +1,8 @@
-# ROPECA contrast analysis facade
+# ROPECA contrast analysis facade for nested input
 
-ROPECA contrast analysis facade
+ROPECA contrast analysis facade for nested input
 
-ROPECA contrast analysis facade
+ROPECA contrast analysis facade for nested input
 
 ## Value
 
@@ -19,9 +19,9 @@ Encapsulates the pipeline:
 -\>
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md).
 
-ROPECA operates on peptide-level data and aggregates peptide-level
-p-values to the protein level. The `lfqdata` object must contain
-peptide-level data (i.e. `hierarchyDepth >= 2`).
+ROPECA fits per-peptide linear models and aggregates peptide-level
+p-values to the protein level. Input must be nested LFQData (peptide
+subject_id strictly below the protein hierarchy).
 
 ## See also
 
@@ -32,6 +32,7 @@ Other modelling:
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
+[`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
@@ -41,7 +42,8 @@ Other modelling:
 [`ContrastsLimmaVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomFacade.md),
 [`ContrastsLimmaVoomImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaVoomImputeFacade.md),
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
-[`ContrastsLmerFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerFacade.md),
+[`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md),
+[`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
 [`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
@@ -113,7 +115,7 @@ Other modelling:
 ## Super class
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
--\> `ContrastsROPECAFacade`
+-\> `ContrastsROPECANestedFacade`
 
 ## Public fields
 
@@ -137,17 +139,17 @@ Other modelling:
 
 ### Public methods
 
-- [`ContrastsROPECAFacade$new()`](#method-ContrastsROPECAFacade-new)
+- [`ContrastsROPECANestedFacade$new()`](#method-ContrastsROPECANestedFacade-new)
 
-- [`ContrastsROPECAFacade$get_contrasts()`](#method-ContrastsROPECAFacade-get_contrasts)
+- [`ContrastsROPECANestedFacade$get_contrasts()`](#method-ContrastsROPECANestedFacade-get_contrasts)
 
-- [`ContrastsROPECAFacade$get_missing()`](#method-ContrastsROPECAFacade-get_missing)
+- [`ContrastsROPECANestedFacade$get_missing()`](#method-ContrastsROPECANestedFacade-get_missing)
 
-- [`ContrastsROPECAFacade$get_Plotter()`](#method-ContrastsROPECAFacade-get_Plotter)
+- [`ContrastsROPECANestedFacade$get_Plotter()`](#method-ContrastsROPECANestedFacade-get_Plotter)
 
-- [`ContrastsROPECAFacade$to_wide()`](#method-ContrastsROPECAFacade-to_wide)
+- [`ContrastsROPECANestedFacade$to_wide()`](#method-ContrastsROPECANestedFacade-to_wide)
 
-- [`ContrastsROPECAFacade$clone()`](#method-ContrastsROPECAFacade-clone)
+- [`ContrastsROPECANestedFacade$clone()`](#method-ContrastsROPECANestedFacade-clone)
 
 Inherited methods
 
@@ -168,13 +170,13 @@ initialize
 
 #### Usage
 
-    ContrastsROPECAFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsROPECANestedFacade$new(lfqdata, modelstr, contrasts, ...)
 
 #### Arguments
 
 - `lfqdata`:
 
-  LFQData object with peptide-level data (hierarchyDepth \>= 2)
+  nested LFQData (peptide-level)
 
 - `modelstr`:
 
@@ -210,17 +212,17 @@ Columns not directly produced by ROPECA are derived heuristically:
 
 #### Usage
 
-    ContrastsROPECAFacade$get_contrasts()
+    ContrastsROPECANestedFacade$get_contrasts()
 
 ------------------------------------------------------------------------
 
 ### Method `get_missing()`
 
-get protein × contrast pairs that could not be estimated
+get protein x contrast pairs that could not be estimated
 
 #### Usage
 
-    ContrastsROPECAFacade$get_missing()
+    ContrastsROPECANestedFacade$get_missing()
 
 ------------------------------------------------------------------------
 
@@ -230,7 +232,7 @@ get ContrastsPlotter (uses standardized column names)
 
 #### Usage
 
-    ContrastsROPECAFacade$get_Plotter(fc_threshold = 2, fdr_threshold = 0.1)
+    ContrastsROPECANestedFacade$get_Plotter(fc_threshold = 2, fdr_threshold = 0.1)
 
 #### Arguments
 
@@ -250,7 +252,7 @@ convert results to wide format
 
 #### Usage
 
-    ContrastsROPECAFacade$to_wide(columns = c("p.value", "FDR", "statistic"))
+    ContrastsROPECANestedFacade$to_wide(columns = c("p.value", "FDR", "statistic"))
 
 #### Arguments
 
@@ -266,7 +268,7 @@ The objects of this class are cloneable with this method.
 
 #### Usage
 
-    ContrastsROPECAFacade$clone(deep = FALSE)
+    ContrastsROPECANestedFacade$clone(deep = FALSE)
 
 #### Arguments
 
@@ -286,7 +288,7 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-fa <- ContrastsROPECAFacade$new(lfqdata, "~ group_", contrasts)
+fa <- ContrastsROPECANestedFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
@@ -294,14 +296,14 @@ head(fa$get_contrasts())
 #> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]
-#>   facade protein_Id  modelName contrast  avgAbd    diff        FDR statistic
-#>   <chr>  <chr>       <chr>     <chr>      <dbl>   <dbl>      <dbl>     <dbl>
-#> 1 ropeca 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -0.0742 0.0528         -1.75
-#> 2 ropeca 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  0.0000991       8.79
-#> 3 ropeca 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -0.598  0.00000691    -12.7 
-#> 4 ropeca BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  0.00187         3.94
-#> 5 ropeca CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -0.310  0.0000374      -9.26
-#> 6 ropeca DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  0.00000138     14.7 
+#>   facade        protein_Id  modelName contrast  avgAbd    diff     FDR statistic
+#>   <chr>         <chr>       <chr>     <chr>      <dbl>   <dbl>   <dbl>     <dbl>
+#> 1 ropeca_nested 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -0.0742 5.28e-2     -1.75
+#> 2 ropeca_nested 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  9.91e-5      8.79
+#> 3 ropeca_nested 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -0.598  6.91e-6    -12.7 
+#> 4 ropeca_nested BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  1.87e-3      3.94
+#> 5 ropeca_nested CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -0.310  3.74e-5     -9.26
+#> 6 ropeca_nested DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  1.38e-6     14.7 
 #> # ℹ 6 more variables: std.error <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>
 fa$to_wide()

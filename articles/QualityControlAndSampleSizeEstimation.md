@@ -450,7 +450,7 @@ sessionInfo()
     ## [31] nnet_7.3-20            grid_4.5.2             jomo_2.7-6            
     ## [34] mice_3.19.0            ggplot2_4.0.3          scales_1.4.0          
     ## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
-    ## [40] UpSetR_1.4.0           rmarkdown_2.31         ragg_1.5.2            
+    ## [40] UpSetR_1.4.1           rmarkdown_2.31         ragg_1.5.2            
     ## [43] reformulas_0.4.4       generics_0.1.4         otel_0.2.0            
     ## [46] httr_1.4.8             minqa_1.2.8            cachem_1.1.0          
     ## [49] operator.tools_1.6.3.1 splines_4.5.2          vctrs_0.7.3           

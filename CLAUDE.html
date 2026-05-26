@@ -99,10 +99,11 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
         $get_contrasts(), $get_missing(), $get_Plotter(), $to_wide()</code></pre>
 </div>
 <div class="section level3">
-<h3 id="facade-pattern-contrastsfacadesr-build_contrast_analysisr">Facade Pattern (<code>ContrastsFacades.R</code>, <code>build_contrast_analysis.R</code>)<a class="anchor" aria-label="anchor" href="#facade-pattern-contrastsfacadesr-build_contrast_analysisr"></a></h3>
+<h3 id="facade-pattern-contrastsfacadesr-contrastschildtoparentfacadesr-build_contrast_analysisr">Facade Pattern (<code>ContrastsFacades.R</code>, <code>ContrastsChildToParentFacades.R</code>, <code>build_contrast_analysis.R</code>)<a class="anchor" aria-label="anchor" href="#facade-pattern-contrastsfacadesr-contrastschildtoparentfacadesr-build_contrast_analysisr"></a></h3>
 <p><code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> is the recommended entry point. Each method dispatches to a Facade class that wires strategy → model → contrasts → moderation internally.</p>
-<p><strong>Aggregated input</strong> (protein-level, <code>subject_Id == hierarchy_keys</code>): <code>lm</code>, <code>rlm</code>, <code>lm_missing</code>, <code>lm_impute</code>, <code>limma</code>, <code>deqms</code>, <code>firth</code></p>
-<p><strong>Nested input</strong> (peptide-level, <code>subject_Id</code> is strict subset of <code>hierarchy_keys</code>): <code>lmer</code>, <code>ropeca</code></p>
+<p>Facades split by input/output hierarchy shape:</p>
+<p><strong>Aggregated input</strong> (same-level, protein → protein FC; <code>subject_Id == hierarchy_keys</code>) — <code>R/ContrastsFacades.R</code>: <code>lm</code>, <code>rlm</code>, <code>lm_missing</code>, <code>lm_impute</code>, <code>limma</code>, <code>limma_impute</code>, <code>limma_voom</code>, <code>limma_voom_impute</code>, <code>deqms</code>, <code>deqms_voom</code>, <code>firth</code>, <code>limpa</code></p>
+<p><strong>Nested input</strong> (child → parent, peptide/precursor → protein FC; <code>subject_Id</code> is strict subset of <code>hierarchy_keys</code>) — <code>R/ContrastsChildToParentFacades.R</code>: <code>lmer_nested</code>, <code>ropeca_nested</code>, <code>firth_nested</code>, <code>limpa_nested</code></p>
 </div>
 <div class="section level3">
 <h3 id="weights--nr_children">Weights &amp; <code>nr_children</code>
@@ -207,7 +208,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 </ul></div>
 <div class="section level3">
 <h3 id="vectorized-mode">Vectorized mode<a class="anchor" aria-label="anchor" href="#vectorized-mode"></a></h3>
-<p><code>options(prolfqua.vectorize = TRUE)</code> activates vectorized implementations of <code>compute_contrast</code> and <code>linfct_matrix_contrasts</code> (matrix multiplication instead of per-row loops). Affects all Wald test facades (lm, rlm, firth, lmer) and limma’s linfct path. Results are numerically identical. Default is <code>FALSE</code>.</p>
+<p><code>options(prolfqua.vectorize = TRUE)</code> activates vectorized implementations of <code>compute_contrast</code> and <code>linfct_matrix_contrasts</code> (matrix multiplication instead of per-row loops). Affects all Wald test facades (lm, rlm, firth, firth_nested, lmer_nested) and limma’s linfct path. Results are numerically identical. Default is <code>FALSE</code>.</p>
 </div>
 </div>
 <div class="section level2">

@@ -425,32 +425,31 @@ proteins that plain lm could not estimate
 
 ## Peptide-input facades
 
-The mixed-effects `lmer` facade and `ropeca` require lower-level
-measurements below the analysis subject. The `firth` facade can also
-operate directly on peptide-level `LFQData`. `firth` is shown a second
-time here on purpose, because it can also be fitted on peptide input.
-All three still return protein-level contrasts.
+The mixed-effects `lmer_nested` facade and `ropeca_nested` require
+lower-level measurements below the analysis subject. The `firth_nested`
+facade is the peptide-input variant of `firth` shown above. All three
+still return protein-level contrasts.
 
 ``` r
 fa_lmer_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup + (1 | peptide_Id) + (1 | sampleName)",
   contrasts_2f,
-  method = "lmer"
+  method = "lmer_nested"
 )
 
 fa_ropeca_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup",
   contrasts_2f,
-  method = "ropeca"
+  method = "ropeca_nested"
 )
 
 fa_firth_peptide_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup",
   contrasts_2f,
-  method = "firth"
+  method = "firth_nested"
 )
 ```
 
@@ -474,11 +473,11 @@ results_peptide_2f |>
 ```
 
     ## # A tibble: 3 × 2
-    ##   facade n_results
-    ##   <chr>      <int>
-    ## 1 firth        240
-    ## 2 lmer         179
-    ## 3 ropeca       231
+    ##   facade        n_results
+    ##   <chr>             <int>
+    ## 1 firth_nested        240
+    ## 2 lmer_nested         179
+    ## 3 ropeca_nested       231
 
 ``` r
 ggplot(results_peptide_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
@@ -560,7 +559,7 @@ sessionInfo()
     ## [31] nnet_7.3-20            grid_4.5.2             jomo_2.7-6            
     ## [34] mice_3.19.0            scales_1.4.0           iterators_1.0.14      
     ## [37] MASS_7.3-65            cli_3.6.6              crayon_1.5.3          
-    ## [40] UpSetR_1.4.0           rmarkdown_2.31         ragg_1.5.2            
+    ## [40] UpSetR_1.4.1           rmarkdown_2.31         ragg_1.5.2            
     ## [43] reformulas_0.4.4       generics_0.1.4         otel_0.2.0            
     ## [46] httr_1.4.8             minqa_1.2.8            cachem_1.1.0          
     ## [49] operator.tools_1.6.3.1 splines_4.5.2          vctrs_0.7.3           

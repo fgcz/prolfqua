@@ -68,17 +68,23 @@ autoload is disabled.
         └── Returns a Facade with uniform API:
             $get_contrasts(), $get_missing(), $get_Plotter(), $to_wide()
 
-### Facade Pattern (`ContrastsFacades.R`, `build_contrast_analysis.R`)
+### Facade Pattern (`ContrastsFacades.R`, `ContrastsChildToParentFacades.R`, `build_contrast_analysis.R`)
 
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
 is the recommended entry point. Each method dispatches to a Facade class
 that wires strategy → model → contrasts → moderation internally.
 
-**Aggregated input** (protein-level, `subject_Id == hierarchy_keys`):
-`lm`, `rlm`, `lm_missing`, `lm_impute`, `limma`, `deqms`, `firth`
+Facades split by input/output hierarchy shape:
 
-**Nested input** (peptide-level, `subject_Id` is strict subset of
-`hierarchy_keys`): `lmer`, `ropeca`
+**Aggregated input** (same-level, protein → protein FC;
+`subject_Id == hierarchy_keys`) — `R/ContrastsFacades.R`: `lm`, `rlm`,
+`lm_missing`, `lm_impute`, `limma`, `limma_impute`, `limma_voom`,
+`limma_voom_impute`, `deqms`, `deqms_voom`, `firth`, `limpa`
+
+**Nested input** (child → parent, peptide/precursor → protein FC;
+`subject_Id` is strict subset of `hierarchy_keys`) —
+`R/ContrastsChildToParentFacades.R`: `lmer_nested`, `ropeca_nested`,
+`firth_nested`, `limpa_nested`
 
 ### Weights & `nr_children`
 
@@ -216,8 +222,8 @@ downstream packages.
 `options(prolfqua.vectorize = TRUE)` activates vectorized
 implementations of `compute_contrast` and `linfct_matrix_contrasts`
 (matrix multiplication instead of per-row loops). Affects all Wald test
-facades (lm, rlm, firth, lmer) and limma’s linfct path. Results are
-numerically identical. Default is `FALSE`.
+facades (lm, rlm, firth, firth_nested, lmer_nested) and limma’s linfct
+path. Results are numerically identical. Default is `FALSE`.
 
 ## Testing
 

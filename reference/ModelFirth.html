@@ -68,6 +68,7 @@ R6 class representing modelling result"></head><body>
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
+<code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
 <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
 <code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>,
 <code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>,
@@ -77,14 +78,15 @@ R6 class representing modelling result"></head><body>
 <code><a href="ContrastsLimmaVoomFacade.html">ContrastsLimmaVoomFacade</a></code>,
 <code><a href="ContrastsLimmaVoomImputeFacade.html">ContrastsLimmaVoomImputeFacade</a></code>,
 <code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>,
-<code><a href="ContrastsLmerFacade.html">ContrastsLmerFacade</a></code>,
+<code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code>,
+<code><a href="ContrastsLmerNestedFacade.html">ContrastsLmerNestedFacade</a></code>,
 <code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
-<code><a href="ContrastsROPECAFacade.html">ContrastsROPECAFacade</a></code>,
+<code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test()</a></code>,
@@ -407,9 +409,9 @@ R6 class representing modelling result"></head><body>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>not implemented</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">write_coef_figures</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpQ16HS9/Coef_Histogram_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpQ16HS9/Coef_volcano_plot_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpQ16HS9/Coef_Pairsplot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp0W8jLt/Coef_Histogram_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp0W8jLt/Coef_volcano_plot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp0W8jLt/Coef_Pairsplot_modelFirth.pdf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -423,7 +425,7 @@ R6 class representing modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> XYrp6h~5793       2.20    -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> quTD7H~4566       0.847    1.35<span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231       0.847    1.35<span style="color: #949494;">e</span>+ 0   1.35<span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_2c9053416914 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_1b921ba43ab3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       2 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
@@ -480,9 +482,9 @@ R6 class representing modelling result"></head><body>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>not implemented</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">write_coef_figures</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpQ16HS9/Coef_Histogram_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpQ16HS9/Coef_volcano_plot_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpQ16HS9/Coef_Pairsplot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp0W8jLt/Coef_Histogram_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp0W8jLt/Coef_volcano_plot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/Rtmp0W8jLt/Coef_Pairsplot_modelFirth.pdf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -496,7 +498,7 @@ R6 class representing modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> quTD7H~4566         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> tCZCHm~6695         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0   4.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231         0.847  1.35<span style="color: #949494;">e</span>+ 0   1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_2c9053416914 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_1b921ba43ab3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                       2 </span>
 </code></pre></div>
     </div>

@@ -452,39 +452,40 @@ proteins that plain lm could not estimate
 
 ## Peptide-input facades
 
-The mixed-effects `lmer` facade and `ropeca` require lower-level
-measurements below the analysis subject. The `firth` facade can also
-operate directly on peptide-level `LFQData`. `firth` is shown a second
-time here on purpose, because it can also be fitted on peptide input.
-All three still return protein-level contrasts.
+The peptide-input facades take peptide/precursor-level `LFQData` and
+return protein-level contrasts. They are defined in
+`R/ContrastsChildToParentFacades.R` and use the `*_nested` method keys:
+`lmer_nested`, `ropeca_nested`, `firth_nested`, and `limpa_nested`.
+`firth_nested` is the peptide-input counterpart of the protein-input
+`firth` shown above.
 
 ``` r
 fa_lmer <- build_contrast_analysis(
   lfq_peptide,
   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
   contrasts,
-  method = "lmer"
+  method = "lmer_nested"
 )
 
 fa_ropeca <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
   contrasts,
-  method = "ropeca"
+  method = "ropeca_nested"
 )
 
 fa_firth_peptide <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
   contrasts,
-  method = "firth"
+  method = "firth_nested"
 )
 ```
 
-`ropeca` aggregates peptide evidence back to proteins, whereas `lmer`
-models the nested peptide structure directly before reporting
-protein-level contrasts. Peptide-level `firth` also reports
-protein-level contrasts. Proteins with exactly one peptide are fitted
+`ropeca_nested` aggregates peptide evidence back to proteins, whereas
+`lmer_nested` models the nested peptide structure directly before
+reporting protein-level contrasts. `firth_nested` also reports
+protein-level contrasts: proteins with exactly one peptide are fitted
 without an added peptide term, while proteins with multiple peptides are
 fitted with the lowest hierarchy key added internally.
 
@@ -508,11 +509,11 @@ results_peptide |>
 ```
 
     ## # A tibble: 3 × 2
-    ##   facade n_results
-    ##   <chr>      <int>
-    ## 1 firth        160
-    ## 2 lmer         102
-    ## 3 ropeca       157
+    ##   facade        n_results
+    ##   <chr>             <int>
+    ## 1 firth_nested        160
+    ## 2 lmer_nested         102
+    ## 3 ropeca_nested       157
 
 ``` r
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
@@ -597,7 +598,7 @@ sessionInfo()
     ## [31] desc_1.4.3             nnet_7.3-20            grid_4.5.2            
     ## [34] jomo_2.7-6             mice_3.19.0            scales_1.4.0          
     ## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
-    ## [40] crayon_1.5.3           UpSetR_1.4.0           rmarkdown_2.31        
+    ## [40] crayon_1.5.3           UpSetR_1.4.1           rmarkdown_2.31        
     ## [43] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
     ## [46] otel_0.2.0             httr_1.4.8             minqa_1.2.8           
     ## [49] cachem_1.1.0           operator.tools_1.6.3.1 splines_4.5.2         
