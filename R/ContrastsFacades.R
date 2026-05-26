@@ -1012,19 +1012,19 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 
 .seed_facade_registry <- function() {
   entries <- list(
-    lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
-    lm_impute = list(class = "ContrastsLMImputeFacade", needs = "aggregated"),
-    lm_missing = list(class = "ContrastsLMMissingFacade", needs = "aggregated"),
-    limma = list(class = "ContrastsLimmaFacade", needs = "aggregated"),
-    limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "aggregated"),
-    limma_voom = list(class = "ContrastsLimmaVoomFacade", needs = "aggregated"),
-    limma_voom_impute = list(class = "ContrastsLimmaVoomImputeFacade", needs = "aggregated"),
-    limpa = list(class = "ContrastsLimpaFacade", needs = "aggregated_limpa"),
+    lm = list(class = "ContrastsLMFacade", needs = "same"),
+    lm_impute = list(class = "ContrastsLMImputeFacade", needs = "same"),
+    lm_missing = list(class = "ContrastsLMMissingFacade", needs = "same"),
+    limma = list(class = "ContrastsLimmaFacade", needs = "same"),
+    limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "same"),
+    limma_voom = list(class = "ContrastsLimmaVoomFacade", needs = "same"),
+    limma_voom_impute = list(class = "ContrastsLimmaVoomImputeFacade", needs = "same"),
+    limpa = list(class = "ContrastsLimpaFacade", needs = "same"),
     limpa_nested = list(class = "ContrastsLimpaNestedFacade", needs = "nested"),
-    rlm = list(class = "ContrastsRLMFacade", needs = "aggregated"),
-    deqms = list(class = "ContrastsDEqMSFacade", needs = "aggregated"),
-    deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "aggregated"),
-    firth = list(class = "ContrastsFirthFacade", needs = "aggregated"),
+    rlm = list(class = "ContrastsRLMFacade", needs = "same"),
+    deqms = list(class = "ContrastsDEqMSFacade", needs = "same"),
+    deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "same"),
+    firth = list(class = "ContrastsFirthFacade", needs = "same"),
     firth_nested = list(class = "ContrastsFirthNestedFacade", needs = "nested"),
     lmer_nested = list(class = "ContrastsLmerNestedFacade", needs = "nested"),
     ropeca_nested = list(class = "ContrastsROPECANestedFacade", needs = "nested")
@@ -1049,9 +1049,11 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #'
 #' @param name short method name, e.g. \code{"saint"}.
 #' @param class character; R6 facade class name to instantiate.
-#' @param needs one of \code{"aggregated"}, \code{"nested"},
-#'   \code{"either"} (or a package-specific shape like
-#'   \code{"aggregated_limpa"}).
+#' @param needs one of \code{"same"} (facade emits contrasts at the same
+#'   hierarchy level as its input \emph{e.g.} protein -> protein FC,
+#'   peptide -> peptide FC) or \code{"nested"} (facade takes child-level
+#'   input and emits parent-level contrasts, \emph{e.g.}
+#'   peptide -> protein FC).
 #' @param package package the facade class lives in. Defaults to
 #'   \code{"prolfqua"}.
 #' @param needs_saint_annotation \code{TRUE} if the backend requires
@@ -1066,7 +1068,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #' lookup_facade("lm")$class
 #' # downstream packages call this from .onLoad():
 #' # prolfqua::register_facade("saint", class = "ContrastsSAINTFacade",
-#' #                           needs = "aggregated", package = "prolfquasaint",
+#' #                           needs = "same", package = "prolfquasaint",
 #' #                           needs_saint_annotation = TRUE)
 register_facade <- function(name, class, needs, package = "prolfqua", needs_saint_annotation = FALSE, ...) {
   stopifnot(
@@ -1155,22 +1157,22 @@ lookup_facade <- function(name) {
 #' FACADE_REGISTRY$limma$class
 FACADE_REGISTRY <- structure(
   list(
-    lm = .builtin_facade_entry("ContrastsLMFacade", "aggregated"),
-    lm_impute = .builtin_facade_entry("ContrastsLMImputeFacade", "aggregated"),
-    lm_missing = .builtin_facade_entry("ContrastsLMMissingFacade", "aggregated"),
-    limma = .builtin_facade_entry("ContrastsLimmaFacade", "aggregated"),
-    limma_impute = .builtin_facade_entry("ContrastsLimmaImputeFacade", "aggregated"),
-    limma_voom = .builtin_facade_entry("ContrastsLimmaVoomFacade", "aggregated"),
+    lm = .builtin_facade_entry("ContrastsLMFacade", "same"),
+    lm_impute = .builtin_facade_entry("ContrastsLMImputeFacade", "same"),
+    lm_missing = .builtin_facade_entry("ContrastsLMMissingFacade", "same"),
+    limma = .builtin_facade_entry("ContrastsLimmaFacade", "same"),
+    limma_impute = .builtin_facade_entry("ContrastsLimmaImputeFacade", "same"),
+    limma_voom = .builtin_facade_entry("ContrastsLimmaVoomFacade", "same"),
     limma_voom_impute = .builtin_facade_entry(
       "ContrastsLimmaVoomImputeFacade",
-      "aggregated"
+      "same"
     ),
-    limpa = .builtin_facade_entry("ContrastsLimpaFacade", "aggregated_limpa"),
+    limpa = .builtin_facade_entry("ContrastsLimpaFacade", "same"),
     limpa_nested = .builtin_facade_entry("ContrastsLimpaNestedFacade", "nested"),
-    rlm = .builtin_facade_entry("ContrastsRLMFacade", "aggregated"),
-    deqms = .builtin_facade_entry("ContrastsDEqMSFacade", "aggregated"),
-    deqms_voom = .builtin_facade_entry("ContrastsDEqMSVoomFacade", "aggregated"),
-    firth = .builtin_facade_entry("ContrastsFirthFacade", "aggregated"),
+    rlm = .builtin_facade_entry("ContrastsRLMFacade", "same"),
+    deqms = .builtin_facade_entry("ContrastsDEqMSFacade", "same"),
+    deqms_voom = .builtin_facade_entry("ContrastsDEqMSVoomFacade", "same"),
+    firth = .builtin_facade_entry("ContrastsFirthFacade", "same"),
     firth_nested = .builtin_facade_entry("ContrastsFirthNestedFacade", "nested"),
     lmer_nested = .builtin_facade_entry("ContrastsLmerNestedFacade", "nested"),
     ropeca_nested = .builtin_facade_entry("ContrastsROPECANestedFacade", "nested")

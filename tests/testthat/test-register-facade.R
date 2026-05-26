@@ -1,7 +1,7 @@
 test_that("built-in facades are registered with package prolfqua", {
   entry <- lookup_facade("lm")
   expect_equal(entry$class, "ContrastsLMFacade")
-  expect_equal(entry$needs, "aggregated")
+  expect_equal(entry$needs, "same")
   expect_equal(entry$package, "prolfqua")
   expect_false(entry$needs_saint_annotation)
 })
@@ -17,7 +17,7 @@ test_that("register_facade and unregister_facade roundtrip", {
   invisible(register_facade(
     "test_fake",
     class = "FakeFacade",
-    needs = "aggregated",
+    needs = "same",
     package = "fakepkg",
     needs_saint_annotation = TRUE,
     extra = "hello"
@@ -35,7 +35,7 @@ test_that("register_facade and unregister_facade roundtrip", {
 
 test_that("list_facades reflects registered entries", {
   on.exit(unregister_facade("test_listed"), add = TRUE)
-  register_facade("test_listed", class = "Whatever", needs = "aggregated")
+  register_facade("test_listed", class = "Whatever", needs = "same")
   all_facades <- list_facades()
   expect_true("test_listed" %in% names(all_facades))
   expect_true("lm" %in% names(all_facades))

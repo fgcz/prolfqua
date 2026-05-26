@@ -18,9 +18,11 @@ register_facade(
 
 \item{class}{character; R6 facade class name to instantiate.}
 
-\item{needs}{one of \code{"aggregated"}, \code{"nested"},
-\code{"either"} (or a package-specific shape like
-\code{"aggregated_limpa"}).}
+\item{needs}{one of \code{"same"} (facade emits contrasts at the same
+hierarchy level as its input \emph{e.g.} protein -> protein FC,
+peptide -> peptide FC) or \code{"nested"} (facade takes child-level
+input and emits parent-level contrasts, \emph{e.g.}
+peptide -> protein FC).}
 
 \item{package}{package the facade class lives in. Defaults to
 \code{"prolfqua"}.}
@@ -47,7 +49,7 @@ the same dispatch path as the built-in facades.
 lookup_facade("lm")$class
 # downstream packages call this from .onLoad():
 # prolfqua::register_facade("saint", class = "ContrastsSAINTFacade",
-#                           needs = "aggregated", package = "prolfquasaint",
+#                           needs = "same", package = "prolfquasaint",
 #                           needs_saint_annotation = TRUE)
 }
 \seealso{
