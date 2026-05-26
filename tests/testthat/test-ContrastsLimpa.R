@@ -198,6 +198,41 @@ test_that("build_contrast_analysis with method='limpa' works", {
 })
 
 
+test_that("ContrastsLimpaNestedFacade end-to-end (precursor input)", {
+  skip_if_not_installed("limpa")
+  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 30)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+  fa <- prolfqua::ContrastsLimpaNestedFacade$new(lfqdata, "~ group_", contrasts)
+
+  expect_true(inherits(fa, "ContrastsLimpaNestedFacade"))
+  res <- fa$get_contrasts()
+  expect_true(is.data.frame(res))
+  expect_true(nrow(res) > 0)
+  expect_true(all(res$facade == "limpa_nested"))
+  expect_true("diff" %in% colnames(res))
+  expect_true("p.value" %in% colnames(res))
+  expect_true("FDR" %in% colnames(res))
+})
+
+
+test_that("build_contrast_analysis with method='limpa_nested' works", {
+  skip_if_not_installed("limpa")
+  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 30)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limpa_nested")
+
+  expect_true(inherits(fa, "ContrastsLimpaNestedFacade"))
+  res <- fa$get_contrasts()
+  expect_true(nrow(res) > 0)
+})
+
+
 test_that("ContrastsLimpaFacade rejects LFQData without opt_se", {
   skip_if_not_installed("limpa")
   # Use protein-level data without SE column

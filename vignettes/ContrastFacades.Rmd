@@ -345,41 +345,41 @@ if (length(lm_missing_proteins) > 0) {
 
 # Peptide-input facades
 
-The mixed-effects `lmer` facade and `ropeca` require lower-level measurements
-below the analysis subject. The `firth` facade can also operate directly on
-peptide-level `LFQData`. `firth` is shown a second time here on purpose,
-because it can also be fitted on peptide input. All three still return
-protein-level contrasts.
+The peptide-input facades take peptide/precursor-level `LFQData` and return
+protein-level contrasts. They are defined in `R/ContrastsChildToParentFacades.R`
+and use the `*_nested` method keys: `lmer_nested`, `ropeca_nested`,
+`firth_nested`, and `limpa_nested`. `firth_nested` is the peptide-input
+counterpart of the protein-input `firth` shown above.
 
 ```{r facades_peptide}
 fa_lmer <- build_contrast_analysis(
   lfq_peptide,
   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
   contrasts,
-  method = "lmer"
+  method = "lmer_nested"
 )
 
 fa_ropeca <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
   contrasts,
-  method = "ropeca"
+  method = "ropeca_nested"
 )
 
 fa_firth_peptide <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
   contrasts,
-  method = "firth"
+  method = "firth_nested"
 )
 ```
 
-`ropeca` aggregates peptide evidence back to proteins, whereas `lmer` models the
-nested peptide structure directly before reporting protein-level contrasts.
-Peptide-level `firth` also reports protein-level contrasts. Proteins with
-exactly one peptide are fitted without an added peptide term, while proteins
-with multiple peptides are fitted with the lowest hierarchy key added
-internally.
+`ropeca_nested` aggregates peptide evidence back to proteins, whereas
+`lmer_nested` models the nested peptide structure directly before reporting
+protein-level contrasts. `firth_nested` also reports protein-level contrasts:
+proteins with exactly one peptide are fitted without an added peptide term,
+while proteins with multiple peptides are fitted with the lowest hierarchy
+key added internally.
 
 ```{r collect_peptide}
 results_peptide <- bind_rows(

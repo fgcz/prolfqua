@@ -89,17 +89,17 @@ test_that("ContrastsRLMFacade initialises and returns correct structure", {
   expect_true(all(fa$get_contrasts()$facade == "rlm"))
 })
 
-# ---- ContrastsLmerFacade ----
+# ---- ContrastsLmerNestedFacade ----
 
-test_that("ContrastsLmerFacade initialises and returns correct structure", {
+test_that("ContrastsLmerNestedFacade initialises and returns correct structure", {
   lfqdata <- make_peptide_lfqdata()
-  fa <- prolfqua::ContrastsLmerFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS)
+  fa <- prolfqua::ContrastsLmerNestedFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS)
 
-  expect_true(inherits(fa, "ContrastsLmerFacade"))
+  expect_true(inherits(fa, "ContrastsLmerNestedFacade"))
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "lmer"))
+  expect_true(all(fa$get_contrasts()$facade == "lmer_nested"))
 })
 
 # ---- ContrastsLMMissingFacade ----
@@ -134,19 +134,19 @@ test_that("ContrastsDEqMSFacade initialises and returns correct structure", {
   expect_true(all(fa$get_contrasts()$facade == "deqms"))
 })
 
-# ---- ContrastsROPECAFacade ----
+# ---- ContrastsROPECANestedFacade ----
 
-test_that("ContrastsROPECAFacade initialises and returns correct structure", {
+test_that("ContrastsROPECANestedFacade initialises and returns correct structure", {
   lfqdata <- make_peptide_lfqdata()
-  fa <- prolfqua::ContrastsROPECAFacade$new(lfqdata, MODELSTR, CONTRASTS)
+  fa <- prolfqua::ContrastsROPECANestedFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
-  expect_true(inherits(fa, "ContrastsROPECAFacade"))
+  expect_true(inherits(fa, "ContrastsROPECANestedFacade"))
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
 
   # Facade normalises ROPECA output to standard column names
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "ropeca"))
+  expect_true(all(fa$get_contrasts()$facade == "ropeca_nested"))
 
   res <- fa$get_contrasts()
   # Heuristically derived columns should have real values (not all NA)
@@ -183,10 +183,10 @@ test_that("build_contrast_analysis dispatches to ContrastsRLMFacade for method='
   check_facade_interface(fa)
 })
 
-test_that("build_contrast_analysis dispatches to ContrastsLmerFacade for method='lmer'", {
+test_that("build_contrast_analysis dispatches to ContrastsLmerNestedFacade for method='lmer_nested'", {
   lfqdata <- make_peptide_lfqdata()
-  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR_LMER, CONTRASTS, method = "lmer")
-  expect_true(inherits(fa, "ContrastsLmerFacade"))
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR_LMER, CONTRASTS, method = "lmer_nested")
+  expect_true(inherits(fa, "ContrastsLmerNestedFacade"))
   check_facade_interface(fa)
 })
 
@@ -212,10 +212,10 @@ test_that("build_contrast_analysis dispatches to ContrastsDEqMSFacade for method
   check_facade_interface(fa)
 })
 
-test_that("build_contrast_analysis dispatches to ContrastsROPECAFacade for method='ropeca'", {
+test_that("build_contrast_analysis dispatches to ContrastsROPECANestedFacade for method='ropeca_nested'", {
   lfqdata <- make_peptide_lfqdata()
-  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "ropeca")
-  expect_true(inherits(fa, "ContrastsROPECAFacade"))
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "ropeca_nested")
+  expect_true(inherits(fa, "ContrastsROPECANestedFacade"))
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
   expect_true(nrow(res) > 0)
@@ -223,6 +223,15 @@ test_that("build_contrast_analysis dispatches to ContrastsROPECAFacade for metho
   expect_true("p.value" %in% colnames(res))
   expect_true("FDR" %in% colnames(res))
   expect_false("beta.based.significance" %in% colnames(res))
+})
+
+test_that("build_contrast_analysis dispatches to ContrastsFirthNestedFacade for method='firth_nested'", {
+  lfqdata <- make_peptide_lfqdata()
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "firth_nested")
+  expect_true(inherits(fa, "ContrastsFirthNestedFacade"))
+  res <- fa$get_contrasts()
+  expect_true(is.data.frame(res))
+  expect_true(all(res$facade == "firth_nested"))
 })
 
 test_that("build_contrast_analysis defaults to lm when no method specified", {
@@ -315,11 +324,11 @@ test_that("nested facades error on aggregated LFQData", {
   lfqdata <- make_protein_lfqdata()$lfqdata
 
   expect_error(
-    prolfqua::ContrastsROPECAFacade$new(lfqdata, MODELSTR, CONTRASTS),
+    prolfqua::ContrastsROPECANestedFacade$new(lfqdata, MODELSTR, CONTRASTS),
     "requires LFQData with additional hierarchy below `subject_id\\(\\)`"
   )
   expect_error(
-    prolfqua::ContrastsLmerFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS),
+    prolfqua::ContrastsLmerNestedFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS),
     "requires LFQData with additional hierarchy below `subject_id\\(\\)`"
   )
 })

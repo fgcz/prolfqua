@@ -306,10 +306,9 @@ if (length(lm_missing_proteins_2f) > 0) {
 
 # Peptide-input facades
 
-The mixed-effects `lmer` facade and `ropeca` require lower-level measurements
-below the analysis subject. The `firth` facade can also operate directly on
-peptide-level `LFQData`. `firth` is shown a second time here on purpose,
-because it can also be fitted on peptide input. All three still return
+The mixed-effects `lmer_nested` facade and `ropeca_nested` require lower-level
+measurements below the analysis subject. The `firth_nested` facade is the
+peptide-input variant of `firth` shown above. All three still return
 protein-level contrasts.
 
 ```{r facades_peptide_two_factor}
@@ -317,21 +316,21 @@ fa_lmer_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup + (1 | peptide_Id) + (1 | sampleName)",
   contrasts_2f,
-  method = "lmer"
+  method = "lmer_nested"
 )
 
 fa_ropeca_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup",
   contrasts_2f,
-  method = "ropeca"
+  method = "ropeca_nested"
 )
 
 fa_firth_peptide_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup",
   contrasts_2f,
-  method = "firth"
+  method = "firth_nested"
 )
 ```
 

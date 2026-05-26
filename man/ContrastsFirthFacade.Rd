@@ -13,11 +13,10 @@ Firth logistic missingness contrast analysis facade
 }
 \details{
 Encapsulates the pipeline: encode missingness ->
-\code{\link{build_model_glm_protein}} or
-\code{\link{build_model_glm_peptide}} -> \code{\link{ContrastsFirth}}.
+\code{\link{build_model_glm_protein}} -> \code{\link{ContrastsFirth}}.
 
-The input may be aggregated protein-level data or nested peptide-level data.
-The correct builder is chosen from the \code{LFQData} hierarchy automatically.
+Requires aggregated (protein-level) LFQData. For nested peptide-level
+input use \code{\link{ContrastsFirthNestedFacade}}.
 
 Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
 computation. See \code{\link{build_contrast_analysis}} for details.
@@ -37,6 +36,7 @@ Other modelling:
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFirth}},
+\code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
 \code{\link{ContrastsLMMissingFacade}},
@@ -46,14 +46,15 @@ Other modelling:
 \code{\link{ContrastsLimmaVoomFacade}},
 \code{\link{ContrastsLimmaVoomImputeFacade}},
 \code{\link{ContrastsLimpaFacade}},
-\code{\link{ContrastsLmerFacade}},
+\code{\link{ContrastsLimpaNestedFacade}},
+\code{\link{ContrastsLmerNestedFacade}},
 \code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
-\code{\link{ContrastsROPECAFacade}},
+\code{\link{ContrastsROPECANestedFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},

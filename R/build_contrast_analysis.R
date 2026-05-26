@@ -26,17 +26,19 @@
 #'   (e.g. \code{c("A_vs_B" = "group_A - group_B")})
 #' @param method one of \code{"lm"}, \code{"lm_impute"}, \code{"lm_missing"},
 #'   \code{"limma"}, \code{"limma_impute"}, \code{"limma_voom"},
-#'   \code{"limma_voom_impute"}, \code{"limpa"}, \code{"rlm"},
-#'   \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
-#'   \code{"lmer"}, \code{"ropeca"}
+#'   \code{"limma_voom_impute"}, \code{"limpa"}, \code{"limpa_nested"},
+#'   \code{"rlm"}, \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
+#'   \code{"firth_nested"}, \code{"lmer_nested"}, \code{"ropeca_nested"}
 #' @param ... additional arguments forwarded to the underlying strategy function
 #'   (e.g. \code{trend}, \code{robust} for \code{strategy_limma})
 #' @return one of \code{\link{ContrastsLimmaFacade}},
 #'   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsRLMFacade}},
-#'   \code{\link{ContrastsLmerFacade}},
+#'   \code{\link{ContrastsLmerNestedFacade}},
 #'   \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsLMImputeFacade}},
 #'   \code{\link{ContrastsDEqMSFacade}},
-#'   \code{\link{ContrastsROPECAFacade}}, or \code{\link{ContrastsFirthFacade}}
+#'   \code{\link{ContrastsROPECANestedFacade}}, \code{\link{ContrastsFirthFacade}},
+#'   \code{\link{ContrastsFirthNestedFacade}}, \code{\link{ContrastsLimpaFacade}},
+#'   or \code{\link{ContrastsLimpaNestedFacade}}
 #' @export
 #' @family modelling
 #' @examples
@@ -65,11 +67,11 @@
 #'   lfqdata_pep,
 #'   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
 #'   contrasts,
-#'   method = "lmer"
+#'   method = "lmer_nested"
 #' )
 #' head(fa_lmer$get_contrasts())
 #'
-#' fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca")
+#' fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca_nested")
 #' head(fa_ropeca$get_contrasts())
 #'
 #' fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
@@ -87,12 +89,14 @@ build_contrast_analysis <- function(
     "limma_voom",
     "limma_voom_impute",
     "limpa",
+    "limpa_nested",
     "rlm",
     "deqms",
     "deqms_voom",
     "firth",
-    "lmer",
-    "ropeca"
+    "firth_nested",
+    "lmer_nested",
+    "ropeca_nested"
   ),
   ...
 ) {
@@ -101,7 +105,7 @@ build_contrast_analysis <- function(
     method,
     lm = ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...),
     rlm = ContrastsRLMFacade$new(lfqdata, modelstr, contrasts, ...),
-    lmer = ContrastsLmerFacade$new(lfqdata, modelstr, contrasts, ...),
+    lmer_nested = ContrastsLmerNestedFacade$new(lfqdata, modelstr, contrasts, ...),
     lm_missing = ContrastsLMMissingFacade$new(lfqdata, modelstr, contrasts, ...),
     lm_impute = ContrastsLMImputeFacade$new(lfqdata, modelstr, contrasts, ...),
     limma = ContrastsLimmaFacade$new(lfqdata, modelstr, contrasts, ...),
@@ -110,8 +114,10 @@ build_contrast_analysis <- function(
     limma_voom_impute = ContrastsLimmaVoomImputeFacade$new(lfqdata, modelstr, contrasts, ...),
     deqms = ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...),
     deqms_voom = ContrastsDEqMSVoomFacade$new(lfqdata, modelstr, contrasts, ...),
-    ropeca = ContrastsROPECAFacade$new(lfqdata, modelstr, contrasts, ...),
+    ropeca_nested = ContrastsROPECANestedFacade$new(lfqdata, modelstr, contrasts, ...),
     firth = ContrastsFirthFacade$new(lfqdata, modelstr, contrasts),
-    limpa = ContrastsLimpaFacade$new(lfqdata, modelstr, contrasts, ...)
+    firth_nested = ContrastsFirthNestedFacade$new(lfqdata, modelstr, contrasts),
+    limpa = ContrastsLimpaFacade$new(lfqdata, modelstr, contrasts, ...),
+    limpa_nested = ContrastsLimpaNestedFacade$new(lfqdata, modelstr, contrasts, ...)
   )
 }
