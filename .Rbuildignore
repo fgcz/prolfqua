@@ -26,6 +26,7 @@ R/tidyMS_stanr\.R
 ^TODO\.md$
 ^data-raw$
 ^CLAUDE\.md$
+^AGENTS\.md$
 ^Rplots\.pdf$
 ^\.cursor$
 ^\.githooks$

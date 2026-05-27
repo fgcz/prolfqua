@@ -7,8 +7,12 @@
 build_model_limpa(lfqdata, strategy, model_name = strategy$model_name)
 }
 \arguments{
-\item{lfqdata}{\code{\link{LFQData}} object from \code{\link{AggregateLimpa}}.
-Must have \code{config$opt_se} and \code{config$nr_children} set.}
+\item{lfqdata}{\code{\link{LFQData}} object. Must have
+\code{config$nr_children} set (used to flag imputed observations via
+\code{nr_children == 0}). \code{config$opt_se} is optional: when set
+(e.g. from \code{\link{AggregateLimpa}}), the SE column is used as a
+vooma precision-weight predictor; otherwise vooma is fit without an
+external predictor.}
 
 \item{strategy}{\code{\link{StrategyLimpa}} object}
 

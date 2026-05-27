@@ -196,7 +196,7 @@ Columns not directly produced by ROPECA are derived heuristically:
   \item \code{std.error = diff / statistic} (algebraic: t = estimate / SE)
   \item \code{sigma = mad.estimate} (MAD of peptide fold changes)
   \item \code{df = n_not_na} (number of contributing peptides)
-  \item \code{conf.low/conf.high} via \code{diff ± qt(0.975, df) * |std.error|}
+  \item \code{conf.low/conf.high} via \code{diff +/- qt(0.975, df) * |std.error|}
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECANestedFacade$get_contrasts()}\if{html}{\out{</div>}}

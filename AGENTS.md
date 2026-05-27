@@ -58,15 +58,19 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
         $get_contrasts(), $get_missing(), $get_Plotter(), $to_wide()
 ```
 
-### Facade Pattern (`ContrastsFacades.R`, `build_contrast_analysis.R`)
+### Facade Pattern (`ContrastsFacades.R`, `ContrastsChildToParentFacades.R`, `build_contrast_analysis.R`)
 
 `build_contrast_analysis()` is the recommended entry point. Each method dispatches to a Facade class that wires strategy → model → contrasts → moderation internally.
 
-**Aggregated input** (protein-level, `subject_Id == hierarchy_keys`):
-`lm`, `rlm`, `lm_missing`, `lm_impute`, `limma`, `deqms`, `firth`
+The authoritative facade list is the `.seed_facade_registry()` table in `R/ContrastsFacades.R`; query it at runtime with `lookup_facade(name)`. Facades split by input/output hierarchy shape — `lookup_facade(name)$needs` returns one of two values:
 
-**Nested input** (peptide-level, `subject_Id` is strict subset of `hierarchy_keys`):
-`lmer`, `ropeca`
+**`needs = "same"`** — facade emits contrasts at the same hierarchy level as its input (protein → protein FC, or peptide/precursor → peptide/precursor FC; `subject_Id == hierarchy_keys`). Lives in `R/ContrastsFacades.R`:
+`lm`, `rlm`, `lm_missing`, `lm_impute`, `limma`, `limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`, `deqms_voom`, `firth`, `limpa`
+
+**`needs = "nested"`** — facade takes child-level input (peptide/precursor) and emits parent-level (protein) contrasts; `subject_Id` is a strict subset of `hierarchy_keys`. Lives in `R/ContrastsChildToParentFacades.R`:
+`lmer_nested`, `ropeca_nested`, `firth_nested`, `limpa_nested`
+
+There are no same-level `lmer`/`ropeca` facades — mixed-model and ROPECA analyses are nested-only.
 
 ### Weights & `nr_children`
 
@@ -141,7 +145,7 @@ Concrete config factories (e.g. `create_config_Skyline()`, `create_config_Spectr
 
 ### Vectorized mode
 
-`options(prolfqua.vectorize = TRUE)` activates vectorized implementations of `compute_contrast` and `linfct_matrix_contrasts` (matrix multiplication instead of per-row loops). Affects all Wald test facades (lm, rlm, firth, lmer) and limma's linfct path. Results are numerically identical. Default is `FALSE`.
+`options(prolfqua.vectorize = TRUE)` activates vectorized implementations of `compute_contrast` and `linfct_matrix_contrasts` (matrix multiplication instead of per-row loops). Affects all Wald test facades (lm, rlm, firth, firth_nested, lmer_nested) and limma's linfct path. Results are numerically identical. Default is `FALSE`.
 
 ## Testing
 

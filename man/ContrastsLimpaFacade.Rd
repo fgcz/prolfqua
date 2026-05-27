@@ -15,10 +15,18 @@ Limpa contrast analysis facade
 Encapsulates the pipeline: \code{\link{strategy_limpa}} ->
 \code{\link{build_model_limpa}} -> \code{\link{ContrastsLimma}}.
 
-Requires protein-level LFQData produced by \code{\link{AggregateLimpa}},
-which provides the standard error (\code{config$opt_se}) and observation
-count (\code{config$nr_children}) columns needed for limpa's vooma
-precision weighting and imputation-aware DF correction.
+Operates as a \code{"same"}-level facade: it consumes whatever aggregated
+LFQData prolfqua's normal aggregation pipeline produced and fits limpa at
+that hierarchy level. If \code{config$opt_se} is set (e.g. when the input
+came from \code{\link{AggregateLimpa}}), the per-observation standard error
+is used as a vooma precision-weight predictor; otherwise plain vooma is
+fit. The \code{config$nr_children} column is required and is used to flag
+imputed observations (\code{nr_children == 0}) for vooma's
+imputation-aware DF correction.
+
+For nested (peptide/precursor) input that should be rolled up to proteins
+via limpa's DPC quantification, use \code{\link{ContrastsLimpaNestedFacade}}
+instead — that facade owns the \code{\link{AggregateLimpa}} pre-step.
 }
 \examples{
 istar <- prolfqua::sim_lfq_data_peptide_config()
@@ -179,7 +187,10 @@ initialize
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{lfqdata}}{LFQData from AggregateLimpa (must have config$opt_se set)}
+\item{\code{lfqdata}}{aggregated LFQData. If \code{config$opt_se} is set
+(e.g. from \code{\link{AggregateLimpa}}), the SE column is used as a
+vooma precision-weight predictor; otherwise vooma is fit without an
+external predictor.}
 
 \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
 

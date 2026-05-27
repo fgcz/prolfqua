@@ -233,16 +233,21 @@ test_that("build_contrast_analysis with method='limpa_nested' works", {
 })
 
 
-test_that("ContrastsLimpaFacade rejects LFQData without opt_se", {
+test_that("ContrastsLimpaFacade accepts aggregated LFQData without opt_se", {
   skip_if_not_installed("limpa")
-  # Use protein-level data without SE column
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  # As a "same"-level facade, limpa operates on whatever the normal
+  # aggregation pipeline produced. opt_se is optional: when absent (e.g.
+  # medpolish-aggregated input), vooma is fit without an SE predictor.
+  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
+  lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+  agg <- prolfqua::AggregateMedpolish$new(lfqdata, "protein")$aggregate()
+  expect_true(length(agg$get_config()$opt_se) == 0 || nchar(agg$get_config()$opt_se) == 0)
 
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-  expect_error(
-    prolfqua::ContrastsLimpaFacade$new(lfqdata, "~ group_", contrasts),
-    "opt_se"
-  )
+  fa <- prolfqua::ContrastsLimpaFacade$new(agg, "~ group_", contrasts)
+  expect_true(inherits(fa, "ContrastsLimpaFacade"))
+  res <- fa$get_contrasts()
+  expect_true(nrow(res) > 0)
+  expect_true(all(res$facade == "limpa"))
 })

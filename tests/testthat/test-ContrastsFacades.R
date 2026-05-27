@@ -102,6 +102,26 @@ test_that("ContrastsLmerNestedFacade initialises and returns correct structure",
   expect_true(all(fa$get_contrasts()$facade == "lmer_nested"))
 })
 
+test_that("ContrastsLmerNestedFacade augments fixed-effects-only modelstr with random effects", {
+  # Caller passes only the fixed effects "~ group_"; facade derives
+  # (1 | <deepest child key>) + (1 | <sample name>) from the LFQData.
+  lfqdata <- make_peptide_lfqdata()
+  fa_auto <- prolfqua::ContrastsLmerNestedFacade$new(lfqdata, "~ group_", CONTRASTS)
+  fa_full <- prolfqua::ContrastsLmerNestedFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS)
+
+  expect_true(inherits(fa_auto$model$model_strategy, "StrategyLmer"))
+  # Both formulas should be identical after augmentation.
+  expect_equal(
+    deparse1(fa_auto$model$model_strategy$formula),
+    deparse1(fa_full$model$model_strategy$formula)
+  )
+  # And the contrast results should match.
+  expect_equal(
+    fa_auto$get_contrasts()$diff,
+    fa_full$get_contrasts()$diff
+  )
+})
+
 # ---- ContrastsLMMissingFacade ----
 
 test_that("ContrastsLMMissingFacade initialises and returns correct structure", {

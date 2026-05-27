@@ -381,10 +381,18 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
 #' Encapsulates the pipeline: \code{\link{strategy_limpa}} ->
 #' \code{\link{build_model_limpa}} -> \code{\link{ContrastsLimma}}.
 #'
-#' Requires protein-level LFQData produced by \code{\link{AggregateLimpa}},
-#' which provides the standard error (\code{config$opt_se}) and observation
-#' count (\code{config$nr_children}) columns needed for limpa's vooma
-#' precision weighting and imputation-aware DF correction.
+#' Operates as a \code{"same"}-level facade: it consumes whatever aggregated
+#' LFQData prolfqua's normal aggregation pipeline produced and fits limpa at
+#' that hierarchy level. If \code{config$opt_se} is set (e.g. when the input
+#' came from \code{\link{AggregateLimpa}}), the per-observation standard error
+#' is used as a vooma precision-weight predictor; otherwise plain vooma is
+#' fit. The \code{config$nr_children} column is required and is used to flag
+#' imputed observations (\code{nr_children == 0}) for vooma's
+#' imputation-aware DF correction.
+#'
+#' For nested (peptide/precursor) input that should be rolled up to proteins
+#' via limpa's DPC quantification, use \code{\link{ContrastsLimpaNestedFacade}}
+#' instead — that facade owns the \code{\link{AggregateLimpa}} pre-step.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -412,7 +420,10 @@ ContrastsLimpaFacade <- R6::R6Class(
     .contrast_names = NULL,
     #' @description
     #' initialize
-    #' @param lfqdata LFQData from AggregateLimpa (must have config$opt_se set)
+    #' @param lfqdata aggregated LFQData. If \code{config$opt_se} is set
+    #'   (e.g. from \code{\link{AggregateLimpa}}), the SE column is used as a
+    #'   vooma precision-weight predictor; otherwise vooma is fit without an
+    #'   external predictor.
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param plot logical; if TRUE, plot the vooma mean-variance trend
@@ -420,12 +431,6 @@ ContrastsLimpaFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_limpa}} (e.g. trend, robust)
     initialize = function(lfqdata, modelstr, contrasts, plot = FALSE, span = NULL, ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsLimpaFacade")
-      if (length(lfqdata$get_config()$opt_se) == 0 || nchar(lfqdata$get_config()$opt_se) == 0) {
-        stop(
-          "ContrastsLimpaFacade requires LFQData with config$opt_se set. ",
-          "Use AggregateLimpa to produce the input."
-        )
-      }
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
       response <- lfqdata$response()

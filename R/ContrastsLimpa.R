@@ -84,8 +84,12 @@ strategy_limpa <- function(modelstr, model_name = "limpa", trend = FALSE, robust
 #' \code{MArrayLM}), which can be passed directly to
 #' \code{\link{ContrastsLimma}}.
 #'
-#' @param lfqdata \code{\link{LFQData}} object from \code{\link{AggregateLimpa}}.
-#'   Must have \code{config$opt_se} and \code{config$nr_children} set.
+#' @param lfqdata \code{\link{LFQData}} object. Must have
+#'   \code{config$nr_children} set (used to flag imputed observations via
+#'   \code{nr_children == 0}). \code{config$opt_se} is optional: when set
+#'   (e.g. from \code{\link{AggregateLimpa}}), the SE column is used as a
+#'   vooma precision-weight predictor; otherwise vooma is fit without an
+#'   external predictor.
 #' @param strategy \code{\link{StrategyLimpa}} object
 #' @param model_name model name (default from strategy)
 #' @return \code{\link{ModelLimma}} object
@@ -112,21 +116,29 @@ build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_nam
   se_col <- lfqdata$get_config()$opt_se
   nr_col <- lfqdata$nr_children_col()
   stopifnot(
-    "LFQData must have config$opt_se set (from AggregateLimpa)" = length(se_col) > 0 && nchar(se_col) > 0,
     "LFQData must have config$nr_children set" = length(nr_col) > 0 && nchar(nr_col) > 0
   )
 
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
 
-  # Extract SE matrix for vooma predictor
-  se_wide <- lfqdata$data_wide(as.matrix = TRUE, value = se_col)
-  predictor <- log(se_wide$data + 1e-6)
+  predictor <- NULL
+  if (length(se_col) > 0 && nchar(se_col) > 0) {
+    se_wide <- lfqdata$data_wide(as.matrix = TRUE, value = se_col)
+    predictor <- log(se_wide$data + 1e-6)
+  }
 
-  # Extract n_observations for imputed flag
   n_obs_wide <- lfqdata$data_wide(as.matrix = TRUE, value = nr_col)
   imputed <- (n_obs_wide$data == 0)
 
-  # Fit vooma model with imputation-aware precision weights
+  # Limpa's voomaLmFitWithImputation requires NA-free input. AggregateLimpa
+  # pre-imputes; other aggregators (e.g. medpolish) do not. Impute any
+  # remaining NAs via limpa::imputeByExpTilt and mark them as imputed.
+  na_mask <- is.na(setup$elist$E)
+  if (any(na_mask)) {
+    setup$elist <- limpa::imputeByExpTilt(setup$elist)
+    imputed <- imputed | na_mask
+  }
+
   fit_args <- list(
     y = setup$elist,
     design = setup$design,

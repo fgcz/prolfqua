@@ -18,17 +18,21 @@ Encapsulates the pipeline: \code{\link{strategy_lmer}} ->
 
 Takes child-hierarchy LFQData (e.g. peptide-level measurements nested
 within proteins) and returns protein-level fold-change estimates.
+
+\code{modelstr} may be either a fixed-effects-only formula (e.g.
+\code{"~ group_"}) - in which case the facade appends
+\code{(1 | <deepest child hierarchy key>) + (1 | <sample name>)} derived
+from the LFQData - or a full mixed-model formula already containing random
+effects, which is passed through unchanged.
 }
 \examples{
 istar <- sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-fa <- ContrastsLmerNestedFacade$new(
-  lfqdata,
-  "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
-  contrasts
-)
+# Random effects derived from lfqdata; equivalent to passing the full
+# mixed-model formula explicitly.
+fa <- ContrastsLmerNestedFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
 fa$to_wide()
 }
@@ -176,7 +180,11 @@ initialize
 \describe{
 \item{\code{lfqdata}}{nested LFQData (subject_id strict subset of hierarchy_keys)}
 
-\item{\code{modelstr}}{model formula string (e.g. "~ group_ + (1 | peptide_Id)")}
+\item{\code{modelstr}}{model formula RHS as string. Fixed effects only
+(e.g. "~ group_") - random effects are derived from \code{lfqdata}
+as \code{(1 | <deepest child key>) + (1 | <sample name>)}. A
+formula already containing random-effect bars is passed through
+unchanged.}
 
 \item{\code{contrasts}}{named character vector of contrasts}
 

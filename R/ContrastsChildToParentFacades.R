@@ -10,6 +10,25 @@
 # .add_facade_column() are defined there and used here as package-internal
 # functions.
 
+# If the caller-supplied modelstr has no random-effect bars, append
+# (1 | <deepest child hierarchy key>) + (1 | <sample name>) derived from the
+# LFQData. Caller-supplied random effects are left untouched.
+.augment_lmer_nested_modelstr <- function(modelstr, lfqdata) {
+  if (grepl("\\|", modelstr)) {
+    return(modelstr)
+  }
+  child_keys <- setdiff(lfqdata$hierarchy_keys(), lfqdata$subject_id())
+  if (length(child_keys) == 0) {
+    stop(
+      "ContrastsLmerNestedFacade: cannot derive random effects - ",
+      "no child hierarchy below subject_id().",
+      call. = FALSE
+    )
+  }
+  deepest_child <- child_keys[length(child_keys)]
+  paste0(modelstr, " + (1 | ", deepest_child, ") + (1 | ", lfqdata$sample_name(), ")")
+}
+
 #' Lmer (mixed-model) contrast analysis facade for nested input
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_lmer}} ->
@@ -19,6 +38,12 @@
 #' Takes child-hierarchy LFQData (e.g. peptide-level measurements nested
 #' within proteins) and returns protein-level fold-change estimates.
 #'
+#' \code{modelstr} may be either a fixed-effects-only formula (e.g.
+#' \code{"~ group_"}) - in which case the facade appends
+#' \code{(1 | <deepest child hierarchy key>) + (1 | <sample name>)} derived
+#' from the LFQData - or a full mixed-model formula already containing random
+#' effects, which is passed through unchanged.
+#'
 #' @export
 #' @family modelling
 #' @examples
@@ -26,11 +51,9 @@
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-#' fa <- ContrastsLmerNestedFacade$new(
-#'   lfqdata,
-#'   "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
-#'   contrasts
-#' )
+#' # Random effects derived from lfqdata; equivalent to passing the full
+#' # mixed-model formula explicitly.
+#' fa <- ContrastsLmerNestedFacade$new(lfqdata, "~ group_", contrasts)
 #' head(fa$get_contrasts())
 #' fa$to_wide()
 #' @return An R6 class generator.
@@ -49,7 +72,11 @@ ContrastsLmerNestedFacade <- R6::R6Class(
     #' @description
     #' initialize
     #' @param lfqdata nested LFQData (subject_id strict subset of hierarchy_keys)
-    #' @param modelstr model formula string (e.g. "~ group_ + (1 | peptide_Id)")
+    #' @param modelstr model formula RHS as string. Fixed effects only
+    #'   (e.g. "~ group_") - random effects are derived from \code{lfqdata}
+    #'   as \code{(1 | <deepest child key>) + (1 | <sample name>)}. A
+    #'   formula already containing random-effect bars is passed through
+    #'   unchanged.
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_lmer}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
@@ -57,6 +84,7 @@ ContrastsLmerNestedFacade <- R6::R6Class(
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
       response <- lfqdata$response()
+      modelstr <- .augment_lmer_nested_modelstr(modelstr, lfqdata)
       full_formula <- paste(response, modelstr)
       strat <- strategy_lmer(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
@@ -145,7 +173,7 @@ ContrastsROPECANestedFacade <- R6::R6Class(
     #'   \item \code{std.error = diff / statistic} (algebraic: t = estimate / SE)
     #'   \item \code{sigma = mad.estimate} (MAD of peptide fold changes)
     #'   \item \code{df = n_not_na} (number of contributing peptides)
-    #'   \item \code{conf.low/conf.high} via \code{diff ± qt(0.975, df) * |std.error|}
+    #'   \item \code{conf.low/conf.high} via \code{diff +/- qt(0.975, df) * |std.error|}
     #' }
     get_contrasts = function() {
       res <- self$contrast$get_contrasts(all = TRUE)
