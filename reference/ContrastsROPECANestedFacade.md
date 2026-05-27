@@ -208,7 +208,7 @@ Columns not directly produced by ROPECA are derived heuristically:
 
 - `df = n_not_na` (number of contributing peptides)
 
-- `conf.low/conf.high` via `diff ± qt(0.975, df) * |std.error|`
+- `conf.low/conf.high` via `diff +/- qt(0.975, df) * |std.error|`
 
 #### Usage
 

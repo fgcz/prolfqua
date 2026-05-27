@@ -76,8 +76,12 @@ for degree-of-freedom correction.</p>
 
 
 <dl><dt id="arg-lfqdata">lfqdata<a class="anchor" aria-label="anchor" href="#arg-lfqdata"></a></dt>
-<dd><p><code><a href="LFQData.html">LFQData</a></code> object from <code><a href="AggregateLimpa.html">AggregateLimpa</a></code>.
-Must have <code>config$opt_se</code> and <code>config$nr_children</code> set.</p></dd>
+<dd><p><code><a href="LFQData.html">LFQData</a></code> object. Must have
+<code>config$nr_children</code> set (used to flag imputed observations via
+<code>nr_children == 0</code>). <code>config$opt_se</code> is optional: when set
+(e.g. from <code><a href="AggregateLimpa.html">AggregateLimpa</a></code>), the SE column is used as a
+vooma precision-weight predictor; otherwise vooma is fit without an
+external predictor.</p></dd>
 
 
 <dt id="arg-strategy">strategy<a class="anchor" aria-label="anchor" href="#arg-strategy"></a></dt>

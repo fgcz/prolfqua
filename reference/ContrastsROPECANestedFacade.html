@@ -237,7 +237,7 @@ subject_id strictly below the protein hierarchy).</p>
 <p>Columns not directly produced by ROPECA are derived heuristically:</p><ul><li><p><code>std.error = diff / statistic</code> (algebraic: t = estimate / SE)</p></li>
 <li><p><code>sigma = mad.estimate</code> (MAD of peptide fold changes)</p></li>
 <li><p><code>df = n_not_na</code> (number of contributing peptides)</p></li>
-<li><p><code>conf.low/conf.high</code> via <code>diff ± qt(0.975, df) * |std.error|</code></p></li>
+<li><p><code>conf.low/conf.high</code> via <code>diff +/- qt(0.975, df) * |std.error|</code></p></li>
 </ul><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>

@@ -66,6 +66,11 @@ Lmer (mixed-model) contrast analysis facade for nested input"></head><body>
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>.</p>
 <p>Takes child-hierarchy LFQData (e.g. peptide-level measurements nested
 within proteins) and returns protein-level fold-change estimates.</p>
+<p><code>modelstr</code> may be either a fixed-effects-only formula (e.g.
+<code>"~ group_"</code>) - in which case the facade appends
+<code>(1 | &lt;deepest child hierarchy key&gt;) + (1 | &lt;sample name&gt;)</code> derived
+from the LFQData - or a full mixed-model formula already containing random
+effects, which is passed through unchanged.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -214,7 +219,11 @@ within proteins) and returns protein-level fold-change estimates.</p>
 
 
 <dt><code>modelstr</code></dt>
-<dd><p>model formula string (e.g. "~ group_ + (1 | peptide_Id)")</p></dd>
+<dd><p>model formula RHS as string. Fixed effects only
+(e.g. "~ group_") - random effects are derived from <code>lfqdata</code>
+as <code>(1 | &lt;deepest child key&gt;) + (1 | &lt;sample name&gt;)</code>. A
+formula already containing random-effect bars is passed through
+unchanged.</p></dd>
 
 
 <dt><code>contrasts</code></dt>
@@ -315,11 +324,9 @@ within proteins) and returns protein-level fold-change estimates.</p>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">log2</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">lfq</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="va">ContrastsLmerNestedFacade</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">lfqdata</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"~ group_ + (1 | peptide_Id) + (1 | sampleName)"</span>,</span></span>
-<span class="r-in"><span>  <span class="va">contrasts</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Random effects derived from lfqdata; equivalent to passing the full</span></span></span>
+<span class="r-in"><span><span class="co"># mixed-model formula explicitly.</span></span></span>
+<span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="va">ContrastsLmerNestedFacade</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>

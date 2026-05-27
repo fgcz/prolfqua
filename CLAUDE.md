@@ -74,17 +74,24 @@ autoload is disabled.
 is the recommended entry point. Each method dispatches to a Facade class
 that wires strategy → model → contrasts → moderation internally.
 
-Facades split by input/output hierarchy shape:
+Facades split by input/output hierarchy shape.
+`lookup_facade(name)$needs` returns one of two values:
 
-**Aggregated input** (same-level, protein → protein FC;
-`subject_Id == hierarchy_keys`) — `R/ContrastsFacades.R`: `lm`, `rlm`,
-`lm_missing`, `lm_impute`, `limma`, `limma_impute`, `limma_voom`,
-`limma_voom_impute`, `deqms`, `deqms_voom`, `firth`, `limpa`
+**`needs = "same"`** — facade emits contrasts at the same hierarchy
+level as its input (protein → protein FC, or peptide/precursor →
+peptide/precursor FC; `subject_Id == hierarchy_keys`). Lives in
+`R/ContrastsFacades.R`: `lm`, `rlm`, `lm_missing`, `lm_impute`, `limma`,
+`limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`,
+`deqms_voom`, `firth`, `limpa`
 
-**Nested input** (child → parent, peptide/precursor → protein FC;
-`subject_Id` is strict subset of `hierarchy_keys`) —
+**`needs = "nested"`** — facade takes child-level input
+(peptide/precursor) and emits parent-level (protein) contrasts;
+`subject_Id` is a strict subset of `hierarchy_keys`. Lives in
 `R/ContrastsChildToParentFacades.R`: `lmer_nested`, `ropeca_nested`,
 `firth_nested`, `limpa_nested`
+
+Downstream dispatch convention: protein-level readers pair with `"same"`
+facades only; peptide-level readers pair with either.
 
 ### Weights & `nr_children`
 

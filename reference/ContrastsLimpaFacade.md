@@ -17,11 +17,22 @@ Encapsulates the pipeline:
 -\>
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md).
 
-Requires protein-level LFQData produced by
-[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
-which provides the standard error (`config$opt_se`) and observation
-count (`config$nr_children`) columns needed for limpa's vooma precision
-weighting and imputation-aware DF correction.
+Operates as a `"same"`-level facade: it consumes whatever aggregated
+LFQData prolfqua's normal aggregation pipeline produced and fits limpa
+at that hierarchy level. If `config$opt_se` is set (e.g. when the input
+came from
+[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)),
+the per-observation standard error is used as a vooma precision-weight
+predictor; otherwise plain vooma is fit. The `config$nr_children` column
+is required and is used to flag imputed observations
+(`nr_children == 0`) for vooma's imputation-aware DF correction.
+
+For nested (peptide/precursor) input that should be rolled up to
+proteins via limpa's DPC quantification, use
+[`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md)
+instead — that facade owns the
+[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)
+pre-step.
 
 ## See also
 
@@ -183,7 +194,10 @@ initialize
 
 - `lfqdata`:
 
-  LFQData from AggregateLimpa (must have config\$opt_se set)
+  aggregated LFQData. If `config$opt_se` is set (e.g. from
+  [`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)),
+  the SE column is used as a vooma precision-weight predictor; otherwise
+  vooma is fit without an external predictor.
 
 - `modelstr`:
 

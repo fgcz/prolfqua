@@ -63,10 +63,17 @@ Limpa contrast analysis facade"></head><body>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Encapsulates the pipeline: <code><a href="strategy_limpa.html">strategy_limpa</a></code> -&gt;
 <code><a href="build_model_limpa.html">build_model_limpa</a></code> -&gt; <code><a href="ContrastsLimma.html">ContrastsLimma</a></code>.</p>
-<p>Requires protein-level LFQData produced by <code><a href="AggregateLimpa.html">AggregateLimpa</a></code>,
-which provides the standard error (<code>config$opt_se</code>) and observation
-count (<code>config$nr_children</code>) columns needed for limpa's vooma
-precision weighting and imputation-aware DF correction.</p>
+<p>Operates as a <code>"same"</code>-level facade: it consumes whatever aggregated
+LFQData prolfqua's normal aggregation pipeline produced and fits limpa at
+that hierarchy level. If <code>config$opt_se</code> is set (e.g. when the input
+came from <code><a href="AggregateLimpa.html">AggregateLimpa</a></code>), the per-observation standard error
+is used as a vooma precision-weight predictor; otherwise plain vooma is
+fit. The <code>config$nr_children</code> column is required and is used to flag
+imputed observations (<code>nr_children == 0</code>) for vooma's
+imputation-aware DF correction.</p>
+<p>For nested (peptide/precursor) input that should be rolled up to proteins
+via limpa's DPC quantification, use <code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code>
+instead — that facade owns the <code><a href="AggregateLimpa.html">AggregateLimpa</a></code> pre-step.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -218,7 +225,10 @@ precision weighting and imputation-aware DF correction.</p>
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>lfqdata</code></dt>
-<dd><p>LFQData from AggregateLimpa (must have config$opt_se set)</p></dd>
+<dd><p>aggregated LFQData. If <code>config$opt_se</code> is set
+(e.g. from <code><a href="AggregateLimpa.html">AggregateLimpa</a></code>), the SE column is used as a
+vooma precision-weight predictor; otherwise vooma is fit without an
+external predictor.</p></dd>
 
 
 <dt><code>modelstr</code></dt>

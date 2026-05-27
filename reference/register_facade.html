@@ -91,9 +91,11 @@ the same dispatch path as the built-in facades.</p>
 
 
 <dt id="arg-needs">needs<a class="anchor" aria-label="anchor" href="#arg-needs"></a></dt>
-<dd><p>one of <code>"aggregated"</code>, <code>"nested"</code>,
-<code>"either"</code> (or a package-specific shape like
-<code>"aggregated_limpa"</code>).</p></dd>
+<dd><p>one of <code>"same"</code> (facade emits contrasts at the same
+hierarchy level as its input <em>e.g.</em> protein -&gt; protein FC,
+peptide -&gt; peptide FC) or <code>"nested"</code> (facade takes child-level
+input and emits parent-level contrasts, <em>e.g.</em>
+peptide -&gt; protein FC).</p></dd>
 
 
 <dt id="arg-package">package<a class="anchor" aria-label="anchor" href="#arg-package"></a></dt>
@@ -212,7 +214,7 @@ to consumers via <code><a href="lookup_facade.html">lookup_facade</a></code>.</p
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ContrastsLMFacade"</span>
 <span class="r-in"><span><span class="co"># downstream packages call this from .onLoad():</span></span></span>
 <span class="r-in"><span><span class="co"># prolfqua::register_facade("saint", class = "ContrastsSAINTFacade",</span></span></span>
-<span class="r-in"><span><span class="co">#                           needs = "aggregated", package = "prolfquasaint",</span></span></span>
+<span class="r-in"><span><span class="co">#                           needs = "same", package = "prolfquasaint",</span></span></span>
 <span class="r-in"><span><span class="co">#                           needs_saint_annotation = TRUE)</span></span></span>
 </code></pre></div>
     </div>

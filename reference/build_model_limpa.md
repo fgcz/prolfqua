@@ -20,9 +20,12 @@ build_model_limpa(lfqdata, strategy, model_name = strategy$model_name)
 - lfqdata:
 
   [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md)
-  object from
-  [`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md).
-  Must have `config$opt_se` and `config$nr_children` set.
+  object. Must have `config$nr_children` set (used to flag imputed
+  observations via `nr_children == 0`). `config$opt_se` is optional:
+  when set (e.g. from
+  [`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)),
+  the SE column is used as a vooma precision-weight predictor; otherwise
+  vooma is fit without an external predictor.
 
 - strategy:
 

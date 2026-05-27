@@ -33,8 +33,10 @@ register_facade(
 
 - needs:
 
-  one of `"aggregated"`, `"nested"`, `"either"` (or a package-specific
-  shape like `"aggregated_limpa"`).
+  one of `"same"` (facade emits contrasts at the same hierarchy level as
+  its input *e.g.* protein -\> protein FC, peptide -\> peptide FC) or
+  `"nested"` (facade takes child-level input and emits parent-level
+  contrasts, *e.g.* peptide -\> protein FC).
 
 - package:
 
@@ -151,6 +153,6 @@ lookup_facade("lm")$class
 #> [1] "ContrastsLMFacade"
 # downstream packages call this from .onLoad():
 # prolfqua::register_facade("saint", class = "ContrastsSAINTFacade",
-#                           needs = "aggregated", package = "prolfquasaint",
+#                           needs = "same", package = "prolfquasaint",
 #                           needs_saint_annotation = TRUE)
 ```

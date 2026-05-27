@@ -22,6 +22,12 @@ Encapsulates the pipeline:
 Takes child-hierarchy LFQData (e.g. peptide-level measurements nested
 within proteins) and returns protein-level fold-change estimates.
 
+`modelstr` may be either a fixed-effects-only formula (e.g.
+`"~ group_"`) - in which case the facade appends
+`(1 | <deepest child hierarchy key>) + (1 | <sample name>)` derived from
+the LFQData - or a full mixed-model formula already containing random
+effects, which is passed through unchanged.
+
 ## See also
 
 Other modelling:
@@ -179,7 +185,10 @@ initialize
 
 - `modelstr`:
 
-  model formula string (e.g. "~ group\_ + (1 \| peptide_Id)")
+  model formula RHS as string. Fixed effects only (e.g. "~ group\_") -
+  random effects are derived from `lfqdata` as
+  `(1 | <deepest child key>) + (1 | <sample name>)`. A formula already
+  containing random-effect bars is passed through unchanged.
 
 - `contrasts`:
 
@@ -276,11 +285,9 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-fa <- ContrastsLmerNestedFacade$new(
-  lfqdata,
-  "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
-  contrasts
-)
+# Random effects derived from lfqdata; equivalent to passing the full
+# mixed-model formula explicitly.
+fa <- ContrastsLmerNestedFacade$new(lfqdata, "~ group_", contrasts)
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
