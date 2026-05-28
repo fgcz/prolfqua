@@ -598,6 +598,79 @@ ContrastsRLMFacade <- R6::R6Class(
 )
 
 
+#' Rfit rank-based regression contrast analysis facade
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_rfit}} ->
+#' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
+#' \code{\link{ContrastsModerated}}, using \code{\link[Rfit]{rfit}} rank-based
+#' linear regression. Output is the standard Wald contrast schema; the
+#' empirical-Bayes moderation shrinks the rank-based scale across proteins.
+#'
+#' Unlike \code{\link{ContrastsLMFacade}} this backend takes no observation
+#' weights (\code{rfit} has no \code{weights} argument), so \code{nr_children}
+#' weighting is not applied.
+#'
+#' @return An R6 class generator.
+#' @export
+#' @family modelling
+#' @examples
+#' if (requireNamespace("Rfit", quietly = TRUE)) {
+#'   istar <- sim_lfq_data_protein_config()
+#'   lfqdata <- LFQData$new(istar$data, istar$config)
+#'   lfqdata$rename_response("transformedIntensity")
+#'   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#'   fa <- ContrastsRfitFacade$new(lfqdata, "~ group_", contrasts)
+#'   head(fa$get_contrasts())
+#'   fa$to_wide()
+#' }
+ContrastsRfitFacade <- R6::R6Class(
+  "ContrastsRfitFacade",
+  inherit = ContrastsInterface,
+  public = list(
+    #' @field model Model object
+    model = NULL,
+    #' @field contrast ContrastsModerated object
+    contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param ... passed to \code{\link{strategy_rfit}}
+    initialize = function(lfqdata, modelstr, contrasts, ...) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsRfitFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      response <- lfqdata$response()
+      full_formula <- paste(response, modelstr)
+      strat <- strategy_rfit(full_formula, ...)
+      self$model <- build_model(lfqdata, strat)
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$config <- self$contrast$get_config()
+    },
+    #' @description get contrast results
+    #' @param ... passed to ContrastsModerated$get_contrasts
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "rfit")
+    },
+    #' @description get protein × contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsModerated$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsModerated$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
 #'
 #' LM + missing-value imputation contrast analysis facade
 #'
@@ -1027,6 +1100,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     limpa = list(class = "ContrastsLimpaFacade", needs = "same"),
     limpa_nested = list(class = "ContrastsLimpaNestedFacade", needs = "nested"),
     rlm = list(class = "ContrastsRLMFacade", needs = "same"),
+    rfit = list(class = "ContrastsRfitFacade", needs = "same"),
     deqms = list(class = "ContrastsDEqMSFacade", needs = "same"),
     deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "same"),
     firth = list(class = "ContrastsFirthFacade", needs = "same"),
@@ -1175,6 +1249,7 @@ FACADE_REGISTRY <- structure(
     limpa = .builtin_facade_entry("ContrastsLimpaFacade", "same"),
     limpa_nested = .builtin_facade_entry("ContrastsLimpaNestedFacade", "nested"),
     rlm = .builtin_facade_entry("ContrastsRLMFacade", "same"),
+    rfit = .builtin_facade_entry("ContrastsRfitFacade", "same"),
     deqms = .builtin_facade_entry("ContrastsDEqMSFacade", "same"),
     deqms_voom = .builtin_facade_entry("ContrastsDEqMSVoomFacade", "same"),
     firth = .builtin_facade_entry("ContrastsFirthFacade", "same"),

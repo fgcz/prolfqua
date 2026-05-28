@@ -23,22 +23,24 @@ library(ggplot2)
 `build_contrast_analysis()` provides a common front-end for several contrast
 backends:
 
-- `lm`
-- `limma`
-- `limma_impute`
-- `limpa` (requires `AggregateLimpa` for DPC-based aggregation with standard errors)
-- `lmer`
-- `ropeca`
-- `lm_missing`
-- `lm_impute`
-- `deqms`
-- `firth`
+- `lm` — ordinary least-squares linear model fitted per protein, Wald contrasts.
+- `rfit` — rank-based robust regression (`Rfit::rfit`); like `lm` but resistant to outliers in the response.
+- `limma` — linear model with empirical-Bayes moderated variance shrinkage across proteins.
+- `limma_impute` — `limma` with LOD imputation and borrowed per-protein variance for groups with no observations.
+- `limpa` — vooma precision-weighted model on DPC-aggregated proteins (requires `AggregateLimpa` for DPC-based aggregation with standard errors).
+- `lmer` — linear mixed-effects model on nested peptide/precursor data, reporting protein-level contrasts.
+- `ropeca` — peptide-level fold changes aggregated to protein via ROPECA median + beta-distribution p-values.
+- `lm_missing` — `lm` merged with group-mean substitution for proteins `lm` cannot estimate (deprecated; prefer `lm_impute`).
+- `lm_impute` — `lm` that refits failed/singular proteins with LOD imputation and borrowed variance.
+- `deqms` — `limma` plus DEqMS count-dependent variance moderation using peptide counts per protein.
+- `firth` — Firth bias-reduced logistic regression on presence/absence (missingness) of aggregated proteins.
+- `firth_nested` — Firth logistic regression on peptide-level missingness, reporting protein-level contrasts.
 
 All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. All examples below return protein-level
 contrasts. The important difference is the required input level:
 
-- `lm`, `limma`, `limma_impute`, `lm_missing`, `lm_impute`, and `deqms` require aggregated protein-level data
+- `lm`, `rfit`, `limma`, `limma_impute`, `lm_missing`, `lm_impute`, and `deqms` require aggregated protein-level data
 - `limpa` requires protein-level data from `AggregateLimpa` (which provides standard errors and observation counts for vooma precision weighting)
 - `lmer` and `ropeca` require lower-level measurements such as peptides nested
   within proteins, but still report protein-level contrasts
@@ -96,6 +98,13 @@ fa_lm <- build_contrast_analysis(
   "~ group_",
   contrasts,
   method = "lm"
+)
+
+fa_rfit <- build_contrast_analysis(
+  lfq_protein,
+  "~ group_",
+  contrasts,
+  method = "rfit"
 )
 
 fa_limma <- build_contrast_analysis(
@@ -177,6 +186,7 @@ results_limpa <- if (requireNamespace("limpa", quietly = TRUE)) {
 
 results_protein <- bind_rows(
   fa_lm$get_contrasts(),
+  fa_rfit$get_contrasts(),
   fa_limma$get_contrasts(),
   fa_limma_impute$get_contrasts(),
   fa_lm_missing$get_contrasts(),
@@ -213,8 +223,8 @@ results_protein |>
 
 ## Standard facades
 
-```{r volcano_standard, fig.height=8, fig.width=12, fig.cap="Volcano plots for the standard protein-level facades (lm, limma, rlm-based)."}
-standard_facades <- c("lm", "limma", "deqms")
+```{r volcano_standard, fig.height=8, fig.width=12, fig.cap="Volcano plots for the standard protein-level facades (lm, rfit, limma, deqms)."}
+standard_facades <- c("lm", "rfit", "limma", "deqms")
 results_standard <- results_protein |>
   dplyr::filter(facade %in% standard_facades)
 

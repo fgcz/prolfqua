@@ -42,6 +42,7 @@ Other modelling:
 \code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECANestedFacade}},
+\code{\link{ContrastsRfitFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
@@ -54,6 +55,7 @@ Other modelling:
 \code{\link{StrategyLmer}},
 \code{\link{StrategyLogistf}},
 \code{\link{StrategyRLM}},
+\code{\link{StrategyRfit}},
 \code{\link{build_contrast_analysis}()},
 \code{\link{build_model}()},
 \code{\link{build_model_glm_peptide}()},
@@ -70,6 +72,7 @@ Other modelling:
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
 \code{\link{contrasts_fisher_exact}()},
+\code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_p_values_pbeta}()},
@@ -92,6 +95,7 @@ Other modelling:
 \code{\link{new_lm_imputed}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{register_facade}()},
+\code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
 \code{\link{sim_build_models_lmer}()},
 \code{\link{sim_build_models_logistf}()},
@@ -101,7 +105,8 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()}
+\code{\link{unregister_facade}()},
+\code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
 \keyword{internal}

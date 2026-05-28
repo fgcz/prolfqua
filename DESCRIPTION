@@ -69,6 +69,7 @@ Suggests:
     pkgdown,
     preprocessCore,
     rcmdcheck,
+    Rfit,
     rmarkdown,
     roxygen2,
     S4Vectors,
