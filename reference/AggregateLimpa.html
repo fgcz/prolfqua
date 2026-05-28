@@ -264,6 +264,7 @@ aggregation using <code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" cl
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">agg</span> <span class="op">&lt;-</span> <span class="va">AggregateLimpa</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"protein"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">agg</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
 <span class="r-in"><span><span class="va">agg</span><span class="op">$</span><span class="va">lfq_agg</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 14</span></span>
@@ -283,19 +284,21 @@ aggregation using <code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" cl
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Ctrl_V4 &lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $annotation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName  sample group_ isotopeLabel</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        A_V1    A_V1      A        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        A_V2    A_V2      A        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        A_V3    A_V3      A        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        A_V4    A_V4      A        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        B_V1    B_V1      B        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        B_V2    B_V2      B        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        B_V3    B_V3      B        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        B_V4    B_V4      B        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     Ctrl_V1 Ctrl_V1   Ctrl        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    Ctrl_V2 Ctrl_V2   Ctrl        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    Ctrl_V3 Ctrl_V3   Ctrl        light</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12    Ctrl_V4 Ctrl_V4   Ctrl        light</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 12 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sampleName sample  group_ isotopeLabel</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A_V1       A_V1    A      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A_V2       A_V2    A      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A_V3       A_V3    A      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A_V4       A_V4    A      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> B_V1       B_V1    B      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> B_V2       B_V2    B      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> B_V3       B_V3    B      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> B_V4       B_V4    B      light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Ctrl_V1    Ctrl_V1 Ctrl   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Ctrl_V2    Ctrl_V2 Ctrl   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Ctrl_V3    Ctrl_V3 Ctrl   light       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Ctrl_V4    Ctrl_V4 Ctrl   light       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rowdata</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 2</span></span>

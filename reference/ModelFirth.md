@@ -36,6 +36,7 @@ Other modelling:
 [`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
+[`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
@@ -47,6 +48,7 @@ Other modelling:
 [`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
 [`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md),
 [`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
+[`StrategyRfit`](https://wolski.github.io/prolfqua/reference/StrategyRfit.md),
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
 [`build_model_glm_peptide()`](https://wolski.github.io/prolfqua/reference/build_model_glm_peptide.md),
@@ -63,6 +65,7 @@ Other modelling:
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
+[`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
@@ -86,6 +89,7 @@ Other modelling:
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
+[`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
 [`sim_build_models_lmer()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.md),
 [`sim_build_models_logistf()`](https://wolski.github.io/prolfqua/reference/sim_build_models_logistf.md),
@@ -95,7 +99,8 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
+[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
+[`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
 
@@ -371,9 +376,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpI54Crx/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpI54Crx/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpI54Crx/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpsHdiNy/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpsHdiNy/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpsHdiNy/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -387,8 +392,8 @@ mod$write_coef_figures(tempdir())
 #>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_1bdeec3d5f2 
-#>                      2 
+#> agg_record_1bba6962e486 
+#>                       2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -444,9 +449,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpI54Crx/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpI54Crx/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpI54Crx/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpsHdiNy/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpsHdiNy/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpsHdiNy/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -460,6 +465,6 @@ mod$write_coef_figures(tempdir())
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
 #>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
 #> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
-#> agg_record_1bdeec3d5f2 
-#>                      2 
+#> agg_record_1bba6962e486 
+#>                       2 
 ```

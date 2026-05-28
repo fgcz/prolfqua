@@ -87,6 +87,7 @@ R6 class representing modelling result"></head><body>
 <code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>,
+<code><a href="ContrastsRfitFacade.html">ContrastsRfitFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test()</a></code>,
@@ -98,6 +99,7 @@ R6 class representing modelling result"></head><body>
 <code><a href="StrategyLmer.html">StrategyLmer</a></code>,
 <code><a href="StrategyLogistf.html">StrategyLogistf</a></code>,
 <code><a href="StrategyRLM.html">StrategyRLM</a></code>,
+<code><a href="StrategyRfit.html">StrategyRfit</a></code>,
 <code><a href="build_contrast_analysis.html">build_contrast_analysis()</a></code>,
 <code><a href="build_model.html">build_model()</a></code>,
 <code><a href="build_model_glm_peptide.html">build_model_glm_peptide()</a></code>,
@@ -114,6 +116,7 @@ R6 class representing modelling result"></head><body>
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
 <code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
+<code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
 <code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
@@ -137,6 +140,7 @@ R6 class representing modelling result"></head><body>
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
+<code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
 <code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
 <code><a href="sim_build_models_logistf.html">sim_build_models_logistf()</a></code>,
@@ -146,7 +150,8 @@ R6 class representing modelling result"></head><body>
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code></p></div>
+<code><a href="unregister_facade.html">unregister_facade()</a></code>,
+<code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
@@ -409,9 +414,9 @@ R6 class representing modelling result"></head><body>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>not implemented</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">write_coef_figures</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpI54Crx/Coef_Histogram_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpI54Crx/Coef_volcano_plot_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpI54Crx/Coef_Pairsplot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsHdiNy/Coef_Histogram_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsHdiNy/Coef_volcano_plot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsHdiNy/Coef_Pairsplot_modelFirth.pdf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -425,8 +430,8 @@ R6 class representing modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> XYrp6h~5793       2.20    -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> quTD7H~4566       0.847    1.35<span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231       0.847    1.35<span style="color: #949494;">e</span>+ 0   1.35<span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_1bdeec3d5f2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_1bba6962e486 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       2 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
@@ -482,9 +487,9 @@ R6 class representing modelling result"></head><body>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>not implemented</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">write_coef_figures</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpI54Crx/Coef_Histogram_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpI54Crx/Coef_volcano_plot_modelFirth.pdf</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpI54Crx/Coef_Pairsplot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsHdiNy/Coef_Histogram_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsHdiNy/Coef_volcano_plot_modelFirth.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Writing figure into : /tmp/RtmpsHdiNy/Coef_Pairsplot_modelFirth.pdf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -498,8 +503,8 @@ R6 class representing modelling result"></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> quTD7H~4566         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> tCZCHm~6695         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0   4.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231         0.847  1.35<span style="color: #949494;">e</span>+ 0   1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_1bdeec3d5f2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> agg_record_1bba6962e486 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       2 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

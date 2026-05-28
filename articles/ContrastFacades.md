@@ -5,25 +5,40 @@
 [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
 provides a common front-end for several contrast backends:
 
-- `lm`
-- `limma`
-- `limma_impute`
-- `limpa` (requires `AggregateLimpa` for DPC-based aggregation with
-  standard errors)
-- `lmer`
-- `ropeca`
-- `lm_missing`
-- `lm_impute`
-- `deqms`
-- `firth`
+- `lm` — ordinary least-squares linear model fitted per protein, Wald
+  contrasts.
+- `rfit` — rank-based robust regression
+  ([`Rfit::rfit`](https://rdrr.io/pkg/Rfit/man/rfit.html)); like `lm`
+  but resistant to outliers in the response.
+- `limma` — linear model with empirical-Bayes moderated variance
+  shrinkage across proteins.
+- `limma_impute` — `limma` with LOD imputation and borrowed per-protein
+  variance for groups with no observations.
+- `limpa` — vooma precision-weighted model on DPC-aggregated proteins
+  (requires `AggregateLimpa` for DPC-based aggregation with standard
+  errors).
+- `lmer` — linear mixed-effects model on nested peptide/precursor data,
+  reporting protein-level contrasts.
+- `ropeca` — peptide-level fold changes aggregated to protein via ROPECA
+  median + beta-distribution p-values.
+- `lm_missing` — `lm` merged with group-mean substitution for proteins
+  `lm` cannot estimate (deprecated; prefer `lm_impute`).
+- `lm_impute` — `lm` that refits failed/singular proteins with LOD
+  imputation and borrowed variance.
+- `deqms` — `limma` plus DEqMS count-dependent variance moderation using
+  peptide counts per protein.
+- `firth` — Firth bias-reduced logistic regression on presence/absence
+  (missingness) of aggregated proteins.
+- `firth_nested` — Firth logistic regression on peptide-level
+  missingness, reporting protein-level contrasts.
 
 All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. All examples below return
 protein-level contrasts. The important difference is the required input
 level:
 
-- `lm`, `limma`, `limma_impute`, `lm_missing`, `lm_impute`, and `deqms`
-  require aggregated protein-level data
+- `lm`, `rfit`, `limma`, `limma_impute`, `lm_missing`, `lm_impute`, and
+  `deqms` require aggregated protein-level data
 - `limpa` requires protein-level data from `AggregateLimpa` (which
   provides standard errors and observation counts for vooma precision
   weighting)
@@ -96,6 +111,13 @@ fa_lm <- build_contrast_analysis(
   "~ group_",
   contrasts,
   method = "lm"
+)
+
+fa_rfit <- build_contrast_analysis(
+  lfq_protein,
+  "~ group_",
+  contrasts,
+  method = "rfit"
 )
 
 fa_limma <- build_contrast_analysis(
@@ -177,6 +199,7 @@ results_limpa <- if (requireNamespace("limpa", quietly = TRUE)) {
 
 results_protein <- bind_rows(
   fa_lm$get_contrasts(),
+  fa_rfit$get_contrasts(),
   fa_limma$get_contrasts(),
   fa_limma_impute$get_contrasts(),
   fa_lm_missing$get_contrasts(),
@@ -200,17 +223,18 @@ results_protein |>
   dplyr::count(facade, name = "n_results")
 ```
 
-    ## # A tibble: 8 × 2
+    ## # A tibble: 9 × 2
     ##   facade       n_results
     ##   <chr>            <int>
     ## 1 deqms              157
-    ## 2 firth              157
+    ## 2 firth              160
     ## 3 limma              155
     ## 4 limma_impute       160
     ## 5 limpa              160
     ## 6 lm                 157
     ## 7 lm_impute          160
     ## 8 lm_missing         160
+    ## 9 rfit               157
 
 For facades that combine several underlying result types, such as
 `lm_missing`, the `modelName` column still tells you where individual
@@ -221,27 +245,27 @@ results_protein |>
   dplyr::count(facade, contrast, modelName, name = "n_results")
 ```
 
-    ## # A tibble: 22 × 4
+    ## # A tibble: 24 × 4
     ##    facade       contrast  modelName      n_results
     ##    <chr>        <chr>     <chr>              <int>
     ##  1 deqms        A_vs_Ctrl WaldTest_DEqMS        78
     ##  2 deqms        B_vs_Ctrl WaldTest_DEqMS        79
-    ##  3 firth        A_vs_Ctrl WaldTestFirth         78
-    ##  4 firth        B_vs_Ctrl WaldTestFirth         79
+    ##  3 firth        A_vs_Ctrl WaldTestFirth         80
+    ##  4 firth        B_vs_Ctrl WaldTestFirth         80
     ##  5 limma        A_vs_Ctrl limma                 78
     ##  6 limma        B_vs_Ctrl limma                 77
     ##  7 limma_impute A_vs_Ctrl limma                 77
     ##  8 limma_impute A_vs_Ctrl limma_imputed          3
     ##  9 limma_impute B_vs_Ctrl limma                 77
     ## 10 limma_impute B_vs_Ctrl limma_imputed          3
-    ## # ℹ 12 more rows
+    ## # ℹ 14 more rows
 
 ## Protein-level volcano comparison
 
 ### Standard facades
 
 ``` r
-standard_facades <- c("lm", "limma", "deqms")
+standard_facades <- c("lm", "rfit", "limma", "deqms")
 results_standard <- results_protein |>
   dplyr::filter(facade %in% standard_facades)
 
@@ -255,11 +279,11 @@ ggplot(results_standard, aes(x = diff, y = -log10(p.value), color = significant)
   theme_minimal(base_size = 12)
 ```
 
-![Volcano plots for the standard protein-level facades (lm, limma,
-rlm-based).](ContrastFacades_files/figure-html/volcano_standard-1.png)
+![Volcano plots for the standard protein-level facades (lm, rfit, limma,
+deqms).](ContrastFacades_files/figure-html/volcano_standard-1.png)
 
-Volcano plots for the standard protein-level facades (lm, limma,
-rlm-based).
+Volcano plots for the standard protein-level facades (lm, rfit, limma,
+deqms).
 
 ### Imputation and missingness facades
 
@@ -304,7 +328,7 @@ results_protein |>
   dplyr::select(facade, contrast, modelName, protein_Id, diff, p.value, FDR)
 ```
 
-    ## # A tibble: 80 × 7
+    ## # A tibble: 90 × 7
     ##    facade contrast  modelName      protein_Id    diff  p.value      FDR
     ##    <chr>  <chr>     <chr>          <chr>        <dbl>    <dbl>    <dbl>
     ##  1 deqms  A_vs_Ctrl WaldTest_DEqMS Zci7Jw~7064 -0.722 3.79e-12 2.96e-10
@@ -317,7 +341,7 @@ results_protein |>
     ##  8 deqms  B_vs_Ctrl WaldTest_DEqMS f0Cvvj~6658  0.345 5.39e-10 1.42e- 8
     ##  9 deqms  B_vs_Ctrl WaldTest_DEqMS TR3Ksv~1492 -0.413 3.73e- 9 7.37e- 8
     ## 10 deqms  B_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.424 8.16e- 9 1.29e- 7
-    ## # ℹ 70 more rows
+    ## # ℹ 80 more rows
 
 ## Proteins that could not be estimated
 
@@ -353,8 +377,6 @@ missing_all |>
 |:-------|:----------|----------:|
 | deqms  | A_vs_Ctrl |         2 |
 | deqms  | B_vs_Ctrl |         1 |
-| firth  | A_vs_Ctrl |         2 |
-| firth  | B_vs_Ctrl |         1 |
 | limma  | A_vs_Ctrl |         2 |
 | limma  | B_vs_Ctrl |         3 |
 | lm     | A_vs_Ctrl |         2 |
@@ -378,11 +400,11 @@ if (length(missing_proteins) > 0) {
 }
 ```
 
-| protein_Id  | B_V1 | B_V4 | Ctrl_V3 | Ctrl_V4 | B_V2 | B_V3 | Ctrl_V2 | A_V4 | Ctrl_V1 |
-|:------------|-----:|-----:|--------:|--------:|-----:|-----:|--------:|-----:|--------:|
-| 8mS8sK~0150 | 3.85 | 3.76 |    3.37 |    3.55 |   NA |   NA |      NA |   NA |      NA |
-| DTCi0N~0734 |   NA | 4.28 |    4.07 |    4.21 | 4.37 | 4.35 |    4.06 |   NA |      NA |
-| OrL0ux~1369 |   NA |   NA |      NA |    3.98 |   NA |   NA |    4.05 | 3.78 |    4.12 |
+| protein_Id  | A_V1 | A_V2 | A_V3 | A_V4 | B_V1 | B_V2 | B_V3 | B_V4 | Ctrl_V1 | Ctrl_V2 | Ctrl_V3 | Ctrl_V4 |
+|:------------|-----:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|--------:|--------:|--------:|--------:|
+| 8mS8sK~0150 |   NA |   NA |   NA |   NA | 3.85 |   NA |   NA | 3.76 |      NA |      NA |    3.37 |    3.55 |
+| DTCi0N~0734 |   NA |   NA |   NA |   NA |   NA | 4.37 | 4.35 | 4.28 |      NA |    4.06 |    4.07 |    4.21 |
+| OrL0ux~1369 |   NA |   NA |   NA | 3.78 |   NA |   NA |   NA |   NA |    4.12 |    4.05 |      NA |    3.98 |
 
 Per-sample intensities of proteins that could not be estimated
 
@@ -425,7 +447,7 @@ if (length(lm_missing_proteins) > 0) {
 | limma_impute | limma_imputed              | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
 | limpa        | limpa                      | 8mS8sK~0150 | A_vs_Ctrl |  2.798 | -0.615 | 0.226 |    -1.435 |     0.429 | 30.965 |   0.161 |   -1.489 |     0.259 | 0.965 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.065 |  4.310 |   1.000 |   -0.234 |     0.234 | 0.087 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | 8mS8sK~0150 | A_vs_Ctrl |     NA |     NA |    NA |        NA |     0.102 |  2.000 |      NA |       NA |        NA | 0.102 | TRUE    | NA          |
+| lm_missing   | groupAverage               | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 |  2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | TRUE    | FALSE       |
 | limma_impute | limma_imputed              | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
 | limpa        | limpa                      | 8mS8sK~0150 | B_vs_Ctrl |  3.245 |  0.279 | 0.578 |     0.662 |     0.422 | 30.965 |   0.513 |   -0.581 |     1.140 | 0.965 | FALSE   | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.798 |     0.286 |     0.065 |  4.310 |   0.788 |   -0.217 |     0.252 | 0.087 | FALSE   | FALSE       |
@@ -433,7 +455,7 @@ if (length(lm_missing_proteins) > 0) {
 | limma_impute | limma_imputed              | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.996 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
 | limpa        | limpa                      | DTCi0N~0734 | A_vs_Ctrl |  3.550 | -0.982 | 0.020 |    -2.714 |     0.362 | 30.965 |   0.011 |   -1.719 |    -0.244 | 0.991 | TRUE    | TRUE        |
 | lm_impute    | WaldTest_moderated_imputed | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -4.057 |     0.065 |  6.310 |   0.006 |   -0.467 |    -0.040 | 0.088 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | DTCi0N~0734 | A_vs_Ctrl |     NA |     NA |    NA |        NA |     0.057 |  4.000 |      NA |       NA |        NA | 0.070 | TRUE    | NA          |
+| lm_missing   | groupAverage               | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 |  4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | TRUE    | FALSE       |
 | limma_impute | limma_imputed              | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
 | limpa        | limpa                      | DTCi0N~0734 | B_vs_Ctrl |  4.145 |  0.208 | 0.619 |     0.581 |     0.358 | 30.965 |   0.565 |   -0.522 |     0.939 | 0.991 | FALSE   | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.049 |     2.665 |     0.065 |  6.310 |   0.035 |   -0.047 |     0.380 | 0.088 | FALSE   | FALSE       |
@@ -445,7 +467,7 @@ if (length(lm_missing_proteins) > 0) {
 | limma_impute | limma_imputed              | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
 | limpa        | limpa                      | OrL0ux~1369 | B_vs_Ctrl |  3.297 | -1.281 | 0.006 |    -3.200 |     0.400 | 30.965 |   0.003 |   -2.097 |    -0.464 | 0.960 | TRUE    | TRUE        |
 | lm_impute    | WaldTest_moderated_imputed | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.036 |    -3.369 |     0.065 |  4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | OrL0ux~1369 | B_vs_Ctrl |     NA |     NA |    NA |        NA |     0.060 |  2.000 |      NA |       NA |        NA | 0.073 | TRUE    | NA          |
+| lm_missing   | groupAverage               | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 |  2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | TRUE    | FALSE       |
 
 Contrast estimates from lm_missing, lm_impute, and limma_impute for
 proteins that plain lm could not estimate
@@ -588,33 +610,33 @@ sessionInfo()
     ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      farver_2.1.2          
     ##  [4] S7_0.2.2               fastmap_1.2.0          lazyeval_0.2.3        
     ##  [7] digest_0.6.39          rpart_4.1.24           lifecycle_1.0.5       
-    ## [10] survival_3.8-3         statmod_1.5.2          magrittr_2.0.5        
-    ## [13] compiler_4.5.2         progress_1.2.3         rlang_1.2.0           
-    ## [16] sass_0.4.10            tools_4.5.2            utf8_1.2.6            
-    ## [19] yaml_2.3.12            data.table_1.18.4      limpa_1.2.5           
-    ## [22] knitr_1.51             labeling_0.4.3         prettyunits_1.2.0     
-    ## [25] htmlwidgets_1.6.4      plyr_1.8.9             RColorBrewer_1.1-3    
-    ## [28] numDeriv_2016.8-1.1    withr_3.0.2            purrr_1.2.2           
-    ## [31] desc_1.4.3             nnet_7.3-20            grid_4.5.2            
-    ## [34] jomo_2.7-6             mice_3.19.0            scales_1.4.0          
-    ## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
-    ## [40] crayon_1.5.3           UpSetR_1.4.1           rmarkdown_2.31        
-    ## [43] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
-    ## [46] otel_0.2.0             httr_1.4.8             minqa_1.2.8           
-    ## [49] cachem_1.1.0           operator.tools_1.6.3.1 splines_4.5.2         
-    ## [52] vctrs_0.7.3            boot_1.3-32            glmnet_5.0            
-    ## [55] Matrix_1.7-4           jsonlite_2.0.0         hms_1.1.4             
-    ## [58] mitml_0.4-5            ggrepel_0.9.8          systemfonts_1.3.2     
-    ## [61] foreach_1.5.2          limma_3.66.0           plotly_4.12.0         
-    ## [64] tidyr_1.3.2            jquerylib_0.1.4        glue_1.8.1            
-    ## [67] pkgdown_2.2.0          nloptr_2.2.1           pan_1.9               
-    ## [70] codetools_0.2-20       stringi_1.8.7          shape_1.4.6.1         
-    ## [73] gtable_0.3.6           lmerTest_3.2-1         lme4_2.0-1            
-    ## [76] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       
-    ## [79] R6_2.6.1               textshaping_1.0.5      Rdpack_2.6.6          
-    ## [82] formula.tools_1.7.1    evaluate_1.0.5         lattice_0.22-7        
-    ## [85] rbibutils_2.4.1        backports_1.5.1        pheatmap_1.0.13       
-    ## [88] broom_1.0.13           bslib_0.11.0           Rcpp_1.1.1-1.1        
-    ## [91] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
-    ## [94] logistf_1.26.1         xfun_0.57              fs_2.1.0              
-    ## [97] forcats_1.0.1          pkgconfig_2.0.3
+    ## [10] Rfit_0.27.0            survival_3.8-3         statmod_1.5.2         
+    ## [13] magrittr_2.0.5         compiler_4.5.2         progress_1.2.3        
+    ## [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           
+    ## [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.4     
+    ## [22] limpa_1.2.5            knitr_1.51             labeling_0.4.3        
+    ## [25] prettyunits_1.2.0      htmlwidgets_1.6.4      plyr_1.8.9            
+    ## [28] RColorBrewer_1.1-3     numDeriv_2016.8-1.1    withr_3.0.2           
+    ## [31] purrr_1.2.2            desc_1.4.3             nnet_7.3-20           
+    ## [34] grid_4.5.2             jomo_2.7-6             mice_3.19.0           
+    ## [37] scales_1.4.0           iterators_1.0.14       MASS_7.3-65           
+    ## [40] cli_3.6.6              crayon_1.5.3           UpSetR_1.4.1          
+    ## [43] rmarkdown_2.31         ragg_1.5.2             reformulas_0.4.4      
+    ## [46] generics_0.1.4         otel_0.2.0             httr_1.4.8            
+    ## [49] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
+    ## [52] splines_4.5.2          vctrs_0.7.3            boot_1.3-32           
+    ## [55] glmnet_5.0             Matrix_1.7-4           jsonlite_2.0.0        
+    ## [58] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         
+    ## [61] systemfonts_1.3.2      foreach_1.5.2          limma_3.66.0          
+    ## [64] plotly_4.12.0          tidyr_1.3.2            jquerylib_0.1.4       
+    ## [67] glue_1.8.1             pkgdown_2.2.0          nloptr_2.2.1          
+    ## [70] pan_1.9                codetools_0.2-20       stringi_1.8.7         
+    ## [73] shape_1.4.6.1          gtable_0.3.6           lmerTest_3.2-1        
+    ## [76] lme4_2.0-1             tibble_3.3.1           pillar_1.11.1         
+    ## [79] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     
+    ## [82] Rdpack_2.6.6           formula.tools_1.7.1    evaluate_1.0.5        
+    ## [85] lattice_0.22-7         rbibutils_2.4.1        backports_1.5.1       
+    ## [88] pheatmap_1.0.13        broom_1.0.13           bslib_0.11.0          
+    ## [91] Rcpp_1.1.1-1.1         gridExtra_2.3          nlme_3.1-168          
+    ## [94] mgcv_1.9-3             logistf_1.26.1         xfun_0.57             
+    ## [97] fs_2.1.0               forcats_1.0.1          pkgconfig_2.0.3

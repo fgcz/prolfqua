@@ -32,8 +32,8 @@ lfqdata$data_wide()$data[1:3,1:8]
     ##   protein_Id  peptide_Id isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1
     ##   <chr>       <chr>      <chr>        <dbl> <dbl> <dbl> <dbl> <dbl>
     ## 1 0EfVhX~0087 ahQLlQY7   light         26.9  25.2  26.1  25.2  26.1
-    ## 2 0EfVhX~0087 ITLb4x1q   light         19.4  NA    18.2  18.9  28.9
-    ## 3 7cbcrd~5725 D5dQ4nKk   light         30.4  30.4  29.6  27.8  NA
+    ## 2 0EfVhX~0087 dJkdz7so   light         NA    16.1  14.7  NA    25.7
+    ## 3 0EfVhX~0087 ITLb4x1q   light         19.4  NA    18.2  18.9  28.9
 
 ### Visualization of not normalized data
 
@@ -361,12 +361,12 @@ stats$stats() |> head()
     ## # A tibble: 6 × 12
     ##   protein_Id  peptide_Id isotopeLabel group_ nrReplicates nrMeasured nrNAs
     ##   <chr>       <chr>      <chr>        <chr>         <int>      <int> <int>
-    ## 1 0EfVhX~0087 ITLb4x1q   light        A                 3          3     0
+    ## 1 0EfVhX~0087 ITLb4x1q   light        A                 4          3     1
     ## 2 0EfVhX~0087 ahQLlQY7   light        A                 4          4     0
-    ## 3 0EfVhX~0087 dJkdz7so   light        A                 2          2     0
+    ## 3 0EfVhX~0087 dJkdz7so   light        A                 4          2     2
     ## 4 7cbcrd~5725 D5dQ4nKk   light        A                 4          4     0
     ## 5 9VUkAq~4703 eIC06D7g   light        A                 4          4     0
-    ## 6 BEJI92~5282 HBkZvdhT   light        A                 2          2     0
+    ## 6 BEJI92~5282 HBkZvdhT   light        A                 4          2     2
     ## # ℹ 5 more variables: sd <dbl>, var <dbl>, meanAbundance <dbl>,
     ## #   medianAbundance <dbl>, interaction <chr>
 
@@ -384,11 +384,11 @@ prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 
 | protein_Id  | peptide_Id | isotopeLabel | group\_ | nrReplicates | nrMeasured | nrNAs |        sd |       var | meanAbundance | medianAbundance | interaction | delta |  N_exact |   N |
 |:------------|:-----------|:-------------|:--------|-------------:|-----------:|------:|----------:|----------:|--------------:|----------------:|:------------|------:|---------:|----:|
-| 0EfVhX~0087 | dJkdz7so   | light        | A       |            2 |          2 |     0 | 0.1816806 | 0.0330078 |      3.971469 |        3.971469 | group_A     |     1 | 2.023422 |   3 |
-| HvIpHG~9079 | opjydeWJ   | light        | A       |            3 |          3 |     0 | 0.2392614 | 0.0572460 |      4.094835 |        3.997946 | group_A     |     1 | 2.344670 |   3 |
+| 0EfVhX~0087 | dJkdz7so   | light        | A       |            4 |          2 |     2 | 0.1816806 | 0.0330078 |      3.971469 |        3.971469 | group_A     |     1 | 2.023422 |   3 |
+| HvIpHG~9079 | opjydeWJ   | light        | A       |            4 |          3 |     1 | 0.2392614 | 0.0572460 |      4.094835 |        3.997946 | group_A     |     1 | 2.344670 |   3 |
 | JcKVfU~9653 | 9LMQBevj   | light        | A       |            4 |          4 |     0 | 0.1871014 | 0.0350069 |      5.482917 |        5.406550 | group_A     |     1 | 2.050429 |   3 |
 | 0EfVhX~0087 | ahQLlQY7   | light        | A       |            4 |          4 |     0 | 0.0620097 | 0.0038452 |      4.742744 |        4.735435 | group_A     |     1 | 1.533666 |   2 |
-| 0EfVhX~0087 | ITLb4x1q   | light        | A       |            3 |          3 |     0 | 0.1535287 | 0.0235710 |      4.190351 |        4.178250 | group_A     |     1 | 1.892113 |   2 |
+| 0EfVhX~0087 | ITLb4x1q   | light        | A       |            4 |          3 |     1 | 0.1535287 | 0.0235710 |      4.190351 |        4.178250 | group_A     |     1 | 1.892113 |   2 |
 | 7cbcrd~5725 | D5dQ4nKk   | light        | A       |            4 |          4 |     0 | 0.0508679 | 0.0025875 |      4.956022 |        4.964554 | group_A     |     1 | 1.500024 |   2 |
 | 9VUkAq~4703 | eIC06D7g   | light        | A       |            4 |          4 |     0 | 0.0945821 | 0.0089458 |      4.159728 |        4.182873 | group_A     |     1 | 1.654299 |   2 |
 

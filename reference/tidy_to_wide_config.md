@@ -115,6 +115,7 @@ res <- lfqdata$get_Aggregator("medpolish")
 #> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: abundance
 x <- res$aggregate()
 #> starting aggregation
+#> completing cases
 towide <- tidy_to_wide_config(x, value = x$nr_children_col())
 
 dd <- prolfqua::sim_lfq_data_protein_config()

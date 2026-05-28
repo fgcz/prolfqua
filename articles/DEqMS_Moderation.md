@@ -274,9 +274,9 @@ res_all |>
     ##  5 0YSKpy~7538 AvsCtrl  0.0632 -0.00621   -0.139               0.00468
     ##  6 0ZHbvZ~4125 AvsCtrl  0.0490  0.0471     1.36                0.00433
     ##  7 1HZ2jt~5236 AvsCtrl  0.0871  0.000509   0.00827             0.00474
-    ##  8 3QYop0~6494 AvsCtrl  0.0477  0.0796     2.04                0.00498
-    ##  9 3Zhyy7~9324 AvsCtrl  0.0604 -0.0167    -0.338               0.00485
-    ## 10 4E74Ry~7621 AvsCtrl  0.0515  0.0240     0.659               0.00446
+    ##  8 3QLHfm~7883 AvsCtrl  0.116  -0.00875   -0.0756              0.00494
+    ##  9 3QYop0~6494 AvsCtrl  0.0477  0.0796     2.04                0.00498
+    ## 10 3Zhyy7~9324 AvsCtrl  0.0604 -0.0167    -0.338               0.00485
     ## # ℹ 4 more variables: moderated.df.prior <dbl>, moderated.var.post <dbl>,
     ## #   moderated.statistic <dbl>, moderated.p.value <dbl>
 

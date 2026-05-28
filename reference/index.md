@@ -95,6 +95,9 @@
 - [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md)
   : ROPECA contrast analysis facade for nested input
 
+- [`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md)
+  : Rfit rank-based regression contrast analysis facade
+
 - [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md)
   : holds results when contrasts are added.
 
@@ -167,6 +170,9 @@
 - [`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md)
   : Robust linear model strategy (R6 class)
 
+- [`StrategyRfit`](https://wolski.github.io/prolfqua/reference/StrategyRfit.md)
+  : Rank-based regression strategy (R6 class)
+
 - [`upset_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
   : UpSetR plot from interaction_missing_stats
 
@@ -208,6 +214,9 @@
 
 - [`center_to_reference_cfg()`](https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.md)
   : center to reference
+
+- [`df.residual(`*`<rfit_prolfqua>`*`)`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md)
+  : Residual degrees of freedom for an augmented rfit fit
 
 - [`estimate_lod_global()`](https://wolski.github.io/prolfqua/reference/estimate_lod_global.md)
   : esitmate lod
@@ -290,6 +299,9 @@
 
   Setup a tidy table compatible with a `AnalysisConfiguration`
 
+- [`sigma(`*`<rfit_prolfqua>`*`)`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md)
+  : Scale estimate for an augmented rfit fit
+
 - [`sim_lfq_data()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data.md)
   : simulate protein level data with two groups
 
@@ -307,6 +319,7 @@
   : Robustly Squeeze Sample Variances
 
 - [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md)
+  [`strategy_rfit()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_lmer()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
@@ -326,6 +339,9 @@
 
 - [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
   : Unregister a contrast facade class
+
+- [`vcov(`*`<rfit_prolfqua>`*`)`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
+  : Named variance-covariance matrix for an augmented rfit fit
 
 - [`volcano_plotly()`](https://wolski.github.io/prolfqua/reference/volcano_Plotly.md)
   : volcano plotly

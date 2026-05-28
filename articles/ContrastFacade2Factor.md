@@ -169,7 +169,7 @@ results_protein_2f |>
     ##   facade       n_results
     ##   <chr>            <int>
     ## 1 deqms              232
-    ## 2 firth              232
+    ## 2 firth              240
     ## 3 limma              232
     ## 4 limma_impute       240
     ## 5 lm                 232
@@ -191,9 +191,9 @@ results_protein_2f |>
     ##  1 deqms        T_C_gv_KO  WaldTest_DEqMS        79
     ##  2 deqms        T_C_gv_WT  WaldTest_DEqMS        77
     ##  3 deqms        WT_KO_comp WaldTest_DEqMS        76
-    ##  4 firth        T_C_gv_KO  WaldTestFirth         79
-    ##  5 firth        T_C_gv_WT  WaldTestFirth         77
-    ##  6 firth        WT_KO_comp WaldTestFirth         76
+    ##  4 firth        T_C_gv_KO  WaldTestFirth         80
+    ##  5 firth        T_C_gv_WT  WaldTestFirth         80
+    ##  6 firth        WT_KO_comp WaldTestFirth         80
     ##  7 limma        T_C_gv_KO  limma                 79
     ##  8 limma        T_C_gv_WT  limma                 77
     ##  9 limma        WT_KO_comp limma                 76
@@ -310,9 +310,6 @@ missing_all_2f |>
 | deqms  | T_C_gv_KO  |         1 |
 | deqms  | T_C_gv_WT  |         3 |
 | deqms  | WT_KO_comp |         4 |
-| firth  | T_C_gv_KO  |         1 |
-| firth  | T_C_gv_WT  |         3 |
-| firth  | WT_KO_comp |         4 |
 | limma  | T_C_gv_KO  |         1 |
 | limma  | T_C_gv_WT  |         3 |
 | limma  | WT_KO_comp |         4 |
@@ -338,12 +335,12 @@ if (length(missing_proteins_2f) > 0) {
 }
 ```
 
-| protein_Id  | A_V3 | B_V1 | B_V2 | B_V3 | B_V4 | Ctrl_V2 | Ctrl_V4 | A_V1 | A_V2 | C_V1 | C_V2 | C_V3 | C_V4 | A_V4 | Ctrl_V1 |
-|:------------|-----:|-----:|-----:|-----:|-----:|--------:|--------:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|--------:|
-| hjVK4f~9433 | 3.88 | 4.42 | 4.35 | 4.28 | 4.29 |    3.68 |    3.86 |   NA |   NA |   NA |   NA |   NA |   NA |   NA |      NA |
-| mVseto~9392 | 4.47 | 4.67 | 4.63 | 4.66 | 4.69 |      NA |      NA | 4.40 | 4.50 | 4.62 | 4.72 | 4.54 | 4.64 |   NA |      NA |
-| QQg7IC~3558 |   NA | 4.34 | 4.31 | 4.36 | 4.31 |      NA |      NA | 3.98 |   NA | 4.38 | 4.31 |   NA | 4.41 | 3.83 |      NA |
-| zvzYsk~2881 | 3.92 |   NA |   NA |   NA |   NA |    4.17 |      NA |   NA | 3.79 |   NA | 3.83 |   NA | 3.92 |   NA |    4.18 |
+| protein_Id  | A_V1 | A_V2 | A_V3 | A_V4 | B_V1 | B_V2 | B_V3 | B_V4 | C_V1 | C_V2 | C_V3 | C_V4 | Ctrl_V1 | Ctrl_V2 | Ctrl_V3 | Ctrl_V4 |
+|:------------|-----:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|-----:|--------:|--------:|--------:|--------:|
+| hjVK4f~9433 |   NA |   NA | 3.88 |   NA | 4.42 | 4.35 | 4.28 | 4.29 |   NA |   NA |   NA |   NA |      NA |    3.68 |      NA |    3.86 |
+| mVseto~9392 | 4.40 | 4.50 | 4.47 |   NA | 4.67 | 4.63 | 4.66 | 4.69 | 4.62 | 4.72 | 4.54 | 4.64 |      NA |      NA |      NA |      NA |
+| QQg7IC~3558 | 3.98 |   NA |   NA | 3.83 | 4.34 | 4.31 | 4.36 | 4.31 | 4.38 | 4.31 |   NA | 4.41 |      NA |      NA |      NA |      NA |
+| zvzYsk~2881 |   NA | 3.79 | 3.92 |   NA |   NA |   NA |   NA |   NA |   NA | 3.83 |   NA | 3.92 |    4.18 |    4.17 |      NA |      NA |
 
 Per-sample intensities of proteins that could not be estimated
 
@@ -388,37 +385,37 @@ if (length(lm_missing_proteins_2f) > 0) {
 | lm_missing   | WaldTest_moderated         | QQg7IC~3558 | T_C_gv_KO  |  4.118 |  0.425 | 0.000 |     6.660 |     0.046 |  9.389 |   0.000 |    0.259 |     0.591 | 0.074 | FALSE   | FALSE       |
 | limma_impute | limma_imputed              | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.005 |     4.568 |     0.077 |  8.398 |   0.002 |    0.175 |     0.526 | 0.109 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.003 |     4.856 |     0.072 |  8.653 |   0.001 |    0.118 |     0.583 | 0.102 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | QQg7IC~3558 | T_C_gv_WT  |     NA |     NA |    NA |        NA |     0.043 |  6.000 |      NA |       NA |        NA | 0.053 | TRUE    | NA          |
+| lm_missing   | groupAverage               | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.001 |     8.081 |     0.043 |  6.000 |   0.000 |    0.245 |     0.457 | 0.053 | TRUE    | FALSE       |
 | limma_impute | limma_imputed              | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.688 |    -0.556 |     0.109 |  8.398 |   0.593 |   -0.309 |     0.188 | 0.109 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.661 |    -0.591 |     0.101 |  8.653 |   0.570 |   -0.293 |     0.172 | 0.102 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | QQg7IC~3558 | WT_KO_comp |     NA |     NA |    NA |        NA |     0.043 |  6.000 |      NA |       NA |        NA | 0.053 | TRUE    | NA          |
+| lm_missing   | groupAverage               | QQg7IC~3558 | WT_KO_comp |  0.389 |  0.000 | 1.000 |     0.000 |     0.043 |  6.000 |   1.000 |   -0.106 |     0.106 | 0.053 | TRUE    | FALSE       |
 | limma_impute | limma_imputed              | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.003 |     5.705 |     0.076 |  6.398 |   0.001 |    0.251 |     0.620 | 0.108 | FALSE   | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.002 |     6.015 |     0.072 |  6.653 |   0.001 |    0.191 |     0.680 | 0.102 | FALSE   | FALSE       |
 | lm_missing   | WaldTest_moderated         | hjVK4f~9433 | T_C_gv_KO  |  4.109 |  0.452 | 0.007 |     4.397 |     0.095 |  7.389 |   0.003 |    0.237 |     0.668 | 0.092 | FALSE   | FALSE       |
 | limma_impute | limma_imputed              | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.076 |  6.398 |   1.000 |   -0.184 |     0.184 | 0.108 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.072 |  6.653 |   1.000 |   -0.245 |     0.245 | 0.102 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | hjVK4f~9433 | T_C_gv_WT  |     NA |     NA |    NA |        NA |     0.069 |  4.000 |      NA |       NA |        NA | 0.085 | TRUE    | NA          |
+| lm_missing   | groupAverage               | hjVK4f~9433 | T_C_gv_WT  |  3.868 |  0.000 | 1.000 |     0.000 |     0.069 |  4.000 |   1.000 |   -0.192 |     0.192 | 0.085 | TRUE    | FALSE       |
 | limma_impute | limma_imputed              | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.015 |    -4.034 |     0.108 |  6.398 |   0.006 |   -0.696 |    -0.175 | 0.108 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.011 |    -4.253 |     0.101 |  6.653 |   0.004 |   -0.680 |    -0.191 | 0.102 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | hjVK4f~9433 | WT_KO_comp |     NA |     NA |    NA |        NA |     0.069 |  4.000 |      NA |       NA |        NA | 0.085 | TRUE    | NA          |
+| lm_missing   | groupAverage               | hjVK4f~9433 | WT_KO_comp |  0.252 | -0.376 | 0.012 |    -5.444 |     0.069 |  4.000 |   0.006 |   -0.567 |    -0.184 | 0.085 | TRUE    | FALSE       |
 | limma_impute | limma_imputed              | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.002 |     4.803 |     0.058 | 10.398 |   0.001 |    0.151 |     0.409 | 0.109 | FALSE   | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.001 |     5.133 |     0.054 | 10.653 |   0.000 |    0.054 |     0.505 | 0.102 | FALSE   | FALSE       |
 | lm_missing   | WaldTest_moderated         | mVseto~9392 | T_C_gv_KO  |  4.559 |  0.200 | 0.002 |     4.469 |     0.039 | 11.389 |   0.001 |    0.024 |     0.376 | 0.080 | FALSE   | FALSE       |
 | limma_impute | limma_imputed              | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.611 |     0.064 | 10.398 |   0.000 |    0.600 |     0.883 | 0.109 | TRUE    | TRUE        |
 | lm_impute    | WaldTest_moderated_imputed | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.602 |     0.064 | 10.653 |   0.000 |    0.516 |     0.967 | 0.102 | TRUE    | TRUE        |
-| lm_missing   | groupAverage               | mVseto~9392 | T_C_gv_WT  |     NA |     NA |    NA |        NA |     0.041 |  8.000 |      NA |       NA |        NA | 0.056 | TRUE    | NA          |
+| lm_missing   | groupAverage               | mVseto~9392 | T_C_gv_WT  |  4.264 |  0.729 | 0.000 |    17.721 |     0.041 |  8.000 |   0.000 |    0.634 |     0.823 | 0.056 | TRUE    | TRUE        |
 | limma_impute | limma_imputed              | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.002 |     5.145 |     0.090 | 10.398 |   0.000 |    0.263 |     0.661 | 0.109 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.001 |     5.497 |     0.083 | 10.653 |   0.000 |    0.237 |     0.687 | 0.102 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | mVseto~9392 | WT_KO_comp |     NA |     NA |    NA |        NA |     0.041 |  8.000 |      NA |       NA |        NA | 0.056 | TRUE    | NA          |
+| lm_missing   | groupAverage               | mVseto~9392 | WT_KO_comp |  0.535 |  0.387 | 0.000 |     9.424 |     0.041 |  8.000 |   0.000 |    0.293 |     0.482 | 0.056 | TRUE    | FALSE       |
 | limma_impute | limma_imputed              | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.982 |    -0.054 |     0.072 |  5.398 |   0.959 |   -0.185 |     0.177 | 0.107 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.981 |    -0.057 |     0.068 |  5.653 |   0.957 |   -0.259 |     0.251 | 0.103 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | zvzYsk~2881 | T_C_gv_KO  |     NA |     NA |    NA |        NA |     0.063 |  3.000 |      NA |       NA |        NA | 0.063 | TRUE    | NA          |
+| lm_missing   | groupAverage               | zvzYsk~2881 | T_C_gv_KO  |  3.889 |  0.000 | 1.000 |     0.000 |     0.063 |  3.000 |   1.000 |   -0.200 |     0.200 | 0.063 | TRUE    | FALSE       |
 | limma_impute | limma_imputed              | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.178 |    -1.902 |     0.070 |  5.398 |   0.111 |   -0.310 |     0.043 | 0.107 | FALSE   | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.166 |    -1.938 |     0.068 |  5.653 |   0.104 |   -0.388 |     0.121 | 0.103 | FALSE   | FALSE       |
 | lm_missing   | WaldTest_moderated         | zvzYsk~2881 | T_C_gv_WT  |  4.018 | -0.314 | 0.017 |    -3.848 |     0.066 |  6.418 |   0.007 |   -0.529 |    -0.099 | 0.089 | FALSE   | FALSE       |
 | limma_impute | limma_imputed              | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.360 |    -1.269 |     0.102 |  5.398 |   0.256 |   -0.386 |     0.127 | 0.107 | TRUE    | FALSE       |
 | lm_impute    | WaldTest_moderated_imputed | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.329 |    -1.331 |     0.096 |  5.653 |   0.234 |   -0.384 |     0.125 | 0.103 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | zvzYsk~2881 | WT_KO_comp |     NA |     NA |    NA |        NA |     0.063 |  3.000 |      NA |       NA |        NA | 0.063 | TRUE    | NA          |
+| lm_missing   | groupAverage               | zvzYsk~2881 | WT_KO_comp | -0.064 |  0.000 | 1.000 |     0.000 |     0.063 |  3.000 |   1.000 |   -0.200 |     0.200 | 0.063 | TRUE    | FALSE       |
 
 Contrast estimates from lm_missing, lm_impute, and limma_impute for
 proteins that plain lm could not estimate

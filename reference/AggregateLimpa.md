@@ -223,6 +223,7 @@ lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
 agg <- AggregateLimpa$new(lfqdata, "protein")
 agg$aggregate()
+#> completing cases
 agg$lfq_agg$data_wide()
 #> $data
 #> # A tibble: 10 × 14
@@ -242,19 +243,21 @@ agg$lfq_agg$data_wide()
 #> #   Ctrl_V4 <dbl>
 #> 
 #> $annotation
-#>    sampleName  sample group_ isotopeLabel
-#> 1        A_V1    A_V1      A        light
-#> 2        A_V2    A_V2      A        light
-#> 3        A_V3    A_V3      A        light
-#> 4        A_V4    A_V4      A        light
-#> 5        B_V1    B_V1      B        light
-#> 6        B_V2    B_V2      B        light
-#> 7        B_V3    B_V3      B        light
-#> 8        B_V4    B_V4      B        light
-#> 9     Ctrl_V1 Ctrl_V1   Ctrl        light
-#> 10    Ctrl_V2 Ctrl_V2   Ctrl        light
-#> 11    Ctrl_V3 Ctrl_V3   Ctrl        light
-#> 12    Ctrl_V4 Ctrl_V4   Ctrl        light
+#> # A tibble: 12 × 4
+#>    sampleName sample  group_ isotopeLabel
+#>    <chr>      <chr>   <chr>  <chr>       
+#>  1 A_V1       A_V1    A      light       
+#>  2 A_V2       A_V2    A      light       
+#>  3 A_V3       A_V3    A      light       
+#>  4 A_V4       A_V4    A      light       
+#>  5 B_V1       B_V1    B      light       
+#>  6 B_V2       B_V2    B      light       
+#>  7 B_V3       B_V3    B      light       
+#>  8 B_V4       B_V4    B      light       
+#>  9 Ctrl_V1    Ctrl_V1 Ctrl   light       
+#> 10 Ctrl_V2    Ctrl_V2 Ctrl   light       
+#> 11 Ctrl_V3    Ctrl_V3 Ctrl   light       
+#> 12 Ctrl_V4    Ctrl_V4 Ctrl   light       
 #> 
 #> $rowdata
 #> # A tibble: 10 × 2

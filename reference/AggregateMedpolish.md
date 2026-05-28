@@ -187,6 +187,7 @@ lfqTrans <- lfqdata$clone()$get_Transformer()$log2()$robscale()$lfq
 agg <- AggregateMedpolish$new(lfqTrans, "protein")
 agg$aggregate()
 #> starting aggregation
+#> completing cases
 p <- agg$plot()
 p$plots[[1]]
 #> Warning: Removed 7 rows containing missing values or values outside the scale range

@@ -200,6 +200,7 @@ agg <- AggregateTopN$new(lfqdata, "protein", N = 3, func = "sum")
 agg$aggregate()
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
+#> completing cases
 p <- agg$plot()
 p$plots[[1]]
 #> Warning: Removed 7 rows containing missing values or values outside the scale range
@@ -212,6 +213,7 @@ agg_mean <- AggregateTopN$new(lfqdata, "protein", N = 3, func = "mean")
 agg_mean$aggregate()
 #> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
+#> completing cases
 protPlotter <- agg_mean$lfq_agg$get_Plotter()
 protPlotter$heatmap()
 
@@ -225,6 +227,12 @@ agg_mean$write_plots(tempdir())
 #> Warning: Removed 1 row containing missing values or values outside the scale range
 #> (`geom_line()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_line()`).
+#> Warning: Removed 2 rows containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_point()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 5 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
@@ -234,6 +242,10 @@ agg_mean$write_plots(tempdir())
 #> (`geom_point()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range
 #> (`geom_line()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_line()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_point()`).
 #> Warning: Removed 8 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 6 rows containing missing values or values outside the scale range

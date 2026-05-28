@@ -54,6 +54,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsROPECA.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsTable.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/FACADE_REGISTRY.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.html</loc></url>
@@ -78,6 +79,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/StrategyLmer.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/StrategyLogistf.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/StrategyRLM.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/StrategyRfit.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/UpSet_missing_stats.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/adjust_p_values.html</loc></url>
@@ -117,6 +119,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/data_skylineSRM_HL_A.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/data_spectronautDIA250_A.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/data_test_confusion_matrix_scores.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/df.residual.rlm.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/dot-get_robscales.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/dot-lfqdata_to_elist.html</loc></url>
@@ -221,6 +224,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/script_copy_helper_vec.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/separate_hierarchy.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/setup_analysis.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/sigma.rlm.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/sim_build_models_lm.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/sim_build_models_lmer.html</loc></url>
@@ -246,6 +250,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/tidy_to_wide_config.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/transform_work_intensity.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/unregister_facade.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/volcano_Plotly.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/which_missing.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/x5463yzwer453bbb.html</loc></url>
