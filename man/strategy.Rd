@@ -99,10 +99,8 @@ modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",
   model_name = "random_example")
 modelFunction$model_fun(nestProtein$data[[1]])
 modelFunction$model_fun(nestProtein$data[[4]])
-if (requireNamespace("Rfit", quietly = TRUE)) {
-  tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
-  tmp$model_fun(get_formula = TRUE)
-}
+tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
+tmp$model_fun(get_formula = TRUE)
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$model_fun(get_formula = TRUE)

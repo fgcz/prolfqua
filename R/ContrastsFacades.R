@@ -614,15 +614,13 @@ ContrastsRLMFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examples
-#' if (requireNamespace("Rfit", quietly = TRUE)) {
-#'   istar <- sim_lfq_data_protein_config()
-#'   lfqdata <- LFQData$new(istar$data, istar$config)
-#'   lfqdata$rename_response("transformedIntensity")
-#'   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-#'   fa <- ContrastsRfitFacade$new(lfqdata, "~ group_", contrasts)
-#'   head(fa$get_contrasts())
-#'   fa$to_wide()
-#' }
+#' istar <- sim_lfq_data_protein_config()
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsRfitFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$to_wide()
 ContrastsRfitFacade <- R6::R6Class(
   "ContrastsRfitFacade",
   inherit = ContrastsInterface,

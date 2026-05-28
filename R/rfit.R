@@ -20,6 +20,9 @@
 #'   coefficient names.
 #' @exportS3Method stats::vcov
 #' @family modelling
+#' @examples
+#' fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
+#' vcov(fit)
 vcov.rfit_prolfqua <- function(object, ...) {
   v <- NextMethod()
   nm <- names(stats::coef(object))
@@ -35,6 +38,9 @@ vcov.rfit_prolfqua <- function(object, ...) {
 #' @return number of observations minus number of coefficients.
 #' @exportS3Method stats::df.residual
 #' @family modelling
+#' @examples
+#' fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
+#' df.residual(fit)
 df.residual.rfit_prolfqua <- function(object, ...) {
   length(object$residuals) - length(stats::coef(object))
 }
@@ -51,6 +57,9 @@ df.residual.rfit_prolfqua <- function(object, ...) {
 #' @return the rank-based scale estimate `tauhat`.
 #' @exportS3Method stats::sigma
 #' @family modelling
+#' @examples
+#' fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
+#' sigma(fit)
 sigma.rfit_prolfqua <- function(object, ...) {
   object$tauhat
 }
@@ -70,10 +79,8 @@ sigma.rfit_prolfqua <- function(object, ...) {
 #' @export
 #' @family modelling
 #' @examples
-#' if (requireNamespace("Rfit", quietly = TRUE)) {
-#'   strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
-#'   strat$model_fun(get_formula = TRUE)
-#' }
+#' strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
+#' strat$model_fun(get_formula = TRUE)
 StrategyRfit <- R6::R6Class(
   "StrategyRfit",
   public = list(
@@ -121,6 +128,14 @@ StrategyRfit <- R6::R6Class(
       tryCatch(
         {
           fit <- Rfit::rfit(self$formula, data = x)
+          # Rfit silently zeros unestimable coefficients in rank-deficient
+          # designs (unlike lm which uses NA), and the resulting vcov()
+          # then fails with a Cholesky error. Detect and fail the fit so
+          # the protein is reported in get_missing() rather than crashing
+          # the contrast loop.
+          if (!is.null(fit$qrx1$rank) && fit$qrx1$rank < ncol(fit$x)) {
+            return(.error_handler(simpleError("rfit design is rank-deficient")))
+          }
           fit$model <- stats::model.frame(self$formula, data = x)
           fit$terms <- stats::terms(self$formula, data = x)
           class(fit) <- c("rfit_prolfqua", class(fit))
@@ -169,10 +184,8 @@ StrategyRfit <- R6::R6Class(
 #' @family modelling
 #' @return a \code{\link{StrategyRfit}} object
 #' @examples
-#' if (requireNamespace("Rfit", quietly = TRUE)) {
-#'   tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
-#'   tmp$model_fun(get_formula = TRUE)
-#' }
+#' tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
+#' tmp$model_fun(get_formula = TRUE)
 strategy_rfit <- function(
   modelstr,
   model_name = "rfit",

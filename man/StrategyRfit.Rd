@@ -21,10 +21,8 @@ Unlike \code{\link{StrategyLM}}, \code{rfit} takes no observation weights, so
 \code{nr_children} weighting is not supported by this backend.
 }
 \examples{
-if (requireNamespace("Rfit", quietly = TRUE)) {
-  strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
-  strat$model_fun(get_formula = TRUE)
-}
+strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
+strat$model_fun(get_formula = TRUE)
 }
 \seealso{
 Other modelling: 

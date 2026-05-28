@@ -23,15 +23,13 @@ weights (\code{rfit} has no \code{weights} argument), so \code{nr_children}
 weighting is not applied.
 }
 \examples{
-if (requireNamespace("Rfit", quietly = TRUE)) {
-  istar <- sim_lfq_data_protein_config()
-  lfqdata <- LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
-  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-  fa <- ContrastsRfitFacade$new(lfqdata, "~ group_", contrasts)
-  head(fa$get_contrasts())
-  fa$to_wide()
-}
+istar <- sim_lfq_data_protein_config()
+lfqdata <- LFQData$new(istar$data, istar$config)
+lfqdata$rename_response("transformedIntensity")
+contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+fa <- ContrastsRfitFacade$new(lfqdata, "~ group_", contrasts)
+head(fa$get_contrasts())
+fa$to_wide()
 }
 \seealso{
 Other modelling: 

@@ -118,6 +118,39 @@ test_that("rfit facade is registered as needs = 'same'", {
 })
 
 
+test_that("rfit handles per-protein rank deficiency without crashing", {
+  skip_if_not_installed("Rfit")
+  istar <- prolfqua::sim_lfq_data_2factor_config(Nprot = 8, with_missing = FALSE)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  # Drop the Treatment=B / Background=Z cell for half the proteins. Those
+  # proteins are rank-deficient on the interaction term — lm fills NA; rfit
+  # zeros and then vcov() Cholesky-fails. The adapter detects this and
+  # marks the affected proteins as failed fits, so contrast construction
+  # still succeeds for the rest and the deficient ones surface via
+  # get_missing().
+  pids <- unique(lfqdata$data_long()$protein_Id)
+  deficient_pids <- pids[seq(1, length(pids), by = 2)]
+  d <- lfqdata$data_long() |>
+    dplyr::filter(!(protein_Id %in% deficient_pids & Treatment == "B" & Background == "Z"))
+  lfqdata$set_data(d)
+
+  contrasts <- c(
+    "TB_vs_A" = "TreatmentB - TreatmentA",
+    "BgZ_vs_X" = "BackgroundZ - BackgroundX"
+  )
+  fa <- prolfqua::ContrastsRfitFacade$new(lfqdata, "~ Treatment * Background", contrasts)
+  res <- fa$get_contrasts()
+  expect_true(is.data.frame(res))
+  # Non-deficient proteins must have estimable contrasts.
+  expect_true(any(!is.na(res$statistic)))
+  expect_false(any(res$protein_Id %in% deficient_pids))
+  # Deficient proteins surface via get_missing for both contrasts.
+  missing <- fa$get_missing()
+  expect_true(all(deficient_pids %in% missing$protein_Id))
+  expect_setequal(unique(missing$contrast), names(contrasts))
+})
+
+
 test_that("rfit handles a two-factor design with interactions", {
   skip_if_not_installed("Rfit")
   istar <- prolfqua::sim_lfq_data_2factor_config(Nprot = 12, with_missing = FALSE)

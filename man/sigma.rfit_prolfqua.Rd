@@ -20,6 +20,10 @@ standard deviation of an `lm`; it does not affect the Wald std.error or
 p-value (those come from `vcov()`), but it is reported and used as the per-
 protein variance estimate if results are passed to limma/eBayes moderation.
 }
+\examples{
+fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
+sigma(fit)
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

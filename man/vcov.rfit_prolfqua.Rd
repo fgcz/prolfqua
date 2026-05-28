@@ -20,6 +20,10 @@ the rfit covariance matrix with row/column names set to the
 covariance by coefficient name, so this method restores the dimnames from
 `coef()`.
 }
+\examples{
+fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
+vcov(fit)
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

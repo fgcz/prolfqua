@@ -17,6 +17,10 @@ number of observations minus number of coefficients.
 \description{
 Residual degrees of freedom for an augmented rfit fit
 }
+\examples{
+fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
+df.residual(fit)
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

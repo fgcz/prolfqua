@@ -1,5 +1,41 @@
 # Implementation Plan: `Rfit::rfit()` Rank-Regression Backend
 
+## Status: DONE
+
+Landed on `Modelling2R6` in commits `277325df` (formatting prep) and
+`19f224c3` (rfit backend), with the `@examples` follow-up + the rank-
+deficient test added on top.
+
+Outcomes vs. plan:
+
+- **Step 0 spike** — resolved decisively. `Rfit::rfit()` exposes
+  `coef`/`vcov`/`tauhat` with names identical to `lm`, but the fit
+  carries no `$model`, no `terms()`, and `vcov.rfit` returns an unnamed
+  matrix.
+- **Step 2a primary path used** — augmenting the fit in `model_fun` with
+  `model.frame()`, `terms()`, and the `rfit_prolfqua` subclass plus three
+  S3 methods (`vcov`/`df.residual`/`sigma`) restores the contract that
+  `linfct_from_model()` / `compute_contrast()` rely on. **Step 2b lm
+  fallback was not needed** — no core changes required.
+- **Rank-deficient designs**: `rfit` silently zeros unestimable
+  coefficients (unlike `lm`'s NA), and `vcov()` then Cholesky-fails. The
+  adapter detects this in `model_fun` via `qrx1$rank < ncol(x)` and
+  routes the affected proteins through `.error_handler`, so they surface
+  via `get_missing()` rather than crashing the contrast loop.
+- **Open questions resolved**:
+  - `tauhat`-as-`sigma` adopted (mirrors `rlm`); documented as a
+    caveat in the facade.
+  - Double-fit cost is irrelevant — fallback path unused.
+- **Tests**: 42 passing in `test-ContrastsRfit.R` (S3 glue, linfct
+  parity with `lm`, sign/correlation agreement, 2-factor + interactions,
+  rank deficiency, `build_contrast_analysis` dispatch, registry).
+  Existing facade suite: 263 passing, no regression.
+- **Docs**: all five Rd files (`StrategyRfit`, `strategy_rfit`,
+  `ContrastsRfitFacade`, and the three S3 methods) carry unguarded
+  runnable `@examples`; `Rfit` added to `Suggests`.
+
+Archived 2026-05-28.
+
 ## Goal
 
 Add an `lm`-like rank-based regression backend using `Rfit::rfit()`, reusing the
