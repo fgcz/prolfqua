@@ -4,6 +4,22 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-05-28 — TODO Cleanup
+
+Archived completed TODO notes after checking their planned fixes against the current codebase:
+
+- version bump to 1.6.2
+- GitHub tarball symlink fix
+- limma sample/annotation alignment fix
+- Windows limpa vignette compatibility fix
+- plotting label and volcano plot fixes
+- contrast table score, rank/ORA, and model-color TODOs
+- limpa same-facade / lmer nested bug follow-up
+
+Kept active TODOs in the top-level `TODO/` directory when the underlying work still appears open or partially open.
+
+---
+
 ## 2026-04-10 — LFQData API & Config Decoupling (Phase 4 complete)
 
 Major refactoring to decouple standalone functions from AnalysisConfiguration. Functions no longer receive `config` — they get either individual column name arguments (≤5 fields) or an `lfqdata` object (>5 fields).
