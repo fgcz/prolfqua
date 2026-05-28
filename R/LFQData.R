@@ -154,6 +154,7 @@ LFQData <- R6::R6Class(
         self$response(),
         threshold = threshold
       )
+      private$.data <- prolfqua::complete_cases(self)
       invisible(self)
     },
     #' @description

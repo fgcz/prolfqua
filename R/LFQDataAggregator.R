@@ -100,6 +100,7 @@ AggregateMedpolish <- R6::R6Class(
     aggregate = function() {
       res <- estimate_intensity(self$lfq, .func = medpolish_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
+      self$lfq_agg$complete_cases()
       invisible(self$lfq_agg)
     },
     #' @description
@@ -177,6 +178,7 @@ AggregateRlm <- R6::R6Class(
     aggregate = function() {
       res <- estimate_intensity(self$lfq, .func = rlm_estimate_dfconfig)
       self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
+      self$lfq_agg$complete_cases()
       invisible(self$lfq_agg)
     },
     #' @description
@@ -283,6 +285,7 @@ AggregateTopN <- R6::R6Class(
       )
       res_topn <- aggregate_intensity_top_n(ranked, self$lfq, .func = .func, N = self$N)
       self$lfq_agg <- LFQData$new(res_topn$data, res_topn$config, prefix = self$prefix)
+      self$lfq_agg$complete_cases()
       invisible(self$lfq_agg)
     },
     #' @description
@@ -518,6 +521,7 @@ AggregateLimpa <- R6::R6Class(
         self$prefix,
         self$impute_only
       )
+      self$lfq_agg$complete_cases()
       invisible(self$lfq_agg)
     },
 

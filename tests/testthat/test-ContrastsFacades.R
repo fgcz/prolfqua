@@ -254,6 +254,19 @@ test_that("build_contrast_analysis dispatches to ContrastsFirthNestedFacade for 
   expect_true(all(res$facade == "firth_nested"))
 })
 
+test_that("Firth nested preparation completes sparse LFQData before encoding missingness", {
+  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 1, seed = 2)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  response <- lfqdata$response()
+
+  lfq_sparse <- lfqdata$get_copy()
+  lfq_sparse$set_data(lfq_sparse$data_long()[!is.na(lfq_sparse$data_long()[[response]]), ])
+  expect_setequal(unique(prolfqua::encode_bin_resp(lfq_sparse)$bin_resp), 1L)
+
+  lfq_missing <- prolfqua:::.prepare_logistf_lfqdata(lfq_sparse)
+  expect_setequal(unique(lfq_missing$data_long()$bin_resp), c(0L, 1L))
+})
+
 test_that("build_contrast_analysis defaults to lm when no method specified", {
   lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS)

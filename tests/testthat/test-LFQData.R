@@ -49,6 +49,18 @@ test_that("LFQData filtering and subsetting", {
   expect_equal(nrow(res$data_long()), nrow(lfqdata$data_long()) - 100)
 })
 
+test_that("remove_small_intensities re-establishes explicit missing rows", {
+  istar_missing <- sim_lfq_data_peptide_config(Nprot = 5, weight_missing = 1, seed = 1)
+  lfq_missing <- LFQData$new(istar_missing$data, istar_missing$config)
+
+  filtered <- lfq_missing$get_copy()
+  filtered$remove_small_intensities()
+
+  response <- filtered$response()
+  expect_gt(sum(is.na(filtered$data_long()[[response]])), 0)
+  expect_equal(nrow(filtered$data_long()), nrow(prolfqua::complete_cases(filtered)))
+})
+
 test_that("LFQData data_wide conversion", {
   tmp <- lfqdata$data_wide()
   expect_equal(nrow(tmp$data), nrow(tmp$rowdata))
@@ -160,6 +172,7 @@ test_that("AggregateMedpolish", {
   result <- agg$aggregate()
   expect_s3_class(result, "LFQData")
   expect_true(nrow(result$data_long()) < nrow(lfqdata$data_long()))
+  expect_equal(nrow(result$data_long()), nrow(result$factors()) * nrow(result$hierarchy()))
 
   pl <- agg$plot()
   expect_true("plots" %in% names(pl))
