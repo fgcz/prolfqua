@@ -1,5 +1,5 @@
 [![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleseeDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
-[![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/Modelling2R6/graph/badge.svg?token=NP7IPP323C)](https://app.codecov.io/gh/fgcz/prolfqua)
+[![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/main/graph/badge.svg?token=NP7IPP323C)](https://app.codecov.io/gh/fgcz/prolfqua)
 [![DOI](https://img.shields.io/badge/DOI-10.1021%2Facs.jproteome.2c00441-blue)](https://pubs.acs.org/doi/10.1021/acs.jproteome.2c00441)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18775726.svg)](https://doi.org/10.5281/zenodo.18775726)
 

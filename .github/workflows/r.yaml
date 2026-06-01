@@ -2,9 +2,9 @@ name: R-CMD-check-prolfqua
 
 on:
   push:
-    branches: [ Modelling2R6 ]
+    branches: [ main ]
   pull_request:
-    branches: [ Modelling2R6 ]
+    branches: [ main ]
 
 jobs:
   R-CMD-check:

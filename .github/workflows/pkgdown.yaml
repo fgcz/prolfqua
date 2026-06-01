@@ -2,7 +2,7 @@ name: pkgdown
 
 on:
   push:
-    branches: [ Modelling2R6 ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:

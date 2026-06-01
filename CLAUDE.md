@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What is prolfqua
 
-An R package for mass spectrometry-based label-free quantification (LFQ) proteomics analysis. It provides a complete workflow: QC, normalization, protein aggregation, statistical modelling, hypothesis testing, and sample size estimation. Data is always in long (tidy) format. Branch `Modelling2R6` is the active development branch.
+An R package for mass spectrometry-based label-free quantification (LFQ) proteomics analysis. It provides a complete workflow: QC, normalization, protein aggregation, statistical modelling, hypothesis testing, and sample size estimation. Data is always in long (tidy) format. Branch `main` is the active development branch.
 
 ## Build & Test Commands
 
