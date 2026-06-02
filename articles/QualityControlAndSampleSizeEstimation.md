@@ -467,7 +467,7 @@ sessionInfo()
     ## [82] rbibutils_2.4.1        backports_1.5.1        pheatmap_1.0.13       
     ## [85] broom_1.0.13           bslib_0.11.0           Rcpp_1.1.1-1.1        
     ## [88] gridExtra_2.3          nlme_3.1-168           mgcv_1.9-3            
-    ## [91] logistf_1.26.1         xfun_0.57              fs_2.1.0              
+    ## [91] logistf_1.26.1         xfun_0.58              fs_2.1.0              
     ## [94] forcats_1.0.1          pkgconfig_2.0.3
 
 ## References

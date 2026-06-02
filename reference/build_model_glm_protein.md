@@ -140,10 +140,10 @@ head(mod$get_coefficients())
 #>   protein_Id  factor     Estimate se.coef. lower.0.95 upper.0.95    Chisq      p
 #>   <chr>       <chr>         <dbl>    <dbl>      <dbl>      <dbl>    <dbl>  <dbl>
 #> 1 7IZdVV~0841 (Interce…  2.20e+ 0     1.49    -0.0397      7.08  3.68e+ 0 0.0550
-#> 2 7IZdVV~0841 group_B    5.61e-16     2.11    -5.33        5.33  0        1     
+#> 2 7IZdVV~0841 group_B    9.70e-16     2.11    -5.33        5.33  0        1     
 #> 3 7IZdVV~0841 group_Ct… -2.20e+ 0     1.74    -7.28        0.755 2.03e+ 0 0.154 
 #> 4 AZPG26~2091 (Interce…  2.20e+ 0     1.49    -0.0397      7.08  3.68e+ 0 0.0550
-#> 5 AZPG26~2091 group_B   -1.52e-15     2.11    -5.33        5.33  8.88e-16 1.000 
-#> 6 AZPG26~2091 group_Ct… -1.07e-15     2.11    -5.33        5.33  8.88e-16 1.000 
+#> 5 AZPG26~2091 group_B    1.26e-15     2.11    -5.33        5.33  8.88e-16 1.000 
+#> 6 AZPG26~2091 group_Ct… -4.27e-16     2.11    -5.33        5.33  8.88e-16 1.000 
 #> # ℹ 3 more variables: method <dbl>, isSingular <lgl>, nr_coef <int>
 ```

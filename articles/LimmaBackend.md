@@ -497,11 +497,11 @@ mod_limpa_prot$get_coefficients() |> head() |> knitr::kable(digits = 3)
 | protein_Id  | factor      | Estimate | Std..Error | t.value | Pr…t.. |
 |:------------|:------------|---------:|-----------:|--------:|-------:|
 | 0EfVhX~3967 | (Intercept) |    4.566 |      0.032 | 140.675 |      0 |
-| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.778 |      0 |
+| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.775 |      0 |
 | 0YSKpy~2865 | (Intercept) |    4.061 |      0.048 |  85.005 |      0 |
 | 3QLHfm~8938 | (Intercept) |    4.652 |      0.034 | 135.632 |      0 |
 | 3QYop0~7543 | (Intercept) |    4.564 |      0.014 | 331.068 |      0 |
-| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.082 |      0 |
+| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.081 |      0 |
 
 #### Step 3: Compute contrasts with ContrastsLimma
 
@@ -749,5 +749,5 @@ sessionInfo()
     ## [85] backports_1.5.1        pheatmap_1.0.13        broom_1.0.13          
     ## [88] bslib_0.11.0           Rcpp_1.1.1-1.1         gridExtra_2.3         
     ## [91] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        
-    ## [94] xfun_0.57              fs_2.1.0               forcats_1.0.1         
+    ## [94] xfun_0.58              fs_2.1.0               forcats_1.0.1         
     ## [97] pkgconfig_2.0.3
