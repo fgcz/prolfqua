@@ -52,11 +52,11 @@ bb <- rlm_estimate(xx, "response", "feature", "samples", maxIt = 20)
 xx2 <- data.frame(log2Area = rnorm(20, 0, 10), peptide_Id = rep(LETTERS[1:5], 4),
   sample_name = rep(letters[1:4], 5))
 rlm_estimate(xx2, "log2Area", "peptide_Id", "sample_name")
-#>   sample_name mean.log2Area     weights      lmrob
-#> 1           a     0.9156846 0.009114066 -0.1575930
-#> 2           b     0.7375349 0.053831495  0.7375349
-#> 3           c    -5.4504240 0.010381022 -6.1380233
-#> 4           d     1.0085976 0.036831551  1.0085976
+#>   sample_name mean.log2Area     weights     lmrob
+#> 1           a     -6.592999 0.010593291 -6.654427
+#> 2           b      6.807057 0.030806440  6.807057
+#> 3           c     -5.082437 0.014193575 -5.082437
+#> 4           d      1.096496 0.008067485  1.549198
 rlm_estimate(prolfqua_data("data_checksummarizationrobust87"),
   "log2Area", "peptide_Id", "sampleName")
 #>   sampleName mean.log2Area weights      lmrob
@@ -88,18 +88,17 @@ for (i in seq_len(100)) {
 #> Warning: 'rlm' failed to converge in 20 steps
 #> Warning: 'rlm' failed to converge in 20 steps
 #> Warning: 'rlm' failed to converge in 20 steps
-#> Warning: 'rlm' failed to converge in 20 steps
 rlm_estimate(xx2[xx2$peptide_Id == "A", ], "log2Area", "peptide_Id", "sample_name")
-#>    sample_name mean.log2Area     lmrob weights
-#> 1            a     -8.956332 -8.956332       1
-#> 6            b     -1.231429 -1.231429       1
-#> 11           c      3.402596  3.402596       1
-#> 16           d     10.894123 10.894123       1
+#>    sample_name mean.log2Area      lmrob weights
+#> 1            a      4.510461   4.510461       1
+#> 6            b     10.339812  10.339812       1
+#> 11           c    -15.477664 -15.477664       1
+#> 16           d    -18.441241 -18.441241       1
 rlm_estimate(xx2[xx2$sample_name == "a", ], "log2Area", "peptide_Id", "sample_name")
 #> # A tibble: 1 × 4
 #>   sample_name lmrob mean.log2Area weights
 #>   <chr>       <dbl>         <dbl>   <dbl>
-#> 1 a           0.916         0.916       1
+#> 1 a           -6.59         -6.59       1
 
 
 bb <- sim_lfq_data_peptide_config(Nprot = 20)

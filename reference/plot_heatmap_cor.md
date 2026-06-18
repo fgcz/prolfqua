@@ -50,7 +50,7 @@ plot_heatmap_cor(
 
 - ...:
 
-  passed to pheatmap
+  passed to \[ComplexHeatmap::Heatmap()\]
 
 ## See also
 
@@ -87,8 +87,8 @@ lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
   lfq$factor_keys(), lfq$sample_name())
-stopifnot("pheatmap" %in% class(pheat_map))
+stopifnot(methods::is(pheat_map, "Heatmap"))
 pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
   lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
-stopifnot("pheatmap" %in% class(pheat_map))
+stopifnot(methods::is(pheat_map, "Heatmap"))
 ```

@@ -60,7 +60,7 @@ plot_raster(
 
 - ...:
 
-  additional arguments passed to pheatmap
+  additional arguments passed to \[ComplexHeatmap::Heatmap()\]
 
 ## See also
 
@@ -96,7 +96,7 @@ istar <- sim_lfq_data_protein_config()
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
-stopifnot(class(rs) == "pheatmap")
+stopifnot(methods::is(rs, "Heatmap"))
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")
-stopifnot(class(rs) == "pheatmap")
+stopifnot(methods::is(rs, "Heatmap"))
 ```

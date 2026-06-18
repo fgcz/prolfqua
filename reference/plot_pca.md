@@ -82,11 +82,9 @@ lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
   add_txt = TRUE, nudge = 0.01)
-#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
-#> Joining with `by = join_by(sampleName)`
+#> PCA: removed 2459 of 2986 features with missing values. To keep all features, impute missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate().
 stopifnot("ggplot" %in% class(tmp))
 tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys())
-#> PCA: removed 2459 of 2986 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
-#> Joining with `by = join_by(sampleName)`
+#> PCA: removed 2459 of 2986 features with missing values. To keep all features, impute missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate().
 stopifnot("ggplot" %in% class(tmp))
 ```

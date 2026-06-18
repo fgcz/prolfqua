@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,11 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.6.3" id="prolfqua-163">prolfqua 1.6.3<a class="anchor" aria-label="anchor" href="#prolfqua-163"></a></h2>
+<ul><li>Removed the unused <code>impute_with_zcomp()</code>, <code>estimate_lod_global()</code>, and <code>function_lod_quantile()</code> exports (and the <code>zCompositions</code> dependency). For missing-value imputation use <code>AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()</code>.</li>
+<li>Hardened <code><a href="../reference/plot_pca.html">plot_pca()</a></code>: errors early on duplicated sample names, an all-missing matrix, or too few samples instead of returning <code>NULL</code> (which broke <code>pca_plotly()</code>); joins scores to annotation with an explicit <code>by</code>; makes <code>prcomp(center = TRUE, scale. = FALSE)</code> explicit.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.6.1" id="prolfqua-161">prolfqua 1.6.1<a class="anchor" aria-label="anchor" href="#prolfqua-161"></a></h2>
 <ul><li>Added a <code>check-bioc</code> Makefile target and a Bioconductor Docker check image.</li>
 <li>Updated BiocCheck-related documentation and vignette metadata.</li>
@@ -57,7 +62,8 @@
 <li>Made <code>LFQData</code> data/config internals private and moved callers to accessor methods.</li>
 <li>Refactored transformer and aggregation helpers around current <code>LFQData</code> APIs.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

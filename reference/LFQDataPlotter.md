@@ -145,7 +145,7 @@ plot intensities in raster
 
 #### Returns
 
-ggplot
+ComplexHeatmap::Heatmap
 
 ------------------------------------------------------------------------
 
@@ -191,7 +191,7 @@ proteins would be one cluster.
 
 #### Returns
 
-pheatmap
+ComplexHeatmap::Heatmap
 
 ------------------------------------------------------------------------
 
@@ -215,7 +215,7 @@ euclidean distance is used to compute the distances.
 
 #### Returns
 
-pheatmap
+ComplexHeatmap::Heatmap
 
 ------------------------------------------------------------------------
 
@@ -224,9 +224,10 @@ pheatmap
 PCA plot
 
 A PCA is applied and the first and second principal component are shown.
-Features with missing values are removed. For PCA with all features,
-impute first using
-[`impute_with_zcomp`](https://wolski.github.io/prolfqua/reference/impute_with_zcomp.md).
+Features with missing values are removed. To keep all features, impute
+first, e.g. with
+[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)
+in `impute_only` mode.
 
 #### Usage
 
@@ -320,7 +321,7 @@ heatmap of features with missing values
 
 #### Returns
 
-ggplot
+ComplexHeatmap::Heatmap
 
 ------------------------------------------------------------------------
 
@@ -482,7 +483,7 @@ write figure to pdf
 
 - `fig`:
 
-  ggplot or pheatmap
+  ggplot or ComplexHeatmap::Heatmap
 
 - `path_qc`:
 
@@ -550,20 +551,18 @@ lfqdata <- LFQData$new(
  istar$config)
 lfqplotter <- lfqdata$get_Plotter()
 
-stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
-stopifnot(class(lfqplotter$heatmap_cor()) == "pheatmap")
+stopifnot(methods::is(lfqplotter$heatmap(), "Heatmap"))
+stopifnot(methods::is(lfqplotter$heatmap_cor(), "Heatmap"))
 stopifnot("ggplot" %in% class(lfqplotter$pca()))
-#> PCA: removed 16 of 28 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
-#> Joining with `by = join_by(sampleName)`
+#> PCA: removed 16 of 28 features with missing values. To keep all features, impute missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate().
 stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
-#> PCA: removed 16 of 28 features with missing values. For PCA with all features, impute first using impute_with_zcomp().
-#> Joining with `by = join_by(sampleName)`
+#> PCA: removed 16 of 28 features with missing values. To keep all features, impute missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate().
 tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
 stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
 #> isotopeLabel ~ group_
 
-stopifnot(class(lfqplotter$na_heatmap()) == "pheatmap")
+stopifnot(methods::is(lfqplotter$na_heatmap(), "Heatmap"))
 #> rows with NA's: 16; all rows :28
 class(lfqplotter$intensity_distribution_density())
 #> [1] "ggplot2::ggplot" "ggplot"          "ggplot2::gg"     "S7_object"      
@@ -575,7 +574,7 @@ stopifnot(is.null(lfqplotter$pairs_smooth()))
 
 stopifnot(class(lfqplotter$sample_correlation()) == "list")
 
-stopifnot(class(lfqplotter$raster()) == "pheatmap")
+stopifnot(methods::is(lfqplotter$raster(), "Heatmap"))
 stopifnot("upset" == class(lfqplotter$upset_missing()))
 #> Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
 #> ℹ Please use tidy evaluation idioms with `aes()`.

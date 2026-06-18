@@ -405,41 +405,46 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] dplyr_1.2.1    prolfqua_1.6.2
+    ## [1] dplyr_1.2.1    prolfqua_1.6.3
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.1       viridisLite_0.4.3      vipor_0.4.7           
-    ##  [4] farver_2.1.2           S7_0.2.2               fastmap_1.2.0         
-    ##  [7] lazyeval_0.2.3         digest_0.6.39          rpart_4.1.24          
-    ## [10] lifecycle_1.0.5        survival_3.8-3         statmod_1.5.2         
-    ## [13] magrittr_2.0.5         compiler_4.5.2         progress_1.2.3        
-    ## [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           
-    ## [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.4     
-    ## [22] knitr_1.51             labeling_0.4.3         prettyunits_1.2.0     
-    ## [25] htmlwidgets_1.6.4      plyr_1.8.9             RColorBrewer_1.1-3    
-    ## [28] withr_3.0.2            purrr_1.2.2            desc_1.4.3            
-    ## [31] nnet_7.3-20            grid_4.5.2             jomo_2.7-6            
-    ## [34] mice_3.19.0            ggplot2_4.0.3          scales_1.4.0          
-    ## [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
-    ## [40] crayon_1.5.3           UpSetR_1.4.1           rmarkdown_2.31        
-    ## [43] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
-    ## [46] otel_0.2.0             httr_1.4.8             ggbeeswarm_0.7.3      
-    ## [49] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
-    ## [52] splines_4.5.2          vctrs_0.7.3            boot_1.3-32           
-    ## [55] glmnet_5.0             Matrix_1.7-4           jsonlite_2.0.0        
-    ## [58] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         
-    ## [61] beeswarm_0.4.0         systemfonts_1.3.2      foreach_1.5.2         
-    ## [64] limma_3.66.0           plotly_4.12.0          tidyr_1.3.2           
-    ## [67] jquerylib_0.1.4        glue_1.8.1             pkgdown_2.2.0         
-    ## [70] nloptr_2.2.1           pan_1.9                codetools_0.2-20      
-    ## [73] stringi_1.8.7          shape_1.4.6.1          gtable_0.3.6          
-    ## [76] lme4_2.0-1             tibble_3.3.1           pillar_1.11.1         
-    ## [79] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     
-    ## [82] Rdpack_2.6.6           formula.tools_1.7.1    evaluate_1.0.5        
-    ## [85] lattice_0.22-7         rbibutils_2.4.1        backports_1.5.1       
-    ## [88] pheatmap_1.0.13        broom_1.0.13           bslib_0.11.0          
-    ## [91] Rcpp_1.1.1-1.1         gridExtra_2.3          nlme_3.1-168          
-    ## [94] mgcv_1.9-3             logistf_1.26.1         xfun_0.58             
-    ## [97] fs_2.1.0               forcats_1.0.1          pkgconfig_2.0.3
+    ##   [1] Rdpack_2.6.6           gridExtra_2.3          rlang_1.2.0           
+    ##   [4] magrittr_2.0.5         clue_0.3-68            GetoptLong_1.1.1      
+    ##   [7] otel_0.2.0             matrixStats_1.5.0      compiler_4.5.2        
+    ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
+    ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
+    ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
+    ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.31        
+    ##  [22] ggbeeswarm_0.7.3       nloptr_2.2.1           ragg_1.5.2            
+    ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.58             
+    ##  [28] glmnet_5.0             jomo_2.7-6             logistf_1.26.1        
+    ##  [31] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
+    ##  [34] pan_1.9                prettyunits_1.2.0      broom_1.0.13          
+    ##  [37] parallel_4.5.2         cluster_2.1.8.1        R6_2.6.1              
+    ##  [40] bslib_0.11.0           stringi_1.8.7          RColorBrewer_1.1-3    
+    ##  [43] limma_3.66.0           boot_1.3-32            rpart_4.1.24          
+    ##  [46] jquerylib_0.1.4        Rcpp_1.1.1-1.1         iterators_1.0.14      
+    ##  [49] knitr_1.51             IRanges_2.44.0         Matrix_1.7-4          
+    ##  [52] splines_4.5.2          nnet_7.3-20            tidyselect_1.2.1      
+    ##  [55] yaml_2.3.12            doParallel_1.0.17      codetools_0.2-20      
+    ##  [58] lattice_0.22-7         tibble_3.3.1           plyr_1.8.9            
+    ##  [61] withr_3.0.2            S7_0.2.2               evaluate_1.0.5        
+    ##  [64] desc_1.4.3             survival_3.8-3         circlize_0.4.18       
+    ##  [67] pillar_1.11.1          mice_3.19.0            foreach_1.5.2         
+    ##  [70] stats4_4.5.2           reformulas_0.4.4       plotly_4.12.0         
+    ##  [73] generics_0.1.4         S4Vectors_0.48.1       hms_1.1.4             
+    ##  [76] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
+    ##  [79] glue_1.8.1             lazyeval_0.2.3         tools_4.5.2           
+    ##  [82] data.table_1.18.4      lme4_2.0-1             forcats_1.0.1         
+    ##  [85] fs_2.1.0               grid_4.5.2             tidyr_1.3.2           
+    ##  [88] rbibutils_2.4.1        colorspace_2.1-2       nlme_3.1-168          
+    ##  [91] formula.tools_1.7.1    beeswarm_0.4.0         vipor_0.4.7           
+    ##  [94] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     
+    ##  [97] ComplexHeatmap_2.26.1  gtable_0.3.6           sass_0.4.10           
+    ## [100] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   
+    ## [103] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     
+    ## [106] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.0         
+    ## [109] lifecycle_1.0.5        httr_1.4.8             GlobalOptions_0.1.4   
+    ## [112] mitml_0.4-5            statmod_1.5.2          MASS_7.3-65
 
 ## References

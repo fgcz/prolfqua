@@ -50,13 +50,13 @@ matrix_to_tibble(x)
 #> ℹ The deprecated feature was likely used in the prolfqua package.
 #>   Please report the issue at <https://github.com/fgcz/prolfqua/issues>.
 #> # A tibble: 5 × 5
-#>   row.names       V1      V2      V3      V4
-#>   <chr>        <dbl>   <dbl>   <dbl>   <dbl>
-#> 1 A          0.0324  -1.81   -0.103   0.972 
-#> 2 B         -0.00624  1.25   -0.0252  0.0103
-#> 3 C         -0.505   -0.651   1.01   -0.598 
-#> 4 D          0.471   -0.0453  0.223   0.621 
-#> 5 E          1.56     1.15    0.747  -0.107 
+#>   row.names     V1     V2      V3      V4
+#>   <chr>      <dbl>  <dbl>   <dbl>   <dbl>
+#> 1 A          1.15  -0.531 -0.942  -0.457 
+#> 2 B          0.253 -1.30  -0.584  -0.988 
+#> 3 C         -0.825  1.22   1.13    0.0213
+#> 4 D          0.287  1.48  -1.76    0.354 
+#> 5 E          0.943 -1.21   0.0523 -1.16  
 !(is.matrix(x) || is.data.frame(x))
 #> [1] FALSE
 ```

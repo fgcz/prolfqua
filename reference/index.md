@@ -218,14 +218,8 @@
 - [`df.residual(`*`<rfit_prolfqua>`*`)`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md)
   : Residual degrees of freedom for an augmented rfit fit
 
-- [`estimate_lod_global()`](https://wolski.github.io/prolfqua/reference/estimate_lod_global.md)
-  : esitmate lod
-
 - [`find_package_file()`](https://wolski.github.io/prolfqua/reference/find_package_file.md)
   : find file stored in package
-
-- [`function_lod_quantile()`](https://wolski.github.io/prolfqua/reference/function_lod_quantile.md)
-  : get smallest values per sample
 
 - [`generate_contrasts()`](https://wolski.github.io/prolfqua/reference/generate_contrasts.md)
   : Combined generate_contrasts
@@ -241,9 +235,6 @@
 
 - [`hierarchy_counts_sample()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.md)
   : Hierarchy counts per sample
-
-- [`impute_with_zcomp()`](https://wolski.github.io/prolfqua/reference/impute_with_zcomp.md)
-  : Impute missing values using zCompositions
 
 - [`interaction_contrasts()`](https://wolski.github.io/prolfqua/reference/interaction_contrasts.md)
   : Interaction contrasts (difference of differences)
@@ -281,9 +272,6 @@
 - [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md)
   : pivot model contrasts matrix to wide format produced by
   \`contrasts_linfct\` and ...
-
-- [`print(`*`<pheatmap>`*`)`](https://wolski.github.io/prolfqua/reference/print.pheatmap.md)
-  : Print method for pheatmap objects
 
 - [`prolfqua_data()`](https://wolski.github.io/prolfqua/reference/prolfqua_data.md)
   : load data from prolfqua
