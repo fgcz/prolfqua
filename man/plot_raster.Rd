@@ -37,7 +37,7 @@ plot_raster(
 \item{max_sample_label_chars}{maximum displayed sample label length. Labels
 keep their suffix because sample prefixes are often shared.}
 
-\item{...}{additional arguments passed to pheatmap}
+\item{...}{additional arguments passed to [ComplexHeatmap::Heatmap()]}
 }
 \description{
 plot heatmap without any clustering (use to show NA's)
@@ -48,9 +48,9 @@ istar <- sim_lfq_data_protein_config()
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
-stopifnot(class(rs) == "pheatmap")
+stopifnot(methods::is(rs, "Heatmap"))
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")
-stopifnot(class(rs) == "pheatmap")
+stopifnot(methods::is(rs, "Heatmap"))
 
 }
 \seealso{

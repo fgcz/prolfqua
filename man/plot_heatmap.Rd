@@ -34,7 +34,7 @@ plot_heatmap(
 \item{max_sample_label_chars}{maximum displayed sample label length. Labels
 keep their suffix because sample prefixes are often shared.}
 
-\item{...}{passed to pheatmap}
+\item{...}{passed to [ComplexHeatmap::Heatmap()]}
 }
 \description{
 plot heatmap with annotations
@@ -45,7 +45,7 @@ istar <- sim_lfq_data_protein_config()
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 p <- plot_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
-stopifnot(class(p) == "pheatmap")
+stopifnot(methods::is(p, "Heatmap"))
 
 }
 \seealso{

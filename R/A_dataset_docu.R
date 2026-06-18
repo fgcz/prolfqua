@@ -11,7 +11,8 @@
 #' @importFrom graphics par rect hist
 #' @importFrom graphics abline pairs plot text
 #' @importFrom grDevices colorRampPalette dev.off pdf png rainbow
-#' @importFrom pheatmap pheatmap
+#' @importFrom ComplexHeatmap Heatmap HeatmapAnnotation draw
+#' @importFrom circlize colorRamp2
 #' @importFrom plotly ggplotly
 #' @importFrom purrr map map2 map2_dbl map_lgl map_chr map_dbl reduce map_if map_dfc map_int map_df
 #' @importFrom rlang := sym syms .data

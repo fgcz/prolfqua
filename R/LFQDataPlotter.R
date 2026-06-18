@@ -15,20 +15,20 @@
 #'  istar$config)
 #' lfqplotter <- lfqdata$get_Plotter()
 #'
-#' stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
-#' stopifnot(class(lfqplotter$heatmap_cor()) == "pheatmap")
+#' stopifnot(methods::is(lfqplotter$heatmap(), "Heatmap"))
+#' stopifnot(methods::is(lfqplotter$heatmap_cor(), "Heatmap"))
 #' stopifnot("ggplot" %in% class(lfqplotter$pca()))
 #' stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
 #' tmp <- lfqplotter$boxplots()
 #' stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
 #' stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
 #'
-#' stopifnot(class(lfqplotter$na_heatmap()) == "pheatmap")
+#' stopifnot(methods::is(lfqplotter$na_heatmap(), "Heatmap"))
 #' class(lfqplotter$intensity_distribution_density())
 #' class(lfqplotter$intensity_distribution_violin())
 #' stopifnot(is.null(lfqplotter$pairs_smooth()))
 #' stopifnot(class(lfqplotter$sample_correlation()) == "list")
-#' stopifnot(class(lfqplotter$raster()) == "pheatmap")
+#' stopifnot(methods::is(lfqplotter$raster(), "Heatmap"))
 #' stopifnot("upset" == class(lfqplotter$upset_missing()))
 #' wide <- lfqdata$data_wide(as.matrix = TRUE)
 #' stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
@@ -62,7 +62,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param max_rownames_chars maximum displayed row label length
     #' @param max_sample_label_chars maximum displayed sample label length.
     #'   Labels keep their suffix because sample prefixes are often shared.
-    #' @return ggplot
+    #' @return ComplexHeatmap::Heatmap
     raster = function(
       arrange = c("mean", "var"),
       not_na = FALSE,
@@ -102,7 +102,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param max_rownames_chars maximum displayed row label length
     #' @param max_sample_label_chars maximum displayed sample label length.
     #'   Labels keep their suffix because sample prefixes are often shared.
-    #' @return pheatmap
+    #' @return ComplexHeatmap::Heatmap
     heatmap = function(na_fraction = 0.3, rownames = FALSE, max_rownames_chars = 60, max_sample_label_chars = 20) {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_heatmap(
@@ -127,7 +127,7 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' @param max_sample_label_chars maximum displayed sample label length.
     #'   Labels keep their suffix because sample prefixes are often shared.
-    #' @return pheatmap
+    #' @return ComplexHeatmap::Heatmap
     #'
     heatmap_cor = function(max_sample_label_chars = 20) {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
@@ -144,8 +144,8 @@ LFQDataPlotter <- R6::R6Class(
     #' PCA plot
     #'
     #' A PCA is applied and the first and second principal component are shown.
-    #' Features with missing values are removed. For PCA with all features,
-    #' impute first using \code{\link{impute_with_zcomp}}.
+    #' Features with missing values are removed. To keep all features, impute
+    #' first, e.g. with \code{\link{AggregateLimpa}} in \code{impute_only} mode.
     #'
     #' @seealso \code{\link{plot_pca}}
     #'
@@ -200,7 +200,7 @@ LFQDataPlotter <- R6::R6Class(
 
     #' @description
     #' heatmap of features with missing values
-    #' @return ggplot
+    #' @return ComplexHeatmap::Heatmap
     na_heatmap = function() {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       prolfqua::plot_na_heatmap(
@@ -317,7 +317,7 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' write figure to pdf
-    #' @param fig ggplot or pheatmap
+    #' @param fig ggplot or ComplexHeatmap::Heatmap
     #' @param path_qc path to write to
     #' @param fig_name name of figure (no extension)
     #' @param width figure width

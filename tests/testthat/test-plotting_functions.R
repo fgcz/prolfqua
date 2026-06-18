@@ -74,6 +74,71 @@ test_that("PCA sample labels repel and are not clipped", {
   expect_equal(p$coordinates$clip, "off")
 })
 
+test_that("plot_pca errors when no complete features remain", {
+  matrix <- matrix(stats::rnorm(60), nrow = 10)
+  colnames(matrix) <- paste0("sample_", seq_len(6))
+  matrix[, 1] <- NA # every feature now has at least one missing value
+  annotation <- data.frame(
+    sample = colnames(matrix),
+    group = rep(c("control", "treated"), each = 3)
+  )
+
+  expect_error(
+    suppressMessages(plot_pca(
+      matrix,
+      annotation,
+      sample_name = "sample",
+      factor_keys = "group"
+    )),
+    "no features without missing values"
+  )
+})
+
+test_that("plot_pca errors with too few samples instead of returning NULL", {
+  matrix <- matrix(stats::rnorm(20), nrow = 10)
+  colnames(matrix) <- c("s1", "s2")
+  annotation <- data.frame(sample = colnames(matrix), group = c("a", "b"))
+
+  expect_error(
+    plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group"),
+    "at least 3 samples"
+  )
+})
+
+test_that("plot_pca errors on duplicated sample names", {
+  matrix <- matrix(stats::rnorm(60), nrow = 10)
+  colnames(matrix) <- c("s1", "s1", "s2", "s3", "s4", "s5")
+  annotation <- data.frame(
+    sample = c("s1", "s2", "s3", "s4", "s5"),
+    group = c("a", "a", "b", "b", "a")
+  )
+
+  expect_error(
+    plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group"),
+    "duplicated sample names"
+  )
+})
+
+test_that("plot_pca joins explicitly and handles a single factor key", {
+  matrix <- matrix(stats::rnorm(60), nrow = 10)
+  colnames(matrix) <- paste0("sample_", seq_len(6))
+  annotation <- data.frame(
+    sample = colnames(matrix),
+    group = rep(c("control", "treated"), each = 3),
+    stringsAsFactors = FALSE
+  )
+
+  # explicit by = sample_name => no "Joining, by" message; single factor key
+  # (factor_keys[2] is NA) must not add a shape scale.
+  expect_no_message(
+    p <- plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group")
+  )
+  expect_s3_class(p, "ggplot")
+  expect_equal(nrow(p$data), ncol(matrix))
+  geom_classes <- vapply(p$layers, function(layer) class(layer$geom)[[1]], character(1))
+  expect_contains(geom_classes, "GeomPoint")
+})
+
 test_that("heatmap row labels are truncated without changing matrix row names", {
   matrix <- matrix(stats::rnorm(12), nrow = 3)
   original_labels <- c(
@@ -97,10 +162,9 @@ test_that("heatmap row labels are truncated without changing matrix row names", 
     max_rownames_chars = 20
   )
 
-  text_grobs <- Filter(function(grob) inherits(grob, "text"), p$gtable$grobs)
-  labels <- unlist(lapply(text_grobs, function(grob) grob$label), use.names = FALSE)
+  labels <- p@row_names_param$labels
 
-  expect_s3_class(p, "pheatmap")
+  expect_s4_class(p, "Heatmap")
   expect_equal(rownames(matrix), original_labels)
   expect_true(any(grepl("[.][.][.]", labels)))
   expect_false(any(original_labels[1] %in% labels))
@@ -137,11 +201,10 @@ test_that("correlation heatmap sample labels keep informative suffixes", {
     max_sample_label_chars = 20
   )
 
-  text_grobs <- Filter(function(grob) inherits(grob, "text"), p$gtable$grobs)
-  labels <- unlist(lapply(text_grobs, function(grob) grob$label), use.names = FALSE)
+  labels <- p@column_names_param$labels
   suffixes <- prolfqua:::.suffix_plot_labels(data$sample_names, 20)
 
-  expect_s3_class(p, "pheatmap")
+  expect_s4_class(p, "Heatmap")
   expect_true(all(suffixes %in% labels))
   expect_false(any(data$sample_names %in% labels))
   expect_true(all(nchar(suffixes) <= 20))
@@ -158,11 +221,10 @@ test_that("abundance heatmap sample labels keep informative suffixes", {
     max_sample_label_chars = 20
   )
 
-  text_grobs <- Filter(function(grob) inherits(grob, "text"), p$gtable$grobs)
-  labels <- unlist(lapply(text_grobs, function(grob) grob$label), use.names = FALSE)
+  labels <- p@column_names_param$labels
   suffixes <- prolfqua:::.suffix_plot_labels(data$sample_names, 20)
 
-  expect_s3_class(p, "pheatmap")
+  expect_s4_class(p, "Heatmap")
   expect_true(all(suffixes %in% labels))
   expect_false(any(data$sample_names %in% labels))
   expect_true(all(nchar(suffixes) <= 20))
@@ -179,14 +241,53 @@ test_that("raster sample labels keep informative suffixes", {
     max_sample_label_chars = 20
   )
 
-  text_grobs <- Filter(function(grob) inherits(grob, "text"), p$gtable$grobs)
-  labels <- unlist(lapply(text_grobs, function(grob) grob$label), use.names = FALSE)
+  labels <- p@column_names_param$labels
   suffixes <- prolfqua:::.suffix_plot_labels(data$sample_names, 20)
 
-  expect_s3_class(p, "pheatmap")
+  expect_s4_class(p, "Heatmap")
   expect_true(all(suffixes %in% labels))
   expect_false(any(data$sample_names %in% labels))
   expect_true(all(nchar(suffixes) <= 20))
+})
+
+test_that("abundance heatmap shows missing values in light gray", {
+  data <- test_long_sample_heatmap_data()
+  data$matrix[1, 1] <- NA
+
+  p <- plot_heatmap(
+    data$matrix,
+    data$annotation,
+    factor_keys = "group",
+    sample_name = "sample"
+  )
+
+  expect_s4_class(p, "Heatmap")
+  expect_equal(
+    grDevices::col2rgb(p@matrix_color_mapping@na_col),
+    grDevices::col2rgb(prolfqua:::.HEATMAP_NA_COL)
+  )
+})
+
+test_that("abundance color mapping spans green, black, and red", {
+  col_fun <- prolfqua:::.abundance_col_fun(matrix(c(-2, 0, 2), nrow = 1))
+  cols <- grDevices::col2rgb(col_fun(c(-2, 0, 2)))
+
+  # min -> green, center -> black, max -> red
+  expect_true(cols["green", 1] > 200 && cols["red", 1] < 50 && cols["blue", 1] < 50)
+  expect_true(all(cols[, 2] < 50))
+  expect_true(cols["red", 3] > 200 && cols["green", 3] < 50 && cols["blue", 3] < 50)
+})
+
+test_that("write_pdf renders a ComplexHeatmap to a non-empty PDF", {
+  istar <- sim_lfq_data_peptide_config()
+  lfq <- LFQData$new(istar$data, istar$config)
+  pl <- lfq$get_Plotter()
+
+  out_dir <- withr::local_tempdir()
+  fpath <- pl$write_pdf(pl$heatmap(), out_dir, "heatmap_smoke")
+
+  expect_true(file.exists(fpath))
+  expect_gt(file.info(fpath)$size, 0)
 })
 
 test_that("volcano_plotly does not cap small non-zero FDR values by default", {

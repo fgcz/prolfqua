@@ -1,7 +1,7 @@
 Package: prolfqua
 Type: Package
 Title: Proteomics Label Free Quantification
-Version: 1.6.2
+Version: 1.6.3
 Authors@R: c(
     person("Witold", "Wolski",
         email = "witold.wolski@fgcz.uzh.ch",
@@ -32,6 +32,8 @@ URL: https://github.com/fgcz/prolfqua,
     https://fgcz.github.io/prolfqua/
 BugReports: https://github.com/fgcz/prolfqua/issues
 Imports:
+    circlize,
+    ComplexHeatmap,
     dplyr,
     forcats,
     ggplot2,
@@ -43,7 +45,6 @@ Imports:
     logistf,
     MASS,
     methods,
-    pheatmap,
     plotly,
     progress,
     purrr,
@@ -75,8 +76,7 @@ Suggests:
     S4Vectors,
     SummarizedExperiment,
     testthat,
-    vsn,
-    zCompositions
+    vsn
 RoxygenNote: 7.3.3
 Roxygen: list(r6 = TRUE)
 Depends: 

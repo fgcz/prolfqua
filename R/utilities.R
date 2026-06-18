@@ -4,10 +4,14 @@
   as.character(e)
 }
 
-# Internal helper for rendering ggplot/pheatmap objects to an open graphics device.
+# Internal helper for rendering ggplot/ComplexHeatmap objects to an open graphics device.
 .render_plot_to_device <- function(x) {
-  print_fun <- base::get("print")
-  print_fun(x)
+  if (methods::is(x, "Heatmap") || methods::is(x, "HeatmapList")) {
+    ComplexHeatmap::draw(x)
+  } else {
+    print_fun <- base::get("print")
+    print_fun(x)
+  }
   invisible(x)
 }
 

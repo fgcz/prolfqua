@@ -23,20 +23,20 @@ lfqdata <- LFQData$new(
  istar$config)
 lfqplotter <- lfqdata$get_Plotter()
 
-stopifnot(class(lfqplotter$heatmap()) == "pheatmap")
-stopifnot(class(lfqplotter$heatmap_cor()) == "pheatmap")
+stopifnot(methods::is(lfqplotter$heatmap(), "Heatmap"))
+stopifnot(methods::is(lfqplotter$heatmap_cor(), "Heatmap"))
 stopifnot("ggplot" \%in\% class(lfqplotter$pca()))
 stopifnot("plotly" \%in\%  class(lfqplotter$pca_plotly()))
 tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" \%in\%  class(tmp$boxplot[[1]]))
 stopifnot("ggplot" \%in\% class(lfqplotter$missigness_histogram()))
 
-stopifnot(class(lfqplotter$na_heatmap()) == "pheatmap")
+stopifnot(methods::is(lfqplotter$na_heatmap(), "Heatmap"))
 class(lfqplotter$intensity_distribution_density())
 class(lfqplotter$intensity_distribution_violin())
 stopifnot(is.null(lfqplotter$pairs_smooth()))
 stopifnot(class(lfqplotter$sample_correlation()) == "list")
-stopifnot(class(lfqplotter$raster()) == "pheatmap")
+stopifnot(methods::is(lfqplotter$raster(), "Heatmap"))
 stopifnot("upset" == class(lfqplotter$upset_missing()))
 wide <- lfqdata$data_wide(as.matrix = TRUE)
 stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
@@ -148,7 +148,7 @@ Labels keep their suffix because sample prefixes are often shared.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-ggplot
+ComplexHeatmap::Heatmap
 }
 }
 \if{html}{\out{<hr>}}
@@ -188,7 +188,7 @@ Labels keep their suffix because sample prefixes are often shared.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-pheatmap
+ComplexHeatmap::Heatmap
 }
 }
 \if{html}{\out{<hr>}}
@@ -212,7 +212,7 @@ Labels keep their suffix because sample prefixes are often shared.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-pheatmap
+ComplexHeatmap::Heatmap
 }
 }
 \if{html}{\out{<hr>}}
@@ -222,8 +222,8 @@ pheatmap
 PCA plot
 
 A PCA is applied and the first and second principal component are shown.
-Features with missing values are removed. For PCA with all features,
-impute first using \code{\link{impute_with_zcomp}}.
+Features with missing values are removed. To keep all features, impute
+first, e.g. with \code{\link{AggregateLimpa}} in \code{impute_only} mode.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, nudge = 0.1)}\if{html}{\out{</div>}}
 }
@@ -308,7 +308,7 @@ heatmap of features with missing values
 }
 
 \subsection{Returns}{
-ggplot
+ComplexHeatmap::Heatmap
 }
 }
 \if{html}{\out{<hr>}}
@@ -456,7 +456,7 @@ write figure to pdf
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{fig}}{ggplot or pheatmap}
+\item{\code{fig}}{ggplot or ComplexHeatmap::Heatmap}
 
 \item{\code{path_qc}}{path to write to}
 
