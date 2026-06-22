@@ -376,9 +376,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpIFz9yR/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpIFz9yR/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpIFz9yR/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpwoWzBx/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpwoWzBx/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpwoWzBx/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -392,7 +392,7 @@ mod$write_coef_figures(tempdir())
 #>  8 XYrp6h~5793       2.20     1.26e-15  -4.27e-16
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_2c3319df4077 
+#> agg_record_1bf74a0236aa 
 #>                       2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
@@ -449,9 +449,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpIFz9yR/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpIFz9yR/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpIFz9yR/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpwoWzBx/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpwoWzBx/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpwoWzBx/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -465,6 +465,6 @@ mod$write_coef_figures(tempdir())
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
 #>  9 tCZCHm~6695         2.20  -1.35e+ 0  -2.16e-15
 #> 10 tHE075~8231         0.847  1.35e+ 0   1.59e-16
-#> agg_record_2c3319df4077 
+#> agg_record_1bf74a0236aa 
 #>                       2 
 ```

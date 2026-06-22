@@ -551,7 +551,7 @@ sessionInfo()
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.31        
     ##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          
-    ##  [25] purrr_1.2.2            xfun_0.58              glmnet_5.0            
+    ##  [25] purrr_1.2.2            xfun_0.59              glmnet_5.0            
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
     ##  [31] jsonlite_2.0.0         progress_1.2.3         pan_1.9               
     ##  [34] broom_1.0.13           parallel_4.5.2         prettyunits_1.2.0     
@@ -563,7 +563,7 @@ sessionInfo()
     ##  [52] splines_4.5.2          nnet_7.3-20            tidyselect_1.2.1      
     ##  [55] yaml_2.3.12            doParallel_1.0.17      codetools_0.2-20      
     ##  [58] lmerTest_3.2-1         lattice_0.22-7         tibble_3.3.1          
-    ##  [61] plyr_1.8.9             withr_3.0.2            S7_0.2.2              
+    ##  [61] plyr_1.8.9             withr_3.0.3            S7_0.2.2              
     ##  [64] evaluate_1.0.5         desc_1.4.3             survival_3.8-3        
     ##  [67] circlize_0.4.18        pillar_1.11.1          mice_3.19.0           
     ##  [70] foreach_1.5.2          stats4_4.5.2           reformulas_0.4.4      
