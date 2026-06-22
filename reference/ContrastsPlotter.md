@@ -145,6 +145,10 @@ Other plotting:
 
   column with contrasts names, default "contrast"
 
+- `group`:
+
+  crosstalk group name for linked brushing, default "BB"
+
 - `volcano_spec`:
 
   volcano plot specification
@@ -217,7 +221,8 @@ create Crontrast_Plotter
       diff = "diff",
       contrast = "contrast",
       avg.abundance = "avgAbd",
-      protein_annot = NULL
+      protein_annot = NULL,
+      group = "BB"
     )
 
 #### Arguments
@@ -265,6 +270,10 @@ create Crontrast_Plotter
 - `protein_annot`:
 
   add protein annotation (optional)
+
+- `group`:
+
+  crosstalk group name for linked brushing, default "BB"
 
 ------------------------------------------------------------------------
 

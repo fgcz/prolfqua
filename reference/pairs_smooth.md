@@ -45,28 +45,20 @@ pairs_smooth(tmp,main="small data", legend=TRUE)
 pairs_smooth(tmp,main="small data")
 
 pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
-#> Warning: 3 y values <= 0 omitted from logarithmic plot
+#> Warning: 2 x values <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
+#> Warning: 2 x values <= 0 omitted from logarithmic plot
+#> Warning: 2 x values <= 0 omitted from logarithmic plot
 #> Warning: 1 y value <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
-#> Warning: 3 x values <= 0 omitted from logarithmic plot
-#> Warning: 3 x values <= 0 omitted from logarithmic plot
-#> Warning: 3 y values <= 0 omitted from logarithmic plot
-#> Warning: 3 x values <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
-#> Warning: 3 x values <= 0 omitted from logarithmic plot
+#> Warning: 2 x values <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 1 y value <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 3 y values <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
 #> Warning: 1 y value <= 0 omitted from logarithmic plot
 #> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 3 y values <= 0 omitted from logarithmic plot
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
-#> Warning: 1 y value <= 0 omitted from logarithmic plot
-#> Warning: 1 x value <= 0 omitted from logarithmic plot
+#> Warning: 2 y values <= 0 omitted from logarithmic plot
 #> Warning: 1 y value <= 0 omitted from logarithmic plot
 ```

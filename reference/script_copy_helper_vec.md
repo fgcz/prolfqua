@@ -12,7 +12,7 @@ script_copy_helper_vec(runscripts, workdir = getwd(), packagename = "prolfqua")
 
 ``` r
 copied <- script_copy_helper_vec("extdata/metadata.csv", workdir = tempdir())
-#> copy /home/runner/work/_temp/Library/prolfqua/extdata/metadata.csv to /tmp/RtmpwoWzBx/metadata.csv
+#> copy /home/runner/work/_temp/Library/prolfqua/extdata/metadata.csv to /tmp/RtmpSgEai7/metadata.csv
 #> your working directory now should contain: 1 new files:
 basename(copied)
 #> [1] "metadata.csv"

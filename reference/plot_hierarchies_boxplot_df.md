@@ -80,9 +80,12 @@ lfq2 <- LFQData$new(
   istar$config)
 res <- plot_hierarchies_boxplot_df(lfq2$data_long(), lfq2)
 res$boxplot[[1]]
-#> Warning: Removed 1 row containing non-finite outside the scale range (`stat_boxplot()`).
-#> Warning: Removed 1 row containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 1 row containing non-finite outside the scale range (`stat_summary()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_boxplot()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
+#> Warning: Removed 8 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
+#> Warning: Removed 8 rows containing missing values or values outside the scale range
 #> (`position_quasirandom()`).
 ```
