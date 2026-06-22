@@ -128,6 +128,18 @@ StrategyRfit <- R6::R6Class(
       tryCatch(
         {
           fit <- Rfit::rfit(self$formula, data = x)
+          # When the rank fit is no better than the intercept-only model,
+          # `Rfit::rfit()` falls back to `bhat0 <- c(median(y), rep(0, p))`,
+          # an UNNAMED coefficient vector at full QR rank. The names matter:
+          # `linfct_from_model()` -> `.model_coeff_matrix()` copies them onto
+          # the coefficient matrix columns, and the contrast path then crashes
+          # in `tibble::as_tibble()` ("Columns must be named") when they are
+          # NULL. The design matrix always carries the correct column names,
+          # so restore them. (This is distinct from the rank-deficient case
+          # below, which keeps full rank and so is not caught by that guard.)
+          if (is.null(names(fit$coefficients))) {
+            names(fit$coefficients) <- colnames(fit$x)
+          }
           # Rfit silently zeros unestimable coefficients in rank-deficient
           # designs (unlike lm which uses NA), and the resulting vcov()
           # then fails with a Cholesky error. Detect and fail the fit so

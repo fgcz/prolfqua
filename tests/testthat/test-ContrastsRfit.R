@@ -151,6 +151,30 @@ test_that("rfit handles per-protein rank deficiency without crashing", {
 })
 
 
+test_that("rfit restores names when it falls back to the null model", {
+  skip_if_not_installed("Rfit")
+  # Two groups whose medians do not separate: Rfit's rank fit is no better
+  # than the intercept-only model, so rfit() returns the UNNAMED fallback
+  # `c(median(y), 0)` at full QR rank. The adapter must restore the
+  # coefficient names from the design matrix, otherwise linfct_from_model()
+  # -> .model_coeff_matrix() propagates NULL column names and the contrast
+  # path crashes in tibble::as_tibble() ("Columns must be named").
+  d <- data.frame(
+    y = c(13, 15, 17, 14, 15, 16),
+    G_ = factor(rep(c("T", "CT"), each = 3))
+  )
+  fit <- prolfqua::strategy_rfit("y ~ G_")$model_fun(d)
+  expect_true(inherits(fit, "rfit_prolfqua"))
+  # Names restored, and the slope was indeed zeroed by the fallback.
+  expect_equal(names(stats::coef(fit)), c("(Intercept)", "G_T"))
+  expect_equal(unname(stats::coef(fit)[2]), 0)
+  # The downstream contrast machinery now works instead of crashing.
+  lf <- prolfqua::linfct_from_model(fit, as_list = FALSE)
+  expect_false(is.null(colnames(lf)))
+  expect_setequal(colnames(lf), c("(Intercept)", "G_T"))
+})
+
+
 test_that("rfit handles a two-factor design with interactions", {
   skip_if_not_installed("Rfit")
   istar <- prolfqua::sim_lfq_data_2factor_config(Nprot = 12, with_missing = FALSE)
