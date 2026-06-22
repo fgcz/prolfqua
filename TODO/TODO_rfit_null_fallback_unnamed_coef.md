@@ -1,10 +1,26 @@
 # Fix: rfit crash on Rfit null-model fallback (unnamed coefficients)
 
-## Status: PATCHED — needs full end-to-end validation + image rebuild
+## Status: SOURCE VALIDATED — needs package install/image rebuild + real WU validation
 
-Branch: `fix-rfit-null-fallback-unnamed-coef` (commit `b58cc714`, not pushed).
+Fix commit: `b58cc714`; merged to `main` in `c085acf9`.
 Found while following up on **bfabric WU347631** (FGCZ order/container 32824),
 an A414 DEA job run with `model = NONE` → `model_extra = rfit`.
+
+Follow-up on 2026-06-22:
+
+- The fix and regression test are present on `prolfqua/main`.
+- Local source validation passes when the working tree is loaded:
+
+  ```bash
+  Rscript -e 'devtools::load_all(quiet = TRUE); testthat::test_file("tests/testthat/test-ContrastsRfit.R")'
+  ```
+
+  Result: 47 passed, 0 failed, 0 skipped. One expected warning remains from the rank-deficiency test
+  (`lsfit(): 'X' matrix was collinear`).
+- Running `testthat::test_file()` without `devtools::load_all()` still exercises the installed prolfqua and failed here
+  because the installed package is stale. Install/rebuild prolfqua before any end-to-end DEA validation or container test.
+- No staged WU347631/32824 input directory was found under `/Users/wolski/projects/prolfqua_fml`; only the
+  `slurmworker/config/A414_DEA` configuration is present. The real-job validation therefore remains open.
 
 ## Symptom
 
@@ -95,23 +111,28 @@ observed in T & CT with non-separating abundances.
 
 ## Remaining work (handoff)
 
-1. **Finish the patched end-to-end run.** The mechanism is confirmed in
-   isolation, but the full patched DEA against WU347631 had not completed when
-   work was paused. Re-run and confirm it produces a populated result
-   directory (xlsx / contrasts) with the degenerate protein present and
-   diff ≈ 0.
-2. **Ship it through the image.** The job runs the bundled
+1. **Install/rebuild before validating.** The local installed prolfqua can be
+   stale even when the source tree contains the fix. Use the package Makefile
+   or a rebuilt prolfquapp image before re-running WU347631.
+2. **Finish the patched end-to-end run.** The mechanism is confirmed in
+   isolation and source-level tests pass, but the full patched DEA against
+   WU347631 still needs to be run with the staged input. Re-run and confirm it
+   produces a populated result directory (xlsx / contrasts) with the degenerate
+   protein present and diff ≈ 0.
+3. **Ship it through the image.** The job runs the bundled
    `prolfquapp:2.0.22` Docker image. The prolfqua commit does not change the
    deployed container — rebuild prolfqua into a new prolfquapp image (or test
    via a dev image mounting the patched package) before re-running WU347631.
-3. **De-skip rfit tests in CI.** Install Rfit in the CI/dev R library so
-   `test-ContrastsRfit.R` actually runs; otherwise regressions here stay
-   invisible. Consider also exercising the *partial-model* path
+4. **Keep rfit tests active in CI.** `Rfit` is declared in `DESCRIPTION`
+   `Suggests`, and it is installed locally. Confirm the GitHub Actions
+   dependency setup installs `Suggests` so `test-ContrastsRfit.R` actually
+   runs there; otherwise regressions here stay invisible. Consider also
+   exercising the *partial-model* path
    (`.linfct_partial_model`) with real per-protein group dropout.
-4. **Optional, separate:** `prolfqua_dea.sh` returns exit 0 on R failure —
+5. **Optional, separate:** `prolfqua_dea.sh` returns exit 0 on R failure —
    consider propagating the non-zero status so bfabric/app-runner sees the
    real failure instead of an empty result dir. (Lives in prolfquapp /
    slurmworker, not prolfqua.)
-5. **Consider** whether other backends share this assumption that
+6. **Consider** whether other backends share this assumption that
    `coef()` is always named (the lm path uses NA, not unnamed zeros, so it is
    fine; limma/limpa paths not audited here).

@@ -60,6 +60,34 @@
 # light gray for missing (NA) cells in ComplexHeatmap output
 .HEATMAP_NA_COL <- "#D3D3D3"
 
+# ggplot2's default discrete colour palette, reproduced with base grDevices so
+# heatmap annotations and PCA can share one colour per factor level without
+# pulling in scales as a direct dependency. hcl(h, l = 65, c = 100) over evenly
+# spaced hues is exactly what scales::hue_pal() returns.
+.hue_palette <- function(n) {
+  if (n < 1) {
+    return(character(0))
+  }
+  grDevices::hcl(h = seq(15, 375, length.out = n + 1), l = 65, c = 100)[seq_len(n)]
+}
+
+# Deterministic level -> colour map for each (non-numeric) factor column, shared
+# by .heatmap_top_annotation() and plot_pca() so a given group always gets the
+# same colour across the heatmap, na-heatmap, and PCA legends. Without this,
+# ComplexHeatmap assigns random colours to discrete annotations on every call.
+.factor_annotation_colors <- function(annotation, factor_keys) {
+  cols <- list()
+  for (key in factor_keys) {
+    values <- annotation[[key]]
+    if (is.numeric(values)) {
+      next
+    }
+    levs <- levels(factor(values))
+    cols[[key]] <- stats::setNames(.hue_palette(length(levs)), levs)
+  }
+  cols
+}
+
 # Build a ComplexHeatmap top annotation from the sample factor columns.
 # ComplexHeatmap aligns the top annotation positionally to the matrix columns
 # (unlike pheatmap's name matching), so the annotation rows must be reordered to
@@ -69,7 +97,12 @@
   factors <- as.data.frame(factors)
   rownames(factors) <- annotation[[sample_name]]
   factors <- factors[matrix_colnames, , drop = FALSE]
-  ComplexHeatmap::HeatmapAnnotation(df = factors, show_annotation_name = TRUE)
+  col <- .factor_annotation_colors(annotation, factor_keys)
+  if (length(col) > 0) {
+    ComplexHeatmap::HeatmapAnnotation(df = factors, col = col, show_annotation_name = TRUE)
+  } else {
+    ComplexHeatmap::HeatmapAnnotation(df = factors, show_annotation_name = TRUE)
+  }
 }
 
 # Green-black-red diverging color function centered at zero, for row z-scored
@@ -771,6 +804,8 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
 
   pc_x <- paste0("PC", PC[1])
   pc_y <- paste0("PC", PC[2])
+  # Share the heatmap annotation palette so a group keeps one colour everywhere.
+  color_palette <- .factor_annotation_colors(annotation, factor_keys[1])[[factor_keys[1]]]
   x <- ggplot(
     xx,
     aes(x = !!sym(pc_x), y = !!sym(pc_y), color = !!sym(factor_keys[1]), text = !!sym(sample_name))
@@ -787,6 +822,9 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
     if (add_txt) {
       text
     }
+  if (!is.null(color_palette)) {
+    x <- x + ggplot2::scale_colour_manual(values = color_palette)
+  }
   if (!is.na(sh)) {
     x <- x + ggplot2::scale_shape_manual(values = seq_along(unique(xx[[sh]])))
   }

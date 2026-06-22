@@ -278,6 +278,41 @@ test_that("abundance color mapping spans green, black, and red", {
   expect_true(cols["red", 3] > 200 && cols["green", 3] < 50 && cols["blue", 3] < 50)
 })
 
+test_that("group colours are deterministic and shared across heatmap, na-heatmap, and PCA", {
+  # Regression: ComplexHeatmap assigned random colours to discrete annotations
+  # (no `col` set), so the heatmap, na-heatmap, and PCA legends each used a
+  # different colour for the same group. They must now share one palette.
+  istar <- sim_lfq_data_protein_config()
+  lfq <- LFQData$new(istar$data, istar$config)
+  wide <- lfq$data_wide(as.matrix = TRUE)
+  fk <- lfq$factor_keys()
+  sn <- lfq$sample_name()
+  key <- fk[1]
+
+  # deterministic: same annotation -> same colours on every call
+  ta1 <- prolfqua:::.heatmap_top_annotation(wide$annotation, fk, sn, colnames(wide$data))
+  ta2 <- prolfqua:::.heatmap_top_annotation(wide$annotation, fk, sn, colnames(wide$data))
+  heat1 <- ta1@anno_list[[key]]@color_mapping@colors
+  heat2 <- ta2@anno_list[[key]]@color_mapping@colors
+  expect_identical(heat1, heat2)
+
+  # na-heatmap shares the same annotation colours
+  na_h <- plot_na_heatmap(wide$data, wide$annotation, fk, sn)
+  na_colors <- na_h@top_annotation@anno_list[[key]]@color_mapping@colors
+  expect_identical(na_colors[order(names(na_colors))], heat1[order(names(heat1))])
+
+  # PCA colours each group with the same colour as the heatmap annotation
+  pca <- plot_pca(wide$data, wide$annotation, sn, fk)
+  build <- ggplot2::ggplot_build(pca)
+  pca_map <- tapply(build$data[[1]]$colour, as.character(build$plot$data[[key]]), unique)
+  for (lev in names(pca_map)) {
+    expect_equal(
+      grDevices::col2rgb(pca_map[[lev]]),
+      grDevices::col2rgb(heat1[[lev]])
+    )
+  }
+})
+
 test_that("write_pdf renders a ComplexHeatmap to a non-empty PDF", {
   istar <- sim_lfq_data_peptide_config()
   lfq <- LFQData$new(istar$data, istar$config)

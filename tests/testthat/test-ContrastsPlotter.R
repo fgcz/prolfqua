@@ -95,6 +95,39 @@ test_that("volcano score names can differ from score columns", {
   expect_s3_class(volcano_plotly$FDR, "plotly")
 })
 
+test_that("volcano_plotly shares the crosstalk group with linked tables", {
+  # Regression: the DT results table uses crosstalk::SharedData group "BB" so
+  # brushing the volcano highlights table rows (and vice versa). The plotly
+  # volcano must publish into the same group, keyed on the united subject_id.
+  contrast_df <- data.frame(
+    protein_Id = c("P1", "P2", "P3"),
+    contrast = "A_vs_B",
+    modelName = "model",
+    diff = c(-2, 0, 2),
+    FDR = c(0.01, 0.1, 0.2)
+  )
+  cp <- ContrastsPlotter$new(
+    contrast_df,
+    subject_id = "protein_Id",
+    volcano = list(list(score = "FDR", thresh = 0.1))
+  )
+  expect_equal(cp$group, "BB")
+
+  built <- plotly::plotly_build(cp$volcano_plotly()$FDR)
+  expect_equal(built$x$data[[1]]$set, "BB")
+  expect_setequal(unlist(built$x$data[[1]]$key), c("P1", "P2", "P3"))
+
+  # group is configurable for callers that link against a different set
+  cp2 <- ContrastsPlotter$new(
+    contrast_df,
+    subject_id = "protein_Id",
+    volcano = list(list(score = "FDR", thresh = 0.1)),
+    group = "OTHER"
+  )
+  built2 <- plotly::plotly_build(cp2$volcano_plotly()$FDR)
+  expect_equal(built2$x$data[[1]]$set, "OTHER")
+})
+
 test_that("volcano plots do not cap small non-zero FDR values by default", {
   contrast_df <- data.frame(
     protein_Id = c("P1", "P2", "P3"),

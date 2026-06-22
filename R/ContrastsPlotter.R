@@ -65,6 +65,8 @@ ContrastsPlotter <- R6::R6Class(
     diff = "diff",
     #' @field contrast column with contrasts names, default "contrast"
     contrast = "contrast",
+    #' @field group crosstalk group name for linked brushing, default "BB"
+    group = "BB",
     #' @field volcano_spec volcano plot specification
     volcano_spec = NULL,
     #' @field score_spec score plot specification
@@ -90,6 +92,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @param contrast contrast column
     #' @param avg.abundance name of column with average abundance
     #' @param protein_annot add protein annotation (optional)
+    #' @param group crosstalk group name for linked brushing, default "BB"
     initialize = function(
       contrast_df,
       subject_id,
@@ -101,7 +104,8 @@ ContrastsPlotter <- R6::R6Class(
       diff = "diff",
       contrast = "contrast",
       avg.abundance = "avgAbd",
-      protein_annot = NULL
+      protein_annot = NULL,
+      group = "BB"
     ) {
       private$.contrast_df <- tidyr::unite(
         contrast_df,
@@ -121,6 +125,7 @@ ContrastsPlotter <- R6::R6Class(
       self$contrast <- contrast
       self$avg.abundance <- avg.abundance
       self$protein_annot <- protein_annot
+      self$group <- group
     },
     #' @description
     #' plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
@@ -297,7 +302,7 @@ ContrastsPlotter <- R6::R6Class(
       if (missing(colour)) {
         colour <- self$model_name
       }
-      contrast_df <- private$.contrast_df |> plotly::highlight_key(~subject_id)
+      contrast_df <- private$.contrast_df |> plotly::highlight_key(~subject_id, group = self$group)
       res <- private$.score_plot(
         contrast_df,
         self$score_spec,
@@ -350,7 +355,7 @@ ContrastsPlotter <- R6::R6Class(
           dplyr::group_by(!!sym(self$contrast)) |>
           dplyr::mutate(!!abundance_col := rank(!!sym(self$avg.abundance)))
       } else if (plotly_mode) {
-        contrast_df <- contrast_df |> plotly::highlight_key(~subject_id)
+        contrast_df <- contrast_df |> plotly::highlight_key(~subject_id, group = self$group)
       }
       private$.ma_plot(contrast_df, abundance_col, self$diff, self$contrast, fc, colour = colour, legend = legend)
     },
@@ -375,7 +380,7 @@ ContrastsPlotter <- R6::R6Class(
           dplyr::filter(!is.na(!!sym(column))) |>
           dplyr::mutate(!!column := .floor_significance_values(!!sym(column), min_score))
         if (plotly) {
-          contrasts2 <- contrasts2 |> plotly::highlight_key(~subject_id)
+          contrasts2 <- contrasts2 |> plotly::highlight_key(~subject_id, group = self$group)
         }
         p <- prolfqua:::.multigroup_volcano(
           contrasts2,

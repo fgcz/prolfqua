@@ -188,6 +188,8 @@ Other plotting:
 
 \item{\code{contrast}}{column with contrasts names, default "contrast"}
 
+\item{\code{group}}{crosstalk group name for linked brushing, default "BB"}
+
 \item{\code{volcano_spec}}{volcano plot specification}
 
 \item{\code{score_spec}}{score plot specification}
@@ -237,7 +239,8 @@ create Crontrast_Plotter
   diff = "diff",
   contrast = "contrast",
   avg.abundance = "avgAbd",
-  protein_annot = NULL
+  protein_annot = NULL,
+  group = "BB"
 )}\if{html}{\out{</div>}}
 }
 
@@ -265,6 +268,8 @@ create Crontrast_Plotter
 \item{\code{avg.abundance}}{name of column with average abundance}
 
 \item{\code{protein_annot}}{add protein annotation (optional)}
+
+\item{\code{group}}{crosstalk group name for linked brushing, default "BB"}
 }
 \if{html}{\out{</div>}}
 }
