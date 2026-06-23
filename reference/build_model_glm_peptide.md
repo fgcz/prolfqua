@@ -145,7 +145,7 @@ head(mod$get_coefficients())
 #> 2 7IZdVV~08… group…  6.77e- 1    0.786     -0.937      2.51  0.669 0.413       2
 #> 3 7IZdVV~08… group… -6.66e- 1    0.645     -2.08       0.640 0.990 0.320       2
 #> 4 AZPG26~20… (Inte…  9.05e- 1    0.863     -0.729      2.90  1.15  0.284       2
-#> 5 AZPG26~20… group…  5.38e-16    1.02      -2.09       2.09  0     1           2
+#> 5 AZPG26~20… group…  2.23e-16    1.02      -2.09       2.09  0     1           2
 #> 6 AZPG26~20… group…  1.82e+ 0    1.55      -0.855      6.80  1.67  0.197       2
 #> # ℹ 2 more variables: isSingular <lgl>, nr_coef <int>
 ```

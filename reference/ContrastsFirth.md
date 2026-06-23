@@ -359,24 +359,24 @@ ctr$get_contrasts()
 #>    <chr>     <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>     <dbl>
 #>  1 WaldTest… 0EfVhX~00… Avs          1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
 #>  2 WaldTest… 0EfVhX~00… AvsCtrl      1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
-#>  3 WaldTest… 7cbcrd~57… Avs          1     9 -3.99e-16 1          1.38 -2.89e-16
+#>  3 WaldTest… 7cbcrd~57… Avs          1     9  6.90e-16 1          1.38  5.00e-16
 #>  4 WaldTest… 7cbcrd~57… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #>  5 WaldTest… 9VUkAq~47… Avs          1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
 #>  6 WaldTest… 9VUkAq~47… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #>  7 WaldTest… BEJI92~52… Avs          1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #>  8 WaldTest… BEJI92~52… AvsCtrl      1     9  2.20e+ 0 0.769      1.74  1.26e+ 0
-#>  9 WaldTest… CGzoYe~21… Avs          1     9 -1.26e-15 1          2.11 -5.97e-16
-#> 10 WaldTest… CGzoYe~21… AvsCtrl      1     9  4.27e-16 1          2.11  2.03e-16
+#>  9 WaldTest… CGzoYe~21… Avs          1     9  1.52e-15 1          2.11  7.20e-16
+#> 10 WaldTest… CGzoYe~21… AvsCtrl      1     9  1.07e-15 1          2.11  5.08e-16
 #> 11 WaldTest… DoWup2~58… Avs          1     9 -1.35e+ 0 0.769      1.78 -7.58e- 1
 #> 12 WaldTest… DoWup2~58… AvsCtrl      1     9 -3.04e+ 0 0.769      1.78 -1.71e+ 0
 #> 13 WaldTest… Fl4JiV~86… Avs          1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #> 14 WaldTest… Fl4JiV~86… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
 #> 15 WaldTest… HvIpHG~90… Avs          1     9 -1.69e+ 0 0.769      1.38 -1.23e+ 0
 #> 16 WaldTest… HvIpHG~90… AvsCtrl      1     9 -1.69e+ 0 0.769      1.38 -1.23e+ 0
-#> 17 WaldTest… JcKVfU~96… Avs          1     9 -1.26e-15 1          2.11 -5.97e-16
-#> 18 WaldTest… JcKVfU~96… AvsCtrl      1     9  4.27e-16 1          2.11  2.03e-16
+#> 17 WaldTest… JcKVfU~96… Avs          1     9  1.52e-15 1          2.11  7.20e-16
+#> 18 WaldTest… JcKVfU~96… AvsCtrl      1     9  1.07e-15 1          2.11  5.08e-16
 #> 19 WaldTest… SGIVBl~57… Avs          1     9  1.35e+ 0 0.769      1.78  7.58e- 1
-#> 20 WaldTest… SGIVBl~57… AvsCtrl      1     9  2.16e-15 1          2.11  1.02e-15
+#> 20 WaldTest… SGIVBl~57… AvsCtrl      1     9 -4.13e-16 1          2.11 -1.96e-16
 #> # ℹ 4 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   avgAbd <dbl>
 
@@ -435,7 +435,7 @@ ctrpep$get_contrasts()
 #>  1 WaldTest… 0EfVhX~00… Avs          1    31 -1.02e+ 0 0.463     0.838 -1.22e+ 0
 #>  2 WaldTest… 0EfVhX~00… AvsCtrl      1    31 -6.45e-10 1         0.822 -7.84e-10
 #>  3 WaldTest… BEJI92~52… Avs          1    20  1.41e-10 1.000     1.04   1.35e-10
-#>  4 WaldTest… BEJI92~52… AvsCtrl      1    20  1.02e-16 1         1.04   9.78e-17
+#>  4 WaldTest… BEJI92~52… AvsCtrl      1    20 -2.99e-16 1         1.04  -2.88e-16
 #>  5 WaldTest… Fl4JiV~86… Avs          1    42 -7.13e- 1 0.518     0.695 -1.03e+ 0
 #>  6 WaldTest… Fl4JiV~86… AvsCtrl      1    42  7.75e- 1 0.485     0.724  1.07e+ 0
 #>  7 WaldTest… HvIpHG~90… Avs          1    20 -1.98e+ 0 0.425     1.09  -1.81e+ 0
@@ -449,7 +449,7 @@ ctrpep$get_contrasts()
 #> 15 WaldTest… 9VUkAq~47… Avs          1     9 -1.35e+ 0 0.585     1.78  -7.58e- 1
 #> 16 WaldTest… 9VUkAq~47… AvsCtrl      1     9 -4.39e+ 0 0.485     2.11  -2.08e+ 0
 #> 17 WaldTest… CGzoYe~21… Avs          1     9  1.35e+ 0 0.585     1.78   7.58e- 1
-#> 18 WaldTest… CGzoYe~21… AvsCtrl      1     9  2.16e-15 1         2.11   1.02e-15
+#> 18 WaldTest… CGzoYe~21… AvsCtrl      1     9 -4.13e-16 1         2.11  -1.96e-16
 #> 19 WaldTest… DoWup2~58… Avs          1     9  4.39e+ 0 0.425     2.11   2.08e+ 0
 #> 20 WaldTest… DoWup2~58… AvsCtrl      1     9  3.04e+ 0 0.485     1.78   1.71e+ 0
 #> # ℹ 4 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,

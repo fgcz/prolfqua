@@ -336,9 +336,9 @@ head(fa_firth$get_contrasts())
 #> # Groups:   contrast [1]
 #>   facade modelName     protein_Id contrast sigma    df      diff   FDR std.error
 #>   <chr>  <chr>         <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>
-#> 1 firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9  4.27e-16     1      2.11
+#> 1 firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9  1.07e-15     1      2.11
 #> 2 firth  WaldTestFirth 0m5WN4~14… A_vs_Ct…     1     9 -2.20e+ 0     1      1.74
-#> 3 firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9  4.27e-16     1      2.11
+#> 3 firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9  1.07e-15     1      2.11
 #> 4 firth  WaldTestFirth 9VUkAq~45… A_vs_Ct…     1     9 -1.35e+ 0     1      1.78
 #> 5 firth  WaldTestFirth At886V~32… A_vs_Ct…     1     9  5.58e-16     1      1.38
 #> 6 firth  WaldTestFirth BEJI92~91… A_vs_Ct…     1     9 -1.35e+ 0     1      1.78
