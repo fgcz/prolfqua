@@ -10,7 +10,8 @@ build_model_impute(
   model_name = paste0(model_strategy$model_name, "Imputed"),
   lod = NULL,
   borrow_method = c("sigma", "vcov"),
-  df_method = c("observed", "borrowed")
+  df_method = c("observed", "borrowed"),
+  on_misalign = c("fallback", "fail")
 )
 }
 \arguments{
@@ -27,6 +28,11 @@ build_model_impute(
 
 \item{df_method}{"observed" uses max(n_observed - p, 1);
 "borrowed" uses median df from successful fits}
+
+\item{on_misalign}{passed to \code{\link{compute_borrowed_variance}} via
+\code{\link{impute_refit_singular}}. "fallback" (default) preserves the lm
+behaviour; "fail" skips the rescue when a full covariance matrix cannot be
+borrowed (used by the rfit backend, which has no sigma-method fallback).}
 }
 \value{
 a object of class \code{\link{Model}}
@@ -75,6 +81,7 @@ Other modelling:
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECANestedFacade}},
 \code{\link{ContrastsRfitFacade}},
+\code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
@@ -123,7 +130,7 @@ Other modelling:
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{moderated_p_limma_long}()},
-\code{\link{new_lm_imputed}()},
+\code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},

@@ -166,6 +166,10 @@ build_model <- function(
 #'   (X'X)^-1; "vcov" borrows element-wise median of full vcov matrices
 #' @param df_method "observed" uses max(n_observed - p, 1);
 #'   "borrowed" uses median df from successful fits
+#' @param on_misalign passed to \code{\link{compute_borrowed_variance}} via
+#'   \code{\link{impute_refit_singular}}. "fallback" (default) preserves the lm
+#'   behaviour; "fail" skips the rescue when a full covariance matrix cannot be
+#'   borrowed (used by the rfit backend, which has no sigma-method fallback).
 #' @return a object of class \code{\link{Model}}
 #' @family modelling
 #' @seealso \code{\link{build_model}}, \code{\link{impute_refit_singular}}
@@ -183,10 +187,12 @@ build_model_impute <- function(
   model_name = paste0(model_strategy$model_name, "Imputed"),
   lod = NULL,
   borrow_method = c("sigma", "vcov"),
-  df_method = c("observed", "borrowed")
+  df_method = c("observed", "borrowed"),
+  on_misalign = c("fallback", "fail")
 ) {
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
+  on_misalign <- match.arg(on_misalign)
   subject_id <- lfqdata$subject_id()
   response <- lfqdata$response()
 
@@ -227,7 +233,8 @@ build_model_impute <- function(
     sample_template = sample_template,
     borrow_method = borrow_method,
     df_method = df_method,
-    nr_children_col = nr_children_col
+    nr_children_col = nr_children_col,
+    on_misalign = on_misalign
   )
 
   return(Model$new(
@@ -276,20 +283,24 @@ model_summary <- function(mod) {
 }
 
 
-# lm_imputed S3 class ----
+# imputed_model S3 class ----
 
-#' Create an imputed lm wrapper
+#' Create an imputed model wrapper
 #'
-#' Wraps an lm object with borrowed covariance information.
-#' S3 generics vcov(), sigma(), and df.residual() dispatch
-#' to the borrowed values instead of the original model's.
+#' Wraps a refitted model (\code{lm}, \code{rfit}, ...) with borrowed
+#' covariance information. S3 generics vcov(), sigma(), and df.residual()
+#' dispatch to the borrowed values instead of the original model's, while
+#' coef()/terms() still fall through to the wrapped fit. The wrapper is
+#' backend-neutral: the class is prepended to whatever the refit already
+#' carries (e.g. \code{c("imputed_model", "lm")} or
+#' \code{c("imputed_model", "rfit_prolfqua", "rfit")}).
 #'
-#' @param model lm object fitted on imputed data
+#' @param model model object fitted on imputed data
 #' @param borrowed_vcov matrix, borrowed variance-covariance matrix
-#' @param borrowed_sigma numeric, borrowed residual standard error
+#' @param borrowed_sigma numeric, borrowed residual standard error / scale
 #' @param borrowed_df numeric, borrowed residual degrees of freedom
 #' @param n_observed integer, number of non-imputed observations
-#' @return lm_imputed object
+#' @return imputed_model object
 #' @keywords internal
 #' @family modelling
 #' @examples
@@ -299,39 +310,39 @@ model_summary <- function(mod) {
 #' fit <- lm(y ~ group_, data = dat)
 #'
 #' # Wrap with borrowed variance (in practice these come from donor pool)
-#' wrapped <- prolfqua:::new_lm_imputed(fit,
+#' wrapped <- prolfqua:::new_imputed_model(fit,
 #'   borrowed_vcov = vcov(fit),
 #'   borrowed_sigma = 0.8,
 #'   borrowed_df = 6,
 #'   n_observed = 5)
 #'
 #' # S3 dispatch returns borrowed values
-#' stopifnot(inherits(wrapped, "lm_imputed"))
+#' stopifnot(inherits(wrapped, "imputed_model"))
 #' stopifnot(sigma(wrapped) == 0.8)
 #' stopifnot(df.residual(wrapped) == 6)
 #' # coefficients() still dispatches to underlying lm
 #' stopifnot(identical(coefficients(wrapped), coefficients(fit)))
-new_lm_imputed <- function(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed) {
+new_imputed_model <- function(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed) {
   attr(model, "borrowed_vcov") <- borrowed_vcov
   attr(model, "borrowed_sigma") <- borrowed_sigma
   attr(model, "borrowed_df") <- borrowed_df
   attr(model, "n_observed") <- n_observed
-  class(model) <- c("lm_imputed", class(model))
+  class(model) <- c("imputed_model", class(model))
   model
 }
 
 #' @export
-vcov.lm_imputed <- function(object, ...) {
+vcov.imputed_model <- function(object, ...) {
   attr(object, "borrowed_vcov")
 }
 
 #' @export
-sigma.lm_imputed <- function(object, ...) {
+sigma.imputed_model <- function(object, ...) {
   attr(object, "borrowed_sigma")
 }
 
 #' @export
-df.residual.lm_imputed <- function(object, ...) {
+df.residual.imputed_model <- function(object, ...) {
   attr(object, "borrowed_df")
 }
 
@@ -343,6 +354,13 @@ df.residual.lm_imputed <- function(object, ...) {
 #' @param model_df tibble from model_analyse
 #' @param method "sigma" borrows scalar sigma and uses per-protein (X'X)^-1,
 #'   "vcov" borrows element-wise median of full vcov matrices
+#' @param on_misalign behaviour when donor \code{vcov} matrices cannot be
+#'   aligned by coefficient name (\code{method = "vcov"} only). "fallback"
+#'   (default) warns and falls back to the sigma method, preserving the lm
+#'   behaviour. "fail" signals a \code{prolfqua_borrow_failed} condition so the
+#'   caller can skip the rescue; backends without an lm-style
+#'   \code{summary(fit)$cov.unscaled} (e.g. rfit) must use this because the
+#'   sigma fallback is not applicable to them.
 #' @return list with sigma, df, method, and optionally vcov
 #' @keywords internal
 #' @family modelling
@@ -357,15 +375,20 @@ df.residual.lm_imputed <- function(object, ...) {
 #' stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
 #'
 #' # Vcov method: element-wise median vcov from donors.
-#' # Falls back to sigma if donor models have different coefficient counts.
+#' # Falls back to sigma if donor models have misaligned coefficient names.
 #' mod_no_missing <- sim_build_models_lm(model = "parallel3",
 #'   Nprot = 10, with_missing = FALSE)
 #' borrowed_v <- prolfqua:::compute_borrowed_variance(
 #'   mod_no_missing$model_df, method = "vcov")
 #' stopifnot(borrowed_v$method == "vcov")
 #' stopifnot(is.matrix(borrowed_v$vcov))
-compute_borrowed_variance <- function(model_df, method = c("sigma", "vcov")) {
+compute_borrowed_variance <- function(
+  model_df,
+  method = c("sigma", "vcov"),
+  on_misalign = c("fallback", "fail")
+) {
   method <- match.arg(method)
+  on_misalign <- match.arg(on_misalign)
   good <- get_complete_model_fit(model_df)
   good <- good |> dplyr::filter(.data$isSingular == FALSE)
 
@@ -381,14 +404,48 @@ compute_borrowed_variance <- function(model_df, method = c("sigma", "vcov")) {
   }
 
   vcov_list <- lapply(good$linear_model, stats::vcov)
+
+  if (on_misalign == "fail") {
+    # Backends without an lm-style sigma fallback (rfit) cannot tolerate a
+    # mixed donor pool. Borrow from the largest subset that shares the full
+    # (maximal-length, most common) coefficient set: rescued proteins are
+    # completed to the full design, so that is the coefficient set they need,
+    # and a few partial-design donors (e.g. a protein missing a whole group)
+    # must not poison the element-wise median.
+    keys <- vapply(vcov_list, function(v) paste(rownames(v), collapse = "\r"), character(1))
+    lens <- vapply(vcov_list, function(v) nrow(v), integer(1))
+    maximal_keys <- keys[lens == max(lens)]
+    tab <- table(maximal_keys)
+    target <- names(tab)[order(-as.integer(tab), names(tab))][1]
+    keep <- keys == target
+    if (!any(keep)) {
+      stop(structure(
+        class = c("prolfqua_borrow_failed", "error", "condition"),
+        list(
+          message = "No donor fits with a borrowable full covariance matrix.",
+          call = NULL
+        )
+      ))
+    }
+    vcov_list <- vcov_list[keep]
+  } else {
+    # Historical lm behaviour: require ALL donors to align by coefficient name,
+    # otherwise fall back to the sigma method. Matching dimnames also implies
+    # matching dimensions, so this subsumes the older dimension-only check.
+    ref_names <- dimnames(vcov_list[[1]])
+    names_ok <- all(vapply(
+      vcov_list,
+      function(v) identical(dimnames(v), ref_names),
+      logical(1)
+    ))
+    if (!names_ok) {
+      warning("vcov coefficient names differ across successful fits; falling back to sigma method.")
+      return(list(sigma = borrowed_sigma, df = borrowed_df, method = "sigma"))
+    }
+  }
+
   ref_dim <- dim(vcov_list[[1]])
   ref_names <- dimnames(vcov_list[[1]])
-  # Check all have same dimensions
-  dims_ok <- all(vapply(vcov_list, function(v) identical(dim(v), ref_dim), logical(1)))
-  if (!dims_ok) {
-    warning("vcov dimensions differ across successful fits; falling back to sigma method.")
-    return(list(sigma = borrowed_sigma, df = borrowed_df, method = "sigma"))
-  }
   vcov_array <- array(unlist(vcov_list), dim = c(ref_dim, length(vcov_list)))
   borrowed_vcov <- apply(vcov_array, c(1, 2), stats::median)
   dimnames(borrowed_vcov) <- ref_names
@@ -415,6 +472,10 @@ compute_borrowed_variance <- function(model_df, method = c("sigma", "vcov")) {
 #' @param nr_children_col optional column name for nr_children (peptide counts);
 #'   NA values in this column are filled with 1 for imputed rows so that
 #'   weighted lm fits do not fail
+#' @param on_misalign passed to \code{\link{compute_borrowed_variance}}. With
+#'   "fail", an unborrowable full covariance matrix skips the rescue (the
+#'   model_df is returned unchanged) instead of crashing, so the affected
+#'   proteins surface in \code{get_missing()}.
 #' @return modified model_df with imputed models replacing failed/singular ones
 #' @keywords internal
 #' @family modelling
@@ -426,10 +487,12 @@ impute_refit_singular <- function(
   sample_template,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed"),
-  nr_children_col = NULL
+  nr_children_col = NULL,
+  on_misalign = c("fallback", "fail")
 ) {
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
+  on_misalign <- match.arg(on_misalign)
 
   max_coef <- max(model_df$nr_coef, na.rm = TRUE)
 
@@ -441,7 +504,21 @@ impute_refit_singular <- function(
     return(model_df)
   }
 
-  borrowed <- compute_borrowed_variance(model_df, method = borrow_method)
+  borrowed <- if (on_misalign == "fail") {
+    tryCatch(
+      compute_borrowed_variance(model_df, method = borrow_method, on_misalign = on_misalign),
+      prolfqua_borrow_failed = function(e) NULL
+    )
+  } else {
+    compute_borrowed_variance(model_df, method = borrow_method, on_misalign = on_misalign)
+  }
+  # When full-covariance borrowing is impossible (e.g. rfit, which has no
+  # lm-style cov.unscaled to fall back to), skip the rescue: leave the
+  # failed/singular proteins untouched so they surface in get_missing()
+  # rather than carrying underestimated uncertainty.
+  if (is.null(borrowed)) {
+    return(model_df)
+  }
 
   impute_idx <- which(needs_impute)
   results <- vector("list", length(impute_idx))
@@ -547,7 +624,7 @@ impute_refit_singular <- function(
     imp_vcov <- borrowed$vcov
   }
 
-  wrapped <- new_lm_imputed(
+  wrapped <- new_imputed_model(
     new_model,
     borrowed_vcov = imp_vcov,
     borrowed_sigma = borrowed$sigma,

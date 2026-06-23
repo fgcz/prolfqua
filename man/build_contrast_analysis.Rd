@@ -9,8 +9,8 @@ build_contrast_analysis(
   modelstr,
   contrasts,
   method = c("lm", "lm_impute", "lm_missing", "limma", "limma_impute", "limma_voom",
-    "limma_voom_impute", "limpa", "limpa_nested", "rlm", "rfit", "deqms", "deqms_voom",
-    "firth", "firth_nested", "lmer_nested", "ropeca_nested"),
+    "limma_voom_impute", "limpa", "limpa_nested", "rlm", "rfit", "rfit_impute", "deqms",
+    "deqms_voom", "firth", "firth_nested", "lmer_nested", "ropeca_nested"),
   ...
 )
 }
@@ -27,8 +27,9 @@ build_contrast_analysis(
 \item{method}{one of \code{"lm"}, \code{"lm_impute"}, \code{"lm_missing"},
 \code{"limma"}, \code{"limma_impute"}, \code{"limma_voom"},
 \code{"limma_voom_impute"}, \code{"limpa"}, \code{"limpa_nested"},
-\code{"rlm"}, \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
-\code{"firth_nested"}, \code{"lmer_nested"}, \code{"ropeca_nested"}}
+\code{"rlm"}, \code{"rfit"}, \code{"rfit_impute"}, \code{"deqms"},
+\code{"deqms_voom"}, \code{"firth"}, \code{"firth_nested"},
+\code{"lmer_nested"}, \code{"ropeca_nested"}}
 
 \item{...}{additional arguments forwarded to the underlying strategy function
 (e.g. \code{trend}, \code{robust} for \code{strategy_limma})}
@@ -36,6 +37,7 @@ build_contrast_analysis(
 \value{
 one of \code{\link{ContrastsLimmaFacade}},
   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsRLMFacade}},
+  \code{\link{ContrastsRfitFacade}}, \code{\link{ContrastsRfitImputeFacade}},
   \code{\link{ContrastsLmerNestedFacade}},
   \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsLMImputeFacade}},
   \code{\link{ContrastsDEqMSFacade}},
@@ -126,6 +128,7 @@ Other modelling:
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECANestedFacade}},
 \code{\link{ContrastsRfitFacade}},
+\code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
@@ -174,7 +177,7 @@ Other modelling:
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{moderated_p_limma_long}()},
-\code{\link{new_lm_imputed}()},
+\code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},

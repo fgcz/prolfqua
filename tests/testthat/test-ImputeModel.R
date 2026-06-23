@@ -1,6 +1,6 @@
-# Test lm_imputed S3 class and build_model_impute
+# Test imputed_model S3 class and build_model_impute
 
-test_that("lm_imputed S3 dispatch works", {
+test_that("imputed_model S3 dispatch works", {
   dat <- data.frame(x = 1:10, y = rnorm(10))
   m <- lm(y ~ x, data = dat)
 
@@ -8,9 +8,9 @@ test_that("lm_imputed S3 dispatch works", {
   borrowed_sigma <- 0.42
   borrowed_df <- 7
 
-  wrapped <- new_lm_imputed(m, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed = 8)
+  wrapped <- new_imputed_model(m, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed = 8)
 
-  expect_s3_class(wrapped, "lm_imputed")
+  expect_s3_class(wrapped, "imputed_model")
   expect_s3_class(wrapped, "lm")
   expect_equal(vcov(wrapped), borrowed_vcov)
   expect_equal(sigma(wrapped), borrowed_sigma)

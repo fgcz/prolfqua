@@ -870,6 +870,114 @@ ContrastsLMImputeFacade <- R6::R6Class(
 )
 
 
+#' Rfit rank-regression contrast analysis with LOD imputation facade
+#'
+#' The rank-based analogue of \code{\link{ContrastsLMImputeFacade}}.
+#' Encapsulates the pipeline: \code{\link{strategy_rfit}} ->
+#' \code{\link{build_model_impute}} -> \code{\link{Contrasts}} ->
+#' \code{\link{ContrastsModerated}}, using \code{\link[Rfit]{rfit}}.
+#'
+#' Proteins whose initial \code{rfit} fit fails, is singular, or has an
+#' incomplete design are re-fitted after imputing missing values with the
+#' limit of detection (LOD). Uncertainty is borrowed from successful donor
+#' fits so it is not underestimated by the constant imputation.
+#'
+#' Differences from \code{\link{ContrastsLMImputeFacade}}:
+#' \itemize{
+#'   \item Covariance borrowing is \strong{vcov-only} (element-wise median of
+#'     the donors' full named covariance matrices). \code{rfit} exposes no
+#'     \code{lm}-style \code{cov.unscaled}, so the scalar-sigma borrowing mode
+#'     is not available and is not exposed.
+#'   \item Borrowing is \strong{fail-hard} (\code{on_misalign = "fail"}): if the
+#'     donor covariance matrices cannot be aligned by coefficient name, the
+#'     rescue is skipped and those proteins remain in \code{get_missing()}
+#'     rather than carrying an \code{lm}-specific approximation.
+#'   \item No observation weights (\code{rfit} has no \code{weights} argument),
+#'     matching plain \code{rfit}.
+#' }
+#'
+#' Rescued rows surface as \code{modelName = "WaldTest_moderated_imputed"} in
+#' the output, the same tag used by \code{\link{ContrastsLMImputeFacade}}.
+#'
+#' @return An R6 class generator.
+#' @export
+#' @family modelling
+#' @seealso \code{\link{ContrastsLMImputeFacade}}, \code{\link{ContrastsRfitFacade}},
+#'   \code{\link{build_model_impute}}
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata$rename_response("transformedIntensity")
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsRfitImputeFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$to_wide()
+ContrastsRfitImputeFacade <- R6::R6Class(
+  "ContrastsRfitImputeFacade",
+  inherit = ContrastsInterface,
+  public = list(
+    #' @field model Model object (with imputed proteins)
+    model = NULL,
+    #' @field contrast ContrastsModerated object
+    contrast = NULL,
+    #' @field .lfqdata stored reference to input LFQData
+    .lfqdata = NULL,
+    #' @field .contrast_names names of the requested contrasts
+    .contrast_names = NULL,
+    #' @description
+    #' initialize
+    #' @param lfqdata LFQData object (aggregated to protein level)
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param lod numeric limit of detection; if NULL, auto-computed from data
+    #' @param df_method "observed" uses max(n_observed - p, 1);
+    #'   "borrowed" uses median df from successful fits
+    #' @param ... passed to \code{\link{strategy_rfit}}
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      lod = NULL,
+      df_method = c("observed", "borrowed"),
+      ...
+    ) {
+      .assert_aggregated_facade_input(lfqdata, "ContrastsRfitImputeFacade")
+      df_method <- match.arg(df_method)
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      response <- lfqdata$response()
+      full_formula <- paste(response, modelstr)
+      strat <- strategy_rfit(full_formula, ...)
+      self$model <- build_model_impute(
+        lfqdata,
+        strat,
+        lod = lod,
+        borrow_method = "vcov",
+        df_method = df_method,
+        on_misalign = "fail"
+      )
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$config <- self$contrast$get_config()
+    },
+    #' @description get contrast results
+    #' @param ... passed to ContrastsModerated$get_contrasts
+    get_contrasts = function(...) {
+      .add_facade_column(self$contrast$get_contrasts(...), "rfit_impute")
+    },
+    #' @description get protein x contrast pairs that could not be estimated
+    get_missing = function() {
+      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+    },
+    #' @description get ContrastsPlotter
+    #' @param ... passed to ContrastsModerated$get_Plotter
+    get_Plotter = function(...) self$contrast$get_Plotter(...),
+    #' @description convert results to wide format
+    #' @param ... passed to ContrastsModerated$to_wide
+    to_wide = function(...) self$contrast$to_wide(...)
+  )
+)
+
+
 #' Firth logistic missingness contrast analysis facade
 #'
 #' Encapsulates the pipeline: encode missingness ->
@@ -1099,6 +1207,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     limpa_nested = list(class = "ContrastsLimpaNestedFacade", needs = "nested"),
     rlm = list(class = "ContrastsRLMFacade", needs = "same"),
     rfit = list(class = "ContrastsRfitFacade", needs = "same"),
+    rfit_impute = list(class = "ContrastsRfitImputeFacade", needs = "same"),
     deqms = list(class = "ContrastsDEqMSFacade", needs = "same"),
     deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "same"),
     firth = list(class = "ContrastsFirthFacade", needs = "same"),
@@ -1248,6 +1357,7 @@ FACADE_REGISTRY <- structure(
     limpa_nested = .builtin_facade_entry("ContrastsLimpaNestedFacade", "nested"),
     rlm = .builtin_facade_entry("ContrastsRLMFacade", "same"),
     rfit = .builtin_facade_entry("ContrastsRfitFacade", "same"),
+    rfit_impute = .builtin_facade_entry("ContrastsRfitImputeFacade", "same"),
     deqms = .builtin_facade_entry("ContrastsDEqMSFacade", "same"),
     deqms_voom = .builtin_facade_entry("ContrastsDEqMSVoomFacade", "same"),
     firth = .builtin_facade_entry("ContrastsFirthFacade", "same"),

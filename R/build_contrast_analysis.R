@@ -27,12 +27,14 @@
 #' @param method one of \code{"lm"}, \code{"lm_impute"}, \code{"lm_missing"},
 #'   \code{"limma"}, \code{"limma_impute"}, \code{"limma_voom"},
 #'   \code{"limma_voom_impute"}, \code{"limpa"}, \code{"limpa_nested"},
-#'   \code{"rlm"}, \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
-#'   \code{"firth_nested"}, \code{"lmer_nested"}, \code{"ropeca_nested"}
+#'   \code{"rlm"}, \code{"rfit"}, \code{"rfit_impute"}, \code{"deqms"},
+#'   \code{"deqms_voom"}, \code{"firth"}, \code{"firth_nested"},
+#'   \code{"lmer_nested"}, \code{"ropeca_nested"}
 #' @param ... additional arguments forwarded to the underlying strategy function
 #'   (e.g. \code{trend}, \code{robust} for \code{strategy_limma})
 #' @return one of \code{\link{ContrastsLimmaFacade}},
 #'   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsRLMFacade}},
+#'   \code{\link{ContrastsRfitFacade}}, \code{\link{ContrastsRfitImputeFacade}},
 #'   \code{\link{ContrastsLmerNestedFacade}},
 #'   \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsLMImputeFacade}},
 #'   \code{\link{ContrastsDEqMSFacade}},
@@ -92,6 +94,7 @@ build_contrast_analysis <- function(
     "limpa_nested",
     "rlm",
     "rfit",
+    "rfit_impute",
     "deqms",
     "deqms_voom",
     "firth",
@@ -107,6 +110,7 @@ build_contrast_analysis <- function(
     lm = ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...),
     rlm = ContrastsRLMFacade$new(lfqdata, modelstr, contrasts, ...),
     rfit = ContrastsRfitFacade$new(lfqdata, modelstr, contrasts, ...),
+    rfit_impute = ContrastsRfitImputeFacade$new(lfqdata, modelstr, contrasts, ...),
     lmer_nested = ContrastsLmerNestedFacade$new(lfqdata, modelstr, contrasts, ...),
     lm_missing = ContrastsLMMissingFacade$new(lfqdata, modelstr, contrasts, ...),
     lm_impute = ContrastsLMImputeFacade$new(lfqdata, modelstr, contrasts, ...),

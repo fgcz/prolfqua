@@ -4,13 +4,25 @@
 \alias{compute_borrowed_variance}
 \title{Compute borrowed variance from successful model fits}
 \usage{
-compute_borrowed_variance(model_df, method = c("sigma", "vcov"))
+compute_borrowed_variance(
+  model_df,
+  method = c("sigma", "vcov"),
+  on_misalign = c("fallback", "fail")
+)
 }
 \arguments{
 \item{model_df}{tibble from model_analyse}
 
 \item{method}{"sigma" borrows scalar sigma and uses per-protein (X'X)^-1,
 "vcov" borrows element-wise median of full vcov matrices}
+
+\item{on_misalign}{behaviour when donor \code{vcov} matrices cannot be
+aligned by coefficient name (\code{method = "vcov"} only). "fallback"
+(default) warns and falls back to the sigma method, preserving the lm
+behaviour. "fail" signals a \code{prolfqua_borrow_failed} condition so the
+caller can skip the rescue; backends without an lm-style
+\code{summary(fit)$cov.unscaled} (e.g. rfit) must use this because the
+sigma fallback is not applicable to them.}
 }
 \value{
 list with sigma, df, method, and optionally vcov
@@ -29,7 +41,7 @@ stopifnot(is.numeric(borrowed_s$sigma) && borrowed_s$sigma > 0)
 stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
 
 # Vcov method: element-wise median vcov from donors.
-# Falls back to sigma if donor models have different coefficient counts.
+# Falls back to sigma if donor models have misaligned coefficient names.
 mod_no_missing <- sim_build_models_lm(model = "parallel3",
   Nprot = 10, with_missing = FALSE)
 borrowed_v <- prolfqua:::compute_borrowed_variance(
@@ -65,6 +77,7 @@ Other modelling:
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECANestedFacade}},
 \code{\link{ContrastsRfitFacade}},
+\code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
@@ -113,7 +126,7 @@ Other modelling:
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{moderated_p_limma_long}()},
-\code{\link{new_lm_imputed}()},
+\code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},

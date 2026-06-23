@@ -12,7 +12,8 @@ impute_refit_singular(
   sample_template,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed"),
-  nr_children_col = NULL
+  nr_children_col = NULL,
+  on_misalign = c("fallback", "fail")
 )
 }
 \arguments{
@@ -36,6 +37,11 @@ proteins that are entirely missing in one or more groups.}
 \item{nr_children_col}{optional column name for nr_children (peptide counts);
 NA values in this column are filled with 1 for imputed rows so that
 weighted lm fits do not fail}
+
+\item{on_misalign}{passed to \code{\link{compute_borrowed_variance}}. With
+"fail", an unborrowable full covariance matrix skips the rescue (the
+model_df is returned unchanged) instead of crashing, so the affected
+proteins surface in \code{get_missing()}.}
 }
 \value{
 modified model_df with imputed models replacing failed/singular ones
@@ -72,6 +78,7 @@ Other modelling:
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECANestedFacade}},
 \code{\link{ContrastsRfitFacade}},
+\code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{LR_test}()},
@@ -120,7 +127,7 @@ Other modelling:
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
 \code{\link{moderated_p_limma_long}()},
-\code{\link{new_lm_imputed}()},
+\code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
 \code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
