@@ -4,6 +4,15 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-06-23 — TODO Cleanup
+
+Archived `TODO_LFQData_access_patterns.md` after confirming the note itself
+marks all LFQData API, standalone-function refactoring, Transformer refactoring,
+and private `data`/`config` encapsulation phases as DONE/RESOLVED. The root
+`TODO.md` now keeps only the remaining broader encapsulation follow-ups.
+
+---
+
 ## 2026-05-28 — TODO Cleanup
 
 Archived completed TODO notes after checking their planned fixes against the current codebase:

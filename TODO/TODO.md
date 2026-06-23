@@ -32,13 +32,13 @@ Open items from the 2026-02-19 code review:
 
 ---
 
-## 4. R6 Encapsulation — Make `data`/`config` Private (Phase 5)
+## 4. R6 Encapsulation Follow-Up
 
-LFQData API methods added (Phase 1+3), standalone functions refactored (Phase 4), Transformer refactored (Phase 2). Remaining step: make `data` and `config` private using active bindings with deprecation warnings.
+The LFQData `data`/`config` encapsulation work is complete and the detailed
+analysis note has been archived at
+`TODO/Archive/TODO_LFQData_access_patterns.md`.
 
-See `TODO/TODO_LFQData_access_patterns.md` for full analysis.
-
-Still to consider:
+Still to consider as separate follow-up work:
 - AnalysisConfiguration: `add_hierarchy()`, `add_factor()` methods for structured fields
 - Contrasts/Model: make `model_df`, `model_name`, `subject_id` private
 
