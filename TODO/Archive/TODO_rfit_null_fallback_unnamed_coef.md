@@ -1,6 +1,14 @@
 # Fix: rfit crash on Rfit null-model fallback (unnamed coefficients)
 
-## Status: SOURCE VALIDATED — needs package install/image rebuild + real WU validation
+## Status: ARCHIVED 2026-06-23 — source fix landed and covered
+
+The `prolfqua` source work is complete: the fix is on `main`, the regression
+test is present, and `Rfit` is declared in `DESCRIPTION` `Suggests`. The
+`prolfquapp` image build has also been updated to install `Rfit`.
+
+No local staged WU347631/32824 input was available to prove the exact original
+workunit end-to-end from this checkout. Treat any future real-WU rerun as an
+operations/deployment validation task, not an active `prolfqua` source TODO.
 
 Fix commit: `b58cc714`; merged to `main` in `c085acf9`.
 Found while following up on **bfabric WU347631** (FGCZ order/container 32824),

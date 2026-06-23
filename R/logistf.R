@@ -32,7 +32,7 @@ contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
   modelcol <- "linear_model"
 
   interaction_models <- vector(mode = "list", length = nrow(model_df))
-  pb <- progress::progress_bar$new(total = length(model_df[[modelcol]]))
+  pb <- .make_progress(length(model_df[[modelcol]]), label = "firth contrasts")
 
   for (i in seq_along(model_df[[modelcol]])) {
     # nolint start: object_usage_linter
@@ -200,6 +200,7 @@ build_model_logistf <- function(data, formula) {
       lfq2$data_long(),
       model_strategy2,
       model_name = "logistf_2",
+      label = "firth multi-peptide",
       subject_id = lfq2$subject_id()
     )
     models2$strategy <- model_strategy2
@@ -214,6 +215,7 @@ build_model_logistf <- function(data, formula) {
       lfq1$data_long(),
       model_strategy1,
       model_name = "logistf_1",
+      label = "firth single-peptide",
       subject_id = lfq1$subject_id()
     )
     models1$strategy <- model_strategy1

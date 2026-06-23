@@ -664,7 +664,7 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
   }
 
   interaction_models <- vector(mode = "list", length = nrow(models))
-  pb <- progress::progress_bar$new(total = nrow(models))
+  pb <- .make_progress(nrow(models), label = "contrasts")
   for (i in seq_along(models[[modelcol]])) {
     interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]])
     pb$tick()

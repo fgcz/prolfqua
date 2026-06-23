@@ -609,6 +609,12 @@ get_complete_model_fit <- function(complete_models) {
 #'
 #' used in project p2901
 #'
+#' @param label short label naming this fitting pass in progress output;
+#'   defaults to `model_name`.
+#' @param progress progress reporter selector passed to [.make_progress()];
+#'   `NULL` (default) keeps the legacy terminal `progress::progress_bar`, a
+#'   `function(i, total, label)` or `"message"` emits batch-visible progress.
+#'   Defaults to `getOption("prolfqua.progress", NULL)`.
 #' @export
 #' @family modelling
 #' @keywords internal
@@ -626,7 +632,9 @@ model_analyse <- function(
   pepIntensity,
   model_strategy,
   subject_id = "protein_Id",
-  model_name = "Model"
+  model_name = "Model",
+  label = model_name,
+  progress = getOption("prolfqua.progress", NULL)
 ) {
   nested_proteins <- pepIntensity |>
     dplyr::group_by(!!!syms(subject_id)) |>
@@ -634,7 +642,12 @@ model_analyse <- function(
 
   lmermodel <- "linear_model"
 
-  pb <- progress::progress_bar$new(total = nrow(nested_proteins))
+  # The strategy `model_fun()`s tick `pb` at fit *start* (their existing
+  # duck-typed contract). We keep that contract untouched -- this is the core
+  # path of every facade -- and only swap the reporter object. With the
+  # throttled reporters the start-vs-finish off-by-one is immaterial for a
+  # log heartbeat.
+  pb <- .make_progress(nrow(nested_proteins), label = label, reporter = progress)
   model_proteins <- nested_proteins |>
     dplyr::mutate(!!lmermodel := purrr::map(data, model_strategy$model_fun, pb = pb))
 

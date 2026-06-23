@@ -8,8 +8,19 @@ model_analyse(
   pepIntensity,
   model_strategy,
   subject_id = "protein_Id",
-  model_name = "Model"
+  model_name = "Model",
+  label = model_name,
+  progress = getOption("prolfqua.progress", NULL)
 )
+}
+\arguments{
+\item{label}{short label naming this fitting pass in progress output;
+defaults to `model_name`.}
+
+\item{progress}{progress reporter selector passed to [.make_progress()];
+`NULL` (default) keeps the legacy terminal `progress::progress_bar`, a
+`function(i, total, label)` or `"message"` emits batch-visible progress.
+Defaults to `getOption("prolfqua.progress", NULL)`.}
 }
 \description{
 used in project p2901

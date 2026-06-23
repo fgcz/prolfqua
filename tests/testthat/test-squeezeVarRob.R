@@ -1,3 +1,71 @@
+test_that("fitFDist_LG preserves non-covariate moment fit behavior", {
+  set.seed(1)
+  x <- exp(rnorm(20, 0, 0.5))
+  df1 <- sample(3:8, 20, replace = TRUE)
+
+  fit <- prolfqua:::fitFDist_LG(x, df1)
+
+  expect_equal(fit$scale, 1.202628, tolerance = 1e-6)
+  expect_equal(fit$df2, Inf)
+})
+
+test_that("fitFDist_LG preserves covariate trend behavior", {
+  set.seed(1)
+  x <- exp(rnorm(20, 0, 0.5))
+  df1 <- sample(3:8, 20, replace = TRUE)
+
+  fit <- prolfqua:::fitFDist_LG(x, df1, covariate = seq_along(x))
+
+  expect_equal(
+    fit$scale,
+    c(
+      0.9457446,
+      1.0800594,
+      1.2248818,
+      1.3698919,
+      1.5003645,
+      1.5980796,
+      1.6438567,
+      1.6233316,
+      1.5479917,
+      1.4447611,
+      1.3378039,
+      1.2458362,
+      1.1827813,
+      1.1603041,
+      1.1832065,
+      1.2471774,
+      1.3498923,
+      1.4903815,
+      1.6674290,
+      1.8779027
+    ),
+    tolerance = 1e-6
+  )
+  expect_equal(fit$df2, Inf)
+})
+
+test_that("fitFDist_LG reconstructs results after missing inputs", {
+  fit <- prolfqua:::fitFDist_LG(
+    x = c(1, NA, 2, Inf, 4),
+    df1 = c(3, 4, 5, 6, 7)
+  )
+
+  expect_equal(fit$scale, 2.333333, tolerance = 1e-6)
+  expect_equal(fit$df2, Inf)
+})
+
+test_that("fitFDist_LG validates lengths", {
+  expect_error(
+    prolfqua:::fitFDist_LG(1:3, df1 = 1:2),
+    "x and df1 have different lengths"
+  )
+  expect_error(
+    prolfqua:::fitFDist_LG(1:3, df1 = 2, covariate = 1:2),
+    "x and covariate must be of same length"
+  )
+})
+
 test_that("fitFDistRobustly_LG preserves non-covariate robust fit behavior", {
   set.seed(1)
   x <- exp(rnorm(20, 0, 0.5))

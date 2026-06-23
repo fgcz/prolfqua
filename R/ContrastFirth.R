@@ -94,7 +94,7 @@ ContrastsFirth <- R6::R6Class(
       if (!is.null(self$models$models$models1)) {
         model1_df <- .filter_fitted_firth_models(self$models$models$models1$model_df)
         res1 <- vector(mode = "list", nrow(model1_df))
-        pb <- progress::progress_bar$new(total = nrow(model1_df))
+        pb <- .make_progress(nrow(model1_df), label = "firth linfct single-peptide")
         if (nrow(model1_df) > 0) {
           model <- get_complete_model_fit(model1_df)$linear_model[[1]]
           compmodel <- .linfct(model, self$contrasts, avg = avg)
@@ -115,7 +115,7 @@ ContrastsFirth <- R6::R6Class(
 
       if (!is.null(self$models$models$models2)) {
         model2_df <- .filter_fitted_firth_models(self$models$models$models2$model_df)
-        pb <- progress::progress_bar$new(total = nrow(model2_df))
+        pb <- .make_progress(nrow(model2_df), label = "firth linfct multi-peptide")
         res2 <- vector(mode = "list", nrow(model2_df))
         for (i in seq_along(model2_df$linear_model)) {
           pb$tick()

@@ -150,7 +150,7 @@ Contrasts <- R6::R6Class(
         return(res)
       } else {
         res <- vector(mode = "list", nrow(self$models))
-        pb <- progress::progress_bar$new(total = length(self$models$linear_model))
+        pb <- .make_progress(length(self$models$linear_model), label = "linfct")
 
         model <- get_complete_model_fit(self$models)$linear_model[[1]]
         compmodel <- .linfct(model, self$contrasts, avg = avg)

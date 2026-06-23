@@ -11,6 +11,15 @@ marks all LFQData API, standalone-function refactoring, Transformer refactoring,
 and private `data`/`config` encapsulation phases as DONE/RESOLVED. The root
 `TODO.md` now keeps only the remaining broader encapsulation follow-ups.
 
+Archived `TODO_facade_analysis_findings.md` after the originally requested
+visible LM-impute rescue path was resolved by `model_df$imputed` tagging,
+`WaldTest_moderated_imputed` model names, and the `prolfquapp` legacy alias
+mapping to `lm_impute`.
+
+Archived `TODO_rfit_null_fallback_unnamed_coef.md` because the `prolfqua`
+source fix and regression test are present on `main`; any future real-WU rerun
+is deployment validation rather than an open source TODO.
+
 ---
 
 ## 2026-05-28 — TODO Cleanup

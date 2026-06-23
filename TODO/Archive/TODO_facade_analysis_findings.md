@@ -1,5 +1,17 @@
 # Facade / model / contrast adapter dependency analysis
 
+## Status: ARCHIVED 2026-06-23
+
+The concrete source gap that made this note active has been resolved without
+adding a separate `lm_impute_missing` facade. `build_model_impute()` now marks
+LOD-rescued rows in `model_df$imputed`, `Contrasts` propagates that flag into
+`modelName = "WaldTest_imputed"`, and `ContrastsModerated` renders rescued
+rows as `WaldTest_moderated_imputed`. Downstream `prolfquapp` maps the legacy
+`model = "prolfqua"` plus `model_missing = TRUE` alias to `lm_impute`, so users
+get the desired visible two-path output from the existing facade.
+
+The dependency analysis below is kept as historical architecture context.
+
 Triggered by the WU345302 PPE4-vs-CONTROL re-run: the user expected the
 "prolfqua + model_missing: yes" alias to produce a contrast table with
 two `modelName` levels showing where LM-impute had stepped in. The

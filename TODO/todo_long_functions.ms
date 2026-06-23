@@ -3,9 +3,8 @@
 Generated from the current `prolfqua/R` sources with BiocCheck 1.46.3 function-length logic
 (`BiocCheck:::getFunctionLengths`). The current sources contain 37 functions longer than 50 lines.
 
-Note: `TODO_BiocCheck.md` currently says the longest function is `fitFDistRobustly_LG()` at 267 lines. In the current
-source, the longest function is `fitFDist_LG()` at 136 lines; `fitFDistRobustly_LG()` has already been shortened below
-the 50-line threshold.
+Note: `fitFDistRobustly_LG()` and `fitFDist_LG()` in `R/squeezeVarRob.R` have now both been shortened below the 50-line
+threshold. Regenerate this file from a clean tree before using the full function inventory for the next cleanup pass.
 
 ## Should Refactor
 
@@ -62,7 +61,6 @@ linear functions only just above the threshold.
 
 | Function | Lines | File | Start | End | Plan to shorten |
 | --- | ---: | --- | ---: | ---: | --- |
-| `fitFDist_LG` | 136 | `R/squeezeVarRob.R` | 64 | 199 | Leave unless BiocCheck compliance becomes mandatory. This is a limma-derived numerical routine; splitting it may obscure the reference algorithm and increase regression risk. |
 | `trigammaInverse` | 60 | `R/squeezeVarRob.R` | 3 | 62 | Leave unless changing the numerical code for another reason. The guard clauses and Newton iteration are compact enough and easier to audit in one place. |
 | `build_model_limpa` | 51 | `R/ContrastsLimpa.R` | 104 | 154 | Leave for now. It is linear setup/validation/fitting code, only one line over the threshold, and extraction would add more indirection than clarity. |
 | `transform_work_intensity` | 51 | `R/LFQDataTransformer.R` | 261 | 311 | Leave for now. It is only one line over the threshold and already has a simple flow: name resolution, diagnostics, mutate, return. |

@@ -38,7 +38,11 @@ R code checks.
   - Latest BiocCheck no longer reports missing examples.
 - [ ] Review long functions; BiocCheck reports 37 functions over 50 lines.
   - Addressed: `fitFDistRobustly_LG()` in `R/squeezeVarRob.R` was covered by regression tests and split into helpers.
-  - Current longest: `fitFDist_LG()` in `R/squeezeVarRob.R` at 136 lines.
+  - Direct golden-output tests now cover `fitFDist_LG()` plain, covariate-trend, missing-input, and validation paths, so
+    it has a harness before any refactor.
+  - Addressed: `fitFDist_LG()` in `R/squeezeVarRob.R` was split into internal helpers and is now 46 lines by
+    `BiocCheck:::getFunctionLengths`; the remaining over-threshold function in that file is `trigammaInverse()` at 60
+    lines.
 - [ ] Decide whether to adopt Bioconductor formatting conventions over the package's local convention.
   - BiocCheck reports 1002 lines over 80 characters.
   - BiocCheck reports 5407 lines whose indentation is not a multiple of 4 spaces.
