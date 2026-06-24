@@ -5,7 +5,11 @@ Compute borrowed variance from successful model fits
 ## Usage
 
 ``` r
-compute_borrowed_variance(model_df, method = c("sigma", "vcov"))
+compute_borrowed_variance(
+  model_df,
+  method = c("sigma", "vcov"),
+  on_misalign = c("fallback", "fail")
+)
 ```
 
 ## Arguments
@@ -18,6 +22,16 @@ compute_borrowed_variance(model_df, method = c("sigma", "vcov"))
 
   "sigma" borrows scalar sigma and uses per-protein (X'X)^-1, "vcov"
   borrows element-wise median of full vcov matrices
+
+- on_misalign:
+
+  behaviour when donor `vcov` matrices cannot be aligned by coefficient
+  name (`method = "vcov"` only). "fallback" (default) warns and falls
+  back to the sigma method, preserving the lm behaviour. "fail" signals
+  a `prolfqua_borrow_failed` condition so the caller can skip the
+  rescue; backends without an lm-style `summary(fit)$cov.unscaled` (e.g.
+  rfit) must use this because the sigma fallback is not applicable to
+  them.
 
 ## Value
 
@@ -52,6 +66,7 @@ Other modelling:
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md),
+[`ContrastsRfitImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
@@ -100,7 +115,7 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
-[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
+[`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
@@ -134,7 +149,7 @@ stopifnot(is.numeric(borrowed_s$sigma) && borrowed_s$sigma > 0)
 stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
 
 # Vcov method: element-wise median vcov from donors.
-# Falls back to sigma if donor models have different coefficient counts.
+# Falls back to sigma if donor models have misaligned coefficient names.
 mod_no_missing <- sim_build_models_lm(model = "parallel3",
   Nprot = 10, with_missing = FALSE)
 #> creating sampleName from file_name column

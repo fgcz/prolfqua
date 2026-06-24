@@ -1,20 +1,30 @@
-# Create an imputed lm wrapper
+# Create an imputed model wrapper
 
-Wraps an lm object with borrowed covariance information. S3 generics
-vcov(), sigma(), and df.residual() dispatch to the borrowed values
-instead of the original model's.
+Wraps a refitted model (`lm`, `rfit`, ...) with borrowed covariance
+information. S3 generics vcov(), sigma(), and df.residual() dispatch to
+the borrowed values instead of the original model's, while
+coef()/terms() still fall through to the wrapped fit. The wrapper is
+backend-neutral: the class is prepended to whatever the refit already
+carries (e.g. `c("imputed_model", "lm")` or
+`c("imputed_model", "rfit_prolfqua", "rfit")`).
 
 ## Usage
 
 ``` r
-new_lm_imputed(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed)
+new_imputed_model(
+  model,
+  borrowed_vcov,
+  borrowed_sigma,
+  borrowed_df,
+  n_observed
+)
 ```
 
 ## Arguments
 
 - model:
 
-  lm object fitted on imputed data
+  model object fitted on imputed data
 
 - borrowed_vcov:
 
@@ -22,7 +32,7 @@ new_lm_imputed(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed)
 
 - borrowed_sigma:
 
-  numeric, borrowed residual standard error
+  numeric, borrowed residual standard error / scale
 
 - borrowed_df:
 
@@ -34,7 +44,7 @@ new_lm_imputed(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed)
 
 ## Value
 
-lm_imputed object
+imputed_model object
 
 ## See also
 
@@ -65,6 +75,7 @@ Other modelling:
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md),
+[`ContrastsRfitImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
@@ -139,14 +150,14 @@ dat <- data.frame(group_ = rep(c("A", "B"), each = 4),
 fit <- lm(y ~ group_, data = dat)
 
 # Wrap with borrowed variance (in practice these come from donor pool)
-wrapped <- prolfqua:::new_lm_imputed(fit,
+wrapped <- prolfqua:::new_imputed_model(fit,
   borrowed_vcov = vcov(fit),
   borrowed_sigma = 0.8,
   borrowed_df = 6,
   n_observed = 5)
 
 # S3 dispatch returns borrowed values
-stopifnot(inherits(wrapped, "lm_imputed"))
+stopifnot(inherits(wrapped, "imputed_model"))
 stopifnot(sigma(wrapped) == 0.8)
 stopifnot(df.residual(wrapped) == 6)
 # coefficients() still dispatches to underlying lm

@@ -57,10 +57,28 @@
 <span>  <span class="va">pepIntensity</span>,</span>
 <span>  <span class="va">model_strategy</span>,</span>
 <span>  subject_id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"Model"</span></span>
+<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
+<span>  label <span class="op">=</span> <span class="va">model_name</span>,</span>
+<span>  progress <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"prolfqua.progress"</span>, <span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-label">label<a class="anchor" aria-label="anchor" href="#arg-label"></a></dt>
+<dd><p>short label naming this fitting pass in progress output;
+defaults to `model_name`.</p></dd>
+
+
+<dt id="arg-progress">progress<a class="anchor" aria-label="anchor" href="#arg-progress"></a></dt>
+<dd><p>progress reporter selector passed to [.make_progress()];
+`NULL` (default) keeps the legacy terminal `progress::progress_bar`, a
+`function(i, total, label)` or `"message"` emits batch-visible progress.
+Defaults to `getOption("prolfqua.progress", NULL)`.</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other modelling:
@@ -90,6 +108,7 @@
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
 <code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>,
 <code><a href="ContrastsRfitFacade.html">ContrastsRfitFacade</a></code>,
+<code><a href="ContrastsRfitImputeFacade.html">ContrastsRfitImputeFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="LR_test.html">LR_test()</a></code>,
@@ -138,7 +157,7 @@
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
-<code><a href="new_lm_imputed.html">new_lm_imputed()</a></code>,
+<code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,

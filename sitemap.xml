@@ -55,6 +55,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsROPECA.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsRfitImputeFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsTable.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/FACADE_REGISTRY.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.html</loc></url>
@@ -123,6 +124,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/df.residual.rlm.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/dot-get_robscales.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/dot-lfqdata_to_elist.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/dot-make_progress.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/dot-resolve_weights.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/encode_bin_resp.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/estimate_intensity.html</loc></url>
@@ -176,7 +178,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/multigroup_volcano.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/names_to_matrix.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/new_lm_imputed.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/new_imputed_model.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_B_in_A.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_children_experiment.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_features_experiment.html</loc></url>

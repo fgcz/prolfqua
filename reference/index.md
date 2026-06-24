@@ -98,6 +98,9 @@
 - [`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md)
   : Rfit rank-based regression contrast analysis facade
 
+- [`ContrastsRfitImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md)
+  : Rfit rank-regression contrast analysis with LOD imputation facade
+
 - [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md)
   : holds results when contrasts are added.
 

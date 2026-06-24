@@ -12,8 +12,8 @@ build_contrast_analysis(
   modelstr,
   contrasts,
   method = c("lm", "lm_impute", "lm_missing", "limma", "limma_impute", "limma_voom",
-    "limma_voom_impute", "limpa", "limpa_nested", "rlm", "rfit", "deqms", "deqms_voom",
-    "firth", "firth_nested", "lmer_nested", "ropeca_nested"),
+    "limma_voom_impute", "limpa", "limpa_nested", "rlm", "rfit", "rfit_impute", "deqms",
+    "deqms_voom", "firth", "firth_nested", "lmer_nested", "ropeca_nested"),
   ...
 )
 ```
@@ -40,8 +40,9 @@ build_contrast_analysis(
 
   one of `"lm"`, `"lm_impute"`, `"lm_missing"`, `"limma"`,
   `"limma_impute"`, `"limma_voom"`, `"limma_voom_impute"`, `"limpa"`,
-  `"limpa_nested"`, `"rlm"`, `"deqms"`, `"deqms_voom"`, `"firth"`,
-  `"firth_nested"`, `"lmer_nested"`, `"ropeca_nested"`
+  `"limpa_nested"`, `"rlm"`, `"rfit"`, `"rfit_impute"`, `"deqms"`,
+  `"deqms_voom"`, `"firth"`, `"firth_nested"`, `"lmer_nested"`,
+  `"ropeca_nested"`
 
 - ...:
 
@@ -54,6 +55,8 @@ one of
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsRLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRLMFacade.md),
+[`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md),
+[`ContrastsRfitImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
 [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
@@ -109,6 +112,7 @@ Other modelling:
 [`ContrastsROPECA`](https://wolski.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md),
+[`ContrastsRfitImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
@@ -157,7 +161,7 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
 [`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
-[`new_lm_imputed()`](https://wolski.github.io/prolfqua/reference/new_lm_imputed.md),
+[`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
