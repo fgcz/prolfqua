@@ -332,28 +332,40 @@ medpolish_estimate_dfconfig <- function(
   data <- pdata |>
     select(all_of(c(samples, feature, response))) |>
     na.omit()
-  ## If there is only one 1 peptide for all samples return response of that peptide
   expname <- paste0("mean.", response)
 
+  ## All branches hand off here so the output schema is identical: a single, fixed column order
+  ## (samples, mean.<response>, lmrob, weights) with one row per sample present in the input.
+  ## The final left_join re-establishes samples dropped by na.omit, so downstream
+  ## unnest()/.reestablish_condition() always bind the same columns and never lose a sample.
+  all_samples <- pdata |>
+    dplyr::select(all_of(samples)) |>
+    distinct()
+  finalize <- function(per_sample) {
+    per_sample <- per_sample |>
+      dplyr::select(all_of(c(samples, expname, "lmrob", "weights")))
+    dplyr::left_join(all_samples, per_sample, by = samples)
+  }
+
+  ## If there is only 1 peptide for all samples use the response of that peptide directly
   if (length(unique(data[[feature]])) == 1L) {
-    data$lmrob <- data[[response]]
-    data$weights <- 1
-    data <- rename(data, !!expname := !!sym(response))
-    data <- data |> select(-!!sym(feature))
-    return(data)
+    per_sample <- data |>
+      dplyr::mutate(lmrob = !!sym(response), weights = 1) |>
+      rename(!!expname := !!sym(response))
+    return(finalize(per_sample))
   }
 
   ## model-matrix breaks on factors with 1 level so make vector of ones (will be intercept)
   if (length(unique(data[[samples]])) == 1L) {
-    data <- data |>
+    per_sample <- data |>
       group_by(across(all_of(samples))) |>
       summarize(
         lmrob = mean(!!sym(response)),
         !!expname := mean(!!sym(response)),
+        weights = 1,
         .groups = "drop"
       )
-    data$weights <- 1
-    return(data)
+    return(finalize(per_sample))
   }
 
   ## sum contrast on peptide level so sample effect will be mean over all peptides instead of reference level
@@ -393,18 +405,13 @@ medpolish_estimate_dfconfig <- function(
       res$lmrob <- res[[expname]]
     }
   } else {
-    sumdata <- data |>
+    res <- data |>
       select(-!!sym(feature)) |>
       group_by(across(all_of(samples))) |>
       dplyr::summarize(!!expname := mean(!!sym(response)), lmrob = mean(!!sym(response)), .groups = "drop")
-    sumdata$weights <- 1
-    res <- sumdata
+    res$weights <- 1
   }
-  pdata <- pdata |>
-    dplyr::select(all_of(samples)) |>
-    distinct()
-  res <- left_join(pdata, res, by = samples)
-  return(res)
+  return(finalize(res))
 }
 
 

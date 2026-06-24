@@ -18,13 +18,16 @@ encode_bin_resp <- function(lfqdata, name = "bin_resp") {
 
 # Functions - Missigness ----
 
-.get_sides <- function(contrast) {
-  get_ast <- function(ee) purrr::map_if(as.list(ee), is.call, get_ast)
-
-  ast_list <- get_ast(rlang::parse_expr(contrast))
-  ast_array <- array(as.character(unlist(ast_list)))
-  ast_array <- gsub("`", "", ast_array)
-  return(ast_array)
+# Split a contrast "LHS - RHS" into its left/right side expressions, used by
+# get_contrast() to derive group_1 / group_2. Returns NULL for anything that is
+# not a top-level binary minus (get_contrast() rejects those).
+.contrast_sides_expr <- function(contrast) {
+  expr <- rlang::parse_expr(contrast)
+  if (rlang::is_call(expr, "-") && length(expr) == 3L) {
+    list(lhs = expr[[2]], rhs = expr[[3]], full = expr)
+  } else {
+    NULL
+  }
 }
 
 #' Compute fold changes given Contrasts
@@ -54,32 +57,44 @@ encode_bin_resp <- function(lfqdata, name = "bin_resp") {
 #'
 #'
 get_contrast <- function(data, hierarchy_keys, contrasts) {
-  for (i in seq_along(contrasts)) {
-    message(names(contrasts)[i], "=", contrasts[i], "\n")
-    data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
-  }
   res <- vector(mode = "list", length(contrasts))
   names(res) <- names(contrasts)
   for (i in seq_along(contrasts)) {
-    sides <- .get_sides(contrasts[i])
-    sides <- intersect(sides, colnames(data))
+    cname <- names(contrasts)[i]
+    message(cname, "=", contrasts[i], "\n")
 
-    df <- dplyr::select(
-      data,
-      dplyr::all_of(hierarchy_keys),
-      group_1 = dplyr::all_of(sides[1]),
-      group_2 = dplyr::all_of(sides[2]),
-      estimate = dplyr::all_of(names(contrasts)[i])
-    )
+    # A contrast must be a difference "LHS - RHS" (e.g. "group_A - group_B" or
+    # "(group_A + group_B)/2 - group_Ctrl"). group_1 / group_2 are the evaluated
+    # left / right sides; estimate is their difference.
+    sx <- .contrast_sides_expr(contrasts[i])
+    if (is.null(sx)) {
+      stop(
+        "get_contrast: contrast '",
+        cname,
+        "' (",
+        contrasts[i],
+        ") is not of the required form 'LHS - RHS'. A contrast must be a ",
+        "difference of two group expressions, e.g. 'group_A - group_B' or ",
+        "'(group_A + group_B)/2 - group_Ctrl'.",
+        call. = FALSE
+      )
+    }
 
-    df$group_1_name <- sides[1]
-    df$group_2_name <- sides[2]
-    df$contrast <- names(contrasts)[i]
-
-    res[[names(contrasts)[i]]] <- df
+    # A contrast referencing a level absent from `data` errors here at mutate
+    # ("object '<level>' not found") -- once per contrast, not per row.
+    dd <- dplyr::mutate(data, group_1 = !!sx$lhs, group_2 = !!sx$rhs, estimate = !!sx$full)
+    # Materialize this contrast under its own name so a *later* nested contrast
+    # can reference it as a group, e.g. "T_C_gv_WT - T_C_gv_KO" after
+    # T_C_gv_WT / T_C_gv_KO have been defined. Sides may therefore be a level
+    # present in `data` or the name of an earlier contrast.
+    data[[cname]] <- dd[["estimate"]]
+    df <- dplyr::select(dd, dplyr::all_of(hierarchy_keys), "group_1", "group_2", "estimate")
+    df$group_1_name <- rlang::as_label(sx$lhs)
+    df$group_2_name <- rlang::as_label(sx$rhs)
+    df$contrast <- cname
+    res[[cname]] <- df
   }
-  res <- dplyr::bind_rows(res)
-  return(dplyr::ungroup(res))
+  dplyr::ungroup(dplyr::bind_rows(res))
 }
 
 

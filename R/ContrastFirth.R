@@ -49,7 +49,7 @@
 #' pl <- ctrpep$get_Plotter()
 #'
 ContrastsFirth <- R6::R6Class(
-  "ContrastFrith",
+  "ContrastsFirth",
   inherit = ContrastsInterface,
   public = list(
     #' @field models Model

@@ -202,6 +202,7 @@ test_that("ContrastsFirth and ContrastsFirthFacade", {
 
   mod <- build_model_glm_protein(lfqdata, "~ group_")
   ctr <- ContrastsFirth$new(mod, Contr)
+  expect_true(inherits(ctr, "ContrastsFirth"))
 
   res <- ctr$get_contrasts()
   expect_s3_class(res, "data.frame")

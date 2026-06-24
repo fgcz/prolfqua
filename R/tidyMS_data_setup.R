@@ -6,7 +6,13 @@
 #' @param configuration AnalysisConfiguration
 #' @param cc complete cases default TRUE
 #' @param from_factors if TRUE, create sampleName from factor columns
-#' @return The computed result.
+#' @param debug if FALSE (default) and any hierarchy-key/sample combination has
+#'   more than one observation, stop with an informative error. If TRUE, warn
+#'   and return the diagnostic count table (inspect rows where n > 1) instead.
+#' @return A tibble with the columns relevant for \code{configuration}
+#'   (sample, hierarchy, factor and response columns). Stops if any
+#'   hierarchy-key/sample combination is observed more than once (unless
+#'   \code{debug = TRUE}).
 #' @export
 #' @family configuration
 #' @examples
@@ -48,7 +54,7 @@
 #'
 #' adata <- setup_analysis(data, config)
 #'
-setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE) {
+setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE, debug = FALSE) {
   configuration <- configuration$clone(deep = TRUE)
   if (is.null(configuration$file_name)) {
     stop("file_name column is not specified in configuration.")
@@ -148,19 +154,28 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE)
     group_by(!!!syms(c(configuration$file_name, configuration$hierarchy_keys(), configuration$isotope_label))) |>
     summarize(n = n())
   if (any(txd$n > 1)) {
-    str <- paste(
-      "There is more than ONE observations for each : ",
+    offending <- dplyr::filter(dplyr::ungroup(txd), .data[["n"]] > 1)
+    str <- paste0(
+      "setup_analysis: there is more than ONE observation for ",
+      nrow(offending),
+      " ",
       paste(configuration$hierarchy_keys(), collapse = ", "),
-      ",\n",
-      "and sample : ",
+      " / sample (column '",
       configuration$sample_name,
-      "; (filename) : ",
+      "', file '",
       configuration$file_name,
-      "\n"
+      "') combination(s).\n",
+      "Each hierarchy key must be observed at most once per sample.\n",
+      "First offending keys:\n",
+      paste(utils::capture.output(print(utils::head(offending, 5))), collapse = "\n"),
+      "\nRe-run setup_analysis(..., debug = TRUE) to return the full count table for inspection ",
+      "(rows where n > 1)."
     )
-    warning(str)
-    warning("Please inspect the returned dataframe. Check for rows where n > 1\n e.g. res |> dplyr::filter(n > 1)")
-    return(txd)
+    if (debug) {
+      warning(str)
+      return(txd)
+    }
+    stop(str, call. = FALSE)
   }
   if (cc) {
     data <- .complete_cases_impl(

@@ -4,7 +4,13 @@
 \alias{setup_analysis}
 \title{Setup a tidy table compatible with a \code{\link{AnalysisConfiguration}}}
 \usage{
-setup_analysis(data, configuration, cc = TRUE, from_factors = FALSE)
+setup_analysis(
+  data,
+  configuration,
+  cc = TRUE,
+  from_factors = FALSE,
+  debug = FALSE
+)
 }
 \arguments{
 \item{data}{data.frame}
@@ -14,9 +20,16 @@ setup_analysis(data, configuration, cc = TRUE, from_factors = FALSE)
 \item{cc}{complete cases default TRUE}
 
 \item{from_factors}{if TRUE, create sampleName from factor columns}
+
+\item{debug}{if FALSE (default) and any hierarchy-key/sample combination has
+more than one observation, stop with an informative error. If TRUE, warn
+and return the diagnostic count table (inspect rows where n > 1) instead.}
 }
 \value{
-The computed result.
+A tibble with the columns relevant for \code{configuration}
+  (sample, hierarchy, factor and response columns). Stops if any
+  hierarchy-key/sample combination is observed more than once (unless
+  \code{debug = TRUE}).
 }
 \description{
 Extracts columns relevant for a configuration from a data frame

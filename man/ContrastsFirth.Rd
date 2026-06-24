@@ -127,7 +127,7 @@ Other modelling:
 }
 \concept{modelling}
 \section{Super class}{
-\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastFrith}
+\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsFirth}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -149,13 +149,13 @@ Other modelling:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-ContrastFrith-new}{\code{ContrastsFirth$new()}}
-\item \href{#method-ContrastFrith-get_contrast_sides}{\code{ContrastsFirth$get_contrast_sides()}}
-\item \href{#method-ContrastFrith-get_linfct}{\code{ContrastsFirth$get_linfct()}}
-\item \href{#method-ContrastFrith-get_contrasts}{\code{ContrastsFirth$get_contrasts()}}
-\item \href{#method-ContrastFrith-get_Plotter}{\code{ContrastsFirth$get_Plotter()}}
-\item \href{#method-ContrastFrith-to_wide}{\code{ContrastsFirth$to_wide()}}
-\item \href{#method-ContrastFrith-clone}{\code{ContrastsFirth$clone()}}
+\item \href{#method-ContrastsFirth-new}{\code{ContrastsFirth$new()}}
+\item \href{#method-ContrastsFirth-get_contrast_sides}{\code{ContrastsFirth$get_contrast_sides()}}
+\item \href{#method-ContrastsFirth-get_linfct}{\code{ContrastsFirth$get_linfct()}}
+\item \href{#method-ContrastsFirth-get_contrasts}{\code{ContrastsFirth$get_contrasts()}}
+\item \href{#method-ContrastsFirth-get_Plotter}{\code{ContrastsFirth$get_Plotter()}}
+\item \href{#method-ContrastsFirth-to_wide}{\code{ContrastsFirth$to_wide()}}
+\item \href{#method-ContrastsFirth-clone}{\code{ContrastsFirth$clone()}}
 }
 }
 \if{html}{\out{
@@ -173,8 +173,8 @@ Other modelling:
 </details>
 }}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastFrith-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastFrith-new}{}}}
+\if{html}{\out{<a id="method-ContrastsFirth-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFirth-new}{}}}
 \subsection{Method \code{new()}}{
 initialize
 create Contrast
@@ -202,8 +202,8 @@ create Contrast
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastFrith-get_contrast_sides"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastFrith-get_contrast_sides}{}}}
+\if{html}{\out{<a id="method-ContrastsFirth-get_contrast_sides"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFirth-get_contrast_sides}{}}}
 \subsection{Method \code{get_contrast_sides()}}{
 get both sides of contrasts
 \subsection{Usage}{
@@ -212,8 +212,8 @@ get both sides of contrasts
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastFrith-get_linfct"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastFrith-get_linfct}{}}}
+\if{html}{\out{<a id="method-ContrastsFirth-get_linfct"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFirth-get_linfct}{}}}
 \subsection{Method \code{get_linfct()}}{
 get linear functions from contrasts
 \subsection{Usage}{
@@ -229,8 +229,8 @@ get linear functions from contrasts
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastFrith-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastFrith-get_contrasts}{}}}
+\if{html}{\out{<a id="method-ContrastsFirth-get_contrasts"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFirth-get_contrasts}{}}}
 \subsection{Method \code{get_contrasts()}}{
 get table with contrast estimates
 \subsection{Usage}{
@@ -249,8 +249,8 @@ data.frame with contrasts
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastFrith-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastFrith-get_Plotter}{}}}
+\if{html}{\out{<a id="method-ContrastsFirth-get_Plotter"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFirth-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
 return \code{\link{ContrastsPlotter}}
 creates Contrast_Plotter
@@ -272,8 +272,8 @@ creates Contrast_Plotter
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastFrith-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastFrith-to_wide}{}}}
+\if{html}{\out{<a id="method-ContrastsFirth-to_wide"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFirth-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
 convert to wide format
 \subsection{Usage}{
@@ -292,8 +292,8 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastFrith-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastFrith-clone}{}}}
+\if{html}{\out{<a id="method-ContrastsFirth-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFirth-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
