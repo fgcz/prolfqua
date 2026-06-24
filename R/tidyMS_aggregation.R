@@ -798,10 +798,20 @@ nr_children_experiment <- function(
   nr_children_col,
   name_nr_child = "nr_child_exp"
 ) {
-  xz <- nr_obs_sample(data, response, hierarchy_keys_depth, file_name, nr_children_col)
-  xz |>
-    group_by(!!!syms(hierarchy_keys_depth)) |>
-    dplyr::summarize(!!name_nr_child := max(!!sym(nr_children_col)), .groups = "drop")
+  per_sample_col <- "nr_children_per_sample"
+  # children (e.g. peptides) observed per hierarchy unit in EACH sample
+  per_sample <- nr_obs_sample(
+    data,
+    response,
+    hierarchy_keys_depth,
+    file_name,
+    nr_children_col = nr_children_col,
+    new_child = per_sample_col
+  )
+  # experiment-wide count = the largest per-sample count across all samples
+  per_sample |>
+    dplyr::group_by(!!!syms(hierarchy_keys_depth)) |>
+    dplyr::summarize(!!name_nr_child := max(!!sym(per_sample_col)), .groups = "drop")
 }
 
 #' Count distinct child features per hierarchy unit
