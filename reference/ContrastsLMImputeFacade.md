@@ -31,6 +31,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -119,9 +120,11 @@ Other modelling:
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Super class
+## Super classes
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\>
+[`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsLMImputeFacade`
 
 ## Public fields
@@ -148,14 +151,6 @@ Other modelling:
 
 - [`ContrastsLMImputeFacade$new()`](#method-ContrastsLMImputeFacade-new)
 
-- [`ContrastsLMImputeFacade$get_contrasts()`](#method-ContrastsLMImputeFacade-get_contrasts)
-
-- [`ContrastsLMImputeFacade$get_missing()`](#method-ContrastsLMImputeFacade-get_missing)
-
-- [`ContrastsLMImputeFacade$get_Plotter()`](#method-ContrastsLMImputeFacade-get_Plotter)
-
-- [`ContrastsLMImputeFacade$to_wide()`](#method-ContrastsLMImputeFacade-to_wide)
-
 - [`ContrastsLMImputeFacade$clone()`](#method-ContrastsLMImputeFacade-clone)
 
 Inherited methods
@@ -168,6 +163,10 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsFacadeBase$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
+- [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
+- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
+- [`prolfqua::ContrastsFacadeBase$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -228,64 +227,6 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
-
-get contrast results
-
-#### Usage
-
-    ContrastsLMImputeFacade$get_contrasts(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$get_contrasts
-
-------------------------------------------------------------------------
-
-### Method `get_missing()`
-
-get protein x contrast pairs that could not be estimated
-
-#### Usage
-
-    ContrastsLMImputeFacade$get_missing()
-
-------------------------------------------------------------------------
-
-### Method `get_Plotter()`
-
-get ContrastsPlotter
-
-#### Usage
-
-    ContrastsLMImputeFacade$get_Plotter(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$get_Plotter
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert results to wide format
-
-#### Usage
-
-    ContrastsLMImputeFacade$to_wide(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$to_wide
-
-------------------------------------------------------------------------
-
 ### Method `clone()`
 
 The objects of this class are cloneable with this method.
@@ -318,15 +259,15 @@ head(fa$get_contrasts())
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 14
-#>   facade  modelName protein_Id contrast    diff std.error avgAbd statistic    df
-#>   <chr>   <chr>     <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lm_imp… WaldTest… 0EfVhX~29… A_vs_Ct…  1.24       0.731   22.6    1.88   15.7 
-#> 2 lm_imp… WaldTest… 0m5WN4~67… A_vs_Ct… -0.0361     0.614   20.8   -0.0334 13.7 
-#> 3 lm_imp… WaldTest… 7QuTub~61… A_vs_Ct…  0.909      0.943   16.7    0.961   8.74
-#> 4 lm_imp… WaldTest… 7cbcrd~26… A_vs_Ct…  0.612      1.08    21.9    0.574  11.7 
-#> 5 lm_imp… WaldTest… 9VUkAq~34… A_vs_Ct…  0.768      1.42    20.0    0.710  14.7 
-#> 6 lm_imp… WaldTest… At886V~77… A_vs_Ct… -1.86       0.706   29.1   -2.40   15.7 
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
+#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
+#> 1 lm_impute observed      0EfVhX~29… A_vs_Ct…  1.24       0.731   22.6    1.88  
+#> 2 lm_impute observed      0m5WN4~67… A_vs_Ct… -0.0361     0.614   20.8   -0.0334
+#> 3 lm_impute observed      7QuTub~61… A_vs_Ct…  0.909      0.943   16.7    0.961 
+#> 4 lm_impute observed      7cbcrd~26… A_vs_Ct…  0.612      1.08    21.9    0.574 
+#> 5 lm_impute observed      9VUkAq~34… A_vs_Ct…  0.768      1.42    20.0    0.710 
+#> 6 lm_impute observed      At886V~77… A_vs_Ct… -1.86       0.706   29.1   -2.40  
+#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 30 × 5

@@ -33,9 +33,9 @@ This facade is deprecated because its missing-data leg uses
 `lm_impute` facade
 ([`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md)),
 which fits an LM for every protein and refits failed/singular fits with
-LOD imputation and borrowed per-protein variance, surfacing rescued rows
-as `modelName = "WaldTest_moderated_imputed"` in the output.
-Construction emits a `.Deprecated` warning; the entry is kept in
+LOD imputation and borrowed per-protein variance, flagging rescued rows
+as `estimate_type = "lod_imputed"` in the output. Construction emits a
+`.Deprecated` warning; the entry is kept in
 [`FACADE_REGISTRY`](https://wolski.github.io/prolfqua/reference/FACADE_REGISTRY.md)
 so historical YAMLs continue to work.
 
@@ -50,6 +50,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -138,9 +139,11 @@ Other modelling:
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Super class
+## Super classes
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\>
+[`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsLMMissingFacade`
 
 ## Public fields
@@ -175,10 +178,6 @@ Other modelling:
 
 - [`ContrastsLMMissingFacade$new()`](#method-ContrastsLMMissingFacade-new)
 
-- [`ContrastsLMMissingFacade$get_contrasts()`](#method-ContrastsLMMissingFacade-get_contrasts)
-
-- [`ContrastsLMMissingFacade$get_missing()`](#method-ContrastsLMMissingFacade-get_missing)
-
 - [`ContrastsLMMissingFacade$get_Plotter()`](#method-ContrastsLMMissingFacade-get_Plotter)
 
 - [`ContrastsLMMissingFacade$to_wide()`](#method-ContrastsLMMissingFacade-to_wide)
@@ -195,6 +194,8 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
+- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
 
 ------------------------------------------------------------------------
 
@@ -238,61 +239,42 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
-
-get contrast results
-
-#### Usage
-
-    ContrastsLMMissingFacade$get_contrasts(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsTable\$get_contrasts
-
-------------------------------------------------------------------------
-
-### Method `get_missing()`
-
-get protein × contrast pairs that could not be estimated
-
-#### Usage
-
-    ContrastsLMMissingFacade$get_missing()
-
-------------------------------------------------------------------------
-
 ### Method `get_Plotter()`
 
-get ContrastsPlotter
+get
+[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
+built from the stamped facade output (so modelName is the facade key,
+not the merged leg names)
 
 #### Usage
 
-    ContrastsLMMissingFacade$get_Plotter(...)
+    ContrastsLMMissingFacade$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)
 
 #### Arguments
 
-- `...`:
+- `fc_threshold`:
 
-  passed to ContrastsTable\$get_Plotter
+  fold change threshold
+
+- `fdr_threshold`:
+
+  FDR threshold
 
 ------------------------------------------------------------------------
 
 ### Method `to_wide()`
 
-convert results to wide format
+convert results to wide format from the stamped facade output
 
 #### Usage
 
-    ContrastsLMMissingFacade$to_wide(...)
+    ContrastsLMMissingFacade$to_wide(columns = c("p.value", "FDR", "statistic"))
 
 #### Arguments
 
-- `...`:
+- `columns`:
 
-  passed to ContrastsTable\$to_wide
+  value columns to pivot
 
 ------------------------------------------------------------------------
 
@@ -336,15 +318,15 @@ suppressWarnings(
 #> Joining with `by = join_by(protein_Id, contrast)`
 head(fa$get_contrasts())
 #> # A tibble: 6 × 14
-#>   facade  modelName protein_Id contrast    diff std.error avgAbd statistic    df
-#>   <chr>   <fct>     <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lm_mis… WaldTest… 0EfVhX~29… A_vs_Ct…  1.24       0.731   22.6    1.85    13.7
-#> 2 lm_mis… WaldTest… 0m5WN4~67… A_vs_Ct… -0.0361     0.614   20.8   -0.0368  11.7
-#> 3 lm_mis… WaldTest… 7QuTub~61… A_vs_Ct… -0.680      0.806   16.6   -0.946   11.7
-#> 4 lm_mis… WaldTest… 7cbcrd~26… A_vs_Ct…  0.704      0.718   22.0    0.930   13.7
-#> 5 lm_mis… WaldTest… 9VUkAq~34… A_vs_Ct…  0.768      1.42    20.0    0.666   12.7
-#> 6 lm_mis… WaldTest… At886V~77… A_vs_Ct… -1.86       0.706   29.1   -2.48    13.7
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
+#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
+#> 1 lm_missi… observed      0EfVhX~29… A_vs_Ct…  1.24       0.731   22.6    1.85  
+#> 2 lm_missi… observed      0m5WN4~67… A_vs_Ct… -0.0361     0.614   20.8   -0.0368
+#> 3 lm_missi… observed      7QuTub~61… A_vs_Ct… -0.680      0.806   16.6   -0.946 
+#> 4 lm_missi… observed      7cbcrd~26… A_vs_Ct…  0.704      0.718   22.0    0.930 
+#> 5 lm_missi… observed      9VUkAq~34… A_vs_Ct…  0.768      1.42    20.0    0.666 
+#> 6 lm_missi… observed      At886V~77… A_vs_Ct… -1.86       0.706   29.1   -2.48  
+#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 30 × 5

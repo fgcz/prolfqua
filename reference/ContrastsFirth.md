@@ -15,6 +15,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
@@ -106,7 +107,7 @@ Other modelling:
 ## Super class
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
--\> `ContrastFrith`
+-\> `ContrastsFirth`
 
 ## Public fields
 
@@ -138,19 +139,19 @@ Other modelling:
 
 ### Public methods
 
-- [`ContrastsFirth$new()`](#method-ContrastFrith-new)
+- [`ContrastsFirth$new()`](#method-ContrastsFirth-new)
 
-- [`ContrastsFirth$get_contrast_sides()`](#method-ContrastFrith-get_contrast_sides)
+- [`ContrastsFirth$get_contrast_sides()`](#method-ContrastsFirth-get_contrast_sides)
 
-- [`ContrastsFirth$get_linfct()`](#method-ContrastFrith-get_linfct)
+- [`ContrastsFirth$get_linfct()`](#method-ContrastsFirth-get_linfct)
 
-- [`ContrastsFirth$get_contrasts()`](#method-ContrastFrith-get_contrasts)
+- [`ContrastsFirth$get_contrasts()`](#method-ContrastsFirth-get_contrasts)
 
-- [`ContrastsFirth$get_Plotter()`](#method-ContrastFrith-get_Plotter)
+- [`ContrastsFirth$get_Plotter()`](#method-ContrastsFirth-get_Plotter)
 
-- [`ContrastsFirth$to_wide()`](#method-ContrastFrith-to_wide)
+- [`ContrastsFirth$to_wide()`](#method-ContrastsFirth-to_wide)
 
-- [`ContrastsFirth$clone()`](#method-ContrastFrith-clone)
+- [`ContrastsFirth$clone()`](#method-ContrastsFirth-clone)
 
 Inherited methods
 
@@ -175,7 +176,7 @@ initialize create Contrast
       model,
       contrasts,
       p.adjust = prolfqua::adjust_p_values,
-      model_name = "WaldTestFirth"
+      model_name = "firth"
     )
 
 #### Arguments
@@ -195,7 +196,7 @@ initialize create Contrast
 
 - `model_name`:
 
-  name of contrast method, default WaldTest
+  name of contrast method, default firth
 
 ------------------------------------------------------------------------
 
@@ -222,6 +223,11 @@ get linear functions from contrasts
 - `avg`:
 
   logical TRUE - get also linfct for averages
+
+#### Returns
+
+a list with the linfct-annotated model containers (`models1` /
+`models2`); the shared input model is left untouched.
 
 ------------------------------------------------------------------------
 
@@ -324,62 +330,75 @@ ctr$get_contrast_sides()
 #> 1 Avs      group_A group_B   
 #> 2 AvsCtrl  group_A group_Ctrl
 ctr$get_linfct()
-#> <ContrastFrith>
-#>   Inherits from: <ContrastsInterface>
+#> $models1
+#> $models1$model_df
+#> # A tibble: 10 × 10
+#> # Groups:   protein_Id [10]
+#>    protein_Id  data     linear_model has_model_fit isSingular df.residual sigma
+#>    <chr>       <list>   <list>       <lgl>         <lgl>            <dbl> <dbl>
+#>  1 0EfVhX~0087 <tibble> <logistf>    TRUE          FALSE                9     1
+#>  2 7cbcrd~5725 <tibble> <logistf>    TRUE          FALSE                9     1
+#>  3 9VUkAq~4703 <tibble> <logistf>    TRUE          FALSE                9     1
+#>  4 BEJI92~5282 <tibble> <logistf>    TRUE          FALSE                9     1
+#>  5 CGzoYe~2147 <tibble> <logistf>    TRUE          FALSE                9     1
+#>  6 DoWup2~5896 <tibble> <logistf>    TRUE          FALSE                9     1
+#>  7 Fl4JiV~8625 <tibble> <logistf>    TRUE          FALSE                9     1
+#>  8 HvIpHG~9079 <tibble> <logistf>    TRUE          FALSE                9     1
+#>  9 JcKVfU~9653 <tibble> <logistf>    TRUE          FALSE                9     1
+#> 10 SGIVBl~5782 <tibble> <logistf>    TRUE          FALSE                9     1
+#> # ℹ 3 more variables: nr_coef <int>, nr_coef_not_NA <int>, linfct <list>
+#> 
+#> $models1$model_name
+#> [1] "logistf_1"
+#> 
+#> $models1$strategy
+#> <StrategyLogistf>
 #>   Public:
+#>     anova_df: AnovaExtractor, R6
 #>     clone: function (deep = FALSE) 
-#>     column_description: function () 
-#>     config: NULL
-#>     contrast_result: NULL
-#>     contrast_summary_table: function (rounded = TRUE) 
-#>     contrasts: group_A - group_B group_A - group_Ctrl
-#>     extra_artifacts: function () 
-#>     filter_significant: function (FDR_threshold = 0.05, diff_threshold = 1) 
-#>     get_Plotter: function (fc_threshold = 1, fdr_threshold = 0.1) 
-#>     get_config: function () 
-#>     get_contrast_sides: function () 
-#>     get_contrasts: function (all = FALSE) 
-#>     get_linfct: function (avg = TRUE) 
-#>     get_missing: function () 
-#>     get_ora: function (up = TRUE, FDR_threshold = 0.05, diff_threshold = 1) 
-#>     get_rank: function (score = NULL) 
-#>     initialize: function (model, contrasts, p.adjust = prolfqua::adjust_p_values, 
-#>     model_name: WaldTestFirth
-#>     models: ModelFirth, ModelInterface, R6
-#>     p.adjust: function (contrast_df, column = "p.value", group_by_col = "contrast", 
-#>     subject_id: protein_Id
-#>     to_wide: function (columns = c("p.value", "FDR", "statistic")) 
+#>     contrast_fun: function (...) 
+#>     df_residual: function (model) 
+#>     formula: formula
+#>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", 
+#>     isSingular: function (model) 
+#>     is_mixed: FALSE
+#>     model_fun: function (x, pb, get_formula = FALSE) 
+#>     model_name: logistf
+#>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...
+#>     sigma: function (model) 
+#> 
+#> 
 ctr$get_contrasts()
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct_firth
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 20 × 13
+#> # A tibble: 20 × 14
 #> # Groups:   contrast [2]
-#>    modelName protein_Id contrast sigma    df      diff   FDR std.error statistic
-#>    <chr>     <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>     <dbl>
-#>  1 WaldTest… 0EfVhX~00… Avs          1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
-#>  2 WaldTest… 0EfVhX~00… AvsCtrl      1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
-#>  3 WaldTest… 7cbcrd~57… Avs          1     9  6.90e-16 1          1.38  5.00e-16
-#>  4 WaldTest… 7cbcrd~57… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
-#>  5 WaldTest… 9VUkAq~47… Avs          1     9 -8.47e- 1 0.769      1.32 -6.40e- 1
-#>  6 WaldTest… 9VUkAq~47… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
-#>  7 WaldTest… BEJI92~52… Avs          1     9  8.47e- 1 0.769      1.32  6.40e- 1
-#>  8 WaldTest… BEJI92~52… AvsCtrl      1     9  2.20e+ 0 0.769      1.74  1.26e+ 0
-#>  9 WaldTest… CGzoYe~21… Avs          1     9  1.52e-15 1          2.11  7.20e-16
-#> 10 WaldTest… CGzoYe~21… AvsCtrl      1     9  1.07e-15 1          2.11  5.08e-16
-#> 11 WaldTest… DoWup2~58… Avs          1     9 -1.35e+ 0 0.769      1.78 -7.58e- 1
-#> 12 WaldTest… DoWup2~58… AvsCtrl      1     9 -3.04e+ 0 0.769      1.78 -1.71e+ 0
-#> 13 WaldTest… Fl4JiV~86… Avs          1     9  8.47e- 1 0.769      1.32  6.40e- 1
-#> 14 WaldTest… Fl4JiV~86… AvsCtrl      1     9  8.47e- 1 0.769      1.32  6.40e- 1
-#> 15 WaldTest… HvIpHG~90… Avs          1     9 -1.69e+ 0 0.769      1.38 -1.23e+ 0
-#> 16 WaldTest… HvIpHG~90… AvsCtrl      1     9 -1.69e+ 0 0.769      1.38 -1.23e+ 0
-#> 17 WaldTest… JcKVfU~96… Avs          1     9  1.52e-15 1          2.11  7.20e-16
-#> 18 WaldTest… JcKVfU~96… AvsCtrl      1     9  1.07e-15 1          2.11  5.08e-16
-#> 19 WaldTest… SGIVBl~57… Avs          1     9  1.35e+ 0 0.769      1.78  7.58e- 1
-#> 20 WaldTest… SGIVBl~57… AvsCtrl      1     9 -4.13e-16 1          2.11 -1.96e-16
-#> # ℹ 4 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   avgAbd <dbl>
+#>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
+#>    <chr>     <chr>         <chr>       <chr>    <dbl> <int>     <dbl> <dbl>
+#>  1 firth     observed      0EfVhX~0087 Avs          1     9 -8.47e- 1 0.769
+#>  2 firth     observed      0EfVhX~0087 AvsCtrl      1     9 -8.47e- 1 0.769
+#>  3 firth     observed      7cbcrd~5725 Avs          1     9  6.90e-16 1    
+#>  4 firth     observed      7cbcrd~5725 AvsCtrl      1     9  8.47e- 1 0.769
+#>  5 firth     observed      9VUkAq~4703 Avs          1     9 -8.47e- 1 0.769
+#>  6 firth     observed      9VUkAq~4703 AvsCtrl      1     9  8.47e- 1 0.769
+#>  7 firth     observed      BEJI92~5282 Avs          1     9  8.47e- 1 0.769
+#>  8 firth     observed      BEJI92~5282 AvsCtrl      1     9  2.20e+ 0 0.769
+#>  9 firth     observed      CGzoYe~2147 Avs          1     9  1.52e-15 1    
+#> 10 firth     observed      CGzoYe~2147 AvsCtrl      1     9  1.07e-15 1    
+#> 11 firth     observed      DoWup2~5896 Avs          1     9 -1.35e+ 0 0.769
+#> 12 firth     observed      DoWup2~5896 AvsCtrl      1     9 -3.04e+ 0 0.769
+#> 13 firth     observed      Fl4JiV~8625 Avs          1     9  8.47e- 1 0.769
+#> 14 firth     observed      Fl4JiV~8625 AvsCtrl      1     9  8.47e- 1 0.769
+#> 15 firth     observed      HvIpHG~9079 Avs          1     9 -1.69e+ 0 0.769
+#> 16 firth     observed      HvIpHG~9079 AvsCtrl      1     9 -1.69e+ 0 0.769
+#> 17 firth     observed      JcKVfU~9653 Avs          1     9  1.52e-15 1    
+#> 18 firth     observed      JcKVfU~9653 AvsCtrl      1     9  1.07e-15 1    
+#> 19 firth     observed      SGIVBl~5782 Avs          1     9  1.35e+ 0 0.769
+#> 20 firth     observed      SGIVBl~5782 AvsCtrl      1     9 -4.13e-16 1    
+#> # ℹ 6 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
 #> creating sampleName from file_name column
@@ -398,62 +417,103 @@ ctrpep$get_contrast_sides()
 #> 2 AvsCtrl  group_A group_Ctrl
 
 ctrpep$get_linfct()
-#> <ContrastFrith>
-#>   Inherits from: <ContrastsInterface>
+#> $models1
+#> $models1$model_df
+#> # A tibble: 4 × 10
+#> # Groups:   protein_Id [4]
+#>   protein_Id  data     linear_model has_model_fit isSingular df.residual sigma
+#>   <chr>       <list>   <list>       <lgl>         <lgl>            <dbl> <dbl>
+#> 1 7cbcrd~5725 <tibble> <logistf>    TRUE          FALSE                9     1
+#> 2 9VUkAq~4703 <tibble> <logistf>    TRUE          FALSE                9     1
+#> 3 CGzoYe~2147 <tibble> <logistf>    TRUE          FALSE                9     1
+#> 4 DoWup2~5896 <tibble> <logistf>    TRUE          FALSE                9     1
+#> # ℹ 3 more variables: nr_coef <int>, nr_coef_not_NA <int>, linfct <list>
+#> 
+#> $models1$model_name
+#> [1] "logistf_1"
+#> 
+#> $models1$strategy
+#> <StrategyLogistf>
 #>   Public:
+#>     anova_df: AnovaExtractor, R6
 #>     clone: function (deep = FALSE) 
-#>     column_description: function () 
-#>     config: NULL
-#>     contrast_result: NULL
-#>     contrast_summary_table: function (rounded = TRUE) 
-#>     contrasts: group_A - group_B group_A - group_Ctrl
-#>     extra_artifacts: function () 
-#>     filter_significant: function (FDR_threshold = 0.05, diff_threshold = 1) 
-#>     get_Plotter: function (fc_threshold = 1, fdr_threshold = 0.1) 
-#>     get_config: function () 
-#>     get_contrast_sides: function () 
-#>     get_contrasts: function (all = FALSE) 
-#>     get_linfct: function (avg = TRUE) 
-#>     get_missing: function () 
-#>     get_ora: function (up = TRUE, FDR_threshold = 0.05, diff_threshold = 1) 
-#>     get_rank: function (score = NULL) 
-#>     initialize: function (model, contrasts, p.adjust = prolfqua::adjust_p_values, 
-#>     model_name: WaldTestFirth
-#>     models: ModelFirth, ModelInterface, R6
-#>     p.adjust: function (contrast_df, column = "p.value", group_by_col = "contrast", 
-#>     subject_id: protein_Id
-#>     to_wide: function (columns = c("p.value", "FDR", "statistic")) 
+#>     contrast_fun: function (...) 
+#>     df_residual: function (model) 
+#>     formula: formula
+#>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", 
+#>     isSingular: function (model) 
+#>     is_mixed: FALSE
+#>     model_fun: function (x, pb, get_formula = FALSE) 
+#>     model_name: logistf
+#>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...
+#>     sigma: function (model) 
+#> 
+#> 
+#> $models2
+#> $models2$model_df
+#> # A tibble: 6 × 10
+#> # Groups:   protein_Id [6]
+#>   protein_Id  data     linear_model has_model_fit isSingular df.residual sigma
+#>   <chr>       <list>   <list>       <lgl>         <lgl>            <dbl> <dbl>
+#> 1 0EfVhX~0087 <tibble> <logistf>    TRUE          FALSE               31     1
+#> 2 BEJI92~5282 <tibble> <logistf>    TRUE          FALSE               20     1
+#> 3 Fl4JiV~8625 <tibble> <logistf>    TRUE          FALSE               42     1
+#> 4 HvIpHG~9079 <tibble> <logistf>    TRUE          FALSE               20     1
+#> 5 JcKVfU~9653 <tibble> <logistf>    TRUE          FALSE               75     1
+#> 6 SGIVBl~5782 <tibble> <logistf>    TRUE          FALSE               64     1
+#> # ℹ 3 more variables: nr_coef <int>, nr_coef_not_NA <int>, linfct <list>
+#> 
+#> $models2$model_name
+#> [1] "logistf_2"
+#> 
+#> $models2$strategy
+#> <StrategyLogistf>
+#>   Public:
+#>     anova_df: AnovaExtractor, R6
+#>     clone: function (deep = FALSE) 
+#>     contrast_fun: function (...) 
+#>     df_residual: function (model) 
+#>     formula: formula
+#>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", 
+#>     isSingular: function (model) 
+#>     is_mixed: FALSE
+#>     model_fun: function (x, pb, get_formula = FALSE) 
+#>     model_name: logistf
+#>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...
+#>     sigma: function (model) 
+#> 
+#> 
 ctrpep$get_contrasts()
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct_firth
 #> contrasts_linfct_firth
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 20 × 13
+#> # A tibble: 20 × 14
 #> # Groups:   contrast [2]
-#>    modelName protein_Id contrast sigma    df      diff   FDR std.error statistic
-#>    <chr>     <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>     <dbl>
-#>  1 WaldTest… 0EfVhX~00… Avs          1    31 -1.02e+ 0 0.463     0.838 -1.22e+ 0
-#>  2 WaldTest… 0EfVhX~00… AvsCtrl      1    31 -6.45e-10 1         0.822 -7.84e-10
-#>  3 WaldTest… BEJI92~52… Avs          1    20  1.41e-10 1.000     1.04   1.35e-10
-#>  4 WaldTest… BEJI92~52… AvsCtrl      1    20 -2.99e-16 1         1.04  -2.88e-16
-#>  5 WaldTest… Fl4JiV~86… Avs          1    42 -7.13e- 1 0.518     0.695 -1.03e+ 0
-#>  6 WaldTest… Fl4JiV~86… AvsCtrl      1    42  7.75e- 1 0.485     0.724  1.07e+ 0
-#>  7 WaldTest… HvIpHG~90… Avs          1    20 -1.98e+ 0 0.425     1.09  -1.81e+ 0
-#>  8 WaldTest… HvIpHG~90… AvsCtrl      1    20 -1.35e+ 0 0.485     0.984 -1.37e+ 0
-#>  9 WaldTest… JcKVfU~96… Avs          1    75 -1.24e+ 0 0.463     0.879 -1.41e+ 0
-#> 10 WaldTest… JcKVfU~96… AvsCtrl      1    75 -6.86e- 1 0.531     0.763 -8.99e- 1
-#> 11 WaldTest… SGIVBl~57… Avs          1    64 -7.95e- 1 0.463     0.630 -1.26e+ 0
-#> 12 WaldTest… SGIVBl~57… AvsCtrl      1    64 -7.95e- 1 0.485     0.630 -1.26e+ 0
-#> 13 WaldTest… 7cbcrd~57… Avs          1     9  8.47e- 1 0.598     1.32   6.40e- 1
-#> 14 WaldTest… 7cbcrd~57… AvsCtrl      1     9  1.69e+ 0 0.485     1.38   1.23e+ 0
-#> 15 WaldTest… 9VUkAq~47… Avs          1     9 -1.35e+ 0 0.585     1.78  -7.58e- 1
-#> 16 WaldTest… 9VUkAq~47… AvsCtrl      1     9 -4.39e+ 0 0.485     2.11  -2.08e+ 0
-#> 17 WaldTest… CGzoYe~21… Avs          1     9  1.35e+ 0 0.585     1.78   7.58e- 1
-#> 18 WaldTest… CGzoYe~21… AvsCtrl      1     9 -4.13e-16 1         2.11  -1.96e-16
-#> 19 WaldTest… DoWup2~58… Avs          1     9  4.39e+ 0 0.425     2.11   2.08e+ 0
-#> 20 WaldTest… DoWup2~58… AvsCtrl      1     9  3.04e+ 0 0.485     1.78   1.71e+ 0
-#> # ℹ 4 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   avgAbd <dbl>
+#>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
+#>    <chr>     <chr>         <chr>       <chr>    <dbl> <int>     <dbl> <dbl>
+#>  1 firth     observed      0EfVhX~0087 Avs          1    31 -1.02e+ 0 0.463
+#>  2 firth     observed      0EfVhX~0087 AvsCtrl      1    31 -6.45e-10 1    
+#>  3 firth     observed      BEJI92~5282 Avs          1    20  1.41e-10 1.000
+#>  4 firth     observed      BEJI92~5282 AvsCtrl      1    20 -2.99e-16 1    
+#>  5 firth     observed      Fl4JiV~8625 Avs          1    42 -7.13e- 1 0.518
+#>  6 firth     observed      Fl4JiV~8625 AvsCtrl      1    42  7.75e- 1 0.485
+#>  7 firth     observed      HvIpHG~9079 Avs          1    20 -1.98e+ 0 0.425
+#>  8 firth     observed      HvIpHG~9079 AvsCtrl      1    20 -1.35e+ 0 0.485
+#>  9 firth     observed      JcKVfU~9653 Avs          1    75 -1.24e+ 0 0.463
+#> 10 firth     observed      JcKVfU~9653 AvsCtrl      1    75 -6.86e- 1 0.531
+#> 11 firth     observed      SGIVBl~5782 Avs          1    64 -7.95e- 1 0.463
+#> 12 firth     observed      SGIVBl~5782 AvsCtrl      1    64 -7.95e- 1 0.485
+#> 13 firth     observed      7cbcrd~5725 Avs          1     9  8.47e- 1 0.598
+#> 14 firth     observed      7cbcrd~5725 AvsCtrl      1     9  1.69e+ 0 0.485
+#> 15 firth     observed      9VUkAq~4703 Avs          1     9 -1.35e+ 0 0.585
+#> 16 firth     observed      9VUkAq~4703 AvsCtrl      1     9 -4.39e+ 0 0.485
+#> 17 firth     observed      CGzoYe~2147 Avs          1     9  1.35e+ 0 0.585
+#> 18 firth     observed      CGzoYe~2147 AvsCtrl      1     9 -4.13e-16 1    
+#> 19 firth     observed      DoWup2~5896 Avs          1     9  4.39e+ 0 0.425
+#> 20 firth     observed      DoWup2~5896 AvsCtrl      1     9  3.04e+ 0 0.485
+#> # ℹ 6 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 pl <- ctrpep$get_Plotter()
 ```

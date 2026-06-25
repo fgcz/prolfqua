@@ -23,6 +23,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -350,16 +351,17 @@ Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 contr_limma <- ContrastsLimma$new(mod_limma, Contr)
 res <- contr_limma$get_contrasts()
 head(res)
-#> # A tibble: 6 × 13
-#>   modelName protein_Id contrast   diff     FDR std.error statistic p.value sigma
-#>   <chr>     <chr>      <chr>     <dbl>   <dbl>     <dbl>     <dbl>   <dbl> <dbl>
-#> 1 limma     0EfVhX~71… dil.b_v…  3.00  6.99e-4     0.681     4.40  1.43e-5 0.963
-#> 2 limma     0m5WN4~35… dil.b_v…  0.222 8.35e-1     0.736     0.301 7.63e-1 0.963
-#> 3 limma     76k03k~97… dil.b_v…  0.509 8.35e-1     0.681     0.747 4.55e-1 0.963
-#> 4 limma     7QuTub~55… dil.b_v… -1.22  4.39e-1     0.736    -1.66  9.69e-2 0.963
-#> 5 limma     7cbcrd~04… dil.b_v…  1.38  5.47e-1     0.963     1.44  1.51e-1 0.963
-#> 6 limma     7soopj~34… dil.b_v…  0.822 5.88e-1     0.681     1.21  2.28e-1 0.963
-#> # ℹ 4 more variables: df <dbl>, conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
+#> # A tibble: 6 × 14
+#>   modelName estimate_type protein_Id contrast   diff     FDR std.error statistic
+#>   <chr>     <chr>         <chr>      <chr>     <dbl>   <dbl>     <dbl>     <dbl>
+#> 1 limma     observed      0EfVhX~71… dil.b_v…  3.00  6.99e-4     0.681     4.40 
+#> 2 limma     observed      0m5WN4~35… dil.b_v…  0.222 8.35e-1     0.736     0.301
+#> 3 limma     observed      76k03k~97… dil.b_v…  0.509 8.35e-1     0.681     0.747
+#> 4 limma     observed      7QuTub~55… dil.b_v… -1.22  4.39e-1     0.736    -1.66 
+#> 5 limma     observed      7cbcrd~04… dil.b_v…  1.38  5.47e-1     0.963     1.44 
+#> 6 limma     observed      7soopj~34… dil.b_v…  0.822 5.88e-1     0.681     1.21 
+#> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, avgAbd <dbl>
 stopifnot(all(c("diff", "FDR", "p.value", "statistic") %in% colnames(res)))
 
 # Compare with prolfqua's own pipeline

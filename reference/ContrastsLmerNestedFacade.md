@@ -35,6 +35,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -123,9 +124,11 @@ Other modelling:
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Super class
+## Super classes
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\>
+[`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsLmerNestedFacade`
 
 ## Public fields
@@ -152,14 +155,6 @@ Other modelling:
 
 - [`ContrastsLmerNestedFacade$new()`](#method-ContrastsLmerNestedFacade-new)
 
-- [`ContrastsLmerNestedFacade$get_contrasts()`](#method-ContrastsLmerNestedFacade-get_contrasts)
-
-- [`ContrastsLmerNestedFacade$get_missing()`](#method-ContrastsLmerNestedFacade-get_missing)
-
-- [`ContrastsLmerNestedFacade$get_Plotter()`](#method-ContrastsLmerNestedFacade-get_Plotter)
-
-- [`ContrastsLmerNestedFacade$to_wide()`](#method-ContrastsLmerNestedFacade-to_wide)
-
 - [`ContrastsLmerNestedFacade$clone()`](#method-ContrastsLmerNestedFacade-clone)
 
 Inherited methods
@@ -172,6 +167,10 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsFacadeBase$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
+- [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
+- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
+- [`prolfqua::ContrastsFacadeBase$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -204,64 +203,6 @@ initialize
 
   passed to
   [`strategy_lmer`](https://wolski.github.io/prolfqua/reference/strategy.md)
-
-------------------------------------------------------------------------
-
-### Method `get_contrasts()`
-
-get contrast results
-
-#### Usage
-
-    ContrastsLmerNestedFacade$get_contrasts(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$get_contrasts
-
-------------------------------------------------------------------------
-
-### Method `get_missing()`
-
-get protein x contrast pairs that could not be estimated
-
-#### Usage
-
-    ContrastsLmerNestedFacade$get_missing()
-
-------------------------------------------------------------------------
-
-### Method `get_Plotter()`
-
-get ContrastsPlotter
-
-#### Usage
-
-    ContrastsLmerNestedFacade$get_Plotter(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$get_Plotter
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert results to wide format
-
-#### Usage
-
-    ContrastsLmerNestedFacade$to_wide(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$to_wide
 
 ------------------------------------------------------------------------
 
@@ -313,16 +254,16 @@ head(fa$get_contrasts())
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 14
-#>   facade modelName protein_Id contrast     diff std.error avgAbd statistic    df
-#>   <chr>  <chr>     <chr>      <chr>       <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lmer_… WaldTest… 0EfVhX~00… A_vs_Ct… -8.32e-4    0.0730   4.34   -0.0115  28.9
-#> 2 lmer_… WaldTest… BEJI92~52… A_vs_Ct…  3.22e-1    0.0832   4.22    2.81    11.6
-#> 3 lmer_… WaldTest… Fl4JiV~86… A_vs_Ct… -4.13e-2    0.0850   4.38   -0.503   39.5
-#> 4 lmer_… WaldTest… HvIpHG~90… A_vs_Ct… -3.72e-1    0.0616   4.40   -5.65    21.8
-#> 5 lmer_… WaldTest… JcKVfU~96… A_vs_Ct… -1.07e-1    0.0577   5.05   -1.88    79.8
-#> 6 lmer_… WaldTest… SGIVBl~57… A_vs_Ct…  3.07e-2    0.0695   4.68    0.452   61.0
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#>   modelName   estimate_type protein_Id  contrast       diff std.error avgAbd
+#>   <chr>       <chr>         <chr>       <chr>         <dbl>     <dbl>  <dbl>
+#> 1 lmer_nested observed      0EfVhX~0087 A_vs_Ctrl -0.000832    0.0730   4.34
+#> 2 lmer_nested observed      BEJI92~5282 A_vs_Ctrl  0.322       0.0832   4.22
+#> 3 lmer_nested observed      Fl4JiV~8625 A_vs_Ctrl -0.0413      0.0850   4.38
+#> 4 lmer_nested observed      HvIpHG~9079 A_vs_Ctrl -0.372       0.0616   4.40
+#> 5 lmer_nested observed      JcKVfU~9653 A_vs_Ctrl -0.107       0.0577   5.05
+#> 6 lmer_nested observed      SGIVBl~5782 A_vs_Ctrl  0.0307      0.0695   4.68
+#> # ℹ 7 more variables: statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 6 × 5
 #>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl

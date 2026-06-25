@@ -73,6 +73,7 @@ fit produces NA coefficients (typically from entire missing groups).</p>
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
+<code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
@@ -162,8 +163,8 @@ fit produces NA coefficients (typically from entire missing groups).</p>
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
-    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
-    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code>ContrastsLimmaVoomImputeFacade</code></p>
+    <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
+    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code><a href="ContrastsFacadeBase.html">prolfqua::ContrastsFacadeBase</a></code> -&gt; <code>ContrastsLimmaVoomImputeFacade</code></p>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
@@ -192,10 +193,6 @@ fit produces NA coefficients (typically from entire missing groups).</p>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-ContrastsLimmaVoomImputeFacade-new"><code>ContrastsLimmaVoomImputeFacade$new()</code></a></p></li>
-<li><p><a href="#method-ContrastsLimmaVoomImputeFacade-get_contrasts"><code>ContrastsLimmaVoomImputeFacade$get_contrasts()</code></a></p></li>
-<li><p><a href="#method-ContrastsLimmaVoomImputeFacade-get_missing"><code>ContrastsLimmaVoomImputeFacade$get_missing()</code></a></p></li>
-<li><p><a href="#method-ContrastsLimmaVoomImputeFacade-get_Plotter"><code>ContrastsLimmaVoomImputeFacade$get_Plotter()</code></a></p></li>
-<li><p><a href="#method-ContrastsLimmaVoomImputeFacade-to_wide"><code>ContrastsLimmaVoomImputeFacade$to_wide()</code></a></p></li>
 <li><p><a href="#method-ContrastsLimmaVoomImputeFacade-clone"><code>ContrastsLimmaVoomImputeFacade$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description"><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table"><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
@@ -205,6 +202,10 @@ fit produces NA coefficients (typically from entire missing groups).</p>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides"><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora"><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank"><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_Plotter"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter"><code>prolfqua::ContrastsFacadeBase$get_Plotter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_contrasts"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts"><code>prolfqua::ContrastsFacadeBase$get_contrasts()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing"><code>prolfqua::ContrastsFacadeBase$get_missing()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="to_wide"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide"><code>prolfqua::ContrastsFacadeBase$to_wide()</code></a></span></li>
 </ul></details></p><hr><a id="method-ContrastsLimmaVoomImputeFacade-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
@@ -265,71 +266,15 @@ fit produces NA coefficients (typically from entire missing groups).</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ContrastsLimmaVoomImputeFacade-get_contrasts"></a><div class="section">
-<h3 id="method-get-contrasts-">Method <code>get_contrasts()</code><a class="anchor" aria-label="anchor" href="#method-get-contrasts-"></a></h3>
-<p>get contrast results (rows with NA diff are filtered out)</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLimmaVoomImputeFacade</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsLimma$get_contrasts</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-ContrastsLimmaVoomImputeFacade-get_missing"></a><div class="section">
-<h3 id="method-get-missing-">Method <code>get_missing()</code><a class="anchor" aria-label="anchor" href="#method-get-missing-"></a></h3>
-<p>get protein x contrast pairs that could not be estimated</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLimmaVoomImputeFacade</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-ContrastsLimmaVoomImputeFacade-get_Plotter"></a><div class="section">
-<h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
-<p>get ContrastsPlotter</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLimmaVoomImputeFacade</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsLimma$get_Plotter</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-ContrastsLimmaVoomImputeFacade-to_wide"></a><div class="section">
-<h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
-<p>convert results to wide format</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLimmaVoomImputeFacade</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsLimma$to_wide</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
 </div><p></p><hr><a id="method-ContrastsLimmaVoomImputeFacade-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLimmaVoomImputeFacade</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -355,16 +300,16 @@ fit produces NA coefficients (typically from entire missing groups).</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Partial NA coefficients for 4 probe(s)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   facade modelName protein_Id contrast    diff   FDR std.error statistic p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> limma… limma     0EfVhX~29… A_vs_Ct…  1.24   0.325     0.617    2.00    0.065<span style="text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> limma… limma     0m5WN4~67… A_vs_Ct… -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">1</span> 0.973     1.03    -<span style="color: #BB0000;">0.035</span><span style="color: #BB0000; text-decoration: underline;">2</span>  0.973 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> limma… limma     7QuTub~61… A_vs_Ct…  0.909  0.694     0.813    1.12    0.301 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> limma… limma     7cbcrd~26… A_vs_Ct…  0.612  0.855     0.968    0.633   0.541 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> limma… limma     9VUkAq~34… A_vs_Ct…  0.768  0.855     1.15     0.671   0.514 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> limma… limma     At886V~77… A_vs_Ct… -<span style="color: #BB0000;">1.86</span>   0.240     0.822   -<span style="color: #BB0000;">2.26</span>    0.040<span style="text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: sigma &lt;dbl&gt;, df &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   avgAbd &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName  estimate_type protein_Id contrast    diff   FDR std.error statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> limma_voo… observed      0EfVhX~29… A_vs_Ct…  1.24   0.325     0.617    2.00  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> limma_voo… observed      0m5WN4~67… A_vs_Ct… -<span style="color: #BB0000;">0.036</span><span style="color: #BB0000; text-decoration: underline;">1</span> 0.973     1.03    -<span style="color: #BB0000;">0.035</span><span style="color: #BB0000; text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> limma_voo… observed      7QuTub~61… A_vs_Ct…  0.909  0.694     0.813    1.12  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> limma_voo… observed      7cbcrd~26… A_vs_Ct…  0.612  0.855     0.968    0.633 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> limma_voo… observed      9VUkAq~34… A_vs_Ct…  0.768  0.855     1.15     0.671 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> limma_voo… observed      At886V~77… A_vs_Ct… -<span style="color: #BB0000;">1.86</span>   0.240     0.822   -<span style="color: #BB0000;">2.26</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: p.value &lt;dbl&gt;, sigma &lt;dbl&gt;, df &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">fa</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 30 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl</span>

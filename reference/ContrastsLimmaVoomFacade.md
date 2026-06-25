@@ -28,6 +28,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -116,9 +117,11 @@ Other modelling:
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Super class
+## Super classes
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\>
+[`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsLimmaVoomFacade`
 
 ## Public fields
@@ -145,14 +148,6 @@ Other modelling:
 
 - [`ContrastsLimmaVoomFacade$new()`](#method-ContrastsLimmaVoomFacade-new)
 
-- [`ContrastsLimmaVoomFacade$get_contrasts()`](#method-ContrastsLimmaVoomFacade-get_contrasts)
-
-- [`ContrastsLimmaVoomFacade$get_missing()`](#method-ContrastsLimmaVoomFacade-get_missing)
-
-- [`ContrastsLimmaVoomFacade$get_Plotter()`](#method-ContrastsLimmaVoomFacade-get_Plotter)
-
-- [`ContrastsLimmaVoomFacade$to_wide()`](#method-ContrastsLimmaVoomFacade-to_wide)
-
 - [`ContrastsLimmaVoomFacade$clone()`](#method-ContrastsLimmaVoomFacade-clone)
 
 Inherited methods
@@ -165,6 +160,10 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsFacadeBase$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
+- [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
+- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
+- [`prolfqua::ContrastsFacadeBase$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -219,64 +218,6 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
-
-get contrast results (rows with NA diff are filtered out)
-
-#### Usage
-
-    ContrastsLimmaVoomFacade$get_contrasts(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsLimma\$get_contrasts
-
-------------------------------------------------------------------------
-
-### Method `get_missing()`
-
-get protein x contrast pairs that could not be estimated
-
-#### Usage
-
-    ContrastsLimmaVoomFacade$get_missing()
-
-------------------------------------------------------------------------
-
-### Method `get_Plotter()`
-
-get ContrastsPlotter
-
-#### Usage
-
-    ContrastsLimmaVoomFacade$get_Plotter(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsLimma\$get_Plotter
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert results to wide format
-
-#### Usage
-
-    ContrastsLimmaVoomFacade$to_wide(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsLimma\$to_wide
-
-------------------------------------------------------------------------
-
 ### Method `clone()`
 
 The objects of this class are cloneable with this method.
@@ -306,16 +247,16 @@ fa <- ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts)
 #> Warning: Partial NA coefficients for 1 probe(s)
 head(fa$get_contrasts())
 #> # A tibble: 6 × 14
-#>   facade     modelName protein_Id  contrast     diff     FDR std.error statistic
-#>   <chr>      <chr>     <chr>       <chr>       <dbl>   <dbl>     <dbl>     <dbl>
-#> 1 limma_voom limma     0EfVhX~0087 A_vs_Ctrl -2.62   0.00198     0.482   -5.42  
-#> 2 limma_voom limma     7cbcrd~5725 A_vs_Ctrl  2.80   0.0590      0.985    2.84  
-#> 3 limma_voom limma     9VUkAq~4703 A_vs_Ctrl  1.67   0.0590      0.565    2.95  
-#> 4 limma_voom limma     BEJI92~5282 A_vs_Ctrl  0.424  0.922       1.81     0.234 
-#> 5 limma_voom limma     CGzoYe~2147 A_vs_Ctrl -0.598  0.794       1.17    -0.512 
-#> 6 limma_voom limma     Fl4JiV~8625 A_vs_Ctrl -0.0494 0.955       0.851   -0.0581
-#> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
-#> #   conf.high <dbl>, avgAbd <dbl>
+#>   modelName  estimate_type protein_Id  contrast     diff     FDR std.error
+#>   <chr>      <chr>         <chr>       <chr>       <dbl>   <dbl>     <dbl>
+#> 1 limma_voom observed      0EfVhX~0087 A_vs_Ctrl -2.62   0.00198     0.482
+#> 2 limma_voom observed      7cbcrd~5725 A_vs_Ctrl  2.80   0.0590      0.985
+#> 3 limma_voom observed      9VUkAq~4703 A_vs_Ctrl  1.67   0.0590      0.565
+#> 4 limma_voom observed      BEJI92~5282 A_vs_Ctrl  0.424  0.922       1.81 
+#> 5 limma_voom observed      CGzoYe~2147 A_vs_Ctrl -0.598  0.794       1.17 
+#> 6 limma_voom observed      Fl4JiV~8625 A_vs_Ctrl -0.0494 0.955       0.851
+#> # ℹ 7 more variables: statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 fa$to_wide()
 #> # A tibble: 10 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl

@@ -67,6 +67,7 @@ holds results when contrasts are added."></head><body>
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
+<code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
@@ -371,25 +372,25 @@ holds results when contrasts are added."></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "protein_Id" "peptide_Id"</span>
 <span class="r-in"><span><span class="va">xcx</span> <span class="op">&lt;-</span> <span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ctr</span>, subject_id <span class="op">=</span> <span class="va">csi</span><span class="op">$</span><span class="va">subject_id</span>, model_name <span class="op">=</span> <span class="st">"TableTest"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 56 × 21</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName protein_Id peptide_Id meanAbundanceImp_gro…¹ meanAbundanceImp_gro…²</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> groupAve… 0EfVhX~00… ITLb4x1q                     18.0                   18.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> groupAve… 0EfVhX~00… ahQLlQY7                     25.8                   21.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> groupAve… 0EfVhX~00… dJkdz7so                     15.5                   17.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> groupAve… 7cbcrd~57… D5dQ4nKk                     29.5                   17.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> groupAve… 9VUkAq~47… eIC06D7g                     18.0                   27.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> groupAve… BEJI92~52… HBkZvdhT                     16.8                   15.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> groupAve… BEJI92~52… qQ1GK8Un                     23.8                   17.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> groupAve… CGzoYe~21… mjHSHhoe                     24.3                   30.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> groupAve… DoWup2~58… KVUnZ6oZ                     23.8                   19.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> groupAve… Fl4JiV~86… GsUIOl6Q                     19.1                   17.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 56 × 22</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName    estimate_type    protein_Id  peptide_Id meanAbundanceImp_group_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> groupAverage missing_fallback 0EfVhX~0087 ITLb4x1q                       18.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> groupAverage missing_fallback 0EfVhX~0087 ahQLlQY7                       25.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> groupAverage missing_fallback 0EfVhX~0087 dJkdz7so                       15.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> groupAverage missing_fallback 7cbcrd~5725 D5dQ4nKk                       29.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> groupAverage missing_fallback 9VUkAq~4703 eIC06D7g                       18.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> groupAverage missing_fallback BEJI92~5282 HBkZvdhT                       16.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> groupAverage missing_fallback BEJI92~5282 qQ1GK8Un                       23.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> groupAverage missing_fallback CGzoYe~2147 mjHSHhoe                       24.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> groupAverage missing_fallback DoWup2~5896 KVUnZ6oZ                       23.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> groupAverage missing_fallback Fl4JiV~8625 GsUIOl6Q                       19.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 46 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ abbreviated names: ¹​meanAbundanceImp_group_1, ²​meanAbundanceImp_group_2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 16 more variables: diff &lt;dbl&gt;, group_1_name &lt;chr&gt;, group_2_name &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   contrast &lt;chr&gt;, avgAbd &lt;dbl&gt;, indic &lt;dbl&gt;, nrMeasured_group_1 &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   nrMeasured_group_2 &lt;int&gt;, df &lt;int&gt;, sigma &lt;dbl&gt;, std.error &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 17 more variables: meanAbundanceImp_group_2 &lt;dbl&gt;, diff &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   group_1_name &lt;chr&gt;, group_2_name &lt;chr&gt;, contrast &lt;chr&gt;, avgAbd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   indic &lt;dbl&gt;, nrMeasured_group_1 &lt;int&gt;, nrMeasured_group_2 &lt;int&gt;, df &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
 <span class="r-plt img"><img src="ContrastsTable-1.png" alt="" width="700" height="433"></span>

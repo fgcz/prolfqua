@@ -75,6 +75,7 @@ subject_id strictly below the protein hierarchy).</p>
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
+<code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
@@ -164,8 +165,8 @@ subject_id strictly below the protein hierarchy).</p>
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
-    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
-    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code>ContrastsROPECANestedFacade</code></p>
+    <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
+    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code><a href="ContrastsFacadeBase.html">prolfqua::ContrastsFacadeBase</a></code> -&gt; <code>ContrastsROPECANestedFacade</code></p>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
@@ -195,7 +196,6 @@ subject_id strictly below the protein hierarchy).</p>
 
 <ul><li><p><a href="#method-ContrastsROPECANestedFacade-new"><code>ContrastsROPECANestedFacade$new()</code></a></p></li>
 <li><p><a href="#method-ContrastsROPECANestedFacade-get_contrasts"><code>ContrastsROPECANestedFacade$get_contrasts()</code></a></p></li>
-<li><p><a href="#method-ContrastsROPECANestedFacade-get_missing"><code>ContrastsROPECANestedFacade$get_missing()</code></a></p></li>
 <li><p><a href="#method-ContrastsROPECANestedFacade-get_Plotter"><code>ContrastsROPECANestedFacade$get_Plotter()</code></a></p></li>
 <li><p><a href="#method-ContrastsROPECANestedFacade-to_wide"><code>ContrastsROPECANestedFacade$to_wide()</code></a></p></li>
 <li><p><a href="#method-ContrastsROPECANestedFacade-clone"><code>ContrastsROPECANestedFacade$clone()</code></a></p></li>
@@ -207,6 +207,7 @@ subject_id strictly below the protein hierarchy).</p>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides"><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora"><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank"><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing"><code>prolfqua::ContrastsFacadeBase$get_missing()</code></a></span></li>
 </ul></details></p><hr><a id="method-ContrastsROPECANestedFacade-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
@@ -250,18 +251,10 @@ subject_id strictly below the protein hierarchy).</p>
 </div>
 
 
-</div><p></p><hr><a id="method-ContrastsROPECANestedFacade-get_missing"></a><div class="section">
-<h3 id="method-get-missing-">Method <code>get_missing()</code><a class="anchor" aria-label="anchor" href="#method-get-missing-"></a></h3>
-<p>get protein x contrast pairs that could not be estimated</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
 </div><p></p><hr><a id="method-ContrastsROPECANestedFacade-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
 <p>get ContrastsPlotter (uses standardized column names)</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>fc_threshold <span class="op">=</span> <span class="fl">2</span>, fdr_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -281,7 +274,7 @@ subject_id strictly below the protein hierarchy).</p>
 </div><p></p><hr><a id="method-ContrastsROPECANestedFacade-to_wide"></a><div class="section">
 <h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
 <p>convert results to wide format</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span>, <span class="st">"statistic"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -297,7 +290,7 @@ subject_id strictly below the protein hierarchy).</p>
 </div><p></p><hr><a id="method-ContrastsROPECANestedFacade-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -333,14 +326,14 @@ subject_id strictly below the protein hierarchy).</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   facade        protein_Id  modelName contrast  avgAbd    diff     FDR statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ropeca_nested 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -<span style="color: #BB0000;">0.074</span><span style="color: #BB0000; text-decoration: underline;">2</span> 5.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>     -<span style="color: #BB0000;">1.75</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ropeca_nested 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  9.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>      8.79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ropeca_nested 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -<span style="color: #BB0000;">0.598</span>  6.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>    -<span style="color: #BB0000;">12.7</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ropeca_nested BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  1.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>      3.94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> ropeca_nested CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -<span style="color: #BB0000;">0.310</span>  3.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>     -<span style="color: #BB0000;">9.26</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> ropeca_nested DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  1.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>     14.7 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName   estimate_type protein_Id contrast avgAbd    diff     FDR statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ropeca_nes… observed      0EfVhX~00… A_vs_Ct…   4.27 -<span style="color: #BB0000;">0.074</span><span style="color: #BB0000; text-decoration: underline;">2</span> 5.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>     -<span style="color: #BB0000;">1.75</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ropeca_nes… observed      7cbcrd~57… A_vs_Ct…   4.51  0.741  9.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>      8.79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ropeca_nes… observed      9VUkAq~47… A_vs_Ct…   4.47 -<span style="color: #BB0000;">0.598</span>  6.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>    -<span style="color: #BB0000;">12.7</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> ropeca_nes… observed      BEJI92~52… A_vs_Ct…   4.23  0.277  1.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>      3.94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> ropeca_nes… observed      CGzoYe~21… A_vs_Ct…   4.76 -<span style="color: #BB0000;">0.310</span>  3.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>     -<span style="color: #BB0000;">9.26</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> ropeca_nes… observed      DoWup2~58… A_vs_Ct…   4.43  0.295  1.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span>     14.7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: std.error &lt;dbl&gt;, df &lt;int&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, sigma &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">fa</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>

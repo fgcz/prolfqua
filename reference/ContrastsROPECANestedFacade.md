@@ -30,6 +30,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -118,9 +119,11 @@ Other modelling:
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Super class
+## Super classes
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\>
+[`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsROPECANestedFacade`
 
 ## Public fields
@@ -149,8 +152,6 @@ Other modelling:
 
 - [`ContrastsROPECANestedFacade$get_contrasts()`](#method-ContrastsROPECANestedFacade-get_contrasts)
 
-- [`ContrastsROPECANestedFacade$get_missing()`](#method-ContrastsROPECANestedFacade-get_missing)
-
 - [`ContrastsROPECANestedFacade$get_Plotter()`](#method-ContrastsROPECANestedFacade-get_Plotter)
 
 - [`ContrastsROPECANestedFacade$to_wide()`](#method-ContrastsROPECANestedFacade-to_wide)
@@ -167,6 +168,7 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
 
 ------------------------------------------------------------------------
 
@@ -219,16 +221,6 @@ Columns not directly produced by ROPECA are derived heuristically:
 #### Usage
 
     ContrastsROPECANestedFacade$get_contrasts()
-
-------------------------------------------------------------------------
-
-### Method `get_missing()`
-
-get protein x contrast pairs that could not be estimated
-
-#### Usage
-
-    ContrastsROPECANestedFacade$get_missing()
 
 ------------------------------------------------------------------------
 
@@ -302,14 +294,14 @@ head(fa$get_contrasts())
 #> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]
-#>   facade        protein_Id  modelName contrast  avgAbd    diff     FDR statistic
-#>   <chr>         <chr>       <chr>     <chr>      <dbl>   <dbl>   <dbl>     <dbl>
-#> 1 ropeca_nested 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -0.0742 5.28e-2     -1.75
-#> 2 ropeca_nested 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  9.91e-5      8.79
-#> 3 ropeca_nested 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -0.598  6.91e-6    -12.7 
-#> 4 ropeca_nested BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  1.87e-3      3.94
-#> 5 ropeca_nested CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -0.310  3.74e-5     -9.26
-#> 6 ropeca_nested DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  1.38e-6     14.7 
+#>   modelName   estimate_type protein_Id contrast avgAbd    diff     FDR statistic
+#>   <chr>       <chr>         <chr>      <chr>     <dbl>   <dbl>   <dbl>     <dbl>
+#> 1 ropeca_nes… observed      0EfVhX~00… A_vs_Ct…   4.27 -0.0742 5.28e-2     -1.75
+#> 2 ropeca_nes… observed      7cbcrd~57… A_vs_Ct…   4.51  0.741  9.91e-5      8.79
+#> 3 ropeca_nes… observed      9VUkAq~47… A_vs_Ct…   4.47 -0.598  6.91e-6    -12.7 
+#> 4 ropeca_nes… observed      BEJI92~52… A_vs_Ct…   4.23  0.277  1.87e-3      3.94
+#> 5 ropeca_nes… observed      CGzoYe~21… A_vs_Ct…   4.76 -0.310  3.74e-5     -9.26
+#> 6 ropeca_nes… observed      DoWup2~58… A_vs_Ct…   4.43  0.295  1.38e-6     14.7 
 #> # ℹ 6 more variables: std.error <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>
 fa$to_wide()

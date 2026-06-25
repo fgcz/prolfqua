@@ -209,7 +209,7 @@ results_protein <- bind_rows(
   results_limpa
 ) |>
   dplyr::select(dplyr::any_of(c(
-    "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
+    "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
     "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
     "sigma"
   ))) |>
@@ -220,11 +220,11 @@ results_protein <- bind_rows(
   )
 
 results_protein |>
-  dplyr::count(facade, name = "n_results")
+  dplyr::count(modelName, name = "n_results")
 ```
 
     ## # A tibble: 9 × 2
-    ##   facade       n_results
+    ##   modelName    n_results
     ##   <chr>            <int>
     ## 1 deqms              157
     ## 2 firth              160
@@ -236,28 +236,29 @@ results_protein |>
     ## 8 lm_missing         160
     ## 9 rfit               157
 
-For facades that combine several underlying result types, such as
-`lm_missing`, the `modelName` column still tells you where individual
-rows came from.
+The `modelName` column is the facade key. For facades that combine
+several underlying result types, such as `lm_missing`, the
+`estimate_type` column tells you how each row was produced (`observed`,
+`lod_imputed`, or `missing_fallback`).
 
 ``` r
 results_protein |>
-  dplyr::count(facade, contrast, modelName, name = "n_results")
+  dplyr::count(modelName, contrast, estimate_type, name = "n_results")
 ```
 
     ## # A tibble: 24 × 4
-    ##    facade       contrast  modelName      n_results
-    ##    <chr>        <chr>     <chr>              <int>
-    ##  1 deqms        A_vs_Ctrl WaldTest_DEqMS        78
-    ##  2 deqms        B_vs_Ctrl WaldTest_DEqMS        79
-    ##  3 firth        A_vs_Ctrl WaldTestFirth         80
-    ##  4 firth        B_vs_Ctrl WaldTestFirth         80
-    ##  5 limma        A_vs_Ctrl limma                 78
-    ##  6 limma        B_vs_Ctrl limma                 77
-    ##  7 limma_impute A_vs_Ctrl limma                 77
-    ##  8 limma_impute A_vs_Ctrl limma_imputed          3
-    ##  9 limma_impute B_vs_Ctrl limma                 77
-    ## 10 limma_impute B_vs_Ctrl limma_imputed          3
+    ##    modelName    contrast  estimate_type n_results
+    ##    <chr>        <chr>     <chr>             <int>
+    ##  1 deqms        A_vs_Ctrl observed             78
+    ##  2 deqms        B_vs_Ctrl observed             79
+    ##  3 firth        A_vs_Ctrl observed             80
+    ##  4 firth        B_vs_Ctrl observed             80
+    ##  5 limma        A_vs_Ctrl observed             78
+    ##  6 limma        B_vs_Ctrl observed             77
+    ##  7 limma_impute A_vs_Ctrl lod_imputed           3
+    ##  8 limma_impute A_vs_Ctrl observed             77
+    ##  9 limma_impute B_vs_Ctrl lod_imputed           3
+    ## 10 limma_impute B_vs_Ctrl observed             77
     ## # ℹ 14 more rows
 
 ## Protein-level volcano comparison
@@ -267,11 +268,11 @@ results_protein |>
 ``` r
 standard_facades <- c("lm", "rfit", "limma", "deqms")
 results_standard <- results_protein |>
-  dplyr::filter(facade %in% standard_facades)
+  dplyr::filter(modelName %in% standard_facades)
 
 ggplot(results_standard, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.5) +
-  facet_grid(contrast ~ facade, scales = "free_y") +
+  facet_grid(contrast ~ modelName, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
@@ -295,15 +296,15 @@ logistic regression facade which models missingness directly.
 ``` r
 impute_facades <- c("lm_missing", "lm_impute", "limma_impute", "firth")
 results_impute <- results_protein |>
-  dplyr::filter(facade %in% impute_facades) |>
-  dplyr::mutate(facade = factor(facade, levels = impute_facades))
+  dplyr::filter(modelName %in% impute_facades) |>
+  dplyr::mutate(modelName = factor(modelName, levels = impute_facades))
 
 ggplot(results_impute, aes(x = diff, y = -log10(p.value))) +
   geom_point(data = dplyr::filter(results_impute, !rescued),
              aes(color = significant), alpha = 0.5, size = 1.2) +
   geom_point(data = dplyr::filter(results_impute, rescued),
              color = "red", shape = 18, size = 5, alpha = 1) +
-  facet_grid(contrast ~ facade, scales = "free_y") +
+  facet_grid(contrast ~ modelName, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
@@ -322,25 +323,25 @@ diamonds mark proteins rescued (missing in plain lm).
 
 ``` r
 results_protein |>
-  dplyr::group_by(facade, contrast) |>
+  dplyr::group_by(modelName, contrast) |>
   dplyr::slice_min(order_by = p.value, n = 5, with_ties = FALSE) |>
   dplyr::ungroup() |>
-  dplyr::select(facade, contrast, modelName, protein_Id, diff, p.value, FDR)
+  dplyr::select(modelName, estimate_type, contrast, protein_Id, diff, p.value, FDR)
 ```
 
     ## # A tibble: 90 × 7
-    ##    facade contrast  modelName      protein_Id    diff  p.value      FDR
-    ##    <chr>  <chr>     <chr>          <chr>        <dbl>    <dbl>    <dbl>
-    ##  1 deqms  A_vs_Ctrl WaldTest_DEqMS Zci7Jw~7064 -0.722 3.79e-12 2.96e-10
-    ##  2 deqms  A_vs_Ctrl WaldTest_DEqMS 6TevMr~7550  0.765 3.46e-11 1.35e- 9
-    ##  3 deqms  A_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.583 5.59e-11 1.45e- 9
-    ##  4 deqms  A_vs_Ctrl WaldTest_DEqMS 0CubNR~0890  0.674 9.73e-11 1.90e- 9
-    ##  5 deqms  A_vs_Ctrl WaldTest_DEqMS KVkccD~1805 -0.524 1.25e- 9 1.95e- 8
-    ##  6 deqms  B_vs_Ctrl WaldTest_DEqMS fylZqB~3883  0.717 1.05e-13 8.28e-12
-    ##  7 deqms  B_vs_Ctrl WaldTest_DEqMS XxJoJB~7286  0.587 4.63e-12 1.83e-10
-    ##  8 deqms  B_vs_Ctrl WaldTest_DEqMS f0Cvvj~6658  0.345 5.39e-10 1.42e- 8
-    ##  9 deqms  B_vs_Ctrl WaldTest_DEqMS TR3Ksv~1492 -0.413 3.73e- 9 7.37e- 8
-    ## 10 deqms  B_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.424 8.16e- 9 1.29e- 7
+    ##    modelName estimate_type contrast  protein_Id    diff  p.value      FDR
+    ##    <chr>     <chr>         <chr>     <chr>        <dbl>    <dbl>    <dbl>
+    ##  1 deqms     observed      A_vs_Ctrl Zci7Jw~7064 -0.722 3.79e-12 2.96e-10
+    ##  2 deqms     observed      A_vs_Ctrl 6TevMr~7550  0.765 3.46e-11 1.35e- 9
+    ##  3 deqms     observed      A_vs_Ctrl 4Y4DYT~0927  0.583 5.59e-11 1.45e- 9
+    ##  4 deqms     observed      A_vs_Ctrl 0CubNR~0890  0.674 9.73e-11 1.90e- 9
+    ##  5 deqms     observed      A_vs_Ctrl KVkccD~1805 -0.524 1.25e- 9 1.95e- 8
+    ##  6 deqms     observed      B_vs_Ctrl fylZqB~3883  0.717 1.05e-13 8.28e-12
+    ##  7 deqms     observed      B_vs_Ctrl XxJoJB~7286  0.587 4.63e-12 1.83e-10
+    ##  8 deqms     observed      B_vs_Ctrl f0Cvvj~6658  0.345 5.39e-10 1.42e- 8
+    ##  9 deqms     observed      B_vs_Ctrl TR3Ksv~1492 -0.413 3.73e- 9 7.37e- 8
+    ## 10 deqms     observed      B_vs_Ctrl 4Y4DYT~0927  0.424 8.16e- 9 1.29e- 7
     ## # ℹ 80 more rows
 
 ## Proteins that could not be estimated
@@ -428,9 +429,9 @@ if (length(lm_missing_proteins) > 0) {
   rescued <- results_protein |>
     dplyr::filter(
       protein_Id %in% lm_missing_proteins,
-      facade %in% c("lm_missing", "lm_impute", "limma_impute", "limpa")
+      modelName %in% c("lm_missing", "lm_impute", "limma_impute", "limpa")
     ) |>
-    dplyr::arrange(protein_Id, contrast, facade)
+    dplyr::arrange(protein_Id, contrast, modelName)
 
   rescued |>
     knitr::kable(
@@ -442,32 +443,32 @@ if (length(lm_missing_proteins) > 0) {
 }
 ```
 
-| facade       | modelName                  | protein_Id  | contrast  | avgAbd |   diff |   FDR | statistic | std.error |     df | p.value | conf.low | conf.high | sigma | rescued | significant |
-|:-------------|:---------------------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|-------:|--------:|---------:|----------:|------:|:--------|:------------|
-| limma_impute | limma_imputed              | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
-| limpa        | limpa                      | 8mS8sK~0150 | A_vs_Ctrl |  2.798 | -0.615 | 0.226 |    -1.435 |     0.429 | 30.965 |   0.161 |   -1.489 |     0.259 | 0.965 | TRUE    | FALSE       |
-| lm_impute    | WaldTest_moderated_imputed | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.065 |  4.310 |   1.000 |   -0.234 |     0.234 | 0.087 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 |  2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | TRUE    | FALSE       |
-| limma_impute | limma_imputed              | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
-| limpa        | limpa                      | 8mS8sK~0150 | B_vs_Ctrl |  3.245 |  0.279 | 0.578 |     0.662 |     0.422 | 30.965 |   0.513 |   -0.581 |     1.140 | 0.965 | FALSE   | FALSE       |
-| lm_impute    | WaldTest_moderated_imputed | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.798 |     0.286 |     0.065 |  4.310 |   0.788 |   -0.217 |     0.252 | 0.087 | FALSE   | FALSE       |
-| lm_missing   | WaldTest_moderated         | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.020 |     3.690 |     0.102 |  5.377 |   0.012 |    0.108 |     0.570 | 0.092 | FALSE   | FALSE       |
-| limma_impute | limma_imputed              | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.996 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
-| limpa        | limpa                      | DTCi0N~0734 | A_vs_Ctrl |  3.550 | -0.982 | 0.020 |    -2.714 |     0.362 | 30.965 |   0.011 |   -1.719 |    -0.244 | 0.991 | TRUE    | TRUE        |
-| lm_impute    | WaldTest_moderated_imputed | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -4.057 |     0.065 |  6.310 |   0.006 |   -0.467 |    -0.040 | 0.088 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 |  4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | TRUE    | FALSE       |
-| limma_impute | limma_imputed              | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
-| limpa        | limpa                      | DTCi0N~0734 | B_vs_Ctrl |  4.145 |  0.208 | 0.619 |     0.581 |     0.358 | 30.965 |   0.565 |   -0.522 |     0.939 | 0.991 | FALSE   | FALSE       |
-| lm_impute    | WaldTest_moderated_imputed | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.049 |     2.665 |     0.065 |  6.310 |   0.035 |   -0.047 |     0.380 | 0.088 | FALSE   | FALSE       |
-| lm_missing   | WaldTest_moderated         | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.016 |     3.499 |     0.057 |  7.377 |   0.009 |    0.040 |     0.403 | 0.078 | FALSE   | FALSE       |
-| limma_impute | limma_imputed              | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | FALSE   | FALSE       |
-| limpa        | limpa                      | OrL0ux~1369 | A_vs_Ctrl |  3.497 | -0.881 | 0.025 |    -2.630 |     0.335 | 30.965 |   0.013 |   -1.563 |    -0.198 | 0.960 | FALSE   | TRUE        |
-| lm_impute    | WaldTest_moderated_imputed | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.049 |    -3.369 |     0.065 |  4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | FALSE   | FALSE       |
-| lm_missing   | WaldTest_moderated         | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.055 |    -2.951 |     0.084 |  5.340 |   0.029 |   -0.480 |    -0.072 | 0.081 | FALSE   | FALSE       |
-| limma_impute | limma_imputed              | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
-| limpa        | limpa                      | OrL0ux~1369 | B_vs_Ctrl |  3.297 | -1.281 | 0.006 |    -3.200 |     0.400 | 30.965 |   0.003 |   -2.097 |    -0.464 | 0.960 | TRUE    | TRUE        |
-| lm_impute    | WaldTest_moderated_imputed | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.036 |    -3.369 |     0.065 |  4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | TRUE    | FALSE       |
-| lm_missing   | groupAverage               | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 |  2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | TRUE    | FALSE       |
+| modelName    | estimate_type    | protein_Id  | contrast  | avgAbd |   diff |   FDR | statistic | std.error |     df | p.value | conf.low | conf.high | sigma | rescued | significant |
+|:-------------|:-----------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|-------:|--------:|---------:|----------:|------:|:--------|:------------|
+| limma_impute | lod_imputed      | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
+| limpa        | observed         | 8mS8sK~0150 | A_vs_Ctrl |  2.798 | -0.615 | 0.226 |    -1.435 |     0.429 | 30.965 |   0.161 |   -1.489 |     0.259 | 0.965 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.065 |  4.310 |   1.000 |   -0.234 |     0.234 | 0.087 | TRUE    | FALSE       |
+| lm_missing   | missing_fallback | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 |  2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | TRUE    | FALSE       |
+| limma_impute | lod_imputed      | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
+| limpa        | observed         | 8mS8sK~0150 | B_vs_Ctrl |  3.245 |  0.279 | 0.578 |     0.662 |     0.422 | 30.965 |   0.513 |   -0.581 |     1.140 | 0.965 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.798 |     0.286 |     0.065 |  4.310 |   0.788 |   -0.217 |     0.252 | 0.087 | FALSE   | FALSE       |
+| lm_missing   | observed         | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.020 |     3.690 |     0.102 |  5.377 |   0.012 |    0.108 |     0.570 | 0.092 | FALSE   | FALSE       |
+| limma_impute | lod_imputed      | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.996 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
+| limpa        | observed         | DTCi0N~0734 | A_vs_Ctrl |  3.550 | -0.982 | 0.020 |    -2.714 |     0.362 | 30.965 |   0.011 |   -1.719 |    -0.244 | 0.991 | TRUE    | TRUE        |
+| lm_impute    | lod_imputed      | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -4.057 |     0.065 |  6.310 |   0.006 |   -0.467 |    -0.040 | 0.088 | TRUE    | FALSE       |
+| lm_missing   | missing_fallback | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 |  4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | TRUE    | FALSE       |
+| limma_impute | lod_imputed      | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
+| limpa        | observed         | DTCi0N~0734 | B_vs_Ctrl |  4.145 |  0.208 | 0.619 |     0.581 |     0.358 | 30.965 |   0.565 |   -0.522 |     0.939 | 0.991 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.049 |     2.665 |     0.065 |  6.310 |   0.035 |   -0.047 |     0.380 | 0.088 | FALSE   | FALSE       |
+| lm_missing   | observed         | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.016 |     3.499 |     0.057 |  7.377 |   0.009 |    0.040 |     0.403 | 0.078 | FALSE   | FALSE       |
+| limma_impute | lod_imputed      | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | FALSE   | FALSE       |
+| limpa        | observed         | OrL0ux~1369 | A_vs_Ctrl |  3.497 | -0.881 | 0.025 |    -2.630 |     0.335 | 30.965 |   0.013 |   -1.563 |    -0.198 | 0.960 | FALSE   | TRUE        |
+| lm_impute    | lod_imputed      | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.049 |    -3.369 |     0.065 |  4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | FALSE   | FALSE       |
+| lm_missing   | observed         | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.055 |    -2.951 |     0.084 |  5.340 |   0.029 |   -0.480 |    -0.072 | 0.081 | FALSE   | FALSE       |
+| limma_impute | lod_imputed      | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
+| limpa        | observed         | OrL0ux~1369 | B_vs_Ctrl |  3.297 | -1.281 | 0.006 |    -3.200 |     0.400 | 30.965 |   0.003 |   -2.097 |    -0.464 | 0.960 | TRUE    | TRUE        |
+| lm_impute    | lod_imputed      | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.036 |    -3.369 |     0.065 |  4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | TRUE    | FALSE       |
+| lm_missing   | missing_fallback | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 |  2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | TRUE    | FALSE       |
 
 Contrast estimates from lm_missing, lm_impute, and limma_impute for
 proteins that plain lm could not estimate
@@ -518,7 +519,7 @@ results_peptide <- bind_rows(
   fa_firth_peptide$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
-    "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
+    "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
     "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
     "sigma"
   ))) |>
@@ -527,11 +528,11 @@ results_peptide <- bind_rows(
   )
 
 results_peptide |>
-  dplyr::count(facade, name = "n_results")
+  dplyr::count(modelName, name = "n_results")
 ```
 
     ## # A tibble: 3 × 2
-    ##   facade        n_results
+    ##   modelName     n_results
     ##   <chr>             <int>
     ## 1 firth_nested        160
     ## 2 lmer_nested         102
@@ -540,7 +541,7 @@ results_peptide |>
 ``` r
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
-  facet_grid(contrast ~ facade, scales = "free_y") +
+  facet_grid(contrast ~ modelName, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +

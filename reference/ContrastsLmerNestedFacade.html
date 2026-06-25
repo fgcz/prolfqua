@@ -79,6 +79,7 @@ effects, which is passed through unchanged.</p>
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
+<code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
@@ -168,8 +169,8 @@ effects, which is passed through unchanged.</p>
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
-    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
-    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code>ContrastsLmerNestedFacade</code></p>
+    <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
+    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code><a href="ContrastsFacadeBase.html">prolfqua::ContrastsFacadeBase</a></code> -&gt; <code>ContrastsLmerNestedFacade</code></p>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
@@ -198,10 +199,6 @@ effects, which is passed through unchanged.</p>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-ContrastsLmerNestedFacade-new"><code>ContrastsLmerNestedFacade$new()</code></a></p></li>
-<li><p><a href="#method-ContrastsLmerNestedFacade-get_contrasts"><code>ContrastsLmerNestedFacade$get_contrasts()</code></a></p></li>
-<li><p><a href="#method-ContrastsLmerNestedFacade-get_missing"><code>ContrastsLmerNestedFacade$get_missing()</code></a></p></li>
-<li><p><a href="#method-ContrastsLmerNestedFacade-get_Plotter"><code>ContrastsLmerNestedFacade$get_Plotter()</code></a></p></li>
-<li><p><a href="#method-ContrastsLmerNestedFacade-to_wide"><code>ContrastsLmerNestedFacade$to_wide()</code></a></p></li>
 <li><p><a href="#method-ContrastsLmerNestedFacade-clone"><code>ContrastsLmerNestedFacade$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description"><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table"><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
@@ -211,6 +208,10 @@ effects, which is passed through unchanged.</p>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides"><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora"><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank"><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_Plotter"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter"><code>prolfqua::ContrastsFacadeBase$get_Plotter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_contrasts"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts"><code>prolfqua::ContrastsFacadeBase$get_contrasts()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing"><code>prolfqua::ContrastsFacadeBase$get_missing()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="to_wide"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide"><code>prolfqua::ContrastsFacadeBase$to_wide()</code></a></span></li>
 </ul></details></p><hr><a id="method-ContrastsLmerNestedFacade-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
@@ -243,71 +244,15 @@ unchanged.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ContrastsLmerNestedFacade-get_contrasts"></a><div class="section">
-<h3 id="method-get-contrasts-">Method <code>get_contrasts()</code><a class="anchor" aria-label="anchor" href="#method-get-contrasts-"></a></h3>
-<p>get contrast results</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLmerNestedFacade</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsModerated$get_contrasts</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-ContrastsLmerNestedFacade-get_missing"></a><div class="section">
-<h3 id="method-get-missing-">Method <code>get_missing()</code><a class="anchor" aria-label="anchor" href="#method-get-missing-"></a></h3>
-<p>get protein x contrast pairs that could not be estimated</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLmerNestedFacade</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-ContrastsLmerNestedFacade-get_Plotter"></a><div class="section">
-<h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
-<p>get ContrastsPlotter</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLmerNestedFacade</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsModerated$get_Plotter</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-ContrastsLmerNestedFacade-to_wide"></a><div class="section">
-<h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
-<p>convert results to wide format</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLmerNestedFacade</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsModerated$to_wide</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
 </div><p></p><hr><a id="method-ContrastsLmerNestedFacade-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsLmerNestedFacade</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -352,16 +297,16 @@ unchanged.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   facade modelName protein_Id contrast     diff std.error avgAbd statistic    df</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lmer_… WaldTest… 0EfVhX~00… A_vs_Ct… -<span style="color: #BB0000;">8.32</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>    0.073<span style="text-decoration: underline;">0</span>   4.34   -<span style="color: #BB0000;">0.011</span><span style="color: #BB0000; text-decoration: underline;">5</span>  28.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lmer_… WaldTest… BEJI92~52… A_vs_Ct…  3.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.083<span style="text-decoration: underline;">2</span>   4.22    2.81    11.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lmer_… WaldTest… Fl4JiV~86… A_vs_Ct… -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>    0.085<span style="text-decoration: underline;">0</span>   4.38   -<span style="color: #BB0000;">0.503</span>   39.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lmer_… WaldTest… HvIpHG~90… A_vs_Ct… -<span style="color: #BB0000;">3.72</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.061<span style="text-decoration: underline;">6</span>   4.40   -<span style="color: #BB0000;">5.65</span>    21.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lmer_… WaldTest… JcKVfU~96… A_vs_Ct… -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.057<span style="text-decoration: underline;">7</span>   5.05   -<span style="color: #BB0000;">1.88</span>    79.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lmer_… WaldTest… SGIVBl~57… A_vs_Ct…  3.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>    0.069<span style="text-decoration: underline;">5</span>   4.68    0.452   61.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName   estimate_type protein_Id  contrast       diff std.error avgAbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lmer_nested observed      0EfVhX~0087 A_vs_Ctrl -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">832</span>    0.073<span style="text-decoration: underline;">0</span>   4.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lmer_nested observed      BEJI92~5282 A_vs_Ctrl  0.322       0.083<span style="text-decoration: underline;">2</span>   4.22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lmer_nested observed      Fl4JiV~8625 A_vs_Ctrl -<span style="color: #BB0000;">0.041</span><span style="color: #BB0000; text-decoration: underline;">3</span>      0.085<span style="text-decoration: underline;">0</span>   4.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lmer_nested observed      HvIpHG~9079 A_vs_Ctrl -<span style="color: #BB0000;">0.372</span>       0.061<span style="text-decoration: underline;">6</span>   4.40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lmer_nested observed      JcKVfU~9653 A_vs_Ctrl -<span style="color: #BB0000;">0.107</span>       0.057<span style="text-decoration: underline;">7</span>   5.05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lmer_nested observed      SGIVBl~5782 A_vs_Ctrl  0.030<span style="text-decoration: underline;">7</span>      0.069<span style="text-decoration: underline;">5</span>   4.68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: statistic &lt;dbl&gt;, df &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">fa</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl</span>

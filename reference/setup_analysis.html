@@ -56,7 +56,13 @@ and create new columns e.g. sampleName column etc.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">setup_analysis</span><span class="op">(</span><span class="va">data</span>, <span class="va">configuration</span>, cc <span class="op">=</span> <span class="cn">TRUE</span>, from_factors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">setup_analysis</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">configuration</span>,</span>
+<span>  cc <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  from_factors <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  debug <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -78,10 +84,19 @@ and create new columns e.g. sampleName column etc.</p>
 <dt id="arg-from-factors">from_factors<a class="anchor" aria-label="anchor" href="#arg-from-factors"></a></dt>
 <dd><p>if TRUE, create sampleName from factor columns</p></dd>
 
+
+<dt id="arg-debug">debug<a class="anchor" aria-label="anchor" href="#arg-debug"></a></dt>
+<dd><p>if FALSE (default) and any hierarchy-key/sample combination has
+more than one observation, stop with an informative error. If TRUE, warn
+and return the diagnostic count table (inspect rows where n &gt; 1) instead.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The computed result.</p>
+    <p>A tibble with the columns relevant for <code>configuration</code>
+  (sample, hierarchy, factor and response columns). Stops if any
+  hierarchy-key/sample combination is observed more than once (unless
+  <code>debug = TRUE</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

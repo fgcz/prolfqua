@@ -396,10 +396,11 @@ myProteinIDS <- c("sp|P0AC33|FUMA_ECOLI",  "sp|P28635|METQ_ECOLI",  "sp|Q14C86|G
 dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 ```
 
-    ## # A tibble: 0 × 13
-    ## # ℹ 13 variables: modelName <chr>, protein_Id <chr>, contrast <chr>,
-    ## #   diff <dbl>, std.error <dbl>, avgAbd <dbl>, statistic <dbl>, df <dbl>,
-    ## #   p.value <dbl>, conf.low <dbl>, conf.high <dbl>, sigma <dbl>, FDR <dbl>
+    ## # A tibble: 0 × 14
+    ## # ℹ 14 variables: modelName <chr>, estimate_type <chr>, protein_Id <chr>,
+    ## #   contrast <chr>, diff <dbl>, std.error <dbl>, avgAbd <dbl>, statistic <dbl>,
+    ## #   df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>, sigma <dbl>,
+    ## #   FDR <dbl>
 
 ## Contrasts with missing value imputation
 
@@ -414,16 +415,17 @@ mC <- prolfqua::ContrastsMissing$new(lfqdata = transformed, contrasts = contr_sp
 colnames(mC$get_contrasts())
 ```
 
-    ##  [1] "modelName"                "protein_Id"              
-    ##  [3] "meanAbundanceImp_group_1" "meanAbundanceImp_group_2"
-    ##  [5] "diff"                     "group_1_name"            
-    ##  [7] "group_2_name"             "contrast"                
-    ##  [9] "avgAbd"                   "indic"                   
-    ## [11] "nrMeasured_group_1"       "nrMeasured_group_2"      
-    ## [13] "df"                       "sigma"                   
-    ## [15] "std.error"                "statistic"               
-    ## [17] "p.value"                  "conf.low"                
-    ## [19] "conf.high"                "FDR"
+    ##  [1] "modelName"                "estimate_type"           
+    ##  [3] "protein_Id"               "meanAbundanceImp_group_1"
+    ##  [5] "meanAbundanceImp_group_2" "diff"                    
+    ##  [7] "group_1_name"             "group_2_name"            
+    ##  [9] "contrast"                 "avgAbd"                  
+    ## [11] "indic"                    "nrMeasured_group_1"      
+    ## [13] "nrMeasured_group_2"       "df"                      
+    ## [15] "sigma"                    "std.error"               
+    ## [17] "statistic"                "p.value"                 
+    ## [19] "conf.low"                 "conf.high"               
+    ## [21] "FDR"
 
 Finally we are merging the results and give priority to the results
 where we do not have missing values in one group.

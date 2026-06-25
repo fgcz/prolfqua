@@ -66,6 +66,7 @@ plot contrasts"></head><body>
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
+<code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
@@ -292,7 +293,10 @@ plot contrasts"></head><body>
 
 
 <dt><code>modelName</code></dt>
-<dd><p>name of column with model names</p></dd>
+<dd><p>name of the colour column. Defaults to <code>"modelName"</code>;
+when left at the default and the contrast carries an <code>estimate_type</code>
+column, that column is used for colouring instead (so observed vs
+imputed/fallback rows stay distinguishable).</p></dd>
 
 
 <dt><code>diff</code></dt>

@@ -1,23 +1,35 @@
-# holds results when contrasts are added.
+# Base class for contrast analysis facades
 
-holds results when contrasts are added.
+Base class for contrast analysis facades
 
-holds results when contrasts are added.
+Base class for contrast analysis facades
 
 ## Value
 
 An R6 class generator.
 
-## See also
+## Details
 
-[`summary_ROPECA_median_p.scaled`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+Holds the fields and delegating methods shared by every facade in
+`ContrastsFacades.R` and `ContrastsChildToParentFacades.R`. Subclasses
+implement the unique pipeline wiring in `initialize()` (build the model,
+build the inner contrast object, store `self$.lfqdata` /
+`self$.contrast_names`) and set `self$facade_name` to their registry
+key. The limma family additionally sets `self$.drop_na_diff <- TRUE` to
+drop rows whose fold change could not be estimated.
+
+`get_contrasts()` delegates to the inner contrast object and then stamps
+the facade key into `modelName` via `.stamp_facade_identity()`;
+rescue/imputation state is carried in the `estimate_type` column set by
+the inner contrast classes.
+
+## See also
 
 Other modelling:
 [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
-[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -41,6 +53,7 @@ Other modelling:
 [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md),
 [`ContrastsRfitImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
+[`ContrastsTable`](https://wolski.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`LR_test()`](https://wolski.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://wolski.github.io/prolfqua/reference/Model.md),
@@ -109,39 +122,47 @@ Other modelling:
 ## Super class
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
--\> `ContrastsTable`
+-\> `ContrastsFacadeBase`
 
 ## Public fields
 
-- `contrast_result`:
+- `model`:
 
-  contrast results
+  fitted model object
 
-- `model_name`:
+- `contrast`:
 
-  model name
+  inner contrast object the facade delegates to
 
-- `subject_id`:
+- `.lfqdata`:
 
-  default protein_Id
+  stored reference to the input LFQData (used by get_missing)
+
+- `.contrast_names`:
+
+  names of the requested contrasts
+
+- `facade_name`:
+
+  registry key stamped into the modelName column
+
+- `.drop_na_diff`:
+
+  drop rows with NA diff (limma family); default FALSE
 
 ## Methods
 
 ### Public methods
 
-- [`ContrastsTable$new()`](#method-ContrastsTable-new)
+- [`ContrastsFacadeBase$get_contrasts()`](#method-ContrastsFacadeBase-get_contrasts)
 
-- [`ContrastsTable$get_contrast_sides()`](#method-ContrastsTable-get_contrast_sides)
+- [`ContrastsFacadeBase$get_missing()`](#method-ContrastsFacadeBase-get_missing)
 
-- [`ContrastsTable$get_linfct()`](#method-ContrastsTable-get_linfct)
+- [`ContrastsFacadeBase$get_Plotter()`](#method-ContrastsFacadeBase-get_Plotter)
 
-- [`ContrastsTable$get_contrasts()`](#method-ContrastsTable-get_contrasts)
+- [`ContrastsFacadeBase$to_wide()`](#method-ContrastsFacadeBase-to_wide)
 
-- [`ContrastsTable$get_Plotter()`](#method-ContrastsTable-get_Plotter)
-
-- [`ContrastsTable$to_wide()`](#method-ContrastsTable-to_wide)
-
-- [`ContrastsTable$clone()`](#method-ContrastsTable-clone)
+- [`ContrastsFacadeBase$clone()`](#method-ContrastsFacadeBase-clone)
 
 Inherited methods
 
@@ -150,81 +171,35 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$extra_artifacts()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
 - [`prolfqua::ContrastsInterface$filter_significant()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
 - [`prolfqua::ContrastsInterface$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
-- [`prolfqua::ContrastsInterface$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
+- [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
-
-intitialize
-
-#### Usage
-
-    ContrastsTable$new(
-      contrastsdf,
-      subject_id = "protein_Id",
-      model_name = "ContrastTable"
-    )
-
-#### Arguments
-
-- `contrastsdf`:
-
-  data.frame
-
-- `subject_id`:
-
-  default protein_Id
-
-- `model_name`:
-
-  default ContrastTable
-
-------------------------------------------------------------------------
-
-### Method `get_contrast_sides()`
-
-return sides of contrast
-
-#### Usage
-
-    ContrastsTable$get_contrast_sides()
-
-#### Returns
-
-data.frame
-
-------------------------------------------------------------------------
-
-### Method `get_linfct()`
-
-not implemented
-
-#### Usage
-
-    ContrastsTable$get_linfct()
-
-------------------------------------------------------------------------
-
 ### Method `get_contrasts()`
 
-get contrasts
+get contrast results, stamped with the facade key
 
 #### Usage
 
-    ContrastsTable$get_contrasts(all = FALSE)
+    ContrastsFacadeBase$get_contrasts(...)
 
 #### Arguments
 
-- `all`:
+- `...`:
 
-  should all columns be returned (default FALSE)
+  passed to the inner contrast object's get_contrasts
 
-- `global`:
+------------------------------------------------------------------------
 
-  use a global linear function (determined by get_linfct)
+### Method `get_missing()`
+
+get subject x contrast pairs that could not be estimated
+
+#### Usage
+
+    ContrastsFacadeBase$get_missing()
 
 ------------------------------------------------------------------------
 
@@ -235,41 +210,29 @@ get
 
 #### Usage
 
-    ContrastsTable$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)
+    ContrastsFacadeBase$get_Plotter(...)
 
 #### Arguments
 
-- `fc_threshold`:
+- `...`:
 
-  fold change threshold
-
-- `fdr_threshold`:
-
-  fdr threshold
-
-#### Returns
-
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
+  passed to the inner contrast object's get_Plotter
 
 ------------------------------------------------------------------------
 
 ### Method `to_wide()`
 
-convert to wide format
+convert results to wide format
 
 #### Usage
 
-    ContrastsTable$to_wide(columns = c("p.value", "FDR", "statistic"))
+    ContrastsFacadeBase$to_wide(...)
 
 #### Arguments
 
-- `columns`:
+- `...`:
 
-  value column default beta.based.significance
-
-#### Returns
-
-data.frame
+  passed to the inner contrast object's to_wide
 
 ------------------------------------------------------------------------
 
@@ -279,84 +242,10 @@ The objects of this class are cloneable with this method.
 
 #### Usage
 
-    ContrastsTable$clone(deep = FALSE)
+    ContrastsFacadeBase$clone(deep = FALSE)
 
 #### Arguments
 
 - `deep`:
 
   Whether to make a deep clone.
-
-## Examples
-
-``` r
-bb <-prolfqua::sim_lfq_data_peptide_config()
-#> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
-configur <- bb$config$clone(deep=TRUE)
-configur$hierarchy_depth <- 2
-data <- bb$data
-lfqdata <- LFQData$new(data, configur)
-lfqdata$factors()
-#> # A tibble: 12 × 3
-#>    sample  sampleName group_
-#>    <chr>   <chr>      <chr> 
-#>  1 A_V1    A_V1       A     
-#>  2 A_V2    A_V2       A     
-#>  3 A_V3    A_V3       A     
-#>  4 A_V4    A_V4       A     
-#>  5 B_V1    B_V1       B     
-#>  6 B_V2    B_V2       B     
-#>  7 B_V3    B_V3       B     
-#>  8 B_V4    B_V4       B     
-#>  9 Ctrl_V1 Ctrl_V1    Ctrl  
-#> 10 Ctrl_V2 Ctrl_V2    Ctrl  
-#> 11 Ctrl_V3 Ctrl_V3    Ctrl  
-#> 12 Ctrl_V4 Ctrl_V4    Ctrl  
-Contrasts <- c("aC" = "group_A - group_Ctrl",
-"bC" = "group_A - group_Ctrl")
-csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
-#> Warning: ContrastsMissing is deprecated: it substitutes group means rather than fitting a model. Prefer build_model_impute (LOD-imputed per-protein refit with borrowed variance) via the lm_impute / limma_impute facades. See ?ContrastsMissing for details.
-ctr <- csi$get_contrasts()
-#> aC=group_A - group_Ctrl
-#> bC=group_A - group_Ctrl
-#> aC=group_A - group_Ctrl
-#> bC=group_A - group_Ctrl
-#> aC=group_A - group_Ctrl
-#> bC=group_A - group_Ctrl
-csi$subject_id
-#> [1] "protein_Id" "peptide_Id"
-xcx <- ContrastsTable$new(ctr, subject_id = csi$subject_id, model_name = "TableTest")
-xcx$get_contrasts()
-#> # A tibble: 56 × 22
-#>    modelName    estimate_type    protein_Id  peptide_Id meanAbundanceImp_group_1
-#>    <chr>        <chr>            <chr>       <chr>                         <dbl>
-#>  1 groupAverage missing_fallback 0EfVhX~0087 ITLb4x1q                       18.0
-#>  2 groupAverage missing_fallback 0EfVhX~0087 ahQLlQY7                       25.8
-#>  3 groupAverage missing_fallback 0EfVhX~0087 dJkdz7so                       15.5
-#>  4 groupAverage missing_fallback 7cbcrd~5725 D5dQ4nKk                       29.5
-#>  5 groupAverage missing_fallback 9VUkAq~4703 eIC06D7g                       18.0
-#>  6 groupAverage missing_fallback BEJI92~5282 HBkZvdhT                       16.8
-#>  7 groupAverage missing_fallback BEJI92~5282 qQ1GK8Un                       23.8
-#>  8 groupAverage missing_fallback CGzoYe~2147 mjHSHhoe                       24.3
-#>  9 groupAverage missing_fallback DoWup2~5896 KVUnZ6oZ                       23.8
-#> 10 groupAverage missing_fallback Fl4JiV~8625 GsUIOl6Q                       19.1
-#> # ℹ 46 more rows
-#> # ℹ 17 more variables: meanAbundanceImp_group_2 <dbl>, diff <dbl>,
-#> #   group_1_name <chr>, group_2_name <chr>, contrast <chr>, avgAbd <dbl>,
-#> #   indic <dbl>, nrMeasured_group_1 <int>, nrMeasured_group_2 <int>, df <int>,
-#> #   sigma <dbl>, std.error <dbl>, statistic <dbl>, p.value <dbl>,
-#> #   conf.low <dbl>, conf.high <dbl>, FDR <dbl>
-xcx$get_Plotter()$volcano()
-#> $p.value
-
-#> 
-#> $FDR
-
-#> 
-stopifnot(is.null(xcx$get_contrast_sides()))
-stopifnot(is.null(xcx$get_linfct()))
-stopifnot(ncol(xcx$to_wide()) == 10)
-```

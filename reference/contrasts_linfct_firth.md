@@ -27,12 +27,10 @@ ctrpep$get_contrast_sides()
 #> 1 Avs      group_A group_B   
 #> 2 AvsCtrl  group_A group_Ctrl
 
-xx <- ctrpep$get_linfct()
-models1 <- xx$models$models$models1
-tmp1 <- contrasts_linfct_firth(models1)
+linfct_models <- ctrpep$get_linfct()
+tmp1 <- contrasts_linfct_firth(linfct_models$models1)
 #> contrasts_linfct_firth
-models2 <- xx$models$models$models2
-tmp2 <- contrasts_linfct_firth(models2)
+tmp2 <- contrasts_linfct_firth(linfct_models$models2)
 #> contrasts_linfct_firth
 stopifnot(all(dim(tmp1) > 10))
 stopifnot(all(dim(tmp2) > 10))

@@ -17,6 +17,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -322,20 +323,20 @@ csi <- ContrastsMissing$new(lProt, contrasts = Contr)
 #> Warning: ContrastsMissing is deprecated: it substitutes group means rather than fitting a model. Prefer build_model_impute (LOD-imputed per-protein refit with borrowed variance) via the lm_impute / limma_impute facades. See ?ContrastsMissing for details.
 
 contrast$get_contrasts() |> dim()
-#> [1] 49 13
+#> [1] 49 14
 (xx <- csi$get_contrasts())   |> dim()
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl
 #> dil.b_vs_a=group_A - group_Ctrl
-#> [1] 50 20
+#> [1] 50 21
 merged <- merge_contrasts_results(contrast, csi)
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> Joining with `by = join_by(protein_Id, contrast)`
 
 merged$more$get_contrasts() |> dim()
-#> [1]  1 13
-stopifnot(all(dim(merged$merged$get_contrasts() == c(50,13))))
-stopifnot(all(dim(merged$same$get_contrasts()) == c(49,13)))
+#> [1]  1 14
+stopifnot(all(dim(merged$merged$get_contrasts()) == c(50, 14)))
+stopifnot(all(dim(merged$same$get_contrasts()) == c(49, 14)))
 
 cs <- contrast$get_contrast_sides()
 cslf <- contrast$get_linfct()

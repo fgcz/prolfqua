@@ -73,6 +73,7 @@ ROPECA reproducibility-optimization method"></head><body>
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
+<code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
@@ -383,42 +384,42 @@ ROPECA reproducibility-optimization method"></head><body>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 78 14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 78 15</span>
 <span class="r-in"><span> <span class="va">contrM</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrM</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 78 14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 78 15</span>
 <span class="r-in"><span> <span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">ContrastsROPECA</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">contrM</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName protein_Id  contrast     n   diff statistic avgAbd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ROPECA    0EfVhX~5954 AvsCtrl      1  9.23     14.1     25.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ROPECA    0m5WN4~1448 AvsCtrl      2 -<span style="color: #BB0000;">1.24</span>     -<span style="color: #BB0000;">1.70</span>    18.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ROPECA    7cbcrd~8305 AvsCtrl      1  4.65      6.59    25.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ROPECA    9VUkAq~4562 AvsCtrl     16  0.980     1.41    18.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ROPECA    At886V~3296 AvsCtrl      5 -<span style="color: #BB0000;">2.67</span>     -<span style="color: #BB0000;">4.09</span>    18.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ROPECA    BEJI92~9143 AvsCtrl      4  1.66      2.54    24.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ROPECA    CGzoYe~2857 AvsCtrl      1 -<span style="color: #BB0000;">1.23</span>     -<span style="color: #BB0000;">1.46</span>    17.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ROPECA    CtOJ9t~2837 AvsCtrl      5  7.02     10.7     23.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ROPECA    DoWup2~2934 AvsCtrl      7  0.831     1.27    21.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ROPECA    DuwH7n~3402 AvsCtrl      3  0.655     1.00    19.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> ROPECA    Fl4JiV~7526 AvsCtrl      1  1.27      1.94    23.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> ROPECA    HC8K98~4958 AvsCtrl      2 -<span style="color: #BB0000;">1.56</span>     -<span style="color: #BB0000;">1.41</span>    15.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> ROPECA    HvIpHG~4015 AvsCtrl      2  1.99      2.78    16.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> ROPECA    I1Jk2Z~0821 AvsCtrl     10 -<span style="color: #BB0000;">3.88</span>     -<span style="color: #BB0000;">4.22</span>    15.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> ROPECA    JV3Z7t~2956 AvsCtrl      1 -<span style="color: #BB0000;">5.06</span>     -<span style="color: #BB0000;">7.74</span>    27.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> ROPECA    JcKVfU~0815 AvsCtrl      1 -<span style="color: #BB0000;">1.51</span>     -<span style="color: #BB0000;">2.31</span>    22.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> ROPECA    JfvT8X~2727 AvsCtrl     11  3.67      5.19    21.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> ROPECA    R2i6w7~0288 AvsCtrl      2  6.27      9.04    22.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> ROPECA    SGIVBl~9558 AvsCtrl      2  7.27     11.1     31.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> ROPECA    r2J0Eh~2687 AvsCtrl      1 -<span style="color: #BB0000;">0.157</span>    -<span style="color: #BB0000;">0.240</span>   22.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName estimate_type protein_Id  contrast     n   diff statistic avgAbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ROPECA    observed      0EfVhX~5954 AvsCtrl      1  9.23     14.1     25.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> ROPECA    observed      0m5WN4~1448 AvsCtrl      2 -<span style="color: #BB0000;">1.24</span>     -<span style="color: #BB0000;">1.70</span>    18.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> ROPECA    observed      7cbcrd~8305 AvsCtrl      1  4.65      6.59    25.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> ROPECA    observed      9VUkAq~4562 AvsCtrl     16  0.980     1.41    18.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> ROPECA    observed      At886V~3296 AvsCtrl      5 -<span style="color: #BB0000;">2.67</span>     -<span style="color: #BB0000;">4.09</span>    18.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> ROPECA    observed      BEJI92~9143 AvsCtrl      4  1.66      2.54    24.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> ROPECA    observed      CGzoYe~2857 AvsCtrl      1 -<span style="color: #BB0000;">1.23</span>     -<span style="color: #BB0000;">1.46</span>    17.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> ROPECA    observed      CtOJ9t~2837 AvsCtrl      5  7.02     10.7     23.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> ROPECA    observed      DoWup2~2934 AvsCtrl      7  0.831     1.27    21.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> ROPECA    observed      DuwH7n~3402 AvsCtrl      3  0.655     1.00    19.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> ROPECA    observed      Fl4JiV~7526 AvsCtrl      1  1.27      1.94    23.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> ROPECA    observed      HC8K98~4958 AvsCtrl      2 -<span style="color: #BB0000;">1.56</span>     -<span style="color: #BB0000;">1.41</span>    15.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> ROPECA    observed      HvIpHG~4015 AvsCtrl      2  1.99      2.78    16.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> ROPECA    observed      I1Jk2Z~0821 AvsCtrl     10 -<span style="color: #BB0000;">3.88</span>     -<span style="color: #BB0000;">4.22</span>    15.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> ROPECA    observed      JV3Z7t~2956 AvsCtrl      1 -<span style="color: #BB0000;">5.06</span>     -<span style="color: #BB0000;">7.74</span>    27.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> ROPECA    observed      JcKVfU~0815 AvsCtrl      1 -<span style="color: #BB0000;">1.51</span>     -<span style="color: #BB0000;">2.31</span>    22.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> ROPECA    observed      JfvT8X~2727 AvsCtrl     11  3.67      5.19    21.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> ROPECA    observed      R2i6w7~0288 AvsCtrl      2  6.27      9.04    22.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> ROPECA    observed      SGIVBl~9558 AvsCtrl      2  7.27     11.1     31.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> ROPECA    observed      r2J0Eh~2687 AvsCtrl      1 -<span style="color: #BB0000;">0.157</span>    -<span style="color: #BB0000;">0.240</span>   22.3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: beta.based.significance &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FDR.beta.based.significance &lt;dbl&gt;</span></span>
 <span class="r-in"><span> <span class="va">contrast</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va">ContrastsROPECA</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">contr</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 20  9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 20 10</span>
 <span class="r-in"><span> <span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">contrast</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 4</span></span>

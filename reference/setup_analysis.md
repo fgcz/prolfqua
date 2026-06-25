@@ -6,7 +6,13 @@ create new columns e.g. sampleName column etc.
 ## Usage
 
 ``` r
-setup_analysis(data, configuration, cc = TRUE, from_factors = FALSE)
+setup_analysis(
+  data,
+  configuration,
+  cc = TRUE,
+  from_factors = FALSE,
+  debug = FALSE
+)
 ```
 
 ## Arguments
@@ -27,9 +33,19 @@ setup_analysis(data, configuration, cc = TRUE, from_factors = FALSE)
 
   if TRUE, create sampleName from factor columns
 
+- debug:
+
+  if FALSE (default) and any hierarchy-key/sample combination has more
+  than one observation, stop with an informative error. If TRUE, warn
+  and return the diagnostic count table (inspect rows where n \> 1)
+  instead.
+
 ## Value
 
-The computed result.
+A tibble with the columns relevant for `configuration` (sample,
+hierarchy, factor and response columns). Stops if any
+hierarchy-key/sample combination is observed more than once (unless
+`debug = TRUE`).
 
 ## See also
 

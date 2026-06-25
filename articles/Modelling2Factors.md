@@ -228,13 +228,13 @@ Also these results can again be visualized in a `volcano` plot.
 dim(contr$get_contrasts())
 ```
 
-    ## [1] 757  13
+    ## [1] 757  14
 
 ``` r
 dim(contrSimple$get_contrasts())
 ```
 
-    ## [1] 980  20
+    ## [1] 980  21
 
 ``` r
 mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrSimple)$merged

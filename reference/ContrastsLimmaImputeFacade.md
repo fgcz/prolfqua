@@ -30,6 +30,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -118,9 +119,11 @@ Other modelling:
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Super class
+## Super classes
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\>
+[`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsLimmaImputeFacade`
 
 ## Public fields
@@ -147,14 +150,6 @@ Other modelling:
 
 - [`ContrastsLimmaImputeFacade$new()`](#method-ContrastsLimmaImputeFacade-new)
 
-- [`ContrastsLimmaImputeFacade$get_contrasts()`](#method-ContrastsLimmaImputeFacade-get_contrasts)
-
-- [`ContrastsLimmaImputeFacade$get_missing()`](#method-ContrastsLimmaImputeFacade-get_missing)
-
-- [`ContrastsLimmaImputeFacade$get_Plotter()`](#method-ContrastsLimmaImputeFacade-get_Plotter)
-
-- [`ContrastsLimmaImputeFacade$to_wide()`](#method-ContrastsLimmaImputeFacade-to_wide)
-
 - [`ContrastsLimmaImputeFacade$clone()`](#method-ContrastsLimmaImputeFacade-clone)
 
 Inherited methods
@@ -167,6 +162,10 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsFacadeBase$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
+- [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
+- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
+- [`prolfqua::ContrastsFacadeBase$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -222,64 +221,6 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
-
-get contrast results (rows with NA diff are filtered out)
-
-#### Usage
-
-    ContrastsLimmaImputeFacade$get_contrasts(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsLimma\$get_contrasts
-
-------------------------------------------------------------------------
-
-### Method `get_missing()`
-
-get protein x contrast pairs that could not be estimated
-
-#### Usage
-
-    ContrastsLimmaImputeFacade$get_missing()
-
-------------------------------------------------------------------------
-
-### Method `get_Plotter()`
-
-get ContrastsPlotter
-
-#### Usage
-
-    ContrastsLimmaImputeFacade$get_Plotter(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsLimma\$get_Plotter
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert results to wide format
-
-#### Usage
-
-    ContrastsLimmaImputeFacade$to_wide(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsLimma\$to_wide
-
-------------------------------------------------------------------------
-
 ### Method `clone()`
 
 The objects of this class are cloneable with this method.
@@ -309,16 +250,16 @@ fa <- ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
 #> Warning: Partial NA coefficients for 4 probe(s)
 head(fa$get_contrasts())
 #> # A tibble: 6 × 14
-#>   facade modelName protein_Id contrast    diff   FDR std.error statistic p.value
-#>   <chr>  <chr>     <chr>      <chr>      <dbl> <dbl>     <dbl>     <dbl>   <dbl>
-#> 1 limma… limma     0EfVhX~29… A_vs_Ct…  1.24   0.427     0.666    1.86    0.0853
-#> 2 limma… limma     0m5WN4~67… A_vs_Ct… -0.0361 0.971     0.964   -0.0374  0.971 
-#> 3 limma… limma     7QuTub~61… A_vs_Ct…  0.909  0.773     0.908    1.00    0.352 
-#> 4 limma… limma     7cbcrd~26… A_vs_Ct…  0.612  0.855     1.04     0.588   0.570 
-#> 5 limma… limma     9VUkAq~34… A_vs_Ct…  0.768  0.855     1.16     0.664   0.519 
-#> 6 limma… limma     At886V~77… A_vs_Ct… -1.86   0.212     0.744   -2.50    0.0258
-#> # ℹ 5 more variables: sigma <dbl>, df <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   avgAbd <dbl>
+#>   modelName  estimate_type protein_Id contrast    diff   FDR std.error statistic
+#>   <chr>      <chr>         <chr>      <chr>      <dbl> <dbl>     <dbl>     <dbl>
+#> 1 limma_imp… observed      0EfVhX~29… A_vs_Ct…  1.24   0.427     0.666    1.86  
+#> 2 limma_imp… observed      0m5WN4~67… A_vs_Ct… -0.0361 0.971     0.964   -0.0374
+#> 3 limma_imp… observed      7QuTub~61… A_vs_Ct…  0.909  0.773     0.908    1.00  
+#> 4 limma_imp… observed      7cbcrd~26… A_vs_Ct…  0.612  0.855     1.04     0.588 
+#> 5 limma_imp… observed      9VUkAq~34… A_vs_Ct…  0.768  0.855     1.16     0.664 
+#> 6 limma_imp… observed      At886V~77… A_vs_Ct… -1.86   0.212     0.744   -2.50  
+#> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, avgAbd <dbl>
 fa$to_wide()
 #> # A tibble: 30 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl

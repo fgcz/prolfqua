@@ -72,6 +72,7 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
+<code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>,
 <code><a href="ContrastsFirth.html">ContrastsFirth</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
@@ -162,8 +163,8 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
-    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
-    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code>ContrastsDEqMSFacade</code></p>
+    <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
+    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code><a href="ContrastsFacadeBase.html">prolfqua::ContrastsFacadeBase</a></code> -&gt; <code>ContrastsDEqMSFacade</code></p>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
@@ -192,10 +193,6 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-ContrastsDEqMSFacade-new"><code>ContrastsDEqMSFacade$new()</code></a></p></li>
-<li><p><a href="#method-ContrastsDEqMSFacade-get_contrasts"><code>ContrastsDEqMSFacade$get_contrasts()</code></a></p></li>
-<li><p><a href="#method-ContrastsDEqMSFacade-get_missing"><code>ContrastsDEqMSFacade$get_missing()</code></a></p></li>
-<li><p><a href="#method-ContrastsDEqMSFacade-get_Plotter"><code>ContrastsDEqMSFacade$get_Plotter()</code></a></p></li>
-<li><p><a href="#method-ContrastsDEqMSFacade-to_wide"><code>ContrastsDEqMSFacade$to_wide()</code></a></p></li>
 <li><p><a href="#method-ContrastsDEqMSFacade-clone"><code>ContrastsDEqMSFacade$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description"><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table"><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
@@ -205,6 +202,10 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides"><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora"><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank"><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_Plotter"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter"><code>prolfqua::ContrastsFacadeBase$get_Plotter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_contrasts"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts"><code>prolfqua::ContrastsFacadeBase$get_contrasts()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing"><code>prolfqua::ContrastsFacadeBase$get_missing()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="to_wide"><a href="../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide"><code>prolfqua::ContrastsFacadeBase$to_wide()</code></a></span></li>
 </ul></details></p><hr><a id="method-ContrastsDEqMSFacade-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
@@ -244,71 +245,15 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ContrastsDEqMSFacade-get_contrasts"></a><div class="section">
-<h3 id="method-get-contrasts-">Method <code>get_contrasts()</code><a class="anchor" aria-label="anchor" href="#method-get-contrasts-"></a></h3>
-<p>get contrast results</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsDEqMSFacade</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsModeratedDEqMS$get_contrasts</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-ContrastsDEqMSFacade-get_missing"></a><div class="section">
-<h3 id="method-get-missing-">Method <code>get_missing()</code><a class="anchor" aria-label="anchor" href="#method-get-missing-"></a></h3>
-<p>get protein × contrast pairs that could not be estimated</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsDEqMSFacade</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-ContrastsDEqMSFacade-get_Plotter"></a><div class="section">
-<h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
-<p>get ContrastsPlotter</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsDEqMSFacade</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsModeratedDEqMS$get_Plotter</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-ContrastsDEqMSFacade-to_wide"></a><div class="section">
-<h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
-<p>convert results to wide format</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsDEqMSFacade</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to ContrastsModeratedDEqMS$to_wide</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
 </div><p></p><hr><a id="method-ContrastsDEqMSFacade-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsDEqMSFacade</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -338,15 +283,15 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   facade contrast  modelName  protein_Id   diff std.error avgAbd statistic    df</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> deqms  A_vs_Ctrl WaldTest_… 0EfVhX~71…  3.00      0.886   18.8     4.77      6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> deqms  A_vs_Ctrl WaldTest_… 0m5WN4~35…  0.222     0.912   20.4     0.342     8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> deqms  A_vs_Ctrl WaldTest_… 76k03k~97…  0.509     0.464   19.9     0.825     9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> deqms  A_vs_Ctrl WaldTest_… 7QuTub~55… -<span style="color: #BB0000;">1.22</span>      0.874   23.4    -<span style="color: #BB0000;">1.57</span>      8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> deqms  A_vs_Ctrl WaldTest_… 7cbcrd~04…  1.38      0.690   16.5     1.35      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> deqms  A_vs_Ctrl WaldTest_… 7soopj~34…  0.822     0.617   25.9     1.13      9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type contrast  protein_Id   diff std.error avgAbd statistic</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> deqms     observed      A_vs_Ctrl 0EfVhX~71…  3.00      0.886   18.8     4.77 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> deqms     observed      A_vs_Ctrl 0m5WN4~35…  0.222     0.912   20.4     0.342</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> deqms     observed      A_vs_Ctrl 76k03k~97…  0.509     0.464   19.9     0.825</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> deqms     observed      A_vs_Ctrl 7QuTub~55… -<span style="color: #BB0000;">1.22</span>      0.874   23.4    -<span style="color: #BB0000;">1.57</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> deqms     observed      A_vs_Ctrl 7cbcrd~04…  1.38      0.690   16.5     1.35 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> deqms     observed      A_vs_Ctrl 7soopj~34…  0.822     0.617   25.9     1.13 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: df &lt;int&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">fa</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)</span>

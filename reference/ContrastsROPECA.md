@@ -23,6 +23,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -341,42 +342,42 @@ mod <- build_model(
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`
-#> [1] 78 14
+#> [1] 78 15
  contrM <- prolfqua::ContrastsModerated$new(contr)
  dim(contrM$get_contrasts())
-#> [1] 78 14
+#> [1] 78 15
  contrast <- prolfqua::ContrastsROPECA$new(contrM)
  contrast$get_contrasts()
-#> # A tibble: 20 × 9
+#> # A tibble: 20 × 10
 #> # Groups:   contrast [1]
-#>    modelName protein_Id  contrast     n   diff statistic avgAbd
-#>    <chr>     <chr>       <chr>    <int>  <dbl>     <dbl>  <dbl>
-#>  1 ROPECA    0EfVhX~5954 AvsCtrl      1  9.23     14.1     25.1
-#>  2 ROPECA    0m5WN4~1448 AvsCtrl      2 -1.24     -1.70    18.5
-#>  3 ROPECA    7cbcrd~8305 AvsCtrl      1  4.65      6.59    25.7
-#>  4 ROPECA    9VUkAq~4562 AvsCtrl     16  0.980     1.41    18.1
-#>  5 ROPECA    At886V~3296 AvsCtrl      5 -2.67     -4.09    18.1
-#>  6 ROPECA    BEJI92~9143 AvsCtrl      4  1.66      2.54    24.6
-#>  7 ROPECA    CGzoYe~2857 AvsCtrl      1 -1.23     -1.46    17.6
-#>  8 ROPECA    CtOJ9t~2837 AvsCtrl      5  7.02     10.7     23.4
-#>  9 ROPECA    DoWup2~2934 AvsCtrl      7  0.831     1.27    21.2
-#> 10 ROPECA    DuwH7n~3402 AvsCtrl      3  0.655     1.00    19.6
-#> 11 ROPECA    Fl4JiV~7526 AvsCtrl      1  1.27      1.94    23.4
-#> 12 ROPECA    HC8K98~4958 AvsCtrl      2 -1.56     -1.41    15.3
-#> 13 ROPECA    HvIpHG~4015 AvsCtrl      2  1.99      2.78    16.4
-#> 14 ROPECA    I1Jk2Z~0821 AvsCtrl     10 -3.88     -4.22    15.5
-#> 15 ROPECA    JV3Z7t~2956 AvsCtrl      1 -5.06     -7.74    27.3
-#> 16 ROPECA    JcKVfU~0815 AvsCtrl      1 -1.51     -2.31    22.2
-#> 17 ROPECA    JfvT8X~2727 AvsCtrl     11  3.67      5.19    21.1
-#> 18 ROPECA    R2i6w7~0288 AvsCtrl      2  6.27      9.04    22.1
-#> 19 ROPECA    SGIVBl~9558 AvsCtrl      2  7.27     11.1     31.2
-#> 20 ROPECA    r2J0Eh~2687 AvsCtrl      1 -0.157    -0.240   22.3
+#>    modelName estimate_type protein_Id  contrast     n   diff statistic avgAbd
+#>    <chr>     <chr>         <chr>       <chr>    <int>  <dbl>     <dbl>  <dbl>
+#>  1 ROPECA    observed      0EfVhX~5954 AvsCtrl      1  9.23     14.1     25.1
+#>  2 ROPECA    observed      0m5WN4~1448 AvsCtrl      2 -1.24     -1.70    18.5
+#>  3 ROPECA    observed      7cbcrd~8305 AvsCtrl      1  4.65      6.59    25.7
+#>  4 ROPECA    observed      9VUkAq~4562 AvsCtrl     16  0.980     1.41    18.1
+#>  5 ROPECA    observed      At886V~3296 AvsCtrl      5 -2.67     -4.09    18.1
+#>  6 ROPECA    observed      BEJI92~9143 AvsCtrl      4  1.66      2.54    24.6
+#>  7 ROPECA    observed      CGzoYe~2857 AvsCtrl      1 -1.23     -1.46    17.6
+#>  8 ROPECA    observed      CtOJ9t~2837 AvsCtrl      5  7.02     10.7     23.4
+#>  9 ROPECA    observed      DoWup2~2934 AvsCtrl      7  0.831     1.27    21.2
+#> 10 ROPECA    observed      DuwH7n~3402 AvsCtrl      3  0.655     1.00    19.6
+#> 11 ROPECA    observed      Fl4JiV~7526 AvsCtrl      1  1.27      1.94    23.4
+#> 12 ROPECA    observed      HC8K98~4958 AvsCtrl      2 -1.56     -1.41    15.3
+#> 13 ROPECA    observed      HvIpHG~4015 AvsCtrl      2  1.99      2.78    16.4
+#> 14 ROPECA    observed      I1Jk2Z~0821 AvsCtrl     10 -3.88     -4.22    15.5
+#> 15 ROPECA    observed      JV3Z7t~2956 AvsCtrl      1 -5.06     -7.74    27.3
+#> 16 ROPECA    observed      JcKVfU~0815 AvsCtrl      1 -1.51     -2.31    22.2
+#> 17 ROPECA    observed      JfvT8X~2727 AvsCtrl     11  3.67      5.19    21.1
+#> 18 ROPECA    observed      R2i6w7~0288 AvsCtrl      2  6.27      9.04    22.1
+#> 19 ROPECA    observed      SGIVBl~9558 AvsCtrl      2  7.27     11.1     31.2
+#> 20 ROPECA    observed      r2J0Eh~2687 AvsCtrl      1 -0.157    -0.240   22.3
 #> # ℹ 2 more variables: beta.based.significance <dbl>,
 #> #   FDR.beta.based.significance <dbl>
  contrast <- prolfqua::ContrastsROPECA$new(contr)
  tmp <- contrast$get_contrasts()
  dim(tmp)
-#> [1] 20  9
+#> [1] 20 10
  pl <- contrast$get_Plotter()
  contrast$to_wide()
 #> # A tibble: 20 × 4

@@ -51,6 +51,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -369,32 +370,34 @@ stopifnot((res$p.value |> is.na() |> sum()) == 0)
 plot(res$diff, -log10(res$p.value), pch = ".")
 
 csi$column_description()
-#>           column_name
-#> modelName   modelName
-#> contrast     contrast
-#> avgAbd         avgAbd
-#> diff             diff
-#> FDR               FDR
-#> statistic   statistic
-#> std.error   std.error
-#> df                 df
-#> p.value       p.value
-#> conf.low     conf.low
-#> conf.high   conf.high
-#> sigma           sigma
-#>                                                                                            description
-#> modelName                                                                                type of model
-#> contrast                                                      name of difference e.g. group1_vs_group2
-#> avgAbd                                                  mean abundance value of protein in all samples
-#> diff                                                                       difference among conditions
-#> FDR                                                                               false discovery rate
-#> statistic                                                                                 t-statistics
-#> std.error                                                                               standard error
-#> df                                                                                  degrees of freedom
-#> p.value                                                                                        p-value
-#> conf.low                                                         lower value of 95 confidence interval
-#> conf.high                                                         high value of 95 confidence interval
-#> sigma     residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).
+#>                 column_name
+#> modelName         modelName
+#> estimate_type estimate_type
+#> contrast           contrast
+#> avgAbd               avgAbd
+#> diff                   diff
+#> FDR                     FDR
+#> statistic         statistic
+#> std.error         std.error
+#> df                       df
+#> p.value             p.value
+#> conf.low           conf.low
+#> conf.high         conf.high
+#> sigma                 sigma
+#>                                                                                                description
+#> modelName                              selected analysis method / facade key (e.g. lm, rfit, limma_impute)
+#> estimate_type                    how the estimate was produced: observed, lod_imputed, or missing_fallback
+#> contrast                                                          name of difference e.g. group1_vs_group2
+#> avgAbd                                                      mean abundance value of protein in all samples
+#> diff                                                                           difference among conditions
+#> FDR                                                                                   false discovery rate
+#> statistic                                                                                     t-statistics
+#> std.error                                                                                   standard error
+#> df                                                                                      degrees of freedom
+#> p.value                                                                                            p-value
+#> conf.low                                                             lower value of 95 confidence interval
+#> conf.high                                                             high value of 95 confidence interval
+#> sigma         residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).
 x<- csi$get_Plotter()
 p <- x$volcano()
 pdf(file = NULL)
@@ -404,7 +407,7 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1bf84a2b98e0 
+#> agg_record_1c04650135cd 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
@@ -444,6 +447,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1bf84a2b98e0 
+#> agg_record_1c04650135cd 
 #>                       2 
 ```

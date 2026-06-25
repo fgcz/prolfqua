@@ -271,30 +271,32 @@ testthat::expect_error(int$filter_significant())
 identical(int$extra_artifacts(), list())
 #> [1] TRUE
 int$column_description()
-#>           column_name
-#> modelName   modelName
-#> contrast     contrast
-#> avgAbd         avgAbd
-#> diff             diff
-#> FDR               FDR
-#> statistic   statistic
-#> std.error   std.error
-#> df                 df
-#> p.value       p.value
-#> conf.low     conf.low
-#> conf.high   conf.high
-#> sigma           sigma
-#>                                                                                            description
-#> modelName                                                                                type of model
-#> contrast                                                      name of difference e.g. group1_vs_group2
-#> avgAbd                                                  mean abundance value of protein in all samples
-#> diff                                                                       difference among conditions
-#> FDR                                                                               false discovery rate
-#> statistic                                                                                 t-statistics
-#> std.error                                                                               standard error
-#> df                                                                                  degrees of freedom
-#> p.value                                                                                        p-value
-#> conf.low                                                         lower value of 95 confidence interval
-#> conf.high                                                         high value of 95 confidence interval
-#> sigma     residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).
+#>                 column_name
+#> modelName         modelName
+#> estimate_type estimate_type
+#> contrast           contrast
+#> avgAbd               avgAbd
+#> diff                   diff
+#> FDR                     FDR
+#> statistic         statistic
+#> std.error         std.error
+#> df                       df
+#> p.value             p.value
+#> conf.low           conf.low
+#> conf.high         conf.high
+#> sigma                 sigma
+#>                                                                                                description
+#> modelName                              selected analysis method / facade key (e.g. lm, rfit, limma_impute)
+#> estimate_type                    how the estimate was produced: observed, lod_imputed, or missing_fallback
+#> contrast                                                          name of difference e.g. group1_vs_group2
+#> avgAbd                                                      mean abundance value of protein in all samples
+#> diff                                                                           difference among conditions
+#> FDR                                                                                   false discovery rate
+#> statistic                                                                                     t-statistics
+#> std.error                                                                                   standard error
+#> df                                                                                      degrees of freedom
+#> p.value                                                                                            p-value
+#> conf.low                                                             lower value of 95 confidence interval
+#> conf.high                                                             high value of 95 confidence interval
+#> sigma         residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).
 ```

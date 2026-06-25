@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-06-24</h4>
+            <h4 data-toc-skip class="date">2026-06-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/ContrastFacades.Rmd" class="external-link"><code>vignettes/ContrastFacades.Rmd</code></a></small>
       <div class="d-none name"><code>ContrastFacades.Rmd</code></div>
@@ -297,7 +297,7 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span>  <span class="va">results_limpa</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">any_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"facade"</span>, <span class="st">"modelName"</span>, <span class="st">"protein_Id"</span>, <span class="st">"contrast"</span>, <span class="st">"avgAbd"</span>, <span class="st">"diff"</span>, <span class="st">"FDR"</span>,</span>
+<span>    <span class="st">"modelName"</span>, <span class="st">"estimate_type"</span>, <span class="st">"protein_Id"</span>, <span class="st">"contrast"</span>, <span class="st">"avgAbd"</span>, <span class="st">"diff"</span>, <span class="st">"FDR"</span>,</span>
 <span>    <span class="st">"statistic"</span>, <span class="st">"std.error"</span>, <span class="st">"df"</span>, <span class="st">"p.value"</span>, <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>,</span>
 <span>    <span class="st">"sigma"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -308,9 +308,9 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">results_protein</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">facade</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">modelName</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 9 × 2</span></span></span>
-<span><span class="co">##   facade       n_results</span></span>
+<span><span class="co">##   modelName    n_results</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> deqms              157</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> firth              160</span></span>
@@ -321,25 +321,27 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">7</span> lm_impute          160</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">8</span> lm_missing         160</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">9</span> rfit               157</span></span></code></pre>
-<p>For facades that combine several underlying result types, such as
-<code>lm_missing</code>, the <code>modelName</code> column still tells
-you where individual rows came from.</p>
+<p>The <code>modelName</code> column is the facade key. For facades that
+combine several underlying result types, such as
+<code>lm_missing</code>, the <code>estimate_type</code> column tells you
+how each row was produced (<code>observed</code>,
+<code>lod_imputed</code>, or <code>missing_fallback</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_protein</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">facade</span>, <span class="va">contrast</span>, <span class="va">modelName</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">modelName</span>, <span class="va">contrast</span>, <span class="va">estimate_type</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
-<span><span class="co">##    facade       contrast  modelName      n_results</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> deqms        A_vs_Ctrl WaldTest_DEqMS        78</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> deqms        B_vs_Ctrl WaldTest_DEqMS        79</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> firth        A_vs_Ctrl WaldTestFirth         80</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> firth        B_vs_Ctrl WaldTestFirth         80</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> limma        A_vs_Ctrl limma                 78</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> limma        B_vs_Ctrl limma                 77</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> limma_impute A_vs_Ctrl limma                 77</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> limma_impute A_vs_Ctrl limma_imputed          3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> limma_impute B_vs_Ctrl limma                 77</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> limma_impute B_vs_Ctrl limma_imputed          3</span></span>
+<span><span class="co">##    modelName    contrast  estimate_type n_results</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> deqms        A_vs_Ctrl observed             78</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> deqms        B_vs_Ctrl observed             79</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> firth        A_vs_Ctrl observed             80</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> firth        B_vs_Ctrl observed             80</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> limma        A_vs_Ctrl observed             78</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> limma        B_vs_Ctrl observed             77</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> limma_impute A_vs_Ctrl lod_imputed           3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> limma_impute A_vs_Ctrl observed             77</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> limma_impute B_vs_Ctrl lod_imputed           3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> limma_impute B_vs_Ctrl observed             77</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
 </div>
 </div>
@@ -352,11 +354,11 @@ you where individual rows came from.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">standard_facades</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"rfit"</span>, <span class="st">"limma"</span>, <span class="st">"deqms"</span><span class="op">)</span></span>
 <span><span class="va">results_standard</span> <span class="op">&lt;-</span> <span class="va">results_protein</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">facade</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">standard_facades</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">modelName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">standard_facades</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_standard</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">diff</span>, y <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span>, color <span class="op">=</span> <span class="va">significant</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.6</span>, size <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">~</span> <span class="va">facade</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">~</span> <span class="va">modelName</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>`TRUE` <span class="op">=</span> <span class="st">"firebrick"</span>, `FALSE` <span class="op">=</span> <span class="st">"grey70"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -380,15 +382,15 @@ which models missingness directly.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">impute_facades</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm_missing"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma_impute"</span>, <span class="st">"firth"</span><span class="op">)</span></span>
 <span><span class="va">results_impute</span> <span class="op">&lt;-</span> <span class="va">results_protein</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">facade</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">impute_facades</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>facade <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">facade</span>, levels <span class="op">=</span> <span class="va">impute_facades</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">modelName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">impute_facades</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>modelName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">modelName</span>, levels <span class="op">=</span> <span class="va">impute_facades</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_impute</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">diff</span>, y <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">results_impute</span>, <span class="op">!</span><span class="va">rescued</span><span class="op">)</span>,</span>
 <span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">significant</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">results_impute</span>, <span class="va">rescued</span><span class="op">)</span>,</span>
 <span>             color <span class="op">=</span> <span class="st">"red"</span>, shape <span class="op">=</span> <span class="fl">18</span>, size <span class="op">=</span> <span class="fl">5</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">~</span> <span class="va">facade</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">~</span> <span class="va">modelName</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>`TRUE` <span class="op">=</span> <span class="st">"firebrick"</span>, `FALSE` <span class="op">=</span> <span class="st">"grey70"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -407,23 +409,23 @@ diamonds mark proteins rescued (missing in plain lm).
 </h2>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_protein</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">facade</span>, <span class="va">contrast</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">modelName</span>, <span class="va">contrast</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">p.value</span>, n <span class="op">=</span> <span class="fl">5</span>, with_ties <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">facade</span>, <span class="va">contrast</span>, <span class="va">modelName</span>, <span class="va">protein_Id</span>, <span class="va">diff</span>, <span class="va">p.value</span>, <span class="va">FDR</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">modelName</span>, <span class="va">estimate_type</span>, <span class="va">contrast</span>, <span class="va">protein_Id</span>, <span class="va">diff</span>, <span class="va">p.value</span>, <span class="va">FDR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 90 × 7</span></span></span>
-<span><span class="co">##    facade contrast  modelName      protein_Id    diff  p.value      FDR</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> deqms  A_vs_Ctrl WaldTest_DEqMS Zci7Jw~7064 -<span style="color: #BB0000;">0.722</span> 3.79<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> deqms  A_vs_Ctrl WaldTest_DEqMS 6TevMr~7550  0.765 3.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.35<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> deqms  A_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.583 5.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.45<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> deqms  A_vs_Ctrl WaldTest_DEqMS 0CubNR~0890  0.674 9.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.90<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> deqms  A_vs_Ctrl WaldTest_DEqMS KVkccD~1805 -<span style="color: #BB0000;">0.524</span> 1.25<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.95<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> deqms  B_vs_Ctrl WaldTest_DEqMS fylZqB~3883  0.717 1.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 8.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> deqms  B_vs_Ctrl WaldTest_DEqMS XxJoJB~7286  0.587 4.63<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> deqms  B_vs_Ctrl WaldTest_DEqMS f0Cvvj~6658  0.345 5.39<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.42<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> deqms  B_vs_Ctrl WaldTest_DEqMS TR3Ksv~1492 -<span style="color: #BB0000;">0.413</span> 3.73<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 7.37<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> deqms  B_vs_Ctrl WaldTest_DEqMS 4Y4DYT~0927  0.424 8.16<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.29<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
+<span><span class="co">##    modelName estimate_type contrast  protein_Id    diff  p.value      FDR</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> deqms     observed      A_vs_Ctrl Zci7Jw~7064 -<span style="color: #BB0000;">0.722</span> 3.79<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> deqms     observed      A_vs_Ctrl 6TevMr~7550  0.765 3.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.35<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> deqms     observed      A_vs_Ctrl 4Y4DYT~0927  0.583 5.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.45<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> deqms     observed      A_vs_Ctrl 0CubNR~0890  0.674 9.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-11</span> 1.90<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> deqms     observed      A_vs_Ctrl KVkccD~1805 -<span style="color: #BB0000;">0.524</span> 1.25<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.95<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> deqms     observed      B_vs_Ctrl fylZqB~3883  0.717 1.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span> 8.28<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> deqms     observed      B_vs_Ctrl XxJoJB~7286  0.587 4.63<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 1.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> deqms     observed      B_vs_Ctrl f0Cvvj~6658  0.345 5.39<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.42<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> deqms     observed      B_vs_Ctrl TR3Ksv~1492 -<span style="color: #BB0000;">0.413</span> 3.73<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 7.37<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> deqms     observed      B_vs_Ctrl 4Y4DYT~0927  0.424 8.16<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.29<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 80 more rows</span></span></span></code></pre>
 </div>
 <div class="section level2">
@@ -612,9 +614,9 @@ below shows these rescued estimates side by side.</p>
 <span>  <span class="va">rescued</span> <span class="op">&lt;-</span> <span class="va">results_protein</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>      <span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">lm_missing_proteins</span>,</span>
-<span>      <span class="va">facade</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm_missing"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma_impute"</span>, <span class="st">"limpa"</span><span class="op">)</span></span>
+<span>      <span class="va">modelName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm_missing"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma_impute"</span>, <span class="st">"limpa"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="va">contrast</span>, <span class="va">facade</span><span class="op">)</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="va">contrast</span>, <span class="va">modelName</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">rescued</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
@@ -624,12 +626,12 @@ below shows these rescued estimates side by side.</p>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"All proteins were estimable by plain lm — no rescued estimates to show."</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <caption>Contrast estimates from lm_missing, lm_impute, and limma_impute
 for proteins that plain lm could not estimate</caption>
 <colgroup>
 <col width="8%">
-<col width="16%">
+<col width="11%">
 <col width="7%">
 <col width="6%">
 <col width="4%">
@@ -638,16 +640,16 @@ for proteins that plain lm could not estimate</caption>
 <col width="6%">
 <col width="6%">
 <col width="4%">
-<col width="4%">
+<col width="5%">
 <col width="5%">
 <col width="6%">
 <col width="3%">
-<col width="4%">
+<col width="5%">
 <col width="7%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">facade</th>
 <th align="left">modelName</th>
+<th align="left">estimate_type</th>
 <th align="left">protein_Id</th>
 <th align="left">contrast</th>
 <th align="right">avgAbd</th>
@@ -666,7 +668,7 @@ for proteins that plain lm could not estimate</caption>
 <tbody>
 <tr class="odd">
 <td align="left">limma_impute</td>
-<td align="left">limma_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.776</td>
@@ -684,7 +686,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">limpa</td>
-<td align="left">limpa</td>
+<td align="left">observed</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">2.798</td>
@@ -702,7 +704,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">lm_impute</td>
-<td align="left">WaldTest_moderated_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.776</td>
@@ -720,7 +722,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">lm_missing</td>
-<td align="left">groupAverage</td>
+<td align="left">missing_fallback</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.697</td>
@@ -738,7 +740,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
-<td align="left">limma_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">3.784</td>
@@ -756,7 +758,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">limpa</td>
-<td align="left">limpa</td>
+<td align="left">observed</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">3.245</td>
@@ -774,7 +776,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">lm_impute</td>
-<td align="left">WaldTest_moderated_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">3.784</td>
@@ -792,7 +794,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">lm_missing</td>
-<td align="left">WaldTest_moderated</td>
+<td align="left">observed</td>
 <td align="left">8mS8sK~0150</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">3.632</td>
@@ -810,7 +812,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
-<td align="left">limma_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.902</td>
@@ -828,7 +830,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">limpa</td>
-<td align="left">limpa</td>
+<td align="left">observed</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.550</td>
@@ -846,7 +848,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">lm_impute</td>
-<td align="left">WaldTest_moderated_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.902</td>
@@ -864,7 +866,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">lm_missing</td>
-<td align="left">groupAverage</td>
+<td align="left">missing_fallback</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.902</td>
@@ -882,7 +884,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
-<td align="left">limma_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">4.112</td>
@@ -900,7 +902,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">limpa</td>
-<td align="left">limpa</td>
+<td align="left">observed</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">4.145</td>
@@ -918,7 +920,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">lm_impute</td>
-<td align="left">WaldTest_moderated_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">4.112</td>
@@ -936,7 +938,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">lm_missing</td>
-<td align="left">WaldTest_moderated</td>
+<td align="left">observed</td>
 <td align="left">DTCi0N~0734</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">4.224</td>
@@ -954,7 +956,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
-<td align="left">limma_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.879</td>
@@ -972,7 +974,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">limpa</td>
-<td align="left">limpa</td>
+<td align="left">observed</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.497</td>
@@ -990,7 +992,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">lm_impute</td>
-<td align="left">WaldTest_moderated_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.879</td>
@@ -1008,7 +1010,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">lm_missing</td>
-<td align="left">WaldTest_moderated</td>
+<td align="left">observed</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="right">3.913</td>
@@ -1026,7 +1028,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
-<td align="left">limma_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">3.879</td>
@@ -1044,7 +1046,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">limpa</td>
-<td align="left">limpa</td>
+<td align="left">observed</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">3.297</td>
@@ -1062,7 +1064,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="odd">
 <td align="left">lm_impute</td>
-<td align="left">WaldTest_moderated_imputed</td>
+<td align="left">lod_imputed</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">3.879</td>
@@ -1080,7 +1082,7 @@ for proteins that plain lm could not estimate</caption>
 </tr>
 <tr class="even">
 <td align="left">lm_missing</td>
-<td align="left">groupAverage</td>
+<td align="left">missing_fallback</td>
 <td align="left">OrL0ux~1369</td>
 <td align="left">B_vs_Ctrl</td>
 <td align="right">3.879</td>
@@ -1146,7 +1148,7 @@ added internally.</p>
 <span>  <span class="va">fa_firth_peptide</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">any_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"facade"</span>, <span class="st">"modelName"</span>, <span class="st">"protein_Id"</span>, <span class="st">"contrast"</span>, <span class="st">"avgAbd"</span>, <span class="st">"diff"</span>, <span class="st">"FDR"</span>,</span>
+<span>    <span class="st">"modelName"</span>, <span class="st">"estimate_type"</span>, <span class="st">"protein_Id"</span>, <span class="st">"contrast"</span>, <span class="st">"avgAbd"</span>, <span class="st">"diff"</span>, <span class="st">"FDR"</span>,</span>
 <span>    <span class="st">"statistic"</span>, <span class="st">"std.error"</span>, <span class="st">"df"</span>, <span class="st">"p.value"</span>, <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>,</span>
 <span>    <span class="st">"sigma"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1155,9 +1157,9 @@ added internally.</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">results_peptide</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">facade</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">modelName</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
-<span><span class="co">##   facade        n_results</span></span>
+<span><span class="co">##   modelName     n_results</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> firth_nested        160</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> lmer_nested         102</span></span>
@@ -1165,7 +1167,7 @@ added internally.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_peptide</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">diff</span>, y <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span>, color <span class="op">=</span> <span class="va">significant</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.6</span>, size <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">~</span> <span class="va">facade</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">contrast</span> <span class="op">~</span> <span class="va">modelName</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>`TRUE` <span class="op">=</span> <span class="st">"firebrick"</span>, `FALSE` <span class="op">=</span> <span class="st">"grey70"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>

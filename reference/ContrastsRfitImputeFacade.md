@@ -43,8 +43,9 @@ Differences from
 - No observation weights (`rfit` has no `weights` argument), matching
   plain `rfit`.
 
-Rescued rows surface as `modelName = "WaldTest_moderated_imputed"` in
-the output, the same tag used by
+`modelName` is the facade key `"rfit_impute"`; rescued rows are flagged
+in the `estimate_type` column as `"lod_imputed"`, the same convention
+used by
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md).
 
 ## See also
@@ -58,6 +59,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -146,9 +148,11 @@ Other modelling:
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Super class
+## Super classes
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\>
+[`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsRfitImputeFacade`
 
 ## Public fields
@@ -175,14 +179,6 @@ Other modelling:
 
 - [`ContrastsRfitImputeFacade$new()`](#method-ContrastsRfitImputeFacade-new)
 
-- [`ContrastsRfitImputeFacade$get_contrasts()`](#method-ContrastsRfitImputeFacade-get_contrasts)
-
-- [`ContrastsRfitImputeFacade$get_missing()`](#method-ContrastsRfitImputeFacade-get_missing)
-
-- [`ContrastsRfitImputeFacade$get_Plotter()`](#method-ContrastsRfitImputeFacade-get_Plotter)
-
-- [`ContrastsRfitImputeFacade$to_wide()`](#method-ContrastsRfitImputeFacade-to_wide)
-
 - [`ContrastsRfitImputeFacade$clone()`](#method-ContrastsRfitImputeFacade-clone)
 
 Inherited methods
@@ -195,6 +191,10 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsFacadeBase$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
+- [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
+- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
+- [`prolfqua::ContrastsFacadeBase$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -243,64 +243,6 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
-
-get contrast results
-
-#### Usage
-
-    ContrastsRfitImputeFacade$get_contrasts(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$get_contrasts
-
-------------------------------------------------------------------------
-
-### Method `get_missing()`
-
-get protein x contrast pairs that could not be estimated
-
-#### Usage
-
-    ContrastsRfitImputeFacade$get_missing()
-
-------------------------------------------------------------------------
-
-### Method `get_Plotter()`
-
-get ContrastsPlotter
-
-#### Usage
-
-    ContrastsRfitImputeFacade$get_Plotter(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$get_Plotter
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert results to wide format
-
-#### Usage
-
-    ContrastsRfitImputeFacade$to_wide(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModerated\$to_wide
-
-------------------------------------------------------------------------
-
 ### Method `clone()`
 
 The objects of this class are cloneable with this method.
@@ -341,15 +283,15 @@ head(fa$get_contrasts())
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 14
-#>   facade  modelName protein_Id contrast    diff std.error avgAbd statistic    df
-#>   <chr>   <chr>     <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 rfit_i… WaldTest… 0EfVhX~29… A_vs_Ct…  1.40       0.999   22.7    1.55    27.3
-#> 2 rfit_i… WaldTest… 0m5WN4~67… A_vs_Ct…  0.0318     0.857   20.7    0.0304  25.3
-#> 3 rfit_i… WaldTest… 7QuTub~61… A_vs_Ct…  0.909      1.15    16.7    0.580   20.3
-#> 4 rfit_i… WaldTest… 7cbcrd~26… A_vs_Ct…  0.612      1.64    21.8    0.553   23.3
-#> 5 rfit_i… WaldTest… 9VUkAq~34… A_vs_Ct…  0.768      2.04    19.9    0.787   26.3
-#> 6 rfit_i… WaldTest… At886V~77… A_vs_Ct… -1.91       1.03    29.2   -2.11    27.3
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
+#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
+#> 1 rfit_imp… observed      0EfVhX~29… A_vs_Ct…  1.40       0.999   22.7    1.55  
+#> 2 rfit_imp… observed      0m5WN4~67… A_vs_Ct…  0.0318     0.857   20.7    0.0304
+#> 3 rfit_imp… observed      7QuTub~61… A_vs_Ct…  0.909      1.15    16.7    0.580 
+#> 4 rfit_imp… observed      7cbcrd~26… A_vs_Ct…  0.612      1.64    21.8    0.553 
+#> 5 rfit_imp… observed      9VUkAq~34… A_vs_Ct…  0.768      2.04    19.9    0.787 
+#> 6 rfit_imp… observed      At886V~77… A_vs_Ct… -1.91       1.03    29.2   -2.11  
+#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 30 × 5

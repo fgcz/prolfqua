@@ -66,6 +66,7 @@ Estimate contrasts using Wald Test"></head><body>
 <code><a href="Contrasts.html">Contrasts</a></code>,
 <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
 <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>,
+<code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>,
 <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
 <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
@@ -156,7 +157,7 @@ Estimate contrasts using Wald Test"></head><body>
     </div>
     <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
-    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code>ContrastFrith</code></p>
+    <p><code><a href="ContrastsInterface.html">prolfqua::ContrastsInterface</a></code> -&gt; <code>ContrastsFirth</code></p>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
@@ -192,13 +193,13 @@ Estimate contrasts using Wald Test"></head><body>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-ContrastFrith-new"><code>ContrastsFirth$new()</code></a></p></li>
-<li><p><a href="#method-ContrastFrith-get_contrast_sides"><code>ContrastsFirth$get_contrast_sides()</code></a></p></li>
-<li><p><a href="#method-ContrastFrith-get_linfct"><code>ContrastsFirth$get_linfct()</code></a></p></li>
-<li><p><a href="#method-ContrastFrith-get_contrasts"><code>ContrastsFirth$get_contrasts()</code></a></p></li>
-<li><p><a href="#method-ContrastFrith-get_Plotter"><code>ContrastsFirth$get_Plotter()</code></a></p></li>
-<li><p><a href="#method-ContrastFrith-to_wide"><code>ContrastsFirth$to_wide()</code></a></p></li>
-<li><p><a href="#method-ContrastFrith-clone"><code>ContrastsFirth$clone()</code></a></p></li>
+<ul><li><p><a href="#method-ContrastsFirth-new"><code>ContrastsFirth$new()</code></a></p></li>
+<li><p><a href="#method-ContrastsFirth-get_contrast_sides"><code>ContrastsFirth$get_contrast_sides()</code></a></p></li>
+<li><p><a href="#method-ContrastsFirth-get_linfct"><code>ContrastsFirth$get_linfct()</code></a></p></li>
+<li><p><a href="#method-ContrastsFirth-get_contrasts"><code>ContrastsFirth$get_contrasts()</code></a></p></li>
+<li><p><a href="#method-ContrastsFirth-get_Plotter"><code>ContrastsFirth$get_Plotter()</code></a></p></li>
+<li><p><a href="#method-ContrastsFirth-to_wide"><code>ContrastsFirth$to_wide()</code></a></p></li>
+<li><p><a href="#method-ContrastsFirth-clone"><code>ContrastsFirth$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description"><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table"><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="extra_artifacts"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts"><code>prolfqua::ContrastsInterface$extra_artifacts()</code></a></span></li>
@@ -207,7 +208,7 @@ Estimate contrasts using Wald Test"></head><body>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_missing"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing"><code>prolfqua::ContrastsInterface$get_missing()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora"><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank"><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
-</ul></details></p><hr><a id="method-ContrastFrith-new"></a><div class="section">
+</ul></details></p><hr><a id="method-ContrastsFirth-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize
 create Contrast</p><div class="section">
@@ -216,7 +217,7 @@ create Contrast</p><div class="section">
 <span>  <span class="va">model</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
 <span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"WaldTestFirth"</span></span>
+<span>  model_name <span class="op">=</span> <span class="st">"firth"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -235,13 +236,13 @@ create Contrast</p><div class="section">
 
 
 <dt><code>model_name</code></dt>
-<dd><p>name of contrast method, default WaldTest</p></dd>
+<dd><p>name of contrast method, default firth</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ContrastFrith-get_contrast_sides"></a><div class="section">
+</div><p></p><hr><a id="method-ContrastsFirth-get_contrast_sides"></a><div class="section">
 <h3 id="method-get-contrast-sides-">Method <code>get_contrast_sides()</code><a class="anchor" aria-label="anchor" href="#method-get-contrast-sides-"></a></h3>
 <p>get both sides of contrasts</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
@@ -249,7 +250,7 @@ create Contrast</p><div class="section">
 </div>
 
 
-</div><p></p><hr><a id="method-ContrastFrith-get_linfct"></a><div class="section">
+</div><p></p><hr><a id="method-ContrastsFirth-get_linfct"></a><div class="section">
 <h3 id="method-get-linfct-">Method <code>get_linfct()</code><a class="anchor" aria-label="anchor" href="#method-get-linfct-"></a></h3>
 <p>get linear functions from contrasts</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
@@ -264,8 +265,14 @@ create Contrast</p><div class="section">
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>a list with the linfct-annotated model containers
+  (<code>models1</code> / <code>models2</code>); the shared input model is left
+  untouched.</p>
+</div>
 
-</div><p></p><hr><a id="method-ContrastFrith-get_contrasts"></a><div class="section">
+</div><p></p><hr><a id="method-ContrastsFirth-get_contrasts"></a><div class="section">
 <h3 id="method-get-contrasts-">Method <code>get_contrasts()</code><a class="anchor" aria-label="anchor" href="#method-get-contrasts-"></a></h3>
 <p>get table with contrast estimates</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
@@ -281,11 +288,11 @@ create Contrast</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>data.frame with contrasts</p>
 </div>
 
-</div><p></p><hr><a id="method-ContrastFrith-get_Plotter"></a><div class="section">
+</div><p></p><hr><a id="method-ContrastsFirth-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
 <p>return <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>
 creates Contrast_Plotter</p><div class="section">
@@ -306,11 +313,11 @@ creates Contrast_Plotter</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p>
 </div>
 
-</div><p></p><hr><a id="method-ContrastFrith-to_wide"></a><div class="section">
+</div><p></p><hr><a id="method-ContrastsFirth-to_wide"></a><div class="section">
 <h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
 <p>convert to wide format</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
@@ -326,11 +333,11 @@ creates Contrast_Plotter</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>data.frame</p>
 </div>
 
-</div><p></p><hr><a id="method-ContrastFrith-clone"></a><div class="section">
+</div><p></p><hr><a id="method-ContrastsFirth-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
@@ -369,62 +376,75 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Avs      group_A group_B   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> AvsCtrl  group_A group_Ctrl</span>
 <span class="r-in"><span><span class="va">ctr</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;ContrastFrith&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Inherits from: &lt;ContrastsInterface&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models1$model_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [10]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  data     linear_model has_model_fit isSingular df.residual sigma</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7cbcrd~5725 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 9VUkAq~4703 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CGzoYe~2147 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> DoWup2~5896 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: nr_coef &lt;int&gt;, nr_coef_not_NA &lt;int&gt;, linfct &lt;list&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models1$model_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "logistf_1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models1$strategy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;StrategyLogistf&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Public:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     anova_df: AnovaExtractor, R6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     clone: function (deep = FALSE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     column_description: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     config: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_result: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_summary_table: function (rounded = TRUE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     contrasts: group_A - group_B group_A - group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     extra_artifacts: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     filter_significant: function (FDR_threshold = 0.05, diff_threshold = 1) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Plotter: function (fc_threshold = 1, fdr_threshold = 0.1) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_config: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_contrast_sides: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_contrasts: function (all = FALSE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_linfct: function (avg = TRUE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_missing: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_ora: function (up = TRUE, FDR_threshold = 0.05, diff_threshold = 1) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_rank: function (score = NULL) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (model, contrasts, p.adjust = prolfqua::adjust_p_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     model_name: WaldTestFirth</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     models: ModelFirth, ModelInterface, R6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p.adjust: function (contrast_df, column = "p.value", group_by_col = "contrast", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     subject_id: protein_Id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     to_wide: function (columns = c("p.value", "FDR", "statistic")) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_fun: function (...) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     df_residual: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     formula: formula</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     isSingular: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     is_mixed: FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     model_fun: function (x, pb, get_formula = FALSE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     model_name: logistf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     sigma: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">ctr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct_firth</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 13</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [2]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName protein_Id contrast sigma    df      diff   FDR std.error statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> WaldTest… 0EfVhX~00… Avs          1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769      1.32 -<span style="color: #BB0000;">6.40</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> WaldTest… 0EfVhX~00… AvsCtrl      1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769      1.32 -<span style="color: #BB0000;">6.40</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> WaldTest… 7cbcrd~57… Avs          1     9  6.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1          1.38  5.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> WaldTest… 7cbcrd~57… AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769      1.32  6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> WaldTest… 9VUkAq~47… Avs          1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769      1.32 -<span style="color: #BB0000;">6.40</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> WaldTest… 9VUkAq~47… AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769      1.32  6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> WaldTest… BEJI92~52… Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769      1.32  6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> WaldTest… BEJI92~52… AvsCtrl      1     9  2.20<span style="color: #949494;">e</span>+ 0 0.769      1.74  1.26<span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> WaldTest… CGzoYe~21… Avs          1     9  1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1          2.11  7.20<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> WaldTest… CGzoYe~21… AvsCtrl      1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1          2.11  5.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> WaldTest… DoWup2~58… Avs          1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.769      1.78 -<span style="color: #BB0000;">7.58</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> WaldTest… DoWup2~58… AvsCtrl      1     9 -<span style="color: #BB0000;">3.04</span><span style="color: #949494;">e</span>+ 0 0.769      1.78 -<span style="color: #BB0000;">1.71</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> WaldTest… Fl4JiV~86… Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769      1.32  6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> WaldTest… Fl4JiV~86… AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769      1.32  6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> WaldTest… HvIpHG~90… Avs          1     9 -<span style="color: #BB0000;">1.69</span><span style="color: #949494;">e</span>+ 0 0.769      1.38 -<span style="color: #BB0000;">1.23</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> WaldTest… HvIpHG~90… AvsCtrl      1     9 -<span style="color: #BB0000;">1.69</span><span style="color: #949494;">e</span>+ 0 0.769      1.38 -<span style="color: #BB0000;">1.23</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> WaldTest… JcKVfU~96… Avs          1     9  1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1          2.11  7.20<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> WaldTest… JcKVfU~96… AvsCtrl      1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1          2.11  5.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> WaldTest… SGIVBl~57… Avs          1     9  1.35<span style="color: #949494;">e</span>+ 0 0.769      1.78  7.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> WaldTest… SGIVBl~57… AvsCtrl      1     9 -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1          2.11 -<span style="color: #BB0000;">1.96</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   avgAbd &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> firth     observed      0EfVhX~0087 Avs          1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> firth     observed      0EfVhX~0087 AvsCtrl      1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> firth     observed      7cbcrd~5725 Avs          1     9  6.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> firth     observed      7cbcrd~5725 AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> firth     observed      9VUkAq~4703 Avs          1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> firth     observed      9VUkAq~4703 AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> firth     observed      BEJI92~5282 Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> firth     observed      BEJI92~5282 AvsCtrl      1     9  2.20<span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> firth     observed      CGzoYe~2147 Avs          1     9  1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> firth     observed      CGzoYe~2147 AvsCtrl      1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> firth     observed      DoWup2~5896 Avs          1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> firth     observed      DoWup2~5896 AvsCtrl      1     9 -<span style="color: #BB0000;">3.04</span><span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> firth     observed      Fl4JiV~8625 Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> firth     observed      Fl4JiV~8625 AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> firth     observed      HvIpHG~9079 Avs          1     9 -<span style="color: #BB0000;">1.69</span><span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> firth     observed      HvIpHG~9079 AvsCtrl      1     9 -<span style="color: #BB0000;">1.69</span><span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> firth     observed      JcKVfU~9653 Avs          1     9  1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> firth     observed      JcKVfU~9653 AvsCtrl      1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> firth     observed      SGIVBl~5782 Avs          1     9  1.35<span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> firth     observed      SGIVBl~5782 AvsCtrl      1     9 -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod3</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_build_models_logistf.html">sim_build_models_logistf</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"parallel3"</span>, weight_missing <span class="op">=</span> <span class="fl">1</span>, peptide<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
@@ -443,63 +463,104 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> AvsCtrl  group_A group_Ctrl</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ctrpep</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;ContrastFrith&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Inherits from: &lt;ContrastsInterface&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models1$model_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [4]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id  data     linear_model has_model_fit isSingular df.residual sigma</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 7cbcrd~5725 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 9VUkAq~4703 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CGzoYe~2147 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> DoWup2~5896 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE                9     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: nr_coef &lt;int&gt;, nr_coef_not_NA &lt;int&gt;, linfct &lt;list&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models1$model_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "logistf_1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models1$strategy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;StrategyLogistf&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Public:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     anova_df: AnovaExtractor, R6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     clone: function (deep = FALSE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     column_description: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     config: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_result: NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_summary_table: function (rounded = TRUE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     contrasts: group_A - group_B group_A - group_Ctrl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     extra_artifacts: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     filter_significant: function (FDR_threshold = 0.05, diff_threshold = 1) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_Plotter: function (fc_threshold = 1, fdr_threshold = 0.1) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_config: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_contrast_sides: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_contrasts: function (all = FALSE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_linfct: function (avg = TRUE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_missing: function () </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_ora: function (up = TRUE, FDR_threshold = 0.05, diff_threshold = 1) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     get_rank: function (score = NULL) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (model, contrasts, p.adjust = prolfqua::adjust_p_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     model_name: WaldTestFirth</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     models: ModelFirth, ModelInterface, R6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     p.adjust: function (contrast_df, column = "p.value", group_by_col = "contrast", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     subject_id: protein_Id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     to_wide: function (columns = c("p.value", "FDR", "statistic")) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_fun: function (...) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     df_residual: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     formula: formula</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     isSingular: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     is_mixed: FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     model_fun: function (x, pb, get_formula = FALSE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     model_name: logistf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     sigma: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models2$model_df</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [6]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id  data     linear_model has_model_fit isSingular df.residual sigma</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0EfVhX~0087 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE               31     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> BEJI92~5282 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE               20     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Fl4JiV~8625 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE               42     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> HvIpHG~9079 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE               20     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> JcKVfU~9653 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE               75     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> SGIVBl~5782 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    TRUE          FALSE               64     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: nr_coef &lt;int&gt;, nr_coef_not_NA &lt;int&gt;, linfct &lt;list&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models2$model_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "logistf_2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $models2$strategy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;StrategyLogistf&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Public:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     anova_df: AnovaExtractor, R6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     clone: function (deep = FALSE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     contrast_fun: function (...) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     df_residual: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     formula: formula</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     isSingular: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     is_mixed: FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     model_fun: function (x, pb, get_formula = FALSE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     model_name: logistf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     sigma: function (model) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">ctrpep</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct_firth</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct_firth</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 13</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [2]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName protein_Id contrast sigma    df      diff   FDR std.error statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> WaldTest… 0EfVhX~00… Avs          1    31 -<span style="color: #BB0000;">1.02</span><span style="color: #949494;">e</span>+ 0 0.463     0.838 -<span style="color: #BB0000;">1.22</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> WaldTest… 0EfVhX~00… AvsCtrl      1    31 -<span style="color: #BB0000;">6.45</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1         0.822 -<span style="color: #BB0000;">7.84</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> WaldTest… BEJI92~52… Avs          1    20  1.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.000     1.04   1.35<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> WaldTest… BEJI92~52… AvsCtrl      1    20 -<span style="color: #BB0000;">2.99</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1         1.04  -<span style="color: #BB0000;">2.88</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> WaldTest… Fl4JiV~86… Avs          1    42 -<span style="color: #BB0000;">7.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.518     0.695 -<span style="color: #BB0000;">1.03</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> WaldTest… Fl4JiV~86… AvsCtrl      1    42  7.75<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.485     0.724  1.07<span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> WaldTest… HvIpHG~90… Avs          1    20 -<span style="color: #BB0000;">1.98</span><span style="color: #949494;">e</span>+ 0 0.425     1.09  -<span style="color: #BB0000;">1.81</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> WaldTest… HvIpHG~90… AvsCtrl      1    20 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.485     0.984 -<span style="color: #BB0000;">1.37</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> WaldTest… JcKVfU~96… Avs          1    75 -<span style="color: #BB0000;">1.24</span><span style="color: #949494;">e</span>+ 0 0.463     0.879 -<span style="color: #BB0000;">1.41</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> WaldTest… JcKVfU~96… AvsCtrl      1    75 -<span style="color: #BB0000;">6.86</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.531     0.763 -<span style="color: #BB0000;">8.99</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> WaldTest… SGIVBl~57… Avs          1    64 -<span style="color: #BB0000;">7.95</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.463     0.630 -<span style="color: #BB0000;">1.26</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> WaldTest… SGIVBl~57… AvsCtrl      1    64 -<span style="color: #BB0000;">7.95</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.485     0.630 -<span style="color: #BB0000;">1.26</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> WaldTest… 7cbcrd~57… Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.598     1.32   6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> WaldTest… 7cbcrd~57… AvsCtrl      1     9  1.69<span style="color: #949494;">e</span>+ 0 0.485     1.38   1.23<span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> WaldTest… 9VUkAq~47… Avs          1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.585     1.78  -<span style="color: #BB0000;">7.58</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> WaldTest… 9VUkAq~47… AvsCtrl      1     9 -<span style="color: #BB0000;">4.39</span><span style="color: #949494;">e</span>+ 0 0.485     2.11  -<span style="color: #BB0000;">2.08</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> WaldTest… CGzoYe~21… Avs          1     9  1.35<span style="color: #949494;">e</span>+ 0 0.585     1.78   7.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> WaldTest… CGzoYe~21… AvsCtrl      1     9 -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1         2.11  -<span style="color: #BB0000;">1.96</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> WaldTest… DoWup2~58… Avs          1     9  4.39<span style="color: #949494;">e</span>+ 0 0.425     2.11   2.08<span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> WaldTest… DoWup2~58… AvsCtrl      1     9  3.04<span style="color: #949494;">e</span>+ 0 0.485     1.78   1.71<span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   avgAbd &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> firth     observed      0EfVhX~0087 Avs          1    31 -<span style="color: #BB0000;">1.02</span><span style="color: #949494;">e</span>+ 0 0.463</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> firth     observed      0EfVhX~0087 AvsCtrl      1    31 -<span style="color: #BB0000;">6.45</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> firth     observed      BEJI92~5282 Avs          1    20  1.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> firth     observed      BEJI92~5282 AvsCtrl      1    20 -<span style="color: #BB0000;">2.99</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> firth     observed      Fl4JiV~8625 Avs          1    42 -<span style="color: #BB0000;">7.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.518</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> firth     observed      Fl4JiV~8625 AvsCtrl      1    42  7.75<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> firth     observed      HvIpHG~9079 Avs          1    20 -<span style="color: #BB0000;">1.98</span><span style="color: #949494;">e</span>+ 0 0.425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> firth     observed      HvIpHG~9079 AvsCtrl      1    20 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> firth     observed      JcKVfU~9653 Avs          1    75 -<span style="color: #BB0000;">1.24</span><span style="color: #949494;">e</span>+ 0 0.463</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> firth     observed      JcKVfU~9653 AvsCtrl      1    75 -<span style="color: #BB0000;">6.86</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> firth     observed      SGIVBl~5782 Avs          1    64 -<span style="color: #BB0000;">7.95</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.463</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> firth     observed      SGIVBl~5782 AvsCtrl      1    64 -<span style="color: #BB0000;">7.95</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> firth     observed      7cbcrd~5725 Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.598</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> firth     observed      7cbcrd~5725 AvsCtrl      1     9  1.69<span style="color: #949494;">e</span>+ 0 0.485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> firth     observed      9VUkAq~4703 Avs          1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> firth     observed      9VUkAq~4703 AvsCtrl      1     9 -<span style="color: #BB0000;">4.39</span><span style="color: #949494;">e</span>+ 0 0.485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> firth     observed      CGzoYe~2147 Avs          1     9  1.35<span style="color: #949494;">e</span>+ 0 0.585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> firth     observed      CGzoYe~2147 AvsCtrl      1     9 -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> firth     observed      DoWup2~5896 Avs          1     9  4.39<span style="color: #949494;">e</span>+ 0 0.425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> firth     observed      DoWup2~5896 AvsCtrl      1     9  3.04<span style="color: #949494;">e</span>+ 0 0.485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">ctrpep</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

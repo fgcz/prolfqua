@@ -7,15 +7,7 @@ strategy construction through modelling to contrast computation.
 ## Usage
 
 ``` r
-build_contrast_analysis(
-  lfqdata,
-  modelstr,
-  contrasts,
-  method = c("lm", "lm_impute", "lm_missing", "limma", "limma_impute", "limma_voom",
-    "limma_voom_impute", "limpa", "limpa_nested", "rlm", "rfit", "rfit_impute", "deqms",
-    "deqms_voom", "firth", "firth_nested", "lmer_nested", "ropeca_nested"),
-  ...
-)
+build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 ```
 
 ## Arguments
@@ -38,11 +30,16 @@ build_contrast_analysis(
 
 - method:
 
-  one of `"lm"`, `"lm_impute"`, `"lm_missing"`, `"limma"`,
-  `"limma_impute"`, `"limma_voom"`, `"limma_voom_impute"`, `"limpa"`,
-  `"limpa_nested"`, `"rlm"`, `"rfit"`, `"rfit_impute"`, `"deqms"`,
-  `"deqms_voom"`, `"firth"`, `"firth_nested"`, `"lmer_nested"`,
-  `"ropeca_nested"`
+  a registered facade key. The built-in keys are `"lm"`, `"lm_impute"`,
+  `"lm_missing"`, `"limma"`, `"limma_impute"`, `"limma_voom"`,
+  `"limma_voom_impute"`, `"limpa"`, `"limpa_nested"`, `"rlm"`, `"rfit"`,
+  `"rfit_impute"`, `"deqms"`, `"deqms_voom"`, `"firth"`,
+  `"firth_nested"`, `"lmer_nested"`, `"ropeca_nested"`; downstream
+  packages may add more via
+  [`register_facade`](https://wolski.github.io/prolfqua/reference/register_facade.md).
+  The authoritative list is
+  `names(`[`list_facades`](https://wolski.github.io/prolfqua/reference/list_facades.md)`())`.
+  Defaults to `"lm"`.
 
 - ...:
 
@@ -90,6 +87,7 @@ Other modelling:
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -197,33 +195,33 @@ head(fa_lm$get_contrasts())
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 14
-#>   facade modelName  protein_Id contrast    diff std.error avgAbd statistic    df
-#>   <chr>  <chr>      <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lm     WaldTest_… 0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47  12.1 
-#> 2 lm     WaldTest_… 0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765  8.08
-#> 3 lm     WaldTest_… 7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68  12.1 
-#> 4 lm     WaldTest_… 9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.104 10.1 
-#> 5 lm     WaldTest_… At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.20   9.08
-#> 6 lm     WaldTest_… BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.39  11.1 
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
+#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
+#> 1 lm        observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47 
+#> 2 lm        observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765
+#> 3 lm        observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68 
+#> 4 lm        observed      9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.104
+#> 5 lm        observed      At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.20 
+#> 6 lm        observed      BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.39 
+#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 
 fa_limma <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma")
 head(fa_limma$get_contrasts())
 #> # A tibble: 6 × 14
-#>   facade modelName protein_Id  contrast     diff    FDR std.error statistic
-#>   <chr>  <chr>     <chr>       <chr>       <dbl>  <dbl>     <dbl>     <dbl>
-#> 1 limma  limma     0EfVhX~5954 A_vs_Ctrl  2.72   0.188      1.09      2.49 
-#> 2 limma  limma     0m5WN4~1448 A_vs_Ctrl  0.600  0.623      0.770     0.779
-#> 3 limma  limma     7cbcrd~8305 A_vs_Ctrl  2.59   0.0271     0.691     3.75 
-#> 4 limma  limma     9VUkAq~4562 A_vs_Ctrl  0.0679 0.967      0.647     0.105
-#> 5 limma  limma     At886V~3296 A_vs_Ctrl -1.01   0.623      0.836    -1.21 
-#> 6 limma  limma     BEJI92~9143 A_vs_Ctrl -0.873  0.623      0.621    -1.41 
+#>   modelName estimate_type protein_Id contrast    diff    FDR std.error statistic
+#>   <chr>     <chr>         <chr>      <chr>      <dbl>  <dbl>     <dbl>     <dbl>
+#> 1 limma     observed      0EfVhX~59… A_vs_Ct…  2.72   0.188      1.09      2.49 
+#> 2 limma     observed      0m5WN4~14… A_vs_Ct…  0.600  0.623      0.770     0.779
+#> 3 limma     observed      7cbcrd~83… A_vs_Ct…  2.59   0.0271     0.691     3.75 
+#> 4 limma     observed      9VUkAq~45… A_vs_Ct…  0.0679 0.967      0.647     0.105
+#> 5 limma     observed      At886V~32… A_vs_Ct… -1.01   0.623      0.836    -1.21 
+#> 6 limma     observed      BEJI92~91… A_vs_Ct… -0.873  0.623      0.621    -1.41 
 #> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, avgAbd <dbl>
 
 fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_missing")
-#> Warning: ContrastsLMMissingFacade (method = 'lm_missing') is deprecated: its second leg uses ContrastsMissing (group-mean substitution, no model fit). Prefer 'lm_impute' which refits failed/singular proteins with LOD imputation and borrowed variance, tagging rescued rows as 'WaldTest_moderated_imputed'. See ?ContrastsLMMissingFacade for migration.
+#> Warning: ContrastsLMMissingFacade (method = 'lm_missing') is deprecated: its second leg uses ContrastsMissing (group-mean substitution, no model fit). Prefer 'lm_impute' which refits failed/singular proteins with LOD imputation and borrowed variance, flagging rescued rows as estimate_type 'lod_imputed'. See ?ContrastsLMMissingFacade for migration.
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
@@ -235,15 +233,15 @@ fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_
 #> Joining with `by = join_by(protein_Id, contrast)`
 head(fa_miss$get_contrasts())
 #> # A tibble: 6 × 14
-#>   facade  modelName protein_Id contrast    diff std.error avgAbd statistic    df
-#>   <chr>   <fct>     <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lm_mis… WaldTest… 0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47  12.1 
-#> 2 lm_mis… WaldTest… 0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765  8.08
-#> 3 lm_mis… WaldTest… 7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68  12.1 
-#> 4 lm_mis… WaldTest… 9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.104 10.1 
-#> 5 lm_mis… WaldTest… At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.20   9.08
-#> 6 lm_mis… WaldTest… BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.39  11.1 
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
+#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
+#> 1 lm_missi… observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47 
+#> 2 lm_missi… observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765
+#> 3 lm_missi… observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68 
+#> 4 lm_missi… observed      9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.104
+#> 5 lm_missi… observed      At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.20 
+#> 6 lm_missi… observed      BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.39 
+#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
@@ -253,15 +251,15 @@ head(fa_deqms$get_contrasts())
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 14
-#>   facade contrast  modelName protein_Id    diff std.error avgAbd statistic    df
-#>   <chr>  <chr>     <chr>     <chr>        <dbl>     <dbl>  <dbl>     <dbl> <int>
-#> 1 deqms  A_vs_Ctrl WaldTest… 0EfVhX~59…  2.72       1.14    23.2    4.23       9
-#> 2 deqms  A_vs_Ctrl WaldTest… 0m5WN4~14…  0.600      0.734   17.4    0.619      5
-#> 3 deqms  A_vs_Ctrl WaldTest… 7cbcrd~83…  2.59       0.572   27.0    4.02       9
-#> 4 deqms  A_vs_Ctrl WaldTest… 9VUkAq~45…  0.0679     0.760   19.4    0.0837     7
-#> 5 deqms  A_vs_Ctrl WaldTest… At886V~32… -1.01       0.969   19.1   -1.37       6
-#> 6 deqms  A_vs_Ctrl WaldTest… BEJI92~91… -0.873      0.659   20.9   -1.31       8
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#>   modelName estimate_type contrast protein_Id    diff std.error avgAbd statistic
+#>   <chr>     <chr>         <chr>    <chr>        <dbl>     <dbl>  <dbl>     <dbl>
+#> 1 deqms     observed      A_vs_Ct… 0EfVhX~59…  2.72       1.14    23.2    4.23  
+#> 2 deqms     observed      A_vs_Ct… 0m5WN4~14…  0.600      0.734   17.4    0.619 
+#> 3 deqms     observed      A_vs_Ct… 7cbcrd~83…  2.59       0.572   27.0    4.02  
+#> 4 deqms     observed      A_vs_Ct… 9VUkAq~45…  0.0679     0.760   19.4    0.0837
+#> 5 deqms     observed      A_vs_Ct… At886V~32… -1.01       0.969   19.1   -1.37  
+#> 6 deqms     observed      A_vs_Ct… BEJI92~91… -0.873      0.659   20.9   -1.31  
+#> # ℹ 6 more variables: df <int>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 
 istar_pep <- sim_lfq_data_peptide_config()
@@ -298,16 +296,16 @@ head(fa_lmer$get_contrasts())
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 14
-#>   facade modelName protein_Id contrast     diff std.error avgAbd statistic    df
-#>   <chr>  <chr>     <chr>      <chr>       <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 lmer_… WaldTest… 0EfVhX~00… A_vs_Ct… -8.32e-4    0.0730   4.34   -0.0115  28.9
-#> 2 lmer_… WaldTest… BEJI92~52… A_vs_Ct…  3.22e-1    0.0832   4.22    2.81    11.6
-#> 3 lmer_… WaldTest… Fl4JiV~86… A_vs_Ct… -4.13e-2    0.0850   4.38   -0.503   39.5
-#> 4 lmer_… WaldTest… HvIpHG~90… A_vs_Ct… -3.72e-1    0.0616   4.40   -5.65    21.8
-#> 5 lmer_… WaldTest… JcKVfU~96… A_vs_Ct… -1.07e-1    0.0577   5.05   -1.88    79.8
-#> 6 lmer_… WaldTest… SGIVBl~57… A_vs_Ct…  3.07e-2    0.0695   4.68    0.452   61.0
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#>   modelName   estimate_type protein_Id  contrast       diff std.error avgAbd
+#>   <chr>       <chr>         <chr>       <chr>         <dbl>     <dbl>  <dbl>
+#> 1 lmer_nested observed      0EfVhX~0087 A_vs_Ctrl -0.000832    0.0730   4.34
+#> 2 lmer_nested observed      BEJI92~5282 A_vs_Ctrl  0.322       0.0832   4.22
+#> 3 lmer_nested observed      Fl4JiV~8625 A_vs_Ctrl -0.0413      0.0850   4.38
+#> 4 lmer_nested observed      HvIpHG~9079 A_vs_Ctrl -0.372       0.0616   4.40
+#> 5 lmer_nested observed      JcKVfU~9653 A_vs_Ctrl -0.107       0.0577   5.05
+#> 6 lmer_nested observed      SGIVBl~5782 A_vs_Ctrl  0.0307      0.0695   4.68
+#> # ℹ 7 more variables: statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca_nested")
 head(fa_ropeca$get_contrasts())
@@ -317,14 +315,14 @@ head(fa_ropeca$get_contrasts())
 #> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]
-#>   facade        protein_Id  modelName contrast  avgAbd    diff     FDR statistic
-#>   <chr>         <chr>       <chr>     <chr>      <dbl>   <dbl>   <dbl>     <dbl>
-#> 1 ropeca_nested 0EfVhX~0087 ROPECA    A_vs_Ctrl   4.27 -0.0742 5.28e-2     -1.75
-#> 2 ropeca_nested 7cbcrd~5725 ROPECA    A_vs_Ctrl   4.51  0.741  9.91e-5      8.79
-#> 3 ropeca_nested 9VUkAq~4703 ROPECA    A_vs_Ctrl   4.47 -0.598  6.91e-6    -12.7 
-#> 4 ropeca_nested BEJI92~5282 ROPECA    A_vs_Ctrl   4.23  0.277  1.87e-3      3.94
-#> 5 ropeca_nested CGzoYe~2147 ROPECA    A_vs_Ctrl   4.76 -0.310  3.74e-5     -9.26
-#> 6 ropeca_nested DoWup2~5896 ROPECA    A_vs_Ctrl   4.43  0.295  1.38e-6     14.7 
+#>   modelName   estimate_type protein_Id contrast avgAbd    diff     FDR statistic
+#>   <chr>       <chr>         <chr>      <chr>     <dbl>   <dbl>   <dbl>     <dbl>
+#> 1 ropeca_nes… observed      0EfVhX~00… A_vs_Ct…   4.27 -0.0742 5.28e-2     -1.75
+#> 2 ropeca_nes… observed      7cbcrd~57… A_vs_Ct…   4.51  0.741  9.91e-5      8.79
+#> 3 ropeca_nes… observed      9VUkAq~47… A_vs_Ct…   4.47 -0.598  6.91e-6    -12.7 
+#> 4 ropeca_nes… observed      BEJI92~52… A_vs_Ct…   4.23  0.277  1.87e-3      3.94
+#> 5 ropeca_nes… observed      CGzoYe~21… A_vs_Ct…   4.76 -0.310  3.74e-5     -9.26
+#> 6 ropeca_nes… observed      DoWup2~58… A_vs_Ct…   4.43  0.295  1.38e-6     14.7 
 #> # ℹ 6 more variables: std.error <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>
 
@@ -338,14 +336,14 @@ head(fa_firth$get_contrasts())
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]
-#>   facade modelName     protein_Id contrast sigma    df      diff   FDR std.error
-#>   <chr>  <chr>         <chr>      <chr>    <dbl> <int>     <dbl> <dbl>     <dbl>
-#> 1 firth  WaldTestFirth 0EfVhX~59… A_vs_Ct…     1     9  1.07e-15     1      2.11
-#> 2 firth  WaldTestFirth 0m5WN4~14… A_vs_Ct…     1     9 -2.20e+ 0     1      1.74
-#> 3 firth  WaldTestFirth 7cbcrd~83… A_vs_Ct…     1     9  1.07e-15     1      2.11
-#> 4 firth  WaldTestFirth 9VUkAq~45… A_vs_Ct…     1     9 -1.35e+ 0     1      1.78
-#> 5 firth  WaldTestFirth At886V~32… A_vs_Ct…     1     9  5.58e-16     1      1.38
-#> 6 firth  WaldTestFirth BEJI92~91… A_vs_Ct…     1     9 -1.35e+ 0     1      1.78
-#> # ℹ 5 more variables: statistic <dbl>, p.value <dbl>, conf.low <dbl>,
-#> #   conf.high <dbl>, avgAbd <dbl>
+#>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
+#>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
+#> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
+#> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
+#> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
+#> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1
+#> # ℹ 6 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 ```

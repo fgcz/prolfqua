@@ -2,6 +2,61 @@
 
 ## prolfqua 1.6.3
 
+- **Breaking — contrast schema.** The `modelName` column of
+  `get_contrasts()` output is now the selected facade key (`lm`, `rlm`,
+  `rfit`, `lm_impute`, `lm_missing`, `limma`, `limma_impute`,
+  `limma_voom`, `limma_voom_impute`, `limpa`, `deqms`, `deqms_voom`,
+  `firth`, `lmer_nested`, `ropeca_nested`, `firth_nested`,
+  `limpa_nested`) instead of the testing-schema label
+  (`WaldTest_moderated`, `*_DEqMS`, `*_imputed`, …). Rescue/imputation
+  state moved to a new `estimate_type` column with values `observed`,
+  `lod_imputed`, or `missing_fallback`. The redundant `facade` column
+  was removed (its role is now played by `modelName`). The
+  moderated-Wald-test wording belongs in methods text, not per-row
+  labels. Downstream code that filtered on
+  `modelName == "WaldTest_moderated"` (or the `_imputed`/`_DEqMS`
+  variants) or read the `facade` column must migrate to the facade key
+  and `estimate_type`.
+- [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+  and the exported `FACADE_REGISTRY` now derive method dispatch and the
+  available-method list from a single seeded registry
+  ([`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md)),
+  removing three hand-maintained copies that could drift. New exported
+  base class `ContrastsFacadeBase` holds the shared facade plumbing; the
+  18 built-in facades are now thin subclasses.
+- `ContrastsPlotter` colours volcano/MA/score plots by `estimate_type`
+  when present (and the colour column was left at its default), keeping
+  LOD-imputed / fallback rows visually distinct now that `modelName` is
+  uniform per run.
+- Correctness fixes: `AggregateTopN` now validates `func` via
+  `match.arg` (an invalid value errors instead of silently meaning
+  `mean`); `Model$get_anova()` drops degenerate rows by `is.na(factor)`
+  rather than a never-matching `"NULL"` string;
+  [`sim_lfq_data()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data.md)
+  now honours its `mean_prot` argument;
+  `LFQDataTransformer`/`LFQDataSummariser` deep-clone their input like
+  the other decorators (no more mutating the caller’s object);
+  `ContrastsFirth$get_linfct()` returns the linfct-annotated model
+  copies instead of mutating the shared model;
+  [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md)
+  pre-allocates `nrow(x)` results; `ContrastsMissing` now actually
+  validates its output schema.
+- [`get_contrast()`](https://wolski.github.io/prolfqua/reference/get_contrast.md)
+  now derives `group_1`/`group_2` from the contrast’s left/right side
+  expressions, fixing mislabeled per-group columns for averaging
+  contrasts such as `(group_A + group_B)/2 - group_Ctrl` (previously it
+  used the first two group tokens). Simple `A - B` contrasts are
+  unaffected. A contrast that is not a difference `LHS - RHS` now errors
+  with a clear message instead of silently extracting the first two
+  group tokens. Nested contrasts that reference an earlier contrast by
+  name (e.g. `Interaction = "AvsB_gv_X - AvsB_gv_Z"`) remain supported
+  in the `ContrastsMissing` / `lm_missing` path.
+- [`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md)
+  now stops with an informative error (listing the offending keys) when
+  a hierarchy-key/sample combination has more than one observation,
+  instead of silently returning a different-schema count table that
+  crashed downstream. Pass `debug = TRUE` to recover the old behaviour
+  and return the count table for inspection.
 - Removed the unused `impute_with_zcomp()`, `estimate_lod_global()`, and
   `function_lod_quantile()` exports (and the `zCompositions`
   dependency). For missing-value imputation use

@@ -30,6 +30,7 @@ Other modelling:
 [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
+[`ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
@@ -119,9 +120,11 @@ Other modelling:
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Super class
+## Super classes
 
 [`prolfqua::ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
+-\>
+[`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsDEqMSVoomFacade`
 
 ## Public fields
@@ -148,14 +151,6 @@ Other modelling:
 
 - [`ContrastsDEqMSVoomFacade$new()`](#method-ContrastsDEqMSVoomFacade-new)
 
-- [`ContrastsDEqMSVoomFacade$get_contrasts()`](#method-ContrastsDEqMSVoomFacade-get_contrasts)
-
-- [`ContrastsDEqMSVoomFacade$get_missing()`](#method-ContrastsDEqMSVoomFacade-get_missing)
-
-- [`ContrastsDEqMSVoomFacade$get_Plotter()`](#method-ContrastsDEqMSVoomFacade-get_Plotter)
-
-- [`ContrastsDEqMSVoomFacade$to_wide()`](#method-ContrastsDEqMSVoomFacade-to_wide)
-
 - [`ContrastsDEqMSVoomFacade$clone()`](#method-ContrastsDEqMSVoomFacade-clone)
 
 Inherited methods
@@ -168,6 +163,10 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsFacadeBase$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
+- [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
+- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
+- [`prolfqua::ContrastsFacadeBase$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -216,64 +215,6 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
-
-get contrast results
-
-#### Usage
-
-    ContrastsDEqMSVoomFacade$get_contrasts(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModeratedDEqMS\$get_contrasts
-
-------------------------------------------------------------------------
-
-### Method `get_missing()`
-
-get protein x contrast pairs that could not be estimated
-
-#### Usage
-
-    ContrastsDEqMSVoomFacade$get_missing()
-
-------------------------------------------------------------------------
-
-### Method `get_Plotter()`
-
-get ContrastsPlotter
-
-#### Usage
-
-    ContrastsDEqMSVoomFacade$get_Plotter(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModeratedDEqMS\$get_Plotter
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert results to wide format
-
-#### Usage
-
-    ContrastsDEqMSVoomFacade$to_wide(...)
-
-#### Arguments
-
-- `...`:
-
-  passed to ContrastsModeratedDEqMS\$to_wide
-
-------------------------------------------------------------------------
-
 ### Method `clone()`
 
 The objects of this class are cloneable with this method.
@@ -305,14 +246,14 @@ head(fa$get_contrasts())
 #> Warning: NaNs produced
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17; 'newdata' had 1 row but variables found have 49 rows; number of items to replace is not a multiple of replacement length; NaNs produced)
 #> # A tibble: 6 × 14
-#>   facade   contrast modelName protein_Id   diff std.error avgAbd statistic    df
-#>   <chr>    <chr>    <chr>     <chr>       <dbl>     <dbl>  <dbl>     <dbl> <dbl>
-#> 1 deqms_v… A_vs_Ct… limma_ra… 0EfVhX~71…  3.00      0.897   18.8     4.84      6
-#> 2 deqms_v… A_vs_Ct… limma_ra… 0m5WN4~35…  0.222     0.906   20.4     0.353     8
-#> 3 deqms_v… A_vs_Ct… limma_ra… 76k03k~97…  0.509     0.461   19.9     0.808     9
-#> 4 deqms_v… A_vs_Ct… limma_ra… 7QuTub~55… -1.22      0.874   23.4    -1.54      8
-#> 5 deqms_v… A_vs_Ct… limma_ra… 7cbcrd~04…  1.38      0.742   16.5     1.54      3
-#> 6 deqms_v… A_vs_Ct… limma_ra… 7soopj~34…  0.822     0.618   25.9     1.11      9
-#> # ℹ 5 more variables: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#>   modelName  estimate_type contrast protein_Id   diff std.error avgAbd statistic
+#>   <chr>      <chr>         <chr>    <chr>       <dbl>     <dbl>  <dbl>     <dbl>
+#> 1 deqms_voom observed      A_vs_Ct… 0EfVhX~71…  3.00      0.897   18.8     4.84 
+#> 2 deqms_voom observed      A_vs_Ct… 0m5WN4~35…  0.222     0.906   20.4     0.353
+#> 3 deqms_voom observed      A_vs_Ct… 76k03k~97…  0.509     0.461   19.9     0.808
+#> 4 deqms_voom observed      A_vs_Ct… 7QuTub~55… -1.22      0.874   23.4    -1.54 
+#> 5 deqms_voom observed      A_vs_Ct… 7cbcrd~04…  1.38      0.742   16.5     1.54 
+#> 6 deqms_voom observed      A_vs_Ct… 7soopj~34…  0.822     0.618   25.9     1.11 
+#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 ```
