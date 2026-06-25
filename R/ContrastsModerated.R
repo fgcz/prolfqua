@@ -31,8 +31,8 @@
 #' merged <- merge_contrasts_results(contrast, csi)
 #'
 #' merged$more$get_contrasts() |> dim()
-#' stopifnot(all(dim(merged$merged$get_contrasts() == c(50,13))))
-#' stopifnot(all(dim(merged$same$get_contrasts()) == c(49,13)))
+#' stopifnot(all(dim(merged$merged$get_contrasts()) == c(50, 14)))
+#' stopifnot(all(dim(merged$same$get_contrasts()) == c(49, 14)))
 #'
 #' cs <- contrast$get_contrast_sides()
 #' cslf <- contrast$get_linfct()
@@ -98,67 +98,11 @@ ContrastsModerated <- R6::R6Class(
         group_by_col = "contrast",
         estimate = "diff"
       )
-      if (!all) {
-        contrast_result <- contrast_result |>
-          select(
-            -c(
-              "sigma",
-              "df",
-              "statistic",
-              "p.value",
-              "conf.low",
-              "conf.high",
-              "FDR",
-              "moderated.df.prior",
-              "moderated.var.prior"
-            )
-          )
-        contrast_result <- contrast_result |> mutate(sigma = sqrt(moderated.var.post), .keep = "unused")
-        contrast_result <- contrast_result |>
-          rename(
-            conf.low = "moderated.conf.low",
-            conf.high = "moderated.conf.high",
-            statistic = "moderated.statistic",
-            df = "moderated.df.total",
-            p.value = "moderated.p.value"
-          )
-        contrast_result <- self$p.adjust(
-          contrast_result,
-          column = "p.value",
-          group_by_col = "contrast",
-          newname = "FDR"
-        )
-      } else {
-        contrast_result <- self$p.adjust(
-          contrast_result,
-          column = "moderated.p.value",
-          group_by_col = "contrast",
-          newname = "FDR.moderated"
-        )
-      }
+      contrast_result <- .finalize_moderated_columns(contrast_result, self$p.adjust, all)
       contrast_result <- dplyr::ungroup(contrast_result)
-      if (inherits(contrast_result$modelName, "factor")) {
-        moderated_levels <- ifelse(
-          grepl("_imputed$", levels(contrast_result$modelName)),
-          sub("_imputed$", "_moderated_imputed", levels(contrast_result$modelName)),
-          paste0(levels(contrast_result$modelName), "_moderated")
-        )
-        mname <- factor(
-          ifelse(
-            grepl("_imputed$", contrast_result$modelName),
-            sub("_imputed$", "_moderated_imputed", contrast_result$modelName),
-            paste0(contrast_result$modelName, "_moderated")
-          ),
-          levels = moderated_levels
-        )
-      } else {
-        mname <- ifelse(
-          grepl("_imputed$", contrast_result$modelName),
-          sub("_imputed$", "_moderated_imputed", contrast_result$modelName),
-          paste0(contrast_result$modelName, "_moderated")
-        )
-      }
-      contrast_result$modelName <- mname
+      # modelName and estimate_type pass through from the wrapped contrast
+      # unchanged; the moderated-Wald-test wording belongs in the methods text,
+      # not in the per-row model identity.
       stopifnot(all(super$column_description()$column_name %in% colnames(contrast_result)))
 
       return(contrast_result)

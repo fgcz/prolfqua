@@ -35,6 +35,7 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
+\code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsFirthNestedFacade}},
@@ -124,8 +125,8 @@ Other modelling:
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
-\section{Super class}{
-\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsROPECANestedFacade}
+\section{Super classes}{
+\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{\link[prolfqua:ContrastsFacadeBase]{prolfqua::ContrastsFacadeBase}} -> \code{ContrastsROPECANestedFacade}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -145,7 +146,6 @@ Other modelling:
 \itemize{
 \item \href{#method-ContrastsROPECANestedFacade-new}{\code{ContrastsROPECANestedFacade$new()}}
 \item \href{#method-ContrastsROPECANestedFacade-get_contrasts}{\code{ContrastsROPECANestedFacade$get_contrasts()}}
-\item \href{#method-ContrastsROPECANestedFacade-get_missing}{\code{ContrastsROPECANestedFacade$get_missing()}}
 \item \href{#method-ContrastsROPECANestedFacade-get_Plotter}{\code{ContrastsROPECANestedFacade$get_Plotter()}}
 \item \href{#method-ContrastsROPECANestedFacade-to_wide}{\code{ContrastsROPECANestedFacade$to_wide()}}
 \item \href{#method-ContrastsROPECANestedFacade-clone}{\code{ContrastsROPECANestedFacade$clone()}}
@@ -162,6 +162,7 @@ Other modelling:
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides'><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing'><code>prolfqua::ContrastsFacadeBase$get_missing()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -206,16 +207,6 @@ Columns not directly produced by ROPECA are derived heuristically:
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECANestedFacade$get_contrasts()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsROPECANestedFacade-get_missing"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsROPECANestedFacade-get_missing}{}}}
-\subsection{Method \code{get_missing()}}{
-get protein x contrast pairs that could not be estimated
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECANestedFacade$get_missing()}\if{html}{\out{</div>}}
 }
 
 }

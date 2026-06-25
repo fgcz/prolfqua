@@ -85,8 +85,11 @@ test_that("ContrastsModeratedDEqMS works end-to-end", {
   expect_true(all(x$p.value > 0 & x$p.value <= 1))
   expect_true(all(x$FDR >= 0 & x$FDR <= 1))
 
-  # modelName should end with _DEqMS
-  expect_true(all(grepl("_DEqMS", x$modelName)))
+  # modelName passes through the wrapped model identity unchanged (no _DEqMS
+  # suffix); DEqMS moderation is documented in the methods text. estimate_type
+  # is carried through from the wrapped contrast.
+  expect_false(any(grepl("_DEqMS", x$modelName)))
+  expect_true("estimate_type" %in% colnames(x))
 
   # get_contrasts(all = TRUE) returns both original and moderated columns
   x_all <- deqms$get_contrasts(all = TRUE)

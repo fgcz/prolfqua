@@ -42,11 +42,17 @@
   dplyr::anti_join(expected, estimated, by = c(subject_id, "contrast"))
 }
 
-.add_facade_column <- function(res, facade_name) {
-  if (!("facade" %in% colnames(res))) {
-    res <- dplyr::mutate(res, facade = facade_name, .before = 1)
+# Stamp the selected facade key as the row's model identity. `modelName` is the
+# single identity column: the inner contrast classes set it to their own model
+# name (e.g. "WaldTest", "limma") and this overwrites it with the facade key
+# (e.g. "rfit", "lm_impute") that the user actually selected. Rescue/imputation
+# state is carried separately in `estimate_type`, set by the inner classes.
+.stamp_facade_identity <- function(res, facade_name) {
+  res$modelName <- facade_name
+  if ("facade" %in% colnames(res)) {
+    res$facade <- NULL
   }
-  res
+  dplyr::relocate(res, dplyr::any_of(c("modelName", "estimate_type")))
 }
 
 #' Limma contrast analysis facade
@@ -71,7 +77,7 @@
 #' fa$to_wide()
 ContrastsLimmaFacade <- R6::R6Class(
   "ContrastsLimmaFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model ModelLimma object
     model = NULL,
@@ -97,25 +103,11 @@ ContrastsLimmaFacade <- R6::R6Class(
       full_formula <- paste(response, modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma(lfqdata, strat)
-      self$contrast <- ContrastsLimma$new(self$model, contrasts)
+      self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limma")
+      self$facade_name <- "limma"
+      self$.drop_na_diff <- TRUE
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results (rows with NA diff are filtered out)
-    #' @param ... passed to ContrastsLimma$get_contrasts
-    get_contrasts = function(...) {
-      res <- .add_facade_column(self$contrast$get_contrasts(...), "limma")
-      res[!is.na(res$diff), ]
-    },
-    #' @description get protein × contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsLimma$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsLimma$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -144,7 +136,7 @@ ContrastsLimmaFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLimmaImputeFacade <- R6::R6Class(
   "ContrastsLimmaImputeFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model ModelLimma object (with imputed proteins)
     model = NULL,
@@ -181,25 +173,11 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
       full_formula <- paste(response, modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_impute(lfqdata, strat, lod = lod, df_method = df_method)
-      self$contrast <- ContrastsLimma$new(self$model, contrasts)
+      self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limma_impute")
+      self$facade_name <- "limma_impute"
+      self$.drop_na_diff <- TRUE
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results (rows with NA diff are filtered out)
-    #' @param ... passed to ContrastsLimma$get_contrasts
-    get_contrasts = function(...) {
-      res <- .add_facade_column(self$contrast$get_contrasts(...), "limma_impute")
-      res[!is.na(res$diff), ]
-    },
-    #' @description get protein x contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsLimma$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsLimma$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -225,7 +203,7 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLimmaVoomFacade <- R6::R6Class(
   "ContrastsLimmaVoomFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model ModelLimma object
     model = NULL,
@@ -261,25 +239,11 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
       full_formula <- paste(response, modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
-      self$contrast <- ContrastsLimma$new(self$model, contrasts)
+      self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limma_voom")
+      self$facade_name <- "limma_voom"
+      self$.drop_na_diff <- TRUE
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results (rows with NA diff are filtered out)
-    #' @param ... passed to ContrastsLimma$get_contrasts
-    get_contrasts = function(...) {
-      res <- .add_facade_column(self$contrast$get_contrasts(...), "limma_voom")
-      res[!is.na(res$diff), ]
-    },
-    #' @description get protein x contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsLimma$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsLimma$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -305,7 +269,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLimmaVoomImputeFacade <- R6::R6Class(
   "ContrastsLimmaVoomImputeFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model ModelLimma object (with imputed proteins)
     model = NULL,
@@ -353,25 +317,11 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
         span = span,
         plot = plot
       )
-      self$contrast <- ContrastsLimma$new(self$model, contrasts)
+      self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limma_voom_impute")
+      self$facade_name <- "limma_voom_impute"
+      self$.drop_na_diff <- TRUE
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results (rows with NA diff are filtered out)
-    #' @param ... passed to ContrastsLimma$get_contrasts
-    get_contrasts = function(...) {
-      res <- .add_facade_column(self$contrast$get_contrasts(...), "limma_voom_impute")
-      res[!is.na(res$diff), ]
-    },
-    #' @description get protein x contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsLimma$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsLimma$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -408,7 +358,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
 #' head(fa$get_contrasts())
 ContrastsLimpaFacade <- R6::R6Class(
   "ContrastsLimpaFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model ModelLimma object (from build_model_limpa)
     model = NULL,
@@ -438,24 +388,10 @@ ContrastsLimpaFacade <- R6::R6Class(
       strat <- strategy_limpa(full_formula, plot = plot, span = span, ...)
       self$model <- build_model_limpa(lfqdata, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa")
+      self$facade_name <- "limpa"
+      self$.drop_na_diff <- TRUE
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results (rows with NA diff are filtered out)
-    #' @param ... passed to ContrastsLimma$get_contrasts
-    get_contrasts = function(...) {
-      res <- .add_facade_column(self$contrast$get_contrasts(...), "limpa")
-      res[!is.na(res$diff), ]
-    },
-    #' @description get protein x contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsLimma$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsLimma$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -482,7 +418,7 @@ ContrastsLimpaFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLMFacade <- R6::R6Class(
   "ContrastsLMFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -508,24 +444,10 @@ ContrastsLMFacade <- R6::R6Class(
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
-      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lm"))
+      self$facade_name <- "lm"
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsModerated$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "lm")
-    },
-    #' @description get protein × contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsModerated$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsModerated$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -552,7 +474,7 @@ ContrastsLMFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsRLMFacade <- R6::R6Class(
   "ContrastsRLMFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -576,24 +498,10 @@ ContrastsRLMFacade <- R6::R6Class(
       full_formula <- paste(response, modelstr)
       strat <- strategy_rlm(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
-      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "rlm"))
+      self$facade_name <- "rlm"
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsModerated$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "rlm")
-    },
-    #' @description get protein × contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsModerated$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsModerated$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -623,7 +531,7 @@ ContrastsRLMFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsRfitFacade <- R6::R6Class(
   "ContrastsRfitFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -647,24 +555,10 @@ ContrastsRfitFacade <- R6::R6Class(
       full_formula <- paste(response, modelstr)
       strat <- strategy_rfit(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
-      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "rfit"))
+      self$facade_name <- "rfit"
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsModerated$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "rfit")
-    },
-    #' @description get protein × contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsModerated$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsModerated$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -686,8 +580,8 @@ ContrastsRfitFacade <- R6::R6Class(
 #' substitution, not a refit. Prefer the \code{lm_impute} facade
 #' (\code{\link{ContrastsLMImputeFacade}}), which fits an LM for every
 #' protein and refits failed/singular fits with LOD imputation and
-#' borrowed per-protein variance, surfacing rescued rows as
-#' \code{modelName = "WaldTest_moderated_imputed"} in the output.
+#' borrowed per-protein variance, flagging rescued rows as
+#' \code{estimate_type = "lod_imputed"} in the output.
 #' Construction emits a \code{.Deprecated} warning; the entry is kept
 #' in \code{\link{FACADE_REGISTRY}} so historical YAMLs continue to
 #' work.
@@ -710,7 +604,7 @@ ContrastsRfitFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLMMissingFacade <- R6::R6Class(
   "ContrastsLMMissingFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -740,7 +634,7 @@ ContrastsLMMissingFacade <- R6::R6Class(
           "deprecated: its second leg uses ContrastsMissing (group-mean",
           "substitution, no model fit). Prefer 'lm_impute' which refits",
           "failed/singular proteins with LOD imputation and borrowed",
-          "variance, tagging rescued rows as 'WaldTest_moderated_imputed'.",
+          "variance, flagging rescued rows as estimate_type 'lod_imputed'.",
           "See ?ContrastsLMMissingFacade for migration."
         )
       )
@@ -757,23 +651,41 @@ ContrastsLMMissingFacade <- R6::R6Class(
       )
       self$merged <- merge_contrasts_results(base_contrast, self$missing_contrast)
       self$contrast <- self$merged$merged
+      self$facade_name <- "lm_missing"
       self$config <- self$contrast$get_config()
     },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsTable$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "lm_missing")
+    #' @description get \code{\link{ContrastsPlotter}} built from the stamped
+    #'   facade output (so modelName is the facade key, not the merged leg names)
+    #' @param fc_threshold fold change threshold
+    #' @param fdr_threshold FDR threshold
+    get_Plotter = function(fc_threshold = 1, fdr_threshold = 0.1) {
+      ContrastsPlotter$new(
+        self$get_contrasts(),
+        subject_id = self$contrast$subject_id,
+        fcthresh = fc_threshold,
+        volcano = list(
+          list(score = "p.value", thresh = fdr_threshold),
+          list(score = "FDR", thresh = fdr_threshold)
+        ),
+        histogram = list(
+          list(score = "p.value", xlim = c(0, 1, 0.05)),
+          list(score = "FDR", xlim = c(0, 1, 0.05))
+        ),
+        score = list(list(score = "statistic", thresh = 5)),
+        diff = "diff",
+        contrast = "contrast"
+      )
     },
-    #' @description get protein × contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsTable$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsTable$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    #' @description convert results to wide format from the stamped facade output
+    #' @param columns value columns to pivot
+    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
+      pivot_model_contrasts_to_wide(
+        self$get_contrasts(),
+        subject_id = self$contrast$subject_id,
+        columns = c("diff", columns),
+        contrast = "contrast"
+      )
+    }
   )
 )
 
@@ -802,7 +714,7 @@ ContrastsLMMissingFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsLMImputeFacade <- R6::R6Class(
   "ContrastsLMImputeFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model Model object (with imputed proteins)
     model = NULL,
@@ -848,24 +760,10 @@ ContrastsLMImputeFacade <- R6::R6Class(
         borrow_method = borrow_method,
         df_method = df_method
       )
-      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lm_impute"))
+      self$facade_name <- "lm_impute"
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsModerated$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "lm_impute")
-    },
-    #' @description get protein x contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsModerated$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsModerated$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -896,8 +794,9 @@ ContrastsLMImputeFacade <- R6::R6Class(
 #'     matching plain \code{rfit}.
 #' }
 #'
-#' Rescued rows surface as \code{modelName = "WaldTest_moderated_imputed"} in
-#' the output, the same tag used by \code{\link{ContrastsLMImputeFacade}}.
+#' \code{modelName} is the facade key \code{"rfit_impute"}; rescued rows are
+#' flagged in the \code{estimate_type} column as \code{"lod_imputed"}, the same
+#' convention used by \code{\link{ContrastsLMImputeFacade}}.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -914,7 +813,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsRfitImputeFacade <- R6::R6Class(
   "ContrastsRfitImputeFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model Model object (with imputed proteins)
     model = NULL,
@@ -956,24 +855,10 @@ ContrastsRfitImputeFacade <- R6::R6Class(
         df_method = df_method,
         on_misalign = "fail"
       )
-      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "rfit_impute"))
+      self$facade_name <- "rfit_impute"
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsModerated$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "rfit_impute")
-    },
-    #' @description get protein x contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsModerated$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsModerated$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -1001,7 +886,7 @@ ContrastsRfitImputeFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsFirthFacade <- R6::R6Class(
   "ContrastsFirthFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model ModelFirth object
     model = NULL,
@@ -1016,29 +901,16 @@ ContrastsFirthFacade <- R6::R6Class(
     #' @param lfqdata LFQData object
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    initialize = function(lfqdata, modelstr, contrasts) {
+    #' @param ... ignored; accepted for dispatch compatibility with other facades
+    initialize = function(lfqdata, modelstr, contrasts, ...) {
       .assert_aggregated_facade_input(lfqdata, "ContrastsFirthFacade")
       self$.lfqdata <- lfqdata
       self$.contrast_names <- names(contrasts)
       self$model <- build_model_glm_protein(lfqdata, modelstr)
-      self$contrast <- ContrastsFirth$new(self$model, contrasts)
+      self$contrast <- ContrastsFirth$new(self$model, contrasts, model_name = "firth")
+      self$facade_name <- "firth"
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsFirth$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "firth")
-    },
-    #' @description get protein × contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsFirth$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsFirth$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -1063,7 +935,7 @@ ContrastsFirthFacade <- R6::R6Class(
 #' fa$to_wide()
 ContrastsDEqMSFacade <- R6::R6Class(
   "ContrastsDEqMSFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model Model object
     model = NULL,
@@ -1089,28 +961,14 @@ ContrastsDEqMSFacade <- R6::R6Class(
       full_formula <- paste(response, modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
-      base_contrast <- Contrasts$new(self$model, contrasts)
+      base_contrast <- Contrasts$new(self$model, contrasts, model_name = "deqms")
       count_column <- lfqdata$nr_children_col()
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
+      self$facade_name <- "deqms"
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsModeratedDEqMS$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "deqms")
-    },
-    #' @description get protein × contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsModeratedDEqMS$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsModeratedDEqMS$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -1138,7 +996,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
 #' head(fa$get_contrasts())
 ContrastsDEqMSVoomFacade <- R6::R6Class(
   "ContrastsDEqMSVoomFacade",
-  inherit = ContrastsInterface,
+  inherit = ContrastsFacadeBase,
   public = list(
     #' @field model ModelLimma object
     model = NULL,
@@ -1166,28 +1024,14 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
       strat <- strategy_limma(full_formula, weights = NULL, ...)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
       # eBayes = FALSE: DEqMS replaces eBayes moderation
-      base_contrast <- ContrastsLimma$new(self$model, contrasts, eBayes = FALSE)
+      base_contrast <- ContrastsLimma$new(self$model, contrasts, eBayes = FALSE, model_name = "deqms_voom")
       count_column <- lfqdata$nr_children_col()
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
+      self$facade_name <- "deqms_voom"
       self$config <- self$contrast$get_config()
-    },
-    #' @description get contrast results
-    #' @param ... passed to ContrastsModeratedDEqMS$get_contrasts
-    get_contrasts = function(...) {
-      .add_facade_column(self$contrast$get_contrasts(...), "deqms_voom")
-    },
-    #' @description get protein x contrast pairs that could not be estimated
-    get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
-    },
-    #' @description get ContrastsPlotter
-    #' @param ... passed to ContrastsModeratedDEqMS$get_Plotter
-    get_Plotter = function(...) self$contrast$get_Plotter(...),
-    #' @description convert results to wide format
-    #' @param ... passed to ContrastsModeratedDEqMS$to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    }
   )
 )
 
@@ -1318,56 +1162,6 @@ lookup_facade <- function(name) {
   get(name, envir = .facade_registry_env, inherits = FALSE)
 }
 
-.builtin_facade_entry <- function(class, needs) {
-  list(
-    class = class,
-    needs = needs,
-    package = "prolfqua",
-    needs_saint_annotation = FALSE
-  )
-}
-
-#' Registry of available contrast facade classes
-#'
-#' Read-only snapshot of the prolfqua facade registry. Use
-#' \code{\link{register_facade}} to add entries from downstream
-#' packages, \code{\link{lookup_facade}} to resolve a single entry, and
-#' \code{list_facades()} to enumerate the current registry.
-#'
-#' Each entry has fields \code{class}, \code{needs}, \code{package},
-#' and \code{needs_saint_annotation}.
-#'
-#' @export
-#' @examples
-#' names(FACADE_REGISTRY)
-#' FACADE_REGISTRY$limma$class
-FACADE_REGISTRY <- structure(
-  list(
-    lm = .builtin_facade_entry("ContrastsLMFacade", "same"),
-    lm_impute = .builtin_facade_entry("ContrastsLMImputeFacade", "same"),
-    lm_missing = .builtin_facade_entry("ContrastsLMMissingFacade", "same"),
-    limma = .builtin_facade_entry("ContrastsLimmaFacade", "same"),
-    limma_impute = .builtin_facade_entry("ContrastsLimmaImputeFacade", "same"),
-    limma_voom = .builtin_facade_entry("ContrastsLimmaVoomFacade", "same"),
-    limma_voom_impute = .builtin_facade_entry(
-      "ContrastsLimmaVoomImputeFacade",
-      "same"
-    ),
-    limpa = .builtin_facade_entry("ContrastsLimpaFacade", "same"),
-    limpa_nested = .builtin_facade_entry("ContrastsLimpaNestedFacade", "nested"),
-    rlm = .builtin_facade_entry("ContrastsRLMFacade", "same"),
-    rfit = .builtin_facade_entry("ContrastsRfitFacade", "same"),
-    rfit_impute = .builtin_facade_entry("ContrastsRfitImputeFacade", "same"),
-    deqms = .builtin_facade_entry("ContrastsDEqMSFacade", "same"),
-    deqms_voom = .builtin_facade_entry("ContrastsDEqMSVoomFacade", "same"),
-    firth = .builtin_facade_entry("ContrastsFirthFacade", "same"),
-    firth_nested = .builtin_facade_entry("ContrastsFirthNestedFacade", "nested"),
-    lmer_nested = .builtin_facade_entry("ContrastsLmerNestedFacade", "nested"),
-    ropeca_nested = .builtin_facade_entry("ContrastsROPECANestedFacade", "nested")
-  ),
-  class = c("facade_registry", "list")
-)
-
 #' List currently registered contrast facades
 #'
 #' @return A list mirroring \code{\link{FACADE_REGISTRY}} but reflecting
@@ -1381,3 +1175,24 @@ list_facades <- function() {
   names(out) <- names_
   out
 }
+
+#' Registry of available contrast facade classes
+#'
+#' Read-only snapshot of the built-in prolfqua facade registry, taken at
+#' package load time. It is derived from the single source of truth
+#' (\code{.seed_facade_registry()}); use \code{\link{register_facade}} to add
+#' entries from downstream packages, \code{\link{lookup_facade}} to resolve a
+#' single entry, and \code{\link{list_facades}()} to enumerate the live
+#' registry (which reflects downstream registrations).
+#'
+#' Each entry has fields \code{class}, \code{needs}, \code{package},
+#' and \code{needs_saint_annotation}.
+#'
+#' @export
+#' @examples
+#' names(FACADE_REGISTRY)
+#' FACADE_REGISTRY$limma$class
+FACADE_REGISTRY <- structure(
+  list_facades(),
+  class = c("facade_registry", "list")
+)

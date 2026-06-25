@@ -115,7 +115,9 @@ ContrastsROPECA <- R6::R6Class(
           group_by_col = "contrast",
           newname = "FDR.median.p.value"
         )
+        contrast_result$estimate_type <- "observed"
         contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
+        contrast_result <- dplyr::relocate(contrast_result, "estimate_type", .after = "modelName")
         self$contrast_result <- contrast_result
       }
 

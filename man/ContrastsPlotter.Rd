@@ -65,6 +65,7 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
+\code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsFirthNestedFacade}},
@@ -260,7 +261,10 @@ create Crontrast_Plotter
 
 \item{\code{fcthresh}}{default 1 (log2 FC threshold)}
 
-\item{\code{modelName}}{name of column with model names}
+\item{\code{modelName}}{name of the colour column. Defaults to \code{"modelName"};
+when left at the default and the contrast carries an \code{estimate_type}
+column, that column is used for colouring instead (so observed vs
+imputed/fallback rows stay distinguishable).}
 
 \item{\code{diff}}{fold change (difference) diff column}
 

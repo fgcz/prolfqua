@@ -36,6 +36,7 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
+\code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsFirthNestedFacade}},

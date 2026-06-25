@@ -87,7 +87,10 @@ ContrastsPlotter <- R6::R6Class(
     #' @param histogram which scores to plot and which range (x) should be shown.
     #' @param score score parameters
     #' @param fcthresh default 1 (log2 FC threshold)
-    #' @param modelName name of column with model names
+    #' @param modelName name of the colour column. Defaults to \code{"modelName"};
+    #'   when left at the default and the contrast carries an \code{estimate_type}
+    #'   column, that column is used for colouring instead (so observed vs
+    #'   imputed/fallback rows stay distinguishable).
     #' @param diff fold change (difference) diff column
     #' @param contrast contrast column
     #' @param avg.abundance name of column with average abundance
@@ -115,6 +118,14 @@ ContrastsPlotter <- R6::R6Class(
         remove = FALSE
       )
 
+      # Colour column. `modelName` is now the (uniform per run) facade key, so
+      # colouring by it yields a single colour. When the contrast carries an
+      # `estimate_type` column (observed / lod_imputed / missing_fallback) and
+      # the caller did not request a specific colour column, colour by it so
+      # rescued/fallback rows stay visually distinct in volcano/MA/score plots.
+      if (identical(modelName, "modelName") && "estimate_type" %in% colnames(contrast_df)) {
+        modelName <- "estimate_type"
+      }
       self$model_name <- modelName
       self$subject_id <- subject_id
       self$diff <- diff

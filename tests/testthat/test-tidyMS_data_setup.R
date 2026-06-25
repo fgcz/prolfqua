@@ -37,3 +37,12 @@ test_that("setup_analysis(debug = TRUE) returns the count table for inspection",
   expect_true("n" %in% colnames(res))
   expect_gt(max(res$n), 1)
 })
+
+test_that("sim_lfq_data respects the mean_prot argument", {
+  set.seed(42)
+  low <- prolfqua::sim_lfq_data(Nprot = 50, N = 3, mean_prot = 20)
+  set.seed(42)
+  high <- prolfqua::sim_lfq_data(Nprot = 50, N = 3, mean_prot = 200)
+  # higher mean_prot must shift abundances up; previously log(20) was hardcoded
+  expect_gt(mean(high$abundance, na.rm = TRUE), mean(low$abundance, na.rm = TRUE))
+})

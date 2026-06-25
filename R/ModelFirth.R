@@ -98,7 +98,6 @@ ModelFirth <- R6::R6Class(
       }
 
       models <- dplyr::bind_rows(self$models[[1]]$model_df, self$models[[2]]$model_df)
-      res <- vector(mode = "list", nrow(models))
       model_coeff <- models |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
       model_coeff <- model_coeff |>

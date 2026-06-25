@@ -253,7 +253,7 @@ AggregateTopN <- R6::R6Class(
       if (lfq$is_transformed()) {
         warning("You did transform the intensities. top N works with raw data. ", lfq$get_config()$work_intensity)
       }
-      match.arg(func, c("sum", "mean"))
+      func <- match.arg(func, c("sum", "mean"))
       self$lfq <- lfq$clone(deep = TRUE)
       self$prefix <- prefix
       self$N <- N

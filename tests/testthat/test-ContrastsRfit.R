@@ -71,12 +71,13 @@ test_that("ContrastsRfitFacade initialises and returns the standard schema", {
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
   expect_true(nrow(res) > 0)
-  for (col in c("facade", "modelName", "contrast", "diff", "FDR", "p.value", "statistic", "std.error")) {
+  for (col in c("modelName", "estimate_type", "contrast", "diff", "FDR", "p.value", "statistic", "std.error")) {
     expect_true(col %in% colnames(res), info = paste("missing column:", col))
   }
+  expect_false("facade" %in% colnames(res))
   expect_true(!any(is.na(res$diff)))
   expect_true(!any(is.na(res$statistic)))
-  expect_true(all(res$facade == "rfit"))
+  expect_true(all(res$modelName == "rfit"))
 
   expect_true(is.data.frame(fa$get_missing()))
   expect_true(nrow(fa$to_wide()) > 0)
@@ -107,7 +108,7 @@ test_that("build_contrast_analysis dispatches method = 'rfit'", {
   lfqdata <- make_protein_lfqdata_rfit()
   fa <- prolfqua::build_contrast_analysis(lfqdata, RFIT_MODELSTR, RFIT_CONTRASTS, method = "rfit")
   expect_true(inherits(fa, "ContrastsRfitFacade"))
-  expect_true(all(fa$get_contrasts()$facade == "rfit"))
+  expect_true(all(fa$get_contrasts()$modelName == "rfit"))
 })
 
 

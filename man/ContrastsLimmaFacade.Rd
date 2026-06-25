@@ -34,6 +34,7 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
+\code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsFirthNestedFacade}},
@@ -123,8 +124,8 @@ Other modelling:
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
-\section{Super class}{
-\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsLimmaFacade}
+\section{Super classes}{
+\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{\link[prolfqua:ContrastsFacadeBase]{prolfqua::ContrastsFacadeBase}} -> \code{ContrastsLimmaFacade}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -143,10 +144,6 @@ Other modelling:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-ContrastsLimmaFacade-new}{\code{ContrastsLimmaFacade$new()}}
-\item \href{#method-ContrastsLimmaFacade-get_contrasts}{\code{ContrastsLimmaFacade$get_contrasts()}}
-\item \href{#method-ContrastsLimmaFacade-get_missing}{\code{ContrastsLimmaFacade$get_missing()}}
-\item \href{#method-ContrastsLimmaFacade-get_Plotter}{\code{ContrastsLimmaFacade$get_Plotter()}}
-\item \href{#method-ContrastsLimmaFacade-to_wide}{\code{ContrastsLimmaFacade$to_wide()}}
 \item \href{#method-ContrastsLimmaFacade-clone}{\code{ContrastsLimmaFacade$clone()}}
 }
 }
@@ -161,6 +158,10 @@ Other modelling:
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides'><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_Plotter"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter'><code>prolfqua::ContrastsFacadeBase$get_Plotter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_contrasts"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts'><code>prolfqua::ContrastsFacadeBase$get_contrasts()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing'><code>prolfqua::ContrastsFacadeBase$get_missing()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="to_wide"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide'><code>prolfqua::ContrastsFacadeBase$to_wide()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -192,67 +193,6 @@ initialize
 \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.}
 
 \item{\code{...}}{passed to \code{\link{strategy_limma}} (e.g. trend, robust)}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsLimmaFacade-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsLimmaFacade-get_contrasts}{}}}
-\subsection{Method \code{get_contrasts()}}{
-get contrast results (rows with NA diff are filtered out)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsLimmaFacade$get_contrasts(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{passed to ContrastsLimma$get_contrasts}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsLimmaFacade-get_missing"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsLimmaFacade-get_missing}{}}}
-\subsection{Method \code{get_missing()}}{
-get protein × contrast pairs that could not be estimated
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsLimmaFacade$get_missing()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsLimmaFacade-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsLimmaFacade-get_Plotter}{}}}
-\subsection{Method \code{get_Plotter()}}{
-get ContrastsPlotter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsLimmaFacade$get_Plotter(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{passed to ContrastsLimma$get_Plotter}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsLimmaFacade-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsLimmaFacade-to_wide}{}}}
-\subsection{Method \code{to_wide()}}{
-convert results to wide format
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsLimmaFacade$to_wide(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{passed to ContrastsLimma$to_wide}
 }
 \if{html}{\out{</div>}}
 }

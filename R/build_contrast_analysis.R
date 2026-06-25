@@ -24,12 +24,15 @@
 #'   \code{lfqdata$get_config()$get_response()}.
 #' @param contrasts named character vector of contrasts
 #'   (e.g. \code{c("A_vs_B" = "group_A - group_B")})
-#' @param method one of \code{"lm"}, \code{"lm_impute"}, \code{"lm_missing"},
-#'   \code{"limma"}, \code{"limma_impute"}, \code{"limma_voom"},
-#'   \code{"limma_voom_impute"}, \code{"limpa"}, \code{"limpa_nested"},
-#'   \code{"rlm"}, \code{"rfit"}, \code{"rfit_impute"}, \code{"deqms"},
-#'   \code{"deqms_voom"}, \code{"firth"}, \code{"firth_nested"},
-#'   \code{"lmer_nested"}, \code{"ropeca_nested"}
+#' @param method a registered facade key. The built-in keys are \code{"lm"},
+#'   \code{"lm_impute"}, \code{"lm_missing"}, \code{"limma"},
+#'   \code{"limma_impute"}, \code{"limma_voom"}, \code{"limma_voom_impute"},
+#'   \code{"limpa"}, \code{"limpa_nested"}, \code{"rlm"}, \code{"rfit"},
+#'   \code{"rfit_impute"}, \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
+#'   \code{"firth_nested"}, \code{"lmer_nested"}, \code{"ropeca_nested"};
+#'   downstream packages may add more via \code{\link{register_facade}}. The
+#'   authoritative list is \code{names(\link{list_facades}())}. Defaults to
+#'   \code{"lm"}.
 #' @param ... additional arguments forwarded to the underlying strategy function
 #'   (e.g. \code{trend}, \code{robust} for \code{strategy_limma})
 #' @return one of \code{\link{ContrastsLimmaFacade}},
@@ -82,48 +85,20 @@ build_contrast_analysis <- function(
   lfqdata,
   modelstr,
   contrasts,
-  method = c(
-    "lm",
-    "lm_impute",
-    "lm_missing",
-    "limma",
-    "limma_impute",
-    "limma_voom",
-    "limma_voom_impute",
-    "limpa",
-    "limpa_nested",
-    "rlm",
-    "rfit",
-    "rfit_impute",
-    "deqms",
-    "deqms_voom",
-    "firth",
-    "firth_nested",
-    "lmer_nested",
-    "ropeca_nested"
-  ),
+  method = "lm",
   ...
 ) {
-  method <- match.arg(method)
-  switch(
-    method,
-    lm = ContrastsLMFacade$new(lfqdata, modelstr, contrasts, ...),
-    rlm = ContrastsRLMFacade$new(lfqdata, modelstr, contrasts, ...),
-    rfit = ContrastsRfitFacade$new(lfqdata, modelstr, contrasts, ...),
-    rfit_impute = ContrastsRfitImputeFacade$new(lfqdata, modelstr, contrasts, ...),
-    lmer_nested = ContrastsLmerNestedFacade$new(lfqdata, modelstr, contrasts, ...),
-    lm_missing = ContrastsLMMissingFacade$new(lfqdata, modelstr, contrasts, ...),
-    lm_impute = ContrastsLMImputeFacade$new(lfqdata, modelstr, contrasts, ...),
-    limma = ContrastsLimmaFacade$new(lfqdata, modelstr, contrasts, ...),
-    limma_impute = ContrastsLimmaImputeFacade$new(lfqdata, modelstr, contrasts, ...),
-    limma_voom = ContrastsLimmaVoomFacade$new(lfqdata, modelstr, contrasts, ...),
-    limma_voom_impute = ContrastsLimmaVoomImputeFacade$new(lfqdata, modelstr, contrasts, ...),
-    deqms = ContrastsDEqMSFacade$new(lfqdata, modelstr, contrasts, ...),
-    deqms_voom = ContrastsDEqMSVoomFacade$new(lfqdata, modelstr, contrasts, ...),
-    ropeca_nested = ContrastsROPECANestedFacade$new(lfqdata, modelstr, contrasts, ...),
-    firth = ContrastsFirthFacade$new(lfqdata, modelstr, contrasts),
-    firth_nested = ContrastsFirthNestedFacade$new(lfqdata, modelstr, contrasts),
-    limpa = ContrastsLimpaFacade$new(lfqdata, modelstr, contrasts, ...),
-    limpa_nested = ContrastsLimpaNestedFacade$new(lfqdata, modelstr, contrasts, ...)
-  )
+  # The facade registry (seeded by .seed_facade_registry(), extensible via
+  # register_facade()) is the single source of truth for method -> class.
+  choices <- names(list_facades())
+  method <- match.arg(method, choices)
+  entry <- lookup_facade(method)
+  if (is.null(entry)) {
+    stop("Unknown contrast method: ", method)
+  }
+  if (!is.null(entry$builder)) {
+    return(entry$builder(lfqdata, modelstr, contrasts, ...))
+  }
+  facade_class <- utils::getFromNamespace(entry$class, entry$package %||% "prolfqua")
+  facade_class$new(lfqdata, modelstr, contrasts, ...)
 }

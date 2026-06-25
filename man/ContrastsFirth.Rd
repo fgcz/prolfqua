@@ -37,6 +37,7 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
+\code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsLMFacade}},
@@ -183,7 +184,7 @@ create Contrast
   model,
   contrasts,
   p.adjust = prolfqua::adjust_p_values,
-  model_name = "WaldTestFirth"
+  model_name = "firth"
 )}\if{html}{\out{</div>}}
 }
 
@@ -196,7 +197,7 @@ create Contrast
 
 \item{\code{p.adjust}}{function to adjust the p-values}
 
-\item{\code{model_name}}{name of contrast method, default WaldTest}
+\item{\code{model_name}}{name of contrast method, default firth}
 }
 \if{html}{\out{</div>}}
 }
@@ -226,6 +227,11 @@ get linear functions from contrasts
 \item{\code{avg}}{logical TRUE - get also linfct for averages}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a list with the linfct-annotated model containers
+  (\code{models1} / \code{models2}); the shared input model is left
+  untouched.
 }
 }
 \if{html}{\out{<hr>}}

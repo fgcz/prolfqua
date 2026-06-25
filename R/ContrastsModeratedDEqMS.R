@@ -364,58 +364,12 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       # Remove the count column from output (it was joined for computation)
       contrast_result[[self$count_column]] <- NULL
 
-      if (!all) {
-        contrast_result <- contrast_result |>
-          dplyr::select(
-            -c(
-              "sigma",
-              "df",
-              "statistic",
-              "p.value",
-              "conf.low",
-              "conf.high",
-              "FDR",
-              "moderated.df.prior",
-              "moderated.var.prior"
-            )
-          )
-        contrast_result <- contrast_result |>
-          dplyr::mutate(sigma = sqrt(moderated.var.post), .keep = "unused")
-        contrast_result <- contrast_result |>
-          dplyr::rename(
-            conf.low = "moderated.conf.low",
-            conf.high = "moderated.conf.high",
-            statistic = "moderated.statistic",
-            df = "moderated.df.total",
-            p.value = "moderated.p.value"
-          )
-        contrast_result <- self$p.adjust(
-          contrast_result,
-          column = "p.value",
-          group_by_col = "contrast",
-          newname = "FDR"
-        )
-      } else {
-        contrast_result <- self$p.adjust(
-          contrast_result,
-          column = "moderated.p.value",
-          group_by_col = "contrast",
-          newname = "FDR.moderated"
-        )
-      }
+      contrast_result <- .finalize_moderated_columns(contrast_result, self$p.adjust, all)
 
       contrast_result <- dplyr::ungroup(contrast_result)
 
-      if (inherits(contrast_result$modelName, "factor")) {
-        mname <- factor(
-          paste0(contrast_result$modelName, "_DEqMS"),
-          levels = paste0(levels(contrast_result$modelName), "_DEqMS")
-        )
-      } else {
-        mname <- paste0(contrast_result$modelName, "_DEqMS")
-      }
-      contrast_result$modelName <- mname
-
+      # modelName and estimate_type pass through from the wrapped contrast
+      # unchanged; the DEqMS moderation is described in the methods text.
       stopifnot(all(
         super$column_description()$column_name %in% colnames(contrast_result)
       ))

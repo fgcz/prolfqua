@@ -33,7 +33,7 @@ LFQDataSummariser <- R6::R6Class(
     #' initialize
     #' @param lfqdata LFQData
     initialize = function(lfqdata) {
-      self$lfq <- lfqdata
+      self$lfq <- lfqdata$clone(deep = TRUE)
     },
     #' @description
     #' summarize hierarchy

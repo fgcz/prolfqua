@@ -45,10 +45,12 @@ utils::globalVariables(c(
   "isSingular",
   "linear_model",
   "meanAbundance",
+  "moderated.var.post",
   "nr_peptides",
   "percent_variance_explained",
   "reference_mean",
   "reference_median",
+  "rhs",
   "subject",
   "y"
 ))

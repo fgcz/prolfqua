@@ -44,7 +44,7 @@ sim_lfq_data <- function(
     proteinID = proteins,
     idtype2 = idtype2,
     nr_peptides = nrpeptides,
-    average_prot_abundance = rlnorm(Nprot, log(20), sdlog = sdlog),
+    average_prot_abundance = rlnorm(Nprot, log(mean_prot), sdlog = sdlog),
     mean_Ctrl = 0,
     N_Ctrl = N,
     sd = 1

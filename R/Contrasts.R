@@ -131,13 +131,7 @@ Contrasts <- R6::R6Class(
     #' @description
     #' get both sides of contrasts
     get_contrast_sides = function() {
-      # extract contrast sides
-      tt <- self$contrasts[grep("-", self$contrasts)]
-      tt <- tibble(contrast = names(tt), rhs = tt)
-      tt <- tt |>
-        mutate(rhs = gsub("[` ]", "", rhs)) |>
-        tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
-      return(tt)
+      parse_contrast_sides(self$contrasts)
     },
     #' @description
     #' get linear functions from contrasts
@@ -202,10 +196,10 @@ Contrasts <- R6::R6Class(
 
         contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
         contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
-        # Stamp modelName per row. If the underlying model_df carries
-        # an `imputed` column (set by impute_refit_singular for LOD-
-        # rescued proteins), suffix the modelName so the rescue is
-        # visible at the contrast level. Otherwise stamp uniformly.
+        # Stamp modelName uniformly with the model identity. Rescue/imputation
+        # state lives in a separate `estimate_type` column: rows refit from an
+        # LOD-imputed model (flagged by impute_refit_singular) get
+        # "lod_imputed", everything else "observed".
         if ("imputed" %in% colnames(self$models)) {
           imputed_lookup <- self$models |>
             dplyr::select(dplyr::all_of(c(self$subject_id, "imputed")))
@@ -214,16 +208,17 @@ Contrasts <- R6::R6Class(
             imputed_lookup,
             by = self$subject_id
           )
-          contrast_result$modelName <- ifelse(
+          contrast_result$estimate_type <- ifelse(
             !is.na(contrast_result$imputed) & contrast_result$imputed,
-            paste0(self$model_name, "_imputed"),
-            self$model_name
+            "lod_imputed",
+            "observed"
           )
           contrast_result$imputed <- NULL
-          contrast_result <- contrast_result |> dplyr::relocate("modelName", .before = 1)
         } else {
-          contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
+          contrast_result$estimate_type <- "observed"
         }
+        contrast_result <- dplyr::mutate(contrast_result, modelName = self$model_name, .before = 1)
+        contrast_result <- dplyr::relocate(contrast_result, "estimate_type", .after = "modelName")
         self$contrast_result <- contrast_result
       }
       res <- if (!all) {

@@ -31,10 +31,12 @@ check_facade_interface <- function(fa) {
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
   expect_true(nrow(res) > 0)
-  expected_cols <- c("facade", "modelName", "contrast", "diff", "FDR", "p.value")
+  expected_cols <- c("modelName", "estimate_type", "contrast", "diff", "FDR", "p.value")
   for (col in expected_cols) {
     expect_true(col %in% colnames(res), info = paste("missing column:", col))
   }
+  # clean break: the legacy `facade` column is gone; modelName carries identity
+  expect_false("facade" %in% colnames(res))
   # get_contrasts must not contain NA diff
   expect_true(!any(is.na(res$diff)), info = "get_contrasts() must not return NA diff rows")
 
@@ -50,6 +52,24 @@ check_facade_interface <- function(fa) {
   expect_true(!is.null(plotter))
 }
 
+# Regression: get_contrasts(), to_wide(), and get_Plotter() must all report the
+# selected facade key, not the inner model name (e.g. "WaldTest"). lm wraps
+# Contrasts -> ContrastsModerated, the same path that previously leaked.
+test_that("facade modelName is consistent across get_contrasts/to_wide/get_Plotter", {
+  lfqdata <- make_protein_lfqdata()$lfqdata
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "lm")
+
+  expect_setequal(unique(fa$get_contrasts()$modelName), "lm")
+
+  wide <- fa$to_wide(columns = "modelName")
+  wide_modelname <- unique(unlist(wide[grep("^modelName", names(wide))]))
+  expect_setequal(wide_modelname, "lm")
+
+  pl <- fa$get_Plotter()
+  pl_df <- pl$.__enclos_env__$private$.contrast_df
+  expect_setequal(unique(pl_df$modelName), "lm")
+})
+
 # ---- ContrastsLimmaFacade ----
 
 test_that("ContrastsLimmaFacade initialises and returns correct structure", {
@@ -60,7 +80,7 @@ test_that("ContrastsLimmaFacade initialises and returns correct structure", {
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "limma"))
+  expect_true(all(fa$get_contrasts()$modelName == "limma"))
 })
 
 # ---- ContrastsLMFacade ----
@@ -73,7 +93,7 @@ test_that("ContrastsLMFacade initialises and returns correct structure", {
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "lm"))
+  expect_true(all(fa$get_contrasts()$modelName == "lm"))
 })
 
 # ---- ContrastsRLMFacade ----
@@ -86,7 +106,7 @@ test_that("ContrastsRLMFacade initialises and returns correct structure", {
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "rlm"))
+  expect_true(all(fa$get_contrasts()$modelName == "rlm"))
 })
 
 # ---- ContrastsLmerNestedFacade ----
@@ -99,7 +119,7 @@ test_that("ContrastsLmerNestedFacade initialises and returns correct structure",
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "lmer_nested"))
+  expect_true(all(fa$get_contrasts()$modelName == "lmer_nested"))
 })
 
 test_that("ContrastsLmerNestedFacade augments fixed-effects-only modelstr with random effects", {
@@ -136,7 +156,7 @@ test_that("ContrastsLMMissingFacade initialises and returns correct structure", 
   expect_true(!is.null(fa$missing_contrast))
   expect_true(!is.null(fa$merged))
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "lm_missing"))
+  expect_true(all(fa$get_contrasts()$modelName == "lm_missing"))
 })
 
 # ---- ContrastsDEqMSFacade ----
@@ -151,7 +171,7 @@ test_that("ContrastsDEqMSFacade initialises and returns correct structure", {
   expect_true(!is.null(fa$contrast))
   expect_equal(fa$contrast$count_column, "nr_peptides")
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "deqms"))
+  expect_true(all(fa$get_contrasts()$modelName == "deqms"))
 })
 
 # ---- ContrastsROPECANestedFacade ----
@@ -166,7 +186,7 @@ test_that("ContrastsROPECANestedFacade initialises and returns correct structure
 
   # Facade normalises ROPECA output to standard column names
   check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$facade == "ropeca_nested"))
+  expect_true(all(fa$get_contrasts()$modelName == "ropeca_nested"))
 
   res <- fa$get_contrasts()
   # Heuristically derived columns should have real values (not all NA)
@@ -251,7 +271,7 @@ test_that("build_contrast_analysis dispatches to ContrastsFirthNestedFacade for 
   expect_true(inherits(fa, "ContrastsFirthNestedFacade"))
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
-  expect_true(all(res$facade == "firth_nested"))
+  expect_true(all(res$modelName == "firth_nested"))
 })
 
 test_that("Firth nested preparation completes sparse LFQData before encoding missingness", {

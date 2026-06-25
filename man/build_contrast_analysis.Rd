@@ -4,15 +4,7 @@
 \alias{build_contrast_analysis}
 \title{Build a contrast analysis using one of several statistical methods}
 \usage{
-build_contrast_analysis(
-  lfqdata,
-  modelstr,
-  contrasts,
-  method = c("lm", "lm_impute", "lm_missing", "limma", "limma_impute", "limma_voom",
-    "limma_voom_impute", "limpa", "limpa_nested", "rlm", "rfit", "rfit_impute", "deqms",
-    "deqms_voom", "firth", "firth_nested", "lmer_nested", "ropeca_nested"),
-  ...
-)
+build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 }
 \arguments{
 \item{lfqdata}{an \code{\link{LFQData}} object}
@@ -24,12 +16,15 @@ build_contrast_analysis(
 \item{contrasts}{named character vector of contrasts
 (e.g. \code{c("A_vs_B" = "group_A - group_B")})}
 
-\item{method}{one of \code{"lm"}, \code{"lm_impute"}, \code{"lm_missing"},
-\code{"limma"}, \code{"limma_impute"}, \code{"limma_voom"},
-\code{"limma_voom_impute"}, \code{"limpa"}, \code{"limpa_nested"},
-\code{"rlm"}, \code{"rfit"}, \code{"rfit_impute"}, \code{"deqms"},
-\code{"deqms_voom"}, \code{"firth"}, \code{"firth_nested"},
-\code{"lmer_nested"}, \code{"ropeca_nested"}}
+\item{method}{a registered facade key. The built-in keys are \code{"lm"},
+\code{"lm_impute"}, \code{"lm_missing"}, \code{"limma"},
+\code{"limma_impute"}, \code{"limma_voom"}, \code{"limma_voom_impute"},
+\code{"limpa"}, \code{"limpa_nested"}, \code{"rlm"}, \code{"rfit"},
+\code{"rfit_impute"}, \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
+\code{"firth_nested"}, \code{"lmer_nested"}, \code{"ropeca_nested"};
+downstream packages may add more via \code{\link{register_facade}}. The
+authoritative list is \code{names(\link{list_facades}())}. Defaults to
+\code{"lm"}.}
 
 \item{...}{additional arguments forwarded to the underlying strategy function
 (e.g. \code{trend}, \code{robust} for \code{strategy_limma})}
@@ -106,6 +101,7 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
+\code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsFirthNestedFacade}},

@@ -144,11 +144,7 @@ ContrastsMissing <- R6::R6Class(
     #' get contrasts sides
     #'
     get_contrast_sides = function() {
-      # extract contrast sides
-      tt <- self$contrasts[grep("-", self$contrasts)]
-      tt <- tibble(contrast = names(tt), rhs = tt)
-      tt <- tt |> dplyr::mutate(rhs = gsub("[` ]", "", rhs)) |> tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
-      return(tt)
+      parse_contrast_sides(self$contrasts)
     },
     #' @description
     #' table with results of contrast computation
@@ -168,11 +164,14 @@ ContrastsMissing <- R6::R6Class(
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
         }
         result <- result |> rename(diff = estimate, sigma = sd, std.error = sdT)
+        # group-mean substitution, not a model fit: every row is a fallback
+        result$estimate_type <- "missing_fallback"
         result <- mutate(result, modelName = self$model_name, .before = 1)
+        result <- dplyr::relocate(result, "estimate_type", .after = "modelName")
         self$contrast_result <- ungroup(result)
       }
       res <- self$contrast_result
-      stopifnot(all(names(super$column_description()$column_name) %in% colnames(res)))
+      stopifnot(all(super$column_description()$column_name %in% colnames(res)))
       invisible(res)
     },
     #' @description

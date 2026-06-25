@@ -97,7 +97,10 @@ Model <- R6::R6Class(
       model_anova <- tidyr::unnest(model_anova, cols = c(Anova_model))
 
       model_anova <- model_anova |> dplyr::filter(factor != "Residuals")
-      model_anova <- model_anova |> dplyr::filter(factor != "NULL")
+      # Drop degenerate anova rows from failed/empty model fits. The real
+      # failure signal is an NA factor; the previous `factor != "NULL"`
+      # checked a string sentinel that the anova backends never emit.
+      model_anova <- model_anova |> dplyr::filter(!is.na(factor), factor != "NULL")
 
       model_anova <- self$p.adjust(model_anova, column = self$model_strategy$anova_df$col_pval, group_by_col = "factor")
 

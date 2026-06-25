@@ -201,4 +201,21 @@ test_that("AggregateTopN", {
   agg_mean <- AggregateTopN$new(lfqdata$get_copy(), "protein", func = "mean")
   result_mean <- agg_mean$aggregate()
   expect_s3_class(result_mean, "LFQData")
+
+  # invalid func must error via match.arg, not be silently accepted
+  expect_error(AggregateTopN$new(lfqdata$get_copy(), "protein", func = "median"))
+})
+
+test_that("Transformer and Summariser deep-clone their input", {
+  lfq_copy <- lfqdata$get_copy()
+  expect_false(lfq_copy$is_transformed())
+
+  tr <- lfq_copy$get_Transformer()
+  tr$log2()
+  # decorator's in-place ops must not mutate the caller's LFQData
+  expect_false(lfq_copy$is_transformed())
+  expect_true(tr$lfq$is_transformed())
+
+  sm <- lfq_copy$get_Summariser()
+  expect_false(identical(sm$lfq, lfq_copy))
 })

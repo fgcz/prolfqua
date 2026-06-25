@@ -234,7 +234,8 @@ ContrastsInterface <- R6::R6Class(
     #' column description
     column_description = function() {
       description <- c(
-        "modelName" = "type of model",
+        "modelName" = "selected analysis method / facade key (e.g. lm, rfit, limma_impute)",
+        "estimate_type" = "how the estimate was produced: observed, lod_imputed, or missing_fallback",
         "contrast" = "name of difference e.g. group1_vs_group2",
         "avgAbd" = "mean abundance value of protein in all samples",
         "diff" = "difference among conditions",

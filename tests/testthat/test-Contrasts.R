@@ -217,8 +217,28 @@ test_that("ContrastsFirth and ContrastsFirthFacade", {
   fa <- build_contrast_analysis(lfqdata, "~ group_", Contr, method = "firth")
   expect_true(inherits(fa, "ContrastsFirthFacade"))
   fa_res <- fa$get_contrasts()
-  expect_true("facade" %in% colnames(fa_res))
-  expect_true(all(fa_res$facade == "firth"))
+  expect_false("facade" %in% colnames(fa_res))
+  expect_true(all(fa_res$modelName == "firth"))
+})
+
+test_that("ContrastsFirth$get_linfct does not mutate the shared model", {
+  istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
+  lfqdata <- LFQData$new(istar$data, istar$config)
+  Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+  mod <- build_model_glm_protein(lfqdata, "~ group_")
+
+  before_rows <- nrow(mod$models$models1$model_df)
+  expect_false("linfct" %in% colnames(mod$models$models1$model_df))
+
+  # computing contrasts must not filter rows or add columns on the shared model
+  invisible(ContrastsFirth$new(mod, Contr)$get_contrasts())
+  expect_equal(nrow(mod$models$models1$model_df), before_rows)
+  expect_false("linfct" %in% colnames(mod$models$models1$model_df))
+
+  # get_linfct returns the annotated copies, leaving the input untouched
+  linfct_models <- ContrastsFirth$new(mod, Contr)$get_linfct()
+  expect_true("linfct" %in% colnames(linfct_models$models1$model_df))
+  expect_false("linfct" %in% colnames(mod$models$models1$model_df))
 })
 
 test_that("ContrastsFirth drops failed logistf fits before contrasts", {

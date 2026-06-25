@@ -93,7 +93,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @param lfqdata
     #' LFQData object to transform
     initialize = function(lfqdata) {
-      self$lfq <- lfqdata
+      self$lfq <- lfqdata$clone(deep = TRUE)
     },
     #' @description
     #' log2 transform data

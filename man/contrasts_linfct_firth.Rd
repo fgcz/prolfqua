@@ -16,11 +16,9 @@ contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
 ctrpep <- ContrastsFirth$new(mod3,contrasts)
 ctrpep$get_contrast_sides()
 
-xx <- ctrpep$get_linfct()
-models1 <- xx$models$models$models1
-tmp1 <- contrasts_linfct_firth(models1)
-models2 <- xx$models$models$models2
-tmp2 <- contrasts_linfct_firth(models2)
+linfct_models <- ctrpep$get_linfct()
+tmp1 <- contrasts_linfct_firth(linfct_models$models1)
+tmp2 <- contrasts_linfct_firth(linfct_models$models2)
 stopifnot(all(dim(tmp1) > 10))
 stopifnot(all(dim(tmp2) > 10))
 }

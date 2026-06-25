@@ -470,8 +470,7 @@ test_that("build_contrast_analysis dispatches limma_voom", {
   expect_true(inherits(fa, "ContrastsLimmaVoomFacade"))
   res <- fa$get_contrasts()
   expect_true(nrow(res) > 0)
-  expect_true("facade" %in% colnames(res))
-  expect_equal(unique(res$facade), "limma_voom")
+  expect_equal(unique(res$modelName), "limma_voom")
 })
 
 test_that("build_contrast_analysis dispatches limma_voom_impute", {
@@ -484,8 +483,7 @@ test_that("build_contrast_analysis dispatches limma_voom_impute", {
   expect_true(inherits(fa, "ContrastsLimmaVoomImputeFacade"))
   res <- fa$get_contrasts()
   expect_true(nrow(res) > 0)
-  expect_true("facade" %in% colnames(res))
-  expect_equal(unique(res$facade), "limma_voom_impute")
+  expect_equal(unique(res$modelName), "limma_voom_impute")
 })
 
 test_that("limma_voom_impute recovers more proteins than limma_voom", {
@@ -513,8 +511,7 @@ test_that("build_contrast_analysis dispatches deqms_voom", {
   expect_true(inherits(fa, "ContrastsDEqMSVoomFacade"))
   res <- fa$get_contrasts()
   expect_true(nrow(res) > 0)
-  expect_true("facade" %in% colnames(res))
-  expect_equal(unique(res$facade), "deqms_voom")
+  expect_equal(unique(res$modelName), "deqms_voom")
 })
 
 test_that("limma_voom with external weights (nr_children)", {
@@ -536,7 +533,7 @@ test_that("limma_voom with external weights (nr_children)", {
 })
 
 
-test_that("limma_impute tags LOD-rescued proteins with _imputed modelName", {
+test_that("limma_impute flags LOD-rescued proteins via estimate_type", {
   # Same fixture as the lm_impute regression test in test-ImputeModel.R;
   # weight_missing = 0.5 guarantees some proteins have NA limma
   # coefficients, which build_model_limma_impute then refits at LOD.
@@ -545,30 +542,30 @@ test_that("limma_impute tags LOD-rescued proteins with _imputed modelName", {
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  # Plain limma: no imputed_proteins, uniform modelName.
+  # Plain limma: no imputed_proteins, modelName is the facade key, all observed.
   fa_plain <- prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
   res_plain <- fa_plain$get_contrasts()
   expect_setequal(unique(res_plain$modelName), "limma")
+  expect_setequal(unique(res_plain$estimate_type), "observed")
   expect_length(fa_plain$model$imputed_proteins, 0)
 
-  # limma_impute: refit proteins should produce a "_imputed" modelName.
-  # ContrastsLimma overrides the wrapped ModelLimma's model_name to
-  # the literal "limma" (or "limma_raw" when eBayes = FALSE), so the
-  # suffix is applied to "limma" not to "limmaImputed".
+  # limma_impute: modelName is the facade key; refit proteins are flagged
+  # in estimate_type as "lod_imputed".
   fa_imp <- prolfqua::ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
   expect_gt(length(fa_imp$model$imputed_proteins), 0)
   res_imp <- fa_imp$get_contrasts()
-  expect_setequal(unique(res_imp$modelName), c("limma", "limma_imputed"))
+  expect_setequal(unique(res_imp$modelName), "limma_impute")
+  expect_setequal(unique(res_imp$estimate_type), c("observed", "lod_imputed"))
   # Refit count should match imputed_proteins (one row per contrast,
   # and we asked for one contrast).
   expect_equal(
-    sum(res_imp$modelName == "limma_imputed"),
+    sum(res_imp$estimate_type == "lod_imputed"),
     length(fa_imp$model$imputed_proteins)
   )
 })
 
 
-test_that("limma_voom_impute also tags LOD-rescued proteins", {
+test_that("limma_voom_impute also flags LOD-rescued proteins", {
   istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
@@ -577,9 +574,8 @@ test_that("limma_voom_impute also tags LOD-rescued proteins", {
   fa <- prolfqua::ContrastsLimmaVoomImputeFacade$new(lfqdata, "~ group_", contrasts)
   expect_gt(length(fa$model$imputed_proteins), 0)
   res <- fa$get_contrasts()
-  # Two modelName levels: base name and base name + "_imputed".
-  expect_equal(length(unique(res$modelName)), 2)
-  expect_true(any(grepl("_imputed$", res$modelName)))
+  expect_setequal(unique(res$modelName), "limma_voom_impute")
+  expect_true("lod_imputed" %in% res$estimate_type)
 })
 
 

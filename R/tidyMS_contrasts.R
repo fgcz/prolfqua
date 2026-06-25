@@ -1,5 +1,25 @@
 # Contrast linear function machinery ----
 
+#' Split two-sided contrast specifications into left/right group columns.
+#'
+#' Shared implementation behind the \code{get_contrast_sides()} methods of the
+#' contrast classes. Keeps only contrasts containing a \code{-}, strips
+#' backticks/spaces, and separates the right-hand side on \code{-}.
+#'
+#' @param contrasts named character vector of contrast specifications.
+#' @return a tibble with columns \code{contrast}, \code{group_1}, \code{group_2}.
+#' @note Preserves the historical parser behaviour: it does not handle \code{+}
+#'   contrasts or group names that themselves contain \code{-}.
+#' @keywords internal
+#' @noRd
+parse_contrast_sides <- function(contrasts) {
+  tt <- contrasts[grep("-", contrasts)]
+  tt <- tibble::tibble(contrast = names(tt), rhs = tt)
+  tt |>
+    dplyr::mutate(rhs = gsub("[` ]", "", rhs)) |>
+    tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
+}
+
 .model_coeff_matrix <- function(m) {
   data <- NULL
   if ("lmerModLmerTest" %in% class(m)) {

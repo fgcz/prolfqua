@@ -68,6 +68,65 @@ moderated_p_limma_long <- function(contrast_df, group_by_col = "lhs", estimate =
 }
 
 
+#' Finalize moderated contrast columns (prune raw stats, promote moderated, FDR).
+#'
+#' Shared post-moderation column surgery used by \code{ContrastsModerated} and
+#' \code{ContrastsModeratedDEqMS}. When \code{all = FALSE} the raw (non-moderated)
+#' statistics are dropped and the moderated ones renamed into the standard
+#' column names; when \code{all = TRUE} both are kept and only the moderated
+#' FDR column is added.
+#'
+#' @param result moderated contrast table (output of \code{moderated_p_limma_long}).
+#' @param p.adjust p-value adjustment function (signature compatible with
+#'   \code{adjust_p_values}).
+#' @param all keep all columns (default FALSE).
+#' @return the finalized contrast table.
+#' @keywords internal
+#' @noRd
+.finalize_moderated_columns <- function(result, p.adjust, all = FALSE) {
+  if (!all) {
+    result <- result |>
+      dplyr::select(
+        -c(
+          "sigma",
+          "df",
+          "statistic",
+          "p.value",
+          "conf.low",
+          "conf.high",
+          "FDR",
+          "moderated.df.prior",
+          "moderated.var.prior"
+        )
+      )
+    result <- result |>
+      dplyr::mutate(sigma = sqrt(moderated.var.post), .keep = "unused")
+    result <- result |>
+      dplyr::rename(
+        conf.low = "moderated.conf.low",
+        conf.high = "moderated.conf.high",
+        statistic = "moderated.statistic",
+        df = "moderated.df.total",
+        p.value = "moderated.p.value"
+      )
+    result <- p.adjust(
+      result,
+      column = "p.value",
+      group_by_col = "contrast",
+      newname = "FDR"
+    )
+  } else {
+    result <- p.adjust(
+      result,
+      column = "moderated.p.value",
+      group_by_col = "contrast",
+      newname = "FDR.moderated"
+    )
+  }
+  result
+}
+
+
 #' adjust columns
 #'
 #' @return The computed result.
@@ -309,7 +368,7 @@ contrasts_fisher_exact <- function(
     samplesB = fisher_input[["samplesB"]]
   )
 
-  res <- vector(mode = "list", length(nrow(fisher_input)))
+  res <- vector(mode = "list", nrow(fisher_input))
 
   for (i in seq_len(nrow(fisher_input))) {
     res[[i]] <- apply_fisher(

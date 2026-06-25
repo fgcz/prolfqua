@@ -63,7 +63,7 @@ test_that("Contrasts work on imputed model", {
 })
 
 
-test_that("LOD-imputed proteins get a distinct modelName tag", {
+test_that("LOD-imputed proteins are flagged via estimate_type", {
   # Fixture chosen to guarantee some singular fits that get rescued via
   # impute_refit_singular. Without the rescue, build_model alone would
   # leave those proteins with NA estimates; with build_model_impute,
@@ -87,26 +87,22 @@ test_that("LOD-imputed proteins get a distinct modelName tag", {
 
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  # Contrasts$get_contrasts() should propagate the flag as a modelName
-  # suffix ("_imputed") for refit proteins; plain proteins keep
-  # the base model_name.
+  # modelName is the model identity (uniform); the LOD-rescue state lives in
+  # the separate estimate_type column ("lod_imputed" for refit proteins).
   ctr_impute <- Contrasts$new(mod_impute, Contr)$get_contrasts()
-  expect_setequal(
-    unique(ctr_impute$modelName),
-    c("WaldTest", "WaldTest_imputed")
-  )
-  expect_equal(
-    sum(ctr_impute$modelName == "WaldTest_imputed"),
-    n_imputed
-  )
+  expect_setequal(unique(ctr_impute$modelName), "WaldTest")
+  expect_true("estimate_type" %in% colnames(ctr_impute))
+  expect_setequal(unique(ctr_impute$estimate_type), c("observed", "lod_imputed"))
+  expect_equal(sum(ctr_impute$estimate_type == "lod_imputed"), n_imputed)
 
-  # The plain Contrasts path keeps a single uniform modelName.
+  # The plain Contrasts path: a single uniform modelName, all observed.
   ctr_plain <- Contrasts$new(mod_plain, Contr)$get_contrasts()
   expect_setequal(unique(ctr_plain$modelName), "WaldTest")
+  expect_setequal(unique(ctr_plain$estimate_type), "observed")
 })
 
 
-test_that("lm_impute facade surfaces LOD-rescued rows in get_contrasts", {
+test_that("lm_impute facade surfaces LOD-rescued rows via estimate_type", {
   istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5, seed = 42)
   lfqdata <- LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
@@ -114,10 +110,11 @@ test_that("lm_impute facade surfaces LOD-rescued rows in get_contrasts", {
 
   fa <- ContrastsLMImputeFacade$new(lfqdata, "~ group_", contrasts)
   res <- fa$get_contrasts()
-  # ContrastsModerated inserts "_moderated" before "_imputed" so
-  # non-imputed rows sort before imputed rows in default plot palettes.
-  expect_true("WaldTest_moderated" %in% res$modelName)
-  expect_true("WaldTest_moderated_imputed" %in% res$modelName)
+  # modelName is the facade key; rescued rows are distinguished by estimate_type.
+  expect_setequal(unique(res$modelName), "lm_impute")
+  expect_true("estimate_type" %in% colnames(res))
+  expect_true("observed" %in% res$estimate_type)
+  expect_true("lod_imputed" %in% res$estimate_type)
 })
 
 

@@ -11,10 +11,12 @@ An object of class \code{facade_registry} (inherits from \code{list}) of length 
 FACADE_REGISTRY
 }
 \description{
-Read-only snapshot of the prolfqua facade registry. Use
-\code{\link{register_facade}} to add entries from downstream
-packages, \code{\link{lookup_facade}} to resolve a single entry, and
-\code{list_facades()} to enumerate the current registry.
+Read-only snapshot of the built-in prolfqua facade registry, taken at
+package load time. It is derived from the single source of truth
+(\code{.seed_facade_registry()}); use \code{\link{register_facade}} to add
+entries from downstream packages, \code{\link{lookup_facade}} to resolve a
+single entry, and \code{\link{list_facades}()} to enumerate the live
+registry (which reflects downstream registrations).
 }
 \details{
 Each entry has fields \code{class}, \code{needs}, \code{package},

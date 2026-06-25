@@ -154,7 +154,7 @@ results_protein_2f <- bind_rows(
   fa_firth_protein_2f$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
-    "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
+    "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
     "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
     "sigma"
   ))) |>
@@ -165,16 +165,16 @@ results_protein_2f <- bind_rows(
   )
 
 results_protein_2f |>
-  dplyr::count(facade, name = "n_results")
+  dplyr::count(modelName, name = "n_results")
 ```
 
-For facades that combine several underlying result types, such as
-`lm_missing`, the `modelName` column still tells you where individual rows came
-from.
+The `modelName` column is the facade key. For facades that combine several
+underlying result types, such as `lm_missing`, the `estimate_type` column tells
+you how each row was produced (`observed`, `lod_imputed`, or `missing_fallback`).
 
 ```{r collect_protein_model_names_2f}
 results_protein_2f |>
-  dplyr::count(facade, contrast, modelName, name = "n_results")
+  dplyr::count(modelName, contrast, estimate_type, name = "n_results")
 ```
 
 # Protein-level volcano comparison
@@ -184,11 +184,11 @@ results_protein_2f |>
 ```{r volcano_standard_2f, fig.height=10, fig.width=12, fig.cap="Volcano plots for the standard protein-level facades (lm, limma, deqms)."}
 standard_facades_2f <- c("lm", "limma", "deqms")
 results_standard_2f <- results_protein_2f |>
-  dplyr::filter(facade %in% standard_facades_2f)
+  dplyr::filter(modelName %in% standard_facades_2f)
 
 ggplot(results_standard_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.5) +
-  facet_grid(contrast ~ facade, scales = "free_y") +
+  facet_grid(contrast ~ modelName, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
@@ -206,15 +206,15 @@ regression facade which models missingness directly.
 ```{r volcano_impute_2f, fig.height=10, fig.width=14, fig.cap="Volcano plots for the imputation and missingness facades. Large red diamonds mark proteins rescued (missing in plain lm)."}
 impute_facades_2f <- c("lm_missing", "lm_impute", "limma_impute", "firth")
 results_impute_2f <- results_protein_2f |>
-  dplyr::filter(facade %in% impute_facades_2f) |>
-  dplyr::mutate(facade = factor(facade, levels = impute_facades_2f))
+  dplyr::filter(modelName %in% impute_facades_2f) |>
+  dplyr::mutate(modelName = factor(modelName, levels = impute_facades_2f))
 
 ggplot(results_impute_2f, aes(x = diff, y = -log10(p.value))) +
   geom_point(data = dplyr::filter(results_impute_2f, !rescued),
              aes(color = significant), alpha = 0.5, size = 1.2) +
   geom_point(data = dplyr::filter(results_impute_2f, rescued),
              color = "red", shape = 18, size = 5, alpha = 1) +
-  facet_grid(contrast ~ facade, scales = "free_y") +
+  facet_grid(contrast ~ modelName, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
@@ -226,10 +226,10 @@ ggplot(results_impute_2f, aes(x = diff, y = -log10(p.value))) +
 
 ```{r top_hits_protein_2f}
 results_protein_2f |>
-  dplyr::group_by(facade, contrast) |>
+  dplyr::group_by(modelName, contrast) |>
   dplyr::slice_min(order_by = p.value, n = 5, with_ties = FALSE) |>
   dplyr::ungroup() |>
-  dplyr::select(facade, contrast, modelName, protein_Id, diff, p.value, FDR)
+  dplyr::select(modelName, estimate_type, contrast, protein_Id, diff, p.value, FDR)
 ```
 
 # Proteins that could not be estimated
@@ -290,9 +290,9 @@ if (length(lm_missing_proteins_2f) > 0) {
   rescued_2f <- results_protein_2f |>
     dplyr::filter(
       protein_Id %in% lm_missing_proteins_2f,
-      facade %in% c("lm_missing", "lm_impute", "limma_impute")
+      modelName %in% c("lm_missing", "lm_impute", "limma_impute")
     ) |>
-    dplyr::arrange(protein_Id, contrast, facade)
+    dplyr::arrange(protein_Id, contrast, modelName)
 
   rescued_2f |>
     knitr::kable(
@@ -341,7 +341,7 @@ results_peptide_2f <- bind_rows(
   fa_firth_peptide_2f$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
-    "facade", "modelName", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
+    "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
     "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
     "sigma"
   ))) |>
@@ -350,13 +350,13 @@ results_peptide_2f <- bind_rows(
   )
 
 results_peptide_2f |>
-  dplyr::count(facade, name = "n_results")
+  dplyr::count(modelName, name = "n_results")
 ```
 
 ```{r volcano_peptide_2f, fig.height=10, fig.width=10, fig.cap="Volcano plots for the peptide-level facades. Rows are contrasts, columns are backends."}
 ggplot(results_peptide_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
-  facet_grid(contrast ~ facade, scales = "free_y") +
+  facet_grid(contrast ~ modelName, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
   geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
   scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +

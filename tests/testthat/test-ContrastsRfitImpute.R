@@ -94,8 +94,8 @@ test_that("ContrastsRfitImputeFacade returns the standard schema with facade tag
   expect_true(is.data.frame(res))
   expect_true(nrow(res) > 0)
   for (col in c(
-    "facade",
     "modelName",
+    "estimate_type",
     "contrast",
     "diff",
     "FDR",
@@ -109,8 +109,9 @@ test_that("ContrastsRfitImputeFacade returns the standard schema with facade tag
   )) {
     expect_true(col %in% colnames(res), info = paste("missing column:", col))
   }
+  expect_false("facade" %in% colnames(res))
   expect_true(!any(is.na(res$diff)))
-  expect_true(all(res$facade == "rfit_impute"))
+  expect_true(all(res$modelName == "rfit_impute"))
 
   # Interface methods all work.
   expect_true(is.data.frame(fa$get_missing()))
@@ -119,14 +120,15 @@ test_that("ContrastsRfitImputeFacade returns the standard schema with facade tag
 })
 
 
-test_that("rfit_impute tags rescued rows as WaldTest_moderated_imputed", {
+test_that("rfit_impute flags rescued rows via estimate_type", {
   skip_if_not_installed("Rfit")
   lfqdata <- make_protein_lfqdata_rfit_impute()
   fa <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
   res <- fa$get_contrasts()
-  # ContrastsModerated inserts "_moderated" before "_imputed".
-  expect_true("WaldTest_moderated" %in% res$modelName)
-  expect_true("WaldTest_moderated_imputed" %in% res$modelName)
+  # modelName is the facade key; rescued rows are tagged in estimate_type.
+  expect_setequal(unique(res$modelName), "rfit_impute")
+  expect_true("observed" %in% res$estimate_type)
+  expect_true("lod_imputed" %in% res$estimate_type)
 })
 
 
@@ -199,7 +201,7 @@ test_that("build_contrast_analysis dispatches method = 'rfit_impute'", {
     method = "rfit_impute"
   )
   expect_true(inherits(fa, "ContrastsRfitImputeFacade"))
-  expect_true(all(fa$get_contrasts()$facade == "rfit_impute"))
+  expect_true(all(fa$get_contrasts()$modelName == "rfit_impute"))
 })
 
 

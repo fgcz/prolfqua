@@ -27,8 +27,8 @@ This facade is deprecated because its missing-data leg uses
 substitution, not a refit. Prefer the \code{lm_impute} facade
 (\code{\link{ContrastsLMImputeFacade}}), which fits an LM for every
 protein and refits failed/singular fits with LOD imputation and
-borrowed per-protein variance, surfacing rescued rows as
-\code{modelName = "WaldTest_moderated_imputed"} in the output.
+borrowed per-protein variance, flagging rescued rows as
+\code{estimate_type = "lod_imputed"} in the output.
 Construction emits a \code{.Deprecated} warning; the entry is kept
 in \code{\link{FACADE_REGISTRY}} so historical YAMLs continue to
 work.
@@ -55,6 +55,7 @@ Other modelling:
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
+\code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsFirthNestedFacade}},
@@ -144,8 +145,8 @@ Other modelling:
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
-\section{Super class}{
-\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsLMMissingFacade}
+\section{Super classes}{
+\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{\link[prolfqua:ContrastsFacadeBase]{prolfqua::ContrastsFacadeBase}} -> \code{ContrastsLMMissingFacade}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -168,8 +169,6 @@ Other modelling:
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-ContrastsLMMissingFacade-new}{\code{ContrastsLMMissingFacade$new()}}
-\item \href{#method-ContrastsLMMissingFacade-get_contrasts}{\code{ContrastsLMMissingFacade$get_contrasts()}}
-\item \href{#method-ContrastsLMMissingFacade-get_missing}{\code{ContrastsLMMissingFacade$get_missing()}}
 \item \href{#method-ContrastsLMMissingFacade-get_Plotter}{\code{ContrastsLMMissingFacade$get_Plotter()}}
 \item \href{#method-ContrastsLMMissingFacade-to_wide}{\code{ContrastsLMMissingFacade$to_wide()}}
 \item \href{#method-ContrastsLMMissingFacade-clone}{\code{ContrastsLMMissingFacade$clone()}}
@@ -186,6 +185,8 @@ Other modelling:
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides'><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_contrasts"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts'><code>prolfqua::ContrastsFacadeBase$get_contrasts()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing'><code>prolfqua::ContrastsFacadeBase$get_missing()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -222,45 +223,21 @@ initialize
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsLMMissingFacade-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsLMMissingFacade-get_contrasts}{}}}
-\subsection{Method \code{get_contrasts()}}{
-get contrast results
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsLMMissingFacade$get_contrasts(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{passed to ContrastsTable$get_contrasts}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsLMMissingFacade-get_missing"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsLMMissingFacade-get_missing}{}}}
-\subsection{Method \code{get_missing()}}{
-get protein × contrast pairs that could not be estimated
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsLMMissingFacade$get_missing()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsLMMissingFacade-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsLMMissingFacade-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-get ContrastsPlotter
+get \code{\link{ContrastsPlotter}} built from the stamped
+  facade output (so modelName is the facade key, not the merged leg names)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsLMMissingFacade$get_Plotter(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsLMMissingFacade$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{passed to ContrastsTable$get_Plotter}
+\item{\code{fc_threshold}}{fold change threshold}
+
+\item{\code{fdr_threshold}}{FDR threshold}
 }
 \if{html}{\out{</div>}}
 }
@@ -269,15 +246,15 @@ get ContrastsPlotter
 \if{html}{\out{<a id="method-ContrastsLMMissingFacade-to_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsLMMissingFacade-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
-convert results to wide format
+convert results to wide format from the stamped facade output
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsLMMissingFacade$to_wide(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsLMMissingFacade$to_wide(columns = c("p.value", "FDR", "statistic"))}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{passed to ContrastsTable$to_wide}
+\item{\code{columns}}{value columns to pivot}
 }
 \if{html}{\out{</div>}}
 }
