@@ -174,6 +174,25 @@ New `prolfquapp/tests/testthat/test-single-filtering-path.R`, built from
    background reads the decoy-free `row_annot` (stays target-only, correct); the Quarto SE report
    `na.omit()`s (drops decoys, fine).
 
+### Status — implemented 2026-07-01 (`prolfquapp` `fdbf171`, `prolfqua` `b85b535e`)
+
+- **Done:** edit-list items 1–4 + 6. `LFQData$remove_contaminants()` deleted; Gap B stamped in
+  `DEAnalyse$initialize` (+ `ProteinDataPrep$initialize` for QC); Gap A drops decoys in
+  `build_facade` (targets-only fit, covers nested + SAINT); `remove_cont_decoy()`'s
+  `get_subset(clean())` filter retired; `cont_decoy_summary()` reports `percentOfDecoys`.
+  New `test-single-filtering-path.R` (11 assertions). prolfquapp 250 pass / prolfqua 1047 pass;
+  WU347806 re-verified (SE builds, 4029 unique).
+- **IBAQ (item 5) — aligned.** `cmd_helpers.R` no longer pre-filters via `get_subset(clean())`;
+  IBAQ runs on a copy of the full LFQData. `compute_IBAQ_values` still inner-joins the annotation
+  for `protein_length` / `nr_tryptic_peptides` (a **functional** metadata join, not a
+  decoy/contaminant filter), so contaminants are kept + labelled and decoys need no explicit drop
+  (per decision: "no need to drop decoys from IBAQ").
+- **Postponed — figure labelling.** The `CON` flag now rides the export `right_join` onto the
+  results table, but the volcano / report is **not yet** wired to visually mark contaminants
+  (colour / shape / legend). This is a reporting-layer change (`ContrastsPlotter` / the Grp2
+  report Rmd) deferred to a later pass. Decoys are already invisible (NA stats) and need no
+  labelling.
+
 ## Background
 
 `prolfqua`'s `LFQData` / `AnalysisConfiguration` currently has **no** decoy/rev concept at all
