@@ -1,12 +1,24 @@
 # Rev/decoy pattern handling in prolfqua core
 
-**Date:** 2026-06-30 (design); **updated 2026-07-01** (core implemented).
-**Status:** **prolfqua-core machinery IMPLEMENTED** (see "Implementation status" below).
-The prolfquapp F3 data-flow flip (normalize-with-decoys) remains deferred.
+**Date:** 2026-06-30 (design); **updated 2026-07-01** (core implemented + single-path plan settled).
+**Status:** **prolfqua-core machinery IMPLEMENTED**; the prolfquapp single-explicit-filtering-path
+refactor is **designed + source-verified, ready to implement** (see "Single explicit filtering
+path" below). No longer deferred — a synthetic decoy+contaminant fixture removes the earlier
+"can't validate without decoy data" blocker.
 **Driver:** the prolfquapp redesign in
 `prolfquapp/TODO/TODO_protect_prolfquapp_against_target_decoy.md` (handling target+decoy FASTAs,
 guaranteeing unique protein IDs). This note records the `prolfqua`-side follow-up so it is not
 lost.
+
+**Key decision update (2026-07-01):** **contaminants are KEPT and LABELLED, not removed.** This
+supersedes the earlier §4 "default remove". Decoys and contaminants are now asymmetric in
+*visibility*, not in whether they pass through:
+
+- **decoys** — kept through normalization → dropped at the *fit* → NA on export → **invisible**
+  (machine artifacts, must never be findings);
+- **contaminants** — kept **everywhere** (normalization, fit, contrasts, export), carrying an
+  `is_contaminant` / annotation `CON` flag so figures can **label** them (real proteins, shown but
+  marked). No contaminant removal step; `LFQData$remove_contaminants()` is therefore dropped.
 
 ## Implementation status (2026-07-01)
 
@@ -35,25 +47,131 @@ lost.
   identical; ProteinAnnotation tests: 26 pass. WU347806 end-to-end re-verified (SE builds, 4029
   unique proteins).
 
-**Deferred — the prolfquapp F3 "normalize-with-decoys" data-flow flip:**
+## Single explicit filtering path — investigation + plan (2026-07-01)
 
-- **F1 and F2 already hold in prolfquapp today.** `ProteinDataPrep$remove_cont_decoy()` aligns the
-  quant data to the **decoy-free** `ProteinAnnotation` via `get_subset(clean())` (an inner join on
-  `protein_Id`), so decoys are stripped from the quant *before* aggregation/normalization and the
-  fit. Consequently decoys never enter the variance pool (**F1**) and contrasts are targets-only,
-  so decoys are absent from the significant set / ORA / GSEA / volcano (**F2**). prolfquapp also
-  builds facades directly (`DEAnalyse$build_facade` → `facade_class$new`), bypassing
-  `build_contrast_analysis`, so the core targets-only-fit guard is a safety net there, not the
-  active mechanism.
-- **What is *not* yet realized is F3** — keeping decoys *through* normalization (accepting the ~1%
-  distribution shift) and dropping them only at the fit, with NA-stats-on-export. This is the
-  lowest-severity finding, explicitly "accepted deliberately". Realizing it in prolfquapp requires
-  re-architecting the annotation↔quant alignment so decoys survive on the **quant** side while the
-  **annotation** stays decoy-free (today the alignment inner-join couples the two). That change:
-  (a) alters normalization inputs + export for decoy-containing datasets, and (b) **cannot be
-  validated by WU347806** (DIA-NN, forwards-only — zero decoys, so the flip is a no-op there).
-  It needs a decoy-containing fixture (e.g. a FragPipe input retaining `REV_` entries) before it
-  is safe to land. **Do not implement blind.**
+Source-verified by a fan-out investigation across all readers + the export path (workflow
+`wf_9b95c4fe-aa1`, 6 agents). The goal (your directive): **one** explicit quant filtering path — no
+alternative/redundant filtering. The annotation↔quant join must **preserve** all quant rows, never
+filter them.
+
+### Load-bearing findings (verified against source)
+
+- **GAP A — decoy-drop-at-fit is dead code in prolfquapp.** The only decoy drop before the fit is
+  the core guard `build_contrast_analysis.R:105-119` (`if (!is.null(cfg$pattern_decoys))
+  lfqdata <- lfqdata$remove_decoys()`). prolfquapp **never calls** `build_contrast_analysis()`;
+  `DEAnalyse$build_facade` (`R6_DEAnalyse.R:168`) constructs `facade_class$new(self$lfq_data, ...)`
+  directly, and no facade `$new()` does decoy handling. So the fit-drop guard is unreachable from
+  prolfquapp.
+- **GAP B — the LFQData config never carries the patterns.** `AnalysisConfiguration` defaults
+  `pattern_decoys`/`pattern_contaminants` to `NULL`; **no** prolfquapp preprocessor assigns onto
+  `lfqdata$get_config()$pattern_decoys` — patterns are passed only to `ProteinAnnotation$new()`.
+  So even if Gap A were reachable, the gate `!is.null(cfg$pattern_decoys)` is always false.
+- **The inner-join IS the hidden/redundant filter.** `ProteinDataPrep$remove_cont_decoy()`
+  (`R6_ProteinDataPrep.R:67-72`) does `get_subset(clean())`; `LFQData$get_subset()` is an
+  `inner_join` on `protein_Id`. Because the annotation is decoy-free at construction, this inner
+  join **drops decoy quant rows at the peptide level, before aggregation** — the exact
+  "alternative/redundant filtering path" to eliminate. Redundancies enumerated: decoys dropped at
+  BOTH `remove_cont_decoy` and the (dead) fit guard; contaminants filtered at `remove_cont_decoy`,
+  `run_dea`, and again for IBAQ (`cmd_helpers.R:458-460`); IBAQ also inner-joins the annotation
+  (`aggregation_IBAQ.R:83-87`).
+- **Export already does the right thing — for free.** The SE row set comes from `lfq_data_raw`
+  (`R6_DEAReportGenerator.R:573-575`), and `.join_annotation` is a **`right_join`**
+  (`report_helpers.R:42-49`), so if decoys survive in `lfq_data_raw` but are dropped from the fit,
+  the SE/results get decoy rows with **NA** contrast stats (base-`[` NA-padding at
+  `R6_DEAReportGenerator.R:624`) — automatically absent from ORA/GSEA/.rnk/volcano. **No export
+  code changes needed** (fix for **F2**).
+- **Quant-side prefix retention per reader** (decides whether `is_decoy`/`is_contaminant` can act on
+  the quant `protein_Id`): all readers **retain both `REV_` and `CON/zz`** on the quant id
+  (MaxQuant `leading.razor.protein`, FragPipe `Protein`, BGS `PG.ProteinGroups`, MSstats
+  `ProteinName`, PTM readers map to `fasta.id`) **except DIA-NN**, which strips the `zz|` wrapper
+  (`preprocess_DIANN.R:91`) but keeps `REV_`. → **decoys detectable on all readers' quant;
+  contaminants NOT detectable on DIA-NN quant.**
+- **BLOCKER C (contaminant detection on DIA-NN quant) — sidestepped by keep+label.** Since
+  contaminants are no longer *removed* on the quant side, we never need to detect them there. For
+  **labelling**, drive it off the annotation's `CON` flag carried onto results via the existing
+  `right_join` (the annotation's `full_id`=`fasta.id` retains `zz`, so it works for DIA-NN too).
+  This avoids the risky "stop stripping the DIA-NN prefix" change to the join key entirely.
+
+### The ONE filtering path (target)
+
+```
+reader → LFQData(peptide) + ProteinAnnotation(decoy-free; CON-flagged, NOT contaminant-removed)
+   │  [FIX B] stamp config$pattern_decoys (+ pattern_contaminants) onto the LFQData config
+   ▼
+ProteinDataPrep$remove_cont_decoy()  → NO quant filtering (retire get_subset(clean()));
+   │                                    compute decoy/contaminant proportion QC only
+   ▼
+aggregate() → transform_data()       (decoys AND contaminants flow through; normalized on full data)
+   ▼
+DEAnalyse$build_facade()
+   │  [FIX A] model_lfq <- if (!is.null(cfg$pattern_decoys)) lfq_data$remove_decoys() else lfq_data
+   │           facade_class$new(model_lfq, ...)     ← decoys dropped ONLY here (targets-only fit, F1)
+   │           (contaminants stay in the fit — real proteins — and get real contrasts)
+   ▼
+export / SE  ← lfq_data_raw keeps decoys+contaminants; right_join → decoys NA stats (invisible),
+                contaminants real stats + CON flag (labelled)
+```
+
+- **Decoys** — dropped exactly once, at the fit (Gap A fix), gated on `pattern_decoys` (Gap B fix).
+- **Contaminants** — never removed; flagged for labelling. `remove_cont` becomes vestigial for the
+  default path (keep it as a future opt-in only if a "biologist wants them gone" mode is revived).
+- **Alignment** — `remove_cont_decoy`'s inner join is retired; the export `right_join` (already
+  quant-preserving) is the single annotation↔quant join.
+
+### Ordered edit list (to implement)
+
+1. **prolfqua** — revert just `LFQData$remove_contaminants()` (keep `remove_decoys`,
+   `decoy_proportion`, `contaminant_proportion`, detectors); update `test-decoy-contaminant-lfqdata.R`.
+2. **prolfquapp Gap B** — stamp `pattern_decoys` (+ `pattern_contaminants`) from
+   `processing_options` onto every LFQData config produced in `ProteinDataPrep` (initialize +
+   after `aggregate()` + after `transform_data()`/`transform_peptide_data()`; aggregation/transform
+   build fresh configs, so re-stamp — a private `.stamp_patterns(lfq)` helper). Defaults:
+   `pattern_decoys="^REV"`, `pattern_contaminants="^CON|^zz"` (`R6_AppConfiguration.R:20-23`).
+3. **prolfquapp** — retire `remove_cont_decoy()`'s `get_subset(clean())`: **no quant filtering**
+   (contaminants kept+flagged, decoys kept); keep it only for QC logging + `decoy_proportion`.
+   Ensure the annotation keeps contaminants **flagged** (`CON`) rather than dropped, and that the
+   `CON` flag is carried onto results for labelling.
+4. **prolfquapp Gap A** — in `DEAnalyse$build_facade`, drop decoys immediately before
+   `facade_class$new(...)`, gated on `cfg$pattern_decoys`; apply to the **SAINT branch**
+   (`:156-160`) and the **nested** `lfq_model` path (`cmd_helpers.R:367-393`) too. Leave
+   `lfq_data`/`lfq_data_raw` untouched so export keeps decoys.
+5. **prolfquapp IBAQ** — align `cmd_helpers.R:458-460` / `aggregation_IBAQ.R:83-87` to the single
+   path (stop using `get_subset(clean())` as a decoy filter; IBAQ may drop decoys explicitly as an
+   output-table choice, but not via the shared alignment).
+6. **QC** — surface `decoy_proportion()` (empirical-FDR signal) in the summary; keep
+   `contaminant_proportion()`.
+
+### Synthetic fixture (removes the "no decoy data" blocker)
+
+New `prolfquapp/tests/testthat/test-single-filtering-path.R`, built from
+`prolfqua::sim_lfq_data_peptide_config()` + `prolfquapp::add_RevCon()` (injects ~10% `REV_`, ~5%
+`zz`) + a matching decoy-free/contaminant-flagged annotation. Assertions:
+
+- after `remove_cont_decoy`: **decoys present** in quant, contaminant handling per decision, decoy
+  proportion > 0;
+- after `aggregate`/`transform`: **decoys survive** normalization;
+- after `build_default`/`get_annotated_contrasts`: **no decoy in contrasts** (targets-only fit),
+  contaminants present in contrasts (kept), and **decoys still present in `lfq_data_raw`**;
+- after `make_SummarizedExperiment`: **decoy rows present with NA contrast stats**; contaminant
+  rows present with real stats + `CON` flag;
+- a **standalone decoy** (no forward twin) survives to export with NA stats;
+- `pattern_decoys = NULL` → decoys are NOT dropped at the fit (gate respects `NULL`).
+
+### Adversarial risks to guard
+
+1. **Pattern not re-stamped after aggregate/transform** → fresh cloned config has `NULL`
+   `pattern_decoys` → Gap A gate fails, decoys silently re-enter the fit. Mitigation: stamp on every
+   produced LFQData; log when the pattern is absent at `build_facade`.
+2. **Decoys re-enter the variance pool if a branch is missed** (SAINT / nested). Mitigation: edit 4
+   covers all facade-construction sites.
+3. **Vendor decoy prefixes not matched by the anchored defaults** (`.default_decoy_prefixes`) →
+   under-counted decoys / bad empirical FDR. Mitigation: set `processing_options$pattern_decoys` per
+   reader as needed.
+4. **`grepl("", x)` foot-gun** — route all detection through `is_decoy`/`is_contaminant` (guarded),
+   never a raw `grepl(cfg$pattern_decoys, ...)`.
+5. **Consumers assuming `nrow(SE) == nrow(contrasts)`** now break (decoy rows padded). Audited: ORA
+   background reads the decoy-free `row_annot` (stays target-only, correct); the Quarto SE report
+   `na.omit()`s (drops decoys, fine).
 
 ## Background
 
@@ -68,8 +186,10 @@ In the prolfquapp redesign, `ProteinAnnotation`:
 
 ## Design (LOCKED 2026-07-01) — quant-side rev/contaminant handling
 
-**Status of this section:** design agreed; **pending one adversarial review** before implementation.
-Still deferred (prolfqua core untouched until we pick this up).
+**Status of this section:** design agreed and adversarially reviewed; **prolfqua core implemented**
+(see "Implementation status"). The prolfquapp realization is planned in "Single explicit filtering
+path" above. **Note:** §4 below is **superseded** by the 2026-07-01 keep+label decision (see the
+top-of-file "Key decision update") — contaminants are no longer removed.
 
 ### Principle
 
@@ -129,23 +249,37 @@ Two levels of control:
 - **Supersedes** the interim prolfquapp behavior where `ProteinAnnotation$clean()` pattern-gated-
   removes decoys from quant — that removal moves out; decoys become preprocess-gated + LFQData-flagged.
 
-### 4. Contaminants — annotate + pattern-gated, config-controlled removal (asymmetric to decoys)
+### 4. Contaminants — keep + label (SUPERSEDED — updated 2026-07-01)
 
-- `LFQData` flags `is_contaminant` **only when `pattern_contaminants` is configured** — no pattern
-  → contaminants can't be identified → none flagged, none removed. (Matches today's behaviour:
-  the `a^` no-op pattern flags no `CON`, so nothing is removed.)
-- Contaminants are **real** proteins (keratin, trypsin, BSA), can be high-abundance and distort
-  results → a genuine scientific keep/remove choice (the bioinformatics-vs-biologist split).
-- When a pattern identifies them, `remove_cont` (**default = remove**) controls the analysis:
-  default removes (biologist); flip to keep+flag (bioinformatics).
-- **QC:** report contaminant proportion.
+> **Superseded.** The original §4 (below, struck through in intent) had contaminants
+> **pattern-gated, default remove**. The 2026-07-01 decision is **keep + label, never remove.**
+
+**Current decision:**
+
+- Contaminants are **real** proteins (keratin, trypsin, BSA). They are **kept everywhere**
+  (normalization, fit, contrasts, export) and **flagged** so figures can label them (e.g. distinct
+  colour/shape in the volcano). Keeping them in the fit is statistically fine — unlike decoys, they
+  carry real variance.
+- **No contaminant removal step.** `LFQData$remove_contaminants()` is dropped. Labelling is driven
+  by the annotation `CON` flag (from `annotate_contaminants`, detected on the prefix-retaining
+  `full_id`) carried onto results via the export `right_join` — this works for **all** readers
+  including DIA-NN, sidestepping Blocker C.
+- `remove_cont` (`processing_options`) is **vestigial** for the default path; retain only if a
+  future opt-in "remove contaminants" (biologist) mode is revived — additive, not default.
+- **QC:** still report contaminant proportion (`contaminant_proportion()`).
+
+_Original (superseded) text: `LFQData` flagged `is_contaminant` only when `pattern_contaminants`
+configured; `remove_cont` default = remove (biologist) / flip to keep+flag (bioinformatics). The
+keep+label decision makes "keep+flag" the single behaviour._
 
 ### 5. What moves out of `ProteinAnnotation` when we implement this
 
-The interim prolfquapp state routes quant contaminant removal through
-`ProteinAnnotation$clean(contaminants=)` + `get_subset`, and pattern-gated decoy removal through
-`clean()`. This deferred work **relocates both to `LFQData`** (annotate + optional filter), leaving
-`ProteinAnnotation` using the pattern **only** for dedup.
+The interim prolfquapp state routes quant contaminant + (pattern-gated) decoy removal through
+`ProteinAnnotation$clean(contaminants=)` + `get_subset` (an inner join). This work **retires that
+inner-join filter entirely** (`remove_cont_decoy` stops filtering quant), leaving
+`ProteinAnnotation` using the pattern **only** for dedup and keeping the `CON` flag **for
+labelling** (not removal). Decoy exclusion moves to the **fit** (`build_facade`); contaminants are
+kept throughout. The only annotation↔quant join left is the export `right_join` (quant-preserving).
 
 ## Resolved decisions
 
@@ -158,16 +292,24 @@ The interim prolfquapp state routes quant contaminant removal through
 | Ever drop decoys once in LFQData? | kept + **normalized-with**; **dropped from the model fit only**; NA stats on export |
 | Write decoys to SE? | **Yes** — abundance + flag (NA stats), so abundance-based SE-QC works |
 | Decoys in volcano / ORA / GSEA / results? | **No** — NA stats make them absent automatically |
-| Ever drop contaminants? | only if `pattern_contaminants` set; then **default remove** (`remove_cont`), flip to keep+flag |
+| Ever drop contaminants? | **No (updated 2026-07-01)** — kept everywhere + flagged for labelling; `remove_cont` vestigial |
+| Contaminants in volcano / results? | **Yes** — kept in the fit, shown, **labelled** via the `CON` flag |
+| Where is the decoy drop coded in prolfquapp? | `DEAnalyse$build_facade` (prolfquapp bypasses `build_contrast_analysis`) — Gap A |
+| How does prolfquapp turn the machinery on? | stamp `pattern_decoys` onto the LFQData config in `ProteinDataPrep` — Gap B |
+| The single annotation↔quant join? | export `right_join` (`.join_annotation`); the `remove_cont_decoy` inner join is retired |
+| DIA-NN strips `zz\|` from quant id (Blocker C)? | moot — contaminant labelling uses the annotation `CON` flag, not quant-string detection |
 | Decoy-proportion QC | `nr_decoys / nr distinct hierarchy keys` of the LFQData (per-peptide or per-protein by analysis level) |
 | Proportion for nested (peptide+protein) analysis | **deferred** |
 
-## Why deferred
+## History — why this was deferred, and why it no longer is
 
-- Touching `prolfqua` core ripples to all dependents (prolfquapp, prophosqua, …); not warranted to
-  fix the immediate prolfquapp bug.
-- prolfquapp owns detection now and exposes the pattern; promoting it to core is the clean
-  follow-up now that the prolfquapp design has settled.
+- Originally deferred: touching `prolfqua` core ripples to all dependents (prolfquapp, prophosqua,
+  …), and the immediate WU347806 bug was fixed by the prolfquapp uniqueness guarantee alone.
+- The core machinery was then implemented additively/opt-in (detectors, config slots, LFQData
+  methods, targets-only fit) — no change to existing behaviour when `pattern_decoys` is `NULL`.
+- The prolfquapp realization was briefly deferred for lack of decoy test data; a **synthetic
+  decoy+contaminant fixture** (`add_RevCon` over simulated data) removes that blocker, so the
+  single-explicit-filtering-path refactor is now planned + ready (see the section above).
 
 ## Adversarial review (2026-07-01) — findings & resolution
 
@@ -254,6 +396,8 @@ above. (Verified by an ecosystem-wide grep on 2026-06-30; line numbers are appro
 
 ### To reintroduce here (the LFQData rev-pattern work)
 
-- **Decoy proportion among quantified entries** (was `percentOfFalsePositives`) — recompute on the
-  quant side via `LFQData` + `ProteinAnnotation$get_rev_pattern()`, *before* the pattern-gated
-  removal, and surface it in QC.
+- **Decoy proportion among quantified entries** (was `percentOfFalsePositives`) — now provided by
+  `LFQData$decoy_proportion()` (implemented). Surface it in the prolfquapp summary/QC (edit-list
+  item 6). Compute it on the quant data that **still contains decoys** (i.e. any point before the
+  fit-drop) — after retiring the `remove_cont_decoy` inner join, that is the peptide LFQData
+  throughout, so timing is no longer delicate.
