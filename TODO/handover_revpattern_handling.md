@@ -127,7 +127,10 @@ Using `add_RevCon()` to inject `REV_` (~10%) and `zz` (~5%) onto simulated pepti
 - decoys **and** contaminants survive aggregation + normalization;
 - after the fit: **no decoy in the contrasts**, contaminants **present** in the contrasts, and
   decoys still present in `lfq_data_raw` (for export);
-- `pattern_decoys = ""` (opt-out) → decoys are **not** dropped at the fit.
+- `pattern_decoys = NULL` (opt-out) → decoy machinery off, decoys **not** dropped
+  at the fit; `pattern_decoys = ""` opts **in** (defaults only) and decoys **are**
+  dropped — same semantics as `prolfqua::build_contrast_analysis` (the app maps an
+  empty REVpattern to NULL upstream).
 
 ---
 
