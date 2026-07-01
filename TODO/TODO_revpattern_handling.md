@@ -69,9 +69,10 @@ filter them.
   So even if Gap A were reachable, the gate `!is.null(cfg$pattern_decoys)` is always false.
 - **The inner-join IS the hidden/redundant filter.** `ProteinDataPrep$remove_cont_decoy()`
   (`R6_ProteinDataPrep.R:67-72`) does `get_subset(clean())`; `LFQData$get_subset()` is an
-  `inner_join` on `protein_Id`. Because the annotation is decoy-free at construction, this inner
-  join **drops decoy quant rows at the peptide level, before aggregation** — the exact
-  "alternative/redundant filtering path" to eliminate. Redundancies enumerated: decoys dropped at
+  `inner_join` on `protein_Id`. Because `clean()` drops contaminants + pattern-gated (standalone)
+  decoys and the annotation carries one row per collision-resolved id, this inner join restricts the
+  quant to non-decoy targets, **dropping decoy quant rows at the peptide level, before aggregation**
+  — the exact "alternative/redundant filtering path" to eliminate. Redundancies enumerated: decoys dropped at
   BOTH `remove_cont_decoy` and the (dead) fit guard; contaminants filtered at `remove_cont_decoy`,
   `run_dea`, and again for IBAQ (`cmd_helpers.R:458-460`); IBAQ also inner-joins the annotation
   (`aggregation_IBAQ.R:83-87`).
@@ -96,7 +97,7 @@ filter them.
 ### The ONE filtering path (target)
 
 ```
-reader → LFQData(peptide) + ProteinAnnotation(decoy-free; CON-flagged, NOT contaminant-removed)
+reader → LFQData(peptide) + ProteinAnnotation(unique id, collisions resolved; CON-flagged, NOT contaminant-removed)
    │  [FIX B] stamp config$pattern_decoys (+ pattern_contaminants) onto the LFQData config
    ▼
 ProteinDataPrep$remove_cont_decoy()  → NO quant filtering (retire get_subset(clean()));
@@ -146,7 +147,7 @@ export / SE  ← lfq_data_raw keeps decoys+contaminants; right_join → decoys N
 
 New `prolfquapp/tests/testthat/test-single-filtering-path.R`, built from
 `prolfqua::sim_lfq_data_peptide_config()` + `prolfquapp::add_RevCon()` (injects ~10% `REV_`, ~5%
-`zz`) + a matching decoy-free/contaminant-flagged annotation. Assertions:
+`zz`) + a matching annotation (unique ids; contaminants flagged). Assertions:
 
 - after `remove_cont_decoy`: **decoys present** in quant, contaminant handling per decision, decoy
   proportion > 0;
@@ -171,8 +172,11 @@ New `prolfquapp/tests/testthat/test-single-filtering-path.R`, built from
 4. **`grepl("", x)` foot-gun** — route all detection through `is_decoy`/`is_contaminant` (guarded),
    never a raw `grepl(cfg$pattern_decoys, ...)`.
 5. **Consumers assuming `nrow(SE) == nrow(contrasts)`** now break (decoy rows padded). Audited: ORA
-   background reads the decoy-free `row_annot` (stays target-only, correct); the Quarto SE report
-   `na.omit()`s (drops decoys, fine).
+   runs on the **target-only** significant set (decoys carry no statistics, so they can never be a
+   significant hit); its background derives from `row_annot`, which is target-only for DIA-NN but
+   may contain **standalone decoys** for readers that emit them — a residual to verify (they cannot
+   become significant, but could sit in the background). The Quarto SE report `na.omit()`s (drops
+   decoys, fine).
 
 ### Status — implemented 2026-07-01 (`prolfquapp` `fdbf171`, `prolfqua` `b85b535e`)
 
@@ -200,7 +204,11 @@ New `prolfquapp/tests/testthat/test-single-filtering-path.R`, built from
 prolfquapp's `ProteinAnnotation`.
 
 In the prolfquapp redesign, `ProteinAnnotation`:
-- is always **decoy-free** (decoys never belong in a protein annotation),
+- guarantees a **unique `protein_Id`** — one row per id. Target+decoy **collisions** (a decoy and a
+  forward that clean to the *same* `protein_Id`, the WU347806 case) are resolved by dropping the
+  decoy twin. **Standalone/unique decoy ids are retained** (they carry no forward twin, so they are
+  left in place and dropped later at the model fit). It is *collision-resolved*, not necessarily
+  *decoy-free*.
 - **detects** the decoy/rev pattern (configured pattern, else a built-in default prefix set),
 - **exposes** the detected pattern via a getter (e.g. `get_rev_pattern()`).
 

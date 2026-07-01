@@ -159,5 +159,11 @@ Using `add_RevCon()` to inject `REV_` (~10%) and `zz` (~5%) onto simulated pepti
 3. **`ggiraph` is a Suggests dep.** The report helpers `stop()` with a clear message if it is
    missing. Ensure report-rendering environments have `ggiraph` installed.
 4. **SE now has more rows** (decoys with NA stats; contaminants with real stats). Any consumer
-   assuming `nrow(SE) == nrow(contrasts)` needs auditing; the shipped consumers were checked (ORA
-   background uses the decoy-free annotation; the Quarto SE report `na.omit()`s).
+   assuming `nrow(SE) == nrow(contrasts)` needs auditing; the shipped consumers were checked. ORA
+   runs on the target-only significant set (decoys have no statistics → never significant); its
+   background derives from `row_annot`, which is collision-resolved but may retain **standalone
+   decoys** for readers that emit them (residual to verify). The Quarto SE report `na.omit()`s.
+
+**Note on "decoy-free":** `ProteinAnnotation` guarantees a **unique `protein_Id`** and resolves
+target+decoy *collisions* by dropping the decoy twin; it does **not** strip standalone/unique decoy
+ids. Earlier drafts said "decoy-free" loosely — read it as "collision-resolved / unique id".
