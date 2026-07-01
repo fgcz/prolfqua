@@ -27,7 +27,11 @@ table_facade(head(iris, 3), caption = "Iris preview")
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{effective_contaminant_pattern}()},
+\code{\link{effective_decoy_pattern}()},
 \code{\link{get_uniprot_id_from_fasta_header}()},
+\code{\link{is_contaminant}()},
+\code{\link{is_decoy}()},
 \code{\link{matrix_to_tibble}()},
 \code{\link{multigroup_volcano}()},
 \code{\link{names_to_matrix}()},

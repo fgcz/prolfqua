@@ -669,3 +669,93 @@ make_interaction_column <- function(data, columns, sep = ".") {
   data <- data |> dplyr::mutate(!!colname := interaction(intr, sep = sep))
   return(data)
 }
+
+
+# Decoy / contaminant identifier detection --------------------------------
+# Shared, database-agnostic prefix detection used by both the protein
+# annotation (deduplication) and the quant layer (flagging), so both sides
+# agree on what a decoy / contaminant looks like.
+
+# Anchored default prefixes. Kept conservative so a normal id is not flagged.
+.default_decoy_prefixes <- "^REV_|^rev_|^DECOY|^decoy_|^XXX_|^reverse_|^##"
+.default_contaminant_prefixes <- "^zz|^CON__|^CON_|^Cont_|^contam_"
+
+# defaults, unioned with an optional configured pattern. An empty / NULL /
+# no-op ("a^") pattern yields the defaults only -- never grepl("", x), which
+# would match every id (the exact failure mode behind WU347806).
+.effective_prefix_pattern <- function(pattern, defaults) {
+  has_pat <- !is.null(pattern) &&
+    length(pattern) == 1 &&
+    !is.na(pattern) &&
+    nzchar(pattern) &&
+    !identical(pattern, "a^")
+  if (has_pat) paste(pattern, defaults, sep = "|") else defaults
+}
+
+#' Detect decoy / reverse-database identifiers
+#'
+#' Flags identifiers that look like decoy (reversed) database entries. Built-in
+#' anchored default prefixes are always considered, unioned with an optional
+#' configured \code{pattern}. An empty string or \code{NULL} pattern uses the
+#' defaults only.
+#' @export
+#' @family utilities
+#' @param ids character vector of (prefixed) identifiers
+#' @param pattern optional additional decoy regex, unioned with the defaults
+#' @return logical vector, \code{TRUE} where an id looks like a decoy
+#' @examples
+#' is_decoy(c("REV_sp|P1|X", "sp|P2|X", "decoy_3", "normalProtein"))
+#' is_decoy(c("shuffled_1", "P2"), pattern = "^shuffled_")
+is_decoy <- function(ids, pattern = NULL) {
+  grepl(
+    .effective_prefix_pattern(pattern, .default_decoy_prefixes),
+    as.character(ids)
+  )
+}
+
+#' Detect contaminant identifiers
+#'
+#' As \code{\link{is_decoy}}, but for contaminant entries (keratin, trypsin,
+#' BSA, ...). Built-in anchored default prefixes unioned with an optional
+#' configured \code{pattern}; empty / \code{NULL} uses the defaults only.
+#' @export
+#' @family utilities
+#' @param ids character vector of (prefixed) identifiers
+#' @param pattern optional additional contaminant regex, unioned with defaults
+#' @return logical vector, \code{TRUE} where an id looks like a contaminant
+#' @examples
+#' is_contaminant(c("zz|Cont00001|X", "sp|P2|X", "CON__ALBU"))
+is_contaminant <- function(ids, pattern = NULL) {
+  grepl(
+    .effective_prefix_pattern(pattern, .default_contaminant_prefixes),
+    as.character(ids)
+  )
+}
+
+#' Effective decoy regex actually applied by \code{\link{is_decoy}}
+#'
+#' Returns the regex \code{is_decoy} uses (defaults, unioned with a configured
+#' pattern). Expose this instead of a raw configured pattern so callers report
+#' what is actually matched, even when no pattern was configured.
+#' @export
+#' @family utilities
+#' @param pattern optional configured decoy regex
+#' @return a single regex string
+#' @examples
+#' effective_decoy_pattern()
+#' effective_decoy_pattern("^shuffled_")
+effective_decoy_pattern <- function(pattern = NULL) {
+  .effective_prefix_pattern(pattern, .default_decoy_prefixes)
+}
+
+#' Effective contaminant regex actually applied by \code{\link{is_contaminant}}
+#'
+#' @export
+#' @family utilities
+#' @param pattern optional configured contaminant regex
+#' @return a single regex string
+#' @examples
+#' effective_contaminant_pattern()
+effective_contaminant_pattern <- function(pattern = NULL) {
+  .effective_prefix_pattern(pattern, .default_contaminant_prefixes)
+}
