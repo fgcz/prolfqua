@@ -66,6 +66,16 @@ Other configuration:
 
 \item{\code{bin_resp}}{column with encoded missing information}
 
+\item{\code{pattern_decoys}}{optional regex identifying decoy / reverse-database
+ids, unioned with the built-in default prefixes (see
+\code{\link{is_decoy}}). \code{NULL} (default) leaves decoy handling off;
+set it (even to \code{""} for defaults only) to opt into flagging and the
+targets-only model fit.}
+
+\item{\code{pattern_contaminants}}{optional regex identifying contaminant ids
+(keratin, trypsin, BSA, ...). \code{NULL} (default) means contaminants are
+not flagged; set it to enable contaminant flagging / removal.}
+
 \item{\code{factors}}{Names of columns containing factors (annotations)}
 
 \item{\code{factor_depth}}{number of relevant factors (used by plotting functions etc)}

@@ -57,7 +57,25 @@ LFQData <- R6::R6Class(
   "LFQData",
   private = list(
     .data = NULL,
-    .config = NULL
+    .config = NULL,
+    # proportion of distinct modelling-level keys (subject_id) whose top-level
+    # hierarchy id (protein_Id) is flagged by `detector` (is_decoy / is_contaminant).
+    .prefix_proportion = function(detector, pattern) {
+      top <- self$hierarchy_keys()[1]
+      sid <- self$subject_id()
+      keys <- self$data_long() |>
+        dplyr::select(dplyr::all_of(unique(c(top, sid)))) |>
+        dplyr::distinct()
+      n_total <- nrow(dplyr::distinct(dplyr::select(keys, dplyr::all_of(sid))))
+      if (n_total == 0) {
+        return(0)
+      }
+      flagged <- detector(keys[[top]], pattern)
+      n_flag <- nrow(dplyr::distinct(
+        dplyr::select(keys[flagged, , drop = FALSE], dplyr::all_of(sid))
+      ))
+      n_flag / n_total
+    }
   ),
   public = list(
     #' @field prefix e.g. "peptide_", "protein_", "compound_"
@@ -164,6 +182,55 @@ LFQData <- R6::R6Class(
       message("removing proteins with less than: ", self$get_config()$min_peptides_protein, " peptpides")
       private$.data <- prolfqua::filter_proteins_by_peptide_count(self$data_long(), self$get_config())$data
       invisible(self)
+    },
+    #' @description
+    #' remove decoy / reverse-database entries (rows whose top-level hierarchy id,
+    #' e.g. protein_Id, is a decoy). Detection uses the configured
+    #' `pattern_decoys` unioned with the built-in defaults (see
+    #' \code{\link{is_decoy}}); decoys are always detectable even when no pattern
+    #' is configured. Returns a new decoy-free LFQData (self is not modified).
+    #' @return LFQData without decoys
+    remove_decoys = function() {
+      top <- self$hierarchy_keys()[1]
+      pdata <- self$data_long()
+      keep <- !prolfqua::is_decoy(pdata[[top]], self$get_config()$pattern_decoys)
+      return(LFQData$new(pdata[keep, , drop = FALSE], self$get_config()))
+    },
+    #' @description
+    #' remove contaminant entries (keratin, trypsin, BSA, ...). Only acts when
+    #' `pattern_contaminants` is configured — with no pattern, contaminants cannot
+    #' be identified and self is returned unchanged. When configured, detection is
+    #' the pattern unioned with the built-in defaults (see
+    #' \code{\link{is_contaminant}}).
+    #' @return LFQData without contaminants (or an unchanged copy if no pattern)
+    remove_contaminants = function() {
+      pat <- self$get_config()$pattern_contaminants
+      if (is.null(pat)) {
+        return(self$get_copy())
+      }
+      top <- self$hierarchy_keys()[1]
+      pdata <- self$data_long()
+      keep <- !prolfqua::is_contaminant(pdata[[top]], pat)
+      return(LFQData$new(pdata[keep, , drop = FALSE], self$get_config()))
+    },
+    #' @description
+    #' proportion of modelling-level keys (subject_id, e.g. protein or peptide by
+    #' `hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
+    #' signal. Decoy status derives from the top-level hierarchy id (protein_Id).
+    #' @return numeric in [0, 1]
+    decoy_proportion = function() {
+      private$.prefix_proportion(prolfqua::is_decoy, self$get_config()$pattern_decoys)
+    },
+    #' @description
+    #' proportion of modelling-level keys (subject_id) that are contaminants.
+    #' Returns 0 when `pattern_contaminants` is not configured.
+    #' @return numeric in [0, 1]
+    contaminant_proportion = function() {
+      pat <- self$get_config()$pattern_contaminants
+      if (is.null(pat)) {
+        return(0)
+      }
+      private$.prefix_proportion(prolfqua::is_contaminant, pat)
     },
     #' @description
     #' Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization

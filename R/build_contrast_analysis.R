@@ -96,6 +96,27 @@ build_contrast_analysis <- function(
   if (is.null(entry)) {
     stop("Unknown contrast method: ", method)
   }
+  # Decoys must not enter the fit or the shared variance pool (limma prior /
+  # DEqMS variance-count trend), where they would perturb *target* q-values.
+  # Opt-in: only when the config declares `pattern_decoys` (NULL leaves existing
+  # behaviour untouched). Normalization is expected to have already run on the
+  # full data upstream; here we drop decoys so the model sees targets only.
+  cfg <- lfqdata$get_config()
+  if (!is.null(cfg$pattern_decoys)) {
+    top <- lfqdata$hierarchy_keys()[1]
+    n_before <- length(unique(lfqdata$data_long()[[top]]))
+    lfqdata <- lfqdata$remove_decoys()
+    n_dropped <- n_before - length(unique(lfqdata$data_long()[[top]]))
+    if (n_dropped > 0) {
+      message(
+        "build_contrast_analysis: dropped ",
+        n_dropped,
+        " decoy ",
+        top,
+        " before modelling (targets-only fit)."
+      )
+    }
+  }
   if (!is.null(entry$builder)) {
     return(entry$builder(lfqdata, modelstr, contrasts, ...))
   }

@@ -54,6 +54,17 @@ AnalysisConfiguration <- R6::R6Class(
     #' @field bin_resp column with encoded missing information
     bin_resp = character(),
 
+    #' @field pattern_decoys optional regex identifying decoy / reverse-database
+    #'   ids, unioned with the built-in default prefixes (see
+    #'   \code{\link{is_decoy}}). \code{NULL} (default) leaves decoy handling off;
+    #'   set it (even to \code{""} for defaults only) to opt into flagging and the
+    #'   targets-only model fit.
+    pattern_decoys = NULL,
+    #' @field pattern_contaminants optional regex identifying contaminant ids
+    #'   (keratin, trypsin, BSA, ...). \code{NULL} (default) means contaminants are
+    #'   not flagged; set it to enable contaminant flagging / removal.
+    pattern_contaminants = NULL,
+
     #' @field factors Names of columns containing factors (annotations)
     factors = list(),
     #' @field factor_depth number of relevant factors (used by plotting functions etc)

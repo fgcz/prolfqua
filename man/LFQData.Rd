@@ -95,6 +95,10 @@ Other LFQData:
 \item \href{#method-LFQData-is_transformed}{\code{LFQData$is_transformed()}}
 \item \href{#method-LFQData-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-LFQData-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
+\item \href{#method-LFQData-remove_decoys}{\code{LFQData$remove_decoys()}}
+\item \href{#method-LFQData-remove_contaminants}{\code{LFQData$remove_contaminants()}}
+\item \href{#method-LFQData-decoy_proportion}{\code{LFQData$decoy_proportion()}}
+\item \href{#method-LFQData-contaminant_proportion}{\code{LFQData$contaminant_proportion()}}
 \item \href{#method-LFQData-omit_na}{\code{LFQData$omit_na()}}
 \item \href{#method-LFQData-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-LFQData-data_wide}{\code{LFQData$data_wide()}}
@@ -306,6 +310,69 @@ remove proteins with less than X peptides
 
 \subsection{Returns}{
 self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-remove_decoys"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-remove_decoys}{}}}
+\subsection{Method \code{remove_decoys()}}{
+remove decoy / reverse-database entries (rows whose top-level hierarchy id,
+e.g. protein_Id, is a decoy). Detection uses the configured
+`pattern_decoys` unioned with the built-in defaults (see
+\code{\link{is_decoy}}); decoys are always detectable even when no pattern
+is configured. Returns a new decoy-free LFQData (self is not modified).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$remove_decoys()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+LFQData without decoys
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-remove_contaminants"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-remove_contaminants}{}}}
+\subsection{Method \code{remove_contaminants()}}{
+remove contaminant entries (keratin, trypsin, BSA, ...). Only acts when
+`pattern_contaminants` is configured — with no pattern, contaminants cannot
+be identified and self is returned unchanged. When configured, detection is
+the pattern unioned with the built-in defaults (see
+\code{\link{is_contaminant}}).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$remove_contaminants()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+LFQData without contaminants (or an unchanged copy if no pattern)
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-decoy_proportion"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-decoy_proportion}{}}}
+\subsection{Method \code{decoy_proportion()}}{
+proportion of modelling-level keys (subject_id, e.g. protein or peptide by
+`hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
+signal. Decoy status derives from the top-level hierarchy id (protein_Id).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$decoy_proportion()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+numeric in [0, 1]
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-contaminant_proportion"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-contaminant_proportion}{}}}
+\subsection{Method \code{contaminant_proportion()}}{
+proportion of modelling-level keys (subject_id) that are contaminants.
+Returns 0 when `pattern_contaminants` is not configured.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{LFQData$contaminant_proportion()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+numeric in [0, 1]
 }
 }
 \if{html}{\out{<hr>}}
