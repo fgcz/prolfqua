@@ -49,21 +49,22 @@ test_that("a configured pattern_decoys unions with the defaults", {
   expect_equal(length(unique(clean$data_long()[[top]])), 20 - 4)
 })
 
-test_that("contaminants only act when pattern_contaminants is configured", {
+# Contaminants are KEPT + LABELLED (never removed). LFQData only reports the
+# proportion for QC; detection for labelling uses is_contaminant. No removal.
+test_that("contaminant_proportion is 0 without a pattern, and counts with one", {
   s <- make_lfq_with_prefixes(cont = 1:5)
-  # no pattern -> not identified, unchanged, proportion 0
+  # no pattern -> contaminants not identified on the quant side -> proportion 0
   expect_null(s$lfq$get_config()$pattern_contaminants)
   expect_equal(s$lfq$contaminant_proportion(), 0)
-  same <- s$lfq$remove_contaminants()
-  expect_equal(length(unique(same$data_long()[[s$top]])), s$n_prot)
 
   # opt in with a pattern (union with defaults catches the zz|CON| prefix)
   config <- s$lfq$get_config()
   config$pattern_contaminants <- "^KRT"
   lfq <- prolfqua::LFQData$new(s$lfq$data_long(), config)
   expect_equal(lfq$contaminant_proportion(), 5 / 20)
-  clean <- lfq$remove_contaminants()
-  expect_equal(length(unique(clean$data_long()[[s$top]])), s$n_prot - 5)
+  # contaminants are still present in the data (kept, not removed)
+  expect_equal(length(unique(lfq$data_long()[[s$top]])), s$n_prot)
+  expect_true(any(prolfqua::is_contaminant(unique(lfq$data_long()[[s$top]]), "^KRT")))
 })
 
 test_that("decoy removal propagates from protein to peptide rows", {

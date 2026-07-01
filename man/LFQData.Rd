@@ -96,7 +96,6 @@ Other LFQData:
 \item \href{#method-LFQData-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
 \item \href{#method-LFQData-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
 \item \href{#method-LFQData-remove_decoys}{\code{LFQData$remove_decoys()}}
-\item \href{#method-LFQData-remove_contaminants}{\code{LFQData$remove_contaminants()}}
 \item \href{#method-LFQData-decoy_proportion}{\code{LFQData$decoy_proportion()}}
 \item \href{#method-LFQData-contaminant_proportion}{\code{LFQData$contaminant_proportion()}}
 \item \href{#method-LFQData-omit_na}{\code{LFQData$omit_na()}}
@@ -327,23 +326,6 @@ is configured. Returns a new decoy-free LFQData (self is not modified).
 
 \subsection{Returns}{
 LFQData without decoys
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-remove_contaminants"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-remove_contaminants}{}}}
-\subsection{Method \code{remove_contaminants()}}{
-remove contaminant entries (keratin, trypsin, BSA, ...). Only acts when
-`pattern_contaminants` is configured — with no pattern, contaminants cannot
-be identified and self is returned unchanged. When configured, detection is
-the pattern unioned with the built-in defaults (see
-\code{\link{is_contaminant}}).
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$remove_contaminants()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-LFQData without contaminants (or an unchanged copy if no pattern)
 }
 }
 \if{html}{\out{<hr>}}

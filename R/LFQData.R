@@ -197,23 +197,6 @@ LFQData <- R6::R6Class(
       return(LFQData$new(pdata[keep, , drop = FALSE], self$get_config()))
     },
     #' @description
-    #' remove contaminant entries (keratin, trypsin, BSA, ...). Only acts when
-    #' `pattern_contaminants` is configured — with no pattern, contaminants cannot
-    #' be identified and self is returned unchanged. When configured, detection is
-    #' the pattern unioned with the built-in defaults (see
-    #' \code{\link{is_contaminant}}).
-    #' @return LFQData without contaminants (or an unchanged copy if no pattern)
-    remove_contaminants = function() {
-      pat <- self$get_config()$pattern_contaminants
-      if (is.null(pat)) {
-        return(self$get_copy())
-      }
-      top <- self$hierarchy_keys()[1]
-      pdata <- self$data_long()
-      keep <- !prolfqua::is_contaminant(pdata[[top]], pat)
-      return(LFQData$new(pdata[keep, , drop = FALSE], self$get_config()))
-    },
-    #' @description
     #' proportion of modelling-level keys (subject_id, e.g. protein or peptide by
     #' `hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
     #' signal. Decoy status derives from the top-level hierarchy id (protein_Id).
