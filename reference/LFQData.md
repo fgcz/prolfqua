@@ -60,6 +60,12 @@ Other LFQData:
 
 - [`LFQData$filter_proteins_by_peptide_count()`](#method-LFQData-filter_proteins_by_peptide_count)
 
+- [`LFQData$remove_decoys()`](#method-LFQData-remove_decoys)
+
+- [`LFQData$decoy_proportion()`](#method-LFQData-decoy_proportion)
+
+- [`LFQData$contaminant_proportion()`](#method-LFQData-contaminant_proportion)
+
 - [`LFQData$omit_na()`](#method-LFQData-omit_na)
 
 - [`LFQData$complete_cases()`](#method-LFQData-complete_cases)
@@ -307,6 +313,57 @@ remove proteins with less than X peptides
 #### Returns
 
 self
+
+------------------------------------------------------------------------
+
+### Method `remove_decoys()`
+
+remove decoy / reverse-database entries (rows whose top-level hierarchy
+id, e.g. protein_Id, is a decoy). Detection uses the configured
+\`pattern_decoys\` unioned with the built-in defaults (see
+[`is_decoy`](https://wolski.github.io/prolfqua/reference/is_decoy.md));
+decoys are always detectable even when no pattern is configured. Returns
+a new decoy-free LFQData (self is not modified).
+
+#### Usage
+
+    LFQData$remove_decoys()
+
+#### Returns
+
+LFQData without decoys
+
+------------------------------------------------------------------------
+
+### Method `decoy_proportion()`
+
+proportion of modelling-level keys (subject_id, e.g. protein or peptide
+by \`hierarchy_depth\`) that are decoys — an empirical-FDR /
+target-decoy QC signal. Decoy status derives from the top-level
+hierarchy id (protein_Id).
+
+#### Usage
+
+    LFQData$decoy_proportion()
+
+#### Returns
+
+numeric in \[0, 1\]
+
+------------------------------------------------------------------------
+
+### Method `contaminant_proportion()`
+
+proportion of modelling-level keys (subject_id) that are contaminants.
+Returns 0 when \`pattern_contaminants\` is not configured.
+
+#### Usage
+
+    LFQData$contaminant_proportion()
+
+#### Returns
+
+numeric in \[0, 1\]
 
 ------------------------------------------------------------------------
 

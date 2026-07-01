@@ -1,38 +1,35 @@
-# splits names and creates a matrix
+# Effective contaminant regex actually applied by [`is_contaminant`](https://wolski.github.io/prolfqua/reference/is_contaminant.md)
 
-splits names and creates a matrix
+Effective contaminant regex actually applied by
+[`is_contaminant`](https://wolski.github.io/prolfqua/reference/is_contaminant.md)
 
 ## Usage
 
 ``` r
-names_to_matrix(names, split = "\\||\\_")
+effective_contaminant_pattern(pattern = NULL)
 ```
 
 ## Arguments
 
-- names:
+- pattern:
 
-  vector with names
-
-- split:
-
-  patter to use to split
+  optional configured contaminant regex
 
 ## Value
 
-matrix
+a single regex string
 
 ## See also
 
 Other utilities:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`effective_contaminant_pattern()`](https://wolski.github.io/prolfqua/reference/effective_contaminant_pattern.md),
 [`effective_decoy_pattern()`](https://wolski.github.io/prolfqua/reference/effective_decoy_pattern.md),
 [`get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
 [`is_contaminant()`](https://wolski.github.io/prolfqua/reference/is_contaminant.md),
 [`is_decoy()`](https://wolski.github.io/prolfqua/reference/is_decoy.md),
 [`matrix_to_tibble()`](https://wolski.github.io/prolfqua/reference/matrix_to_tibble.md),
 [`multigroup_volcano()`](https://wolski.github.io/prolfqua/reference/multigroup_volcano.md),
+[`names_to_matrix()`](https://wolski.github.io/prolfqua/reference/names_to_matrix.md),
 [`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
 [`panel_cor()`](https://wolski.github.io/prolfqua/reference/panel_cor.md),
 [`remove_na_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md),
@@ -41,10 +38,6 @@ Other utilities:
 ## Examples
 
 ``` r
-dat = c("bla_ra0/2_run0","bla_ra1/2_run0","bla_ra2/2_run0")
-names_to_matrix(dat,split="\\_|\\/")
-#>      [,1]  [,2]  [,3] [,4]  
-#> [1,] "bla" "ra0" "2"  "run0"
-#> [2,] "bla" "ra1" "2"  "run0"
-#> [3,] "bla" "ra2" "2"  "run0"
+effective_contaminant_pattern()
+#> [1] "^zz|^CON__|^CON_|^Cont_|^contam_"
 ```

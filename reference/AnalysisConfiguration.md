@@ -82,6 +82,20 @@ Other configuration:
 
   column with encoded missing information
 
+- `pattern_decoys`:
+
+  optional regex identifying decoy / reverse-database ids, unioned with
+  the built-in default prefixes (see
+  [`is_decoy`](https://wolski.github.io/prolfqua/reference/is_decoy.md)).
+  `NULL` (default) leaves decoy handling off; set it (even to `""` for
+  defaults only) to opt into flagging and the targets-only model fit.
+
+- `pattern_contaminants`:
+
+  optional regex identifying contaminant ids (keratin, trypsin, BSA,
+  ...). `NULL` (default) means contaminants are not flagged; set it to
+  enable contaminant flagging / removal.
+
 - `factors`:
 
   Names of columns containing factors (annotations)

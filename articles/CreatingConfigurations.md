@@ -246,7 +246,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## loaded via a namespace (and not attached):
-    ##   [1] Rdpack_2.6.6           gridExtra_2.3          rlang_1.2.0           
+    ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.2.0           
     ##   [4] magrittr_2.0.5         clue_0.3-68            GetoptLong_1.1.1      
     ##   [7] otel_0.2.0             matrixStats_1.5.0      compiler_4.5.2        
     ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
@@ -256,7 +256,7 @@ sessionInfo()
     ##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          
     ##  [25] purrr_1.2.2            xfun_0.59              glmnet_5.0            
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
-    ##  [31] jsonlite_2.0.0         pan_1.9                broom_1.0.13          
+    ##  [31] jsonlite_2.0.0         pan_2.0                broom_1.0.13          
     ##  [34] parallel_4.5.2         cluster_2.1.8.1        R6_2.6.1              
     ##  [37] stringi_1.8.7          bslib_0.11.0           RColorBrewer_1.1-3    
     ##  [40] limma_3.66.0           boot_1.3-32            rpart_4.1.24          

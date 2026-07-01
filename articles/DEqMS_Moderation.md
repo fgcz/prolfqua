@@ -313,7 +313,7 @@ sessionInfo()
     ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.6.3
     ## 
     ## loaded via a namespace (and not attached):
-    ##   [1] Rdpack_2.6.6           gridExtra_2.3          rlang_1.2.0           
+    ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.2.0           
     ##   [4] magrittr_2.0.5         clue_0.3-68            GetoptLong_1.1.1      
     ##   [7] otel_0.2.0             matrixStats_1.5.0      compiler_4.5.2        
     ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
@@ -323,7 +323,7 @@ sessionInfo()
     ##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          
     ##  [25] purrr_1.2.2            xfun_0.59              glmnet_5.0            
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
-    ##  [31] jsonlite_2.0.0         progress_1.2.3         pan_1.9               
+    ##  [31] jsonlite_2.0.0         progress_1.2.3         pan_2.0               
     ##  [34] prettyunits_1.2.0      broom_1.0.13           parallel_4.5.2        
     ##  [37] cluster_2.1.8.1        R6_2.6.1               bslib_0.11.0          
     ##  [40] stringi_1.8.7          RColorBrewer_1.1-3     limma_3.66.0          

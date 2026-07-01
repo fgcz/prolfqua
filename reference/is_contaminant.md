@@ -1,26 +1,30 @@
-# splits names and creates a matrix
+# Detect contaminant identifiers
 
-splits names and creates a matrix
+As
+[`is_decoy`](https://wolski.github.io/prolfqua/reference/is_decoy.md),
+but for contaminant entries (keratin, trypsin, BSA, ...). Built-in
+anchored default prefixes unioned with an optional configured `pattern`;
+empty / `NULL` uses the defaults only.
 
 ## Usage
 
 ``` r
-names_to_matrix(names, split = "\\||\\_")
+is_contaminant(ids, pattern = NULL)
 ```
 
 ## Arguments
 
-- names:
+- ids:
 
-  vector with names
+  character vector of (prefixed) identifiers
 
-- split:
+- pattern:
 
-  patter to use to split
+  optional additional contaminant regex, unioned with defaults
 
 ## Value
 
-matrix
+logical vector, `TRUE` where an id looks like a contaminant
 
 ## See also
 
@@ -29,10 +33,10 @@ Other utilities:
 [`effective_contaminant_pattern()`](https://wolski.github.io/prolfqua/reference/effective_contaminant_pattern.md),
 [`effective_decoy_pattern()`](https://wolski.github.io/prolfqua/reference/effective_decoy_pattern.md),
 [`get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
-[`is_contaminant()`](https://wolski.github.io/prolfqua/reference/is_contaminant.md),
 [`is_decoy()`](https://wolski.github.io/prolfqua/reference/is_decoy.md),
 [`matrix_to_tibble()`](https://wolski.github.io/prolfqua/reference/matrix_to_tibble.md),
 [`multigroup_volcano()`](https://wolski.github.io/prolfqua/reference/multigroup_volcano.md),
+[`names_to_matrix()`](https://wolski.github.io/prolfqua/reference/names_to_matrix.md),
 [`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
 [`panel_cor()`](https://wolski.github.io/prolfqua/reference/panel_cor.md),
 [`remove_na_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md),
@@ -41,10 +45,6 @@ Other utilities:
 ## Examples
 
 ``` r
-dat = c("bla_ra0/2_run0","bla_ra1/2_run0","bla_ra2/2_run0")
-names_to_matrix(dat,split="\\_|\\/")
-#>      [,1]  [,2]  [,3] [,4]  
-#> [1,] "bla" "ra0" "2"  "run0"
-#> [2,] "bla" "ra1" "2"  "run0"
-#> [3,] "bla" "ra2" "2"  "run0"
+is_contaminant(c("zz|Cont00001|X", "sp|P2|X", "CON__ALBU"))
+#> [1]  TRUE FALSE  TRUE
 ```

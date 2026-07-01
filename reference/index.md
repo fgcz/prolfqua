@@ -221,6 +221,16 @@
 - [`df.residual(`*`<rfit_prolfqua>`*`)`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md)
   : Residual degrees of freedom for an augmented rfit fit
 
+- [`effective_contaminant_pattern()`](https://wolski.github.io/prolfqua/reference/effective_contaminant_pattern.md)
+  :
+
+  Effective contaminant regex actually applied by `is_contaminant`
+
+- [`effective_decoy_pattern()`](https://wolski.github.io/prolfqua/reference/effective_decoy_pattern.md)
+  :
+
+  Effective decoy regex actually applied by `is_decoy`
+
 - [`find_package_file()`](https://wolski.github.io/prolfqua/reference/find_package_file.md)
   : find file stored in package
 
@@ -241,6 +251,12 @@
 
 - [`interaction_contrasts()`](https://wolski.github.io/prolfqua/reference/interaction_contrasts.md)
   : Interaction contrasts (difference of differences)
+
+- [`is_contaminant()`](https://wolski.github.io/prolfqua/reference/is_contaminant.md)
+  : Detect contaminant identifiers
+
+- [`is_decoy()`](https://wolski.github.io/prolfqua/reference/is_decoy.md)
+  : Detect decoy / reverse-database identifiers
 
 - [`level_specific_contrasts()`](https://wolski.github.io/prolfqua/reference/level_specific_contrasts.md)
   : Level-specific contrasts (per secondary level)

@@ -307,7 +307,7 @@ sessionInfo()
     ##  [64] mitml_0.4-5            ggrepel_0.9.8          clue_0.3-68           
     ##  [67] systemfonts_1.3.2      foreach_1.5.2          plotly_4.12.0         
     ##  [70] limma_3.66.0           jquerylib_0.1.4        tidyr_1.3.2           
-    ##  [73] glue_1.8.1             pan_1.9                nloptr_2.2.1          
+    ##  [73] glue_1.8.1             pan_2.0                nloptr_2.2.1          
     ##  [76] pkgdown_2.2.0          codetools_0.2-20       shape_1.4.6.1         
     ##  [79] gtable_0.3.6           lme4_2.0-1             ComplexHeatmap_2.26.1 
     ##  [82] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       
@@ -315,7 +315,7 @@ sessionInfo()
     ##  [88] textshaping_1.0.5      formula.tools_1.7.1    doParallel_1.0.17     
     ##  [91] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
     ##  [94] png_0.1-9              backports_1.5.1        broom_1.0.13          
-    ##  [97] bslib_0.11.0           Rcpp_1.1.1-1.1         gridExtra_2.3         
+    ##  [97] bslib_0.11.0           Rcpp_1.1.1-1.1         gridExtra_2.3.1       
     ## [100] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        
     ## [103] xfun_0.59              fs_2.1.0               forcats_1.0.1         
     ## [106] pkgconfig_2.0.3        GlobalOptions_0.1.4

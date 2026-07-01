@@ -106,6 +106,9 @@ can bias fold-change estimates and inflate false discovery rates.</p>
 <li><p><a href="#method-LFQData-is_transformed"><code>LFQData$is_transformed()</code></a></p></li>
 <li><p><a href="#method-LFQData-remove_small_intensities"><code>LFQData$remove_small_intensities()</code></a></p></li>
 <li><p><a href="#method-LFQData-filter_proteins_by_peptide_count"><code>LFQData$filter_proteins_by_peptide_count()</code></a></p></li>
+<li><p><a href="#method-LFQData-remove_decoys"><code>LFQData$remove_decoys()</code></a></p></li>
+<li><p><a href="#method-LFQData-decoy_proportion"><code>LFQData$decoy_proportion()</code></a></p></li>
+<li><p><a href="#method-LFQData-contaminant_proportion"><code>LFQData$contaminant_proportion()</code></a></p></li>
 <li><p><a href="#method-LFQData-omit_na"><code>LFQData$omit_na()</code></a></p></li>
 <li><p><a href="#method-LFQData-complete_cases"><code>LFQData$complete_cases()</code></a></p></li>
 <li><p><a href="#method-LFQData-data_wide"><code>LFQData$data_wide()</code></a></p></li>
@@ -319,12 +322,55 @@ can bias fold-change estimates and inflate false discovery rates.</p>
 <p>self</p>
 </div>
 
+</div><p></p><hr><a id="method-LFQData-remove_decoys"></a><div class="section">
+<h3 id="method-remove-decoys-">Method <code>remove_decoys()</code><a class="anchor" aria-label="anchor" href="#method-remove-decoys-"></a></h3>
+<p>remove decoy / reverse-database entries (rows whose top-level hierarchy id,
+e.g. protein_Id, is a decoy). Detection uses the configured
+`pattern_decoys` unioned with the built-in defaults (see
+<code><a href="is_decoy.html">is_decoy</a></code>); decoys are always detectable even when no pattern
+is configured. Returns a new decoy-free LFQData (self is not modified).</p><div class="section">
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">remove_decoys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p>LFQData without decoys</p>
+</div>
+
+</div><p></p><hr><a id="method-LFQData-decoy_proportion"></a><div class="section">
+<h3 id="method-decoy-proportion-">Method <code>decoy_proportion()</code><a class="anchor" aria-label="anchor" href="#method-decoy-proportion-"></a></h3>
+<p>proportion of modelling-level keys (subject_id, e.g. protein or peptide by
+`hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
+signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><div class="section">
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">decoy_proportion</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p>numeric in [0, 1]</p>
+</div>
+
+</div><p></p><hr><a id="method-LFQData-contaminant_proportion"></a><div class="section">
+<h3 id="method-contaminant-proportion-">Method <code>contaminant_proportion()</code><a class="anchor" aria-label="anchor" href="#method-contaminant-proportion-"></a></h3>
+<p>proportion of modelling-level keys (subject_id) that are contaminants.
+Returns 0 when `pattern_contaminants` is not configured.</p><div class="section">
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">contaminant_proportion</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>numeric in [0, 1]</p>
+</div>
+
 </div><p></p><hr><a id="method-LFQData-omit_na"></a><div class="section">
 <h3 id="method-omit-na-">Method <code>omit_na()</code><a class="anchor" aria-label="anchor" href="#method-omit-na-"></a></h3>
 <p>Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
 For instance if a peptide has a missing value in more then nrNA of the samples within a condition
 it will be removed</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">omit_na</span><span class="op">(</span>nr_na <span class="op">=</span> <span class="fl">0</span>, factor_depth <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -342,14 +388,14 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>LFQData with NA omitted.</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-complete_cases"></a><div class="section">
 <h3 id="method-complete-cases-">Method <code><a href="complete_cases.html">complete_cases()</a></code><a class="anchor" aria-label="anchor" href="#method-complete-cases-"></a></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">complete_cases</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -362,14 +408,14 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>self</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-data_wide"></a><div class="section">
 <h3 id="method-data-wide-">Method <code>data_wide()</code><a class="anchor" aria-label="anchor" href="#method-data-wide-"></a></h3>
 <p>converts the data to wide</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">FALSE</span>, value <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -386,26 +432,26 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>list with data, annotation, and configuration</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-factors"></a><div class="section">
 <h3 id="method-factors-">Method <code>factors()</code><a class="anchor" aria-label="anchor" href="#method-factors-"></a></h3>
 <p>Annotation table</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>data.frame</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-hierarchy"></a><div class="section">
 <h3 id="method-hierarchy-">Method <code>hierarchy()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-"></a></h3>
 <p>Hierarchy table</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -413,19 +459,19 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-response"></a><div class="section">
 <h3 id="method-response-">Method <code>response()</code><a class="anchor" aria-label="anchor" href="#method-response-"></a></h3>
 <p>name of response variable</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>data.frame</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-hierarchy_keys"></a><div class="section">
 <h3 id="method-hierarchy-keys-">Method <code>hierarchy_keys()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-keys-"></a></h3>
 <p>return all hierarchy column names</p><div class="section">
-<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
+<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -433,7 +479,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-relevant_hierarchy_keys"></a><div class="section">
 <h3 id="method-relevant-hierarchy-keys-">Method <code>relevant_hierarchy_keys()</code><a class="anchor" aria-label="anchor" href="#method-relevant-hierarchy-keys-"></a></h3>
 <p>return hierarchy column names at current depth (alias for subject_id)</p><div class="section">
-<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
+<h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">relevant_hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -441,7 +487,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-factor_keys"></a><div class="section">
 <h3 id="method-factor-keys-">Method <code>factor_keys()</code><a class="anchor" aria-label="anchor" href="#method-factor-keys-"></a></h3>
 <p>return all factor column names</p><div class="section">
-<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
+<h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -449,7 +495,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-relevant_factor_keys"></a><div class="section">
 <h3 id="method-relevant-factor-keys-">Method <code>relevant_factor_keys()</code><a class="anchor" aria-label="anchor" href="#method-relevant-factor-keys-"></a></h3>
 <p>return factor column names at current depth</p><div class="section">
-<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
+<h4 id="usage-23">Usage<a class="anchor" aria-label="anchor" href="#usage-23"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">relevant_factor_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -457,7 +503,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-sample_name"></a><div class="section">
 <h3 id="method-sample-name-">Method <code>sample_name()</code><a class="anchor" aria-label="anchor" href="#method-sample-name-"></a></h3>
 <p>return sample name column</p><div class="section">
-<h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
+<h4 id="usage-24">Usage<a class="anchor" aria-label="anchor" href="#usage-24"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -465,7 +511,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-file_name"></a><div class="section">
 <h3 id="method-file-name-">Method <code>file_name()</code><a class="anchor" aria-label="anchor" href="#method-file-name-"></a></h3>
 <p>return file name column</p><div class="section">
-<h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
+<h4 id="usage-25">Usage<a class="anchor" aria-label="anchor" href="#usage-25"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">file_name</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -473,7 +519,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-nr_children_col"></a><div class="section">
 <h3 id="method-nr-children-col-">Method <code>nr_children_col()</code><a class="anchor" aria-label="anchor" href="#method-nr-children-col-"></a></h3>
 <p>return name of nr_children column</p><div class="section">
-<h4 id="usage-23">Usage<a class="anchor" aria-label="anchor" href="#usage-23"></a></h4>
+<h4 id="usage-26">Usage<a class="anchor" aria-label="anchor" href="#usage-26"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -481,7 +527,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-isotope_label"></a><div class="section">
 <h3 id="method-isotope-label-">Method <code>isotope_label()</code><a class="anchor" aria-label="anchor" href="#method-isotope-label-"></a></h3>
 <p>return isotope label column name</p><div class="section">
-<h4 id="usage-24">Usage<a class="anchor" aria-label="anchor" href="#usage-24"></a></h4>
+<h4 id="usage-27">Usage<a class="anchor" aria-label="anchor" href="#usage-27"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">isotope_label</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -489,7 +535,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-data_long"></a><div class="section">
 <h3 id="method-data-long-">Method <code>data_long()</code><a class="anchor" aria-label="anchor" href="#method-data-long-"></a></h3>
 <p>return the tidy (long-format) data frame</p><div class="section">
-<h4 id="usage-25">Usage<a class="anchor" aria-label="anchor" href="#usage-25"></a></h4>
+<h4 id="usage-28">Usage<a class="anchor" aria-label="anchor" href="#usage-28"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span>na.omit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -505,7 +551,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-rename_response"></a><div class="section">
 <h3 id="method-rename-response-">Method <code>rename_response()</code><a class="anchor" aria-label="anchor" href="#method-rename-response-"></a></h3>
 <p>new name of response variable</p><div class="section">
-<h4 id="usage-26">Usage<a class="anchor" aria-label="anchor" href="#usage-26"></a></h4>
+<h4 id="usage-29">Usage<a class="anchor" aria-label="anchor" href="#usage-29"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span>newname <span class="op">=</span> <span class="st">"Intensity"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -521,7 +567,7 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-hierarchy_counts"></a><div class="section">
 <h3 id="method-hierarchy-counts-">Method <code><a href="hierarchy_counts.html">hierarchy_counts()</a></code><a class="anchor" aria-label="anchor" href="#method-hierarchy-counts-"></a></h3>
 <p>number of elements at each level</p><div class="section">
-<h4 id="usage-27">Usage<a class="anchor" aria-label="anchor" href="#usage-27"></a></h4>
+<h4 id="usage-30">Usage<a class="anchor" aria-label="anchor" href="#usage-30"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -529,43 +575,43 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div><p></p><hr><a id="method-LFQData-summarize_hierarchy"></a><div class="section">
 <h3 id="method-summarize-hierarchy-">Method <code><a href="summarize_hierarchy.html">summarize_hierarchy()</a></code><a class="anchor" aria-label="anchor" href="#method-summarize-hierarchy-"></a></h3>
 <p>e.g. number of peptides per protein etc</p><div class="section">
-<h4 id="usage-28">Usage<a class="anchor" aria-label="anchor" href="#usage-28"></a></h4>
+<h4 id="usage-31">Usage<a class="anchor" aria-label="anchor" href="#usage-31"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>data.frame</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
 <p>get Plotter</p><div class="section">
-<h4 id="usage-29">Usage<a class="anchor" aria-label="anchor" href="#usage-29"></a></h4>
+<h4 id="usage-32">Usage<a class="anchor" aria-label="anchor" href="#usage-32"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>LFQDataPlotter</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-get_Summariser"></a><div class="section">
 <h3 id="method-get-summariser-">Method <code>get_Summariser()</code><a class="anchor" aria-label="anchor" href="#method-get-summariser-"></a></h3>
 <p>get Summariser</p><div class="section">
-<h4 id="usage-30">Usage<a class="anchor" aria-label="anchor" href="#usage-30"></a></h4>
+<h4 id="usage-33">Usage<a class="anchor" aria-label="anchor" href="#usage-33"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>LFQDataSummarizer</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-get_Stats"></a><div class="section">
 <h3 id="method-get-stats-">Method <code>get_Stats()</code><a class="anchor" aria-label="anchor" href="#method-get-stats-"></a></h3>
 <p>Get <code><a href="LFQDataStats.html">LFQDataStats</a></code>. For more details see <code><a href="LFQDataStats.html">LFQDataStats</a></code>.</p><div class="section">
-<h4 id="usage-31">Usage<a class="anchor" aria-label="anchor" href="#usage-31"></a></h4>
+<h4 id="usage-34">Usage<a class="anchor" aria-label="anchor" href="#usage-34"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span>stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"everything"</span>, <span class="st">"interaction"</span>, <span class="st">"all"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -578,26 +624,26 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
 <p>LFQDataStats</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-get_Transformer"></a><div class="section">
 <h3 id="method-get-transformer-">Method <code>get_Transformer()</code><a class="anchor" aria-label="anchor" href="#method-get-transformer-"></a></h3>
 <p>get Stats</p><div class="section">
-<h4 id="usage-32">Usage<a class="anchor" aria-label="anchor" href="#usage-32"></a></h4>
+<h4 id="usage-35">Usage<a class="anchor" aria-label="anchor" href="#usage-35"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
 <p>LFQDataTransformer</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-get_Aggregator"></a><div class="section">
 <h3 id="method-get-aggregator-">Method <code>get_Aggregator()</code><a class="anchor" aria-label="anchor" href="#method-get-aggregator-"></a></h3>
 <p>get Aggregator</p><div class="section">
-<h4 id="usage-33">Usage<a class="anchor" aria-label="anchor" href="#usage-33"></a></h4>
+<h4 id="usage-36">Usage<a class="anchor" aria-label="anchor" href="#usage-36"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"medpolish"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -614,14 +660,14 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
+<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
 <p>AggregateMedpolish, AggregateRlm, or AggregateTopN</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-filter_difference"></a><div class="section">
 <h3 id="method-filter-difference-">Method <code><a href="filter_difference.html">filter_difference()</a></code><a class="anchor" aria-label="anchor" href="#method-filter-difference-"></a></h3>
 <p>get difference of self with other if other is subset of self</p><div class="section">
-<h4 id="usage-34">Usage<a class="anchor" aria-label="anchor" href="#usage-34"></a></h4>
+<h4 id="usage-37">Usage<a class="anchor" aria-label="anchor" href="#usage-37"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">filter_difference</span><span class="op">(</span><span class="va">other</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -639,14 +685,14 @@ globally, e.g. `factor_depth = 0` means per experiment</p></dd>
 </div>
 
 <div class="section">
-<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<h4 id="returns-19">Returns<a class="anchor" aria-label="anchor" href="#returns-19"></a></h4>
 <p>LFQData</p>
 </div>
 
 </div><p></p><hr><a id="method-LFQData-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-35">Usage<a class="anchor" aria-label="anchor" href="#usage-35"></a></h4>
+<h4 id="usage-38">Usage<a class="anchor" aria-label="anchor" href="#usage-38"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 

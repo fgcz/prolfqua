@@ -135,6 +135,20 @@ flat object.</p>
 <dd><p>column with encoded missing information</p></dd>
 
 
+<dt><code>pattern_decoys</code></dt>
+<dd><p>optional regex identifying decoy / reverse-database
+ids, unioned with the built-in default prefixes (see
+<code><a href="is_decoy.html">is_decoy</a></code>). <code>NULL</code> (default) leaves decoy handling off;
+set it (even to <code>""</code> for defaults only) to opt into flagging and the
+targets-only model fit.</p></dd>
+
+
+<dt><code>pattern_contaminants</code></dt>
+<dd><p>optional regex identifying contaminant ids
+(keratin, trypsin, BSA, ...). <code>NULL</code> (default) means contaminants are
+not flagged; set it to enable contaminant flagging / removal.</p></dd>
+
+
 <dt><code>factors</code></dt>
 <dd><p>Names of columns containing factors (annotations)</p></dd>
 

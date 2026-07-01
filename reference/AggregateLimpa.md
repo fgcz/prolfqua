@@ -303,6 +303,8 @@ agg$lfq_agg$data_wide()
 #>     opt_mz: 
 #>     opt_rt: 
 #>     opt_se: limpa_se
+#>     pattern_contaminants: NULL
+#>     pattern_decoys: NULL
 #>     pop_response: function () 
 #>     sample_name: sampleName
 #>     sep: ~
