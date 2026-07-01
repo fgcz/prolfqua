@@ -1,11 +1,59 @@
-# Rev/decoy pattern handling in prolfqua core (deferred)
+# Rev/decoy pattern handling in prolfqua core
 
-**Date:** 2026-06-30
-**Status:** Deferred / future. **Do not implement yet** — `prolfqua` core stays untouched for now.
+**Date:** 2026-06-30 (design); **updated 2026-07-01** (core implemented).
+**Status:** **prolfqua-core machinery IMPLEMENTED** (see "Implementation status" below).
+The prolfquapp F3 data-flow flip (normalize-with-decoys) remains deferred.
 **Driver:** the prolfquapp redesign in
 `prolfquapp/TODO/TODO_protect_prolfquapp_against_target_decoy.md` (handling target+decoy FASTAs,
 guaranteeing unique protein IDs). This note records the `prolfqua`-side follow-up so it is not
 lost.
+
+## Implementation status (2026-07-01)
+
+**Landed in `prolfqua` (committed on `main`):**
+
+- **Shared detectors** (`706e08af`, `R/utilities.R`): `is_decoy()`, `is_contaminant()`,
+  `effective_decoy_pattern()`, `effective_contaminant_pattern()` — one database-agnostic
+  implementation (config pattern ∪ built-in defaults; empty/`NULL`/`"a^"` → defaults only).
+  Resolves **F4** (effective-pattern exposure). Tests: `test-decoy-contaminant-detect.R`.
+- **Config slots** (`4166581f`, `R/AnalysisConfiguration.R`): optional `pattern_decoys` /
+  `pattern_contaminants` (default `NULL` = off; round-trips through `R6_extract_values`).
+- **LFQData methods** (`4166581f`, `R/LFQData.R`): `remove_decoys()`, `remove_contaminants()`
+  (contaminants act only when `pattern_contaminants` set — §4 asymmetry), `decoy_proportion()`,
+  `contaminant_proportion()` (per modelling-level `subject_id`, decoy status derived from the
+  top-level protein id — **F5**). Tests: `test-decoy-contaminant-lfqdata.R`.
+- **Targets-only fit** (`4166581f`, `R/build_contrast_analysis.R`): when `pattern_decoys` is set,
+  decoys are dropped before the fit, so the fit + the shared variance pool (limma prior / DEqMS
+  variance-count trend) see targets only — **F1**. Opt-in: `NULL` leaves existing behaviour
+  untouched. Tests: `test-build-contrast-decoy-drop.R`. Full suite: 1047 pass, 0 fail.
+
+**Landed in `prolfquapp` (committed on `master`):**
+
+- **Detector consolidation** (`e3a2bcd`, `R/R6_ProteinAnnotation.R`): `.detect_decoy_ids` is now a
+  thin wrapper over `prolfqua::is_decoy` — the byte-for-byte duplicate default-prefix set is gone,
+  so annotation de-duplication and the prolfqua quant layer share one detector. Behaviour
+  identical; ProteinAnnotation tests: 26 pass. WU347806 end-to-end re-verified (SE builds, 4029
+  unique proteins).
+
+**Deferred — the prolfquapp F3 "normalize-with-decoys" data-flow flip:**
+
+- **F1 and F2 already hold in prolfquapp today.** `ProteinDataPrep$remove_cont_decoy()` aligns the
+  quant data to the **decoy-free** `ProteinAnnotation` via `get_subset(clean())` (an inner join on
+  `protein_Id`), so decoys are stripped from the quant *before* aggregation/normalization and the
+  fit. Consequently decoys never enter the variance pool (**F1**) and contrasts are targets-only,
+  so decoys are absent from the significant set / ORA / GSEA / volcano (**F2**). prolfquapp also
+  builds facades directly (`DEAnalyse$build_facade` → `facade_class$new`), bypassing
+  `build_contrast_analysis`, so the core targets-only-fit guard is a safety net there, not the
+  active mechanism.
+- **What is *not* yet realized is F3** — keeping decoys *through* normalization (accepting the ~1%
+  distribution shift) and dropping them only at the fit, with NA-stats-on-export. This is the
+  lowest-severity finding, explicitly "accepted deliberately". Realizing it in prolfquapp requires
+  re-architecting the annotation↔quant alignment so decoys survive on the **quant** side while the
+  **annotation** stays decoy-free (today the alignment inner-join couples the two). That change:
+  (a) alters normalization inputs + export for decoy-containing datasets, and (b) **cannot be
+  validated by WU347806** (DIA-NN, forwards-only — zero decoys, so the flip is a no-op there).
+  It needs a decoy-containing fixture (e.g. a FragPipe input retaining `REV_` entries) before it
+  is safe to land. **Do not implement blind.**
 
 ## Background
 
