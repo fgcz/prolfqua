@@ -1,4 +1,4 @@
-# Rev/decoy pattern handling in prolfqua core
+# Decoy and contaminant handling in prolfqua core (rev/contaminant patterns)
 
 **Date:** 2026-06-30 (design); **updated 2026-07-01** (core implemented + single-path plan settled).
 **Status:** **prolfqua-core machinery IMPLEMENTED**; the prolfquapp single-explicit-filtering-path
@@ -30,10 +30,11 @@ supersedes the earlier §4 "default remove". Decoys and contaminants are now asy
   Resolves **F4** (effective-pattern exposure). Tests: `test-decoy-contaminant-detect.R`.
 - **Config slots** (`4166581f`, `R/AnalysisConfiguration.R`): optional `pattern_decoys` /
   `pattern_contaminants` (default `NULL` = off; round-trips through `R6_extract_values`).
-- **LFQData methods** (`4166581f`, `R/LFQData.R`): `remove_decoys()`, `remove_contaminants()`
-  (contaminants act only when `pattern_contaminants` set — §4 asymmetry), `decoy_proportion()`,
-  `contaminant_proportion()` (per modelling-level `subject_id`, decoy status derived from the
-  top-level protein id — **F5**). Tests: `test-decoy-contaminant-lfqdata.R`.
+- **LFQData methods** (`4166581f`, `R/LFQData.R`): `remove_decoys()` (targets-only fit),
+  `decoy_proportion()` / `contaminant_proportion()` (QC, per modelling-level `subject_id`; decoy
+  status derived from the top-level protein id — **F5**). Tests: `test-decoy-contaminant-lfqdata.R`.
+  _(An earlier `remove_contaminants()` was removed in `b85b535e` — contaminants are kept+labelled,
+  see the top-of-file decision.)_
 - **Targets-only fit** (`4166581f`, `R/build_contrast_analysis.R`): when `pattern_decoys` is set,
   decoys are dropped before the fit, so the fit + the shared variance pool (limma prior / DEqMS
   variance-count trend) see targets only — **F1**. Opt-in: `NULL` leaves existing behaviour
