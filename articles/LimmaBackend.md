@@ -497,11 +497,11 @@ mod_limpa_prot$get_coefficients() |> head() |> knitr::kable(digits = 3)
 | protein_Id  | factor      | Estimate | Std..Error | t.value | Pr…t.. |
 |:------------|:------------|---------:|-----------:|--------:|-------:|
 | 0EfVhX~3967 | (Intercept) |    4.566 |      0.032 | 140.675 |      0 |
-| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.778 |      0 |
+| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.775 |      0 |
 | 0YSKpy~2865 | (Intercept) |    4.061 |      0.048 |  85.005 |      0 |
 | 3QLHfm~8938 | (Intercept) |    4.652 |      0.034 | 135.632 |      0 |
 | 3QYop0~7543 | (Intercept) |    4.564 |      0.014 | 331.068 |      0 |
-| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.082 |      0 |
+| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.081 |      0 |
 
 #### Step 3: Compute contrasts with ContrastsLimma
 
@@ -718,7 +718,7 @@ sessionInfo()
     ## [1] dplyr_1.2.1    prolfqua_1.6.3
     ## 
     ## loaded via a namespace (and not attached):
-    ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.2.0           
+    ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           
     ##   [4] magrittr_2.0.5         clue_0.3-68            GetoptLong_1.1.1      
     ##   [7] otel_0.2.0             matrixStats_1.5.0      compiler_4.5.2        
     ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
@@ -733,7 +733,7 @@ sessionInfo()
     ##  [37] cluster_2.1.8.1        R6_2.6.1               bslib_0.11.0          
     ##  [40] stringi_1.8.7          RColorBrewer_1.1-3     limma_3.66.0          
     ##  [43] boot_1.3-32            rpart_4.1.24           jquerylib_0.1.4       
-    ##  [46] Rcpp_1.1.1-1.1         iterators_1.0.14       knitr_1.51            
+    ##  [46] Rcpp_1.1.2             iterators_1.0.14       knitr_1.51            
     ##  [49] IRanges_2.44.0         Matrix_1.7-4           splines_4.5.2         
     ##  [52] nnet_7.3-20            tidyselect_1.2.1       yaml_2.3.12           
     ##  [55] doParallel_1.0.17      codetools_0.2-20       lattice_0.22-7        

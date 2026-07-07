@@ -41,6 +41,15 @@
   [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md)
   pre-allocates `nrow(x)` results; `ContrastsMissing` now actually
   validates its output schema.
+- Fixed the vectorized contrast path
+  (`options(prolfqua.vectorize = TRUE)`) to match the default loop path
+  on rank-deficient (aliased) model fits: a contrast whose weights fall
+  on non-estimable coefficients now returns `NA` instead of a spurious
+  fold-change of 0 with a `NaN` p-value. The invalid-row guard now
+  counts nonzero weights rather than summing signed weights, so
+  contrasts with canceling `+1`/`-1` weights on missing coefficients are
+  correctly flagged. The default (non-vectorized) path was never
+  affected.
 - [`get_contrast()`](https://wolski.github.io/prolfqua/reference/get_contrast.md)
   now derives `group_1`/`group_2` from the contrast’s left/right side
   expressions, fixing mislabeled per-group columns for averaging

@@ -288,7 +288,7 @@ sessionInfo()
     ##   [7] fastmap_1.2.0          rpart_4.1.24           digest_0.6.39         
     ##  [10] lifecycle_1.0.5        cluster_2.1.8.1        survival_3.8-3        
     ##  [13] statmod_1.5.2          magrittr_2.0.5         compiler_4.5.2        
-    ##  [16] rlang_1.2.0            sass_0.4.10            tools_4.5.2           
+    ##  [16] rlang_1.3.0            sass_0.4.10            tools_4.5.2           
     ##  [19] utf8_1.2.6             yaml_2.3.12            data.table_1.18.4     
     ##  [22] knitr_1.51             htmlwidgets_1.6.4      plyr_1.8.9            
     ##  [25] RColorBrewer_1.1-3     withr_3.0.3            purrr_1.2.2           
@@ -315,7 +315,7 @@ sessionInfo()
     ##  [88] textshaping_1.0.5      formula.tools_1.7.1    doParallel_1.0.17     
     ##  [91] evaluate_1.0.5         lattice_0.22-7         rbibutils_2.4.1       
     ##  [94] png_0.1-9              backports_1.5.1        broom_1.0.13          
-    ##  [97] bslib_0.11.0           Rcpp_1.1.1-1.1         gridExtra_2.3.1       
+    ##  [97] bslib_0.11.0           Rcpp_1.1.2             gridExtra_2.3.1       
     ## [100] nlme_3.1-168           mgcv_1.9-3             logistf_1.26.1        
     ## [103] xfun_0.59              fs_2.1.0               forcats_1.0.1         
     ## [106] pkgconfig_2.0.3        GlobalOptions_0.1.4

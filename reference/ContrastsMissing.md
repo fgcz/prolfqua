@@ -407,8 +407,8 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1bc7b927e1c 
-#>                      2 
+#> agg_record_1b4a20fc9c71 
+#>                       2 
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
 #> creating sampleName from file_name column
@@ -447,6 +447,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1bc7b927e1c 
-#>                      2 
+#> agg_record_1b4a20fc9c71 
+#>                       2 
 ```
