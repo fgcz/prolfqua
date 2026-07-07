@@ -4,6 +4,29 @@ Chronological record of completed development work on the `Modelling2R6` branch.
 
 ---
 
+## 2026-07-06 — TODO Cleanup
+
+Archived addressed TODO/review notes after checking them against the current
+source, tests, and BiocCheck state in `TODO/REVIEW_todo_status_2026-07-06.md`:
+
+- `TODO_rfit_impute.md` — `rfit_impute` is implemented, registered, documented,
+  and covered by focused tests.
+- `TODO_volcano_plotly_or_ggplot.md` — the native plotly vs ggplotly question
+  is resolved as a decision to keep both implementations.
+- `Review_revpatter_handling_impl.md` — all recorded review findings were
+  resolved in the follow-up prolfquapp changes.
+- `TODO_revpattern_handling.md` and `handover_revpattern_handling.md` — the
+  decoy/contaminant root work is implemented; remaining ideas are future
+  watch-items, not blockers for the original TODO.
+- `TODO_BiocCheck.md` — archived by maintainer decision; the support-site
+  watched-tag item will be handled outside this repo.
+
+Kept unresolved/stale TODOs active: vectorized NA-coefficient contrast bug,
+long-function inventory, child-count filtering/count taxonomy, and the broad
+remaining items in `TODO.md`.
+
+---
+
 ## 2026-06-23 — TODO Cleanup
 
 Archived `TODO_LFQData_access_patterns.md` after confirming the note itself
