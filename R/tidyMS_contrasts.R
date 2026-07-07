@@ -538,7 +538,7 @@ compute_contrast_vectorized <- function(m, linfct, confint = 0.95) {
 
   # Mark rows invalid if any non-zero weight touches an NA coefficient
   if (any(na_coefs)) {
-    invalid <- as.logical(linfct[, na_coefs, drop = FALSE] %*% rep(1, sum(na_coefs)) != 0)
+    invalid <- as.logical((linfct[, na_coefs, drop = FALSE] != 0) %*% rep(1, sum(na_coefs)) != 0)
     estimate[invalid] <- NA
   }
 

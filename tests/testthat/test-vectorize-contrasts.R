@@ -255,6 +255,37 @@ test_that("compute_contrast_vectorized matches original: simulated incomplete mo
   expect_equal(orig$lhs, vec$lhs)
 })
 
+test_that("compute_contrast_vectorized matches original: rank-deficient model, canceling NA weights", {
+  # Deterministic rank-deficient fit: B is perfectly aliased with A, so coefficients
+  # Bb2/Bb3 are NA. A contrast placing +1/-1 on those two NA coefficients has a signed
+  # weight sum of 0 -- the previous vectorized guard wrongly treated it as valid and
+  # returned estimate = 0 / p = NaN, while the loop path correctly returns NA.
+  d <- data.frame(
+    y = c(1.2, -0.3, 0.8, 0.1, 2.1, -1.0, 0.4, 0.9, -0.6, 1.5, 0.2, -0.4),
+    A = factor(rep(c("a1", "a2", "a3"), each = 4)),
+    B = factor(rep(c("b1", "b2", "b3"), each = 4))
+  )
+  m <- lm(y ~ A + B, data = d)
+  expect_true(any(is.na(coefficients(m)))) # confirm rank deficiency
+
+  na_names <- names(which(is.na(coefficients(m))))
+  expect_gte(length(na_names), 2)
+  cn <- names(coefficients(m))
+  linfct <- matrix(0, nrow = 1, ncol = length(cn), dimnames = list("cancel", cn))
+  linfct[1, na_names[1]] <- 1
+  linfct[1, na_names[2]] <- -1
+
+  orig <- compute_contrast(m, linfct, confint = 0.95)
+  vec <- compute_contrast_vectorized(m, linfct, confint = 0.95)
+
+  # Loop path refuses the contrast (references non-estimable coefficients).
+  expect_true(is.na(orig$estimate))
+  # Vectorized path must agree -- not a spurious 0 estimate.
+  expect_equal(is.na(orig$estimate), is.na(vec$estimate))
+  expect_equal(is.na(orig$p.value), is.na(vec$p.value))
+  expect_true(is.na(vec$estimate))
+})
+
 # ---- Section C: options(prolfqua.vectorize) hot-swap through facade ----
 
 test_that("prolfqua.vectorize option dispatches correctly through build_contrast_analysis", {
