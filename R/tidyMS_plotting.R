@@ -115,6 +115,37 @@
   circlize::colorRamp2(c(-m, 0, m), c("green", "black", "red"))
 }
 
+.finite_heatmap_dist <- function(matrix) {
+  tryCatch(
+    {
+      distance <- stats::dist(matrix)
+      if (any(!is.finite(distance))) {
+        return(NULL)
+      }
+      distance
+    },
+    error = function(e) NULL
+  )
+}
+
+.can_cluster_heatmap_columns <- function(matrix) {
+  if (ncol(matrix) < 2) {
+    return(FALSE)
+  }
+  !is.null(.finite_heatmap_dist(t(matrix)))
+}
+
+.cluster_heatmap_rows <- function(matrix) {
+  if (nrow(matrix) < 3) {
+    return(matrix)
+  }
+  distance <- .finite_heatmap_dist(matrix)
+  if (is.null(distance)) {
+    return(matrix)
+  }
+  matrix[stats::hclust(distance)$order, , drop = FALSE]
+}
+
 # White-to-red color function for correlation heatmaps, ranging over the
 # observed values (R-squared lives in [0, 1]).
 .cor_col_fun <- function(cres, R2 = FALSE) {
@@ -500,50 +531,33 @@ plot_heatmap <- function(
   }
 
   resdata <- t(scale(t(matrix)))
-  resdataf <- prolfqua::remove_na_rows(resdata, floor(ncol(resdata) * na_fraction))
-
-  if (nrow(resdataf) >= 3) {
-    gg <- stats::hclust(stats::dist(resdataf))
-    plot_data <- resdataf[gg$order, ]
-    res <- ComplexHeatmap::Heatmap(
-      plot_data,
-      name = "row z-score",
-      col = .abundance_col_fun(plot_data),
-      na_col = .HEATMAP_NA_COL,
-      cluster_rows = FALSE,
-      cluster_columns = TRUE,
-      top_annotation = .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(plot_data)),
-      show_row_names = show_rownames,
-      show_column_names = TRUE,
-      row_labels = .truncate_plot_labels(rownames(plot_data), max_rownames_chars),
-      column_labels = .suffix_plot_labels(colnames(plot_data), max_sample_label_chars),
-      border = FALSE,
-      use_raster = FALSE,
-      heatmap_legend_param = list(title = "row z-score"),
-      ... = ...
-    )
+  na_threshold <- floor(ncol(resdata) * na_fraction)
+  keep_rows <- rowSums(is.na(resdata)) <= na_threshold
+  resdataf <- resdata[keep_rows, , drop = FALSE]
+  plot_data <- if (nrow(resdataf) >= 3) {
+    .cluster_heatmap_rows(resdataf)
   } else {
-    res <- tryCatch(
-      ComplexHeatmap::Heatmap(
-        resdata,
-        name = "row z-score",
-        col = .abundance_col_fun(resdata),
-        na_col = .HEATMAP_NA_COL,
-        cluster_rows = FALSE,
-        cluster_columns = TRUE,
-        top_annotation = .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(resdata)),
-        show_row_names = show_rownames,
-        show_column_names = TRUE,
-        row_labels = .truncate_plot_labels(rownames(resdata), max_rownames_chars),
-        column_labels = .suffix_plot_labels(colnames(resdata), max_sample_label_chars),
-        border = FALSE,
-        use_raster = FALSE,
-        heatmap_legend_param = list(title = "row z-score"),
-        ... = ...
-      ),
-      error = .error_handler # nolint object_usage_linter. defined in utilities.R
-    )
+    resdata
   }
+  cluster_columns <- .can_cluster_heatmap_columns(plot_data)
+
+  res <- ComplexHeatmap::Heatmap(
+    plot_data,
+    name = "row z-score",
+    col = .abundance_col_fun(plot_data),
+    na_col = .HEATMAP_NA_COL,
+    cluster_rows = FALSE,
+    cluster_columns = cluster_columns,
+    top_annotation = .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(plot_data)),
+    show_row_names = show_rownames,
+    show_column_names = TRUE,
+    row_labels = .truncate_plot_labels(rownames(plot_data), max_rownames_chars),
+    column_labels = .suffix_plot_labels(colnames(plot_data), max_sample_label_chars),
+    border = FALSE,
+    use_raster = FALSE,
+    heatmap_legend_param = list(title = "row z-score"),
+    ... = ...
+  )
   invisible(res)
 }
 

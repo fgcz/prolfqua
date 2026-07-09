@@ -1,3 +1,31 @@
+# Keep the `top_n` most variable features for the intensity heatmap.
+#
+# Ranks features by their prolfqua variability statistic (CV for untransformed
+# data, sd for transformed data; see LFQDataStats) and keeps the most variable.
+# The heatmap clusters rows with stats::hclust, which errors above 65536
+# features, so this keeps clustering feasible (and the plot legible) for
+# peptide-list / entrapment searches with tens of thousands of degenerate
+# protein groups. `top_n = NULL` / non-finite keeps all features.
+# Returns a subset of wide$data in the original row order.
+.select_most_variable_features <- function(lfqdata, wide, top_n) {
+  mat <- wide$data
+  if (is.null(top_n) || !is.finite(top_n) || nrow(mat) <= top_n) {
+    return(mat)
+  }
+  lfqstats <- lfqdata$get_Stats(stats = "all")
+  metric <- lfqstats$stat # "CV" (untransformed) or "sd" (transformed)
+  keys <- c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
+  # wide$rowdata is in the same row order as the matrix, so joining the
+  # per-feature statistic onto it aligns the ranking with the matrix rows.
+  ranked <- dplyr::left_join(
+    wide$rowdata,
+    dplyr::select(lfqstats$stats(), dplyr::all_of(c(keys, metric))),
+    by = keys
+  )
+  keep <- utils::head(order(ranked[[metric]], decreasing = TRUE, na.last = TRUE), top_n)
+  mat[sort(keep), , drop = FALSE]
+}
+
 #' LFQDataPlotter ----
 #' Create various visualization of the LFQdata
 #' @return An R6 class generator.
@@ -97,16 +125,32 @@ LFQDataPlotter <- R6::R6Class(
     #' Without the z-scoring, the proteins would group according
     #' to their abundance, e.g., high abundant proteins would be one cluster.
     #'
+    #' Only the \code{top_n} most variable features are shown. Row clustering
+    #' uses \code{stats::hclust}, which errors above 65536 features, so the rows
+    #' are ranked by their variability statistic (CV for untransformed data, sd
+    #' for transformed data; see \code{\link{LFQDataStats}}) and the most
+    #' variable are kept. This keeps the heatmap feasible and legible for
+    #' peptide-list / entrapment searches with tens of thousands of features.
+    #'
     #' @param na_fraction max fraction of NA's per row
     #' @param rownames show rownames (default FALSE - do not show.)
     #' @param max_rownames_chars maximum displayed row label length
     #' @param max_sample_label_chars maximum displayed sample label length.
     #'   Labels keep their suffix because sample prefixes are often shared.
+    #' @param top_n keep the \code{top_n} most variable features (default 1000);
+    #'   \code{NULL} or \code{Inf} keeps all features.
     #' @return ComplexHeatmap::Heatmap
-    heatmap = function(na_fraction = 0.3, rownames = FALSE, max_rownames_chars = 60, max_sample_label_chars = 20) {
+    heatmap = function(
+      na_fraction = 0.3,
+      rownames = FALSE,
+      max_rownames_chars = 60,
+      max_sample_label_chars = 20,
+      top_n = 1000
+    ) {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
+      data <- .select_most_variable_features(self$lfq, wide, top_n)
       fig <- prolfqua::plot_heatmap(
-        wide$data,
+        data,
         wide$annotation,
         self$lfq$factor_keys(),
         self$lfq$sample_name(),

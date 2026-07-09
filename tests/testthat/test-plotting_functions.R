@@ -268,6 +268,29 @@ test_that("abundance heatmap shows missing values in light gray", {
   )
 })
 
+test_that("abundance heatmap draws sparse one-row matrices with all-NA columns", {
+  matrix <- matrix(
+    c(NA, 12, 13, NA, 12.5, 13.5),
+    nrow = 1,
+    dimnames = list("P1", c("C1", "T1", "T2", "C2", "T3", "T4"))
+  )
+  annotation <- data.frame(
+    sample = colnames(matrix),
+    group = c("control", "treated", "treated", "control", "treated", "treated")
+  )
+
+  p <- plot_heatmap(
+    matrix,
+    annotation,
+    factor_keys = "group",
+    sample_name = "sample",
+    show_rownames = TRUE
+  )
+
+  expect_s4_class(p, "Heatmap")
+  expect_no_error(ComplexHeatmap::draw(p))
+})
+
 test_that("abundance color mapping spans green, black, and red", {
   col_fun <- prolfqua:::.abundance_col_fun(matrix(c(-2, 0, 2), nrow = 1))
   cols <- grDevices::col2rgb(col_fun(c(-2, 0, 2)))
@@ -344,4 +367,39 @@ test_that("volcano_plotly does not cap small non-zero FDR values by default", {
   capped_y <- unlist(lapply(plotly::plotly_build(capped_plot)$x$data, function(trace) trace$y))
 
   expect_equal(max(capped_y), 4)
+})
+
+test_that("heatmap keeps only the top_n most variable features", {
+  istar <- sim_lfq_data_protein_config()
+  lfq <- LFQData$new(istar$data, istar$config)
+  wide <- lfq$data_wide(as.matrix = TRUE)
+  n_all <- nrow(wide$data)
+  expect_gt(n_all, 3)
+
+  # top_n >= feature count (or NULL / Inf) keeps every feature.
+  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, top_n = n_all + 10)), n_all)
+  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, top_n = NULL)), n_all)
+  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, top_n = Inf)), n_all)
+
+  # top_n < feature count keeps exactly top_n rows, and they are the ones with
+  # the highest variability statistic (CV here — untransformed data).
+  k <- 3L
+  sub <- prolfqua:::.select_most_variable_features(lfq, wide, top_n = k)
+  expect_equal(nrow(sub), k)
+
+  st <- lfq$get_Stats(stats = "all")
+  keys <- c(lfq$hierarchy_keys(), lfq$isotope_label())
+  ranked <- dplyr::left_join(
+    wide$rowdata,
+    dplyr::select(st$stats(), dplyr::all_of(c(keys, st$stat))),
+    by = keys
+  )
+  metric <- stats::setNames(ranked[[st$stat]], rownames(wide$data))
+  kept <- metric[rownames(sub)]
+  dropped <- metric[setdiff(rownames(wide$data), rownames(sub))]
+  expect_gte(min(kept, na.rm = TRUE), max(dropped, na.rm = TRUE))
+
+  # end-to-end through the plotter: no hclust blow-up, returns a Heatmap.
+  p <- lfq$get_Plotter()$heatmap(top_n = k)
+  expect_s4_class(p, "Heatmap")
 })

@@ -9,6 +9,8 @@
 - `setup_analysis()` now stops with an informative error (listing the offending keys) when a hierarchy-key/sample combination has more than one observation, instead of silently returning a different-schema count table that crashed downstream. Pass `debug = TRUE` to recover the old behaviour and return the count table for inspection.
 - Removed the unused `impute_with_zcomp()`, `estimate_lod_global()`, and `function_lod_quantile()` exports (and the `zCompositions` dependency). For missing-value imputation use `AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()`.
 - Hardened `plot_pca()`: errors early on duplicated sample names, an all-missing matrix, or too few samples instead of returning `NULL` (which broke `pca_plotly()`); joins scores to annotation with an explicit `by`; makes `prcomp(center = TRUE, scale. = FALSE)` explicit.
+- Hardened abundance heatmaps for sparse significant-feature subsets: when row or column distances are non-finite because of missing values, `plot_heatmap()` now falls back to the input order instead of returning a `ComplexHeatmap` object that fails during drawing.
+- `LFQDataPlotter$heatmap()` now shows only the `top_n` most variable features (default 1000), ranked by the prolfqua per-feature statistic (CV for untransformed data, sd for transformed, via `LFQDataStats`). Row clustering uses `stats::hclust`, which errors above 65536 features, so peptide-list / entrapment searches with tens of thousands of degenerate protein groups no longer crash the QC heatmap. Pass `top_n = NULL` (or `Inf`) to keep every feature.
 
 # prolfqua 1.6.1
 
