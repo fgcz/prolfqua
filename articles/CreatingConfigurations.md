@@ -280,7 +280,7 @@ sessionInfo()
     ##  [94] gtable_0.3.6           sass_0.4.10            digest_0.6.39         
     ##  [97] operator.tools_1.6.3.1 BiocGenerics_0.56.0    ggrepel_0.9.8         
     ## [100] rjson_0.2.23           htmlwidgets_1.6.4      farver_2.1.2          
-    ## [103] htmltools_0.5.9        pkgdown_2.2.0          lifecycle_1.0.5       
+    ## [103] htmltools_0.5.9        pkgdown_2.2.1          lifecycle_1.0.5       
     ## [106] httr_1.4.8             GlobalOptions_0.1.4    mitml_0.4-5           
     ## [109] statmod_1.5.2          MASS_7.3-65
 

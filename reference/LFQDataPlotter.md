@@ -161,13 +161,23 @@ difference in the expression in the samples. Without the z-scoring, the
 proteins would group according to their abundance, e.g., high abundant
 proteins would be one cluster.
 
+Only the `top_n` most variable features are shown. Row clustering uses
+[`stats::hclust`](https://rdrr.io/r/stats/hclust.html), which errors
+above 65536 features, so the rows are ranked by their variability
+statistic (CV for untransformed data, sd for transformed data; see
+[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md))
+and the most variable are kept. This keeps the heatmap feasible and
+legible for peptide-list / entrapment searches with tens of thousands of
+features.
+
 #### Usage
 
     LFQDataPlotter$heatmap(
       na_fraction = 0.3,
       rownames = FALSE,
       max_rownames_chars = 60,
-      max_sample_label_chars = 20
+      max_sample_label_chars = 20,
+      top_n = 1000
     )
 
 #### Arguments
@@ -188,6 +198,11 @@ proteins would be one cluster.
 
   maximum displayed sample label length. Labels keep their suffix
   because sample prefixes are often shared.
+
+- `top_n`:
+
+  keep the `top_n` most variable features (default 1000); `NULL` or
+  `Inf` keeps all features.
 
 #### Returns
 

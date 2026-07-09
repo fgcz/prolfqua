@@ -351,6 +351,6 @@ sessionInfo()
     ##  [97] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1
     ## [100] BiocGenerics_0.56.0    ggrepel_0.9.8          rjson_0.2.23          
     ## [103] htmlwidgets_1.6.4      farver_2.1.2           htmltools_0.5.9       
-    ## [106] pkgdown_2.2.0          lifecycle_1.0.5        httr_1.4.8            
+    ## [106] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.8            
     ## [109] GlobalOptions_0.1.4    mitml_0.4-5            statmod_1.5.2         
     ## [112] MASS_7.3-65

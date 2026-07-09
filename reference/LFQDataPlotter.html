@@ -196,13 +196,20 @@ and the standard variation is one.
 z-scoring allows to compare (cluster) the proteins according
 to the difference in the expression in the samples.
 Without the z-scoring, the proteins would group according
-to their abundance, e.g., high abundant proteins would be one cluster.</p><div class="section">
+to their abundance, e.g., high abundant proteins would be one cluster.</p>
+<p>Only the <code>top_n</code> most variable features are shown. Row clustering
+uses <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">stats::hclust</a></code>, which errors above 65536 features, so the rows
+are ranked by their variability statistic (CV for untransformed data, sd
+for transformed data; see <code><a href="LFQDataStats.html">LFQDataStats</a></code>) and the most
+variable are kept. This keeps the heatmap feasible and legible for
+peptide-list / entrapment searches with tens of thousands of features.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span></span>
 <span>  na_fraction <span class="op">=</span> <span class="fl">0.3</span>,</span>
 <span>  rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  max_rownames_chars <span class="op">=</span> <span class="fl">60</span>,</span>
-<span>  max_sample_label_chars <span class="op">=</span> <span class="fl">20</span></span>
+<span>  max_sample_label_chars <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  top_n <span class="op">=</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -223,6 +230,11 @@ to their abundance, e.g., high abundant proteins would be one cluster.</p><div c
 <dt><code>max_sample_label_chars</code></dt>
 <dd><p>maximum displayed sample label length.
 Labels keep their suffix because sample prefixes are often shared.</p></dd>
+
+
+<dt><code>top_n</code></dt>
+<dd><p>keep the <code>top_n</code> most variable features (default 1000);
+<code>NULL</code> or <code>Inf</code> keeps all features.</p></dd>
 
 
 </dl><p></p></div>
@@ -634,7 +646,7 @@ display.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

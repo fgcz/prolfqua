@@ -497,11 +497,11 @@ mod_limpa_prot$get_coefficients() |> head() |> knitr::kable(digits = 3)
 | protein_Id  | factor      | Estimate | Std..Error | t.value | Pr…t.. |
 |:------------|:------------|---------:|-----------:|--------:|-------:|
 | 0EfVhX~3967 | (Intercept) |    4.566 |      0.032 | 140.675 |      0 |
-| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.775 |      0 |
+| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.778 |      0 |
 | 0YSKpy~2865 | (Intercept) |    4.061 |      0.048 |  85.005 |      0 |
 | 3QLHfm~8938 | (Intercept) |    4.652 |      0.034 | 135.632 |      0 |
 | 3QYop0~7543 | (Intercept) |    4.564 |      0.014 | 331.068 |      0 |
-| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.081 |      0 |
+| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.082 |      0 |
 
 #### Step 3: Compute contrasts with ContrastsLimma
 
@@ -753,6 +753,6 @@ sessionInfo()
     ##  [97] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1
     ## [100] BiocGenerics_0.56.0    ggrepel_0.9.8          rjson_0.2.23          
     ## [103] htmlwidgets_1.6.4      farver_2.1.2           htmltools_0.5.9       
-    ## [106] pkgdown_2.2.0          lifecycle_1.0.5        httr_1.4.8            
+    ## [106] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.8            
     ## [109] GlobalOptions_0.1.4    mitml_0.4-5            statmod_1.5.2         
     ## [112] MASS_7.3-65

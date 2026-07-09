@@ -76,6 +76,19 @@
   few samples instead of returning `NULL` (which broke `pca_plotly()`);
   joins scores to annotation with an explicit `by`; makes
   `prcomp(center = TRUE, scale. = FALSE)` explicit.
+- Hardened abundance heatmaps for sparse significant-feature subsets:
+  when row or column distances are non-finite because of missing values,
+  [`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md)
+  now falls back to the input order instead of returning a
+  `ComplexHeatmap` object that fails during drawing.
+- `LFQDataPlotter$heatmap()` now shows only the `top_n` most variable
+  features (default 1000), ranked by the prolfqua per-feature statistic
+  (CV for untransformed data, sd for transformed, via `LFQDataStats`).
+  Row clustering uses
+  [`stats::hclust`](https://rdrr.io/r/stats/hclust.html), which errors
+  above 65536 features, so peptide-list / entrapment searches with tens
+  of thousands of degenerate protein groups no longer crash the QC
+  heatmap. Pass `top_n = NULL` (or `Inf`) to keep every feature.
 
 ## prolfqua 1.6.1
 

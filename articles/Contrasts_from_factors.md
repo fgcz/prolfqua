@@ -308,7 +308,7 @@ sessionInfo()
     ##  [67] systemfonts_1.3.2      foreach_1.5.2          plotly_4.12.0         
     ##  [70] limma_3.66.0           jquerylib_0.1.4        tidyr_1.3.2           
     ##  [73] glue_1.8.1             pan_2.0                nloptr_2.2.1          
-    ##  [76] pkgdown_2.2.0          codetools_0.2-20       shape_1.4.6.1         
+    ##  [76] pkgdown_2.2.1          codetools_0.2-20       shape_1.4.6.1         
     ##  [79] gtable_0.3.6           lme4_2.0-1             ComplexHeatmap_2.26.1 
     ##  [82] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       
     ##  [85] circlize_0.4.18        R6_2.6.1               Rdpack_2.6.6          
