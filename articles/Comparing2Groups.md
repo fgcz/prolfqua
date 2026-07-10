@@ -527,7 +527,7 @@ sessionInfo()
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] labeling_0.4.3         utf8_1.2.6             promises_1.5.0        
     ##  [22] rmarkdown_2.31         nloptr_2.2.1           ragg_1.5.2            
-    ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.59             
+    ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.60             
     ##  [28] glmnet_5.0             jomo_2.7-6             logistf_1.26.1        
     ##  [31] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
     ##  [34] later_1.4.8            pan_2.0                prettyunits_1.2.0     
@@ -549,8 +549,8 @@ sessionInfo()
     ##  [82] minqa_1.2.8            xtable_1.8-8           glue_1.8.1            
     ##  [85] lazyeval_0.2.3         tools_4.5.2            data.table_1.18.4     
     ##  [88] lme4_2.0-1             forcats_1.0.1          fs_2.1.0              
-    ##  [91] grid_4.5.2             tidyr_1.3.2            crosstalk_1.2.2       
-    ##  [94] rbibutils_2.4.1        colorspace_2.1-2       nlme_3.1-168          
+    ##  [91] grid_4.5.2             tidyr_1.3.2            rbibutils_2.4.1       
+    ##  [94] crosstalk_1.2.2        colorspace_2.1-2       nlme_3.1-168          
     ##  [97] formula.tools_1.7.1    cli_3.6.6              textshaping_1.0.5     
     ## [100] viridisLite_0.4.3      ComplexHeatmap_2.26.1  gtable_0.3.6          
     ## [103] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1

@@ -2,6 +2,9 @@
 
 ## prolfqua 1.6.3
 
+- Abundance-density plots now carry per-sample Plotly highlight keys,
+  allowing interactive reports to fade non-hovered sample curves while
+  preserving the existing ggplot output.
 - **Breaking — contrast schema.** The `modelName` column of
   `get_contrasts()` output is now the selected facade key (`lm`, `rlm`,
   `rfit`, `lm_impute`, `lm_missing`, `limma`, `limma_impute`,

@@ -726,7 +726,7 @@ sessionInfo()
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.31        
     ##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          
-    ##  [25] purrr_1.2.2            xfun_0.59              glmnet_5.0            
+    ##  [25] purrr_1.2.2            xfun_0.60              glmnet_5.0            
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
     ##  [31] jsonlite_2.0.0         progress_1.2.3         pan_2.0               
     ##  [34] prettyunits_1.2.0      broom_1.0.13           parallel_4.5.2        
