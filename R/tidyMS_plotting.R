@@ -226,7 +226,19 @@ plot_intensity_distribution_density <- function(
   legend = NA,
   max_legend_samples = 16
 ) {
-  p <- ggplot(pdata, aes(x = .data[[response]], colour = .data[[sample_name]])) +
+  density_data <- plotly::highlight_key(
+    pdata,
+    key = as.character(pdata[[sample_name]]),
+    group = paste("prolfqua_density", sample_name, sep = "_")
+  )
+  p <- ggplot(
+    density_data,
+    aes(
+      x = .data[[response]],
+      colour = .data[[sample_name]],
+      group = .data[[sample_name]]
+    )
+  ) +
     geom_line(stat = "density")
   if (!is_transformed) {
     p <- p + scale_x_continuous(trans = "log10")

@@ -47,6 +47,28 @@ test_that("density legend is suppressed automatically for many samples", {
   expect_equal(length(p$guides$guides), 1)
 })
 
+test_that("density plot carries sample keys for plotly hover highlighting", {
+  testthat::skip_if_not_installed("plotly")
+
+  pdata <- expand.grid(
+    sample = c("S1", "S2"),
+    feature = seq_len(30),
+    KEEP.OUT.ATTRS = FALSE
+  )
+  pdata$abundance <- c(stats::rnorm(30, mean = 10), stats::rnorm(30, mean = 12))
+
+  p <- plot_intensity_distribution_density(
+    pdata,
+    sample_name = "sample",
+    response = "abundance",
+    is_transformed = TRUE
+  )
+  built <- plotly::plotly_build(plotly::ggplotly(p))
+  trace_keys <- vapply(built$x$data, function(trace) trace$key[[1]], character(1))
+
+  expect_setequal(trace_keys, c("S1", "S2"))
+})
+
 test_that("PCA sample labels repel and are not clipped", {
   matrix <- matrix(stats::rnorm(60), nrow = 10)
   colnames(matrix) <- paste0("sample_", seq_len(6))
