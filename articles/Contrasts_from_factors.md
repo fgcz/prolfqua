@@ -294,7 +294,7 @@ sessionInfo()
     ##  [25] RColorBrewer_1.1-3     withr_3.0.3            purrr_1.2.2           
     ##  [28] BiocGenerics_0.56.0    desc_1.4.3             nnet_7.3-20           
     ##  [31] grid_4.5.2             stats4_4.5.2           jomo_2.7-6            
-    ##  [34] colorspace_2.1-2       mice_3.19.0            ggplot2_4.0.3         
+    ##  [34] colorspace_2.1-3       mice_3.19.0            ggplot2_4.0.3         
     ##  [37] scales_1.4.0           iterators_1.0.14       MASS_7.3-65           
     ##  [40] cli_3.6.6              UpSetR_1.4.1           rmarkdown_2.31        
     ##  [43] crayon_1.5.3           reformulas_0.4.4       ragg_1.5.2            
@@ -309,7 +309,7 @@ sessionInfo()
     ##  [70] limma_3.66.0           jquerylib_0.1.4        tidyr_1.3.2           
     ##  [73] glue_1.8.1             pan_2.0                nloptr_2.2.1          
     ##  [76] pkgdown_2.2.1          codetools_0.2-20       shape_1.4.6.1         
-    ##  [79] gtable_0.3.6           lme4_2.0-1             ComplexHeatmap_2.26.1 
+    ##  [79] gtable_0.3.6           lme4_2.0-6             ComplexHeatmap_2.26.1 
     ##  [82] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       
     ##  [85] circlize_0.4.18        R6_2.6.1               Rdpack_2.6.6          
     ##  [88] textshaping_1.0.5      formula.tools_1.7.1    doParallel_1.0.17     

@@ -339,9 +339,9 @@ sessionInfo()
     ##  [70] reformulas_0.4.4       plotly_4.12.0          generics_0.1.4        
     ##  [73] S4Vectors_0.48.1       hms_1.1.4              scales_1.4.0          
     ##  [76] minqa_1.2.8            glue_1.8.1             lazyeval_0.2.3        
-    ##  [79] tools_4.5.2            data.table_1.18.4      lme4_2.0-1            
+    ##  [79] tools_4.5.2            data.table_1.18.4      lme4_2.0-6            
     ##  [82] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
-    ##  [85] tidyr_1.3.2            rbibutils_2.4.1        colorspace_2.1-2      
+    ##  [85] tidyr_1.3.2            rbibutils_2.4.1        colorspace_2.1-3      
     ##  [88] nlme_3.1-168           formula.tools_1.7.1    cli_3.6.6             
     ##  [91] textshaping_1.0.5      viridisLite_0.4.3      ComplexHeatmap_2.26.1 
     ##  [94] gtable_0.3.6           sass_0.4.10            digest_0.6.39         

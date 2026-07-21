@@ -214,10 +214,10 @@ sessionInfo()
     ##  [76] generics_0.1.4         hms_1.1.4              S4Vectors_0.48.1      
     ##  [79] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
     ##  [82] xtable_1.8-8           glue_1.8.1             lazyeval_0.2.3        
-    ##  [85] tools_4.5.2            data.table_1.18.4      lme4_2.0-1            
+    ##  [85] tools_4.5.2            data.table_1.18.4      lme4_2.0-6            
     ##  [88] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
     ##  [91] tidyr_1.3.2            rbibutils_2.4.1        crosstalk_1.2.2       
-    ##  [94] colorspace_2.1-2       nlme_3.1-168           formula.tools_1.7.1   
+    ##  [94] colorspace_2.1-3       nlme_3.1-168           formula.tools_1.7.1   
     ##  [97] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     
     ## [100] ComplexHeatmap_2.26.1  dplyr_1.2.1            gtable_0.3.6          
     ## [103] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1

@@ -585,7 +585,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> bin_resp ~ condition
-#> <environment: 0x5653e0cc1c78>
+#> <environment: 0x558b0bbc65e0>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -606,9 +606,10 @@ istar2$data_long() |>
 modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",
   model_name = "random_example")
 modelFunction$model_fun(nestProtein$data[[1]])
-#> logistf::logistf(formula = self$formula, data = DFT, weights = Freq)
+#> logistf::logistf(formula = self$formula, data = DFT, pl = FALSE, 
+#>     weights = Freq)
 #> Model fitted by Penalized ML
-#> Confidence intervals and p-values by Profile Likelihood 
+#> Confidence intervals and p-values by Wald 
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq 
@@ -621,9 +622,10 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> Likelihood ratio test=10.07111 on 8 df, p=0.2600707, n=84
 #> 
 modelFunction$model_fun(nestProtein$data[[4]])
-#> logistf::logistf(formula = self$formula, data = DFT, weights = Freq)
+#> logistf::logistf(formula = self$formula, data = DFT, pl = FALSE, 
+#>     weights = Freq)
 #> Model fitted by Penalized ML
-#> Confidence intervals and p-values by Profile Likelihood 
+#> Confidence intervals and p-values by Wald 
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd 
@@ -636,20 +638,20 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x5653e314a130>
+#> <environment: 0x558b00b238e0>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$model_fun(get_formula = TRUE)
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x5653e3798430>
+#> <environment: 0x558b02211430>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x5653eca368a8>
+#> <environment: 0x558b036ac0c0>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x5653ee1b89e0>
+#> <environment: 0x558b05bffdc0>
 ```

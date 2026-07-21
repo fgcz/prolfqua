@@ -141,13 +141,13 @@ mod <- build_model_glm_peptide(lfqdata, "~ group_")
 head(mod$get_coefficients())
 #> # A tibble: 6 × 11
 #> # Groups:   protein_Id [2]
-#>   protein_Id factor  Estimate se.coef. lower.0.95 upper.0.95 Chisq      p method
-#>   <chr>      <chr>      <dbl>    <dbl>      <dbl>      <dbl> <dbl>  <dbl>  <dbl>
-#> 1 7IZdVV~08… (Inte…  2.10e+ 0    0.950      0.439      4.49  6.53  0.0106      2
-#> 2 7IZdVV~08… group…  6.77e- 1    0.786     -0.937      2.51  0.669 0.413       2
-#> 3 7IZdVV~08… group… -6.66e- 1    0.645     -2.08       0.640 0.990 0.320       2
-#> 4 AZPG26~20… (Inte…  9.05e- 1    0.863     -0.729      2.90  1.15  0.284       2
-#> 5 AZPG26~20… group…  2.23e-16    1.02      -2.09       2.09  0     1           2
-#> 6 AZPG26~20… group…  1.82e+ 0    1.55      -0.855      6.80  1.67  0.197       2
-#> # ℹ 2 more variables: isSingular <lgl>, nr_coef <int>
+#>   protein_Id  factor     Estimate se.coef. lower.0.95 upper.0.95    Chisq      p
+#>   <chr>       <chr>         <dbl>    <dbl>      <dbl>      <dbl>    <dbl>  <dbl>
+#> 1 7IZdVV~0841 (Interce…  2.10e+ 0    0.950      0.240      3.96  4.89e+ 0 0.0269
+#> 2 7IZdVV~0841 group_B    6.77e- 1    0.786     -0.863      2.22  7.43e- 1 0.389 
+#> 3 7IZdVV~0841 group_Ct… -6.66e- 1    0.645     -1.93       0.598 1.07e+ 0 0.302 
+#> 4 AZPG26~2091 (Interce…  9.05e- 1    0.863     -0.786      2.60  1.10e+ 0 0.294 
+#> 5 AZPG26~2091 group_B    2.23e-16    1.02      -1.99       1.99  7.74e-32 1     
+#> 6 AZPG26~2091 group_Ct…  1.82e+ 0    1.55      -1.23       4.86  1.37e+ 0 0.242 
+#> # ℹ 3 more variables: method <dbl>, isSingular <lgl>, nr_coef <int>
 ```

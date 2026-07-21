@@ -92,6 +92,9 @@
   above 65536 features, so peptide-list / entrapment searches with tens
   of thousands of degenerate protein groups no longer crash the QC
   heatmap. Pass `top_n = NULL` (or `Inf`) to keep every feature.
+- `StrategyLogistf` now uses Wald confidence intervals instead of
+  profiling every coefficient, preventing `firth_nested` analyses from
+  stalling for days on proteins with hundreds or thousands of peptides.
 
 ## prolfqua 1.6.1
 

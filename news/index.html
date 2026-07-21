@@ -66,6 +66,8 @@
 <li>Hardened abundance heatmaps for sparse significant-feature subsets: when row or column distances are non-finite because of missing values, <code><a href="../reference/plot_heatmap.html">plot_heatmap()</a></code> now falls back to the input order instead of returning a <code>ComplexHeatmap</code> object that fails during drawing.</li>
 <li>
 <code>LFQDataPlotter$heatmap()</code> now shows only the <code>top_n</code> most variable features (default 1000), ranked by the prolfqua per-feature statistic (CV for untransformed data, sd for transformed, via <code>LFQDataStats</code>). Row clustering uses <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">stats::hclust</a></code>, which errors above 65536 features, so peptide-list / entrapment searches with tens of thousands of degenerate protein groups no longer crash the QC heatmap. Pass <code>top_n = NULL</code> (or <code>Inf</code>) to keep every feature.</li>
+<li>
+<code>StrategyLogistf</code> now uses Wald confidence intervals instead of profiling every coefficient, preventing <code>firth_nested</code> analyses from stalling for days on proteins with hundreds or thousands of peptides.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.6.1" id="prolfqua-161">prolfqua 1.6.1<a class="anchor" aria-label="anchor" href="#prolfqua-161"></a></h2>
