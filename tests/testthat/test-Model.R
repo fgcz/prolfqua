@@ -102,6 +102,17 @@ test_that("ModelFirth", {
   expect_s3_class(cv$plot, "ggplot")
 })
 
+test_that("StrategyLogistf avoids coefficient-wise profile likelihood fits", {
+  data <- data.frame(
+    bin_resp = c(1L, 0L, 1L, 0L, 1L, 0L, 0L, 1L),
+    condition = rep(c("A", "B"), each = 4)
+  )
+
+  fit <- strategy_logistf("bin_resp ~ condition")$model_fun(data)
+
+  expect_setequal(fit$method.ci, "Wald")
+})
+
 test_that("build_model_glm_protein and build_model_glm_peptide return ModelFirth", {
   prot <- sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 7)
   prot_lfq <- LFQData$new(prot$data, prot$config)

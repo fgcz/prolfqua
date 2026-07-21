@@ -365,7 +365,7 @@ StrategyLogistf <- R6::R6Class(
       DFT <- x |>
         dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
         dplyr::summarize(Freq = dplyr::n(), .groups = "drop")
-      tryCatch(logistf::logistf(self$formula, data = DFT, weights = Freq), error = .error_handler)
+      tryCatch(logistf::logistf(self$formula, data = DFT, weights = Freq, pl = FALSE), error = .error_handler)
     },
 
     #' @description Check if model is singular (NA coefficients or df < 2)
