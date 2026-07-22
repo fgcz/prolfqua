@@ -152,7 +152,16 @@ ContrastsMissing <- R6::R6Class(
     get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
         if (self$lfqdata$get_config()$hierarchy_depth < length(self$lfqdata$get_config()$hierarchy_keys())) {
-          stop("hierarchy depth < hierarchy_keys(). Please aggregate first.")
+          abort_bad_argument(
+            "lfqdata",
+            "be aggregated first (hierarchy_depth must equal the number of hierarchy keys)",
+            not = paste0(
+              "hierarchy_depth = ",
+              self$lfqdata$get_config()$hierarchy_depth,
+              "; hierarchy_keys = ",
+              length(self$lfqdata$get_config()$hierarchy_keys())
+            )
+          )
         } else {
           mh1 <- prolfqua::MissingHelpers$new(
             self$lfqdata$data_long(),

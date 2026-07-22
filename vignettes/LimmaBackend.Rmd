@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 This vignette demonstrates the **limma backend** for prolfqua's modelling pipeline. The limma backend is a drop-in alternative to the per-protein `lm` + `squeezeVar` pipeline. Both approaches fit linear models and perform empirical Bayes variance shrinkage, but:
 
-- **prolfqua default** (`strategy_lm` + `Contrasts` + `ContrastsModerated`): fits one `lm()` per protein, then applies prolfqua's own `squeezeVarRob` moderation.
+- **prolfqua default** (`strategy_lm` + `Contrasts` + `ContrastsModerated`): fits one `lm()` per protein, then applies empirical Bayes moderation via `limma::squeezeVar()`.
 - **limma backend** (`strategy_limma` + `ContrastsLimma`): uses limma's matrix-based `lmFit` + `contrasts.fit` + `eBayes` pipeline directly.
 
 The user-facing API is identical: same formula specification, same contrast specification, same downstream methods (`get_contrasts`, `get_Plotter`, `to_wide`, `merge_contrasts_results`).

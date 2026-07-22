@@ -318,9 +318,16 @@ StrategyRLM <- R6::R6Class(
     #' @param model fitted model
     df_residual = function(model) stats::df.residual(model),
 
-    #' @description Get residual standard error
+    #' @description Get the robust scale estimate used by \code{vcov()}
+    #'
+    #' Returns \code{model$s}, the robust scale \code{MASS::rlm} builds its
+    #' \code{vcov()} / \code{summary()} standard errors from. This must match the
+    #' scale embedded in \code{vcov()} so that \code{ContrastsModerated}'s
+    #' \code{sigma / sqrt(var.post)} rescaling stays coherent; \code{stats::sigma()}
+    #' returns the ordinary-residual scale instead and would distort moderated
+    #' \code{rlm} statistics.
     #' @param model fitted model
-    sigma = function(model) stats::sigma(model)
+    sigma = function(model) model$s
   )
 )
 

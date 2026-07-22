@@ -91,11 +91,18 @@ build_contrast_analysis <- function(
   # The facade registry (seeded by .seed_facade_registry(), extensible via
   # register_facade()) is the single source of truth for method -> class.
   choices <- names(list_facades())
-  method <- match.arg(method, choices)
+  method <- tryCatch(
+    match.arg(method, choices),
+    error = function(e) {
+      abort_bad_argument(
+        "method",
+        must = paste0("be one of: ", paste(choices, collapse = ", ")),
+        not = paste(method, collapse = ", "),
+        parent = e
+      )
+    }
+  )
   entry <- lookup_facade(method)
-  if (is.null(entry)) {
-    stop("Unknown contrast method: ", method)
-  }
   # Decoys must not enter the fit or the shared variance pool (limma prior /
   # DEqMS variance-count trend), where they would perturb *target* q-values.
   # Opt-in: only when the config declares `pattern_decoys` (NULL leaves existing

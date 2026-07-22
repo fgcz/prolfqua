@@ -3,14 +3,22 @@
 # Shared helper: validate hierarchy is aggregatable
 .check_aggregatable <- function(lfq) {
   if (length(lfq$hierarchy_keys()) == 1) {
-    stop("no hierarchies to aggregate from: ", lfq$hierarchy_keys())
+    abort_bad_argument(
+      "lfq",
+      "have more than one hierarchy level to aggregate from",
+      not = paste(lfq$hierarchy_keys(), collapse = ", ")
+    )
   }
   if (length(lfq$hierarchy_keys()) == length(lfq$relevant_hierarchy_keys())) {
-    stop(
-      "no hierarchies to aggregate from: ",
-      lfq$hierarchy_keys(),
-      ", hierarchyDepth :",
-      length(lfq$relevant_hierarchy_keys())
+    abort_bad_argument(
+      "lfq",
+      "have a hierarchy_depth below its number of hierarchy levels to aggregate",
+      not = paste0(
+        "hierarchy_keys = ",
+        paste(lfq$hierarchy_keys(), collapse = ", "),
+        "; hierarchy_depth = ",
+        length(lfq$relevant_hierarchy_keys())
+      )
     )
   }
 }
@@ -18,7 +26,7 @@
 # Shared helper: plot aggregation result
 .aggregator_plot <- function(lfq, lfq_agg, subset = NULL, show.legend = FALSE) {
   if (is.null(lfq_agg)) {
-    stop("please aggregate the data first")
+    abort_bad_argument("lfq_agg", "be an aggregated LFQData (call the aggregator first)", not = "NULL")
   }
   if (!is.null(subset)) {
     lfqagg <- lfq_agg$get_subset(subset)

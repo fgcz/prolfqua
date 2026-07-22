@@ -15,9 +15,13 @@
 #' res <- moderated_p_limma(contrast_df)
 #' "moderated.p.value" %in% colnames(res)
 moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust = FALSE, confint = 0.95) {
-  squeezed_var <- prolfqua::squeezeVarRob(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
+  # Empirical-Bayes variance moderation via limma. Since limma 3.x, squeezeVar()
+  # estimates the prior robustly on fractional / low residual df (as produced by
+  # rlm, lmer_nested and the imputation facades) without the min_df workaround
+  # that prolfqua's former squeezeVarRob() fork carried over from MSqRob.
+  squeezed_var <- limma::squeezeVar(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
 
-  # pior degrees of freedom are Inf
+  # prior degrees of freedom are Inf
   if (all(is.infinite(squeezed_var$df.prior))) {
     squeezed_var$df.prior <- mean(contrast_df[[df]]) * nrow(contrast_df) / 10
   }

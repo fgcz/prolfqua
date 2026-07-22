@@ -57,10 +57,10 @@
 setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE, debug = FALSE) {
   configuration <- configuration$clone(deep = TRUE)
   if (is.null(configuration$file_name)) {
-    stop("file_name column is not specified in configuration.")
+    abort_invalid_config("`file_name` column is not specified in the AnalysisConfiguration.")
   }
   if (!configuration$file_name %in% colnames(data)) {
-    stop("File name column :", configuration$file_name, ", is missing in data.")
+    abort_missing_columns(configuration$file_name)
   }
 
   # extract hierarchy columns
@@ -80,11 +80,13 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE,
 
   # extract factors
   if (length(configuration$factors) == 0) {
-    stop(
-      "No factors (explanatory variables) specified in the AnalysisConfiguration.\n",
-      "Please use config$factors[\"Condition\"] = \"columnName\".\n",
-      "where Condition is the new name of the variable and\n",
-      "columnName is the name of the column containing the variable."
+    abort_invalid_config(
+      paste0(
+        "No factors (explanatory variables) specified in the AnalysisConfiguration.\n",
+        "Please use config$factors[\"Condition\"] = \"columnName\".\n",
+        "where Condition is the new name of the variable and\n",
+        "columnName is the name of the column containing the variable."
+      )
     )
   }
   for (i in seq_along(configuration$factors)) {
@@ -175,7 +177,7 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE,
       warning(str)
       return(txd)
     }
-    stop(str, call. = FALSE)
+    rlang::abort(str, class = c("prolfqua_error_duplicate_keys", "prolfqua_error"))
   }
   if (cc) {
     data <- .complete_cases_impl(

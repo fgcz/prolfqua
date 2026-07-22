@@ -1,5 +1,33 @@
 # prolfqua 1.6.3
 
+- **Variance moderation now uses `limma::squeezeVar()` directly.** `moderated_p_limma()` — and therefore every
+  moderated Wald-test facade (`lm`, `rlm`, `rfit`, `lm_impute`, `lm_missing`, `rfit_impute`, `lmer_nested`) and
+  the DEqMS small-group fallback — now calls `limma::squeezeVar()` instead of the vendored `squeezeVarRob()` fork
+  (limma is already a dependency). Modern limma estimates the empirical-Bayes prior robustly on the fractional / low
+  residual degrees of freedom these estimators produce, without the `min_df` workaround prolfqua inherited from MSqRob.
+  This slightly changes moderated p-values, FDR and confidence bounds; on the IonStar spike-in benchmark AUC is
+  unchanged, FDR calibration is maintained, and ≥99.7% of significance calls are identical. See the
+  `SqueezeVar_comparison` vignette in `prolfquabenchmark`. (`ropeca_nested` is unaffected — it aggregates raw
+  peptide-level p-values and never used variance moderation. A contrast with fewer than three features now returns
+  unmoderated results, matching limma, where the empirical-Bayes prior is undefined.)
+- **Fixed the scale used to moderate `rlm` contrasts.** `StrategyRLM$sigma()` now returns the robust scale
+  `MASS::rlm` builds its standard errors from (`fit$s`) instead of `stats::sigma()` (the ordinary-residual scale).
+  Because the two differ, `ContrastsModerated`'s `sigma / sqrt(var.post)` rescaling was leaving a spurious
+  per-protein factor in moderated `rlm` statistics, p-values, FDR and confidence bounds. Only the `rlm` facade's
+  moderated output is affected — `lm` and `rfit` were already coherent, and `rlm`'s unmoderated statistics
+  (`diff`, `std.error`) were always correct.
+- **Removed the exported `squeezeVarRob()`** and its internal helpers (`fitFDist_LG`, `fitFDistRobustly_LG`); the whole
+  vendored `squeezeVarRob.R` file is gone. Use `limma::squeezeVar()` instead. DEqMS moderation now calls
+  `limma::trigammaInverse()` (identical to the copy that was removed). This is a breaking change only for code that
+  called `prolfqua::squeezeVarRob()` directly — the ecosystem does not. Also dropped the now-unused `statmod` from
+  `Imports`.
+- User-facing errors at prolfqua's public entry points now carry typed condition classes (all inheriting from
+  `prolfqua_error`), so callers and tests can catch failures by class instead of matching message text. Covered:
+  `setup_analysis()`, `build_contrast_analysis()`, the `LFQData$set_data()` / `set_config_value()` mutators,
+  `LFQData$get_Aggregator()`, the aggregators' "must aggregate a multi-level hierarchy" / "aggregate first" checks,
+  `LFQDataTransformer$center_to_reference()`, and `ContrastsSimpleImpute$get_contrasts()`. `LFQData$set_data()` and
+  `set_config_value()` additionally now reject data that no longer contains the columns required by the current
+  configuration, instead of accepting invalid state silently.
 - Abundance-density plots now carry per-sample Plotly highlight keys, allowing interactive reports to fade non-hovered
   sample curves while preserving the existing ggplot output.
 - **Breaking — contrast schema.** The `modelName` column of `get_contrasts()` output is now the selected facade key (`lm`, `rlm`, `rfit`, `lm_impute`, `lm_missing`, `limma`, `limma_impute`, `limma_voom`, `limma_voom_impute`, `limpa`, `deqms`, `deqms_voom`, `firth`, `lmer_nested`, `ropeca_nested`, `firth_nested`, `limpa_nested`) instead of the testing-schema label (`WaldTest_moderated`, `*_DEqMS`, `*_imputed`, …). Rescue/imputation state moved to a new `estimate_type` column with values `observed`, `lod_imputed`, or `missing_fallback`. The redundant `facade` column was removed (its role is now played by `modelName`). The moderated-Wald-test wording belongs in methods text, not per-row labels. Downstream code that filtered on `modelName == "WaldTest_moderated"` (or the `_imputed`/`_DEqMS` variants) or read the `facade` column must migrate to the facade key and `estimate_type`.

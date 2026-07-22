@@ -43,6 +43,28 @@ test_that("Model (lm strategy)", {
   expect_s3_class(ah$plot, "ggplot")
 })
 
+test_that("strategy_rlm sigma matches the scale embedded in vcov() (moderation coherence)", {
+  set.seed(1)
+  d <- data.frame(
+    abundance = c(stats::rnorm(10), stats::rnorm(10, mean = 2)),
+    group_ = rep(c("A", "B"), each = 10)
+  )
+  strat <- strategy_rlm("abundance ~ group_")
+  fit <- strat$model_fun(d)
+
+  # ContrastsModerated rescales the raw Wald statistic by sigma / sqrt(var.post).
+  # That is only coherent when the strategy's sigma equals the scale factor
+  # embedded in vcov() (i.e. std.error == sigma * unscaled). MASS::rlm builds its
+  # vcov()/summary() standard errors from the robust scale fit$s, so the strategy
+  # sigma must be fit$s -- not stats::sigma(), which is the larger
+  # ordinary-residual scale and would leave a spurious per-protein factor in
+  # every moderated rlm p-value.
+  se_vcov <- sqrt(diag(vcov(fit)))
+  unscaled <- se_vcov / fit$s # scale-free contrast geometry
+  expect_equal(strat$sigma(fit) * unscaled, se_vcov)
+  expect_equal(strat$sigma(fit), fit$s)
+})
+
 test_that("Model (lm strategy with weights)", {
   istar <- sim_lfq_data_peptide_config(Nprot = 20)
   config <- istar$config

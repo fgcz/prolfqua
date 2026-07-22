@@ -75,6 +75,19 @@ LFQData <- R6::R6Class(
         dplyr::select(keys[flagged, , drop = FALSE], dplyr::all_of(sid))
       ))
       n_flag / n_total
+    },
+    # Verify that the internal data still carries the columns implied by the
+    # current configuration (structural join / grouping keys). Guards the
+    # mutators, which would otherwise accept data that silently breaks
+    # downstream operations.
+    .validate_state = function() {
+      cfg <- private$.config
+      must_have <- unique(c(cfg$file_name, cfg$sample_name, cfg$factor_keys(), cfg$hierarchy_keys()))
+      missing <- setdiff(must_have, names(private$.data))
+      if (length(missing) > 0) {
+        abort_missing_columns(missing, data_nm = "LFQData$data")
+      }
+      invisible(NULL)
     }
   ),
   public = list(
@@ -101,7 +114,11 @@ LFQData <- R6::R6Class(
     #' @param new_data data.frame
     #' @return self (invisible)
     set_data = function(new_data) {
+      if (!is.data.frame(new_data)) {
+        abort_bad_argument("new_data", "be a data frame", not = paste(class(new_data), collapse = "/"))
+      }
       private$.data <- new_data
+      private$.validate_state()
       invisible(self)
     },
     #' @description
@@ -116,6 +133,7 @@ LFQData <- R6::R6Class(
     #' @param value the value to set
     set_config_value = function(field, value) {
       private$.config[[field]] <- value
+      private$.validate_state()
       invisible(self)
     },
     #' @description
@@ -410,7 +428,7 @@ LFQData <- R6::R6Class(
         "medpolish" = AggregateMedpolish$new(self, ...),
         "rlm" = AggregateRlm$new(self, ...),
         "topN" = AggregateTopN$new(self, ...),
-        stop("Unknown aggregation method: ", method)
+        abort_bad_argument("method", 'be one of: "medpolish", "rlm", "topN"', not = method)
       )
     },
     #' @description

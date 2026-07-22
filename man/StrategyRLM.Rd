@@ -244,7 +244,14 @@ Get residual degrees of freedom
 \if{html}{\out{<a id="method-StrategyRLM-sigma"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyRLM-sigma}{}}}
 \subsection{Method \code{sigma()}}{
-Get residual standard error
+Get the robust scale estimate used by \code{vcov()}
+
+Returns \code{model$s}, the robust scale \code{MASS::rlm} builds its
+\code{vcov()} / \code{summary()} standard errors from. This must match the
+scale embedded in \code{vcov()} so that \code{ContrastsModerated}'s
+\code{sigma / sqrt(var.post)} rescaling stays coherent; \code{stats::sigma()}
+returns the ordinary-residual scale instead and would distort moderated
+\code{rlm} statistics.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{StrategyRLM$sigma(model)}\if{html}{\out{</div>}}
 }

@@ -40,7 +40,7 @@ methods (`get_contrasts`, `get_Plotter`, `to_wide`, `merge_contrasts_results`).
 1. **Fit LOESS**: `log(sigma^2) ~ log2(peptide_count)` — captures the
    count-dependent variance trend.
 2. **Estimate prior df (d0)**: from the residual variance around the LOESS
-   curve, using the `trigammaInverse` approach (same math as limma/squeezeVarRob).
+   curve, using the `trigammaInverse` approach (same math as `limma::squeezeVar`).
 3. **Count-specific prior variance**: `s0^2(count)` varies per protein, derived
    from the fitted LOESS curve.
 4. **Posterior variance**: Bayesian shrinkage combining observed and prior:

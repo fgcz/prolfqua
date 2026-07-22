@@ -13,7 +13,7 @@ find_d0_deqms(mean_myfct)
 scalar prior degrees of freedom (d0)
 }
 \description{
-Uses trigammaInverse to estimate d0 from the mean residual variance
-after removing the count-dependent trend.
+Uses \code{limma::trigammaInverse} to estimate d0 from the mean residual
+variance after removing the count-dependent trend.
 }
 \keyword{internal}

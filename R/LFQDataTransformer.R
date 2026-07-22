@@ -170,7 +170,7 @@ LFQDataTransformer <- R6::R6Class(
     center_to_reference = function(lfqsubset) {
       message("data is transformed: ", self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
-        stop("the subset must have the same config as self")
+        abort_bad_argument("lfqsubset", "have the same transformation state (is_transformed) as self")
       }
       if (!self$lfq$is_transformed()) {
         warning("data should be log2 transformed")

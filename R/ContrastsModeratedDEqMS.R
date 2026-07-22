@@ -2,8 +2,8 @@
 
 #' Find prior degrees of freedom for DEqMS
 #'
-#' Uses trigammaInverse to estimate d0 from the mean residual variance
-#' after removing the count-dependent trend.
+#' Uses \code{limma::trigammaInverse} to estimate d0 from the mean residual
+#' variance after removing the count-dependent trend.
 #'
 #' @param mean_myfct mean of squared residuals minus trigamma correction
 #' @return scalar prior degrees of freedom (d0)
@@ -12,7 +12,7 @@ find_d0_deqms <- function(mean_myfct) {
   if (is.na(mean_myfct) || mean_myfct <= 0) {
     return(Inf)
   }
-  d0 <- 2 * trigammaInverse(mean_myfct)
+  d0 <- 2 * limma::trigammaInverse(mean_myfct)
   return(max(d0, 0.1))
 }
 
