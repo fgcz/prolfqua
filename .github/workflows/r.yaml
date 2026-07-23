@@ -40,3 +40,19 @@ jobs:
         if: success()
         run: covr::codecov(type = "all", token = Sys.getenv('CODECOV_TOKEN'))
         shell: Rscript {0}
+
+      - name: Run goodpractice report
+        if: always()
+        continue-on-error: true
+        run: |
+          mkdir -p goodpractice-report
+          Rscript -e 'result <- goodpractice::gp("."); print(result); saveRDS(result, "goodpractice-report/result.rds")' \
+            > goodpractice-report/report.txt 2>&1
+
+      - name: Upload goodpractice report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goodpractice-${{ runner.os }}-R-${{ matrix.r-version }}
+          path: goodpractice-report
+          if-no-files-found: warn
