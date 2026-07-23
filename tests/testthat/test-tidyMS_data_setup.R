@@ -38,6 +38,30 @@ test_that("setup_analysis(debug = TRUE) returns the count table for inspection",
   expect_gt(max(res$n), 1)
 })
 
+test_that("setup_analysis derives sample names and default metadata", {
+  fx <- .dup_setup_fixture()
+  fx$data$isotopeLabel <- NULL
+  fx$data$qValue <- NULL
+  fx$data$nr_children <- NULL
+
+  expect_warning(
+    result <- prolfqua::setup_analysis(
+      fx$data,
+      fx$config,
+      from_factors = TRUE
+    ),
+    "no isotopeLabel"
+  )
+
+  expect_equal(
+    dplyr::n_distinct(result[[fx$config$sample_name]]),
+    dplyr::n_distinct(result[[fx$config$file_name]])
+  )
+  expect_setequal(result[[fx$config$isotope_label]], "light")
+  expect_setequal(result[[fx$config$ident_q_value]], 0)
+  expect_setequal(result[[fx$config$nr_children]], 1)
+})
+
 test_that("sim_lfq_data respects the mean_prot argument", {
   set.seed(42)
   low <- prolfqua::sim_lfq_data(Nprot = 50, N = 3, mean_prot = 20)

@@ -1,3 +1,173 @@
+.validate_setup_file_name <- function(data, configuration) {
+  if (is.null(configuration$file_name)) {
+    abort_invalid_config("`file_name` column is not specified in the AnalysisConfiguration.")
+  }
+  if (!configuration$file_name %in% colnames(data)) {
+    abort_missing_columns(configuration$file_name)
+  }
+}
+
+.setup_hierarchy_columns <- function(data, configuration) {
+  for (i in seq_along(configuration$hierarchy)) {
+    data <- tidyr::unite(
+      data,
+      !!sym(configuration$hierarchy_keys()[i]),
+      configuration$hierarchy[[i]],
+      remove = FALSE,
+      sep = configuration$sep
+    )
+  }
+  dplyr::select(
+    data,
+    -dplyr::all_of(dplyr::setdiff(
+      unlist(configuration$hierarchy),
+      configuration$hierarchy_keys()
+    ))
+  )
+}
+
+.setup_factor_columns <- function(data, configuration) {
+  if (length(configuration$factors) == 0) {
+    abort_invalid_config(
+      paste0(
+        "No factors (explanatory variables) specified in the AnalysisConfiguration.\n",
+        "Please use config$factors[\"Condition\"] = \"columnName\".\n",
+        "where Condition is the new name of the variable and\n",
+        "columnName is the name of the column containing the variable."
+      )
+    )
+  }
+
+  for (i in seq_along(configuration$factors)) {
+    if (length(configuration$factors[[i]]) > 1) {
+      data <- tidyr::unite(
+        data,
+        !!sym(configuration$factor_keys()[i]),
+        configuration$factors[[i]],
+        remove = FALSE,
+        sep = configuration$sep
+      )
+    } else {
+      newname <- configuration$factor_keys()[i]
+      data <- dplyr::mutate(
+        data,
+        !!newname := as.character(!!sym(configuration$factors[[i]]))
+      )
+    }
+  }
+  data
+}
+
+.setup_sample_name <- function(data, configuration, from_factors) {
+  sample_name <- configuration$sample_name
+
+  if (from_factors && !sample_name %in% names(data)) {
+    message("creating sampleName from factor columns")
+    return(
+      data |>
+        tidyr::unite(
+          !!sym(sample_name),
+          unique(unlist(configuration$factors)),
+          remove = TRUE,
+          sep = configuration$sep
+        ) |>
+        dplyr::select(sample_name, configuration$file_name) |>
+        dplyr::distinct() |>
+        dplyr::mutate(across(all_of(sample_name), function(x) {
+          make.unique(x, sep = configuration$sep)
+        })) |>
+        dplyr::inner_join(data, by = configuration$file_name)
+    )
+  }
+
+  if (!sample_name %in% names(data)) {
+    message("creating sampleName from file_name column")
+    data[[sample_name]] <- tools::file_path_sans_ext(basename(data[[configuration$file_name]]))
+    return(data)
+  }
+
+  message("column sampleName already exists, using :", sample_name)
+  data
+}
+
+.add_setup_default_column <- function(data, column, value, warning_message) {
+  if (column %in% colnames(data)) {
+    return(data)
+  }
+  warning(warning_message)
+  data[[column]] <- value
+  data
+}
+
+.add_setup_default_columns <- function(data, configuration) {
+  data <- .add_setup_default_column(
+    data,
+    configuration$isotope_label,
+    "light",
+    "no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'."
+  )
+  data <- .add_setup_default_column(
+    data,
+    configuration$ident_q_value,
+    0,
+    "no qValue column specified in the data. Creating column qValue and setting qValues to 0."
+  )
+  .add_setup_default_column(
+    data,
+    configuration$nr_children,
+    1,
+    "no nr_children column specified in the data, adding column nr_children and setting to 1."
+  )
+}
+
+.setup_duplicate_counts <- function(data, configuration) {
+  data |>
+    group_by(
+      !!!syms(c(
+        configuration$file_name,
+        configuration$hierarchy_keys(),
+        configuration$isotope_label
+      ))
+    ) |>
+    summarize(n = n())
+}
+
+.setup_duplicate_message <- function(offending, configuration) {
+  paste0(
+    "setup_analysis: there is more than ONE observation for ",
+    nrow(offending),
+    " ",
+    paste(configuration$hierarchy_keys(), collapse = ", "),
+    " / sample (column '",
+    configuration$sample_name,
+    "', file '",
+    configuration$file_name,
+    "') combination(s).\n",
+    "Each hierarchy key must be observed at most once per sample.\n",
+    "First offending keys:\n",
+    paste(utils::capture.output(print(utils::head(offending, 5))), collapse = "\n"),
+    "\nRe-run setup_analysis(..., debug = TRUE) to return the full count table for inspection ",
+    "(rows where n > 1)."
+  )
+}
+
+.handle_setup_duplicates <- function(counts, configuration, debug) {
+  offending <- dplyr::filter(dplyr::ungroup(counts), .data[["n"]] > 1)
+  if (nrow(offending) == 0) {
+    return(NULL)
+  }
+
+  message <- .setup_duplicate_message(offending, configuration)
+  if (debug) {
+    warning(message)
+    return(counts)
+  }
+  rlang::abort(
+    message,
+    class = c("prolfqua_error_duplicate_keys", "prolfqua_error")
+  )
+}
+
 #' Setup a tidy table compatible with a \code{\link{AnalysisConfiguration}}
 #'
 #' Extracts columns relevant for a configuration from a data frame
@@ -56,128 +226,23 @@
 #'
 setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE, debug = FALSE) {
   configuration <- configuration$clone(deep = TRUE)
-  if (is.null(configuration$file_name)) {
-    abort_invalid_config("`file_name` column is not specified in the AnalysisConfiguration.")
-  }
-  if (!configuration$file_name %in% colnames(data)) {
-    abort_missing_columns(configuration$file_name)
-  }
-
-  # extract hierarchy columns
-  for (i in seq_along(configuration$hierarchy)) {
-    data <- tidyr::unite(
-      data,
-      !!sym(configuration$hierarchy_keys()[i]),
-      configuration$hierarchy[[i]],
-      remove = FALSE,
-      sep = configuration$sep
-    )
-  }
-  data <- dplyr::select(
-    data,
-    -dplyr::all_of(dplyr::setdiff(unlist(configuration$hierarchy), configuration$hierarchy_keys()))
-  )
-
-  # extract factors
-  if (length(configuration$factors) == 0) {
-    abort_invalid_config(
-      paste0(
-        "No factors (explanatory variables) specified in the AnalysisConfiguration.\n",
-        "Please use config$factors[\"Condition\"] = \"columnName\".\n",
-        "where Condition is the new name of the variable and\n",
-        "columnName is the name of the column containing the variable."
-      )
-    )
-  }
-  for (i in seq_along(configuration$factors)) {
-    if (length(configuration$factors[[i]]) > 1) {
-      data <- tidyr::unite(
-        data,
-        !!sym(configuration$factor_keys()[i]),
-        configuration$factors[[i]],
-        remove = FALSE,
-        sep = configuration$sep
-      )
-    } else {
-      newname <- configuration$factor_keys()[i]
-      data <- dplyr::mutate(data, !!newname := as.character(!!sym(configuration$factors[[i]])))
-    }
-  }
-
-  sample_name <- configuration$sample_name
-
-  if (from_factors && !sample_name %in% names(data)) {
-    message("creating sampleName from factor columns")
-    data <- data |>
-      tidyr::unite(
-        !!sym(sample_name),
-        unique(unlist(configuration$factors)),
-        remove = TRUE,
-        sep = configuration$sep
-      ) |>
-      dplyr::select(sample_name, configuration$file_name) |>
-      dplyr::distinct() |>
-      dplyr::mutate(across(all_of(sample_name), function(x) {
-        make.unique(x, sep = configuration$sep)
-      })) |>
-      dplyr::inner_join(data, by = configuration$file_name)
-  } else if (!sample_name %in% names(data)) {
-    message("creating sampleName from file_name column")
-    data[[configuration$sample_name]] <- tools::file_path_sans_ext(basename(data[[configuration$file_name]]))
-  } else {
-    message("column sampleName already exists, using :", sample_name)
-  }
-
+  .validate_setup_file_name(data, configuration)
+  data <- .setup_hierarchy_columns(data, configuration)
+  data <- .setup_factor_columns(data, configuration)
+  data <- .setup_sample_name(data, configuration, from_factors)
   data <- data |>
     dplyr::select(-dplyr::all_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
-
-  # Make implicit NA's explicit
-  if (!(configuration$isotope_label %in% colnames(data))) {
-    warning(
-      "no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'."
-    )
-    data[[configuration$isotope_label]] <- "light"
-  }
-  if (!(configuration$ident_q_value %in% colnames(data))) {
-    warning("no qValue column specified in the data. Creating column qValue and setting qValues to 0.")
-    data[[configuration$ident_q_value]] <- 0
-  }
-
-  # Make implicit NA's explicit
-  if (!(configuration$nr_children %in% colnames(data))) {
-    warning("no nr_children column specified in the data, adding column nr_children and setting to 1.")
-    data[[configuration$nr_children]] <- 1
-  }
-
-  # TODO add better warning....
+  data <- .add_setup_default_columns(data, configuration)
   data <- data |> dplyr::select(c(configuration$id_vars(), configuration$value_vars()))
 
-  txd <- data |>
-    group_by(!!!syms(c(configuration$file_name, configuration$hierarchy_keys(), configuration$isotope_label))) |>
-    summarize(n = n())
-  if (any(txd$n > 1)) {
-    offending <- dplyr::filter(dplyr::ungroup(txd), .data[["n"]] > 1)
-    str <- paste0(
-      "setup_analysis: there is more than ONE observation for ",
-      nrow(offending),
-      " ",
-      paste(configuration$hierarchy_keys(), collapse = ", "),
-      " / sample (column '",
-      configuration$sample_name,
-      "', file '",
-      configuration$file_name,
-      "') combination(s).\n",
-      "Each hierarchy key must be observed at most once per sample.\n",
-      "First offending keys:\n",
-      paste(utils::capture.output(print(utils::head(offending, 5))), collapse = "\n"),
-      "\nRe-run setup_analysis(..., debug = TRUE) to return the full count table for inspection ",
-      "(rows where n > 1)."
-    )
-    if (debug) {
-      warning(str)
-      return(txd)
-    }
-    rlang::abort(str, class = c("prolfqua_error_duplicate_keys", "prolfqua_error"))
+  duplicate_counts <- .setup_duplicate_counts(data, configuration)
+  duplicate_result <- .handle_setup_duplicates(
+    duplicate_counts,
+    configuration,
+    debug
+  )
+  if (!is.null(duplicate_result)) {
+    return(duplicate_result)
   }
   if (cc) {
     data <- .complete_cases_impl(
