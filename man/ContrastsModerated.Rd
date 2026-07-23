@@ -167,6 +167,8 @@ Other modelling:
 \item{\code{subject_id}}{columns with subject_id (proteinID)}
 
 \item{\code{p.adjust}}{function to adjust p-values}
+
+\item{\code{variance_floor}}{optional lower bound for posterior variances}
 }
 \if{html}{\out{</div>}}
 }
@@ -205,7 +207,8 @@ initialize
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsModerated$new(
   Contrast,
   model_name = paste0(Contrast$model_name, "_moderated"),
-  p.adjust = prolfqua::adjust_p_values
+  p.adjust = prolfqua::adjust_p_values,
+  variance_floor = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -217,6 +220,8 @@ initialize
 \item{\code{model_name}}{name of the model}
 
 \item{\code{p.adjust}}{function to adjust p-values - default BH}
+
+\item{\code{variance_floor}}{optional positive lower bound for posterior variances}
 }
 \if{html}{\out{</div>}}
 }

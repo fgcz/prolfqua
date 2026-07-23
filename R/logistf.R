@@ -84,7 +84,7 @@ contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
 }
 
 
-.prepare_logistf_lfqdata <- function(lfqdata) {
+.prepare_detection_lfqdata <- function(lfqdata) {
   stopifnot("LFQData" %in% class(lfqdata))
   lfq_missing <- lfqdata$get_copy()
   lfq_missing$complete_cases()
@@ -113,7 +113,7 @@ contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
 #' head(mod$get_coefficients())
 build_model_glm_protein <- function(lfqdata, modelstr) {
   .assert_aggregated_facade_input(lfqdata, "build_model_glm_protein")
-  lfq_missing <- .prepare_logistf_lfqdata(lfqdata)
+  lfq_missing <- .prepare_detection_lfqdata(lfqdata)
   formula <- paste(lfq_missing$get_config()$bin_resp, modelstr)
   build_model_logistf(lfq_missing, formula)
 }
@@ -139,7 +139,7 @@ build_model_glm_protein <- function(lfqdata, modelstr) {
 #' head(mod$get_coefficients())
 build_model_glm_peptide <- function(lfqdata, modelstr) {
   .assert_nested_facade_input(lfqdata, "build_model_glm_peptide")
-  lfq_missing <- .prepare_logistf_lfqdata(lfqdata)
+  lfq_missing <- .prepare_detection_lfqdata(lfqdata)
   formula <- paste(lfq_missing$get_config()$bin_resp, modelstr)
   build_model_logistf(lfq_missing, formula)
 }

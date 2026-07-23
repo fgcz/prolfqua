@@ -14,7 +14,25 @@
 #' )
 #' res <- moderated_p_limma(contrast_df)
 #' "moderated.p.value" %in% colnames(res)
-moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust = FALSE, confint = 0.95) {
+#' @param variance_floor optional positive lower bound for posterior variances
+moderated_p_limma <- function(
+  contrast_df,
+  df = "df",
+  estimate = "diff",
+  robust = FALSE,
+  confint = 0.95,
+  variance_floor = NULL
+) {
+  if (
+    !is.null(variance_floor) &&
+      (!is.numeric(variance_floor) ||
+        length(variance_floor) != 1L ||
+        is.na(variance_floor) ||
+        !is.finite(variance_floor) ||
+        variance_floor <= 0)
+  ) {
+    stop("`variance_floor` must be NULL or one positive number.", call. = FALSE)
+  }
   # Empirical-Bayes variance moderation via limma. Since limma 3.x, squeezeVar()
   # estimates the prior robustly on fractional / low residual df (as produced by
   # rlm, lmer_nested and the imputation facades) without the min_df workaround
@@ -24,6 +42,12 @@ moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust 
   # prior degrees of freedom are Inf
   if (all(is.infinite(squeezed_var$df.prior))) {
     squeezed_var$df.prior <- mean(contrast_df[[df]]) * nrow(contrast_df) / 10
+  }
+
+  if (!is.null(variance_floor)) {
+    bounded <- !is.na(squeezed_var$var.post) & squeezed_var$var.post < variance_floor
+    squeezed_var$var.post[bounded] <- variance_floor
+    squeezed_var$df.prior[bounded] <- Inf
   }
 
   squeezed_var <- tibble::as_tibble(squeezed_var)
@@ -63,11 +87,24 @@ moderated_p_limma <- function(contrast_df, df = "df", estimate = "diff", robust 
 #'
 #' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
 #'
-moderated_p_limma_long <- function(contrast_df, group_by_col = "lhs", estimate = "estimate", robust = FALSE) {
+#' @param variance_floor optional positive lower bound for posterior variances
+moderated_p_limma_long <- function(
+  contrast_df,
+  group_by_col = "lhs",
+  estimate = "estimate",
+  robust = FALSE,
+  variance_floor = NULL
+) {
   split_groups <- contrast_df |>
     dplyr::group_by(across(all_of(group_by_col))) |>
     dplyr::group_split()
-  moderated_results <- purrr::map_df(split_groups, moderated_p_limma, estimate = estimate, robust = robust)
+  moderated_results <- purrr::map_df(
+    split_groups,
+    moderated_p_limma,
+    estimate = estimate,
+    robust = robust,
+    variance_floor = variance_floor
+  )
   return(moderated_results)
 }
 

@@ -29,7 +29,8 @@
 #'   \code{"limma_impute"}, \code{"limma_voom"}, \code{"limma_voom_impute"},
 #'   \code{"limpa"}, \code{"limpa_nested"}, \code{"rlm"}, \code{"rfit"},
 #'   \code{"rfit_impute"}, \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
-#'   \code{"firth_nested"}, \code{"lmer_nested"}, \code{"ropeca_nested"};
+#'   \code{"firth_nested"}, \code{"binomial_nested"}, \code{"lmer_nested"},
+#'   \code{"ropeca_nested"};
 #'   downstream packages may add more via \code{\link{register_facade}}. The
 #'   authoritative list is \code{names(\link{list_facades}())}. Defaults to
 #'   \code{"lm"}.
@@ -43,7 +44,8 @@
 #'   \code{\link{ContrastsDEqMSFacade}},
 #'   \code{\link{ContrastsROPECANestedFacade}}, \code{\link{ContrastsFirthFacade}},
 #'   \code{\link{ContrastsFirthNestedFacade}}, \code{\link{ContrastsLimpaFacade}},
-#'   or \code{\link{ContrastsLimpaNestedFacade}}
+#'   \code{\link{ContrastsBinomialNestedFacade}}, or
+#'   \code{\link{ContrastsLimpaNestedFacade}}
 #' @export
 #' @family modelling
 #' @examples

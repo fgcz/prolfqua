@@ -8,13 +8,16 @@ moderated_p_limma_long(
   contrast_df,
   group_by_col = "lhs",
   estimate = "estimate",
-  robust = FALSE
+  robust = FALSE,
+  variance_floor = NULL
 )
 }
 \arguments{
 \item{contrast_df}{result of \code{\link{contrasts_linfct}}}
 
 \item{group_by_col}{colnames with contrast description - default 'lhs'}
+
+\item{variance_floor}{optional positive lower bound for posterior variances}
 }
 \description{
 Moderate p-value for long table

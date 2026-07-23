@@ -175,11 +175,11 @@ Add focused tests for:
 
 ## Completion criteria
 
-- [ ] Firth and binomial backends share missingness preparation.
-- [ ] No new package dependency is introduced.
-- [ ] The strategy uses the Pearson dispersion scale embedded in `vcov()`.
-- [ ] Only a binomial strategy, thin facade, count summary, and small moderation generalization are added.
-- [ ] Existing generic model and contrast adapters provide the public contracts.
-- [ ] Log odds contrasts and moderated inference agree with independent reference calculations.
-- [ ] Method assumptions and limitations are documented.
-- [ ] Core and downstream validation pass.
+- [x] Firth and binomial backends share missingness preparation.
+- [x] No new package dependency is introduced.
+- [x] The strategy uses the Pearson dispersion scale embedded in `vcov()`.
+- [x] Only a binomial strategy, thin facade, count summary, and small moderation generalization are added.
+- [x] Existing generic model and contrast adapters provide the public contracts.
+- [x] Log odds contrasts and moderated inference agree with independent reference calculations.
+- [x] Method assumptions and limitations are documented.
+- [x] Core and downstream validation pass.

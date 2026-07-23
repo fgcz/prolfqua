@@ -60,20 +60,26 @@ ContrastsModerated <- R6::R6Class(
     subject_id = character(),
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
+    #' @field variance_floor optional lower bound for posterior variances
+    variance_floor = NULL,
     #' @description
     #' initialize
     #' @param Contrast class implementing the ContrastInterface
     #' @param model_name name of the model
     #' @param p.adjust function to adjust p-values - default BH
+    #' @param variance_floor optional positive lower bound for posterior variances
     initialize = function(
       Contrast,
       model_name = paste0(Contrast$model_name, "_moderated"),
-      p.adjust = prolfqua::adjust_p_values
+      p.adjust = prolfqua::adjust_p_values,
+      variance_floor = NULL
     ) {
       self$Contrast <- Contrast
       self$subject_id <- Contrast$subject_id
       self$model_name <- model_name
       self$p.adjust <- p.adjust
+      self$variance_floor <- variance_floor
+      self$config <- Contrast$get_config()
     },
     #' @description
     #' get both sides of contrasts
@@ -96,7 +102,8 @@ ContrastsModerated <- R6::R6Class(
       contrast_result <- moderated_p_limma_long(
         contrast_result,
         group_by_col = "contrast",
-        estimate = "diff"
+        estimate = "diff",
+        variance_floor = self$variance_floor
       )
       contrast_result <- .finalize_moderated_columns(contrast_result, self$p.adjust, all)
       contrast_result <- dplyr::ungroup(contrast_result)

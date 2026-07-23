@@ -283,7 +283,7 @@ test_that("Firth nested preparation completes sparse LFQData before encoding mis
   lfq_sparse$set_data(lfq_sparse$data_long()[!is.na(lfq_sparse$data_long()[[response]]), ])
   expect_setequal(unique(prolfqua::encode_bin_resp(lfq_sparse)$bin_resp), 1L)
 
-  lfq_missing <- prolfqua:::.prepare_logistf_lfqdata(lfq_sparse)
+  lfq_missing <- prolfqua:::.prepare_detection_lfqdata(lfq_sparse)
   expect_setequal(unique(lfq_missing$data_long()$bin_resp), c(0L, 1L))
 })
 

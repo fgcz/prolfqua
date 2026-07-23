@@ -277,6 +277,79 @@ ContrastsFirthNestedFacade <- R6::R6Class(
 )
 
 
+#' Quasibinomial detection-count facade for nested input
+#'
+#' Completes and encodes child-feature detection using the same preparation as
+#' \code{\link{ContrastsFirthNestedFacade}}, then collapses the binary rows into
+#' detected and undetected counts per parent and sample. The resulting
+#' quasibinomial model reports parent-level log odds ratios in \code{diff};
+#' \code{avgAbd} is the average linear predictor on the log-odds scale.
+#'
+#' Child features are treated as exchangeable binomial trials. The symmetric
+#' pseudo-count stabilizes complete separation but is not equivalent to Firth's
+#' bias-reducing penalty. Empirical-Bayes dispersion moderation uses
+#' \code{\link{ContrastsModerated}}; by default posterior dispersion is bounded
+#' below by one.
+#'
+#' @return An R6 class generator.
+#' @export
+#' @examples
+#' istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' facade <- ContrastsBinomialNestedFacade$new(lfqdata, "~ group_", contrasts)
+#' head(facade$get_contrasts())
+ContrastsBinomialNestedFacade <- R6::R6Class(
+  "ContrastsBinomialNestedFacade",
+  inherit = ContrastsFacadeBase,
+  public = list(
+    #' @description Fit the nested detection-count model and its contrasts.
+    #' @param lfqdata nested \code{\link{LFQData}}
+    #' @param modelstr right-hand-side model formula
+    #' @param contrasts named contrast expressions
+    #' @param prior_count non-negative symmetric pseudo-count
+    #' @param binomial_bound bound posterior dispersion below by one
+    #' @param ... passed to \code{\link{strategy_binomial}}
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      prior_count = 0.1,
+      binomial_bound = TRUE,
+      ...
+    ) {
+      .assert_nested_facade_input(lfqdata, "ContrastsBinomialNestedFacade")
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+
+      detection_lfqdata <- .prepare_detection_lfqdata(lfqdata)
+      counts <- .summarize_detection_counts(detection_lfqdata)
+      strategy <- strategy_binomial(modelstr, prior_count = prior_count, ...)
+      self$model <- build_model(
+        counts,
+        strategy,
+        subject_id = lfqdata$subject_id(),
+        model_name = "binomial_nested"
+      )
+
+      base_contrast <- Contrasts$new(self$model, contrasts, model_name = "binomial_nested")
+      base_contrast$config <- ContrastConfiguration$new(
+        subject_id = lfqdata$subject_id(),
+        supports_dea_qc = FALSE
+      )
+      variance_floor <- if (isTRUE(binomial_bound)) 1 else NULL
+      self$contrast <- ContrastsModerated$new(
+        base_contrast,
+        model_name = "binomial_nested",
+        variance_floor = variance_floor
+      )
+      self$facade_name <- "binomial_nested"
+      self$config <- self$contrast$get_config()
+    }
+  )
+)
+
+
 #' Limpa contrast analysis facade for nested input
 #'
 #' Encapsulates the full precursor -> protein pipeline:
