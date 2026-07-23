@@ -13,7 +13,7 @@ BUILD_VIGNETTES_CMD = Rscript -e "devtools::build_vignettes()"
 TEST_CMD = Rscript -e "devtools::test()"
 COVERAGE_CMD = Rscript -e "covr::package_coverage() |> print()"
 INSTALL_CMD = R CMD INSTALL $(TARBALL)
-LINT_CMD = Rscript -e "lintr::lint_package()"
+LINT_CMD = Rscript -e "lints <- lintr::lint_package(); print(lints); if (length(lints) > 0L) quit(status = 1L)"
 SITE_CMD = Rscript -e "pkgdown::build_site(install = FALSE)"
 DEPLOY_CMD = Rscript -e "pkgdown::deploy_to_branch()"
 NEW_VERSION_CMD = Rscript -e "d <- read.dcf('DESCRIPTION'); old <- d[1, 'Version']; parts <- as.integer(strsplit(old, '.', fixed = TRUE)[[1]]); if (length(parts) < 3) parts <- c(parts, rep(0L, 3L - length(parts))); parts[3] <- parts[3] + 1L; new <- paste(parts, collapse = '.'); x <- readLines('DESCRIPTION'); x <- sub('^Version: .*', paste0('Version: ', new), x); writeLines(x, 'DESCRIPTION'); cat(new)"
