@@ -236,25 +236,25 @@ head(fa$get_contrasts())
 #> # A tibble: 6 × 14
 #>   modelName estimate_type protein_Id  contrast   diff std.error avgAbd statistic
 #>   <chr>     <chr>         <chr>       <chr>     <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 rfit      observed      0EfVhX~0087 A_vs_Ct… -2.34      0.686   21.0    -3.02 
-#> 2 rfit      observed      7cbcrd~5725 A_vs_Ct…  2.79      0.554   20.6     3.90 
-#> 3 rfit      observed      9VUkAq~4703 A_vs_Ct…  1.64      0.609   20.3     1.87 
-#> 4 rfit      observed      BEJI92~5282 A_vs_Ct…  0.979     0.749   20.7     1.26 
-#> 5 rfit      observed      CGzoYe~2147 A_vs_Ct… -0.630     0.898   30.5    -0.878
-#> 6 rfit      observed      Fl4JiV~8625 A_vs_Ct… -0.103     0.821   21.2    -0.132
+#> 1 rfit      observed      0EfVhX~0087 A_vs_Ct… -2.34      0.686   21.0    -2.87 
+#> 2 rfit      observed      7cbcrd~5725 A_vs_Ct…  2.79      0.554   20.6     3.70 
+#> 3 rfit      observed      9VUkAq~4703 A_vs_Ct…  1.64      0.609   20.3     1.78 
+#> 4 rfit      observed      BEJI92~5282 A_vs_Ct…  0.979     0.749   20.7     1.20 
+#> 5 rfit      observed      CGzoYe~2147 A_vs_Ct… -0.630     0.898   30.5    -0.833
+#> 6 rfit      observed      Fl4JiV~8625 A_vs_Ct… -0.103     0.821   21.2    -0.126
 #> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 9 × 5
 #>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>   <chr>                <dbl>             <dbl>         <dbl>               <dbl>
-#> 1 0EfVhX~0087         -2.34            0.00848        0.0382              -3.02 
-#> 2 7cbcrd~5725          2.79            0.00182        0.0164               3.90 
-#> 3 9VUkAq~4703          1.64            0.0820         0.246                1.87 
-#> 4 BEJI92~5282          0.979           0.225          0.507                1.26 
-#> 5 CGzoYe~2147         -0.630           0.393          0.657               -0.878
-#> 6 Fl4JiV~8625         -0.103           0.896          0.896               -0.132
-#> 7 HvIpHG~9079         -0.617           0.438          0.657               -0.797
-#> 8 JcKVfU~9653          0.361           0.621          0.699                0.504
-#> 9 SGIVBl~5782         -0.416           0.571          0.699               -0.580
+#> 1 0EfVhX~0087         -2.34           0.00412        0.0186               -2.87 
+#> 2 7cbcrd~5725          2.79           0.000221       0.00199               3.70 
+#> 3 9VUkAq~4703          1.64           0.0756         0.227                 1.78 
+#> 4 BEJI92~5282          0.979          0.230          0.518                 1.20 
+#> 5 CGzoYe~2147         -0.630          0.405          0.675                -0.833
+#> 6 Fl4JiV~8625         -0.103          0.900          0.900                -0.126
+#> 7 HvIpHG~9079         -0.617          0.450          0.675                -0.755
+#> 8 JcKVfU~9653          0.361          0.633          0.712                 0.478
+#> 9 SGIVBl~5782         -0.416          0.582          0.712                -0.550
 ```

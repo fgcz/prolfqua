@@ -9,7 +9,8 @@ moderated_p_limma_long(
   contrast_df,
   group_by_col = "lhs",
   estimate = "estimate",
-  robust = FALSE
+  robust = FALSE,
+  variance_floor = NULL
 )
 ```
 
@@ -23,6 +24,10 @@ moderated_p_limma_long(
 - group_by_col:
 
   colnames with contrast description - default 'lhs'
+
+- variance_floor:
+
+  optional positive lower bound for posterior variances
 
 ## See also
 

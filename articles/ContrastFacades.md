@@ -447,27 +447,27 @@ if (length(lm_missing_proteins) > 0) {
 |:-------------|:-----------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|-------:|--------:|---------:|----------:|------:|:--------|:------------|
 | limma_impute | lod_imputed      | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
 | limpa        | observed         | 8mS8sK~0150 | A_vs_Ctrl |  2.798 | -0.615 | 0.226 |    -1.435 |     0.429 | 30.965 |   0.161 |   -1.489 |     0.259 | 0.965 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.065 |  4.310 |   1.000 |   -0.234 |     0.234 | 0.087 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.065 |  4.468 |   1.000 |   -0.237 |     0.237 | 0.089 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 |  2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | TRUE    | FALSE       |
 | limma_impute | lod_imputed      | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
 | limpa        | observed         | 8mS8sK~0150 | B_vs_Ctrl |  3.245 |  0.279 | 0.578 |     0.662 |     0.422 | 30.965 |   0.513 |   -0.581 |     1.140 | 0.965 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.798 |     0.286 |     0.065 |  4.310 |   0.788 |   -0.217 |     0.252 | 0.087 | FALSE   | FALSE       |
-| lm_missing   | observed         | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.020 |     3.690 |     0.102 |  5.377 |   0.012 |    0.108 |     0.570 | 0.092 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.065 |  4.468 |   0.792 |   -0.219 |     0.254 | 0.089 | FALSE   | FALSE       |
+| lm_missing   | observed         | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.021 |     3.642 |     0.102 |  5.447 |   0.013 |    0.106 |     0.572 | 0.093 | FALSE   | FALSE       |
 | limma_impute | lod_imputed      | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.996 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
 | limpa        | observed         | DTCi0N~0734 | A_vs_Ctrl |  3.550 | -0.982 | 0.020 |    -2.714 |     0.362 | 30.965 |   0.011 |   -1.719 |    -0.244 | 0.991 | TRUE    | TRUE        |
-| lm_impute    | lod_imputed      | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -4.057 |     0.065 |  6.310 |   0.006 |   -0.467 |    -0.040 | 0.088 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.997 |     0.065 |  6.468 |   0.006 |   -0.469 |    -0.038 | 0.090 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 |  4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | TRUE    | FALSE       |
 | limma_impute | lod_imputed      | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
 | limpa        | observed         | DTCi0N~0734 | B_vs_Ctrl |  4.145 |  0.208 | 0.619 |     0.581 |     0.358 | 30.965 |   0.565 |   -0.522 |     0.939 | 0.991 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.049 |     2.665 |     0.065 |  6.310 |   0.035 |   -0.047 |     0.380 | 0.088 | FALSE   | FALSE       |
-| lm_missing   | observed         | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.016 |     3.499 |     0.057 |  7.377 |   0.009 |    0.040 |     0.403 | 0.078 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.065 |  6.468 |   0.037 |   -0.049 |     0.382 | 0.090 | FALSE   | FALSE       |
+| lm_missing   | observed         | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.017 |     3.447 |     0.057 |  7.447 |   0.010 |    0.038 |     0.406 | 0.079 | FALSE   | FALSE       |
 | limma_impute | lod_imputed      | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | FALSE   | FALSE       |
 | limpa        | observed         | OrL0ux~1369 | A_vs_Ctrl |  3.497 | -0.881 | 0.025 |    -2.630 |     0.335 | 30.965 |   0.013 |   -1.563 |    -0.198 | 0.960 | FALSE   | TRUE        |
-| lm_impute    | lod_imputed      | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.049 |    -3.369 |     0.065 |  4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | FALSE   | FALSE       |
-| lm_missing   | observed         | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.055 |    -2.951 |     0.084 |  5.340 |   0.029 |   -0.480 |    -0.072 | 0.081 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.065 |  4.468 |   0.026 |   -0.443 |     0.030 | 0.089 | FALSE   | FALSE       |
+| lm_missing   | observed         | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.058 |    -2.893 |     0.084 |  5.408 |   0.031 |   -0.483 |    -0.068 | 0.082 | FALSE   | FALSE       |
 | limma_impute | lod_imputed      | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
 | limpa        | observed         | OrL0ux~1369 | B_vs_Ctrl |  3.297 | -1.281 | 0.006 |    -3.200 |     0.400 | 30.965 |   0.003 |   -2.097 |    -0.464 | 0.960 | TRUE    | TRUE        |
-| lm_impute    | lod_imputed      | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.036 |    -3.369 |     0.065 |  4.310 |   0.025 |   -0.441 |     0.028 | 0.087 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.065 |  4.468 |   0.026 |   -0.443 |     0.030 | 0.089 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 |  2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | TRUE    | FALSE       |
 
 Contrast estimates from lm_missing, lm_impute, and limma_impute for
@@ -605,7 +605,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.6.3
+    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.7.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

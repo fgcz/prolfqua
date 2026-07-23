@@ -1,7 +1,9 @@
 # Find prior degrees of freedom for DEqMS
 
-Uses trigammaInverse to estimate d0 from the mean residual variance
-after removing the count-dependent trend.
+Uses
+[`limma::trigammaInverse`](https://rdrr.io/pkg/limma/man/trigammainverse.html)
+to estimate d0 from the mean residual variance after removing the
+count-dependent trend.
 
 ## Usage
 

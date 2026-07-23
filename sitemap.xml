@@ -30,6 +30,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/AnovaExtractor.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastConfiguration.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/Contrasts.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsBinomialNestedFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.html</loc></url>
@@ -75,6 +76,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/ModelLimma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/PACKAGE_DATA.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/R6_extract_values.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/StrategyBinomial.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/StrategyLM.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/StrategyLimma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/StrategyLimpa.html</loc></url>
@@ -238,8 +240,8 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/sim_lfq_data_protein_config.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/sim_make_model_lm.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/sim_make_model_lmer.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/squeezeVarRob.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/strategy.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/strategy_binomial.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/strategy_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/strategy_limpa.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/summarize_hierarchy.html</loc></url>

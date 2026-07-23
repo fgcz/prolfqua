@@ -30,7 +30,7 @@ downstream methods (`get_contrasts`, `get_Plotter`, `to_wide`,
     count-dependent variance trend.
 2.  **Estimate prior df (d0)**: from the residual variance around the
     LOESS curve, using the `trigammaInverse` approach (same math as
-    limma/squeezeVarRob).
+    [`limma::squeezeVar`](https://rdrr.io/pkg/limma/man/squeezeVar.html)).
 3.  **Count-specific prior variance**: `s0^2(count)` varies per protein,
     derived from the fitted LOESS curve.
 4.  **Posterior variance**: Bayesian shrinkage combining observed and
@@ -179,7 +179,7 @@ merged_p <- inner_join(
 cor(-log10(merged_p$p_deqms), -log10(merged_p$p_moderated), use = "complete.obs")
 ```
 
-    ## [1] 0.9964816
+    ## [1] 0.9959993
 
 ``` r
 ggplot(merged_p, aes(x = -log10(p_moderated), y = -log10(p_deqms))) +
@@ -310,7 +310,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.6.3
+    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.7.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

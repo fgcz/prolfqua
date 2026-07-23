@@ -382,40 +382,40 @@ if (length(lm_missing_proteins_2f) > 0) {
 | modelName    | estimate_type    | protein_Id  | contrast   | avgAbd |   diff |   FDR | statistic | std.error |     df | p.value | conf.low | conf.high | sigma | rescued | significant |
 |:-------------|:-----------------|:------------|:-----------|-------:|-------:|------:|----------:|----------:|-------:|--------:|---------:|----------:|------:|:--------|:------------|
 | limma_impute | lod_imputed      | QQg7IC~3558 | T_C_gv_KO  |  4.125 |  0.411 | 0.002 |     5.353 |     0.077 |  8.398 |   0.001 |    0.235 |     0.587 | 0.109 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | QQg7IC~3558 | T_C_gv_KO  |  4.125 |  0.411 | 0.001 |     5.691 |     0.072 |  8.653 |   0.000 |    0.179 |     0.644 | 0.102 | FALSE   | FALSE       |
-| lm_missing   | observed         | QQg7IC~3558 | T_C_gv_KO  |  4.118 |  0.425 | 0.000 |     6.660 |     0.046 |  9.389 |   0.000 |    0.259 |     0.591 | 0.074 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | QQg7IC~3558 | T_C_gv_KO  |  4.125 |  0.411 | 0.001 |     5.648 |     0.072 |  8.380 |   0.000 |    0.176 |     0.647 | 0.103 | FALSE   | FALSE       |
+| lm_missing   | observed         | QQg7IC~3558 | T_C_gv_KO  |  4.118 |  0.425 | 0.000 |     6.581 |     0.046 |  9.214 |   0.000 |    0.257 |     0.593 | 0.075 | FALSE   | FALSE       |
 | limma_impute | lod_imputed      | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.005 |     4.568 |     0.077 |  8.398 |   0.002 |    0.175 |     0.526 | 0.109 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.003 |     4.856 |     0.072 |  8.653 |   0.001 |    0.118 |     0.583 | 0.102 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.003 |     4.819 |     0.072 |  8.380 |   0.001 |    0.115 |     0.586 | 0.103 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.001 |     8.081 |     0.043 |  6.000 |   0.000 |    0.245 |     0.457 | 0.053 | TRUE    | FALSE       |
 | limma_impute | lod_imputed      | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.688 |    -0.556 |     0.109 |  8.398 |   0.593 |   -0.309 |     0.188 | 0.109 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.661 |    -0.591 |     0.101 |  8.653 |   0.570 |   -0.293 |     0.172 | 0.102 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.665 |    -0.586 |     0.101 |  8.380 |   0.573 |   -0.296 |     0.175 | 0.103 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | QQg7IC~3558 | WT_KO_comp |  0.389 |  0.000 | 1.000 |     0.000 |     0.043 |  6.000 |   1.000 |   -0.106 |     0.106 | 0.053 | TRUE    | FALSE       |
 | limma_impute | lod_imputed      | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.003 |     5.705 |     0.076 |  6.398 |   0.001 |    0.251 |     0.620 | 0.108 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.002 |     6.015 |     0.072 |  6.653 |   0.001 |    0.191 |     0.680 | 0.102 | FALSE   | FALSE       |
-| lm_missing   | observed         | hjVK4f~9433 | T_C_gv_KO  |  4.109 |  0.452 | 0.007 |     4.397 |     0.095 |  7.389 |   0.003 |    0.237 |     0.668 | 0.092 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.002 |     5.954 |     0.072 |  6.380 |   0.001 |    0.186 |     0.685 | 0.103 | FALSE   | FALSE       |
+| lm_missing   | observed         | hjVK4f~9433 | T_C_gv_KO  |  4.109 |  0.452 | 0.008 |     4.335 |     0.095 |  7.214 |   0.003 |    0.233 |     0.672 | 0.093 | FALSE   | FALSE       |
 | limma_impute | lod_imputed      | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.076 |  6.398 |   1.000 |   -0.184 |     0.184 | 0.108 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.072 |  6.653 |   1.000 |   -0.245 |     0.245 | 0.102 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.072 |  6.380 |   1.000 |   -0.250 |     0.250 | 0.103 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | hjVK4f~9433 | T_C_gv_WT  |  3.868 |  0.000 | 1.000 |     0.000 |     0.069 |  4.000 |   1.000 |   -0.192 |     0.192 | 0.085 | TRUE    | FALSE       |
 | limma_impute | lod_imputed      | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.015 |    -4.034 |     0.108 |  6.398 |   0.006 |   -0.696 |    -0.175 | 0.108 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.011 |    -4.253 |     0.101 |  6.653 |   0.004 |   -0.680 |    -0.191 | 0.102 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.013 |    -4.210 |     0.101 |  6.380 |   0.005 |   -0.685 |    -0.186 | 0.103 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | hjVK4f~9433 | WT_KO_comp |  0.252 | -0.376 | 0.012 |    -5.444 |     0.069 |  4.000 |   0.006 |   -0.567 |    -0.184 | 0.085 | TRUE    | FALSE       |
 | limma_impute | lod_imputed      | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.002 |     4.803 |     0.058 | 10.398 |   0.001 |    0.151 |     0.409 | 0.109 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.001 |     5.133 |     0.054 | 10.653 |   0.000 |    0.054 |     0.505 | 0.102 | FALSE   | FALSE       |
-| lm_missing   | observed         | mVseto~9392 | T_C_gv_KO  |  4.559 |  0.200 | 0.002 |     4.469 |     0.039 | 11.389 |   0.001 |    0.024 |     0.376 | 0.080 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.001 |     5.101 |     0.054 | 10.380 |   0.000 |    0.052 |     0.507 | 0.103 | FALSE   | FALSE       |
+| lm_missing   | observed         | mVseto~9392 | T_C_gv_KO  |  4.559 |  0.200 | 0.003 |     4.427 |     0.039 | 11.214 |   0.001 |    0.022 |     0.378 | 0.081 | FALSE   | FALSE       |
 | limma_impute | lod_imputed      | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.611 |     0.064 | 10.398 |   0.000 |    0.600 |     0.883 | 0.109 | TRUE    | TRUE        |
-| lm_impute    | lod_imputed      | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.602 |     0.064 | 10.653 |   0.000 |    0.516 |     0.967 | 0.102 | TRUE    | TRUE        |
+| lm_impute    | lod_imputed      | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.531 |     0.064 | 10.380 |   0.000 |    0.514 |     0.969 | 0.103 | TRUE    | TRUE        |
 | lm_missing   | missing_fallback | mVseto~9392 | T_C_gv_WT  |  4.264 |  0.729 | 0.000 |    17.721 |     0.041 |  8.000 |   0.000 |    0.634 |     0.823 | 0.056 | TRUE    | TRUE        |
 | limma_impute | lod_imputed      | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.002 |     5.145 |     0.090 | 10.398 |   0.000 |    0.263 |     0.661 | 0.109 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.001 |     5.497 |     0.083 | 10.653 |   0.000 |    0.237 |     0.687 | 0.102 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.001 |     5.463 |     0.083 | 10.380 |   0.000 |    0.234 |     0.690 | 0.103 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | mVseto~9392 | WT_KO_comp |  0.535 |  0.387 | 0.000 |     9.424 |     0.041 |  8.000 |   0.000 |    0.293 |     0.482 | 0.056 | TRUE    | FALSE       |
 | limma_impute | lod_imputed      | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.982 |    -0.054 |     0.072 |  5.398 |   0.959 |   -0.185 |     0.177 | 0.107 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.981 |    -0.057 |     0.068 |  5.653 |   0.957 |   -0.259 |     0.251 | 0.103 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.982 |    -0.056 |     0.068 |  5.380 |   0.957 |   -0.265 |     0.257 | 0.104 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | zvzYsk~2881 | T_C_gv_KO  |  3.889 |  0.000 | 1.000 |     0.000 |     0.063 |  3.000 |   1.000 |   -0.200 |     0.200 | 0.063 | TRUE    | FALSE       |
 | limma_impute | lod_imputed      | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.178 |    -1.902 |     0.070 |  5.398 |   0.111 |   -0.310 |     0.043 | 0.107 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.166 |    -1.938 |     0.068 |  5.653 |   0.104 |   -0.388 |     0.121 | 0.103 | FALSE   | FALSE       |
-| lm_missing   | observed         | zvzYsk~2881 | T_C_gv_WT  |  4.018 | -0.314 | 0.017 |    -3.848 |     0.066 |  6.418 |   0.007 |   -0.529 |    -0.099 | 0.089 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed      | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.172 |    -1.915 |     0.068 |  5.380 |   0.110 |   -0.395 |     0.128 | 0.104 | FALSE   | FALSE       |
+| lm_missing   | observed         | zvzYsk~2881 | T_C_gv_WT  |  4.018 | -0.314 | 0.019 |    -3.791 |     0.066 |  6.250 |   0.008 |   -0.533 |    -0.094 | 0.091 | FALSE   | FALSE       |
 | limma_impute | lod_imputed      | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.360 |    -1.269 |     0.102 |  5.398 |   0.256 |   -0.386 |     0.127 | 0.107 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.329 |    -1.331 |     0.096 |  5.653 |   0.234 |   -0.384 |     0.125 | 0.103 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed      | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.339 |    -1.315 |     0.096 |  5.380 |   0.242 |   -0.391 |     0.132 | 0.104 | TRUE    | FALSE       |
 | lm_missing   | missing_fallback | zvzYsk~2881 | WT_KO_comp | -0.064 |  0.000 | 1.000 |     0.000 |     0.063 |  3.000 |   1.000 |   -0.200 |     0.200 | 0.063 | TRUE    | FALSE       |
 
 Contrast estimates from lm_missing, lm_impute, and limma_impute for
@@ -541,7 +541,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.6.3
+    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.7.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

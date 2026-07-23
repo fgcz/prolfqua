@@ -9,7 +9,7 @@ Limma moderated contrasts"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -178,6 +178,10 @@ Limma moderated contrasts"></head><body>
 <dd><p>function to adjust p-values</p></dd>
 
 
+<dt><code>variance_floor</code></dt>
+<dd><p>optional lower bound for posterior variances</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -208,7 +212,8 @@ Limma moderated contrasts"></head><body>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">Contrast</span>,</span>
 <span>  model_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">Contrast</span><span class="op">$</span><span class="va">model_name</span>, <span class="st">"_moderated"</span><span class="op">)</span>,</span>
-<span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span></span>
+<span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
+<span>  variance_floor <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -224,6 +229,10 @@ Limma moderated contrasts"></head><body>
 
 <dt><code>p.adjust</code></dt>
 <dd><p>function to adjust p-values - default BH</p></dd>
+
+
+<dt><code>variance_floor</code></dt>
+<dd><p>optional positive lower bound for posterior variances</p></dd>
 
 
 </dl><p></p></div>

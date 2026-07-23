@@ -10,7 +10,8 @@ models and perform empirical Bayes variance shrinkage, but:
 - **prolfqua default** (`strategy_lm` + `Contrasts` +
   `ContrastsModerated`): fits one
   [`lm()`](https://rdrr.io/r/stats/lm.html) per protein, then applies
-  prolfqua’s own `squeezeVarRob` moderation.
+  empirical Bayes moderation via
+  [`limma::squeezeVar()`](https://rdrr.io/pkg/limma/man/squeezeVar.html).
 - **limma backend** (`strategy_limma` + `ContrastsLimma`): uses limma’s
   matrix-based `lmFit` + `contrasts.fit` + `eBayes` pipeline directly.
 
@@ -176,7 +177,7 @@ merged_p <- inner_join(
 cor(-log10(merged_p$p_limma), -log10(merged_p$p_moderated), use = "complete.obs")
 ```
 
-    ## [1] 0.984774
+    ## [1] 0.9941538
 
 ``` r
 plot(-log10(merged_p$p_limma), -log10(merged_p$p_moderated),
@@ -715,7 +716,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] dplyr_1.2.1    prolfqua_1.6.3
+    ## [1] dplyr_1.2.1    prolfqua_1.7.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

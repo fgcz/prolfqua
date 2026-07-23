@@ -11,7 +11,7 @@ construction through modelling to contrast computation."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,8 @@ construction through modelling to contrast computation.</p>
 <code>"limma_impute"</code>, <code>"limma_voom"</code>, <code>"limma_voom_impute"</code>,
 <code>"limpa"</code>, <code>"limpa_nested"</code>, <code>"rlm"</code>, <code>"rfit"</code>,
 <code>"rfit_impute"</code>, <code>"deqms"</code>, <code>"deqms_voom"</code>, <code>"firth"</code>,
-<code>"firth_nested"</code>, <code>"lmer_nested"</code>, <code>"ropeca_nested"</code>;
+<code>"firth_nested"</code>, <code>"binomial_nested"</code>, <code>"lmer_nested"</code>,
+<code>"ropeca_nested"</code>;
 downstream packages may add more via <code><a href="register_facade.html">register_facade</a></code>. The
 authoritative list is <code>names(<a href="list_facades.html">list_facades</a>())</code>. Defaults to
 <code>"lm"</code>.</p></dd>
@@ -108,7 +109,8 @@ authoritative list is <code>names(<a href="list_facades.html">list_facades</a>()
   <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>,
   <code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>, <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>,
   <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>, <code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>,
-  or <code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code></p>
+  <code><a href="ContrastsBinomialNestedFacade.html">ContrastsBinomialNestedFacade</a></code>, or
+  <code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code></p>
     </div>
     <div class="section level2">
     <h2 id="vectorized-mode">Vectorized mode<a class="anchor" aria-label="anchor" href="#vectorized-mode"></a></h2>
@@ -241,12 +243,12 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lm        observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lm        observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lm        observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lm        observed      9VUkAq~45… A_vs_Ct…  0.067<span style="text-decoration: underline;">9</span>     0.760   19.4     0.104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lm        observed      At886V~32… A_vs_Ct… -<span style="color: #BB0000;">1.01</span>       0.969   19.1    -<span style="color: #BB0000;">1.20</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lm        observed      BEJI92~91… A_vs_Ct… -<span style="color: #BB0000;">0.873</span>      0.659   20.9    -<span style="color: #BB0000;">1.39</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lm        observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.49 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lm        observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lm        observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lm        observed      9VUkAq~45… A_vs_Ct…  0.067<span style="text-decoration: underline;">9</span>     0.760   19.4     0.105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lm        observed      At886V~32… A_vs_Ct… -<span style="color: #BB0000;">1.01</span>       0.969   19.1    -<span style="color: #BB0000;">1.21</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lm        observed      BEJI92~91… A_vs_Ct… -<span style="color: #BB0000;">0.873</span>      0.659   20.9    -<span style="color: #BB0000;">1.41</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: df &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
@@ -279,12 +281,12 @@ for large datasets. Results are numerically identical. Example:</p><div class="s
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lm_missi… observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lm_missi… observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lm_missi… observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lm_missi… observed      9VUkAq~45… A_vs_Ct…  0.067<span style="text-decoration: underline;">9</span>     0.760   19.4     0.104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lm_missi… observed      At886V~32… A_vs_Ct… -<span style="color: #BB0000;">1.01</span>       0.969   19.1    -<span style="color: #BB0000;">1.20</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lm_missi… observed      BEJI92~91… A_vs_Ct… -<span style="color: #BB0000;">0.873</span>      0.659   20.9    -<span style="color: #BB0000;">1.39</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> lm_missi… observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.49 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> lm_missi… observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> lm_missi… observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> lm_missi… observed      9VUkAq~45… A_vs_Ct…  0.067<span style="text-decoration: underline;">9</span>     0.760   19.4     0.105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> lm_missi… observed      At886V~32… A_vs_Ct… -<span style="color: #BB0000;">1.01</span>       0.969   19.1    -<span style="color: #BB0000;">1.21</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> lm_missi… observed      BEJI92~91… A_vs_Ct… -<span style="color: #BB0000;">0.873</span>      0.659   20.9    -<span style="color: #BB0000;">1.41</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: df &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>

@@ -17,7 +17,7 @@ registry (which reflects downstream registrations)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@ registry (which reflects downstream registrations).</p>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>An object of class <code>facade_registry</code> (inherits from <code>list</code>) of length 18.</p>
+    <p>An object of class <code>facade_registry</code> (inherits from <code>list</code>) of length 19.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -84,12 +84,13 @@ and <code>needs_saint_annotation</code>.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">FACADE_REGISTRY</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "deqms"             "deqms_voom"        "firth"            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "firth_nested"      "limma"             "limma_impute"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "limma_voom"        "limma_voom_impute" "limpa"            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "limpa_nested"      "lm"                "lm_impute"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "lm_missing"        "lmer_nested"       "rfit"             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "rfit_impute"       "rlm"               "ropeca_nested"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "binomial_nested"   "deqms"             "deqms_voom"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "firth"             "firth_nested"      "limma"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "limma_impute"      "limma_voom"        "limma_voom_impute"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "limpa"             "limpa_nested"      "lm"               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "lm_impute"         "lm_missing"        "lmer_nested"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "rfit"              "rfit_impute"       "rlm"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ropeca_nested"    </span>
 <span class="r-in"><span><span class="va">FACADE_REGISTRY</span><span class="op">$</span><span class="va">limma</span><span class="op">$</span><span class="va">class</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ContrastsLimmaFacade"</span>
 </code></pre></div>

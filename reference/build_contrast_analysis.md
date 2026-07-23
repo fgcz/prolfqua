@@ -34,8 +34,8 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
   `"lm_missing"`, `"limma"`, `"limma_impute"`, `"limma_voom"`,
   `"limma_voom_impute"`, `"limpa"`, `"limpa_nested"`, `"rlm"`, `"rfit"`,
   `"rfit_impute"`, `"deqms"`, `"deqms_voom"`, `"firth"`,
-  `"firth_nested"`, `"lmer_nested"`, `"ropeca_nested"`; downstream
-  packages may add more via
+  `"firth_nested"`, `"binomial_nested"`, `"lmer_nested"`,
+  `"ropeca_nested"`; downstream packages may add more via
   [`register_facade`](https://wolski.github.io/prolfqua/reference/register_facade.md).
   The authoritative list is
   `names(`[`list_facades`](https://wolski.github.io/prolfqua/reference/list_facades.md)`())`.
@@ -62,6 +62,7 @@ one of
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
+[`ContrastsBinomialNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsBinomialNestedFacade.md),
 or
 [`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md)
 
@@ -197,12 +198,12 @@ head(fa_lm$get_contrasts())
 #> # A tibble: 6 × 14
 #>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
 #>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 lm        observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47 
-#> 2 lm        observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765
-#> 3 lm        observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68 
-#> 4 lm        observed      9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.104
-#> 5 lm        observed      At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.20 
-#> 6 lm        observed      BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.39 
+#> 1 lm        observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.49 
+#> 2 lm        observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.779
+#> 3 lm        observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.75 
+#> 4 lm        observed      9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.105
+#> 5 lm        observed      At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.21 
+#> 6 lm        observed      BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.41 
 #> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 
@@ -235,12 +236,12 @@ head(fa_miss$get_contrasts())
 #> # A tibble: 6 × 14
 #>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
 #>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 lm_missi… observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.47 
-#> 2 lm_missi… observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.765
-#> 3 lm_missi… observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.68 
-#> 4 lm_missi… observed      9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.104
-#> 5 lm_missi… observed      At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.20 
-#> 6 lm_missi… observed      BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.39 
+#> 1 lm_missi… observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.49 
+#> 2 lm_missi… observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.779
+#> 3 lm_missi… observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.75 
+#> 4 lm_missi… observed      9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.105
+#> 5 lm_missi… observed      At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.21 
+#> 6 lm_missi… observed      BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.41 
 #> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 

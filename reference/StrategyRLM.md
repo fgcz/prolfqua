@@ -256,7 +256,19 @@ Get residual degrees of freedom
 
 ### Method [`sigma()`](https://rdrr.io/r/stats/sigma.html)
 
-Get residual standard error
+Get the robust scale estimate used by
+[`vcov()`](https://rdrr.io/r/stats/vcov.html)
+
+Returns `model$s`, the robust scale
+[`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html) builds its
+[`vcov()`](https://rdrr.io/r/stats/vcov.html) /
+[`summary()`](https://rdrr.io/r/base/summary.html) standard errors from.
+This must match the scale embedded in
+[`vcov()`](https://rdrr.io/r/stats/vcov.html) so that
+`ContrastsModerated`'s `sigma / sqrt(var.post)` rescaling stays
+coherent; [`stats::sigma()`](https://rdrr.io/r/stats/sigma.html) returns
+the ordinary-residual scale instead and would distort moderated `rlm`
+statistics.
 
 #### Usage
 
@@ -290,5 +302,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$model_fun(get_formula = TRUE)
 #> Intensity ~ condition
-#> <environment: 0x558af57bad90>
+#> <environment: 0x556e5deb3c48>
 ```

@@ -26,6 +26,9 @@
 - [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md)
   : Estimate contrasts using Wald Test
 
+- [`ContrastsBinomialNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsBinomialNestedFacade.md)
+  : Quasibinomial detection-count facade for nested input
+
 - [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md)
   : DEqMS contrast analysis facade
 
@@ -154,6 +157,9 @@
 
 - [`R6_extract_values()`](https://wolski.github.io/prolfqua/reference/R6_extract_values.md)
   : Extract all value slots in an R6 object
+
+- [`StrategyBinomial`](https://wolski.github.io/prolfqua/reference/StrategyBinomial.md)
+  : Quasibinomial detection-count strategy
 
 - [`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md)
   : Linear model strategy (R6 class)
@@ -322,15 +328,15 @@
 - [`sim_lfq_data_protein_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_protein_config.md)
   : Simulate data, protein, with config
 
-- [`squeezeVarRob()`](https://wolski.github.io/prolfqua/reference/squeezeVarRob.md)
-  : Robustly Squeeze Sample Variances
-
 - [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_rfit()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_lmer()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   [`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
   : Create Firth's logistic regression strategy
+
+- [`strategy_binomial()`](https://wolski.github.io/prolfqua/reference/strategy_binomial.md)
+  : Create a quasibinomial detection-count strategy
 
 - [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
   : Create limma modelling strategy

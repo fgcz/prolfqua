@@ -129,6 +129,10 @@ Other modelling:
 
   function to adjust p-values
 
+- `variance_floor`:
+
+  optional lower bound for posterior variances
+
 ## Methods
 
 ### Public methods
@@ -169,7 +173,8 @@ initialize
     ContrastsModerated$new(
       Contrast,
       model_name = paste0(Contrast$model_name, "_moderated"),
-      p.adjust = prolfqua::adjust_p_values
+      p.adjust = prolfqua::adjust_p_values,
+      variance_floor = NULL
     )
 
 #### Arguments
@@ -185,6 +190,10 @@ initialize
 - `p.adjust`:
 
   function to adjust p-values - default BH
+
+- `variance_floor`:
+
+  optional positive lower bound for posterior variances
 
 ------------------------------------------------------------------------
 

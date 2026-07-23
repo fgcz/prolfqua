@@ -1,7 +1,70 @@
 # Changelog
 
-## prolfqua 1.6.3
+## prolfqua 1.7.0
 
+- Added the `binomial_nested` facade for nested LFQ data. It reuses the
+  Firth backend’s completed peptide-detection representation, fits
+  protein-by-sample detected/undetected peptide counts with a
+  quasibinomial GLM, and reports moderated protein-level log odds-ratio
+  contrasts. A symmetric pseudo-count stabilizes separated fits, and
+  posterior dispersion is bounded below by one by default
+  (`binomial_bound = FALSE` disables the bound).
+- **Variance moderation now uses
+  [`limma::squeezeVar()`](https://rdrr.io/pkg/limma/man/squeezeVar.html)
+  directly.**
+  [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md)
+  — and therefore every moderated Wald-test facade (`lm`, `rlm`, `rfit`,
+  `lm_impute`, `lm_missing`, `rfit_impute`, `lmer_nested`) and the DEqMS
+  small-group fallback — now calls
+  [`limma::squeezeVar()`](https://rdrr.io/pkg/limma/man/squeezeVar.html)
+  instead of the vendored `squeezeVarRob()` fork (limma is already a
+  dependency). Modern limma estimates the empirical-Bayes prior robustly
+  on the fractional / low residual degrees of freedom these estimators
+  produce, without the `min_df` workaround prolfqua inherited from
+  MSqRob. This slightly changes moderated p-values, FDR and confidence
+  bounds; on the IonStar spike-in benchmark AUC is unchanged, FDR
+  calibration is maintained, and ≥99.7% of significance calls are
+  identical. See the `SqueezeVar_comparison` vignette in
+  `prolfquabenchmark`. (`ropeca_nested` is unaffected — it aggregates
+  raw peptide-level p-values and never used variance moderation. A
+  contrast with fewer than three features now returns unmoderated
+  results, matching limma, where the empirical-Bayes prior is
+  undefined.)
+- **Fixed the scale used to moderate `rlm` contrasts.**
+  `StrategyRLM$sigma()` now returns the robust scale
+  [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html) builds its
+  standard errors from (`fit$s`) instead of
+  [`stats::sigma()`](https://rdrr.io/r/stats/sigma.html) (the
+  ordinary-residual scale). Because the two differ,
+  `ContrastsModerated`’s `sigma / sqrt(var.post)` rescaling was leaving
+  a spurious per-protein factor in moderated `rlm` statistics, p-values,
+  FDR and confidence bounds. Only the `rlm` facade’s moderated output is
+  affected — `lm` and `rfit` were already coherent, and `rlm`’s
+  unmoderated statistics (`diff`, `std.error`) were always correct.
+- **Removed the exported `squeezeVarRob()`** and its internal helpers
+  (`fitFDist_LG`, `fitFDistRobustly_LG`); the whole vendored
+  `squeezeVarRob.R` file is gone. Use
+  [`limma::squeezeVar()`](https://rdrr.io/pkg/limma/man/squeezeVar.html)
+  instead. DEqMS moderation now calls
+  [`limma::trigammaInverse()`](https://rdrr.io/pkg/limma/man/trigammainverse.html)
+  (identical to the copy that was removed). This is a breaking change
+  only for code that called `prolfqua::squeezeVarRob()` directly — the
+  ecosystem does not. Also dropped the now-unused `statmod` from
+  `Imports`.
+- User-facing errors at prolfqua’s public entry points now carry typed
+  condition classes (all inheriting from `prolfqua_error`), so callers
+  and tests can catch failures by class instead of matching message
+  text. Covered:
+  [`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md),
+  [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
+  the `LFQData$set_data()` / `set_config_value()` mutators,
+  `LFQData$get_Aggregator()`, the aggregators’ “must aggregate a
+  multi-level hierarchy” / “aggregate first” checks,
+  `LFQDataTransformer$center_to_reference()`, and
+  `ContrastsSimpleImpute$get_contrasts()`. `LFQData$set_data()` and
+  `set_config_value()` additionally now reject data that no longer
+  contains the columns required by the current configuration, instead of
+  accepting invalid state silently.
 - Abundance-density plots now carry per-sample Plotly highlight keys,
   allowing interactive reports to fade non-hovered sample curves while
   preserving the existing ggplot output.
@@ -26,7 +89,7 @@
   ([`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md)),
   removing three hand-maintained copies that could drift. New exported
   base class `ContrastsFacadeBase` holds the shared facade plumbing; the
-  18 built-in facades are now thin subclasses.
+  19 built-in facades are now thin subclasses.
 - `ContrastsPlotter` colours volcano/MA/score plots by `estimate_type`
   when present (and the colour column was left at its default), keeping
   LOD-imputed / fallback rows visually distinct now that `modelName` is

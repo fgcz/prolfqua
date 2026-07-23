@@ -10,9 +10,16 @@ moderated_p_limma(
   df = "df",
   estimate = "diff",
   robust = FALSE,
-  confint = 0.95
+  confint = 0.95,
+  variance_floor = NULL
 )
 ```
+
+## Arguments
+
+- variance_floor:
+
+  optional positive lower bound for posterior variances
 
 ## See also
 
