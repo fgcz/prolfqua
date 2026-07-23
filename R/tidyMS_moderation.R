@@ -1,5 +1,94 @@
 # Moderation and p-value adjustment ----
 
+.validate_variance_floor <- function(variance_floor) {
+  if (is.null(variance_floor)) {
+    return(invisible(NULL))
+  }
+  valid <- is.numeric(variance_floor) &&
+    length(variance_floor) == 1L &&
+    !is.na(variance_floor) &&
+    is.finite(variance_floor) &&
+    variance_floor > 0
+  if (!valid) {
+    stop(
+      "`variance_floor` must be NULL or one positive number.",
+      call. = FALSE
+    )
+  }
+  invisible(NULL)
+}
+
+.moderate_variances <- function(
+  contrast_df,
+  df,
+  robust,
+  variance_floor
+) {
+  squeezed_var <- limma::squeezeVar(
+    contrast_df$sigma^2,
+    df = contrast_df[[df]],
+    robust = robust
+  )
+
+  if (all(is.infinite(squeezed_var$df.prior))) {
+    squeezed_var$df.prior <- mean(contrast_df[[df]]) *
+      nrow(contrast_df) /
+      10
+  }
+  if (is.null(variance_floor)) {
+    return(squeezed_var)
+  }
+
+  bounded <- !is.na(squeezed_var$var.post) &
+    squeezed_var$var.post < variance_floor
+  squeezed_var$var.post[bounded] <- variance_floor
+  squeezed_var$df.prior[bounded] <- Inf
+  squeezed_var
+}
+
+.append_moderated_statistics <- function(
+  contrast_df,
+  squeezed_var,
+  df
+) {
+  squeezed_var <- tibble::as_tibble(squeezed_var)
+  squeezed_var <- setNames(
+    squeezed_var,
+    paste0("moderated.", names(squeezed_var))
+  )
+  dplyr::bind_cols(contrast_df, squeezed_var) |>
+    dplyr::mutate(
+      moderated.statistic = .data$statistic *
+        .data$sigma /
+        sqrt(.data$moderated.var.post),
+      moderated.df.total = !!sym(df) +
+        .data$moderated.df.prior,
+      moderated.p.value = 2 *
+        pt(
+          abs(.data$moderated.statistic),
+          df = .data$moderated.df.total,
+          lower.tail = FALSE
+        )
+    )
+}
+
+.append_moderated_confidence <- function(
+  contrast_df,
+  estimate,
+  confint
+) {
+  conf_quantile <- -qt(
+    (1 - confint) / 2,
+    df = contrast_df$moderated.df.total
+  )
+  posterior_sd <- sqrt(contrast_df$moderated.var.post)
+  contrast_df$moderated.conf.low <- contrast_df[[estimate]] -
+    conf_quantile * posterior_sd
+  contrast_df$moderated.conf.high <- contrast_df[[estimate]] +
+    conf_quantile * posterior_sd
+  dplyr::ungroup(contrast_df)
+}
+
 #' Moderate p-values - limma approach
 #' @export
 #' @family modelling
@@ -23,49 +112,28 @@ moderated_p_limma <- function(
   confint = 0.95,
   variance_floor = NULL
 ) {
-  if (
-    !is.null(variance_floor) &&
-      (!is.numeric(variance_floor) ||
-        length(variance_floor) != 1L ||
-        is.na(variance_floor) ||
-        !is.finite(variance_floor) ||
-        variance_floor <= 0)
-  ) {
-    stop("`variance_floor` must be NULL or one positive number.", call. = FALSE)
-  }
+  .validate_variance_floor(variance_floor)
+
   # Empirical-Bayes variance moderation via limma. Since limma 3.x, squeezeVar()
   # estimates the prior robustly on fractional / low residual df (as produced by
   # rlm, lmer_nested and the imputation facades) without the min_df workaround
   # that prolfqua's former squeezeVarRob() fork carried over from MSqRob.
-  squeezed_var <- limma::squeezeVar(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
-
-  # prior degrees of freedom are Inf
-  if (all(is.infinite(squeezed_var$df.prior))) {
-    squeezed_var$df.prior <- mean(contrast_df[[df]]) * nrow(contrast_df) / 10
-  }
-
-  if (!is.null(variance_floor)) {
-    bounded <- !is.na(squeezed_var$var.post) & squeezed_var$var.post < variance_floor
-    squeezed_var$var.post[bounded] <- variance_floor
-    squeezed_var$df.prior[bounded] <- Inf
-  }
-
-  squeezed_var <- tibble::as_tibble(squeezed_var)
-  squeezed_var <- setNames(squeezed_var, paste0("moderated.", names(squeezed_var)))
-  contrast_df <- dplyr::bind_cols(contrast_df, squeezed_var)
-  contrast_df <- contrast_df |>
-    dplyr::mutate(
-      moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post),
-      moderated.df.total = !!sym(df) + .data$moderated.df.prior,
-      moderated.p.value = 2 * pt(abs(.data$moderated.statistic), df = .data$moderated.df.total, lower.tail = FALSE)
-    )
-
-  conf_quantile <- -qt((1 - confint) / 2, df = contrast_df$moderated.df.total)
-  contrast_df$moderated.conf.low <- contrast_df[[estimate]] - conf_quantile * sqrt(contrast_df$moderated.var.post)
-  contrast_df$moderated.conf.high <- contrast_df[[estimate]] + conf_quantile * sqrt(contrast_df$moderated.var.post)
-  contrast_df <- dplyr::ungroup(contrast_df)
-
-  return(contrast_df)
+  squeezed_var <- .moderate_variances(
+    contrast_df,
+    df,
+    robust,
+    variance_floor
+  )
+  contrast_df <- .append_moderated_statistics(
+    contrast_df,
+    squeezed_var,
+    df
+  )
+  .append_moderated_confidence(
+    contrast_df,
+    estimate,
+    confint
+  )
 }
 
 #' Moderate p-value for long table
