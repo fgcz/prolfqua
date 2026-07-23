@@ -578,6 +578,55 @@ test_that("limma_voom_impute also flags LOD-rescued proteins", {
   expect_true("lod_imputed" %in% res$estimate_type)
 })
 
+test_that("limma_voom_impute returns an ordinary fit when no rows fail", {
+  istar <- prolfqua::sim_lfq_data_protein_config(
+    Nprot = 30,
+    weight_missing = 0,
+    seed = 42
+  )
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  strategy <- prolfqua::strategy_limma(
+    "transformedIntensity ~ group_"
+  )
+
+  model <- prolfqua::build_model_limma_voom_impute(
+    lfqdata,
+    strategy
+  )
+
+  expect_s3_class(model, "ModelLimma")
+  expect_length(model$imputed_proteins, 0)
+  expect_false(anyNA(model$fit$coefficients))
+})
+
+test_that("limma_voom_impute supports borrowed residual degrees of freedom", {
+  istar <- prolfqua::sim_lfq_data_protein_config(
+    Nprot = 50,
+    weight_missing = 0.5,
+    seed = 42
+  )
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata$rename_response("transformedIntensity")
+  strategy <- prolfqua::strategy_limma(
+    "transformedIntensity ~ group_"
+  )
+
+  model <- prolfqua::build_model_limma_voom_impute(
+    lfqdata,
+    strategy,
+    df_method = "borrowed"
+  )
+  imputed_rows <- model$rowdata$protein_Id %in%
+    model$imputed_proteins
+
+  expect_true(any(imputed_rows))
+  expect_length(
+    unique(model$fit$df.residual[imputed_rows]),
+    1
+  )
+})
+
 
 test_that("ContrastsLMMissingFacade emits a deprecation warning", {
   istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
