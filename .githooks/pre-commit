@@ -1,16 +1,22 @@
-#!/bin/sh
-set -eu
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 
 repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
 
+if [[ ! -f Makefile ]]; then
+  echo "pre-commit: no Makefile found, skipping"
+  exit 0
+fi
+
 echo "pre-commit: formatting with Air"
 make format
 
-if ! git diff --quiet -- .; then
+if ! git diff --quiet --; then
   echo "pre-commit: formatting changed files"
   echo "Review and stage the formatting changes, then commit again."
-  git diff --name-only -- .
+  git diff --name-only --
   exit 1
 fi
 
