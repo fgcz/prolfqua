@@ -204,6 +204,205 @@ compute_borrowed_variance_limma <- function(fit) {
   NULL
 }
 
+.new_model_limma <- function(
+  fit,
+  setup,
+  strategy,
+  model_name,
+  dummy_model = setup$dummy_model,
+  imputed_proteins = character(0)
+) {
+  ModelLimma$new(
+    fit = fit,
+    design = setup$design,
+    formula = strategy$formula,
+    subject_id = setup$subject_id,
+    model_name = model_name,
+    rowdata = setup$rowdata,
+    trend = strategy$trend,
+    robust = strategy$robust,
+    dummy_model = dummy_model,
+    p.adjust = prolfqua::adjust_p_values,
+    imputed_proteins = imputed_proteins
+  )
+}
+
+.resolve_limma_lod <- function(lod, lfqdata) {
+  if (!is.null(lod)) {
+    return(lod)
+  }
+  missing_helpers <- MissingHelpers$new(
+    lfqdata$data_long(),
+    lfqdata$get_config()
+  )
+  missing_helpers$get_lod()
+}
+
+.impute_limma_data <- function(expr_matrix, weights, lod) {
+  na_mask <- is.na(expr_matrix)
+  expr_imputed <- expr_matrix
+  expr_imputed[na_mask] <- lod
+  expr_imputed <- pmax(expr_imputed, lod)
+
+  weights_imputed <- weights
+  if (is.matrix(weights_imputed)) {
+    weights_imputed[na_mask] <- 1
+  }
+  list(
+    expression = expr_imputed,
+    weights = weights_imputed
+  )
+}
+
+.replace_failed_limma_rows <- function(
+  fit,
+  imputed_fit,
+  failed,
+  borrowed,
+  expr_matrix,
+  design,
+  df_method
+) {
+  fit$coefficients[failed, ] <-
+    imputed_fit$coefficients[failed, ]
+  fit$stdev.unscaled[failed, ] <-
+    imputed_fit$stdev.unscaled[failed, ]
+  fit$sigma[failed] <- borrowed$sigma
+  fit$Amean[failed] <- imputed_fit$Amean[failed]
+
+  if (df_method == "observed") {
+    n_observed <- rowSums(!is.na(expr_matrix))
+    fit$df.residual[failed] <- pmax(
+      n_observed[failed] - ncol(design),
+      1
+    )
+  } else {
+    fit$df.residual[failed] <- borrowed$df
+  }
+  fit
+}
+
+.limma_imputed_dummy_model <- function(setup, expr_imputed) {
+  dummy_data <- setup$annotation
+  dummy_data$.response <- as.numeric(expr_imputed[1, ])
+  dummy_formula <- update(
+    setup$rhs_formula,
+    .response ~ .
+  )
+  lm(dummy_formula, data = dummy_data)
+}
+
+.finish_limma_imputation <- function(
+  fit,
+  imputed_fit,
+  failed,
+  borrowed,
+  expr_matrix,
+  expr_imputed,
+  setup,
+  strategy,
+  model_name,
+  df_method
+) {
+  fit <- .replace_failed_limma_rows(
+    fit,
+    imputed_fit,
+    failed,
+    borrowed,
+    expr_matrix,
+    setup$design,
+    df_method
+  )
+  .new_model_limma(
+    fit,
+    setup,
+    strategy,
+    model_name,
+    dummy_model = .limma_imputed_dummy_model(
+      setup,
+      expr_imputed
+    ),
+    imputed_proteins = setup$rowdata[
+      failed,
+      setup$subject_id[1],
+      drop = TRUE
+    ]
+  )
+}
+
+.combine_vooma_weights <- function(vooma_weights, external_weights) {
+  if (is.null(external_weights)) {
+    return(vooma_weights)
+  }
+  if (is.matrix(external_weights)) {
+    return(vooma_weights * external_weights)
+  }
+  vooma_weights *
+    rep(
+      external_weights,
+      each = nrow(vooma_weights)
+    )
+}
+
+.plot_vooma_trend <- function(mean_expression, sigma, lowess_trend) {
+  graphics::plot(
+    mean_expression,
+    sigma,
+    xlab = "Average log2 expression",
+    ylab = expression(sqrt(sigma)),
+    main = "vooma: Mean-variance trend",
+    pch = 16,
+    cex = 0.3
+  )
+  graphics::lines(lowess_trend, col = "red", lwd = 2)
+}
+
+.fit_vooma <- function(
+  expression,
+  design,
+  external_weights,
+  span,
+  plot
+) {
+  preliminary_fit <- limma::lmFit(
+    expression,
+    design,
+    weights = external_weights
+  )
+  mean_expression <- preliminary_fit$Amean
+  sigma <- sqrt(preliminary_fit$sigma)
+  lowess_trend <- stats::lowess(
+    mean_expression,
+    sigma,
+    f = span
+  )
+  trend_function <- stats::approxfun(
+    lowess_trend,
+    rule = 2,
+    ties = list("ordered", mean)
+  )
+  fitted_values <- preliminary_fit$coefficients %*%
+    t(preliminary_fit$design)
+  vooma_weights <- 1 / trend_function(fitted_values)^4
+  dim(vooma_weights) <- dim(fitted_values)
+
+  if (plot) {
+    .plot_vooma_trend(
+      mean_expression,
+      sigma,
+      lowess_trend
+    )
+  }
+  limma::lmFit(
+    expression,
+    design,
+    weights = .combine_vooma_weights(
+      vooma_weights,
+      external_weights
+    )
+  )
+}
+
 
 # build_model_limma -----
 
@@ -236,18 +435,7 @@ build_model_limma <- function(lfqdata, strategy, model_name = strategy$model_nam
   wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
   fit <- limma::lmFit(setup$expr_matrix, setup$design, weights = wt)
 
-  ModelLimma$new(
-    fit = fit,
-    design = setup$design,
-    formula = strategy$formula,
-    subject_id = setup$subject_id,
-    model_name = model_name,
-    rowdata = setup$rowdata,
-    trend = strategy$trend,
-    robust = strategy$robust,
-    dummy_model = setup$dummy_model,
-    p.adjust = prolfqua::adjust_p_values
-  )
+  .new_model_limma(fit, setup, strategy, model_name)
 }
 
 
@@ -298,85 +486,41 @@ build_model_limma_impute <- function(
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
   expr_matrix <- setup$expr_matrix
   design <- setup$design
-  p <- ncol(design)
   wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
 
-  # Step 1: Fit on original data (with NAs)
   fit_na <- limma::lmFit(expr_matrix, design, weights = wt)
-
-  # Step 2: Identify failed proteins (any NA coefficient)
   failed <- which(rowSums(is.na(fit_na$coefficients)) > 0)
 
   if (length(failed) == 0) {
-    return(ModelLimma$new(
-      fit = fit_na,
-      design = design,
-      formula = strategy$formula,
-      subject_id = setup$subject_id,
-      model_name = model_name,
-      rowdata = setup$rowdata,
-      trend = strategy$trend,
-      robust = strategy$robust,
-      dummy_model = setup$dummy_model,
-      p.adjust = prolfqua::adjust_p_values
-    ))
+    return(
+      .new_model_limma(
+        fit_na,
+        setup,
+        strategy,
+        model_name
+      )
+    )
   }
 
-  # Step 3: Compute LOD if not provided
-  if (is.null(lod)) {
-    mh <- MissingHelpers$new(lfqdata$data_long(), lfqdata$get_config())
-    lod <- mh$get_lod()
-  }
-
-  # Step 4: Compute borrowed variance from successful proteins
+  lod <- .resolve_limma_lod(lod, lfqdata)
   borrowed <- compute_borrowed_variance_limma(fit_na)
-
-  # Step 5: Impute expression matrix with LOD
-  na_mask <- is.na(expr_matrix)
-  expr_imputed <- expr_matrix
-  expr_imputed[na_mask] <- lod
-  expr_imputed <- pmax(expr_imputed, lod)
-
-  # Also impute weight matrix: NA weights for imputed positions get weight = 1
-  wt_imputed <- wt
-  if (is.matrix(wt_imputed)) {
-    wt_imputed[na_mask] <- 1
-  }
-
-  # Step 6: Fit on imputed data
-  fit_lod <- limma::lmFit(expr_imputed, design, weights = wt_imputed)
-
-  # Step 7: Create hybrid fit — replace failed rows in fit_na
-  fit_na$coefficients[failed, ] <- fit_lod$coefficients[failed, ]
-  fit_na$stdev.unscaled[failed, ] <- fit_lod$stdev.unscaled[failed, ]
-  fit_na$sigma[failed] <- borrowed$sigma
-  fit_na$Amean[failed] <- fit_lod$Amean[failed]
-  # CRITICAL: df correction — never use fit_lod$df.residual (counts imputed as real)
-  n_observed <- rowSums(!is.na(expr_matrix))
-  if (df_method == "observed") {
-    fit_na$df.residual[failed] <- pmax(n_observed[failed] - p, 1)
-  } else {
-    fit_na$df.residual[failed] <- borrowed$df
-  }
-
-  # Dummy model from imputed data (all rows complete after imputation)
-  dummy_data <- setup$annotation
-  dummy_data$.response <- as.numeric(expr_imputed[1, ])
-  dummy_formula <- update(setup$rhs_formula, .response ~ .)
-  dummy_model <- lm(dummy_formula, data = dummy_data)
-
-  ModelLimma$new(
-    fit = fit_na,
-    design = design,
-    formula = strategy$formula,
-    subject_id = setup$subject_id,
-    model_name = model_name,
-    rowdata = setup$rowdata,
-    trend = strategy$trend,
-    robust = strategy$robust,
-    dummy_model = dummy_model,
-    p.adjust = prolfqua::adjust_p_values,
-    imputed_proteins = setup$rowdata[failed, setup$subject_id[1], drop = TRUE]
+  imputed <- .impute_limma_data(expr_matrix, wt, lod)
+  fit_lod <- limma::lmFit(
+    imputed$expression,
+    design,
+    weights = imputed$weights
+  )
+  .finish_limma_imputation(
+    fit_na,
+    fit_lod,
+    failed,
+    borrowed,
+    expr_matrix,
+    imputed$expression,
+    setup,
+    strategy,
+    model_name,
+    df_method
   )
 }
 
@@ -425,60 +569,14 @@ build_model_limma_voom <- function(
   design <- setup$design
   ext_wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
 
-  # Step 1: Preliminary fit (with external weights if available)
-  fit0 <- limma::lmFit(expr_matrix, design, weights = ext_wt)
-
-  # Step 2: Lowess trend on (mean expression, sqrt(sigma))
-  sx <- fit0$Amean
-  sy <- sqrt(fit0$sigma)
-  l <- stats::lowess(sx, sy, f = span)
-  f <- stats::approxfun(l, rule = 2, ties = list("ordered", mean))
-
-  # Step 3: Observation-level vooma weights
-  fitted_vals <- fit0$coefficients %*% t(fit0$design)
-  w_voom <- 1 / f(fitted_vals)^4
-  dim(w_voom) <- dim(fitted_vals)
-
-  # Step 4: Combine with external weights
-  if (!is.null(ext_wt)) {
-    if (is.matrix(ext_wt)) {
-      w_combined <- w_voom * ext_wt
-    } else {
-      w_combined <- w_voom * rep(ext_wt, each = nrow(w_voom))
-    }
-  } else {
-    w_combined <- w_voom
-  }
-
-  # Optional diagnostic plot
-  if (plot) {
-    graphics::plot(
-      sx,
-      sy,
-      xlab = "Average log2 expression",
-      ylab = expression(sqrt(sigma)),
-      main = "vooma: Mean-variance trend",
-      pch = 16,
-      cex = 0.3
-    )
-    graphics::lines(l, col = "red", lwd = 2)
-  }
-
-  # Step 5: Final WLS fit with combined weights
-  fit <- limma::lmFit(expr_matrix, design, weights = w_combined)
-
-  ModelLimma$new(
-    fit = fit,
-    design = design,
-    formula = strategy$formula,
-    subject_id = setup$subject_id,
-    model_name = model_name,
-    rowdata = setup$rowdata,
-    trend = strategy$trend,
-    robust = strategy$robust,
-    dummy_model = setup$dummy_model,
-    p.adjust = prolfqua::adjust_p_values
+  fit <- .fit_vooma(
+    expr_matrix,
+    design,
+    ext_wt,
+    span,
+    plot
   )
+  .new_model_limma(fit, setup, strategy, model_name)
 }
 
 
@@ -525,118 +623,49 @@ build_model_limma_voom_impute <- function(
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
   expr_matrix <- setup$expr_matrix
   design <- setup$design
-  p <- ncol(design)
   ext_wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
 
-  # Helper: compute vooma weights and final fit from an expression matrix
-  .voom_fit <- function(expr, wt_ext) {
-    fit0 <- limma::lmFit(expr, design, weights = wt_ext)
-    sx <- fit0$Amean
-    sy <- sqrt(fit0$sigma)
-    l <- stats::lowess(sx, sy, f = span)
-    f_trend <- stats::approxfun(l, rule = 2, ties = list("ordered", mean))
-    fitted_vals <- fit0$coefficients %*% t(fit0$design)
-    w_voom <- 1 / f_trend(fitted_vals)^4
-    dim(w_voom) <- dim(fitted_vals)
-    if (!is.null(wt_ext)) {
-      if (is.matrix(wt_ext)) {
-        w_combined <- w_voom * wt_ext
-      } else {
-        w_combined <- w_voom * rep(wt_ext, each = nrow(w_voom))
-      }
-    } else {
-      w_combined <- w_voom
-    }
-    if (plot) {
-      graphics::plot(
-        sx,
-        sy,
-        xlab = "Average log2 expression",
-        ylab = expression(sqrt(sigma)),
-        main = "vooma: Mean-variance trend",
-        pch = 16,
-        cex = 0.3
-      )
-      graphics::lines(l, col = "red", lwd = 2)
-    }
-    limma::lmFit(expr, design, weights = w_combined)
-  }
-
-  # Step 1: Fit on original data with vooma weights
-  fit_na <- .voom_fit(expr_matrix, ext_wt)
-
-  # Step 2: Identify failed proteins (any NA coefficient)
+  fit_na <- .fit_vooma(
+    expr_matrix,
+    design,
+    ext_wt,
+    span,
+    plot
+  )
   failed <- which(rowSums(is.na(fit_na$coefficients)) > 0)
 
   if (length(failed) == 0) {
-    return(ModelLimma$new(
-      fit = fit_na,
-      design = design,
-      formula = strategy$formula,
-      subject_id = setup$subject_id,
-      model_name = model_name,
-      rowdata = setup$rowdata,
-      trend = strategy$trend,
-      robust = strategy$robust,
-      dummy_model = setup$dummy_model,
-      p.adjust = prolfqua::adjust_p_values
-    ))
+    return(
+      .new_model_limma(
+        fit_na,
+        setup,
+        strategy,
+        model_name
+      )
+    )
   }
 
-  # Step 3: Compute LOD if not provided
-  if (is.null(lod)) {
-    mh <- MissingHelpers$new(lfqdata$data_long(), lfqdata$get_config())
-    lod <- mh$get_lod()
-  }
-
-  # Step 4: Borrow variance from successful proteins
+  lod <- .resolve_limma_lod(lod, lfqdata)
   borrowed <- compute_borrowed_variance_limma(fit_na)
-
-  # Step 5: Impute expression matrix with LOD
-  na_mask <- is.na(expr_matrix)
-  expr_imputed <- expr_matrix
-  expr_imputed[na_mask] <- lod
-  expr_imputed <- pmax(expr_imputed, lod)
-
-  # Impute external weight matrix: NA positions get weight = 1
-  ext_wt_imputed <- ext_wt
-  if (is.matrix(ext_wt_imputed)) {
-    ext_wt_imputed[na_mask] <- 1
-  }
-
-  # Step 6: Fit on imputed data with vooma weights
-  fit_lod <- .voom_fit(expr_imputed, ext_wt_imputed)
-
-  # Step 7: Hybrid fit — replace failed rows
-  fit_na$coefficients[failed, ] <- fit_lod$coefficients[failed, ]
-  fit_na$stdev.unscaled[failed, ] <- fit_lod$stdev.unscaled[failed, ]
-  fit_na$sigma[failed] <- borrowed$sigma
-  fit_na$Amean[failed] <- fit_lod$Amean[failed]
-  n_observed <- rowSums(!is.na(expr_matrix))
-  if (df_method == "observed") {
-    fit_na$df.residual[failed] <- pmax(n_observed[failed] - p, 1)
-  } else {
-    fit_na$df.residual[failed] <- borrowed$df
-  }
-
-  # Dummy model from imputed data (all rows complete after imputation)
-  dummy_data <- setup$annotation
-  dummy_data$.response <- as.numeric(expr_imputed[1, ])
-  dummy_formula <- update(setup$rhs_formula, .response ~ .)
-  dummy_model <- lm(dummy_formula, data = dummy_data)
-
-  ModelLimma$new(
-    fit = fit_na,
-    design = design,
-    formula = strategy$formula,
-    subject_id = setup$subject_id,
-    model_name = model_name,
-    rowdata = setup$rowdata,
-    trend = strategy$trend,
-    robust = strategy$robust,
-    dummy_model = dummy_model,
-    p.adjust = prolfqua::adjust_p_values,
-    imputed_proteins = setup$rowdata[failed, setup$subject_id[1], drop = TRUE]
+  imputed <- .impute_limma_data(expr_matrix, ext_wt, lod)
+  fit_lod <- .fit_vooma(
+    imputed$expression,
+    design,
+    imputed$weights,
+    span,
+    plot
+  )
+  .finish_limma_imputation(
+    fit_na,
+    fit_lod,
+    failed,
+    borrowed,
+    expr_matrix,
+    imputed$expression,
+    setup,
+    strategy,
+    model_name,
+    df_method
   )
 }
 
