@@ -31,10 +31,29 @@ Investigating defect #1 (below) surfaced that the **same bug class already shipp
   `sigma * unscaled == sqrt(diag(vcov))`) and a `NEWS.md` bullet under 1.6.3. All model,
   contrast, facade, DEqMS and vectorize test suites pass.
 
-**Implication for the binomial plan:** the fix also establishes the exact `sigma ↔ vcov`
-coherence invariant (and its regression test) that the future `strategy_binomial()` must
-satisfy — see defect #1. Use `sqrt(summary(fit)$dispersion)` (Pearson) for the quasibinomial
-`sigma`, not `stats::sigma`.
+**Implication for the binomial plan:** the fix establishes the `sigma ↔ vcov` coherence
+invariant (and its regression test). For a quasibinomial glm that invariant is *already*
+satisfied by `stats::sigma` (R returns the Pearson dispersion for glm objects), so
+`StrategyBinomial` needs no change here — see defect #1, which is **retracted**.
+
+## Post-implementation recheck (verified against the merged code)
+
+The `binomial_nested` implementation (`R/BinomialNested.R`, facade in
+`R/ContrastsChildToParentFacades.R`, moderation floor in `R/tidyMS_moderation.R`) was
+re-verified against this review:
+
+- **Defect #1 — RETRACTED.** `sigma = stats::sigma` is correct for the quasibinomial glm
+  (empirically `stats::sigma == sqrt(summary$dispersion)`, coherent with `vcov()`).
+- **Defect #5 — addressed.** The facade sets a family-aware `ContrastConfiguration`
+  (`supports_dea_qc = FALSE`); roxygen documents `diff` = log odds ratio and `avgAbd` = average
+  linear predictor on the log-odds scale, so log-odds output is not mislabeled as abundance.
+- **Variance floor — implemented as analyzed, including the ordering subtlety.** `binomial_bound`
+  maps to `variance_floor = 1`; floored rows get `df.prior <- Inf` *after* the pre-existing
+  "all `df.prior` infinite" fallback, so it is not clobbered.
+- **Tests green.** `test-BinomialNested.R` passes 65/65.
+
+The remaining "statistical decisions" below were deliberate author choices (documented in
+`NEWS.md`): the symmetric pseudo-count for separated fits and the posterior-dispersion bound.
 
 ## What the plan gets right
 
@@ -63,28 +82,33 @@ satisfy — see defect #1. Use `sqrt(summary(fit)$dispersion)` (Pearson) for the
 
 ## Code-level defects (fix before implementing)
 
-### 1. `sigma = stats::sigma` is the wrong scale for a quasibinomial glm (major / correctness)
+### 1. ~~`sigma = stats::sigma` is the wrong scale for a quasibinomial glm~~ — RETRACTED (my claim was WRONG)
 
-The most important defect. In `.compute_contrast` (`R/tidyMS_contrasts.R:395-428`), `std.error`
-comes from `vcov(m)` (`:407`) while the stored `sigma` comes independently from
-`strategy$sigma(m)` (`:401`). The moderation rescale at `R/tidyMS_moderation.R:34`,
+**This claim was incorrect and is withdrawn.** It was rejected during implementation, and an
+empirical check confirms the rejection was right.
+
+The moderation rescale at `R/tidyMS_moderation.R`,
 `moderated.statistic = statistic * sigma / sqrt(var.post)`, is only coherent when
-`std.error = sigma × (unscaled)`.
+`std.error = sigma × (unscaled)`. I asserted that `stats::sigma(glm)` returns the
+deviance-based scale `sqrt(deviance/df.residual)` and would therefore break this. **It does
+not.** For a glm, R's `sigma()` returns the *Pearson dispersion* — the same quantity `vcov()`
+uses. Verified on a quasibinomial fit:
 
-- For an `lm` this holds: `vcov = σ²(XᵀX)⁻¹`, `sigma = stats::sigma` = residual SD.
-- For a quasibinomial glm, `vcov = φ_Pearson × cov.unscaled`, but `stats::sigma(glm)` returns
-  the **deviance-based** scale `sqrt(deviance/df.residual)`, *not* `φ_Pearson`. The two differ
-  exactly in the sparse-count regime this model targets, leaving a spurious per-protein factor
-  `sqrt(φ_dev/φ_Pearson)` in every moderated t.
+```
+stats::sigma(fit)          = 1.149071
+sqrt(summary$dispersion)   = 1.149071   <- equal: Pearson, what vcov() uses
+sqrt(deviance/df.residual) = 1.177689   <- NOT what stats::sigma returns
+stats::sigma * unscaled    == sqrt(diag(vcov(fit)))   <- reconstructs the SE exactly
+```
 
-**Fix:** the strategy must set `sigma = function(model) sqrt(summary(model)$dispersion)`
-(Pearson), matching what `vcov()` embeds. (`StrategyLogistf` sidesteps this by hardcoding
-`sigma = 1`; the binomial strategy cannot.)
+So `sigma = function(model) stats::sigma(model)` (as implemented in `StrategyBinomial`) is
+**correct and coherent** for the quasibinomial glm; no change is needed.
 
-> **Note:** this exact bug class was already present in the shipped `rlm` backend and has been
-> **fixed** during this review — see the "Related pre-existing bug" section above. The
-> `rlm` fix adds the `sigma ↔ vcov` coherence regression test that the binomial strategy
-> should extend.
+My error was over-generalizing a *class-specific* behavior: the identical reasoning is genuinely
+correct for `rlm` (where `stats::sigma` returns the ordinary-residual scale, ≠ the robust scale
+`$s` that `vcov()` uses — the real bug we fixed) but wrong for `glm` (where `stats::sigma` already
+equals the Pearson dispersion). The `sigma ↔ vcov` coherence invariant still matters; `glm` simply
+satisfies it via `stats::sigma` out of the box. The `rlm` fix and its regression test stand.
 
 ### 2. The cited facade templates are the wrong ones (major)
 
