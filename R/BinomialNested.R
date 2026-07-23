@@ -24,6 +24,20 @@
   counts
 }
 
+.validate_binomial_prior_count <- function(prior_count) {
+  candidate <- if (is.numeric(prior_count)) prior_count else NA_real_
+  is_valid <- all(c(
+    length(candidate) == 1L,
+    !anyNA(candidate),
+    is.finite(candidate),
+    candidate >= 0
+  ))
+  if (!is_valid) {
+    stop("`prior_count` must be one non-negative number.", call. = FALSE)
+  }
+  prior_count
+}
+
 
 #' Quasibinomial detection-count strategy
 #'
@@ -77,15 +91,7 @@ StrategyBinomial <- R6::R6Class(
         "moderated.p.value.adjusted"
       )
     ) {
-      if (
-        !is.numeric(prior_count) ||
-          length(prior_count) != 1L ||
-          is.na(prior_count) ||
-          !is.finite(prior_count) ||
-          prior_count < 0
-      ) {
-        stop("`prior_count` must be one non-negative number.", call. = FALSE)
-      }
+      prior_count <- .validate_binomial_prior_count(prior_count)
       self$formula <- stats::as.formula(paste("cbind(.detected, .undetected)", modelstr))
       self$model_name <- model_name
       self$report_columns <- report_columns

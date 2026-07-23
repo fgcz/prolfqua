@@ -105,6 +105,24 @@ test_that("strategy_binomial pseudocount bounds separation and supports one chil
   expect_true(is.finite(stats::sigma(fit_one)))
 })
 
+test_that("strategy_binomial validates its pseudocount", {
+  invalid_prior_counts <- list(
+    "not numeric",
+    c(0.1, 0.2),
+    NA_real_,
+    Inf,
+    -0.1
+  )
+
+  for (prior_count in invalid_prior_counts) {
+    expect_error(
+      strategy_binomial("~ group_", prior_count = prior_count),
+      "one non-negative number",
+      fixed = TRUE
+    )
+  }
+})
+
 test_that("strategy_binomial rejects rank-deficient and insufficient-df fits", {
   rank_deficient <- data.frame(
     group_ = factor(rep(c("A", "B"), each = 3)),
