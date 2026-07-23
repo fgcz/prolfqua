@@ -46,7 +46,7 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p goodpractice-report
-          Rscript -e 'result <- goodpractice::gp("."); print(result); saveRDS(result, "goodpractice-report/result.rds")' \
+          Rscript -e 'pkgload::load_all(quiet = TRUE); result <- goodpractice::gp("."); print(result); saveRDS(result, "goodpractice-report/result.rds")' \
             > goodpractice-report/report.txt 2>&1
 
       - name: Upload goodpractice report
