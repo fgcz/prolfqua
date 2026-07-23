@@ -1,19 +1,3 @@
-#'
-#'
-#'
-.linfct <- function(model, contrast, avg = TRUE) {
-  linfct <- linfct_from_model(model, as_list = FALSE)
-  linfct <- unique(linfct) # needed for single factor models
-  if (avg) {
-    namtmp <- paste0("avg_", names(contrast))
-    cntr_avg <- paste0("(", gsub(" - ", " + ", contrast), ")/2")
-    names(cntr_avg) <- namtmp
-    contrast <- c(contrast, cntr_avg)
-  }
-  linfct_a <- linfct_matrix_contrasts(linfct, contrast)
-  return(linfct_a)
-}
-
 .filter_fitted_firth_models <- function(model_df) {
   model_df |>
     dplyr::filter(
