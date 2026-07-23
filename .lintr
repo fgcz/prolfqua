@@ -1,4 +1,3 @@
-linters: linters_with_defaults(line_length_linter(120), brace_linter = NULL, commas_linter = NULL, indentation_linter = NULL, infix_spaces_linter = NULL, object_length_linter(40), object_name_linter = NULL, paren_body_linter = NULL, return_linter = NULL, spaces_inside_linter = NULL, spaces_left_parentheses_linter = NULL, trailing_blank_lines_linter = NULL, trailing_whitespace_linter = NULL)
+linters: linters_with_defaults(line_length_linter(120), cyclocomp_linter(15L), brace_linter = NULL, commas_linter = NULL, indentation_linter = NULL, infix_spaces_linter = NULL, object_length_linter(40), object_name_linter = NULL, paren_body_linter = NULL, return_linter = NULL, spaces_inside_linter = NULL, spaces_left_parentheses_linter = NULL, trailing_blank_lines_linter = NULL, trailing_whitespace_linter = NULL)
 exclusions: list("data-raw", "inst/deprecated", "inst/doc", "inst/issue71", "tests/testthat", "vignettes", "R/generatedContrastsDF.r")
-
 
