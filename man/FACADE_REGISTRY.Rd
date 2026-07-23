@@ -10,6 +10,9 @@ An object of class \code{facade_registry} (inherits from \code{list}) of length 
 \usage{
 FACADE_REGISTRY
 }
+\value{
+A named list of built-in facade registry entries.
+}
 \description{
 Read-only snapshot of the built-in prolfqua facade registry, taken at
 package load time. It is derived from the single source of truth

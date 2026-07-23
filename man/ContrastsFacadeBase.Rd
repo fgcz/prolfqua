@@ -25,6 +25,10 @@ the facade key into \code{modelName} via \code{.stamp_facade_identity()};
 rescue/imputation state is carried in the \code{estimate_type} column set by
 the inner contrast classes.
 }
+\examples{
+facade <- ContrastsFacadeBase$new()
+inherits(facade, "ContrastsFacadeBase")
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

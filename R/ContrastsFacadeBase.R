@@ -19,6 +19,9 @@
 #' @export
 #' @family modelling
 #' @keywords internal
+#' @examples
+#' facade <- ContrastsFacadeBase$new()
+#' inherits(facade, "ContrastsFacadeBase")
 ContrastsFacadeBase <- R6::R6Class(
   "ContrastsFacadeBase",
   inherit = ContrastsInterface,

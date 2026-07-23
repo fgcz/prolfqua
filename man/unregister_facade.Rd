@@ -17,6 +17,10 @@ Invisibly \code{TRUE} if the entry was removed, \code{FALSE}
 \description{
 Unregister a contrast facade class
 }
+\examples{
+register_facade("example", class = "ExampleFacade", needs = "same")
+unregister_facade("example")
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

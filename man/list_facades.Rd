@@ -14,6 +14,9 @@ A list mirroring \code{\link{FACADE_REGISTRY}} but reflecting
 \description{
 List currently registered contrast facades
 }
+\examples{
+head(names(list_facades()))
+}
 \seealso{
 Other modelling: 
 \code{\link{AnovaExtractor}},

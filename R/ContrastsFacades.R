@@ -1133,6 +1133,9 @@ register_facade <- function(name, class, needs, package = "prolfqua", needs_sain
 #'   if no entry existed.
 #' @export
 #' @family modelling
+#' @examples
+#' register_facade("example", class = "ExampleFacade", needs = "same")
+#' unregister_facade("example")
 unregister_facade <- function(name) {
   if (exists(name, envir = .facade_registry_env, inherits = FALSE)) {
     rm(list = name, envir = .facade_registry_env)
@@ -1170,6 +1173,8 @@ lookup_facade <- function(name) {
 #'   packages.
 #' @export
 #' @family modelling
+#' @examples
+#' head(names(list_facades()))
 list_facades <- function() {
   names_ <- ls(envir = .facade_registry_env, sorted = TRUE)
   out <- lapply(names_, function(nm) get(nm, envir = .facade_registry_env, inherits = FALSE))
@@ -1189,6 +1194,7 @@ list_facades <- function() {
 #' Each entry has fields \code{class}, \code{needs}, \code{package},
 #' and \code{needs_saint_annotation}.
 #'
+#' @return A named list of built-in facade registry entries.
 #' @export
 #' @examples
 #' names(FACADE_REGISTRY)
