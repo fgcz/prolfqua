@@ -110,6 +110,40 @@ test_that("linfct_matrix_contrasts_vectorized matches original: invalid contrast
   expect_equal(orig, vec, tolerance = 1e-12)
 })
 
+test_that("linfct_matrix_contrasts_vectorized names unnamed contrasts", {
+  m <- sim_make_model_lm("parallel3")
+  linfct <- linfct_from_model(m, as_list = FALSE)
+  contrasts <- c("group_A - group_Ctrl", "group_B - group_Ctrl")
+
+  result <- linfct_matrix_contrasts_vectorized(linfct, contrasts)
+
+  expect_identical(
+    rownames(result),
+    c("contrast_1", "contrast_2")
+  )
+})
+
+test_that("linfct_matrix_contrasts_vectorized reports fallback evaluation", {
+  m <- sim_make_model_lm("parallel3")
+  linfct <- linfct_from_model(m, as_list = FALSE)
+  contrasts <- c(
+    valid = "group_A - group_Ctrl",
+    invalid = "nonexistent_group - group_Ctrl"
+  )
+
+  expect_warning(
+    expect_message(
+      linfct_matrix_contrasts_vectorized(
+        linfct,
+        contrasts,
+        p.message = TRUE
+      ),
+      "valid=group_A - group_Ctrl"
+    ),
+    "failed 1: invalid"
+  )
+})
+
 # ---- Section B: compute_contrast vs compute_contrast_vectorized ----
 
 test_that("compute_contrast_vectorized matches original: full factors model", {

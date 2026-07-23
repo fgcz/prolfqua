@@ -227,6 +227,76 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
   return(res)
 }
 
+.name_unnamed_contrasts <- function(contrasts) {
+  contrast_names <- names(contrasts)
+  if (is.null(contrast_names)) {
+    contrast_names <- rep("", length(contrasts))
+  }
+  missing_names <- is.na(contrast_names) | !nzchar(contrast_names)
+  contrast_names[missing_names] <- paste0(
+    "contrast_",
+    which(missing_names)
+  )
+  names(contrasts) <- contrast_names
+  contrasts
+}
+
+.try_vectorized_contrasts <- function(data, parsed) {
+  tryCatch(
+    dplyr::mutate(data, !!!parsed),
+    error = function(error) error
+  )
+}
+
+.evaluate_contrasts_sequentially <- function(data, contrasts, parsed, p.message) {
+  failures <- list()
+  for (i in seq_along(contrasts)) {
+    if (p.message) {
+      message(names(contrasts)[i], "=", contrasts[i], "\n")
+    }
+    error <- tryCatch(
+      {
+        data <- dplyr::mutate(
+          data,
+          !!names(contrasts)[i] := !!parsed[[i]]
+        )
+        NULL
+      },
+      error = function(error) error
+    )
+    if (inherits(error, "error")) {
+      failures[[length(failures) + 1]] <- list(
+        contrast = names(contrasts)[i],
+        message = conditionMessage(error)
+      )
+    }
+  }
+  list(data = data, failures = failures)
+}
+
+.warn_contrast_failures <- function(result, contrasts, failures) {
+  if (length(failures) == 0) {
+    return(invisible(NULL))
+  }
+
+  failure_df <- dplyr::bind_rows(failures)
+  failure_names <- paste(failure_df$contrast, collapse = ", ")
+  failure_messages <- unique(failure_df$message)
+  failure_summary <- paste(
+    utils::head(failure_messages, 3),
+    collapse = "; "
+  )
+  message <- sprintf(
+    "linfct_matrix_contrasts: computed %d/%d contrasts; failed %d: %s. %s",
+    ncol(result) - 1,
+    length(contrasts),
+    nrow(failure_df),
+    failure_names,
+    failure_summary
+  )
+  warning(message, call. = FALSE)
+}
+
 #' Vectorized version of \code{\link{linfct_matrix_contrasts}}
 #'
 #' Same semantics but uses a single \code{dplyr::mutate(data, !!!parsed)} call
@@ -238,82 +308,36 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
 linfct_matrix_contrasts_vectorized <- function(linfct, contrasts, p.message = FALSE) {
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")
-  make_contrasts <- function(data, contrasts) {
-    cnams <- base::setdiff(colnames(data), "interaction")
+  original_columns <- base::setdiff(colnames(df), "interaction")
+  contrasts <- .name_unnamed_contrasts(contrasts)
+  parsed <- lapply(contrasts, rlang::parse_expr)
+  names(parsed) <- names(contrasts)
 
-    # Ensure all contrasts have names
-    for (i in seq_along(contrasts)) {
-      contrast_name <- names(contrasts)[i]
-      if (is.null(contrast_name) || !nzchar(contrast_name)) {
-        names(contrasts)[i] <- paste0("contrast_", i)
-      }
-    }
-
-    # Pre-parse all contrast expressions
-    parsed <- lapply(contrasts, rlang::parse_expr)
-    names(parsed) <- names(contrasts)
-
-    # Fast path: single mutate with !!! splicing
-    err <- tryCatch(
-      {
-        data <- dplyr::mutate(data, !!!parsed)
-        NULL
-      },
-      error = function(e) {
-        e
-      }
+  result <- .try_vectorized_contrasts(df, parsed)
+  if (inherits(result, "error")) {
+    sequential <- .evaluate_contrasts_sequentially(
+      df,
+      contrasts,
+      parsed,
+      p.message
     )
-
-    if (is.null(err)) {
-      res <- data |> dplyr::select(-dplyr::all_of(cnams))
-      return(res)
-    }
-
-    # Fallback: per-expression evaluation for granular error reporting
-    failures <- list()
-    for (i in seq_along(contrasts)) {
-      if (p.message) {
-        message(names(contrasts)[i], "=", contrasts[i], "\n")
-      }
-      err <- tryCatch(
-        {
-          data <- dplyr::mutate(data, !!names(contrasts)[i] := !!parsed[[i]])
-          NULL
-        },
-        error = function(e) {
-          e
-        }
-      )
-      if (inherits(err, "error")) {
-        failures[[length(failures) + 1]] <- list(
-          contrast = names(contrasts)[i],
-          message = conditionMessage(err)
-        )
-      }
-    }
-    res <- data |> dplyr::select(-dplyr::all_of(cnams))
-    if (length(failures) > 0) {
-      failure_df <- dplyr::bind_rows(failures)
-      failure_names <- paste(failure_df$contrast, collapse = ", ")
-      failure_messages <- unique(failure_df$message)
-      failure_summary <- paste(utils::head(failure_messages, 3), collapse = "; ")
-      msg <- sprintf(
-        "linfct_matrix_contrasts: computed %d/%d contrasts; failed %d: %s. %s",
-        ncol(res) - 1,
-        length(contrasts),
-        nrow(failure_df),
-        failure_names,
-        failure_summary
-      )
-      warning(msg, call. = FALSE)
-    }
-    return(res)
+    result <- sequential$data
+  }
+  result <- dplyr::select(
+    result,
+    -dplyr::all_of(original_columns)
+  )
+  if (exists("sequential", inherits = FALSE)) {
+    .warn_contrast_failures(
+      result,
+      contrasts,
+      sequential$failures
+    )
   }
 
-  res <- make_contrasts(df, contrasts)
-  res <- tibble::column_to_rownames(res, "interaction")
-  res <- t(res)
-  return(res)
+  result |>
+    tibble::column_to_rownames("interaction") |>
+    t()
 }
 
 #' create all possible contrasts
