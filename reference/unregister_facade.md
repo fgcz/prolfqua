@@ -114,3 +114,10 @@ Other modelling:
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
+
+## Examples
+
+``` r
+register_facade("example", class = "ExampleFacade", needs = "same")
+unregister_facade("example")
+```

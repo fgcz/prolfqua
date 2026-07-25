@@ -22,6 +22,10 @@ FACADE_REGISTRY
 An object of class `facade_registry` (inherits from `list`) of length
 19.
 
+## Value
+
+A named list of built-in facade registry entries.
+
 ## Details
 
 Each entry has fields `class`, `needs`, `package`, and

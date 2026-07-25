@@ -461,22 +461,21 @@ sessionInfo()
     ##  [64] prolfqua_1.7.0         evaluate_1.0.5         desc_1.4.3            
     ##  [67] survival_3.8-3         circlize_0.4.18        pillar_1.11.1         
     ##  [70] mice_3.19.0            KernSmooth_2.23-26     foreach_1.5.2         
-    ##  [73] stats4_4.5.2           reformulas_0.4.4       plotly_4.12.0         
+    ##  [73] stats4_4.5.2           reformulas_0.4.4       plotly_4.12.1         
     ##  [76] generics_0.1.4         S4Vectors_0.48.1       ggplot2_4.0.3         
     ##  [79] scales_1.4.0           minqa_1.2.8            xtable_1.8-8          
-    ##  [82] glue_1.8.1             lazyeval_0.2.3         tools_4.5.2           
-    ##  [85] data.table_1.18.4      lme4_2.0-6             forcats_1.0.1         
-    ##  [88] fs_2.1.0               grid_4.5.2             tidyr_1.3.2           
-    ##  [91] rbibutils_2.4.1        crosstalk_1.2.2        colorspace_2.1-3      
-    ##  [94] nlme_3.1-168           formula.tools_1.7.1    cli_3.6.6             
-    ##  [97] textshaping_1.0.5      viridisLite_0.4.3      ComplexHeatmap_2.26.1 
-    ## [100] dplyr_1.2.1            gtable_0.3.6           sass_0.4.10           
-    ## [103] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   
-    ## [106] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     
-    ## [109] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.1         
-    ## [112] lifecycle_1.0.5        httr_1.4.8             mime_0.13             
-    ## [115] GlobalOptions_0.1.4    mitml_0.4-5            statmod_1.5.2         
-    ## [118] MASS_7.3-65
+    ##  [82] glue_1.8.1             tools_4.5.2            data.table_1.18.4     
+    ##  [85] lme4_2.0-6             forcats_1.0.1          fs_2.1.0              
+    ##  [88] grid_4.5.2             tidyr_1.3.2            rbibutils_2.4.1       
+    ##  [91] crosstalk_1.2.2        colorspace_2.1-3       nlme_3.1-168          
+    ##  [94] formula.tools_1.7.1    cli_3.6.6              textshaping_1.0.5     
+    ##  [97] viridisLite_0.4.3      ComplexHeatmap_2.26.1  dplyr_1.2.1           
+    ## [100] gtable_0.3.6           sass_0.4.10            digest_0.6.39         
+    ## [103] operator.tools_1.6.3.1 BiocGenerics_0.56.0    ggrepel_0.9.8         
+    ## [106] rjson_0.2.23           htmlwidgets_1.6.4      farver_2.1.2          
+    ## [109] htmltools_0.5.9        pkgdown_2.2.1          lifecycle_1.0.5       
+    ## [112] httr_1.4.8             mime_0.13              GlobalOptions_0.1.4   
+    ## [115] mitml_0.4-5            statmod_1.5.2          MASS_7.3-65
 
 ## References
 

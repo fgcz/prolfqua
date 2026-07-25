@@ -544,7 +544,7 @@ sessionInfo()
     ##  [67] desc_1.4.3             survival_3.8-3         circlize_0.4.18       
     ##  [70] pillar_1.11.1          mice_3.19.0            KernSmooth_2.23-26    
     ##  [73] foreach_1.5.2          stats4_4.5.2           reformulas_0.4.4      
-    ##  [76] plotly_4.12.0          generics_0.1.4         hms_1.1.4             
+    ##  [76] plotly_4.12.1          generics_0.1.4         hms_1.1.4             
     ##  [79] S4Vectors_0.48.1       ggplot2_4.0.3          scales_1.4.0          
     ##  [82] minqa_1.2.8            xtable_1.8-8           glue_1.8.1            
     ##  [85] lazyeval_0.2.3         tools_4.5.2            data.table_1.18.4     

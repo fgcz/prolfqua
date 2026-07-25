@@ -742,18 +742,17 @@ sessionInfo()
     ##  [61] S7_0.2.2               evaluate_1.0.5         desc_1.4.3            
     ##  [64] survival_3.8-3         circlize_0.4.18        pillar_1.11.1         
     ##  [67] mice_3.19.0            foreach_1.5.2          stats4_4.5.2          
-    ##  [70] reformulas_0.4.4       plotly_4.12.0          generics_0.1.4        
+    ##  [70] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        
     ##  [73] hms_1.1.4              S4Vectors_0.48.1       ggplot2_4.0.3         
     ##  [76] scales_1.4.0           minqa_1.2.8            glue_1.8.1            
-    ##  [79] lazyeval_0.2.3         tools_4.5.2            data.table_1.18.4     
-    ##  [82] lme4_2.0-6             forcats_1.0.1          fs_2.1.0              
-    ##  [85] grid_4.5.2             limpa_1.2.5            tidyr_1.3.2           
-    ##  [88] rbibutils_2.4.1        colorspace_2.1-3       nlme_3.1-168          
-    ##  [91] formula.tools_1.7.1    cli_3.6.6              textshaping_1.0.5     
-    ##  [94] viridisLite_0.4.3      ComplexHeatmap_2.26.1  gtable_0.3.6          
-    ##  [97] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1
-    ## [100] BiocGenerics_0.56.0    ggrepel_0.9.8          rjson_0.2.23          
-    ## [103] htmlwidgets_1.6.4      farver_2.1.2           htmltools_0.5.9       
-    ## [106] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.8            
-    ## [109] GlobalOptions_0.1.4    mitml_0.4-5            statmod_1.5.2         
-    ## [112] MASS_7.3-65
+    ##  [79] tools_4.5.2            data.table_1.18.4      lme4_2.0-6            
+    ##  [82] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
+    ##  [85] limpa_1.2.5            tidyr_1.3.2            rbibutils_2.4.1       
+    ##  [88] colorspace_2.1-3       nlme_3.1-168           formula.tools_1.7.1   
+    ##  [91] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     
+    ##  [94] ComplexHeatmap_2.26.1  gtable_0.3.6           sass_0.4.10           
+    ##  [97] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   
+    ## [100] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     
+    ## [103] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.1         
+    ## [106] lifecycle_1.0.5        httr_1.4.8             GlobalOptions_0.1.4   
+    ## [109] mitml_0.4-5            statmod_1.5.2          MASS_7.3-65

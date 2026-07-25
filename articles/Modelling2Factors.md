@@ -419,8 +419,8 @@ sessionInfo()
     ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.60             
     ##  [28] glmnet_5.0             jomo_2.7-6             logistf_1.26.1        
     ##  [31] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
-    ##  [34] pan_2.0                prettyunits_1.2.0      broom_1.0.13          
-    ##  [37] parallel_4.5.2         cluster_2.1.8.1        R6_2.6.1              
+    ##  [34] pan_2.0                broom_1.0.13           parallel_4.5.2        
+    ##  [37] prettyunits_1.2.0      cluster_2.1.8.1        R6_2.6.1              
     ##  [40] bslib_0.11.0           stringi_1.8.7          RColorBrewer_1.1-3    
     ##  [43] limma_3.66.0           boot_1.3-32            rpart_4.1.24          
     ##  [46] jquerylib_0.1.4        Rcpp_1.1.2             iterators_1.0.14      
@@ -431,20 +431,20 @@ sessionInfo()
     ##  [61] withr_3.0.3            S7_0.2.2               evaluate_1.0.5        
     ##  [64] desc_1.4.3             survival_3.8-3         circlize_0.4.18       
     ##  [67] pillar_1.11.1          mice_3.19.0            foreach_1.5.2         
-    ##  [70] stats4_4.5.2           reformulas_0.4.4       plotly_4.12.0         
+    ##  [70] stats4_4.5.2           reformulas_0.4.4       plotly_4.12.1         
     ##  [73] generics_0.1.4         S4Vectors_0.48.1       hms_1.1.4             
     ##  [76] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
-    ##  [79] glue_1.8.1             lazyeval_0.2.3         tools_4.5.2           
-    ##  [82] data.table_1.18.4      lme4_2.0-6             forcats_1.0.1         
-    ##  [85] fs_2.1.0               grid_4.5.2             tidyr_1.3.2           
-    ##  [88] rbibutils_2.4.1        colorspace_2.1-3       nlme_3.1-168          
-    ##  [91] formula.tools_1.7.1    beeswarm_0.4.0         vipor_0.4.7           
-    ##  [94] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     
-    ##  [97] ComplexHeatmap_2.26.1  gtable_0.3.6           sass_0.4.10           
-    ## [100] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   
-    ## [103] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     
-    ## [106] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.1         
-    ## [109] lifecycle_1.0.5        httr_1.4.8             GlobalOptions_0.1.4   
-    ## [112] mitml_0.4-5            statmod_1.5.2          MASS_7.3-65
+    ##  [79] glue_1.8.1             tools_4.5.2            data.table_1.18.4     
+    ##  [82] lme4_2.0-6             forcats_1.0.1          fs_2.1.0              
+    ##  [85] grid_4.5.2             tidyr_1.3.2            rbibutils_2.4.1       
+    ##  [88] colorspace_2.1-3       nlme_3.1-168           formula.tools_1.7.1   
+    ##  [91] beeswarm_0.4.0         vipor_0.4.7            cli_3.6.6             
+    ##  [94] textshaping_1.0.5      viridisLite_0.4.3      ComplexHeatmap_2.26.1 
+    ##  [97] gtable_0.3.6           sass_0.4.10            digest_0.6.39         
+    ## [100] operator.tools_1.6.3.1 BiocGenerics_0.56.0    ggrepel_0.9.8         
+    ## [103] rjson_0.2.23           htmlwidgets_1.6.4      farver_2.1.2          
+    ## [106] htmltools_0.5.9        pkgdown_2.2.1          lifecycle_1.0.5       
+    ## [109] httr_1.4.8             GlobalOptions_0.1.4    mitml_0.4-5           
+    ## [112] statmod_1.5.2          MASS_7.3-65
 
 ## References

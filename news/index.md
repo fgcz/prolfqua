@@ -116,6 +116,10 @@
   contrasts with canceling `+1`/`-1` weights on missing coefficients are
   correctly flagged. The default (non-vectorized) path was never
   affected.
+- The vectorized contrast path now assigns stable `contrast_1`,
+  `contrast_2`, … labels to unnamed contrasts, matching the documented
+  naming behavior instead of leaking an expression into the result row
+  names.
 - [`get_contrast()`](https://wolski.github.io/prolfqua/reference/get_contrast.md)
   now derives `group_1`/`group_2` from the contrast’s left/right side
   expressions, fixing mislabeled per-group columns for averaging

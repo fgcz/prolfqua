@@ -111,3 +111,11 @@ Other modelling:
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
 [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
+
+## Examples
+
+``` r
+head(names(list_facades()))
+#> [1] "binomial_nested" "deqms"           "deqms_voom"      "firth"          
+#> [5] "firth_nested"    "limma"          
+```
