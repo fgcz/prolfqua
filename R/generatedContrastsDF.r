@@ -32,7 +32,7 @@ main_effect_contrasts <- function(primary_levels, secondary_levels) {
     avg_low <- paste0(group_label(low, secondary_levels), collapse = " + ")
     key <- paste0(high, "_vs_", low)
     contrasts[[key]] <- sprintf(
-      "( (%s)/%d - (%s)/%d )",
+      "(%s)/%d - (%s)/%d",
       avg_high,
       length(secondary_levels),
       avg_low,

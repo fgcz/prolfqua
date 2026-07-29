@@ -33,3 +33,8 @@ R/tidyMS_stanr\.R
 ^air\.toml$
 ^Dockerfile$
 ^\.dockerignore$
+^make$
+^.*\.BiocCheck$
+^\.github$
+^AGENTS\.md$
+^CLAUDE\.md$

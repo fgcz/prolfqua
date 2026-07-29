@@ -3,6 +3,7 @@ name: pkgdown
 on:
   push:
     branches: [ main ]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -31,7 +32,12 @@ jobs:
           extra-packages: any::pkgdown, local::.
           needs: website
 
+      - name: Build pkgdown site
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+        run: Rscript -e 'pkgdown::build_site()'
+
       - name: Build and deploy pkgdown site
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"

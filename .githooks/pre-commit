@@ -10,12 +10,15 @@ if [[ ! -f Makefile ]]; then
   exit 0
 fi
 
+echo "pre-commit: running package preparation"
+make precommit-prepare
+
 echo "pre-commit: formatting with Air"
 make format
 
 if ! git diff --quiet --; then
-  echo "pre-commit: formatting changed files"
-  echo "Review and stage the formatting changes, then commit again."
+  echo "pre-commit: formatting or package preparation changed files"
+  echo "Review and stage the changes, then commit again."
   git diff --name-only --
   exit 1
 fi
