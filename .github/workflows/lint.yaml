@@ -18,6 +18,8 @@ jobs:
 
       - name: Set up Air
         uses: posit-dev/setup-air@v1
+        with:
+          version: "0.11.0"
 
       - name: Check formatting
         run: air format . --check

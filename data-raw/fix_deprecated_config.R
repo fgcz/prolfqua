@@ -43,7 +43,7 @@ data_skylinePRMSample_A$config_f <- function() {
   config$ident_q_value <- "Detection.Q.Value"
   config$set_response("Area")
   config$isotope_label <- "Isotope.Label.Type"
-  config$factors[["Time"]] = "Sampling.Time.Point"
+  config$factors[["Time"]] <- "Sampling.Time.Point"
   return(config)
 }
 usethis::use_data(data_skylinePRMSample_A, overwrite = TRUE)
@@ -62,7 +62,7 @@ data_skylineSRM_HL_A$config_f <- function() {
   config$isotope_label <- "Isotope.Label"
   config$factors[["treatment_c"]] <- "Condition2"
   config$factors[["time_c"]] <- "time"
-  config$is_response_transformed = FALSE
+  config$is_response_transformed <- FALSE
   return(config)
 }
 usethis::use_data(data_skylineSRM_HL_A, overwrite = TRUE)
@@ -79,10 +79,10 @@ data_spectronautDIA250_A$config_f <- function() {
   config$ident_q_value <- "EG.Qvalue"
   config$work_intensity <- "FG.Quantity"
   config$isotope_label <- "Isotope.Label"
-  config$factors[["coding"]] = "coding"
-  config$factors[["sex"]] = "sex"
-  config$factors[["age"]] = "age"
-  config$factors[["Sample_id"]] = "Sample.Name"
+  config$factors[["coding"]] <- "coding"
+  config$factors[["sex"]] <- "sex"
+  config$factors[["age"]] <- "age"
+  config$factors[["Sample_id"]] <- "Sample.Name"
   return(config)
 }
 usethis::use_data(data_spectronautDIA250_A, overwrite = TRUE)

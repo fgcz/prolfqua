@@ -10,7 +10,7 @@ test_that("check config", {
   config$ident_q_value <- "annotation_QValue"
   config$set_response("Area")
   config$isotope_label <- "Isotope.Label"
-  config$factors[["Time"]] = "Sampling.Time.Point"
+  config$factors[["Time"]] <- "Sampling.Time.Point"
   expect_equal(config$factor_keys(), "Time")
   expect_equal(config$hierarchy_keys(), c("protein_Id", "peptide_Id", "precursor_Id", "fragment_Id"))
 })
