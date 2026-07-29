@@ -101,7 +101,7 @@ LFQDataTransformer <- R6::R6Class(
     #'   transformed a second time. `TRUE` forces log transformation
     #' @return LFQDataTransformer
     log2 = function(force = FALSE) {
-      if (!self$lfq$is_transformed() | force) {
+      if (!self$lfq$is_transformed() || force) {
         cfg <- self$lfq$get_config()$clone(deep = TRUE)
         res <- prolfqua::transform_work_intensity(
           self$lfq$data_long(),
@@ -187,7 +187,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @return LFQDataTransformer (self)
     #'
     intensity_array = function(.func = log2, force = FALSE) {
-      if (!self$lfq$is_transformed() | force) {
+      if (!self$lfq$is_transformed() || force) {
         .call <- as.list(match.call())
         cfg <- self$lfq$get_config()$clone(deep = TRUE)
         res <- prolfqua::transform_work_intensity(
@@ -213,7 +213,7 @@ LFQDataTransformer <- R6::R6Class(
     #' @return LFQDataTransformer (self)
     #'
     intensity_matrix = function(.func = robust_scale, force = FALSE) {
-      if (!self$lfq$is_transformed() | force) {
+      if (!self$lfq$is_transformed() || force) {
         .call <- as.list(match.call())
         cfg <- self$lfq$get_config()$clone(deep = TRUE)
         res <- prolfqua::apply_to_response_matrix(
