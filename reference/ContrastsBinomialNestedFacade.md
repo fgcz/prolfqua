@@ -139,7 +139,7 @@ head(facade$get_contrasts())
 #> 1 binomial_nested observed      0GRprF~7339 A_vs_Ctrl -8.87e- 1  1.39e+ 0  0.444
 #> 2 binomial_nested observed      4JK499~3111 A_vs_Ctrl  5.18e- 1  1.03e+ 0 -0.722
 #> 3 binomial_nested observed      7IZdVV~6818 A_vs_Ctrl -5.85e- 1  7.54e- 1  1.34 
-#> 4 binomial_nested observed      AZPG26~9461 A_vs_Ctrl  9.53e-16  1.41e-12  2.40 
+#> 4 binomial_nested observed      AZPG26~9461 A_vs_Ctrl  8.46e-16  1.42e-12  2.40 
 #> 5 binomial_nested observed      AoNKbb~3497 A_vs_Ctrl -1.34e+ 0  1.60e+ 0  2.77 
 #> 6 binomial_nested observed      CibL2O~2149 A_vs_Ctrl -1.47e+ 0  6.43e- 1 -0.733
 #> # ℹ 7 more variables: statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,

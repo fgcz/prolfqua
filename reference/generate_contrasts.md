@@ -49,14 +49,14 @@ generate_contrasts(primary_levels, secondary_levels)
 #> interaction_MINOCAM_vs_MI_at_T150_vs_T0     interaction_MINOCAM_vs_MI_at_T150_vs_T0
 #> interaction_MINOCAM_vs_MI_at_T300_vs_T0     interaction_MINOCAM_vs_MI_at_T300_vs_T0
 #> interaction_MINOCAM_vs_MI_at_T300_vs_T150 interaction_MINOCAM_vs_MI_at_T300_vs_T150
-#>                                                                                                                               Contrast
-#> MINOCAM_vs_MI                             ( (G_MINOCAM_T0 + G_MINOCAM_T150 + G_MINOCAM_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )
-#> MINOCAM_vs_MI_at_T0                                                                                             G_MINOCAM_T0 - G_MI_T0
-#> MINOCAM_vs_MI_at_T150                                                                                       G_MINOCAM_T150 - G_MI_T150
-#> MINOCAM_vs_MI_at_T300                                                                                       G_MINOCAM_T300 - G_MI_T300
-#> interaction_MINOCAM_vs_MI_at_T150_vs_T0                                        (G_MINOCAM_T150 - G_MI_T150) - (G_MINOCAM_T0 - G_MI_T0)
-#> interaction_MINOCAM_vs_MI_at_T300_vs_T0                                        (G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T0 - G_MI_T0)
-#> interaction_MINOCAM_vs_MI_at_T300_vs_T150                                  (G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T150 - G_MI_T150)
+#>                                                                                                                           Contrast
+#> MINOCAM_vs_MI                             (G_MINOCAM_T0 + G_MINOCAM_T150 + G_MINOCAM_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3
+#> MINOCAM_vs_MI_at_T0                                                                                         G_MINOCAM_T0 - G_MI_T0
+#> MINOCAM_vs_MI_at_T150                                                                                   G_MINOCAM_T150 - G_MI_T150
+#> MINOCAM_vs_MI_at_T300                                                                                   G_MINOCAM_T300 - G_MI_T300
+#> interaction_MINOCAM_vs_MI_at_T150_vs_T0                                    (G_MINOCAM_T150 - G_MI_T150) - (G_MINOCAM_T0 - G_MI_T0)
+#> interaction_MINOCAM_vs_MI_at_T300_vs_T0                                    (G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T0 - G_MI_T0)
+#> interaction_MINOCAM_vs_MI_at_T300_vs_T150                              (G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T150 - G_MI_T150)
 generate_contrasts(secondary_levels, primary_levels)
 #>                                                                        ContrastName
 #> T150_vs_T0                                                               T150_vs_T0
@@ -71,17 +71,17 @@ generate_contrasts(secondary_levels, primary_levels)
 #> interaction_T150_vs_T0_at_MINOCAM_vs_MI     interaction_T150_vs_T0_at_MINOCAM_vs_MI
 #> interaction_T300_vs_T0_at_MINOCAM_vs_MI     interaction_T300_vs_T0_at_MINOCAM_vs_MI
 #> interaction_T300_vs_T150_at_MINOCAM_vs_MI interaction_T300_vs_T150_at_MINOCAM_vs_MI
-#>                                                                                                      Contrast
-#> T150_vs_T0                                    ( (G_T150_MI + G_T150_MINOCAM)/2 - (G_T0_MI + G_T0_MINOCAM)/2 )
-#> T300_vs_T0                                    ( (G_T300_MI + G_T300_MINOCAM)/2 - (G_T0_MI + G_T0_MINOCAM)/2 )
-#> T300_vs_T150                              ( (G_T300_MI + G_T300_MINOCAM)/2 - (G_T150_MI + G_T150_MINOCAM)/2 )
-#> T150_vs_T0_at_MI                                                                          G_T150_MI - G_T0_MI
-#> T150_vs_T0_at_MINOCAM                                                           G_T150_MINOCAM - G_T0_MINOCAM
-#> T300_vs_T0_at_MI                                                                          G_T300_MI - G_T0_MI
-#> T300_vs_T0_at_MINOCAM                                                           G_T300_MINOCAM - G_T0_MINOCAM
-#> T300_vs_T150_at_MI                                                                      G_T300_MI - G_T150_MI
-#> T300_vs_T150_at_MINOCAM                                                       G_T300_MINOCAM - G_T150_MINOCAM
-#> interaction_T150_vs_T0_at_MINOCAM_vs_MI               (G_T150_MINOCAM - G_T0_MINOCAM) - (G_T150_MI - G_T0_MI)
-#> interaction_T300_vs_T0_at_MINOCAM_vs_MI               (G_T300_MINOCAM - G_T0_MINOCAM) - (G_T300_MI - G_T0_MI)
-#> interaction_T300_vs_T150_at_MINOCAM_vs_MI         (G_T300_MINOCAM - G_T150_MINOCAM) - (G_T300_MI - G_T150_MI)
+#>                                                                                                  Contrast
+#> T150_vs_T0                                    (G_T150_MI + G_T150_MINOCAM)/2 - (G_T0_MI + G_T0_MINOCAM)/2
+#> T300_vs_T0                                    (G_T300_MI + G_T300_MINOCAM)/2 - (G_T0_MI + G_T0_MINOCAM)/2
+#> T300_vs_T150                              (G_T300_MI + G_T300_MINOCAM)/2 - (G_T150_MI + G_T150_MINOCAM)/2
+#> T150_vs_T0_at_MI                                                                      G_T150_MI - G_T0_MI
+#> T150_vs_T0_at_MINOCAM                                                       G_T150_MINOCAM - G_T0_MINOCAM
+#> T300_vs_T0_at_MI                                                                      G_T300_MI - G_T0_MI
+#> T300_vs_T0_at_MINOCAM                                                       G_T300_MINOCAM - G_T0_MINOCAM
+#> T300_vs_T150_at_MI                                                                  G_T300_MI - G_T150_MI
+#> T300_vs_T150_at_MINOCAM                                                   G_T300_MINOCAM - G_T150_MINOCAM
+#> interaction_T150_vs_T0_at_MINOCAM_vs_MI           (G_T150_MINOCAM - G_T0_MINOCAM) - (G_T150_MI - G_T0_MI)
+#> interaction_T300_vs_T0_at_MINOCAM_vs_MI           (G_T300_MINOCAM - G_T0_MINOCAM) - (G_T300_MI - G_T0_MI)
+#> interaction_T300_vs_T150_at_MINOCAM_vs_MI     (G_T300_MINOCAM - G_T150_MINOCAM) - (G_T300_MI - G_T150_MI)
 ```

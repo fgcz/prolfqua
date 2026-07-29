@@ -498,11 +498,11 @@ mod_limpa_prot$get_coefficients() |> head() |> knitr::kable(digits = 3)
 | protein_Id  | factor      | Estimate | Std..Error | t.value | Pr…t.. |
 |:------------|:------------|---------:|-----------:|--------:|-------:|
 | 0EfVhX~3967 | (Intercept) |    4.566 |      0.032 | 140.675 |      0 |
-| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.778 |      0 |
+| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.775 |      0 |
 | 0YSKpy~2865 | (Intercept) |    4.061 |      0.048 |  85.005 |      0 |
 | 3QLHfm~8938 | (Intercept) |    4.652 |      0.034 | 135.632 |      0 |
 | 3QYop0~7543 | (Intercept) |    4.564 |      0.014 | 331.068 |      0 |
-| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.082 |      0 |
+| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.081 |      0 |
 
 #### Step 3: Compute contrasts with ContrastsLimma
 

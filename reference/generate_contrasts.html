@@ -99,14 +99,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T150_vs_T0     interaction_MINOCAM_vs_MI_at_T150_vs_T0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T300_vs_T0     interaction_MINOCAM_vs_MI_at_T300_vs_T0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T300_vs_T150 interaction_MINOCAM_vs_MI_at_T300_vs_T150</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                               Contrast</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MINOCAM_vs_MI                             ( (G_MINOCAM_T0 + G_MINOCAM_T150 + G_MINOCAM_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MINOCAM_vs_MI_at_T0                                                                                             G_MINOCAM_T0 - G_MI_T0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MINOCAM_vs_MI_at_T150                                                                                       G_MINOCAM_T150 - G_MI_T150</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MINOCAM_vs_MI_at_T300                                                                                       G_MINOCAM_T300 - G_MI_T300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T150_vs_T0                                        (G_MINOCAM_T150 - G_MI_T150) - (G_MINOCAM_T0 - G_MI_T0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T300_vs_T0                                        (G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T0 - G_MI_T0)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T300_vs_T150                                  (G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T150 - G_MI_T150)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                           Contrast</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> MINOCAM_vs_MI                             (G_MINOCAM_T0 + G_MINOCAM_T150 + G_MINOCAM_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> MINOCAM_vs_MI_at_T0                                                                                         G_MINOCAM_T0 - G_MI_T0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> MINOCAM_vs_MI_at_T150                                                                                   G_MINOCAM_T150 - G_MI_T150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> MINOCAM_vs_MI_at_T300                                                                                   G_MINOCAM_T300 - G_MI_T300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T150_vs_T0                                    (G_MINOCAM_T150 - G_MI_T150) - (G_MINOCAM_T0 - G_MI_T0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T300_vs_T0                                    (G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T0 - G_MI_T0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_MINOCAM_vs_MI_at_T300_vs_T150                              (G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T150 - G_MI_T150)</span>
 <span class="r-in"><span><span class="fu">generate_contrasts</span><span class="op">(</span><span class="va">secondary_levels</span>, <span class="va">primary_levels</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        ContrastName</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> T150_vs_T0                                                               T150_vs_T0</span>
@@ -121,19 +121,19 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T150_vs_T0_at_MINOCAM_vs_MI     interaction_T150_vs_T0_at_MINOCAM_vs_MI</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T300_vs_T0_at_MINOCAM_vs_MI     interaction_T300_vs_T0_at_MINOCAM_vs_MI</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T300_vs_T150_at_MINOCAM_vs_MI interaction_T300_vs_T150_at_MINOCAM_vs_MI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                      Contrast</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T150_vs_T0                                    ( (G_T150_MI + G_T150_MINOCAM)/2 - (G_T0_MI + G_T0_MINOCAM)/2 )</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T0                                    ( (G_T300_MI + G_T300_MINOCAM)/2 - (G_T0_MI + G_T0_MINOCAM)/2 )</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T150                              ( (G_T300_MI + G_T300_MINOCAM)/2 - (G_T150_MI + G_T150_MINOCAM)/2 )</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T150_vs_T0_at_MI                                                                          G_T150_MI - G_T0_MI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T150_vs_T0_at_MINOCAM                                                           G_T150_MINOCAM - G_T0_MINOCAM</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T0_at_MI                                                                          G_T300_MI - G_T0_MI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T0_at_MINOCAM                                                           G_T300_MINOCAM - G_T0_MINOCAM</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T150_at_MI                                                                      G_T300_MI - G_T150_MI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T150_at_MINOCAM                                                       G_T300_MINOCAM - G_T150_MINOCAM</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T150_vs_T0_at_MINOCAM_vs_MI               (G_T150_MINOCAM - G_T0_MINOCAM) - (G_T150_MI - G_T0_MI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T300_vs_T0_at_MINOCAM_vs_MI               (G_T300_MINOCAM - G_T0_MINOCAM) - (G_T300_MI - G_T0_MI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T300_vs_T150_at_MINOCAM_vs_MI         (G_T300_MINOCAM - G_T150_MINOCAM) - (G_T300_MI - G_T150_MI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                  Contrast</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T150_vs_T0                                    (G_T150_MI + G_T150_MINOCAM)/2 - (G_T0_MI + G_T0_MINOCAM)/2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T0                                    (G_T300_MI + G_T300_MINOCAM)/2 - (G_T0_MI + G_T0_MINOCAM)/2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T150                              (G_T300_MI + G_T300_MINOCAM)/2 - (G_T150_MI + G_T150_MINOCAM)/2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T150_vs_T0_at_MI                                                                      G_T150_MI - G_T0_MI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T150_vs_T0_at_MINOCAM                                                       G_T150_MINOCAM - G_T0_MINOCAM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T0_at_MI                                                                      G_T300_MI - G_T0_MI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T0_at_MINOCAM                                                       G_T300_MINOCAM - G_T0_MINOCAM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T150_at_MI                                                                  G_T300_MI - G_T150_MI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> T300_vs_T150_at_MINOCAM                                                   G_T300_MINOCAM - G_T150_MINOCAM</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T150_vs_T0_at_MINOCAM_vs_MI           (G_T150_MINOCAM - G_T0_MINOCAM) - (G_T150_MI - G_T0_MI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T300_vs_T0_at_MINOCAM_vs_MI           (G_T300_MINOCAM - G_T0_MINOCAM) - (G_T300_MI - G_T0_MI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> interaction_T300_vs_T150_at_MINOCAM_vs_MI     (G_T300_MINOCAM - G_T150_MINOCAM) - (G_T300_MI - G_T150_MI)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

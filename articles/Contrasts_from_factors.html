@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-07-25</h4>
+            <h4 data-toc-skip class="date">2026-07-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/Contrasts_from_factors.Rmd" class="external-link"><code>vignettes/Contrasts_from_factors.Rmd</code></a></small>
       <div class="d-none name"><code>Contrasts_from_factors.Rmd</code></div>
@@ -135,8 +135,8 @@ across all time points:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ContrastName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span>, Contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">me</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##              ContrastName</span></span>
 <span><span class="co">## MINOCA_vs_MI MINOCA_vs_MI</span></span>
-<span><span class="co">##                                                                                               Contrast</span></span>
-<span><span class="co">## MINOCA_vs_MI ( (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</span></span></code></pre>
+<span><span class="co">##                                                                                           Contrast</span></span>
+<span><span class="co">## MINOCA_vs_MI (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3</span></span></code></pre>
 <p>Swapping the roles of primary and secondary gives main effects for
 time points averaged across disease types:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -146,10 +146,10 @@ time points averaged across disease types:</p>
 <span><span class="co">## T150_vs_T0     T150_vs_T0</span></span>
 <span><span class="co">## T300_vs_T0     T300_vs_T0</span></span>
 <span><span class="co">## T300_vs_T150 T300_vs_T150</span></span>
-<span><span class="co">##                                                                       Contrast</span></span>
-<span><span class="co">## T150_vs_T0       ( (G_T150_MI + G_T150_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2 )</span></span>
-<span><span class="co">## T300_vs_T0       ( (G_T300_MI + G_T300_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2 )</span></span>
-<span><span class="co">## T300_vs_T150 ( (G_T300_MI + G_T300_MINOCA)/2 - (G_T150_MI + G_T150_MINOCA)/2 )</span></span></code></pre>
+<span><span class="co">##                                                                   Contrast</span></span>
+<span><span class="co">## T150_vs_T0       (G_T150_MI + G_T150_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2</span></span>
+<span><span class="co">## T300_vs_T0       (G_T300_MI + G_T300_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2</span></span>
+<span><span class="co">## T300_vs_T150 (G_T300_MI + G_T300_MINOCA)/2 - (G_T150_MI + G_T150_MINOCA)/2</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="level-specific-contrasts">Level-specific contrasts<a class="anchor" aria-label="anchor" href="#level-specific-contrasts"></a>
@@ -206,8 +206,8 @@ level-specific, and interaction contrasts into a single data frame:</p>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">all_contrasts</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="31%">
-<col width="68%">
+<col width="32%">
+<col width="67%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">ContrastName</th>
@@ -216,8 +216,8 @@ level-specific, and interaction contrasts into a single data frame:</p>
 <tbody>
 <tr class="odd">
 <td align="left">MINOCA_vs_MI</td>
-<td align="left">( (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
-(G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</td>
+<td align="left">(G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
+(G_MI_T0 + G_MI_T150 + G_MI_T300)/3</td>
 </tr>
 <tr class="even">
 <td align="left">MINOCA_vs_MI_at_T0</td>
@@ -254,8 +254,8 @@ G_MI_T150)</td>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">no_int</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="18%">
-<col width="81%">
+<col width="19%">
+<col width="80%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">ContrastName</th>
@@ -264,8 +264,8 @@ G_MI_T150)</td>
 <tbody>
 <tr class="odd">
 <td align="left">MINOCA_vs_MI</td>
-<td align="left">( (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
-(G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</td>
+<td align="left">(G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
+(G_MI_T0 + G_MI_T150 + G_MI_T300)/3</td>
 </tr>
 <tr class="even">
 <td align="left">MINOCA_vs_MI_at_T0</td>
@@ -319,7 +319,7 @@ generates all contrasts, and binds them alongside the annotation:</p>
 <col width="8%">
 <col width="7%">
 <col width="26%">
-<col width="57%">
+<col width="56%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">Name</th>
@@ -332,8 +332,8 @@ generates all contrasts, and binds them alongside the annotation:</p>
 <td align="left">MI_150_6</td>
 <td align="left">MI_T150</td>
 <td align="left">MINOCA_vs_MI</td>
-<td align="left">( (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
-(G_MI_T0 + G_MI_T150 + G_MI_T300)/3 )</td>
+<td align="left">(G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 -
+(G_MI_T0 + G_MI_T150 + G_MI_T300)/3</td>
 </tr>
 <tr class="even">
 <td align="left">MINOCA_0_3</td>
@@ -414,7 +414,7 @@ perspective:</p>
 <col width="10%">
 <col width="9%">
 <col width="30%">
-<col width="50%">
+<col width="49%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">Name</th>
@@ -427,22 +427,22 @@ perspective:</p>
 <td align="left">MI_150_6</td>
 <td align="left">T150_MI</td>
 <td align="left">T150_vs_T0</td>
-<td align="left">( (G_T150_MI + G_T150_MINOCA)/2 - (G_T0_MI +
-G_T0_MINOCA)/2 )</td>
+<td align="left">(G_T150_MI + G_T150_MINOCA)/2 - (G_T0_MI +
+G_T0_MINOCA)/2</td>
 </tr>
 <tr class="even">
 <td align="left">MINOCA_0_3</td>
 <td align="left">T0_MINOCA</td>
 <td align="left">T300_vs_T0</td>
-<td align="left">( (G_T300_MI + G_T300_MINOCA)/2 - (G_T0_MI +
-G_T0_MINOCA)/2 )</td>
+<td align="left">(G_T300_MI + G_T300_MINOCA)/2 - (G_T0_MI +
+G_T0_MINOCA)/2</td>
 </tr>
 <tr class="odd">
 <td align="left">MINOCA_300_5</td>
 <td align="left">T300_MINOCA</td>
 <td align="left">T300_vs_T150</td>
-<td align="left">( (G_T300_MI + G_T300_MINOCA)/2 - (G_T150_MI +
-G_T150_MINOCA)/2 )</td>
+<td align="left">(G_T300_MI + G_T300_MINOCA)/2 - (G_T150_MI +
+G_T150_MINOCA)/2</td>
 </tr>
 <tr class="even">
 <td align="left">MI_150_5</td>

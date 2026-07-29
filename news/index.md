@@ -2,6 +2,9 @@
 
 ## prolfqua 1.7.0
 
+- [`main_effect_contrasts()`](https://wolski.github.io/prolfqua/reference/main_effect_contrasts.md)
+  now emits averaging contrasts with a top-level `LHS - RHS`, making its
+  output directly valid for the stricter contrast parser.
 - Added the `binomial_nested` facade for nested LFQ data. It reuses the
   Firth backend’s completed peptide-detection representation, fits
   protein-by-sample detected/undetected peptide counts with a
