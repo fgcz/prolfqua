@@ -38,7 +38,8 @@ plot_heatmap(
 
 - na_fraction:
 
-  fraction of NA values per row
+  maximum fraction of missing values per row. Rows that cannot be
+  meaningfully z-scored are always removed.
 
 - show_rownames:
 

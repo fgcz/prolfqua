@@ -154,6 +154,12 @@
   [`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md)
   now falls back to the input order instead of returning a
   `ComplexHeatmap` object that fails during drawing.
+- Abundance heatmaps now retain every partially observed feature that
+  can be meaningfully row z-scored by default, while automatically
+  removing constant, single-observation, and all-missing rows.
+  Significant-feature reports no longer hide bait-only results or
+  require a dataset-specific missing-value threshold, and sparse
+  matrices render safely even when clustering distances are unavailable.
 - `LFQDataPlotter$heatmap()` now shows only the `top_n` most variable
   features (default 1000), ranked by the prolfqua per-feature statistic
   (CV for untransformed data, sd for transformed, via `LFQDataStats`).

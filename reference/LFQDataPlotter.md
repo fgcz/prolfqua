@@ -173,7 +173,7 @@ features.
 #### Usage
 
     LFQDataPlotter$heatmap(
-      na_fraction = 0.3,
+      na_fraction = 1,
       rownames = FALSE,
       max_rownames_chars = 60,
       max_sample_label_chars = 20,
@@ -184,7 +184,8 @@ features.
 
 - `na_fraction`:
 
-  max fraction of NA's per row
+  maximum fraction of missing values per row. The default keeps every
+  row that can be meaningfully z-scored.
 
 - `rownames`:
 
