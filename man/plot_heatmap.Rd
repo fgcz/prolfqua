@@ -25,7 +25,8 @@ plot_heatmap(
 
 \item{sample_name}{character — sample name column}
 
-\item{na_fraction}{fraction of NA values per row}
+\item{na_fraction}{maximum fraction of missing values per row. Rows that
+cannot be meaningfully z-scored are always removed.}
 
 \item{show_rownames}{if TRUE shows row names, default FALSE}
 

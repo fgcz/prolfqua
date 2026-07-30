@@ -132,7 +132,8 @@ LFQDataPlotter <- R6::R6Class(
     #' variable are kept. This keeps the heatmap feasible and legible for
     #' peptide-list / entrapment searches with tens of thousands of features.
     #'
-    #' @param na_fraction max fraction of NA's per row
+    #' @param na_fraction maximum fraction of missing values per row. The default
+    #'   keeps every row that can be meaningfully z-scored.
     #' @param rownames show rownames (default FALSE - do not show.)
     #' @param max_rownames_chars maximum displayed row label length
     #' @param max_sample_label_chars maximum displayed sample label length.
@@ -141,7 +142,7 @@ LFQDataPlotter <- R6::R6Class(
     #'   \code{NULL} or \code{Inf} keeps all features.
     #' @return ComplexHeatmap::Heatmap
     heatmap = function(
-      na_fraction = 0.3,
+      na_fraction = 1,
       rownames = FALSE,
       max_rownames_chars = 60,
       max_sample_label_chars = 20,

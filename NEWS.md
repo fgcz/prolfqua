@@ -47,6 +47,10 @@
 - Removed the unused `impute_with_zcomp()`, `estimate_lod_global()`, and `function_lod_quantile()` exports (and the `zCompositions` dependency). For missing-value imputation use `AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()`.
 - Hardened `plot_pca()`: errors early on duplicated sample names, an all-missing matrix, or too few samples instead of returning `NULL` (which broke `pca_plotly()`); joins scores to annotation with an explicit `by`; makes `prcomp(center = TRUE, scale. = FALSE)` explicit.
 - Hardened abundance heatmaps for sparse significant-feature subsets: when row or column distances are non-finite because of missing values, `plot_heatmap()` now falls back to the input order instead of returning a `ComplexHeatmap` object that fails during drawing.
+- Abundance heatmaps now retain every partially observed feature that can be meaningfully row z-scored by default,
+  while automatically removing constant, single-observation, and all-missing rows. Significant-feature reports no
+  longer hide bait-only results or require a dataset-specific missing-value threshold, and sparse matrices render
+  safely even when clustering distances are unavailable.
 - `LFQDataPlotter$heatmap()` now shows only the `top_n` most variable features (default 1000), ranked by the prolfqua per-feature statistic (CV for untransformed data, sd for transformed, via `LFQDataStats`). Row clustering uses `stats::hclust`, which errors above 65536 features, so peptide-list / entrapment searches with tens of thousands of degenerate protein groups no longer crash the QC heatmap. Pass `top_n = NULL` (or `Inf`) to keep every feature.
 - `StrategyLogistf` now uses Wald confidence intervals instead of profiling every coefficient, preventing `firth_nested`
   analyses from stalling for days on proteins with hundreds or thousands of peptides.

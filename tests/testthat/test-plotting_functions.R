@@ -313,6 +313,38 @@ test_that("abundance heatmap draws sparse one-row matrices with all-NA columns",
   expect_no_error(ComplexHeatmap::draw(p))
 })
 
+test_that("abundance heatmap keeps partially observed rows and drops rows that cannot be z-scored", {
+  matrix <- rbind(
+    complete = c(11, 12, 13, 14, 8, 9, 10, 11),
+    bait_only = c(14, 15, 16, 17, NA, NA, NA, NA),
+    constant = rep(10, 8),
+    one_observation = c(12, rep(NA, 7)),
+    all_missing = rep(NA, 8)
+  )
+  colnames(matrix) <- c(paste0("B", 1:4), paste0("C", 1:4))
+  annotation <- data.frame(
+    sample = colnames(matrix),
+    group = rep(c("bait", "control"), each = 4)
+  )
+
+  p <- plot_heatmap(
+    matrix,
+    annotation,
+    factor_keys = "group",
+    sample_name = "sample",
+    na_fraction = 1,
+    show_rownames = TRUE
+  )
+
+  expect_s4_class(p, "Heatmap")
+  expect_setequal(rownames(p@matrix), c("complete", "bait_only"))
+  expect_no_warning(ComplexHeatmap::draw(p))
+})
+
+test_that("LFQDataPlotter heatmaps retain all z-scoreable rows by default", {
+  expect_identical(formals(LFQDataPlotter$public_methods$heatmap)$na_fraction, 1)
+})
+
 test_that("abundance color mapping spans green, black, and red", {
   col_fun <- prolfqua:::.abundance_col_fun(matrix(c(-2, 0, 2), nrow = 1))
   cols <- grDevices::col2rgb(col_fun(c(-2, 0, 2)))

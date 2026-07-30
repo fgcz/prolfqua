@@ -173,7 +173,7 @@ variable are kept. This keeps the heatmap feasible and legible for
 peptide-list / entrapment searches with tens of thousands of features.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(
-  na_fraction = 0.3,
+  na_fraction = 1,
   rownames = FALSE,
   max_rownames_chars = 60,
   max_sample_label_chars = 20,
@@ -184,7 +184,8 @@ peptide-list / entrapment searches with tens of thousands of features.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{na_fraction}}{max fraction of NA's per row}
+\item{\code{na_fraction}}{maximum fraction of missing values per row. The default
+keeps every row that can be meaningfully z-scored.}
 
 \item{\code{rownames}}{show rownames (default FALSE - do not show.)}
 

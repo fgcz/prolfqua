@@ -509,7 +509,8 @@ plot_heatmap_cor <- function(
 #' @param annotation data.frame — sample annotation
 #' @param factor_keys character vector — factor column names for annotation
 #' @param sample_name character — sample name column
-#' @param na_fraction fraction of NA values per row
+#' @param na_fraction maximum fraction of missing values per row. Rows that
+#'   cannot be meaningfully z-scored are always removed.
 #' @param show_rownames if TRUE shows row names, default FALSE
 #' @param max_rownames_chars maximum displayed row label length
 #' @param max_sample_label_chars maximum displayed sample label length. Labels
@@ -544,13 +545,14 @@ plot_heatmap <- function(
 
   resdata <- t(scale(t(matrix)))
   na_threshold <- floor(ncol(resdata) * na_fraction)
-  keep_rows <- rowSums(is.na(resdata)) <= na_threshold
+  can_z_score <- rowSums(is.finite(resdata)) >= 2
+  keep_rows <- rowSums(is.na(resdata)) <= na_threshold & can_z_score
   resdataf <- resdata[keep_rows, , drop = FALSE]
-  plot_data <- if (nrow(resdataf) >= 3) {
-    .cluster_heatmap_rows(resdataf)
-  } else {
-    resdata
+  if (nrow(resdataf) == 0) {
+    warning("No features have enough observed variation for a row z-scored heatmap.")
+    return(NULL)
   }
+  plot_data <- .cluster_heatmap_rows(resdataf)
   cluster_columns <- .can_cluster_heatmap_columns(plot_data)
 
   res <- ComplexHeatmap::Heatmap(
