@@ -328,7 +328,7 @@ sessionInfo()
     ##  [28] logistf_1.26.1         cachem_1.1.0           jsonlite_2.0.0        
     ##  [31] progress_1.2.3         pan_2.0                broom_1.0.13          
     ##  [34] parallel_4.5.2         prettyunits_1.2.0      cluster_2.1.8.1       
-    ##  [37] R6_2.6.1               bslib_0.11.0           stringi_1.8.7         
+    ##  [37] R6_2.6.1               bslib_0.12.0           stringi_1.8.9         
     ##  [40] RColorBrewer_1.1-3     limma_3.66.0           boot_1.3-32           
     ##  [43] rpart_4.1.24           jquerylib_0.1.4        Rcpp_1.1.2            
     ##  [46] iterators_1.0.14       knitr_1.51             IRanges_2.44.0        

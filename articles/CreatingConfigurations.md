@@ -258,7 +258,7 @@ sessionInfo()
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
     ##  [31] jsonlite_2.0.0         pan_2.0                broom_1.0.13          
     ##  [34] parallel_4.5.2         cluster_2.1.8.1        R6_2.6.1              
-    ##  [37] bslib_0.11.0           stringi_1.8.7          RColorBrewer_1.1-3    
+    ##  [37] bslib_0.12.0           stringi_1.8.9          RColorBrewer_1.1-3    
     ##  [40] limma_3.66.0           boot_1.3-32            rpart_4.1.24          
     ##  [43] jquerylib_0.1.4        Rcpp_1.1.2             iterators_1.0.14      
     ##  [46] knitr_1.51             IRanges_2.44.0         Matrix_1.7-4          

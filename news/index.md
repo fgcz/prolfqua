@@ -94,9 +94,9 @@
   base class `ContrastsFacadeBase` holds the shared facade plumbing; the
   19 built-in facades are now thin subclasses.
 - `ContrastsPlotter` colours volcano/MA/score plots by `estimate_type`
-  when present (and the colour column was left at its default), keeping
-  LOD-imputed / fallback rows visually distinct now that `modelName` is
-  uniform per run.
+  when present (and the colour column was left at its default), using
+  black for observed estimates, green for LOD-imputed estimates, and
+  blue for group-mean fallback estimates.
 - Correctness fixes: `AggregateTopN` now validates `func` via
   `match.arg` (an invalid value errors instead of silently meaning
   `mean`); `Model$get_anova()` drops degenerate rows by `is.na(factor)`
