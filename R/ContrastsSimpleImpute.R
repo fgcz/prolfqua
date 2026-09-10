@@ -173,6 +173,11 @@ ContrastsMissing <- R6::R6Class(
           result <- self$p.adjust(result, column = "p.value", group_by_col = "contrast", newname = "FDR")
         }
         result <- result |> rename(diff = estimate, sigma = sd, std.error = sdT)
+        result <- result |>
+          dplyr::mutate(
+            std.error.unmoderated = .data$std.error,
+            df.unmoderated = .data$df
+          )
         # group-mean substitution, not a model fit: every row is a fallback
         result$estimate_type <- "missing_fallback"
         result <- mutate(result, modelName = self$model_name, .before = 1)

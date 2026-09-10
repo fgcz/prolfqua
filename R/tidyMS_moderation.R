@@ -58,6 +58,9 @@
   )
   dplyr::bind_cols(contrast_df, squeezed_var) |>
     dplyr::mutate(
+      moderated.std.error = .data$std.error *
+        sqrt(.data$moderated.var.post) /
+        .data$sigma,
       moderated.statistic = .data$statistic *
         .data$sigma /
         sqrt(.data$moderated.var.post),
@@ -81,11 +84,10 @@
     (1 - confint) / 2,
     df = contrast_df$moderated.df.total
   )
-  posterior_sd <- sqrt(contrast_df$moderated.var.post)
   contrast_df$moderated.conf.low <- contrast_df[[estimate]] -
-    conf_quantile * posterior_sd
+    conf_quantile * contrast_df$moderated.std.error
   contrast_df$moderated.conf.high <- contrast_df[[estimate]] +
-    conf_quantile * posterior_sd
+    conf_quantile * contrast_df$moderated.std.error
   dplyr::ungroup(contrast_df)
 }
 
@@ -99,6 +101,7 @@
 #'   sigma = c(0.25, 0.32, 0.28, 0.40, 0.35),
 #'   df = rep(6, 5),
 #'   statistic = c(2.1, -1.8, 0.5, 3.0, -2.2),
+#'   std.error = c(0.8 / 2.1, 0.6 / 1.8, 0.2 / 0.5, 1.2 / 3.0, 0.9 / 2.2),
 #'   diff = c(0.8, -0.6, 0.2, 1.2, -0.9)
 #' )
 #' res <- moderated_p_limma(contrast_df)
@@ -200,6 +203,7 @@ moderated_p_limma_long <- function(
           "sigma",
           "df",
           "statistic",
+          "std.error",
           "p.value",
           "conf.low",
           "conf.high",
@@ -215,6 +219,7 @@ moderated_p_limma_long <- function(
         conf.low = "moderated.conf.low",
         conf.high = "moderated.conf.high",
         statistic = "moderated.statistic",
+        std.error = "moderated.std.error",
         df = "moderated.df.total",
         p.value = "moderated.p.value"
       )

@@ -196,6 +196,11 @@ Contrasts <- R6::R6Class(
 
         contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
         contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
+        contrast_result <- contrast_result |>
+          dplyr::mutate(
+            std.error.unmoderated = .data$std.error,
+            df.unmoderated = .data$df
+          )
         # Stamp modelName uniformly with the model identity. Rescue/imputation
         # state lives in a separate `estimate_type` column: rows refit from an
         # LOD-imputed model (flagged by impute_refit_singular) get

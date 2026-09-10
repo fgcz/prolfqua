@@ -1025,6 +1025,8 @@ ContrastsLimma <- R6::R6Class(
         if (self$eBayes) {
           tt <- limma::topTable(fit2, coef = i, number = Inf, sort.by = "none", confint = TRUE)
           df_i$diff <- tt$logFC
+          df_i$std.error.unmoderated <- fit2$sigma * fit2$stdev.unscaled[, i]
+          df_i$df.unmoderated <- fit2$df.residual
           df_i$std.error <- sqrt(fit2$s2.post) * fit2$stdev.unscaled[, i]
           df_i$statistic <- tt$t
           df_i$p.value <- tt$P.Value
@@ -1045,10 +1047,12 @@ ContrastsLimma <- R6::R6Class(
 
           df_i$diff <- diff_i
           df_i$std.error <- se_i
+          df_i$std.error.unmoderated <- se_i
           df_i$statistic <- t_raw
           df_i$p.value <- p_raw
           df_i$sigma <- sigma_raw
           df_i$df <- df_raw
+          df_i$df.unmoderated <- df_raw
           df_i$conf.low <- diff_i - prqt * se_i
           df_i$conf.high <- diff_i + prqt * se_i
         }

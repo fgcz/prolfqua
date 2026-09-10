@@ -46,6 +46,7 @@ test_that("moderated_p_deqms works on simulated data", {
   expect_true("moderated.var.prior" %in% colnames(result))
   expect_true("moderated.df.prior" %in% colnames(result))
   expect_true("moderated.df.total" %in% colnames(result))
+  expect_true("moderated.std.error" %in% colnames(result))
   expect_true("moderated.conf.low" %in% colnames(result))
   expect_true("moderated.conf.high" %in% colnames(result))
 
@@ -55,6 +56,11 @@ test_that("moderated_p_deqms works on simulated data", {
 
   # Prior variance should vary per protein (count-dependent)
   expect_true(length(unique(result$moderated.var.prior)) > 1)
+  expect_equal(
+    result$moderated.conf.high - result$diff,
+    -stats::qt(0.025, df = result$moderated.df.total) * result$moderated.std.error,
+    tolerance = 1e-12
+  )
 })
 
 test_that("ContrastsModeratedDEqMS works end-to-end", {
@@ -84,6 +90,10 @@ test_that("ContrastsModeratedDEqMS works end-to-end", {
   expect_true(all(c("diff", "p.value", "FDR", "sigma", "statistic", "df", "conf.low", "conf.high") %in% colnames(x)))
   expect_true(all(x$p.value > 0 & x$p.value <= 1))
   expect_true(all(x$FDR >= 0 & x$FDR <= 1))
+  raw <- contrast$get_contrasts()
+  expect_equal(x$std.error.unmoderated, raw$std.error)
+  expect_equal(x$df.unmoderated, raw$df)
+  expect_equal(x$statistic, x$diff / x$std.error, tolerance = 1e-12)
 
   # modelName passes through the wrapped model identity unchanged (no _DEqMS
   # suffix); DEqMS moderation is documented in the methods text. estimate_type

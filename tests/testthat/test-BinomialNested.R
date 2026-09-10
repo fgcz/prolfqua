@@ -164,6 +164,7 @@ test_that("moderated_p_limma applies an optional posterior variance floor", {
     sigma = c(0.20, 0.25, 0.18, 0.22, 0.24),
     df = rep(6, 5),
     statistic = c(2.1, -1.8, 0.5, 3.0, -2.2),
+    std.error = c(0.8 / 2.1, 0.6 / 1.8, 0.2 / 0.5, 1.2 / 3.0, 0.9 / 2.2),
     diff = c(0.8, -0.6, 0.2, 1.2, -0.9)
   )
 

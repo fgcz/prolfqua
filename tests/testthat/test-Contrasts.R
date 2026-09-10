@@ -28,6 +28,8 @@ test_that("Contrasts (Wald test)", {
   x <- contrastX$get_contrasts()
   expect_s3_class(x, "data.frame")
   expect_true(all(c("contrast", "diff", "statistic", "p.value", "FDR") %in% colnames(x)))
+  expect_equal(x$std.error.unmoderated, x$std.error)
+  expect_equal(x$df.unmoderated, x$df)
   expect_true(all(x$p.value > 0 & x$p.value < 1))
   expect_true(all(x$FDR > 0 & x$FDR <= 1))
 
@@ -61,9 +63,23 @@ test_that("ContrastsModerated", {
   contrast <- Contrasts$new(mod, Contr)
   moderated <- ContrastsModerated$new(contrast)
 
+  raw <- contrast$get_contrasts()
   x <- moderated$get_contrasts()
   expect_s3_class(x, "data.frame")
   expect_true(all(c("diff", "p.value", "FDR") %in% colnames(x)))
+  expect_equal(x$std.error.unmoderated, raw$std.error)
+  expect_equal(x$df.unmoderated, raw$df)
+  expect_equal(x$statistic, x$diff / x$std.error, tolerance = 1e-12)
+  expect_equal(
+    x$p.value,
+    2 * stats::pt(abs(x$statistic), df = x$df, lower.tail = FALSE),
+    tolerance = 1e-12
+  )
+  expect_equal(
+    x$conf.high - x$diff,
+    -stats::qt(0.025, df = x$df) * x$std.error,
+    tolerance = 1e-12
+  )
 
   tw <- moderated$to_wide()
   expect_s3_class(tw, "data.frame")
@@ -112,6 +128,8 @@ test_that("ContrastsMissing", {
   res <- csi$get_contrasts()
   expect_s3_class(res, "data.frame")
   expect_true(all(c("diff", "p.value", "FDR") %in% colnames(res)))
+  expect_equal(res$std.error.unmoderated, res$std.error)
+  expect_equal(res$df.unmoderated, res$df)
   expect_equal(sum(is.na(res$p.value)), 0)
 
   cs <- csi$get_contrast_sides()

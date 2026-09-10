@@ -73,8 +73,10 @@ test_that("ContrastsLimma produces valid results", {
       "p.value",
       "statistic",
       "std.error",
+      "std.error.unmoderated",
       "sigma",
       "df",
+      "df.unmoderated",
       "conf.low",
       "conf.high",
       "avgAbd",
@@ -87,6 +89,33 @@ test_that("ContrastsLimma produces valid results", {
   expect_true(all(res$FDR >= 0 & res$FDR <= 1, na.rm = TRUE))
   # avgAbd can be NA for proteins with incomplete data (NA coefficients)
   expect_true(sum(!is.na(res$avgAbd)) > 0)
+  expect_equal(
+    unname(res$statistic),
+    unname(res$diff / res$std.error),
+    tolerance = 1e-12
+  )
+  expect_true(any(abs(res$std.error - res$std.error.unmoderated) > 1e-12, na.rm = TRUE))
+  expect_true(any(abs(res$df - res$df.unmoderated) > 1e-12, na.rm = TRUE))
+})
+
+test_that("ContrastsLimma exposes identical standard and raw pairs without eBayes", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  lProt <- prolfqua::LFQData$new(istar$data, istar$config)
+  lProt$rename_response("transformedIntensity")
+  mod <- prolfqua::build_model_limma(
+    lProt,
+    prolfqua::strategy_limma("transformedIntensity ~ group_")
+  )
+  contrast <- prolfqua::ContrastsLimma$new(
+    mod,
+    c("A_vs_Ctrl" = "group_A - group_Ctrl"),
+    eBayes = FALSE
+  )
+
+  res <- contrast$get_contrasts()
+
+  expect_equal(res$std.error.unmoderated, res$std.error)
+  expect_equal(res$df.unmoderated, res$df)
 })
 
 test_that("ContrastsLimma fold changes match prolfqua lm", {
