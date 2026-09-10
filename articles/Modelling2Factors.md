@@ -228,13 +228,13 @@ Also these results can again be visualized in a `volcano` plot.
 dim(contr$get_contrasts())
 ```
 
-    ## [1] 757  14
+    ## [1] 757  16
 
 ``` r
 dim(contrSimple$get_contrasts())
 ```
 
-    ## [1] 980  21
+    ## [1] 980  23
 
 ``` r
 mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrSimple)$merged
@@ -414,7 +414,7 @@ sessionInfo()
     ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
     ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
-    ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.31        
+    ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.32        
     ##  [22] ggbeeswarm_0.7.3       nloptr_2.2.1           ragg_1.5.2            
     ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.60             
     ##  [28] glmnet_5.0             jomo_2.7-6             logistf_1.26.1        
@@ -424,7 +424,7 @@ sessionInfo()
     ##  [40] bslib_0.12.0           stringi_1.8.9          RColorBrewer_1.1-3    
     ##  [43] limma_3.66.0           boot_1.3-32            rpart_4.1.24          
     ##  [46] jquerylib_0.1.4        Rcpp_1.1.2             iterators_1.0.14      
-    ##  [49] knitr_1.51             IRanges_2.44.0         Matrix_1.7-4          
+    ##  [49] knitr_1.52             IRanges_2.44.0         Matrix_1.7-4          
     ##  [52] splines_4.5.2          nnet_7.3-20            tidyselect_1.2.1      
     ##  [55] yaml_2.3.12            doParallel_1.0.17      codetools_0.2-20      
     ##  [58] lattice_0.22-7         tibble_3.3.1           plyr_1.8.9            
@@ -434,7 +434,7 @@ sessionInfo()
     ##  [70] stats4_4.5.2           reformulas_0.4.4       plotly_4.12.1         
     ##  [73] generics_0.1.4         S4Vectors_0.48.1       hms_1.1.4             
     ##  [76] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
-    ##  [79] glue_1.8.1             tools_4.5.2            data.table_1.18.4     
+    ##  [79] glue_1.8.1             tools_4.5.2            data.table_1.18.6.1   
     ##  [82] lme4_2.0-6             forcats_1.0.1          fs_2.1.0              
     ##  [85] grid_4.5.2             tidyr_1.3.2            rbibutils_2.4.1       
     ##  [88] colorspace_2.1-3       nlme_3.1-168           formula.tools_1.7.1   
@@ -444,7 +444,7 @@ sessionInfo()
     ## [100] operator.tools_1.6.3.1 BiocGenerics_0.56.0    ggrepel_0.9.8         
     ## [103] rjson_0.2.23           htmlwidgets_1.6.4      farver_2.1.2          
     ## [106] htmltools_0.5.9        pkgdown_2.2.1          lifecycle_1.0.5       
-    ## [109] httr_1.4.8             GlobalOptions_0.1.4    mitml_0.4-5           
+    ## [109] httr_1.4.9             GlobalOptions_0.1.4    mitml_0.4-5           
     ## [112] statmod_1.5.2          MASS_7.3-65
 
 ## References

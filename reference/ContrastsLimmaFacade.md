@@ -238,16 +238,17 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
 #> Warning: Partial NA coefficients for 1 probe(s)
 head(fa$get_contrasts())
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id  contrast     diff     FDR std.error
-#>   <chr>     <chr>         <chr>       <chr>       <dbl>   <dbl>     <dbl>
-#> 1 limma     observed      0EfVhX~0087 A_vs_Ctrl -2.62   0.00694     0.625
-#> 2 limma     observed      7cbcrd~5725 A_vs_Ctrl  2.80   0.00694     0.585
-#> 3 limma     observed      9VUkAq~4703 A_vs_Ctrl  1.67   0.219       0.831
-#> 4 limma     observed      BEJI92~5282 A_vs_Ctrl  0.424  0.721       0.884
-#> 5 limma     observed      CGzoYe~2147 A_vs_Ctrl -0.598  0.583       0.771
-#> 6 limma     observed      Fl4JiV~8625 A_vs_Ctrl -0.0494 0.932       0.566
-#> # ℹ 7 more variables: statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
+#> # A tibble: 6 × 16
+#>   modelName estimate_type protein_Id  contrast     diff     FDR
+#>   <chr>     <chr>         <chr>       <chr>       <dbl>   <dbl>
+#> 1 limma     observed      0EfVhX~0087 A_vs_Ctrl -2.62   0.00694
+#> 2 limma     observed      7cbcrd~5725 A_vs_Ctrl  2.80   0.00694
+#> 3 limma     observed      9VUkAq~4703 A_vs_Ctrl  1.67   0.219  
+#> 4 limma     observed      BEJI92~5282 A_vs_Ctrl  0.424  0.721  
+#> 5 limma     observed      CGzoYe~2147 A_vs_Ctrl -0.598  0.583  
+#> 6 limma     observed      Fl4JiV~8625 A_vs_Ctrl -0.0494 0.932  
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 fa$to_wide()
 #> # A tibble: 10 × 5

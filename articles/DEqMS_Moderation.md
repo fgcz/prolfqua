@@ -319,7 +319,7 @@ sessionInfo()
     ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
     ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
-    ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.31        
+    ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.32        
     ##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          
     ##  [25] purrr_1.2.2            xfun_0.60              glmnet_5.0            
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
@@ -328,7 +328,7 @@ sessionInfo()
     ##  [37] cluster_2.1.8.1        R6_2.6.1               bslib_0.12.0          
     ##  [40] stringi_1.8.9          RColorBrewer_1.1-3     limma_3.66.0          
     ##  [43] boot_1.3-32            rpart_4.1.24           jquerylib_0.1.4       
-    ##  [46] Rcpp_1.1.2             iterators_1.0.14       knitr_1.51            
+    ##  [46] Rcpp_1.1.2             iterators_1.0.14       knitr_1.52            
     ##  [49] IRanges_2.44.0         Matrix_1.7-4           splines_4.5.2         
     ##  [52] nnet_7.3-20            tidyselect_1.2.1       yaml_2.3.12           
     ##  [55] doParallel_1.0.17      codetools_0.2-20       lattice_0.22-7        
@@ -339,7 +339,7 @@ sessionInfo()
     ##  [70] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        
     ##  [73] S4Vectors_0.48.1       hms_1.1.4              scales_1.4.0          
     ##  [76] minqa_1.2.8            glue_1.8.1             tools_4.5.2           
-    ##  [79] data.table_1.18.4      lme4_2.0-6             forcats_1.0.1         
+    ##  [79] data.table_1.18.6.1    lme4_2.0-6             forcats_1.0.1         
     ##  [82] fs_2.1.0               grid_4.5.2             tidyr_1.3.2           
     ##  [85] rbibutils_2.4.1        colorspace_2.1-3       nlme_3.1-168          
     ##  [88] formula.tools_1.7.1    cli_3.6.6              textshaping_1.0.5     
@@ -347,6 +347,6 @@ sessionInfo()
     ##  [94] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1
     ##  [97] BiocGenerics_0.56.0    ggrepel_0.9.8          rjson_0.2.23          
     ## [100] htmlwidgets_1.6.4      farver_2.1.2           htmltools_0.5.9       
-    ## [103] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.8            
+    ## [103] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.9            
     ## [106] GlobalOptions_0.1.4    mitml_0.4-5            statmod_1.5.2         
     ## [109] MASS_7.3-65

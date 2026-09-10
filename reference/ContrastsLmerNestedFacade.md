@@ -253,16 +253,17 @@ head(fa$get_contrasts())
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 6 × 14
-#>   modelName   estimate_type protein_Id  contrast       diff std.error avgAbd
-#>   <chr>       <chr>         <chr>       <chr>         <dbl>     <dbl>  <dbl>
-#> 1 lmer_nested observed      0EfVhX~0087 A_vs_Ctrl -0.000832    0.0730   4.34
-#> 2 lmer_nested observed      BEJI92~5282 A_vs_Ctrl  0.322       0.0832   4.22
-#> 3 lmer_nested observed      Fl4JiV~8625 A_vs_Ctrl -0.0413      0.0850   4.38
-#> 4 lmer_nested observed      HvIpHG~9079 A_vs_Ctrl -0.372       0.0616   4.40
-#> 5 lmer_nested observed      JcKVfU~9653 A_vs_Ctrl -0.107       0.0577   5.05
-#> 6 lmer_nested observed      SGIVBl~5782 A_vs_Ctrl  0.0307      0.0695   4.68
-#> # ℹ 7 more variables: statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> # A tibble: 6 × 16
+#>   modelName   estimate_type protein_Id  contrast       diff avgAbd
+#>   <chr>       <chr>         <chr>       <chr>         <dbl>  <dbl>
+#> 1 lmer_nested observed      0EfVhX~0087 A_vs_Ctrl -0.000832   4.34
+#> 2 lmer_nested observed      BEJI92~5282 A_vs_Ctrl  0.322      4.22
+#> 3 lmer_nested observed      Fl4JiV~8625 A_vs_Ctrl -0.0413     4.38
+#> 4 lmer_nested observed      HvIpHG~9079 A_vs_Ctrl -0.372      4.40
+#> 5 lmer_nested observed      JcKVfU~9653 A_vs_Ctrl -0.107      5.05
+#> 6 lmer_nested observed      SGIVBl~5782 A_vs_Ctrl  0.0307     4.68
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 6 × 5

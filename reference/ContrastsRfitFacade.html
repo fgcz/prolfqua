@@ -274,17 +274,18 @@ weighting is not applied.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type protein_Id  contrast   diff std.error avgAbd statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> rfit      observed      0EfVhX~0087 A_vs_Ct… -<span style="color: #BB0000;">2.34</span>      0.686   21.0    -<span style="color: #BB0000;">2.87</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> rfit      observed      7cbcrd~5725 A_vs_Ct…  2.79      0.554   20.6     3.70 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> rfit      observed      9VUkAq~4703 A_vs_Ct…  1.64      0.609   20.3     1.78 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> rfit      observed      BEJI92~5282 A_vs_Ct…  0.979     0.749   20.7     1.20 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> rfit      observed      CGzoYe~2147 A_vs_Ct… -<span style="color: #BB0000;">0.630</span>     0.898   30.5    -<span style="color: #BB0000;">0.833</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> rfit      observed      Fl4JiV~8625 A_vs_Ct… -<span style="color: #BB0000;">0.103</span>     0.821   21.2    -<span style="color: #BB0000;">0.126</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: df &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type protein_Id  contrast    diff avgAbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> rfit      observed      0EfVhX~0087 A_vs_Ctrl -<span style="color: #BB0000;">2.34</span>    21.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> rfit      observed      7cbcrd~5725 A_vs_Ctrl  2.79    20.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> rfit      observed      9VUkAq~4703 A_vs_Ctrl  1.64    20.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> rfit      observed      BEJI92~5282 A_vs_Ctrl  0.979   20.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> rfit      observed      CGzoYe~2147 A_vs_Ctrl -<span style="color: #BB0000;">0.630</span>   30.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> rfit      observed      Fl4JiV~8625 A_vs_Ctrl -<span style="color: #BB0000;">0.103</span>   21.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 10 more variables: std.error.unmoderated &lt;dbl&gt;, df.unmoderated &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, df &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">fa</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl</span>

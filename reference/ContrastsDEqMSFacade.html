@@ -282,17 +282,18 @@ merge with <code><a href="ContrastsMissing.html">ContrastsMissing</a></code> -&g
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type contrast  protein_Id   diff std.error avgAbd statistic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> deqms     observed      A_vs_Ctrl 0EfVhX~71…  3.00      0.886   18.8     4.77 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> deqms     observed      A_vs_Ctrl 0m5WN4~35…  0.222     0.912   20.4     0.342</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> deqms     observed      A_vs_Ctrl 76k03k~97…  0.509     0.464   19.9     0.825</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> deqms     observed      A_vs_Ctrl 7QuTub~55… -<span style="color: #BB0000;">1.22</span>      0.874   23.4    -<span style="color: #BB0000;">1.57</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> deqms     observed      A_vs_Ctrl 7cbcrd~04…  1.38      0.690   16.5     1.35 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> deqms     observed      A_vs_Ctrl 7soopj~34…  0.822     0.617   25.9     1.13 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: df &lt;int&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type contrast  protein_Id    diff avgAbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> deqms     observed      A_vs_Ctrl 0EfVhX~7161  3.00    18.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> deqms     observed      A_vs_Ctrl 0m5WN4~3543  0.222   20.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> deqms     observed      A_vs_Ctrl 76k03k~9735  0.509   19.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> deqms     observed      A_vs_Ctrl 7QuTub~5556 -<span style="color: #BB0000;">1.22</span>    23.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> deqms     observed      A_vs_Ctrl 7cbcrd~0495  1.38    16.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> deqms     observed      A_vs_Ctrl 7soopj~3451  0.822   25.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 10 more variables: std.error.unmoderated &lt;dbl&gt;, df.unmoderated &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, df &lt;int&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">fa</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 49 × 5</span></span>

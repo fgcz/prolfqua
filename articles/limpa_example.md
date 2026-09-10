@@ -1239,7 +1239,7 @@ sessionInfo()
     ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
     ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
-    ##  [19] rmarkdown_2.31         nloptr_2.2.1           ragg_1.5.2            
+    ##  [19] rmarkdown_2.32         nloptr_2.2.1           ragg_1.5.2            
     ##  [22] UpSetR_1.4.1           purrr_1.2.2            xfun_0.60             
     ##  [25] glmnet_5.0             jomo_2.7-6             logistf_1.26.1        
     ##  [28] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
@@ -1247,7 +1247,7 @@ sessionInfo()
     ##  [34] prettyunits_1.2.0      cluster_2.1.8.1        R6_2.6.1              
     ##  [37] bslib_0.12.0           stringi_1.8.9          RColorBrewer_1.1-3    
     ##  [40] boot_1.3-32            rpart_4.1.24           jquerylib_0.1.4       
-    ##  [43] Rcpp_1.1.2             iterators_1.0.14       knitr_1.51            
+    ##  [43] Rcpp_1.1.2             iterators_1.0.14       knitr_1.52            
     ##  [46] IRanges_2.44.0         Matrix_1.7-4           splines_4.5.2         
     ##  [49] nnet_7.3-20            tidyselect_1.2.1       yaml_2.3.12           
     ##  [52] doParallel_1.0.17      codetools_0.2-20       lattice_0.22-7        
@@ -1258,7 +1258,7 @@ sessionInfo()
     ##  [67] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        
     ##  [70] S4Vectors_0.48.1       hms_1.1.4              ggplot2_4.0.3         
     ##  [73] scales_1.4.0           minqa_1.2.8            glue_1.8.1            
-    ##  [76] tools_4.5.2            data.table_1.18.4      lme4_2.0-6            
+    ##  [76] tools_4.5.2            data.table_1.18.6.1    lme4_2.0-6            
     ##  [79] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
     ##  [82] tidyr_1.3.2            rbibutils_2.4.1        colorspace_2.1-3      
     ##  [85] nlme_3.1-168           formula.tools_1.7.1    cli_3.6.6             
@@ -1267,5 +1267,5 @@ sessionInfo()
     ##  [94] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   
     ##  [97] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     
     ## [100] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.1         
-    ## [103] lifecycle_1.0.5        httr_1.4.8             GlobalOptions_0.1.4   
+    ## [103] lifecycle_1.0.5        httr_1.4.9             GlobalOptions_0.1.4   
     ## [106] mitml_0.4-5            statmod_1.5.2          MASS_7.3-65

@@ -351,17 +351,18 @@ Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 contr_limma <- ContrastsLimma$new(mod_limma, Contr)
 res <- contr_limma$get_contrasts()
 head(res)
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id contrast   diff     FDR std.error statistic
-#>   <chr>     <chr>         <chr>      <chr>     <dbl>   <dbl>     <dbl>     <dbl>
-#> 1 limma     observed      0EfVhX~71… dil.b_v…  3.00  6.99e-4     0.681     4.40 
-#> 2 limma     observed      0m5WN4~35… dil.b_v…  0.222 8.35e-1     0.736     0.301
-#> 3 limma     observed      76k03k~97… dil.b_v…  0.509 8.35e-1     0.681     0.747
-#> 4 limma     observed      7QuTub~55… dil.b_v… -1.22  4.39e-1     0.736    -1.66 
-#> 5 limma     observed      7cbcrd~04… dil.b_v…  1.38  5.47e-1     0.963     1.44 
-#> 6 limma     observed      7soopj~34… dil.b_v…  0.822 5.88e-1     0.681     1.21 
-#> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
-#> #   conf.high <dbl>, avgAbd <dbl>
+#> # A tibble: 6 × 16
+#>   modelName estimate_type protein_Id  contrast     diff      FDR
+#>   <chr>     <chr>         <chr>       <chr>       <dbl>    <dbl>
+#> 1 limma     observed      0EfVhX~7161 dil.b_vs_a  3.00  0.000699
+#> 2 limma     observed      0m5WN4~3543 dil.b_vs_a  0.222 0.835   
+#> 3 limma     observed      76k03k~9735 dil.b_vs_a  0.509 0.835   
+#> 4 limma     observed      7QuTub~5556 dil.b_vs_a -1.22  0.439   
+#> 5 limma     observed      7cbcrd~0495 dil.b_vs_a  1.38  0.547   
+#> 6 limma     observed      7soopj~3451 dil.b_vs_a  0.822 0.588   
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 stopifnot(all(c("diff", "FDR", "p.value", "statistic") %in% colnames(res)))
 
 # Compare with prolfqua's own pipeline

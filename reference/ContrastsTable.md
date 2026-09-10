@@ -330,7 +330,7 @@ csi$subject_id
 #> [1] "protein_Id" "peptide_Id"
 xcx <- ContrastsTable$new(ctr, subject_id = csi$subject_id, model_name = "TableTest")
 xcx$get_contrasts()
-#> # A tibble: 56 × 22
+#> # A tibble: 56 × 24
 #>    modelName    estimate_type    protein_Id  peptide_Id meanAbundanceImp_group_1
 #>    <chr>        <chr>            <chr>       <chr>                         <dbl>
 #>  1 groupAverage missing_fallback 0EfVhX~0087 ITLb4x1q                       18.0
@@ -344,11 +344,12 @@ xcx$get_contrasts()
 #>  9 groupAverage missing_fallback DoWup2~5896 KVUnZ6oZ                       23.8
 #> 10 groupAverage missing_fallback Fl4JiV~8625 GsUIOl6Q                       19.1
 #> # ℹ 46 more rows
-#> # ℹ 17 more variables: meanAbundanceImp_group_2 <dbl>, diff <dbl>,
+#> # ℹ 19 more variables: meanAbundanceImp_group_2 <dbl>, diff <dbl>,
 #> #   group_1_name <chr>, group_2_name <chr>, contrast <chr>, avgAbd <dbl>,
 #> #   indic <dbl>, nrMeasured_group_1 <int>, nrMeasured_group_2 <int>, df <int>,
 #> #   sigma <dbl>, std.error <dbl>, statistic <dbl>, p.value <dbl>,
-#> #   conf.low <dbl>, conf.high <dbl>, FDR <dbl>
+#> #   conf.low <dbl>, conf.high <dbl>, FDR <dbl>, std.error.unmoderated <dbl>,
+#> #   df.unmoderated <int>
 xcx$get_Plotter()$volcano()
 #> $p.value
 

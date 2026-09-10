@@ -70,7 +70,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-08-11</h4>
+            <h4 data-toc-skip class="date">2026-09-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/LimmaBackend.Rmd" class="external-link"><code>vignettes/LimmaBackend.Rmd</code></a></small>
       <div class="d-none name"><code>LimmaBackend.Rmd</code></div>
@@ -353,16 +353,17 @@ average intensity (useful when variance is intensity-dependent)</li>
 <span><span class="va">mod_robust</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_model_limma.html">build_model_limma</a></span><span class="op">(</span><span class="va">transformed</span>, <span class="va">strat_robust</span><span class="op">)</span></span>
 <span><span class="va">contr_robust</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsLimma.html">ContrastsLimma</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod_robust</span>, <span class="va">contr_spec</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">contr_robust</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 14</span></span></span>
-<span><span class="co">##   modelName estimate_type protein_Id  contrast     diff      FDR std.error</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> limma     observed      0EfVhX~3967 AvsCtrl   0.087<span style="text-decoration: underline;">5</span>  0.400       0.055<span style="text-decoration: underline;">1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> limma     observed      0m5WN4~6025 AvsCtrl  -<span style="color: #BB0000;">0.235</span>   0.000<span style="text-decoration: underline;">672</span>    0.056<span style="text-decoration: underline;">9</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> limma     observed      0YSKpy~2865 AvsCtrl   0.001<span style="text-decoration: underline;">48</span> 0.992       0.064<span style="text-decoration: underline;">1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> limma     observed      3QLHfm~8938 AvsCtrl  -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">3</span>  0.778       0.047<span style="text-decoration: underline;">6</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> limma     observed      3QYop0~7543 AvsCtrl  -<span style="color: #BB0000;">0.018</span><span style="color: #BB0000; text-decoration: underline;">0</span>  0.931       0.047<span style="text-decoration: underline;">5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> limma     observed      76k03k~7094 AvsCtrl   0.016<span style="text-decoration: underline;">9</span>  0.931       0.044<span style="text-decoration: underline;">7</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 7 more variables: statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, sigma &lt;dbl&gt;, df &lt;dbl&gt;,</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 16</span></span></span>
+<span><span class="co">##   modelName estimate_type protein_Id  contrast     diff      FDR</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> limma     observed      0EfVhX~3967 AvsCtrl   0.087<span style="text-decoration: underline;">5</span>  0.400   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> limma     observed      0m5WN4~6025 AvsCtrl  -<span style="color: #BB0000;">0.235</span>   0.000<span style="text-decoration: underline;">672</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> limma     observed      0YSKpy~2865 AvsCtrl   0.001<span style="text-decoration: underline;">48</span> 0.992   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> limma     observed      3QLHfm~8938 AvsCtrl  -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">3</span>  0.778   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> limma     observed      3QYop0~7543 AvsCtrl  -<span style="color: #BB0000;">0.018</span><span style="color: #BB0000; text-decoration: underline;">0</span>  0.931   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> limma     observed      76k03k~7094 AvsCtrl   0.016<span style="text-decoration: underline;">9</span>  0.931   </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 10 more variables: std.error.unmoderated &lt;dbl&gt;, df.unmoderated &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;, sigma &lt;dbl&gt;, df &lt;dbl&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span></span></code></pre>
 </div>
 <div class="section level2">
@@ -681,20 +682,22 @@ same as for the limma and vooma backends.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res_limpa_prot</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
+<col width="6%">
 <col width="8%">
-<col width="11%">
-<col width="9%">
 <col width="7%">
 <col width="5%">
 <col width="4%">
-<col width="8%">
-<col width="8%">
+<col width="3%">
+<col width="13%">
+<col width="9%">
+<col width="6%">
 <col width="6%">
 <col width="4%">
+<col width="3%">
+<col width="4%">
 <col width="5%">
-<col width="7%">
-<col width="8%">
-<col width="5%">
+<col width="6%">
+<col width="4%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">modelName</th>
@@ -703,6 +706,8 @@ same as for the limma and vooma backends.</p>
 <th align="left">contrast</th>
 <th align="right">diff</th>
 <th align="right">FDR</th>
+<th align="right">std.error.unmoderated</th>
+<th align="right">df.unmoderated</th>
 <th align="right">std.error</th>
 <th align="right">statistic</th>
 <th align="right">p.value</th>
@@ -720,6 +725,8 @@ same as for the limma and vooma backends.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.188</td>
 <td align="right">0.005</td>
+<td align="right">0.044</td>
+<td align="right">9</td>
 <td align="right">0.056</td>
 <td align="right">3.353</td>
 <td align="right">0.002</td>
@@ -736,6 +743,8 @@ same as for the limma and vooma backends.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.078</td>
 <td align="right">0.033</td>
+<td align="right">0.033</td>
+<td align="right">9</td>
 <td align="right">0.032</td>
 <td align="right">2.418</td>
 <td align="right">0.023</td>
@@ -752,6 +761,8 @@ same as for the limma and vooma backends.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">-0.125</td>
 <td align="right">0.059</td>
+<td align="right">0.071</td>
+<td align="right">9</td>
 <td align="right">0.059</td>
 <td align="right">-2.108</td>
 <td align="right">0.045</td>
@@ -768,6 +779,8 @@ same as for the limma and vooma backends.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.233</td>
 <td align="right">0.011</td>
+<td align="right">0.090</td>
+<td align="right">9</td>
 <td align="right">0.080</td>
 <td align="right">2.929</td>
 <td align="right">0.007</td>
@@ -784,6 +797,8 @@ same as for the limma and vooma backends.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">-0.133</td>
 <td align="right">0.000</td>
+<td align="right">0.019</td>
+<td align="right">9</td>
 <td align="right">0.018</td>
 <td align="right">-7.379</td>
 <td align="right">0.000</td>
@@ -800,6 +815,8 @@ same as for the limma and vooma backends.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">-0.112</td>
 <td align="right">0.000</td>
+<td align="right">0.023</td>
+<td align="right">9</td>
 <td align="right">0.019</td>
 <td align="right">-5.814</td>
 <td align="right">0.000</td>
@@ -839,20 +856,22 @@ and observation count columns.</p>
 <span><span class="va">fa_limpa_prot</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
+<col width="6%">
 <col width="8%">
-<col width="11%">
-<col width="9%">
 <col width="7%">
 <col width="5%">
 <col width="4%">
-<col width="8%">
-<col width="8%">
+<col width="3%">
+<col width="13%">
+<col width="9%">
+<col width="6%">
 <col width="6%">
 <col width="4%">
+<col width="3%">
+<col width="4%">
 <col width="5%">
-<col width="7%">
-<col width="8%">
-<col width="5%">
+<col width="6%">
+<col width="4%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">modelName</th>
@@ -861,6 +880,8 @@ and observation count columns.</p>
 <th align="left">contrast</th>
 <th align="right">diff</th>
 <th align="right">FDR</th>
+<th align="right">std.error.unmoderated</th>
+<th align="right">df.unmoderated</th>
 <th align="right">std.error</th>
 <th align="right">statistic</th>
 <th align="right">p.value</th>
@@ -878,6 +899,8 @@ and observation count columns.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.188</td>
 <td align="right">0.005</td>
+<td align="right">0.044</td>
+<td align="right">9</td>
 <td align="right">0.056</td>
 <td align="right">3.353</td>
 <td align="right">0.002</td>
@@ -894,6 +917,8 @@ and observation count columns.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.078</td>
 <td align="right">0.033</td>
+<td align="right">0.033</td>
+<td align="right">9</td>
 <td align="right">0.032</td>
 <td align="right">2.418</td>
 <td align="right">0.023</td>
@@ -910,6 +935,8 @@ and observation count columns.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">-0.125</td>
 <td align="right">0.059</td>
+<td align="right">0.071</td>
+<td align="right">9</td>
 <td align="right">0.059</td>
 <td align="right">-2.108</td>
 <td align="right">0.045</td>
@@ -926,6 +953,8 @@ and observation count columns.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.233</td>
 <td align="right">0.011</td>
+<td align="right">0.090</td>
+<td align="right">9</td>
 <td align="right">0.080</td>
 <td align="right">2.929</td>
 <td align="right">0.007</td>
@@ -942,6 +971,8 @@ and observation count columns.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">-0.133</td>
 <td align="right">0.000</td>
+<td align="right">0.019</td>
+<td align="right">9</td>
 <td align="right">0.018</td>
 <td align="right">-7.379</td>
 <td align="right">0.000</td>
@@ -958,6 +989,8 @@ and observation count columns.</p>
 <td align="left">AvsCtrl</td>
 <td align="right">-0.112</td>
 <td align="right">0.000</td>
+<td align="right">0.023</td>
+<td align="right">9</td>
 <td align="right">0.019</td>
 <td align="right">-5.814</td>
 <td align="right">0.000</td>
@@ -1097,23 +1130,25 @@ sample, with <code>subject_id = protein_Id</code>).</p>
 </table>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res_limpa_pep</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="10%">
-<col width="10%">
+<col width="7%">
+<col width="7%">
+<col width="6%">
+<col width="6%">
+<col width="5%">
+<col width="3%">
+<col width="3%">
+<col width="12%">
 <col width="8%">
-<col width="7%">
-<col width="6%">
+<col width="5%">
 <col width="5%">
 <col width="4%">
-<col width="7%">
-<col width="7%">
+<col width="3%">
+<col width="3%">
 <col width="5%">
-<col width="4%">
 <col width="5%">
-<col width="6%">
-<col width="7%">
-<col width="5%">
+<col width="3%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">modelName</th>
@@ -1123,6 +1158,8 @@ sample, with <code>subject_id = protein_Id</code>).</p>
 <th align="left">contrast</th>
 <th align="right">diff</th>
 <th align="right">FDR</th>
+<th align="right">std.error.unmoderated</th>
+<th align="right">df.unmoderated</th>
 <th align="right">std.error</th>
 <th align="right">statistic</th>
 <th align="right">p.value</th>
@@ -1141,6 +1178,8 @@ sample, with <code>subject_id = protein_Id</code>).</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.234</td>
 <td align="right">0.000</td>
+<td align="right">0.045</td>
+<td align="right">9</td>
 <td align="right">0.046</td>
 <td align="right">5.086</td>
 <td align="right">0.000</td>
@@ -1158,6 +1197,8 @@ sample, with <code>subject_id = protein_Id</code>).</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.156</td>
 <td align="right">0.021</td>
+<td align="right">0.080</td>
+<td align="right">9</td>
 <td align="right">0.061</td>
 <td align="right">2.562</td>
 <td align="right">0.015</td>
@@ -1175,6 +1216,8 @@ sample, with <code>subject_id = protein_Id</code>).</p>
 <td align="left">AvsCtrl</td>
 <td align="right">-0.430</td>
 <td align="right">0.000</td>
+<td align="right">0.083</td>
+<td align="right">9</td>
 <td align="right">0.067</td>
 <td align="right">-6.396</td>
 <td align="right">0.000</td>
@@ -1192,6 +1235,8 @@ sample, with <code>subject_id = protein_Id</code>).</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.272</td>
 <td align="right">0.000</td>
+<td align="right">0.063</td>
+<td align="right">9</td>
 <td align="right">0.061</td>
 <td align="right">4.485</td>
 <td align="right">0.000</td>
@@ -1209,6 +1254,8 @@ sample, with <code>subject_id = protein_Id</code>).</p>
 <td align="left">AvsCtrl</td>
 <td align="right">0.697</td>
 <td align="right">0.000</td>
+<td align="right">0.061</td>
+<td align="right">9</td>
 <td align="right">0.058</td>
 <td align="right">11.988</td>
 <td align="right">0.000</td>
@@ -1226,6 +1273,8 @@ sample, with <code>subject_id = protein_Id</code>).</p>
 <td align="left">AvsCtrl</td>
 <td align="right">-0.413</td>
 <td align="right">0.000</td>
+<td align="right">0.055</td>
+<td align="right">9</td>
 <td align="right">0.049</td>
 <td align="right">-8.470</td>
 <td align="right">0.000</td>
@@ -1321,7 +1370,7 @@ Limpa peptide-level volcano plot.
 <span><span class="co">##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     </span></span>
 <span><span class="co">##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         </span></span>
 <span><span class="co">##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       </span></span>
-<span><span class="co">##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.31        </span></span>
+<span><span class="co">##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.32        </span></span>
 <span><span class="co">##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          </span></span>
 <span><span class="co">##  [25] purrr_1.2.2            xfun_0.60              glmnet_5.0            </span></span>
 <span><span class="co">##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          </span></span>
@@ -1330,7 +1379,7 @@ Limpa peptide-level volcano plot.
 <span><span class="co">##  [37] cluster_2.1.8.1        R6_2.6.1               bslib_0.12.0          </span></span>
 <span><span class="co">##  [40] stringi_1.8.9          RColorBrewer_1.1-3     limma_3.66.0          </span></span>
 <span><span class="co">##  [43] boot_1.3-32            rpart_4.1.24           jquerylib_0.1.4       </span></span>
-<span><span class="co">##  [46] Rcpp_1.1.2             iterators_1.0.14       knitr_1.51            </span></span>
+<span><span class="co">##  [46] Rcpp_1.1.2             iterators_1.0.14       knitr_1.52            </span></span>
 <span><span class="co">##  [49] IRanges_2.44.0         Matrix_1.7-4           splines_4.5.2         </span></span>
 <span><span class="co">##  [52] nnet_7.3-20            tidyselect_1.2.1       yaml_2.3.12           </span></span>
 <span><span class="co">##  [55] doParallel_1.0.17      codetools_0.2-20       lattice_0.22-7        </span></span>
@@ -1341,7 +1390,7 @@ Limpa peptide-level volcano plot.
 <span><span class="co">##  [70] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        </span></span>
 <span><span class="co">##  [73] hms_1.1.4              S4Vectors_0.48.1       ggplot2_4.0.3         </span></span>
 <span><span class="co">##  [76] scales_1.4.0           minqa_1.2.8            glue_1.8.1            </span></span>
-<span><span class="co">##  [79] tools_4.5.2            data.table_1.18.4      lme4_2.0-6            </span></span>
+<span><span class="co">##  [79] tools_4.5.2            data.table_1.18.6.1    lme4_2.0-6            </span></span>
 <span><span class="co">##  [82] forcats_1.0.1          fs_2.1.0               grid_4.5.2            </span></span>
 <span><span class="co">##  [85] limpa_1.2.5            tidyr_1.3.2            rbibutils_2.4.1       </span></span>
 <span><span class="co">##  [88] colorspace_2.1-3       nlme_3.1-168           formula.tools_1.7.1   </span></span>
@@ -1350,7 +1399,7 @@ Limpa peptide-level volcano plot.
 <span><span class="co">##  [97] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   </span></span>
 <span><span class="co">## [100] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     </span></span>
 <span><span class="co">## [103] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.1         </span></span>
-<span><span class="co">## [106] lifecycle_1.0.5        httr_1.4.8             GlobalOptions_0.1.4   </span></span>
+<span><span class="co">## [106] lifecycle_1.0.5        httr_1.4.9             GlobalOptions_0.1.4   </span></span>
 <span><span class="co">## [109] mitml_0.4-5            statmod_1.5.2          MASS_7.3-65</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

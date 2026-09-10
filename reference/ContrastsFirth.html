@@ -419,7 +419,7 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct_firth</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [2]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -443,8 +443,9 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> firth     observed      JcKVfU~9653 AvsCtrl      1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> firth     observed      SGIVBl~5782 Avs          1     9  1.35<span style="color: #949494;">e</span>+ 0 0.769</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> firth     observed      SGIVBl~5782 AvsCtrl      1     9 -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;, std.error.unmoderated &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   df.unmoderated &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mod3</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_build_models_logistf.html">sim_build_models_logistf</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"parallel3"</span>, weight_missing <span class="op">=</span> <span class="fl">1</span>, peptide<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
@@ -535,7 +536,7 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct_firth</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct_firth</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [2]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -559,8 +560,9 @@ creates Contrast_Plotter</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> firth     observed      CGzoYe~2147 AvsCtrl      1     9 -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> firth     observed      DoWup2~5896 Avs          1     9  4.39<span style="color: #949494;">e</span>+ 0 0.425</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> firth     observed      DoWup2~5896 AvsCtrl      1     9  3.04<span style="color: #949494;">e</span>+ 0 0.485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;, std.error.unmoderated &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   df.unmoderated &lt;int&gt;</span></span>
 <span class="r-in"><span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">ctrpep</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -48,7 +48,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.7.0" id="prolfqua-170">prolfqua 1.7.0<a class="anchor" aria-label="anchor" href="#prolfqua-170"></a></h2>
-<ul><li>
+<ul><li>Moderated t/Wald contrast tables now report the posterior contrast standard error in <code>std.error</code>, while <code>std.error.unmoderated</code> and <code>df.unmoderated</code> preserve the pre-moderation test inputs for downstream comparisons. Moderated confidence intervals now use the contrast scale rather than the residual-variance scale; this corrects intervals that were too wide when the raw contrast scale factor was below one and too narrow when it was above one. The separate infinite-prior-df fallback is unchanged and remains a distinct follow-up decision.</li>
+<li>
 <code><a href="../reference/main_effect_contrasts.html">main_effect_contrasts()</a></code> now emits averaging contrasts with a top-level <code>LHS - RHS</code>, making its output directly valid for the stricter contrast parser.</li>
 <li>Added the <code>binomial_nested</code> facade for nested LFQ data. It reuses the Firth backend’s completed peptide-detection representation, fits protein-by-sample detected/undetected peptide counts with a quasibinomial GLM, and reports moderated protein-level log odds-ratio contrasts. A symmetric pseudo-count stabilizes separated fits, and posterior dispersion is bounded below by one by default (<code>binomial_bound = FALSE</code> disables the bound).</li>
 <li>

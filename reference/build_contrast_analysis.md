@@ -195,31 +195,33 @@ head(fa_lm$get_contrasts())
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
-#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 lm        observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.49 
-#> 2 lm        observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.779
-#> 3 lm        observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.75 
-#> 4 lm        observed      9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.105
-#> 5 lm        observed      At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.21 
-#> 6 lm        observed      BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.41 
-#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#> # A tibble: 6 × 16
+#>   modelName estimate_type protein_Id  contrast     diff avgAbd
+#>   <chr>     <chr>         <chr>       <chr>       <dbl>  <dbl>
+#> 1 lm        observed      0EfVhX~5954 A_vs_Ctrl  2.72     23.2
+#> 2 lm        observed      0m5WN4~1448 A_vs_Ctrl  0.600    17.4
+#> 3 lm        observed      7cbcrd~8305 A_vs_Ctrl  2.59     27.0
+#> 4 lm        observed      9VUkAq~4562 A_vs_Ctrl  0.0679   19.4
+#> 5 lm        observed      At886V~3296 A_vs_Ctrl -1.01     19.1
+#> 6 lm        observed      BEJI92~9143 A_vs_Ctrl -0.873    20.9
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 fa_limma <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma")
 head(fa_limma$get_contrasts())
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id contrast    diff    FDR std.error statistic
-#>   <chr>     <chr>         <chr>      <chr>      <dbl>  <dbl>     <dbl>     <dbl>
-#> 1 limma     observed      0EfVhX~59… A_vs_Ct…  2.72   0.188      1.09      2.49 
-#> 2 limma     observed      0m5WN4~14… A_vs_Ct…  0.600  0.623      0.770     0.779
-#> 3 limma     observed      7cbcrd~83… A_vs_Ct…  2.59   0.0271     0.691     3.75 
-#> 4 limma     observed      9VUkAq~45… A_vs_Ct…  0.0679 0.967      0.647     0.105
-#> 5 limma     observed      At886V~32… A_vs_Ct… -1.01   0.623      0.836    -1.21 
-#> 6 limma     observed      BEJI92~91… A_vs_Ct… -0.873  0.623      0.621    -1.41 
-#> # ℹ 6 more variables: p.value <dbl>, sigma <dbl>, df <dbl>, conf.low <dbl>,
-#> #   conf.high <dbl>, avgAbd <dbl>
+#> # A tibble: 6 × 16
+#>   modelName estimate_type protein_Id  contrast     diff    FDR
+#>   <chr>     <chr>         <chr>       <chr>       <dbl>  <dbl>
+#> 1 limma     observed      0EfVhX~5954 A_vs_Ctrl  2.72   0.188 
+#> 2 limma     observed      0m5WN4~1448 A_vs_Ctrl  0.600  0.623 
+#> 3 limma     observed      7cbcrd~8305 A_vs_Ctrl  2.59   0.0271
+#> 4 limma     observed      9VUkAq~4562 A_vs_Ctrl  0.0679 0.967 
+#> 5 limma     observed      At886V~3296 A_vs_Ctrl -1.01   0.623 
+#> 6 limma     observed      BEJI92~9143 A_vs_Ctrl -0.873  0.623 
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 
 fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_missing")
 #> Warning: ContrastsLMMissingFacade (method = 'lm_missing') is deprecated: its second leg uses ContrastsMissing (group-mean substitution, no model fit). Prefer 'lm_impute' which refits failed/singular proteins with LOD imputation and borrowed variance, flagging rescued rows as estimate_type 'lod_imputed'. See ?ContrastsLMMissingFacade for migration.
@@ -233,17 +235,18 @@ fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> Joining with `by = join_by(protein_Id, contrast)`
 head(fa_miss$get_contrasts())
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
-#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 lm_missi… observed      0EfVhX~59… A_vs_Ct…  2.72       1.14    23.2     2.49 
-#> 2 lm_missi… observed      0m5WN4~14… A_vs_Ct…  0.600      0.734   17.4     0.779
-#> 3 lm_missi… observed      7cbcrd~83… A_vs_Ct…  2.59       0.572   27.0     3.75 
-#> 4 lm_missi… observed      9VUkAq~45… A_vs_Ct…  0.0679     0.760   19.4     0.105
-#> 5 lm_missi… observed      At886V~32… A_vs_Ct… -1.01       0.969   19.1    -1.21 
-#> 6 lm_missi… observed      BEJI92~91… A_vs_Ct… -0.873      0.659   20.9    -1.41 
-#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#> # A tibble: 6 × 16
+#>   modelName  estimate_type protein_Id  contrast     diff avgAbd
+#>   <chr>      <chr>         <chr>       <chr>       <dbl>  <dbl>
+#> 1 lm_missing observed      0EfVhX~5954 A_vs_Ctrl  2.72     23.2
+#> 2 lm_missing observed      0m5WN4~1448 A_vs_Ctrl  0.600    17.4
+#> 3 lm_missing observed      7cbcrd~8305 A_vs_Ctrl  2.59     27.0
+#> 4 lm_missing observed      9VUkAq~4562 A_vs_Ctrl  0.0679   19.4
+#> 5 lm_missing observed      At886V~3296 A_vs_Ctrl -1.01     19.1
+#> 6 lm_missing observed      BEJI92~9143 A_vs_Ctrl -0.873    20.9
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
 head(fa_deqms$get_contrasts())
@@ -251,17 +254,18 @@ head(fa_deqms$get_contrasts())
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 6 × 14
-#>   modelName estimate_type contrast protein_Id    diff std.error avgAbd statistic
-#>   <chr>     <chr>         <chr>    <chr>        <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 deqms     observed      A_vs_Ct… 0EfVhX~59…  2.72       1.14    23.2    4.23  
-#> 2 deqms     observed      A_vs_Ct… 0m5WN4~14…  0.600      0.734   17.4    0.619 
-#> 3 deqms     observed      A_vs_Ct… 7cbcrd~83…  2.59       0.572   27.0    4.02  
-#> 4 deqms     observed      A_vs_Ct… 9VUkAq~45…  0.0679     0.760   19.4    0.0837
-#> 5 deqms     observed      A_vs_Ct… At886V~32… -1.01       0.969   19.1   -1.37  
-#> 6 deqms     observed      A_vs_Ct… BEJI92~91… -0.873      0.659   20.9   -1.31  
-#> # ℹ 6 more variables: df <int>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#> # A tibble: 6 × 16
+#>   modelName estimate_type contrast  protein_Id     diff avgAbd
+#>   <chr>     <chr>         <chr>     <chr>         <dbl>  <dbl>
+#> 1 deqms     observed      A_vs_Ctrl 0EfVhX~5954  2.72     23.2
+#> 2 deqms     observed      A_vs_Ctrl 0m5WN4~1448  0.600    17.4
+#> 3 deqms     observed      A_vs_Ctrl 7cbcrd~8305  2.59     27.0
+#> 4 deqms     observed      A_vs_Ctrl 9VUkAq~4562  0.0679   19.4
+#> 5 deqms     observed      A_vs_Ctrl At886V~3296 -1.01     19.1
+#> 6 deqms     observed      A_vs_Ctrl BEJI92~9143 -0.873    20.9
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+#> #   std.error <dbl>, statistic <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 istar_pep <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
@@ -296,16 +300,17 @@ head(fa_lmer$get_contrasts())
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 6 × 14
-#>   modelName   estimate_type protein_Id  contrast       diff std.error avgAbd
-#>   <chr>       <chr>         <chr>       <chr>         <dbl>     <dbl>  <dbl>
-#> 1 lmer_nested observed      0EfVhX~0087 A_vs_Ctrl -0.000832    0.0730   4.34
-#> 2 lmer_nested observed      BEJI92~5282 A_vs_Ctrl  0.322       0.0832   4.22
-#> 3 lmer_nested observed      Fl4JiV~8625 A_vs_Ctrl -0.0413      0.0850   4.38
-#> 4 lmer_nested observed      HvIpHG~9079 A_vs_Ctrl -0.372       0.0616   4.40
-#> 5 lmer_nested observed      JcKVfU~9653 A_vs_Ctrl -0.107       0.0577   5.05
-#> 6 lmer_nested observed      SGIVBl~5782 A_vs_Ctrl  0.0307      0.0695   4.68
-#> # ℹ 7 more variables: statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> # A tibble: 6 × 16
+#>   modelName   estimate_type protein_Id  contrast       diff avgAbd
+#>   <chr>       <chr>         <chr>       <chr>         <dbl>  <dbl>
+#> 1 lmer_nested observed      0EfVhX~0087 A_vs_Ctrl -0.000832   4.34
+#> 2 lmer_nested observed      BEJI92~5282 A_vs_Ctrl  0.322      4.22
+#> 3 lmer_nested observed      Fl4JiV~8625 A_vs_Ctrl -0.0413     4.38
+#> 4 lmer_nested observed      HvIpHG~9079 A_vs_Ctrl -0.372      4.40
+#> 5 lmer_nested observed      JcKVfU~9653 A_vs_Ctrl -0.107      5.05
+#> 6 lmer_nested observed      SGIVBl~5782 A_vs_Ctrl  0.0307     4.68
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca_nested")
@@ -335,7 +340,7 @@ head(fa_firth$get_contrasts())
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct_firth
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 6 × 14
+#> # A tibble: 6 × 16
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
@@ -345,6 +350,7 @@ head(fa_firth$get_contrasts())
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1
-#> # ℹ 6 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
-#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
+#> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
+#> #   df.unmoderated <int>
 ```

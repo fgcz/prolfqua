@@ -259,15 +259,16 @@ lfq_agg <- agg$aggregate()
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)
 head(fa$get_contrasts())
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id  contrast     diff       FDR std.error
-#>   <chr>     <chr>         <chr>       <chr>       <dbl>     <dbl>     <dbl>
-#> 1 limpa     observed      0EfVhX~0087 A_vs_Ctrl -0.0244 0.407        0.0283
-#> 2 limpa     observed      7cbcrd~5725 A_vs_Ctrl  0.725  0.00458      0.185 
-#> 3 limpa     observed      9VUkAq~4703 A_vs_Ctrl -0.572  0.000276     0.0991
-#> 4 limpa     observed      BEJI92~5282 A_vs_Ctrl  0.236  0.0138       0.0739
-#> 5 limpa     observed      CGzoYe~2147 A_vs_Ctrl -0.296  0.146        0.175 
-#> 6 limpa     observed      DoWup2~5896 A_vs_Ctrl  0.282  0.0000889    0.0417
-#> # ℹ 7 more variables: statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
+#> # A tibble: 6 × 16
+#>   modelName estimate_type protein_Id  contrast     diff       FDR
+#>   <chr>     <chr>         <chr>       <chr>       <dbl>     <dbl>
+#> 1 limpa     observed      0EfVhX~0087 A_vs_Ctrl -0.0244 0.407    
+#> 2 limpa     observed      7cbcrd~5725 A_vs_Ctrl  0.725  0.00458  
+#> 3 limpa     observed      9VUkAq~4703 A_vs_Ctrl -0.572  0.000276 
+#> 4 limpa     observed      BEJI92~5282 A_vs_Ctrl  0.236  0.0138   
+#> 5 limpa     observed      CGzoYe~2147 A_vs_Ctrl -0.296  0.146    
+#> 6 limpa     observed      DoWup2~5896 A_vs_Ctrl  0.282  0.0000889
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 ```

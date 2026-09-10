@@ -230,7 +230,7 @@ head(fa$get_contrasts())
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct_firth
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 6 × 14
+#> # A tibble: 6 × 16
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
@@ -240,8 +240,9 @@ head(fa$get_contrasts())
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0 0.978
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9 -8.47e- 1 0.978
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0 0.978
-#> # ℹ 6 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
-#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
+#> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
+#> #   df.unmoderated <int>
 fa$to_wide()
 #> # A tibble: 20 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl

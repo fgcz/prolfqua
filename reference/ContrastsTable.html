@@ -372,7 +372,7 @@ holds results when contrasts are added."></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "protein_Id" "peptide_Id"</span>
 <span class="r-in"><span><span class="va">xcx</span> <span class="op">&lt;-</span> <span class="va">ContrastsTable</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">ctr</span>, subject_id <span class="op">=</span> <span class="va">csi</span><span class="op">$</span><span class="va">subject_id</span>, model_name <span class="op">=</span> <span class="st">"TableTest"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 56 × 22</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 56 × 24</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    modelName    estimate_type    protein_Id  peptide_Id meanAbundanceImp_group_1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> groupAverage missing_fallback 0EfVhX~0087 ITLb4x1q                       18.0</span>
@@ -386,11 +386,12 @@ holds results when contrasts are added."></head><body>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> groupAverage missing_fallback DoWup2~5896 KVUnZ6oZ                       23.8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> groupAverage missing_fallback Fl4JiV~8625 GsUIOl6Q                       19.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 46 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 17 more variables: meanAbundanceImp_group_2 &lt;dbl&gt;, diff &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more variables: meanAbundanceImp_group_2 &lt;dbl&gt;, diff &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   group_1_name &lt;chr&gt;, group_2_name &lt;chr&gt;, contrast &lt;chr&gt;, avgAbd &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   indic &lt;dbl&gt;, nrMeasured_group_1 &lt;int&gt;, nrMeasured_group_2 &lt;int&gt;, df &lt;int&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sigma &lt;dbl&gt;, std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, FDR &lt;dbl&gt;, std.error.unmoderated &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   df.unmoderated &lt;int&gt;</span></span>
 <span class="r-in"><span><span class="va">xcx</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p.value</span>
 <span class="r-plt img"><img src="ContrastsTable-1.png" alt="" width="700" height="433"></span>

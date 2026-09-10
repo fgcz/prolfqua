@@ -373,7 +373,7 @@ ctr$get_contrasts()
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct_firth
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 20 × 14
+#> # A tibble: 20 × 16
 #> # Groups:   contrast [2]
 #>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
 #>    <chr>     <chr>         <chr>       <chr>    <dbl> <int>     <dbl> <dbl>
@@ -397,8 +397,9 @@ ctr$get_contrasts()
 #> 18 firth     observed      JcKVfU~9653 AvsCtrl      1     9  1.07e-15 1    
 #> 19 firth     observed      SGIVBl~5782 Avs          1     9  1.35e+ 0 0.769
 #> 20 firth     observed      SGIVBl~5782 AvsCtrl      1     9 -4.13e-16 1    
-#> # ℹ 6 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
-#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
+#> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
+#> #   df.unmoderated <int>
 
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
 #> creating sampleName from file_name column
@@ -489,7 +490,7 @@ ctrpep$get_contrasts()
 #> contrasts_linfct_firth
 #> contrasts_linfct_firth
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 20 × 14
+#> # A tibble: 20 × 16
 #> # Groups:   contrast [2]
 #>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
 #>    <chr>     <chr>         <chr>       <chr>    <dbl> <int>     <dbl> <dbl>
@@ -513,7 +514,8 @@ ctrpep$get_contrasts()
 #> 18 firth     observed      CGzoYe~2147 AvsCtrl      1     9 -4.13e-16 1    
 #> 19 firth     observed      DoWup2~5896 Avs          1     9  4.39e+ 0 0.425
 #> 20 firth     observed      DoWup2~5896 AvsCtrl      1     9  3.04e+ 0 0.485
-#> # ℹ 6 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
-#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
+#> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
+#> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
+#> #   df.unmoderated <int>
 pl <- ctrpep$get_Plotter()
 ```

@@ -289,16 +289,16 @@ sessionInfo()
     ##  [10] cluster_2.1.8.1        survival_3.8-3         statmod_1.5.2         
     ##  [13] magrittr_2.0.5         compiler_4.5.2         rlang_1.3.0           
     ##  [16] sass_0.4.10            tools_4.5.2            utf8_1.2.6            
-    ##  [19] yaml_2.3.12            data.table_1.18.4      knitr_1.51            
+    ##  [19] yaml_2.3.12            data.table_1.18.6.1    knitr_1.52            
     ##  [22] htmlwidgets_1.6.4      plyr_1.8.9             RColorBrewer_1.1-3    
     ##  [25] withr_3.0.3            purrr_1.2.2            BiocGenerics_0.56.0   
     ##  [28] desc_1.4.3             nnet_7.3-20            grid_4.5.2            
     ##  [31] stats4_4.5.2           jomo_2.7-6             colorspace_2.1-3      
     ##  [34] mice_3.19.0            ggplot2_4.0.3          scales_1.4.0          
     ##  [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
-    ##  [40] UpSetR_1.4.1           rmarkdown_2.31         crayon_1.5.3          
+    ##  [40] UpSetR_1.4.1           rmarkdown_2.32         crayon_1.5.3          
     ##  [43] reformulas_0.4.4       ragg_1.5.2             generics_0.1.4        
-    ##  [46] otel_0.2.0             httr_1.4.8             rjson_0.2.23          
+    ##  [46] otel_0.2.0             httr_1.4.9             rjson_0.2.23          
     ##  [49] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
     ##  [52] splines_4.5.2          parallel_4.5.2         matrixStats_1.5.0     
     ##  [55] vctrs_0.7.3            boot_1.3-32            glmnet_5.0            

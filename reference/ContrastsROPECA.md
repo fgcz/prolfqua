@@ -342,10 +342,10 @@ mod <- build_model(
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`
-#> [1] 78 15
+#> [1] 78 17
  contrM <- prolfqua::ContrastsModerated$new(contr)
  dim(contrM$get_contrasts())
-#> [1] 78 15
+#> [1] 78 17
  contrast <- prolfqua::ContrastsROPECA$new(contrM)
  contrast$get_contrasts()
 #> # A tibble: 20 × 10

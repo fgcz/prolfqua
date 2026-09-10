@@ -239,17 +239,18 @@ head(fa$get_contrasts())
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
-#> # A tibble: 6 × 14
-#>   modelName estimate_type contrast  protein_Id   diff std.error avgAbd statistic
-#>   <chr>     <chr>         <chr>     <chr>       <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 deqms     observed      A_vs_Ctrl 0EfVhX~71…  3.00      0.886   18.8     4.77 
-#> 2 deqms     observed      A_vs_Ctrl 0m5WN4~35…  0.222     0.912   20.4     0.342
-#> 3 deqms     observed      A_vs_Ctrl 76k03k~97…  0.509     0.464   19.9     0.825
-#> 4 deqms     observed      A_vs_Ctrl 7QuTub~55… -1.22      0.874   23.4    -1.57 
-#> 5 deqms     observed      A_vs_Ctrl 7cbcrd~04…  1.38      0.690   16.5     1.35 
-#> 6 deqms     observed      A_vs_Ctrl 7soopj~34…  0.822     0.617   25.9     1.13 
-#> # ℹ 6 more variables: df <int>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#> # A tibble: 6 × 16
+#>   modelName estimate_type contrast  protein_Id    diff avgAbd
+#>   <chr>     <chr>         <chr>     <chr>        <dbl>  <dbl>
+#> 1 deqms     observed      A_vs_Ctrl 0EfVhX~7161  3.00    18.8
+#> 2 deqms     observed      A_vs_Ctrl 0m5WN4~3543  0.222   20.4
+#> 3 deqms     observed      A_vs_Ctrl 76k03k~9735  0.509   19.9
+#> 4 deqms     observed      A_vs_Ctrl 7QuTub~5556 -1.22    23.4
+#> 5 deqms     observed      A_vs_Ctrl 7cbcrd~0495  1.38    16.5
+#> 6 deqms     observed      A_vs_Ctrl 7soopj~3451  0.822   25.9
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+#> #   std.error <dbl>, statistic <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 #> # A tibble: 49 × 5

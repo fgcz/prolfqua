@@ -233,17 +233,18 @@ head(fa$get_contrasts())
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id  contrast   diff std.error avgAbd statistic
-#>   <chr>     <chr>         <chr>       <chr>     <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 rfit      observed      0EfVhX~0087 A_vs_Ct… -2.34      0.686   21.0    -2.87 
-#> 2 rfit      observed      7cbcrd~5725 A_vs_Ct…  2.79      0.554   20.6     3.70 
-#> 3 rfit      observed      9VUkAq~4703 A_vs_Ct…  1.64      0.609   20.3     1.78 
-#> 4 rfit      observed      BEJI92~5282 A_vs_Ct…  0.979     0.749   20.7     1.20 
-#> 5 rfit      observed      CGzoYe~2147 A_vs_Ct… -0.630     0.898   30.5    -0.833
-#> 6 rfit      observed      Fl4JiV~8625 A_vs_Ct… -0.103     0.821   21.2    -0.126
-#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#> # A tibble: 6 × 16
+#>   modelName estimate_type protein_Id  contrast    diff avgAbd
+#>   <chr>     <chr>         <chr>       <chr>      <dbl>  <dbl>
+#> 1 rfit      observed      0EfVhX~0087 A_vs_Ctrl -2.34    21.0
+#> 2 rfit      observed      7cbcrd~5725 A_vs_Ctrl  2.79    20.6
+#> 3 rfit      observed      9VUkAq~4703 A_vs_Ctrl  1.64    20.3
+#> 4 rfit      observed      BEJI92~5282 A_vs_Ctrl  0.979   20.7
+#> 5 rfit      observed      CGzoYe~2147 A_vs_Ctrl -0.630   30.5
+#> 6 rfit      observed      Fl4JiV~8625 A_vs_Ctrl -0.103   21.2
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 9 × 5
 #>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl

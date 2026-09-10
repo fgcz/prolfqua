@@ -317,17 +317,18 @@ suppressWarnings(
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> Joining with `by = join_by(protein_Id, contrast)`
 head(fa$get_contrasts())
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
-#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 lm_missi… observed      0EfVhX~29… A_vs_Ct…  1.24       0.731   22.6    1.86  
-#> 2 lm_missi… observed      0m5WN4~67… A_vs_Ct… -0.0361     0.614   20.8   -0.0365
-#> 3 lm_missi… observed      7QuTub~61… A_vs_Ct… -0.680      0.806   16.6   -0.949 
-#> 4 lm_missi… observed      7cbcrd~26… A_vs_Ct…  0.704      0.718   22.0    0.927 
-#> 5 lm_missi… observed      9VUkAq~34… A_vs_Ct…  0.768      1.42    20.0    0.671 
-#> 6 lm_missi… observed      At886V~77… A_vs_Ct… -1.86       0.706   29.1   -2.48  
-#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#> # A tibble: 6 × 16
+#>   modelName  estimate_type protein_Id  contrast     diff avgAbd
+#>   <chr>      <chr>         <chr>       <chr>       <dbl>  <dbl>
+#> 1 lm_missing observed      0EfVhX~2956 A_vs_Ctrl  1.24     22.6
+#> 2 lm_missing observed      0m5WN4~6730 A_vs_Ctrl -0.0361   20.8
+#> 3 lm_missing observed      7QuTub~6175 A_vs_Ctrl -0.680    16.6
+#> 4 lm_missing observed      7cbcrd~2687 A_vs_Ctrl  0.704    22.0
+#> 5 lm_missing observed      9VUkAq~3402 A_vs_Ctrl  0.768    20.0
+#> 6 lm_missing observed      At886V~7759 A_vs_Ctrl -1.86     29.1
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 30 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl

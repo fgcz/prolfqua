@@ -398,11 +398,11 @@ myProteinIDS <- c("sp|P0AC33|FUMA_ECOLI",  "sp|P28635|METQ_ECOLI",  "sp|Q14C86|G
 dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 ```
 
-    ## # A tibble: 0 × 14
-    ## # ℹ 14 variables: modelName <chr>, estimate_type <chr>, protein_Id <chr>,
-    ## #   contrast <chr>, diff <dbl>, std.error <dbl>, avgAbd <dbl>, statistic <dbl>,
-    ## #   df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>, sigma <dbl>,
-    ## #   FDR <dbl>
+    ## # A tibble: 0 × 16
+    ## # ℹ 16 variables: modelName <chr>, estimate_type <chr>, protein_Id <chr>,
+    ## #   contrast <chr>, diff <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
+    ## #   df.unmoderated <int>, std.error <dbl>, statistic <dbl>, df <dbl>,
+    ## #   p.value <dbl>, conf.low <dbl>, conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 ## Contrasts with missing value imputation
 
@@ -427,7 +427,8 @@ colnames(mC$get_contrasts())
     ## [15] "sigma"                    "std.error"               
     ## [17] "statistic"                "p.value"                 
     ## [19] "conf.low"                 "conf.high"               
-    ## [21] "FDR"
+    ## [21] "FDR"                      "std.error.unmoderated"   
+    ## [23] "df.unmoderated"
 
 Finally we are merging the results and give priority to the results
 where we do not have missing values in one group.
@@ -526,7 +527,7 @@ sessionInfo()
     ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] labeling_0.4.3         utf8_1.2.6             promises_1.5.0        
-    ##  [22] rmarkdown_2.31         nloptr_2.2.1           ragg_1.5.2            
+    ##  [22] rmarkdown_2.32         nloptr_2.2.1           ragg_1.5.2            
     ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.60             
     ##  [28] glmnet_5.0             jomo_2.7-6             logistf_1.26.1        
     ##  [31] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
@@ -535,7 +536,7 @@ sessionInfo()
     ##  [40] R6_2.6.1               bslib_0.12.0           stringi_1.8.9         
     ##  [43] RColorBrewer_1.1-3     limma_3.66.0           boot_1.3-32           
     ##  [46] rpart_4.1.24           jquerylib_0.1.4        Rcpp_1.1.2            
-    ##  [49] iterators_1.0.14       knitr_1.51             IRanges_2.44.0        
+    ##  [49] iterators_1.0.14       knitr_1.52             IRanges_2.44.0        
     ##  [52] httpuv_1.6.17          Matrix_1.7-4           splines_4.5.2         
     ##  [55] nnet_7.3-20            tidyselect_1.2.1       yaml_2.3.12           
     ##  [58] doParallel_1.0.17      codetools_0.2-20       lattice_0.22-7        
@@ -547,7 +548,7 @@ sessionInfo()
     ##  [76] plotly_4.12.1          generics_0.1.4         hms_1.1.4             
     ##  [79] S4Vectors_0.48.1       ggplot2_4.0.3          scales_1.4.0          
     ##  [82] minqa_1.2.8            xtable_1.8-8           glue_1.8.1            
-    ##  [85] lazyeval_0.2.3         tools_4.5.2            data.table_1.18.4     
+    ##  [85] lazyeval_0.2.3         tools_4.5.2            data.table_1.18.6.1   
     ##  [88] lme4_2.0-6             forcats_1.0.1          fs_2.1.0              
     ##  [91] grid_4.5.2             tidyr_1.3.2            rbibutils_2.4.1       
     ##  [94] crosstalk_1.2.2        colorspace_2.1-3       nlme_3.1-168          
@@ -556,7 +557,7 @@ sessionInfo()
     ## [103] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1
     ## [106] BiocGenerics_0.56.0    ggrepel_0.9.8          rjson_0.2.23          
     ## [109] htmlwidgets_1.6.4      farver_2.1.2           htmltools_0.5.9       
-    ## [112] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.8            
+    ## [112] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.9            
     ## [115] mime_0.13              GlobalOptions_0.1.4    mitml_0.4-5           
     ## [118] statmod_1.5.2          MASS_7.3-65
 

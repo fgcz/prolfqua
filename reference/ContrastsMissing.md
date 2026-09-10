@@ -370,34 +370,38 @@ stopifnot((res$p.value |> is.na() |> sum()) == 0)
 plot(res$diff, -log10(res$p.value), pch = ".")
 
 csi$column_description()
-#>                 column_name
-#> modelName         modelName
-#> estimate_type estimate_type
-#> contrast           contrast
-#> avgAbd               avgAbd
-#> diff                   diff
-#> FDR                     FDR
-#> statistic         statistic
-#> std.error         std.error
-#> df                       df
-#> p.value             p.value
-#> conf.low           conf.low
-#> conf.high         conf.high
-#> sigma                 sigma
-#>                                                                                                description
-#> modelName                              selected analysis method / facade key (e.g. lm, rfit, limma_impute)
-#> estimate_type                    how the estimate was produced: observed, lod_imputed, or missing_fallback
-#> contrast                                                          name of difference e.g. group1_vs_group2
-#> avgAbd                                                      mean abundance value of protein in all samples
-#> diff                                                                           difference among conditions
-#> FDR                                                                                   false discovery rate
-#> statistic                                                                                     t-statistics
-#> std.error                                                                                   standard error
-#> df                                                                                      degrees of freedom
-#> p.value                                                                                            p-value
-#> conf.low                                                             lower value of 95 confidence interval
-#> conf.high                                                             high value of 95 confidence interval
-#> sigma         residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).
+#>                                 column_name
+#> modelName                         modelName
+#> estimate_type                 estimate_type
+#> contrast                           contrast
+#> avgAbd                               avgAbd
+#> diff                                   diff
+#> FDR                                     FDR
+#> statistic                         statistic
+#> std.error                         std.error
+#> std.error.unmoderated std.error.unmoderated
+#> df                                       df
+#> df.unmoderated               df.unmoderated
+#> p.value                             p.value
+#> conf.low                           conf.low
+#> conf.high                         conf.high
+#> sigma                                 sigma
+#>                                                                                                        description
+#> modelName                                      selected analysis method / facade key (e.g. lm, rfit, limma_impute)
+#> estimate_type                            how the estimate was produced: observed, lod_imputed, or missing_fallback
+#> contrast                                                                  name of difference e.g. group1_vs_group2
+#> avgAbd                                                              mean abundance value of protein in all samples
+#> diff                                                                                   difference among conditions
+#> FDR                                                                                           false discovery rate
+#> statistic                                                                                             t-statistics
+#> std.error                                                                                           standard error
+#> std.error.unmoderated                                    standard error before empirical-Bayes variance moderation
+#> df                                                                                              degrees of freedom
+#> df.unmoderated                        degrees of freedom before empirical-Bayes prior degrees of freedom are added
+#> p.value                                                                                                    p-value
+#> conf.low                                                                     lower value of 95 confidence interval
+#> conf.high                                                                     high value of 95 confidence interval
+#> sigma                 residual standard deviation of linear model (needed for empirical Bayes variance shrinkage).
 x<- csi$get_Plotter()
 p <- x$volcano()
 pdf(file = NULL)
@@ -407,7 +411,7 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1c3642d2cd00 
+#> agg_record_2c2c25c152cf 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
@@ -447,6 +451,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1c3642d2cd00 
+#> agg_record_2c2c25c152cf 
 #>                       2 
 ```

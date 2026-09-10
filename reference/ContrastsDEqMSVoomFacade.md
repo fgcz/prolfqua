@@ -245,15 +245,16 @@ fa <- ContrastsDEqMSVoomFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
 #> Warning: NaNs produced
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17; 'newdata' had 1 row but variables found have 49 rows; number of items to replace is not a multiple of replacement length; NaNs produced)
-#> # A tibble: 6 × 14
-#>   modelName  estimate_type contrast protein_Id   diff std.error avgAbd statistic
-#>   <chr>      <chr>         <chr>    <chr>       <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 deqms_voom observed      A_vs_Ct… 0EfVhX~71…  3.00      0.897   18.8     4.84 
-#> 2 deqms_voom observed      A_vs_Ct… 0m5WN4~35…  0.222     0.906   20.4     0.353
-#> 3 deqms_voom observed      A_vs_Ct… 76k03k~97…  0.509     0.461   19.9     0.808
-#> 4 deqms_voom observed      A_vs_Ct… 7QuTub~55… -1.22      0.874   23.4    -1.54 
-#> 5 deqms_voom observed      A_vs_Ct… 7cbcrd~04…  1.38      0.742   16.5     1.54 
-#> 6 deqms_voom observed      A_vs_Ct… 7soopj~34…  0.822     0.618   25.9     1.11 
-#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#> # A tibble: 6 × 16
+#>   modelName  estimate_type contrast  protein_Id    diff std.error.unmoderated
+#>   <chr>      <chr>         <chr>     <chr>        <dbl>                 <dbl>
+#> 1 deqms_voom observed      A_vs_Ctrl 0EfVhX~7161  3.00                  0.897
+#> 2 deqms_voom observed      A_vs_Ctrl 0m5WN4~3543  0.222                 0.906
+#> 3 deqms_voom observed      A_vs_Ctrl 76k03k~9735  0.509                 0.461
+#> 4 deqms_voom observed      A_vs_Ctrl 7QuTub~5556 -1.22                  0.874
+#> 5 deqms_voom observed      A_vs_Ctrl 7cbcrd~0495  1.38                  0.742
+#> 6 deqms_voom observed      A_vs_Ctrl 7soopj~3451  0.822                 0.618
+#> # ℹ 10 more variables: df.unmoderated <dbl>, avgAbd <dbl>, std.error <dbl>,
+#> #   statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
 #> #   sigma <dbl>, FDR <dbl>
 ```

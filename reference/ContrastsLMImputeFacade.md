@@ -258,17 +258,18 @@ head(fa$get_contrasts())
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> # A tibble: 6 × 14
-#>   modelName estimate_type protein_Id contrast    diff std.error avgAbd statistic
-#>   <chr>     <chr>         <chr>      <chr>      <dbl>     <dbl>  <dbl>     <dbl>
-#> 1 lm_impute observed      0EfVhX~29… A_vs_Ct…  1.24       0.731   22.6    1.86  
-#> 2 lm_impute observed      0m5WN4~67… A_vs_Ct… -0.0361     0.614   20.8   -0.0372
-#> 3 lm_impute observed      7QuTub~61… A_vs_Ct…  0.909      0.943   16.7    0.999 
-#> 4 lm_impute observed      7cbcrd~26… A_vs_Ct…  0.612      1.08    21.9    0.588 
-#> 5 lm_impute observed      9VUkAq~34… A_vs_Ct…  0.768      1.42    20.0    0.666 
-#> 6 lm_impute observed      At886V~77… A_vs_Ct… -1.86       0.706   29.1   -2.50  
-#> # ℹ 6 more variables: df <dbl>, p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
-#> #   sigma <dbl>, FDR <dbl>
+#> # A tibble: 6 × 16
+#>   modelName estimate_type protein_Id  contrast     diff avgAbd
+#>   <chr>     <chr>         <chr>       <chr>       <dbl>  <dbl>
+#> 1 lm_impute observed      0EfVhX~2956 A_vs_Ctrl  1.24     22.6
+#> 2 lm_impute observed      0m5WN4~6730 A_vs_Ctrl -0.0361   20.8
+#> 3 lm_impute observed      7QuTub~6175 A_vs_Ctrl  0.909    16.7
+#> 4 lm_impute observed      7cbcrd~2687 A_vs_Ctrl  0.612    21.9
+#> 5 lm_impute observed      9VUkAq~3402 A_vs_Ctrl  0.768    20.0
+#> 6 lm_impute observed      At886V~7759 A_vs_Ctrl -1.86     29.1
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> # A tibble: 30 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl

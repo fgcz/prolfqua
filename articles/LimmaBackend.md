@@ -291,16 +291,17 @@ contr_robust <- ContrastsLimma$new(mod_robust, contr_spec)
 head(contr_robust$get_contrasts())
 ```
 
-    ## # A tibble: 6 × 14
-    ##   modelName estimate_type protein_Id  contrast     diff      FDR std.error
-    ##   <chr>     <chr>         <chr>       <chr>       <dbl>    <dbl>     <dbl>
-    ## 1 limma     observed      0EfVhX~3967 AvsCtrl   0.0875  0.400       0.0551
-    ## 2 limma     observed      0m5WN4~6025 AvsCtrl  -0.235   0.000672    0.0569
-    ## 3 limma     observed      0YSKpy~2865 AvsCtrl   0.00148 0.992       0.0641
-    ## 4 limma     observed      3QLHfm~8938 AvsCtrl  -0.0343  0.778       0.0476
-    ## 5 limma     observed      3QYop0~7543 AvsCtrl  -0.0180  0.931       0.0475
-    ## 6 limma     observed      76k03k~7094 AvsCtrl   0.0169  0.931       0.0447
-    ## # ℹ 7 more variables: statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
+    ## # A tibble: 6 × 16
+    ##   modelName estimate_type protein_Id  contrast     diff      FDR
+    ##   <chr>     <chr>         <chr>       <chr>       <dbl>    <dbl>
+    ## 1 limma     observed      0EfVhX~3967 AvsCtrl   0.0875  0.400   
+    ## 2 limma     observed      0m5WN4~6025 AvsCtrl  -0.235   0.000672
+    ## 3 limma     observed      0YSKpy~2865 AvsCtrl   0.00148 0.992   
+    ## 4 limma     observed      3QLHfm~8938 AvsCtrl  -0.0343  0.778   
+    ## 5 limma     observed      3QYop0~7543 AvsCtrl  -0.0180  0.931   
+    ## 6 limma     observed      76k03k~7094 AvsCtrl   0.0169  0.931   
+    ## # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
+    ## #   std.error <dbl>, statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
     ## #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 
 ## Vooma backend pipeline
@@ -515,14 +516,14 @@ res_limpa_prot <- contr_limpa_prot$get_contrasts()
 head(res_limpa_prot) |> knitr::kable(digits = 3)
 ```
 
-| modelName | estimate_type | protein_Id  | contrast |   diff |   FDR | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
-|:----------|:--------------|:------------|:---------|-------:|------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
-| limpa     | observed      | 0EfVhX~3967 | AvsCtrl  |  0.188 | 0.005 |     0.056 |     3.353 |   0.002 | 0.772 | 25.515 |    0.073 |     0.303 |  4.472 |
-| limpa     | observed      | 0m5WN4~6025 | AvsCtrl  |  0.078 | 0.033 |     0.032 |     2.418 |   0.023 | 0.855 | 25.515 |    0.012 |     0.145 |  4.231 |
-| limpa     | observed      | 0YSKpy~2865 | AvsCtrl  | -0.125 | 0.059 |     0.059 |    -2.108 |   0.045 | 0.968 | 25.515 |   -0.247 |    -0.003 |  4.124 |
-| limpa     | observed      | 3QLHfm~8938 | AvsCtrl  |  0.233 | 0.011 |     0.080 |     2.929 |   0.007 | 0.927 | 25.515 |    0.069 |     0.397 |  4.535 |
-| limpa     | observed      | 3QYop0~7543 | AvsCtrl  | -0.133 | 0.000 |     0.018 |    -7.379 |   0.000 | 0.887 | 25.515 |   -0.170 |    -0.096 |  4.630 |
-| limpa     | observed      | 76k03k~7094 | AvsCtrl  | -0.112 | 0.000 |     0.019 |    -5.814 |   0.000 | 0.966 | 25.515 |   -0.151 |    -0.072 |  4.595 |
+| modelName | estimate_type | protein_Id  | contrast |   diff |   FDR | std.error.unmoderated | df.unmoderated | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
+|:----------|:--------------|:------------|:---------|-------:|------:|----------------------:|---------------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
+| limpa     | observed      | 0EfVhX~3967 | AvsCtrl  |  0.188 | 0.005 |                 0.044 |              9 |     0.056 |     3.353 |   0.002 | 0.772 | 25.515 |    0.073 |     0.303 |  4.472 |
+| limpa     | observed      | 0m5WN4~6025 | AvsCtrl  |  0.078 | 0.033 |                 0.033 |              9 |     0.032 |     2.418 |   0.023 | 0.855 | 25.515 |    0.012 |     0.145 |  4.231 |
+| limpa     | observed      | 0YSKpy~2865 | AvsCtrl  | -0.125 | 0.059 |                 0.071 |              9 |     0.059 |    -2.108 |   0.045 | 0.968 | 25.515 |   -0.247 |    -0.003 |  4.124 |
+| limpa     | observed      | 3QLHfm~8938 | AvsCtrl  |  0.233 | 0.011 |                 0.090 |              9 |     0.080 |     2.929 |   0.007 | 0.927 | 25.515 |    0.069 |     0.397 |  4.535 |
+| limpa     | observed      | 3QYop0~7543 | AvsCtrl  | -0.133 | 0.000 |                 0.019 |              9 |     0.018 |    -7.379 |   0.000 | 0.887 | 25.515 |   -0.170 |    -0.096 |  4.630 |
+| limpa     | observed      | 76k03k~7094 | AvsCtrl  | -0.112 | 0.000 |                 0.023 |              9 |     0.019 |    -5.814 |   0.000 | 0.966 | 25.515 |   -0.151 |    -0.072 |  4.595 |
 
 #### Volcano plot
 
@@ -550,14 +551,14 @@ fa_limpa_prot <- build_contrast_analysis(
 fa_limpa_prot$get_contrasts() |> head() |> knitr::kable(digits = 3)
 ```
 
-| modelName | estimate_type | protein_Id  | contrast |   diff |   FDR | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
-|:----------|:--------------|:------------|:---------|-------:|------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
-| limpa     | observed      | 0EfVhX~3967 | AvsCtrl  |  0.188 | 0.005 |     0.056 |     3.353 |   0.002 | 0.772 | 25.515 |    0.073 |     0.303 |  4.472 |
-| limpa     | observed      | 0m5WN4~6025 | AvsCtrl  |  0.078 | 0.033 |     0.032 |     2.418 |   0.023 | 0.855 | 25.515 |    0.012 |     0.145 |  4.231 |
-| limpa     | observed      | 0YSKpy~2865 | AvsCtrl  | -0.125 | 0.059 |     0.059 |    -2.108 |   0.045 | 0.968 | 25.515 |   -0.247 |    -0.003 |  4.124 |
-| limpa     | observed      | 3QLHfm~8938 | AvsCtrl  |  0.233 | 0.011 |     0.080 |     2.929 |   0.007 | 0.927 | 25.515 |    0.069 |     0.397 |  4.535 |
-| limpa     | observed      | 3QYop0~7543 | AvsCtrl  | -0.133 | 0.000 |     0.018 |    -7.379 |   0.000 | 0.887 | 25.515 |   -0.170 |    -0.096 |  4.630 |
-| limpa     | observed      | 76k03k~7094 | AvsCtrl  | -0.112 | 0.000 |     0.019 |    -5.814 |   0.000 | 0.966 | 25.515 |   -0.151 |    -0.072 |  4.595 |
+| modelName | estimate_type | protein_Id  | contrast |   diff |   FDR | std.error.unmoderated | df.unmoderated | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
+|:----------|:--------------|:------------|:---------|-------:|------:|----------------------:|---------------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
+| limpa     | observed      | 0EfVhX~3967 | AvsCtrl  |  0.188 | 0.005 |                 0.044 |              9 |     0.056 |     3.353 |   0.002 | 0.772 | 25.515 |    0.073 |     0.303 |  4.472 |
+| limpa     | observed      | 0m5WN4~6025 | AvsCtrl  |  0.078 | 0.033 |                 0.033 |              9 |     0.032 |     2.418 |   0.023 | 0.855 | 25.515 |    0.012 |     0.145 |  4.231 |
+| limpa     | observed      | 0YSKpy~2865 | AvsCtrl  | -0.125 | 0.059 |                 0.071 |              9 |     0.059 |    -2.108 |   0.045 | 0.968 | 25.515 |   -0.247 |    -0.003 |  4.124 |
+| limpa     | observed      | 3QLHfm~8938 | AvsCtrl  |  0.233 | 0.011 |                 0.090 |              9 |     0.080 |     2.929 |   0.007 | 0.927 | 25.515 |    0.069 |     0.397 |  4.535 |
+| limpa     | observed      | 3QYop0~7543 | AvsCtrl  | -0.133 | 0.000 |                 0.019 |              9 |     0.018 |    -7.379 |   0.000 | 0.887 | 25.515 |   -0.170 |    -0.096 |  4.630 |
+| limpa     | observed      | 76k03k~7094 | AvsCtrl  | -0.112 | 0.000 |                 0.023 |              9 |     0.019 |    -5.814 |   0.000 | 0.966 | 25.515 |   -0.151 |    -0.072 |  4.595 |
 
 ### Example 2: Peptide-level analysis (no aggregation)
 
@@ -651,14 +652,14 @@ data.frame(
 head(res_limpa_pep) |> knitr::kable(digits = 3)
 ```
 
-| modelName     | estimate_type | protein_Id  | peptide_Id | contrast |   diff |   FDR | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
-|:--------------|:--------------|:------------|:-----------|:---------|-------:|------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
-| limpa_peptide | observed      | 0EfVhX~3967 | IIhYJDAe   | AvsCtrl  |  0.234 | 0.000 |     0.046 |     5.086 |   0.000 | 1.047 | 35.777 |    0.141 |     0.327 |  4.545 |
-| limpa_peptide | observed      | 0EfVhX~3967 | SWkbauTR   | AvsCtrl  |  0.156 | 0.021 |     0.061 |     2.562 |   0.015 | 1.208 | 35.777 |    0.033 |     0.280 |  4.393 |
-| limpa_peptide | observed      | 0m5WN4~6025 | 7uKIY8WX   | AvsCtrl  | -0.430 | 0.000 |     0.067 |    -6.396 |   0.000 | 1.164 | 35.777 |   -0.566 |    -0.293 |  4.041 |
-| limpa_peptide | observed      | 0m5WN4~6025 | 7xDNA2B6   | AvsCtrl  |  0.272 | 0.000 |     0.061 |     4.485 |   0.000 | 1.069 | 35.777 |    0.149 |     0.395 |  4.187 |
-| limpa_peptide | observed      | 0m5WN4~6025 | KT0ROM7b   | AvsCtrl  |  0.697 | 0.000 |     0.058 |    11.988 |   0.000 | 1.071 | 35.777 |    0.579 |     0.815 |  4.186 |
-| limpa_peptide | observed      | 0m5WN4~6025 | LYLauRlr   | AvsCtrl  | -0.413 | 0.000 |     0.049 |    -8.470 |   0.000 | 1.108 | 35.777 |   -0.512 |    -0.314 |  4.553 |
+| modelName     | estimate_type | protein_Id  | peptide_Id | contrast |   diff |   FDR | std.error.unmoderated | df.unmoderated | std.error | statistic | p.value | sigma |     df | conf.low | conf.high | avgAbd |
+|:--------------|:--------------|:------------|:-----------|:---------|-------:|------:|----------------------:|---------------:|----------:|----------:|--------:|------:|-------:|---------:|----------:|-------:|
+| limpa_peptide | observed      | 0EfVhX~3967 | IIhYJDAe   | AvsCtrl  |  0.234 | 0.000 |                 0.045 |              9 |     0.046 |     5.086 |   0.000 | 1.047 | 35.777 |    0.141 |     0.327 |  4.545 |
+| limpa_peptide | observed      | 0EfVhX~3967 | SWkbauTR   | AvsCtrl  |  0.156 | 0.021 |                 0.080 |              9 |     0.061 |     2.562 |   0.015 | 1.208 | 35.777 |    0.033 |     0.280 |  4.393 |
+| limpa_peptide | observed      | 0m5WN4~6025 | 7uKIY8WX   | AvsCtrl  | -0.430 | 0.000 |                 0.083 |              9 |     0.067 |    -6.396 |   0.000 | 1.164 | 35.777 |   -0.566 |    -0.293 |  4.041 |
+| limpa_peptide | observed      | 0m5WN4~6025 | 7xDNA2B6   | AvsCtrl  |  0.272 | 0.000 |                 0.063 |              9 |     0.061 |     4.485 |   0.000 | 1.069 | 35.777 |    0.149 |     0.395 |  4.187 |
+| limpa_peptide | observed      | 0m5WN4~6025 | KT0ROM7b   | AvsCtrl  |  0.697 | 0.000 |                 0.061 |              9 |     0.058 |    11.988 |   0.000 | 1.071 | 35.777 |    0.579 |     0.815 |  4.186 |
+| limpa_peptide | observed      | 0m5WN4~6025 | LYLauRlr   | AvsCtrl  | -0.413 | 0.000 |                 0.055 |              9 |     0.049 |    -8.470 |   0.000 | 1.108 | 35.777 |   -0.512 |    -0.314 |  4.553 |
 
 #### Volcano plot
 
@@ -725,7 +726,7 @@ sessionInfo()
     ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
     ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
-    ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.31        
+    ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.32        
     ##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          
     ##  [25] purrr_1.2.2            xfun_0.60              glmnet_5.0            
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
@@ -734,7 +735,7 @@ sessionInfo()
     ##  [37] cluster_2.1.8.1        R6_2.6.1               bslib_0.12.0          
     ##  [40] stringi_1.8.9          RColorBrewer_1.1-3     limma_3.66.0          
     ##  [43] boot_1.3-32            rpart_4.1.24           jquerylib_0.1.4       
-    ##  [46] Rcpp_1.1.2             iterators_1.0.14       knitr_1.51            
+    ##  [46] Rcpp_1.1.2             iterators_1.0.14       knitr_1.52            
     ##  [49] IRanges_2.44.0         Matrix_1.7-4           splines_4.5.2         
     ##  [52] nnet_7.3-20            tidyselect_1.2.1       yaml_2.3.12           
     ##  [55] doParallel_1.0.17      codetools_0.2-20       lattice_0.22-7        
@@ -745,7 +746,7 @@ sessionInfo()
     ##  [70] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        
     ##  [73] hms_1.1.4              S4Vectors_0.48.1       ggplot2_4.0.3         
     ##  [76] scales_1.4.0           minqa_1.2.8            glue_1.8.1            
-    ##  [79] tools_4.5.2            data.table_1.18.4      lme4_2.0-6            
+    ##  [79] tools_4.5.2            data.table_1.18.6.1    lme4_2.0-6            
     ##  [82] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
     ##  [85] limpa_1.2.5            tidyr_1.3.2            rbibutils_2.4.1       
     ##  [88] colorspace_2.1-3       nlme_3.1-168           formula.tools_1.7.1   
@@ -754,5 +755,5 @@ sessionInfo()
     ##  [97] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   
     ## [100] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     
     ## [103] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.1         
-    ## [106] lifecycle_1.0.5        httr_1.4.8             GlobalOptions_0.1.4   
+    ## [106] lifecycle_1.0.5        httr_1.4.9             GlobalOptions_0.1.4   
     ## [109] mitml_0.4-5            statmod_1.5.2          MASS_7.3-65

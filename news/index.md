@@ -2,6 +2,15 @@
 
 ## prolfqua 1.7.0
 
+- Moderated t/Wald contrast tables now report the posterior contrast
+  standard error in `std.error`, while `std.error.unmoderated` and
+  `df.unmoderated` preserve the pre-moderation test inputs for
+  downstream comparisons. Moderated confidence intervals now use the
+  contrast scale rather than the residual-variance scale; this corrects
+  intervals that were too wide when the raw contrast scale factor was
+  below one and too narrow when it was above one. The separate
+  infinite-prior-df fallback is unchanged and remains a distinct
+  follow-up decision.
 - [`main_effect_contrasts()`](https://wolski.github.io/prolfqua/reference/main_effect_contrasts.md)
   now emits averaging contrasts with a top-level `LHS - RHS`, making its
   output directly valid for the stricter contrast parser.
