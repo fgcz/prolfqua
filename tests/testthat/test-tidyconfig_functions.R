@@ -37,3 +37,33 @@ test_that("pattern_decoys / pattern_contaminants default to NULL and round-trip"
   expect_identical(rebuilt2$pattern_decoys, "^shuffled_")
   expect_identical(rebuilt2$pattern_contaminants, "^KERATIN_")
 })
+
+test_that("list_to_ContrastConfiguration restores roles and methods", {
+  cfg <- ContrastConfiguration$new(
+    subject_id = "protein_Id",
+    contrast_col = "Bait",
+    effect_col = "log2_EFCs",
+    score_col = "SaintScore",
+    pvalue_col = NA_character_,
+    fdr_col = "BFDR",
+    significance_directional = TRUE
+  )
+
+  vals <- R6_extract_values(cfg)
+  rebuilt <- list_to_ContrastConfiguration(vals)
+
+  expect_identical(R6_extract_values(rebuilt), vals)
+  # R6_extract_values drops the methods; the reconstruction brings them back.
+  expect_false(rebuilt$has_pvalue())
+  expect_true(rebuilt$significance_directional)
+  expect_true(ContrastConfiguration$new()$has_pvalue())
+  # An unset field keeps the schema default rather than becoming NULL.
+  expect_identical(
+    list_to_ContrastConfiguration(list())$fdr_col,
+    ContrastConfiguration$new()$fdr_col
+  )
+  expect_error(
+    list_to_ContrastConfiguration(list(no_such_field = "x")),
+    "Not ContrastConfiguration fields"
+  )
+})

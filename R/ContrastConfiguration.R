@@ -123,3 +123,41 @@ ContrastConfiguration <- R6::R6Class(
     }
   )
 )
+
+#' Rebuild a ContrastConfiguration from a list
+#'
+#' Round-trip partner of \code{\link{R6_extract_values}}, which keeps the
+#' fields but drops the methods. Use it to restore the column-role mapping
+#' from a serialized result artifact (e.g. `SummarizedExperiment` metadata
+#' or an AnnData `uns` entry) so consumers can call \code{has_pvalue()} and
+#' friends again.
+#'
+#' @param dd named list of \code{\link{ContrastConfiguration}} fields
+#' @return A \code{\link{ContrastConfiguration}}.
+#' @family configuration
+#' @export
+#' @examples
+#' cfg <- ContrastConfiguration$new(
+#'   subject_id = "protein_Id",
+#'   contrast_col = "Bait",
+#'   pvalue_col = NA_character_
+#' )
+#' values <- R6_extract_values(cfg)
+#' restored <- list_to_ContrastConfiguration(values)
+#' stopifnot(all.equal(R6_extract_values(restored), values))
+#' restored$has_pvalue()
+list_to_ContrastConfiguration <- function(dd) {
+  config <- ContrastConfiguration$new()
+  fields <- names(R6_extract_values(config))
+  unknown <- setdiff(names(dd), fields)
+  if (length(unknown) > 0) {
+    stop(
+      "Not ContrastConfiguration fields: ",
+      paste(unknown, collapse = ", ")
+    )
+  }
+  for (i in names(dd)) {
+    config[[i]] <- dd[[i]]
+  }
+  return(config)
+}
