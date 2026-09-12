@@ -273,6 +273,9 @@
 - [`list_to_AnalysisConfiguration()`](https://wolski.github.io/prolfqua/reference/list_to_AnalysisConfiguration.md)
   : read minimal yaml to reconstruct configuration
 
+- [`list_to_ContrastConfiguration()`](https://wolski.github.io/prolfqua/reference/list_to_ContrastConfiguration.md)
+  : Rebuild a ContrastConfiguration from a list
+
 - [`lookup_facade()`](https://wolski.github.io/prolfqua/reference/lookup_facade.md)
   : Look up a contrast facade by short name
 

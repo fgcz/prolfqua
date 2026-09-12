@@ -2,6 +2,13 @@
 
 ## prolfqua 1.7.0
 
+- New
+  [`list_to_ContrastConfiguration()`](https://wolski.github.io/prolfqua/reference/list_to_ContrastConfiguration.md)
+  rebuilds a `ContrastConfiguration` from the plain list produced by
+  [`R6_extract_values()`](https://wolski.github.io/prolfqua/reference/R6_extract_values.md),
+  so a serialized column-role mapping (e.g. from `SummarizedExperiment`
+  metadata or an AnnData `uns` entry) can be restored with its methods,
+  such as `has_pvalue()`, intact.
 - Moderated t/Wald contrast tables now report the posterior contrast
   standard error in `std.error`, while `std.error.unmoderated` and
   `df.unmoderated` preserve the pre-moderation test inputs for
