@@ -43,7 +43,7 @@ sim_lfq_data <- function(
   prot <- data.frame(
     proteinID = proteins,
     idtype2 = idtype2,
-    nr_peptides = nrpeptides,
+    nrPeptides = nrpeptides,
     average_prot_abundance = rlnorm(Nprot, log(mean_prot), sdlog = sdlog),
     mean_Ctrl = 0,
     N_Ctrl = N,
@@ -71,9 +71,9 @@ sim_lfq_data <- function(
 
   if (PEPTIDE) {
     # add row for each protein
-    peptide_df <- prot |> tidyr::uncount(nr_peptides)
+    peptide_df <- prot |> tidyr::uncount(nrPeptides)
     # create peptide ids
-    peptide_df$peptideID <- stringi::stri_rand_strings(sum(prot$nr_peptides), 8)
+    peptide_df$peptideID <- stringi::stri_rand_strings(sum(prot$nrPeptides), 8)
   } else {
     peptide_df <- prot
   }
@@ -229,9 +229,9 @@ sim_lfq_data_protein_config <- function(
         mutate(subject = paste0("P", subject))
       data <- inner_join(annot, data, by = c("group", "sample"))
     }
-    data$nr_peptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
+    data$nrPeptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
     if (with_missing) {
-      data <- data[data$nr_peptides > 0, ]
+      data <- data[data$nrPeptides > 0, ]
     }
 
     data$isotopeLabel <- "light"
@@ -239,7 +239,7 @@ sim_lfq_data_protein_config <- function(
 
     config <- AnalysisConfiguration$new()
     config$file_name <- "sample"
-    config$nr_children <- "nr_peptides"
+    config$nr_children <- "nrPeptides"
     config$factors["group_"] <- "group"
     if (paired) {
       config$factors["subject_"] <- "subject"
@@ -296,19 +296,19 @@ sim_lfq_data_2factor_config <- function(
     res <- res |> mutate(Treatment = case_when(group %in% c("Ctrl", "A") ~ "A", TRUE ~ "B"))
     data <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
 
-    if (is.null(data$nr_peptides)) {
-      data$nr_peptides <- 1
+    if (is.null(data$nrPeptides)) {
+      data$nrPeptides <- 1
     }
-    data$nr_peptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
+    data$nrPeptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
     if (with_missing) {
-      data <- data[data$nr_peptides > 0, ]
+      data <- data[data$nrPeptides > 0, ]
     }
 
     data$isotopeLabel <- "light"
     data$qValue <- 0
     config <- AnalysisConfiguration$new()
     config$file_name <- "sample"
-    config$nr_children <- "nr_peptides"
+    config$nr_children <- "nrPeptides"
 
     if (TWO) {
       config$factors["Treatment"] <- "Treatment"

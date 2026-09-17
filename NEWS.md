@@ -1,5 +1,12 @@
 # prolfqua 1.7.0
 
+- The peptide count in simulated data is now called `nrPeptides`, matching the
+  name every reader in the ecosystem produces. It was the only place the column
+  was called `nr_peptides`, which meant code written against simulated data did
+  not work on real data -- and vice versa -- and downstream packages carried
+  aliases between the two spellings. The `nr_peptides` *option* (minimum
+  peptides per protein) is unchanged; only the data column is renamed.
+
 - New `list_to_ContrastConfiguration()` rebuilds a `ContrastConfiguration` from the plain list produced by
   `R6_extract_values()`, so a serialized column-role mapping (e.g. from `SummarizedExperiment` metadata or an AnnData
   `uns` entry) can be restored with its methods, such as `has_pvalue()`, intact.

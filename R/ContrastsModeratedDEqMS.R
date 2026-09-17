@@ -258,12 +258,12 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
 #'
 #' # Build count_df from config
 #' count_df <- dplyr::select(protIntensity,
-#'   dplyr::all_of(c(config$hierarchy_keys_depth(), "nr_peptides"))) |>
+#'   dplyr::all_of(c(config$hierarchy_keys_depth(), "nrPeptides"))) |>
 #'   dplyr::distinct()
 #'
 #' deqms <- ContrastsModeratedDEqMS$new(contrast,
 #'   count_df = count_df,
-#'   count_column = "nr_peptides")
+#'   count_column = "nrPeptides")
 #'
 #' bb <- deqms$get_contrasts()
 #' stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))

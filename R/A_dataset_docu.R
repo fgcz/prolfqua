@@ -46,7 +46,7 @@ utils::globalVariables(c(
   "linear_model",
   "meanAbundance",
   "moderated.var.post",
-  "nr_peptides",
+  "nrPeptides",
   "percent_variance_explained",
   "reference_mean",
   "reference_median",

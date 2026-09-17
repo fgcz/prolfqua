@@ -14,7 +14,7 @@ make_peptide_lfqdata <- function(Nprot = 30) {
   lfqdata
 }
 
-# Protein-level data with nr_peptides (used for deqms)
+# Protein-level data with nrPeptides (used for deqms)
 make_protein_lfqdata <- function(Nprot = 30) {
   istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
@@ -169,7 +169,7 @@ test_that("ContrastsDEqMSFacade initialises and returns correct structure", {
   expect_true(inherits(fa, "ContrastsDEqMSFacade"))
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
-  expect_equal(fa$contrast$count_column, "nr_peptides")
+  expect_equal(fa$contrast$count_column, "nrPeptides")
   check_facade_interface(fa)
   expect_true(all(fa$get_contrasts()$modelName == "deqms"))
 })
@@ -248,7 +248,7 @@ test_that("build_contrast_analysis dispatches to ContrastsDEqMSFacade for method
   lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "deqms")
   expect_true(inherits(fa, "ContrastsDEqMSFacade"))
-  expect_equal(fa$contrast$count_column, "nr_peptides")
+  expect_equal(fa$contrast$count_column, "nrPeptides")
   check_facade_interface(fa)
 })
 
