@@ -41,7 +41,7 @@ downstream methods (`get_contrasts`, `get_Plotter`, `to_wide`,
 ## Data preparation
 
 We use simulated protein-level data. The simulation includes a
-`nr_peptides` column — the number of peptides per protein — which is
+`nrPeptides` column — the number of peptides per protein — which is
 exactly the count we need.
 
 ``` r
@@ -73,14 +73,14 @@ contr_spec <- c(
 At the low-level `ContrastsModeratedDEqMS` API we still provide an
 explicit count table. The count column can be derived directly from the
 `LFQData` object via `config$nr_children`. In this simulated data set
-the count variable is `nr_peptides`.
+the count variable is `nrPeptides`.
 
 ``` r
 count_per_prot <- transformed$data_long() |>
   group_by(protein_Id) |>
-  summarise(nr_peptides = max(.data[[transformed$nr_children_col()]], na.rm = TRUE))
+  summarise(nrPeptides = max(.data[[transformed$nr_children_col()]], na.rm = TRUE))
 
-ggplot(count_per_prot, aes(x = nr_peptides)) +
+ggplot(count_per_prot, aes(x = nrPeptides)) +
   geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
   labs(x = "Number of peptides per protein", y = "Count",
        title = "Distribution of peptide counts") +
@@ -107,7 +107,7 @@ you use the higher-level
 extraction is done for you from the `LFQData` object.
 
 ``` r
-contr_deqms <- ContrastsModeratedDEqMS$new(contr_lm, count_per_prot, "nr_peptides")
+contr_deqms <- ContrastsModeratedDEqMS$new(contr_lm, count_per_prot, "nrPeptides")
 res_deqms <- contr_deqms$get_contrasts()
 ```
 
@@ -129,7 +129,7 @@ contr_raw <- inner_join(
 # Plot for one contrast
 one_contrast <- contr_raw |> filter(contrast == levels(factor(contrast))[1])
 
-ggplot(one_contrast, aes(x = log2(nr_peptides), y = log(sigma^2))) +
+ggplot(one_contrast, aes(x = log2(nrPeptides), y = log(sigma^2))) +
   geom_point(alpha = 0.4, size = 2) +
   geom_smooth(method = "loess", span = 0.75, color = "steelblue", se = TRUE) +
   labs(x = "log2(peptide count)",
@@ -321,7 +321,7 @@ sessionInfo()
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.32        
     ##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          
-    ##  [25] purrr_1.2.2            xfun_0.60              glmnet_5.0            
+    ##  [25] purrr_1.2.2            xfun_0.61              glmnet_5.0            
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
     ##  [31] jsonlite_2.0.0         progress_1.2.3         pan_2.0               
     ##  [34] broom_1.0.13           parallel_4.5.2         prettyunits_1.2.0     

@@ -149,7 +149,7 @@ mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptid
 #> Joining with `by = join_by(protein_Id)`
 #> Joining with `by = join_by(protein_Id)`
 modf <- sim_build_models_logistf(model = "factors", weight_missing = 1, peptide=TRUE)
-#> Warning: Unknown or uninitialised column: `nr_peptides`.
+#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done

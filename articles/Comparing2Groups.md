@@ -30,18 +30,18 @@ xx
 
     ## $data
     ## # A tibble: 1,200 × 8
-    ##    sample sampleName group_ isotopeLabel protein_Id abundance qValue nr_peptides
-    ##    <chr>  <chr>      <chr>  <chr>        <chr>          <dbl>  <dbl>       <dbl>
-    ##  1 A_V1   A_V1       A      light        0EfVhX~39…      20.4      0           2
-    ##  2 A_V1   A_V1       A      light        0m5WN4~60…      16.4      0           7
-    ##  3 A_V1   A_V1       A      light        0YSKpy~28…      18.2      0           2
-    ##  4 A_V1   A_V1       A      light        3QLHfm~89…      23.0      0           1
-    ##  5 A_V1   A_V1       A      light        3QYop0~75…      23.1      0           7
-    ##  6 A_V1   A_V1       A      light        76k03k~70…      25.5      0           4
-    ##  7 A_V1   A_V1       A      light        7cbcrd~73…      27.1      0           2
-    ##  8 A_V1   A_V1       A      light        7QuTub~18…      18.4      0           4
-    ##  9 A_V1   A_V1       A      light        7soopj~53…      19.5      0           2
-    ## 10 A_V1   A_V1       A      light        7zeekV~71…      20.6      0           8
+    ##    sample sampleName group_ isotopeLabel protein_Id  abundance qValue nrPeptides
+    ##    <chr>  <chr>      <chr>  <chr>        <chr>           <dbl>  <dbl>      <dbl>
+    ##  1 A_V1   A_V1       A      light        0EfVhX~3967      20.4      0          2
+    ##  2 A_V1   A_V1       A      light        0m5WN4~6025      16.4      0          7
+    ##  3 A_V1   A_V1       A      light        0YSKpy~2865      18.2      0          2
+    ##  4 A_V1   A_V1       A      light        3QLHfm~8938      23.0      0          1
+    ##  5 A_V1   A_V1       A      light        3QYop0~7543      23.1      0          7
+    ##  6 A_V1   A_V1       A      light        76k03k~7094      25.5      0          4
+    ##  7 A_V1   A_V1       A      light        7cbcrd~7351      27.1      0          2
+    ##  8 A_V1   A_V1       A      light        7QuTub~1867      18.4      0          4
+    ##  9 A_V1   A_V1       A      light        7soopj~5352      19.5      0          2
+    ## 10 A_V1   A_V1       A      light        7zeekV~7127      20.6      0          8
     ## # ℹ 1,190 more rows
     ## 
     ## $config
@@ -69,7 +69,7 @@ xx
     ##     isotope_label: isotopeLabel
     ##     min_peptides_protein: 2
     ##     norm_value: NULL
-    ##     nr_children: nr_peptides
+    ##     nr_children: nrPeptides
     ##     opt_mz: 
     ##     opt_rt: 
     ##     opt_se: 
@@ -528,7 +528,7 @@ sessionInfo()
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] labeling_0.4.3         utf8_1.2.6             promises_1.5.0        
     ##  [22] rmarkdown_2.32         nloptr_2.2.1           ragg_1.5.2            
-    ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.60             
+    ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.61             
     ##  [28] glmnet_5.0             jomo_2.7-6             logistf_1.26.1        
     ##  [31] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
     ##  [34] later_1.4.8            pan_2.0                prettyunits_1.2.0     

@@ -71,8 +71,8 @@ dp <- prolfqua::sim_lfq_data_protein_config()
 xp <- nr_obs_sample(dp$data, dp$config$get_response(),
   dp$config$hierarchy_keys_depth(), dp$config$file_name, dp$config$nr_children)
 # xp
-# xp |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_peptides)
-xp$nr_peptides |> table()
+# xp |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nrPeptides)
+xp$nrPeptides |> table()
 #> 
 #>  1  2  3  4  6  7 
 #> 37 22 11 11 11 12 

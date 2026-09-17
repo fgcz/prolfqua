@@ -499,11 +499,11 @@ mod_limpa_prot$get_coefficients() |> head() |> knitr::kable(digits = 3)
 | protein_Id  | factor      | Estimate | Std..Error | t.value | Pr…t.. |
 |:------------|:------------|---------:|-----------:|--------:|-------:|
 | 0EfVhX~3967 | (Intercept) |    4.566 |      0.032 | 140.675 |      0 |
-| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.778 |      0 |
+| 0m5WN4~6025 | (Intercept) |    4.270 |      0.022 | 196.775 |      0 |
 | 0YSKpy~2865 | (Intercept) |    4.061 |      0.048 |  85.005 |      0 |
 | 3QLHfm~8938 | (Intercept) |    4.652 |      0.034 | 135.632 |      0 |
 | 3QYop0~7543 | (Intercept) |    4.564 |      0.014 | 331.068 |      0 |
-| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.082 |      0 |
+| 76k03k~7094 | (Intercept) |    4.539 |      0.014 | 314.081 |      0 |
 
 #### Step 3: Compute contrasts with ContrastsLimma
 
@@ -728,7 +728,7 @@ sessionInfo()
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.32        
     ##  [22] nloptr_2.2.1           ragg_1.5.2             UpSetR_1.4.1          
-    ##  [25] purrr_1.2.2            xfun_0.60              glmnet_5.0            
+    ##  [25] purrr_1.2.2            xfun_0.61              glmnet_5.0            
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
     ##  [31] jsonlite_2.0.0         progress_1.2.3         pan_2.0               
     ##  [34] prettyunits_1.2.0      broom_1.0.13           parallel_4.5.2        

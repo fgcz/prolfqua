@@ -122,7 +122,7 @@ Other modelling:
 
 ``` r
 mb <- sim_make_model_lmer("interaction")
-#> Warning: Unknown or uninitialised column: `nr_peptides`.
+#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done

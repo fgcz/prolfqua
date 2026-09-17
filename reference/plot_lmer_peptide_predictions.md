@@ -108,7 +108,7 @@ Other modelling:
 
 ``` r
 m <- sim_make_model_lmer()
-#> Warning: Unknown or uninitialised column: `nr_peptides`.
+#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
@@ -128,7 +128,7 @@ m <- sim_make_model_lmer()
 plot_lmer_peptide_predictions(m, intensity = "abundance")
 
 m <- sim_make_model_lmer("interaction")
-#> Warning: Unknown or uninitialised column: `nr_peptides`.
+#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done

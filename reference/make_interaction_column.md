@@ -42,18 +42,18 @@ config$factor_depth <- 1
 make_interaction_column(analysis,
    config$factor_keys_depth())
 #> # A tibble: 120 × 9
-#>    sample sampleName group_ isotopeLabel protein_Id abundance qValue nr_peptides
-#>    <chr>  <chr>      <chr>  <chr>        <chr>          <dbl>  <dbl>       <dbl>
-#>  1 A_V1   A_V1       A      light        0EfVhX~00…      20.1      0           3
-#>  2 A_V1   A_V1       A      light        7cbcrd~57…      22.0      0           1
-#>  3 A_V1   A_V1       A      light        9VUkAq~47…      19.8      0           1
-#>  4 A_V1   A_V1       A      light        BEJI92~52…      21.2      0           2
-#>  5 A_V1   A_V1       A      light        CGzoYe~21…      29.4      0           1
-#>  6 A_V1   A_V1       A      light        DoWup2~58…      NA       NA          NA
-#>  7 A_V1   A_V1       A      light        Fl4JiV~86…      20.1      0           4
-#>  8 A_V1   A_V1       A      light        HvIpHG~90…      21.7      0           2
-#>  9 A_V1   A_V1       A      light        JcKVfU~96…      34.5      0           7
-#> 10 A_V1   A_V1       A      light        SGIVBl~57…      23.9      0           6
+#>    sample sampleName group_ isotopeLabel protein_Id  abundance qValue nrPeptides
+#>    <chr>  <chr>      <chr>  <chr>        <chr>           <dbl>  <dbl>      <dbl>
+#>  1 A_V1   A_V1       A      light        0EfVhX~0087      20.1      0          3
+#>  2 A_V1   A_V1       A      light        7cbcrd~5725      22.0      0          1
+#>  3 A_V1   A_V1       A      light        9VUkAq~4703      19.8      0          1
+#>  4 A_V1   A_V1       A      light        BEJI92~5282      21.2      0          2
+#>  5 A_V1   A_V1       A      light        CGzoYe~2147      29.4      0          1
+#>  6 A_V1   A_V1       A      light        DoWup2~5896      NA       NA         NA
+#>  7 A_V1   A_V1       A      light        Fl4JiV~8625      20.1      0          4
+#>  8 A_V1   A_V1       A      light        HvIpHG~9079      21.7      0          2
+#>  9 A_V1   A_V1       A      light        JcKVfU~9653      34.5      0          7
+#> 10 A_V1   A_V1       A      light        SGIVBl~5782      23.9      0          6
 #> # ℹ 110 more rows
 #> # ℹ 1 more variable: interaction <fct>
 ```

@@ -2,6 +2,14 @@
 
 ## prolfqua 1.7.0
 
+- The peptide count in simulated data is now called `nrPeptides`,
+  matching the name every reader in the ecosystem produces. It was the
+  only place the column was called `nr_peptides`, which meant code
+  written against simulated data did not work on real data – and vice
+  versa – and downstream packages carried aliases between the two
+  spellings. The `nr_peptides` *option* (minimum peptides per protein)
+  is unchanged; only the data column is renamed.
+
 - New
   [`list_to_ContrastConfiguration()`](https://wolski.github.io/prolfqua/reference/list_to_ContrastConfiguration.md)
   rebuilds a `ContrastConfiguration` from the plain list produced by
@@ -9,6 +17,7 @@
   so a serialized column-role mapping (e.g. from `SummarizedExperiment`
   metadata or an AnnData `uns` entry) can be restored with its methods,
   such as `has_pvalue()`, intact.
+
 - Moderated t/Wald contrast tables now report the posterior contrast
   standard error in `std.error`, while `std.error.unmoderated` and
   `df.unmoderated` preserve the pre-moderation test inputs for
@@ -18,9 +27,11 @@
   below one and too narrow when it was above one. The separate
   infinite-prior-df fallback is unchanged and remains a distinct
   follow-up decision.
+
 - [`main_effect_contrasts()`](https://wolski.github.io/prolfqua/reference/main_effect_contrasts.md)
   now emits averaging contrasts with a top-level `LHS - RHS`, making its
   output directly valid for the stricter contrast parser.
+
 - Added the `binomial_nested` facade for nested LFQ data. It reuses the
   Firth backend’s completed peptide-detection representation, fits
   protein-by-sample detected/undetected peptide counts with a
@@ -28,6 +39,7 @@
   contrasts. A symmetric pseudo-count stabilizes separated fits, and
   posterior dispersion is bounded below by one by default
   (`binomial_bound = FALSE` disables the bound).
+
 - **Variance moderation now uses
   [`limma::squeezeVar()`](https://rdrr.io/pkg/limma/man/squeezeVar.html)
   directly.**
@@ -49,6 +61,7 @@
   contrast with fewer than three features now returns unmoderated
   results, matching limma, where the empirical-Bayes prior is
   undefined.)
+
 - **Fixed the scale used to moderate `rlm` contrasts.**
   `StrategyRLM$sigma()` now returns the robust scale
   [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html) builds its
@@ -60,6 +73,7 @@
   FDR and confidence bounds. Only the `rlm` facade’s moderated output is
   affected — `lm` and `rfit` were already coherent, and `rlm`’s
   unmoderated statistics (`diff`, `std.error`) were always correct.
+
 - **Removed the exported `squeezeVarRob()`** and its internal helpers
   (`fitFDist_LG`, `fitFDistRobustly_LG`); the whole vendored
   `squeezeVarRob.R` file is gone. Use
@@ -70,6 +84,7 @@
   only for code that called `prolfqua::squeezeVarRob()` directly — the
   ecosystem does not. Also dropped the now-unused `statmod` from
   `Imports`.
+
 - User-facing errors at prolfqua’s public entry points now carry typed
   condition classes (all inheriting from `prolfqua_error`), so callers
   and tests can catch failures by class instead of matching message
@@ -84,9 +99,11 @@
   `set_config_value()` additionally now reject data that no longer
   contains the columns required by the current configuration, instead of
   accepting invalid state silently.
+
 - Abundance-density plots now carry per-sample Plotly highlight keys,
   allowing interactive reports to fade non-hovered sample curves while
   preserving the existing ggplot output.
+
 - **Breaking — contrast schema.** The `modelName` column of
   `get_contrasts()` output is now the selected facade key (`lm`, `rlm`,
   `rfit`, `lm_impute`, `lm_missing`, `limma`, `limma_impute`,
@@ -102,6 +119,7 @@
   `modelName == "WaldTest_moderated"` (or the `_imputed`/`_DEqMS`
   variants) or read the `facade` column must migrate to the facade key
   and `estimate_type`.
+
 - [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
   and the exported `FACADE_REGISTRY` now derive method dispatch and the
   available-method list from a single seeded registry
@@ -109,10 +127,12 @@
   removing three hand-maintained copies that could drift. New exported
   base class `ContrastsFacadeBase` holds the shared facade plumbing; the
   19 built-in facades are now thin subclasses.
+
 - `ContrastsPlotter` colours volcano/MA/score plots by `estimate_type`
   when present (and the colour column was left at its default), using
   black for observed estimates, green for LOD-imputed estimates, and
   blue for group-mean fallback estimates.
+
 - Correctness fixes: `AggregateTopN` now validates `func` via
   `match.arg` (an invalid value errors instead of silently meaning
   `mean`); `Model$get_anova()` drops degenerate rows by `is.na(factor)`
@@ -126,6 +146,7 @@
   [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md)
   pre-allocates `nrow(x)` results; `ContrastsMissing` now actually
   validates its output schema.
+
 - Fixed the vectorized contrast path
   (`options(prolfqua.vectorize = TRUE)`) to match the default loop path
   on rank-deficient (aliased) model fits: a contrast whose weights fall
@@ -135,10 +156,12 @@
   contrasts with canceling `+1`/`-1` weights on missing coefficients are
   correctly flagged. The default (non-vectorized) path was never
   affected.
+
 - The vectorized contrast path now assigns stable `contrast_1`,
   `contrast_2`, … labels to unnamed contrasts, matching the documented
   naming behavior instead of leaking an expression into the result row
   names.
+
 - [`get_contrast()`](https://wolski.github.io/prolfqua/reference/get_contrast.md)
   now derives `group_1`/`group_2` from the contrast’s left/right side
   expressions, fixing mislabeled per-group columns for averaging
@@ -149,33 +172,39 @@
   group tokens. Nested contrasts that reference an earlier contrast by
   name (e.g. `Interaction = "AvsB_gv_X - AvsB_gv_Z"`) remain supported
   in the `ContrastsMissing` / `lm_missing` path.
+
 - [`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md)
   now stops with an informative error (listing the offending keys) when
   a hierarchy-key/sample combination has more than one observation,
   instead of silently returning a different-schema count table that
   crashed downstream. Pass `debug = TRUE` to recover the old behaviour
   and return the count table for inspection.
+
 - Removed the unused `impute_with_zcomp()`, `estimate_lod_global()`, and
   `function_lod_quantile()` exports (and the `zCompositions`
   dependency). For missing-value imputation use
   `AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()`.
+
 - Hardened
   [`plot_pca()`](https://wolski.github.io/prolfqua/reference/plot_pca.md):
   errors early on duplicated sample names, an all-missing matrix, or too
   few samples instead of returning `NULL` (which broke `pca_plotly()`);
   joins scores to annotation with an explicit `by`; makes
   `prcomp(center = TRUE, scale. = FALSE)` explicit.
+
 - Hardened abundance heatmaps for sparse significant-feature subsets:
   when row or column distances are non-finite because of missing values,
   [`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md)
   now falls back to the input order instead of returning a
   `ComplexHeatmap` object that fails during drawing.
+
 - Abundance heatmaps now retain every partially observed feature that
   can be meaningfully row z-scored by default, while automatically
   removing constant, single-observation, and all-missing rows.
   Significant-feature reports no longer hide bait-only results or
   require a dataset-specific missing-value threshold, and sparse
   matrices render safely even when clustering distances are unavailable.
+
 - `LFQDataPlotter$heatmap()` now shows only the `top_n` most variable
   features (default 1000), ranked by the prolfqua per-feature statistic
   (CV for untransformed data, sd for transformed, via `LFQDataStats`).
@@ -184,6 +213,7 @@
   above 65536 features, so peptide-list / entrapment searches with tens
   of thousands of degenerate protein groups no longer crash the QC
   heatmap. Pass `top_n = NULL` (or `Inf`) to keep every feature.
+
 - `StrategyLogistf` now uses Wald confidence intervals instead of
   profiling every coefficient, preventing `firth_nested` analyses from
   stalling for days on proteins with hundreds or thousands of peptides.

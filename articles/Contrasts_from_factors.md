@@ -316,6 +316,6 @@ sessionInfo()
     ##  [91] lattice_0.22-7         rbibutils_2.4.1        png_0.1-9             
     ##  [94] backports_1.5.1        broom_1.0.13           bslib_0.12.0          
     ##  [97] Rcpp_1.1.2             gridExtra_2.3.1        nlme_3.1-168          
-    ## [100] mgcv_1.9-3             logistf_1.26.1         xfun_0.60             
+    ## [100] mgcv_1.9-3             logistf_1.26.1         xfun_0.61             
     ## [103] fs_2.1.0               forcats_1.0.1          pkgconfig_2.0.3       
     ## [106] GlobalOptions_0.1.4

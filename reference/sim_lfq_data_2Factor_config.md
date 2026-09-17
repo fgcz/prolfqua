@@ -60,7 +60,7 @@ dim(x$data)
 stopifnot("data.frame" %in% class(x$data))
 stopifnot("AnalysisConfiguration" %in% class(x$config))
 x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE)
-#> Warning: Unknown or uninitialised column: `nr_peptides`.
+#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
@@ -76,9 +76,9 @@ head(x$data)
 #> 4 A_V1   A_V1       A         X          light        7cbcrd~5725 D5dQ4nKk  
 #> 5 A_V1   A_V1       A         X          light        9VUkAq~4703 eIC06D7g  
 #> 6 A_V1   A_V1       A         X          light        BEJI92~5282 HBkZvdhT  
-#> # ℹ 3 more variables: abundance <dbl>, qValue <dbl>, nr_peptides <dbl>
+#> # ℹ 3 more variables: abundance <dbl>, qValue <dbl>, nrPeptides <dbl>
 x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE, TWO = TRUE)
-#> Warning: Unknown or uninitialised column: `nr_peptides`.
+#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
