@@ -135,8 +135,9 @@ is <code>diff</code>, for SAINT <code>log2_EFCs</code></p></dd>
 
 
 <dt><code>pvalue_col</code></dt>
-<dd><p>column with the raw p-value, or <code>NA_character_</code>
-for backends that do not produce one (e.g. SAINTexpress)</p></dd>
+<dd><p>column with the raw p-value, or <code>""</code> for backends
+that do not produce one (e.g. SAINTexpress). <code>NA_character_</code> is
+accepted by the constructor and stored as <code>""</code>.</p></dd>
 
 
 <dt><code>fdr_col</code></dt>
@@ -221,7 +222,8 @@ fields of the same name.</p><div class="section">
 
 
 <dt><code>pvalue_col</code></dt>
-<dd><p>raw p-value column, or <code>NA_character_</code></p></dd>
+<dd><p>raw p-value column, or <code>""</code> / <code>NA_character_</code>
+when the backend produces none</p></dd>
 
 
 <dt><code>fdr_col</code></dt>

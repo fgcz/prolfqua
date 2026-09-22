@@ -64,8 +64,9 @@ Other configuration:
 
 - `pvalue_col`:
 
-  column with the raw p-value, or `NA_character_` for backends that do
-  not produce one (e.g. SAINTexpress)
+  column with the raw p-value, or `""` for backends that do not produce
+  one (e.g. SAINTexpress). `NA_character_` is accepted by the
+  constructor and stored as `""`.
 
 - `fdr_col`:
 
@@ -150,7 +151,8 @@ of the same name.
 
 - `pvalue_col`:
 
-  raw p-value column, or `NA_character_`
+  raw p-value column, or `""` / `NA_character_` when the backend
+  produces none
 
 - `fdr_col`:
 
