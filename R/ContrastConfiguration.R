@@ -56,8 +56,9 @@ ContrastConfiguration <- R6::R6Class(
     effect_col = "diff",
     #' @field score_col column with the per-contrast test statistic
     score_col = "statistic",
-    #' @field pvalue_col column with the raw p-value, or \code{NA_character_}
-    #'   for backends that do not produce one (e.g. SAINTexpress)
+    #' @field pvalue_col column with the raw p-value, or \code{""} for backends
+    #'   that do not produce one (e.g. SAINTexpress). \code{NA_character_} is
+    #'   accepted by the constructor and stored as \code{""}.
     pvalue_col = "p.value",
     #' @field fdr_col column with the FDR / BFDR / adjusted p-value
     fdr_col = "FDR",
@@ -85,7 +86,8 @@ ContrastConfiguration <- R6::R6Class(
     #' @param contrast_col contrast-label column
     #' @param effect_col signed effect column
     #' @param score_col test-statistic column
-    #' @param pvalue_col raw p-value column, or \code{NA_character_}
+    #' @param pvalue_col raw p-value column, or \code{""} / \code{NA_character_}
+    #'   when the backend produces none
     #' @param fdr_col FDR / adjusted-p column
     #' @param avg_abundance_col mean-abundance column
     #' @param supports_dea_qc supports DEA QC HTML
@@ -109,7 +111,16 @@ ContrastConfiguration <- R6::R6Class(
       self$contrast_col <- contrast_col
       self$effect_col <- effect_col
       self$score_col <- score_col
-      self$pvalue_col <- pvalue_col
+      # An absent p-value column is stored as "", not NA_character_: HDF5 has
+      # no character NA, so a serialized artifact reads `NA_character_` back as
+      # the literal column name "NA" and `has_pvalue()` then reports a p-value
+      # the backend never produced. Both spellings mean "absent" to
+      # `has_pvalue()`, and "" is the one that round-trips.
+      self$pvalue_col <- if (length(pvalue_col) == 1 && is.na(pvalue_col)) {
+        ""
+      } else {
+        pvalue_col
+      }
       self$fdr_col <- fdr_col
       self$avg_abundance_col <- avg_abundance_col
       self$supports_dea_qc <- supports_dea_qc

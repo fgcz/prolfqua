@@ -27,8 +27,11 @@ test_that("has_pvalue reflects pvalue_col presence", {
   cfg <- ContrastConfiguration$new(subject_id = "p")
   expect_true(cfg$has_pvalue())
 
+  # NA is stored as "" so the field survives serialization to HDF5, which has
+  # no character NA and would read one back as the column name "NA".
   cfg_na <- ContrastConfiguration$new(subject_id = "p", pvalue_col = NA_character_)
   expect_false(cfg_na$has_pvalue())
+  expect_equal(cfg_na$pvalue_col, "")
 
   cfg_empty <- ContrastConfiguration$new(subject_id = "p", pvalue_col = "")
   expect_false(cfg_empty$has_pvalue())

@@ -278,3 +278,16 @@ test_that("ContrastsFirth drops failed logistf fits before contrasts", {
   expect_true(all(c("protein_Id", "contrast", "diff", "p.value", "FDR") %in% colnames(res)))
   expect_false(any(is.na(res$protein_Id)))
 })
+
+test_that("compute_lmer_contrast reports an empty contrast matrix instead of failing", {
+  # A protein whose model carries none of the requested contrast coefficients
+  # leaves `linfct_matrix_contrasts()` with a 0-row matrix. lmerTest::contest()
+  # indexes 1:nrow(L) and used to abort the whole run on it.
+  mb <- sim_make_model_lmer("interaction")
+  linfct <- linfct_from_model(mb)$linfct_factors
+  empty <- linfct[0, , drop = FALSE]
+
+  expect_warning(res <- compute_lmer_contrast(mb, empty), "No estimable contrast")
+  expect_true(is.logical(res))
+  expect_true(is.na(res))
+})

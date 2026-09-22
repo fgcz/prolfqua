@@ -1,5 +1,17 @@
 # prolfqua 1.7.0
 
+- A mixed-model analysis (`lmer_nested`) no longer aborts partway through when a
+  single protein has no estimable contrast. Such a protein is now dropped with a
+  warning naming it, like a rank-deficient one, instead of failing the whole run
+  with `subscript out of bounds` from `lmerTest::contest()`.
+
+- A `ContrastConfiguration` built with `pvalue_col = NA_character_` now stores
+  `""` instead. HDF5 has no character NA, so a configuration serialized into an
+  AnnData artifact came back with `pvalue_col` set to the literal string `"NA"`
+  and `has_pvalue()` reported a p-value column that no backend had produced.
+  Backends without a p-value, such as SAINTexpress, are now read back
+  correctly.
+
 - The peptide count in simulated data is now called `nrPeptides`, matching the
   name every reader in the ecosystem produces. It was the only place the column
   was called `nr_peptides`, which meant code written against simulated data did

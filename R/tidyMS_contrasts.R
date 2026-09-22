@@ -623,6 +623,15 @@ compute_contrast_vectorized <- function(m, linfct, confint = 0.95) {
 #'
 compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")) {
   ddf <- match.arg(ddf)
+  if (nrow(linfct) == 0L) {
+    # `linfct_matrix_contrasts()` drops a contrast whose coefficients this
+    # model does not carry, and for some proteins that leaves nothing at all.
+    # `lmerTest::contest()` indexes `1:nrow(L)`, so an empty matrix reaches
+    # `L[1, ]` and aborts the whole run with "subscript out of bounds".
+    # Nothing is estimable here, so report it like a rank-deficient model.
+    warning("No estimable contrast for this model!")
+    return(NA)
+  }
   if (length(lme4::fixef(model)) != ncol(linfct)) {
     warning("Model is rank deficient!")
     return(NA) # catch rank defficient
