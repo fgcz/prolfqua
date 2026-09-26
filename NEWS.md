@@ -1,3 +1,9 @@
+# prolfqua 1.7.1
+
+- `MissingHelpers$get_lod()` no longer returns NA for data without groups seen once. It falls back to the partly observed groups with the fewest observations, and to the lowest group mean when every group is complete or empty. `build_model_impute()` therefore refits a protein missing a whole group in nearly complete data, where the NA LOD made the refit fail silently and left the protein unfitted.
+
+- New `impute_from_model()` fills the missing response cells of an `LFQData` with predictions from its per-protein `lm` models (from `build_model()` or `build_model_impute()`), leaving observed values unchanged, and reports per protein how many cells were observed and imputed and by which route (`complete`, `fitted`, `lod_refit` or `none`). Additive designs such as `~ group_ + pair` are supported; a model that is not lm-based is an error.
+
 # prolfqua 1.7.0
 
 - A mixed-model analysis (`lmer_nested`) no longer aborts partway through when a

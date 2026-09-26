@@ -66,14 +66,14 @@ MissingHelpers <- R6::R6Class(
     },
     #' @description
     #' determine limit of detection
-    #' computes quantile of abundances in groups with a single observation
-    #' @return integer LOD
+    #' computes quantile of abundances in groups with a single observation;
+    #' without such groups, of the partly observed groups with the fewest
+    #' observations, and when every group is complete or empty, the lowest
+    #' group mean
+    #' @return numeric LOD
     get_lod = function() {
       if (is.null(private$.lod_cache)) {
-        private$.lod_cache <- self$get_stats() |>
-          dplyr::filter(nrMeasured == 1) |>
-          dplyr::summarize(LOD = quantile(meanAbundance, probs = self$prob, na.rm = TRUE)) |>
-          dplyr::pull()
+        private$.lod_cache <- .lod_from_group_stats(self$get_stats(), self$prob)
       }
       return(private$.lod_cache)
     },
@@ -217,3 +217,18 @@ MissingHelpers <- R6::R6Class(
     }
   )
 )
+
+# Groups seen once are the nearest the data comes to its detection limit. A
+# nearly complete dataset can have none while one feature still misses a whole
+# group and needs a value to refit, so the partly observed groups with the
+# fewest observations stand in, and when every group is complete or empty, the
+# lowest group mean.
+.lod_from_group_stats <- function(stats, prob) {
+  measured <- dplyr::filter(stats, .data$nrMeasured > 0)
+  partial <- dplyr::filter(measured, .data$nrMeasured == 1 | .data$nrMeasured < .data$nrReplicates)
+  if (nrow(partial) == 0) {
+    return(if (nrow(measured) == 0) NA_real_ else min(measured$meanAbundance))
+  }
+  fewest <- dplyr::filter(partial, .data$nrMeasured == min(.data$nrMeasured))
+  unname(stats::quantile(fewest$meanAbundance, probs = prob, na.rm = TRUE))
+}

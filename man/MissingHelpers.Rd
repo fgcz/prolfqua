@@ -108,13 +108,16 @@ data.frame
 \if{latex}{\out{\hypertarget{method-MissingHelpers-get_lod}{}}}
 \subsection{Method \code{get_lod()}}{
 determine limit of detection
-computes quantile of abundances in groups with a single observation
+computes quantile of abundances in groups with a single observation;
+without such groups, of the partly observed groups with the fewest
+observations, and when every group is complete or empty, the lowest
+group mean
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_lod()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-integer LOD
+numeric LOD
 }
 }
 \if{html}{\out{<hr>}}

@@ -246,6 +246,165 @@ build_model_impute <- function(
 }
 
 
+#' Fill missing responses with predictions from per-subject linear models
+#'
+#' Completes the data to every subject x every sample and fills each missing
+#' response cell with \code{predict()} of that subject's fitted \code{lm}, on the
+#' response scale. Observed values are left unchanged. The imputed values carry
+#' no noise.
+#'
+#' Each subject gets one route, checked in this order:
+#' \describe{
+#'   \item{complete}{no missing cell.}
+#'   \item{lod_refit}{the subject was refitted at the LOD by
+#'     \code{\link{build_model_impute}} (\code{model_df$imputed}); that fit's
+#'     predictions fill the missing cells.}
+#'   \item{fitted}{the observed-data fit has no NA coefficient and knows every
+#'     factor level of the missing cells; its predictions fill them.}
+#'   \item{none}{no usable fit; the missing cells stay NA.}
+#' }
+#'
+#' @param model a \code{\link{Model}} with \code{lm} fits, as returned by
+#'   \code{\link{build_model}} or \code{\link{build_model_impute}}
+#' @param lfqdata the \code{\link{LFQData}} the model was fitted on (same
+#'   response and subject_id)
+#' @return list with \code{lfqdata}, a new \code{\link{LFQData}} holding every
+#'   subject x sample row with missing responses filled, and \code{summary}, a
+#'   tibble with the subject_id columns and \code{n_observed}, \code{n_imputed}
+#'   and \code{route} per subject
+#' @family modelling
+#' @seealso \code{\link{build_model_impute}}
+#' @export
+#' @examples
+#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
+#' mod <- build_model_impute(lfqdata, strat)
+#' res <- impute_from_model(mod, lfqdata)
+#' table(res$summary$route)
+#' n_missing <- function(x) sum(is.na(x$data_long()$abundance))
+#' stopifnot(n_missing(res$lfqdata) <= n_missing(lfqdata))
+impute_from_model <- function(model, lfqdata) {
+  subject_id <- model$subject_id
+  if (!identical(subject_id, lfqdata$subject_id())) {
+    stop(
+      "Model subject_id (",
+      paste(subject_id, collapse = ", "),
+      ") differs from lfqdata subject_id (",
+      paste(lfqdata$subject_id(), collapse = ", "),
+      ").",
+      call. = FALSE
+    )
+  }
+  model_df <- dplyr::ungroup(model$model_df)
+  fits <- model_df$linear_model[model_df$has_model_fit]
+  is_lm <- vapply(fits, inherits, logical(1), what = "lm")
+  if (!all(is_lm)) {
+    stop(
+      "impute_from_model() needs lm fits, but model '",
+      model$model_name,
+      "' has fits of class '",
+      class(fits[[which(!is_lm)[1]]])[1],
+      "'.",
+      call. = FALSE
+    )
+  }
+  response <- lfqdata$response()
+  model_response <- deparse(model$model_strategy$formula[[2]])
+  if (!identical(model_response, response)) {
+    stop("Model response '", model_response, "' differs from lfqdata response '", response, "'.", call. = FALSE)
+  }
+
+  fit_table <- model_df |>
+    dplyr::select(dplyr::all_of(c(subject_id, "linear_model", "has_model_fit"))) |>
+    dplyr::mutate(imputed = if ("imputed" %in% colnames(model_df)) model_df$imputed else FALSE)
+
+  data <- lfqdata$data_long()
+  annotation_cols <- intersect(lfqdata$get_config()$annotation_vars(), colnames(data))
+  sample_template <- data |>
+    dplyr::select(dplyr::all_of(annotation_cols)) |>
+    dplyr::distinct()
+  row_keys <- intersect(c(subject_id, lfqdata$isotope_label()), colnames(data))
+  completed <- data |>
+    dplyr::select(dplyr::all_of(row_keys)) |>
+    dplyr::distinct() |>
+    tidyr::crossing(sample_template) |>
+    dplyr::left_join(data, by = c(row_keys, annotation_cols))
+
+  per_subject <- completed |>
+    dplyr::group_by(!!!syms(subject_id)) |>
+    tidyr::nest() |>
+    dplyr::ungroup() |>
+    dplyr::left_join(fit_table, by = subject_id)
+  if (anyNA(per_subject$has_model_fit)) {
+    stop(
+      "Model '",
+      model$model_name,
+      "' has no row for ",
+      sum(is.na(per_subject$has_model_fit)),
+      " subject(s) of lfqdata.",
+      call. = FALSE
+    )
+  }
+
+  filled <- purrr::pmap(
+    list(per_subject$data, per_subject$linear_model, per_subject$has_model_fit, per_subject$imputed),
+    .fill_missing_response,
+    response = response
+  )
+
+  summary <- per_subject |>
+    dplyr::select(dplyr::all_of(subject_id)) |>
+    dplyr::mutate(
+      n_observed = vapply(filled, `[[`, integer(1), "n_observed"),
+      n_imputed = vapply(filled, `[[`, integer(1), "n_imputed"),
+      route = vapply(filled, `[[`, character(1), "route")
+    )
+  imputed_data <- per_subject |>
+    dplyr::select(dplyr::all_of(subject_id)) |>
+    dplyr::mutate(data = lapply(filled, `[[`, "data")) |>
+    tidyr::unnest("data") |>
+    dplyr::select(dplyr::all_of(colnames(data)))
+
+  list(
+    lfqdata = LFQData$new(imputed_data, lfqdata$get_config(), prefix = lfqdata$prefix),
+    summary = summary
+  )
+}
+
+.fill_missing_response <- function(rows, fit, has_model_fit, imputed, response) {
+  missing <- is.na(rows[[response]])
+  route <- if (!any(missing)) {
+    "complete"
+  } else if (isTRUE(imputed)) {
+    "lod_refit"
+  } else if (has_model_fit && !anyNA(stats::coefficients(fit)) && .fit_knows_levels(fit, rows[missing, ])) {
+    "fitted"
+  } else {
+    "none"
+  }
+  if (route %in% c("fitted", "lod_refit")) {
+    rows[[response]][missing] <- stats::predict(fit, newdata = rows[missing, ])
+  }
+  list(
+    data = rows,
+    n_observed = sum(!missing),
+    n_imputed = sum(missing & !is.na(rows[[response]])),
+    route = route
+  )
+}
+
+# predict.lm() fails on a factor level the fit never saw, e.g. a pair whose
+# samples are all missing; such a subject has no usable fit.
+.fit_knows_levels <- function(fit, newdata) {
+  all(vapply(
+    names(fit$xlevels),
+    function(v) all(newdata[[v]] %in% fit$xlevels[[v]]),
+    logical(1)
+  ))
+}
+
+
 #' Summarize modelling and error reporting
 #' @param mod model table see \code{\link{build_model}}
 #' @keywords internal

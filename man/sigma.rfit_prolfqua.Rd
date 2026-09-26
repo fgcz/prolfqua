@@ -88,6 +88,7 @@ Other modelling:
 \code{\link{get_complete_model_fit}()},
 \code{\link{get_p_values_pbeta}()},
 \code{\link{group_label}()},
+\code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
 \code{\link{is_singular_lm}()},
 \code{\link{linfct_all_possible_contrasts}()},

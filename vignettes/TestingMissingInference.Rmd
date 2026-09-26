@@ -119,6 +119,25 @@ vcov(m)
 
 ```
 
+# Filling missing cells from the protein models
+
+`impute_from_model()` completes the data to every protein x sample and fills each missing cell with `predict()` of that protein's fitted model. A protein fitted on its observed values takes the route `fitted`; one that `build_model_impute()` refitted at the LOD, typically because a whole group is missing, takes `lod_refit`. Observed values stay as they are, and the filled values carry no noise.
+
+```{r imputeFromModel}
+modImpute <- prolfqua::build_model_impute(dd_lfq, formula_Protein)
+filled <- prolfqua::impute_from_model(modImpute, dd_lfq)
+filled$summary$route |> table()
+
+before <- dd_lfq$data_long()
+after <- filled$lfqdata$data_long()
+missing_cells <- dplyr::inner_join(
+  before |> dplyr::filter(is.na(abundance)) |> dplyr::select(protein_Id, sampleName, group_),
+  after |> dplyr::select(protein_Id, sampleName, filled = abundance),
+  by = c("protein_Id", "sampleName")
+)
+head(missing_cells)
+```
+
 # Session Info
 
 ```{r session_info}
