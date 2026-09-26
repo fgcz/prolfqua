@@ -5,14 +5,19 @@ Aggregates e.g. protein abundances from peptide abundances
 ## Usage
 
 ``` r
-estimate_intensity(lfqdata, .func)
+estimate_intensity(lfqdata, method = c("medpolish", "rlm"))
 ```
 
 ## Arguments
 
-- func:
+- lfqdata:
 
-  \- a function working on a matrix of intensities for each protein.
+  LFQData object
+
+- method:
+
+  "medpolish" (Tukey's median polish, column \`medpolish\`) or "rlm"
+  (robust regression with \`MASS::rlm\`, column \`lmrob\`)
 
 ## Value
 
@@ -20,21 +25,11 @@ returns list with data (data.frame) and config (AnalysisConfiguration)
 
 ## See also
 
-[`medpolish_estimate_dfconfig`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_dfconfig.md)
-[`rlm_estimate_dfconfig`](https://wolski.github.io/prolfqua/reference/rlm_estimate_dfconfig.md)
-
 Other aggregation:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
-[`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
-[`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
-[`medpolish_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_dfconfig.md),
 [`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
-[`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
-[`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md),
-[`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
-[`rlm_estimate()`](https://wolski.github.io/prolfqua/reference/rlm_estimate.md),
-[`rlm_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/rlm_estimate_dfconfig.md)
+[`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md)
 
 ## Examples
 
@@ -47,9 +42,9 @@ dd <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(dd$data, dd$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
-bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
+bbMed <- estimate_intensity(lfq, method = "medpolish")
 #> starting aggregation
-bbRob <- estimate_intensity(lfq, .func = rlm_estimate_dfconfig)
+bbRob <- estimate_intensity(lfq, method = "rlm")
 #> starting aggregation
 #> Warning: 'rlm' failed to converge in 20 steps
 #> Warning: 'rlm' failed to converge in 20 steps

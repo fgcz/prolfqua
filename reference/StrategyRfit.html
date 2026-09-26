@@ -9,7 +9,7 @@ Rank-based regression strategy (R6 class)"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,7 +126,6 @@ via <code><a href="https://rdrr.io/pkg/Rfit/man/rfit.html" class="external-link"
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -134,9 +133,6 @@ via <code><a href="https://rdrr.io/pkg/Rfit/man/rfit.html" class="external-link"
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -147,10 +143,8 @@ via <code><a href="https://rdrr.io/pkg/Rfit/man/rfit.html" class="external-link"
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -162,32 +156,11 @@ via <code><a href="https://rdrr.io/pkg/Rfit/man/rfit.html" class="external-link"
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
-    <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
-    <p></p><div class="r6-fields"><dl><dt><code>formula</code></dt>
-<dd><p>model formula</p></dd>
-
-
-<dt><code>model_name</code></dt>
-<dd><p>name of model</p></dd>
-
-
-<dt><code>report_columns</code></dt>
-<dd><p>columns to report</p></dd>
-
-
-<dt><code>is_mixed</code></dt>
-<dd><p>always FALSE for rfit</p></dd>
-
-
-<dt><code>anova_df</code></dt>
-<dd><p>list with anova function and column names</p></dd>
-
-
-</dl><p></p></div>
+    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
+    <p><code><a href="StrategyBase.html">prolfqua::StrategyBase</a></code> -&gt; <code>StrategyRfit</code></p>
     </div>
     <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
@@ -196,22 +169,18 @@ via <code><a href="https://rdrr.io/pkg/Rfit/man/rfit.html" class="external-link"
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-StrategyRfit-new"><code>StrategyRfit$new()</code></a></p></li>
-<li><p><a href="#method-StrategyRfit-model_fun"><code>StrategyRfit$model_fun()</code></a></p></li>
-<li><p><a href="#method-StrategyRfit-isSingular"><code>StrategyRfit$isSingular()</code></a></p></li>
-<li><p><a href="#method-StrategyRfit-contrast_fun"><code>StrategyRfit$contrast_fun()</code></a></p></li>
-<li><p><a href="#method-StrategyRfit-df_residual"><code>StrategyRfit$df_residual()</code></a></p></li>
-<li><p><a href="#method-StrategyRfit-sigma"><code>StrategyRfit$sigma()</code></a></p></li>
 <li><p><a href="#method-StrategyRfit-clone"><code>StrategyRfit$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-StrategyRfit-new"></a><div class="section">
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun"><code>prolfqua::StrategyBase$contrast_fun()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual"><code>prolfqua::StrategyBase$df_residual()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular"><code>prolfqua::StrategyBase$isSingular()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun"><code>prolfqua::StrategyBase$model_fun()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma"><code>prolfqua::StrategyBase$sigma()</code></a></span></li>
+</ul></details></p><hr><a id="method-StrategyRfit-new"></a><div class="section">
 <h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
-<p>Create a new StrategyRfit</p><div class="section">
+<p>Create a new StrategyRfit. Residual df and scale come from
+  <code><a href="https://rdrr.io/r/stats/df.residual.html" class="external-link">df.residual()</a></code> and <code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma()</a></code> of the augmented fit.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyRfit.html">StrategyRfit</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>  <span class="va">modelstr</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"rfit"</span>,</span>
-<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
-<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyRfit.html">StrategyRfit</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"rfit"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -224,111 +193,18 @@ via <code><a href="https://rdrr.io/pkg/Rfit/man/rfit.html" class="external-link"
 <dd><p>name of model</p></dd>
 
 
-<dt><code>report_columns</code></dt>
-<dd><p>columns to report</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyRfit-model_fun"></a><div class="section">
-<h3 id="method-model-fun-">Method <code>model_fun()</code><a class="anchor" aria-label="anchor" href="#method-model-fun-"></a></h3>
-<p>Fit rfit to one protein's data, augmenting the fit so the
-  classic contrast path can introspect it.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyRfit</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span><span class="va">x</span>, <span class="va">pb</span>, get_formula <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>x</code></dt>
-<dd><p>data.frame for one protein</p></dd>
-
-
-<dt><code>pb</code></dt>
-<dd><p>optional progress bar</p></dd>
-
-
-<dt><code>get_formula</code></dt>
-<dd><p>if TRUE, return formula instead of fitting</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyRfit-isSingular"></a><div class="section">
-<h3 id="method-issingular-">Method <code>isSingular()</code><a class="anchor" aria-label="anchor" href="#method-issingular-"></a></h3>
-<p>Check if model is singular (NA coefficients or df &lt; 2)</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyRfit</span><span class="op">$</span><span class="fu">isSingular</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>model</code></dt>
-<dd><p>fitted model</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyRfit-contrast_fun"></a><div class="section">
-<h3 id="method-contrast-fun-">Method <code>contrast_fun()</code><a class="anchor" aria-label="anchor" href="#method-contrast-fun-"></a></h3>
-<p>Compute contrasts from fitted model</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyRfit</span><span class="op">$</span><span class="fu">contrast_fun</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to <code><a href="compute_contrast.html">compute_contrast</a></code></p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyRfit-df_residual"></a><div class="section">
-<h3 id="method-df-residual-">Method <code>df_residual()</code><a class="anchor" aria-label="anchor" href="#method-df-residual-"></a></h3>
-<p>Get residual degrees of freedom</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyRfit</span><span class="op">$</span><span class="fu">df_residual</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>model</code></dt>
-<dd><p>fitted model</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyRfit-sigma"></a><div class="section">
-<h3 id="method-sigma-">Method <code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma()</a></code><a class="anchor" aria-label="anchor" href="#method-sigma-"></a></h3>
-<p>Get the rank-based scale estimate</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyRfit</span><span class="op">$</span><span class="fu">sigma</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>model</code></dt>
-<dd><p>fitted model</p></dd>
-
-
 </dl><p></p></div>
 </div>
 
 </div><p></p><hr><a id="method-StrategyRfit-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyRfit</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -343,9 +219,9 @@ via <code><a href="https://rdrr.io/pkg/Rfit/man/rfit.html" class="external-link"
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="va">StrategyRfit</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x562014f51260&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5593c9333e18&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

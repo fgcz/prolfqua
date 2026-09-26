@@ -66,7 +66,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -74,9 +73,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -87,10 +83,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -102,22 +96,18 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 Other plotting:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
 [`missigness_histogram()`](https://wolski.github.io/prolfqua/reference/missigness_histogram.md),
 [`missingness_per_condition()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
 [`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md),
 [`plot_heatmap_cor()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor.md),
-[`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
 [`plot_hierarchies_boxplot_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_boxplot_df.md),
 [`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md),
-[`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
 [`plot_intensity_distribution_violin()`](https://wolski.github.io/prolfqua/reference/plot_intensity_distribution_violin.md),
 [`plot_na_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_NA_heatmap.md),
 [`plot_pca()`](https://wolski.github.io/prolfqua/reference/plot_pca.md),
@@ -135,10 +125,6 @@ Other plotting:
 - `subject_id`:
 
   hierarchy key columns
-
-- `prefix`:
-
-  default Contrasts - used to generate file names
 
 - `diff`:
 
@@ -172,10 +158,6 @@ Other plotting:
 
   name of column containing avg abundance values.
 
-- `protein_annot`:
-
-  protein annotation
-
 ## Methods
 
 ### Public methods
@@ -183,8 +165,6 @@ Other plotting:
 - [`ContrastsPlotter$new()`](#method-ContrastsPlotter-new)
 
 - [`ContrastsPlotter$histogram()`](#method-ContrastsPlotter-histogram)
-
-- [`ContrastsPlotter$histogram_estimate()`](#method-ContrastsPlotter-histogram_estimate)
 
 - [`ContrastsPlotter$histogram_diff()`](#method-ContrastsPlotter-histogram_diff)
 
@@ -197,8 +177,6 @@ Other plotting:
 - [`ContrastsPlotter$ma_plotly()`](#method-ContrastsPlotter-ma_plotly)
 
 - [`ContrastsPlotter$score_plot()`](#method-ContrastsPlotter-score_plot)
-
-- [`ContrastsPlotter$score_plotly()`](#method-ContrastsPlotter-score_plotly)
 
 - [`ContrastsPlotter$barplot_threshold()`](#method-ContrastsPlotter-barplot_threshold)
 
@@ -224,7 +202,6 @@ create Crontrast_Plotter
       diff = "diff",
       contrast = "contrast",
       avg.abundance = "avgAbd",
-      protein_annot = NULL,
       group = "BB"
     )
 
@@ -273,10 +250,6 @@ create Crontrast_Plotter
 
   name of column with average abundance
 
-- `protein_annot`:
-
-  add protein annotation (optional)
-
 - `group`:
 
   crosstalk group name for linked brushing, default "BB"
@@ -290,22 +263,6 @@ plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
 #### Usage
 
     ContrastsPlotter$histogram()
-
-------------------------------------------------------------------------
-
-### Method `histogram_estimate()`
-
-plot histogram of effect size - difference between groups
-
-#### Usage
-
-    ContrastsPlotter$histogram_estimate(binwidth = 0.05)
-
-#### Arguments
-
-- `binwidth`:
-
-  with of bin in histogram
 
 ------------------------------------------------------------------------
 
@@ -332,7 +289,7 @@ volcano plots (fold change vs FDR)
 #### Usage
 
     ContrastsPlotter$volcano(
-      colour,
+      colour = self$model_name,
       legend = TRUE,
       scales = c("fixed", "free", "free_x", "free_y"),
       min_score = NULL
@@ -369,7 +326,7 @@ plotly volcano plots
 #### Usage
 
     ContrastsPlotter$volcano_plotly(
-      colour,
+      colour = self$model_name,
       legend = TRUE,
       scales = c("fixed", "free", "free_x", "free_y"),
       min_score = NULL
@@ -417,7 +374,12 @@ systematic effects can be explored using MA-plots.
 
 #### Usage
 
-    ContrastsPlotter$ma_plot(fc, colour, legend = TRUE, rank = TRUE)
+    ContrastsPlotter$ma_plot(
+      fc = self$fcthresh,
+      colour = self$model_name,
+      legend = TRUE,
+      rank = TRUE
+    )
 
 #### Arguments
 
@@ -449,7 +411,12 @@ ma plotly
 
 #### Usage
 
-    ContrastsPlotter$ma_plotly(fc, colour, legend = TRUE, rank = FALSE)
+    ContrastsPlotter$ma_plotly(
+      fc = self$fcthresh,
+      colour = self$model_name,
+      legend = TRUE,
+      rank = FALSE
+    )
 
 #### Arguments
 
@@ -481,35 +448,7 @@ plot a score against the log2 fc e.g. t-statistic
 
 #### Usage
 
-    ContrastsPlotter$score_plot(scorespec, colour, legend = TRUE)
-
-#### Arguments
-
-- `scorespec`:
-
-  list(score="statistics", fcthres = 2, thresh = 5)
-
-- `colour`:
-
-  column with colour coding
-
-- `legend`:
-
-  enable legend default TRUE
-
-#### Returns
-
-list of ggplots
-
-------------------------------------------------------------------------
-
-### Method `score_plotly()`
-
-plot a score against the log2 fc e.g. t-statistic
-
-#### Usage
-
-    ContrastsPlotter$score_plotly(scorespec, colour, legend = TRUE)
+    ContrastsPlotter$score_plot(scorespec, colour = self$model_name, legend = TRUE)
 
 #### Arguments
 
@@ -624,8 +563,6 @@ stopifnot("ggplot" %in% class(cp$score_plot(legend=FALSE)$statistic))
 p <- cp$histogram()
 stopifnot("ggplot" %in% class(p$FDR))
 stopifnot("ggplot" %in% class(p$p.value))
-p <- cp$histogram_estimate()
-stopifnot("ggplot" %in% class(p))
 res <- cp$volcano()
 stopifnot("ggplot" %in% class(res$FDR))
 respltly <- cp$volcano_plotly()

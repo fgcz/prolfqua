@@ -6,13 +6,7 @@ create new columns e.g. sampleName column etc.
 ## Usage
 
 ``` r
-setup_analysis(
-  data,
-  configuration,
-  cc = TRUE,
-  from_factors = FALSE,
-  debug = FALSE
-)
+setup_analysis(data, configuration, debug = FALSE)
 ```
 
 ## Arguments
@@ -24,14 +18,6 @@ setup_analysis(
 - configuration:
 
   AnalysisConfiguration
-
-- cc:
-
-  complete cases default TRUE
-
-- from_factors:
-
-  if TRUE, create sampleName from factor columns
 
 - debug:
 

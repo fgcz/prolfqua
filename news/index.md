@@ -1,5 +1,126 @@
 # Changelog
 
+## prolfqua 1.8.0
+
+This release removes about 3,600 lines (20%) of dead or duplicated code
+from `R/`. Everything removed had no callers in prolfqua or in the
+downstream packages (prolfquapp, prophosqua, prolfquappPTMreaders,
+prolfquasaint, prolfquabenchmark, ptm-pipeline).
+
+### Bug fixes
+
+- [`sigma()`](https://rdrr.io/r/stats/sigma.html) for
+  [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html) fits took the
+  square root twice. The `rlm` method’s contrast `sigma` and all
+  moderated statistics derived from it (`std.error`, `statistic`, `df`,
+  `p.value`, `FDR`, confidence intervals) change; fold changes do not.
+  On simulated data the moderated df drops from about 8,000 to about 25.
+- `moderated_p_limma(variance_floor = )` with `robust = FALSE` returned
+  NA moderated p-values for rows above the floor, because the scalar
+  prior df was padded with NA when the floored rows were set to `Inf`.
+  This is the default path of the `binomial_nested` facade
+  (`binomial_bound = TRUE`). Rows above the floor now keep the estimated
+  prior df.
+- [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md):
+  when both inputs share a model name, `modelName` is now
+  `<name>_prefer` / `<name>_add` instead of NA for every row.
+- [`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md)
+  no longer fails when `sample_name` and `file_name` are the same
+  column.
+
+### Behaviour changes
+
+- `options(prolfqua.vectorize)` is removed; contrasts always use the
+  per-row path, which was already the default. Setting the option has no
+  effect.
+- `ContrastsFirth`: proteins whose contrast fails are reported with the
+  [`contrasts_linfct()`](https://wolski.github.io/prolfqua/reference/contrasts_linfct.md)
+  warning listing the dropped protein IDs, instead of a message.
+- `ContrastsInterface` provides default `get_Plotter()` and `to_wide()`
+  methods, so subclasses no longer need to implement them.
+- [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md)
+  takes `method = "medpolish"` or `"rlm"` instead of a function in
+  `.func`.
+- A facade’s `config` field is filled on the first `get_config()` call;
+  use `get_config()` rather than reading `$config`.
+- [`center_to_reference_cfg()`](https://wolski.github.io/prolfqua/reference/center_to_reference_cfg.md)
+  always returns a median-centred copy (`summary` and `copy` removed).
+  [`scale_with_subset()`](https://wolski.github.io/prolfqua/reference/scale_with_subset.md)
+  gains `colname` and loses the unused `get_scales`.
+- [`plot_stat_violin_median()`](https://wolski.github.io/prolfqua/reference/plot_stat_violin_median.md)
+  checks `stat` with
+  [`match.arg()`](https://rdrr.io/r/base/match.arg.html), so the default
+  `stat` now works (it used “CV” only when given explicitly).
+- [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md)
+  returns NA for an NA `n.obs` instead of stopping.
+- [`script_copy_helper_vec()`](https://wolski.github.io/prolfqua/reference/script_copy_helper_vec.md)
+  reports the source path it actually copies from and warns once for a
+  missing file;
+  [`find_package_file()`](https://wolski.github.io/prolfqua/reference/find_package_file.md)
+  returns `NULL` invisibly when the file is not found.
+
+### Removed
+
+- Exported functions: `contrasts_fisher_exact()`,
+  `contrasts_linfct_firth()`, `effective_contaminant_pattern()`,
+  `effective_decoy_pattern()`, `filter_difference()`,
+  `hierarchy_counts_sample()`, `is_singular_lm()`,
+  `lfq_power_t_test_quantiles()`, `linfct_all_possible_contrasts()`,
+  `linfct_factors_contrasts()`, `medpolish_estimate()`,
+  `medpolish_estimate_df()`, `medpolish_estimate_dfconfig()`,
+  `moderated_p_limma_long()`, `names_to_matrix()`, `nr_B_in_A()`,
+  `plot_hierarchies_add_quantline()`, `plot_hierarchies_line_df()`,
+  `plot_lmer_peptide_predictions()`, `remove_na_rows()`,
+  `rlm_estimate()`, `rlm_estimate_dfconfig()`, `scatter_plotly()`,
+  `summarize_stats_all()`, `tidy_to_wide()`, and the function forms of
+  `filter_proteins_by_peptide_count()` and `remove_small_intensities()`
+  (the `LFQData` methods of the same names are unchanged).
+  `unregister_facade()` is no longer exported.
+- Replacements where one exists: sample sizes via
+  `LFQDataStats$power_t_test_quantiles()` or
+  [`lfq_power_t_test_quantiles_V2()`](https://wolski.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md);
+  `summarize_stats(x, factor_key = NULL)` for `summarize_stats_all(x)`;
+  the Summariser method `$hierarchy_counts_sample()`.
+- Datasets `data_checksummarizerobust` and `data_correlatedPeptideList`.
+- R6 methods: `LFQData$filter_difference()`, `$omit_na()`,
+  `$contaminant_proportion()`; `LFQDataPlotter$write()`,
+  `$write_pltly()`; `Model$write_anova_figures()`,
+  `$write_coef_figures()` and the same on `ModelFirth`;
+  `ContrastsPlotter$score_plotly()`, `$histogram_estimate()` (use
+  `$histogram_diff()`); `AnalysisConfiguration$id_required()`.
+- Unused fields and arguments:
+  - strategies: `report_columns` (argument and field of all
+    `strategy_*()` and `Strategy*` classes), `is_mixed`,
+    `$model_fun(get_formula = )` (use `$formula`),
+    `strategy_logistf(test = )`
+  - models and contrasts: `ModelLimma$design`, `$formula` and the
+    matching `$new()` arguments; `Model$anova_df`,
+    `ModelFirth$anova_df`; `AnovaExtractor$col_fdr`;
+    `Contrasts$protein_annot`; `ContrastsMissing$global`, `$present`,
+    `$minsd`
+  - plotting: `ContrastsPlotter` `prefix` and `protein_annot` fields and
+    `$new(protein_annot = )`; `LFQDataPlotter` `file_paths_pdf`,
+    `file_paths_html`
+  - other: `AnalysisConfiguration$hierarchy_keys(rev = )`;
+    `setup_analysis(cc = , from_factors = )`;
+    `plot_hierarchies_line(separate = )`;
+    `transform_work_intensity(intensity_new_name = )`;
+    `compute_pooled(method = )` and `poolvar(method = )` with the “V2”
+    pooled variance; `sim_make_model_lmer(singular = )`; internal facade
+    fields `ContrastsLMMissingFacade$missing_contrast`, `$merged`,
+    `ContrastsLimpaNestedFacade$.lfqdata_nested`
+- [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+  no longer honours an undocumented `builder` field on facade registry
+  entries.
+
+### Internal
+
+- Facades, strategies, aggregators and model classes now share base
+  classes (`ContrastsFacadeBase$.setup()`, `StrategyBase`,
+  `AggregatorBase`, plotting methods on `ModelInterface`); the four
+  `build_model_limma*()` builders share one core. Class vectors of
+  strategies and aggregators gain `StrategyBase` / `AggregatorBase`.
+
 ## prolfqua 1.7.1
 
 - `MissingHelpers$get_lod()` no longer returns NA for data without
@@ -181,9 +302,8 @@
   the other decorators (no more mutating the caller’s object);
   `ContrastsFirth$get_linfct()` returns the linfct-annotated model
   copies instead of mutating the shared model;
-  [`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md)
-  pre-allocates `nrow(x)` results; `ContrastsMissing` now actually
-  validates its output schema.
+  `contrasts_fisher_exact()` pre-allocates `nrow(x)` results;
+  `ContrastsMissing` now actually validates its output schema.
 
 - Fixed the vectorized contrast path
   (`options(prolfqua.vectorize = TRUE)`) to match the default loop path

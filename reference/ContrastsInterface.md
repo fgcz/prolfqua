@@ -84,21 +84,47 @@ get table with contrast results (similar to limma topTable function)
 
 ### Method `get_Plotter()`
 
-initialize plotter
+return
+[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
+for the contrast results
 
 #### Usage
 
-    ContrastsInterface$get_Plotter()
+    ContrastsInterface$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)
+
+#### Arguments
+
+- `fc_threshold`:
+
+  fold change threshold to show in plots
+
+- `fdr_threshold`:
+
+  FDR threshold to show in plots
+
+#### Returns
+
+[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
 
 ------------------------------------------------------------------------
 
 ### Method `to_wide()`
 
-create wide representation of data.
+convert contrast results to wide format
 
 #### Usage
 
-    ContrastsInterface$to_wide()
+    ContrastsInterface$to_wide(columns = c("p.value", "FDR", "statistic"))
+
+#### Arguments
+
+- `columns`:
+
+  value columns to spread next to `diff`
+
+#### Returns
+
+data.frame
 
 ------------------------------------------------------------------------
 
@@ -261,10 +287,10 @@ int <- ContrastsInterface$new()
 testthat::expect_error(int$get_contrast_sides())
 testthat::expect_error(int$get_contrasts())
 testthat::expect_error(int$get_missing())
+# get_Plotter / to_wide / get_rank / get_ora / filter_significant call get_contrasts()
+# internally, which is not implemented on the bare interface, so they surface that error.
 testthat::expect_error(int$get_Plotter())
 testthat::expect_error(int$to_wide())
-# get_rank / get_ora / filter_significant call get_contrasts() internally,
-# which is not implemented on the bare interface, so they surface that error.
 testthat::expect_error(int$get_rank())
 testthat::expect_error(int$get_ora())
 testthat::expect_error(int$filter_significant())

@@ -5,13 +5,7 @@ Transform intensity column by applying a function
 ## Usage
 
 ``` r
-transform_work_intensity(
-  pdata,
-  response,
-  .func,
-  .funcname = NULL,
-  intensity_new_name = NULL
-)
+transform_work_intensity(pdata, response, .func, .funcname = NULL)
 ```
 
 ## Arguments
@@ -31,10 +25,6 @@ transform_work_intensity(
 - .funcname:
 
   name of function (used for creating new column name)
-
-- intensity_new_name:
-
-  column name for new intensity, default NULL
 
 ## Value
 

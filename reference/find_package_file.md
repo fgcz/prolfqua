@@ -26,5 +26,4 @@ The computed result.
 
 ``` r
 find_package_file("prolfqua","extdata/medata.csv")
-#> NULL
 ```

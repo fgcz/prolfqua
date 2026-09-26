@@ -86,7 +86,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -94,9 +93,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -107,10 +103,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -122,7 +116,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
@@ -148,7 +141,7 @@ head(mod$get_coefficients())
 #> 2 7IZdVV~0841 group_B    6.77e- 1    0.786     -0.863      2.22  7.43e- 1 0.389 
 #> 3 7IZdVV~0841 group_Ct… -6.66e- 1    0.645     -1.93       0.598 1.07e+ 0 0.302 
 #> 4 AZPG26~2091 (Interce…  9.05e- 1    0.863     -0.786      2.60  1.10e+ 0 0.294 
-#> 5 AZPG26~2091 group_B    2.23e-16    1.02      -1.99       1.99  7.74e-32 1     
+#> 5 AZPG26~2091 group_B    5.38e-16    1.02      -1.99       1.99  3.10e-31 1     
 #> 6 AZPG26~2091 group_Ct…  1.82e+ 0    1.55      -1.23       4.86  1.37e+ 0 0.242 
 #> # ℹ 3 more variables: method <dbl>, isSingular <lgl>, nr_coef <int>
 ```

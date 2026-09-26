@@ -19,6 +19,7 @@ Other LFQData:
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),

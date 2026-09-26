@@ -73,7 +73,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -81,9 +80,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -94,10 +90,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -109,7 +103,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -122,14 +115,6 @@ Other modelling:
 - `fit`:
 
   limma MArrayLM object from lmFit
-
-- `design`:
-
-  design matrix
-
-- `formula`:
-
-  model formula
 
 - `subject_id`:
 
@@ -177,15 +162,14 @@ Other modelling:
 
 - [`ModelLimma$get_anova()`](#method-ModelLimma-get_anova)
 
-- [`ModelLimma$coef_histogram()`](#method-ModelLimma-coef_histogram)
-
-- [`ModelLimma$coef_volcano()`](#method-ModelLimma-coef_volcano)
-
-- [`ModelLimma$coef_pairs()`](#method-ModelLimma-coef_pairs)
-
-- [`ModelLimma$anova_histogram()`](#method-ModelLimma-anova_histogram)
-
 - [`ModelLimma$clone()`](#method-ModelLimma-clone)
+
+Inherited methods
+
+- [`prolfqua::ModelInterface$anova_histogram()`](https://wolski.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram)
+- [`prolfqua::ModelInterface$coef_histogram()`](https://wolski.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram)
+- [`prolfqua::ModelInterface$coef_pairs()`](https://wolski.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs)
+- [`prolfqua::ModelInterface$coef_volcano()`](https://wolski.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano)
 
 ------------------------------------------------------------------------
 
@@ -197,8 +181,6 @@ initialize ModelLimma
 
     ModelLimma$new(
       fit,
-      design,
-      formula,
       subject_id,
       model_name,
       rowdata,
@@ -214,14 +196,6 @@ initialize ModelLimma
 - `fit`:
 
   limma MArrayLM from lmFit
-
-- `design`:
-
-  design matrix
-
-- `formula`:
-
-  model formula
 
 - `subject_id`:
 
@@ -283,52 +257,6 @@ coefficients)
 #### Returns
 
 data.frame
-
-------------------------------------------------------------------------
-
-### Method `coef_histogram()`
-
-histogram of model coefficient p-values
-
-#### Usage
-
-    ModelLimma$coef_histogram()
-
-------------------------------------------------------------------------
-
-### Method `coef_volcano()`
-
-volcano plot of non-intercept coefficients
-
-#### Usage
-
-    ModelLimma$coef_volcano()
-
-------------------------------------------------------------------------
-
-### Method `coef_pairs()`
-
-pairs plot of coefficients
-
-#### Usage
-
-    ModelLimma$coef_pairs()
-
-------------------------------------------------------------------------
-
-### Method `anova_histogram()`
-
-histogram of ANOVA F-test p-values
-
-#### Usage
-
-    ModelLimma$anova_histogram(what = c("p.value", "FDR"))
-
-#### Arguments
-
-- `what`:
-
-  show either "p.value" or "FDR"
 
 ------------------------------------------------------------------------
 

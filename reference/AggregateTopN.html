@@ -9,7 +9,7 @@ AggregateTopN"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,6 +70,7 @@ Works with raw (untransformed) intensities.</p>
 <code><a href="AggregateLimpa.html">AggregateLimpa</a></code>,
 <code><a href="AggregateMedpolish.html">AggregateMedpolish</a></code>,
 <code><a href="AggregateRlm.html">AggregateRlm</a></code>,
+<code><a href="AggregatorBase.html">AggregatorBase</a></code>,
 <code><a href="LFQData.html">LFQData</a></code>,
 <code><a href="LFQDataPlotter.html">LFQDataPlotter</a></code>,
 <code><a href="LFQDataStats.html">LFQDataStats</a></code>,
@@ -77,20 +78,12 @@ Works with raw (untransformed) intensities.</p>
 <code><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment()</a></code></p></div>
     </div>
     <div class="section level2">
+    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
+    <p><code><a href="AggregatorBase.html">prolfqua::AggregatorBase</a></code> -&gt; <code>AggregateTopN</code></p>
+    </div>
+    <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
-    <p></p><div class="r6-fields"><dl><dt><code>lfq</code></dt>
-<dd><p>LFQData</p></dd>
-
-
-<dt><code>lfq_agg</code></dt>
-<dd><p>aggregation result</p></dd>
-
-
-<dt><code>prefix</code></dt>
-<dd><p>to use for aggregation results e.g. protein</p></dd>
-
-
-<dt><code>N</code></dt>
+    <p></p><div class="r6-fields"><dl><dt><code>N</code></dt>
 <dd><p>top N peptides by intensity</p></dd>
 
 
@@ -108,10 +101,10 @@ Works with raw (untransformed) intensities.</p>
 
 <ul><li><p><a href="#method-AggregateTopN-new"><code>AggregateTopN$new()</code></a></p></li>
 <li><p><a href="#method-AggregateTopN-aggregate"><code>AggregateTopN$aggregate()</code></a></p></li>
-<li><p><a href="#method-AggregateTopN-plot"><code>AggregateTopN$plot()</code></a></p></li>
-<li><p><a href="#method-AggregateTopN-write_plots"><code>AggregateTopN$write_plots()</code></a></p></li>
 <li><p><a href="#method-AggregateTopN-clone"><code>AggregateTopN$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-AggregateTopN-new"></a><div class="section">
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href="../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot"><code>prolfqua::AggregatorBase$plot()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href="../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots"><code>prolfqua::AggregatorBase$write_plots()</code></a></span></li>
+</ul></details></p><hr><a id="method-AggregateTopN-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -151,81 +144,15 @@ Works with raw (untransformed) intensities.</p>
 <p>LFQData</p>
 </div>
 
-</div><p></p><hr><a id="method-AggregateTopN-plot"></a><div class="section">
-<h3 id="method-plot-">Method <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code><a class="anchor" aria-label="anchor" href="#method-plot-"></a></h3>
-<p>creates aggregation plots</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AggregateTopN</span><span class="op">$</span><span class="fu">plot</span><span class="op">(</span>subset <span class="op">=</span> <span class="cn">NULL</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>subset</code></dt>
-<dd><p>create plots for a subset of the data only</p></dd>
-
-
-<dt><code>show.legend</code></dt>
-<dd><p>default FALSE</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
-<p>data.frame</p>
-</div>
-
-</div><p></p><hr><a id="method-AggregateTopN-write_plots"></a><div class="section">
-<h3 id="method-write-plots-">Method <code>write_plots()</code><a class="anchor" aria-label="anchor" href="#method-write-plots-"></a></h3>
-<p>writes plots to folder</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AggregateTopN</span><span class="op">$</span><span class="fu">write_plots</span><span class="op">(</span></span>
-<span>  <span class="va">qcpath</span>,</span>
-<span>  subset <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  show.legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  width <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>  height <span class="op">=</span> <span class="fl">6</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>qcpath</code></dt>
-<dd><p>qcpath</p></dd>
-
-
-<dt><code>subset</code></dt>
-<dd><p>write plots only for some</p></dd>
-
-
-<dt><code>show.legend</code></dt>
-<dd><p>legend</p></dd>
-
-
-<dt><code>width</code></dt>
-<dd><p>figure width</p></dd>
-
-
-<dt><code>height</code></dt>
-<dd><p>figure height</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
-<p>file path</p>
-</div>
-
 </div><p></p><hr><a id="method-AggregateTopN-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AggregateTopN</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

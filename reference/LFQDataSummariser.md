@@ -15,6 +15,7 @@ Other LFQData:
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
@@ -82,7 +83,7 @@ summarize hierarchy
 
 ------------------------------------------------------------------------
 
-### Method [`hierarchy_counts_sample()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.md)
+### Method `hierarchy_counts_sample()`
 
 number of elements at each level in every sample
 

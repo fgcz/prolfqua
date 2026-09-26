@@ -23,7 +23,13 @@ modelSummary_A <- sim_build_models_lm()
 #> setup done
 m <- get_complete_model_fit(modelSummary_A$model_df)
 
-factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
+linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
+factor_contrasts <- linfct_matrix_contrasts(linfct, c(A_vs_B = "TreatmentA - TreatmentB"))
+#> Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if
+#> `.name_repair` is omitted as of tibble 2.0.0.
+#> ℹ Using compatibility `.name_repair`.
+#> ℹ The deprecated feature was likely used in the prolfqua package.
+#>   Please report the issue at <https://github.com/fgcz/prolfqua/issues>.
 
 factor_levelContrasts <- contrasts_linfct( m,
         factor_contrasts,

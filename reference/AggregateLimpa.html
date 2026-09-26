@@ -9,7 +9,7 @@ AggregateLimpa"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,6 +75,7 @@ aggregation using <code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" cl
 <code><a href="AggregateMedpolish.html">AggregateMedpolish</a></code>,
 <code><a href="AggregateRlm.html">AggregateRlm</a></code>,
 <code><a href="AggregateTopN.html">AggregateTopN</a></code>,
+<code><a href="AggregatorBase.html">AggregatorBase</a></code>,
 <code><a href="LFQData.html">LFQData</a></code>,
 <code><a href="LFQDataPlotter.html">LFQDataPlotter</a></code>,
 <code><a href="LFQDataStats.html">LFQDataStats</a></code>,
@@ -82,20 +83,12 @@ aggregation using <code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" cl
 <code><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment()</a></code></p></div>
     </div>
     <div class="section level2">
+    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
+    <p><code><a href="AggregatorBase.html">prolfqua::AggregatorBase</a></code> -&gt; <code>AggregateLimpa</code></p>
+    </div>
+    <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
-    <p></p><div class="r6-fields"><dl><dt><code>lfq</code></dt>
-<dd><p>LFQData (deep cloned input)</p></dd>
-
-
-<dt><code>lfq_agg</code></dt>
-<dd><p>aggregation result</p></dd>
-
-
-<dt><code>prefix</code></dt>
-<dd><p>to use for aggregation results e.g. protein</p></dd>
-
-
-<dt><code>dpc_result</code></dt>
+    <p></p><div class="r6-fields"><dl><dt><code>dpc_result</code></dt>
 <dd><p>estimated DPC object from limpa::dpc</p></dd>
 
 
@@ -329,13 +322,11 @@ aggregation using <code><a href="https://rdrr.io/pkg/limpa/man/dpcQuant.html" cl
 <span class="r-out co"><span class="r-pr">#&gt;</span>     get_response: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy: list</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_depth: 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_keys: function (rev = FALSE) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_keys: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     hierarchy_keys_depth: function (names = TRUE) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     id_required: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     id_vars: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ident_q_value: qValue</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ident_score: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     initialize: function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     is_response_transformed: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     isotope_label: isotopeLabel</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     min_peptides_protein: 2</span>

@@ -72,7 +72,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -80,9 +79,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -93,10 +89,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -108,101 +102,29 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
-## Public fields
+## Super class
 
-- `formula`:
-
-  model formula
-
-- `model_name`:
-
-  name of model
-
-- `report_columns`:
-
-  columns to report
-
-- `is_mixed`:
-
-  always TRUE for lmer
-
-- `anova_df`:
-
-  list with anova function and column names
+[`prolfqua::StrategyBase`](https://wolski.github.io/prolfqua/reference/StrategyBase.md)
+-\> `StrategyLmer`
 
 ## Methods
 
 ### Public methods
 
-- [`StrategyLmer$new()`](#method-StrategyLmer-new)
-
-- [`StrategyLmer$model_fun()`](#method-StrategyLmer-model_fun)
-
 - [`StrategyLmer$isSingular()`](#method-StrategyLmer-isSingular)
 
 - [`StrategyLmer$contrast_fun()`](#method-StrategyLmer-contrast_fun)
 
-- [`StrategyLmer$df_residual()`](#method-StrategyLmer-df_residual)
-
-- [`StrategyLmer$sigma()`](#method-StrategyLmer-sigma)
-
 - [`StrategyLmer$clone()`](#method-StrategyLmer-clone)
 
-------------------------------------------------------------------------
+Inherited methods
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
-
-Create a new StrategyLmer
-
-#### Usage
-
-    StrategyLmer$new(
-      modelstr,
-      model_name = "Model",
-      report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-        "moderated.p.value.adjusted")
-    )
-
-#### Arguments
-
-- `modelstr`:
-
-  model formula string
-
-- `model_name`:
-
-  name of model
-
-- `report_columns`:
-
-  columns to report
-
-------------------------------------------------------------------------
-
-### Method `model_fun()`
-
-Fit lmer to one protein's data
-
-#### Usage
-
-    StrategyLmer$model_fun(x, pb, get_formula = FALSE)
-
-#### Arguments
-
-- `x`:
-
-  data.frame for one protein
-
-- `pb`:
-
-  optional progress bar
-
-- `get_formula`:
-
-  if TRUE, return formula instead of fitting
+- [`prolfqua::StrategyBase$df_residual()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`prolfqua::StrategyBase$initialize()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-initialize)
+- [`prolfqua::StrategyBase$model_fun()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`prolfqua::StrategyBase$sigma()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
 
 ------------------------------------------------------------------------
 
@@ -236,38 +158,6 @@ Compute contrasts from fitted model
 
   passed to
   [`compute_lmer_contrast`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md)
-
-------------------------------------------------------------------------
-
-### Method `df_residual()`
-
-Get residual degrees of freedom
-
-#### Usage
-
-    StrategyLmer$df_residual(model)
-
-#### Arguments
-
-- `model`:
-
-  fitted model
-
-------------------------------------------------------------------------
-
-### Method [`sigma()`](https://rdrr.io/r/stats/sigma.html)
-
-Get residual standard error
-
-#### Usage
-
-    StrategyLmer$sigma(model)
-
-#### Arguments
-
-- `model`:
-
-  fitted model
 
 ------------------------------------------------------------------------
 

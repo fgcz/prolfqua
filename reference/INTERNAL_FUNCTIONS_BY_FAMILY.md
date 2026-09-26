@@ -11,15 +11,8 @@ A documentation topic.
 Other aggregation:
 [`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
 [`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
-[`medpolish_estimate()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate.md),
-[`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
-[`medpolish_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_dfconfig.md),
 [`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
-[`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
-[`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md),
-[`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
-[`rlm_estimate()`](https://wolski.github.io/prolfqua/reference/rlm_estimate.md),
-[`rlm_estimate_dfconfig()`](https://wolski.github.io/prolfqua/reference/rlm_estimate_dfconfig.md)
+[`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md)
 
 Other configuration:
 [`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md),
@@ -91,7 +84,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -99,9 +91,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -112,10 +101,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -127,22 +114,18 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 Other plotting:
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`medpolish_estimate_df()`](https://wolski.github.io/prolfqua/reference/medpolish_estimate_df.md),
 [`missigness_histogram()`](https://wolski.github.io/prolfqua/reference/missigness_histogram.md),
 [`missingness_per_condition()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://wolski.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
 [`plot_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_heatmap.md),
 [`plot_heatmap_cor()`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor.md),
-[`plot_hierarchies_add_quantline()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_add_quantline.md),
 [`plot_hierarchies_boxplot_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_boxplot_df.md),
 [`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md),
-[`plot_hierarchies_line_df()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line_df.md),
 [`plot_intensity_distribution_violin()`](https://wolski.github.io/prolfqua/reference/plot_intensity_distribution_violin.md),
 [`plot_na_heatmap()`](https://wolski.github.io/prolfqua/reference/plot_NA_heatmap.md),
 [`plot_pca()`](https://wolski.github.io/prolfqua/reference/plot_pca.md),
@@ -153,39 +136,32 @@ Other plotting:
 
 Other preprocessing:
 [`apply_to_response_matrix()`](https://wolski.github.io/prolfqua/reference/apply_to_response_matrix.md),
-[`filter_proteins_by_peptide_count()`](https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md),
 [`get_robscales()`](https://wolski.github.io/prolfqua/reference/get_robscales.md),
 [`robust_scale()`](https://wolski.github.io/prolfqua/reference/robust_scale.md),
 [`scale_with_subset()`](https://wolski.github.io/prolfqua/reference/scale_with_subset.md)
 
 Other stats:
+[`compute_pooled()`](https://wolski.github.io/prolfqua/reference/pooled_var.md),
 [`lfq_power_t_test_proteins()`](https://wolski.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles()`](https://wolski.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`lfq_power_t_test_quantiles_V2()`](https://wolski.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
 [`plot_stat_density()`](https://wolski.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_density_median()`](https://wolski.github.io/prolfqua/reference/plot_stat_density_median.md),
 [`plot_stat_violin()`](https://wolski.github.io/prolfqua/reference/plot_stat_violin.md),
 [`plot_stat_violin_median()`](https://wolski.github.io/prolfqua/reference/plot_stat_violin_median.md),
 [`plot_stdv_vs_mean()`](https://wolski.github.io/prolfqua/reference/plot_stdv_vs_mean.md),
-[`pooled_V2()`](https://wolski.github.io/prolfqua/reference/pooled_var.md),
 [`summarize_stats()`](https://wolski.github.io/prolfqua/reference/summarize_stats.md)
 
 Other summary:
 [`HierarchyCountsSample`](https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.md),
 [`hierarchy_counts()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts.md),
-[`hierarchy_counts_sample()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.md),
 [`summarize_hierarchy()`](https://wolski.github.io/prolfqua/reference/summarize_hierarchy.md)
 
 Other utilities:
-[`effective_contaminant_pattern()`](https://wolski.github.io/prolfqua/reference/effective_contaminant_pattern.md),
-[`effective_decoy_pattern()`](https://wolski.github.io/prolfqua/reference/effective_decoy_pattern.md),
 [`get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
 [`is_contaminant()`](https://wolski.github.io/prolfqua/reference/is_contaminant.md),
 [`is_decoy()`](https://wolski.github.io/prolfqua/reference/is_decoy.md),
 [`matrix_to_tibble()`](https://wolski.github.io/prolfqua/reference/matrix_to_tibble.md),
 [`multigroup_volcano()`](https://wolski.github.io/prolfqua/reference/multigroup_volcano.md),
-[`names_to_matrix()`](https://wolski.github.io/prolfqua/reference/names_to_matrix.md),
 [`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
 [`panel_cor()`](https://wolski.github.io/prolfqua/reference/panel_cor.md),
-[`remove_na_rows()`](https://wolski.github.io/prolfqua/reference/remove_NA_rows.md),
 [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)

@@ -9,7 +9,7 @@ R6 interface class representing modelling result"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,50 +98,58 @@ R6 interface class representing modelling result"></head><body>
 
 </div><p></p><hr><a id="method-ModelInterface-coef_histogram"></a><div class="section">
 <h3 id="method-coef-histogram-">Method <code>coef_histogram()</code><a class="anchor" aria-label="anchor" href="#method-coef-histogram-"></a></h3>
-<p>plot histogram of coefficients</p><div class="section">
+<p>histogram of coefficient p-values</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">coef_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
-<p>ggplot</p>
+<p>list with <code>plot</code> (ggplot) and file <code>name</code></p>
 </div>
 
 </div><p></p><hr><a id="method-ModelInterface-coef_volcano"></a><div class="section">
 <h3 id="method-coef-volcano-">Method <code>coef_volcano()</code><a class="anchor" aria-label="anchor" href="#method-coef-volcano-"></a></h3>
-<p>plot volcano of coefficients</p><div class="section">
+<p>volcano plot of non-intercept coefficients</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">coef_volcano</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
-<p>ggplot</p>
+<p>list with <code>plot</code> (ggplot) and file <code>name</code></p>
 </div>
 
 </div><p></p><hr><a id="method-ModelInterface-coef_pairs"></a><div class="section">
 <h3 id="method-coef-pairs-">Method <code>coef_pairs()</code><a class="anchor" aria-label="anchor" href="#method-coef-pairs-"></a></h3>
-<p>pairs plot of coefficients</p><div class="section">
+<p>coefficient estimates in wide format, one column per coefficient, for a pairs plot</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">coef_pairs</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
-<p>ggplot</p>
+<p>list with <code>plot</code> (data.frame) and file <code>name</code></p>
 </div>
 
 </div><p></p><hr><a id="method-ModelInterface-anova_histogram"></a><div class="section">
 <h3 id="method-anova-histogram-">Method <code>anova_histogram()</code><a class="anchor" aria-label="anchor" href="#method-anova-histogram-"></a></h3>
-<p>histogram of p-values and FDR for anova results</p><div class="section">
+<p>histogram of ANOVA p-values or FDR</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span>what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>what</code></dt>
+<dd><p>show either "p.value" or "FDR"</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
-<p>ggplot</p>
+<p>list with <code>plot</code> (ggplot) and file <code>name</code></p>
 </div>
 
 </div><p></p><hr><a id="method-ModelInterface-clone"></a><div class="section">
@@ -152,7 +160,7 @@ R6 interface class representing modelling result"></head><body>
 </div>
 
 <div class="section">
-<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

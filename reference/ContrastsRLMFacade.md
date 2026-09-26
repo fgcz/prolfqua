@@ -19,11 +19,6 @@ Encapsulates the pipeline:
 -\>
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md).
 
-Supports `options(prolfqua.vectorize = TRUE)` for faster contrast
-computation. See
-[`build_contrast_analysis`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
-for details.
-
 ## See also
 
 Other modelling:
@@ -82,7 +77,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -90,9 +84,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -103,10 +94,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -118,7 +107,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super classes
@@ -127,24 +115,6 @@ Other modelling:
 -\>
 [`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsRLMFacade`
-
-## Public fields
-
-- `model`:
-
-  Model object
-
-- `contrast`:
-
-  ContrastsModerated object
-
-- `.lfqdata`:
-
-  stored reference to input LFQData
-
-- `.contrast_names`:
-
-  names of the requested contrasts
 
 ## Methods
 
@@ -160,11 +130,11 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
 - [`prolfqua::ContrastsInterface$extra_artifacts()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
 - [`prolfqua::ContrastsInterface$filter_significant()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`prolfqua::ContrastsInterface$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
 - [`prolfqua::ContrastsFacadeBase$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
+- [`prolfqua::ContrastsFacadeBase$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_config)
 - [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
 - [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
 - [`prolfqua::ContrastsFacadeBase$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
@@ -247,13 +217,13 @@ fa$to_wide()
 #> # A tibble: 9 × 5
 #>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>   <chr>                <dbl>             <dbl>         <dbl>               <dbl>
-#> 1 0EfVhX~0087         -2.44         0.00137        0.00412                -3.20 
-#> 2 7cbcrd~5725          2.79         0.00000819     0.0000738               4.46 
-#> 3 9VUkAq~4703          1.74         0.000212       0.000953                3.71 
-#> 4 BEJI92~5282          0.951        0.0622         0.140                   1.87 
-#> 5 CGzoYe~2147         -0.579        0.506          0.638                  -0.665
-#> 6 Fl4JiV~8625         -0.174        0.828          0.828                  -0.218
-#> 7 HvIpHG~9079         -0.585        0.427          0.638                  -0.794
-#> 8 JcKVfU~9653          0.328        0.567          0.638                   0.572
-#> 9 SGIVBl~5782         -0.494        0.510          0.638                  -0.660
+#> 1 0EfVhX~0087         -2.44           0.00208        0.00796              -3.08 
+#> 2 7cbcrd~5725          2.79           0.000813       0.00732               3.35 
+#> 3 9VUkAq~4703          1.74           0.00265        0.00796               3.01 
+#> 4 BEJI92~5282          0.951          0.0621         0.140                 1.87 
+#> 5 CGzoYe~2147         -0.579          0.451          0.605                -0.753
+#> 6 Fl4JiV~8625         -0.174          0.833          0.833                -0.211
+#> 7 HvIpHG~9079         -0.585          0.402          0.605                -0.838
+#> 8 JcKVfU~9653          0.328          0.553          0.623                 0.593
+#> 9 SGIVBl~5782         -0.494          0.471          0.605                -0.721
 ```

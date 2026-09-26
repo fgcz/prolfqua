@@ -23,6 +23,7 @@ Other LFQData:
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
@@ -63,10 +64,6 @@ Other LFQData:
 - [`LFQData$remove_decoys()`](#method-LFQData-remove_decoys)
 
 - [`LFQData$decoy_proportion()`](#method-LFQData-decoy_proportion)
-
-- [`LFQData$contaminant_proportion()`](#method-LFQData-contaminant_proportion)
-
-- [`LFQData$omit_na()`](#method-LFQData-omit_na)
 
 - [`LFQData$complete_cases()`](#method-LFQData-complete_cases)
 
@@ -111,8 +108,6 @@ Other LFQData:
 - [`LFQData$get_Transformer()`](#method-LFQData-get_Transformer)
 
 - [`LFQData$get_Aggregator()`](#method-LFQData-get_Aggregator)
-
-- [`LFQData$filter_difference()`](#method-LFQData-filter_difference)
 
 - [`LFQData$clone()`](#method-LFQData-clone)
 
@@ -282,7 +277,7 @@ logical
 
 ------------------------------------------------------------------------
 
-### Method [`remove_small_intensities()`](https://wolski.github.io/prolfqua/reference/remove_small_intensities.md)
+### Method `remove_small_intensities()`
 
 some software is reporting NA's as 0, you must remove it from your data
 
@@ -302,7 +297,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method [`filter_proteins_by_peptide_count()`](https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)
+### Method `filter_proteins_by_peptide_count()`
 
 remove proteins with less than X peptides
 
@@ -349,49 +344,6 @@ hierarchy id (protein_Id).
 #### Returns
 
 numeric in \[0, 1\]
-
-------------------------------------------------------------------------
-
-### Method `contaminant_proportion()`
-
-proportion of modelling-level keys (subject_id) that are contaminants.
-Returns 0 when \`pattern_contaminants\` is not configured.
-
-#### Usage
-
-    LFQData$contaminant_proportion()
-
-#### Returns
-
-numeric in \[0, 1\]
-
-------------------------------------------------------------------------
-
-### Method `omit_na()`
-
-Omit NA from intensities per hierarchy (e.g. protein or peptide), idea
-is to use it for normalization For instance if a peptide has a missing
-value in more then nrNA of the samples within a condition it will be
-removed
-
-#### Usage
-
-    LFQData$omit_na(nr_na = 0, factor_depth = NULL)
-
-#### Arguments
-
-- `nr_na`:
-
-  number of NA values
-
-- `factor_depth`:
-
-  control whether \`nr_na\` is applied per condition or more globally,
-  e.g. \`factor_depth = 0\` means per experiment
-
-#### Returns
-
-LFQData with NA omitted.
 
 ------------------------------------------------------------------------
 
@@ -702,31 +654,6 @@ AggregateMedpolish, AggregateRlm, or AggregateTopN
 
 ------------------------------------------------------------------------
 
-### Method [`filter_difference()`](https://wolski.github.io/prolfqua/reference/filter_difference.md)
-
-get difference of self with other if other is subset of self
-
-#### Usage
-
-    LFQData$filter_difference(other)
-
-#### Arguments
-
-- `other`:
-
-  a filtered LFQData set
-
-#### Details
-
-Use to compare filtering results obtained from self, e.g. which proteins
-and peptides were removed (other)
-
-#### Returns
-
-LFQData
-
-------------------------------------------------------------------------
-
 ### Method `clone()`
 
 The objects of this class are cloneable with this method.
@@ -772,16 +699,6 @@ lfqdata$summarize_hierarchy()
 #> 5 JcKVfU~9653              1            7
 #> 6 SGIVBl~5782              1            6
 
-# filter for missing values
-
-f1 <- lfqdata$omit_na(nr_na = 0)
-#> Joining with `by = join_by(protein_Id, peptide_Id)`
-stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
-
-f2 <- lfqdata$omit_na(factor_depth = 0)
-#> Joining with `by = join_by(protein_Id, peptide_Id)`
-stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
-
 lfqdata$response()
 #> [1] "abundance"
 lfqdata$rename_response("peptide.intensity")
@@ -795,12 +712,7 @@ stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
 stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))
 #> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: peptide.intensity
 
-lfqdata2 <- lfqdata$get_copy()
-lfqdata2$set_data(lfqdata2$data_long()[1:100, ])
-res <- lfqdata$filter_difference(lfqdata2)
-stopifnot(nrow(res$data_long()) == nrow(lfqdata$data_long()) - 100)
-
-tmp <- lfqdata$get_sample(5, seed = 4)
+tmp <-lfqdata$get_sample(5, seed = 4)
 #> Sampling 5protein_Id
 #> Joining with `by = join_by(protein_Id)`
 stopifnot(nrow(tmp$hierarchy()) == 5)

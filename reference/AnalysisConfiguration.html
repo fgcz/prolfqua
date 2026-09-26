@@ -11,7 +11,7 @@ flat object."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -178,31 +178,21 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-AnalysisConfiguration-new"><code>AnalysisConfiguration$new()</code></a></p></li>
-<li><p><a href="#method-AnalysisConfiguration-set_response"><code>AnalysisConfiguration$set_response()</code></a></p></li>
+<ul><li><p><a href="#method-AnalysisConfiguration-set_response"><code>AnalysisConfiguration$set_response()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-get_response"><code>AnalysisConfiguration$get_response()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-pop_response"><code>AnalysisConfiguration$pop_response()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-factor_keys"><code>AnalysisConfiguration$factor_keys()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-factor_keys_depth"><code>AnalysisConfiguration$factor_keys_depth()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-hierarchy_keys"><code>AnalysisConfiguration$hierarchy_keys()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-hierarchy_keys_depth"><code>AnalysisConfiguration$hierarchy_keys_depth()</code></a></p></li>
-<li><p><a href="#method-AnalysisConfiguration-id_required"><code>AnalysisConfiguration$id_required()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-id_vars"><code>AnalysisConfiguration$id_vars()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-value_vars"><code>AnalysisConfiguration$value_vars()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-annotation_vars"><code>AnalysisConfiguration$annotation_vars()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-clone"><code>AnalysisConfiguration$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-AnalysisConfiguration-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
-<p>create AnalysisConfiguration</p><div class="section">
-<h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AnalysisConfiguration.html">AnalysisConfiguration</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-AnalysisConfiguration-set_response"></a><div class="section">
+</ul></div><p></p><hr><a id="method-AnalysisConfiguration-set_response"></a><div class="section">
 <h3 id="method-set-response-">Method <code>set_response()</code><a class="anchor" aria-label="anchor" href="#method-set-response-"></a></h3>
 <p>Add name of intensity column</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span><span class="va">col_name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -218,7 +208,7 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div><p></p><hr><a id="method-AnalysisConfiguration-get_response"></a><div class="section">
 <h3 id="method-get-response-">Method <code>get_response()</code><a class="anchor" aria-label="anchor" href="#method-get-response-"></a></h3>
 <p>Get name of working intensity column</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -226,7 +216,7 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div><p></p><hr><a id="method-AnalysisConfiguration-pop_response"></a><div class="section">
 <h3 id="method-pop-response-">Method <code>pop_response()</code><a class="anchor" aria-label="anchor" href="#method-pop-response-"></a></h3>
 <p>Remove last name in array of working intensity column names</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">pop_response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -234,7 +224,7 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div><p></p><hr><a id="method-AnalysisConfiguration-factor_keys"></a><div class="section">
 <h3 id="method-factor-keys-">Method <code>factor_keys()</code><a class="anchor" aria-label="anchor" href="#method-factor-keys-"></a></h3>
 <p>Get factor keys</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -246,7 +236,7 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div><p></p><hr><a id="method-AnalysisConfiguration-factor_keys_depth"></a><div class="section">
 <h3 id="method-factor-keys-depth-">Method <code>factor_keys_depth()</code><a class="anchor" aria-label="anchor" href="#method-factor-keys-depth-"></a></h3>
 <p>Get factor keys till factorDepth</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">factor_keys_depth</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -254,18 +244,10 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div><p></p><hr><a id="method-AnalysisConfiguration-hierarchy_keys"></a><div class="section">
 <h3 id="method-hierarchy-keys-">Method <code>hierarchy_keys()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-keys-"></a></h3>
 <p>get hierarchy keys</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span>rev <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>rev</code></dt>
-<dd><p>return in reverse order</p></dd>
-
-
-</dl><p></p></div>
-</div>
 <div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>array of column names</p>
@@ -274,12 +256,12 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div><p></p><hr><a id="method-AnalysisConfiguration-hierarchy_keys_depth"></a><div class="section">
 <h3 id="method-hierarchy-keys-depth-">Method <code>hierarchy_keys_depth()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-keys-depth-"></a></h3>
 <p>get hierarchy keys up to depth</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>names</code></dt>
 <dd><p>if TRUE names only if FALSE key value pairs</p></dd>
 
@@ -291,11 +273,11 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 <p>array of column names</p>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-id_required"></a><div class="section">
-<h3 id="method-id-required-">Method <code>id_required()</code><a class="anchor" aria-label="anchor" href="#method-id-required-"></a></h3>
-<p>Id Columns which must be in the input data frame</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">id_required</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><hr><a id="method-AnalysisConfiguration-id_vars"></a><div class="section">
+<h3 id="method-id-vars-">Method <code>id_vars()</code><a class="anchor" aria-label="anchor" href="#method-id-vars-"></a></h3>
+<p>get names of columns annotating values (e.g. intensities)</p><div class="section">
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">id_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -303,22 +285,10 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 <p>character array</p>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-id_vars"></a><div class="section">
-<h3 id="method-id-vars-">Method <code>id_vars()</code><a class="anchor" aria-label="anchor" href="#method-id-vars-"></a></h3>
-<p>get names of columns annotating values (e.g. intensities)</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">id_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
-<p>character array</p>
-</div>
-
 </div><p></p><hr><a id="method-AnalysisConfiguration-value_vars"></a><div class="section">
 <h3 id="method-value-vars-">Method <code>value_vars()</code><a class="anchor" aria-label="anchor" href="#method-value-vars-"></a></h3>
 <p>get names of columns containing observations e.g. (intensity, qValue, mz or rt)</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">value_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -326,7 +296,7 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div><p></p><hr><a id="method-AnalysisConfiguration-annotation_vars"></a><div class="section">
 <h3 id="method-annotation-vars-">Method <code>annotation_vars()</code><a class="anchor" aria-label="anchor" href="#method-annotation-vars-"></a></h3>
 <p>get names of columns with sample annotations</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">annotation_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -334,12 +304,12 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div><p></p><hr><a id="method-AnalysisConfiguration-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

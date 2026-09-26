@@ -5,13 +5,7 @@ Create a quasibinomial detection-count strategy
 ## Usage
 
 ``` r
-strategy_binomial(
-  modelstr,
-  prior_count = 0.1,
-  model_name = "binomial_nested",
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted")
-)
+strategy_binomial(modelstr, prior_count = 0.1, model_name = "binomial_nested")
 ```
 
 ## Arguments
@@ -28,10 +22,6 @@ strategy_binomial(
 
   model identity
 
-- report_columns:
-
-  result columns supported by the strategy
-
 ## Value
 
 A
@@ -42,7 +32,7 @@ object.
 
 ``` r
 strategy <- strategy_binomial("~ group_", prior_count = 0.1)
-strategy$model_fun(get_formula = TRUE)
+strategy$formula
 #> cbind(.detected, .undetected) ~ group_
-#> <environment: 0x561ff54f83e0>
+#> <environment: 0x5593e90387b8>
 ```

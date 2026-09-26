@@ -9,7 +9,7 @@ Quasibinomial detection-count strategy"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,28 +67,12 @@ pseudo-count stabilizes fits under complete separation; it is not equivalent
 to Firth's bias-reducing penalty.</p>
     </div>
     <div class="section level2">
+    <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
+    <p><code><a href="StrategyBase.html">prolfqua::StrategyBase</a></code> -&gt; <code>StrategyBinomial</code></p>
+    </div>
+    <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
-    <p></p><div class="r6-fields"><dl><dt><code>formula</code></dt>
-<dd><p>quasibinomial model formula</p></dd>
-
-
-<dt><code>model_name</code></dt>
-<dd><p>model identity</p></dd>
-
-
-<dt><code>report_columns</code></dt>
-<dd><p>result columns supported by the strategy</p></dd>
-
-
-<dt><code>is_mixed</code></dt>
-<dd><p>always FALSE</p></dd>
-
-
-<dt><code>anova_df</code></dt>
-<dd><p>ANOVA extractor</p></dd>
-
-
-<dt><code>prior_count</code></dt>
+    <p></p><div class="r6-fields"><dl><dt><code>prior_count</code></dt>
 <dd><p>symmetric pseudo-count added to both outcomes</p></dd>
 
 
@@ -101,22 +85,21 @@ to Firth's bias-reducing penalty.</p>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-StrategyBinomial-new"><code>StrategyBinomial$new()</code></a></p></li>
-<li><p><a href="#method-StrategyBinomial-model_fun"><code>StrategyBinomial$model_fun()</code></a></p></li>
-<li><p><a href="#method-StrategyBinomial-isSingular"><code>StrategyBinomial$isSingular()</code></a></p></li>
-<li><p><a href="#method-StrategyBinomial-contrast_fun"><code>StrategyBinomial$contrast_fun()</code></a></p></li>
-<li><p><a href="#method-StrategyBinomial-df_residual"><code>StrategyBinomial$df_residual()</code></a></p></li>
-<li><p><a href="#method-StrategyBinomial-sigma"><code>StrategyBinomial$sigma()</code></a></p></li>
 <li><p><a href="#method-StrategyBinomial-clone"><code>StrategyBinomial$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-StrategyBinomial-new"></a><div class="section">
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun"><code>prolfqua::StrategyBase$contrast_fun()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual"><code>prolfqua::StrategyBase$df_residual()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular"><code>prolfqua::StrategyBase$isSingular()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun"><code>prolfqua::StrategyBase$model_fun()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma"><code>prolfqua::StrategyBase$sigma()</code></a></span></li>
+</ul></details></p><hr><a id="method-StrategyBinomial-new"></a><div class="section">
 <h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
-<p>Create a quasibinomial count strategy.</p><div class="section">
+<p>Create a quasibinomial count strategy. <code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma()</a></code> is the
+  Pearson residual scale used by <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyBinomial.html">StrategyBinomial</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">modelstr</span>,</span>
 <span>  prior_count <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"binomial_nested"</span>,</span>
-<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
-<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
+<span>  model_name <span class="op">=</span> <span class="st">"binomial_nested"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -135,110 +118,18 @@ to Firth's bias-reducing penalty.</p>
 <dd><p>model identity</p></dd>
 
 
-<dt><code>report_columns</code></dt>
-<dd><p>result columns supported by the strategy</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyBinomial-model_fun"></a><div class="section">
-<h3 id="method-model-fun-">Method <code>model_fun()</code><a class="anchor" aria-label="anchor" href="#method-model-fun-"></a></h3>
-<p>Fit one parent's detection counts.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span><span class="va">x</span>, <span class="va">pb</span>, get_formula <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>x</code></dt>
-<dd><p>parent-by-sample count data</p></dd>
-
-
-<dt><code>pb</code></dt>
-<dd><p>optional progress reporter</p></dd>
-
-
-<dt><code>get_formula</code></dt>
-<dd><p>if TRUE, return the model formula without fitting</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyBinomial-isSingular"></a><div class="section">
-<h3 id="method-issingular-">Method <code>isSingular()</code><a class="anchor" aria-label="anchor" href="#method-issingular-"></a></h3>
-<p>Check whether the model is singular.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">isSingular</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>model</code></dt>
-<dd><p>fitted quasibinomial model</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyBinomial-contrast_fun"></a><div class="section">
-<h3 id="method-contrast-fun-">Method <code>contrast_fun()</code><a class="anchor" aria-label="anchor" href="#method-contrast-fun-"></a></h3>
-<p>Compute linear contrasts.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">contrast_fun</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>passed to <code><a href="compute_contrast.html">compute_contrast</a></code></p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyBinomial-df_residual"></a><div class="section">
-<h3 id="method-df-residual-">Method <code>df_residual()</code><a class="anchor" aria-label="anchor" href="#method-df-residual-"></a></h3>
-<p>Return residual degrees of freedom.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">df_residual</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>model</code></dt>
-<dd><p>fitted quasibinomial model</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-StrategyBinomial-sigma"></a><div class="section">
-<h3 id="method-sigma-">Method <code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma()</a></code><a class="anchor" aria-label="anchor" href="#method-sigma-"></a></h3>
-<p>Return the Pearson residual scale used by <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">sigma</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>model</code></dt>
-<dd><p>fitted quasibinomial model</p></dd>
-
-
 </dl><p></p></div>
 </div>
 
 </div><p></p><hr><a id="method-StrategyBinomial-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

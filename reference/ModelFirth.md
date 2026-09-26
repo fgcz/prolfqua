@@ -66,7 +66,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -74,9 +73,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -87,10 +83,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -102,7 +96,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -124,10 +117,6 @@ Other modelling:
 
   e.g. protein_Id
 
-- `anova_df`:
-
-  function to compute anova
-
 - `p.adjust`:
 
   function to adjust p-values
@@ -142,19 +131,15 @@ Other modelling:
 
 - [`ModelFirth$get_anova()`](#method-ModelFirth-get_anova)
 
-- [`ModelFirth$coef_histogram()`](#method-ModelFirth-coef_histogram)
-
-- [`ModelFirth$coef_volcano()`](#method-ModelFirth-coef_volcano)
-
-- [`ModelFirth$coef_pairs()`](#method-ModelFirth-coef_pairs)
-
 - [`ModelFirth$anova_histogram()`](#method-ModelFirth-anova_histogram)
 
-- [`ModelFirth$write_anova_figures()`](#method-ModelFirth-write_anova_figures)
-
-- [`ModelFirth$write_coef_figures()`](#method-ModelFirth-write_coef_figures)
-
 - [`ModelFirth$clone()`](#method-ModelFirth-clone)
+
+Inherited methods
+
+- [`prolfqua::ModelInterface$coef_histogram()`](https://wolski.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram)
+- [`prolfqua::ModelInterface$coef_pairs()`](https://wolski.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs)
+- [`prolfqua::ModelInterface$coef_volcano()`](https://wolski.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano)
 
 ------------------------------------------------------------------------
 
@@ -211,36 +196,6 @@ return anova table
 
 ------------------------------------------------------------------------
 
-### Method `coef_histogram()`
-
-histogram of model coefficient
-
-#### Usage
-
-    ModelFirth$coef_histogram()
-
-------------------------------------------------------------------------
-
-### Method `coef_volcano()`
-
-volcano plot of non intercept coefficients
-
-#### Usage
-
-    ModelFirth$coef_volcano()
-
-------------------------------------------------------------------------
-
-### Method `coef_pairs()`
-
-pairs-plot of coefficients
-
-#### Usage
-
-    ModelFirth$coef_pairs()
-
-------------------------------------------------------------------------
-
 ### Method `anova_histogram()`
 
 histogram of ANOVA results
@@ -254,54 +209,6 @@ histogram of ANOVA results
 - `what`:
 
   show either "Pr..F." or "FDR.Pr..F."
-
-------------------------------------------------------------------------
-
-### Method `write_anova_figures()`
-
-write figures related to ANOVA into pdf file
-
-#### Usage
-
-    ModelFirth$write_anova_figures(path, width = 10, height = 10)
-
-#### Arguments
-
-- `path`:
-
-  folder name
-
-- `width`:
-
-  figure width
-
-- `height`:
-
-  figure height
-
-------------------------------------------------------------------------
-
-### Method `write_coef_figures()`
-
-write figures related to Coefficients into pdf file
-
-#### Usage
-
-    ModelFirth$write_coef_figures(path, width = 10, height = 10)
-
-#### Arguments
-
-- `path`:
-
-  folder name
-
-- `width`:
-
-  figure width
-
-- `height`:
-
-  figure height
 
 ------------------------------------------------------------------------
 
@@ -352,13 +259,13 @@ mod$coef_pairs()
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
 #>  1 7IZdVV~0841       2.10     6.77e- 1  -6.66e- 1
-#>  2 AZPG26~2091       0.905    2.23e-16   1.82e+ 0
+#>  2 AZPG26~2091       0.905    5.38e-16   1.82e+ 0
 #>  3 AoNKbb~6908       1.01    -7.77e- 1  -4.25e- 1
 #>  4 JnEDsz~4938       0.00838  8.36e-11   9.37e- 1
 #>  5 tCZCHm~6695       2.16     1.23e+ 0   1.23e+ 0
 #>  6 EnbuYk~0350       0.847    1.35e+ 0  -3.04e+ 0
-#>  7 NNASGK~1417       2.20    -1.35e+ 0   4.13e-16
-#>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
+#>  7 NNASGK~1417       2.20    -1.35e+ 0  -2.16e-15
+#>  8 XYrp6h~5793       2.20     1.26e-15  -4.27e-16
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
 #> 
@@ -378,25 +285,6 @@ mod$coef_volcano()
 mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
-mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpcyqFlu/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpcyqFlu/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpcyqFlu/Coef_Pairsplot_modelFirth.pdf
-#> # A tibble: 10 × 4
-#>    subject_id  `(Intercept)`   group_B group_Ctrl
-#>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841       2.10     6.77e- 1  -6.66e- 1
-#>  2 AZPG26~2091       0.905    2.23e-16   1.82e+ 0
-#>  3 AoNKbb~6908       1.01    -7.77e- 1  -4.25e- 1
-#>  4 JnEDsz~4938       0.00838  8.36e-11   9.37e- 1
-#>  5 tCZCHm~6695       2.16     1.23e+ 0   1.23e+ 0
-#>  6 EnbuYk~0350       0.847    1.35e+ 0  -3.04e+ 0
-#>  7 NNASGK~1417       2.20    -1.35e+ 0   4.13e-16
-#>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
-#>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
-#> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_1b3015837f85 
-#>                       2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -424,16 +312,16 @@ mod$coef_pairs()
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841         2.20   5.61e-16  -2.20e+ 0
-#>  2 AZPG26~2091         2.20  -1.52e-15  -1.07e-15
-#>  3 AoNKbb~6908         2.20   6.16e-16  -1.35e+ 0
-#>  4 EnbuYk~0350         0.847 -8.47e- 1  -6.83e-16
-#>  5 JnEDsz~4938        -0.847 -1.35e+ 0   1.18e-16
-#>  6 NNASGK~1417         2.20  -1.52e-15  -1.07e-15
-#>  7 XYrp6h~5793         2.20  -1.52e-15  -1.07e-15
+#>  1 7IZdVV~0841         2.20   9.70e-16  -2.20e+ 0
+#>  2 AZPG26~2091         2.20   1.26e-15  -4.27e-16
+#>  3 AoNKbb~6908         2.20  -1.69e-16  -1.35e+ 0
+#>  4 EnbuYk~0350         0.847 -8.47e- 1   4.14e-16
+#>  5 JnEDsz~4938        -0.847 -1.35e+ 0  -4.18e-17
+#>  6 NNASGK~1417         2.20   1.26e-15  -4.27e-16
+#>  7 XYrp6h~5793         2.20   1.26e-15  -4.27e-16
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
-#>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
-#> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
+#>  9 tCZCHm~6695         2.20  -1.35e+ 0  -2.16e-15
+#> 10 tHE075~8231         0.847  1.35e+ 0   1.59e-16
 #> 
 #> $name
 #> [1] "Coef_Pairsplot_modelFirth.pdf"
@@ -451,23 +339,4 @@ mod$coef_volcano()
 mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
-mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpcyqFlu/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpcyqFlu/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpcyqFlu/Coef_Pairsplot_modelFirth.pdf
-#> # A tibble: 10 × 4
-#>    subject_id  `(Intercept)`   group_B group_Ctrl
-#>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841         2.20   5.61e-16  -2.20e+ 0
-#>  2 AZPG26~2091         2.20  -1.52e-15  -1.07e-15
-#>  3 AoNKbb~6908         2.20   6.16e-16  -1.35e+ 0
-#>  4 EnbuYk~0350         0.847 -8.47e- 1  -6.83e-16
-#>  5 JnEDsz~4938        -0.847 -1.35e+ 0   1.18e-16
-#>  6 NNASGK~1417         2.20  -1.52e-15  -1.07e-15
-#>  7 XYrp6h~5793         2.20  -1.52e-15  -1.07e-15
-#>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
-#>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
-#> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
-#> agg_record_1b3015837f85 
-#>                       2 
 ```

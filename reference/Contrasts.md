@@ -14,10 +14,7 @@ The per-protein contrast computation uses
 [`compute_contrast`](https://wolski.github.io/prolfqua/reference/compute_contrast.md)
 and
 [`linfct_matrix_contrasts`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md)
-internally. Both support a vectorized code path activated by
-`options(prolfqua.vectorize = TRUE)`. This can give a significant
-speed-up for large datasets. The vectorized path produces numerically
-identical results.
+internally.
 
 ## See also
 
@@ -77,7 +74,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -85,9 +81,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -98,10 +91,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -113,7 +104,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -155,10 +145,6 @@ Other modelling:
 
   use a global linear function (determined by get_linfct)
 
-- `protein_annot`:
-
-  holds protein annotation
-
 ## Methods
 
 ### Public methods
@@ -171,10 +157,6 @@ Other modelling:
 
 - [`Contrasts$get_contrasts()`](#method-Contrast-get_contrasts)
 
-- [`Contrasts$get_Plotter()`](#method-Contrast-get_Plotter)
-
-- [`Contrasts$to_wide()`](#method-Contrast-to_wide)
-
 - [`Contrasts$clone()`](#method-Contrast-clone)
 
 Inherited methods
@@ -183,10 +165,12 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
 - [`prolfqua::ContrastsInterface$extra_artifacts()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
 - [`prolfqua::ContrastsInterface$filter_significant()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`prolfqua::ContrastsInterface$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter)
 - [`prolfqua::ContrastsInterface$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
 - [`prolfqua::ContrastsInterface$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsInterface$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -278,52 +262,6 @@ get table with contrast estimates
 #### Returns
 
 data.frame with contrasts
-
-------------------------------------------------------------------------
-
-### Method `get_Plotter()`
-
-return
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
-creates Contrast_Plotter
-
-#### Usage
-
-    Contrasts$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)
-
-#### Arguments
-
-- `fc_threshold`:
-
-  fold change threshold to show in plots
-
-- `fdr_threshold`:
-
-  FDR threshold to show in plots
-
-#### Returns
-
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert to wide format
-
-#### Usage
-
-    Contrasts$to_wide(columns = c("p.value", "FDR", "statistic"))
-
-#### Arguments
-
-- `columns`:
-
-  value column default p.value
-
-#### Returns
-
-data.frame
 
 ------------------------------------------------------------------------
 

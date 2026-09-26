@@ -13,7 +13,7 @@ Create various visualization of the LFQdata"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,7 @@ Create various visualization of the LFQdata</p>
 <code><a href="AggregateMedpolish.html">AggregateMedpolish</a></code>,
 <code><a href="AggregateRlm.html">AggregateRlm</a></code>,
 <code><a href="AggregateTopN.html">AggregateTopN</a></code>,
+<code><a href="AggregatorBase.html">AggregatorBase</a></code>,
 <code><a href="LFQData.html">LFQData</a></code>,
 <code><a href="LFQDataStats.html">LFQDataStats</a></code>,
 <code><a href="LFQDataSummariser.html">LFQDataSummariser</a></code>,
@@ -87,14 +88,6 @@ Create various visualization of the LFQdata</p>
 
 <dt><code>prefix</code></dt>
 <dd><p>prefix to figure names when writing, e.g. protein_</p></dd>
-
-
-<dt><code>file_paths_pdf</code></dt>
-<dd><p>with paths to figures</p></dd>
-
-
-<dt><code>file_paths_html</code></dt>
-<dd><p>with paths to figures</p></dd>
 
 
 </dl><p></p></div>
@@ -120,9 +113,7 @@ Create various visualization of the LFQdata</p>
 <li><p><a href="#method-LFQDataPlotter-sample_correlation"><code>LFQDataPlotter$sample_correlation()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-upset_missing"><code>LFQDataPlotter$upset_missing()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-write_boxplots"><code>LFQDataPlotter$write_boxplots()</code></a></p></li>
-<li><p><a href="#method-LFQDataPlotter-write_pltly"><code>LFQDataPlotter$write_pltly()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-write_pdf"><code>LFQDataPlotter$write_pdf()</code></a></p></li>
-<li><p><a href="#method-LFQDataPlotter-write"><code>LFQDataPlotter$write()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-clone"><code>LFQDataPlotter$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-LFQDataPlotter-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -480,43 +471,15 @@ display.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-LFQDataPlotter-write_pltly"></a><div class="section">
-<h3 id="method-write-pltly-">Method <code>write_pltly()</code><a class="anchor" aria-label="anchor" href="#method-write-pltly-"></a></h3>
-<p>write pltly figures to path_qc</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">write_pltly</span><span class="op">(</span><span class="va">fig</span>, <span class="va">path_qc</span>, <span class="va">fig_name</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>fig</code></dt>
-<dd><p>pltly figure</p></dd>
-
-
-<dt><code>path_qc</code></dt>
-<dd><p>path to write to</p></dd>
-
-
-<dt><code>fig_name</code></dt>
-<dd><p>file name (without extension)</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
-<p>path the file was written to.</p>
-</div>
-
 </div><p></p><hr><a id="method-LFQDataPlotter-write_pdf"></a><div class="section">
 <h3 id="method-write-pdf-">Method <code>write_pdf()</code><a class="anchor" aria-label="anchor" href="#method-write-pdf-"></a></h3>
 <p>write figure to pdf</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">write_pdf</span><span class="op">(</span><span class="va">fig</span>, <span class="va">path_qc</span>, <span class="va">fig_name</span>, width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fig</code></dt>
 <dd><p>ggplot or ComplexHeatmap::Heatmap</p></dd>
 
@@ -540,35 +503,19 @@ display.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>path the file was written to</p>
-</div>
-
-</div><p></p><hr><a id="method-LFQDataPlotter-write"></a><div class="section">
-<h3 id="method-write-">Method <code><a href="https://rdrr.io/r/base/write.html" class="external-link">write()</a></code><a class="anchor" aria-label="anchor" href="#method-write-"></a></h3>
-<p>write heatmaps and pca plots to files</p><div class="section">
-<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="va">path_qc</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>path_qc</code></dt>
-<dd><p>path to write to</p></dd>
-
-
-</dl><p></p></div>
 </div>
 
 </div><p></p><hr><a id="method-LFQDataPlotter-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

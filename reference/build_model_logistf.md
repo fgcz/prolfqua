@@ -66,7 +66,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -74,9 +73,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -87,10 +83,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -102,7 +96,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
@@ -135,23 +128,17 @@ formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 xx <- build_model_logistf(tmp, formula)
 #> Joining with `by = join_by(protein_Id)`
 
-
-
+contrasts <- c(AvsB = "group_A - group_B")
 m <- xx$models$models1$model_df$linear_model[[1]]
-linfct <- linfct_from_model(m)
-linfct_all_possible_contrasts(linfct$linfct_factors)
-#>                      (Intercept) group_B group_Ctrl
-#> group_A - group_B              0      -1          0
-#> group_A - group_Ctrl           0       0         -1
-#> group_B - group_Ctrl           0       1         -1
-x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-linfct <- linfct_factors_contrasts(m)
-
+linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
+#>      (Intercept) group_B group_Ctrl
+#> AvsB           0      -1          0
 m <- xx2$models$models2$model_df$linear_model[[1]]
-linfct <- linfct_from_model(m)
-x <- linfct_all_possible_contrasts(linfct$linfct_factors)
-x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-linfct <- linfct_factors_contrasts(m)
-
-
+linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
+#>      (Intercept) group_B group_Ctrl peptide_IdFLq7LKTq peptide_IdJYhOpuPH
+#> AvsB           0      -1          0                  0                  0
+#>      peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg
+#> AvsB                  0                  0                  0
+#>      peptide_Idq2jTaC1y
+#> AvsB                  0
 ```

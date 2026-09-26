@@ -15,7 +15,7 @@ Convenience wrapper that creates a StrategyRLM object."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,42 +65,15 @@ Convenience wrapper that creates a StrategyRLM object."></head><body>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">strategy_logistf</span><span class="op">(</span></span>
-<span>  <span class="va">modelstr</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"logistf"</span>,</span>
-<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
-<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span>,</span>
-<span>  test <span class="op">=</span> <span class="st">"Chisq"</span></span>
-<span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">strategy_logistf</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"logistf"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">strategy_rfit</span><span class="op">(</span></span>
-<span>  <span class="va">modelstr</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"rfit"</span>,</span>
-<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
-<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">strategy_rfit</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"rfit"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">strategy_lmer</span><span class="op">(</span></span>
-<span>  <span class="va">modelstr</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
-<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
-<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">strategy_lmer</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">strategy_lm</span><span class="op">(</span></span>
-<span>  <span class="va">modelstr</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
-<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
-<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span>,</span>
-<span>  weights <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">strategy_lm</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span>, weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">strategy_rlm</span><span class="op">(</span></span>
-<span>  <span class="va">modelstr</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
-<span>  report_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"statistic"</span>, <span class="st">"p.value"</span>, <span class="st">"p.value.adjusted"</span>, <span class="st">"moderated.p.value"</span>,</span>
-<span>    <span class="st">"moderated.p.value.adjusted"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">strategy_rlm</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -113,14 +86,6 @@ Convenience wrapper that creates a StrategyRLM object."></head><body>
 
 <dt id="arg-model-name">model_name<a class="anchor" aria-label="anchor" href="#arg-model-name"></a></dt>
 <dd><p>name of model</p></dd>
-
-
-<dt id="arg-report-columns">report_columns<a class="anchor" aria-label="anchor" href="#arg-report-columns"></a></dt>
-<dd><p>columns to report</p></dd>
-
-
-<dt id="arg-test">test<a class="anchor" aria-label="anchor" href="#arg-test"></a></dt>
-<dd><p>type of test statistic to use (e.g. "Chisq")</p></dd>
 
 
 <dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
@@ -196,7 +161,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -204,9 +168,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -217,10 +178,8 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -231,7 +190,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p>
 <p>Other modelling:
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
@@ -290,7 +248,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -298,9 +255,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -311,10 +265,8 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -325,7 +277,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p>
 <p>Other modelling:
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
@@ -384,7 +335,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -392,9 +342,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -405,10 +352,8 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -419,7 +364,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p>
 <p>Other modelling:
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
@@ -478,7 +422,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -486,9 +429,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -499,10 +439,8 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -513,7 +451,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p>
 <p>Other modelling:
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
@@ -572,7 +509,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -580,9 +516,6 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -593,10 +526,8 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -607,16 +538,15 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_logistf</span><span class="op">(</span><span class="st">"bin_resp ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bin_resp ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x562023dbc488&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5593cc060020&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
@@ -644,9 +574,9 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       2.101899e+00       6.773389e-01      -6.663876e-01       3.440276e-16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       2.101899e+00       6.773389e-01      -6.663876e-01      -6.417966e-16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      -1.068335e+00       3.432936e-16      -1.068335e+00       1.197563e+00 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      -1.068335e+00      -4.082102e-16      -1.068335e+00       1.197563e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_Idq2jTaC1y </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      -1.445323e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -660,31 +590,31 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       8.375544e-03       8.360400e-11       9.365126e-01      -3.147690e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       8.375544e-03       8.360364e-11       9.365126e-01      -3.147690e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_IdgdnXrza3 peptide_IdxvlVt88v </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      -2.035802e-09      -6.303721e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      -2.035803e-09      -6.303721e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Likelihood ratio test=3.276542 on 5 df, p=0.657435, n=48</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rfit</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x562007886f08&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5593ba17c8c8&gt;</span>
 <span class="r-in"><span><span class="va">modelFunction</span> <span class="op">&lt;-</span> <span class="fu">strategy_lmer</span><span class="op">(</span><span class="st">"abundanceC ~ group_ + (1|peptide_Id)"</span>,</span></span>
 <span class="r-in"><span>  model_name <span class="op">=</span> <span class="st">"random_example"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modelFunction</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modelFunction</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> abundanceC ~ group_ + (1 | peptide_Id)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5620078251f8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5593ba0cda28&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56200707e528&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5593b99321f8&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">weights</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span>get_formula <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x562006fec5e8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5593b98035f8&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

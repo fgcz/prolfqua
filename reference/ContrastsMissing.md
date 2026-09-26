@@ -102,7 +102,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -110,9 +109,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -123,10 +119,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -138,7 +132,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -176,19 +169,6 @@ Other modelling:
 
   function to adjust p-values
 
-- `global`:
-
-  Take global or local values for imputation
-
-- `present`:
-
-  default 1, presence in interaction to infer limit of detection.
-
-- `minsd`:
-
-  default 1, if standard deviation can not be estimated, what is the
-  prior minimum sd, default = 1s
-
 ## Methods
 
 ### Public methods
@@ -200,8 +180,6 @@ Other modelling:
 - [`ContrastsMissing$get_contrasts()`](#method-ContrastsMissing-get_contrasts)
 
 - [`ContrastsMissing$get_Plotter()`](#method-ContrastsMissing-get_Plotter)
-
-- [`ContrastsMissing$to_wide()`](#method-ContrastsMissing-to_wide)
 
 - [`ContrastsMissing$clone()`](#method-ContrastsMissing-clone)
 
@@ -215,6 +193,7 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsInterface$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -293,26 +272,6 @@ get ContrastsPlotter
 #### Returns
 
 Contrast_Plotter
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert contrast results to wide format
-
-#### Usage
-
-    ContrastsMissing$to_wide(columns = c("p.value", "FDR", "statistic"))
-
-#### Arguments
-
-- `columns`:
-
-  value column default p.value
-
-#### Returns
-
-data.frame
 
 ------------------------------------------------------------------------
 
@@ -412,7 +371,7 @@ print(p)
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1b30415977f1 
+#> agg_record_1aa83ab52cfc 
 #>                       2 
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
@@ -452,6 +411,6 @@ pl$volcano()
 #> $FDR
 #> 
 dev.off()
-#> agg_record_1b30415977f1 
+#> agg_record_1aa83ab52cfc 
 #>                       2 
 ```

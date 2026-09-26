@@ -310,7 +310,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.7.1
+    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.8.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

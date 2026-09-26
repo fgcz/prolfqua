@@ -9,7 +9,7 @@ R6 class representing a limma modelling result"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,7 +122,6 @@ R6 class representing a limma modelling result"></head><body>
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -130,9 +129,6 @@ R6 class representing a limma modelling result"></head><body>
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -143,10 +139,8 @@ R6 class representing a limma modelling result"></head><body>
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -158,7 +152,6 @@ R6 class representing a limma modelling result"></head><body>
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
@@ -169,14 +162,6 @@ R6 class representing a limma modelling result"></head><body>
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
     <p></p><div class="r6-fields"><dl><dt><code>fit</code></dt>
 <dd><p>limma MArrayLM object from lmFit</p></dd>
-
-
-<dt><code>design</code></dt>
-<dd><p>design matrix</p></dd>
-
-
-<dt><code>formula</code></dt>
-<dd><p>model formula</p></dd>
 
 
 <dt><code>subject_id</code></dt>
@@ -227,19 +212,17 @@ impute.</p></dd>
 <ul><li><p><a href="#method-ModelLimma-new"><code>ModelLimma$new()</code></a></p></li>
 <li><p><a href="#method-ModelLimma-get_coefficients"><code>ModelLimma$get_coefficients()</code></a></p></li>
 <li><p><a href="#method-ModelLimma-get_anova"><code>ModelLimma$get_anova()</code></a></p></li>
-<li><p><a href="#method-ModelLimma-coef_histogram"><code>ModelLimma$coef_histogram()</code></a></p></li>
-<li><p><a href="#method-ModelLimma-coef_volcano"><code>ModelLimma$coef_volcano()</code></a></p></li>
-<li><p><a href="#method-ModelLimma-coef_pairs"><code>ModelLimma$coef_pairs()</code></a></p></li>
-<li><p><a href="#method-ModelLimma-anova_histogram"><code>ModelLimma$anova_histogram()</code></a></p></li>
 <li><p><a href="#method-ModelLimma-clone"><code>ModelLimma$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-ModelLimma-new"></a><div class="section">
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="anova_histogram"><a href="../../prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram"><code>prolfqua::ModelInterface$anova_histogram()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href="../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram"><code>prolfqua::ModelInterface$coef_histogram()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href="../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs"><code>prolfqua::ModelInterface$coef_pairs()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href="../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano"><code>prolfqua::ModelInterface$coef_volcano()</code></a></span></li>
+</ul></details></p><hr><a id="method-ModelLimma-new"></a><div class="section">
 <h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>initialize ModelLimma</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ModelLimma.html">ModelLimma</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">fit</span>,</span>
-<span>  <span class="va">design</span>,</span>
-<span>  <span class="va">formula</span>,</span>
 <span>  <span class="va">subject_id</span>,</span>
 <span>  <span class="va">model_name</span>,</span>
 <span>  <span class="va">rowdata</span>,</span>
@@ -255,14 +238,6 @@ impute.</p></dd>
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fit</code></dt>
 <dd><p>limma MArrayLM from lmFit</p></dd>
-
-
-<dt><code>design</code></dt>
-<dd><p>design matrix</p></dd>
-
-
-<dt><code>formula</code></dt>
-<dd><p>model formula</p></dd>
 
 
 <dt><code>subject_id</code></dt>
@@ -324,55 +299,15 @@ impute.</p></dd>
 <p>data.frame</p>
 </div>
 
-</div><p></p><hr><a id="method-ModelLimma-coef_histogram"></a><div class="section">
-<h3 id="method-coef-histogram-">Method <code>coef_histogram()</code><a class="anchor" aria-label="anchor" href="#method-coef-histogram-"></a></h3>
-<p>histogram of model coefficient p-values</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelLimma</span><span class="op">$</span><span class="fu">coef_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-ModelLimma-coef_volcano"></a><div class="section">
-<h3 id="method-coef-volcano-">Method <code>coef_volcano()</code><a class="anchor" aria-label="anchor" href="#method-coef-volcano-"></a></h3>
-<p>volcano plot of non-intercept coefficients</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelLimma</span><span class="op">$</span><span class="fu">coef_volcano</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-ModelLimma-coef_pairs"></a><div class="section">
-<h3 id="method-coef-pairs-">Method <code>coef_pairs()</code><a class="anchor" aria-label="anchor" href="#method-coef-pairs-"></a></h3>
-<p>pairs plot of coefficients</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelLimma</span><span class="op">$</span><span class="fu">coef_pairs</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-ModelLimma-anova_histogram"></a><div class="section">
-<h3 id="method-anova-histogram-">Method <code>anova_histogram()</code><a class="anchor" aria-label="anchor" href="#method-anova-histogram-"></a></h3>
-<p>histogram of ANOVA F-test p-values</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelLimma</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span>what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>what</code></dt>
-<dd><p>show either "p.value" or "FDR"</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
 </div><p></p><hr><a id="method-ModelLimma-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelLimma</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

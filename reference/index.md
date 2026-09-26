@@ -227,16 +227,6 @@
 - [`df.residual(`*`<rfit_prolfqua>`*`)`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md)
   : Residual degrees of freedom for an augmented rfit fit
 
-- [`effective_contaminant_pattern()`](https://wolski.github.io/prolfqua/reference/effective_contaminant_pattern.md)
-  :
-
-  Effective contaminant regex actually applied by `is_contaminant`
-
-- [`effective_decoy_pattern()`](https://wolski.github.io/prolfqua/reference/effective_decoy_pattern.md)
-  :
-
-  Effective decoy regex actually applied by `is_decoy`
-
 - [`find_package_file()`](https://wolski.github.io/prolfqua/reference/find_package_file.md)
   : find file stored in package
 
@@ -251,9 +241,6 @@
 
 - [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md)
   : group label function
-
-- [`hierarchy_counts_sample()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.md)
-  : Hierarchy counts per sample
 
 - [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md)
   : Fill missing responses with predictions from per-subject linear
@@ -311,9 +298,6 @@
 - [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md)
   : Register a contrast facade class
 
-- [`scatter_plotly()`](https://wolski.github.io/prolfqua/reference/scatter_plotly.md)
-  : scatter plotly
-
 - [`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md)
   :
 
@@ -356,9 +340,6 @@
 
 - [`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
   : table facade to easily switch implementations
-
-- [`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md)
-  : Unregister a contrast facade class
 
 - [`vcov(`*`<rfit_prolfqua>`*`)`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
   : Named variance-covariance matrix for an augmented rfit fit

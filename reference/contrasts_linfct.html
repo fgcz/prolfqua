@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,13 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">modelSummary_A</span><span class="op">$</span><span class="va">model_df</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_factors_contrasts.html">linfct_factors_contrasts</a></span><span class="op">(</span> <span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a></span><span class="op">(</span><span class="va">linfct</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A_vs_B <span class="op">=</span> <span class="st">"TreatmentA - TreatmentB"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `x` argument of `as_tibble.matrix()` must have unique column names if</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> `.name_repair` is omitted as of tibble 2.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using compatibility `.name_repair`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">prolfqua</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/fgcz/prolfqua/issues&gt;</span>.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu">contrasts_linfct</span><span class="op">(</span> <span class="va">m</span>,</span></span>
 <span class="r-in"><span>        <span class="va">factor_contrasts</span>,</span></span>

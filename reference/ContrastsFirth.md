@@ -66,7 +66,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -74,9 +73,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -87,10 +83,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -102,7 +96,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -148,10 +141,6 @@ Other modelling:
 
 - [`ContrastsFirth$get_contrasts()`](#method-ContrastsFirth-get_contrasts)
 
-- [`ContrastsFirth$get_Plotter()`](#method-ContrastsFirth-get_Plotter)
-
-- [`ContrastsFirth$to_wide()`](#method-ContrastsFirth-to_wide)
-
 - [`ContrastsFirth$clone()`](#method-ContrastsFirth-clone)
 
 Inherited methods
@@ -160,10 +149,12 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
 - [`prolfqua::ContrastsInterface$extra_artifacts()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
 - [`prolfqua::ContrastsInterface$filter_significant()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`prolfqua::ContrastsInterface$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter)
 - [`prolfqua::ContrastsInterface$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
 - [`prolfqua::ContrastsInterface$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`prolfqua::ContrastsInterface$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -252,52 +243,6 @@ data.frame with contrasts
 
 ------------------------------------------------------------------------
 
-### Method `get_Plotter()`
-
-return
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
-creates Contrast_Plotter
-
-#### Usage
-
-    ContrastsFirth$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)
-
-#### Arguments
-
-- `fc_threshold`:
-
-  fold change threshold to show in plots
-
-- `fdr_threshold`:
-
-  FDR threshold to show in plots
-
-#### Returns
-
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
-
-------------------------------------------------------------------------
-
-### Method `to_wide()`
-
-convert to wide format
-
-#### Usage
-
-    ContrastsFirth$to_wide(columns = c("p.value", "FDR", "statistic"))
-
-#### Arguments
-
-- `columns`:
-
-  value column default p.value
-
-#### Returns
-
-data.frame
-
-------------------------------------------------------------------------
-
 ### Method `clone()`
 
 The objects of this class are cloneable with this method.
@@ -354,25 +299,27 @@ ctr$get_linfct()
 #> 
 #> $models1$strategy
 #> <StrategyLogistf>
+#>   Inherits from: <StrategyBase>
 #>   Public:
 #>     anova_df: AnovaExtractor, R6
 #>     clone: function (deep = FALSE) 
 #>     contrast_fun: function (...) 
 #>     df_residual: function (model) 
 #>     formula: formula
-#>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", 
+#>     initialize: function (modelstr, model_name = "logistf") 
 #>     isSingular: function (model) 
-#>     is_mixed: FALSE
-#>     model_fun: function (x, pb, get_formula = FALSE) 
+#>     model_fun: function (x, pb) 
 #>     model_name: logistf
-#>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...
 #>     sigma: function (model) 
+#>   Private:
+#>     fit: function (DFT) 
+#>     prepare: function (x) 
 #> 
 #> 
 ctr$get_contrasts()
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
-#> contrasts_linfct_firth
+#> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 20 × 16
 #> # Groups:   contrast [2]
@@ -380,24 +327,24 @@ ctr$get_contrasts()
 #>    <chr>     <chr>         <chr>       <chr>    <dbl> <int>     <dbl> <dbl>
 #>  1 firth     observed      0EfVhX~0087 Avs          1     9 -8.47e- 1 0.769
 #>  2 firth     observed      0EfVhX~0087 AvsCtrl      1     9 -8.47e- 1 0.769
-#>  3 firth     observed      7cbcrd~5725 Avs          1     9  6.90e-16 1    
+#>  3 firth     observed      7cbcrd~5725 Avs          1     9 -3.99e-16 1    
 #>  4 firth     observed      7cbcrd~5725 AvsCtrl      1     9  8.47e- 1 0.769
 #>  5 firth     observed      9VUkAq~4703 Avs          1     9 -8.47e- 1 0.769
 #>  6 firth     observed      9VUkAq~4703 AvsCtrl      1     9  8.47e- 1 0.769
 #>  7 firth     observed      BEJI92~5282 Avs          1     9  8.47e- 1 0.769
 #>  8 firth     observed      BEJI92~5282 AvsCtrl      1     9  2.20e+ 0 0.769
-#>  9 firth     observed      CGzoYe~2147 Avs          1     9  1.52e-15 1    
-#> 10 firth     observed      CGzoYe~2147 AvsCtrl      1     9  1.07e-15 1    
+#>  9 firth     observed      CGzoYe~2147 Avs          1     9 -1.26e-15 1    
+#> 10 firth     observed      CGzoYe~2147 AvsCtrl      1     9  4.27e-16 1    
 #> 11 firth     observed      DoWup2~5896 Avs          1     9 -1.35e+ 0 0.769
 #> 12 firth     observed      DoWup2~5896 AvsCtrl      1     9 -3.04e+ 0 0.769
 #> 13 firth     observed      Fl4JiV~8625 Avs          1     9  8.47e- 1 0.769
 #> 14 firth     observed      Fl4JiV~8625 AvsCtrl      1     9  8.47e- 1 0.769
 #> 15 firth     observed      HvIpHG~9079 Avs          1     9 -1.69e+ 0 0.769
 #> 16 firth     observed      HvIpHG~9079 AvsCtrl      1     9 -1.69e+ 0 0.769
-#> 17 firth     observed      JcKVfU~9653 Avs          1     9  1.52e-15 1    
-#> 18 firth     observed      JcKVfU~9653 AvsCtrl      1     9  1.07e-15 1    
+#> 17 firth     observed      JcKVfU~9653 Avs          1     9 -1.26e-15 1    
+#> 18 firth     observed      JcKVfU~9653 AvsCtrl      1     9  4.27e-16 1    
 #> 19 firth     observed      SGIVBl~5782 Avs          1     9  1.35e+ 0 0.769
-#> 20 firth     observed      SGIVBl~5782 AvsCtrl      1     9 -4.13e-16 1    
+#> 20 firth     observed      SGIVBl~5782 AvsCtrl      1     9  2.16e-15 1    
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
 #> #   df.unmoderated <int>
@@ -436,19 +383,21 @@ ctrpep$get_linfct()
 #> 
 #> $models1$strategy
 #> <StrategyLogistf>
+#>   Inherits from: <StrategyBase>
 #>   Public:
 #>     anova_df: AnovaExtractor, R6
 #>     clone: function (deep = FALSE) 
 #>     contrast_fun: function (...) 
 #>     df_residual: function (model) 
 #>     formula: formula
-#>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", 
+#>     initialize: function (modelstr, model_name = "logistf") 
 #>     isSingular: function (model) 
-#>     is_mixed: FALSE
-#>     model_fun: function (x, pb, get_formula = FALSE) 
+#>     model_fun: function (x, pb) 
 #>     model_name: logistf
-#>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...
 #>     sigma: function (model) 
+#>   Private:
+#>     fit: function (DFT) 
+#>     prepare: function (x) 
 #> 
 #> 
 #> $models2
@@ -470,26 +419,28 @@ ctrpep$get_linfct()
 #> 
 #> $models2$strategy
 #> <StrategyLogistf>
+#>   Inherits from: <StrategyBase>
 #>   Public:
 #>     anova_df: AnovaExtractor, R6
 #>     clone: function (deep = FALSE) 
 #>     contrast_fun: function (...) 
 #>     df_residual: function (model) 
 #>     formula: formula
-#>     initialize: function (modelstr, model_name = "logistf", report_columns = c("statistic", 
+#>     initialize: function (modelstr, model_name = "logistf") 
 #>     isSingular: function (model) 
-#>     is_mixed: FALSE
-#>     model_fun: function (x, pb, get_formula = FALSE) 
+#>     model_fun: function (x, pb) 
 #>     model_name: logistf
-#>     report_columns: statistic p.value p.value.adjusted moderated.p.value mod ...
 #>     sigma: function (model) 
+#>   Private:
+#>     fit: function (DFT) 
+#>     prepare: function (x) 
 #> 
 #> 
 ctrpep$get_contrasts()
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
-#> contrasts_linfct_firth
-#> contrasts_linfct_firth
+#> contrasts_linfct
+#> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 20 × 16
 #> # Groups:   contrast [2]
@@ -498,7 +449,7 @@ ctrpep$get_contrasts()
 #>  1 firth     observed      0EfVhX~0087 Avs          1    31 -1.02e+ 0 0.463
 #>  2 firth     observed      0EfVhX~0087 AvsCtrl      1    31 -6.45e-10 1    
 #>  3 firth     observed      BEJI92~5282 Avs          1    20  1.41e-10 1.000
-#>  4 firth     observed      BEJI92~5282 AvsCtrl      1    20 -2.99e-16 1    
+#>  4 firth     observed      BEJI92~5282 AvsCtrl      1    20  1.02e-16 1    
 #>  5 firth     observed      Fl4JiV~8625 Avs          1    42 -7.13e- 1 0.518
 #>  6 firth     observed      Fl4JiV~8625 AvsCtrl      1    42  7.75e- 1 0.485
 #>  7 firth     observed      HvIpHG~9079 Avs          1    20 -1.98e+ 0 0.425
@@ -512,7 +463,7 @@ ctrpep$get_contrasts()
 #> 15 firth     observed      9VUkAq~4703 Avs          1     9 -1.35e+ 0 0.585
 #> 16 firth     observed      9VUkAq~4703 AvsCtrl      1     9 -4.39e+ 0 0.485
 #> 17 firth     observed      CGzoYe~2147 Avs          1     9  1.35e+ 0 0.585
-#> 18 firth     observed      CGzoYe~2147 AvsCtrl      1     9 -4.13e-16 1    
+#> 18 firth     observed      CGzoYe~2147 AvsCtrl      1     9  2.16e-15 1    
 #> 19 firth     observed      DoWup2~5896 Avs          1     9  4.39e+ 0 0.425
 #> 20 firth     observed      DoWup2~5896 AvsCtrl      1     9  3.04e+ 0 0.485
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,

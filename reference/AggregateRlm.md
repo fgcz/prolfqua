@@ -20,59 +20,31 @@ Other LFQData:
 [`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
 [`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
-## Public fields
+## Super class
 
-- `lfq`:
-
-  LFQData
-
-- `lfq_agg`:
-
-  aggregation result
-
-- `prefix`:
-
-  to use for aggregation results e.g. protein
+[`prolfqua::AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md)
+-\> `AggregateRlm`
 
 ## Methods
 
 ### Public methods
 
-- [`AggregateRlm$new()`](#method-AggregateRlm-new)
-
 - [`AggregateRlm$aggregate()`](#method-AggregateRlm-aggregate)
-
-- [`AggregateRlm$plot()`](#method-AggregateRlm-plot)
-
-- [`AggregateRlm$write_plots()`](#method-AggregateRlm-write_plots)
 
 - [`AggregateRlm$clone()`](#method-AggregateRlm-clone)
 
-------------------------------------------------------------------------
+Inherited methods
 
-### Method `new()`
-
-initialize
-
-#### Usage
-
-    AggregateRlm$new(lfq, prefix = "protein")
-
-#### Arguments
-
-- `lfq`:
-
-  LFQData
-
-- `prefix`:
-
-  default protein
+- [`prolfqua::AggregatorBase$initialize()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-initialize)
+- [`prolfqua::AggregatorBase$plot()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot)
+- [`prolfqua::AggregatorBase$write_plots()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots)
 
 ------------------------------------------------------------------------
 
@@ -87,72 +59,6 @@ run robust regression aggregation
 #### Returns
 
 LFQData
-
-------------------------------------------------------------------------
-
-### Method [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
-
-creates aggregation plots
-
-#### Usage
-
-    AggregateRlm$plot(subset = NULL, show.legend = FALSE)
-
-#### Arguments
-
-- `subset`:
-
-  create plots for a subset of the data only
-
-- `show.legend`:
-
-  default FALSE
-
-#### Returns
-
-data.frame
-
-------------------------------------------------------------------------
-
-### Method `write_plots()`
-
-writes plots to folder
-
-#### Usage
-
-    AggregateRlm$write_plots(
-      qcpath,
-      subset = NULL,
-      show.legend = FALSE,
-      width = 6,
-      height = 6
-    )
-
-#### Arguments
-
-- `qcpath`:
-
-  qcpath
-
-- `subset`:
-
-  write plots only for some
-
-- `show.legend`:
-
-  legend
-
-- `width`:
-
-  figure width
-
-- `height`:
-
-  figure height
-
-#### Returns
-
-file path
 
 ------------------------------------------------------------------------
 

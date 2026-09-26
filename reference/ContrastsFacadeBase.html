@@ -9,7 +9,7 @@ Base class for contrast analysis facades"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,11 +63,13 @@ Base class for contrast analysis facades"></head><body>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Holds the fields and delegating methods shared by every facade in
 <code>ContrastsFacades.R</code> and <code>ContrastsChildToParentFacades.R</code>.
-Subclasses implement the unique pipeline wiring in <code>initialize()</code> (build
-the model, build the inner contrast object, store <code>self$.lfqdata</code> /
-<code>self$.contrast_names</code>) and set <code>self$facade_name</code> to their registry
-key. The limma family additionally sets <code>self$.drop_na_diff &lt;- TRUE</code> to
-drop rows whose fold change could not be estimated.</p>
+Subclasses implement the unique pipeline wiring in <code>initialize()</code>: they
+call the private <code>.setup()</code> (input-shape check, <code>self$.lfqdata</code>,
+<code>self$.contrast_names</code>, <code>self$facade_name</code>), then build the model
+and the inner contrast object. <code>get_config()</code> defaults to the inner
+contrast object's configuration. The limma family additionally sets
+<code>self$.drop_na_diff &lt;- TRUE</code> to drop rows whose fold change could not be
+estimated.</p>
 <p><code>get_contrasts()</code> delegates to the inner contrast object and then stamps
 the facade key into <code>modelName</code> via <code>.stamp_facade_identity()</code>;
 rescue/imputation state is carried in the <code>estimate_type</code> column set by
@@ -131,7 +133,6 @@ the inner contrast classes.</p>
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -139,9 +140,6 @@ the inner contrast classes.</p>
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -152,10 +150,8 @@ the inner contrast classes.</p>
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -167,7 +163,6 @@ the inner contrast classes.</p>
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
@@ -208,7 +203,8 @@ the inner contrast classes.</p>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-ContrastsFacadeBase-get_contrasts"><code>ContrastsFacadeBase$get_contrasts()</code></a></p></li>
+<ul><li><p><a href="#method-ContrastsFacadeBase-get_config"><code>ContrastsFacadeBase$get_config()</code></a></p></li>
+<li><p><a href="#method-ContrastsFacadeBase-get_contrasts"><code>ContrastsFacadeBase$get_contrasts()</code></a></p></li>
 <li><p><a href="#method-ContrastsFacadeBase-get_missing"><code>ContrastsFacadeBase$get_missing()</code></a></p></li>
 <li><p><a href="#method-ContrastsFacadeBase-get_Plotter"><code>ContrastsFacadeBase$get_Plotter()</code></a></p></li>
 <li><p><a href="#method-ContrastsFacadeBase-to_wide"><code>ContrastsFacadeBase$to_wide()</code></a></p></li>
@@ -217,14 +213,22 @@ the inner contrast classes.</p>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table"><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="extra_artifacts"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts"><code>prolfqua::ContrastsInterface$extra_artifacts()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="filter_significant"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant"><code>prolfqua::ContrastsInterface$filter_significant()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_config"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config"><code>prolfqua::ContrastsInterface$get_config()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides"><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora"><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href="../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank"><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
-</ul></details></p><hr><a id="method-ContrastsFacadeBase-get_contrasts"></a><div class="section">
+</ul></details></p><hr><a id="method-ContrastsFacadeBase-get_config"></a><div class="section">
+<h3 id="method-get-config-">Method <code>get_config()</code><a class="anchor" aria-label="anchor" href="#method-get-config-"></a></h3>
+<p>get the <code><a href="ContrastConfiguration.html">ContrastConfiguration</a></code>; defaults to
+  the inner contrast object's configuration</p><div class="section">
+<h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">get_config</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-ContrastsFacadeBase-get_contrasts"></a><div class="section">
 <h3 id="method-get-contrasts-">Method <code>get_contrasts()</code><a class="anchor" aria-label="anchor" href="#method-get-contrasts-"></a></h3>
 <p>get contrast results, stamped with the facade key</p><div class="section">
-<h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -240,7 +244,7 @@ the inner contrast classes.</p>
 </div><p></p><hr><a id="method-ContrastsFacadeBase-get_missing"></a><div class="section">
 <h3 id="method-get-missing-">Method <code>get_missing()</code><a class="anchor" aria-label="anchor" href="#method-get-missing-"></a></h3>
 <p>get subject x contrast pairs that could not be estimated</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -248,7 +252,7 @@ the inner contrast classes.</p>
 </div><p></p><hr><a id="method-ContrastsFacadeBase-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
 <p>get <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -264,7 +268,7 @@ the inner contrast classes.</p>
 </div><p></p><hr><a id="method-ContrastsFacadeBase-to_wide"></a><div class="section">
 <h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
 <p>convert results to wide format</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -280,7 +284,7 @@ the inner contrast classes.</p>
 </div><p></p><hr><a id="method-ContrastsFacadeBase-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 

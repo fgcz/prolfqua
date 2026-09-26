@@ -122,8 +122,6 @@ Other configuration:
 
 ### Public methods
 
-- [`AnalysisConfiguration$new()`](#method-AnalysisConfiguration-new)
-
 - [`AnalysisConfiguration$set_response()`](#method-AnalysisConfiguration-set_response)
 
 - [`AnalysisConfiguration$get_response()`](#method-AnalysisConfiguration-get_response)
@@ -138,8 +136,6 @@ Other configuration:
 
 - [`AnalysisConfiguration$hierarchy_keys_depth()`](#method-AnalysisConfiguration-hierarchy_keys_depth)
 
-- [`AnalysisConfiguration$id_required()`](#method-AnalysisConfiguration-id_required)
-
 - [`AnalysisConfiguration$id_vars()`](#method-AnalysisConfiguration-id_vars)
 
 - [`AnalysisConfiguration$value_vars()`](#method-AnalysisConfiguration-value_vars)
@@ -147,16 +143,6 @@ Other configuration:
 - [`AnalysisConfiguration$annotation_vars()`](#method-AnalysisConfiguration-annotation_vars)
 
 - [`AnalysisConfiguration$clone()`](#method-AnalysisConfiguration-clone)
-
-------------------------------------------------------------------------
-
-### Method `new()`
-
-create AnalysisConfiguration
-
-#### Usage
-
-    AnalysisConfiguration$new()
 
 ------------------------------------------------------------------------
 
@@ -226,13 +212,7 @@ get hierarchy keys
 
 #### Usage
 
-    AnalysisConfiguration$hierarchy_keys(rev = FALSE)
-
-#### Arguments
-
-- `rev`:
-
-  return in reverse order
+    AnalysisConfiguration$hierarchy_keys()
 
 #### Returns
 
@@ -257,20 +237,6 @@ get hierarchy keys up to depth
 #### Returns
 
 array of column names
-
-------------------------------------------------------------------------
-
-### Method `id_required()`
-
-Id Columns which must be in the input data frame
-
-#### Usage
-
-    AnalysisConfiguration$id_required()
-
-#### Returns
-
-character array
 
 ------------------------------------------------------------------------
 

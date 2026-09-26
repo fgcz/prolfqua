@@ -9,7 +9,7 @@ Base class for all Contrasts classes"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -116,19 +116,47 @@ LM-flavoured default on demand if a subclass has not set one.</p><div class="sec
 
 </div><p></p><hr><a id="method-ContrastsInterface-get_Plotter"></a><div class="section">
 <h3 id="method-get-plotter-">Method <code>get_Plotter()</code><a class="anchor" aria-label="anchor" href="#method-get-plotter-"></a></h3>
-<p>initialize plotter</p><div class="section">
+<p>return <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code> for the contrast results</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>fc_threshold <span class="op">=</span> <span class="fl">1</span>, fdr_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>fc_threshold</code></dt>
+<dd><p>fold change threshold to show in plots</p></dd>
+
+
+<dt><code>fdr_threshold</code></dt>
+<dd><p>FDR threshold to show in plots</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p><code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code></p>
+</div>
 
 </div><p></p><hr><a id="method-ContrastsInterface-to_wide"></a><div class="section">
 <h3 id="method-to-wide-">Method <code>to_wide()</code><a class="anchor" aria-label="anchor" href="#method-to-wide-"></a></h3>
-<p>create wide representation of data.</p><div class="section">
+<p>convert contrast results to wide format</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span>, <span class="st">"statistic"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>columns</code></dt>
+<dd><p>value columns to spread next to <code>diff</code></p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>data.frame</p>
+</div>
 
 </div><p></p><hr><a id="method-ContrastsInterface-get_missing"></a><div class="section">
 <h3 id="method-get-missing-">Method <code>get_missing()</code><a class="anchor" aria-label="anchor" href="#method-get-missing-"></a></h3>
@@ -151,7 +179,7 @@ effect column itself.</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>score</code></dt>
 <dd><p>column name to use as rank score, or <code>NULL</code> to
 pick from the config</p></dd>
@@ -160,7 +188,7 @@ pick from the config</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>data.frame with subject id, contrast, and score columns.</p>
 </div>
 
@@ -173,7 +201,7 @@ effect-size threshold in the requested direction.</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>up</code></dt>
 <dd><p>if TRUE return positive effects, otherwise negative effects</p></dd>
 
@@ -189,7 +217,7 @@ effect-size threshold in the requested direction.</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>filtered contrast data.frame for ORA input.</p>
 </div>
 
@@ -207,7 +235,7 @@ is one-sided (<code>effect &gt; diff_threshold</code>).</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>FDR_threshold</code></dt>
 <dd><p>false discovery rate threshold</p></dd>
 
@@ -219,7 +247,7 @@ is one-sided (<code>effect &gt; diff_threshold</code>).</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>filtered contrast data.frame.</p>
 </div>
 
@@ -234,7 +262,7 @@ regardless of backend.</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rounded</code></dt>
 <dd><p>if TRUE round numeric columns to 3 significant
 digits (matches the prolfquapp report convention)</p></dd>
@@ -269,7 +297,7 @@ Default returns an empty named list.</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -287,10 +315,10 @@ Default returns an empty named list.</p><div class="section">
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_contrast_sides</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># get_Plotter / to_wide / get_rank / get_ora / filter_significant call get_contrasts()</span></span></span>
+<span class="r-in"><span><span class="co"># internally, which is not implemented on the bare interface, so they surface that error.</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># get_rank / get_ora / filter_significant call get_contrasts() internally,</span></span></span>
-<span class="r-in"><span><span class="co"># which is not implemented on the bare interface, so they surface that error.</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_rank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">get_ora</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_error</a></span><span class="op">(</span><span class="va">int</span><span class="op">$</span><span class="fu">filter_significant</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>

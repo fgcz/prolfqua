@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -155,9 +155,7 @@ facades separately.</p>
 <h2 id="simulate-one-experiment">Simulate one experiment<a class="anchor" aria-label="anchor" href="#simulate-one-experiment"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>prolfqua.vectorize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">80</span>, seed <span class="op">=</span> <span class="fl">42</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">80</span>, seed <span class="op">=</span> <span class="fl">42</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">lfq_peptide</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
@@ -1230,7 +1228,7 @@ together.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.7.1</span></span>
+<span><span class="co">## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.8.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           </span></span>

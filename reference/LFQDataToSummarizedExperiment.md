@@ -25,6 +25,7 @@ Other LFQData:
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
@@ -106,13 +107,11 @@ lfqdata$data_wide()
 #>     get_response: function () 
 #>     hierarchy: list
 #>     hierarchy_depth: 1
-#>     hierarchy_keys: function (rev = FALSE) 
+#>     hierarchy_keys: function () 
 #>     hierarchy_keys_depth: function (names = TRUE) 
-#>     id_required: function () 
 #>     id_vars: function () 
 #>     ident_q_value: qValue
 #>     ident_score: 
-#>     initialize: function () 
 #>     is_response_transformed: FALSE
 #>     isotope_label: isotopeLabel
 #>     min_peptides_protein: 2

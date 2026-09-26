@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,16 +77,12 @@
     <div class="dont-index"><p>also <code><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></code></p>
 <p>Other utilities:
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="effective_contaminant_pattern.html">effective_contaminant_pattern()</a></code>,
-<code><a href="effective_decoy_pattern.html">effective_decoy_pattern()</a></code>,
 <code><a href="get_uniprot_id_from_fasta_header.html">get_uniprot_id_from_fasta_header()</a></code>,
 <code><a href="is_contaminant.html">is_contaminant()</a></code>,
 <code><a href="is_decoy.html">is_decoy()</a></code>,
 <code><a href="matrix_to_tibble.html">matrix_to_tibble()</a></code>,
 <code><a href="multigroup_volcano.html">multigroup_volcano()</a></code>,
-<code><a href="names_to_matrix.html">names_to_matrix()</a></code>,
 <code><a href="panel_cor.html">panel_cor()</a></code>,
-<code><a href="remove_NA_rows.html">remove_na_rows()</a></code>,
 <code><a href="table_facade.html">table_facade()</a></code></p></div>
     </div>
 
@@ -98,38 +94,30 @@
 <span class="r-in"><span><span class="fu">pairs_smooth</span><span class="op">(</span><span class="va">tmp</span>,main<span class="op">=</span><span class="st">"small data"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="pairs_smooth-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">pairs_smooth</span><span class="op">(</span><span class="va">tmp</span>,log<span class="op">=</span><span class="st">"xy"</span>,main<span class="op">=</span><span class="st">"small data"</span>, legend<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 y values &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 y values &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 y values &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 y values &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 y values &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 y values &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 y values &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 x values &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2 y values &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 x value &lt;= 0 omitted from logarithmic plot</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 y value &lt;= 0 omitted from logarithmic plot</span>
 <span class="r-plt img"><img src="pairs_smooth-3.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

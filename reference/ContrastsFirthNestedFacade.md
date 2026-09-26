@@ -20,11 +20,6 @@ fold-change estimates. For protein-level (aggregated) input use
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md)
 instead.
 
-Supports `options(prolfqua.vectorize = TRUE)` for faster contrast
-computation. See
-[`build_contrast_analysis`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
-for details.
-
 ## See also
 
 Other modelling:
@@ -83,7 +78,6 @@ Other modelling:
 [`compute_borrowed_variance_limma()`](https://wolski.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
 [`compute_contrast()`](https://wolski.github.io/prolfqua/reference/compute_contrast.md),
 [`compute_lmer_contrast()`](https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.md),
-[`contrasts_fisher_exact()`](https://wolski.github.io/prolfqua/reference/contrasts_fisher_exact.md),
 [`df.residual.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
 [`get_anova_df()`](https://wolski.github.io/prolfqua/reference/get_anova_df.md),
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
@@ -91,9 +85,6 @@ Other modelling:
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
-[`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
-[`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
-[`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
 [`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
@@ -104,10 +95,8 @@ Other modelling:
 [`moderated_p_deqms()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms.md),
 [`moderated_p_deqms_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma.md),
-[`moderated_p_limma_long()`](https://wolski.github.io/prolfqua/reference/moderated_p_limma_long.md),
 [`new_imputed_model()`](https://wolski.github.io/prolfqua/reference/new_imputed_model.md),
 [`pivot_model_contrasts_to_wide()`](https://wolski.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
-[`plot_lmer_peptide_predictions()`](https://wolski.github.io/prolfqua/reference/plot_lmer_peptide_predictions.md),
 [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://wolski.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -119,7 +108,6 @@ Other modelling:
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
 [`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
-[`unregister_facade()`](https://wolski.github.io/prolfqua/reference/unregister_facade.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super classes
@@ -128,24 +116,6 @@ Other modelling:
 -\>
 [`prolfqua::ContrastsFacadeBase`](https://wolski.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsFirthNestedFacade`
-
-## Public fields
-
-- `model`:
-
-  ModelFirth object
-
-- `contrast`:
-
-  ContrastsFirth object
-
-- `.lfqdata`:
-
-  stored reference to input LFQData
-
-- `.contrast_names`:
-
-  names of the requested contrasts
 
 ## Methods
 
@@ -161,11 +131,11 @@ Inherited methods
 - [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
 - [`prolfqua::ContrastsInterface$extra_artifacts()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
 - [`prolfqua::ContrastsInterface$filter_significant()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`prolfqua::ContrastsInterface$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
 - [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
 - [`prolfqua::ContrastsInterface$get_ora()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
 - [`prolfqua::ContrastsInterface$get_rank()`](https://wolski.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
 - [`prolfqua::ContrastsFacadeBase$get_Plotter()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
+- [`prolfqua::ContrastsFacadeBase$get_config()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_config)
 - [`prolfqua::ContrastsFacadeBase$get_contrasts()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
 - [`prolfqua::ContrastsFacadeBase$get_missing()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
 - [`prolfqua::ContrastsFacadeBase$to_wide()`](https://wolski.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
@@ -231,8 +201,8 @@ fa <- ContrastsFirthNestedFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
-#> contrasts_linfct_firth
-#> contrasts_linfct_firth
+#> contrasts_linfct
+#> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
 #> # Groups:   contrast [1]
@@ -257,18 +227,18 @@ fa$to_wide()
 #>  4 BEJI92~91…      -9.06e- 1            0.325          0.720           -9.96e- 1
 #>  5 CtOJ9t~28…       3.92e- 1            0.641          0.855            4.69e- 1
 #>  6 DoWup2~29…      -9.11e- 1            0.225          0.720           -1.22e+ 0
-#>  7 DuwH7n~34…       3.33e-16            1              1                3.82e-16
+#>  7 DuwH7n~34…       2.50e-16            1              1                2.87e-16
 #>  8 HC8K98~49…       9.24e- 1            0.356          0.720            9.44e- 1
 #>  9 HvIpHG~40…       2.06e+ 0            0.214          0.720            1.28e+ 0
 #> 10 I1Jk2Z~08…      -7.13e- 1            0.119          0.720           -1.57e+ 0
 #> 11 JfvT8X~27…       5.77e- 1            0.269          0.720            1.11e+ 0
 #> 12 R2i6w7~02…       2.08e+ 0            0.221          0.720            1.26e+ 0
 #> 13 SGIVBl~95…       1.23e+ 0            0.448          0.720            7.74e- 1
-#> 14 0EfVhX~59…       1.07e-15            1              1                5.08e-16
+#> 14 0EfVhX~59…       4.27e-16            1              1                2.03e-16
 #> 15 7cbcrd~83…      -1.35e+ 0            0.468          0.720           -7.58e- 1
 #> 16 CGzoYe~28…      -8.47e- 1            0.538          0.769           -6.40e- 1
 #> 17 Fl4JiV~75…       1.35e+ 0            0.468          0.720            7.58e- 1
-#> 18 JV3Z7t~29…       1.07e-15            1              1                5.08e-16
+#> 18 JV3Z7t~29…       4.27e-16            1              1                2.03e-16
 #> 19 JcKVfU~08…      -1.35e+ 0            0.468          0.720           -7.58e- 1
-#> 20 r2J0Eh~26…      -5.35e-17            1              1               -2.54e-17
+#> 20 r2J0Eh~26…      -3.58e-16            1              1               -1.70e-16
 ```

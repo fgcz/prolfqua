@@ -58,13 +58,11 @@ xx
     ##     get_response: function () 
     ##     hierarchy: list
     ##     hierarchy_depth: 1
-    ##     hierarchy_keys: function (rev = FALSE) 
+    ##     hierarchy_keys: function () 
     ##     hierarchy_keys_depth: function (names = TRUE) 
-    ##     id_required: function () 
     ##     id_vars: function () 
     ##     ident_q_value: qValue
     ##     ident_score: 
-    ##     initialize: function () 
     ##     is_response_transformed: FALSE
     ##     isotope_label: isotopeLabel
     ##     min_peptides_protein: 2
@@ -517,7 +515,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.7.1 dplyr_1.2.1   
+    ## [1] prolfqua_1.8.0 dplyr_1.2.1   
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

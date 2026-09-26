@@ -19,59 +19,31 @@ Other LFQData:
 [`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
 [`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
-## Public fields
+## Super class
 
-- `lfq`:
-
-  LFQData
-
-- `lfq_agg`:
-
-  aggregation result
-
-- `prefix`:
-
-  to use for aggregation results e.g. protein
+[`prolfqua::AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md)
+-\> `AggregateMedpolish`
 
 ## Methods
 
 ### Public methods
 
-- [`AggregateMedpolish$new()`](#method-AggregateMedpolish-new)
-
 - [`AggregateMedpolish$aggregate()`](#method-AggregateMedpolish-aggregate)
-
-- [`AggregateMedpolish$plot()`](#method-AggregateMedpolish-plot)
-
-- [`AggregateMedpolish$write_plots()`](#method-AggregateMedpolish-write_plots)
 
 - [`AggregateMedpolish$clone()`](#method-AggregateMedpolish-clone)
 
-------------------------------------------------------------------------
+Inherited methods
 
-### Method `new()`
-
-initialize
-
-#### Usage
-
-    AggregateMedpolish$new(lfq, prefix = "protein")
-
-#### Arguments
-
-- `lfq`:
-
-  LFQData
-
-- `prefix`:
-
-  default protein
+- [`prolfqua::AggregatorBase$initialize()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-initialize)
+- [`prolfqua::AggregatorBase$plot()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot)
+- [`prolfqua::AggregatorBase$write_plots()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots)
 
 ------------------------------------------------------------------------
 
@@ -86,72 +58,6 @@ run median polish aggregation
 #### Returns
 
 LFQData
-
-------------------------------------------------------------------------
-
-### Method [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
-
-creates aggregation plots
-
-#### Usage
-
-    AggregateMedpolish$plot(subset = NULL, show.legend = FALSE)
-
-#### Arguments
-
-- `subset`:
-
-  create plots for a subset of the data only
-
-- `show.legend`:
-
-  default FALSE
-
-#### Returns
-
-data.frame
-
-------------------------------------------------------------------------
-
-### Method `write_plots()`
-
-writes plots to folder
-
-#### Usage
-
-    AggregateMedpolish$write_plots(
-      qcpath,
-      subset = NULL,
-      show.legend = FALSE,
-      width = 6,
-      height = 6
-    )
-
-#### Arguments
-
-- `qcpath`:
-
-  qcpath
-
-- `subset`:
-
-  write plots only for some
-
-- `show.legend`:
-
-  legend
-
-- `width`:
-
-  figure width
-
-- `height`:
-
-  figure height
-
-#### Returns
-
-file path
 
 ------------------------------------------------------------------------
 

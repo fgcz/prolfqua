@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,64 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.8.0" id="prolfqua-180">prolfqua 1.8.0<a class="anchor" aria-label="anchor" href="#prolfqua-180"></a></h2>
+<p>This release removes about 3,600 lines (20%) of dead or duplicated code from <code>R/</code>. Everything removed had no callers in prolfqua or in the downstream packages (prolfquapp, prophosqua, prolfquappPTMreaders, prolfquasaint, prolfquabenchmark, ptm-pipeline).</p>
+<div class="section level3">
+<h3 id="bug-fixes-1-8-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-8-0"></a></h3>
+<ul><li>
+<code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma()</a></code> for <code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">MASS::rlm</a></code> fits took the square root twice. The <code>rlm</code> method’s contrast <code>sigma</code> and all moderated statistics derived from it (<code>std.error</code>, <code>statistic</code>, <code>df</code>, <code>p.value</code>, <code>FDR</code>, confidence intervals) change; fold changes do not. On simulated data the moderated df drops from about 8,000 to about 25.</li>
+<li>
+<code>moderated_p_limma(variance_floor = )</code> with <code>robust = FALSE</code> returned NA moderated p-values for rows above the floor, because the scalar prior df was padded with NA when the floored rows were set to <code>Inf</code>. This is the default path of the <code>binomial_nested</code> facade (<code>binomial_bound = TRUE</code>). Rows above the floor now keep the estimated prior df.</li>
+<li>
+<code><a href="../reference/merge_contrasts_results.html">merge_contrasts_results()</a></code>: when both inputs share a model name, <code>modelName</code> is now <code>&lt;name&gt;_prefer</code> / <code>&lt;name&gt;_add</code> instead of NA for every row.</li>
+<li>
+<code><a href="../reference/setup_analysis.html">setup_analysis()</a></code> no longer fails when <code>sample_name</code> and <code>file_name</code> are the same column.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="behaviour-changes-1-8-0">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-8-0"></a></h3>
+<ul><li>
+<code>options(prolfqua.vectorize)</code> is removed; contrasts always use the per-row path, which was already the default. Setting the option has no effect.</li>
+<li>
+<code>ContrastsFirth</code>: proteins whose contrast fails are reported with the <code><a href="../reference/contrasts_linfct.html">contrasts_linfct()</a></code> warning listing the dropped protein IDs, instead of a message.</li>
+<li>
+<code>ContrastsInterface</code> provides default <code>get_Plotter()</code> and <code>to_wide()</code> methods, so subclasses no longer need to implement them.</li>
+<li>
+<code><a href="../reference/estimate_intensity.html">estimate_intensity()</a></code> takes <code>method = "medpolish"</code> or <code>"rlm"</code> instead of a function in <code>.func</code>.</li>
+<li>A facade’s <code>config</code> field is filled on the first <code>get_config()</code> call; use <code>get_config()</code> rather than reading <code>$config</code>.</li>
+<li>
+<code><a href="../reference/center_to_reference_cfg.html">center_to_reference_cfg()</a></code> always returns a median-centred copy (<code>summary</code> and <code>copy</code> removed). <code><a href="../reference/scale_with_subset.html">scale_with_subset()</a></code> gains <code>colname</code> and loses the unused <code>get_scales</code>.</li>
+<li>
+<code><a href="../reference/plot_stat_violin_median.html">plot_stat_violin_median()</a></code> checks <code>stat</code> with <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code>, so the default <code>stat</code> now works (it used “CV” only when given explicitly).</li>
+<li>
+<code><a href="../reference/get_p_values_pbeta.html">get_p_values_pbeta()</a></code> returns NA for an NA <code>n.obs</code> instead of stopping.</li>
+<li>
+<code><a href="../reference/script_copy_helper_vec.html">script_copy_helper_vec()</a></code> reports the source path it actually copies from and warns once for a missing file; <code><a href="../reference/find_package_file.html">find_package_file()</a></code> returns <code>NULL</code> invisibly when the file is not found.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="removed-1-8-0">Removed<a class="anchor" aria-label="anchor" href="#removed-1-8-0"></a></h3>
+<ul><li>Exported functions: <code>contrasts_fisher_exact()</code>, <code>contrasts_linfct_firth()</code>, <code>effective_contaminant_pattern()</code>, <code>effective_decoy_pattern()</code>, <code>filter_difference()</code>, <code>hierarchy_counts_sample()</code>, <code>is_singular_lm()</code>, <code>lfq_power_t_test_quantiles()</code>, <code>linfct_all_possible_contrasts()</code>, <code>linfct_factors_contrasts()</code>, <code>medpolish_estimate()</code>, <code>medpolish_estimate_df()</code>, <code>medpolish_estimate_dfconfig()</code>, <code>moderated_p_limma_long()</code>, <code>names_to_matrix()</code>, <code>nr_B_in_A()</code>, <code>plot_hierarchies_add_quantline()</code>, <code>plot_hierarchies_line_df()</code>, <code>plot_lmer_peptide_predictions()</code>, <code>remove_na_rows()</code>, <code>rlm_estimate()</code>, <code>rlm_estimate_dfconfig()</code>, <code>scatter_plotly()</code>, <code>summarize_stats_all()</code>, <code>tidy_to_wide()</code>, and the function forms of <code>filter_proteins_by_peptide_count()</code> and <code>remove_small_intensities()</code> (the <code>LFQData</code> methods of the same names are unchanged). <code>unregister_facade()</code> is no longer exported.</li>
+<li>Replacements where one exists: sample sizes via <code>LFQDataStats$power_t_test_quantiles()</code> or <code><a href="../reference/lfq_power_t_test_quantiles_V2.html">lfq_power_t_test_quantiles_V2()</a></code>; <code>summarize_stats(x, factor_key = NULL)</code> for <code>summarize_stats_all(x)</code>; the Summariser method <code>$hierarchy_counts_sample()</code>.</li>
+<li>Datasets <code>data_checksummarizerobust</code> and <code>data_correlatedPeptideList</code>.</li>
+<li>R6 methods: <code>LFQData$filter_difference()</code>, <code>$omit_na()</code>, <code>$contaminant_proportion()</code>; <code>LFQDataPlotter$write()</code>, <code>$write_pltly()</code>; <code>Model$write_anova_figures()</code>, <code>$write_coef_figures()</code> and the same on <code>ModelFirth</code>; <code>ContrastsPlotter$score_plotly()</code>, <code>$histogram_estimate()</code> (use <code>$histogram_diff()</code>); <code>AnalysisConfiguration$id_required()</code>.</li>
+<li>Unused fields and arguments:
+<ul><li>strategies: <code>report_columns</code> (argument and field of all <code>strategy_*()</code> and <code>Strategy*</code> classes), <code>is_mixed</code>, <code>$model_fun(get_formula = )</code> (use <code>$formula</code>), <code>strategy_logistf(test = )</code>
+</li>
+<li>models and contrasts: <code>ModelLimma$design</code>, <code>$formula</code> and the matching <code>$new()</code> arguments; <code>Model$anova_df</code>, <code>ModelFirth$anova_df</code>; <code>AnovaExtractor$col_fdr</code>; <code>Contrasts$protein_annot</code>; <code>ContrastsMissing$global</code>, <code>$present</code>, <code>$minsd</code>
+</li>
+<li>plotting: <code>ContrastsPlotter</code> <code>prefix</code> and <code>protein_annot</code> fields and <code>$new(protein_annot = )</code>; <code>LFQDataPlotter</code> <code>file_paths_pdf</code>, <code>file_paths_html</code>
+</li>
+<li>other: <code>AnalysisConfiguration$hierarchy_keys(rev = )</code>; <code>setup_analysis(cc = , from_factors = )</code>; <code>plot_hierarchies_line(separate = )</code>; <code>transform_work_intensity(intensity_new_name = )</code>; <code>compute_pooled(method = )</code> and <code>poolvar(method = )</code> with the “V2” pooled variance; <code>sim_make_model_lmer(singular = )</code>; internal facade fields <code>ContrastsLMMissingFacade$missing_contrast</code>, <code>$merged</code>, <code>ContrastsLimpaNestedFacade$.lfqdata_nested</code>
+</li>
+</ul></li>
+<li>
+<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> no longer honours an undocumented <code>builder</code> field on facade registry entries.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-1-8-0">Internal<a class="anchor" aria-label="anchor" href="#internal-1-8-0"></a></h3>
+<ul><li>Facades, strategies, aggregators and model classes now share base classes (<code>ContrastsFacadeBase$.setup()</code>, <code>StrategyBase</code>, <code>AggregatorBase</code>, plotting methods on <code>ModelInterface</code>); the four <code>build_model_limma*()</code> builders share one core. Class vectors of strategies and aggregators gain <code>StrategyBase</code> / <code>AggregatorBase</code>.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.7.1" id="prolfqua-171">prolfqua 1.7.1<a class="anchor" aria-label="anchor" href="#prolfqua-171"></a></h2>
 <ul><li><p><code>MissingHelpers$get_lod()</code> no longer returns NA for data without groups seen once. It falls back to the partly observed groups with the fewest observations, and to the lowest group mean when every group is complete or empty. <code><a href="../reference/build_model_impute.html">build_model_impute()</a></code> therefore refits a protein missing a whole group in nearly complete data, where the NA LOD made the refit fail silently and left the protein unfitted.</p></li>
 <li><p>New <code><a href="../reference/impute_from_model.html">impute_from_model()</a></code> fills the missing response cells of an <code>LFQData</code> with predictions from its per-protein <code>lm</code> models (from <code><a href="../reference/build_model.html">build_model()</a></code> or <code><a href="../reference/build_model_impute.html">build_model_impute()</a></code>), leaving observed values unchanged, and reports per protein how many cells were observed and imputed and by which route (<code>complete</code>, <code>fitted</code>, <code>lod_refit</code> or <code>none</code>). Additive designs such as <code>~ group_ + pair</code> are supported; a model that is not lm-based is an error.</p></li>
@@ -68,7 +126,7 @@
 <li><p><strong>Breaking — contrast schema.</strong> The <code>modelName</code> column of <code>get_contrasts()</code> output is now the selected facade key (<code>lm</code>, <code>rlm</code>, <code>rfit</code>, <code>lm_impute</code>, <code>lm_missing</code>, <code>limma</code>, <code>limma_impute</code>, <code>limma_voom</code>, <code>limma_voom_impute</code>, <code>limpa</code>, <code>deqms</code>, <code>deqms_voom</code>, <code>firth</code>, <code>lmer_nested</code>, <code>ropeca_nested</code>, <code>firth_nested</code>, <code>limpa_nested</code>) instead of the testing-schema label (<code>WaldTest_moderated</code>, <code>*_DEqMS</code>, <code>*_imputed</code>, …). Rescue/imputation state moved to a new <code>estimate_type</code> column with values <code>observed</code>, <code>lod_imputed</code>, or <code>missing_fallback</code>. The redundant <code>facade</code> column was removed (its role is now played by <code>modelName</code>). The moderated-Wald-test wording belongs in methods text, not per-row labels. Downstream code that filtered on <code>modelName == "WaldTest_moderated"</code> (or the <code>_imputed</code>/<code>_DEqMS</code> variants) or read the <code>facade</code> column must migrate to the facade key and <code>estimate_type</code>.</p></li>
 <li><p><code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> and the exported <code>FACADE_REGISTRY</code> now derive method dispatch and the available-method list from a single seeded registry (<code><a href="../reference/list_facades.html">list_facades()</a></code>), removing three hand-maintained copies that could drift. New exported base class <code>ContrastsFacadeBase</code> holds the shared facade plumbing; the 19 built-in facades are now thin subclasses.</p></li>
 <li><p><code>ContrastsPlotter</code> colours volcano/MA/score plots by <code>estimate_type</code> when present (and the colour column was left at its default), using black for observed estimates, green for LOD-imputed estimates, and blue for group-mean fallback estimates.</p></li>
-<li><p>Correctness fixes: <code>AggregateTopN</code> now validates <code>func</code> via <code>match.arg</code> (an invalid value errors instead of silently meaning <code>mean</code>); <code>Model$get_anova()</code> drops degenerate rows by <code>is.na(factor)</code> rather than a never-matching <code>"NULL"</code> string; <code><a href="../reference/sim_lfq_data.html">sim_lfq_data()</a></code> now honours its <code>mean_prot</code> argument; <code>LFQDataTransformer</code>/<code>LFQDataSummariser</code> deep-clone their input like the other decorators (no more mutating the caller’s object); <code>ContrastsFirth$get_linfct()</code> returns the linfct-annotated model copies instead of mutating the shared model; <code><a href="../reference/contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code> pre-allocates <code>nrow(x)</code> results; <code>ContrastsMissing</code> now actually validates its output schema.</p></li>
+<li><p>Correctness fixes: <code>AggregateTopN</code> now validates <code>func</code> via <code>match.arg</code> (an invalid value errors instead of silently meaning <code>mean</code>); <code>Model$get_anova()</code> drops degenerate rows by <code>is.na(factor)</code> rather than a never-matching <code>"NULL"</code> string; <code><a href="../reference/sim_lfq_data.html">sim_lfq_data()</a></code> now honours its <code>mean_prot</code> argument; <code>LFQDataTransformer</code>/<code>LFQDataSummariser</code> deep-clone their input like the other decorators (no more mutating the caller’s object); <code>ContrastsFirth$get_linfct()</code> returns the linfct-annotated model copies instead of mutating the shared model; <code>contrasts_fisher_exact()</code> pre-allocates <code>nrow(x)</code> results; <code>ContrastsMissing</code> now actually validates its output schema.</p></li>
 <li><p>Fixed the vectorized contrast path (<code>options(prolfqua.vectorize = TRUE)</code>) to match the default loop path on rank-deficient (aliased) model fits: a contrast whose weights fall on non-estimable coefficients now returns <code>NA</code> instead of a spurious fold-change of 0 with a <code>NaN</code> p-value. The invalid-row guard now counts nonzero weights rather than summing signed weights, so contrasts with canceling <code>+1</code>/<code>-1</code> weights on missing coefficients are correctly flagged. The default (non-vectorized) path was never affected.</p></li>
 <li><p>The vectorized contrast path now assigns stable <code>contrast_1</code>, <code>contrast_2</code>, … labels to unnamed contrasts, matching the documented naming behavior instead of leaking an expression into the result row names.</p></li>
 <li><p><code><a href="../reference/get_contrast.html">get_contrast()</a></code> now derives <code>group_1</code>/<code>group_2</code> from the contrast’s left/right side expressions, fixing mislabeled per-group columns for averaging contrasts such as <code>(group_A + group_B)/2 - group_Ctrl</code> (previously it used the first two group tokens). Simple <code>A - B</code> contrasts are unaffected. A contrast that is not a difference <code>LHS - RHS</code> now errors with a clear message instead of silently extracting the first two group tokens. Nested contrasts that reference an earlier contrast by name (e.g. <code>Interaction = "AvsB_gv_X - AvsB_gv_Z"</code>) remain supported in the <code>ContrastsMissing</code> / <code>lm_missing</code> path.</p></li>

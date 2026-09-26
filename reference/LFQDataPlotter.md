@@ -19,6 +19,7 @@ Other LFQData:
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
 [`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
@@ -33,14 +34,6 @@ Other LFQData:
 - `prefix`:
 
   prefix to figure names when writing, e.g. protein\_
-
-- `file_paths_pdf`:
-
-  with paths to figures
-
-- `file_paths_html`:
-
-  with paths to figures
 
 ## Methods
 
@@ -76,11 +69,7 @@ Other LFQData:
 
 - [`LFQDataPlotter$write_boxplots()`](#method-LFQDataPlotter-write_boxplots)
 
-- [`LFQDataPlotter$write_pltly()`](#method-LFQDataPlotter-write_pltly)
-
 - [`LFQDataPlotter$write_pdf()`](#method-LFQDataPlotter-write_pdf)
-
-- [`LFQDataPlotter$write()`](#method-LFQDataPlotter-write)
 
 - [`LFQDataPlotter$clone()`](#method-LFQDataPlotter-clone)
 
@@ -459,34 +448,6 @@ write boxplots to file
 
 ------------------------------------------------------------------------
 
-### Method `write_pltly()`
-
-write pltly figures to path_qc
-
-#### Usage
-
-    LFQDataPlotter$write_pltly(fig, path_qc, fig_name)
-
-#### Arguments
-
-- `fig`:
-
-  pltly figure
-
-- `path_qc`:
-
-  path to write to
-
-- `fig_name`:
-
-  file name (without extension)
-
-#### Returns
-
-path the file was written to.
-
-------------------------------------------------------------------------
-
 ### Method `write_pdf()`
 
 write figure to pdf
@@ -520,22 +481,6 @@ write figure to pdf
 #### Returns
 
 path the file was written to
-
-------------------------------------------------------------------------
-
-### Method [`write()`](https://rdrr.io/r/base/write.html)
-
-write heatmaps and pca plots to files
-
-#### Usage
-
-    LFQDataPlotter$write(path_qc)
-
-#### Arguments
-
-- `path_qc`:
-
-  path to write to
 
 ------------------------------------------------------------------------
 

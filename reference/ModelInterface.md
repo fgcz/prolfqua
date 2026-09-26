@@ -58,7 +58,7 @@ data.frame
 
 ### Method `coef_histogram()`
 
-plot histogram of coefficients
+histogram of coefficient p-values
 
 #### Usage
 
@@ -66,13 +66,13 @@ plot histogram of coefficients
 
 #### Returns
 
-ggplot
+list with `plot` (ggplot) and file `name`
 
 ------------------------------------------------------------------------
 
 ### Method `coef_volcano()`
 
-plot volcano of coefficients
+volcano plot of non-intercept coefficients
 
 #### Usage
 
@@ -80,13 +80,14 @@ plot volcano of coefficients
 
 #### Returns
 
-ggplot
+list with `plot` (ggplot) and file `name`
 
 ------------------------------------------------------------------------
 
 ### Method `coef_pairs()`
 
-pairs plot of coefficients
+coefficient estimates in wide format, one column per coefficient, for a
+pairs plot
 
 #### Usage
 
@@ -94,21 +95,27 @@ pairs plot of coefficients
 
 #### Returns
 
-ggplot
+list with `plot` (data.frame) and file `name`
 
 ------------------------------------------------------------------------
 
 ### Method `anova_histogram()`
 
-histogram of p-values and FDR for anova results
+histogram of ANOVA p-values or FDR
 
 #### Usage
 
-    ModelInterface$anova_histogram()
+    ModelInterface$anova_histogram(what = c("p.value", "FDR"))
+
+#### Arguments
+
+- `what`:
+
+  show either "p.value" or "FDR"
 
 #### Returns
 
-ggplot
+list with `plot` (ggplot) and file `name`
 
 ------------------------------------------------------------------------
 

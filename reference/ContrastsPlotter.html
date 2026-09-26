@@ -9,7 +9,7 @@ plot contrasts"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,7 +117,6 @@ plot contrasts"></head><body>
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
 <code><a href="compute_contrast.html">compute_contrast()</a></code>,
 <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
-<code><a href="contrasts_fisher_exact.html">contrasts_fisher_exact()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
 <code><a href="get_anova_df.html">get_anova_df()</a></code>,
 <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
@@ -125,9 +124,6 @@ plot contrasts"></head><body>
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="is_singular_lm.html">is_singular_lm()</a></code>,
-<code><a href="linfct_all_possible_contrasts.html">linfct_all_possible_contrasts()</a></code>,
-<code><a href="linfct_factors_contrasts.html">linfct_factors_contrasts()</a></code>,
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
@@ -138,10 +134,8 @@ plot contrasts"></head><body>
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
-<code><a href="moderated_p_limma_long.html">moderated_p_limma_long()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
-<code><a href="plot_lmer_peptide_predictions.html">plot_lmer_peptide_predictions()</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -153,21 +147,17 @@ plot contrasts"></head><body>
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
 <code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
-<code><a href="unregister_facade.html">unregister_facade()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p>
 <p>Other plotting:
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="medpolish_estimate_df.html">medpolish_estimate_df()</a></code>,
 <code><a href="missigness_histogram.html">missigness_histogram()</a></code>,
 <code><a href="missingness_per_condition.html">missingness_per_condition()</a></code>,
 <code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum()</a></code>,
 <code><a href="plot_estimate.html">plot_estimate()</a></code>,
 <code><a href="plot_heatmap.html">plot_heatmap()</a></code>,
 <code><a href="plot_heatmap_cor.html">plot_heatmap_cor()</a></code>,
-<code><a href="plot_hierarchies_add_quantline.html">plot_hierarchies_add_quantline()</a></code>,
 <code><a href="plot_hierarchies_boxplot_df.html">plot_hierarchies_boxplot_df()</a></code>,
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
-<code><a href="plot_hierarchies_line_df.html">plot_hierarchies_line_df()</a></code>,
 <code><a href="plot_intensity_distribution_violin.html">plot_intensity_distribution_violin()</a></code>,
 <code><a href="plot_NA_heatmap.html">plot_na_heatmap()</a></code>,
 <code><a href="plot_pca.html">plot_pca()</a></code>,
@@ -184,10 +174,6 @@ plot contrasts"></head><body>
 
 <dt><code>subject_id</code></dt>
 <dd><p>hierarchy key columns</p></dd>
-
-
-<dt><code>prefix</code></dt>
-<dd><p>default Contrasts - used to generate file names</p></dd>
 
 
 <dt><code>diff</code></dt>
@@ -222,10 +208,6 @@ plot contrasts"></head><body>
 <dd><p>name of column containing avg abundance values.</p></dd>
 
 
-<dt><code>protein_annot</code></dt>
-<dd><p>protein annotation</p></dd>
-
-
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -236,14 +218,12 @@ plot contrasts"></head><body>
 
 <ul><li><p><a href="#method-ContrastsPlotter-new"><code>ContrastsPlotter$new()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-histogram"><code>ContrastsPlotter$histogram()</code></a></p></li>
-<li><p><a href="#method-ContrastsPlotter-histogram_estimate"><code>ContrastsPlotter$histogram_estimate()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-histogram_diff"><code>ContrastsPlotter$histogram_diff()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-volcano"><code>ContrastsPlotter$volcano()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-volcano_plotly"><code>ContrastsPlotter$volcano_plotly()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-ma_plot"><code>ContrastsPlotter$ma_plot()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-ma_plotly"><code>ContrastsPlotter$ma_plotly()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-score_plot"><code>ContrastsPlotter$score_plot()</code></a></p></li>
-<li><p><a href="#method-ContrastsPlotter-score_plotly"><code>ContrastsPlotter$score_plotly()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-barplot_threshold"><code>ContrastsPlotter$barplot_threshold()</code></a></p></li>
 <li><p><a href="#method-ContrastsPlotter-clone"><code>ContrastsPlotter$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-ContrastsPlotter-new"></a><div class="section">
@@ -262,7 +242,6 @@ plot contrasts"></head><body>
 <span>  diff <span class="op">=</span> <span class="st">"diff"</span>,</span>
 <span>  contrast <span class="op">=</span> <span class="st">"contrast"</span>,</span>
 <span>  avg.abundance <span class="op">=</span> <span class="st">"avgAbd"</span>,</span>
-<span>  protein_annot <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  group <span class="op">=</span> <span class="st">"BB"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -312,10 +291,6 @@ imputed/fallback rows stay distinguishable).</p></dd>
 <dd><p>name of column with average abundance</p></dd>
 
 
-<dt><code>protein_annot</code></dt>
-<dd><p>add protein annotation (optional)</p></dd>
-
-
 <dt><code>group</code></dt>
 <dd><p>crosstalk group name for linked brushing, default "BB"</p></dd>
 
@@ -331,11 +306,11 @@ imputed/fallback rows stay distinguishable).</p></dd>
 </div>
 
 
-</div><p></p><hr><a id="method-ContrastsPlotter-histogram_estimate"></a><div class="section">
-<h3 id="method-histogram-estimate-">Method <code>histogram_estimate()</code><a class="anchor" aria-label="anchor" href="#method-histogram-estimate-"></a></h3>
-<p>plot histogram of effect size - difference between groups</p><div class="section">
+</div><p></p><hr><a id="method-ContrastsPlotter-histogram_diff"></a><div class="section">
+<h3 id="method-histogram-diff-">Method <code>histogram_diff()</code><a class="anchor" aria-label="anchor" href="#method-histogram-diff-"></a></h3>
+<p>plot histogram of differences (diff) fold change</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">histogram_estimate</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">histogram_diff</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -347,28 +322,12 @@ imputed/fallback rows stay distinguishable).</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ContrastsPlotter-histogram_diff"></a><div class="section">
-<h3 id="method-histogram-diff-">Method <code>histogram_diff()</code><a class="anchor" aria-label="anchor" href="#method-histogram-diff-"></a></h3>
-<p>plot histogram of differences (diff) fold change</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">histogram_diff</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>binwidth</code></dt>
-<dd><p>with of bin in histogram</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
 </div><p></p><hr><a id="method-ContrastsPlotter-volcano"></a><div class="section">
 <h3 id="method-volcano-">Method <code>volcano()</code><a class="anchor" aria-label="anchor" href="#method-volcano-"></a></h3>
 <p>volcano plots (fold change vs FDR)</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span></span>
-<span>  <span class="va">colour</span>,</span>
+<span>  colour <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">model_name</span>,</span>
 <span>  legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"free"</span>, <span class="st">"free_x"</span>, <span class="st">"free_y"</span><span class="op">)</span>,</span>
 <span>  min_score <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -376,7 +335,7 @@ imputed/fallback rows stay distinguishable).</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>colour</code></dt>
 <dd><p>column name with color information default modelName</p></dd>
 
@@ -401,9 +360,9 @@ observed value in the same score column.</p></dd>
 </div><p></p><hr><a id="method-ContrastsPlotter-volcano_plotly"></a><div class="section">
 <h3 id="method-volcano-plotly-">Method <code><a href="volcano_Plotly.html">volcano_plotly()</a></code><a class="anchor" aria-label="anchor" href="#method-volcano-plotly-"></a></h3>
 <p>plotly volcano plots</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">volcano_plotly</span><span class="op">(</span></span>
-<span>  <span class="va">colour</span>,</span>
+<span>  colour <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">model_name</span>,</span>
 <span>  legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fixed"</span>, <span class="st">"free"</span>, <span class="st">"free_x"</span>, <span class="st">"free_y"</span><span class="op">)</span>,</span>
 <span>  min_score <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -411,7 +370,7 @@ observed value in the same score column.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>colour</code></dt>
 <dd><p>column in contrast matrix with colour coding</p></dd>
 
@@ -447,12 +406,17 @@ Red horizontal lines represent the fold-change threshold.</p>
 <p>Sometimes measured effects sizes (differences between samples groups)
 are biased by the signal intensity (here protein abundance).
 Such systematic effects can be explored using MA-plots.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span><span class="va">fc</span>, <span class="va">colour</span>, legend <span class="op">=</span> <span class="cn">TRUE</span>, rank <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">ma_plot</span><span class="op">(</span></span>
+<span>  fc <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">fcthresh</span>,</span>
+<span>  colour <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">model_name</span>,</span>
+<span>  legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  rank <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fc</code></dt>
 <dd><p>fold change abline</p></dd>
 
@@ -479,12 +443,17 @@ Such systematic effects can be explored using MA-plots.</p><div class="section">
 </div><p></p><hr><a id="method-ContrastsPlotter-ma_plotly"></a><div class="section">
 <h3 id="method-ma-plotly-">Method <code>ma_plotly()</code><a class="anchor" aria-label="anchor" href="#method-ma-plotly-"></a></h3>
 <p>ma plotly</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">ma_plotly</span><span class="op">(</span><span class="va">fc</span>, <span class="va">colour</span>, legend <span class="op">=</span> <span class="cn">TRUE</span>, rank <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">ma_plotly</span><span class="op">(</span></span>
+<span>  fc <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">fcthresh</span>,</span>
+<span>  colour <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">model_name</span>,</span>
+<span>  legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  rank <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fc</code></dt>
 <dd><p>horizontal lines</p></dd>
 
@@ -511,12 +480,12 @@ Such systematic effects can be explored using MA-plots.</p><div class="section">
 </div><p></p><hr><a id="method-ContrastsPlotter-score_plot"></a><div class="section">
 <h3 id="method-score-plot-">Method <code>score_plot()</code><a class="anchor" aria-label="anchor" href="#method-score-plot-"></a></h3>
 <p>plot a score against the log2 fc e.g. t-statistic</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">score_plot</span><span class="op">(</span><span class="va">scorespec</span>, <span class="va">colour</span>, legend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">score_plot</span><span class="op">(</span><span class="va">scorespec</span>, colour <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">model_name</span>, legend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>scorespec</code></dt>
 <dd><p>list(score="statistics", fcthres = 2, thresh = 5)</p></dd>
 
@@ -536,55 +505,27 @@ Such systematic effects can be explored using MA-plots.</p><div class="section">
 <p>list of ggplots</p>
 </div>
 
-</div><p></p><hr><a id="method-ContrastsPlotter-score_plotly"></a><div class="section">
-<h3 id="method-score-plotly-">Method <code>score_plotly()</code><a class="anchor" aria-label="anchor" href="#method-score-plotly-"></a></h3>
-<p>plot a score against the log2 fc e.g. t-statistic</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">score_plotly</span><span class="op">(</span><span class="va">scorespec</span>, <span class="va">colour</span>, legend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>scorespec</code></dt>
-<dd><p>list(score="statistics", fcthres = 2, thresh = 5)</p></dd>
-
-
-<dt><code>colour</code></dt>
-<dd><p>column with colour coding</p></dd>
-
-
-<dt><code>legend</code></dt>
-<dd><p>enable legend default TRUE</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
-<p>list of ggplots</p>
-</div>
-
 </div><p></p><hr><a id="method-ContrastsPlotter-barplot_threshold"></a><div class="section">
 <h3 id="method-barplot-threshold-">Method <code>barplot_threshold()</code><a class="anchor" aria-label="anchor" href="#method-barplot-threshold-"></a></h3>
 <p>shows the number of significant proteins per contrasts</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">barplot_threshold</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>list which contains ggplots and summary tables</p>
 </div>
 
 </div><p></p><hr><a id="method-ContrastsPlotter-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsPlotter</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -661,8 +602,6 @@ Such systematic effects can be explored using MA-plots.</p><div class="section">
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">cp</span><span class="op">$</span><span class="fu">histogram</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">FDR</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">p.value</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">cp</span><span class="op">$</span><span class="fu">histogram_estimate</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">cp</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">FDR</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">respltly</span> <span class="op">&lt;-</span> <span class="va">cp</span><span class="op">$</span><span class="fu">volcano_plotly</span><span class="op">(</span><span class="op">)</span></span></span>

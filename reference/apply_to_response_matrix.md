@@ -30,7 +30,6 @@ list with \`data\` (data.frame) and \`colname\` (new column name)
 
 Other preprocessing:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`filter_proteins_by_peptide_count()`](https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md),
 [`get_robscales()`](https://wolski.github.io/prolfqua/reference/get_robscales.md),
 [`robust_scale()`](https://wolski.github.io/prolfqua/reference/robust_scale.md),
 [`scale_with_subset()`](https://wolski.github.io/prolfqua/reference/scale_with_subset.md)

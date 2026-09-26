@@ -19,25 +19,19 @@ Other LFQData:
 [`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
 [`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
 [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
 [`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
+## Super class
+
+[`prolfqua::AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md)
+-\> `AggregateTopN`
+
 ## Public fields
-
-- `lfq`:
-
-  LFQData
-
-- `lfq_agg`:
-
-  aggregation result
-
-- `prefix`:
-
-  to use for aggregation results e.g. protein
 
 - `N`:
 
@@ -55,11 +49,12 @@ Other LFQData:
 
 - [`AggregateTopN$aggregate()`](#method-AggregateTopN-aggregate)
 
-- [`AggregateTopN$plot()`](#method-AggregateTopN-plot)
-
-- [`AggregateTopN$write_plots()`](#method-AggregateTopN-write_plots)
-
 - [`AggregateTopN$clone()`](#method-AggregateTopN-clone)
+
+Inherited methods
+
+- [`prolfqua::AggregatorBase$plot()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot)
+- [`prolfqua::AggregatorBase$write_plots()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots)
 
 ------------------------------------------------------------------------
 
@@ -102,72 +97,6 @@ run top N aggregation
 #### Returns
 
 LFQData
-
-------------------------------------------------------------------------
-
-### Method [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
-
-creates aggregation plots
-
-#### Usage
-
-    AggregateTopN$plot(subset = NULL, show.legend = FALSE)
-
-#### Arguments
-
-- `subset`:
-
-  create plots for a subset of the data only
-
-- `show.legend`:
-
-  default FALSE
-
-#### Returns
-
-data.frame
-
-------------------------------------------------------------------------
-
-### Method `write_plots()`
-
-writes plots to folder
-
-#### Usage
-
-    AggregateTopN$write_plots(
-      qcpath,
-      subset = NULL,
-      show.legend = FALSE,
-      width = 6,
-      height = 6
-    )
-
-#### Arguments
-
-- `qcpath`:
-
-  qcpath
-
-- `subset`:
-
-  write plots only for some
-
-- `show.legend`:
-
-  legend
-
-- `width`:
-
-  figure width
-
-- `height`:
-
-  figure height
-
-#### Returns
-
-file path
 
 ------------------------------------------------------------------------
 
