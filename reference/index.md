@@ -255,6 +255,10 @@
 - [`hierarchy_counts_sample()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts_sample.md)
   : Hierarchy counts per sample
 
+- [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md)
+  : Fill missing responses with predictions from per-subject linear
+  models
+
 - [`interaction_contrasts()`](https://wolski.github.io/prolfqua/reference/interaction_contrasts.md)
   : Interaction contrasts (difference of differences)
 

@@ -72,6 +72,7 @@ Other modelling:
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
+[`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
 [`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
@@ -378,9 +379,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpQKIOty/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpQKIOty/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpQKIOty/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpcyqFlu/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpcyqFlu/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpcyqFlu/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -394,7 +395,7 @@ mod$write_coef_figures(tempdir())
 #>  8 XYrp6h~5793       2.20    -1.52e-15  -1.07e-15
 #>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
 #> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> agg_record_1c572d717630 
+#> agg_record_1b3015837f85 
 #>                       2 
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
@@ -451,9 +452,9 @@ mod$anova_histogram()
 #> Warning: not implemented
 #> NULL
 mod$write_coef_figures(tempdir())
-#> Writing figure into : /tmp/RtmpQKIOty/Coef_Histogram_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpQKIOty/Coef_volcano_plot_modelFirth.pdf
-#> Writing figure into : /tmp/RtmpQKIOty/Coef_Pairsplot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpcyqFlu/Coef_Histogram_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpcyqFlu/Coef_volcano_plot_modelFirth.pdf
+#> Writing figure into : /tmp/RtmpcyqFlu/Coef_Pairsplot_modelFirth.pdf
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
@@ -467,6 +468,6 @@ mod$write_coef_figures(tempdir())
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
 #>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
 #> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
-#> agg_record_1c572d717630 
+#> agg_record_1b3015837f85 
 #>                       2 
 ```

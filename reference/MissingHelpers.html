@@ -9,7 +9,7 @@ compute group mean by LOD"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,14 +145,17 @@ compute group mean by LOD"></head><body>
 </div><p></p><hr><a id="method-MissingHelpers-get_lod"></a><div class="section">
 <h3 id="method-get-lod-">Method <code>get_lod()</code><a class="anchor" aria-label="anchor" href="#method-get-lod-"></a></h3>
 <p>determine limit of detection
-computes quantile of abundances in groups with a single observation</p><div class="section">
+computes quantile of abundances in groups with a single observation;
+without such groups, of the partly observed groups with the fewest
+observations, and when every group is complete or empty, the lowest
+group mean</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">MissingHelpers</span><span class="op">$</span><span class="fu">get_lod</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
-<p>integer LOD</p>
+<p>numeric LOD</p>
 </div>
 
 </div><p></p><hr><a id="method-MissingHelpers-impute_weighted_lod"></a><div class="section">

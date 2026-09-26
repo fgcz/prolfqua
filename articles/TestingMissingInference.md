@@ -68,8 +68,7 @@ abline(0 , 1 , col=2 , lwd=2)
 mh1$get_lod()
 ```
 
-    ##      50% 
-    ## 18.13636
+    ## [1] 18.13636
 
 ``` r
 plot( imputed$estimate, -log10(imputed$p.value), pch = "*" )
@@ -289,6 +288,88 @@ vcov(m)
     ## group_B      -0.3737352  0.7474704  0.3737352
     ## group_Ctrl   -0.3737352  0.3737352  0.7474704
 
+## Filling missing cells from the protein models
+
+[`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md)
+completes the data to every protein x sample and fills each missing cell
+with [`predict()`](https://rdrr.io/r/stats/predict.html) of that
+protein’s fitted model. A protein fitted on its observed values takes
+the route `fitted`; one that
+[`build_model_impute()`](https://wolski.github.io/prolfqua/reference/build_model_impute.md)
+refitted at the LOD, typically because a whole group is missing, takes
+`lod_refit`. Observed values stay as they are, and the filled values
+carry no noise.
+
+``` r
+modImpute <- prolfqua::build_model_impute(dd_lfq, formula_Protein)
+```
+
+    ## Warning: There were 11 warnings in `dplyr::mutate()`.
+    ## The first warning was:
+    ## ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
+    ##   pb)`.
+    ## ℹ In group 18: `protein_Id = "DoWup2~8058"`.
+    ## Caused by warning:
+    ## ! contrasts can be applied only to factors with 2 or more levels
+    ## ℹ Run `dplyr::last_dplyr_warnings()` to see the 10 remaining warnings.
+
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+    ## Warning in summary.lm(new_model): essentially perfect fit: summary may be
+    ## unreliable
+
+``` r
+filled <- prolfqua::impute_from_model(modImpute, dd_lfq)
+filled$summary$route |> table()
+```
+
+    ## 
+    ##  complete    fitted lod_refit 
+    ##        10        51        39
+
+``` r
+before <- dd_lfq$data_long()
+after <- filled$lfqdata$data_long()
+missing_cells <- dplyr::inner_join(
+  before |> dplyr::filter(is.na(abundance)) |> dplyr::select(protein_Id, sampleName, group_),
+  after |> dplyr::select(protein_Id, sampleName, filled = abundance),
+  by = c("protein_Id", "sampleName")
+)
+head(missing_cells)
+```
+
+    ## # A tibble: 6 × 4
+    ##   protein_Id  sampleName group_ filled
+    ##   <chr>       <chr>      <chr>   <dbl>
+    ## 1 0m5WN4~6025 A_V1       A        17.9
+    ## 2 7QuTub~1867 A_V1       A        21.9
+    ## 3 At886V~1021 A_V1       A        16.7
+    ## 4 bkh7dJ~7252 A_V1       A        18.1
+    ## 5 cPmoxD~0749 A_V1       A        18.1
+    ## 6 CtOJ9t~0799 A_V1       A        18.9
+
 ## Session Info
 
 ``` r
@@ -324,7 +405,7 @@ sessionInfo()
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] utf8_1.2.6             rmarkdown_2.32         nloptr_2.2.1          
     ##  [22] ragg_1.5.2             UpSetR_1.4.1           purrr_1.2.2           
-    ##  [25] xfun_0.61              glmnet_5.0             jomo_2.7-6            
+    ##  [25] xfun_0.61              glmnet_5.1             jomo_2.7-6            
     ##  [28] logistf_1.26.1         cachem_1.1.0           jsonlite_2.0.0        
     ##  [31] progress_1.2.3         pan_2.0                broom_1.0.13          
     ##  [34] parallel_4.5.2         prettyunits_1.2.0      cluster_2.1.8.1       
@@ -336,7 +417,7 @@ sessionInfo()
     ##  [52] tidyselect_1.2.1       yaml_2.3.12            doParallel_1.0.17     
     ##  [55] codetools_0.2-20       lattice_0.22-7         tibble_3.3.1          
     ##  [58] plyr_1.8.9             withr_3.0.3            S7_0.2.2              
-    ##  [61] prolfqua_1.7.0         evaluate_1.0.5         desc_1.4.3            
+    ##  [61] prolfqua_1.7.1         evaluate_1.0.5         desc_1.4.3            
     ##  [64] survival_3.8-3         circlize_0.4.18        pillar_1.11.1         
     ##  [67] mice_3.19.0            foreach_1.5.2          stats4_4.5.2          
     ##  [70] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        

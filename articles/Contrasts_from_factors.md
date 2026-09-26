@@ -280,7 +280,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.7.0
+    ## [1] prolfqua_1.7.1
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] tidyselect_1.2.1       viridisLite_0.4.3      dplyr_1.2.1           
@@ -301,7 +301,7 @@ sessionInfo()
     ##  [46] otel_0.2.0             httr_1.4.9             rjson_0.2.23          
     ##  [49] minqa_1.2.8            cachem_1.1.0           operator.tools_1.6.3.1
     ##  [52] splines_4.5.2          parallel_4.5.2         matrixStats_1.5.0     
-    ##  [55] vctrs_0.7.3            boot_1.3-32            glmnet_5.0            
+    ##  [55] vctrs_0.7.3            boot_1.3-32            glmnet_5.1            
     ##  [58] Matrix_1.7-4           jsonlite_2.0.0         IRanges_2.44.0        
     ##  [61] GetoptLong_1.1.1       S4Vectors_0.48.1       mitml_0.4-5           
     ##  [64] ggrepel_0.9.8          clue_0.3-68            systemfonts_1.3.2     

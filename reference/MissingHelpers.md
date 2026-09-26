@@ -104,7 +104,9 @@ data.frame
 ### Method `get_lod()`
 
 determine limit of detection computes quantile of abundances in groups
-with a single observation
+with a single observation; without such groups, of the partly observed
+groups with the fewest observations, and when every group is complete or
+empty, the lowest group mean
 
 #### Usage
 
@@ -112,7 +114,7 @@ with a single observation
 
 #### Returns
 
-integer LOD
+numeric LOD
 
 ------------------------------------------------------------------------
 

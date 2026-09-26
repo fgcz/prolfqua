@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,11 @@
       <small>Source: <a href="https://github.com/fgcz/prolfqua/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.7.1" id="prolfqua-171">prolfqua 1.7.1<a class="anchor" aria-label="anchor" href="#prolfqua-171"></a></h2>
+<ul><li><p><code>MissingHelpers$get_lod()</code> no longer returns NA for data without groups seen once. It falls back to the partly observed groups with the fewest observations, and to the lowest group mean when every group is complete or empty. <code><a href="../reference/build_model_impute.html">build_model_impute()</a></code> therefore refits a protein missing a whole group in nearly complete data, where the NA LOD made the refit fail silently and left the protein unfitted.</p></li>
+<li><p>New <code><a href="../reference/impute_from_model.html">impute_from_model()</a></code> fills the missing response cells of an <code>LFQData</code> with predictions from its per-protein <code>lm</code> models (from <code><a href="../reference/build_model.html">build_model()</a></code> or <code><a href="../reference/build_model_impute.html">build_model_impute()</a></code>), leaving observed values unchanged, and reports per protein how many cells were observed and imputed and by which route (<code>complete</code>, <code>fitted</code>, <code>lod_refit</code> or <code>none</code>). Additive designs such as <code>~ group_ + pair</code> are supported; a model that is not lm-based is an error.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.7.0" id="prolfqua-170">prolfqua 1.7.0<a class="anchor" aria-label="anchor" href="#prolfqua-170"></a></h2>
 <ul><li><p>A mixed-model analysis (<code>lmer_nested</code>) no longer aborts partway through when a single protein has no estimable contrast. Such a protein is now dropped with a warning naming it, like a rank-deficient one, instead of failing the whole run with <code>subscript out of bounds</code> from <code><a href="https://rdrr.io/pkg/lmerTest/man/contest.html" class="external-link">lmerTest::contest()</a></code>.</p></li>

@@ -1,34 +1,67 @@
-# linfct_matrix_contrasts
+# Fill missing responses with predictions from per-subject linear models
 
-When `options(prolfqua.vectorize = TRUE)` is set, dispatches to a
-vectorized implementation that batch-evaluates all contrast expressions
-in a single
-[`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)
-call instead of looping per expression. Set
-`options(prolfqua.vectorize = FALSE)` (the default) to use the original
-per-expression loop.
+Completes the data to every subject x every sample and fills each
+missing response cell with
+[`predict()`](https://rdrr.io/r/stats/predict.html) of that subject's
+fitted `lm`, on the response scale. Observed values are left unchanged.
+The imputed values carry no noise.
 
 ## Usage
 
 ``` r
-linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
+impute_from_model(model, lfqdata)
 ```
 
 ## Arguments
 
-- linfct:
+- model:
 
-  linear functions as created by linfct_from_model
+  a [`Model`](https://wolski.github.io/prolfqua/reference/Model.md) with
+  `lm` fits, as returned by
+  [`build_model`](https://wolski.github.io/prolfqua/reference/build_model.md)
+  or
+  [`build_model_impute`](https://wolski.github.io/prolfqua/reference/build_model_impute.md)
 
-- contrasts:
+- lfqdata:
 
-  named character vector of contrasts to determine linear functions for
+  the
+  [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md)
+  the model was fitted on (same response and subject_id)
 
-- p.message:
+## Value
 
-  print messages default FALSE
+list with `lfqdata`, a new
+[`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md)
+holding every subject x sample row with missing responses filled, and
+`summary`, a tibble with the subject_id columns and `n_observed`,
+`n_imputed` and `route` per subject
+
+## Details
+
+Each subject gets one route, checked in this order:
+
+- complete:
+
+  no missing cell.
+
+- lod_refit:
+
+  the subject was refitted at the LOD by
+  [`build_model_impute`](https://wolski.github.io/prolfqua/reference/build_model_impute.md)
+  (`model_df$imputed`); that fit's predictions fill the missing cells.
+
+- fitted:
+
+  the observed-data fit has no NA coefficient and knows every factor
+  level of the missing cells; its predictions fill them.
+
+- none:
+
+  no usable fit; the missing cells stay NA.
 
 ## See also
+
+[`build_model_impute`](https://wolski.github.io/prolfqua/reference/build_model_impute.md)
 
 Other modelling:
 [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
@@ -93,12 +126,12 @@ Other modelling:
 [`get_complete_model_fit()`](https://wolski.github.io/prolfqua/reference/get_complete_model_fit.md),
 [`get_p_values_pbeta()`](https://wolski.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md),
-[`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://wolski.github.io/prolfqua/reference/impute_refit_singular.md),
 [`is_singular_lm()`](https://wolski.github.io/prolfqua/reference/is_singular_lm.md),
 [`linfct_all_possible_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_all_possible_contrasts.md),
 [`linfct_factors_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_factors_contrasts.md),
 [`linfct_from_model()`](https://wolski.github.io/prolfqua/reference/linfct_from_model.md),
+[`linfct_matrix_contrasts()`](https://wolski.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://wolski.github.io/prolfqua/reference/lookup_facade.md),
 [`merge_contrasts_results()`](https://wolski.github.io/prolfqua/reference/merge_contrasts_results.md),
@@ -128,32 +161,19 @@ Other modelling:
 ## Examples
 
 ``` r
-m <- sim_make_model_lm( "factors")
+istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
-    "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
-    "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
-    "IntoflintoB" = "`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`",
-    "IntoflintoX" = "`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`",
-    "IntoflintoZ" = "`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`",
-    "interactXZ" = "IntoflintoX - IntoflintoZ",
-    "interactAB" = "IntoflintoA - IntoflintoB"
-     )
-linfct <- linfct_from_model(m, as_list = FALSE)
-x <- linfct_matrix_contrasts(linfct, Contr )
-stopifnot(sum(x["interactXZ",]) == 0 )
-stopifnot(sum(x["interactAB",]) == 0 )
-
-m <- sim_make_model_lm( "interaction")
-#> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
-linfct <- linfct_from_model(m, as_list = FALSE)
-x <- linfct_matrix_contrasts(linfct, Contr )
-stopifnot(sum(x["interactXZ",]) ==1 )
-stopifnot(sum(x["interactAB",]) ==1 )
+lfqdata <- LFQData$new(istar$data, istar$config)
+strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
+mod <- build_model_impute(lfqdata, strat)
+res <- impute_from_model(mod, lfqdata)
+table(res$summary$route)
+#> 
+#>  complete    fitted lod_refit 
+#>         8        16         6 
+n_missing <- function(x) sum(is.na(x$data_long()$abundance))
+stopifnot(n_missing(res$lfqdata) <= n_missing(lfqdata))
 ```

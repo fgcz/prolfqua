@@ -183,7 +183,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.7.0
+    ## [1] prolfqua_1.7.1
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           
@@ -195,7 +195,7 @@ sessionInfo()
     ##  [19] labeling_0.4.3         utf8_1.2.6             promises_1.5.0        
     ##  [22] rmarkdown_2.32         nloptr_2.2.1           ragg_1.5.2            
     ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.61             
-    ##  [28] glmnet_5.0             jomo_2.7-6             logistf_1.26.1        
+    ##  [28] glmnet_5.1             jomo_2.7-6             logistf_1.26.1        
     ##  [31] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
     ##  [34] later_1.4.8            pan_2.0                prettyunits_1.2.0     
     ##  [37] broom_1.0.13           parallel_4.5.2         cluster_2.1.8.1       
