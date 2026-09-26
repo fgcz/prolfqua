@@ -1,26 +1,5 @@
 # Intensities to wide ----
 
-#' Transform tidy table into a table with a column of responses for each sample
-#'
-#' @export
-#' @keywords internal
-#' @examples
-#' pdata <- data.frame(
-#'   protein_Id = c("P1", "P1", "P2", "P2"),
-#'   sampleName = c("S1", "S2", "S1", "S2"),
-#'   abundance = c(10, 12, 20, 25)
-#' )
-#' tidy_to_wide(pdata, row_ids = "protein_Id", column_labels = "sampleName", value = "abundance")
-tidy_to_wide <- function(data, row_ids, column_labels, value) {
-  wide <- data |>
-    dplyr::select(all_of(c(row_ids, column_labels, value)))
-
-  wide_spread <- wide |>
-    tidyr::pivot_wider(names_from = all_of(column_labels), values_from = all_of(value))
-
-  return(wide_spread)
-}
-
 #' transform long to wide
 #' @param lfqdata LFQData object
 #' @param as.matrix if TRUE return matrix, otherwise data.frame
@@ -76,7 +55,8 @@ tidy_to_wide_config <- function(
     dplyr::arrange_at(newcolname)
 
   hierarchy_isotope <- c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
-  res <- tidy_to_wide(data, hierarchy_isotope, newcolname, value = value)
+  res <- dplyr::select(data, all_of(c(hierarchy_isotope, newcolname, value))) |>
+    tidyr::pivot_wider(names_from = all_of(newcolname), values_from = all_of(value))
   sample_cols <- ids[[newcolname]]
   res <- res |>
     dplyr::select(dplyr::all_of(c(hierarchy_isotope, sample_cols)))

@@ -115,10 +115,7 @@ ContrastsROPECA <- R6::R6Class(
           group_by_col = "contrast",
           newname = "FDR.median.p.value"
         )
-        contrast_result$estimate_type <- "observed"
-        contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
-        contrast_result <- dplyr::relocate(contrast_result, "estimate_type", .after = "modelName")
-        self$contrast_result <- contrast_result
+        self$contrast_result <- .stamp_model_identity(contrast_result, self$model_name, "observed")
       }
 
       if (!all) {
@@ -155,10 +152,7 @@ ContrastsROPECA <- R6::R6Class(
         histogram = list(
           list(score = "beta.based.significance", xlim = c(0, 1, 0.05)),
           list(score = "FDR.beta.based.significance", xlim = c(0, 1, 0.05))
-        ),
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
+        )
       )
       return(res)
     },

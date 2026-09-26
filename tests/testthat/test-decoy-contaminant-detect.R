@@ -40,10 +40,3 @@ test_that("is_contaminant unions a configured pattern with the defaults", {
   ids <- c("KERATIN_1", "zz|C1|X", "sp|P1|X")
   expect_equal(is_contaminant(ids, pattern = "^KERATIN_"), c(TRUE, TRUE, FALSE))
 })
-
-test_that("effective_*_pattern exposes the applied regex", {
-  expect_true(grepl("REV_", effective_decoy_pattern(), fixed = TRUE))
-  expect_true(grepl("shuffled", effective_decoy_pattern("^shuffled_"), fixed = TRUE))
-  expect_identical(effective_decoy_pattern(""), effective_decoy_pattern(NULL))
-  expect_true(grepl("zz", effective_contaminant_pattern(), fixed = TRUE))
-})

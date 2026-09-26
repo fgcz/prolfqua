@@ -65,11 +65,7 @@ ContrastsFirth <- R6::R6Class(
     #' @description
     #' get both sides of contrasts
     get_contrast_sides = function() {
-      # extract contrast sides
-      tt <- self$contrasts[grep("-", self$contrasts)]
-      tt <- tibble(contrast = names(tt), rhs = tt)
-      tt <- tt |> mutate(rhs = gsub("[` ]", "", rhs)) |> tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
-      return(tt)
+      parse_contrast_sides(self$contrasts)
     },
     #' @description
     #' get linear functions from contrasts
@@ -79,43 +75,21 @@ ContrastsFirth <- R6::R6Class(
     #'   untouched.
     get_linfct = function(avg = TRUE) {
       linfct_models <- list()
-      if (!is.null(self$models$models$models1)) {
-        models1 <- self$models$models$models1
-        model1_df <- .filter_fitted_firth_models(models1$model_df)
-        res1 <- vector(mode = "list", nrow(model1_df))
-        pb <- .make_progress(nrow(model1_df), label = "firth linfct single-peptide")
-        if (nrow(model1_df) > 0) {
-          model <- get_complete_model_fit(model1_df)$linear_model[[1]]
-          compmodel <- .linfct(model, self$contrasts, avg = avg)
-          max_coef <- max(model1_df$nr_coef_not_NA, na.rm = TRUE)
-
-          for (i in seq_along(model1_df$linear_model)) {
-            pb$tick()
-            res1[[i]] <- if (model1_df$nr_coef_not_NA[[i]] == max_coef) {
-              compmodel
-            } else {
-              .linfct(model1_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
-            }
-          }
+      labels <- c(models1 = "firth linfct single-peptide", models2 = "firth linfct multi-peptide")
+      for (name in names(labels)) {
+        models <- self$models$models[[name]]
+        if (!is.null(models)) {
+          models$model_df <- .filter_fitted_firth_models(models$model_df)
+          # multi-peptide models carry protein-specific peptide coefficients: no shared linfct
+          models$model_df$linfct <- .linfct_per_model(
+            models$model_df,
+            self$contrasts,
+            avg,
+            labels[[name]],
+            reuse_complete = name == "models1"
+          )
+          linfct_models[[name]] <- models
         }
-        model1_df$linfct <- res1
-        models1$model_df <- model1_df
-        linfct_models$models1 <- models1
-      }
-
-      if (!is.null(self$models$models$models2)) {
-        models2 <- self$models$models$models2
-        model2_df <- .filter_fitted_firth_models(models2$model_df)
-        pb <- .make_progress(nrow(model2_df), label = "firth linfct multi-peptide")
-        res2 <- vector(mode = "list", nrow(model2_df))
-        for (i in seq_along(model2_df$linear_model)) {
-          pb$tick()
-          res2[[i]] <-
-            .linfct(model2_df$linear_model[[i]], contrast = self$contrasts, avg = avg)
-        }
-        model2_df$linfct <- res2
-        models2$model_df <- model2_df
-        linfct_models$models2 <- models2
       }
       return(linfct_models)
     },
@@ -129,91 +103,24 @@ ContrastsFirth <- R6::R6Class(
         message("determine linear functions:")
         linfct_models <- self$get_linfct()
         message("get_contrasts -> contrasts_linfct")
-        models1 <- linfct_models$models1
-        contrast_result1 <- NULL
-        contrast_result2 <- NULL
-        if (!is.null(models1)) {
-          contrast_result1 <- contrasts_linfct_firth(models1)
-          contrast_result1 <- ungroup(contrast_result1)
-        }
-        models2 <- linfct_models$models2
-        if (!is.null(models2)) {
-          contrast_result2 <- contrasts_linfct_firth(models2)
-          contrast_result2 <- ungroup(contrast_result2)
-        }
-        contrast_result <- bind_rows(contrast_result2, contrast_result1)
-        contrast_result <- dplyr::rename(contrast_result, contrast = lhs, diff = estimate)
-
-        differences <- contrast_result |>
-          dplyr::filter(contrast %in% names(self$contrasts))
-
-        avg_abd <- contrast_result |>
-          dplyr::select(dplyr::all_of(c(self$subject_id, "contrast", "diff"))) |>
-          dplyr::filter(startsWith(contrast, "avg_"))
-
-        avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
-        avg_abd <- avg_abd |> dplyr::rename(avgAbd = diff)
-        contrast_result <- left_join(differences, avg_abd)
-
-        contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
-        contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
-        contrast_result <- contrast_result |>
-          dplyr::mutate(
-            std.error.unmoderated = .data$std.error,
-            df.unmoderated = .data$df
+        # multi-peptide rows first; skip model sets without any fitted model
+        fitted <- Filter(function(m) !is.null(m) && nrow(m$model_df) > 0, linfct_models[c("models2", "models1")])
+        contrast_result <- bind_rows(lapply(fitted, function(models) {
+          contrasts_linfct(
+            models$model_df,
+            models$model_df$linfct,
+            subject_id = self$subject_id,
+            contrastfun = function(m, linfct) {
+              tryCatch(.compute_contrast(m, linfct, strategy = models$strategy), error = function(e) FALSE)
+            }
           )
-        contrast_result$estimate_type <- "observed"
-        contrast_result <- mutate(contrast_result, modelName = self$model_name, .before = 1)
-        contrast_result <- dplyr::relocate(contrast_result, "estimate_type", .after = "modelName")
-        self$contrast_result <- contrast_result
+        }))
+        contrast_result <- .finalize_wald_contrasts(contrast_result, self$contrasts, self$subject_id, self$p.adjust)
+        self$contrast_result <- .stamp_model_identity(contrast_result, self$model_name, "observed")
       }
-      res <- if (!all) {
-        self$contrast_result |>
-          select(-all_of(c("sigma.model", "df.residual.model", "isSingular")))
-      } else {
-        self$contrast_result
-      }
-
+      res <- .select_wald_columns(self$contrast_result, all)
       stopifnot(all(super$column_description()$column_name %in% colnames(res)))
       return(res)
-    },
-    #' @description
-    #' return \code{\link{ContrastsPlotter}}
-    #' creates Contrast_Plotter
-    #' @param fc_threshold fold change threshold to show in plots
-    #' @param fdr_threshold FDR threshold to show in plots
-    #' @return \code{\link{ContrastsPlotter}}
-    get_Plotter = function(
-      fc_threshold = 1,
-      fdr_threshold = 0.1
-    ) {
-      contrast_result <- self$get_contrasts()
-      res <- ContrastsPlotter$new(
-        contrast_result,
-        subject_id = self$subject_id,
-        fcthresh = fc_threshold,
-        volcano = list(list(score = "p.value", thresh = fdr_threshold), list(score = "FDR", thresh = fdr_threshold)),
-        histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
-        score = list(list(score = "statistic", thresh = 5)),
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
-      )
-      return(res)
-    },
-    #' @description
-    #' convert to wide format
-    #' @param columns value column default p.value
-    #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
-      contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_to_wide(
-        contrast_minimal,
-        subject_id = self$subject_id,
-        columns = c("diff", columns),
-        contrast = "contrast"
-      )
-      return(contrasts_wide)
     }
   )
 )

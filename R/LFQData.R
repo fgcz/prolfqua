@@ -27,14 +27,6 @@
 #' stopifnot(lfqdata$is_transformed()==FALSE)
 #' lfqdata$summarize_hierarchy()
 #'
-#' # filter for missing values
-#'
-#' f1 <- lfqdata$omit_na(nr_na = 0)
-#' stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
-#'
-#' f2 <- lfqdata$omit_na(factor_depth = 0)
-#' stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
-#'
 #' lfqdata$response()
 #' lfqdata$rename_response("peptide.intensity")
 #' lfqdata$response()
@@ -45,12 +37,7 @@
 #' stopifnot("LFQDataPlotter" %in% class(lfqdata$get_Plotter()))
 #' stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))
 #'
-#' lfqdata2 <- lfqdata$get_copy()
-#' lfqdata2$set_data(lfqdata2$data_long()[1:100, ])
-#' res <- lfqdata$filter_difference(lfqdata2)
-#' stopifnot(nrow(res$data_long()) == nrow(lfqdata$data_long()) - 100)
-#'
-#' tmp <- lfqdata$get_sample(5, seed = 4)
+#' tmp <-lfqdata$get_sample(5, seed = 4)
 #' stopifnot(nrow(tmp$hierarchy()) == 5)
 #'
 LFQData <- R6::R6Class(
@@ -185,11 +172,7 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     #' @return self
     remove_small_intensities = function(threshold = 4) {
-      private$.data <- prolfqua::remove_small_intensities(
-        self$data_long(),
-        self$response(),
-        threshold = threshold
-      )
+      private$.data <- dplyr::filter(self$data_long(), !!sym(self$response()) >= threshold)
       private$.data <- prolfqua::complete_cases(self)
       invisible(self)
     },
@@ -197,8 +180,21 @@ LFQData <- R6::R6Class(
     #' remove proteins with less than X peptides
     #' @return self
     filter_proteins_by_peptide_count = function() {
-      message("removing proteins with less than: ", self$get_config()$min_peptides_protein, " peptpides")
-      private$.data <- prolfqua::filter_proteins_by_peptide_count(self$data_long(), self$get_config())$data
+      cfg <- self$get_config()
+      message("removing proteins with less than: ", cfg$min_peptides_protein, " peptpides")
+      level_a <- cfg$hierarchy_keys_depth()
+      level_b <- cfg$hierarchy_keys()[length(level_a) + 1]
+      if (is.na(level_b)) {
+        warning("here is no B in A")
+        return(invisible(self))
+      }
+      c_name <- paste0("nr_", level_b, "_IN_", paste(level_a, collapse = "_"))
+      counts <- dplyr::distinct(dplyr::select(self$data_long(), dplyr::all_of(c(level_a, level_b)))) |>
+        dplyr::group_by(dplyr::across(dplyr::all_of(level_a))) |>
+        dplyr::summarize(!!c_name := dplyr::n())
+      data <- dplyr::inner_join(self$data_long(), counts, by = level_a)
+      message("Column added : ", c_name)
+      private$.data <- dplyr::filter(data, !!sym(c_name) >= cfg$min_peptides_protein)
       invisible(self)
     },
     #' @description
@@ -222,47 +218,6 @@ LFQData <- R6::R6Class(
     decoy_proportion = function() {
       private$.prefix_proportion(prolfqua::is_decoy, self$get_config()$pattern_decoys)
     },
-    #' @description
-    #' proportion of modelling-level keys (subject_id) that are contaminants.
-    #' Returns 0 when `pattern_contaminants` is not configured.
-    #' @return numeric in [0, 1]
-    contaminant_proportion = function() {
-      pat <- self$get_config()$pattern_contaminants
-      if (is.null(pat)) {
-        return(0)
-      }
-      private$.prefix_proportion(prolfqua::is_contaminant, pat)
-    },
-    #' @description
-    #' Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
-    #' For instance if a peptide has a missing value in more then nrNA of the samples within a condition
-    #' it will be removed
-    #' @param nr_na number of NA values
-    #' @param factor_depth control whether `nr_na` is applied per condition or more
-    #'   globally, e.g. `factor_depth = 0` means per experiment
-    #' @return LFQData with NA omitted.
-    #'
-    omit_na = function(nr_na = 0, factor_depth = NULL) {
-      if (is.null(factor_depth)) {
-        missing <- prolfqua::summarize_stats_factors(self)
-      } else {
-        if (factor_depth >= 1) {
-          lfq_copy <- self$get_copy()
-          lfq_copy$set_config_value("factor_depth", factor_depth)
-          missing <- prolfqua::summarize_stats_factors(lfq_copy)
-        } else {
-          missing <- prolfqua::summarize_stats_all(self)
-        }
-      }
-      not_na <- missing |> dplyr::filter(nrNAs <= nr_na)
-      sum_n <- not_na |> group_by(across(all_of(self$hierarchy_keys()))) |> summarise(n = n())
-      not_na <- sum_n |> dplyr::filter(n == max(n))
-
-      not_na <- not_na |> dplyr::select(dplyr::all_of(self$hierarchy_keys()))
-      not_na_data <- dplyr::inner_join(not_na, self$data_long()) |> ungroup()
-      return(LFQData$new(not_na_data, self$get_config()))
-    },
-
     #'
     #' @description
     #' some software is reporting NA's as 0, you must remove it from your data
@@ -280,16 +235,10 @@ LFQData <- R6::R6Class(
     #'
     data_wide = function(as.matrix = FALSE, value = NULL) {
       cfg <- self$get_config()
-      if (is.null(value)) {
-        wide <- prolfqua::tidy_to_wide_config(self, as.matrix = as.matrix)
-      } else {
+      if (!is.null(value)) {
         stopifnot(value %in% cfg$value_vars())
-        wide <- prolfqua::tidy_to_wide_config(
-          self,
-          as.matrix = as.matrix,
-          value = value
-        )
       }
+      wide <- prolfqua::tidy_to_wide_config(self, as.matrix = as.matrix, value = value %||% self$response())
       wide$config <- cfg$clone(deep = TRUE)
       return(wide)
     },
@@ -430,184 +379,9 @@ LFQData <- R6::R6Class(
         "topN" = AggregateTopN$new(self, ...),
         abort_bad_argument("method", 'be one of: "medpolish", "rlm", "topN"', not = method)
       )
-    },
-    #' @description
-    #' get difference of self with other if other is subset of self
-    #'
-    #' @details
-    #' Use to compare filtering results obtained from self, e.g. which proteins and peptides were removed (other)
-    #'
-    #' @param other a filtered LFQData set
-    #' @return LFQData
-    #'
-    filter_difference = function(other) {
-      diffdata <- prolfqua::filter_difference(
-        self$data_long(),
-        other$data_long(),
-        self$get_config()
-      )
-      return(LFQData$new(diffdata, self$get_config()))
     }
   )
 )
-
-# Direct intensity manipulation ----
-
-#' Remove rows when intensity lower then threshold
-#' @param pdata data.frame
-#' @param response character — name of the intensity column
-#' @param threshold numeric — minimum intensity to keep (default 1)
-#' @return data.frame
-#' @export
-#' @keywords internal
-#' @family filtering
-#' @examples
-#'
-#' istar <- sim_lfq_data_peptide_config(Nprot = 20)
-#' lfqdata <- LFQData$new(istar$data, istar$config)
-#' res1 <- remove_small_intensities(lfqdata$data_long(), lfqdata$response(), threshold = 1)
-#' res1000 <- remove_small_intensities(lfqdata$data_long(), lfqdata$response(), threshold = 1000)
-#' stopifnot(nrow(res1) > nrow(res1000))
-#'
-remove_small_intensities <- function(pdata, response, threshold = 1) {
-  res_data <- pdata |> dplyr::filter(!!sym(response) >= threshold)
-  return(res_data)
-}
-
-# Hierarchy counting helpers ----
-
-.make_name_AinB <- function(level_a, level_b, prefix = "nr_") {
-  c_name <- paste(prefix, level_b, "_IN_", level_a, sep = "")
-  return(c_name)
-}
-
-.nr_B_in_A <- function(data, level_a, level_b, merge = TRUE) {
-  nam_a <- paste(level_a, collapse = "_")
-  nam_b <- paste(level_b, collapse = "_")
-  c_name <- .make_name_AinB(nam_a, nam_b)
-  if (!c_name %in% colnames(data)) {
-    data$c_name <- NULL
-  }
-  tmp <- data |>
-    dplyr::select(all_of(c(level_a, level_b))) |>
-    dplyr::distinct() |>
-    dplyr::group_by(across(all_of(level_a))) |>
-    dplyr::summarize(!!c_name := n())
-
-  if (!merge) {
-    return(tmp)
-  }
-  data <- dplyr::inner_join(data, tmp, by = level_a)
-  message("Column added : ", c_name)
-  return(list(data = data, name = c_name))
-}
-
-
-#' Compute nr of B per A
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
-#' config <- bb$config$clone(deep=TRUE)
-#' data <- bb$data
-#' hierarchy <- config$hierarchy_keys()
-#' res <- nr_B_in_A(data, config)
-#'
-#' res$data |>
-#'   dplyr::select(all_of(c(config$hierarchy_keys_depth(),  res$name))) |>
-#'   dplyr::distinct() |>
-#'   dplyr::pull() |> table()
-#'
-#'
-#' bb <- prolfqua::prolfqua_data('data_skylineSRM_HL_A')
-#' config <- bb$config_f()
-#' data <- bb$data
-#' data$Area[data$Area == 0] <- NA
-#' analysis <- setup_analysis(data, config)
-#'
-#' resDataStart <- bb$analysis(bb$data, config)
-#'
-#' nr_B_in_A(resDataStart, config)
-#' nr_B_in_A(resDataStart, config, merge = FALSE)
-#' config$hierarchy_depth <- 2
-#' nr_B_in_A(resDataStart, config, merge = FALSE)
-#'
-nr_B_in_A <- function(pdata, config, merge = TRUE) {
-  level_a <- config$hierarchy_keys_depth()
-  level_b <- config$hierarchy_keys()[length(level_a) + 1]
-  if (is.na(level_b)) {
-    warning("here is no B in A")
-    return(NULL)
-  } else {
-    .nr_B_in_A(pdata, level_a, level_b, merge = merge)
-  }
-}
-
-# Filtering helpers -----
-
-#' Keep only those proteins with 2 IDENTIFIED peptides
-#' @param pdata data.frame
-#' @param config AnalysisConfiguration
-#' @return list with data.frame (data) and name of new column (name)
-#' @export
-#' @keywords internal
-#' @family preprocessing
-#' @examples
-#'
-#' istar <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' filterPep <- prolfqua::filter_proteins_by_peptide_count(istar$data, istar$config)
-#' x <- prolfqua::summarize_hierarchy(filterPep$data,
-#'   lfq$hierarchy_keys(), lfq$isotope_label())
-#' stopifnot(x$peptide_Id_n >= istar$config$min_peptides_protein)
-#'
-filter_proteins_by_peptide_count <-
-  function(pdata, config) {
-    # remove single hit wonders
-    tmp <- prolfqua::nr_B_in_A(pdata, config)
-    if (!is.null(tmp)) {
-      res <- dplyr::filter(tmp$data, !!sym(tmp$name) >= config$min_peptides_protein)
-      name <- tmp$name
-    } else {
-      res <- pdata
-      name <- NULL
-    }
-    return(list(data = res, name = name))
-  }
-
-
-#' get the difference of two dataset where one is a subset of the other.
-#'
-#' @param x data.frame
-#' @param y data.frame
-#' @param config AnlysisConfiguration
-#' @return data.frame
-#' @export
-#' @keywords internal
-#'
-#' @examples
-#'
-#'
-#' istar <- prolfqua::sim_lfq_data_peptide_config()
-#' istar$config <- istar$config
-#' istar_data <- istar$data
-#' filterPep <- prolfqua:::filter_proteins_by_peptide_count( istar_data ,  istar$config )
-#' tmp <- filter_difference(istar_data, filterPep$data, istar$config)
-#' stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))
-#' tmp <- filter_difference(filterPep$data, istar_data , istar$config)
-#' stopifnot(nrow(istar_data )  - nrow(filterPep$data) == nrow(tmp))
-#'
-filter_difference <- function(x, y, config) {
-  if (nrow(y) > nrow(x)) {
-    dplyr::anti_join(y, x, by = config$id_vars())
-  } else {
-    dplyr::anti_join(x, y, by = config$id_vars())
-  }
-}
-
 
 #' converts LFQData object to SummarizedExperiment
 #'

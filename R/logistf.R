@@ -1,89 +1,3 @@
-#' compute contrasts
-#'
-#'
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
-#' contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
-#' ctrpep <- ContrastsFirth$new(mod3,contrasts)
-#' ctrpep$get_contrast_sides()
-#'
-#' linfct_models <- ctrpep$get_linfct()
-#' tmp1 <- contrasts_linfct_firth(linfct_models$models1)
-#' tmp2 <- contrasts_linfct_firth(linfct_models$models2)
-#' stopifnot(all(dim(tmp1) > 10))
-#' stopifnot(all(dim(tmp2) > 10))
-contrasts_linfct_firth <- function(models, subject_id = "protein_Id") {
-  model_df <- models$model_df |>
-    dplyr::filter(
-      .data$has_model_fit,
-      !is.na(.data$nr_coef_not_NA),
-      !purrr::map_lgl(.data$linear_model, is.character)
-    )
-  #computeGroupAverages
-  message("contrasts_linfct_firth")
-  if (nrow(model_df) == 0) {
-    return(tibble::tibble())
-  }
-  modelcol <- "linear_model"
-
-  interaction_models <- vector(mode = "list", length = nrow(model_df))
-  pb <- .make_progress(length(model_df[[modelcol]]), label = "firth contrasts")
-
-  for (i in seq_along(model_df[[modelcol]])) {
-    # nolint start: object_usage_linter
-    interaction_models[[i]] <- tryCatch(
-      .compute_contrast(
-        model_df[[modelcol]][[i]],
-        linfct = model_df$linfct[[i]],
-        strategy = models$strategy
-      ),
-      error = function(e) FALSE
-    )
-    # nolint end
-    pb$tick()
-  }
-
-  interaction_model_matrix <- model_df
-  interaction_model_matrix$contrast <- interaction_models
-
-  mclass <- function(x) {
-    class(x)[1]
-  }
-
-  interaction_model_matrix <- interaction_model_matrix |>
-    dplyr::mutate(classC = purrr::map_chr(.data$contrast, mclass))
-
-  n_failed <- sum(interaction_model_matrix$classC == "logical")
-  if (n_failed > 0) {
-    message(
-      "contrasts_linfct_logistf: dropped ",
-      n_failed,
-      " of ",
-      nrow(interaction_model_matrix),
-      " proteins with failed contrasts."
-    )
-  }
-
-  interaction_model_matrix <- interaction_model_matrix |>
-    dplyr::filter(.data$classC != "logical")
-
-  contrasts <- interaction_model_matrix |>
-    dplyr::select(all_of(c(subject_id, "contrast"))) |>
-    tidyr::unnest(cols = c("contrast"))
-
-  # take sigma and df from somewhere else.
-  model_infos <- model_df |>
-    dplyr::select(all_of(c(subject_id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
-
-    dplyr::distinct()
-  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_id)
-  return(ungroup(contrasts))
-}
-
-
 .prepare_detection_lfqdata <- function(lfqdata) {
   stopifnot("LFQData" %in% class(lfqdata))
   lfq_missing <- lfqdata$get_copy()
@@ -166,60 +80,34 @@ build_model_glm_peptide <- function(lfqdata, modelstr) {
 #' formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 #' xx <- build_model_logistf(tmp, formula)
 #'
-#'
-#'
+#' contrasts <- c(AvsB = "group_A - group_B")
 #' m <- xx$models$models1$model_df$linear_model[[1]]
-#' linfct <- linfct_from_model(m)
-#' linfct_all_possible_contrasts(linfct$linfct_factors)
-#' x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-#' linfct <- linfct_factors_contrasts(m)
-#'
+#' linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
 #' m <- xx2$models$models2$model_df$linear_model[[1]]
-#' linfct <- linfct_from_model(m)
-#' x <- linfct_all_possible_contrasts(linfct$linfct_factors)
-#' x <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-#' linfct <- linfct_factors_contrasts(m)
-#'
-#'
-#'
+#' linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
 build_model_logistf <- function(data, formula) {
-  pep <- data
-  df <- pep$summarize_hierarchy()
-  df2 <- df[df[[ncol(df)]] > 1, ]
-
-  models2 <- NULL
-  hkey <- NULL
-  if (nrow(df2) > 0) {
-    hkey <- tail(pep$get_config()$hierarchy_keys(), n = 1)
-    lfq2 <- pep$get_subset(df2)
-    formula2 <- paste0(formula, "+", hkey)
-    model_strategy2 <- prolfqua::strategy_logistf(formula2)
-    models2 <- model_analyse(
-      lfq2$data_long(),
-      model_strategy2,
-      model_name = "logistf_2",
-      label = "firth multi-peptide",
-      subject_id = lfq2$subject_id()
+  df <- data$summarize_hierarchy()
+  n_children <- df[[ncol(df)]]
+  hkey <- if (any(n_children > 1)) tail(data$get_config()$hierarchy_keys(), n = 1) else NULL
+  fit_subset <- function(rows, formula, model_name, label) {
+    if (nrow(rows) == 0) {
+      return(NULL)
+    }
+    lfq <- data$get_subset(rows)
+    strategy <- strategy_logistf(formula)
+    models <- model_analyse(
+      lfq$data_long(),
+      strategy,
+      model_name = model_name,
+      label = label,
+      subject_id = lfq$subject_id()
     )
-    models2$strategy <- model_strategy2
+    models$strategy <- strategy
+    models
   }
-
-  df1 <- df[df[[ncol(df)]] == 1, ]
-  models1 <- NULL
-  if (nrow(df1) > 0) {
-    lfq1 <- pep$get_subset(df1)
-    model_strategy1 <- prolfqua::strategy_logistf(formula)
-    models1 <- model_analyse(
-      lfq1$data_long(),
-      model_strategy1,
-      model_name = "logistf_1",
-      label = "firth single-peptide",
-      subject_id = lfq1$subject_id()
-    )
-    models1$strategy <- model_strategy1
-  }
-  res <- ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey))
-  return(res)
+  models2 <- fit_subset(df[n_children > 1, ], paste0(formula, "+", hkey), "logistf_2", "firth multi-peptide")
+  models1 <- fit_subset(df[n_children == 1, ], formula, "logistf_1", "firth single-peptide")
+  ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey))
 }
 
 
@@ -318,81 +206,35 @@ sim_build_models_logistf <- function(
 #' @importFrom logistf logistf
 #' @examples
 #' strat <- StrategyLogistf$new("bin_resp ~ condition")
-#' strat$model_fun(get_formula = TRUE)
+#' strat$formula
 StrategyLogistf <- R6::R6Class(
   "StrategyLogistf",
+  inherit = StrategyBase,
   public = list(
-    #' @field formula model formula
-    formula = NULL,
-    #' @field model_name name of model
-    model_name = NULL,
-    #' @field report_columns columns to report
-    report_columns = NULL,
-    #' @field is_mixed always FALSE for logistf
-    is_mixed = FALSE,
-    #' @field anova_df list with anova function and column names
-    anova_df = NULL,
-
     #' @description Create a new StrategyLogistf
     #' @param modelstr model formula string
     #' @param model_name name of model
-    #' @param report_columns columns to report
-    #' @param test type of test statistic to use (e.g. "Chisq")
-    initialize = function(
-      modelstr,
-      model_name = "logistf",
-      report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted"),
-      test = "Chisq"
-    ) {
-      self$formula <- as.formula(modelstr)
-      self$model_name <- model_name
-      self$report_columns <- report_columns
-      self$anova_df <- get_anova_df(test = test)
+    initialize = function(modelstr, model_name = "logistf") {
+      super$initialize(modelstr, model_name)
     },
-
-    #' @description Fit logistf to one protein's data
-    #' @param x data.frame for one protein
-    #' @param pb optional progress bar
-    #' @param get_formula if TRUE, return formula instead of fitting
-    model_fun = function(x, pb, get_formula = FALSE) {
-      if (get_formula) {
-        return(self$formula)
-      }
-      if (!missing(pb)) {
-        pb$tick()
-      }
-      predictor_vars <- all.vars(update(self$formula, . ~ .))
-      DFT <- x |>
-        dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
-        dplyr::summarize(Freq = dplyr::n(), .groups = "drop")
-      tryCatch(logistf::logistf(self$formula, data = DFT, weights = Freq, pl = FALSE), error = .error_handler)
-    },
-
-    #' @description Check if model is singular (NA coefficients or df < 2)
-    #' @param model fitted model
-    isSingular = function(model) {
-      if (any(is.na(coefficients(model)))) {
-        return(TRUE)
-      }
-      if (self$df_residual(model) >= 2) {
-        return(FALSE)
-      }
-      TRUE
-    },
-
-    #' @description Compute contrasts from fitted model
-    #' @param ... passed to \code{\link{compute_contrast}}
-    contrast_fun = function(...) compute_contrast(...),
 
     #' @description Get residual degrees of freedom
     #' @param model fitted model
-    df_residual = function(model) {
-      model$n - length(model$coefficients)
-    },
+    df_residual = function(model) model$n - length(model$coefficients),
 
     #' @description Get residual standard error (always 1 for logistic)
     #' @param model fitted model
     sigma = function(model) 1
+  ),
+  private = list(
+    # Collapse identical predictor rows into frequency weights.
+    prepare = function(x) {
+      predictor_vars <- all.vars(update(self$formula, . ~ .))
+      x |>
+        dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
+        dplyr::summarize(Freq = dplyr::n(), .groups = "drop")
+    },
+    fit = function(DFT) logistf::logistf(self$formula, data = DFT, weights = Freq, pl = FALSE)
   )
 )
 
@@ -402,15 +244,11 @@ StrategyLogistf <- R6::R6Class(
 #' Convenience wrapper that creates a \code{\link{StrategyLogistf}} object.
 #' @export
 #' @rdname strategy
-#' @param modelstr model formula
-#' @param model_name name of model
-#' @param report_columns columns to report
-#' @param test type of test statistic to use (e.g. "Chisq")
 #' @family modelling
 #' @return a \code{\link{StrategyLogistf}} object
 #' @examples
 #' tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
-#' tmp$model_fun(get_formula = TRUE)
+#' tmp$formula
 #'
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
@@ -427,11 +265,6 @@ StrategyLogistf <- R6::R6Class(
 #'   model_name = "random_example")
 #' modelFunction$model_fun(nestProtein$data[[1]])
 #' modelFunction$model_fun(nestProtein$data[[4]])
-strategy_logistf <- function(
-  modelstr,
-  model_name = "logistf",
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted"),
-  test = "Chisq"
-) {
-  StrategyLogistf$new(modelstr, model_name, report_columns, test)
+strategy_logistf <- function(modelstr, model_name = "logistf") {
+  StrategyLogistf$new(modelstr, model_name)
 }

@@ -1,96 +1,5 @@
 # Moderation and p-value adjustment ----
 
-.validate_variance_floor <- function(variance_floor) {
-  if (is.null(variance_floor)) {
-    return(invisible(NULL))
-  }
-  valid <- is.numeric(variance_floor) &&
-    length(variance_floor) == 1L &&
-    !is.na(variance_floor) &&
-    is.finite(variance_floor) &&
-    variance_floor > 0
-  if (!valid) {
-    stop(
-      "`variance_floor` must be NULL or one positive number.",
-      call. = FALSE
-    )
-  }
-  invisible(NULL)
-}
-
-.moderate_variances <- function(
-  contrast_df,
-  df,
-  robust,
-  variance_floor
-) {
-  squeezed_var <- limma::squeezeVar(
-    contrast_df$sigma^2,
-    df = contrast_df[[df]],
-    robust = robust
-  )
-
-  if (all(is.infinite(squeezed_var$df.prior))) {
-    squeezed_var$df.prior <- mean(contrast_df[[df]]) *
-      nrow(contrast_df) /
-      10
-  }
-  if (is.null(variance_floor)) {
-    return(squeezed_var)
-  }
-
-  bounded <- !is.na(squeezed_var$var.post) &
-    squeezed_var$var.post < variance_floor
-  squeezed_var$var.post[bounded] <- variance_floor
-  squeezed_var$df.prior[bounded] <- Inf
-  squeezed_var
-}
-
-.append_moderated_statistics <- function(
-  contrast_df,
-  squeezed_var,
-  df
-) {
-  squeezed_var <- tibble::as_tibble(squeezed_var)
-  squeezed_var <- setNames(
-    squeezed_var,
-    paste0("moderated.", names(squeezed_var))
-  )
-  dplyr::bind_cols(contrast_df, squeezed_var) |>
-    dplyr::mutate(
-      moderated.std.error = .data$std.error *
-        sqrt(.data$moderated.var.post) /
-        .data$sigma,
-      moderated.statistic = .data$statistic *
-        .data$sigma /
-        sqrt(.data$moderated.var.post),
-      moderated.df.total = !!sym(df) +
-        .data$moderated.df.prior,
-      moderated.p.value = 2 *
-        pt(
-          abs(.data$moderated.statistic),
-          df = .data$moderated.df.total,
-          lower.tail = FALSE
-        )
-    )
-}
-
-.append_moderated_confidence <- function(
-  contrast_df,
-  estimate,
-  confint
-) {
-  conf_quantile <- -qt(
-    (1 - confint) / 2,
-    df = contrast_df$moderated.df.total
-  )
-  contrast_df$moderated.conf.low <- contrast_df[[estimate]] -
-    conf_quantile * contrast_df$moderated.std.error
-  contrast_df$moderated.conf.high <- contrast_df[[estimate]] +
-    conf_quantile * contrast_df$moderated.std.error
-  dplyr::ungroup(contrast_df)
-}
-
 #' Moderate p-values - limma approach
 #' @export
 #' @family modelling
@@ -115,70 +24,40 @@ moderated_p_limma <- function(
   confint = 0.95,
   variance_floor = NULL
 ) {
-  .validate_variance_floor(variance_floor)
+  valid_floor <- is.numeric(variance_floor) && length(variance_floor) == 1L && is.finite(variance_floor)
+  if (!is.null(variance_floor) && !(valid_floor && variance_floor > 0)) {
+    stop("`variance_floor` must be NULL or one positive number.", call. = FALSE)
+  }
 
   # Empirical-Bayes variance moderation via limma. Since limma 3.x, squeezeVar()
   # estimates the prior robustly on fractional / low residual df (as produced by
   # rlm, lmer_nested and the imputation facades) without the min_df workaround
   # that prolfqua's former squeezeVarRob() fork carried over from MSqRob.
-  squeezed_var <- .moderate_variances(
-    contrast_df,
-    df,
-    robust,
-    variance_floor
-  )
-  contrast_df <- .append_moderated_statistics(
-    contrast_df,
-    squeezed_var,
-    df
-  )
-  .append_moderated_confidence(
-    contrast_df,
-    estimate,
-    confint
-  )
-}
+  squeezed_var <- limma::squeezeVar(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
+  if (all(is.infinite(squeezed_var$df.prior))) {
+    squeezed_var$df.prior <- mean(contrast_df[[df]]) * nrow(contrast_df) / 10
+  }
+  if (!is.null(variance_floor)) {
+    bounded <- !is.na(squeezed_var$var.post) & squeezed_var$var.post < variance_floor
+    squeezed_var$var.post[bounded] <- variance_floor
+    squeezed_var$df.prior <- rep_len(squeezed_var$df.prior, length(bounded))
+    squeezed_var$df.prior[bounded] <- Inf
+  }
+  squeezed_var <- tibble::as_tibble(squeezed_var)
+  squeezed_var <- setNames(squeezed_var, paste0("moderated.", names(squeezed_var)))
+  contrast_df <- dplyr::bind_cols(contrast_df, squeezed_var) |>
+    dplyr::mutate(
+      moderated.std.error = .data$std.error * sqrt(.data$moderated.var.post) / .data$sigma,
+      moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post),
+      moderated.df.total = !!sym(df) + .data$moderated.df.prior,
+      moderated.p.value = 2 * pt(abs(.data$moderated.statistic), df = .data$moderated.df.total, lower.tail = FALSE)
+    )
 
-#' Moderate p-value for long table
-#' @param contrast_df result of \code{\link{contrasts_linfct}}
-#' @param group_by_col colnames with contrast description - default 'lhs'
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#'
-#' mod <- sim_build_models_lm()
-#' m <- get_complete_model_fit(mod$model_df)
-#' factor_contrasts <- linfct_factors_contrasts(m$linear_model[[1]])
-#' factor_levelContrasts <- contrasts_linfct(
-#'   mod$model_df,
-#'   factor_contrasts,
-#'   subject_id = "protein_Id",
-#'   contrastfun = compute_contrast)
-#'
-#' mmm <- moderated_p_limma_long(factor_levelContrasts, group_by_col = "lhs")
-#'
-#' @param variance_floor optional positive lower bound for posterior variances
-moderated_p_limma_long <- function(
-  contrast_df,
-  group_by_col = "lhs",
-  estimate = "estimate",
-  robust = FALSE,
-  variance_floor = NULL
-) {
-  split_groups <- contrast_df |>
-    dplyr::group_by(across(all_of(group_by_col))) |>
-    dplyr::group_split()
-  moderated_results <- purrr::map_df(
-    split_groups,
-    moderated_p_limma,
-    estimate = estimate,
-    robust = robust,
-    variance_floor = variance_floor
-  )
-  return(moderated_results)
+  conf_quantile <- -qt((1 - confint) / 2, df = contrast_df$moderated.df.total)
+  contrast_df$moderated.conf.low <- contrast_df[[estimate]] - conf_quantile * contrast_df$moderated.std.error
+  contrast_df$moderated.conf.high <- contrast_df[[estimate]] + conf_quantile * contrast_df$moderated.std.error
+  dplyr::ungroup(contrast_df)
 }
-
 
 #' Finalize moderated contrast columns (prune raw stats, promote moderated, FDR).
 #'
@@ -188,7 +67,7 @@ moderated_p_limma_long <- function(
 #' column names; when \code{all = TRUE} both are kept and only the moderated
 #' FDR column is added.
 #'
-#' @param result moderated contrast table (output of \code{moderated_p_limma_long}).
+#' @param result moderated contrast table (per-group output of \code{moderated_p_limma}).
 #' @param p.adjust p-value adjustment function (signature compatible with
 #'   \code{adjust_p_values}).
 #' @param all keep all columns (default FALSE).
@@ -301,14 +180,9 @@ adjust_p_values <- function(
 #' testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10), tolerance = 1e-4)
 #'
 get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
-  n.obs <- pmin(n.obs, max.n)
-
-  shape1 <- (n.obs / 2 + 0.5)
-  shape2 <- (n.obs - (n.obs / 2 + 0.5) + 1)
-
-  stopifnot(shape1 == shape2)
-  res.p.value <- pbeta(median.p.value, shape1 = shape1, shape2 = shape2)
-  return(res.p.value)
+  # beta distribution of the median of n.obs uniform p-values; both shapes equal n.obs / 2 + 0.5
+  shape <- pmin(n.obs, max.n) / 2 + 0.5
+  pbeta(median.p.value, shape1 = shape, shape2 = shape)
 }
 
 
@@ -388,10 +262,6 @@ summary_ROPECA_median_p.scaled <- function(
   p.value = "moderated.p.value",
   max.n = 10
 ) {
-  nrpeps_per_prot <- contrasts_data |>
-    group_by(across(all_of(c(subject_id, contrast)))) |>
-    dplyr::summarize(n = dplyr::n())
-
   contrasts_data <- contrasts_data |>
     dplyr::mutate(
       scaled.p = ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value), !!sym(p.value) - 1)
@@ -400,6 +270,7 @@ summary_ROPECA_median_p.scaled <- function(
   summarized.protein <- contrasts_data |>
     group_by(across(all_of(c(subject_id, contrast)))) |>
     dplyr::summarize(
+      n = dplyr::n(),
       n_not_na = n(),
       mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
       estimate = median(!!sym(estimate), na.rm = TRUE),
@@ -409,92 +280,11 @@ summary_ROPECA_median_p.scaled <- function(
     )
 
   summarized.protein <- summarized.protein |>
-    dplyr::mutate(median.p.value = 1 - abs(.data$median.p.scaled))
-
-  summarized.protein <- summarized.protein |>
-    dplyr::mutate(beta.based.significance = get_p_values_pbeta(.data$median.p.value, .data$n_not_na, max.n = max.n))
-  summarized.protein <- summarized.protein |>
-    dplyr::mutate(n.beta = pmin(.data$n_not_na, max.n))
-
-  summarized.protein <- dplyr::inner_join(nrpeps_per_prot, summarized.protein, by = c(subject_id, contrast))
-
-  summarized.protein$isSingular <- FALSE
-  # scale it back here.
-  return(ungroup(summarized.protein))
-}
-
-
-#' Fishers exact test on a datframe
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#' Nprot <- 1000
-#' condA <- 8
-#' condB <- 8
-#' observedA <- sample(0:8, Nprot, replace = TRUE)
-#' observedB <- sample(0:8, Nprot, replace = TRUE)
-#' fisher_input <- data.frame(observedA = observedA, observedB = observedB)
-#'
-#' fisher_input$samplesA <- condA
-#' fisher_input$samplesB <- condB
-#' proteinID <- unique(stringi::stri_rand_strings(Nprot + 20,5))[1:Nprot]
-#' fisher_input$proteinID <- proteinID
-#' res <- contrasts_fisher_exact(fisher_input)
-#'
-contrasts_fisher_exact <- function(
-  fisher_input,
-  observedA = "observedA",
-  observedB = "observedB",
-  samplesA = "samplesA",
-  samplesB = "samplesB"
-) {
-  relative_risk <- function(observedA, observedB, samplesA, samplesB) {
-    rr <- (observedA / (observedA + observedB)) / (samplesA / (samplesA + samplesB))
-    return(rr)
-  }
-  ods_ratio <- function(observedA, observedB, samplesA, samplesB) {
-    rr <- (observedA / observedB) / (samplesA / samplesB)
-    return(rr)
-  }
-  apply_fisher <- function(proteinID, observedA, observedB, samplesA, samplesB) {
-    mat <- matrix(c(observedA, samplesA - observedA, observedB, samplesB - observedB), nrow = 2)
-    fisher_result <- fisher.test(mat)
-    return(data.frame(
-      proteinID = proteinID,
-      p_value = fisher_result$p.value,
-      OdsRatio = (fisher_result$estimate),
-      conf.lower = (fisher_result$conf.int[1]),
-      conf.higher = (fisher_result$conf.int[2])
-    ))
-  }
-
-  fisher_input$OdsRatioM <- ods_ratio(
-    observedA = fisher_input[["observedA"]],
-    observedB = fisher_input[["observedB"]],
-    samplesA = fisher_input[["samplesA"]],
-    samplesB = fisher_input[["samplesB"]]
-  )
-  fisher_input$relative_riskM <- relative_risk(
-    observedA = fisher_input[["observedA"]],
-    observedB = fisher_input[["observedB"]],
-    samplesA = fisher_input[["samplesA"]],
-    samplesB = fisher_input[["samplesB"]]
-  )
-
-  res <- vector(mode = "list", nrow(fisher_input))
-
-  for (i in seq_len(nrow(fisher_input))) {
-    res[[i]] <- apply_fisher(
-      fisher_input[["proteinID"]][i],
-      fisher_input[["observedA"]][i],
-      fisher_input[["observedB"]][i],
-      fisher_input[["samplesA"]][i],
-      fisher_input[["samplesB"]][i]
+    dplyr::mutate(
+      median.p.value = 1 - abs(.data$median.p.scaled),
+      beta.based.significance = get_p_values_pbeta(.data$median.p.value, .data$n_not_na, max.n = max.n),
+      n.beta = pmin(.data$n_not_na, max.n),
+      isSingular = FALSE
     )
-  }
-
-  result <- dplyr::bind_rows(res)
-  enriched_result <- dplyr::inner_join(fisher_input, result, by = c("proteinID" = "proteinID"))
-  return(enriched_result)
+  return(ungroup(summarized.protein))
 }

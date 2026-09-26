@@ -31,8 +31,6 @@
 NULL
 
 
-## @importFrom vsn justvsn
-
 # Suppress R CMD check NOTEs for variables used in NSE (dplyr/ggplot2)
 utils::globalVariables(c(
   ".",
@@ -43,11 +41,9 @@ utils::globalVariables(c(
   "Replicate",
   "group",
   "isSingular",
-  "linear_model",
   "meanAbundance",
   "moderated.var.post",
   "nrPeptides",
-  "percent_variance_explained",
   "reference_mean",
   "reference_median",
   "rhs",
@@ -57,21 +53,13 @@ utils::globalVariables(c(
 
 #' Internal Functions by category
 #' @family aggregation
-#' @family benchmarking
-#' @family concrete_configuration
 #' @family configuration
-#' @family deprecated
-#' @family MaxQuant
 #' @family modelling
-#' @family FragPipe
 #' @family plotting
 #' @family preprocessing
 #' @family stats
 #' @family summary
-#' @family transitionCorrelation
 #' @family utilities
-#' @family vignetteHelpers
-#' @family workflows
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
 #'
 #' @return A documentation topic.
@@ -120,21 +108,8 @@ data_checksummarizationrobust87 <- NULL
 #' @family data
 #' @docType data
 #' @keywords internal
-data_checksummarizerobust <- NULL
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
 #'
 data_checksummarizerobust69 <- NULL
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-#'
-data_correlatedPeptideList <- NULL
 
 #' example data for check
 #' @family data

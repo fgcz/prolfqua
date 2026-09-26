@@ -22,12 +22,6 @@ test_that("LFQData filtering and subsetting", {
   # After filtering, should have same or fewer hierarchy entries
   expect_true(nrow(lfq_copy$hierarchy()) <= nrow(orig_hier))
 
-  f1 <- lfqdata$omit_na(nr_na = 0)
-  expect_true(nrow(f1$hierarchy()) <= nrow(lfqdata$hierarchy()))
-
-  f2 <- lfqdata$omit_na(factor_depth = 0)
-  expect_true(nrow(f2$hierarchy()) <= nrow(lfqdata$hierarchy()))
-
   cc <- lfqdata$get_copy()
   cc$complete_cases()
   expect_s3_class(cc, "LFQData")
@@ -42,11 +36,6 @@ test_that("LFQData filtering and subsetting", {
 
   sub <- lfqdata$get_subset(head(lfqdata$hierarchy(), 3))
   expect_s3_class(sub, "LFQData")
-
-  lfq2 <- lfqdata$get_copy()
-  lfq2$set_data(lfq2$data_long()[1:100, ])
-  res <- lfqdata$filter_difference(lfq2)
-  expect_equal(nrow(res$data_long()), nrow(lfqdata$data_long()) - 100)
 })
 
 test_that("remove_small_intensities re-establishes explicit missing rows", {

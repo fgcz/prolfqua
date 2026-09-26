@@ -29,7 +29,6 @@ mod$coef_pairs()
 mod$get_anova()
 mod$coef_volcano()
 mod$anova_histogram()
-mod$write_coef_figures(tempdir())
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -45,7 +44,6 @@ mod$coef_pairs()
 mod$get_anova()
 mod$coef_volcano()
 mod$anova_histogram()
-mod$write_coef_figures(tempdir())
 }
 \seealso{
 Other modelling: 
@@ -104,7 +102,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -112,9 +109,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -125,10 +119,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -140,7 +132,6 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
@@ -156,8 +147,6 @@ Other modelling:
 
 \item{\code{subject_id}}{e.g. protein_Id}
 
-\item{\code{anova_df}}{function to compute anova}
-
 \item{\code{p.adjust}}{function to adjust p-values}
 }
 \if{html}{\out{</div>}}
@@ -168,15 +157,19 @@ Other modelling:
 \item \href{#method-ModelFirth-new}{\code{ModelFirth$new()}}
 \item \href{#method-ModelFirth-get_coefficients}{\code{ModelFirth$get_coefficients()}}
 \item \href{#method-ModelFirth-get_anova}{\code{ModelFirth$get_anova()}}
-\item \href{#method-ModelFirth-coef_histogram}{\code{ModelFirth$coef_histogram()}}
-\item \href{#method-ModelFirth-coef_volcano}{\code{ModelFirth$coef_volcano()}}
-\item \href{#method-ModelFirth-coef_pairs}{\code{ModelFirth$coef_pairs()}}
 \item \href{#method-ModelFirth-anova_histogram}{\code{ModelFirth$anova_histogram()}}
-\item \href{#method-ModelFirth-write_anova_figures}{\code{ModelFirth$write_anova_figures()}}
-\item \href{#method-ModelFirth-write_coef_figures}{\code{ModelFirth$write_coef_figures()}}
 \item \href{#method-ModelFirth-clone}{\code{ModelFirth$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram'><code>prolfqua::ModelInterface$coef_histogram()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs'><code>prolfqua::ModelInterface$coef_pairs()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano'><code>prolfqua::ModelInterface$coef_volcano()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelFirth-new"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelFirth-new}{}}}
@@ -226,36 +219,6 @@ return anova table
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelFirth-coef_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelFirth-coef_histogram}{}}}
-\subsection{Method \code{coef_histogram()}}{
-histogram of model coefficient
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$coef_histogram()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelFirth-coef_volcano"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelFirth-coef_volcano}{}}}
-\subsection{Method \code{coef_volcano()}}{
-volcano plot of non intercept coefficients
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$coef_volcano()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelFirth-coef_pairs"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelFirth-coef_pairs}{}}}
-\subsection{Method \code{coef_pairs()}}{
-pairs-plot of coefficients
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$coef_pairs()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelFirth-anova_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelFirth-anova_histogram}{}}}
 \subsection{Method \code{anova_histogram()}}{
@@ -268,48 +231,6 @@ histogram of ANOVA results
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{what}}{show either "Pr..F." or "FDR.Pr..F."}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelFirth-write_anova_figures"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelFirth-write_anova_figures}{}}}
-\subsection{Method \code{write_anova_figures()}}{
-write figures related to ANOVA into pdf file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$write_anova_figures(path, width = 10, height = 10)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{folder name}
-
-\item{\code{width}}{figure width}
-
-\item{\code{height}}{figure height}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelFirth-write_coef_figures"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelFirth-write_coef_figures}{}}}
-\subsection{Method \code{write_coef_figures()}}{
-write figures related to Coefficients into pdf file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$write_coef_figures(path, width = 10, height = 10)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{folder name}
-
-\item{\code{width}}{figure width}
-
-\item{\code{height}}{figure height}
 }
 \if{html}{\out{</div>}}
 }

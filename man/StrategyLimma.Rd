@@ -77,7 +77,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -85,9 +84,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -98,10 +94,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -113,7 +107,6 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
@@ -157,17 +150,7 @@ Create a new StrategyLimma
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{modelstr}}{model formula as string (e.g. "abundance ~ group_")}
-
-\item{\code{model_name}}{name of model}
-
-\item{\code{trend}}{logical, passed to \code{\link[limma]{eBayes}}}
-
-\item{\code{robust}}{logical, passed to \code{\link[limma]{eBayes}}}
-
-\item{\code{weights}}{either a character string (column name in annotation for
-per-sample weights) or a numeric matrix (proteins x samples) passed to
-\code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).}
+\item{\code{modelstr, model_name, trend, robust, weights}}{see \code{\link{strategy_limma}}}
 }
 \if{html}{\out{</div>}}
 }

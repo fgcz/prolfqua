@@ -84,18 +84,13 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess
 
   d0 <- find_d0_deqms(mean_myfct)
 
-  # Count-specific prior variance
+  # Count-specific prior variance and posterior variance
   if (is.finite(d0)) {
     s02 <- exp(egpred + digamma(d0 / 2) - log(d0 / 2))
-  } else {
-    s02 <- exp(fitted_logvar)
-  }
-
-  # Posterior variance
-  if (is.finite(d0)) {
     var_post <- (d0 * s02 + df_res * mm$sigma^2) / (d0 + df_res)
     df_total <- d0 + df_res
   } else {
+    s02 <- exp(fitted_logvar)
     var_post <- s02
     df_total <- df_res
   }
@@ -379,45 +374,9 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       ))
 
       return(contrast_result)
-    },
-    #' @description
-    #' get \code{\link{ContrastsPlotter}}
-    #' @param fc_threshold fold change threshold to show in plots
-    #' @param fdr_threshold FDR threshold to show in plots
-    get_Plotter = function(
-      fc_threshold = 1,
-      fdr_threshold = 0.1
-    ) {
-      contrast_result <- self$get_contrasts()
-      res <- ContrastsPlotter$new(
-        contrast_result,
-        subject_id = self$subject_id,
-        fcthresh = fc_threshold,
-        volcano = list(list(score = "FDR", thresh = fdr_threshold)),
-        histogram = list(
-          list(score = "p.value", xlim = c(0, 1, 0.05)),
-          list(score = "FDR", xlim = c(0, 1, 0.05))
-        ),
-        score = list(list(score = "statistic", thresh = 5)),
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
-      )
-      return(res)
-    },
-    #' @description
-    #' convert to wide format
-    #' @param columns value column default p.value, FDR, statistic
-    #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
-      contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_to_wide(
-        contrast_minimal,
-        subject_id = self$subject_id,
-        columns = c("diff", columns),
-        contrast = "contrast"
-      )
-      return(contrasts_wide)
     }
+  ),
+  private = list(
+    volcano_scores = "FDR"
   )
 )

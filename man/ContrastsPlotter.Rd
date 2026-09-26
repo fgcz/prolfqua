@@ -46,8 +46,6 @@ stopifnot("ggplot" \%in\% class(cp$score_plot(legend=FALSE)$statistic))
 p <- cp$histogram()
 stopifnot("ggplot" \%in\% class(p$FDR))
 stopifnot("ggplot" \%in\% class(p$p.value))
-p <- cp$histogram_estimate()
-stopifnot("ggplot" \%in\% class(p))
 res <- cp$volcano()
 stopifnot("ggplot" \%in\% class(res$FDR))
 respltly <- cp$volcano_plotly()
@@ -116,7 +114,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -124,9 +121,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -137,10 +131,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -152,22 +144,18 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 
 Other plotting: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{plot_estimate}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
-\code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_boxplot_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_na_heatmap}()},
 \code{\link{plot_pca}()},
@@ -185,8 +173,6 @@ Other plotting:
 
 \item{\code{subject_id}}{hierarchy key columns}
 
-\item{\code{prefix}}{default Contrasts - used to generate file names}
-
 \item{\code{diff}}{column with fold change differences}
 
 \item{\code{contrast}}{column with contrasts names, default "contrast"}
@@ -202,8 +188,6 @@ Other plotting:
 \item{\code{fcthresh}}{fold change threshold}
 
 \item{\code{avg.abundance}}{name of column containing avg abundance values.}
-
-\item{\code{protein_annot}}{protein annotation}
 }
 \if{html}{\out{</div>}}
 }
@@ -212,14 +196,12 @@ Other plotting:
 \itemize{
 \item \href{#method-ContrastsPlotter-new}{\code{ContrastsPlotter$new()}}
 \item \href{#method-ContrastsPlotter-histogram}{\code{ContrastsPlotter$histogram()}}
-\item \href{#method-ContrastsPlotter-histogram_estimate}{\code{ContrastsPlotter$histogram_estimate()}}
 \item \href{#method-ContrastsPlotter-histogram_diff}{\code{ContrastsPlotter$histogram_diff()}}
 \item \href{#method-ContrastsPlotter-volcano}{\code{ContrastsPlotter$volcano()}}
 \item \href{#method-ContrastsPlotter-volcano_plotly}{\code{ContrastsPlotter$volcano_plotly()}}
 \item \href{#method-ContrastsPlotter-ma_plot}{\code{ContrastsPlotter$ma_plot()}}
 \item \href{#method-ContrastsPlotter-ma_plotly}{\code{ContrastsPlotter$ma_plotly()}}
 \item \href{#method-ContrastsPlotter-score_plot}{\code{ContrastsPlotter$score_plot()}}
-\item \href{#method-ContrastsPlotter-score_plotly}{\code{ContrastsPlotter$score_plotly()}}
 \item \href{#method-ContrastsPlotter-barplot_threshold}{\code{ContrastsPlotter$barplot_threshold()}}
 \item \href{#method-ContrastsPlotter-clone}{\code{ContrastsPlotter$clone()}}
 }
@@ -242,7 +224,6 @@ create Crontrast_Plotter
   diff = "diff",
   contrast = "contrast",
   avg.abundance = "avgAbd",
-  protein_annot = NULL,
   group = "BB"
 )}\if{html}{\out{</div>}}
 }
@@ -273,8 +254,6 @@ imputed/fallback rows stay distinguishable).}
 
 \item{\code{avg.abundance}}{name of column with average abundance}
 
-\item{\code{protein_annot}}{add protein annotation (optional)}
-
 \item{\code{group}}{crosstalk group name for linked brushing, default "BB"}
 }
 \if{html}{\out{</div>}}
@@ -289,23 +268,6 @@ plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$histogram()}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsPlotter-histogram_estimate"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsPlotter-histogram_estimate}{}}}
-\subsection{Method \code{histogram_estimate()}}{
-plot histogram of effect size - difference between groups
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$histogram_estimate(binwidth = 0.05)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{binwidth}}{with of bin in histogram}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-histogram_diff"></a>}}
@@ -331,7 +293,7 @@ plot histogram of differences (diff) fold change
 volcano plots (fold change vs FDR)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$volcano(
-  colour,
+  colour = self$model_name,
   legend = TRUE,
   scales = c("fixed", "free", "free_x", "free_y"),
   min_score = NULL
@@ -361,7 +323,7 @@ observed value in the same score column.}
 plotly volcano plots
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$volcano_plotly(
-  colour,
+  colour = self$model_name,
   legend = TRUE,
   scales = c("fixed", "free", "free_x", "free_y"),
   min_score = NULL
@@ -402,7 +364,12 @@ Sometimes measured effects sizes (differences between samples groups)
 are biased by the signal intensity (here protein abundance).
 Such systematic effects can be explored using MA-plots.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$ma_plot(fc, colour, legend = TRUE, rank = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$ma_plot(
+  fc = self$fcthresh,
+  colour = self$model_name,
+  legend = TRUE,
+  rank = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -428,7 +395,12 @@ ggplot
 \subsection{Method \code{ma_plotly()}}{
 ma plotly
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$ma_plotly(fc, colour, legend = TRUE, rank = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$ma_plotly(
+  fc = self$fcthresh,
+  colour = self$model_name,
+  legend = TRUE,
+  rank = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -454,31 +426,7 @@ list of ggplots
 \subsection{Method \code{score_plot()}}{
 plot a score against the log2 fc e.g. t-statistic
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$score_plot(scorespec, colour, legend = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{scorespec}}{list(score="statistics", fcthres = 2, thresh = 5)}
-
-\item{\code{colour}}{column with colour coding}
-
-\item{\code{legend}}{enable legend default TRUE}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list of ggplots
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsPlotter-score_plotly"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsPlotter-score_plotly}{}}}
-\subsection{Method \code{score_plotly()}}{
-plot a score against the log2 fc e.g. t-statistic
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$score_plotly(scorespec, colour, legend = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$score_plot(scorespec, colour = self$model_name, legend = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

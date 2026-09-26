@@ -26,13 +26,7 @@ StrategyLimma <- R6::R6Class(
     #' @field weights either a character string (column name) or a numeric matrix
     weights = NULL,
     #' @description Create a new StrategyLimma
-    #' @param modelstr model formula as string (e.g. "abundance ~ group_")
-    #' @param model_name name of model
-    #' @param trend logical, passed to \code{\link[limma]{eBayes}}
-    #' @param robust logical, passed to \code{\link[limma]{eBayes}}
-    #' @param weights either a character string (column name in annotation for
-    #'   per-sample weights) or a numeric matrix (proteins x samples) passed to
-    #'   \code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).
+    #' @param modelstr,model_name,trend,robust,weights see \code{\link{strategy_limma}}
     initialize = function(modelstr, model_name = "limma", trend = FALSE, robust = FALSE, weights = NULL) {
       self$formula <- as.formula(modelstr)
       self$model_name <- model_name
@@ -143,11 +137,7 @@ compute_borrowed_variance_limma <- function(fit) {
   if (length(complete_rows) == 0) {
     complete_rows <- which.min(rowSums(is.na(expr_matrix)))
   }
-  idx <- complete_rows[1]
-  dummy_data <- annotation
-  dummy_data$.response <- as.numeric(expr_matrix[idx, ])
-  dummy_formula <- update(rhs_formula, .response ~ .)
-  dummy_model <- lm(dummy_formula, data = dummy_data)
+  dummy_model <- .limma_dummy_model(annotation, rhs_formula, expr_matrix[complete_rows[1], ])
 
   list(
     elist = elist,
@@ -214,8 +204,6 @@ compute_borrowed_variance_limma <- function(fit) {
 ) {
   ModelLimma$new(
     fit = fit,
-    design = setup$design,
-    formula = strategy$formula,
     subject_id = setup$subject_id,
     model_name = model_name,
     rowdata = setup$rowdata,
@@ -227,15 +215,12 @@ compute_borrowed_variance_limma <- function(fit) {
   )
 }
 
-.resolve_limma_lod <- function(lod, lfqdata) {
-  if (!is.null(lod)) {
-    return(lod)
-  }
-  missing_helpers <- MissingHelpers$new(
-    lfqdata$data_long(),
-    lfqdata$get_config()
-  )
-  missing_helpers$get_lod()
+# lm of one expression row on the design, used to derive the linear functions of the contrasts.
+.limma_dummy_model <- function(annotation, rhs_formula, response) {
+  dummy_data <- annotation
+  dummy_data$.response <- as.numeric(response)
+  dummy_formula <- update(rhs_formula, .response ~ .)
+  lm(dummy_formula, data = dummy_data)
 }
 
 .impute_limma_data <- function(expr_matrix, weights, lod) {
@@ -254,79 +239,46 @@ compute_borrowed_variance_limma <- function(fit) {
   )
 }
 
-.replace_failed_limma_rows <- function(
-  fit,
-  imputed_fit,
-  failed,
-  borrowed,
-  expr_matrix,
-  design,
-  df_method
+# Shared body of the build_model_limma* builders. `fit_fun(expression, design, weights = )` fits the
+# expression matrix. With `impute = TRUE`, proteins with NA coefficients are refit on LOD-imputed data
+# and get the variance borrowed from the successful fits.
+.build_model_limma_core <- function(
+  lfqdata,
+  strategy,
+  model_name,
+  fit_fun,
+  impute = FALSE,
+  lod = NULL,
+  df_method = "observed"
 ) {
-  fit$coefficients[failed, ] <-
-    imputed_fit$coefficients[failed, ]
-  fit$stdev.unscaled[failed, ] <-
-    imputed_fit$stdev.unscaled[failed, ]
-  fit$sigma[failed] <- borrowed$sigma
-  fit$Amean[failed] <- imputed_fit$Amean[failed]
+  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
+  weights <- .resolve_weights(lfqdata, strategy, setup$annotation)
+  fit <- fit_fun(setup$expr_matrix, setup$design, weights = weights)
+  failed <- if (impute) which(rowSums(is.na(fit$coefficients)) > 0) else integer(0)
+  if (length(failed) == 0) {
+    return(.new_model_limma(fit, setup, strategy, model_name))
+  }
 
+  lod <- .resolve_lod(lod, lfqdata)
+  borrowed <- compute_borrowed_variance_limma(fit)
+  imputed <- .impute_limma_data(setup$expr_matrix, weights, lod)
+  fit_lod <- fit_fun(imputed$expression, setup$design, weights = imputed$weights)
+  fit$coefficients[failed, ] <- fit_lod$coefficients[failed, ]
+  fit$stdev.unscaled[failed, ] <- fit_lod$stdev.unscaled[failed, ]
+  fit$sigma[failed] <- borrowed$sigma
+  fit$Amean[failed] <- fit_lod$Amean[failed]
   if (df_method == "observed") {
-    n_observed <- rowSums(!is.na(expr_matrix))
-    fit$df.residual[failed] <- pmax(
-      n_observed[failed] - ncol(design),
-      1
-    )
+    fit$df.residual[failed] <- pmax(rowSums(!is.na(setup$expr_matrix))[failed] - ncol(setup$design), 1)
   } else {
     fit$df.residual[failed] <- borrowed$df
   }
-  fit
-}
-
-.limma_imputed_dummy_model <- function(setup, expr_imputed) {
-  dummy_data <- setup$annotation
-  dummy_data$.response <- as.numeric(expr_imputed[1, ])
-  dummy_formula <- update(
-    setup$rhs_formula,
-    .response ~ .
-  )
-  lm(dummy_formula, data = dummy_data)
-}
-
-.finish_limma_imputation <- function(
-  fit,
-  imputed_fit,
-  failed,
-  borrowed,
-  expr_matrix,
-  expr_imputed,
-  setup,
-  strategy,
-  model_name,
-  df_method
-) {
-  fit <- .replace_failed_limma_rows(
-    fit,
-    imputed_fit,
-    failed,
-    borrowed,
-    expr_matrix,
-    setup$design,
-    df_method
-  )
   .new_model_limma(
     fit,
     setup,
     strategy,
     model_name,
-    dummy_model = .limma_imputed_dummy_model(
-      setup,
-      expr_imputed
-    ),
-    imputed_proteins = setup$rowdata[
-      failed,
-      setup$subject_id[1],
-      drop = TRUE
-    ]
+    dummy_model = .limma_dummy_model(setup$annotation, setup$rhs_formula, imputed$expression[1, ]),
+    imputed_proteins = setup$rowdata[failed, setup$subject_id[1], drop = TRUE]
   )
 }
 
@@ -360,14 +312,14 @@ compute_borrowed_variance_limma <- function(fit) {
 .fit_vooma <- function(
   expression,
   design,
-  external_weights,
+  weights,
   span,
   plot
 ) {
   preliminary_fit <- limma::lmFit(
     expression,
     design,
-    weights = external_weights
+    weights = weights
   )
   mean_expression <- preliminary_fit$Amean
   sigma <- sqrt(preliminary_fit$sigma)
@@ -398,7 +350,7 @@ compute_borrowed_variance_limma <- function(fit) {
     design,
     weights = .combine_vooma_weights(
       vooma_weights,
-      external_weights
+      weights
     )
   )
 }
@@ -431,11 +383,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' mod_limma$get_anova()
 #'
 build_model_limma <- function(lfqdata, strategy, model_name = strategy$model_name) {
-  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
-  wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
-  fit <- limma::lmFit(setup$expr_matrix, setup$design, weights = wt)
-
-  .new_model_limma(fit, setup, strategy, model_name)
+  .build_model_limma_core(lfqdata, strategy, model_name, limma::lmFit)
 }
 
 
@@ -482,46 +430,7 @@ build_model_limma_impute <- function(
   df_method = c("observed", "borrowed")
 ) {
   df_method <- match.arg(df_method)
-
-  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
-  expr_matrix <- setup$expr_matrix
-  design <- setup$design
-  wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
-
-  fit_na <- limma::lmFit(expr_matrix, design, weights = wt)
-  failed <- which(rowSums(is.na(fit_na$coefficients)) > 0)
-
-  if (length(failed) == 0) {
-    return(
-      .new_model_limma(
-        fit_na,
-        setup,
-        strategy,
-        model_name
-      )
-    )
-  }
-
-  lod <- .resolve_limma_lod(lod, lfqdata)
-  borrowed <- compute_borrowed_variance_limma(fit_na)
-  imputed <- .impute_limma_data(expr_matrix, wt, lod)
-  fit_lod <- limma::lmFit(
-    imputed$expression,
-    design,
-    weights = imputed$weights
-  )
-  .finish_limma_imputation(
-    fit_na,
-    fit_lod,
-    failed,
-    borrowed,
-    expr_matrix,
-    imputed$expression,
-    setup,
-    strategy,
-    model_name,
-    df_method
-  )
+  .build_model_limma_core(lfqdata, strategy, model_name, limma::lmFit, impute = TRUE, lod = lod, df_method = df_method)
 }
 
 
@@ -564,19 +473,8 @@ build_model_limma_voom <- function(
   span = 0.5,
   plot = FALSE
 ) {
-  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
-  expr_matrix <- setup$expr_matrix
-  design <- setup$design
-  ext_wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
-
-  fit <- .fit_vooma(
-    expr_matrix,
-    design,
-    ext_wt,
-    span,
-    plot
-  )
-  .new_model_limma(fit, setup, strategy, model_name)
+  fit_vooma <- function(expression, design, weights) .fit_vooma(expression, design, weights, span, plot)
+  .build_model_limma_core(lfqdata, strategy, model_name, fit_vooma)
 }
 
 
@@ -619,54 +517,8 @@ build_model_limma_voom_impute <- function(
   plot = FALSE
 ) {
   df_method <- match.arg(df_method)
-
-  setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
-  expr_matrix <- setup$expr_matrix
-  design <- setup$design
-  ext_wt <- .resolve_weights(lfqdata, strategy, setup$annotation)
-
-  fit_na <- .fit_vooma(
-    expr_matrix,
-    design,
-    ext_wt,
-    span,
-    plot
-  )
-  failed <- which(rowSums(is.na(fit_na$coefficients)) > 0)
-
-  if (length(failed) == 0) {
-    return(
-      .new_model_limma(
-        fit_na,
-        setup,
-        strategy,
-        model_name
-      )
-    )
-  }
-
-  lod <- .resolve_limma_lod(lod, lfqdata)
-  borrowed <- compute_borrowed_variance_limma(fit_na)
-  imputed <- .impute_limma_data(expr_matrix, ext_wt, lod)
-  fit_lod <- .fit_vooma(
-    imputed$expression,
-    design,
-    imputed$weights,
-    span,
-    plot
-  )
-  .finish_limma_imputation(
-    fit_na,
-    fit_lod,
-    failed,
-    borrowed,
-    expr_matrix,
-    imputed$expression,
-    setup,
-    strategy,
-    model_name,
-    df_method
-  )
+  fit_vooma <- function(expression, design, weights) .fit_vooma(expression, design, weights, span, plot)
+  .build_model_limma_core(lfqdata, strategy, model_name, fit_vooma, impute = TRUE, lod = lod, df_method = df_method)
 }
 
 
@@ -702,10 +554,6 @@ ModelLimma <- R6::R6Class(
   public = list(
     #' @field fit limma MArrayLM object from lmFit
     fit = NULL,
-    #' @field design design matrix
-    design = NULL,
-    #' @field formula model formula
-    formula = NULL,
     #' @field subject_id protein ID column name(s)
     subject_id = character(),
     #' @field model_name model name
@@ -730,8 +578,6 @@ ModelLimma <- R6::R6Class(
     #' @description
     #' initialize ModelLimma
     #' @param fit limma MArrayLM from lmFit
-    #' @param design design matrix
-    #' @param formula model formula
     #' @param subject_id protein ID column name(s)
     #' @param model_name model name
     #' @param rowdata protein ID mapping
@@ -742,8 +588,6 @@ ModelLimma <- R6::R6Class(
     #' @param imputed_proteins character vector of LOD-rescued protein ids
     initialize = function(
       fit,
-      design,
-      formula,
       subject_id,
       model_name,
       rowdata,
@@ -754,8 +598,6 @@ ModelLimma <- R6::R6Class(
       imputed_proteins = character(0)
     ) {
       self$fit <- fit
-      self$design <- design
-      self$formula <- formula
       self$subject_id <- subject_id
       self$model_name <- model_name
       self$rowdata <- rowdata
@@ -820,60 +662,11 @@ ModelLimma <- R6::R6Class(
 
       result <- self$p.adjust(result, column = "p.value", group_by_col = "factor")
       return(dplyr::ungroup(result))
-    },
-    #' @description
-    #' histogram of model coefficient p-values
-    coef_histogram = function() {
-      model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
-      fname <- paste0("Coef_Histogram_", self$model_name, ".pdf")
-      p <- ggplot(data = model_coeff, aes(x = .data$Pr...t.., group = .data$factor)) +
-        geom_histogram(breaks = seq(0, 1, by = 0.05)) +
-        facet_wrap(~factor)
-      return(list(plot = p, name = fname))
-    },
-    #' @description
-    #' volcano plot of non-intercept coefficients
-    coef_volcano = function() {
-      model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
-      fname <- paste0("Coef_VolcanoPlot_", self$model_name, ".pdf")
-      p <- model_coeff |>
-        dplyr::filter(.data$factor != "(Intercept)") |>
-        prolfqua::multigroup_volcano(
-          effect = "Estimate",
-          significance = "Pr...t..",
-          contrast = "factor",
-          label = "subject_id",
-          xintercept = c(-1, 1),
-          colour = NULL
-        )
-      return(list(plot = p, name = fname))
-    },
-    #' @description
-    #' pairs plot of coefficients
-    coef_pairs = function() {
-      model_coeff <- self$get_coefficients()
-      model_coeff <- tidyr::unite(model_coeff, "subject_id", self$subject_id)
-      for_pairs <- model_coeff |>
-        dplyr::select(all_of(c("subject_id", "factor", "Estimate"))) |>
-        tidyr::pivot_wider(names_from = "factor", values_from = "Estimate")
-      fname <- paste0("Coef_Pairsplot_", self$model_name, ".pdf")
-      return(list(plot = for_pairs, name = fname))
-    },
-    #' @description
-    #' histogram of ANOVA F-test p-values
-    #' @param what show either "p.value" or "FDR"
-    anova_histogram = function(what = c("p.value", "FDR")) {
-      what <- match.arg(what)
-      model_anova <- self$get_anova()
-      fname <- paste0("Anova_p.values_", self$model_name, ".pdf")
-      p <- model_anova |>
-        ggplot(aes(x = !!sym(what), group = .data$factor)) +
-        geom_histogram(breaks = seq(0, 1, by = 0.05)) +
-        facet_wrap(~factor)
-      return(list(plot = p, name = fname))
     }
+  ),
+  private = list(
+    volcano_colour = NULL,
+    volcano_prefix = "Coef_VolcanoPlot_"
   )
 )
 
@@ -989,22 +782,10 @@ ContrastsLimma <- R6::R6Class(
         return(self$contrast_result)
       }
 
-      # Build the contrast matrix via linfct_from_model + linfct_matrix_contrasts
-      linfct <- linfct_from_model(self$model$dummy_model, as_list = FALSE)
-      linfct <- unique(linfct) # needed for single factor models
-
-      # Add avg contrasts for avgAbd computation
-      namtmp <- paste0("avg_", names(self$contrasts))
-      cntr_avg <- paste0("(", gsub(" - ", " + ", self$contrasts), ")/2")
-      names(cntr_avg) <- namtmp
-      all_contrasts <- c(self$contrasts, cntr_avg)
-
-      linfct_a <- linfct_matrix_contrasts(linfct, all_contrasts)
-      # linfct_a: rows = contrast names, cols = model coefficients
-
-      # Split into difference contrasts and avg contrasts
+      # linfct_a: rows = contrasts and their avg_ counterparts (for avgAbd), cols = model coefficients
+      linfct_a <- self$get_linfct()
       diff_names <- names(self$contrasts)
-      avg_names <- namtmp
+      avg_names <- paste0("avg_", diff_names)
 
       # Transpose for limma: rows = coefficients, cols = contrasts
       contrast_matrix <- t(linfct_a[diff_names, , drop = FALSE])
@@ -1015,6 +796,9 @@ ContrastsLimma <- R6::R6Class(
       if (self$eBayes) {
         fit2 <- limma::eBayes(fit2, trend = self$model$trend, robust = self$model$robust)
       }
+
+      # avgAbd: the avg_ linear functions applied to the fit coefficients (rows = proteins)
+      avg_vals <- self$model$fit$coefficients %*% t(linfct_a[avg_names, , drop = FALSE])
 
       # Extract results per contrast
       res_list <- vector("list", length(diff_names))
@@ -1056,30 +840,10 @@ ContrastsLimma <- R6::R6Class(
           df_i$conf.low <- diff_i - prqt * se_i
           df_i$conf.high <- diff_i + prqt * se_i
         }
-
+        df_i$avgAbd <- avg_vals[, i]
         res_list[[i]] <- df_i
       }
       contrast_result <- dplyr::bind_rows(res_list)
-
-      # Compute avgAbd from the avg linfct applied to the fit coefficients
-      avg_matrix <- t(linfct_a[avg_names, , drop = FALSE])
-      avg_vals <- self$model$fit$coefficients %*% avg_matrix
-      # avg_vals: rows = proteins, cols = avg contrasts
-
-      avg_df_list <- vector("list", length(avg_names))
-      for (i in seq_along(avg_names)) {
-        df_avg <- self$model$rowdata
-        df_avg$contrast <- diff_names[i] # map back to original contrast name
-        df_avg$avgAbd <- avg_vals[, i]
-        avg_df_list[[i]] <- df_avg
-      }
-      avg_df <- dplyr::bind_rows(avg_df_list)
-
-      contrast_result <- dplyr::left_join(
-        contrast_result,
-        avg_df,
-        by = c(self$subject_id, "contrast")
-      )
 
       # Adjust p-values per contrast
       contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast", newname = "FDR")
@@ -1088,17 +852,10 @@ ContrastsLimma <- R6::R6Class(
       # (recorded as bare subject_id values on ModelLimma$imputed_proteins by
       # build_model_limma_impute and build_model_limma_voom_impute) are flagged
       # in the separate `estimate_type` column with "lod_imputed"; everything
-      # else is "observed".
-      imp_ids <- self$model$imputed_proteins
-      if (length(imp_ids) > 0 && length(self$subject_id) >= 1) {
-        # Match on the primary subject_id column. Multi-key subject_ids
-        # would require a paste-key join but no current backend uses
-        # that with limma.
-        is_imputed <- contrast_result[[self$subject_id[1]]] %in% imp_ids
-        contrast_result$estimate_type <- ifelse(is_imputed, "lod_imputed", "observed")
-      } else {
-        contrast_result$estimate_type <- "observed"
-      }
+      # else is "observed". Match on the primary subject_id column; no current
+      # limma backend uses multi-key subject_ids.
+      is_imputed <- contrast_result[[self$subject_id[1]]] %in% self$model$imputed_proteins
+      contrast_result$estimate_type <- dplyr::if_else(is_imputed, "lod_imputed", "observed")
       contrast_result <- dplyr::mutate(contrast_result, modelName = self$model_name, .before = 1)
       contrast_result <- dplyr::relocate(contrast_result, "estimate_type", .after = "modelName")
       contrast_result <- dplyr::ungroup(contrast_result)
@@ -1106,46 +863,6 @@ ContrastsLimma <- R6::R6Class(
 
       stopifnot(all(super$column_description()$column_name %in% colnames(contrast_result)))
       return(contrast_result)
-    },
-    #' @description
-    #' return \code{\link{ContrastsPlotter}}
-    #' @param fc_threshold fold change threshold to show in plots
-    #' @param fdr_threshold FDR threshold to show in plots
-    #' @return \code{\link{ContrastsPlotter}}
-    get_Plotter = function(fc_threshold = 1, fdr_threshold = 0.1) {
-      contrast_result <- self$get_contrasts()
-      res <- ContrastsPlotter$new(
-        contrast_result,
-        subject_id = self$subject_id,
-        fcthresh = fc_threshold,
-        volcano = list(
-          list(score = "p.value", thresh = fdr_threshold),
-          list(score = "FDR", thresh = fdr_threshold)
-        ),
-        histogram = list(
-          list(score = "p.value", xlim = c(0, 1, 0.05)),
-          list(score = "FDR", xlim = c(0, 1, 0.05))
-        ),
-        score = list(list(score = "statistic", thresh = 5)),
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
-      )
-      return(res)
-    },
-    #' @description
-    #' convert to wide format
-    #' @param columns value column default p.value
-    #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
-      contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_to_wide(
-        contrast_minimal,
-        subject_id = self$subject_id,
-        columns = c("diff", columns),
-        contrast = "contrast"
-      )
-      return(contrasts_wide)
     }
   )
 )

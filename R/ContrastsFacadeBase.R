@@ -4,11 +4,13 @@
 #'
 #' Holds the fields and delegating methods shared by every facade in
 #' \code{ContrastsFacades.R} and \code{ContrastsChildToParentFacades.R}.
-#' Subclasses implement the unique pipeline wiring in \code{initialize()} (build
-#' the model, build the inner contrast object, store \code{self$.lfqdata} /
-#' \code{self$.contrast_names}) and set \code{self$facade_name} to their registry
-#' key. The limma family additionally sets \code{self$.drop_na_diff <- TRUE} to
-#' drop rows whose fold change could not be estimated.
+#' Subclasses implement the unique pipeline wiring in \code{initialize()}: they
+#' call the private \code{.setup()} (input-shape check, \code{self$.lfqdata},
+#' \code{self$.contrast_names}, \code{self$facade_name}), then build the model
+#' and the inner contrast object. \code{get_config()} defaults to the inner
+#' contrast object's configuration. The limma family additionally sets
+#' \code{self$.drop_na_diff <- TRUE} to drop rows whose fold change could not be
+#' estimated.
 #'
 #' \code{get_contrasts()} delegates to the inner contrast object and then stamps
 #' the facade key into \code{modelName} via \code{.stamp_facade_identity()};
@@ -38,6 +40,14 @@ ContrastsFacadeBase <- R6::R6Class(
     facade_name = NULL,
     #' @field .drop_na_diff drop rows with NA diff (limma family); default FALSE
     .drop_na_diff = FALSE,
+    #' @description get the \code{\link{ContrastConfiguration}}; defaults to
+    #'   the inner contrast object's configuration
+    get_config = function() {
+      if (is.null(self$config)) {
+        self$config <- self$contrast$get_config()
+      }
+      self$config
+    },
     #' @description get contrast results, stamped with the facade key
     #' @param ... passed to the inner contrast object's get_contrasts
     get_contrasts = function(...) {
@@ -57,5 +67,22 @@ ContrastsFacadeBase <- R6::R6Class(
     #' @description convert results to wide format
     #' @param ... passed to the inner contrast object's to_wide
     to_wide = function(...) self$contrast$to_wide(...)
+  ),
+  private = list(
+    # Shared initialize() prologue: check the input shape required by the
+    # registry entry of `key` (`needs`), store the input and the contrast names,
+    # record the facade key, and return the full model formula string.
+    .setup = function(lfqdata, contrasts, key, modelstr) {
+      entry <- lookup_facade(key)
+      if (identical(entry$needs, "nested")) {
+        .assert_nested_facade_input(lfqdata, entry$class)
+      } else {
+        .assert_aggregated_facade_input(lfqdata, entry$class)
+      }
+      self$.lfqdata <- lfqdata
+      self$.contrast_names <- names(contrasts)
+      self$facade_name <- key
+      paste(lfqdata$response(), modelstr)
+    }
   )
 )

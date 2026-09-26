@@ -84,7 +84,7 @@ test_that(".rlm_estimate returns one consistent column schema across all three b
   df_samp1 <- data.frame(samples = "a", feature = c("F1", "F2", "F3"), response = c(10, 11, 12))
   res_samp1 <- prolfqua:::.rlm_estimate(df_samp1, "response", "feature", "samples")
 
-  # main path: multiple features and samples (mirrors the rlm_estimate roxygen example)
+  # main path: multiple features and samples
   set.seed(42)
   xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4), samples = rep(letters[1:4], 5))
   res_main <- prolfqua:::.rlm_estimate(xx, "response", "feature", "samples")
@@ -112,6 +112,13 @@ test_that(".rlm_estimate re-establishes every input sample in all branches", {
   xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4), samples = rep(letters[1:4], 5))
   res_main <- prolfqua:::.rlm_estimate(xx, "response", "feature", "samples")
   expect_setequal(res_main$samples, letters[1:4])
+
+  # stored problem cases for the robust summary
+  for (ds in c("data_checksummarizationrobust87", "data_checksummarizerobust69")) {
+    x <- prolfqua::prolfqua_data(ds)
+    res <- prolfqua:::.rlm_estimate(x, "log2Area", "peptide_Id", "sampleName")
+    expect_setequal(res$sampleName, unique(x$sampleName))
+  }
 })
 
 test_that("rlm and medpolish aggregation produce the same (protein, sample) rows (boundary invariant)", {
@@ -119,8 +126,8 @@ test_that("rlm and medpolish aggregation produce the same (protein, sample) rows
   lfq <- prolfqua::LFQData$new(dd$data, dd$config)
   lfq <- lfq$get_Transformer()$log2()$lfq
 
-  bbMed <- suppressMessages(prolfqua::estimate_intensity(lfq, .func = prolfqua::medpolish_estimate_dfconfig))
-  bbRob <- suppressMessages(prolfqua::estimate_intensity(lfq, .func = prolfqua::rlm_estimate_dfconfig))
+  bbMed <- suppressMessages(prolfqua::estimate_intensity(lfq, method = "medpolish"))
+  bbRob <- suppressMessages(prolfqua::estimate_intensity(lfq, method = "rlm"))
 
   keycols <- c(bbMed$config$hierarchy_keys(), bbMed$config$sample_name)
   keyM <- dplyr::distinct(bbMed$data, dplyr::across(dplyr::all_of(keycols)))

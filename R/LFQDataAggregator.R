@@ -23,37 +23,76 @@
   }
 }
 
-# Shared helper: plot aggregation result
-.aggregator_plot <- function(lfq, lfq_agg, subset = NULL, show.legend = FALSE) {
-  if (is.null(lfq_agg)) {
-    abort_bad_argument("lfq_agg", "be an aggregated LFQData (call the aggregator first)", not = "NULL")
-  }
-  if (!is.null(subset)) {
-    lfqagg <- lfq_agg$get_subset(subset)
-  } else {
-    lfqagg <- lfq_agg
-  }
-  df <- prolfqua::plot_estimate(
-    lfq,
-    lfqagg,
-    show.legend = show.legend
+#' Base class of the peptide to protein aggregators
+#'
+#' Holds the fields, construction, and plotting shared by \code{\link{AggregateMedpolish}},
+#' \code{\link{AggregateRlm}}, \code{\link{AggregateTopN}} and \code{\link{AggregateLimpa}}.
+#' Subclasses implement \code{aggregate()}.
+#'
+#' @return An R6 class generator.
+#' @family LFQData
+#' @keywords internal
+AggregatorBase <- R6::R6Class(
+  "AggregatorBase",
+  public = list(
+    #' @field lfq LFQData
+    lfq = NULL,
+    #' @field lfq_agg aggregation result
+    lfq_agg = NULL,
+    #' @field prefix to use for aggregation results e.g. protein
+    prefix = character(),
+    #' @description
+    #' initialize
+    #' @param lfq LFQData
+    #' @param prefix default protein
+    initialize = function(lfq, prefix = "protein") {
+      .check_aggregatable(lfq)
+      private$.check_transformed(lfq)
+      self$lfq <- lfq$clone(deep = TRUE)
+      self$prefix <- prefix
+    },
+    #' @description
+    #' creates aggregation plots
+    #' @param subset create plots for a subset of the data only
+    #' @param show.legend default FALSE
+    #' @return data.frame
+    plot = function(subset = NULL, show.legend = FALSE) {
+      if (is.null(self$lfq_agg)) {
+        abort_bad_argument("lfq_agg", "be an aggregated LFQData (call the aggregator first)", not = "NULL")
+      }
+      lfqagg <- if (is.null(subset)) self$lfq_agg else self$lfq_agg$get_subset(subset)
+      invisible(prolfqua::plot_estimate(self$lfq, lfqagg, show.legend = show.legend))
+    },
+    #' @description
+    #' writes plots to folder
+    #' @param qcpath qcpath
+    #' @param subset write plots only for some
+    #' @param show.legend legend
+    #' @param width figure width
+    #' @param height figure height
+    #' @return file path
+    write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
+      pl <- self$plot(subset)
+      pb <- progress::progress_bar$new(total = nrow(pl))
+      filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
+      pdf(filepath, width = width, height = height)
+      for (i in seq_len(nrow(pl))) {
+        .render_plot_to_device(pl$plots[[i]])
+        pb$tick()
+      }
+      dev.off()
+      invisible(filepath)
+    }
+  ),
+  private = list(
+    .check_transformed = function(lfq) NULL,
+    .set_result = function(lfq_agg) {
+      self$lfq_agg <- lfq_agg
+      self$lfq_agg$complete_cases()
+      invisible(self$lfq_agg)
+    }
   )
-  invisible(df)
-}
-
-# Shared helper: write aggregation plots to PDF
-.aggregator_write_plots <- function(self, qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
-  pl <- self$plot(subset)
-  pb <- progress::progress_bar$new(total = nrow(pl))
-  filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
-  pdf(filepath, width = width, height = height)
-  for (i in seq_len(nrow(pl))) {
-    .render_plot_to_device(pl$plots[[i]])
-    pb$tick()
-  }
-  dev.off()
-  invisible(filepath)
-}
+)
 
 
 #' AggregateMedpolish
@@ -78,19 +117,18 @@
 #'
 AggregateMedpolish <- R6::R6Class(
   "AggregateMedpolish",
+  inherit = AggregatorBase,
   public = list(
-    #' @field lfq LFQData
-    lfq = NULL,
-    #' @field lfq_agg aggregation result
-    lfq_agg = NULL,
-    #' @field prefix to use for aggregation results e.g. protein
-    prefix = character(),
     #' @description
-    #' initialize
-    #' @param lfq LFQData
-    #' @param prefix default protein
-    initialize = function(lfq, prefix = "protein") {
-      .check_aggregatable(lfq)
+    #' run median polish aggregation
+    #' @return LFQData
+    aggregate = function() {
+      res <- estimate_intensity(self$lfq, method = "medpolish")
+      private$.set_result(LFQData$new(res$data, res$config, prefix = self$prefix))
+    }
+  ),
+  private = list(
+    .check_transformed = function(lfq) {
       if (!lfq$is_transformed()) {
         warning(
           "You did not transform the intensities. ",
@@ -99,36 +137,6 @@ AggregateMedpolish <- R6::R6Class(
           lfq$get_config()$work_intensity
         )
       }
-      self$lfq <- lfq$clone(deep = TRUE)
-      self$prefix <- prefix
-    },
-    #' @description
-    #' run median polish aggregation
-    #' @return LFQData
-    aggregate = function() {
-      res <- estimate_intensity(self$lfq, .func = medpolish_estimate_dfconfig)
-      self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
-      self$lfq_agg$complete_cases()
-      invisible(self$lfq_agg)
-    },
-    #' @description
-    #' creates aggregation plots
-    #' @param subset create plots for a subset of the data only
-    #' @param show.legend default FALSE
-    #' @return data.frame
-    plot = function(subset = NULL, show.legend = FALSE) {
-      .aggregator_plot(self$lfq, self$lfq_agg, subset = subset, show.legend = show.legend)
-    },
-    #' @description
-    #' writes plots to folder
-    #' @param qcpath qcpath
-    #' @param subset write plots only for some
-    #' @param show.legend legend
-    #' @param width figure width
-    #' @param height figure height
-    #' @return file path
-    write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
-      .aggregator_write_plots(self, qcpath, subset, show.legend, width, height)
     }
   )
 )
@@ -156,19 +164,18 @@ AggregateMedpolish <- R6::R6Class(
 #'
 AggregateRlm <- R6::R6Class(
   "AggregateRlm",
+  inherit = AggregatorBase,
   public = list(
-    #' @field lfq LFQData
-    lfq = NULL,
-    #' @field lfq_agg aggregation result
-    lfq_agg = NULL,
-    #' @field prefix to use for aggregation results e.g. protein
-    prefix = character(),
     #' @description
-    #' initialize
-    #' @param lfq LFQData
-    #' @param prefix default protein
-    initialize = function(lfq, prefix = "protein") {
-      .check_aggregatable(lfq)
+    #' run robust regression aggregation
+    #' @return LFQData
+    aggregate = function() {
+      res <- estimate_intensity(self$lfq, method = "rlm")
+      private$.set_result(LFQData$new(res$data, res$config, prefix = self$prefix))
+    }
+  ),
+  private = list(
+    .check_transformed = function(lfq) {
       if (!lfq$is_transformed()) {
         warning(
           "You did not transform the intensities. ",
@@ -177,36 +184,6 @@ AggregateRlm <- R6::R6Class(
           lfq$get_config()$work_intensity
         )
       }
-      self$lfq <- lfq$clone(deep = TRUE)
-      self$prefix <- prefix
-    },
-    #' @description
-    #' run robust regression aggregation
-    #' @return LFQData
-    aggregate = function() {
-      res <- estimate_intensity(self$lfq, .func = rlm_estimate_dfconfig)
-      self$lfq_agg <- LFQData$new(res$data, res$config, prefix = self$prefix)
-      self$lfq_agg$complete_cases()
-      invisible(self$lfq_agg)
-    },
-    #' @description
-    #' creates aggregation plots
-    #' @param subset create plots for a subset of the data only
-    #' @param show.legend default FALSE
-    #' @return data.frame
-    plot = function(subset = NULL, show.legend = FALSE) {
-      .aggregator_plot(self$lfq, self$lfq_agg, subset = subset, show.legend = show.legend)
-    },
-    #' @description
-    #' writes plots to folder
-    #' @param qcpath qcpath
-    #' @param subset write plots only for some
-    #' @param show.legend legend
-    #' @param width figure width
-    #' @param height figure height
-    #' @return file path
-    write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
-      .aggregator_write_plots(self, qcpath, subset, show.legend, width, height)
     }
   )
 )
@@ -239,13 +216,8 @@ AggregateRlm <- R6::R6Class(
 #'
 AggregateTopN <- R6::R6Class(
   "AggregateTopN",
+  inherit = AggregatorBase,
   public = list(
-    #' @field lfq LFQData
-    lfq = NULL,
-    #' @field lfq_agg aggregation result
-    lfq_agg = NULL,
-    #' @field prefix to use for aggregation results e.g. protein
-    prefix = character(),
     #' @field N top N peptides by intensity
     N = 3L,
     #' @field func aggregation function name: "sum" or "mean"
@@ -257,34 +229,20 @@ AggregateTopN <- R6::R6Class(
     #' @param N top N peptides (default 3)
     #' @param func "sum" or "mean" (default "sum")
     initialize = function(lfq, prefix = "protein", N = 3, func = "sum") {
-      .check_aggregatable(lfq)
-      if (lfq$is_transformed()) {
-        warning("You did transform the intensities. top N works with raw data. ", lfq$get_config()$work_intensity)
-      }
-      func <- match.arg(func, c("sum", "mean"))
-      self$lfq <- lfq$clone(deep = TRUE)
-      self$prefix <- prefix
+      super$initialize(lfq, prefix)
       self$N <- N
-      self$func <- func
+      self$func <- match.arg(func, c("sum", "mean"))
     },
     #' @description
     #' run top N aggregation
     #' @return LFQData
     aggregate = function() {
-      .func <- if (self$func == "sum") {
-        function(x, name = FALSE) {
-          if (name) {
-            return("sum")
-          }
-          sum(x, na.rm = TRUE)
+      fun <- match.fun(self$func)
+      .func <- function(x, name = FALSE) {
+        if (name) {
+          return(self$func)
         }
-      } else {
-        function(x, name = FALSE) {
-          if (name) {
-            return("mean")
-          }
-          mean(x, na.rm = TRUE)
-        }
+        fun(x, na.rm = TRUE)
       }
       ranked <- rank_peptide_by_intensity(
         self$lfq$data_long(),
@@ -292,28 +250,14 @@ AggregateTopN <- R6::R6Class(
         self$lfq$hierarchy_keys()
       )
       res_topn <- aggregate_intensity_top_n(ranked, self$lfq, .func = .func, N = self$N)
-      self$lfq_agg <- LFQData$new(res_topn$data, res_topn$config, prefix = self$prefix)
-      self$lfq_agg$complete_cases()
-      invisible(self$lfq_agg)
-    },
-    #' @description
-    #' creates aggregation plots
-    #' @param subset create plots for a subset of the data only
-    #' @param show.legend default FALSE
-    #' @return data.frame
-    plot = function(subset = NULL, show.legend = FALSE) {
-      .aggregator_plot(self$lfq, self$lfq_agg, subset = subset, show.legend = show.legend)
-    },
-    #' @description
-    #' writes plots to folder
-    #' @param qcpath qcpath
-    #' @param subset write plots only for some
-    #' @param show.legend legend
-    #' @param width figure width
-    #' @param height figure height
-    #' @return file path
-    write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
-      .aggregator_write_plots(self, qcpath, subset, show.legend, width, height)
+      private$.set_result(LFQData$new(res_topn$data, res_topn$config, prefix = self$prefix))
+    }
+  ),
+  private = list(
+    .check_transformed = function(lfq) {
+      if (lfq$is_transformed()) {
+        warning("You did transform the intensities. top N works with raw data. ", lfq$get_config()$work_intensity)
+      }
     }
   )
 )
@@ -321,85 +265,24 @@ AggregateTopN <- R6::R6Class(
 
 # Helper: convert limpa EList back to long-format LFQData
 .elist_to_lfqdata <- function(elist, wide, config, prefix, impute_only) {
-  annotation <- wide$annotation
-  sample_col <- config$sample_name
-
-  intensity_name <- "limpa"
-  se_name <- "limpa_se"
-
-  # Row IDs from the EList (united hierarchy keys with ~lfq~ separator from to_wide)
-  row_ids_raw <- rownames(elist$E)
-  sample_names <- colnames(elist$E)
-
-  if (impute_only) {
-    hierarchy_keys <- config$hierarchy_keys()
-  } else {
-    hierarchy_keys <- config$hierarchy_keys_depth()
-  }
-
-  # Parse row IDs back to hierarchy columns
-  sep <- "~lfq~"
-  all_keys <- c(hierarchy_keys, config$isotope_label)
-  if (length(all_keys) == 1) {
-    row_ids <- data.frame(V1 = row_ids_raw, stringsAsFactors = FALSE)
-    colnames(row_ids) <- all_keys
-  } else {
-    row_ids <- as.data.frame(
-      do.call(rbind, strsplit(row_ids_raw, sep, fixed = TRUE)),
-      stringsAsFactors = FALSE
-    )
-    if (ncol(row_ids) == length(all_keys)) {
-      colnames(row_ids) <- all_keys
-    } else {
-      colnames(row_ids) <- hierarchy_keys
-    }
-  }
-
-  # Pivot three matrices to long format
-  nr <- nrow(elist$E)
-  nc <- ncol(elist$E)
-
-  row_idx <- rep(seq_len(nr), each = nc)
-  col_idx <- rep(seq_len(nc), times = nr)
-
-  long_data <- row_ids[row_idx, , drop = FALSE]
-  rownames(long_data) <- NULL
-  long_data[[sample_col]] <- sample_names[col_idx]
-  long_data[[intensity_name]] <- as.vector(t(elist$E))
-  long_data[[se_name]] <- as.vector(t(elist$other$standard.error))
-
-  n_obs_vec <- as.vector(t(elist$other$n.observations))
-
-  # Join annotation (factors, fileName, etc.)
-  # Exclude columns already parsed from row IDs to avoid .x/.y suffixes
-  anno_cols <- intersect(
-    colnames(annotation),
-    c(config$file_name, sample_col, config$factor_keys(), config$isotope_label, config$norm_value)
-  )
-  anno_cols <- setdiff(anno_cols, c(colnames(long_data), sample_col))
-  anno_cols <- c(sample_col, anno_cols)
-  long_data <- dplyr::left_join(long_data, annotation[, anno_cols, drop = FALSE], by = sample_col)
-
-  # Build new config
   if (impute_only) {
     newconfig <- config$clone(deep = TRUE)
-    newconfig$work_intensity <- intensity_name
+    newconfig$work_intensity <- "limpa"
   } else {
-    newconfig <- make_reduced_hierarchy_config(
-      config,
-      work_intensity = intensity_name,
-      hierarchy = config$hierarchy_keys_depth(names = FALSE)
-    )
+    newconfig <- make_reduced_hierarchy_config(config, "limpa", config$hierarchy_keys_depth(names = FALSE))
   }
-
-  # nr_children from n_observations
-  nr_children_name <- paste0("nr_children_", paste(hierarchy_keys, collapse = "_"))
-  long_data[[nr_children_name]] <- n_obs_vec
-  newconfig$nr_children <- nr_children_name
-
-  # opt_se for standard errors
-  newconfig$opt_se <- se_name
-
+  # rows of E are the united hierarchy keys and isotope label; pivot_longer keeps row-major order,
+  # which the transposed standard error and observation count matrices match
+  long_data <- response_matrix_as_tibble(elist$E, "limpa", newconfig)
+  long_data$limpa_se <- as.vector(t(elist$other$standard.error))
+  long_data <- dplyr::left_join(
+    long_data,
+    wide$annotation,
+    by = intersect(colnames(long_data), colnames(wide$annotation))
+  )
+  newconfig$nr_children <- paste0("nr_children_", paste(newconfig$hierarchy_keys(), collapse = "_"))
+  long_data[[newconfig$nr_children]] <- as.vector(t(elist$other$n.observations))
+  newconfig$opt_se <- "limpa_se"
   LFQData$new(long_data, newconfig, prefix = prefix)
 }
 
@@ -440,13 +323,8 @@ AggregateTopN <- R6::R6Class(
 #' agg$lfq_agg$data_wide()
 AggregateLimpa <- R6::R6Class(
   "AggregateLimpa",
+  inherit = AggregatorBase,
   public = list(
-    #' @field lfq LFQData (deep cloned input)
-    lfq = NULL,
-    #' @field lfq_agg aggregation result
-    lfq_agg = NULL,
-    #' @field prefix to use for aggregation results e.g. protein
-    prefix = character(),
     #' @field dpc_result estimated DPC object from limpa::dpc
     dpc_result = NULL,
     #' @field dpc_slope DPC slope parameter (default 0.8)
@@ -495,24 +373,10 @@ AggregateLimpa <- R6::R6Class(
         )
         # Restore rownames from input (dpcQuantByRow uses integer IDs internally)
         rownames(elist$E) <- rownames(expr_matrix)
-        if (!is.null(elist$other$standard.error)) {
-          rownames(elist$other$standard.error) <- rownames(expr_matrix)
-        }
-        if (!is.null(elist$other$n.observations)) {
-          rownames(elist$other$n.observations) <- rownames(expr_matrix)
-        }
       } else {
-        # Build protein ID vector from hierarchy_keys_depth in rowdata
-        rowdata <- wide$rowdata
-        hierarchy_keys_depth <- self$lfq$relevant_hierarchy_keys()
-        if (length(hierarchy_keys_depth) == 1) {
-          protein_ids <- rowdata[[hierarchy_keys_depth]]
-        } else {
-          protein_ids <- do.call(
-            paste,
-            c(rowdata[, hierarchy_keys_depth, drop = FALSE], sep = "~lfq~")
-          )
-        }
+        # protein ID: hierarchy keys at depth and isotope label, united like the rownames of data_wide
+        id_cols <- c(self$lfq$relevant_hierarchy_keys(), self$lfq$isotope_label())
+        protein_ids <- do.call(paste, c(wide$rowdata[, id_cols, drop = FALSE], sep = "~lfq~"))
         elist <- limpa::dpcQuant(
           expr_matrix,
           protein.id = protein_ids,
@@ -522,15 +386,7 @@ AggregateLimpa <- R6::R6Class(
         )
       }
 
-      self$lfq_agg <- .elist_to_lfqdata(
-        elist,
-        wide,
-        self$lfq$get_config(),
-        self$prefix,
-        self$impute_only
-      )
-      self$lfq_agg$complete_cases()
-      invisible(self$lfq_agg)
+      private$.set_result(.elist_to_lfqdata(elist, wide, self$lfq$get_config(), self$prefix, self$impute_only))
     },
 
     #' @description
@@ -543,7 +399,7 @@ AggregateLimpa <- R6::R6Class(
         message("Aggregation plots not available in impute_only mode")
         return(invisible(NULL))
       }
-      .aggregator_plot(self$lfq, self$lfq_agg, subset = subset, show.legend = show.legend)
+      super$plot(subset = subset, show.legend = show.legend)
     },
 
     #' @description
@@ -559,7 +415,7 @@ AggregateLimpa <- R6::R6Class(
         message("Aggregation plots not available in impute_only mode")
         return(invisible(NULL))
       }
-      .aggregator_write_plots(self, qcpath, subset, show.legend, width, height)
+      super$write_plots(qcpath, subset, show.legend, width, height)
     }
   )
 )

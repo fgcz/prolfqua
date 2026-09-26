@@ -4,22 +4,12 @@
 \alias{setup_analysis}
 \title{Setup a tidy table compatible with a \code{\link{AnalysisConfiguration}}}
 \usage{
-setup_analysis(
-  data,
-  configuration,
-  cc = TRUE,
-  from_factors = FALSE,
-  debug = FALSE
-)
+setup_analysis(data, configuration, debug = FALSE)
 }
 \arguments{
 \item{data}{data.frame}
 
 \item{configuration}{AnalysisConfiguration}
-
-\item{cc}{complete cases default TRUE}
-
-\item{from_factors}{if TRUE, create sampleName from factor columns}
 
 \item{debug}{if FALSE (default) and any hierarchy-key/sample combination has
 more than one observation, stop with an informative error. If TRUE, warn

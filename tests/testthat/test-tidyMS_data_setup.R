@@ -45,11 +45,7 @@ test_that("setup_analysis derives sample names and default metadata", {
   fx$data$nr_children <- NULL
 
   expect_warning(
-    result <- prolfqua::setup_analysis(
-      fx$data,
-      fx$config,
-      from_factors = TRUE
-    ),
+    result <- prolfqua::setup_analysis(fx$data, fx$config),
     "no isotopeLabel"
   )
 
@@ -60,6 +56,15 @@ test_that("setup_analysis derives sample names and default metadata", {
   expect_setequal(result[[fx$config$isotope_label]], "light")
   expect_setequal(result[[fx$config$ident_q_value]], 0)
   expect_setequal(result[[fx$config$nr_children]], 1)
+})
+
+test_that("setup_analysis works when sample_name and file_name are the same column", {
+  fx <- .dup_setup_fixture()
+  fx$config$sample_name <- fx$config$file_name
+
+  result <- suppressMessages(prolfqua::setup_analysis(fx$data, fx$config))
+  expect_equal(sum(colnames(result) == fx$config$file_name), 1)
+  expect_equal(nrow(result), nrow(fx$data))
 })
 
 test_that("sim_lfq_data respects the mean_prot argument", {

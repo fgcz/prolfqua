@@ -32,16 +32,12 @@ stopifnot(sum(!is.na(result$UniprotID)) == 3)
 \seealso{
 Other utilities: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{effective_contaminant_pattern}()},
-\code{\link{effective_decoy_pattern}()},
 \code{\link{is_contaminant}()},
 \code{\link{is_decoy}()},
 \code{\link{matrix_to_tibble}()},
 \code{\link{multigroup_volcano}()},
-\code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
 \code{\link{panel_cor}()},
-\code{\link{remove_na_rows}()},
 \code{\link{table_facade}()}
 }
 \concept{utilities}

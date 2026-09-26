@@ -88,7 +88,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -96,9 +95,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -109,10 +105,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -124,7 +118,6 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
@@ -155,8 +148,6 @@ Other modelling:
 \item \href{#method-ContrastsFirth-get_contrast_sides}{\code{ContrastsFirth$get_contrast_sides()}}
 \item \href{#method-ContrastsFirth-get_linfct}{\code{ContrastsFirth$get_linfct()}}
 \item \href{#method-ContrastsFirth-get_contrasts}{\code{ContrastsFirth$get_contrasts()}}
-\item \href{#method-ContrastsFirth-get_Plotter}{\code{ContrastsFirth$get_Plotter()}}
-\item \href{#method-ContrastsFirth-to_wide}{\code{ContrastsFirth$to_wide()}}
 \item \href{#method-ContrastsFirth-clone}{\code{ContrastsFirth$clone()}}
 }
 }
@@ -167,10 +158,12 @@ Other modelling:
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table'><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="extra_artifacts"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts'><code>prolfqua::ContrastsInterface$extra_artifacts()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="filter_significant"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant'><code>prolfqua::ContrastsInterface$filter_significant()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_Plotter"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter'><code>prolfqua::ContrastsInterface$get_Plotter()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_config"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config'><code>prolfqua::ContrastsInterface$get_config()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_missing"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing'><code>prolfqua::ContrastsInterface$get_missing()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="to_wide"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide'><code>prolfqua::ContrastsInterface$to_wide()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -253,49 +246,6 @@ get table with contrast estimates
 }
 \subsection{Returns}{
 data.frame with contrasts
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsFirth-get_Plotter"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsFirth-get_Plotter}{}}}
-\subsection{Method \code{get_Plotter()}}{
-return \code{\link{ContrastsPlotter}}
-creates Contrast_Plotter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsFirth$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fc_threshold}}{fold change threshold to show in plots}
-
-\item{\code{fdr_threshold}}{FDR threshold to show in plots}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link{ContrastsPlotter}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsFirth-to_wide"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsFirth-to_wide}{}}}
-\subsection{Method \code{to_wide()}}{
-convert to wide format
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsFirth$to_wide(columns = c("p.value", "FDR", "statistic"))}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{columns}}{value column default p.value}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
 }
 }
 \if{html}{\out{<hr>}}

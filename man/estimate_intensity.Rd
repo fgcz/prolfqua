@@ -4,10 +4,13 @@
 \alias{estimate_intensity}
 \title{Aggregates e.g. protein abundances from peptide abundances}
 \usage{
-estimate_intensity(lfqdata, .func)
+estimate_intensity(lfqdata, method = c("medpolish", "rlm"))
 }
 \arguments{
-\item{func}{- a function working on a matrix of intensities for each protein.}
+\item{lfqdata}{LFQData object}
+
+\item{method}{"medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
+`MASS::rlm`, column `lmrob`)}
 }
 \value{
 returns list with data (data.frame) and config (AnalysisConfiguration)
@@ -20,8 +23,8 @@ Aggregates e.g. protein abundances from peptide abundances
 dd <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(dd$data, dd$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
-bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
-bbRob <- estimate_intensity(lfq, .func = rlm_estimate_dfconfig)
+bbMed <- estimate_intensity(lfq, method = "medpolish")
+bbRob <- estimate_intensity(lfq, method = "rlm")
 nrow(bbMed$data)
 nrow(bbRob$data)
 xt <- dplyr::inner_join(bbMed$data, bbRob$data)
@@ -30,20 +33,11 @@ abline(0, 1, col = 2)
 
 }
 \seealso{
-\code{\link{medpolish_estimate_dfconfig}} \code{\link{rlm_estimate_dfconfig}}
-
 Other aggregation: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{aggregate_intensity_top_n}()},
-\code{\link{medpolish_estimate}()},
-\code{\link{medpolish_estimate_df}()},
-\code{\link{medpolish_estimate_dfconfig}()},
 \code{\link{plot_estimate}()},
-\code{\link{plot_hierarchies_add_quantline}()},
-\code{\link{plot_hierarchies_line}()},
-\code{\link{plot_hierarchies_line_df}()},
-\code{\link{rlm_estimate}()},
-\code{\link{rlm_estimate_dfconfig}()}
+\code{\link{plot_hierarchies_line}()}
 }
 \concept{aggregation}
 \keyword{internal}

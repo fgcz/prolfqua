@@ -4,13 +4,7 @@
 \alias{plot_hierarchies_line}
 \title{Plot peptide intensities of protein as a function of the sample and factor}
 \usage{
-plot_hierarchies_line(
-  res,
-  protein_name,
-  lfqdata,
-  separate = FALSE,
-  show.legend = FALSE
-)
+plot_hierarchies_line(res, protein_name, lfqdata, show.legend = FALSE)
 }
 \arguments{
 \item{res}{data.frame}
@@ -19,7 +13,7 @@ plot_hierarchies_line(
 
 \item{lfqdata}{LFQData object}
 
-\item{separate}{if heavy and light show in one plot or with separate y axis?}
+\item{show.legend}{logical, show legend in plot}
 }
 \description{
 Plot peptide intensities of protein as a function of the sample and factor
@@ -44,28 +38,18 @@ Other aggregation:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
-\code{\link{medpolish_estimate}()},
-\code{\link{medpolish_estimate_df}()},
-\code{\link{medpolish_estimate_dfconfig}()},
-\code{\link{plot_estimate}()},
-\code{\link{plot_hierarchies_add_quantline}()},
-\code{\link{plot_hierarchies_line_df}()},
-\code{\link{rlm_estimate}()},
-\code{\link{rlm_estimate_dfconfig}()}
+\code{\link{plot_estimate}()}
 
 Other plotting: 
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{plot_estimate}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
-\code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_boxplot_df}()},
-\code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_na_heatmap}()},
 \code{\link{plot_pca}()},

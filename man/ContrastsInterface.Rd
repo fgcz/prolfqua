@@ -16,10 +16,10 @@ int <- ContrastsInterface$new()
 testthat::expect_error(int$get_contrast_sides())
 testthat::expect_error(int$get_contrasts())
 testthat::expect_error(int$get_missing())
+# get_Plotter / to_wide / get_rank / get_ora / filter_significant call get_contrasts()
+# internally, which is not implemented on the bare interface, so they surface that error.
 testthat::expect_error(int$get_Plotter())
 testthat::expect_error(int$to_wide())
-# get_rank / get_ora / filter_significant call get_contrasts() internally,
-# which is not implemented on the bare interface, so they surface that error.
 testthat::expect_error(int$get_rank())
 testthat::expect_error(int$get_ora())
 testthat::expect_error(int$filter_significant())
@@ -89,21 +89,43 @@ get table with contrast results (similar to limma topTable function)
 \if{html}{\out{<a id="method-ContrastsInterface-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsInterface-get_Plotter}{}}}
 \subsection{Method \code{get_Plotter()}}{
-initialize plotter
+return \code{\link{ContrastsPlotter}} for the contrast results
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_Plotter()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$get_Plotter(fc_threshold = 1, fdr_threshold = 0.1)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{fc_threshold}}{fold change threshold to show in plots}
+
+\item{\code{fdr_threshold}}{FDR threshold to show in plots}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link{ContrastsPlotter}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsInterface-to_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsInterface-to_wide}{}}}
 \subsection{Method \code{to_wide()}}{
-create wide representation of data.
+convert contrast results to wide format
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$to_wide()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ContrastsInterface$to_wide(columns = c("p.value", "FDR", "statistic"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{columns}}{value columns to spread next to \code{diff}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data.frame
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsInterface-get_missing"></a>}}

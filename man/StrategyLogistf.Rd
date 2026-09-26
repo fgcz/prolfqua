@@ -17,7 +17,7 @@ logistic regression via \code{\link[logistf]{logistf}} and extract contrasts.
 }
 \examples{
 strat <- StrategyLogistf$new("bin_resp ~ condition")
-strat$model_fun(get_formula = TRUE)
+strat$formula
 }
 \seealso{
 Other modelling: 
@@ -76,7 +76,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -84,9 +83,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -97,10 +93,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -112,50 +106,37 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{formula}}{model formula}
-
-\item{\code{model_name}}{name of model}
-
-\item{\code{report_columns}}{columns to report}
-
-\item{\code{is_mixed}}{always FALSE for logistf}
-
-\item{\code{anova_df}}{list with anova function and column names}
-}
-\if{html}{\out{</div>}}
+\section{Super class}{
+\code{\link[prolfqua:StrategyBase]{prolfqua::StrategyBase}} -> \code{StrategyLogistf}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-StrategyLogistf-new}{\code{StrategyLogistf$new()}}
-\item \href{#method-StrategyLogistf-model_fun}{\code{StrategyLogistf$model_fun()}}
-\item \href{#method-StrategyLogistf-isSingular}{\code{StrategyLogistf$isSingular()}}
-\item \href{#method-StrategyLogistf-contrast_fun}{\code{StrategyLogistf$contrast_fun()}}
 \item \href{#method-StrategyLogistf-df_residual}{\code{StrategyLogistf$df_residual()}}
 \item \href{#method-StrategyLogistf-sigma}{\code{StrategyLogistf$sigma()}}
 \item \href{#method-StrategyLogistf-clone}{\code{StrategyLogistf$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>prolfqua::StrategyBase$contrast_fun()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>prolfqua::StrategyBase$isSingular()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>prolfqua::StrategyBase$model_fun()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyLogistf-new"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyLogistf-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new StrategyLogistf
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLogistf$new(
-  modelstr,
-  model_name = "logistf",
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted"),
-  test = "Chisq"
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{StrategyLogistf$new(modelstr, model_name = "logistf")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -164,65 +145,6 @@ Create a new StrategyLogistf
 \item{\code{modelstr}}{model formula string}
 
 \item{\code{model_name}}{name of model}
-
-\item{\code{report_columns}}{columns to report}
-
-\item{\code{test}}{type of test statistic to use (e.g. "Chisq")}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLogistf-model_fun"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLogistf-model_fun}{}}}
-\subsection{Method \code{model_fun()}}{
-Fit logistf to one protein's data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLogistf$model_fun(x, pb, get_formula = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{data.frame for one protein}
-
-\item{\code{pb}}{optional progress bar}
-
-\item{\code{get_formula}}{if TRUE, return formula instead of fitting}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLogistf-isSingular"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLogistf-isSingular}{}}}
-\subsection{Method \code{isSingular()}}{
-Check if model is singular (NA coefficients or df < 2)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLogistf$isSingular(model)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{fitted model}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLogistf-contrast_fun"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLogistf-contrast_fun}{}}}
-\subsection{Method \code{contrast_fun()}}{
-Compute contrasts from fitted model
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLogistf$contrast_fun(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{passed to \code{\link{compute_contrast}}}
 }
 \if{html}{\out{</div>}}
 }

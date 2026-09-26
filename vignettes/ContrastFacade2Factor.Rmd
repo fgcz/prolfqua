@@ -35,8 +35,6 @@ specification. See `ContrastFacades.Rmd` for the one-factor introduction.
 # Simulate two-factor data and encode subgroups
 
 ```{r simulate_two_factor_subgroups}
-options(prolfqua.vectorize = TRUE)
-
 dd <- sim_lfq_data_2factor_config(
   Nprot = 80,
   with_missing = TRUE,

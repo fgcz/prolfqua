@@ -58,28 +58,8 @@
   data
 }
 
-.setup_sample_name <- function(data, configuration, from_factors) {
+.setup_sample_name <- function(data, configuration) {
   sample_name <- configuration$sample_name
-
-  if (from_factors && !sample_name %in% names(data)) {
-    message("creating sampleName from factor columns")
-    return(
-      data |>
-        tidyr::unite(
-          !!sym(sample_name),
-          unique(unlist(configuration$factors)),
-          remove = TRUE,
-          sep = configuration$sep
-        ) |>
-        dplyr::select(sample_name, configuration$file_name) |>
-        dplyr::distinct() |>
-        dplyr::mutate(across(all_of(sample_name), function(x) {
-          make.unique(x, sep = configuration$sep)
-        })) |>
-        dplyr::inner_join(data, by = configuration$file_name)
-    )
-  }
-
   if (!sample_name %in% names(data)) {
     message("creating sampleName from file_name column")
     data[[sample_name]] <- tools::file_path_sans_ext(basename(data[[configuration$file_name]]))
@@ -174,8 +154,6 @@
 #' and create new columns e.g. sampleName column etc.
 #' @param data data.frame
 #' @param configuration AnalysisConfiguration
-#' @param cc complete cases default TRUE
-#' @param from_factors if TRUE, create sampleName from factor columns
 #' @param debug if FALSE (default) and any hierarchy-key/sample combination has
 #'   more than one observation, stop with an informative error. If TRUE, warn
 #'   and return the diagnostic count table (inspect rows where n > 1) instead.
@@ -224,12 +202,12 @@
 #'
 #' adata <- setup_analysis(data, config)
 #'
-setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE, debug = FALSE) {
+setup_analysis <- function(data, configuration, debug = FALSE) {
   configuration <- configuration$clone(deep = TRUE)
   .validate_setup_file_name(data, configuration)
   data <- .setup_hierarchy_columns(data, configuration)
   data <- .setup_factor_columns(data, configuration)
-  data <- .setup_sample_name(data, configuration, from_factors)
+  data <- .setup_sample_name(data, configuration)
   data <- data |>
     dplyr::select(-dplyr::all_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
   data <- .add_setup_default_columns(data, configuration)
@@ -244,16 +222,14 @@ setup_analysis <- function(data, configuration, cc = TRUE, from_factors = FALSE,
   if (!is.null(duplicate_result)) {
     return(duplicate_result)
   }
-  if (cc) {
-    data <- .complete_cases_impl(
-      data,
-      configuration$file_name,
-      configuration$sample_name,
-      configuration$factor_keys(),
-      configuration$isotope_label,
-      configuration$hierarchy_keys()
-    )
-  }
+  data <- .complete_cases_impl(
+    data,
+    configuration$file_name,
+    configuration$sample_name,
+    configuration$factor_keys(),
+    configuration$isotope_label,
+    configuration$hierarchy_keys()
+  )
   message("completing cases done")
   message("setup done")
   return(data)
@@ -287,7 +263,7 @@ separate_hierarchy <- function(data, config) {
 # Internal implementation for complete_cases (used by setup_analysis before LFQData exists)
 .complete_cases_impl <- function(pdata, file_name, sample_name, factor_keys, isotope_label, hierarchy_keys) {
   message("completing cases")
-  fkeys <- c(file_name, sample_name, factor_keys)
+  fkeys <- unique(c(file_name, sample_name, factor_keys))
   hkeys <- c(isotope_label, hierarchy_keys)
   res <- tidyr::complete(
     pdata,

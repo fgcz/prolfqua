@@ -80,107 +80,54 @@ sigma.rfit_prolfqua <- function(object, ...) {
 #' @family modelling
 #' @examples
 #' strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
-#' strat$model_fun(get_formula = TRUE)
+#' strat$formula
 StrategyRfit <- R6::R6Class(
   "StrategyRfit",
+  inherit = StrategyBase,
   public = list(
-    #' @field formula model formula
-    formula = NULL,
-    #' @field model_name name of model
-    model_name = NULL,
-    #' @field report_columns columns to report
-    report_columns = NULL,
-    #' @field is_mixed always FALSE for rfit
-    is_mixed = FALSE,
-    #' @field anova_df list with anova function and column names
-    anova_df = NULL,
-
-    #' @description Create a new StrategyRfit
+    #' @description Create a new StrategyRfit. Residual df and scale come from
+    #'   \code{df.residual()} and \code{sigma()} of the augmented fit.
     #' @param modelstr model formula string
     #' @param model_name name of model
-    #' @param report_columns columns to report
-    initialize = function(
-      modelstr,
-      model_name = "rfit",
-      report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
-    ) {
-      self$formula <- as.formula(modelstr)
-      self$model_name <- model_name
-      self$report_columns <- report_columns
-      self$anova_df <- get_anova_df(test = "F")
-    },
-
-    #' @description Fit rfit to one protein's data, augmenting the fit so the
-    #'   classic contrast path can introspect it.
-    #' @param x data.frame for one protein
-    #' @param pb optional progress bar
-    #' @param get_formula if TRUE, return formula instead of fitting
-    model_fun = function(x, pb, get_formula = FALSE) {
-      if (get_formula) {
-        return(self$formula)
-      }
-      if (!missing(pb)) {
-        pb$tick()
-      }
+    initialize = function(modelstr, model_name = "rfit") {
+      super$initialize(modelstr, model_name)
+    }
+  ),
+  private = list(
+    prepare = function(x) {
       if (!requireNamespace("Rfit", quietly = TRUE)) {
         stop("Package 'Rfit' is required for the rfit backend. Install it with install.packages('Rfit').")
       }
-      tryCatch(
-        {
-          fit <- Rfit::rfit(self$formula, data = x)
-          # When the rank fit is no better than the intercept-only model,
-          # `Rfit::rfit()` falls back to `bhat0 <- c(median(y), rep(0, p))`,
-          # an UNNAMED coefficient vector at full QR rank. The names matter:
-          # `linfct_from_model()` -> `.model_coeff_matrix()` copies them onto
-          # the coefficient matrix columns, and the contrast path then crashes
-          # in `tibble::as_tibble()` ("Columns must be named") when they are
-          # NULL. The design matrix always carries the correct column names,
-          # so restore them. (This is distinct from the rank-deficient case
-          # below, which keeps full rank and so is not caught by that guard.)
-          if (is.null(names(fit$coefficients))) {
-            names(fit$coefficients) <- colnames(fit$x)
-          }
-          # Rfit silently zeros unestimable coefficients in rank-deficient
-          # designs (unlike lm which uses NA), and the resulting vcov()
-          # then fails with a Cholesky error. Detect and fail the fit so
-          # the protein is reported in get_missing() rather than crashing
-          # the contrast loop.
-          if (!is.null(fit$qrx1$rank) && fit$qrx1$rank < ncol(fit$x)) {
-            return(.error_handler(simpleError("rfit design is rank-deficient")))
-          }
-          fit$model <- stats::model.frame(self$formula, data = x)
-          fit$terms <- stats::terms(self$formula, data = x)
-          class(fit) <- c("rfit_prolfqua", class(fit))
-          fit
-        },
-        error = .error_handler
-      )
+      x
     },
-
-    #' @description Check if model is singular (NA coefficients or df < 2)
-    #' @param model fitted model
-    isSingular = function(model) {
-      if (any(is.na(coefficients(model)))) {
-        return(TRUE)
+    # Fit rfit, augmenting the fit so the classic contrast path can introspect it.
+    fit = function(x) {
+      fit <- Rfit::rfit(self$formula, data = x)
+      # When the rank fit is no better than the intercept-only model,
+      # `Rfit::rfit()` falls back to `bhat0 <- c(median(y), rep(0, p))`,
+      # an UNNAMED coefficient vector at full QR rank. The names matter:
+      # `linfct_from_model()` -> `.model_coeff_matrix()` copies them onto
+      # the coefficient matrix columns, and the contrast path then crashes
+      # in `tibble::as_tibble()` ("Columns must be named") when they are
+      # NULL. The design matrix always carries the correct column names,
+      # so restore them. (This is distinct from the rank-deficient case
+      # below, which keeps full rank and so is not caught by that guard.)
+      if (is.null(names(fit$coefficients))) {
+        names(fit$coefficients) <- colnames(fit$x)
       }
-      df <- self$df_residual(model)
-      if (is.na(df) || df < 2) {
-        return(TRUE)
+      # Rfit silently zeros unestimable coefficients in rank-deficient
+      # designs (unlike lm which uses NA), and the resulting vcov()
+      # then fails with a Cholesky error. Detect and fail the fit so
+      # the protein is reported in get_missing() rather than crashing
+      # the contrast loop.
+      if (!is.null(fit$qrx1$rank) && fit$qrx1$rank < ncol(fit$x)) {
+        return(.error_handler(simpleError("rfit design is rank-deficient")))
       }
-      FALSE
-    },
-
-    #' @description Compute contrasts from fitted model
-    #' @param ... passed to \code{\link{compute_contrast}}
-    contrast_fun = function(...) compute_contrast(...),
-
-    #' @description Get residual degrees of freedom
-    #' @param model fitted model
-    df_residual = function(model) length(model$residuals) - length(stats::coef(model)),
-
-    #' @description Get the rank-based scale estimate
-    #' @param model fitted model
-    sigma = function(model) model$tauhat
+      fit$model <- stats::model.frame(self$formula, data = x)
+      fit$terms <- stats::terms(self$formula, data = x)
+      class(fit) <- c("rfit_prolfqua", class(fit))
+      fit
+    }
   )
 )
 
@@ -190,18 +137,11 @@ StrategyRfit <- R6::R6Class(
 #' Convenience wrapper that creates a \code{\link{StrategyRfit}} object.
 #' @rdname strategy
 #' @export
-#' @param modelstr model formula
-#' @param model_name name of model
-#' @param report_columns columns to report
 #' @family modelling
 #' @return a \code{\link{StrategyRfit}} object
 #' @examples
 #' tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
-#' tmp$model_fun(get_formula = TRUE)
-strategy_rfit <- function(
-  modelstr,
-  model_name = "rfit",
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value", "moderated.p.value.adjusted")
-) {
-  StrategyRfit$new(modelstr, model_name, report_columns)
+#' tmp$formula
+strategy_rfit <- function(modelstr, model_name = "rfit") {
+  StrategyRfit$new(modelstr, model_name)
 }

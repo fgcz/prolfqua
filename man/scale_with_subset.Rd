@@ -4,7 +4,7 @@
 \alias{scale_with_subset}
 \title{Scale data using a subset of the data}
 \usage{
-scale_with_subset(lfqdata, lfqsubset, preserve_mean = FALSE, get_scales = TRUE)
+scale_with_subset(lfqdata, lfqsubset, preserve_mean = FALSE, colname = NULL)
 }
 \arguments{
 \item{lfqdata}{LFQData object with full dataset}
@@ -13,7 +13,7 @@ scale_with_subset(lfqdata, lfqsubset, preserve_mean = FALSE, get_scales = TRUE)
 
 \item{preserve_mean}{default FALSE - sets mean to zero}
 
-\item{get_scales}{return a list of transformed data and the scaling parameters}
+\item{colname}{name of the scaled intensity column; default NULL uses \code{<response>_subset_scaled}}
 }
 \value{
 list with data, scales, and colname
@@ -38,7 +38,6 @@ stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{apply_to_response_matrix}()},
-\code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
 \code{\link{robust_scale}()}
 }

@@ -32,6 +32,7 @@ Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateTopN}},
+\code{\link{AggregatorBase}},
 \code{\link{LFQData}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
@@ -39,46 +40,25 @@ Other LFQData:
 \code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{lfq}}{LFQData}
-
-\item{\code{lfq_agg}}{aggregation result}
-
-\item{\code{prefix}}{to use for aggregation results e.g. protein}
-}
-\if{html}{\out{</div>}}
+\section{Super class}{
+\code{\link[prolfqua:AggregatorBase]{prolfqua::AggregatorBase}} -> \code{AggregateRlm}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-AggregateRlm-new}{\code{AggregateRlm$new()}}
 \item \href{#method-AggregateRlm-aggregate}{\code{AggregateRlm$aggregate()}}
-\item \href{#method-AggregateRlm-plot}{\code{AggregateRlm$plot()}}
-\item \href{#method-AggregateRlm-write_plots}{\code{AggregateRlm$write_plots()}}
 \item \href{#method-AggregateRlm-clone}{\code{AggregateRlm$clone()}}
 }
 }
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AggregateRlm-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AggregateRlm-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateRlm$new(lfq, prefix = "protein")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfq}}{LFQData}
-
-\item{\code{prefix}}{default protein}
-}
-\if{html}{\out{</div>}}
-}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="initialize"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-initialize'><code>prolfqua::AggregatorBase$initialize()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>prolfqua::AggregatorBase$plot()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>prolfqua::AggregatorBase$write_plots()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateRlm-aggregate"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateRlm-aggregate}{}}}
@@ -90,62 +70,6 @@ run robust regression aggregation
 
 \subsection{Returns}{
 LFQData
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AggregateRlm-plot"></a>}}
-\if{latex}{\out{\hypertarget{method-AggregateRlm-plot}{}}}
-\subsection{Method \code{plot()}}{
-creates aggregation plots
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateRlm$plot(subset = NULL, show.legend = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{subset}}{create plots for a subset of the data only}
-
-\item{\code{show.legend}}{default FALSE}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AggregateRlm-write_plots"></a>}}
-\if{latex}{\out{\hypertarget{method-AggregateRlm-write_plots}{}}}
-\subsection{Method \code{write_plots()}}{
-writes plots to folder
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateRlm$write_plots(
-  qcpath,
-  subset = NULL,
-  show.legend = FALSE,
-  width = 6,
-  height = 6
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{qcpath}}{qcpath}
-
-\item{\code{subset}}{write plots only for some}
-
-\item{\code{show.legend}}{legend}
-
-\item{\code{width}}{figure width}
-
-\item{\code{height}}{figure height}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-file path
 }
 }
 \if{html}{\out{<hr>}}

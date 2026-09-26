@@ -92,7 +92,6 @@ not flagged; set it to enable contaminant flagging / removal.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-AnalysisConfiguration-new}{\code{AnalysisConfiguration$new()}}
 \item \href{#method-AnalysisConfiguration-set_response}{\code{AnalysisConfiguration$set_response()}}
 \item \href{#method-AnalysisConfiguration-get_response}{\code{AnalysisConfiguration$get_response()}}
 \item \href{#method-AnalysisConfiguration-pop_response}{\code{AnalysisConfiguration$pop_response()}}
@@ -100,22 +99,11 @@ not flagged; set it to enable contaminant flagging / removal.}
 \item \href{#method-AnalysisConfiguration-factor_keys_depth}{\code{AnalysisConfiguration$factor_keys_depth()}}
 \item \href{#method-AnalysisConfiguration-hierarchy_keys}{\code{AnalysisConfiguration$hierarchy_keys()}}
 \item \href{#method-AnalysisConfiguration-hierarchy_keys_depth}{\code{AnalysisConfiguration$hierarchy_keys_depth()}}
-\item \href{#method-AnalysisConfiguration-id_required}{\code{AnalysisConfiguration$id_required()}}
 \item \href{#method-AnalysisConfiguration-id_vars}{\code{AnalysisConfiguration$id_vars()}}
 \item \href{#method-AnalysisConfiguration-value_vars}{\code{AnalysisConfiguration$value_vars()}}
 \item \href{#method-AnalysisConfiguration-annotation_vars}{\code{AnalysisConfiguration$annotation_vars()}}
 \item \href{#method-AnalysisConfiguration-clone}{\code{AnalysisConfiguration$clone()}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisConfiguration-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisConfiguration-new}{}}}
-\subsection{Method \code{new()}}{
-create AnalysisConfiguration
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$new()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-set_response"></a>}}
@@ -183,16 +171,9 @@ Get factor keys till factorDepth
 \subsection{Method \code{hierarchy_keys()}}{
 get hierarchy keys
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$hierarchy_keys(rev = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$hierarchy_keys()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rev}}{return in reverse order}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
 array of column names
 }
@@ -215,19 +196,6 @@ get hierarchy keys up to depth
 }
 \subsection{Returns}{
 array of column names
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AnalysisConfiguration-id_required"></a>}}
-\if{latex}{\out{\hypertarget{method-AnalysisConfiguration-id_required}{}}}
-\subsection{Method \code{id_required()}}{
-Id Columns which must be in the input data frame
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$id_required()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-character array
 }
 }
 \if{html}{\out{<hr>}}

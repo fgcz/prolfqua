@@ -93,7 +93,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -101,9 +100,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -114,10 +110,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -129,25 +123,11 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
 \section{Super classes}{
 \code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{\link[prolfqua:ContrastsFacadeBase]{prolfqua::ContrastsFacadeBase}} -> \code{ContrastsLmerNestedFacade}
-}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{model}}{Model object}
-
-\item{\code{contrast}}{ContrastsModerated object}
-
-\item{\code{.lfqdata}}{stored reference to input LFQData}
-
-\item{\code{.contrast_names}}{names of the requested contrasts}
-}
-\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -163,11 +143,11 @@ Other modelling:
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table'><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="extra_artifacts"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts'><code>prolfqua::ContrastsInterface$extra_artifacts()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="filter_significant"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant'><code>prolfqua::ContrastsInterface$filter_significant()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_config"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config'><code>prolfqua::ContrastsInterface$get_config()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides'><code>prolfqua::ContrastsInterface$get_contrast_sides()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_Plotter"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter'><code>prolfqua::ContrastsFacadeBase$get_Plotter()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_config"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_config'><code>prolfqua::ContrastsFacadeBase$get_config()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_contrasts"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts'><code>prolfqua::ContrastsFacadeBase$get_contrasts()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing'><code>prolfqua::ContrastsFacadeBase$get_missing()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="to_wide"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide'><code>prolfqua::ContrastsFacadeBase$to_wide()</code></a></span></li>

@@ -2,13 +2,10 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{summarize_stats}
 \alias{summarize_stats}
-\alias{summarize_stats_all}
 \alias{summarize_stats_quantiles}
 \title{Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.}
 \usage{
 summarize_stats(lfqdata, factor_key = lfqdata$relevant_factor_keys())
-
-summarize_stats_all(lfqdata)
 
 summarize_stats_quantiles(
   stats_res,
@@ -33,8 +30,6 @@ summarize_stats_quantiles(
 \description{
 Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
 
-Compute mean, sd, and CV for e.g. Peptides, or proteins, for all samples.
-
 summarize stats output (compute quantiles)
 }
 \examples{
@@ -55,11 +50,6 @@ stats <- summarize_stats(lfq2, factor_key = lfq2$factor_keys()[2])
 stopifnot(nrow(stats) == 20)
 stats <- summarize_stats(lfq2, factor_key = NULL)
 stopifnot(nrow(stats) == 10)
-
-bb <- prolfqua::sim_lfq_data_protein_config()
-lfq <- LFQData$new(bb$data, bb$config)
-res1 <- summarize_stats_all(lfq)
-stopifnot((res1 |> dplyr::filter(group_ == "All") |> nrow()) == (res1 |> nrow()))
 library(ggplot2)
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(bb1$data, bb1$config)
@@ -74,39 +64,25 @@ ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_l
 \seealso{
 Other stats: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{compute_pooled}()},
 \code{\link{lfq_power_t_test_proteins}()},
-\code{\link{lfq_power_t_test_quantiles}()},
 \code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{plot_stat_density}()},
 \code{\link{plot_stat_density_median}()},
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stat_violin_median}()},
-\code{\link{plot_stdv_vs_mean}()},
-\code{\link{pooled_V2}()}
+\code{\link{plot_stdv_vs_mean}()}
 
 Other stats: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
+\code{\link{compute_pooled}()},
 \code{\link{lfq_power_t_test_proteins}()},
-\code{\link{lfq_power_t_test_quantiles}()},
 \code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{plot_stat_density}()},
 \code{\link{plot_stat_density_median}()},
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stat_violin_median}()},
-\code{\link{plot_stdv_vs_mean}()},
-\code{\link{pooled_V2}()}
-
-Other stats: 
-\code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{lfq_power_t_test_proteins}()},
-\code{\link{lfq_power_t_test_quantiles}()},
-\code{\link{lfq_power_t_test_quantiles_V2}()},
-\code{\link{plot_stat_density}()},
-\code{\link{plot_stat_density_median}()},
-\code{\link{plot_stat_violin}()},
-\code{\link{plot_stat_violin_median}()},
-\code{\link{plot_stdv_vs_mean}()},
-\code{\link{pooled_V2}()}
+\code{\link{plot_stdv_vs_mean}()}
 }
 \concept{stats}
 \keyword{internal}

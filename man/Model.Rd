@@ -93,7 +93,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -101,9 +100,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -114,10 +110,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -129,7 +123,6 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
@@ -147,8 +140,6 @@ Other modelling:
 
 \item{\code{model_strategy}}{function to create the models}
 
-\item{\code{anova_df}}{function to compute anova}
-
 \item{\code{p.adjust}}{function to adjust p-values}
 }
 \if{html}{\out{</div>}}
@@ -159,15 +150,19 @@ Other modelling:
 \item \href{#method-Model-new}{\code{Model$new()}}
 \item \href{#method-Model-get_coefficients}{\code{Model$get_coefficients()}}
 \item \href{#method-Model-get_anova}{\code{Model$get_anova()}}
-\item \href{#method-Model-coef_histogram}{\code{Model$coef_histogram()}}
-\item \href{#method-Model-coef_volcano}{\code{Model$coef_volcano()}}
-\item \href{#method-Model-coef_pairs}{\code{Model$coef_pairs()}}
-\item \href{#method-Model-anova_histogram}{\code{Model$anova_histogram()}}
-\item \href{#method-Model-write_anova_figures}{\code{Model$write_anova_figures()}}
-\item \href{#method-Model-write_coef_figures}{\code{Model$write_coef_figures()}}
 \item \href{#method-Model-clone}{\code{Model$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="anova_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram'><code>prolfqua::ModelInterface$anova_histogram()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram'><code>prolfqua::ModelInterface$coef_histogram()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs'><code>prolfqua::ModelInterface$coef_pairs()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano'><code>prolfqua::ModelInterface$coef_volcano()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Model-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Model-new}{}}}
@@ -218,95 +213,6 @@ return anova table
 \if{html}{\out{<div class="r">}}\preformatted{Model$get_anova()}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-coef_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-coef_histogram}{}}}
-\subsection{Method \code{coef_histogram()}}{
-histogram of model coefficient
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$coef_histogram()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-coef_volcano"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-coef_volcano}{}}}
-\subsection{Method \code{coef_volcano()}}{
-volcano plot of non intercept coefficients
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$coef_volcano()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-coef_pairs"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-coef_pairs}{}}}
-\subsection{Method \code{coef_pairs()}}{
-pairs-plot of coefficients
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$coef_pairs()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-anova_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-anova_histogram}{}}}
-\subsection{Method \code{anova_histogram()}}{
-histogram of ANOVA results
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$anova_histogram(what = c("p.value", "FDR"))}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{what}}{show either "Pr..F." or "FDR.Pr..F."}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-write_anova_figures"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-write_anova_figures}{}}}
-\subsection{Method \code{write_anova_figures()}}{
-write figures related to ANOVA into pdf file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$write_anova_figures(path, width = 10, height = 10)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{folder name}
-
-\item{\code{width}}{figure width}
-
-\item{\code{height}}{figure height}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Model-write_coef_figures"></a>}}
-\if{latex}{\out{\hypertarget{method-Model-write_coef_figures}{}}}
-\subsection{Method \code{write_coef_figures()}}{
-write figures related to Coefficients into pdf file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$write_coef_figures(path, width = 10, height = 10)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{folder name}
-
-\item{\code{width}}{figure width}
-
-\item{\code{height}}{figure height}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Model-clone"></a>}}

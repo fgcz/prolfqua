@@ -35,14 +35,6 @@ stopifnot("matrix" \%in\% class(tmp$data))
 stopifnot(lfqdata$is_transformed()==FALSE)
 lfqdata$summarize_hierarchy()
 
-# filter for missing values
-
-f1 <- lfqdata$omit_na(nr_na = 0)
-stopifnot(f1$hierarchy_counts() <= lfqdata$hierarchy_counts())
-
-f2 <- lfqdata$omit_na(factor_depth = 0)
-stopifnot(f2$hierarchy_counts() <= lfqdata$hierarchy_counts())
-
 lfqdata$response()
 lfqdata$rename_response("peptide.intensity")
 lfqdata$response()
@@ -53,12 +45,7 @@ stopifnot("LFQDataSummariser" \%in\% class(lfqdata$get_Summariser()))
 stopifnot("LFQDataPlotter" \%in\% class(lfqdata$get_Plotter()))
 stopifnot("AggregateMedpolish" \%in\% class(lfqdata$get_Aggregator("medpolish")))
 
-lfqdata2 <- lfqdata$get_copy()
-lfqdata2$set_data(lfqdata2$data_long()[1:100, ])
-res <- lfqdata$filter_difference(lfqdata2)
-stopifnot(nrow(res$data_long()) == nrow(lfqdata$data_long()) - 100)
-
-tmp <- lfqdata$get_sample(5, seed = 4)
+tmp <-lfqdata$get_sample(5, seed = 4)
 stopifnot(nrow(tmp$hierarchy()) == 5)
 
 }
@@ -68,6 +55,7 @@ Other LFQData:
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
+\code{\link{AggregatorBase}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
@@ -97,8 +85,6 @@ Other LFQData:
 \item \href{#method-LFQData-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
 \item \href{#method-LFQData-remove_decoys}{\code{LFQData$remove_decoys()}}
 \item \href{#method-LFQData-decoy_proportion}{\code{LFQData$decoy_proportion()}}
-\item \href{#method-LFQData-contaminant_proportion}{\code{LFQData$contaminant_proportion()}}
-\item \href{#method-LFQData-omit_na}{\code{LFQData$omit_na()}}
 \item \href{#method-LFQData-complete_cases}{\code{LFQData$complete_cases()}}
 \item \href{#method-LFQData-data_wide}{\code{LFQData$data_wide()}}
 \item \href{#method-LFQData-factors}{\code{LFQData$factors()}}
@@ -121,7 +107,6 @@ Other LFQData:
 \item \href{#method-LFQData-get_Stats}{\code{LFQData$get_Stats()}}
 \item \href{#method-LFQData-get_Transformer}{\code{LFQData$get_Transformer()}}
 \item \href{#method-LFQData-get_Aggregator}{\code{LFQData$get_Aggregator()}}
-\item \href{#method-LFQData-filter_difference}{\code{LFQData$filter_difference()}}
 \item \href{#method-LFQData-clone}{\code{LFQData$clone()}}
 }
 }
@@ -341,45 +326,6 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).
 
 \subsection{Returns}{
 numeric in [0, 1]
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-contaminant_proportion"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-contaminant_proportion}{}}}
-\subsection{Method \code{contaminant_proportion()}}{
-proportion of modelling-level keys (subject_id) that are contaminants.
-Returns 0 when `pattern_contaminants` is not configured.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$contaminant_proportion()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-numeric in [0, 1]
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-omit_na"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-omit_na}{}}}
-\subsection{Method \code{omit_na()}}{
-Omit NA from intensities per hierarchy (e.g. protein or peptide), idea is to use it for normalization
-For instance if a peptide has a missing value in more then nrNA of the samples within a condition
-it will be removed
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$omit_na(nr_na = 0, factor_depth = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{nr_na}}{number of NA values}
-
-\item{\code{factor_depth}}{control whether `nr_na` is applied per condition or more
-globally, e.g. `factor_depth = 0` means per experiment}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-LFQData with NA omitted.
 }
 }
 \if{html}{\out{<hr>}}
@@ -676,30 +622,6 @@ get Aggregator
 }
 \subsection{Returns}{
 AggregateMedpolish, AggregateRlm, or AggregateTopN
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-filter_difference"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-filter_difference}{}}}
-\subsection{Method \code{filter_difference()}}{
-get difference of self with other if other is subset of self
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$filter_difference(other)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{other}}{a filtered LFQData set}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Details}{
-Use to compare filtering results obtained from self, e.g. which proteins and peptides were removed (other)
-}
-
-\subsection{Returns}{
-LFQData
 }
 }
 \if{html}{\out{<hr>}}

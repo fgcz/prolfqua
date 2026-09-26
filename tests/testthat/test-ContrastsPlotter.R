@@ -52,10 +52,6 @@ test_that("ContrastsPlotter produces correct plot types", {
   expect_s3_class(h$FDR, "ggplot")
   expect_s3_class(h$p.value, "ggplot")
 
-  # histogram_estimate returns ggplot
-  he <- cp$histogram_estimate()
-  expect_s3_class(he, "ggplot")
-
   # histogram_diff returns ggplot
   hd <- cp$histogram_diff()
   expect_s3_class(hd, "ggplot")

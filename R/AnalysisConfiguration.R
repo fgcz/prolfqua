@@ -79,10 +79,6 @@ AnalysisConfiguration <- R6::R6Class(
     #' @field min_peptides_protein minimum number of peptides per protein
     min_peptides_protein = 2,
 
-    #' @description
-    #' create AnalysisConfiguration
-    initialize = function() {},
-
     # --- methods from AnalysisTableAnnotation ---
     #' @description
     #' Add name of intensity column
@@ -118,14 +114,9 @@ AnalysisConfiguration <- R6::R6Class(
 
     #' @description
     #' get hierarchy keys
-    #' @param rev return in reverse order
     #' @return array of column names
-    hierarchy_keys = function(rev = FALSE) {
-      if (rev) {
-        return(rev(names(self$hierarchy)))
-      } else {
-        return(names(self$hierarchy))
-      }
+    hierarchy_keys = function() {
+      return(names(self$hierarchy))
     },
 
     #' @description
@@ -134,31 +125,13 @@ AnalysisConfiguration <- R6::R6Class(
     #' @return array of column names
     hierarchy_keys_depth = function(names = TRUE) {
       res <- head(self$hierarchy, n = self$hierarchy_depth)
-      res <- if (names) {
-        names(res)
-      } else {
-        res
-      }
-      return(res)
+      if (names) names(res) else res
     },
 
-    #' @description
-    #' Id Columns which must be in the input data frame
-    #' @return character array
-    id_required = function() {
-      id_vars <- c(
-        self$file_name,
-        unlist(self$factors),
-        unlist(self$hierarchy),
-        self$isotope_label
-      )
-      return(id_vars)
-    },
     #' @description
     #' get names of columns annotating values (e.g. intensities)
     #' @return character array
     id_vars = function() {
-      "Id Columns which must be in the output data frame"
       id_vars <- c(
         self$file_name,
         names(self$factors),
@@ -172,7 +145,6 @@ AnalysisConfiguration <- R6::R6Class(
     #' @description
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
     value_vars = function() {
-      "Columns containing values"
       value_vars <- c(
         self$get_response(),
         self$ident_q_value,

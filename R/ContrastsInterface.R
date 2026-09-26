@@ -7,10 +7,10 @@
 #' testthat::expect_error(int$get_contrast_sides())
 #' testthat::expect_error(int$get_contrasts())
 #' testthat::expect_error(int$get_missing())
+#' # get_Plotter / to_wide / get_rank / get_ora / filter_significant call get_contrasts()
+#' # internally, which is not implemented on the bare interface, so they surface that error.
 #' testthat::expect_error(int$get_Plotter())
 #' testthat::expect_error(int$to_wide())
-#' # get_rank / get_ora / filter_significant call get_contrasts() internally,
-#' # which is not implemented on the bare interface, so they surface that error.
 #' testthat::expect_error(int$get_rank())
 #' testthat::expect_error(int$get_ora())
 #' testthat::expect_error(int$filter_significant())
@@ -45,14 +45,30 @@ ContrastsInterface <- R6::R6Class(
       stop("get_contrasts not implemented.")
     },
     #' @description
-    #' initialize plotter
-    get_Plotter = function() {
-      stop("get_Plotter not implemented.")
+    #' return \code{\link{ContrastsPlotter}} for the contrast results
+    #' @param fc_threshold fold change threshold to show in plots
+    #' @param fdr_threshold FDR threshold to show in plots
+    #' @return \code{\link{ContrastsPlotter}}
+    get_Plotter = function(fc_threshold = 1, fdr_threshold = 0.1) {
+      ContrastsPlotter$new(
+        self$get_contrasts(),
+        subject_id = self$subject_id,
+        fcthresh = fc_threshold,
+        volcano = lapply(private$volcano_scores, function(score) list(score = score, thresh = fdr_threshold)),
+        score = list(list(score = "statistic", thresh = 5))
+      )
     },
     #' @description
-    #' create wide representation of data.
-    to_wide = function() {
-      stop("to_wide not implemented.")
+    #' convert contrast results to wide format
+    #' @param columns value columns to spread next to \code{diff}
+    #' @return data.frame
+    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
+      pivot_model_contrasts_to_wide(
+        self$get_contrasts(),
+        subject_id = self$subject_id,
+        columns = c("diff", columns),
+        contrast = "contrast"
+      )
     },
     #' @description
     #' get protein × contrast pairs that could not be estimated.
@@ -73,10 +89,7 @@ ContrastsInterface <- R6::R6Class(
     get_rank = function(score = NULL) {
       contrasts <- self$get_contrasts()
       cfg <- self$get_config()
-      subject_id <- cfg$subject_id
-      if (length(subject_id) == 0) {
-        subject_id <- self$subject_id
-      }
+      subject_id <- private$subject_columns(cfg)
       contrast_col <- cfg$contrast_col
       effect_col <- cfg$effect_col
       pvalue_col <- cfg$pvalue_col
@@ -91,14 +104,7 @@ ContrastsInterface <- R6::R6Class(
       } else {
         score_col_internal <- score
       }
-      required <- c(subject_id, contrast_col, score_col_internal)
-      missing_columns <- setdiff(required, colnames(contrasts))
-      if (length(missing_columns) > 0) {
-        stop(
-          "Cannot create rank table. Missing columns: ",
-          paste(missing_columns, collapse = ", ")
-        )
-      }
+      .stop_if_missing_columns(contrasts, c(subject_id, contrast_col, score_col_internal), "create rank table")
       rank_table <- contrasts |>
         dplyr::select(
           dplyr::all_of(subject_id),
@@ -118,36 +124,17 @@ ContrastsInterface <- R6::R6Class(
     get_ora = function(up = TRUE, FDR_threshold = 0.05, diff_threshold = 1) {
       contrasts <- self$get_contrasts()
       cfg <- self$get_config()
-      subject_id <- cfg$subject_id
-      if (length(subject_id) == 0) {
-        subject_id <- self$subject_id
-      }
-      contrast_col <- cfg$contrast_col
       effect_col <- cfg$effect_col
       fdr_col <- cfg$fdr_col
-      required <- c(subject_id, contrast_col, fdr_col, effect_col)
-      missing_columns <- setdiff(required, colnames(contrasts))
-      if (length(missing_columns) > 0) {
-        stop(
-          "Cannot create ORA table. Missing columns: ",
-          paste(missing_columns, collapse = ", ")
-        )
-      }
-      if (up) {
-        ora <- contrasts[
-          contrasts[[fdr_col]] < FDR_threshold &
-            !is.na(contrasts[[fdr_col]]) &
-            contrasts[[effect_col]] > diff_threshold &
-            !is.na(contrasts[[effect_col]]),
-        ]
-      } else {
-        ora <- contrasts[
-          contrasts[[fdr_col]] < FDR_threshold &
-            !is.na(contrasts[[fdr_col]]) &
-            contrasts[[effect_col]] < -diff_threshold &
-            !is.na(contrasts[[effect_col]]),
-        ]
-      }
+      required <- c(private$subject_columns(cfg), cfg$contrast_col, fdr_col, effect_col)
+      .stop_if_missing_columns(contrasts, required, "create ORA table")
+      direction <- if (up) 1 else -1
+      ora <- contrasts[
+        contrasts[[fdr_col]] < FDR_threshold &
+          !is.na(contrasts[[fdr_col]]) &
+          direction * contrasts[[effect_col]] > diff_threshold &
+          !is.na(contrasts[[effect_col]]),
+      ]
       return(ora)
     },
     #' @description
@@ -167,14 +154,7 @@ ContrastsInterface <- R6::R6Class(
       cfg <- self$get_config()
       fdr_col <- cfg$fdr_col
       effect_col <- cfg$effect_col
-      required <- c(fdr_col, effect_col)
-      missing_columns <- setdiff(required, colnames(contrasts))
-      if (length(missing_columns) > 0) {
-        stop(
-          "Cannot filter significant contrasts. Missing columns: ",
-          paste(missing_columns, collapse = ", ")
-        )
-      }
+      .stop_if_missing_columns(contrasts, c(fdr_col, effect_col), "filter significant contrasts")
       effect_predicate <- if (isTRUE(cfg$significance_directional)) {
         contrasts[[effect_col]] > diff_threshold
       } else {
@@ -200,14 +180,7 @@ ContrastsInterface <- R6::R6Class(
       effect_col <- cfg$effect_col
       score_col <- cfg$score_col
       fdr_col <- cfg$fdr_col
-      required <- c(contrast_col, effect_col, score_col, fdr_col)
-      missing_columns <- setdiff(required, colnames(contrasts))
-      if (length(missing_columns) > 0) {
-        stop(
-          "Cannot build contrast summary. Missing columns: ",
-          paste(missing_columns, collapse = ", ")
-        )
-      }
+      .stop_if_missing_columns(contrasts, c(contrast_col, effect_col, score_col, fdr_col), "build contrast summary")
       res <- data.frame(
         contrast = contrasts[[contrast_col]],
         effect = contrasts[[effect_col]],
@@ -216,10 +189,8 @@ ContrastsInterface <- R6::R6Class(
         stringsAsFactors = FALSE
       )
       if (isTRUE(rounded)) {
-        round3 <- function(x) if (is.numeric(x)) signif(x, 3) else x
-        res$effect <- round3(res$effect)
-        res$score <- round3(res$score)
-        res$fdr <- round3(res$fdr)
+        numeric_cols <- c("effect", "score", "fdr")
+        res[numeric_cols] <- lapply(res[numeric_cols], function(x) if (is.numeric(x)) signif(x, 3) else x)
       }
       res
     },
@@ -253,8 +224,29 @@ ContrastsInterface <- R6::R6Class(
       description <- data.frame(column_name = names(description), description = description)
       return(description)
     }
+  ),
+  private = list(
+    # score columns shown as volcano plots by the default get_Plotter()
+    volcano_scores = c("p.value", "FDR"),
+    subject_columns = function(cfg) {
+      if (length(cfg$subject_id) == 0) self$subject_id else cfg$subject_id
+    }
   )
 )
+
+.stop_if_missing_columns <- function(contrasts, required, action) {
+  missing_columns <- setdiff(required, colnames(contrasts))
+  if (length(missing_columns) > 0) {
+    stop("Cannot ", action, ". Missing columns: ", paste(missing_columns, collapse = ", "))
+  }
+}
+
+# Lead the contrast table with the model identity: modelName, then estimate_type.
+.stamp_model_identity <- function(contrast_result, model_name, estimate_type) {
+  contrast_result$estimate_type <- estimate_type
+  contrast_result <- dplyr::mutate(contrast_result, modelName = model_name, .before = 1)
+  dplyr::relocate(contrast_result, "estimate_type", .after = "modelName")
+}
 
 
 # Merge contrasts ----
@@ -310,8 +302,6 @@ merge_contrasts_results <- function(prefer, add, model_name = "mergedModel") {
   same_id <- select(c_a, c(add$subject_id, "contrast"))
   same <- inner_join(same_id, c_b)
 
-  merged <- bind_rows(c_a, more)
-
   if (prefer$model_name == add$model_name) {
     prefer_model_name <- paste0(prefer$model_name, "_prefer")
     add_model_name <- paste0(add$model_name, "_add")
@@ -322,6 +312,7 @@ merge_contrasts_results <- function(prefer, add, model_name = "mergedModel") {
     add_model_name <- add$model_name
   }
 
+  merged <- bind_rows(c_a, more)
   merged$modelName <- factor(merged$modelName, levels = c(levels(factor(c_a$modelName)), add_model_name))
 
   merged <- ContrastsTable$new(

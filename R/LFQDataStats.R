@@ -113,11 +113,11 @@ LFQDataStats <- R6::R6Class(
       if (stats == "interaction") {
         self$statsdf <- prolfqua::summarize_stats(self$lfq)
       } else if (stats == "all") {
-        self$statsdf <- prolfqua::summarize_stats_all(self$lfq)
+        self$statsdf <- prolfqua::summarize_stats(self$lfq, factor_key = NULL)
       } else if (stats == "everything") {
         self$statsdf <- bind_rows(
           prolfqua::summarize_stats(self$lfq),
-          prolfqua::summarize_stats_all(self$lfq)
+          prolfqua::summarize_stats(self$lfq, factor_key = NULL)
         )
       }
     },

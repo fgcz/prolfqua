@@ -53,23 +53,19 @@ Other LFQData:
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
+\code{\link{AggregatorBase}},
 \code{\link{LFQData}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
-\keyword{static}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{lfq}}{LFQData object}
 
 \item{\code{prefix}}{prefix to figure names when writing, e.g. protein_}
-
-\item{\code{file_paths_pdf}}{with paths to figures}
-
-\item{\code{file_paths_html}}{with paths to figures}
 }
 \if{html}{\out{</div>}}
 }
@@ -91,9 +87,7 @@ Other LFQData:
 \item \href{#method-LFQDataPlotter-sample_correlation}{\code{LFQDataPlotter$sample_correlation()}}
 \item \href{#method-LFQDataPlotter-upset_missing}{\code{LFQDataPlotter$upset_missing()}}
 \item \href{#method-LFQDataPlotter-write_boxplots}{\code{LFQDataPlotter$write_boxplots()}}
-\item \href{#method-LFQDataPlotter-write_pltly}{\code{LFQDataPlotter$write_pltly()}}
 \item \href{#method-LFQDataPlotter-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
-\item \href{#method-LFQDataPlotter-write}{\code{LFQDataPlotter$write()}}
 \item \href{#method-LFQDataPlotter-clone}{\code{LFQDataPlotter$clone()}}
 }
 }
@@ -433,30 +427,6 @@ write boxplots to file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataPlotter-write_pltly"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataPlotter-write_pltly}{}}}
-\subsection{Method \code{write_pltly()}}{
-write pltly figures to path_qc
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pltly(fig, path_qc, fig_name)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fig}}{pltly figure}
-
-\item{\code{path_qc}}{path to write to}
-
-\item{\code{fig_name}}{file name (without extension)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-path the file was written to.
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-write_pdf"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-write_pdf}{}}}
 \subsection{Method \code{write_pdf()}}{
@@ -482,23 +452,6 @@ write figure to pdf
 }
 \subsection{Returns}{
 path the file was written to
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataPlotter-write"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataPlotter-write}{}}}
-\subsection{Method \code{write()}}{
-write heatmaps and pca plots to files
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write(path_qc)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path_qc}}{path to write to}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

@@ -4,13 +4,7 @@
 \alias{transform_work_intensity}
 \title{Transform intensity column by applying a function}
 \usage{
-transform_work_intensity(
-  pdata,
-  response,
-  .func,
-  .funcname = NULL,
-  intensity_new_name = NULL
-)
+transform_work_intensity(pdata, response, .func, .funcname = NULL)
 }
 \arguments{
 \item{pdata}{data.frame}
@@ -20,8 +14,6 @@ transform_work_intensity(
 \item{.func}{function to transform intensities e.g. log2}
 
 \item{.funcname}{name of function (used for creating new column name)}
-
-\item{intensity_new_name}{column name for new intensity, default NULL}
 }
 \value{
 list with `data` (data.frame) and `colname` (new column name)

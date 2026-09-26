@@ -38,6 +38,7 @@ Other LFQData:
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
+\code{\link{AggregatorBase}},
 \code{\link{LFQData}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},

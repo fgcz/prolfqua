@@ -93,25 +93,9 @@ ContrastsTable <- R6::R6Class(
         fcthresh = fc_threshold,
         volcano = volcano,
         histogram = histogram,
-        score = score,
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
+        score = score
       )
       return(res)
-    },
-    #' @description convert to wide format
-    #' @param columns value column default beta.based.significance
-    #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
-      contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_to_wide(
-        contrast_minimal,
-        subject_id = self$subject_id,
-        columns = c("diff", columns),
-        contrast = "contrast"
-      )
-      return(contrasts_wide)
     }
   )
 )

@@ -28,7 +28,6 @@ abs(mean(s1$mads) - mean(s2$mads)) < 0.1
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{apply_to_response_matrix}()},
-\code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{robust_scale}()},
 \code{\link{scale_with_subset}()}
 }

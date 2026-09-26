@@ -40,8 +40,6 @@
 #' p <- cp$histogram()
 #' stopifnot("ggplot" %in% class(p$FDR))
 #' stopifnot("ggplot" %in% class(p$p.value))
-#' p <- cp$histogram_estimate()
-#' stopifnot("ggplot" %in% class(p))
 #' res <- cp$volcano()
 #' stopifnot("ggplot" %in% class(res$FDR))
 #' respltly <- cp$volcano_plotly()
@@ -59,8 +57,6 @@ ContrastsPlotter <- R6::R6Class(
     model_name = character(),
     #' @field subject_id hierarchy key columns
     subject_id = character(),
-    #' @field prefix default Contrasts - used to generate file names
-    prefix = "Contrasts",
     #' @field diff column with fold change differences
     diff = "diff",
     #' @field contrast column with contrasts names, default "contrast"
@@ -77,8 +73,6 @@ ContrastsPlotter <- R6::R6Class(
     fcthresh = 1,
     #' @field avg.abundance name of column containing avg abundance values.
     avg.abundance = character(),
-    #' @field protein_annot protein annotation
-    protein_annot = NULL,
     #' @description
     #' create Crontrast_Plotter
     #' @param contrast_df frame with contrast data
@@ -94,7 +88,6 @@ ContrastsPlotter <- R6::R6Class(
     #' @param diff fold change (difference) diff column
     #' @param contrast contrast column
     #' @param avg.abundance name of column with average abundance
-    #' @param protein_annot add protein annotation (optional)
     #' @param group crosstalk group name for linked brushing, default "BB"
     initialize = function(
       contrast_df,
@@ -107,7 +100,6 @@ ContrastsPlotter <- R6::R6Class(
       diff = "diff",
       contrast = "contrast",
       avg.abundance = "avgAbd",
-      protein_annot = NULL,
       group = "BB"
     ) {
       private$.contrast_df <- tidyr::unite(
@@ -135,7 +127,6 @@ ContrastsPlotter <- R6::R6Class(
       self$fcthresh <- fcthresh
       self$contrast <- contrast
       self$avg.abundance <- avg.abundance
-      self$protein_annot <- protein_annot
       self$group <- group
     },
     #' @description
@@ -151,9 +142,9 @@ ContrastsPlotter <- R6::R6Class(
       }
     },
     #' @description
-    #' plot histogram of effect size - difference between groups
+    #' plot histogram of differences (diff) fold change
     #' @param binwidth with of bin in histogram
-    histogram_estimate = function(binwidth = 0.05) {
+    histogram_diff = function(binwidth = 0.05) {
       re <- range(private$.contrast_df[[self$diff]], na.rm = TRUE)
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
@@ -172,12 +163,6 @@ ContrastsPlotter <- R6::R6Class(
       return(fig)
     },
     #' @description
-    #' plot histogram of differences (diff) fold change
-    #' @param binwidth with of bin in histogram
-    histogram_diff = function(binwidth = 0.05) {
-      self$histogram_estimate(binwidth = binwidth)
-    },
-    #' @description
     #' volcano plots (fold change vs FDR)
     #' @param colour column name with color information default modelName
     #' @param legend default TRUE
@@ -185,20 +170,13 @@ ContrastsPlotter <- R6::R6Class(
     #' @param min_score optional lower bound for p-values or FDR values. If NULL,
     #' only exact zero and negative values are replaced with the smallest positive
     #' observed value in the same score column.
-    volcano = function(colour, legend = TRUE, scales = c("fixed", "free", "free_x", "free_y"), min_score = NULL) {
-      if (missing(colour)) {
-        colour <- self$model_name
-      }
-      scales <- match.arg(scales)
-      fig <- private$.volcano(
-        private$.contrast_df,
-        self$volcano_spec,
-        colour = colour,
-        legend = legend,
-        scales = scales,
-        min_score = min_score
-      )
-      return(fig)
+    volcano = function(
+      colour = self$model_name,
+      legend = TRUE,
+      scales = c("fixed", "free", "free_x", "free_y"),
+      min_score = NULL
+    ) {
+      private$.volcano(colour, legend, match.arg(scales), plotly = FALSE, min_score = min_score)
     },
     #' @description
     #' plotly volcano plots
@@ -210,25 +188,12 @@ ContrastsPlotter <- R6::R6Class(
     #' only exact zero and negative values are replaced with the smallest positive
     #' observed value in the same score column.
     volcano_plotly = function(
-      colour,
+      colour = self$model_name,
       legend = TRUE,
       scales = c("fixed", "free", "free_x", "free_y"),
       min_score = NULL
     ) {
-      if (missing(colour)) {
-        colour <- self$model_name
-      }
-      scales <- match.arg(scales)
-      res <- private$.volcano(
-        private$.contrast_df,
-        self$volcano_spec,
-        colour = colour,
-        legend = legend,
-        scales = scales,
-        plotly = TRUE,
-        min_score = min_score
-      )
-      return(res)
+      private$.volcano(colour, legend, match.arg(scales), plotly = TRUE, min_score = min_score)
     },
     #' @description
     #' ma plot
@@ -247,13 +212,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @param legend enable legend default TRUE
     #' @param rank default FALSE, if TRUE then rank of avgAbd is used.
     #' @return ggplot
-    ma_plot = function(fc, colour, legend = TRUE, rank = TRUE) {
-      if (missing(fc)) {
-        fc <- self$fcthresh
-      }
-      if (missing(colour)) {
-        colour <- self$model_name
-      }
+    ma_plot = function(fc = self$fcthresh, colour = self$model_name, legend = TRUE, rank = TRUE) {
       private$.ma_fig(private$.contrast_df, fc, colour, legend, rank)
     },
     #' @description
@@ -263,13 +222,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @param legend enable legend default TRUE
     #' @param rank default FALSE, if TRUE then rank of avgAbd is used.
     #' @return list of ggplots
-    ma_plotly = function(fc, colour, legend = TRUE, rank = FALSE) {
-      if (missing(fc)) {
-        fc <- self$fcthresh
-      }
-      if (missing(colour)) {
-        colour <- self$model_name
-      }
+    ma_plotly = function(fc = self$fcthresh, colour = self$model_name, legend = TRUE, rank = FALSE) {
       fig <- private$.ma_fig(private$.contrast_df, fc, colour, legend, rank, plotly_mode = TRUE)
       if (!is.null(fig)) {
         fig <- fig |> plotly::ggplotly(tooltip = "subject_id")
@@ -282,12 +235,9 @@ ContrastsPlotter <- R6::R6Class(
     #' @param colour column with colour coding
     #' @param legend enable legend default TRUE
     #' @return list of ggplots
-    score_plot = function(scorespec, colour, legend = TRUE) {
+    score_plot = function(scorespec, colour = self$model_name, legend = TRUE) {
       if (!missing(scorespec)) {
         self$score_spec[[scorespec$score]] <- scorespec
-      }
-      if (missing(colour)) {
-        colour <- self$model_name
       }
       res <- list()
       if (length(self$score_spec) > 0) {
@@ -297,32 +247,6 @@ ContrastsPlotter <- R6::R6Class(
           colour = colour,
           legend = legend
         )
-      }
-      return(res)
-    },
-    #' @description
-    #' plot a score against the log2 fc e.g. t-statistic
-    #' @param scorespec list(score="statistics", fcthres = 2, thresh = 5)
-    #' @param colour column with colour coding
-    #' @param legend enable legend default TRUE
-    #' @return list of ggplots
-    score_plotly = function(scorespec, colour, legend = TRUE) {
-      if (!missing(scorespec)) {
-        self$score_spec[[scorespec$score]] <- scorespec
-      }
-      if (missing(colour)) {
-        colour <- self$model_name
-      }
-      contrast_df <- private$.contrast_df |> plotly::highlight_key(~subject_id, group = self$group)
-      res <- private$.score_plot(
-        contrast_df,
-        self$score_spec,
-        colour = colour,
-        legend = legend
-      )
-
-      for (i in seq_along(res)) {
-        res[[i]] <- plotly::ggplotly(res[[i]], tooltip = "subject_id")
       }
       return(res)
     },
@@ -370,23 +294,15 @@ ContrastsPlotter <- R6::R6Class(
       }
       private$.ma_plot(contrast_df, abundance_col, self$diff, self$contrast, fc, colour = colour, legend = legend)
     },
-    .volcano = function(
-      contrasts,
-      scores,
-      colour = NULL,
-      legend = TRUE,
-      scales = "free_y",
-      plotly = FALSE,
-      min_score = NULL
-    ) {
+    .volcano = function(colour, legend, scales, plotly, min_score) {
       fig <- list()
-      for (score in scores) {
+      for (score in self$volcano_spec) {
         column <- score$score
         plot_name <- score$name
         if (is.null(plot_name)) {
           plot_name <- column
         }
-        contrasts2 <- contrasts |>
+        contrasts2 <- private$.contrast_df |>
           dplyr::filter(!is.na(!!sym(self$diff))) |>
           dplyr::filter(!is.na(!!sym(column))) |>
           dplyr::mutate(!!column := .floor_significance_values(!!sym(column), min_score))
@@ -435,11 +351,6 @@ ContrastsPlotter <- R6::R6Class(
         geom_point(alpha = 0.5) +
         scale_colour_manual(values = .contrast_colour_values(colour)) +
         facet_wrap(vars(!!sym(contrast)))
-      if (FALSE) {
-        ylab("log fold change (M)") + xlab("mean log intensities (A)")
-      } else {
-        NULL
-      }
       if (is.numeric(fc)) {
         p <- p + geom_hline(yintercept = c(-fc, fc), linetype = "dashed", colour = "red")
       }
@@ -455,13 +366,7 @@ ContrastsPlotter <- R6::R6Class(
         xlim <- self$fcthresh
         ylim <- score$thresh
         score <- score$score
-        score_values <- if ("data.frame" %in% class(x)) {
-          x[[score]]
-        } else {
-          x$data()[[score]]
-        }
-
-        ylims <- c(sign(min(score_values, na.rm = TRUE)) * ylim, sign(max(score_values, na.rm = TRUE)) * ylim)
+        ylims <- c(sign(min(x[[score]], na.rm = TRUE)) * ylim, sign(max(x[[score]], na.rm = TRUE)) * ylim)
         p <- ggplot(
           x,
           aes(x = !!sym(self$diff), y = !!sym(score), text = !!sym("subject_id"), colour = !!sym(colour))

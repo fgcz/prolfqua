@@ -21,12 +21,11 @@ parse_contrast_sides <- function(contrasts) {
 }
 
 .model_coeff_matrix <- function(m) {
-  data <- NULL
   if ("lmerModLmerTest" %in% class(m)) {
     data <- m@frame
     coeffs <- coefficients(summary(m))[, "Estimate"]
   } else {
-    # for "lmerModLmerTest"
+    # lm-like fits (lm, rlm, rfit, logistf, ...)
     data <- m$model
     coeffs <- coef(m)
   }
@@ -49,30 +48,15 @@ parse_contrast_sides <- function(contrasts) {
 }
 
 
-.get_match_idx <- function(coeff_matrix, factor_level) {
-  row_name_parts <- names_to_matrix(rownames(coeff_matrix), split = ":")
-  factor_match <- apply(
-    row_name_parts,
-    2,
-    function(x, factor_level) {
-      x %in% factor_level
-    },
-    factor_level
-  )
-  idx <- which(apply(factor_match, 1, sum) > 0)
-  return(idx)
-}
-
 .coeff_weights_factor_levels <- function(coeff_matrix) {
-  get_coeffs <- function(factor_level, coeff_matrix) {
-    idx <- .get_match_idx(coeff_matrix, factor_level)
+  row_name_parts <- stringi::stri_split_fixed(rownames(coeff_matrix), ":")
+  get_coeffs <- function(factor_level) {
+    idx <- which(vapply(row_name_parts, function(x) factor_level %in% x, logical(1)))
     x <- as.list(apply(coeff_matrix[idx, , drop = FALSE], 2, mean))
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level, .before = 1)
   }
-  factor_levels <- unique(unlist(stringi::stri_split_fixed(rownames(coeff_matrix), ":")))
-  weights_by_factor <- purrr::map_df(factor_levels, get_coeffs, coeff_matrix)
-  return(weights_by_factor)
+  purrr::map_df(unique(unlist(row_name_parts)), get_coeffs)
 }
 
 #' get linfct from model
@@ -133,12 +117,6 @@ linfct_from_model <- function(m, as_list = TRUE) {
 
 #' linfct_matrix_contrasts
 #'
-#' When \code{options(prolfqua.vectorize = TRUE)} is set, dispatches to a
-#' vectorized implementation that batch-evaluates all contrast expressions in a
-#' single \code{dplyr::mutate()} call instead of looping per expression.
-#' Set \code{options(prolfqua.vectorize = FALSE)} (the default) to use the
-#' original per-expression loop.
-#'
 #' @export
 #' @param linfct linear functions as created by linfct_from_model
 #' @param contrasts named character vector of contrasts to determine linear functions for
@@ -170,9 +148,6 @@ linfct_from_model <- function(m, as_list = TRUE) {
 #' stopifnot(sum(x["interactAB",]) ==1 )
 #'
 linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
-  if (isTRUE(getOption("prolfqua.vectorize"))) {
-    return(linfct_matrix_contrasts_vectorized(linfct, contrasts, p.message = p.message))
-  }
   linfct <- t(linfct)
   df <- tibble::as_tibble(linfct, rownames = "interaction")
   make_contrasts <- function(data, contrasts) {
@@ -224,186 +199,6 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
   res <- make_contrasts(df, contrasts)
   res <- tibble::column_to_rownames(res, "interaction")
   res <- t(res)
-  return(res)
-}
-
-.name_unnamed_contrasts <- function(contrasts) {
-  contrast_names <- names(contrasts)
-  if (is.null(contrast_names)) {
-    contrast_names <- rep("", length(contrasts))
-  }
-  missing_names <- is.na(contrast_names) | !nzchar(contrast_names)
-  contrast_names[missing_names] <- paste0(
-    "contrast_",
-    which(missing_names)
-  )
-  names(contrasts) <- contrast_names
-  contrasts
-}
-
-.try_vectorized_contrasts <- function(data, parsed) {
-  tryCatch(
-    dplyr::mutate(data, !!!parsed),
-    error = function(error) error
-  )
-}
-
-.evaluate_contrasts_sequentially <- function(data, contrasts, parsed, p.message) {
-  failures <- list()
-  for (i in seq_along(contrasts)) {
-    if (p.message) {
-      message(names(contrasts)[i], "=", contrasts[i], "\n")
-    }
-    error <- tryCatch(
-      {
-        data <- dplyr::mutate(
-          data,
-          !!names(contrasts)[i] := !!parsed[[i]]
-        )
-        NULL
-      },
-      error = function(error) error
-    )
-    if (inherits(error, "error")) {
-      failures[[length(failures) + 1]] <- list(
-        contrast = names(contrasts)[i],
-        message = conditionMessage(error)
-      )
-    }
-  }
-  list(data = data, failures = failures)
-}
-
-.warn_contrast_failures <- function(result, contrasts, failures) {
-  if (length(failures) == 0) {
-    return(invisible(NULL))
-  }
-
-  failure_df <- dplyr::bind_rows(failures)
-  failure_names <- paste(failure_df$contrast, collapse = ", ")
-  failure_messages <- unique(failure_df$message)
-  failure_summary <- paste(
-    utils::head(failure_messages, 3),
-    collapse = "; "
-  )
-  message <- sprintf(
-    "linfct_matrix_contrasts: computed %d/%d contrasts; failed %d: %s. %s",
-    ncol(result) - 1,
-    length(contrasts),
-    nrow(failure_df),
-    failure_names,
-    failure_summary
-  )
-  warning(message, call. = FALSE)
-}
-
-#' Vectorized version of \code{\link{linfct_matrix_contrasts}}
-#'
-#' Same semantics but uses a single \code{dplyr::mutate(data, !!!parsed)} call
-#' instead of one mutate per contrast. Falls back to per-expression evaluation
-#' on error so that granular failure reporting is preserved.
-#'
-#' @inheritParams linfct_matrix_contrasts
-#' @keywords internal
-linfct_matrix_contrasts_vectorized <- function(linfct, contrasts, p.message = FALSE) {
-  linfct <- t(linfct)
-  df <- tibble::as_tibble(linfct, rownames = "interaction")
-  original_columns <- base::setdiff(colnames(df), "interaction")
-  contrasts <- .name_unnamed_contrasts(contrasts)
-  parsed <- lapply(contrasts, rlang::parse_expr)
-  names(parsed) <- names(contrasts)
-
-  result <- .try_vectorized_contrasts(df, parsed)
-  if (inherits(result, "error")) {
-    sequential <- .evaluate_contrasts_sequentially(
-      df,
-      contrasts,
-      parsed,
-      p.message
-    )
-    result <- sequential$data
-  }
-  result <- dplyr::select(
-    result,
-    -dplyr::all_of(original_columns)
-  )
-  if (exists("sequential", inherits = FALSE)) {
-    .warn_contrast_failures(
-      result,
-      contrasts,
-      sequential$failures
-    )
-  }
-
-  result |>
-    tibble::column_to_rownames("interaction") |>
-    t()
-}
-
-#' create all possible contrasts
-#' @export
-#' @keywords internal
-#' @family modelling
-#' @examples
-#' m <- sim_make_model_lm( "interaction")
-#' linfct <- linfct_from_model(m)
-#' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
-#' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-#' m <- sim_make_model_lm( "factor")
-#' linfct <- linfct_from_model(m)
-#' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
-#' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-#' m <- sim_make_model_lm( "parallel2")
-#' linfct <- linfct_from_model(m)
-#' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
-#' stopifnot(all(xl == c(0,-1)))
-#' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-#' stopifnot(all(xx == c(0,-1)))
-#'
-#' m <- sim_make_model_lm( "parallel3")
-#' linfct <- linfct_from_model(m)
-#' xl <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_factors)
-#' stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
-#' xx <- prolfqua::linfct_all_possible_contrasts(linfct$linfct_interactions)
-#' stopifnot(all(xl == c(0,0,0,-1,0,1,0,-1,-1)))
-linfct_all_possible_contrasts <- function(lin_int) {
-  combs <- combn(nrow(lin_int), 2)
-  names <- rownames(lin_int)
-  newnames <- rep("", ncol(combs))
-  new_lin_fct <- matrix(NA, nrow = ncol(combs), ncol = ncol(lin_int))
-  for (i in seq_len(ncol(combs))) {
-    newnames[i] <- paste(names[combs[, i]], collapse = " - ")
-    new_lin_fct[i, ] <- lin_int[combs[1, i], ] - lin_int[combs[2, i], ]
-  }
-  rownames(new_lin_fct) <- newnames
-  colnames(new_lin_fct) <- colnames(lin_int)
-  return(new_lin_fct)
-}
-#' create contrasts between factor levels
-#'
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#'
-#' m <- sim_make_model_lm( "interaction")
-#' xl <- linfct_factors_contrasts(m)
-#' m <- lm(Petal.Width ~ Species, data = iris)
-#' linfct_factors_contrasts(m)
-linfct_factors_contrasts <- function(m) {
-  ffac <- attributes(terms(m))$term.labels
-  ffac <- ffac[!grepl(":", ffac)] # remove interactions
-  linfct_factors <- linfct_from_model(m)$linfct_factors
-
-  factor_depths <- rownames(linfct_factors)
-  res <- vector(length(ffac), mode = "list")
-  for (i in seq_along(ffac)) {
-    fac <- ffac[i]
-    idx <- grep(fac, factor_depths)
-    linfct_m <- linfct_factors[idx, ]
-    res[[i]] <- linfct_all_possible_contrasts(linfct_m)
-  }
-  res <- do.call(rbind, res)
   return(res)
 }
 
@@ -462,11 +257,6 @@ linfct_factors_contrasts <- function(m) {
 #'
 #' only keeps non NA coefficients.
 #'
-#' When \code{options(prolfqua.vectorize = TRUE)} is set, dispatches to a
-#' vectorized implementation that uses matrix multiplication instead of a
-#' per-row loop. Set \code{options(prolfqua.vectorize = FALSE)} (the default)
-#' to use the original loop.
-#'
 #' @param m linear model generated using lm
 #' @param linfct linear function
 #' @param confint confidence interval default 0.95
@@ -481,9 +271,6 @@ linfct_factors_contrasts <- function(m) {
 #' compute_contrast(m, linfct, confint = 0.99)
 #'
 compute_contrast <- function(m, linfct, confint = 0.95) {
-  if (isTRUE(getOption("prolfqua.vectorize"))) {
-    return(compute_contrast_vectorized(m, linfct, confint = confint))
-  }
   Sigma.hat <- vcov(m)
 
   coef <- na.omit(coefficients(m))
@@ -517,87 +304,6 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
     }
   }
   res <- dplyr::bind_rows(res)
-  return(res)
-}
-
-#' Vectorized version of \code{\link{compute_contrast}}
-#'
-#' Same semantics but uses vectorized matrix multiplication instead of a
-#' per-row loop. NAs in \code{coefficients(m)} propagate naturally via
-#' \code{linfct \%*\% coef} for rows that reference missing coefficients.
-#'
-#' @inheritParams compute_contrast
-#' @keywords internal
-compute_contrast_vectorized <- function(m, linfct, confint = 0.95) {
-  n <- nrow(linfct)
-  if (n == 0) {
-    return(data.frame(
-      lhs = character(0),
-      sigma = numeric(0),
-      df = numeric(0),
-      estimate = numeric(0),
-      std.error = numeric(0),
-      statistic = numeric(0),
-      p.value = numeric(0),
-      conf.low = numeric(0),
-      conf.high = numeric(0),
-      stringsAsFactors = FALSE
-    ))
-  }
-
-  coef_full <- coefficients(m)
-  available <- names(na.omit(coef_full))
-  Sigma.hat <- vcov(m)
-  df <- df.residual(m)
-  sig <- sigma(m)
-
-  # Align coefficients with linfct columns by name
-  coef_aligned <- coef_full[colnames(linfct)]
-  na_coefs <- is.na(coef_aligned)
-
-  # Use zero-filled coefficients for multiplication (0 * NA = NA in R, but 0 * 0 = 0)
-  coef_zero <- coef_aligned
-  coef_zero[na_coefs] <- 0
-  estimate <- as.vector(linfct %*% coef_zero)
-
-  # Mark rows invalid if any non-zero weight touches an NA coefficient
-  if (any(na_coefs)) {
-    invalid <- as.logical((linfct[, na_coefs, drop = FALSE] != 0) %*% rep(1, sum(na_coefs)) != 0)
-    estimate[invalid] <- NA
-  }
-
-  if (df > 0) {
-    # std.error: vcov only covers available (non-NA) coefficients
-    available_cols <- intersect(colnames(linfct), available)
-    linfct_avail <- linfct[, available_cols, drop = FALSE]
-    Sigma.hat_avail <- Sigma.hat[available_cols, available_cols, drop = FALSE]
-    std.error <- sqrt(diag(linfct_avail %*% Sigma.hat_avail %*% t(linfct_avail)))
-    std.error[is.na(estimate)] <- NA
-    statistic <- estimate / std.error
-    p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
-    prqt <- -qt((1 - confint) / 2, df = df)
-    conf.low <- estimate - prqt * std.error
-    conf.high <- estimate + prqt * std.error
-  } else {
-    std.error <- rep(NA_real_, n)
-    statistic <- rep(NA_real_, n)
-    p.value <- rep(NA_real_, n)
-    conf.low <- rep(NA_real_, n)
-    conf.high <- rep(NA_real_, n)
-  }
-
-  res <- data.frame(
-    lhs = rownames(linfct),
-    sigma = sig,
-    df = df,
-    estimate = estimate,
-    std.error = std.error,
-    statistic = statistic,
-    p.value = p.value,
-    conf.low = conf.low,
-    conf.high = conf.high,
-    stringsAsFactors = FALSE
-  )
   return(res)
 }
 
@@ -698,7 +404,8 @@ pivot_model_contrasts_to_wide <- function(
 #' modelSummary_A <- sim_build_models_lm()
 #' m <- get_complete_model_fit(modelSummary_A$model_df)
 #'
-#' factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
+#' linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
+#' factor_contrasts <- linfct_matrix_contrasts(linfct, c(A_vs_B = "TreatmentA - TreatmentB"))
 #'
 #' factor_levelContrasts <- contrasts_linfct( m,
 #'         factor_contrasts,
@@ -725,17 +432,10 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
   interaction_model_matrix <- models
   interaction_model_matrix$contrast <- interaction_models
 
-  mclass <- function(x) {
-    class(x)[1]
-  }
-
-  interaction_model_matrix <- interaction_model_matrix |>
-    dplyr::mutate(classC = purrr::map_chr(.data$contrast, mclass))
-
-  failed_mask <- interaction_model_matrix$classC == "logical"
-  n_failed <- sum(failed_mask)
+  failed <- purrr::map_lgl(interaction_models, is.logical)
+  n_failed <- sum(failed)
   if (n_failed > 0) {
-    failed_ids <- interaction_model_matrix[[subject_id[1]]][failed_mask]
+    failed_ids <- interaction_model_matrix[[subject_id[1]]][failed]
     warning(
       "contrasts_linfct: dropped ",
       n_failed,
@@ -747,10 +447,7 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
     )
   }
 
-  interaction_model_matrix <- interaction_model_matrix |>
-    dplyr::filter(.data$classC != "logical")
-
-  contrasts <- interaction_model_matrix |>
+  contrasts <- interaction_model_matrix[!failed, ] |>
     dplyr::select(all_of(c(subject_id, "contrast"))) |>
     tidyr::unnest(cols = c("contrast"))
 

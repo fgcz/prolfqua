@@ -148,13 +148,9 @@ Concrete config factories (e.g. `create_config_Skyline()`, `create_config_Spectr
 - `R/tidyMS_R6_Modelling.R` — Strategy R6 classes (`StrategyLM`, `StrategyRLM`, `StrategyLmer`)
 - `R/tidyMS_build_model.R` — `build_model`, `model_analyse`, imputation internals
 - `R/tidyMS_contrasts.R` — `linfct_*` family, `compute_contrast`, `contrasts_linfct`, `pivot_model_contrasts_to_wide`
-- `R/tidyMS_moderation.R` — `moderated_p_limma*`, `adjust_p_values`, ROPECA, Fisher
+- `R/tidyMS_moderation.R` — `moderated_p_limma`, `adjust_p_values`, ROPECA
 - `R/tidyMS_*.R` — Other utility functions (plotting, stats, aggregation, missingness)
 - `R/utilities.R` — Shared helpers (`make_interaction_column`, `.error_handler`)
-
-### Vectorized mode
-
-`options(prolfqua.vectorize = TRUE)` activates vectorized implementations of `compute_contrast` and `linfct_matrix_contrasts` (matrix multiplication instead of per-row loops). Affects all Wald test facades (lm, rlm, firth, firth_nested, lmer_nested) and limma's linfct path. Results are numerically identical. Default is `FALSE`.
 
 ## Testing
 
@@ -171,7 +167,7 @@ Concrete config factories (e.g. `create_config_Skyline()`, `create_config_Spectr
 - `test-ImputeModel.R` — LOD imputation with borrowed covariance
 - `test-plotting_functions.R` — Low-level plots
 - `test-tidyconfig_functions.R` — Configuration and utilities
-- `test-vectorize-contrasts.R` — Side-by-side original vs vectorized contrast functions
+- `test-tidyMS_contrasts.R` — `linfct_matrix_contrasts` and `contrasts_linfct` edge cases
 
 ## Cross-Package Context
 

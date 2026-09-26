@@ -37,6 +37,7 @@ Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
+\code{\link{AggregatorBase}},
 \code{\link{LFQData}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
@@ -44,15 +45,12 @@ Other LFQData:
 \code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
+\section{Super class}{
+\code{\link[prolfqua:AggregatorBase]{prolfqua::AggregatorBase}} -> \code{AggregateTopN}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{lfq}}{LFQData}
-
-\item{\code{lfq_agg}}{aggregation result}
-
-\item{\code{prefix}}{to use for aggregation results e.g. protein}
-
 \item{\code{N}}{top N peptides by intensity}
 
 \item{\code{func}}{aggregation function name: "sum" or "mean"}
@@ -64,11 +62,17 @@ Other LFQData:
 \itemize{
 \item \href{#method-AggregateTopN-new}{\code{AggregateTopN$new()}}
 \item \href{#method-AggregateTopN-aggregate}{\code{AggregateTopN$aggregate()}}
-\item \href{#method-AggregateTopN-plot}{\code{AggregateTopN$plot()}}
-\item \href{#method-AggregateTopN-write_plots}{\code{AggregateTopN$write_plots()}}
 \item \href{#method-AggregateTopN-clone}{\code{AggregateTopN$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>prolfqua::AggregatorBase$plot()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>prolfqua::AggregatorBase$write_plots()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateTopN-new"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateTopN-new}{}}}
@@ -103,62 +107,6 @@ run top N aggregation
 
 \subsection{Returns}{
 LFQData
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AggregateTopN-plot"></a>}}
-\if{latex}{\out{\hypertarget{method-AggregateTopN-plot}{}}}
-\subsection{Method \code{plot()}}{
-creates aggregation plots
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateTopN$plot(subset = NULL, show.legend = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{subset}}{create plots for a subset of the data only}
-
-\item{\code{show.legend}}{default FALSE}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AggregateTopN-write_plots"></a>}}
-\if{latex}{\out{\hypertarget{method-AggregateTopN-write_plots}{}}}
-\subsection{Method \code{write_plots()}}{
-writes plots to folder
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateTopN$write_plots(
-  qcpath,
-  subset = NULL,
-  show.legend = FALSE,
-  width = 6,
-  height = 6
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{qcpath}}{qcpath}
-
-\item{\code{subset}}{write plots only for some}
-
-\item{\code{show.legend}}{legend}
-
-\item{\code{width}}{figure width}
-
-\item{\code{height}}{figure height}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-file path
 }
 }
 \if{html}{\out{<hr>}}

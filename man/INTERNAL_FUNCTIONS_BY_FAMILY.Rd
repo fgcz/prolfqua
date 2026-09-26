@@ -13,15 +13,8 @@ Internal Functions by category
 Other aggregation: 
 \code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
-\code{\link{medpolish_estimate}()},
-\code{\link{medpolish_estimate_df}()},
-\code{\link{medpolish_estimate_dfconfig}()},
 \code{\link{plot_estimate}()},
-\code{\link{plot_hierarchies_add_quantline}()},
-\code{\link{plot_hierarchies_line}()},
-\code{\link{plot_hierarchies_line_df}()},
-\code{\link{rlm_estimate}()},
-\code{\link{rlm_estimate_dfconfig}()}
+\code{\link{plot_hierarchies_line}()}
 
 Other configuration: 
 \code{\link{AnalysisConfiguration}},
@@ -93,7 +86,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -101,9 +93,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -114,10 +103,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -129,22 +116,18 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 
 Other plotting: 
 \code{\link{ContrastsPlotter}},
-\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{plot_estimate}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
-\code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_boxplot_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_na_heatmap}()},
 \code{\link{plot_pca}()},
@@ -155,56 +138,41 @@ Other plotting:
 
 Other preprocessing: 
 \code{\link{apply_to_response_matrix}()},
-\code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
 \code{\link{robust_scale}()},
 \code{\link{scale_with_subset}()}
 
 Other stats: 
+\code{\link{compute_pooled}()},
 \code{\link{lfq_power_t_test_proteins}()},
-\code{\link{lfq_power_t_test_quantiles}()},
 \code{\link{lfq_power_t_test_quantiles_V2}()},
 \code{\link{plot_stat_density}()},
 \code{\link{plot_stat_density_median}()},
 \code{\link{plot_stat_violin}()},
 \code{\link{plot_stat_violin_median}()},
 \code{\link{plot_stdv_vs_mean}()},
-\code{\link{pooled_V2}()},
 \code{\link{summarize_stats}()}
 
 Other summary: 
 \code{\link{HierarchyCountsSample}},
 \code{\link{hierarchy_counts}()},
-\code{\link{hierarchy_counts_sample}()},
 \code{\link{summarize_hierarchy}()}
 
 Other utilities: 
-\code{\link{effective_contaminant_pattern}()},
-\code{\link{effective_decoy_pattern}()},
 \code{\link{get_uniprot_id_from_fasta_header}()},
 \code{\link{is_contaminant}()},
 \code{\link{is_decoy}()},
 \code{\link{matrix_to_tibble}()},
 \code{\link{multigroup_volcano}()},
-\code{\link{names_to_matrix}()},
 \code{\link{pairs_smooth}()},
 \code{\link{panel_cor}()},
-\code{\link{remove_na_rows}()},
 \code{\link{table_facade}()}
 }
-\concept{FragPipe}
-\concept{MaxQuant}
 \concept{aggregation}
-\concept{benchmarking}
-\concept{concrete_configuration}
 \concept{configuration}
-\concept{deprecated}
 \concept{modelling}
 \concept{plotting}
 \concept{preprocessing}
 \concept{stats}
 \concept{summary}
-\concept{transitionCorrelation}
 \concept{utilities}
-\concept{vignetteHelpers}
-\concept{workflows}

@@ -65,6 +65,13 @@ test_that("strategy_rlm sigma matches the scale embedded in vcov() (moderation c
   expect_equal(strat$sigma(fit), fit$s)
 })
 
+test_that("sigma.rlm returns the weighted residual scale", {
+  fit <- MASS::rlm(Sepal.Length ~ Species, data = iris)
+  expected <- sqrt(sum(fit$w * fit$resid^2) / (sum(fit$w) - fit$rank))
+  expect_equal(stats::sigma(fit), expected)
+  expect_equal(stats::sigma(fit), 0.4686, tolerance = 1e-4)
+})
+
 test_that("Model (lm strategy with weights)", {
   istar <- sim_lfq_data_peptide_config(Nprot = 20)
   config <- istar$config

@@ -4,27 +4,18 @@
 \alias{center_to_reference_cfg}
 \title{center to reference}
 \usage{
-center_to_reference_cfg(
-  lfqdata,
-  lfqdareference,
-  summary = c("median", "mean"),
-  copy = TRUE
-)
+center_to_reference_cfg(lfqdata, lfqdareference)
 }
 \arguments{
 \item{lfqdata}{LFQData object containing the data to center}
 
 \item{lfqdareference}{LFQData object containing the reference subset}
-
-\item{summary}{character, summary statistic to use ("median" or "mean")}
-
-\item{copy}{logical, if TRUE return a copy, otherwise modify in place}
 }
 \value{
 The computed result.
 }
 \description{
-takes the mean or median of the lfqdareference per sample and subtracts from lfqdata
+takes the median of the lfqdareference per sample and subtracts it from a copy of lfqdata
 }
 \examples{
 # example code
@@ -33,10 +24,8 @@ bb <- sim_lfq_data_peptide_config(Nprot = 100)
 x <- LFQData$new(bb$data, bb$config)
 xc <- x$get_copy()
 xc$set_data(xc$data_long() |> dplyr::filter(protein_Id == "0EfVhX~3967"))
-xxd <- center_to_reference_cfg(x, xc, summary="median")
+xxd <- center_to_reference_cfg(x, xc)
 xxd$response()
-xxd$data
-center_to_reference_cfg(x, xc, summary="median", copy=FALSE)
 x$response()
 
 }

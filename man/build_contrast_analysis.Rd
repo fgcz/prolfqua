@@ -47,20 +47,6 @@ A builder function that dispatches to the appropriate facade class based on
 the chosen method. Each facade encapsulates the full pipeline from strategy
 construction through modelling to contrast computation.
 }
-\section{Vectorized mode}{
-
-Set \code{options(prolfqua.vectorize = TRUE)} before calling this function
-to activate vectorized implementations of \code{\link{compute_contrast}} and
-\code{\link{linfct_matrix_contrasts}}. This affects all methods that use the
-Wald test path (lm, rlm, firth, lmer) and can give a significant speed-up
-for large datasets. Results are numerically identical. Example:
-\preformatted{
-options(prolfqua.vectorize = TRUE)
-fa <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
-options(prolfqua.vectorize = FALSE)  # restore default
-}
-}
-
 \examples{
 istar <- sim_lfq_data_protein_config(Nprot = 20)
 lfqdata <- LFQData$new(istar$data, istar$config)
@@ -154,7 +140,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -162,9 +147,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -175,10 +157,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -190,7 +170,6 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}

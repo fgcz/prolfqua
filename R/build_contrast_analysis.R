@@ -6,18 +6,6 @@
 #' the chosen method. Each facade encapsulates the full pipeline from strategy
 #' construction through modelling to contrast computation.
 #'
-#' @section Vectorized mode:
-#' Set \code{options(prolfqua.vectorize = TRUE)} before calling this function
-#' to activate vectorized implementations of \code{\link{compute_contrast}} and
-#' \code{\link{linfct_matrix_contrasts}}. This affects all methods that use the
-#' Wald test path (lm, rlm, firth, lmer) and can give a significant speed-up
-#' for large datasets. Results are numerically identical. Example:
-#' \preformatted{
-#' options(prolfqua.vectorize = TRUE)
-#' fa <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
-#' options(prolfqua.vectorize = FALSE)  # restore default
-#' }
-#'
 #' @param lfqdata an \code{\link{LFQData}} object
 #' @param modelstr model formula string without the response variable
 #'   (e.g. \code{"~ group_"}). The response is taken automatically from
@@ -126,9 +114,6 @@ build_contrast_analysis <- function(
       )
     }
   }
-  if (!is.null(entry$builder)) {
-    return(entry$builder(lfqdata, modelstr, contrasts, ...))
-  }
-  facade_class <- utils::getFromNamespace(entry$class, entry$package %||% "prolfqua")
+  facade_class <- utils::getFromNamespace(entry$class, entry$package)
   facade_class$new(lfqdata, modelstr, contrasts, ...)
 }

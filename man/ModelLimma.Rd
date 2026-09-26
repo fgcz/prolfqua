@@ -89,7 +89,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -97,9 +96,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -110,10 +106,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -125,7 +119,6 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
@@ -136,10 +129,6 @@ Other modelling:
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{fit}}{limma MArrayLM object from lmFit}
-
-\item{\code{design}}{design matrix}
-
-\item{\code{formula}}{model formula}
 
 \item{\code{subject_id}}{protein ID column name(s)}
 
@@ -170,13 +159,19 @@ impute.}
 \item \href{#method-ModelLimma-new}{\code{ModelLimma$new()}}
 \item \href{#method-ModelLimma-get_coefficients}{\code{ModelLimma$get_coefficients()}}
 \item \href{#method-ModelLimma-get_anova}{\code{ModelLimma$get_anova()}}
-\item \href{#method-ModelLimma-coef_histogram}{\code{ModelLimma$coef_histogram()}}
-\item \href{#method-ModelLimma-coef_volcano}{\code{ModelLimma$coef_volcano()}}
-\item \href{#method-ModelLimma-coef_pairs}{\code{ModelLimma$coef_pairs()}}
-\item \href{#method-ModelLimma-anova_histogram}{\code{ModelLimma$anova_histogram()}}
 \item \href{#method-ModelLimma-clone}{\code{ModelLimma$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="anova_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram'><code>prolfqua::ModelInterface$anova_histogram()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram'><code>prolfqua::ModelInterface$coef_histogram()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs'><code>prolfqua::ModelInterface$coef_pairs()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano'><code>prolfqua::ModelInterface$coef_volcano()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelLimma-new"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelLimma-new}{}}}
@@ -185,8 +180,6 @@ initialize ModelLimma
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelLimma$new(
   fit,
-  design,
-  formula,
   subject_id,
   model_name,
   rowdata,
@@ -202,10 +195,6 @@ initialize ModelLimma
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{fit}}{limma MArrayLM from lmFit}
-
-\item{\code{design}}{design matrix}
-
-\item{\code{formula}}{model formula}
 
 \item{\code{subject_id}}{protein ID column name(s)}
 
@@ -250,53 +239,6 @@ return anova table (F-test per protein across all non-intercept coefficients)
 
 \subsection{Returns}{
 data.frame
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelLimma-coef_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelLimma-coef_histogram}{}}}
-\subsection{Method \code{coef_histogram()}}{
-histogram of model coefficient p-values
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelLimma$coef_histogram()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelLimma-coef_volcano"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelLimma-coef_volcano}{}}}
-\subsection{Method \code{coef_volcano()}}{
-volcano plot of non-intercept coefficients
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelLimma$coef_volcano()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelLimma-coef_pairs"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelLimma-coef_pairs}{}}}
-\subsection{Method \code{coef_pairs()}}{
-pairs plot of coefficients
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelLimma$coef_pairs()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelLimma-anova_histogram"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelLimma-anova_histogram}{}}}
-\subsection{Method \code{anova_histogram()}}{
-histogram of ANOVA F-test p-values
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelLimma$anova_histogram(what = c("p.value", "FDR"))}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{what}}{show either "p.value" or "FDR"}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

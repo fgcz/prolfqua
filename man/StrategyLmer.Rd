@@ -82,7 +82,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -90,9 +89,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -103,10 +99,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -118,84 +112,30 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{formula}}{model formula}
-
-\item{\code{model_name}}{name of model}
-
-\item{\code{report_columns}}{columns to report}
-
-\item{\code{is_mixed}}{always TRUE for lmer}
-
-\item{\code{anova_df}}{list with anova function and column names}
-}
-\if{html}{\out{</div>}}
+\section{Super class}{
+\code{\link[prolfqua:StrategyBase]{prolfqua::StrategyBase}} -> \code{StrategyLmer}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-StrategyLmer-new}{\code{StrategyLmer$new()}}
-\item \href{#method-StrategyLmer-model_fun}{\code{StrategyLmer$model_fun()}}
 \item \href{#method-StrategyLmer-isSingular}{\code{StrategyLmer$isSingular()}}
 \item \href{#method-StrategyLmer-contrast_fun}{\code{StrategyLmer$contrast_fun()}}
-\item \href{#method-StrategyLmer-df_residual}{\code{StrategyLmer$df_residual()}}
-\item \href{#method-StrategyLmer-sigma}{\code{StrategyLmer$sigma()}}
 \item \href{#method-StrategyLmer-clone}{\code{StrategyLmer$clone()}}
 }
 }
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLmer-new"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLmer-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new StrategyLmer
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLmer$new(
-  modelstr,
-  model_name = "Model",
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted")
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{modelstr}}{model formula string}
-
-\item{\code{model_name}}{name of model}
-
-\item{\code{report_columns}}{columns to report}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLmer-model_fun"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLmer-model_fun}{}}}
-\subsection{Method \code{model_fun()}}{
-Fit lmer to one protein's data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLmer$model_fun(x, pb, get_formula = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{data.frame for one protein}
-
-\item{\code{pb}}{optional progress bar}
-
-\item{\code{get_formula}}{if TRUE, return formula instead of fitting}
-}
-\if{html}{\out{</div>}}
-}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>prolfqua::StrategyBase$df_residual()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-initialize'><code>prolfqua::StrategyBase$initialize()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>prolfqua::StrategyBase$model_fun()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>prolfqua::StrategyBase$sigma()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyLmer-isSingular"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyLmer-isSingular}{}}}
@@ -226,40 +166,6 @@ Compute contrasts from fitted model
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{passed to \code{\link{compute_lmer_contrast}}}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLmer-df_residual"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLmer-df_residual}{}}}
-\subsection{Method \code{df_residual()}}{
-Get residual degrees of freedom
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLmer$df_residual(model)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{fitted model}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLmer-sigma"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLmer-sigma}{}}}
-\subsection{Method \code{sigma()}}{
-Get residual standard error
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLmer$sigma(model)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{fitted model}
 }
 \if{html}{\out{</div>}}
 }

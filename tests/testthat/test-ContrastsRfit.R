@@ -15,8 +15,7 @@ RFIT_MODELSTR <- "~ group_"
 test_that("strategy_rfit constructs a StrategyRfit", {
   strat <- prolfqua::strategy_rfit("Intensity ~ group_")
   expect_true(inherits(strat, "StrategyRfit"))
-  expect_false(strat$is_mixed)
-  expect_equal(strat$model_fun(get_formula = TRUE), stats::as.formula("Intensity ~ group_"))
+  expect_equal(strat$formula, stats::as.formula("Intensity ~ group_"))
 })
 
 

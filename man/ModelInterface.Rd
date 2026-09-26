@@ -66,52 +66,59 @@ data.frame
 \if{html}{\out{<a id="method-ModelInterface-coef_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-coef_histogram}{}}}
 \subsection{Method \code{coef_histogram()}}{
-plot histogram of coefficients
+histogram of coefficient p-values
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_histogram()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-ggplot
+list with \code{plot} (ggplot) and file \code{name}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-coef_volcano"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-coef_volcano}{}}}
 \subsection{Method \code{coef_volcano()}}{
-plot volcano of coefficients
+volcano plot of non-intercept coefficients
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_volcano()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-ggplot
+list with \code{plot} (ggplot) and file \code{name}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-coef_pairs"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-coef_pairs}{}}}
 \subsection{Method \code{coef_pairs()}}{
-pairs plot of coefficients
+coefficient estimates in wide format, one column per coefficient, for a pairs plot
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_pairs()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-ggplot
+list with \code{plot} (data.frame) and file \code{name}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-anova_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-anova_histogram}{}}}
 \subsection{Method \code{anova_histogram()}}{
-histogram of p-values and FDR for anova results
+histogram of ANOVA p-values or FDR
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$anova_histogram()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$anova_histogram(what = c("p.value", "FDR"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{what}}{show either "p.value" or "FDR"}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-ggplot
+list with \code{plot} (ggplot) and file \code{name}
 }
 }
 \if{html}{\out{<hr>}}

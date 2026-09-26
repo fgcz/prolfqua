@@ -18,7 +18,7 @@ computation, ANOVA, and residual statistics.
 }
 \examples{
 strat <- StrategyLM$new("Intensity ~ condition", model_name = "parallel design")
-strat$model_fun(get_formula = TRUE)
+strat$formula
 strat$weights
 }
 \seealso{
@@ -78,7 +78,6 @@ Other modelling:
 \code{\link{compute_borrowed_variance_limma}()},
 \code{\link{compute_contrast}()},
 \code{\link{compute_lmer_contrast}()},
-\code{\link{contrasts_fisher_exact}()},
 \code{\link{df.residual.rfit_prolfqua}()},
 \code{\link{get_anova_df}()},
 \code{\link{get_complete_model_fit}()},
@@ -86,9 +85,6 @@ Other modelling:
 \code{\link{group_label}()},
 \code{\link{impute_from_model}()},
 \code{\link{impute_refit_singular}()},
-\code{\link{is_singular_lm}()},
-\code{\link{linfct_all_possible_contrasts}()},
-\code{\link{linfct_factors_contrasts}()},
 \code{\link{linfct_from_model}()},
 \code{\link{linfct_matrix_contrasts}()},
 \code{\link{list_facades}()},
@@ -99,10 +95,8 @@ Other modelling:
 \code{\link{moderated_p_deqms}()},
 \code{\link{moderated_p_deqms_long}()},
 \code{\link{moderated_p_limma}()},
-\code{\link{moderated_p_limma_long}()},
 \code{\link{new_imputed_model}()},
 \code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{plot_lmer_peptide_predictions}()},
 \code{\link{register_facade}()},
 \code{\link{sigma.rfit_prolfqua}()},
 \code{\link{sim_build_models_lm}()},
@@ -114,25 +108,17 @@ Other modelling:
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
 \code{\link{summary_ROPECA_median_p.scaled}()},
-\code{\link{unregister_facade}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}
+\section{Super class}{
+\code{\link[prolfqua:StrategyBase]{prolfqua::StrategyBase}} -> \code{StrategyLM}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{formula}}{model formula}
-
-\item{\code{model_name}}{name of model}
-
-\item{\code{report_columns}}{columns to report}
-
 \item{\code{weights}}{optional character string naming a column in the data
 containing per-observation weights, passed to \code{\link[stats]{lm}}.}
-
-\item{\code{is_mixed}}{always FALSE for lm}
-
-\item{\code{anova_df}}{list with anova function and column names}
 }
 \if{html}{\out{</div>}}
 }
@@ -140,27 +126,27 @@ containing per-observation weights, passed to \code{\link[stats]{lm}}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-StrategyLM-new}{\code{StrategyLM$new()}}
-\item \href{#method-StrategyLM-model_fun}{\code{StrategyLM$model_fun()}}
-\item \href{#method-StrategyLM-isSingular}{\code{StrategyLM$isSingular()}}
-\item \href{#method-StrategyLM-contrast_fun}{\code{StrategyLM$contrast_fun()}}
-\item \href{#method-StrategyLM-df_residual}{\code{StrategyLM$df_residual()}}
-\item \href{#method-StrategyLM-sigma}{\code{StrategyLM$sigma()}}
 \item \href{#method-StrategyLM-clone}{\code{StrategyLM$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>prolfqua::StrategyBase$contrast_fun()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>prolfqua::StrategyBase$df_residual()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>prolfqua::StrategyBase$isSingular()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>prolfqua::StrategyBase$model_fun()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>prolfqua::StrategyBase$sigma()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyLM-new"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyLM-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new StrategyLM
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLM$new(
-  modelstr,
-  model_name = "Model",
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted"),
-  weights = NULL
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{StrategyLM$new(modelstr, model_name = "Model", weights = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -170,99 +156,8 @@ Create a new StrategyLM
 
 \item{\code{model_name}}{name of model}
 
-\item{\code{report_columns}}{columns to report}
-
 \item{\code{weights}}{optional character string naming a column in the data
 containing per-observation weights}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLM-model_fun"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLM-model_fun}{}}}
-\subsection{Method \code{model_fun()}}{
-Fit lm to one protein's data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLM$model_fun(x, pb, get_formula = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{data.frame for one protein}
-
-\item{\code{pb}}{optional progress bar}
-
-\item{\code{get_formula}}{if TRUE, return formula instead of fitting}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLM-isSingular"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLM-isSingular}{}}}
-\subsection{Method \code{isSingular()}}{
-Check if model is singular
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLM$isSingular(model)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{fitted model}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLM-contrast_fun"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLM-contrast_fun}{}}}
-\subsection{Method \code{contrast_fun()}}{
-Compute contrasts from fitted model
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLM$contrast_fun(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{passed to \code{\link{compute_contrast}}}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLM-df_residual"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLM-df_residual}{}}}
-\subsection{Method \code{df_residual()}}{
-Get residual degrees of freedom
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLM$df_residual(model)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{fitted model}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyLM-sigma"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyLM-sigma}{}}}
-\subsection{Method \code{sigma()}}{
-Get residual standard error
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyLM$sigma(model)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{fitted model}
 }
 \if{html}{\out{</div>}}
 }

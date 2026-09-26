@@ -94,17 +94,14 @@ ContrastsModerated <- R6::R6Class(
     },
     #' @description
     #' applies limma moderation
-    #' @seealso \code{\link{moderated_p_limma_long}}
+    #' @seealso \code{\link{moderated_p_limma}}
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE) {
-      contrast_result <- self$Contrast$get_contrasts(all = FALSE)
-      contrast_result <- moderated_p_limma_long(
-        contrast_result,
-        group_by_col = "contrast",
-        estimate = "diff",
-        variance_floor = self$variance_floor
-      )
+      contrast_result <- self$Contrast$get_contrasts(all = FALSE) |>
+        dplyr::group_by(dplyr::across(dplyr::all_of("contrast"))) |>
+        dplyr::group_split() |>
+        purrr::map_df(moderated_p_limma, estimate = "diff", variance_floor = self$variance_floor)
       contrast_result <- .finalize_moderated_columns(contrast_result, self$p.adjust, all)
       contrast_result <- dplyr::ungroup(contrast_result)
       # modelName and estimate_type pass through from the wrapped contrast
@@ -113,43 +110,9 @@ ContrastsModerated <- R6::R6Class(
       stopifnot(all(super$column_description()$column_name %in% colnames(contrast_result)))
 
       return(contrast_result)
-    },
-    #' @description
-    #' get \code{\link{ContrastsPlotter}}
-    #' @param fc_threshold fold change threshold to show in plots
-    #' @param fdr_threshold FDR threshold to show in plots
-    #'
-    get_Plotter = function(
-      fc_threshold = 1,
-      fdr_threshold = 0.1
-    ) {
-      contrast_result <- self$get_contrasts()
-      res <- ContrastsPlotter$new(
-        contrast_result,
-        subject_id = self$subject_id,
-        fcthresh = fc_threshold,
-        volcano = list(list(score = "FDR", thresh = fdr_threshold)),
-        histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
-        score = list(list(score = "statistic", thresh = 5)),
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
-      )
-      return(res)
-    },
-    #' @description
-    #' convert to wide format
-    #' @param columns value column default moderated.p.value
-    #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
-      contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_to_wide(
-        contrast_minimal,
-        subject_id = self$subject_id,
-        columns = c("diff", columns),
-        contrast = "contrast"
-      )
-      return(contrasts_wide)
     }
+  ),
+  private = list(
+    volcano_scores = "FDR"
   )
 )

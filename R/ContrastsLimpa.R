@@ -30,12 +30,7 @@ StrategyLimpa <- R6::R6Class(
     #' @field span lowess smoother span for vooma trend (NULL = auto)
     span = NULL,
     #' @description Create a new StrategyLimpa
-    #' @param modelstr model formula as string (e.g. "abundance ~ group_")
-    #' @param model_name name of model
-    #' @param trend logical, passed to \code{\link[limma]{eBayes}}
-    #' @param robust logical, passed to \code{\link[limma]{eBayes}}
-    #' @param plot logical, plot the vooma mean-variance trend
-    #' @param span lowess smoother span (NULL = auto)
+    #' @param modelstr,model_name,trend,robust,plot,span see \code{\link{strategy_limpa}}
     initialize = function(modelstr, model_name = "limpa", trend = FALSE, robust = FALSE, plot = FALSE, span = NULL) {
       self$formula <- as.formula(modelstr)
       self$model_name <- model_name
@@ -150,17 +145,5 @@ build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_nam
     fit_args$span <- strategy$span
   }
   fit <- do.call(limpa::voomaLmFitWithImputation, fit_args)
-
-  ModelLimma$new(
-    fit = fit,
-    design = setup$design,
-    formula = strategy$formula,
-    subject_id = setup$subject_id,
-    model_name = model_name,
-    rowdata = setup$rowdata,
-    trend = strategy$trend,
-    robust = strategy$robust,
-    dummy_model = setup$dummy_model,
-    p.adjust = prolfqua::adjust_p_values
-  )
+  .new_model_limma(fit, setup, strategy, model_name)
 }

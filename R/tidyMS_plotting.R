@@ -6,54 +6,43 @@
   n_samples <= max_legend_samples
 }
 
-.truncate_plot_labels <- function(labels, max_chars = 60) {
+# Label widths for .truncate_plot_labels() and .suffix_plot_labels(); NULL when max_chars is NULL or not finite.
+.plot_label_widths <- function(labels, max_chars, min_chars) {
   if (is.null(max_chars) || !is.finite(max_chars)) {
-    return(as.character(labels))
+    return(NULL)
   }
   max_chars <- as.integer(max_chars)
-  if (max_chars < 4) {
-    stop("max_chars must be at least 4.", call. = FALSE)
+  if (max_chars < min_chars) {
+    stop("max_chars must be at least ", min_chars, ".", call. = FALSE)
   }
+  width <- nchar(labels, type = "chars", allowNA = FALSE)
+  list(max_chars = max_chars, width = width, too_long = width > max_chars)
+}
 
+.truncate_plot_labels <- function(labels, max_chars = 60) {
   labels <- as.character(labels)
-  label_width <- nchar(labels, type = "chars", allowNA = FALSE)
-  too_long <- label_width > max_chars
-  if (!any(too_long)) {
+  lw <- .plot_label_widths(labels, max_chars, 4)
+  if (is.null(lw) || !any(lw$too_long)) {
     return(labels)
   }
-
-  keep_chars <- max_chars - 3
-  left_chars <- ceiling(keep_chars / 2)
+  too_long <- lw$too_long
+  keep_chars <- lw$max_chars - 3
   right_chars <- floor(keep_chars / 2)
   labels[too_long] <- paste0(
-    substr(labels[too_long], 1, left_chars),
+    substr(labels[too_long], 1, ceiling(keep_chars / 2)),
     "...",
-    substr(
-      labels[too_long],
-      label_width[too_long] - right_chars + 1,
-      label_width[too_long]
-    )
+    substr(labels[too_long], lw$width[too_long] - right_chars + 1, lw$width[too_long])
   )
   labels
 }
 
 .suffix_plot_labels <- function(labels, max_chars = 20) {
-  if (is.null(max_chars) || !is.finite(max_chars)) {
-    return(as.character(labels))
-  }
-  max_chars <- as.integer(max_chars)
-  if (max_chars < 1) {
-    stop("max_chars must be at least 1.", call. = FALSE)
-  }
-
   labels <- as.character(labels)
-  label_width <- nchar(labels, type = "chars", allowNA = FALSE)
-  too_long <- label_width > max_chars
-  labels[too_long] <- substr(
-    labels[too_long],
-    label_width[too_long] - max_chars + 1,
-    label_width[too_long]
-  )
+  lw <- .plot_label_widths(labels, max_chars, 1)
+  if (!is.null(lw)) {
+    width <- lw$width[lw$too_long]
+    labels[lw$too_long] <- substr(labels[lw$too_long], width - lw$max_chars + 1, width)
+  }
   labels
 }
 
@@ -98,11 +87,24 @@
   rownames(factors) <- annotation[[sample_name]]
   factors <- factors[matrix_colnames, , drop = FALSE]
   col <- .factor_annotation_colors(annotation, factor_keys)
-  if (length(col) > 0) {
-    ComplexHeatmap::HeatmapAnnotation(df = factors, col = col, show_annotation_name = TRUE)
-  } else {
-    ComplexHeatmap::HeatmapAnnotation(df = factors, show_annotation_name = TRUE)
-  }
+  ComplexHeatmap::HeatmapAnnotation(df = factors, col = col, show_annotation_name = TRUE)
+}
+
+# Heatmap() arguments shared by plot_heatmap_cor(), plot_heatmap() and plot_raster(); rows arrive already ordered.
+.annotated_heatmap <- function(matrix, name, col, top_annotation, max_sample_label_chars, ...) {
+  ComplexHeatmap::Heatmap(
+    matrix,
+    name = name,
+    col = col,
+    na_col = .HEATMAP_NA_COL,
+    cluster_rows = FALSE,
+    top_annotation = top_annotation,
+    show_column_names = TRUE,
+    column_labels = .suffix_plot_labels(colnames(matrix), max_sample_label_chars),
+    border = FALSE,
+    heatmap_legend_param = list(title = name),
+    ...
+  )
 }
 
 # Green-black-red diverging color function centered at zero, for row z-scored
@@ -263,31 +265,20 @@ plot_intensity_distribution_density <- function(
 #' plot_sample_correlation(lfq$data_wide(as.matrix = TRUE)$data)
 plot_sample_correlation <- function(matrix) {
   M <- cor(matrix, use = "pairwise.complete.obs")
-  if (nrow(M) > 12) {
-    res <- corrplot::corrplot.mixed(
-      M,
-      upper = "ellipse",
-      lower = "pie",
-      diag = "u",
-      tl.cex = .6,
-      tl.pos = "lt",
-      tl.col = "black",
-      mar = c(2, 5, 5, 2)
-    )
-  } else {
-    res <- corrplot::corrplot.mixed(
-      M,
-      upper = "ellipse",
-      lower = "number",
-      lower.col = "black",
-      tl.cex = .6,
-      number.cex = .7,
-      diag = "u",
-      tl.pos = "lt",
-      tl.col = "black",
-      mar = c(2, 5, 5, 2)
-    )
-  }
+  # up to 12 samples the lower panel shows the correlation values, otherwise pies (corrplot defaults otherwise)
+  numbers <- nrow(M) <= 12
+  res <- corrplot::corrplot.mixed(
+    M,
+    upper = "ellipse",
+    lower = if (numbers) "number" else "pie",
+    lower.col = if (numbers) "black",
+    tl.cex = .6,
+    number.cex = if (numbers) .7 else 1,
+    diag = "u",
+    tl.pos = "lt",
+    tl.col = "black",
+    mar = c(2, 5, 5, 2)
+  )
   invisible(res)
 }
 
@@ -339,16 +330,11 @@ plot_hierarchies_boxplot <- function(
   pdata <- prolfqua::make_interaction_column(pdata, c(lfqdata$relevant_factor_keys()))
   pdata$size <- ifelse(pdata[[nr_children_col]] == 0, 2, pdata[[nr_children_col]])
   pdata[[nr_children_col]] <- as.factor(pdata[[nr_children_col]])
-  color <- if (lil > 1) {
-    isotope_col
-  } else {
-    NULL
-  }
   p <- ggplot(pdata, aes(x = .data[["interaction"]], y = .data[[response]])) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
-  if (!is.null(color)) {
-    p <- p + aes(colour = .data[[color]])
+  if (lil > 1) {
+    p <- p + aes(colour = .data[[isotope_col]])
   }
 
   if (!lfqdata$is_transformed()) {
@@ -481,23 +467,17 @@ plot_heatmap_cor <- function(
 
   gg <- stats::hclust(stats::dist(cres))
   plot_data <- cres[gg$order, ]
-  ta <- .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(plot_data))
   title <- if (R2) "R^2" else "correlation"
-  res <- ComplexHeatmap::Heatmap(
+  res <- .annotated_heatmap(
     plot_data,
-    name = title,
-    col = .cor_col_fun(plot_data, R2),
-    na_col = .HEATMAP_NA_COL,
-    cluster_rows = FALSE,
+    title,
+    .cor_col_fun(plot_data, R2),
+    .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(plot_data)),
+    max_sample_label_chars,
     cluster_columns = TRUE,
-    top_annotation = ta,
     show_row_names = FALSE,
-    show_column_names = TRUE,
-    column_labels = .suffix_plot_labels(colnames(plot_data), max_sample_label_chars),
     column_title = title,
-    border = FALSE,
-    heatmap_legend_param = list(title = title),
-    ... = ...
+    ...
   )
   invisible(res)
 }
@@ -553,24 +533,17 @@ plot_heatmap <- function(
     return(NULL)
   }
   plot_data <- .cluster_heatmap_rows(resdataf)
-  cluster_columns <- .can_cluster_heatmap_columns(plot_data)
-
-  res <- ComplexHeatmap::Heatmap(
+  res <- .annotated_heatmap(
     plot_data,
-    name = "row z-score",
-    col = .abundance_col_fun(plot_data),
-    na_col = .HEATMAP_NA_COL,
-    cluster_rows = FALSE,
-    cluster_columns = cluster_columns,
-    top_annotation = .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(plot_data)),
+    "row z-score",
+    .abundance_col_fun(plot_data),
+    .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(plot_data)),
+    max_sample_label_chars,
+    cluster_columns = .can_cluster_heatmap_columns(plot_data),
     show_row_names = show_rownames,
-    show_column_names = TRUE,
     row_labels = .truncate_plot_labels(rownames(plot_data), max_rownames_chars),
-    column_labels = .suffix_plot_labels(colnames(plot_data), max_sample_label_chars),
-    border = FALSE,
     use_raster = FALSE,
-    heatmap_legend_param = list(title = "row z-score"),
-    ... = ...
+    ...
   )
   invisible(res)
 }
@@ -620,38 +593,25 @@ plot_raster <- function(
   }
   arrange <- match.arg(arrange)
 
-  if (arrange == "mean") {
-    bb <- apply(matrix, 1, mean, na.rm = TRUE)
-  } else if (arrange == "var") {
-    bb <- apply(matrix, 1, stats::var, na.rm = TRUE)
-  }
+  bb <- apply(matrix, 1, if (arrange == "mean") mean else stats::var, na.rm = TRUE)
   if (not_na) {
-    na_counts <- apply(matrix, 1, function(x) {
-      sum(is.na(x))
-    })
-    matrix <- matrix[order(na_counts, bb, decreasing = c(FALSE, TRUE)), , drop = FALSE]
+    matrix <- matrix[order(rowSums(is.na(matrix)), bb, decreasing = c(FALSE, TRUE)), , drop = FALSE]
   } else {
     matrix <- matrix[order(bb, decreasing = TRUE), , drop = FALSE]
   }
 
-  res <- ComplexHeatmap::Heatmap(
+  res <- .annotated_heatmap(
     matrix,
-    name = "abundance",
-    col = .raster_col_fun(matrix),
-    na_col = .HEATMAP_NA_COL,
-    cluster_rows = FALSE,
+    "abundance",
+    .raster_col_fun(matrix),
+    .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(matrix)),
+    max_sample_label_chars,
     cluster_columns = FALSE,
-    top_annotation = .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(matrix)),
     show_row_names = show_rownames,
-    show_column_names = TRUE,
     row_labels = .truncate_plot_labels(rownames(matrix), max_rownames_chars),
-    column_labels = .suffix_plot_labels(colnames(matrix), max_sample_label_chars),
-    border = FALSE,
     use_raster = FALSE,
-    heatmap_legend_param = list(title = "abundance"),
-    ... = ...
+    ...
   )
-
   invisible(res)
 }
 
@@ -680,7 +640,7 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
   matrix[!is.na(matrix)] <- 0
   matrix[is.na(matrix)] <- 1
   allrows <- nrow(matrix)
-  matrix <- matrix[apply(matrix, 1, sum) > 0, , drop = FALSE]
+  matrix <- matrix[rowSums(matrix) > 0, , drop = FALSE]
 
   message("rows with NA's: ", nrow(matrix), "; all rows :", allrows, "\n")
 
@@ -739,75 +699,56 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 #'
 plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2), add_txt = FALSE, nudge = 0.1) {
   stopifnot(length(PC) == 2)
-
-  ff <- matrix
+  impute_hint <- "missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()."
 
   # Duplicated sample names become duplicated row names after transpose and
   # cause a cartesian expansion in the join below — error early instead.
-  dup_samples <- unique(colnames(ff)[duplicated(colnames(ff))])
+  dup_samples <- unique(colnames(matrix)[duplicated(colnames(matrix))])
   if (length(dup_samples) > 0) {
-    stop(
-      "PCA: duplicated sample names are not allowed: ",
-      paste(dup_samples, collapse = ", "),
-      "."
-    )
+    stop(sprintf("PCA: duplicated sample names are not allowed: %s.", paste(dup_samples, collapse = ", ")))
   }
 
-  if (any(is.na(ff))) {
-    n_before <- nrow(ff)
-    ff <- na.omit(ff)
-    n_after <- nrow(ff)
-    message(
-      "PCA: removed ",
-      n_before - n_after,
-      " of ",
+  if (any(is.na(matrix))) {
+    n_before <- nrow(matrix)
+    matrix <- na.omit(matrix)
+    message(sprintf(
+      "PCA: removed %s of %s features with missing values. To keep all features, impute %s",
+      n_before - nrow(matrix),
       n_before,
-      " features with missing values. ",
-      "To keep all features, impute missing values first, ",
-      "e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()."
-    )
+      impute_hint
+    ))
   }
 
   # prcomp() errors on a 0-row matrix, which happens when every feature had at
   # least one missing value. Fail with an actionable message instead.
-  if (nrow(ff) == 0) {
-    stop(
-      "PCA: no features without missing values remain after NA filtering. ",
-      "Impute missing values first, ",
-      "e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()."
-    )
+  if (nrow(matrix) == 0) {
+    stop("PCA: no features without missing values remain after NA filtering. Impute ", impute_hint)
   }
 
   # Centered data has rank at most (n_samples - 1), so component max(PC) only
   # exists when there are at least max(PC) + 1 samples. Guard before prcomp() so
   # the caller (e.g. pca_plotly()) gets a clear error rather than a NULL plot.
-  if (ncol(ff) <= max(PC)) {
-    stop(
-      "PCA: need at least ",
+  if (ncol(matrix) <= max(PC)) {
+    stop(sprintf(
+      "PCA: need at least %s samples to plot principal components %s and %s; got %s.",
       max(PC) + 1,
-      " samples to plot principal components ",
       PC[1],
-      " and ",
       PC[2],
-      "; got ",
-      ncol(ff),
-      "."
-    )
+      ncol(matrix)
+    ))
   }
 
-  ff <- t(ff)
-  pca_result <- prcomp(ff, center = TRUE, scale. = FALSE)
+  pca_result <- prcomp(t(matrix), center = TRUE, scale. = FALSE)
   xx <- as_tibble(pca_result$x, rownames = sample_name)
   variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
 
   if (max(PC) > (ncol(xx) - 1)) {
-    stop(
-      "PCA: requested principal component ",
+    stop(sprintf(
+      "PCA: requested principal component %s but only %s principal component(s) could be computed %s",
       max(PC),
-      " but only ",
       ncol(xx) - 1,
-      " principal component(s) could be computed (too few features or samples)."
-    )
+      "(too few features or samples)."
+    ))
   }
 
   xx <- inner_join(annotation, xx, by = sample_name)

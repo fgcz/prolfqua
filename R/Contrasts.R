@@ -18,15 +18,64 @@
   )
 }
 
+# One linfct per model. With `reuse_complete`, models with the maximal number of estimated coefficients share the
+# linfct of the complete model fit; all other models get their own from `linfct_fun`.
+.linfct_per_model <- function(model_df, contrasts, avg, label, linfct_fun = .linfct, reuse_complete = TRUE) {
+  res <- vector(mode = "list", nrow(model_df))
+  pb <- .make_progress(nrow(model_df), label = label)
+  if (reuse_complete && nrow(model_df) > 0) {
+    compmodel <- .linfct(get_complete_model_fit(model_df)$linear_model[[1]], contrasts, avg = avg)
+    max_coef <- max(model_df$nr_coef_not_NA)
+  }
+  for (i in seq_along(model_df$linear_model)) {
+    pb$tick()
+    res[[i]] <- if (reuse_complete && model_df$nr_coef_not_NA[[i]] == max_coef) {
+      compmodel
+    } else {
+      linfct_fun(model_df$linear_model[[i]], contrast = contrasts, avg = avg)
+    }
+  }
+  res
+}
+
+# Wald-test finish shared by Contrasts and ContrastsFirth: name the contrast columns, join the `avg_` rows back as
+# avgAbd, adjust p-values and keep the unmoderated standard error and df.
+.finalize_wald_contrasts <- function(contrast_result, contrasts, subject_id, p.adjust) {
+  contrast_result <- dplyr::rename(ungroup(contrast_result), contrast = "lhs", diff = "estimate")
+
+  differences <- contrast_result |>
+    dplyr::filter(.data$contrast %in% names(contrasts))
+
+  avg_abd <- contrast_result |>
+    dplyr::select(dplyr::all_of(c(subject_id, "contrast", "diff"))) |>
+    dplyr::filter(startsWith(.data$contrast, "avg_"))
+
+  avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
+  avg_abd <- avg_abd |> dplyr::rename(avgAbd = "diff")
+  contrast_result <- left_join(differences, avg_abd)
+
+  contrast_result <- p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
+  contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
+  contrast_result |>
+    dplyr::mutate(
+      std.error.unmoderated = .data$std.error,
+      df.unmoderated = .data$df
+    )
+}
+
+.select_wald_columns <- function(contrast_result, all) {
+  if (all) {
+    return(contrast_result)
+  }
+  dplyr::select(contrast_result, -dplyr::all_of(c("sigma.model", "df.residual.model", "isSingular")))
+}
+
 # Contrasts -----
 
 #' Estimate contrasts using Wald Test
 #'
 #' The per-protein contrast computation uses \code{\link{compute_contrast}} and
-#' \code{\link{linfct_matrix_contrasts}} internally. Both support a vectorized
-#' code path activated by \code{options(prolfqua.vectorize = TRUE)}. This can
-#' give a significant speed-up for large datasets. The vectorized path produces
-#' numerically identical results.
+#' \code{\link{linfct_matrix_contrasts}} internally.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -103,8 +152,6 @@ Contrasts <- R6::R6Class(
     contrast_result = NULL,
     #' @field global use a global linear function (determined by get_linfct)
     global = TRUE,
-    #' @field protein_annot holds protein annotation
-    protein_annot = NULL,
     #' @description
     #' initialize
     #' create Contrast
@@ -142,25 +189,8 @@ Contrasts <- R6::R6Class(
         model <- get_complete_model_fit(self$models)$linear_model[[1]]
         res <- .linfct(model, self$contrasts, avg = avg)
         return(res)
-      } else {
-        res <- vector(mode = "list", nrow(self$models))
-        pb <- .make_progress(length(self$models$linear_model), label = "linfct")
-
-        model <- get_complete_model_fit(self$models)$linear_model[[1]]
-        compmodel <- .linfct(model, self$contrasts, avg = avg)
-
-        max_coef <- max(self$models$nr_coef_not_NA)
-
-        for (i in seq_along(self$models$linear_model)) {
-          pb$tick()
-          res[[i]] <- if (self$models$nr_coef_not_NA[[i]] == max_coef) {
-            compmodel
-          } else {
-            .linfct_partial_model(self$models$linear_model[[i]], contrast = self$contrasts, avg = avg)
-          }
-        }
-        return(res)
       }
+      .linfct_per_model(self$models, self$contrasts, avg, "linfct", linfct_fun = .linfct_partial_model)
     },
     #' @description
     #' get table with contrast estimates
@@ -179,32 +209,12 @@ Contrasts <- R6::R6Class(
           subject_id = self$subject_id,
           contrastfun = self$contrastfun
         )
-        contrast_result <- ungroup(contrast_result)
-
-        contrast_result <- dplyr::rename(contrast_result, contrast = lhs, diff = estimate)
-
-        differences <- contrast_result |>
-          dplyr::filter(contrast %in% names(self$contrasts))
-
-        avg_abd <- contrast_result |>
-          dplyr::select(dplyr::all_of(c(self$subject_id, "contrast", "diff"))) |>
-          dplyr::filter(startsWith(contrast, "avg_"))
-
-        avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
-        avg_abd <- avg_abd |> dplyr::rename(avgAbd = diff)
-        contrast_result <- left_join(differences, avg_abd)
-
-        contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
-        contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
-        contrast_result <- contrast_result |>
-          dplyr::mutate(
-            std.error.unmoderated = .data$std.error,
-            df.unmoderated = .data$df
-          )
+        contrast_result <- .finalize_wald_contrasts(contrast_result, self$contrasts, self$subject_id, self$p.adjust)
         # Stamp modelName uniformly with the model identity. Rescue/imputation
         # state lives in a separate `estimate_type` column: rows refit from an
         # LOD-imputed model (flagged by impute_refit_singular) get
         # "lod_imputed", everything else "observed".
+        estimate_type <- "observed"
         if ("imputed" %in% colnames(self$models)) {
           imputed_lookup <- self$models |>
             dplyr::select(dplyr::all_of(c(self$subject_id, "imputed")))
@@ -213,78 +223,18 @@ Contrasts <- R6::R6Class(
             imputed_lookup,
             by = self$subject_id
           )
-          contrast_result$estimate_type <- ifelse(
+          estimate_type <- ifelse(
             !is.na(contrast_result$imputed) & contrast_result$imputed,
             "lod_imputed",
             "observed"
           )
           contrast_result$imputed <- NULL
-        } else {
-          contrast_result$estimate_type <- "observed"
         }
-        contrast_result <- dplyr::mutate(contrast_result, modelName = self$model_name, .before = 1)
-        contrast_result <- dplyr::relocate(contrast_result, "estimate_type", .after = "modelName")
-        self$contrast_result <- contrast_result
+        self$contrast_result <- .stamp_model_identity(contrast_result, self$model_name, estimate_type)
       }
-      res <- if (!all) {
-        self$contrast_result |>
-          select(
-            -all_of(c(
-              "sigma.model",
-              "df.residual.model",
-              "isSingular"
-            ))
-          )
-      } else {
-        self$contrast_result
-      }
-
+      res <- .select_wald_columns(self$contrast_result, all)
       stopifnot(all(super$column_description()$column_name %in% colnames(res)))
       return(res)
-    },
-    #' @description
-    #' return \code{\link{ContrastsPlotter}}
-    #' creates Contrast_Plotter
-    #' @param fc_threshold fold change threshold to show in plots
-    #' @param fdr_threshold FDR threshold to show in plots
-    #' @return \code{\link{ContrastsPlotter}}
-    get_Plotter = function(
-      fc_threshold = 1,
-      fdr_threshold = 0.1
-    ) {
-      contrast_result <- self$get_contrasts()
-      res <- ContrastsPlotter$new(
-        contrast_result,
-        subject_id = self$subject_id,
-        fcthresh = fc_threshold,
-        volcano = list(
-          list(score = "p.value", thresh = fdr_threshold),
-          list(score = "FDR", thresh = fdr_threshold)
-        ),
-        histogram = list(
-          list(score = "p.value", xlim = c(0, 1, 0.05)),
-          list(score = "FDR", xlim = c(0, 1, 0.05))
-        ),
-        score = list(list(score = "statistic", thresh = 5)),
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
-      )
-      return(res)
-    },
-    #' @description
-    #' convert to wide format
-    #' @param columns value column default p.value
-    #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
-      contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_to_wide(
-        contrast_minimal,
-        subject_id = self$subject_id,
-        columns = c("diff", columns),
-        contrast = "contrast"
-      )
-      return(contrasts_wide)
     }
   )
 )

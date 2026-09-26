@@ -39,13 +39,12 @@
 # of thousands of chatty lines while still proving liveness.
 #
 # `callback` mode calls `callback(i, total, label)` -- the documented public
-# contract for the `prolfqua.progress` option. `message_mode` emits a
+# contract for the `prolfqua.progress` option. Without a callback it emits a
 # `message()` heartbeat with elapsed time and ETA.
 .throttled_reporter <- function(
   total,
   label = NULL,
   callback = NULL,
-  message_mode = FALSE,
   min_interval = 10,
   min_pct = 2
 ) {
@@ -125,7 +124,7 @@
     return(.throttled_reporter(total, label, callback = reporter))
   }
   if (identical(reporter, "message")) {
-    return(.throttled_reporter(total, label, message_mode = TRUE))
+    return(.throttled_reporter(total, label))
   }
   stop("unknown prolfqua.progress reporter: use NULL, a function(i, total, label), or 'message'")
 }

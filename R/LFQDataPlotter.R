@@ -67,12 +67,8 @@ LFQDataPlotter <- R6::R6Class(
   list(
     #' @field lfq LFQData object
     #' @field prefix prefix to figure names when writing, e.g. protein_
-    #' @field file_paths_pdf with paths to figures
-    #' @field file_paths_html with paths to figures
     lfq = NULL,
     prefix = "",
-    file_paths_pdf = list(),
-    file_paths_html = list(),
     #' @description
     #' create LFQDataPlotter
     #' @param lfqdata LFQData
@@ -288,21 +284,17 @@ LFQDataPlotter <- R6::R6Class(
     #' @param max maximal number of samples to show
     #' @return NULL
     pairs_smooth = function(max = 10) {
-      sample_col <- self$lfq$sample_name()
-      samples <- dplyr::select(self$lfq$data_long(), sample_col) |>
+      lfq <- self$lfq
+      sample_col <- lfq$sample_name()
+      samples <- dplyr::select(lfq$data_long(), sample_col) |>
         distinct() |>
         pull()
       if (length(samples) > max) {
         limit <- samples |> sample(max)
-        lfq_sub <- self$lfq$get_copy()
-        lfq_sub$set_data(
-          lfq_sub$data_long() |>
-            dplyr::filter(!!sym(sample_col) %in% limit)
-        )
-        prolfqua::pairs_smooth(lfq_sub$data_wide(as.matrix = TRUE)$data)
-      } else {
-        prolfqua::pairs_smooth(self$lfq$data_wide(as.matrix = TRUE)$data)
+        lfq <- lfq$get_copy()
+        lfq$set_data(dplyr::filter(lfq$data_long(), !!sym(sample_col) %in% limit))
       }
+      prolfqua::pairs_smooth(lfq$data_wide(as.matrix = TRUE)$data)
       NULL
     },
     #' @description
@@ -345,22 +337,6 @@ LFQDataPlotter <- R6::R6Class(
       dev.off()
     },
     #' @description
-    #' write pltly figures to path_qc
-    #' @keywords static
-    #' @param fig pltly figure
-    #' @param path_qc path to write to
-    #' @param fig_name file name (without extension)
-    #' @return path the file was written to.
-    write_pltly = function(fig, path_qc, fig_name) {
-      fname <- paste0(self$prefix, fig_name, ".html")
-      html_path <- file.path(".", path_qc, fname)
-      message("writing ", html_path)
-      htmlwidgets::saveWidget(widget = fig, file = fname)
-      file.rename(fname, html_path)
-      self$file_paths_html[[fig_name]] <- html_path
-      invisible(html_path)
-    },
-    #' @description
     #' write figure to pdf
     #' @param fig ggplot or ComplexHeatmap::Heatmap
     #' @param path_qc path to write to
@@ -375,18 +351,7 @@ LFQDataPlotter <- R6::R6Class(
       pdf(fpath, width = width, height = height)
       .render_plot_to_device(fig)
       graphics.off()
-      self$file_paths_pdf[[fig_name]] <- fpath
       invisible(fpath)
-    },
-    #' @description
-    #' write heatmaps and pca plots to files
-    #' @param path_qc path to write to
-    #'
-    write = function(path_qc) {
-      self$write_pdf(self$heatmap_cor(), path_qc, "intensities_heatmap_correlation", width = 10, height = 10)
-      self$write_pdf(self$heatmap(), path_qc, "intensities_heatmap", width = 10, height = 10)
-      self$write_pdf(self$pca(), path_qc, "intensities_PCA")
-      self$write_pltly(self$pca_plotly(), path_qc, "intensities_PCA")
     }
   )
 )

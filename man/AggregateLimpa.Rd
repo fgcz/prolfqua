@@ -38,6 +38,7 @@ Other LFQData:
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
+\code{\link{AggregatorBase}},
 \code{\link{LFQData}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
@@ -45,15 +46,12 @@ Other LFQData:
 \code{\link{LFQDataToSummarizedExperiment}()}
 }
 \concept{LFQData}
+\section{Super class}{
+\code{\link[prolfqua:AggregatorBase]{prolfqua::AggregatorBase}} -> \code{AggregateLimpa}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{lfq}}{LFQData (deep cloned input)}
-
-\item{\code{lfq_agg}}{aggregation result}
-
-\item{\code{prefix}}{to use for aggregation results e.g. protein}
-
 \item{\code{dpc_result}}{estimated DPC object from limpa::dpc}
 
 \item{\code{dpc_slope}}{DPC slope parameter (default 0.8)}

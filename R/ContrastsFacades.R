@@ -49,9 +49,6 @@
 # state is carried separately in `estimate_type`, set by the inner classes.
 .stamp_facade_identity <- function(res, facade_name) {
   res$modelName <- facade_name
-  if ("facade" %in% colnames(res)) {
-    res$facade <- NULL
-  }
   dplyr::relocate(res, dplyr::any_of(c("modelName", "estimate_type")))
 }
 
@@ -59,10 +56,6 @@
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_limma}} ->
 #' \code{\link{build_model_limma}} -> \code{\link{ContrastsLimma}}.
-#'
-#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster
-#' \code{\link{linfct_matrix_contrasts}} evaluation.
-#' See \code{\link{build_contrast_analysis}} for details.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -79,14 +72,6 @@ ContrastsLimmaFacade <- R6::R6Class(
   "ContrastsLimmaFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelLimma object
-    model = NULL,
-    #' @field contrast ContrastsLimma object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -96,17 +81,11 @@ ContrastsLimmaFacade <- R6::R6Class(
     #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
     initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "limma", modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma(lfqdata, strat)
-      self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limma")
-      self$facade_name <- "limma"
+      self$contrast <- ContrastsLimma$new(self$model, contrasts)
       self$.drop_na_diff <- TRUE
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -138,14 +117,6 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
   "ContrastsLimmaImputeFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelLimma object (with imputed proteins)
-    model = NULL,
-    #' @field contrast ContrastsLimma object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object (aggregated to protein level)
@@ -166,17 +137,11 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
       weights = lfqdata$nr_children_col(),
       ...
     ) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaImputeFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "limma_impute", modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_impute(lfqdata, strat, lod = lod, df_method = df_method)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limma_impute")
-      self$facade_name <- "limma_impute"
       self$.drop_na_diff <- TRUE
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -205,14 +170,6 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
   "ContrastsLimmaVoomFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelLimma object
-    model = NULL,
-    #' @field contrast ContrastsLimma object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -232,17 +189,11 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
       plot = FALSE,
       ...
     ) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaVoomFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "limma_voom", modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limma_voom")
-      self$facade_name <- "limma_voom"
       self$.drop_na_diff <- TRUE
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -271,14 +222,6 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
   "ContrastsLimmaVoomImputeFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelLimma object (with imputed proteins)
-    model = NULL,
-    #' @field contrast ContrastsLimma object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object (aggregated to protein level)
@@ -303,11 +246,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
       plot = FALSE,
       ...
     ) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsLimmaVoomImputeFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "limma_voom_impute", modelstr)
       strat <- strategy_limma(full_formula, weights = weights, ...)
       self$model <- build_model_limma_voom_impute(
         lfqdata,
@@ -318,9 +257,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
         plot = plot
       )
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limma_voom_impute")
-      self$facade_name <- "limma_voom_impute"
       self$.drop_na_diff <- TRUE
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -360,14 +297,6 @@ ContrastsLimpaFacade <- R6::R6Class(
   "ContrastsLimpaFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelLimma object (from build_model_limpa)
-    model = NULL,
-    #' @field contrast ContrastsLimma object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata aggregated LFQData. If \code{config$opt_se} is set
@@ -380,17 +309,11 @@ ContrastsLimpaFacade <- R6::R6Class(
     #' @param span lowess smoother span (NULL = auto)
     #' @param ... passed to \code{\link{strategy_limpa}} (e.g. trend, robust)
     initialize = function(lfqdata, modelstr, contrasts, plot = FALSE, span = NULL, ...) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsLimpaFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "limpa", modelstr)
       strat <- strategy_limpa(full_formula, plot = plot, span = span, ...)
       self$model <- build_model_limpa(lfqdata, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa")
-      self$facade_name <- "limpa"
       self$.drop_na_diff <- TRUE
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -401,9 +324,6 @@ ContrastsLimpaFacade <- R6::R6Class(
 #' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
 #' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
 #' \code{\link{ContrastsModerated}}.
-#'
-#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
-#' computation. See \code{\link{build_contrast_analysis}} for details.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -420,14 +340,6 @@ ContrastsLMFacade <- R6::R6Class(
   "ContrastsLMFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object
-    model = NULL,
-    #' @field contrast ContrastsModerated object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -437,16 +349,10 @@ ContrastsLMFacade <- R6::R6Class(
     #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsLMFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "lm", modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lm"))
-      self$facade_name <- "lm"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -457,9 +363,6 @@ ContrastsLMFacade <- R6::R6Class(
 #' Encapsulates the pipeline: \code{\link{strategy_rlm}} ->
 #' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
 #' \code{\link{ContrastsModerated}}.
-#'
-#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
-#' computation. See \code{\link{build_contrast_analysis}} for details.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -476,14 +379,6 @@ ContrastsRLMFacade <- R6::R6Class(
   "ContrastsRLMFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object
-    model = NULL,
-    #' @field contrast ContrastsModerated object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -491,16 +386,10 @@ ContrastsRLMFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_rlm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsRLMFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "rlm", modelstr)
       strat <- strategy_rlm(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "rlm"))
-      self$facade_name <- "rlm"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -533,14 +422,6 @@ ContrastsRfitFacade <- R6::R6Class(
   "ContrastsRfitFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object
-    model = NULL,
-    #' @field contrast ContrastsModerated object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -548,16 +429,10 @@ ContrastsRfitFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_rfit}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsRfitFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "rfit", modelstr)
       strat <- strategy_rfit(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "rfit"))
-      self$facade_name <- "rfit"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -606,18 +481,6 @@ ContrastsLMMissingFacade <- R6::R6Class(
   "ContrastsLMMissingFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object
-    model = NULL,
-    #' @field contrast ContrastsModerated object (merged with ContrastsMissing)
-    contrast = NULL,
-    #' @field missing_contrast ContrastsMissing object
-    missing_contrast = NULL,
-    #' @field merged merged contrast result list from merge_contrasts_results
-    merged = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -638,21 +501,14 @@ ContrastsLMMissingFacade <- R6::R6Class(
           "See ?ContrastsLMMissingFacade for migration."
         )
       )
-      .assert_aggregated_facade_input(lfqdata, "ContrastsLMMissingFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "lm_missing", modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
       base_contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
-      self$missing_contrast <- suppressWarnings(
+      missing_contrast <- suppressWarnings(
         ContrastsMissing$new(lfqdata, contrasts = contrasts)
       )
-      self$merged <- merge_contrasts_results(base_contrast, self$missing_contrast)
-      self$contrast <- self$merged$merged
-      self$facade_name <- "lm_missing"
-      self$config <- self$contrast$get_config()
+      self$contrast <- merge_contrasts_results(base_contrast, missing_contrast)$merged
     },
     #' @description get \code{\link{ContrastsPlotter}} built from the stamped
     #'   facade output (so modelName is the facade key, not the merged leg names)
@@ -667,23 +523,7 @@ ContrastsLMMissingFacade <- R6::R6Class(
           list(score = "p.value", thresh = fdr_threshold),
           list(score = "FDR", thresh = fdr_threshold)
         ),
-        histogram = list(
-          list(score = "p.value", xlim = c(0, 1, 0.05)),
-          list(score = "FDR", xlim = c(0, 1, 0.05))
-        ),
-        score = list(list(score = "statistic", thresh = 5)),
-        diff = "diff",
-        contrast = "contrast"
-      )
-    },
-    #' @description convert results to wide format from the stamped facade output
-    #' @param columns value columns to pivot
-    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
-      pivot_model_contrasts_to_wide(
-        self$get_contrasts(),
-        subject_id = self$contrast$subject_id,
-        columns = c("diff", columns),
-        contrast = "contrast"
+        score = list(list(score = "statistic", thresh = 5))
       )
     }
   )
@@ -716,14 +556,6 @@ ContrastsLMImputeFacade <- R6::R6Class(
   "ContrastsLMImputeFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object (with imputed proteins)
-    model = NULL,
-    #' @field contrast ContrastsModerated object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object (aggregated to protein level)
@@ -747,11 +579,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
       weights = lfqdata$nr_children_col(),
       ...
     ) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsLMImputeFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "lm_impute", modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model_impute(
         lfqdata,
@@ -761,8 +589,6 @@ ContrastsLMImputeFacade <- R6::R6Class(
         df_method = df_method
       )
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lm_impute"))
-      self$facade_name <- "lm_impute"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -815,14 +641,6 @@ ContrastsRfitImputeFacade <- R6::R6Class(
   "ContrastsRfitImputeFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object (with imputed proteins)
-    model = NULL,
-    #' @field contrast ContrastsModerated object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object (aggregated to protein level)
@@ -840,12 +658,8 @@ ContrastsRfitImputeFacade <- R6::R6Class(
       df_method = c("observed", "borrowed"),
       ...
     ) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsRfitImputeFacade")
+      full_formula <- private$.setup(lfqdata, contrasts, "rfit_impute", modelstr)
       df_method <- match.arg(df_method)
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
       strat <- strategy_rfit(full_formula, ...)
       self$model <- build_model_impute(
         lfqdata,
@@ -856,8 +670,6 @@ ContrastsRfitImputeFacade <- R6::R6Class(
         on_misalign = "fail"
       )
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "rfit_impute"))
-      self$facade_name <- "rfit_impute"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -870,9 +682,6 @@ ContrastsRfitImputeFacade <- R6::R6Class(
 #'
 #' Requires aggregated (protein-level) LFQData. For nested peptide-level
 #' input use \code{\link{ContrastsFirthNestedFacade}}.
-#'
-#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
-#' computation. See \code{\link{build_contrast_analysis}} for details.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -888,14 +697,6 @@ ContrastsFirthFacade <- R6::R6Class(
   "ContrastsFirthFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelFirth object
-    model = NULL,
-    #' @field contrast ContrastsFirth object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -903,13 +704,9 @@ ContrastsFirthFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... ignored; accepted for dispatch compatibility with other facades
     initialize = function(lfqdata, modelstr, contrasts, ...) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsFirthFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
+      private$.setup(lfqdata, contrasts, "firth", modelstr)
       self$model <- build_model_glm_protein(lfqdata, modelstr)
-      self$contrast <- ContrastsFirth$new(self$model, contrasts, model_name = "firth")
-      self$facade_name <- "firth"
-      self$config <- self$contrast$get_config()
+      self$contrast <- ContrastsFirth$new(self$model, contrasts)
     }
   )
 )
@@ -937,14 +734,6 @@ ContrastsDEqMSFacade <- R6::R6Class(
   "ContrastsDEqMSFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object
-    model = NULL,
-    #' @field contrast ContrastsModeratedDEqMS object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -954,11 +743,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
     #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsDEqMSFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "deqms", modelstr)
       strat <- strategy_lm(full_formula, weights = weights, ...)
       self$model <- build_model(lfqdata, strat)
       base_contrast <- Contrasts$new(self$model, contrasts, model_name = "deqms")
@@ -966,8 +751,6 @@ ContrastsDEqMSFacade <- R6::R6Class(
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
-      self$facade_name <- "deqms"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -998,14 +781,6 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
   "ContrastsDEqMSVoomFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelLimma object
-    model = NULL,
-    #' @field contrast ContrastsModeratedDEqMS object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata LFQData object
@@ -1015,11 +790,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     #' @param plot logical; if TRUE, plot the mean-variance trend
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
     initialize = function(lfqdata, modelstr, contrasts, span = 0.5, plot = FALSE, ...) {
-      .assert_aggregated_facade_input(lfqdata, "ContrastsDEqMSVoomFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "deqms_voom", modelstr)
       # No external weights — vooma handles mean-variance only
       strat <- strategy_limma(full_formula, weights = NULL, ...)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
@@ -1029,8 +800,6 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
-      self$facade_name <- "deqms_voom"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -1131,11 +900,7 @@ register_facade <- function(name, class, needs, package = "prolfqua", needs_sain
 #'   \code{\link{register_facade}}.
 #' @return Invisibly \code{TRUE} if the entry was removed, \code{FALSE}
 #'   if no entry existed.
-#' @export
-#' @family modelling
-#' @examples
-#' register_facade("example", class = "ExampleFacade", needs = "same")
-#' unregister_facade("example")
+#' @noRd
 unregister_facade <- function(name) {
   if (exists(name, envir = .facade_registry_env, inherits = FALSE)) {
     rm(list = name, envir = .facade_registry_env)

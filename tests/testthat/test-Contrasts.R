@@ -213,6 +213,27 @@ test_that("ContrastsTable provides rank and ORA input tables", {
   expect_equal(ora_down$protein_Id, c("P2", "P5"))
 })
 
+test_that("merge_contrasts_results labels rows when both inputs share a model name", {
+  prefer_df <- data.frame(
+    protein_Id = c("P1", "P2"),
+    contrast = "A_vs_B",
+    modelName = "lm",
+    diff = c(1, 2),
+    p.value = c(0.01, 0.2),
+    FDR = c(0.02, 0.2),
+    statistic = c(3, NA)
+  )
+  add_df <- transform(prefer_df, diff = c(1.1, 2.1), statistic = c(2.8, 2.5))
+  prefer <- ContrastsTable$new(prefer_df, subject_id = "protein_Id", model_name = "lm")
+  add <- ContrastsTable$new(add_df, subject_id = "protein_Id", model_name = "lm")
+
+  merged <- merge_contrasts_results(prefer, add)$merged
+  res <- merged$get_contrasts()
+  expect_equal(as.character(res$modelName), c("lm_prefer", "lm_add"))
+  expect_equal(res$diff, c(1, 2.1))
+  expect_equal(merged$model_name, "lm_prefer_lm_add")
+})
+
 test_that("ContrastsFirth and ContrastsFirthFacade", {
   istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)

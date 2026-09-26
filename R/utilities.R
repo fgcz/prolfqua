@@ -9,8 +9,7 @@
   if (methods::is(x, "Heatmap") || methods::is(x, "HeatmapList")) {
     ComplexHeatmap::draw(x)
   } else {
-    print_fun <- base::get("print")
-    print_fun(x)
+    print(x)
   }
   invisible(x)
 }
@@ -50,47 +49,6 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
   }
   return(res)
 }
-
-#' Removes rows with more than thresh NA's from matrix
-#' @export
-#' @keywords internal
-#' @family utilities
-#' @return matrix
-#' @param obj matrix or dataframe
-#' @param thresh - maximum number of NA's / row - if more the row will be removed
-#' @examples
-#'
-#' obj = matrix(rnorm(10*10),ncol=10)
-#' dim(obj)
-#' obj[3,3] = NA
-#' x1 = remove_na_rows(obj, thresh=0)
-#' stopifnot(all(c(9,10)==dim(x1)))
-#' x2 = remove_na_rows(obj, thresh=1)
-#' stopifnot(all(c(10,10)==dim(x2)))
-#'
-remove_na_rows <- function(obj, thresh = 0) {
-  x <- apply(obj, 1, function(x) {
-    sum(is.na(x))
-  })
-  obj <- obj[!(x > thresh), ]
-}
-#' splits names and creates a matrix
-#' @export
-#' @keywords internal
-#' @family utilities
-#' @param names vector with names
-#' @param split patter to use to split
-#' @return matrix
-#'
-#' @examples
-#' dat = c("bla_ra0/2_run0","bla_ra1/2_run0","bla_ra2/2_run0")
-#' names_to_matrix(dat,split="\\_|\\/")
-names_to_matrix <- function(names, split = "\\||\\_") {
-  cnamessplit <- stringi::stri_split_regex(as.character(names), pattern = split)
-  protnam <- do.call("rbind", cnamessplit)
-  return(protnam)
-}
-
 
 #' plot volcano given multiple contrasts
 #' @param .data data in long format
@@ -520,115 +478,6 @@ volcano_plotly <- function(
 }
 
 
-.scatter <- function(
-  data,
-  contrast = NULL,
-  dx = "diff.protein",
-  dy = "diff.site",
-  x_annot = min(data[[dx]], na.rm = TRUE),
-  y_annot = min(data[[dy]], na.rm = TRUE),
-  proteinID = "Prey",
-  color = "modelName.site",
-  palette = NULL,
-  title_size = 25
-) {
-  p <- plotly::plot_ly(
-    data,
-    x = as.formula(paste0("~", dx)),
-    y = as.formula(paste0("~", dy)),
-    type = "scatter",
-    mode = "markers",
-    color = as.formula(paste0("~", color)),
-    colors = palette,
-    text = as.formula(paste0("~", proteinID)),
-    showlegend = FALSE
-  )
-
-  p <- p |>
-    plotly::add_annotations(
-      contrast,
-      x = x_annot,
-      y = y_annot,
-      showarrow = FALSE,
-      xanchor = "left",
-      font = list(size = title_size)
-    )
-  return(p)
-}
-
-
-#' scatter plotly
-#' @param .data data frame
-#' @param dx column name for the x-axis difference
-#' @param dy column name for the y-axis difference
-#' @param contrast column with contrast labels
-#' @param proteinID column with protein ids
-#' @param color column used for colouring points
-#' @param palette named colour vector for the colour aesthetic
-#' @param title_size font size of the subplot title annotation
-#' @param group crosstalk group name for linked brushing
-#' @return The requested plot, table, or transformed object.
-#' @export
-#' @examples
-#'
-#' data <- data.frame(diff.protein = c(-1,0,1,2,8), diff.site = c(0.01,1, 0.01, 0.005,0),
-#' condition = rep("A",5), protein_Id = LETTERS[1:5], modelName = c("A","A","B","A","A"))
-#'
-#' dataB <- data.frame(diff.protein = c(-1,0,1,2,8), diff.site = c(0.01,1, 0.01, 0.005,0),
-#' condition = rep("B",5), protein_Id = LETTERS[1:5],modelName = c("A","A","B","B","B"))
-#' data <- dplyr::bind_rows(data, dataB)
-#' bc <- scatter_plotly(data, palette = c(A = "black" , B = "red"))
-#' bc[[1]]
-#' bc[[2]]
-#' bc |> plotly::subplot()
-#'
-scatter_plotly <- function(
-  .data,
-  dx = "diff.protein",
-  dy = "diff.site",
-  contrast = "condition",
-  proteinID = "protein_Id",
-  color = "modelName",
-  palette = NULL,
-  title_size = 25,
-  group = "BB"
-) {
-  xx <- .data |>
-    dplyr::group_by(!!dplyr::sym(contrast)) |>
-    tidyr::nest()
-
-  makeshared <- function(x, proteinID = "Prey") {
-    crosstalk::SharedData$new(x, as.formula(paste0("~", proteinID)), group = group)
-  }
-  xx <- dplyr::mutate(
-    xx,
-    shared_data = purrr::map(
-      data,
-      makeshared,
-      proteinID = proteinID
-    )
-  )
-
-  x_annot <- min(.data[[dx]], na.rm = TRUE)
-  y_annot <- min(.data[[dy]], na.rm = TRUE)
-
-  xd <- purrr::map2(
-    xx$shared_data,
-    xx[[contrast]],
-    .scatter,
-    dx = dx,
-    dy = dy,
-    x_annot = x_annot,
-    y_annot = y_annot,
-    proteinID = proteinID,
-    color = color,
-    palette = palette,
-    title_size = title_size
-  )
-  return(xd)
-}
-
-
 #' load data from prolfqua
 #' @param datastr name of dataset
 #' @param package default prolfqua
@@ -737,32 +586,4 @@ is_contaminant <- function(ids, pattern = NULL) {
     .effective_prefix_pattern(pattern, .default_contaminant_prefixes),
     as.character(ids)
   )
-}
-
-#' Effective decoy regex actually applied by \code{\link{is_decoy}}
-#'
-#' Returns the regex \code{is_decoy} uses (defaults, unioned with a configured
-#' pattern). Expose this instead of a raw configured pattern so callers report
-#' what is actually matched, even when no pattern was configured.
-#' @export
-#' @family utilities
-#' @param pattern optional configured decoy regex
-#' @return a single regex string
-#' @examples
-#' effective_decoy_pattern()
-#' effective_decoy_pattern("^shuffled_")
-effective_decoy_pattern <- function(pattern = NULL) {
-  .effective_prefix_pattern(pattern, .default_decoy_prefixes)
-}
-
-#' Effective contaminant regex actually applied by \code{\link{is_contaminant}}
-#'
-#' @export
-#' @family utilities
-#' @param pattern optional configured contaminant regex
-#' @return a single regex string
-#' @examples
-#' effective_contaminant_pattern()
-effective_contaminant_pattern <- function(pattern = NULL) {
-  .effective_prefix_pattern(pattern, .default_contaminant_prefixes)
 }

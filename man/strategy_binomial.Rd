@@ -4,13 +4,7 @@
 \alias{strategy_binomial}
 \title{Create a quasibinomial detection-count strategy}
 \usage{
-strategy_binomial(
-  modelstr,
-  prior_count = 0.1,
-  model_name = "binomial_nested",
-  report_columns = c("statistic", "p.value", "p.value.adjusted", "moderated.p.value",
-    "moderated.p.value.adjusted")
-)
+strategy_binomial(modelstr, prior_count = 0.1, model_name = "binomial_nested")
 }
 \arguments{
 \item{modelstr}{right-hand-side model formula}
@@ -18,8 +12,6 @@ strategy_binomial(
 \item{prior_count}{non-negative symmetric pseudo-count}
 
 \item{model_name}{model identity}
-
-\item{report_columns}{result columns supported by the strategy}
 }
 \value{
 A \code{\link{StrategyBinomial}} object.
@@ -29,5 +21,5 @@ Create a quasibinomial detection-count strategy
 }
 \examples{
 strategy <- strategy_binomial("~ group_", prior_count = 0.1)
-strategy$model_fun(get_formula = TRUE)
+strategy$formula
 }

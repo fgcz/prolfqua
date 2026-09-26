@@ -153,8 +153,6 @@ test_that("ContrastsLMMissingFacade initialises and returns correct structure", 
   expect_true(inherits(fa, "ContrastsLMMissingFacade"))
   expect_true(!is.null(fa$model))
   expect_true(!is.null(fa$contrast))
-  expect_true(!is.null(fa$missing_contrast))
-  expect_true(!is.null(fa$merged))
   check_facade_interface(fa)
   expect_true(all(fa$get_contrasts()$modelName == "lm_missing"))
 })

@@ -5,10 +5,9 @@
 # either inside the modelling backend (Lmer, ROPECA, Firth) or by an explicit
 # pre-aggregation step driven by the facade itself (Limpa).
 #
-# Same-level (protein -> protein) facades live in R/ContrastsFacades.R. Shared
-# helpers .assert_nested_facade_input(), .compute_missing(), and
-# .stamp_facade_identity() are defined there and used here as package-internal
-# functions.
+# Same-level (protein -> protein) facades live in R/ContrastsFacades.R. The
+# shared helper .stamp_facade_identity() is defined there and used here as a
+# package-internal function.
 
 # If the caller-supplied modelstr has no random-effect bars, append
 # (1 | <deepest child hierarchy key>) + (1 | <sample name>) derived from the
@@ -61,14 +60,6 @@ ContrastsLmerNestedFacade <- R6::R6Class(
   "ContrastsLmerNestedFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object
-    model = NULL,
-    #' @field contrast ContrastsModerated object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata nested LFQData (subject_id strict subset of hierarchy_keys)
@@ -80,17 +71,11 @@ ContrastsLmerNestedFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_lmer}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
-      .assert_nested_facade_input(lfqdata, "ContrastsLmerNestedFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      modelstr <- .augment_lmer_nested_modelstr(modelstr, lfqdata)
-      full_formula <- paste(response, modelstr)
+      private$.setup(lfqdata, contrasts, "lmer_nested", modelstr)
+      full_formula <- paste(lfqdata$response(), .augment_lmer_nested_modelstr(modelstr, lfqdata))
       strat <- strategy_lmer(full_formula, ...)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lmer_nested"))
-      self$facade_name <- "lmer_nested"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -121,14 +106,6 @@ ContrastsROPECANestedFacade <- R6::R6Class(
   "ContrastsROPECANestedFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model Model object (peptide-level)
-    model = NULL,
-    #' @field contrast ContrastsROPECA object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata nested LFQData (peptide-level)
@@ -136,18 +113,13 @@ ContrastsROPECANestedFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_lm}}
     initialize = function(lfqdata, modelstr, contrasts, ...) {
-      .assert_nested_facade_input(lfqdata, "ContrastsROPECANestedFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
-      response <- lfqdata$response()
-      full_formula <- paste(response, modelstr)
+      full_formula <- private$.setup(lfqdata, contrasts, "ropeca_nested", modelstr)
       strat <- strategy_lm(full_formula, ...)
       subject_id <- lfqdata$hierarchy_keys()
       self$model <- build_model(lfqdata, strat, subject_id = subject_id)
       self$contrast <- ContrastsROPECA$new(Contrasts$new(self$model, contrasts))
       self$config <- self$contrast$get_config()
       self$config$subject_id <- self$contrast$subject_id[1]
-      self$facade_name <- "ropeca_nested"
     },
     #' @description
     #' Get contrast results with standardized column names.
@@ -201,11 +173,7 @@ ContrastsROPECANestedFacade <- R6::R6Class(
         contrast_result,
         subject_id = protein_Id,
         fcthresh = fc_threshold,
-        volcano = list(list(score = "FDR", thresh = fdr_threshold)),
-        histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
+        volcano = list(list(score = "FDR", thresh = fdr_threshold))
       )
     },
     #' @description convert results to wide format
@@ -233,9 +201,6 @@ ContrastsROPECANestedFacade <- R6::R6Class(
 #' fold-change estimates. For protein-level (aggregated) input use
 #' \code{\link{ContrastsFirthFacade}} instead.
 #'
-#' Supports \code{options(prolfqua.vectorize = TRUE)} for faster contrast
-#' computation. See \code{\link{build_contrast_analysis}} for details.
-#'
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
@@ -250,14 +215,6 @@ ContrastsFirthNestedFacade <- R6::R6Class(
   "ContrastsFirthNestedFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelFirth object
-    model = NULL,
-    #' @field contrast ContrastsFirth object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to input LFQData
-    .lfqdata = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata nested LFQData (peptide-level)
@@ -265,13 +222,9 @@ ContrastsFirthNestedFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param ... ignored; accepted for dispatch compatibility with other facades
     initialize = function(lfqdata, modelstr, contrasts, ...) {
-      .assert_nested_facade_input(lfqdata, "ContrastsFirthNestedFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
+      private$.setup(lfqdata, contrasts, "firth_nested", modelstr)
       self$model <- build_model_glm_peptide(lfqdata, modelstr)
       self$contrast <- ContrastsFirth$new(self$model, contrasts, model_name = "firth_nested")
-      self$facade_name <- "firth_nested"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -318,9 +271,7 @@ ContrastsBinomialNestedFacade <- R6::R6Class(
       binomial_bound = TRUE,
       ...
     ) {
-      .assert_nested_facade_input(lfqdata, "ContrastsBinomialNestedFacade")
-      self$.lfqdata <- lfqdata
-      self$.contrast_names <- names(contrasts)
+      private$.setup(lfqdata, contrasts, "binomial_nested", modelstr)
 
       detection_lfqdata <- .prepare_detection_lfqdata(lfqdata)
       counts <- .summarize_detection_counts(detection_lfqdata)
@@ -343,8 +294,6 @@ ContrastsBinomialNestedFacade <- R6::R6Class(
         model_name = "binomial_nested",
         variance_floor = variance_floor
       )
-      self$facade_name <- "binomial_nested"
-      self$config <- self$contrast$get_config()
     }
   )
 )
@@ -381,16 +330,6 @@ ContrastsLimpaNestedFacade <- R6::R6Class(
   "ContrastsLimpaNestedFacade",
   inherit = ContrastsFacadeBase,
   public = list(
-    #' @field model ModelLimma object (from build_model_limpa)
-    model = NULL,
-    #' @field contrast ContrastsLimma object
-    contrast = NULL,
-    #' @field .lfqdata stored reference to the aggregated protein-level LFQData
-    .lfqdata = NULL,
-    #' @field .lfqdata_nested stored reference to the original nested input
-    .lfqdata_nested = NULL,
-    #' @field .contrast_names names of the requested contrasts
-    .contrast_names = NULL,
     #' @description
     #' initialize
     #' @param lfqdata nested LFQData (precursor/peptide-level, log2-transformed)
@@ -412,19 +351,14 @@ ContrastsLimpaNestedFacade <- R6::R6Class(
       span = NULL,
       ...
     ) {
-      .assert_nested_facade_input(lfqdata, "ContrastsLimpaNestedFacade")
-      self$.lfqdata_nested <- lfqdata
-      self$.contrast_names <- names(contrasts)
+      private$.setup(lfqdata, contrasts, "limpa_nested", modelstr)
       lfq_agg <- AggregateLimpa$new(lfqdata, prefix = prefix, dpc_slope = dpc_slope)$aggregate()
+      # get_missing() compares against the aggregated protein-level data.
       self$.lfqdata <- lfq_agg
-      response <- lfq_agg$response()
-      full_formula <- paste(response, modelstr)
-      strat <- strategy_limpa(full_formula, plot = plot, span = span, ...)
+      strat <- strategy_limpa(paste(lfq_agg$response(), modelstr), plot = plot, span = span, ...)
       self$model <- build_model_limpa(lfq_agg, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa_nested")
-      self$facade_name <- "limpa_nested"
       self$.drop_na_diff <- TRUE
-      self$config <- self$contrast$get_config()
     }
   )
 )

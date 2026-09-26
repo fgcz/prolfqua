@@ -11,11 +11,7 @@ find_package_file <- function(packagename, file) {
   if (!file.exists(src_script)) {
     src_script <- file.path(find.package(packagename), "inst", file)
   }
-  if (file.exists(src_script)) {
-    return(src_script)
-  } else {
-    return(NULL)
-  }
+  if (file.exists(src_script)) src_script
 }
 
 #' copy script files and other from a package to workdir
@@ -28,19 +24,13 @@ script_copy_helper_vec <-
   function(runscripts, workdir = getwd(), packagename = "prolfqua") {
     res <- NULL
     for (scripts in runscripts) {
-      src_script <- file.path(find.package(packagename), scripts)
+      src_script <- find_package_file(packagename, scripts)
       dest_script <- file.path(workdir, basename(scripts))
       message("copy ", src_script, " to ", dest_script)
-      if (!file.exists(src_script)) {
-        src_script <- file.path(find.package(packagename), "inst", scripts)
-        if (!file.exists(src_script)) {
-          msg <- sprintf("could not copy script file. %s", dest_script)
-          warning(msg, call. = FALSE)
-        }
-      }
-      if (!file.copy(src_script, dest_script, overwrite = TRUE)) {
-        msg <- sprintf("could not copy script file. %s to %s", src_script, dest_script)
-        warning(msg, call. = FALSE)
+      if (is.null(src_script)) {
+        warning(sprintf("could not copy script file. %s", dest_script), call. = FALSE)
+      } else if (!file.copy(src_script, dest_script, overwrite = TRUE)) {
+        warning(sprintf("could not copy script file. %s to %s", src_script, dest_script), call. = FALSE)
       } else {
         res <- c(res, dest_script)
       }

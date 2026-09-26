@@ -76,7 +76,6 @@ test_that("strategy_binomial matches an independent quasibinomial fit", {
     as.numeric(sqrt(linfct %*% stats::vcov(fit) %*% t(linfct)))
   )
   expect_false(strategy$isSingular(fit))
-  expect_false(strategy$is_mixed)
   expect_equal(strategy$model_name, "binomial_nested")
   expect_error(strategy_binomial("~ group_", prior_count = Inf), "non-negative number")
 })
@@ -183,6 +182,25 @@ test_that("moderated_p_limma applies an optional posterior variance floor", {
   unchanged <- moderated_p_limma(contrast_df, variance_floor = NULL)
   expect_equal(unchanged, unbounded)
   expect_error(moderated_p_limma(contrast_df, variance_floor = Inf), "positive number")
+})
+
+test_that("moderated_p_limma variance floor keeps the prior df of rows above the floor", {
+  contrast_df <- data.frame(
+    sigma = c(0.20, 1.60, 0.25, 1.80, 1.40, 0.22),
+    df = rep(6, 6),
+    statistic = c(2.1, -1.8, 0.5, 3.0, -2.2, 1.1),
+    diff = c(0.8, -0.6, 0.2, 1.2, -0.9, 0.4)
+  )
+  contrast_df$std.error <- contrast_df$diff / contrast_df$statistic
+
+  unbounded <- moderated_p_limma(contrast_df)
+  bounded <- moderated_p_limma(contrast_df, variance_floor = 1)
+  above <- unbounded$moderated.var.post >= 1
+  expect_true(any(above) && any(!above))
+
+  expect_false(anyNA(bounded$moderated.p.value))
+  expect_equal(bounded$moderated.df.total[above], unbounded$moderated.df.total[above])
+  expect_true(all(is.infinite(bounded$moderated.df.total[!above])))
 })
 
 test_that("binomial_nested facade reuses generic model and contrast interfaces", {

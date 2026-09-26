@@ -102,12 +102,8 @@ MissingHelpers <- R6::R6Class(
     #' compute pooled var per protein
     #' @param prob prob of sd from proteins where it can be computed
     get_poolvar = function(prob = 0.75) {
-      if (self$weighted) {
-        imputed_data <- self$impute_weighted_lod()
-      } else {
-        imputed_data <- self$impute_lod()
-      }
-      pooled <- prolfqua::poolvar(imputed_data, self$config, method = "V1")
+      imputed_data <- private$.imputed()
+      pooled <- prolfqua::poolvar(imputed_data, self$config)
       pooled <- dplyr::select(pooled, -all_of(c(self$config$factor_keys_depth()[1], "var")))
 
       pooled_zero <- pooled[pooled$df > 0 & pooled$sd > 0, ]
@@ -134,56 +130,41 @@ MissingHelpers <- R6::R6Class(
     get_contrast_estimates = function(
       Contrasts
     ) {
-      if (self$weighted) {
-        lt <- self$impute_weighted_lod()
-      } else {
-        lt <- self$impute_lod()
-      }
-      abundance_column <- "meanAbundanceImp"
+      lt <- private$.imputed()
+      lt$is_missing <- ifelse(lt$nrNAs == lt$nrReplicates, 1, 0)
       hierarchy_keys <- self$config$hierarchy_keys()
-      imp <- lt |>
-        pivot_wider(
+      # contrasts of one per-group statistic, computed on its protein x group wide table
+      contrast_of <- function(values_from) {
+        wide <- pivot_wider(
+          lt,
           id_cols = dplyr::all_of(hierarchy_keys),
           names_from = "interaction",
-          values_from = !!sym(abundance_column)
+          values_from = dplyr::all_of(values_from)
         )
+        prolfqua::get_contrast(ungroup(wide), hierarchy_keys, Contrasts)
+      }
 
-      imputed <- prolfqua::get_contrast(ungroup(imp), hierarchy_keys, Contrasts)
+      imputed <- contrast_of("meanAbundanceImp")
       imputed$avgAbd <- (imputed$group_1 + imputed$group_2) / 2
       imputed <- imputed |>
-        dplyr::rename(
-          !!paste0(abundance_column, "_group_1") := "group_1",
-          !!paste0(abundance_column, "_group_2") := "group_2"
-        )
-
-      nr <- lt |> mutate(is_missing = ifelse(.data$nrNAs == .data$nrReplicates, 1, 0))
-      nr <- nr |>
-        pivot_wider(
-          id_cols = dplyr::all_of(hierarchy_keys),
-          names_from = "interaction",
-          values_from = "is_missing"
-        )
-      nrs <- prolfqua::get_contrast(ungroup(nr), hierarchy_keys, Contrasts)
-
-      nrs <- nrs |> select(all_of(c(hierarchy_keys, "contrast", "estimate")))
-      nrs <- nrs |> rename(indic = estimate)
-      imputed <- inner_join(imputed, nrs, by = c(hierarchy_keys, "contrast"))
-
-      nr_measured <- lt |>
-        pivot_wider(
-          id_cols = dplyr::all_of(hierarchy_keys),
-          names_from = "interaction",
-          values_from = nrMeasured
-        )
-      nr_measured <- prolfqua::get_contrast(ungroup(nr_measured), hierarchy_keys, Contrasts)
-      nr_measured <- nr_measured |>
+        dplyr::rename(meanAbundanceImp_group_1 = "group_1", meanAbundanceImp_group_2 = "group_2")
+      nrs <- contrast_of("is_missing") |>
+        select(all_of(c(hierarchy_keys, "contrast", indic = "estimate")))
+      nr_measured <- contrast_of("nrMeasured") |>
         select(all_of(c(hierarchy_keys, "contrast", nrMeasured_group_1 = "group_1", nrMeasured_group_2 = "group_2")))
-      imputed <- inner_join(imputed, nr_measured, by = c(hierarchy_keys, "contrast"))
+      imputed <- imputed |>
+        inner_join(nrs, by = c(hierarchy_keys, "contrast")) |>
+        inner_join(nr_measured, by = c(hierarchy_keys, "contrast"))
 
-      imputed2 <- imputed |> mutate(estimate = ifelse(.data$indic < 0 & .data$estimate < 0, 0, .data$estimate))
-      imputed2 <- imputed2 |> mutate(estimate = ifelse(.data$indic > 0 & .data$estimate > 0, 0, .data$estimate))
-
-      return(imputed2)
+      # an estimate saying that a completely missing group is the more abundant one is set to 0
+      imputed |>
+        mutate(
+          estimate = ifelse(
+            (.data$indic < 0 & .data$estimate < 0) | (.data$indic > 0 & .data$estimate > 0),
+            0,
+            .data$estimate
+          )
+        )
     },
     #' @description
     #' compute contrasts
@@ -203,6 +184,9 @@ MissingHelpers <- R6::R6Class(
   ),
   private = list(
     .lod_cache = NULL,
+    .imputed = function() {
+      if (self$weighted) self$impute_weighted_lod() else self$impute_lod()
+    },
     add_p_values = function(result, confint = 0.95, all = TRUE) {
       result <- dplyr::mutate(
         result,

@@ -18,7 +18,8 @@ used in p2621, p2109
 modelSummary_A <- sim_build_models_lm()
 m <- get_complete_model_fit(modelSummary_A$model_df)
 
-factor_contrasts <- linfct_factors_contrasts( m$linear_model[[1]])
+linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
+factor_contrasts <- linfct_matrix_contrasts(linfct, c(A_vs_B = "TreatmentA - TreatmentB"))
 
 factor_levelContrasts <- contrasts_linfct( m,
         factor_contrasts,

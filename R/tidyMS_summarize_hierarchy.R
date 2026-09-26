@@ -145,50 +145,6 @@ HierarchyCountsSample <- R6::R6Class(
   )
 )
 
-#' Hierarchy counts per sample
-#'
-#' @param pdata data.frame
-#' @param configuration AnalysisConfiguration
-#' @param nr_children minimum number of children
-#' @return \code{\link{HierarchyCountsSample}} R6 object
-#' @export
-#' @family summary
-#' @examples
-#'
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#'
-#' config <- bb$config
-#' data <- bb$data
-#' res <- hierarchy_counts_sample(data, config, nr_children = 1)
-#' x <- res$long()
-#' # filters on peptide level
-#' res <- hierarchy_counts_sample(data, config, nr_children = 2)
-#' x2 <- res$long()
-#' # filters on protein level based on peptide count
-#' bb <- prolfqua::sim_lfq_data_protein_config()
-#' res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 2)
-#' x1 <- res$wide()
-#' res <- hierarchy_counts_sample(bb$data, bb$config, nr_children = 1)
-#' x2 <- res$wide()
-#' x1$nr_children <- 2
-#' x2$nr_children <- 1
-#' xl <- dplyr::bind_rows(x1, x2)
-#'
-#' xl$nr_children |> table()
-#' nudgeval <-  -mean(xl$protein_Id) * 0.05
-#' ggplot2::ggplot(xl,
-#'   ggplot2::aes(x = sampleName, y = protein_Id, fill = as.character(nr_children))) +
-#'  ggplot2::geom_bar(stat = "identity", position = ggplot2::position_dodge())
-#'
-hierarchy_counts_sample <- function(
-  pdata,
-  configuration,
-  nr_children = 1
-) {
-  HierarchyCountsSample$new(pdata, configuration, nr_children = nr_children)
-}
-
-
 #' Summarize hierarchy counts
 #'
 #' E.g compute number of peptides for each protein

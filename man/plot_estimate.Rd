@@ -21,7 +21,7 @@ Plot feature data and result of aggregation
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
-bbMed <- estimate_intensity(lfq, .func = medpolish_estimate_dfconfig)
+bbMed <- estimate_intensity(lfq, method = "medpolish")
 lfq_med <- LFQData$new(bbMed$data, bbMed$config)
 tmpMed <- plot_estimate(lfq, lfq_med)
 stopifnot("ggplot" \%in\% class(tmpMed$plots[[1]]))
@@ -31,16 +31,13 @@ stopifnot("ggplot" \%in\% class(tmpMed$plots[[1]]))
 Other plotting: 
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{medpolish_estimate_df}()},
 \code{\link{missigness_histogram}()},
 \code{\link{missingness_per_condition}()},
 \code{\link{missingness_per_condition_cumsum}()},
 \code{\link{plot_heatmap}()},
 \code{\link{plot_heatmap_cor}()},
-\code{\link{plot_hierarchies_add_quantline}()},
 \code{\link{plot_hierarchies_boxplot_df}()},
 \code{\link{plot_hierarchies_line}()},
-\code{\link{plot_hierarchies_line_df}()},
 \code{\link{plot_intensity_distribution_violin}()},
 \code{\link{plot_na_heatmap}()},
 \code{\link{plot_pca}()},
@@ -53,14 +50,7 @@ Other aggregation:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{aggregate_intensity_top_n}()},
 \code{\link{estimate_intensity}()},
-\code{\link{medpolish_estimate}()},
-\code{\link{medpolish_estimate_df}()},
-\code{\link{medpolish_estimate_dfconfig}()},
-\code{\link{plot_hierarchies_add_quantline}()},
-\code{\link{plot_hierarchies_line}()},
-\code{\link{plot_hierarchies_line_df}()},
-\code{\link{rlm_estimate}()},
-\code{\link{rlm_estimate_dfconfig}()}
+\code{\link{plot_hierarchies_line}()}
 }
 \concept{aggregation}
 \concept{plotting}

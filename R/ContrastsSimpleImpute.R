@@ -85,9 +85,6 @@
 ContrastsMissing <- R6::R6Class(
   "ContrastsMissing",
   inherit = ContrastsInterface,
-  private = list(
-    method = "V1"
-  ),
   public = list(
     #' @field subject_id subject_id e.g. protein_ID column
     subject_id = character(),
@@ -103,12 +100,6 @@ ContrastsMissing <- R6::R6Class(
     confint = 0.95,
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
-    #' @field global Take global or local values for imputation
-    global = logical(),
-    #' @field present default 1, presence in interaction to infer limit of detection.
-    present = 1,
-    #' @field minsd default 1, if standard deviation can not be estimated, what is the prior minimum sd, default = 1s
-    minsd = 1,
     #' @description
     #' initialize
     #' @param lfqdata LFQData
@@ -179,9 +170,7 @@ ContrastsMissing <- R6::R6Class(
             df.unmoderated = .data$df
           )
         # group-mean substitution, not a model fit: every row is a fallback
-        result$estimate_type <- "missing_fallback"
-        result <- mutate(result, modelName = self$model_name, .before = 1)
-        result <- dplyr::relocate(result, "estimate_type", .after = "modelName")
+        result <- .stamp_model_identity(result, self$model_name, "missing_fallback")
         self$contrast_result <- ungroup(result)
       }
       res <- self$contrast_result
@@ -195,27 +184,9 @@ ContrastsMissing <- R6::R6Class(
       res <- ContrastsPlotter$new(
         self$get_contrasts(),
         subject_id = self$subject_id,
-        volcano = list(list(score = "p.value", thresh = 0.1), list(score = "FDR", thresh = 0.1)),
-        histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
-        modelName = "modelName",
-        diff = "diff",
-        contrast = "contrast"
+        volcano = list(list(score = "p.value", thresh = 0.1), list(score = "FDR", thresh = 0.1))
       )
       return(res)
-    },
-    #' @description
-    #' convert contrast results to wide format
-    #' @param columns value column default p.value
-    #' @return data.frame
-    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
-      contrast_minimal <- self$get_contrasts()
-      contrasts_wide <- pivot_model_contrasts_to_wide(
-        contrast_minimal,
-        subject_id = self$subject_id,
-        columns = c("diff", columns),
-        contrast = "contrast"
-      )
-      return(contrasts_wide)
     }
   )
 )

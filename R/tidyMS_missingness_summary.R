@@ -123,25 +123,15 @@ missigness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$r
     dplyr::mutate(nrNAs = as.factor(.data$nrNAs))
 
   if (showempty) {
-    if (lfqdata$is_transformed()) {
-      missing_percent <- missing_percent |>
-        dplyr::mutate(
-          meanAbundance = ifelse(
-            is.na(.data$meanAbundance),
-            min(.data$meanAbundance, na.rm = TRUE) - 1,
-            .data$meanAbundance
-          )
+    offset <- if (lfqdata$is_transformed()) 1 else 20
+    missing_percent <- missing_percent |>
+      dplyr::mutate(
+        meanAbundance = ifelse(
+          is.na(.data$meanAbundance),
+          min(.data$meanAbundance, na.rm = TRUE) - offset,
+          .data$meanAbundance
         )
-    } else {
-      missing_percent <- missing_percent |>
-        dplyr::mutate(
-          meanAbundance = ifelse(
-            is.na(.data$meanAbundance),
-            min(.data$meanAbundance, na.rm = TRUE) - 20,
-            .data$meanAbundance
-          )
-        )
-    }
+      )
   }
 
   factors <- lfqdata$relevant_factor_keys()
