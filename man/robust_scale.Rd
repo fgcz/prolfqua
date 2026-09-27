@@ -18,7 +18,9 @@ dim(scaled)
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{apply_to_response_matrix}()},
+\code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
+\code{\link{nr_B_in_A}()},
 \code{\link{scale_with_subset}()}
 }
 \concept{preprocessing}

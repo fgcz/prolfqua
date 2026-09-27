@@ -38,7 +38,9 @@ stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
 Other preprocessing: 
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link{apply_to_response_matrix}()},
+\code{\link{filter_proteins_by_peptide_count}()},
 \code{\link{get_robscales}()},
+\code{\link{nr_B_in_A}()},
 \code{\link{robust_scale}()}
 }
 \concept{preprocessing}

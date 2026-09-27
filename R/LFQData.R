@@ -182,19 +182,11 @@ LFQData <- R6::R6Class(
     filter_proteins_by_peptide_count = function() {
       cfg <- self$get_config()
       message("removing proteins with less than: ", cfg$min_peptides_protein, " peptpides")
-      level_a <- cfg$hierarchy_keys_depth()
-      level_b <- cfg$hierarchy_keys()[length(level_a) + 1]
-      if (is.na(level_b)) {
-        warning("here is no B in A")
-        return(invisible(self))
+      filtered <- filter_proteins_by_peptide_count(self$data_long(), cfg)
+      if (!is.null(filtered$name)) {
+        message("Column added : ", filtered$name)
       }
-      c_name <- paste0("nr_", level_b, "_IN_", paste(level_a, collapse = "_"))
-      counts <- dplyr::distinct(dplyr::select(self$data_long(), dplyr::all_of(c(level_a, level_b)))) |>
-        dplyr::group_by(dplyr::across(dplyr::all_of(level_a))) |>
-        dplyr::summarize(!!c_name := dplyr::n())
-      data <- dplyr::inner_join(self$data_long(), counts, by = level_a)
-      message("Column added : ", c_name)
-      private$.data <- dplyr::filter(data, !!sym(c_name) >= cfg$min_peptides_protein)
+      private$.data <- filtered$data
       invisible(self)
     },
     #' @description

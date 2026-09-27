@@ -514,11 +514,7 @@ nr_children_experiment <- function(
 #' stopifnot(min(xd$nr_child_exp) == 1)
 #'
 nr_features_experiment <- function(data, hierarchy_keys, hierarchy_keys_depth, name_nr_child = "nr_child_exp") {
-  data |>
-    dplyr::select(hierarchy_keys) |>
-    distinct() |>
-    dplyr::group_by(!!!syms(hierarchy_keys_depth)) |>
-    dplyr::summarize(!!name_nr_child := dplyr::n(), .groups = "drop")
+  nr_B_in_A(data, hierarchy_keys_depth, setdiff(hierarchy_keys, hierarchy_keys_depth), name_nr_child)
 }
 
 # Summarize Intensities by Intensity or NAs ----

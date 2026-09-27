@@ -4,6 +4,7 @@ This release removes about 3,600 lines (20%) of dead or duplicated code from `R/
 
 ## Bug fixes
 
+- `filter_proteins_by_peptide_count()` and `nr_B_in_A()` are back, internal: the `filtered()` method of the saved `data_ionstar` dataset calls the filter, so its removal broke every caller of that dataset, prolfquapp's QC vignette among them. `nr_B_in_A(pdata, level_a, level_b)` only counts the children of each parent; the filter, `LFQData$filter_proteins_by_peptide_count()` and `nr_features_experiment()` count through it instead of each repeating the count.
 - `sigma()` for `MASS::rlm` fits took the square root twice. The `rlm` method's contrast `sigma` and all moderated statistics derived from it (`std.error`, `statistic`, `df`, `p.value`, `FDR`, confidence intervals) change; fold changes do not. On simulated data the moderated df drops from about 8,000 to about 25.
 - `moderated_p_limma(variance_floor = )` with `robust = FALSE` returned NA moderated p-values for rows above the floor, because the scalar prior df was padded with NA when the floored rows were set to `Inf`. This is the default path of the `binomial_nested` facade (`binomial_bound = TRUE`). Rows above the floor now keep the estimated prior df.
 - `merge_contrasts_results()`: when both inputs share a model name, `modelName` is now `<name>_prefer` / `<name>_add` instead of NA for every row.
