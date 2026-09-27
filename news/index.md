@@ -9,6 +9,16 @@ prolfquasaint, prolfquabenchmark, ptm-pipeline).
 
 ### Bug fixes
 
+- [`filter_proteins_by_peptide_count()`](https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)
+  and
+  [`nr_B_in_A()`](https://wolski.github.io/prolfqua/reference/nr_B_in_A.md)
+  are back, internal: the `filtered()` method of the saved
+  `data_ionstar` dataset calls the filter, so its removal broke every
+  caller of that dataset, prolfquapp’s QC vignette among them.
+  `nr_B_in_A(pdata, level_a, level_b)` only counts the children of each
+  parent; the filter, `LFQData$filter_proteins_by_peptide_count()` and
+  [`nr_features_experiment()`](https://wolski.github.io/prolfqua/reference/nr_features_experiment.md)
+  count through it instead of each repeating the count.
 - [`sigma()`](https://rdrr.io/r/stats/sigma.html) for
   [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html) fits took the
   square root twice. The `rlm` method’s contrast `sigma` and all
@@ -68,14 +78,15 @@ prolfquasaint, prolfquabenchmark, ptm-pipeline).
   `lfq_power_t_test_quantiles()`, `linfct_all_possible_contrasts()`,
   `linfct_factors_contrasts()`, `medpolish_estimate()`,
   `medpolish_estimate_df()`, `medpolish_estimate_dfconfig()`,
-  `moderated_p_limma_long()`, `names_to_matrix()`, `nr_B_in_A()`,
+  `moderated_p_limma_long()`, `names_to_matrix()`,
+  [`nr_B_in_A()`](https://wolski.github.io/prolfqua/reference/nr_B_in_A.md),
   `plot_hierarchies_add_quantline()`, `plot_hierarchies_line_df()`,
   `plot_lmer_peptide_predictions()`, `remove_na_rows()`,
   `rlm_estimate()`, `rlm_estimate_dfconfig()`, `scatter_plotly()`,
   `summarize_stats_all()`, `tidy_to_wide()`, and the function forms of
-  `filter_proteins_by_peptide_count()` and `remove_small_intensities()`
-  (the `LFQData` methods of the same names are unchanged).
-  `unregister_facade()` is no longer exported.
+  [`filter_proteins_by_peptide_count()`](https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)
+  and `remove_small_intensities()` (the `LFQData` methods of the same
+  names are unchanged). `unregister_facade()` is no longer exported.
 - Replacements where one exists: sample sizes via
   `LFQDataStats$power_t_test_quantiles()` or
   [`lfq_power_t_test_quantiles_V2()`](https://wolski.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md);

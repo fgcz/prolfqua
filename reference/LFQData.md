@@ -297,7 +297,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method `filter_proteins_by_peptide_count()`
+### Method [`filter_proteins_by_peptide_count()`](https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)
 
 remove proteins with less than X peptides
 

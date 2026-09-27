@@ -128,6 +128,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/dot-resolve_weights.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/encode_bin_resp.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/estimate_intensity.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/find_d0_deqms.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/find_package_file.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/generate_contrasts.html</loc></url>
@@ -170,6 +171,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/moderated_p_limma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/multigroup_volcano.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/new_imputed_model.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/nr_B_in_A.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_children_experiment.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_features_experiment.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/nr_obs_sample.html</loc></url>
