@@ -1,0 +1,14 @@
+name: Test R-universe
+
+# Same build and BiocCheck run as BiocStaging/r-universe (Bioconductor review)
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: R-universe testing
+    uses: r-universe-org/workflows/.github/workflows/build.yml@v3
+    with:
+      universe: bioc
+      organization: bioconductor # for BiocCheck checks

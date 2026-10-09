@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        r-version: ['4.5.2']
+        r-version: ['4.5.2', '4.6']
 
     steps:
       - uses: actions/checkout@v6.0.3
