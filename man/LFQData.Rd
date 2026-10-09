@@ -129,8 +129,6 @@ initialize
 \item{\code{prefix}}{will be use as output prefix}
 
 \item{\code{setup}}{is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.}
-
-\item{\code{is_pep}}{todo}
 }
 \if{html}{\out{</div>}}
 }

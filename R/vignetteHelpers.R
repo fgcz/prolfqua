@@ -15,13 +15,18 @@ find_package_file <- function(packagename, file) {
 }
 
 #' copy script files and other from a package to workdir
+#' @param runscripts paths of the files relative to the package root (or \code{inst/})
+#' @param workdir directory to copy the files to
+#' @param packagename package to copy the files from
+#' @param overwrite overwrite existing files in \code{workdir}, default TRUE
+#' @return paths of the copied files
 #' @export
 #' @keywords internal
 #' @examples
 #' copied <- script_copy_helper_vec("CITATION", workdir = tempdir())
 #' basename(copied)
 script_copy_helper_vec <-
-  function(runscripts, workdir = getwd(), packagename = "prolfqua") {
+  function(runscripts, workdir = getwd(), packagename = "prolfqua", overwrite = TRUE) {
     res <- NULL
     for (scripts in runscripts) {
       src_script <- find_package_file(packagename, scripts)
@@ -29,7 +34,7 @@ script_copy_helper_vec <-
       message("copy ", src_script, " to ", dest_script)
       if (is.null(src_script)) {
         warning(sprintf("could not copy script file. %s", dest_script), call. = FALSE)
-      } else if (!file.copy(src_script, dest_script, overwrite = TRUE)) {
+      } else if (!file.copy(src_script, dest_script, overwrite = overwrite)) {
         warning(sprintf("could not copy script file. %s to %s", src_script, dest_script), call. = FALSE)
       } else {
         res <- c(res, dest_script)

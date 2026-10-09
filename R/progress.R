@@ -126,5 +126,5 @@
   if (identical(reporter, "message")) {
     return(.throttled_reporter(total, label))
   }
-  stop("unknown prolfqua.progress reporter: use NULL, a function(i, total, label), or 'message'")
+  rlang::abort("unknown prolfqua.progress reporter: use NULL, a function(i, total, label), or 'message'")
 }

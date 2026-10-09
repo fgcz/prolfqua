@@ -125,7 +125,7 @@
     "') combination(s).\n",
     "Each hierarchy key must be observed at most once per sample.\n",
     "First offending keys:\n",
-    paste(utils::capture.output(print(utils::head(offending, 5))), collapse = "\n"),
+    paste(utils::capture.output(utils::head(offending, 5)), collapse = "\n"),
     "\nRe-run setup_analysis(..., debug = TRUE) to return the full count table for inspection ",
     "(rows where n > 1)."
   )
@@ -299,7 +299,8 @@ complete_cases <- function(lfqdata) {
 #' subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
 #' length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 sample_subset <- function(size, pdata, hierarchy_keys_depth) {
-  message("Sampling ", size, paste(hierarchy_keys_depth, collapse = ","))
+  keys <- paste(hierarchy_keys_depth, collapse = ",")
+  message("Sampling ", size, " ", keys)
   hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> sample_n(size = size)
   sdata <- inner_join(hkdf, pdata)
   return(sdata)

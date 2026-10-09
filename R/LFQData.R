@@ -84,7 +84,6 @@ LFQData <- R6::R6Class(
     #' initialize
     #' @param data data.frame
     #' @param config configuration
-    #' @param is_pep todo
     #' @param prefix will be use as output prefix
     #' @param setup is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.
     initialize = function(data, config, prefix = "ms_", setup = FALSE) {

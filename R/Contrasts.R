@@ -202,7 +202,6 @@ Contrasts <- R6::R6Class(
         message("determine linear functions:")
         linfct <- self$get_linfct(global = self$global)
         message("get_contrasts -> contrasts_linfct")
-        # TODO (goes into calling code)
         contrast_result <- contrasts_linfct(
           self$models,
           linfct,

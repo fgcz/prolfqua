@@ -9,7 +9,7 @@
   if (methods::is(x, "Heatmap") || methods::is(x, "HeatmapList")) {
     ComplexHeatmap::draw(x)
   } else {
-    print(x)
+    plot(x)
   }
   invisible(x)
 }

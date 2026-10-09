@@ -2,8 +2,13 @@
 
 Changes for the Bioconductor review ([BiocContributions #171](https://github.com/Bioconductor/BiocContributions/issues/171)).
 
+## Bug fixes
+
+- `citation("prolfqua")` works again: `inst/CITATION` contained a non-ASCII dash that `utils::readCitationFile()` could not read.
+
 ## Behaviour changes
 
+- `script_copy_helper_vec()` gains an `overwrite` argument (default `TRUE`, as before).
 - `summary_ROPECA_median_p.scaled()` is renamed to `summary_ROPECA_median_p_scaled()` (Bioconductor function names must not contain `.`). There is no alias.
 
 ## Removed

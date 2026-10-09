@@ -18,7 +18,7 @@ bibentry(bibtype = "Article",
                    person(given = "Christian", family = "Panse",
                    email = "cp@fgcz.ethz.ch")
                           ),
-  journal      = "J. Proteome Res. 2023, 22, 4, 1092–1104",
+  journal      = "J. Proteome Res. 2023, 22, 4, 1092-1104",
   year         = "2023",
   month = "March",
   day = "20",

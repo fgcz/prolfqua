@@ -563,13 +563,11 @@ compute_borrowed_variance <- function(
     target <- names(tab)[order(-as.integer(tab), names(tab))][1]
     keep <- keys == target
     if (!any(keep)) {
-      stop(structure(
-        class = c("prolfqua_borrow_failed", "error", "condition"),
-        list(
-          message = "No donor fits with a borrowable full covariance matrix.",
-          call = NULL
-        )
-      ))
+      rlang::abort(
+        "No donor fits with a borrowable full covariance matrix.",
+        class = "prolfqua_borrow_failed",
+        call = NULL
+      )
     }
     vcov_list <- vcov_list[keep]
   } else {

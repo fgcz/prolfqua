@@ -4,7 +4,24 @@
 \alias{script_copy_helper_vec}
 \title{copy script files and other from a package to workdir}
 \usage{
-script_copy_helper_vec(runscripts, workdir = getwd(), packagename = "prolfqua")
+script_copy_helper_vec(
+  runscripts,
+  workdir = getwd(),
+  packagename = "prolfqua",
+  overwrite = TRUE
+)
+}
+\arguments{
+\item{runscripts}{paths of the files relative to the package root (or \code{inst/})}
+
+\item{workdir}{directory to copy the files to}
+
+\item{packagename}{package to copy the files from}
+
+\item{overwrite}{overwrite existing files in \code{workdir}, default TRUE}
+}
+\value{
+paths of the copied files
 }
 \description{
 copy script files and other from a package to workdir
