@@ -24,16 +24,9 @@ names(ionstar)
 \seealso{
 Other data: 
 \code{\link{PACKAGE_DATA}},
-\code{\link{data_IonstarProtein_subsetNorm}},
-\code{\link{data_SAINTe_output}},
-\code{\link{data_benchmarkExample}},
 \code{\link{data_checksummarizationrobust87}},
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_ionstar}},
-\code{\link{data_skylinePRMSample_A}},
-\code{\link{data_skylineSRM_HL_A}},
-\code{\link{data_spectronautDIA250_A}},
-\code{\link{data_test_confusion_matrix_scores}},
 \code{\link{x5463yzwer453bbb}}
 }
 \concept{data}

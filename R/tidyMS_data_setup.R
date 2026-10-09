@@ -165,22 +165,7 @@
 #' @family configuration
 #' @examples
 #'
-#' skylineconfig <- AnalysisConfiguration$new()
-#' skylineconfig$file_name <- "Replicate.Name"
-#' skylineconfig$hierarchy[["protein_Id"]] <- "Protein.Name"
-#' skylineconfig$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
-#' skylineconfig$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
-#' skylineconfig$hierarchy[["fragment_Id"]] <- c(
-#'   "Peptide.Sequence", "Precursor.Charge",
-#'   "Fragment.Ion", "Product.Charge"
-#' )
-#' skylineconfig$ident_q_value <- "Detection.Q.Value"
-#' skylineconfig$set_response("Area")
-#' skylineconfig$isotope_label <- "Isotope.Label.Type"
-#' skylineconfig$factors[["Time"]] = "Sampling.Time.Point"
-#' sample_analysis <- setup_analysis(prolfqua_data('data_skylinePRMSample_A')$data, skylineconfig)
-#'
-#' # Example with normValue column (e.g., creatinine)
+#' # Example with a normValue column (e.g., creatinine)
 #' set.seed(1234)
 #' data <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE, N = 4)
 #' data$nr_children <- 1

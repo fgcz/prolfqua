@@ -3,28 +3,30 @@
 \docType{data}
 \name{data_ionstar}
 \alias{data_ionstar}
-\title{example data for check}
+\title{IonStar peptide-level example data}
 \format{
-An object of class \code{NULL} of length 0.
+An R6 object of class `IonstarData`; `$data` is a data frame with
+  26520 rows.
+}
+\source{
+PRIDE PXD003881
 }
 \usage{
 data_ionstar
 }
 \description{
-example data for check
+Peptide intensities of 200 proteins from the IonStar human cell lysate with
+E. coli spike-in dilution series (dilutions a to e, 4 replicates each),
+processed with MaxQuant. An R6 object holding the data, its
+\code{\link{AnalysisConfiguration}}, and the methods \code{filtered()},
+\code{normalized()} and \code{subset_normalized()}. See
+`inst/script/README.md` for its origin.
 }
 \seealso{
 Other data: 
 \code{\link{PACKAGE_DATA}},
-\code{\link{data_IonstarProtein_subsetNorm}},
-\code{\link{data_SAINTe_output}},
-\code{\link{data_benchmarkExample}},
 \code{\link{data_checksummarizationrobust87}},
 \code{\link{data_checksummarizerobust69}},
-\code{\link{data_skylinePRMSample_A}},
-\code{\link{data_skylineSRM_HL_A}},
-\code{\link{data_spectronautDIA250_A}},
-\code{\link{data_test_confusion_matrix_scores}},
 \code{\link{prolfqua_data}()},
 \code{\link{x5463yzwer453bbb}}
 }

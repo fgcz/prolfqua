@@ -23,18 +23,16 @@ Transform intensity column by applying a function
 }
 \examples{
 
-dd <- prolfqua_data('data_spectronautDIA250_A')
-config <- dd$config_f()
-analysis <- dd$analysis(dd$data, config)
+istar <- sim_lfq_data_peptide_config()
+config <- istar$config
 res <- transform_work_intensity(
-  analysis, config$get_response(), .func = log2
+  istar$data, config$get_response(), .func = log2
 )
-stopifnot("log2_FG.Quantity" \%in\% colnames(res$data))
-config <- dd$config_f()
+stopifnot("log2_abundance" \%in\% colnames(res$data))
 res <- transform_work_intensity(
-  analysis, config$get_response(), .func = asinh
+  istar$data, config$get_response(), .func = asinh
 )
-stopifnot("asinh_FG.Quantity" \%in\% colnames(res$data))
+stopifnot("asinh_abundance" \%in\% colnames(res$data))
 
 }
 \keyword{internal}

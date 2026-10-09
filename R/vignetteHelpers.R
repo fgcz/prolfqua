@@ -4,7 +4,7 @@
 #' @param packagename name of the R package
 #' @param file relative path to the file within the package
 #' @examples
-#' find_package_file("prolfqua","extdata/medata.csv")
+#' find_package_file("prolfqua", "CITATION")
 #'
 find_package_file <- function(packagename, file) {
   src_script <- file.path(find.package(packagename), file)
@@ -18,7 +18,7 @@ find_package_file <- function(packagename, file) {
 #' @export
 #' @keywords internal
 #' @examples
-#' copied <- script_copy_helper_vec("extdata/metadata.csv", workdir = tempdir())
+#' copied <- script_copy_helper_vec("CITATION", workdir = tempdir())
 #' basename(copied)
 script_copy_helper_vec <-
   function(runscripts, workdir = getwd(), packagename = "prolfqua") {

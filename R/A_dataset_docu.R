@@ -72,78 +72,57 @@ NULL
 NULL
 
 
-#' SAINT express output
+#' Factor annotation of 36 samples
 #'
-#' SAINT express output produced by running the function
-#' runSaint
+#' Sample annotation table with two factors (`factor_A`: MI / MINOCA,
+#' `factor_B`: sampling time T0 / T150 / T300), used to demonstrate how
+#' contrasts are derived from the factor levels. See `inst/script/README.md`
+#' for its origin.
 #'
-#' @family data
-#' @keywords internal
-#' @docType data
-#' @format a linear model
-data_SAINTe_output <- NULL
-
-#' example dataset for testing
+#' @format A tibble with 36 rows and the columns `Relative Path`, `Name`,
+#'   `Group`, `factor_A`, `factor_B`.
 #' @family data
 #' @docType data
 #' @keywords internal
-#' @format a data frame
 x5463yzwer453bbb <- NULL
 
-
-#' Benchmark data Example
-#' @format A data frame
-#' @family data
-#' @docType data
-#' @keywords internal
-data_benchmarkExample <- NULL
-
-#' example data for check
+#' Reference input for the robust summarisation check (87 percent)
+#'
+#' log2 peptide areas of one protein, used by the tests of the robust
+#' (medpolish/rlm) protein summarisation. See `inst/script/README.md`.
+#'
+#' @format A data frame with 20 rows and the columns `log2Area`, `peptide_Id`,
+#'   `sampleName`.
 #' @family data
 #' @docType data
 #' @keywords internal
 data_checksummarizationrobust87 <- NULL
 
-#' example data for check
+#' Reference input for the robust summarisation check (69 percent)
+#'
+#' log2 peptide areas of one protein, used by the tests of the robust
+#' (medpolish/rlm) protein summarisation. See `inst/script/README.md`.
+#'
+#' @format A data frame with 20 rows and the columns `log2Area`, `peptide_Id`,
+#'   `sampleName`.
 #' @family data
 #' @docType data
 #' @keywords internal
-#'
 data_checksummarizerobust69 <- NULL
 
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
+#' IonStar peptide-level example data
 #'
-data_IonstarProtein_subsetNorm <- NULL
-
-#' example data for check
+#' Peptide intensities of 200 proteins from the IonStar human cell lysate with
+#' E. coli spike-in dilution series (dilutions a to e, 4 replicates each),
+#' processed with MaxQuant. An R6 object holding the data, its
+#' \code{\link{AnalysisConfiguration}}, and the methods \code{filtered()},
+#' \code{normalized()} and \code{subset_normalized()}. See
+#' `inst/script/README.md` for its origin.
+#'
+#' @format An R6 object of class `IonstarData`; `$data` is a data frame with
+#'   26520 rows.
+#' @source PRIDE PXD003881
 #' @family data
 #' @docType data
 #' @keywords internal
 data_ionstar <- NULL
-
-#' example data for check of scores produced based on confusion matrix
-#' @family data
-#' @docType data
-#' @keywords internal
-data_test_confusion_matrix_scores <- NULL
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-data_skylinePRMSample_A <- NULL
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-data_skylineSRM_HL_A <- NULL
-
-#' example data for check
-#' @family data
-#' @docType data
-#' @keywords internal
-data_spectronautDIA250_A <- NULL

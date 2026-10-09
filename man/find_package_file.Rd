@@ -18,6 +18,6 @@ The computed result.
 find file stored in package
 }
 \examples{
-find_package_file("prolfqua","extdata/medata.csv")
+find_package_file("prolfqua", "CITATION")
 
 }

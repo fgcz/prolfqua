@@ -3,28 +3,23 @@
 \docType{data}
 \name{data_checksummarizationrobust87}
 \alias{data_checksummarizationrobust87}
-\title{example data for check}
+\title{Reference input for the robust summarisation check (87 percent)}
 \format{
-An object of class \code{NULL} of length 0.
+A data frame with 20 rows and the columns `log2Area`, `peptide_Id`,
+  `sampleName`.
 }
 \usage{
 data_checksummarizationrobust87
 }
 \description{
-example data for check
+log2 peptide areas of one protein, used by the tests of the robust
+(medpolish/rlm) protein summarisation. See `inst/script/README.md`.
 }
 \seealso{
 Other data: 
 \code{\link{PACKAGE_DATA}},
-\code{\link{data_IonstarProtein_subsetNorm}},
-\code{\link{data_SAINTe_output}},
-\code{\link{data_benchmarkExample}},
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_ionstar}},
-\code{\link{data_skylinePRMSample_A}},
-\code{\link{data_skylineSRM_HL_A}},
-\code{\link{data_spectronautDIA250_A}},
-\code{\link{data_test_confusion_matrix_scores}},
 \code{\link{prolfqua_data}()},
 \code{\link{x5463yzwer453bbb}}
 }

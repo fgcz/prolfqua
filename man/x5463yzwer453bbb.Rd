@@ -3,29 +3,26 @@
 \docType{data}
 \name{x5463yzwer453bbb}
 \alias{x5463yzwer453bbb}
-\title{example dataset for testing}
+\title{Factor annotation of 36 samples}
 \format{
-a data frame
+A tibble with 36 rows and the columns `Relative Path`, `Name`,
+  `Group`, `factor_A`, `factor_B`.
 }
 \usage{
 x5463yzwer453bbb
 }
 \description{
-example dataset for testing
+Sample annotation table with two factors (`factor_A`: MI / MINOCA,
+`factor_B`: sampling time T0 / T150 / T300), used to demonstrate how
+contrasts are derived from the factor levels. See `inst/script/README.md`
+for its origin.
 }
 \seealso{
 Other data: 
 \code{\link{PACKAGE_DATA}},
-\code{\link{data_IonstarProtein_subsetNorm}},
-\code{\link{data_SAINTe_output}},
-\code{\link{data_benchmarkExample}},
 \code{\link{data_checksummarizationrobust87}},
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_ionstar}},
-\code{\link{data_skylinePRMSample_A}},
-\code{\link{data_skylineSRM_HL_A}},
-\code{\link{data_spectronautDIA250_A}},
-\code{\link{data_test_confusion_matrix_scores}},
 \code{\link{prolfqua_data}()}
 }
 \concept{data}
