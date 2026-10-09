@@ -17,7 +17,7 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 (e.g. \code{c("A_vs_B" = "group_A - group_B")})}
 
 \item{method}{a registered facade key. The built-in keys are \code{"lm"},
-\code{"lm_impute"}, \code{"lm_missing"}, \code{"limma"},
+\code{"lm_impute"}, \code{"limma"},
 \code{"limma_impute"}, \code{"limma_voom"}, \code{"limma_voom_impute"},
 \code{"limpa"}, \code{"limpa_nested"}, \code{"rlm"}, \code{"rfit"},
 \code{"rfit_impute"}, \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
@@ -35,7 +35,7 @@ one of \code{\link{ContrastsLimmaFacade}},
   \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsRLMFacade}},
   \code{\link{ContrastsRfitFacade}}, \code{\link{ContrastsRfitImputeFacade}},
   \code{\link{ContrastsLmerNestedFacade}},
-  \code{\link{ContrastsLMMissingFacade}}, \code{\link{ContrastsLMImputeFacade}},
+  \code{\link{ContrastsLMImputeFacade}},
   \code{\link{ContrastsDEqMSFacade}},
   \code{\link{ContrastsROPECANestedFacade}}, \code{\link{ContrastsFirthFacade}},
   \code{\link{ContrastsFirthNestedFacade}}, \code{\link{ContrastsLimpaFacade}},
@@ -58,9 +58,6 @@ head(fa_lm$get_contrasts())
 
 fa_limma <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma")
 head(fa_limma$get_contrasts())
-
-fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_missing")
-head(fa_miss$get_contrasts())
 
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
 head(fa_deqms$get_contrasts())
@@ -95,7 +92,6 @@ Other modelling:
 \code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
-\code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
 \code{\link{ContrastsLimmaFacade}},
 \code{\link{ContrastsLimmaImputeFacade}},
@@ -104,7 +100,6 @@ Other modelling:
 \code{\link{ContrastsLimpaFacade}},
 \code{\link{ContrastsLimpaNestedFacade}},
 \code{\link{ContrastsLmerNestedFacade}},
-\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},

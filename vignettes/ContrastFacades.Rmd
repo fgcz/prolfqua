@@ -30,7 +30,6 @@ backends:
 - `limpa` — vooma precision-weighted model on DPC-aggregated proteins (requires `AggregateLimpa` for DPC-based aggregation with standard errors).
 - `lmer` — linear mixed-effects model on nested peptide/precursor data, reporting protein-level contrasts.
 - `ropeca` — peptide-level fold changes aggregated to protein via ROPECA median + beta-distribution p-values.
-- `lm_missing` — `lm` merged with group-mean substitution for proteins `lm` cannot estimate (deprecated; prefer `lm_impute`).
 - `lm_impute` — `lm` that refits failed/singular proteins with LOD imputation and borrowed variance.
 - `deqms` — `limma` plus DEqMS count-dependent variance moderation using peptide counts per protein.
 - `firth` — Firth bias-reduced logistic regression on presence/absence (missingness) of aggregated proteins.
@@ -40,7 +39,7 @@ All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. All examples below return protein-level
 contrasts. The important difference is the required input level:
 
-- `lm`, `rfit`, `limma`, `limma_impute`, `lm_missing`, `lm_impute`, and `deqms` require aggregated protein-level data
+- `lm`, `rfit`, `limma`, `limma_impute`, `lm_impute`, and `deqms` require aggregated protein-level data
 - `limpa` requires protein-level data from `AggregateLimpa` (which provides standard errors and observation counts for vooma precision weighting)
 - `lmer` and `ropeca` require lower-level measurements such as peptides nested
   within proteins, but still report protein-level contrasts
@@ -119,13 +118,6 @@ fa_limma_impute <- build_contrast_analysis(
   method = "limma_impute"
 )
 
-fa_lm_missing <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "lm_missing"
-)
-
 fa_deqms <- build_contrast_analysis(
   lfq_protein,
   "~ group_",
@@ -187,7 +179,6 @@ results_protein <- bind_rows(
   fa_rfit$get_contrasts(),
   fa_limma$get_contrasts(),
   fa_limma_impute$get_contrasts(),
-  fa_lm_missing$get_contrasts(),
   fa_lm_impute$get_contrasts(),
   fa_deqms$get_contrasts(),
   fa_firth_protein$get_contrasts(),
@@ -209,8 +200,8 @@ results_protein |>
 ```
 
 The `modelName` column is the facade key. For facades that combine several
-underlying result types, such as `lm_missing`, the `estimate_type` column tells
-you how each row was produced (`observed`, `lod_imputed`, or `missing_fallback`).
+underlying result types, such as `lm_impute`, the `estimate_type` column tells
+you how each row was produced (`observed` or `lod_imputed`).
 
 ```{r collect_protein_model_names}
 results_protein |>
@@ -240,11 +231,11 @@ ggplot(results_standard, aes(x = diff, y = -log10(p.value), color = significant)
 
 Rescued proteins (missing in plain `lm`) are shown as large red diamonds
 so they stand out clearly. This group includes the LOD imputation facades
-(`lm_missing`, `lm_impute`, `limma_impute`) and the firth logistic
+(`lm_impute`, `limma_impute`) and the firth logistic
 regression facade which models missingness directly.
 
 ```{r volcano_impute, fig.height=8, fig.width=14, fig.cap="Volcano plots for the imputation and missingness facades. Large red diamonds mark proteins rescued (missing in plain lm)."}
-impute_facades <- c("lm_missing", "lm_impute", "limma_impute", "firth")
+impute_facades <- c("lm_impute", "limma_impute", "firth")
 results_impute <- results_protein |>
   dplyr::filter(modelName %in% impute_facades) |>
   dplyr::mutate(modelName = factor(modelName, levels = impute_facades))
@@ -289,7 +280,6 @@ missing_all <- dplyr::bind_rows(
   fa_lm$get_missing() |> dplyr::mutate(facade = "lm"),
   fa_limma$get_missing() |> dplyr::mutate(facade = "limma"),
   fa_limma_impute$get_missing() |> dplyr::mutate(facade = "limma_impute"),
-  fa_lm_missing$get_missing() |> dplyr::mutate(facade = "lm_missing"),
   fa_lm_impute$get_missing() |> dplyr::mutate(facade = "lm_impute"),
   fa_deqms$get_missing() |> dplyr::mutate(facade = "deqms"),
   fa_firth_protein$get_missing() |> dplyr::mutate(facade = "firth"),
@@ -318,13 +308,12 @@ if (length(missing_proteins) > 0) {
 ```
 
 The missing cells (NA) explain why these proteins cannot be estimated — they
-lack observations in one or more groups. The `lm_missing` facade fills in
-these gaps via group-mean imputation, while `lm_impute` and `limma_impute`
+lack observations in one or more groups. The `lm_impute` and `limma_impute` facades
 re-fit after imputing individual values with the LOD and borrowing covariance
 from successful fits. These should have fewer missing proteins than plain
 `lm` or `limma`.
 
-## Estimates for the missing proteins from `lm_missing` and `lm_impute`
+## Estimates for the missing proteins from `lm_impute` and `limma_impute`
 
 For proteins that plain `lm` could not estimate, the imputation-based facades
 can still produce contrast results. The table below shows these rescued
@@ -337,14 +326,14 @@ if (length(lm_missing_proteins) > 0) {
   rescued <- results_protein |>
     dplyr::filter(
       protein_Id %in% lm_missing_proteins,
-      modelName %in% c("lm_missing", "lm_impute", "limma_impute", "limpa")
+      modelName %in% c("lm_impute", "limma_impute", "limpa")
     ) |>
     dplyr::arrange(protein_Id, contrast, modelName)
 
   rescued |>
     knitr::kable(
       digits = 3,
-      caption = "Contrast estimates from lm_missing, lm_impute, and limma_impute for proteins that plain lm could not estimate"
+      caption = "Contrast estimates from lm_impute and limma_impute for proteins that plain lm could not estimate"
     )
 } else {
   cat("All proteins were estimable by plain lm — no rescued estimates to show.")

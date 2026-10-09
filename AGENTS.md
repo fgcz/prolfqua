@@ -74,7 +74,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 The authoritative facade list is the `.seed_facade_registry()` table in `R/ContrastsFacades.R`; query it at runtime with `lookup_facade(name)`. Facades split by input/output hierarchy shape — `lookup_facade(name)$needs` returns one of two values:
 
 **`needs = "same"`** — facade emits contrasts at the same hierarchy level as its input (protein → protein FC, or peptide/precursor → peptide/precursor FC; `subject_Id == hierarchy_keys`). Lives in `R/ContrastsFacades.R`:
-`lm`, `rlm`, `lm_missing`, `lm_impute`, `limma`, `limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`, `deqms_voom`, `firth`, `limpa`
+`lm`, `rlm`, `lm_impute`, `limma`, `limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`, `deqms_voom`, `firth`, `limpa`
 
 **`needs = "nested"`** — facade takes child-level input (peptide/precursor) and emits parent-level (protein) contrasts; `subject_Id` is a strict subset of `hierarchy_keys`. Lives in `R/ContrastsChildToParentFacades.R`:
 `lmer_nested`, `ropeca_nested`, `firth_nested`, `limpa_nested`
@@ -87,7 +87,7 @@ There are no same-level `lmer`/`ropeca` facades — mixed-model and ROPECA analy
 
 **Two distinct uses:**
 
-1. **Fitting weights** (sample-wise): Aggregated facades (`lm`, `limma`, `lm_missing`, `lm_impute`, `deqms`) pass `nr_children` as `weights` by default to `lm()` or `limma::lmFit()`. This down-weights protein intensities derived from fewer peptides in a given sample. Disable with `weights = NULL`.
+1. **Fitting weights** (sample-wise): Aggregated facades (`lm`, `limma`, `lm_impute`, `deqms`) pass `nr_children` as `weights` by default to `lm()` or `limma::lmFit()`. This down-weights protein intensities derived from fewer peptides in a given sample. Disable with `weights = NULL`.
 
 2. **DEqMS variance moderation** (experiment-wide): `ContrastsDEqMSFacade` additionally aggregates `nr_children` via `max()` per protein across all samples for count-dependent variance shrinkage. This is separate from the fitting weights.
 
@@ -113,7 +113,7 @@ lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 | Core data | `LFQData`, `AnalysisConfiguration` | LFQData.R, AnalysisConfiguration.R |
 | Decorators | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp` | LFQData*.R |
 | Model interfaces | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma` | Model*.R, ContrastsLimma.R |
-| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
+| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsROPECA`, `ContrastsFirth`, `ContrastsTable` | Contrasts*.R, ContrastFirth.R |
 | Visualization | `ContrastsPlotter` | ContrastsPlotter.R |
 | Utilities | `MissingHelpers` | tidyMS_missingness_imputation.R |
 

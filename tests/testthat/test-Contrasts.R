@@ -117,28 +117,6 @@ test_that("ContrastsROPECA", {
   expect_s3_class(ropeca$get_contrast_sides(), "data.frame")
 })
 
-test_that("ContrastsMissing", {
-  istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.4)
-  lProt <- LFQData$new(istar$data, istar$config)
-  lProt$rename_response("transformedIntensity")
-
-  Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
-  csi <- ContrastsMissing$new(lProt, contrasts = Contr)
-
-  res <- csi$get_contrasts()
-  expect_s3_class(res, "data.frame")
-  expect_true(all(c("diff", "p.value", "FDR") %in% colnames(res)))
-  expect_equal(res$std.error.unmoderated, res$std.error)
-  expect_equal(res$df.unmoderated, res$df)
-  expect_equal(sum(is.na(res$p.value)), 0)
-
-  cs <- csi$get_contrast_sides()
-  expect_s3_class(cs, "data.frame")
-
-  pl <- csi$get_Plotter()
-  expect_s3_class(pl, "ContrastsPlotter")
-})
-
 test_that("ContrastsTable (passive container)", {
   # Build a contrast result to feed into ContrastsTable
   istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.4)
@@ -146,10 +124,10 @@ test_that("ContrastsTable (passive container)", {
   lProt$rename_response("transformedIntensity")
 
   Contr <- c("AvsCtrl" = "group_A - group_Ctrl")
-  csi <- ContrastsMissing$new(lProt, contrasts = Contr)
-  ctr <- csi$get_contrasts()
+  fa <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)
+  ctr <- fa$get_contrasts()
 
-  ct <- ContrastsTable$new(ctr, subject_id = csi$subject_id, model_name = "TableTest")
+  ct <- ContrastsTable$new(ctr, subject_id = fa$contrast$subject_id, model_name = "TableTest")
 
   x <- ct$get_contrasts()
   expect_s3_class(x, "data.frame")

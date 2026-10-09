@@ -31,11 +31,12 @@ contrast <- prolfqua::Contrasts$new(mod,
  Contr)
 contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
-csi <- ContrastsMissing$new(lProt, contrasts = Contr)
+# LOD-imputed refit for proteins the plain lm cannot estimate
+imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 
 contrast$get_contrasts() |> dim()
-(xx <- csi$get_contrasts())   |> dim()
-merged <- merge_contrasts_results(contrast, csi)
+(xx <- imp$get_contrasts())   |> dim()
+merged <- merge_contrasts_results(contrast, imp)
 
 merged$more$get_contrasts() |> dim()
 stopifnot(all(dim(merged$merged$get_contrasts()) == c(50, 16)))
@@ -70,7 +71,6 @@ Other modelling:
 \code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
-\code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
 \code{\link{ContrastsLimmaFacade}},
 \code{\link{ContrastsLimmaImputeFacade}},
@@ -79,7 +79,6 @@ Other modelling:
 \code{\link{ContrastsLimpaFacade}},
 \code{\link{ContrastsLimpaNestedFacade}},
 \code{\link{ContrastsLmerNestedFacade}},
-\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsRLMFacade}},

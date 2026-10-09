@@ -252,7 +252,8 @@ ContrastsInterface <- R6::R6Class(
 # Merge contrasts ----
 #' Merge contrast results coming from two different model.
 #'
-#' Typically used with results of \code{\link{Contrasts}} and \code{\link{ContrastsMissing}}
+#' Typically used to fill proteins missing from \code{\link{Contrasts}} with
+#' estimates from another model, e.g. the LOD-imputed refits of \code{\link{ContrastsLMImputeFacade}}
 #'
 #' @param prefer contrasts to use preferentially
 #' @param add contrasts to add from if missing in prefer

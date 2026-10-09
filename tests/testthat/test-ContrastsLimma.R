@@ -238,9 +238,9 @@ test_that("merge_contrasts_results works with ContrastsLimma", {
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
   contr_limma <- prolfqua::ContrastsLimma$new(mod, Contr)
 
-  csi <- prolfqua::ContrastsMissing$new(lProt, contrasts = Contr)
+  imp <- prolfqua::ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 
-  merged <- prolfqua::merge_contrasts_results(contr_limma, csi)
+  merged <- prolfqua::merge_contrasts_results(contr_limma, imp)
   expect_true(inherits(merged$merged, "ContrastsTable"))
   expect_true(nrow(merged$merged$get_contrasts()) > 0)
 })
@@ -653,31 +653,5 @@ test_that("limma_voom_impute supports borrowed residual degrees of freedom", {
   expect_length(
     unique(model$fit$df.residual[imputed_rows]),
     1
-  )
-})
-
-
-test_that("ContrastsLMMissingFacade emits a deprecation warning", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
-  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-
-  expect_warning(
-    prolfqua::ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts),
-    "deprecated"
-  )
-})
-
-
-test_that("ContrastsMissing emits a deprecation warning at construction", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
-  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-
-  expect_warning(
-    prolfqua::ContrastsMissing$new(lfqdata, contrasts = contrasts),
-    "deprecated"
   )
 })

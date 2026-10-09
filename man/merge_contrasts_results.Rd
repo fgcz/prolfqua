@@ -17,7 +17,8 @@ merge_contrasts_results(prefer, add, model_name = "mergedModel")
 Contrast definitions or contrast results.
 }
 \description{
-Typically used with results of \code{\link{Contrasts}} and \code{\link{ContrastsMissing}}
+Typically used to fill proteins missing from \code{\link{Contrasts}} with
+estimates from another model, e.g. the LOD-imputed refits of \code{\link{ContrastsLMImputeFacade}}
 }
 \examples{
 prefer_df <- data.frame(
@@ -55,7 +56,6 @@ Other modelling:
 \code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
-\code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
 \code{\link{ContrastsLimmaFacade}},
 \code{\link{ContrastsLimmaImputeFacade}},
@@ -64,7 +64,6 @@ Other modelling:
 \code{\link{ContrastsLimpaFacade}},
 \code{\link{ContrastsLimpaNestedFacade}},
 \code{\link{ContrastsLmerNestedFacade}},
-\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},

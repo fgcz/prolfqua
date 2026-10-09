@@ -1,6 +1,6 @@
 ## Tests for ContrastsFacades and build_contrast_analysis
 
-# Shared test data (peptide-level, used for lm / lm_missing / limma / ropeca)
+# Shared test data (peptide-level, used for lm / limma / ropeca)
 make_peptide_lfqdata <- function(Nprot = 30) {
   istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = Nprot, with_missing = FALSE, seed = 42)
 
@@ -142,21 +142,6 @@ test_that("ContrastsLmerNestedFacade augments fixed-effects-only modelstr with r
   )
 })
 
-# ---- ContrastsLMMissingFacade ----
-
-test_that("ContrastsLMMissingFacade initialises and returns correct structure", {
-  # ContrastsMissing requires protein-level data (hierarchyDepth == len(hierarchy_keys()))
-  obj <- make_protein_lfqdata()
-  lfqdata <- obj$lfqdata
-  fa <- prolfqua::ContrastsLMMissingFacade$new(lfqdata, MODELSTR, CONTRASTS)
-
-  expect_true(inherits(fa, "ContrastsLMMissingFacade"))
-  expect_true(!is.null(fa$model))
-  expect_true(!is.null(fa$contrast))
-  check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$modelName == "lm_missing"))
-})
-
 # ---- ContrastsDEqMSFacade ----
 
 test_that("ContrastsDEqMSFacade initialises and returns correct structure", {
@@ -225,13 +210,6 @@ test_that("build_contrast_analysis dispatches to ContrastsLmerNestedFacade for m
   lfqdata <- make_peptide_lfqdata()
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR_LMER, CONTRASTS, method = "lmer_nested")
   expect_true(inherits(fa, "ContrastsLmerNestedFacade"))
-  check_facade_interface(fa)
-})
-
-test_that("build_contrast_analysis dispatches to ContrastsLMMissingFacade for method='lm_missing'", {
-  lfqdata <- make_protein_lfqdata()$lfqdata
-  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "lm_missing")
-  expect_true(inherits(fa, "ContrastsLMMissingFacade"))
   check_facade_interface(fa)
 })
 
@@ -307,10 +285,6 @@ test_that("aggregated facades error on peptide-level LFQData", {
     "requires aggregated LFQData"
   )
   expect_error(
-    prolfqua::ContrastsLMMissingFacade$new(lfqdata, MODELSTR, CONTRASTS),
-    "requires aggregated LFQData"
-  )
-  expect_error(
     prolfqua::ContrastsDEqMSFacade$new(lfqdata, MODELSTR, CONTRASTS),
     "requires aggregated LFQData"
   )
@@ -331,13 +305,12 @@ test_that("get_missing returns non-empty for data with missing groups", {
 
   fa_lm <- prolfqua::ContrastsLMFacade$new(lfq_protein, MODELSTR, contrasts2)
   fa_limma <- prolfqua::ContrastsLimmaFacade$new(lfq_protein, MODELSTR, contrasts2)
-  fa_lm_missing <- prolfqua::ContrastsLMMissingFacade$new(lfq_protein, MODELSTR, contrasts2)
 
   # lm should have missing proteins (it drops unfittable ones)
-  lm_missing <- fa_lm$get_missing()
-  expect_true(is.data.frame(lm_missing))
-  expect_true("protein_Id" %in% colnames(lm_missing))
-  expect_true("contrast" %in% colnames(lm_missing))
+  missing_lm <- fa_lm$get_missing()
+  expect_true(is.data.frame(missing_lm))
+  expect_true("protein_Id" %in% colnames(missing_lm))
+  expect_true("contrast" %in% colnames(missing_lm))
 
   # limma should also have missing proteins (NA diff rows are filtered)
   limma_missing <- fa_limma$get_missing()
@@ -348,14 +321,10 @@ test_that("get_missing returns non-empty for data with missing groups", {
   limma_res <- fa_limma$get_contrasts()
   expect_true(!any(is.na(limma_res$diff)))
 
-  # lm_missing should have fewer (or no) missing proteins thanks to imputation
-  lm_missing_missing <- fa_lm_missing$get_missing()
-  expect_true(nrow(lm_missing_missing) <= nrow(lm_missing))
-
   # get_missing + get_contrasts should cover all input proteins × contrasts
   n_input_proteins <- dplyr::n_distinct(lfq_protein$data_long()$protein_Id)
   n_contrasts <- length(contrasts2)
-  for (fa in list(fa_lm, fa_limma, fa_lm_missing)) {
+  for (fa in list(fa_lm, fa_limma)) {
     n_estimated <- nrow(fa$get_contrasts())
     n_missing <- nrow(fa$get_missing())
     expect_equal(n_estimated + n_missing, n_input_proteins * n_contrasts)

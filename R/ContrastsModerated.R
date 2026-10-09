@@ -24,11 +24,12 @@
 #'  Contr)
 #' contrast <- ContrastsModerated$new(contrast)
 #' bb <- contrast$get_contrasts()
-#' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
+#' # LOD-imputed refit for proteins the plain lm cannot estimate
+#' imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 #'
 #' contrast$get_contrasts() |> dim()
-#' (xx <- csi$get_contrasts())   |> dim()
-#' merged <- merge_contrasts_results(contrast, csi)
+#' (xx <- imp$get_contrasts())   |> dim()
+#' merged <- merge_contrasts_results(contrast, imp)
 #'
 #' merged$more$get_contrasts() |> dim()
 #' stopifnot(all(dim(merged$merged$get_contrasts()) == c(50, 16)))

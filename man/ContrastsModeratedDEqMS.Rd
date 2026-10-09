@@ -47,9 +47,9 @@ deqms <- ContrastsModeratedDEqMS$new(contrast,
 bb <- deqms$get_contrasts()
 stopifnot(all(c("diff", "p.value", "FDR", "sigma") \%in\% colnames(bb)))
 
-# Merge with ContrastsMissing
-csi <- ContrastsMissing$new(lProt, contrasts = Contr)
-merged <- merge_contrasts_results(deqms, csi)
+# Merge with LOD-imputed refits for proteins the plain lm cannot estimate
+imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
+merged <- merge_contrasts_results(deqms, imp)
 
 cs <- deqms$get_contrast_sides()
 cslf <- deqms$get_linfct()
@@ -72,7 +72,6 @@ Other modelling:
 \code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
-\code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
 \code{\link{ContrastsLimmaFacade}},
 \code{\link{ContrastsLimmaImputeFacade}},
@@ -81,7 +80,6 @@ Other modelling:
 \code{\link{ContrastsLimpaFacade}},
 \code{\link{ContrastsLimpaNestedFacade}},
 \code{\link{ContrastsLmerNestedFacade}},
-\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsPlotter}},
 \code{\link{ContrastsRLMFacade}},

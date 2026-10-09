@@ -438,98 +438,6 @@ ContrastsRfitFacade <- R6::R6Class(
 )
 
 
-#'
-#' LM + missing-value imputation contrast analysis facade
-#'
-#' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
-#' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
-#' merge with \code{\link{ContrastsMissing}} ->
-#' \code{\link{ContrastsModerated}}.
-#'
-#' Proteins without a fitted model get their contrasts filled in from the
-#' group-mean imputation method (\code{\link{ContrastsMissing}}).
-#'
-#' @section Deprecated:
-#' This facade is deprecated because its missing-data leg uses
-#' \code{\link{ContrastsMissing}} — a pre-fitting group-mean
-#' substitution, not a refit. Prefer the \code{lm_impute} facade
-#' (\code{\link{ContrastsLMImputeFacade}}), which fits an LM for every
-#' protein and refits failed/singular fits with LOD imputation and
-#' borrowed per-protein variance, flagging rescued rows as
-#' \code{estimate_type = "lod_imputed"} in the output.
-#' Construction emits a \code{.Deprecated} warning; the entry is kept
-#' in \code{\link{FACADE_REGISTRY}} so historical YAMLs continue to
-#' work.
-#'
-#' @return An R6 class generator.
-#' @export
-#' @family modelling
-#' @seealso \code{\link{ContrastsLMImputeFacade}},
-#'   \code{\link{build_model_impute}}, \code{\link{ContrastsMissing}}
-#' @examples
-#' # ContrastsMissing requires protein-level data (hierarchyDepth == len(hierarchy_keys()))
-#' istar <- sim_lfq_data_protein_config(Nprot = 30)
-#' lfqdata <- LFQData$new(istar$data, istar$config)
-#' lfqdata$rename_response("transformedIntensity")
-#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-#' suppressWarnings(
-#'   fa <- ContrastsLMMissingFacade$new(lfqdata, "~ group_", contrasts)
-#' )
-#' head(fa$get_contrasts())
-#' fa$to_wide()
-ContrastsLMMissingFacade <- R6::R6Class(
-  "ContrastsLMMissingFacade",
-  inherit = ContrastsFacadeBase,
-  public = list(
-    #' @description
-    #' initialize
-    #' @param lfqdata LFQData object
-    #' @param modelstr model formula string (e.g. "~ group_")
-    #' @param contrasts named character vector of contrasts
-    #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
-    #' @param ... passed to \code{\link{strategy_lm}}
-    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col(), ...) {
-      .Deprecated(
-        new = "ContrastsLMImputeFacade",
-        msg = paste(
-          "ContrastsLMMissingFacade (method = 'lm_missing') is",
-          "deprecated: its second leg uses ContrastsMissing (group-mean",
-          "substitution, no model fit). Prefer 'lm_impute' which refits",
-          "failed/singular proteins with LOD imputation and borrowed",
-          "variance, flagging rescued rows as estimate_type 'lod_imputed'.",
-          "See ?ContrastsLMMissingFacade for migration."
-        )
-      )
-      full_formula <- private$.setup(lfqdata, contrasts, "lm_missing", modelstr)
-      strat <- strategy_lm(full_formula, weights = weights, ...)
-      self$model <- build_model(lfqdata, strat)
-      base_contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
-      missing_contrast <- suppressWarnings(
-        ContrastsMissing$new(lfqdata, contrasts = contrasts)
-      )
-      self$contrast <- merge_contrasts_results(base_contrast, missing_contrast)$merged
-    },
-    #' @description get \code{\link{ContrastsPlotter}} built from the stamped
-    #'   facade output (so modelName is the facade key, not the merged leg names)
-    #' @param fc_threshold fold change threshold
-    #' @param fdr_threshold FDR threshold
-    get_Plotter = function(fc_threshold = 1, fdr_threshold = 0.1) {
-      ContrastsPlotter$new(
-        self$get_contrasts(),
-        subject_id = self$contrast$subject_id,
-        fcthresh = fc_threshold,
-        volcano = list(
-          list(score = "p.value", thresh = fdr_threshold),
-          list(score = "FDR", thresh = fdr_threshold)
-        ),
-        score = list(list(score = "statistic", thresh = 5))
-      )
-    }
-  )
-)
-
-
 #' LM contrast analysis with LOD imputation facade
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
@@ -716,7 +624,6 @@ ContrastsFirthFacade <- R6::R6Class(
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
 #' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
-#' merge with \code{\link{ContrastsMissing}} ->
 #' \code{\link{ContrastsModeratedDEqMS}}.
 #'
 #' @return An R6 class generator.
@@ -811,7 +718,6 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
   entries <- list(
     lm = list(class = "ContrastsLMFacade", needs = "same"),
     lm_impute = list(class = "ContrastsLMImputeFacade", needs = "same"),
-    lm_missing = list(class = "ContrastsLMMissingFacade", needs = "same"),
     limma = list(class = "ContrastsLimmaFacade", needs = "same"),
     limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "same"),
     limma_voom = list(class = "ContrastsLimmaVoomFacade", needs = "same"),

@@ -104,13 +104,6 @@ fa_limma_impute_2f <- build_contrast_analysis(
   method = "limma_impute"
 )
 
-fa_lm_missing_2f <- build_contrast_analysis(
-  lfq_protein_2f,
-  "~ Subgroup",
-  contrasts_2f,
-  method = "lm_missing"
-)
-
 fa_deqms_2f <- build_contrast_analysis(
   lfq_protein_2f,
   "~ Subgroup",
@@ -146,7 +139,6 @@ results_protein_2f <- bind_rows(
   fa_lm_2f$get_contrasts(),
   fa_limma_2f$get_contrasts(),
   fa_limma_impute_2f$get_contrasts(),
-  fa_lm_missing_2f$get_contrasts(),
   fa_lm_impute_2f$get_contrasts(),
   fa_deqms_2f$get_contrasts(),
   fa_firth_protein_2f$get_contrasts()
@@ -167,8 +159,8 @@ results_protein_2f |>
 ```
 
 The `modelName` column is the facade key. For facades that combine several
-underlying result types, such as `lm_missing`, the `estimate_type` column tells
-you how each row was produced (`observed`, `lod_imputed`, or `missing_fallback`).
+underlying result types, such as `lm_impute`, the `estimate_type` column tells
+you how each row was produced (`observed` or `lod_imputed`).
 
 ```{r collect_protein_model_names_2f}
 results_protein_2f |>
@@ -198,11 +190,11 @@ ggplot(results_standard_2f, aes(x = diff, y = -log10(p.value), color = significa
 
 Rescued proteins (missing in plain `lm`) are shown as large red diamonds
 so they stand out clearly. This group includes the LOD imputation facades
-(`lm_missing`, `lm_impute`, `limma_impute`) and the firth logistic
+(`lm_impute`, `limma_impute`) and the firth logistic
 regression facade which models missingness directly.
 
 ```{r volcano_impute_2f, fig.height=10, fig.width=14, fig.cap="Volcano plots for the imputation and missingness facades. Large red diamonds mark proteins rescued (missing in plain lm)."}
-impute_facades_2f <- c("lm_missing", "lm_impute", "limma_impute", "firth")
+impute_facades_2f <- c("lm_impute", "limma_impute", "firth")
 results_impute_2f <- results_protein_2f |>
   dplyr::filter(modelName %in% impute_facades_2f) |>
   dplyr::mutate(modelName = factor(modelName, levels = impute_facades_2f))
@@ -241,7 +233,6 @@ missing_all_2f <- dplyr::bind_rows(
   fa_lm_2f$get_missing() |> dplyr::mutate(facade = "lm"),
   fa_limma_2f$get_missing() |> dplyr::mutate(facade = "limma"),
   fa_limma_impute_2f$get_missing() |> dplyr::mutate(facade = "limma_impute"),
-  fa_lm_missing_2f$get_missing() |> dplyr::mutate(facade = "lm_missing"),
   fa_lm_impute_2f$get_missing() |> dplyr::mutate(facade = "lm_impute"),
   fa_deqms_2f$get_missing() |> dplyr::mutate(facade = "deqms"),
   fa_firth_protein_2f$get_missing() |> dplyr::mutate(facade = "firth")
@@ -269,13 +260,12 @@ if (length(missing_proteins_2f) > 0) {
 ```
 
 The missing cells (NA) explain why these proteins cannot be estimated — they
-lack observations in one or more groups. The `lm_missing` facade fills in
-these gaps via group-mean imputation, while `lm_impute` and `limma_impute`
+lack observations in one or more groups. The `lm_impute` and `limma_impute` facades
 re-fit after imputing individual values with the LOD and borrowing covariance
 from successful fits. These should have fewer missing proteins than plain
 `lm` or `limma`.
 
-## Estimates for the missing proteins from `lm_missing` and `lm_impute`
+## Estimates for the missing proteins from `lm_impute` and `limma_impute`
 
 For proteins that plain `lm` could not estimate, the imputation-based facades
 can still produce contrast results. The table below shows these rescued
@@ -288,14 +278,14 @@ if (length(lm_missing_proteins_2f) > 0) {
   rescued_2f <- results_protein_2f |>
     dplyr::filter(
       protein_Id %in% lm_missing_proteins_2f,
-      modelName %in% c("lm_missing", "lm_impute", "limma_impute")
+      modelName %in% c("lm_impute", "limma_impute")
     ) |>
     dplyr::arrange(protein_Id, contrast, modelName)
 
   rescued_2f |>
     knitr::kable(
       digits = 3,
-      caption = "Contrast estimates from lm_missing, lm_impute, and limma_impute for proteins that plain lm could not estimate"
+      caption = "Contrast estimates from lm_impute and limma_impute for proteins that plain lm could not estimate"
     )
 } else {
   cat("All proteins were estimable by plain lm — no rescued estimates to show.")

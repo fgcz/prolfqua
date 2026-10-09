@@ -143,11 +143,11 @@ gridExtra::grid.arrange(
 
 # Merging with missing value imputation
 
-`ContrastsLimma` integrates seamlessly with `ContrastsMissing` and `merge_contrasts_results`.
+`ContrastsLimma` works with `merge_contrasts_results`. Proteins limma cannot estimate are filled in from the `lm_impute` facade, which refits them with LOD-imputed values.
 
 ```{r merge_missing}
-mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
-merged_result <- merge_contrasts_results(prefer = contr_limma, add = mC)
+imp <- ContrastsLMImputeFacade$new(transformed, "~ group_", contr_spec)$contrast
+merged_result <- merge_contrasts_results(prefer = contr_limma, add = imp)
 
 plotter <- merged_result$merged$get_Plotter()
 plotter$volcano()$FDR

@@ -54,8 +54,8 @@ head(wide)
 
 # merge_contrasts_results works
 Contr2 <- c("dil.b_vs_a" = "group_A - group_Ctrl")
-csi <- ContrastsMissing$new(lProt, contrasts = Contr2)
-merged_res <- merge_contrasts_results(contr_limma, csi)
+imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr2)$contrast
+merged_res <- merge_contrasts_results(contr_limma, imp)
 
 }
 \seealso{
@@ -70,7 +70,6 @@ Other modelling:
 \code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
-\code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimmaFacade}},
 \code{\link{ContrastsLimmaImputeFacade}},
 \code{\link{ContrastsLimmaVoomFacade}},
@@ -78,7 +77,6 @@ Other modelling:
 \code{\link{ContrastsLimpaFacade}},
 \code{\link{ContrastsLimpaNestedFacade}},
 \code{\link{ContrastsLmerNestedFacade}},
-\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},

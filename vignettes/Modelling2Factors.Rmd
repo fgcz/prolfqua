@@ -118,29 +118,27 @@ plotter$ma_plot()
 
 ## Analyse contrasts with missing data imputation
 
-Still using the approach above, we can only estimate group averages in case there is at least one measurement for each protein in each group/condition. In the case of missing data for one condition, we can use the `ContrastsMissing` function where the 10th percentile expression of all proteins is used for the estimate of the missing condition. 
+Still using the approach above, we can only estimate contrasts for proteins with enough observations in each group/condition. For proteins where the linear model fails, the `lm_impute` facade refits the model after imputing the missing observations with the limit of detection (LOD) and borrows the variance from the proteins that could be fitted.
 
-```{r prepareForGroupAverageImputation, fig.cap="Volcano and MA plot for result visualisation for the group average model"}
-contrSimple <- prolfqua::ContrastsMissing$new(pMerged, contr_spec)
-contrdfSimple <- contrSimple$get_contrasts()
-pl <- contrSimple$get_Plotter()
+```{r prepareForImputation, fig.cap="Histogram of fold changes and volcano plot for the LOD-imputed model"}
+contrImputed <- prolfqua::ContrastsLMImputeFacade$new(pMerged, "~ Treatment * Background", contr_spec)$contrast
+contrdfImputed <- contrImputed$get_contrasts()
+pl <- contrImputed$get_Plotter()
 pl$histogram_diff()
 pl$volcano()$FDR
-
-
 ```
 
 ## Merge nonimputed and imputed data.
 
-For the moderated model, we can only get results if we have enough valid data points. With the group average model we can get group estimates for all proteins. Therefore, we are merging the statistics for both approaches while we are preferring the values of the moderated model.
+For the moderated model, we can only get results if we have enough valid data points. With the imputed model we get estimates for all proteins. Therefore, we are merging the statistics for both approaches while we are preferring the values of the moderated model.
 Also these results can again be visualized in a `volcano` plot.
 
-```{r doGroupAverageImputation, fig.cap="Volcano plot of moderated (black) and impuation (light green) model"}
+```{r doImputationMerge, fig.cap="Volcano plot of moderated and imputed model"}
 
 dim(contr$get_contrasts())
-dim(contrSimple$get_contrasts())
+dim(contrImputed$get_contrasts())
 
-mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrSimple)$merged
+mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrImputed)$merged
 cM <- mergedContrasts$get_Plotter()
 plot <- cM$volcano()
 plot$FDR

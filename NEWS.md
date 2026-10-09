@@ -1,3 +1,11 @@
+# prolfqua 1.9.0
+
+Changes for the Bioconductor review ([BiocContributions #171](https://github.com/Bioconductor/BiocContributions/issues/171)).
+
+## Removed
+
+- The `lm_missing` method (`ContrastsLMMissingFacade`) and `ContrastsMissing` (group-mean substitution with a pooled-variance t-test). `MissingHelpers` keeps `get_stats()` and `get_lod()`; its imputation and contrast methods and the `weighted` argument are gone. All of it lives on in the new package [prolfquatakeoutmissing](https://github.com/prolfqua/prolfquatakeoutmissing): loading it registers `method = "lm_missing"` again. In prolfqua, use `lm_impute`, which refits the proteins plain `lm` cannot estimate with LOD-imputed values.
+
 # prolfqua 1.8.0
 
 This release removes about 3,600 lines (20%) of dead or duplicated code from `R/`. Everything removed had no callers in prolfqua or in the downstream packages (prolfquapp, prophosqua, prolfquappPTMreaders, prolfquasaint, prolfquabenchmark, ptm-pipeline).

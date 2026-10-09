@@ -2,40 +2,30 @@
 % Please edit documentation in R/tidyMS_missingness_imputation.R
 \name{MissingHelpers}
 \alias{MissingHelpers}
-\title{compute group mean by LOD}
+\title{Group statistics and limit of detection}
 \value{
 An R6 class generator.
 }
 \description{
-compute group mean by LOD
+Group statistics and limit of detection
 
-compute group mean by LOD
+Group statistics and limit of detection
 }
 \details{
-weight lod by nr of NA's $(LOD * nrNas + meanAbundance *nrObs)/(nrMeasured)$
+Computes per-group statistics of the abundances and, from them, the limit of
+detection (LOD) used by \code{\link{build_model_impute}} to impute groups
+without observations.
 }
 \examples{
-Contrasts <- c("group.b-a" = "group_A - group_B", "group.a-ctrl" = "group_A - group_Ctrl")
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
-mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
+mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 xx <- mh$get_stats()
 xx <- mh$get_lod()
-xx <- mh$impute_weighted_lod()
-xx <- mh$impute_lod()
-xx <- mh$get_poolvar()
-bb <- mh$get_contrast_estimates(Contrasts)
-mh$get_contrasts(Contrasts)
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
-
-Contrasts <- c("c1" = "TreatmentA - TreatmentB",
-               "C2" = "BackgroundX- BackgroundZ",
-               "c3" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
-               "c4" = "`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`"
-               )
-mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8,weighted = TRUE)
+mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 mh$get_stats()$interaction |> table()
-mh$get_contrast_estimates(Contrasts)
+mh$get_lod()
 
 }
 \section{Public fields}{
@@ -48,8 +38,6 @@ mh$get_contrast_estimates(Contrasts)
 \item{\code{prob}}{quantile of groups with one observed value to estimate LOD}
 
 \item{\code{stats}}{data.frame with group statistics}
-
-\item{\code{weighted}}{should we weight the LOD}
 }
 \if{html}{\out{</div>}}
 }
@@ -59,11 +47,6 @@ mh$get_contrast_estimates(Contrasts)
 \item \href{#method-MissingHelpers-new}{\code{MissingHelpers$new()}}
 \item \href{#method-MissingHelpers-get_stats}{\code{MissingHelpers$get_stats()}}
 \item \href{#method-MissingHelpers-get_lod}{\code{MissingHelpers$get_lod()}}
-\item \href{#method-MissingHelpers-impute_weighted_lod}{\code{MissingHelpers$impute_weighted_lod()}}
-\item \href{#method-MissingHelpers-impute_lod}{\code{MissingHelpers$impute_lod()}}
-\item \href{#method-MissingHelpers-get_poolvar}{\code{MissingHelpers$get_poolvar()}}
-\item \href{#method-MissingHelpers-get_contrast_estimates}{\code{MissingHelpers$get_contrast_estimates()}}
-\item \href{#method-MissingHelpers-get_contrasts}{\code{MissingHelpers$get_contrasts()}}
 \item \href{#method-MissingHelpers-clone}{\code{MissingHelpers$clone()}}
 }
 }
@@ -73,7 +56,7 @@ mh$get_contrast_estimates(Contrasts)
 \subsection{Method \code{new()}}{
 initialize
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$new(data, config, prob = 0.5, weighted = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$new(data, config, prob = 0.5)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -84,8 +67,6 @@ initialize
 \item{\code{config}}{config}
 
 \item{\code{prob}}{default 0.5, median of groups with one observed value}
-
-\item{\code{weighted}}{should group average be computed used weighting, default TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -118,81 +99,6 @@ group mean
 
 \subsection{Returns}{
 numeric LOD
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MissingHelpers-impute_weighted_lod"></a>}}
-\if{latex}{\out{\hypertarget{method-MissingHelpers-impute_weighted_lod}{}}}
-\subsection{Method \code{impute_weighted_lod()}}{
-compute group averages using weighted lod
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$impute_weighted_lod()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MissingHelpers-impute_lod"></a>}}
-\if{latex}{\out{\hypertarget{method-MissingHelpers-impute_lod}{}}}
-\subsection{Method \code{impute_lod()}}{
-if group average absent substitute with LOD
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$impute_lod()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MissingHelpers-get_poolvar"></a>}}
-\if{latex}{\out{\hypertarget{method-MissingHelpers-get_poolvar}{}}}
-\subsection{Method \code{get_poolvar()}}{
-compute pooled var per protein
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_poolvar(prob = 0.75)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prob}}{prob of sd from proteins where it can be computed}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MissingHelpers-get_contrast_estimates"></a>}}
-\if{latex}{\out{\hypertarget{method-MissingHelpers-get_contrast_estimates}{}}}
-\subsection{Method \code{get_contrast_estimates()}}{
-get contrast estimates
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_contrast_estimates(Contrasts)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{Contrasts}}{named array with contrasts}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MissingHelpers-get_contrasts"></a>}}
-\if{latex}{\out{\hypertarget{method-MissingHelpers-get_contrasts}{}}}
-\subsection{Method \code{get_contrasts()}}{
-compute contrasts
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_contrasts(Contrasts, confint = 0.95, all = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{Contrasts}}{vector with contrasts}
-
-\item{\code{confint}}{compute confint}
-
-\item{\code{all}}{return all columns, default FALSE}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

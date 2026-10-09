@@ -18,25 +18,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This vignette contains experimental code.
 
-# Example using prolfqua::MissingHelpers class
+# Limit of detection with the prolfqua::MissingHelpers class
 
 
 ```{r lookAtSummarizeStats}
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
 dd$data$abundance |> is.na() |> sum()
 
-contr_spec <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
-mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = TRUE)
-imputed <- mh1$get_contrasts(Contrasts = contr_spec)
-mh2 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = FALSE)
-imputed2 <- mh2$get_contrasts(Contrasts = contr_spec)
-plot(imputed$estimate, imputed2$estimate)
-abline(0 , 1 , col=2 , lwd=2)
-
+mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5)
+head(mh1$get_stats())
 mh1$get_lod()
-plot( imputed$estimate, -log10(imputed$p.value), pch = "*" )
-points(imputed2$estimate, -log10(imputed2$p.value), col = 2, pch = "x")
-
 ```
 
 

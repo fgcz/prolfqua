@@ -14,7 +14,6 @@ DEqMS contrast analysis facade
 \details{
 Encapsulates the pipeline: \code{\link{strategy_lm}} ->
 \code{\link{build_model}} -> \code{\link{Contrasts}} ->
-merge with \code{\link{ContrastsMissing}} ->
 \code{\link{ContrastsModeratedDEqMS}}.
 }
 \examples{
@@ -37,7 +36,6 @@ Other modelling:
 \code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
-\code{\link{ContrastsLMMissingFacade}},
 \code{\link{ContrastsLimma}},
 \code{\link{ContrastsLimmaFacade}},
 \code{\link{ContrastsLimmaImputeFacade}},
@@ -46,7 +44,6 @@ Other modelling:
 \code{\link{ContrastsLimpaFacade}},
 \code{\link{ContrastsLimpaNestedFacade}},
 \code{\link{ContrastsLmerNestedFacade}},
-\code{\link{ContrastsMissing}},
 \code{\link{ContrastsModerated}},
 \code{\link{ContrastsModeratedDEqMS}},
 \code{\link{ContrastsPlotter}},

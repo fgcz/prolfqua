@@ -263,9 +263,9 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
 #' bb <- deqms$get_contrasts()
 #' stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
 #'
-#' # Merge with ContrastsMissing
-#' csi <- ContrastsMissing$new(lProt, contrasts = Contr)
-#' merged <- merge_contrasts_results(deqms, csi)
+#' # Merge with LOD-imputed refits for proteins the plain lm cannot estimate
+#' imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
+#' merged <- merge_contrasts_results(deqms, imp)
 #'
 #' cs <- deqms$get_contrast_sides()
 #' cslf <- deqms$get_linfct()

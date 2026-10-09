@@ -172,9 +172,9 @@ test_that("merge_contrasts_results works with ContrastsModeratedDEqMS", {
     count_column = "nrPeptides"
   )
 
-  csi <- ContrastsMissing$new(lProt, contrasts = Contr)
+  imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 
-  merged <- merge_contrasts_results(deqms, csi)
+  merged <- merge_contrasts_results(deqms, imp)
   expect_true("merged" %in% names(merged))
   expect_true("more" %in% names(merged))
   expect_true("same" %in% names(merged))

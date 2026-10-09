@@ -219,17 +219,17 @@ dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 
 # Contrasts with missing value imputation
 
-Use this method if there proteins with no observations in one of the groups. With the `ContrastsMissing` function, we can estimate difference in mean for proteins that are not observed in one group or condition. For this we are using the average expression at percentile 0.05 of the group where the protein is not quantified. 
+Use this method if there are proteins with no observations in one of the groups. The `lm_impute` facade refits the linear model for these proteins after imputing the missing observations with the limit of detection (LOD), and borrows the variance from the proteins that could be fitted.
 
 ```{r computeMissing, eval=TRUE}
-mC <- prolfqua::ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
+mC <- prolfqua::ContrastsLMImputeFacade$new(transformed, "~ group_", contr_spec)$contrast
 colnames(mC$get_contrasts())
 
 ```
 
 Finally we are merging the results and give priority to the results where we do not have missing values in one group.
 
-```{r mergeResults, fig.cap="Volcano plots for the two contrasts with missing value imputation from the group_average model."}
+```{r mergeResults, fig.cap="Volcano plots for the two contrasts with missing value imputation from the lm_impute model."}
 
 merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)$merged
 plotter <- merged$get_Plotter()
