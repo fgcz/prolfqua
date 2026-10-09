@@ -111,7 +111,7 @@ Other modelling:
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
 \code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{summary_ROPECA_median_p_scaled}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}

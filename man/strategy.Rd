@@ -163,7 +163,7 @@ Other modelling:
 \code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
-\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{summary_ROPECA_median_p_scaled}()},
 \code{\link{vcov.rfit_prolfqua}()}
 
 Other modelling: 
@@ -249,7 +249,7 @@ Other modelling:
 \code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
-\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{summary_ROPECA_median_p_scaled}()},
 \code{\link{vcov.rfit_prolfqua}()}
 
 Other modelling: 
@@ -335,7 +335,7 @@ Other modelling:
 \code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
-\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{summary_ROPECA_median_p_scaled}()},
 \code{\link{vcov.rfit_prolfqua}()}
 
 Other modelling: 
@@ -421,7 +421,7 @@ Other modelling:
 \code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
-\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{summary_ROPECA_median_p_scaled}()},
 \code{\link{vcov.rfit_prolfqua}()}
 
 Other modelling: 
@@ -507,7 +507,7 @@ Other modelling:
 \code{\link{sim_make_model_lmer}()},
 \code{\link{strategy_limma}()},
 \code{\link{strategy_limpa}()},
-\code{\link{summary_ROPECA_median_p.scaled}()},
+\code{\link{summary_ROPECA_median_p_scaled}()},
 \code{\link{vcov.rfit_prolfqua}()}
 }
 \concept{modelling}

@@ -222,13 +222,13 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 #'   p.value = p.value,
 #'   avgAbd = avgAbd )
 #'
-#' xx30 <- summary_ROPECA_median_p.scaled(testdata,
+#' xx30 <- summary_ROPECA_median_p_scaled(testdata,
 #'                                     subject_id = "protein_Id",
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
 #'                                     max.n = 30)
 #'
-#' xx2 <- summary_ROPECA_median_p.scaled(testdata,
+#' xx2 <- summary_ROPECA_median_p_scaled(testdata,
 #'                                     subject_id = "protein_Id",
 #'                                     estimate = "estimate",
 #'                                     p.value = "p.value",
@@ -253,7 +253,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 #' hist(xx2$beta.based.significance, breaks = 20)
 #' hist(estimate)
 #'
-summary_ROPECA_median_p.scaled <- function(
+summary_ROPECA_median_p_scaled <- function(
   contrasts_data,
   contrast = "contrast",
   subject_id = "protein_Id",
