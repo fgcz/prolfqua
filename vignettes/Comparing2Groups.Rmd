@@ -2,7 +2,7 @@
 title: "Comparing Two Groups with prolfqua"
 author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
-output: html_document
+output: BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{Comparing Two Groups with prolfqua} 
   %\VignetteEncoding{UTF-8}
@@ -22,22 +22,22 @@ library(dplyr)
 
 # Purpose
 
-This vignette demonstrates how two conditions, e.g., treatment vs. control, can be compared and the differences statistically tested. We will again use the Ionstar dataset as an example of an LFQ experiment. This dataset was preprocessed with the MaxQuant software. After first examining the data using QC plots and then normalizing the data, we compare groups of replicates with the different dilutions. The output of the comparison is the difference in the mean intensities for quantified proteins (log2 fold-change) in each group, along with statistical parameters such as degrees of freedom, standard errors, p-value and the FDR. 
+This vignette demonstrates how two conditions, e.g., treatment vs. control, can be compared and the differences statistically tested. We use simulated protein abundances of an LFQ experiment with two treatment groups (`A`, `B`) and a control group (`Ctrl`). After first examining the data using QC plots and then normalizing the data, we compare each treatment group with the control. The output of the comparison is the difference in the mean intensities for quantified proteins (log2 fold-change) in each group, along with statistical parameters such as degrees of freedom, standard errors, p-value and the FDR.
 
-# Loading protein abundances from MaxQuant proteinGroups.txt
+# Simulated protein abundances
 
 ```{r createConfig}
 library(prolfqua)
 ```
 
-Specify the path to the MaxQuant `proteinGroups.txt` file. The function `tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and convert it into a tidy table
+`sim_lfq_data_protein_config()` simulates protein abundances in long format, one row per protein and sample, and returns them together with a matching `AnalysisConfiguration`. To read your own data, see the vignette [Creating configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
 
 ```{r LoadDataAndConfigure}
 xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100)
 xx
 ```
 
-Create the `LFQData` class instance and remove zeros from data (MaxQuant encodes missing values with zero).
+Create the `LFQData` class instance and remove zero or very small intensities, which most quantification software reports for missing values.
 
 ```{r removeSmallIntensities}
 lfqdata <- prolfqua::LFQData$new(xx$data, xx$config)
@@ -62,7 +62,7 @@ density_nn <- lfqplotter$intensity_distribution_density()
 
 ### Visualization of missing data
 
-```{r makeMissingHeatmap, fig.cap="Heatmap where missing proteins (zero in case of MaxQuant reported intensities), black - missing protein intensities, white - present"}
+```{r makeMissingHeatmap, fig.cap="Heatmap of missing protein intensities, black - missing, white - present"}
 lfqplotter$na_heatmap()
 ```
 
@@ -158,11 +158,11 @@ mod <- prolfqua::build_model(
 
 In this plot we can see what factors in our model are mostly responsible for the adjusted p-values calculated from an analysis of variance.
 
-```{r showANOVA, fig.cap="Distribtuion of adjusted p-values (FDR)"}
+```{r showANOVA, fig.cap="Distribution of adjusted p-values (FDR)"}
 mod$anova_histogram("FDR")
 ```
 
-One also look what proteins do show different abundances in any of our five dilutions by looking at the FDR values of the analysis of variance.
+One can also look at which proteins show different abundances in any of the groups by looking at the FDR values of the analysis of variance.
 
 ```{r filterDataForFDR}
 aovtable <- mod$get_anova()
@@ -190,14 +190,14 @@ contr <- prolfqua::Contrasts$new(mod, contr_spec)
 v1 <- contr$get_Plotter()$volcano()
 ```
 
-Alternatively, we can moderate the variance and using the Experimental Bayes method implemented in `ContrastsModerated`.
+Alternatively, we can moderate the variance using the empirical Bayes method implemented in `ContrastsModerated`.
 
 ```{r computeContrastsModerated}
 contr <- prolfqua::ContrastsModerated$new(contr)
 contrdf <- contr$get_contrasts()
 ```
 
-In the next figure it can be seen WEWinputNEEDED.
+Moderation shrinks the variance of each protein towards the variance of all proteins, which stabilises the p-values of proteins whose variance is estimated from few observations. The next figure compares the volcano plots without and with moderation.
 
 ```{r plotVolcanos, fig.cap="Volcano plot, Left panel - no moderation, Right panel - with moderation."}
 plotter <- contr$get_Plotter()
@@ -205,14 +205,13 @@ v2 <- plotter$volcano()
 gridExtra::grid.arrange(v1$FDR,v2$FDR, ncol = 1)
 ```
 
-```{r showMAplot, fig.cap="MA plot showing the dependency of mean abuncance with respect to the difference"}
+```{r showMAplot, fig.cap="MA plot showing the dependency of mean abundance with respect to the difference"}
 plotter$ma_plotly()
 ```
 
 
 ```{r checkProteinsInOutput}
-#myProteinIDS <- c("sp|Q12246|LCB4_YEAST",  "sp|P38929|ATC2_YEAST",  "sp|Q99207|NOP14_YEAST")
-myProteinIDS <- c("sp|P0AC33|FUMA_ECOLI",  "sp|P28635|METQ_ECOLI",  "sp|Q14C86|GAPD1_HUMAN")
+myProteinIDS <- head(unique(contrdf$protein_Id), 3)
 dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 ```
 

@@ -8,6 +8,8 @@ Changes for the Bioconductor review ([BiocContributions #171](https://github.com
 
 ## Documentation
 
+- New introductory vignette `vignette("prolfqua")`: introduction, installation with BiocManager, a quick start, and links to all tutorials on the package website.
+- `Comparing2Groups` describes the simulated data it actually uses (the text still referred to MaxQuant Ionstar data) and no longer looks up protein IDs that do not exist in it. Both vignettes use BiocStyle.
 - `?prolfqua` opens a package overview page.
 - Typos fixed across the help pages, vignettes and README.
 

@@ -57,6 +57,7 @@ Imports:
     withr
 Suggests:
     BiocCheck,
+    BiocStyle,
     corrplot,
     covr,
     crosstalk,
