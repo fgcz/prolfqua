@@ -195,7 +195,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 #' @param estimate name of column with effect size estimate
 #' @param statistic statistic name of column with statistic (typically t-statistics)
 #' @param p.value name of column with moderated.p.value
-#' @param max.n used to limit the number of peptides in probablity computation.
+#' @param max.n used to limit the number of peptides in probability computation.
 #' @export
 #' @family modelling
 #' @keywords internal

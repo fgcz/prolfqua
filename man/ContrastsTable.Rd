@@ -163,7 +163,7 @@ Other modelling:
 \if{html}{\out{<a id="method-ContrastsTable-new"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsTable-new}{}}}
 \subsection{Method \code{new()}}{
-intitialize
+initialize
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsTable$new(
   contrastsdf,

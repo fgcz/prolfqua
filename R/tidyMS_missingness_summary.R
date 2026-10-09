@@ -16,7 +16,7 @@ encode_bin_resp <- function(lfqdata, name = "bin_resp") {
   return(pdata)
 }
 
-# Functions - Missigness ----
+# Functions - Missingness ----
 
 # Split a contrast "LHS - RHS" into its left/right side expressions, used by
 # get_contrast() to derive group_1 / group_2. Returns NULL for anything that is
@@ -98,7 +98,7 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
 }
 
 
-#' Histogram summarizing missigness
+#' Histogram summarizing missingness
 #' @param lfqdata LFQData object
 #' @param showempty show empty values
 #' @param factors factor columns to use

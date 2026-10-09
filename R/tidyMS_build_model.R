@@ -6,7 +6,7 @@
 #' @param model_name name of model
 #' @param complete_models_int reduced model
 #' @param model_name_int name of reduced model
-#' @param subject_id subject id typically Assession or protein_Id
+#' @param subject_id subject id typically Accession or protein_Id
 #' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
 #' data_2Factor <- prolfqua::sim_lfq_data_2factor_config(

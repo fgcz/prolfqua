@@ -206,7 +206,7 @@ initialize
 
 \item{\code{model_name}}{default ROPECA}
 
-\item{\code{p.adjust}}{function to use for p.value adjustement}
+\item{\code{p.adjust}}{function to use for p.value adjustment}
 }
 \if{html}{\out{</div>}}
 }

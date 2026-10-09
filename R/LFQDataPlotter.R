@@ -218,7 +218,7 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' boxplots for all proteins
-    #' @param facet enable facet wrap if hierarchy_depth less then hierarchy lenght.
+    #' @param facet enable facet wrap if hierarchy_depth less then hierarchy length.
     #' @return tibble with column boxplots containing ggplot objects
     boxplots = function(facet = TRUE) {
       rhk <- self$lfq$relevant_hierarchy_keys()

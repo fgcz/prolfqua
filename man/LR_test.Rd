@@ -22,7 +22,7 @@ LR_test(
 
 \item{model_name_int}{name of reduced model}
 
-\item{subject_id}{subject id typically Assession or protein_Id}
+\item{subject_id}{subject id typically Accession or protein_Id}
 
 \item{path}{default NULL, set to a directory if you need to write diagnostic plots.}
 }

@@ -1,4 +1,4 @@
-[![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleseeDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
+[![R-CMD-check-prolfqua](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml/badge.svg)](https://github.com/fgcz/prolfqua/actions/workflows/r.yaml) ![ReleaseDownloads](https://img.shields.io/github/downloads/fgcz/prolfqua/total)
 [![codecov](https://codecov.io/gh/fgcz/prolfqua/branch/main/graph/badge.svg?token=NP7IPP323C)](https://app.codecov.io/gh/fgcz/prolfqua)
 [![DOI](https://img.shields.io/badge/DOI-10.1021%2Facs.jproteome.2c00441-blue)](https://pubs.acs.org/doi/10.1021/acs.jproteome.2c00441)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18775726.svg)](https://doi.org/10.5281/zenodo.18775726)
@@ -52,7 +52,7 @@ https://github.com/fgcz/prolfqua/issues
 
 How to build a `LFQData` object from a table with protein or peptide quantification results, and a table with sample annotation is described in more detail here the: [CreatingConfigurations vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
 
-A minimal example for a table with protein abudances is:
+A minimal example for a table with protein abundances is:
 
 ```r
 #Table with abundances
@@ -164,7 +164,7 @@ Example QC and sample size report
 
 - [QC and sample size Report](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 
-# Releated projects
+# Related projects
 
 - prolfquabenchmark - a package to document the performance of prolfqua, MSstats, msqrob, and proda. See documentation: [https://prolfqua.github.io/prolfquabenchmark/]
 - prolfquapp: Generating Dynamic DEA Reports with the prolfqua R Package [https://github.com/prolfqua/prolfquapp](https://github.com/prolfqua/prolfquapp)

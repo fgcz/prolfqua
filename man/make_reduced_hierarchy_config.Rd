@@ -14,7 +14,7 @@ make_reduced_hierarchy_config(config, work_intensity, hierarchy)
 \item{hierarchy}{new reduced hierarchy}
 }
 \value{
-AnalysisConfiguration with reduced hieararchy
+AnalysisConfiguration with reduced hierarchy
 }
 \description{
 Make reduced hierarchy configuration

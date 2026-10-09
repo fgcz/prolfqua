@@ -56,7 +56,7 @@ Now you can annotate the samples in the table with the Intensities.
 table_long <- dplyr::inner_join(annot, table_long)
 ```
 
-We create a `AnalysisConfiguration` and start annotating the data frame, that is specifying which column contains wich type of information.
+We create a `AnalysisConfiguration` and start annotating the data frame, that is specifying which column contains which type of information.
 
 ```{r createConfig}
 config <- prolfqua::AnalysisConfiguration$new()

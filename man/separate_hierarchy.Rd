@@ -9,7 +9,7 @@ separate_hierarchy(data, config)
 \arguments{
 \item{data}{data.frame}
 
-\item{config}{AnlalysisConfiguration}
+\item{config}{AnalysisConfiguration}
 }
 \description{
 Separates hierarchy columns into starting columns

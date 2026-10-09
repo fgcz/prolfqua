@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_missingness_summary.R
 \name{missigness_histogram}
 \alias{missigness_histogram}
-\title{Histogram summarizing missigness}
+\title{Histogram summarizing missingness}
 \usage{
 missigness_histogram(
   lfqdata,
@@ -21,7 +21,7 @@ missigness_histogram(
 \item{alpha}{transparency}
 }
 \description{
-Histogram summarizing missigness
+Histogram summarizing missingness
 }
 \examples{
 

@@ -42,8 +42,8 @@
 #' stopifnot("ggplot" %in% class(p$p.value))
 #' res <- cp$volcano()
 #' stopifnot("ggplot" %in% class(res$FDR))
-#' respltly <- cp$volcano_plotly()
-#' stopifnot("plotly" %in% class(respltly$FDR))
+#' res_plotly <- cp$volcano_plotly()
+#' stopifnot("plotly" %in% class(res_plotly$FDR))
 #' stopifnot("ggplot" %in%  class(cp$ma_plot()))
 #' stopifnot("plotly" %in%   class(cp$ma_plotly(rank=TRUE)))
 #' res  <- cp$barplot_threshold()
@@ -74,7 +74,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @field avg.abundance name of column containing avg abundance values.
     avg.abundance = character(),
     #' @description
-    #' create Crontrast_Plotter
+    #' create ContrastsPlotter
     #' @param contrast_df frame with contrast data
     #' @param subject_id columns containing subject Identifier
     #' @param volcano which score to plot and which ablines to add.

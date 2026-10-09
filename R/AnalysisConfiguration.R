@@ -225,7 +225,7 @@ list_to_AnalysisConfiguration <- function(dd) {
 #' @param work_intensity work intensity column
 #' @param hierarchy new reduced hierarchy
 #' @family configuration
-#' @return AnalysisConfiguration with reduced hieararchy
+#' @return AnalysisConfiguration with reduced hierarchy
 #' @examples
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
 #'

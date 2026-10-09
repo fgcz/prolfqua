@@ -6,6 +6,11 @@ Changes for the Bioconductor review ([BiocContributions #171](https://github.com
 
 - `citation("prolfqua")` works again: `inst/CITATION` contained a non-ASCII dash that `utils::readCitationFile()` could not read.
 
+## Documentation
+
+- `?prolfqua` opens a package overview page.
+- Typos fixed across the help pages, vignettes and README.
+
 ## Behaviour changes
 
 - `script_copy_helper_vec()` gains an `overwrite` argument (default `TRUE`, as before).

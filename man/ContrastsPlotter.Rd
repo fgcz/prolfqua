@@ -48,8 +48,8 @@ stopifnot("ggplot" \%in\% class(p$FDR))
 stopifnot("ggplot" \%in\% class(p$p.value))
 res <- cp$volcano()
 stopifnot("ggplot" \%in\% class(res$FDR))
-respltly <- cp$volcano_plotly()
-stopifnot("plotly" \%in\% class(respltly$FDR))
+res_plotly <- cp$volcano_plotly()
+stopifnot("plotly" \%in\% class(res_plotly$FDR))
 stopifnot("ggplot" \%in\%  class(cp$ma_plot()))
 stopifnot("plotly" \%in\%   class(cp$ma_plotly(rank=TRUE)))
 res  <- cp$barplot_threshold()
@@ -208,7 +208,7 @@ Other plotting:
 \if{html}{\out{<a id="method-ContrastsPlotter-new"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-new}{}}}
 \subsection{Method \code{new()}}{
-create Crontrast_Plotter
+create ContrastsPlotter
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$new(
   contrast_df,

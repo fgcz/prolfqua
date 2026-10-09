@@ -225,7 +225,7 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
 #'
 #' @export
 #' @param data data.frame
-#' @param config AnlalysisConfiguration
+#' @param config AnalysisConfiguration
 #' @family configuration
 #' @keywords internal
 #' @examples

@@ -28,7 +28,7 @@ summary_ROPECA_median_p_scaled(
 
 \item{p.value}{name of column with moderated.p.value}
 
-\item{max.n}{used to limit the number of peptides in probablity computation.}
+\item{max.n}{used to limit the number of peptides in probability computation.}
 }
 \value{
 data.frame with columns

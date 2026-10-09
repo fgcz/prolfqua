@@ -283,7 +283,7 @@ boxplots for all proteins
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{facet}}{enable facet wrap if hierarchy_depth less then hierarchy lenght.}
+\item{\code{facet}}{enable facet wrap if hierarchy_depth less then hierarchy length.}
 }
 \if{html}{\out{</div>}}
 }

@@ -162,7 +162,7 @@ In this plot we can see what factors in our model are mostly responsible for the
 mod$anova_histogram("FDR")
 ```
 
-One also look what proteins do show different abundances in any of our five dilutions by looking at the FDR values of the analysis of variane.
+One also look what proteins do show different abundances in any of our five dilutions by looking at the FDR values of the analysis of variance.
 
 ```{r filterDataForFDR}
 aovtable <- mod$get_anova()

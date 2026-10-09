@@ -54,7 +54,7 @@ lfqplotter$intensity_distribution_density()
 
 ### Visualization of missing data
 
-Often it also makes sense to look into the part of the data that is not quantified in all samples. Therefore several functions for the missingess are available. In the `NA_heatmap` function it is possible to see if some missing proteins are specific for one particular dilution or if they appear randomly in all samples.
+Often it also makes sense to look into the part of the data that is not quantified in all samples. Therefore several functions for the missingness are available. In the `NA_heatmap` function it is possible to see if some missing proteins are specific for one particular dilution or if they appear randomly in all samples.
 
 ```{r makeMissingHeatmap}
 nah <- lfqplotter$na_heatmap()
@@ -75,7 +75,7 @@ lfqdata$get_Summariser()$plot_missingness_per_group()
 lfqdata$get_Summariser()$plot_missingness_per_group_cumsum()
 ```
 
-In the `missigness_histogram` we can check if there is a dependency between NAs (and the number of NAs for earch protein) with respect to the protein intensity.
+In the `missigness_histogram` we can check if there is a dependency between NAs (and the number of NAs for each protein) with respect to the protein intensity.
 
 ```{r missingnessHist, fig.cap="Intensity distribution of proteins depending on # of missing values"}
 lfqplotter$missigness_histogram()
@@ -95,7 +95,7 @@ prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stat
 stats$density_median()
 ```
 
-In the next figure we show the dependency of the standard deviation with respect to the mean intensitiy of the proteins.
+In the next figure we show the dependency of the standard deviation with respect to the mean intensity of the proteins.
 
 ```{r stdvVSmean, fig.cap="Scatter plot of standard deviation vs mean"}
 stdm_raw <- stats$stdv_vs_mean(size = 10000) +
@@ -217,7 +217,7 @@ stats$stats() |> head()
 ```
 
 You can also estimate the sample size needed to perform differential expression analysis for each protein, given the `power`, `delta`, and `sig.level`.
-The next figure shows the distribution of needed sample sizes for all proteins with a power of 0.8 at signifiance level 0.05 for a two fold change (delta = 1).
+The next figure shows the distribution of needed sample sizes for all proteins with a power of 0.8 at significance level 0.05 for a two fold change (delta = 1).
 
 ```{r statsWithN, eval = TRUE}
 x <- stats$power_t_test(delta = 1,power = 0.8, sig.level = 0.05)

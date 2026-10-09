@@ -34,7 +34,7 @@ ContrastsTable <- R6::R6Class(
     #' @field subject_id default protein_Id
     subject_id = character(),
     #' @description
-    #' intitialize
+    #' initialize
     #' @param contrastsdf data.frame
     #' @param subject_id default protein_Id
     #' @param model_name default ContrastTable
