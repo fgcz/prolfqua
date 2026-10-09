@@ -21,8 +21,6 @@ provides a common front-end for several contrast backends:
   reporting protein-level contrasts.
 - `ropeca` — peptide-level fold changes aggregated to protein via ROPECA
   median + beta-distribution p-values.
-- `lm_missing` — `lm` merged with group-mean substitution for proteins
-  `lm` cannot estimate (deprecated; prefer `lm_impute`).
 - `lm_impute` — `lm` that refits failed/singular proteins with LOD
   imputation and borrowed variance.
 - `deqms` — `limma` plus DEqMS count-dependent variance moderation using
@@ -37,8 +35,8 @@ All of them expose the same basic interface: `get_contrasts()`,
 protein-level contrasts. The important difference is the required input
 level:
 
-- `lm`, `rfit`, `limma`, `limma_impute`, `lm_missing`, `lm_impute`, and
-  `deqms` require aggregated protein-level data
+- `lm`, `rfit`, `limma`, `limma_impute`, `lm_impute`, and `deqms`
+  require aggregated protein-level data
 - `limpa` requires protein-level data from `AggregateLimpa` (which
   provides standard errors and observation counts for vooma precision
   weighting)
@@ -132,13 +130,6 @@ fa_limma_impute <- build_contrast_analysis(
   method = "limma_impute"
 )
 
-fa_lm_missing <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "lm_missing"
-)
-
 fa_deqms <- build_contrast_analysis(
   lfq_protein,
   "~ group_",
@@ -200,7 +191,6 @@ results_protein <- bind_rows(
   fa_rfit$get_contrasts(),
   fa_limma$get_contrasts(),
   fa_limma_impute$get_contrasts(),
-  fa_lm_missing$get_contrasts(),
   fa_lm_impute$get_contrasts(),
   fa_deqms$get_contrasts(),
   fa_firth_protein$get_contrasts(),
@@ -221,7 +211,7 @@ results_protein |>
   dplyr::count(modelName, name = "n_results")
 ```
 
-    ## # A tibble: 9 × 2
+    ## # A tibble: 8 × 2
     ##   modelName    n_results
     ##   <chr>            <int>
     ## 1 deqms              157
@@ -231,20 +221,19 @@ results_protein |>
     ## 5 limpa              160
     ## 6 lm                 157
     ## 7 lm_impute          160
-    ## 8 lm_missing         160
-    ## 9 rfit               157
+    ## 8 rfit               157
 
 The `modelName` column is the facade key. For facades that combine
-several underlying result types, such as `lm_missing`, the
-`estimate_type` column tells you how each row was produced (`observed`,
-`lod_imputed`, or `missing_fallback`).
+several underlying result types, such as `lm_impute`, the
+`estimate_type` column tells you how each row was produced (`observed`
+or `lod_imputed`).
 
 ``` r
 results_protein |>
   dplyr::count(modelName, contrast, estimate_type, name = "n_results")
 ```
 
-    ## # A tibble: 24 × 4
+    ## # A tibble: 20 × 4
     ##    modelName    contrast  estimate_type n_results
     ##    <chr>        <chr>     <chr>             <int>
     ##  1 deqms        A_vs_Ctrl observed             78
@@ -257,7 +246,16 @@ results_protein |>
     ##  8 limma_impute A_vs_Ctrl observed             77
     ##  9 limma_impute B_vs_Ctrl lod_imputed           3
     ## 10 limma_impute B_vs_Ctrl observed             77
-    ## # ℹ 14 more rows
+    ## 11 limpa        A_vs_Ctrl observed             80
+    ## 12 limpa        B_vs_Ctrl observed             80
+    ## 13 lm           A_vs_Ctrl observed             78
+    ## 14 lm           B_vs_Ctrl observed             79
+    ## 15 lm_impute    A_vs_Ctrl lod_imputed           3
+    ## 16 lm_impute    A_vs_Ctrl observed             77
+    ## 17 lm_impute    B_vs_Ctrl lod_imputed           3
+    ## 18 lm_impute    B_vs_Ctrl observed             77
+    ## 19 rfit         A_vs_Ctrl observed             78
+    ## 20 rfit         B_vs_Ctrl observed             79
 
 ## Protein-level volcano comparison
 
@@ -288,11 +286,11 @@ deqms).
 
 Rescued proteins (missing in plain `lm`) are shown as large red diamonds
 so they stand out clearly. This group includes the LOD imputation
-facades (`lm_missing`, `lm_impute`, `limma_impute`) and the firth
-logistic regression facade which models missingness directly.
+facades (`lm_impute`, `limma_impute`) and the firth logistic regression
+facade which models missingness directly.
 
 ``` r
-impute_facades <- c("lm_missing", "lm_impute", "limma_impute", "firth")
+impute_facades <- c("lm_impute", "limma_impute", "firth")
 results_impute <- results_protein |>
   dplyr::filter(modelName %in% impute_facades) |>
   dplyr::mutate(modelName = factor(modelName, levels = impute_facades))
@@ -327,7 +325,7 @@ results_protein |>
   dplyr::select(modelName, estimate_type, contrast, protein_Id, diff, p.value, FDR)
 ```
 
-    ## # A tibble: 90 × 7
+    ## # A tibble: 80 × 7
     ##    modelName estimate_type contrast  protein_Id    diff  p.value      FDR
     ##    <chr>     <chr>         <chr>     <chr>        <dbl>    <dbl>    <dbl>
     ##  1 deqms     observed      A_vs_Ctrl Zci7Jw~7064 -0.722 3.79e-12 2.96e-10
@@ -340,7 +338,7 @@ results_protein |>
     ##  8 deqms     observed      B_vs_Ctrl f0Cvvj~6658  0.345 5.39e-10 1.42e- 8
     ##  9 deqms     observed      B_vs_Ctrl TR3Ksv~1492 -0.413 3.73e- 9 7.37e- 8
     ## 10 deqms     observed      B_vs_Ctrl 4Y4DYT~0927  0.424 8.16e- 9 1.29e- 7
-    ## # ℹ 80 more rows
+    ## # ℹ 70 more rows
 
 ## Proteins that could not be estimated
 
@@ -360,7 +358,6 @@ missing_all <- dplyr::bind_rows(
   fa_lm$get_missing() |> dplyr::mutate(facade = "lm"),
   fa_limma$get_missing() |> dplyr::mutate(facade = "limma"),
   fa_limma_impute$get_missing() |> dplyr::mutate(facade = "limma_impute"),
-  fa_lm_missing$get_missing() |> dplyr::mutate(facade = "lm_missing"),
   fa_lm_impute$get_missing() |> dplyr::mutate(facade = "lm_impute"),
   fa_deqms$get_missing() |> dplyr::mutate(facade = "deqms"),
   fa_firth_protein$get_missing() |> dplyr::mutate(facade = "firth"),
@@ -408,13 +405,12 @@ if (length(missing_proteins) > 0) {
 Per-sample intensities of proteins that could not be estimated
 
 The missing cells (NA) explain why these proteins cannot be estimated —
-they lack observations in one or more groups. The `lm_missing` facade
-fills in these gaps via group-mean imputation, while `lm_impute` and
-`limma_impute` re-fit after imputing individual values with the LOD and
-borrowing covariance from successful fits. These should have fewer
-missing proteins than plain `lm` or `limma`.
+they lack observations in one or more groups. The `lm_impute` and
+`limma_impute` facades re-fit after imputing individual values with the
+LOD and borrowing covariance from successful fits. These should have
+fewer missing proteins than plain `lm` or `limma`.
 
-### Estimates for the missing proteins from `lm_missing` and `lm_impute`
+### Estimates for the missing proteins from `lm_impute` and `limma_impute`
 
 For proteins that plain `lm` could not estimate, the imputation-based
 facades can still produce contrast results. The table below shows these
@@ -427,49 +423,43 @@ if (length(lm_missing_proteins) > 0) {
   rescued <- results_protein |>
     dplyr::filter(
       protein_Id %in% lm_missing_proteins,
-      modelName %in% c("lm_missing", "lm_impute", "limma_impute", "limpa")
+      modelName %in% c("lm_impute", "limma_impute", "limpa")
     ) |>
     dplyr::arrange(protein_Id, contrast, modelName)
 
   rescued |>
     knitr::kable(
       digits = 3,
-      caption = "Contrast estimates from lm_missing, lm_impute, and limma_impute for proteins that plain lm could not estimate"
+      caption = "Contrast estimates from lm_impute and limma_impute for proteins that plain lm could not estimate"
     )
 } else {
   cat("All proteins were estimable by plain lm — no rescued estimates to show.")
 }
 ```
 
-| modelName    | estimate_type    | protein_Id  | contrast  | avgAbd |   diff |   FDR | statistic | std.error |     df | p.value | conf.low | conf.high | sigma | rescued | significant |
-|:-------------|:-----------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|-------:|--------:|---------:|----------:|------:|:--------|:------------|
-| limma_impute | lod_imputed      | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
-| limpa        | observed         | 8mS8sK~0150 | A_vs_Ctrl |  2.798 | -0.615 | 0.226 |    -1.435 |     0.429 | 30.965 |   0.161 |   -1.489 |     0.259 | 0.965 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | 8mS8sK~0150 | A_vs_Ctrl |  3.697 |  0.000 | 1.000 |     0.000 |     0.102 |  2.000 |   1.000 |   -0.437 |     0.437 | 0.102 | TRUE    | FALSE       |
-| limma_impute | lod_imputed      | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
-| limpa        | observed         | 8mS8sK~0150 | B_vs_Ctrl |  3.245 |  0.279 | 0.578 |     0.662 |     0.422 | 30.965 |   0.513 |   -0.581 |     1.140 | 0.965 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
-| lm_missing   | observed         | 8mS8sK~0150 | B_vs_Ctrl |  3.632 |  0.339 | 0.021 |     3.642 |     0.093 |  5.447 |   0.013 |    0.106 |     0.572 | 0.093 | FALSE   | FALSE       |
-| limma_impute | lod_imputed      | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.996 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
-| limpa        | observed         | DTCi0N~0734 | A_vs_Ctrl |  3.550 | -0.982 | 0.020 |    -2.714 |     0.362 | 30.965 |   0.011 |   -1.719 |    -0.244 | 0.991 | TRUE    | TRUE        |
-| lm_impute    | lod_imputed      | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.997 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.032 |    -4.417 |     0.057 |  4.000 |   0.012 |   -0.412 |    -0.094 | 0.070 | TRUE    | FALSE       |
-| limma_impute | lod_imputed      | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
-| limpa        | observed         | DTCi0N~0734 | B_vs_Ctrl |  4.145 |  0.208 | 0.619 |     0.581 |     0.358 | 30.965 |   0.565 |   -0.522 |     0.939 | 0.991 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
-| lm_missing   | observed         | DTCi0N~0734 | B_vs_Ctrl |  4.224 |  0.222 | 0.017 |     3.447 |     0.064 |  7.447 |   0.010 |    0.071 |     0.372 | 0.079 | FALSE   | FALSE       |
-| limma_impute | lod_imputed      | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | FALSE   | FALSE       |
-| limpa        | observed         | OrL0ux~1369 | A_vs_Ctrl |  3.497 | -0.881 | 0.025 |    -2.630 |     0.335 | 30.965 |   0.013 |   -1.563 |    -0.198 | 0.960 | FALSE   | TRUE        |
-| lm_impute    | lod_imputed      | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | FALSE   | FALSE       |
-| lm_missing   | observed         | OrL0ux~1369 | A_vs_Ctrl |  3.913 | -0.276 | 0.058 |    -2.893 |     0.095 |  5.408 |   0.031 |   -0.515 |    -0.036 | 0.082 | FALSE   | FALSE       |
-| limma_impute | lod_imputed      | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
-| limpa        | observed         | OrL0ux~1369 | B_vs_Ctrl |  3.297 | -1.281 | 0.006 |    -3.200 |     0.400 | 30.965 |   0.003 |   -2.097 |    -0.464 | 0.960 | TRUE    | TRUE        |
-| lm_impute    | lod_imputed      | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.094 |    -3.473 |     0.060 |  2.000 |   0.074 |   -0.463 |     0.049 | 0.073 | TRUE    | FALSE       |
+| modelName    | estimate_type | protein_Id  | contrast  | avgAbd |   diff |   FDR | statistic | std.error |     df | p.value | conf.low | conf.high | sigma | rescued | significant |
+|:-------------|:--------------|:------------|:----------|-------:|-------:|------:|----------:|----------:|-------:|--------:|---------:|----------:|------:|:--------|:------------|
+| limma_impute | lod_imputed   | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
+| limpa        | observed      | 8mS8sK~0150 | A_vs_Ctrl |  2.798 | -0.615 | 0.226 |    -1.435 |     0.429 | 30.965 |   0.161 |   -1.489 |     0.259 | 0.965 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed   | 8mS8sK~0150 | A_vs_Ctrl |  3.776 |  0.000 | 1.000 |     0.000 |     0.063 |  4.468 |   1.000 |   -0.167 |     0.167 | 0.089 | TRUE    | FALSE       |
+| limma_impute | lod_imputed   | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
+| limpa        | observed      | 8mS8sK~0150 | B_vs_Ctrl |  3.245 |  0.279 | 0.578 |     0.662 |     0.422 | 30.965 |   0.513 |   -0.581 |     1.140 | 0.965 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed   | 8mS8sK~0150 | B_vs_Ctrl |  3.784 |  0.018 | 0.803 |     0.279 |     0.063 |  4.468 |   0.792 |   -0.150 |     0.185 | 0.089 | FALSE   | FALSE       |
+| limma_impute | lod_imputed   | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.996 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
+| limpa        | observed      | DTCi0N~0734 | A_vs_Ctrl |  3.550 | -0.982 | 0.020 |    -2.714 |     0.362 | 30.965 |   0.011 |   -1.719 |    -0.244 | 0.991 | TRUE    | TRUE        |
+| lm_impute    | lod_imputed   | DTCi0N~0734 | A_vs_Ctrl |  3.902 | -0.253 | 0.017 |    -3.997 |     0.063 |  6.468 |   0.006 |   -0.405 |    -0.101 | 0.090 | TRUE    | FALSE       |
+| limma_impute | lod_imputed   | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
+| limpa        | observed      | DTCi0N~0734 | B_vs_Ctrl |  4.145 |  0.208 | 0.619 |     0.581 |     0.358 | 30.965 |   0.565 |   -0.522 |     0.939 | 0.991 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed   | DTCi0N~0734 | B_vs_Ctrl |  4.112 |  0.166 | 0.051 |     2.626 |     0.063 |  6.468 |   0.037 |    0.014 |     0.319 | 0.090 | FALSE   | FALSE       |
+| limma_impute | lod_imputed   | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | FALSE   | FALSE       |
+| limpa        | observed      | OrL0ux~1369 | A_vs_Ctrl |  3.497 | -0.881 | 0.025 |    -2.630 |     0.335 | 30.965 |   0.013 |   -1.563 |    -0.198 | 0.960 | FALSE   | TRUE        |
+| lm_impute    | lod_imputed   | OrL0ux~1369 | A_vs_Ctrl |  3.879 | -0.207 | 0.050 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | FALSE   | FALSE       |
+| limma_impute | lod_imputed   | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
+| limpa        | observed      | OrL0ux~1369 | B_vs_Ctrl |  3.297 | -1.281 | 0.006 |    -3.200 |     0.400 | 30.965 |   0.003 |   -2.097 |    -0.464 | 0.960 | TRUE    | TRUE        |
+| lm_impute    | lod_imputed   | OrL0ux~1369 | B_vs_Ctrl |  3.879 | -0.207 | 0.038 |    -3.293 |     0.063 |  4.468 |   0.026 |   -0.374 |    -0.039 | 0.089 | TRUE    | FALSE       |
 
-Contrast estimates from lm_missing, lm_impute, and limma_impute for
-proteins that plain lm could not estimate
+Contrast estimates from lm_impute and limma_impute for proteins that
+plain lm could not estimate
 
 ## Peptide-input facades
 
@@ -603,7 +593,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.8.0
+    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.9.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

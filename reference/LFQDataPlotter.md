@@ -294,7 +294,7 @@ boxplots for all proteins
 
 - `facet`:
 
-  enable facet wrap if hierarchy_depth less then hierarchy lenght.
+  enable facet wrap if hierarchy_depth less then hierarchy length.
 
 #### Returns
 

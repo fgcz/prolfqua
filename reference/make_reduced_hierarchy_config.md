@@ -24,7 +24,7 @@ make_reduced_hierarchy_config(config, work_intensity, hierarchy)
 
 ## Value
 
-AnalysisConfiguration with reduced hieararchy
+AnalysisConfiguration with reduced hierarchy
 
 ## See also
 

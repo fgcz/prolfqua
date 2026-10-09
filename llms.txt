@@ -43,7 +43,7 @@ quantification results, and a table with sample annotation is described
 in more detail here the: [CreatingConfigurations
 vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
 
-A minimal example for a table with protein abudances is:
+A minimal example for a table with protein abundances is:
 
 ``` r
 #Table with abundances
@@ -165,7 +165,7 @@ Example QC and sample size report
 - [QC and sample size
   Report](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 
-# Releated projects
+# Related projects
 
 - prolfquabenchmark - a package to document the performance of prolfqua,
   MSstats, msqrob, and proda. See documentation:
@@ -403,9 +403,6 @@ What name should we use?
 - [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md)
   : LM contrast analysis with LOD imputation facade
 
-- [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md)
-  : LM + missing-value imputation contrast analysis facade
-
 - [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md)
   : Limma-based contrasts (direct limma pipeline)
 
@@ -488,7 +485,7 @@ What name should we use?
   : Likelihood ratio test
 
 - [`MissingHelpers`](https://wolski.github.io/prolfqua/reference/MissingHelpers.md)
-  : compute group mean by LOD
+  : Group statistics and limit of detection
 
 - [`Model`](https://wolski.github.io/prolfqua/reference/Model.md) : R6
   class representing modelling result
@@ -722,6 +719,8 @@ What name should we use?
   Data](https://wolski.github.io/prolfqua/articles/limpa_example.md):
 - [Modelling dataset with two
   Factors](https://wolski.github.io/prolfqua/articles/Modelling2Factors.md):
+- [Introduction to
+  prolfqua](https://wolski.github.io/prolfqua/articles/prolfqua.md):
 - [QC and Sample Size
   Estimation](https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.md):
 - [Simulate Peptide level

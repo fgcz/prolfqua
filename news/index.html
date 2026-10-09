@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,7 +15,8 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/prolfqua.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
@@ -46,6 +47,36 @@
       <small>Source: <a href="https://github.com/fgcz/prolfqua/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.0" id="prolfqua-190">prolfqua 1.9.0<a class="anchor" aria-label="anchor" href="#prolfqua-190"></a></h2>
+<p>Changes for the Bioconductor review (<a href="https://github.com/Bioconductor/BiocContributions/issues/171" class="external-link">BiocContributions </a><a href="https://github.com/fgcz/prolfqua/issues/171" class="external-link">#171</a>).</p>
+<div class="section level3">
+<h3 id="bug-fixes-1-9-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-0"></a></h3>
+<ul><li>
+<code>citation("prolfqua")</code> works again: <code>inst/CITATION</code> contained a non-ASCII dash that <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">utils::readCitationFile()</a></code> could not read.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-9-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-9-0"></a></h3>
+<ul><li>New introductory vignette <code><a href="../articles/prolfqua.html">vignette("prolfqua")</a></code>: introduction, installation with BiocManager, a quick start, and links to all tutorials on the package website.</li>
+<li>
+<code>Comparing2Groups</code> describes the simulated data it actually uses (the text still referred to MaxQuant Ionstar data) and no longer looks up protein IDs that do not exist in it. Both vignettes use BiocStyle.</li>
+<li>
+<code><a href="../reference/prolfqua-package.html">?prolfqua</a></code> opens a package overview page.</li>
+<li>Typos fixed across the help pages, vignettes and README.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="behaviour-changes-1-9-0">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-0"></a></h3>
+<ul><li>
+<code><a href="../reference/script_copy_helper_vec.html">script_copy_helper_vec()</a></code> gains an <code>overwrite</code> argument (default <code>TRUE</code>, as before).</li>
+<li>
+<code>summary_ROPECA_median_p.scaled()</code> is renamed to <code><a href="../reference/summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code> (Bioconductor function names must not contain <code>.</code>). There is no alias.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="removed-1-9-0">Removed<a class="anchor" aria-label="anchor" href="#removed-1-9-0"></a></h3>
+<ul><li>Datasets <code>data_spectronautDIA250_A</code>, <code>data_skylinePRMSample_A</code> and <code>data_skylineSRM_HL_A</code>; their examples use simulated data now. <code>data_IonstarProtein_subsetNorm</code> and <code>data_SAINTe_output</code> move to prolfquasaint, <code>data_benchmarkExample</code> and <code>data_test_confusion_matrix_scores</code> to prolfquabenchmark (<code>prolfqua_data(&lt;name&gt;, package = &lt;package&gt;)</code>). The unused ExperimentHub manifest <code>inst/extdata/metadata.csv</code> is gone. <code>inst/script/README.md</code> documents the four datasets that remain.</li>
+<li>The <code>lm_missing</code> method (<code>ContrastsLMMissingFacade</code>) and <code>ContrastsMissing</code> (group-mean substitution with a pooled-variance t-test). <code>MissingHelpers</code> keeps <code>get_stats()</code> and <code>get_lod()</code>; its imputation and contrast methods and the <code>weighted</code> argument are gone. All of it lives on in the new package <a href="https://github.com/prolfqua/prolfquatakeoutmissing" class="external-link">prolfquatakeoutmissing</a>: loading it registers <code>method = "lm_missing"</code> again. In prolfqua, use <code>lm_impute</code>, which refits the proteins plain <code>lm</code> cannot estimate with LOD-imputed values.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.8.0" id="prolfqua-180">prolfqua 1.8.0<a class="anchor" aria-label="anchor" href="#prolfqua-180"></a></h2>
 <p>This release removes about 3,600 lines (20%) of dead or duplicated code from <code>R/</code>. Everything removed had no callers in prolfqua or in the downstream packages (prolfquapp, prophosqua, prolfquappPTMreaders, prolfquasaint, prolfquabenchmark, ptm-pipeline).</p>

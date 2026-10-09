@@ -217,12 +217,13 @@ Volcano plots from both moderation approaches.
 
 ## Merging with missing value imputation
 
-`ContrastsModeratedDEqMS` works seamlessly with `ContrastsMissing` and
-`merge_contrasts_results`.
+`ContrastsModeratedDEqMS` works with `merge_contrasts_results`. Proteins
+the per-protein `lm` cannot estimate are filled in from the `lm_impute`
+facade, which refits them with LOD-imputed values.
 
 ``` r
-mC <- ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
-merged_result <- merge_contrasts_results(prefer = contr_deqms, add = mC)
+imp <- ContrastsLMImputeFacade$new(transformed, "~ group_", contr_spec)$contrast
+merged_result <- merge_contrasts_results(prefer = contr_deqms, add = imp)
 
 plotter <- merged_result$merged$get_Plotter()
 plotter$volcano()$FDR
@@ -310,7 +311,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.8.0
+    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.9.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

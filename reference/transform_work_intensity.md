@@ -33,23 +33,20 @@ list with \`data\` (data.frame) and \`colname\` (new column name)
 ## Examples
 
 ``` r
-dd <- prolfqua_data('data_spectronautDIA250_A')
-config <- dd$config_f()
-analysis <- dd$analysis(dd$data, config)
+istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> Warning: no nr_children column specified in the data, adding column nr_children and setting to 1.
 #> completing cases
 #> completing cases done
 #> setup done
+config <- istar$config
 res <- transform_work_intensity(
-  analysis, config$get_response(), .func = log2
+  istar$data, config$get_response(), .func = log2
 )
-#> Column added : log2_FG.Quantity
-stopifnot("log2_FG.Quantity" %in% colnames(res$data))
-config <- dd$config_f()
+#> Column added : log2_abundance
+stopifnot("log2_abundance" %in% colnames(res$data))
 res <- transform_work_intensity(
-  analysis, config$get_response(), .func = asinh
+  istar$data, config$get_response(), .func = asinh
 )
-#> Column added : asinh_FG.Quantity
-stopifnot("asinh_FG.Quantity" %in% colnames(res$data))
+#> Column added : asinh_abundance
+stopifnot("asinh_abundance" %in% colnames(res$data))
 ```

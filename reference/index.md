@@ -53,9 +53,6 @@
 - [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md)
   : LM contrast analysis with LOD imputation facade
 
-- [`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md)
-  : LM + missing-value imputation contrast analysis facade
-
 - [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md)
   : Limma-based contrasts (direct limma pipeline)
 
@@ -138,7 +135,7 @@
   : Likelihood ratio test
 
 - [`MissingHelpers`](https://wolski.github.io/prolfqua/reference/MissingHelpers.md)
-  : compute group mean by LOD
+  : Group statistics and limit of detection
 
 - [`Model`](https://wolski.github.io/prolfqua/reference/Model.md) : R6
   class representing modelling result

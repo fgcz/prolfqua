@@ -51,9 +51,9 @@ lfqplotter$intensity_distribution_density()
 
 Often it also makes sense to look into the part of the data that is not
 quantified in all samples. Therefore several functions for the
-missingess are available. In the `NA_heatmap` function it is possible to
-see if some missing proteins are specific for one particular dilution or
-if they appear randomly in all samples.
+missingness are available. In the `NA_heatmap` function it is possible
+to see if some missing proteins are specific for one particular dilution
+or if they appear randomly in all samples.
 
 ``` r
 nah <- lfqplotter$na_heatmap()
@@ -93,8 +93,8 @@ values](QualityControlAndSampleSizeEstimation_files/figure-html/cumSumSummary-1.
 Cumulative sum of the \# of proteins with 0,1,…N missing values
 
 In the `missigness_histogram` we can check if there is a dependency
-between NAs (and the number of NAs for earch protein) with respect to
-the protein intensity.
+between NAs (and the number of NAs for each protein) with respect to the
+protein intensity.
 
 ``` r
 lfqplotter$missigness_histogram()
@@ -135,7 +135,7 @@ CV's](QualityControlAndSampleSizeEstimation_files/figure-html/cvDistr-1.png)
 Distribution of CV’s
 
 In the next figure we show the dependency of the standard deviation with
-respect to the mean intensitiy of the proteins.
+respect to the mean intensity of the proteins.
 
 ``` r
 stdm_raw <- stats$stdv_vs_mean(size = 10000) +
@@ -373,8 +373,8 @@ stats$stats() |> head()
 You can also estimate the sample size needed to perform differential
 expression analysis for each protein, given the `power`, `delta`, and
 `sig.level`. The next figure shows the distribution of needed sample
-sizes for all proteins with a power of 0.8 at signifiance level 0.05 for
-a two fold change (delta = 1).
+sizes for all proteins with a power of 0.8 at significance level 0.05
+for a two fold change (delta = 1).
 
 ``` r
 x <- stats$power_t_test(delta = 1,power = 0.8, sig.level = 0.05)
@@ -458,7 +458,7 @@ sessionInfo()
     ##  [55] yaml_2.3.12            doParallel_1.0.17      codetools_0.2-20      
     ##  [58] lattice_0.22-7         tibble_3.3.1           plyr_1.8.9            
     ##  [61] shiny_1.14.0           withr_3.0.3            S7_0.2.2              
-    ##  [64] prolfqua_1.8.0         evaluate_1.0.5         desc_1.4.3            
+    ##  [64] prolfqua_1.9.0         evaluate_1.0.5         desc_1.4.3            
     ##  [67] survival_3.8-3         circlize_0.4.18        pillar_1.11.1         
     ##  [70] mice_3.19.0            KernSmooth_2.23-26     foreach_1.5.2         
     ##  [73] stats4_4.5.2           reformulas_0.4.4       plotly_4.12.1         

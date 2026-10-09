@@ -141,10 +141,6 @@ initialize
   [`setup_analysis`](https://wolski.github.io/prolfqua/reference/setup_analysis.md)
   on data first.
 
-- `is_pep`:
-
-  todo
-
 ------------------------------------------------------------------------
 
 ### Method `set_data()`
@@ -713,7 +709,7 @@ stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))
 #> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: peptide.intensity
 
 tmp <-lfqdata$get_sample(5, seed = 4)
-#> Sampling 5protein_Id
+#> Sampling 5 protein_Id
 #> Joining with `by = join_by(protein_Id)`
 stopifnot(nrow(tmp$hierarchy()) == 5)
 ```

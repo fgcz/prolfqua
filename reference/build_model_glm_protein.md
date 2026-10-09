@@ -40,7 +40,6 @@ Other modelling:
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
-[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
 [`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md),
@@ -49,7 +48,6 @@ Other modelling:
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
 [`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md),
 [`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
-[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
@@ -114,7 +112,7 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
+[`summary_ROPECA_median_p_scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
@@ -136,10 +134,10 @@ head(mod$get_coefficients())
 #>   protein_Id  factor      Estimate se.coef. lower.0.95 upper.0.95    Chisq     p
 #>   <chr>       <chr>          <dbl>    <dbl>      <dbl>      <dbl>    <dbl> <dbl>
 #> 1 7IZdVV~0841 (Intercep…  2.20e+ 0     1.49     -0.725       5.12 2.17e+ 0 0.140
-#> 2 7IZdVV~0841 group_B     5.61e-16     2.11     -4.13        4.13 7.74e-32 1    
+#> 2 7IZdVV~0841 group_B     9.70e-16     2.11     -4.13        4.13 1.74e-31 1    
 #> 3 7IZdVV~0841 group_Ctrl -2.20e+ 0     1.74     -5.60        1.21 1.60e+ 0 0.206
 #> 4 AZPG26~2091 (Intercep…  2.20e+ 0     1.49     -0.725       5.12 2.17e+ 0 0.140
-#> 5 AZPG26~2091 group_B    -1.52e-15     2.11     -4.13        4.13 4.84e-31 1.00 
-#> 6 AZPG26~2091 group_Ctrl -1.07e-15     2.11     -4.13        4.13 3.10e-31 1    
+#> 5 AZPG26~2091 group_B     1.26e-15     2.11     -4.13        4.13 3.10e-31 1    
+#> 6 AZPG26~2091 group_Ctrl -4.27e-16     2.11     -4.13        4.13 1.94e-32 1    
 #> # ℹ 3 more variables: method <dbl>, isSingular <lgl>, nr_coef <int>
 ```

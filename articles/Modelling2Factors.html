@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/prolfqua.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -70,7 +71,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-09-27</h4>
+            <h4 data-toc-skip class="date">2026-10-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/Modelling2Factors.Rmd" class="external-link"><code>vignettes/Modelling2Factors.Rmd</code></a></small>
       <div class="d-none name"><code>Modelling2Factors.Rmd</code></div>
@@ -116,7 +117,7 @@ linear models can be found <a href="https://genomicsclass.github.io/book/pages/i
 <p>We use simulated data generated using the function
 <code>sim_lfq_data_2factor_config</code>. Interesting here is the
 definition of the model. If interaction shall be included in the model a
-<em>asterix</em> should be used while if no interaction should be taken
+<em>asterisk</em> should be used while if no interaction should be taken
 into account a <em>plus</em> should be used in the model definition.
 Also we can directly specify what comparisons we are interested in by
 specifying the respective contrasts.</p>
@@ -242,27 +243,27 @@ Volcano and MA plot for result visualisation
 <div class="section level3">
 <h3 id="analyse-contrasts-with-missing-data-imputation">Analyse contrasts with missing data imputation<a class="anchor" aria-label="anchor" href="#analyse-contrasts-with-missing-data-imputation"></a>
 </h3>
-<p>Still using the approach above, we can only estimate group averages
-in case there is at least one measurement for each protein in each
-group/condition. In the case of missing data for one condition, we can
-use the <code>ContrastsMissing</code> function where the 10th percentile
-expression of all proteins is used for the estimate of the missing
-condition.</p>
+<p>Still using the approach above, we can only estimate contrasts for
+proteins with enough observations in each group/condition. For proteins
+where the linear model fails, the <code>lm_impute</code> facade refits
+the model after imputing the missing observations with the limit of
+detection (LOD) and borrows the variance from the proteins that could be
+fitted.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contrSimple</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="va">contr_spec</span><span class="op">)</span></span>
-<span><span class="va">contrdfSimple</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contrImputed</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">pMerged</span>, <span class="st">"~ Treatment * Background"</span>, <span class="va">contr_spec</span><span class="op">)</span><span class="op">$</span><span class="va">contrast</span></span>
+<span><span class="va">contrdfImputed</span> <span class="op">&lt;-</span> <span class="va">contrImputed</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">pl</span> <span class="op">&lt;-</span> <span class="va">contrImputed</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">pl</span><span class="op">$</span><span class="fu">histogram_diff</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-1.png" class="r-plt" alt="Volcano and MA plot for result visualisation for the group average model" width="700"><p class="caption">
-Volcano and MA plot for result visualisation for the group average model
+<img src="Modelling2Factors_files/figure-html/prepareForImputation-1.png" class="r-plt" alt="Histogram of fold changes and volcano plot for the LOD-imputed model" width="700"><p class="caption">
+Histogram of fold changes and volcano plot for the LOD-imputed model
 </p>
 </div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pl</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FDR</span></span></code></pre></div>
 <div class="figure">
-<img src="Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-2.png" class="r-plt" alt="Volcano and MA plot for result visualisation for the group average model" width="700"><p class="caption">
-Volcano and MA plot for result visualisation for the group average model
+<img src="Modelling2Factors_files/figure-html/prepareForImputation-2.png" class="r-plt" alt="Histogram of fold changes and volcano plot for the LOD-imputed model" width="700"><p class="caption">
+Histogram of fold changes and volcano plot for the LOD-imputed model
 </p>
 </div>
 </div>
@@ -270,25 +271,24 @@ Volcano and MA plot for result visualisation for the group average model
 <h3 id="merge-nonimputed-and-imputed-data-">Merge nonimputed and imputed data.<a class="anchor" aria-label="anchor" href="#merge-nonimputed-and-imputed-data-"></a>
 </h3>
 <p>For the moderated model, we can only get results if we have enough
-valid data points. With the group average model we can get group
-estimates for all proteins. Therefore, we are merging the statistics for
-both approaches while we are preferring the values of the moderated
-model. Also these results can again be visualized in a
-<code>volcano</code> plot.</p>
+valid data points. With the imputed model we get estimates for all
+proteins. Therefore, we are merging the statistics for both approaches
+while we are preferring the values of the moderated model. Also these
+results can again be visualized in a <code>volcano</code> plot.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 757  16</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrSimple</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 980  23</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">contrImputed</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 980  16</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrSimple</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span></span>
+<code class="sourceCode R"><span><span class="va">mergedContrasts</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr</span>, add <span class="op">=</span> <span class="va">contrImputed</span><span class="op">)</span><span class="op">$</span><span class="va">merged</span></span>
 <span><span class="va">cM</span> <span class="op">&lt;-</span> <span class="va">mergedContrasts</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">cM</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">plot</span><span class="op">$</span><span class="va">FDR</span></span></code></pre></div>
 <div class="figure">
-<img src="Modelling2Factors_files/figure-html/doGroupAverageImputation-1.png" class="r-plt" alt="Volcano plot of moderated (black) and impuation (light green) model" width="700"><p class="caption">
-Volcano plot of moderated (black) and impuation (light green) model
+<img src="Modelling2Factors_files/figure-html/doImputationMerge-1.png" class="r-plt" alt="Volcano plot of moderated and imputed model" width="700"><p class="caption">
+Volcano plot of moderated and imputed model
 </p>
 </div>
 <div class="section level4">
@@ -499,7 +499,7 @@ open the documentation run <code><a href="../reference/LR_test.html">?LR_test</a
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] dplyr_1.2.1    prolfqua_1.8.0</span></span>
+<span><span class="co">## [1] dplyr_1.2.1    prolfqua_1.9.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           </span></span>

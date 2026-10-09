@@ -43,7 +43,7 @@ quantification results, and a table with sample annotation is described
 in more detail here the: [CreatingConfigurations
 vignette](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
 
-A minimal example for a table with protein abudances is:
+A minimal example for a table with protein abundances is:
 
 ``` r
 #Table with abundances
@@ -165,7 +165,7 @@ Example QC and sample size report
 - [QC and sample size
   Report](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 
-# Releated projects
+# Related projects
 
 - prolfquabenchmark - a package to document the performance of prolfqua,
   MSstats, msqrob, and proda. See documentation:

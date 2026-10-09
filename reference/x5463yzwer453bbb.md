@@ -1,6 +1,9 @@
-# example dataset for testing
+# Factor annotation of 36 samples
 
-example dataset for testing
+Sample annotation table with two factors (\`factor_A\`: MI / MINOCA,
+\`factor_B\`: sampling time T0 / T150 / T300), used to demonstrate how
+contrasts are derived from the factor levels. See
+\`inst/script/README.md\` for its origin.
 
 ## Usage
 
@@ -10,20 +13,14 @@ x5463yzwer453bbb
 
 ## Format
 
-a data frame
+A tibble with 36 rows and the columns \`Relative Path\`, \`Name\`,
+\`Group\`, \`factor_A\`, \`factor_B\`.
 
 ## See also
 
 Other data:
 [`PACKAGE_DATA`](https://wolski.github.io/prolfqua/reference/PACKAGE_DATA.md),
-[`data_IonstarProtein_subsetNorm`](https://wolski.github.io/prolfqua/reference/data_IonstarProtein_subsetNorm.md),
-[`data_SAINTe_output`](https://wolski.github.io/prolfqua/reference/data_SAINTe_output.md),
-[`data_benchmarkExample`](https://wolski.github.io/prolfqua/reference/data_benchmarkExample.md),
 [`data_checksummarizationrobust87`](https://wolski.github.io/prolfqua/reference/data_checksummarizationrobust87.md),
 [`data_checksummarizerobust69`](https://wolski.github.io/prolfqua/reference/data_checksummarizerobust69.md),
 [`data_ionstar`](https://wolski.github.io/prolfqua/reference/data_ionstar.md),
-[`data_skylinePRMSample_A`](https://wolski.github.io/prolfqua/reference/data_skylinePRMSample_A.md),
-[`data_skylineSRM_HL_A`](https://wolski.github.io/prolfqua/reference/data_skylineSRM_HL_A.md),
-[`data_spectronautDIA250_A`](https://wolski.github.io/prolfqua/reference/data_spectronautDIA250_A.md),
-[`data_test_confusion_matrix_scores`](https://wolski.github.io/prolfqua/reference/data_test_confusion_matrix_scores.md),
 [`prolfqua_data()`](https://wolski.github.io/prolfqua/reference/prolfqua_data.md)

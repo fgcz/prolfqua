@@ -9,7 +9,7 @@ Limma-based contrasts (direct limma pipeline)"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,7 +17,8 @@ Limma-based contrasts (direct limma pipeline)"></head><body>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/prolfqua.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
@@ -79,7 +80,6 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
 <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
 <code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>,
-<code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>,
 <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
 <code><a href="ContrastsLimmaImputeFacade.html">ContrastsLimmaImputeFacade</a></code>,
 <code><a href="ContrastsLimmaVoomFacade.html">ContrastsLimmaVoomFacade</a></code>,
@@ -87,7 +87,6 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>,
 <code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code>,
 <code><a href="ContrastsLmerNestedFacade.html">ContrastsLmerNestedFacade</a></code>,
-<code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
@@ -153,7 +152,7 @@ Inherits from <code><a href="ContrastsInterface.html">ContrastsInterface</a></co
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
-<code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
+<code><a href="summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
@@ -393,12 +392,13 @@ wrapping with <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEq
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># merge_contrasts_results works</span></span></span>
 <span class="r-in"><span><span class="va">Contr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dil.b_vs_a"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">csi</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, contrasts <span class="op">=</span> <span class="va">Contr2</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>ContrastsMissing is deprecated: it substitutes group means rather than fitting a model. Prefer build_model_impute (LOD-imputed per-protein refit with borrowed variance) via the lm_impute / limma_impute facades. See ?ContrastsMissing for details.</span>
-<span class="r-in"><span><span class="va">merged_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span><span class="va">contr_limma</span>, <span class="va">csi</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> dil.b_vs_a=group_A - group_Ctrl</span>
+<span class="r-in"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, <span class="st">"~ group_"</span>, <span class="va">Contr2</span><span class="op">)</span><span class="op">$</span><span class="va">contrast</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
+<span class="r-in"><span><span class="va">merged_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span><span class="va">contr_limma</span>, <span class="va">imp</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> determine linear functions:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> get_contrasts -&gt; contrasts_linfct</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-in"><span></span></span>

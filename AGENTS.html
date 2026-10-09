@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,7 +15,8 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="articles/prolfqua.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
@@ -106,7 +107,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <h3 id="facade-pattern-contrastsfacadesr-contrastschildtoparentfacadesr-build_contrast_analysisr">Facade Pattern (<code>ContrastsFacades.R</code>, <code>ContrastsChildToParentFacades.R</code>, <code>build_contrast_analysis.R</code>)<a class="anchor" aria-label="anchor" href="#facade-pattern-contrastsfacadesr-contrastschildtoparentfacadesr-build_contrast_analysisr"></a></h3>
 <p><code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> is the recommended entry point. Each method dispatches to a Facade class that wires strategy → model → contrasts → moderation internally.</p>
 <p>The authoritative facade list is the <code>.seed_facade_registry()</code> table in <code>R/ContrastsFacades.R</code>; query it at runtime with <code>lookup_facade(name)</code>. Facades split by input/output hierarchy shape — <code>lookup_facade(name)$needs</code> returns one of two values:</p>
-<p><strong><code>needs = "same"</code></strong> — facade emits contrasts at the same hierarchy level as its input (protein → protein FC, or peptide/precursor → peptide/precursor FC; <code>subject_Id == hierarchy_keys</code>). Lives in <code>R/ContrastsFacades.R</code>: <code>lm</code>, <code>rlm</code>, <code>lm_missing</code>, <code>lm_impute</code>, <code>limma</code>, <code>limma_impute</code>, <code>limma_voom</code>, <code>limma_voom_impute</code>, <code>deqms</code>, <code>deqms_voom</code>, <code>firth</code>, <code>limpa</code></p>
+<p><strong><code>needs = "same"</code></strong> — facade emits contrasts at the same hierarchy level as its input (protein → protein FC, or peptide/precursor → peptide/precursor FC; <code>subject_Id == hierarchy_keys</code>). Lives in <code>R/ContrastsFacades.R</code>: <code>lm</code>, <code>rlm</code>, <code>lm_impute</code>, <code>limma</code>, <code>limma_impute</code>, <code>limma_voom</code>, <code>limma_voom_impute</code>, <code>deqms</code>, <code>deqms_voom</code>, <code>firth</code>, <code>limpa</code></p>
 <p><strong><code>needs = "nested"</code></strong> — facade takes child-level input (peptide/precursor) and emits parent-level (protein) contrasts; <code>subject_Id</code> is a strict subset of <code>hierarchy_keys</code>. Lives in <code>R/ContrastsChildToParentFacades.R</code>: <code>lmer_nested</code>, <code>ropeca_nested</code>, <code>firth_nested</code>, <code>limpa_nested</code></p>
 <p>There are no same-level <code>lmer</code>/<code>ropeca</code> facades — mixed-model and ROPECA analyses are nested-only.</p>
 </div>
@@ -115,7 +116,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <a class="anchor" aria-label="anchor" href="#weights--nr_children"></a></h3>
 <p><code>config$nr_children</code> names the column tracking child-feature counts (e.g. peptides per protein). After <code>get_Aggregator()</code> rollup, each protein×sample row gets its own count — <strong><code>nr_children</code> is sample-wise</strong>. For peptide/precursor-level data it is typically 1.</p>
 <p><strong>Two distinct uses:</strong></p>
-<ol style="list-style-type: decimal"><li><p><strong>Fitting weights</strong> (sample-wise): Aggregated facades (<code>lm</code>, <code>limma</code>, <code>lm_missing</code>, <code>lm_impute</code>, <code>deqms</code>) pass <code>nr_children</code> as <code>weights</code> by default to <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> or <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">limma::lmFit()</a></code>. This down-weights protein intensities derived from fewer peptides in a given sample. Disable with <code>weights = NULL</code>.</p></li>
+<ol style="list-style-type: decimal"><li><p><strong>Fitting weights</strong> (sample-wise): Aggregated facades (<code>lm</code>, <code>limma</code>, <code>lm_impute</code>, <code>deqms</code>) pass <code>nr_children</code> as <code>weights</code> by default to <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> or <code><a href="https://rdrr.io/pkg/limma/man/lmFit.html" class="external-link">limma::lmFit()</a></code>. This down-weights protein intensities derived from fewer peptides in a given sample. Disable with <code>weights = NULL</code>.</p></li>
 <li><p><strong>DEqMS variance moderation</strong> (experiment-wide): <code>ContrastsDEqMSFacade</code> additionally aggregates <code>nr_children</code> via <code><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max()</a></code> per protein across all samples for count-dependent variance shrinkage. This is separate from the fitting weights.</p></li>
 </ol><p><strong>Protein-level input must carry <code>nr_children</code>.</strong> If the column is missing, <code><a href="reference/setup_analysis.html">setup_analysis()</a></code> adds it set to 1 with a warning — but this defeats the purpose for aggregated data where the actual peptide count matters.</p>
 </div>
@@ -150,9 +151,9 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <td>Model*.R, ContrastsLimma.R</td>
 </tr><tr class="even"><td>Contrast interfaces</td>
 <td>
-<code>ContrastsInterface</code>, <code>Contrasts</code>, <code>ContrastsModerated</code>, <code>ContrastsLimma</code>, <code>ContrastsROPECA</code>, <code>ContrastsMissing</code>, <code>ContrastsFirth</code>, <code>ContrastsTable</code>
+<code>ContrastsInterface</code>, <code>Contrasts</code>, <code>ContrastsModerated</code>, <code>ContrastsLimma</code>, <code>ContrastsROPECA</code>, <code>ContrastsFirth</code>, <code>ContrastsTable</code>
 </td>
-<td>Contrasts*.R, ContrastFirth.R, ContrastsSimpleImpute.R</td>
+<td>Contrasts*.R, ContrastFirth.R</td>
 </tr><tr class="odd"><td>Visualization</td>
 <td><code>ContrastsPlotter</code></td>
 <td>ContrastsPlotter.R</td>

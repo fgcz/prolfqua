@@ -6,7 +6,7 @@ distribution) takes p-value of the scaled p-value
 ## Usage
 
 ``` r
-summary_ROPECA_median_p.scaled(
+summary_ROPECA_median_p_scaled(
   contrasts_data,
   contrast = "contrast",
   subject_id = "protein_Id",
@@ -45,7 +45,7 @@ summary_ROPECA_median_p.scaled(
 
 - max.n:
 
-  used to limit the number of peptides in probablity computation.
+  used to limit the number of peptides in probability computation.
 
 ## Value
 
@@ -64,7 +64,6 @@ Other modelling:
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
-[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
 [`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md),
@@ -73,7 +72,6 @@ Other modelling:
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
 [`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md),
 [`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
-[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
@@ -163,13 +161,13 @@ testdata <- data.frame(contrast = "contrast1",
   p.value = p.value,
   avgAbd = avgAbd )
 
-xx30 <- summary_ROPECA_median_p.scaled(testdata,
+xx30 <- summary_ROPECA_median_p_scaled(testdata,
                                     subject_id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",
                                     max.n = 30)
 
-xx2 <- summary_ROPECA_median_p.scaled(testdata,
+xx2 <- summary_ROPECA_median_p_scaled(testdata,
                                     subject_id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",

@@ -101,13 +101,6 @@ fa_limma_impute_2f <- build_contrast_analysis(
   method = "limma_impute"
 )
 
-fa_lm_missing_2f <- build_contrast_analysis(
-  lfq_protein_2f,
-  "~ Subgroup",
-  contrasts_2f,
-  method = "lm_missing"
-)
-
 fa_deqms_2f <- build_contrast_analysis(
   lfq_protein_2f,
   "~ Subgroup",
@@ -143,7 +136,6 @@ results_protein_2f <- bind_rows(
   fa_lm_2f$get_contrasts(),
   fa_limma_2f$get_contrasts(),
   fa_limma_impute_2f$get_contrasts(),
-  fa_lm_missing_2f$get_contrasts(),
   fa_lm_impute_2f$get_contrasts(),
   fa_deqms_2f$get_contrasts(),
   fa_firth_protein_2f$get_contrasts()
@@ -163,7 +155,7 @@ results_protein_2f |>
   dplyr::count(modelName, name = "n_results")
 ```
 
-    ## # A tibble: 7 × 2
+    ## # A tibble: 6 × 2
     ##   modelName    n_results
     ##   <chr>            <int>
     ## 1 deqms              232
@@ -172,19 +164,18 @@ results_protein_2f |>
     ## 4 limma_impute       240
     ## 5 lm                 232
     ## 6 lm_impute          240
-    ## 7 lm_missing         240
 
 The `modelName` column is the facade key. For facades that combine
-several underlying result types, such as `lm_missing`, the
-`estimate_type` column tells you how each row was produced (`observed`,
-`lod_imputed`, or `missing_fallback`).
+several underlying result types, such as `lm_impute`, the
+`estimate_type` column tells you how each row was produced (`observed`
+or `lod_imputed`).
 
 ``` r
 results_protein_2f |>
   dplyr::count(modelName, contrast, estimate_type, name = "n_results")
 ```
 
-    ## # A tibble: 30 × 4
+    ## # A tibble: 24 × 4
     ##    modelName    contrast   estimate_type n_results
     ##    <chr>        <chr>      <chr>             <int>
     ##  1 deqms        T_C_gv_KO  observed             79
@@ -197,7 +188,7 @@ results_protein_2f |>
     ##  8 limma        T_C_gv_WT  observed             77
     ##  9 limma        WT_KO_comp observed             76
     ## 10 limma_impute T_C_gv_KO  lod_imputed           4
-    ## # ℹ 20 more rows
+    ## # ℹ 14 more rows
 
 ## Protein-level volcano comparison
 
@@ -227,11 +218,11 @@ Volcano plots for the standard protein-level facades (lm, limma, deqms).
 
 Rescued proteins (missing in plain `lm`) are shown as large red diamonds
 so they stand out clearly. This group includes the LOD imputation
-facades (`lm_missing`, `lm_impute`, `limma_impute`) and the firth
-logistic regression facade which models missingness directly.
+facades (`lm_impute`, `limma_impute`) and the firth logistic regression
+facade which models missingness directly.
 
 ``` r
-impute_facades_2f <- c("lm_missing", "lm_impute", "limma_impute", "firth")
+impute_facades_2f <- c("lm_impute", "limma_impute", "firth")
 results_impute_2f <- results_protein_2f |>
   dplyr::filter(modelName %in% impute_facades_2f) |>
   dplyr::mutate(modelName = factor(modelName, levels = impute_facades_2f))
@@ -266,7 +257,7 @@ results_protein_2f |>
   dplyr::select(modelName, estimate_type, contrast, protein_Id, diff, p.value, FDR)
 ```
 
-    ## # A tibble: 105 × 7
+    ## # A tibble: 90 × 7
     ##    modelName estimate_type contrast  protein_Id    diff  p.value      FDR
     ##    <chr>     <chr>         <chr>     <chr>        <dbl>    <dbl>    <dbl>
     ##  1 deqms     observed      T_C_gv_KO qc8ZRR~4628  0.628 2.16e-13 1.71e-11
@@ -279,7 +270,7 @@ results_protein_2f |>
     ##  8 deqms     observed      T_C_gv_WT HnBvvB~5903  0.335 1.20e- 9 3.07e- 8
     ##  9 deqms     observed      T_C_gv_WT IPV3OT~3010  0.467 2.42e- 9 4.66e- 8
     ## 10 deqms     observed      T_C_gv_WT lCgO3j~8152  0.402 4.22e- 9 6.41e- 8
-    ## # ℹ 95 more rows
+    ## # ℹ 80 more rows
 
 ## Proteins that could not be estimated
 
@@ -293,7 +284,6 @@ missing_all_2f <- dplyr::bind_rows(
   fa_lm_2f$get_missing() |> dplyr::mutate(facade = "lm"),
   fa_limma_2f$get_missing() |> dplyr::mutate(facade = "limma"),
   fa_limma_impute_2f$get_missing() |> dplyr::mutate(facade = "limma_impute"),
-  fa_lm_missing_2f$get_missing() |> dplyr::mutate(facade = "lm_missing"),
   fa_lm_impute_2f$get_missing() |> dplyr::mutate(facade = "lm_impute"),
   fa_deqms_2f$get_missing() |> dplyr::mutate(facade = "deqms"),
   fa_firth_protein_2f$get_missing() |> dplyr::mutate(facade = "firth")
@@ -344,13 +334,12 @@ if (length(missing_proteins_2f) > 0) {
 Per-sample intensities of proteins that could not be estimated
 
 The missing cells (NA) explain why these proteins cannot be estimated —
-they lack observations in one or more groups. The `lm_missing` facade
-fills in these gaps via group-mean imputation, while `lm_impute` and
-`limma_impute` re-fit after imputing individual values with the LOD and
-borrowing covariance from successful fits. These should have fewer
-missing proteins than plain `lm` or `limma`.
+they lack observations in one or more groups. The `lm_impute` and
+`limma_impute` facades re-fit after imputing individual values with the
+LOD and borrowing covariance from successful fits. These should have
+fewer missing proteins than plain `lm` or `limma`.
 
-### Estimates for the missing proteins from `lm_missing` and `lm_impute`
+### Estimates for the missing proteins from `lm_impute` and `limma_impute`
 
 For proteins that plain `lm` could not estimate, the imputation-based
 facades can still produce contrast results. The table below shows these
@@ -363,61 +352,49 @@ if (length(lm_missing_proteins_2f) > 0) {
   rescued_2f <- results_protein_2f |>
     dplyr::filter(
       protein_Id %in% lm_missing_proteins_2f,
-      modelName %in% c("lm_missing", "lm_impute", "limma_impute")
+      modelName %in% c("lm_impute", "limma_impute")
     ) |>
     dplyr::arrange(protein_Id, contrast, modelName)
 
   rescued_2f |>
     knitr::kable(
       digits = 3,
-      caption = "Contrast estimates from lm_missing, lm_impute, and limma_impute for proteins that plain lm could not estimate"
+      caption = "Contrast estimates from lm_impute and limma_impute for proteins that plain lm could not estimate"
     )
 } else {
   cat("All proteins were estimable by plain lm — no rescued estimates to show.")
 }
 ```
 
-| modelName    | estimate_type    | protein_Id  | contrast   | avgAbd |   diff |   FDR | statistic | std.error |     df | p.value | conf.low | conf.high | sigma | rescued | significant |
-|:-------------|:-----------------|:------------|:-----------|-------:|-------:|------:|----------:|----------:|-------:|--------:|---------:|----------:|------:|:--------|:------------|
-| limma_impute | lod_imputed      | QQg7IC~3558 | T_C_gv_KO  |  4.125 |  0.411 | 0.002 |     5.353 |     0.077 |  8.398 |   0.001 |    0.235 |     0.587 | 0.109 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | QQg7IC~3558 | T_C_gv_KO  |  4.125 |  0.411 | 0.001 |     5.648 |     0.073 |  8.380 |   0.000 |    0.245 |     0.578 | 0.103 | FALSE   | FALSE       |
-| lm_missing   | observed         | QQg7IC~3558 | T_C_gv_KO  |  4.118 |  0.425 | 0.000 |     6.581 |     0.065 |  9.214 |   0.000 |    0.279 |     0.571 | 0.075 | FALSE   | FALSE       |
-| limma_impute | lod_imputed      | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.005 |     4.568 |     0.077 |  8.398 |   0.002 |    0.175 |     0.526 | 0.109 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.003 |     4.819 |     0.073 |  8.380 |   0.001 |    0.184 |     0.517 | 0.103 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.001 |     8.081 |     0.043 |  6.000 |   0.000 |    0.245 |     0.457 | 0.053 | TRUE    | FALSE       |
-| limma_impute | lod_imputed      | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.688 |    -0.556 |     0.109 |  8.398 |   0.593 |   -0.309 |     0.188 | 0.109 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.665 |    -0.586 |     0.103 |  8.380 |   0.573 |   -0.296 |     0.175 | 0.103 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | QQg7IC~3558 | WT_KO_comp |  0.389 |  0.000 | 1.000 |     0.000 |     0.043 |  6.000 |   1.000 |   -0.106 |     0.106 | 0.053 | TRUE    | FALSE       |
-| limma_impute | lod_imputed      | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.003 |     5.705 |     0.076 |  6.398 |   0.001 |    0.251 |     0.620 | 0.108 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.002 |     5.954 |     0.073 |  6.380 |   0.001 |    0.259 |     0.612 | 0.103 | FALSE   | FALSE       |
-| lm_missing   | observed         | hjVK4f~9433 | T_C_gv_KO  |  4.109 |  0.452 | 0.008 |     4.335 |     0.104 |  7.214 |   0.003 |    0.207 |     0.698 | 0.093 | FALSE   | FALSE       |
-| limma_impute | lod_imputed      | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.076 |  6.398 |   1.000 |   -0.184 |     0.184 | 0.108 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.073 |  6.380 |   1.000 |   -0.176 |     0.176 | 0.103 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | hjVK4f~9433 | T_C_gv_WT  |  3.868 |  0.000 | 1.000 |     0.000 |     0.069 |  4.000 |   1.000 |   -0.192 |     0.192 | 0.085 | TRUE    | FALSE       |
-| limma_impute | lod_imputed      | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.015 |    -4.034 |     0.108 |  6.398 |   0.006 |   -0.696 |    -0.175 | 0.108 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.013 |    -4.210 |     0.103 |  6.380 |   0.005 |   -0.685 |    -0.186 | 0.103 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | hjVK4f~9433 | WT_KO_comp |  0.252 | -0.376 | 0.012 |    -5.444 |     0.069 |  4.000 |   0.006 |   -0.567 |    -0.184 | 0.085 | TRUE    | FALSE       |
-| limma_impute | lod_imputed      | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.002 |     4.803 |     0.058 | 10.398 |   0.001 |    0.151 |     0.409 | 0.109 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.001 |     5.101 |     0.055 | 10.380 |   0.000 |    0.158 |     0.402 | 0.103 | FALSE   | FALSE       |
-| lm_missing   | observed         | mVseto~9392 | T_C_gv_KO  |  4.559 |  0.200 | 0.003 |     4.427 |     0.045 | 11.214 |   0.001 |    0.101 |     0.299 | 0.081 | FALSE   | FALSE       |
-| limma_impute | lod_imputed      | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.611 |     0.064 | 10.398 |   0.000 |    0.600 |     0.883 | 0.109 | TRUE    | TRUE        |
-| lm_impute    | lod_imputed      | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.531 |     0.064 | 10.380 |   0.000 |    0.599 |     0.884 | 0.103 | TRUE    | TRUE        |
-| lm_missing   | missing_fallback | mVseto~9392 | T_C_gv_WT  |  4.264 |  0.729 | 0.000 |    17.721 |     0.041 |  8.000 |   0.000 |    0.634 |     0.823 | 0.056 | TRUE    | TRUE        |
-| limma_impute | lod_imputed      | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.002 |     5.145 |     0.090 | 10.398 |   0.000 |    0.263 |     0.661 | 0.109 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.001 |     5.463 |     0.085 | 10.380 |   0.000 |    0.274 |     0.649 | 0.103 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | mVseto~9392 | WT_KO_comp |  0.535 |  0.387 | 0.000 |     9.424 |     0.041 |  8.000 |   0.000 |    0.293 |     0.482 | 0.056 | TRUE    | FALSE       |
-| limma_impute | lod_imputed      | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.982 |    -0.054 |     0.072 |  5.398 |   0.959 |   -0.185 |     0.177 | 0.107 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.982 |    -0.056 |     0.070 |  5.380 |   0.957 |   -0.179 |     0.171 | 0.104 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | zvzYsk~2881 | T_C_gv_KO  |  3.889 |  0.000 | 1.000 |     0.000 |     0.063 |  3.000 |   1.000 |   -0.200 |     0.200 | 0.063 | TRUE    | FALSE       |
-| limma_impute | lod_imputed      | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.178 |    -1.902 |     0.070 |  5.398 |   0.111 |   -0.310 |     0.043 | 0.107 | FALSE   | FALSE       |
-| lm_impute    | lod_imputed      | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.172 |    -1.915 |     0.070 |  5.380 |   0.110 |   -0.309 |     0.042 | 0.104 | FALSE   | FALSE       |
-| lm_missing   | observed         | zvzYsk~2881 | T_C_gv_WT  |  4.018 | -0.314 | 0.019 |    -3.791 |     0.083 |  6.250 |   0.008 |   -0.514 |    -0.113 | 0.091 | FALSE   | FALSE       |
-| limma_impute | lod_imputed      | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.360 |    -1.269 |     0.102 |  5.398 |   0.256 |   -0.386 |     0.127 | 0.107 | TRUE    | FALSE       |
-| lm_impute    | lod_imputed      | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.339 |    -1.315 |     0.098 |  5.380 |   0.242 |   -0.377 |     0.118 | 0.104 | TRUE    | FALSE       |
-| lm_missing   | missing_fallback | zvzYsk~2881 | WT_KO_comp | -0.064 |  0.000 | 1.000 |     0.000 |     0.063 |  3.000 |   1.000 |   -0.200 |     0.200 | 0.063 | TRUE    | FALSE       |
+| modelName    | estimate_type | protein_Id  | contrast   | avgAbd |   diff |   FDR | statistic | std.error |     df | p.value | conf.low | conf.high | sigma | rescued | significant |
+|:-------------|:--------------|:------------|:-----------|-------:|-------:|------:|----------:|----------:|-------:|--------:|---------:|----------:|------:|:--------|:------------|
+| limma_impute | lod_imputed   | QQg7IC~3558 | T_C_gv_KO  |  4.125 |  0.411 | 0.002 |     5.353 |     0.077 |  8.398 |   0.001 |    0.235 |     0.587 | 0.109 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed   | QQg7IC~3558 | T_C_gv_KO  |  4.125 |  0.411 | 0.001 |     5.648 |     0.073 |  8.380 |   0.000 |    0.245 |     0.578 | 0.103 | FALSE   | FALSE       |
+| limma_impute | lod_imputed   | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.005 |     4.568 |     0.077 |  8.398 |   0.002 |    0.175 |     0.526 | 0.109 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed   | QQg7IC~3558 | T_C_gv_WT  |  4.075 |  0.351 | 0.003 |     4.819 |     0.073 |  8.380 |   0.001 |    0.184 |     0.517 | 0.103 | TRUE    | FALSE       |
+| limma_impute | lod_imputed   | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.688 |    -0.556 |     0.109 |  8.398 |   0.593 |   -0.309 |     0.188 | 0.109 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed   | QQg7IC~3558 | WT_KO_comp |  0.381 | -0.060 | 0.665 |    -0.586 |     0.103 |  8.380 |   0.573 |   -0.296 |     0.175 | 0.103 | TRUE    | FALSE       |
+| limma_impute | lod_imputed   | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.003 |     5.705 |     0.076 |  6.398 |   0.001 |    0.251 |     0.620 | 0.108 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed   | hjVK4f~9433 | T_C_gv_KO  |  4.118 |  0.435 | 0.002 |     5.954 |     0.073 |  6.380 |   0.001 |    0.259 |     0.612 | 0.103 | FALSE   | FALSE       |
+| limma_impute | lod_imputed   | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.076 |  6.398 |   1.000 |   -0.184 |     0.184 | 0.108 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed   | hjVK4f~9433 | T_C_gv_WT  |  3.900 |  0.000 | 1.000 |     0.000 |     0.073 |  6.380 |   1.000 |   -0.176 |     0.176 | 0.103 | TRUE    | FALSE       |
+| limma_impute | lod_imputed   | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.015 |    -4.034 |     0.108 |  6.398 |   0.006 |   -0.696 |    -0.175 | 0.108 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed   | hjVK4f~9433 | WT_KO_comp |  0.218 | -0.435 | 0.013 |    -4.210 |     0.103 |  6.380 |   0.005 |   -0.685 |    -0.186 | 0.103 | TRUE    | FALSE       |
+| limma_impute | lod_imputed   | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.002 |     4.803 |     0.058 | 10.398 |   0.001 |    0.151 |     0.409 | 0.109 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed   | mVseto~9392 | T_C_gv_KO  |  4.519 |  0.280 | 0.001 |     5.101 |     0.055 | 10.380 |   0.000 |    0.158 |     0.402 | 0.103 | FALSE   | FALSE       |
+| limma_impute | lod_imputed   | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.611 |     0.064 | 10.398 |   0.000 |    0.600 |     0.883 | 0.109 | TRUE    | TRUE        |
+| lm_impute    | lod_imputed   | mVseto~9392 | T_C_gv_WT  |  4.271 |  0.742 | 0.000 |    11.531 |     0.064 | 10.380 |   0.000 |    0.599 |     0.884 | 0.103 | TRUE    | TRUE        |
+| limma_impute | lod_imputed   | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.002 |     5.145 |     0.090 | 10.398 |   0.000 |    0.263 |     0.661 | 0.109 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed   | mVseto~9392 | WT_KO_comp |  0.511 |  0.462 | 0.001 |     5.463 |     0.085 | 10.380 |   0.000 |    0.274 |     0.649 | 0.103 | TRUE    | FALSE       |
+| limma_impute | lod_imputed   | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.982 |    -0.054 |     0.072 |  5.398 |   0.959 |   -0.185 |     0.177 | 0.107 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed   | zvzYsk~2881 | T_C_gv_KO  |  3.902 | -0.004 | 0.982 |    -0.056 |     0.070 |  5.380 |   0.957 |   -0.179 |     0.171 | 0.104 | TRUE    | FALSE       |
+| limma_impute | lod_imputed   | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.178 |    -1.902 |     0.070 |  5.398 |   0.111 |   -0.310 |     0.043 | 0.107 | FALSE   | FALSE       |
+| lm_impute    | lod_imputed   | zvzYsk~2881 | T_C_gv_WT  |  3.971 | -0.133 | 0.172 |    -1.915 |     0.070 |  5.380 |   0.110 |   -0.309 |     0.042 | 0.104 | FALSE   | FALSE       |
+| limma_impute | lod_imputed   | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.360 |    -1.269 |     0.102 |  5.398 |   0.256 |   -0.386 |     0.127 | 0.107 | TRUE    | FALSE       |
+| lm_impute    | lod_imputed   | zvzYsk~2881 | WT_KO_comp | -0.069 | -0.129 | 0.339 |    -1.315 |     0.098 |  5.380 |   0.242 |   -0.377 |     0.118 | 0.104 | TRUE    | FALSE       |
 
-Contrast estimates from lm_missing, lm_impute, and limma_impute for
-proteins that plain lm could not estimate
+Contrast estimates from lm_impute and limma_impute for proteins that
+plain lm could not estimate
 
 ## Peptide-input facades
 
@@ -539,7 +516,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.8.0
+    ## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.9.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

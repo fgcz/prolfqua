@@ -94,7 +94,7 @@ Facades split by input/output hierarchy shape —
 **`needs = "same"`** — facade emits contrasts at the same hierarchy
 level as its input (protein → protein FC, or peptide/precursor →
 peptide/precursor FC; `subject_Id == hierarchy_keys`). Lives in
-`R/ContrastsFacades.R`: `lm`, `rlm`, `lm_missing`, `lm_impute`, `limma`,
+`R/ContrastsFacades.R`: `lm`, `rlm`, `lm_impute`, `limma`,
 `limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`,
 `deqms_voom`, `firth`, `limpa`
 
@@ -117,8 +117,8 @@ sample-wise**. For peptide/precursor-level data it is typically 1.
 **Two distinct uses:**
 
 1.  **Fitting weights** (sample-wise): Aggregated facades (`lm`,
-    `limma`, `lm_missing`, `lm_impute`, `deqms`) pass `nr_children` as
-    `weights` by default to [`lm()`](https://rdrr.io/r/stats/lm.html) or
+    `limma`, `lm_impute`, `deqms`) pass `nr_children` as `weights` by
+    default to [`lm()`](https://rdrr.io/r/stats/lm.html) or
     [`limma::lmFit()`](https://rdrr.io/pkg/limma/man/lmFit.html). This
     down-weights protein intensities derived from fewer peptides in a
     given sample. Disable with `weights = NULL`.
@@ -167,14 +167,14 @@ existing LFQData.
 
 ### R6 Classes (22 classes across R/)
 
-| Category            | Classes                                                                                                                                              | Files                                                   |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|
-| Core data           | `LFQData`, `AnalysisConfiguration`                                                                                                                   | LFQData.R, AnalysisConfiguration.R                      |
-| Decorators          | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp`                                       | LFQData\*.R                                             |
-| Model interfaces    | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma`                                                                                                | Model\*.R, ContrastsLimma.R                             |
-| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsROPECA`, `ContrastsMissing`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R, ContrastsSimpleImpute.R |
-| Visualization       | `ContrastsPlotter`                                                                                                                                   | ContrastsPlotter.R                                      |
-| Utilities           | `MissingHelpers`                                                                                                                                     | tidyMS_missingness_imputation.R                         |
+| Category            | Classes                                                                                                                          | Files                              |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
+| Core data           | `LFQData`, `AnalysisConfiguration`                                                                                               | LFQData.R, AnalysisConfiguration.R |
+| Decorators          | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp`                   | LFQData\*.R                        |
+| Model interfaces    | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma`                                                                            | Model\*.R, ContrastsLimma.R        |
+| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsROPECA`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R     |
+| Visualization       | `ContrastsPlotter`                                                                                                               | ContrastsPlotter.R                 |
+| Utilities           | `MissingHelpers`                                                                                                                 | tidyMS_missingness_imputation.R    |
 
 ### AnalysisConfiguration
 

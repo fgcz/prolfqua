@@ -1,6 +1,6 @@
 # Simulate Peptide level Data
 
-### Dimulate data
+### Simulate data
 
 For proteins: - the proteins have a FC either equal 1, 0. or -1, 10%
 have 1 80% have 0 and 10% have -1.
@@ -183,7 +183,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.8.0
+    ## [1] prolfqua_1.9.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

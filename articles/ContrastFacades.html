@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/prolfqua.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -70,7 +71,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-09-27</h4>
+            <h4 data-toc-skip class="date">2026-10-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/ContrastFacades.Rmd" class="external-link"><code>vignettes/ContrastFacades.Rmd</code></a></small>
       <div class="d-none name"><code>ContrastFacades.Rmd</code></div>
@@ -108,10 +109,6 @@ peptide/precursor data, reporting protein-level contrasts.</li>
 <code>ropeca</code> — peptide-level fold changes aggregated to
 protein via ROPECA median + beta-distribution p-values.</li>
 <li>
-<code>lm_missing</code> — <code>lm</code> merged with group-mean
-substitution for proteins <code>lm</code> cannot estimate (deprecated;
-prefer <code>lm_impute</code>).</li>
-<li>
 <code>lm_impute</code> — <code>lm</code> that refits failed/singular
 proteins with LOD imputation and borrowed variance.</li>
 <li>
@@ -131,9 +128,8 @@ contrasts. The important difference is the required input level:</p>
 <ul>
 <li>
 <code>lm</code>, <code>rfit</code>, <code>limma</code>,
-<code>limma_impute</code>, <code>lm_missing</code>,
-<code>lm_impute</code>, and <code>deqms</code> require aggregated
-protein-level data</li>
+<code>limma_impute</code>, <code>lm_impute</code>, and
+<code>deqms</code> require aggregated protein-level data</li>
 <li>
 <code>limpa</code> requires protein-level data from
 <code>AggregateLimpa</code> (which provides standard errors and
@@ -224,13 +220,6 @@ input.</p>
 <span>  method <span class="op">=</span> <span class="st">"limma_impute"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fa_lm_missing</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span></span>
-<span>  <span class="va">lfq_protein</span>,</span>
-<span>  <span class="st">"~ group_"</span>,</span>
-<span>  <span class="va">contrasts</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"lm_missing"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">fa_deqms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span></span>
 <span>  <span class="va">lfq_protein</span>,</span>
 <span>  <span class="st">"~ group_"</span>,</span>
@@ -288,7 +277,6 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span>  <span class="va">fa_rfit</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_limma</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_limma_impute</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="va">fa_lm_missing</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_lm_impute</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_deqms</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_firth_protein</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
@@ -307,7 +295,7 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span></span>
 <span><span class="va">results_protein</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">modelName</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 9 × 2</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
 <span><span class="co">##   modelName    n_results</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> deqms              157</span></span>
@@ -317,17 +305,15 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">5</span> limpa              160</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span> lm                 157</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">7</span> lm_impute          160</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">8</span> lm_missing         160</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">9</span> rfit               157</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">8</span> rfit               157</span></span></code></pre>
 <p>The <code>modelName</code> column is the facade key. For facades that
-combine several underlying result types, such as
-<code>lm_missing</code>, the <code>estimate_type</code> column tells you
-how each row was produced (<code>observed</code>,
-<code>lod_imputed</code>, or <code>missing_fallback</code>).</p>
+combine several underlying result types, such as <code>lm_impute</code>,
+the <code>estimate_type</code> column tells you how each row was
+produced (<code>observed</code> or <code>lod_imputed</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_protein</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">modelName</span>, <span class="va">contrast</span>, <span class="va">estimate_type</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 24 × 4</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 20 × 4</span></span></span>
 <span><span class="co">##    modelName    contrast  estimate_type n_results</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span> deqms        A_vs_Ctrl observed             78</span></span>
@@ -340,7 +326,16 @@ how each row was produced (<code>observed</code>,
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> limma_impute A_vs_Ctrl observed             77</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> limma_impute B_vs_Ctrl lod_imputed           3</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> limma_impute B_vs_Ctrl observed             77</span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> limpa        A_vs_Ctrl observed             80</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> limpa        B_vs_Ctrl observed             80</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> lm           A_vs_Ctrl observed             78</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> lm           B_vs_Ctrl observed             79</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> lm_impute    A_vs_Ctrl lod_imputed           3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> lm_impute    A_vs_Ctrl observed             77</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">17</span> lm_impute    B_vs_Ctrl lod_imputed           3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">18</span> lm_impute    B_vs_Ctrl observed             77</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">19</span> rfit         A_vs_Ctrl observed             78</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">20</span> rfit         B_vs_Ctrl observed             79</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -374,11 +369,11 @@ deqms).
 </h3>
 <p>Rescued proteins (missing in plain <code>lm</code>) are shown as
 large red diamonds so they stand out clearly. This group includes the
-LOD imputation facades (<code>lm_missing</code>, <code>lm_impute</code>,
+LOD imputation facades (<code>lm_impute</code>,
 <code>limma_impute</code>) and the firth logistic regression facade
 which models missingness directly.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">impute_facades</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm_missing"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma_impute"</span>, <span class="st">"firth"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">impute_facades</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm_impute"</span>, <span class="st">"limma_impute"</span>, <span class="st">"firth"</span><span class="op">)</span></span>
 <span><span class="va">results_impute</span> <span class="op">&lt;-</span> <span class="va">results_protein</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">modelName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">impute_facades</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>modelName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">modelName</span>, levels <span class="op">=</span> <span class="va">impute_facades</span><span class="op">)</span><span class="op">)</span></span>
@@ -411,7 +406,7 @@ diamonds mark proteins rescued (missing in plain lm).
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">p.value</span>, n <span class="op">=</span> <span class="fl">5</span>, with_ties <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">modelName</span>, <span class="va">estimate_type</span>, <span class="va">contrast</span>, <span class="va">protein_Id</span>, <span class="va">diff</span>, <span class="va">p.value</span>, <span class="va">FDR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 90 × 7</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 80 × 7</span></span></span>
 <span><span class="co">##    modelName estimate_type contrast  protein_Id    diff  p.value      FDR</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span> deqms     observed      A_vs_Ctrl Zci7Jw~7064 -<span style="color: #BB0000;">0.722</span> 3.79<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span> 2.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span></span></span>
@@ -424,7 +419,7 @@ diamonds mark proteins rescued (missing in plain lm).
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> deqms     observed      B_vs_Ctrl f0Cvvj~6658  0.345 5.39<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> 1.42<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> deqms     observed      B_vs_Ctrl TR3Ksv~1492 -<span style="color: #BB0000;">0.413</span> 3.73<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 7.37<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> deqms     observed      B_vs_Ctrl 4Y4DYT~0927  0.424 8.16<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> 1.29<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 80 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 70 more rows</span></span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="proteins-that-could-not-be-estimated">Proteins that could not be estimated<a class="anchor" aria-label="anchor" href="#proteins-that-could-not-be-estimated"></a>
@@ -444,7 +439,6 @@ each method fails on and to compare coverage.</p>
 <span>  <span class="va">fa_lm</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>facade <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_limma</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>facade <span class="op">=</span> <span class="st">"limma"</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_limma_impute</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>facade <span class="op">=</span> <span class="st">"limma_impute"</span><span class="op">)</span>,</span>
-<span>  <span class="va">fa_lm_missing</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>facade <span class="op">=</span> <span class="st">"lm_missing"</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_lm_impute</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>facade <span class="op">=</span> <span class="st">"lm_impute"</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_deqms</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>facade <span class="op">=</span> <span class="st">"deqms"</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_firth_protein</span><span class="op">$</span><span class="fu">get_missing</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>facade <span class="op">=</span> <span class="st">"firth"</span><span class="op">)</span>,</span>
@@ -592,15 +586,14 @@ estimated</caption>
 </table>
 <p>The missing cells (NA) explain why these proteins cannot be estimated
 — they lack observations in one or more groups. The
-<code>lm_missing</code> facade fills in these gaps via group-mean
-imputation, while <code>lm_impute</code> and <code>limma_impute</code>
-re-fit after imputing individual values with the LOD and borrowing
-covariance from successful fits. These should have fewer missing
-proteins than plain <code>lm</code> or <code>limma</code>.</p>
+<code>lm_impute</code> and <code>limma_impute</code> facades re-fit
+after imputing individual values with the LOD and borrowing covariance
+from successful fits. These should have fewer missing proteins than
+plain <code>lm</code> or <code>limma</code>.</p>
 </div>
 <div class="section level3">
-<h3 id="estimates-for-the-missing-proteins-from-lm_missing-and-lm_impute">Estimates for the missing proteins from <code>lm_missing</code> and
-<code>lm_impute</code><a class="anchor" aria-label="anchor" href="#estimates-for-the-missing-proteins-from-lm_missing-and-lm_impute"></a>
+<h3 id="estimates-for-the-missing-proteins-from-lm_impute-and-limma_impute">Estimates for the missing proteins from <code>lm_impute</code> and
+<code>limma_impute</code><a class="anchor" aria-label="anchor" href="#estimates-for-the-missing-proteins-from-lm_impute-and-limma_impute"></a>
 </h3>
 <p>For proteins that plain <code>lm</code> could not estimate, the
 imputation-based facades can still produce contrast results. The table
@@ -612,38 +605,38 @@ below shows these rescued estimates side by side.</p>
 <span>  <span class="va">rescued</span> <span class="op">&lt;-</span> <span class="va">results_protein</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>      <span class="va">protein_Id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">lm_missing_proteins</span>,</span>
-<span>      <span class="va">modelName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm_missing"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma_impute"</span>, <span class="st">"limpa"</span><span class="op">)</span></span>
+<span>      <span class="va">modelName</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm_impute"</span>, <span class="st">"limma_impute"</span>, <span class="st">"limpa"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">protein_Id</span>, <span class="va">contrast</span>, <span class="va">modelName</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">rescued</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
 <span>      digits <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>      caption <span class="op">=</span> <span class="st">"Contrast estimates from lm_missing, lm_impute, and limma_impute for proteins that plain lm could not estimate"</span></span>
+<span>      caption <span class="op">=</span> <span class="st">"Contrast estimates from lm_impute and limma_impute for proteins that plain lm could not estimate"</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"All proteins were estimable by plain lm — no rescued estimates to show."</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<caption>Contrast estimates from lm_missing, lm_impute, and limma_impute
-for proteins that plain lm could not estimate</caption>
+<table class="table">
+<caption>Contrast estimates from lm_impute and limma_impute for proteins
+that plain lm could not estimate</caption>
 <colgroup>
 <col width="8%">
-<col width="11%">
-<col width="7%">
+<col width="9%">
+<col width="8%">
 <col width="6%">
 <col width="4%">
 <col width="4%">
-<col width="3%">
+<col width="4%">
 <col width="6%">
 <col width="6%">
 <col width="4%">
 <col width="5%">
-<col width="5%">
 <col width="6%">
-<col width="3%">
+<col width="6%">
+<col width="4%">
 <col width="5%">
-<col width="7%">
+<col width="8%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">modelName</th>
@@ -719,24 +712,6 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">lm_missing</td>
-<td align="left">missing_fallback</td>
-<td align="left">8mS8sK~0150</td>
-<td align="left">A_vs_Ctrl</td>
-<td align="right">3.697</td>
-<td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">0.000</td>
-<td align="right">0.102</td>
-<td align="right">2.000</td>
-<td align="right">1.000</td>
-<td align="right">-0.437</td>
-<td align="right">0.437</td>
-<td align="right">0.102</td>
-<td align="left">TRUE</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
 <td align="left">limma_impute</td>
 <td align="left">lod_imputed</td>
 <td align="left">8mS8sK~0150</td>
@@ -754,7 +729,7 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limpa</td>
 <td align="left">observed</td>
 <td align="left">8mS8sK~0150</td>
@@ -772,7 +747,7 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">lm_impute</td>
 <td align="left">lod_imputed</td>
 <td align="left">8mS8sK~0150</td>
@@ -787,24 +762,6 @@ for proteins that plain lm could not estimate</caption>
 <td align="right">-0.150</td>
 <td align="right">0.185</td>
 <td align="right">0.089</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">lm_missing</td>
-<td align="left">observed</td>
-<td align="left">8mS8sK~0150</td>
-<td align="left">B_vs_Ctrl</td>
-<td align="right">3.632</td>
-<td align="right">0.339</td>
-<td align="right">0.021</td>
-<td align="right">3.642</td>
-<td align="right">0.093</td>
-<td align="right">5.447</td>
-<td align="right">0.013</td>
-<td align="right">0.106</td>
-<td align="right">0.572</td>
-<td align="right">0.093</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 </tr>
@@ -863,24 +820,6 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">lm_missing</td>
-<td align="left">missing_fallback</td>
-<td align="left">DTCi0N~0734</td>
-<td align="left">A_vs_Ctrl</td>
-<td align="right">3.902</td>
-<td align="right">-0.253</td>
-<td align="right">0.032</td>
-<td align="right">-4.417</td>
-<td align="right">0.057</td>
-<td align="right">4.000</td>
-<td align="right">0.012</td>
-<td align="right">-0.412</td>
-<td align="right">-0.094</td>
-<td align="right">0.070</td>
-<td align="left">TRUE</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
 <td align="left">limma_impute</td>
 <td align="left">lod_imputed</td>
 <td align="left">DTCi0N~0734</td>
@@ -898,7 +837,7 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limpa</td>
 <td align="left">observed</td>
 <td align="left">DTCi0N~0734</td>
@@ -916,7 +855,7 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">lm_impute</td>
 <td align="left">lod_imputed</td>
 <td align="left">DTCi0N~0734</td>
@@ -931,24 +870,6 @@ for proteins that plain lm could not estimate</caption>
 <td align="right">0.014</td>
 <td align="right">0.319</td>
 <td align="right">0.090</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">lm_missing</td>
-<td align="left">observed</td>
-<td align="left">DTCi0N~0734</td>
-<td align="left">B_vs_Ctrl</td>
-<td align="right">4.224</td>
-<td align="right">0.222</td>
-<td align="right">0.017</td>
-<td align="right">3.447</td>
-<td align="right">0.064</td>
-<td align="right">7.447</td>
-<td align="right">0.010</td>
-<td align="right">0.071</td>
-<td align="right">0.372</td>
-<td align="right">0.079</td>
 <td align="left">FALSE</td>
 <td align="left">FALSE</td>
 </tr>
@@ -1007,24 +928,6 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">FALSE</td>
 </tr>
 <tr class="even">
-<td align="left">lm_missing</td>
-<td align="left">observed</td>
-<td align="left">OrL0ux~1369</td>
-<td align="left">A_vs_Ctrl</td>
-<td align="right">3.913</td>
-<td align="right">-0.276</td>
-<td align="right">0.058</td>
-<td align="right">-2.893</td>
-<td align="right">0.095</td>
-<td align="right">5.408</td>
-<td align="right">0.031</td>
-<td align="right">-0.515</td>
-<td align="right">-0.036</td>
-<td align="right">0.082</td>
-<td align="left">FALSE</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="odd">
 <td align="left">limma_impute</td>
 <td align="left">lod_imputed</td>
 <td align="left">OrL0ux~1369</td>
@@ -1042,7 +945,7 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limpa</td>
 <td align="left">observed</td>
 <td align="left">OrL0ux~1369</td>
@@ -1060,7 +963,7 @@ for proteins that plain lm could not estimate</caption>
 <td align="left">TRUE</td>
 <td align="left">TRUE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">lm_impute</td>
 <td align="left">lod_imputed</td>
 <td align="left">OrL0ux~1369</td>
@@ -1075,24 +978,6 @@ for proteins that plain lm could not estimate</caption>
 <td align="right">-0.374</td>
 <td align="right">-0.039</td>
 <td align="right">0.089</td>
-<td align="left">TRUE</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">lm_missing</td>
-<td align="left">missing_fallback</td>
-<td align="left">OrL0ux~1369</td>
-<td align="left">B_vs_Ctrl</td>
-<td align="right">3.879</td>
-<td align="right">-0.207</td>
-<td align="right">0.094</td>
-<td align="right">-3.473</td>
-<td align="right">0.060</td>
-<td align="right">2.000</td>
-<td align="right">0.074</td>
-<td align="right">-0.463</td>
-<td align="right">0.049</td>
-<td align="right">0.073</td>
 <td align="left">TRUE</td>
 <td align="left">FALSE</td>
 </tr>
@@ -1228,7 +1113,7 @@ together.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.8.0</span></span>
+<span><span class="co">## [1] ggplot2_4.0.3  dplyr_1.2.1    prolfqua_1.9.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           </span></span>

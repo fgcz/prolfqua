@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/prolfqua.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -70,7 +71,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-09-27</h4>
+            <h4 data-toc-skip class="date">2026-10-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/LimmaBackend.Rmd" class="external-link"><code>vignettes/LimmaBackend.Rmd</code></a></small>
       <div class="d-none name"><code>LimmaBackend.Rmd</code></div>
@@ -278,12 +279,13 @@ Volcano plots from both backends.
 <div class="section level2">
 <h2 id="merging-with-missing-value-imputation">Merging with missing value imputation<a class="anchor" aria-label="anchor" href="#merging-with-missing-value-imputation"></a>
 </h2>
-<p><code>ContrastsLimma</code> integrates seamlessly with
-<code>ContrastsMissing</code> and
-<code>merge_contrasts_results</code>.</p>
+<p><code>ContrastsLimma</code> works with
+<code>merge_contrasts_results</code>. Proteins limma cannot estimate are
+filled in from the <code>lm_impute</code> facade, which refits them with
+LOD-imputed values.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mC</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsMissing.html">ContrastsMissing</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>lfqdata <span class="op">=</span> <span class="va">transformed</span>, contrasts <span class="op">=</span> <span class="va">contr_spec</span><span class="op">)</span></span>
-<span><span class="va">merged_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr_limma</span>, add <span class="op">=</span> <span class="va">mC</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">transformed</span>, <span class="st">"~ group_"</span>, <span class="va">contr_spec</span><span class="op">)</span><span class="op">$</span><span class="va">contrast</span></span>
+<span><span class="va">merged_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merge_contrasts_results.html">merge_contrasts_results</a></span><span class="op">(</span>prefer <span class="op">=</span> <span class="va">contr_limma</span>, add <span class="op">=</span> <span class="va">imp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">plotter</span> <span class="op">&lt;-</span> <span class="va">merged_result</span><span class="op">$</span><span class="va">merged</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">plotter</span><span class="op">$</span><span class="fu">volcano</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FDR</span></span></code></pre></div>
@@ -632,7 +634,7 @@ for degree-of-freedom correction.</p>
 <td align="left">(Intercept)</td>
 <td align="right">4.270</td>
 <td align="right">0.022</td>
-<td align="right">196.778</td>
+<td align="right">196.775</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
@@ -664,7 +666,7 @@ for degree-of-freedom correction.</p>
 <td align="left">(Intercept)</td>
 <td align="right">4.539</td>
 <td align="right">0.014</td>
-<td align="right">314.082</td>
+<td align="right">314.081</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -1361,7 +1363,7 @@ Limpa peptide-level volcano plot.
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] dplyr_1.2.1    prolfqua_1.8.0</span></span>
+<span><span class="co">## [1] dplyr_1.2.1    prolfqua_1.9.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           </span></span>

@@ -19,6 +19,7 @@
 <url><loc>https://wolski.github.io/prolfqua/articles/TestingMissingInference.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/index.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/articles/limpa_example.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/articles/prolfqua.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/authors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/index.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/news/index.html</loc></url>
@@ -41,7 +42,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsInterface.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimma.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.html</loc></url>
@@ -50,7 +50,6 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/ContrastsMissing.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsModerated.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/ContrastsPlotter.html</loc></url>
@@ -110,16 +109,9 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_contrast.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/compute_lmer_contrast.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/contrasts_linfct.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/data_IonstarProtein_subsetNorm.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/data_SAINTe_output.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/data_benchmarkExample.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/data_checksummarizationrobust87.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/data_checksummarizerobust69.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/data_ionstar.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/data_skylinePRMSample_A.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/data_skylineSRM_HL_A.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/data_spectronautDIA250_A.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/data_test_confusion_matrix_scores.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/df.residual.rfit_prolfqua.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/df.residual.rlm.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/dot-get_robscales.html</loc></url>
@@ -196,6 +188,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/plot_stat_violin_median.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/plot_stdv_vs_mean.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/pooled_var.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/prolfqua-package.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/prolfqua_data.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/rank_peptide_by_intensity.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/register_facade.html</loc></url>
@@ -224,7 +217,7 @@
 <url><loc>https://wolski.github.io/prolfqua/reference/summarize_hierarchy.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/summarize_stats.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/summarize_stats_factors.html</loc></url>
-<url><loc>https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.html</loc></url>
+<url><loc>https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/table_facade.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/table_factors.html</loc></url>
 <url><loc>https://wolski.github.io/prolfqua/reference/table_factors_size.html</loc></url>

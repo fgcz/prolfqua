@@ -10,7 +10,7 @@ An R6 class generator.
 
 ## See also
 
-[`summary_ROPECA_median_p.scaled`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md)
+[`summary_ROPECA_median_p_scaled`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md)
 
 Other modelling:
 [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md),
@@ -23,7 +23,6 @@ Other modelling:
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
-[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
 [`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md),
@@ -32,7 +31,6 @@ Other modelling:
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
 [`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md),
 [`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
-[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
@@ -97,7 +95,7 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
+[`summary_ROPECA_median_p_scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -151,7 +149,7 @@ Inherited methods
 
 ### Method `new()`
 
-intitialize
+initialize
 
 #### Usage
 
@@ -263,66 +261,42 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-bb <-prolfqua::sim_lfq_data_peptide_config()
+istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done
 #> setup done
-configur <- bb$config$clone(deep=TRUE)
-configur$hierarchy_depth <- 2
-data <- bb$data
-lfqdata <- LFQData$new(data, configur)
-lfqdata$factors()
-#> # A tibble: 12 × 3
-#>    sample  sampleName group_
-#>    <chr>   <chr>      <chr> 
-#>  1 A_V1    A_V1       A     
-#>  2 A_V2    A_V2       A     
-#>  3 A_V3    A_V3       A     
-#>  4 A_V4    A_V4       A     
-#>  5 B_V1    B_V1       B     
-#>  6 B_V2    B_V2       B     
-#>  7 B_V3    B_V3       B     
-#>  8 B_V4    B_V4       B     
-#>  9 Ctrl_V1 Ctrl_V1    Ctrl  
-#> 10 Ctrl_V2 Ctrl_V2    Ctrl  
-#> 11 Ctrl_V3 Ctrl_V3    Ctrl  
-#> 12 Ctrl_V4 Ctrl_V4    Ctrl  
+lfqdata <- LFQData$new(istar$data, istar$config)
+lfqdata$rename_response("transformedIntensity")
 Contrasts <- c("aC" = "group_A - group_Ctrl",
-"bC" = "group_A - group_Ctrl")
-csi <- ContrastsMissing$new(lfqdata, contrasts = Contrasts)
-#> Warning: ContrastsMissing is deprecated: it substitutes group means rather than fitting a model. Prefer build_model_impute (LOD-imputed per-protein refit with borrowed variance) via the lm_impute / limma_impute facades. See ?ContrastsMissing for details.
-ctr <- csi$get_contrasts()
-#> aC=group_A - group_Ctrl
-#> bC=group_A - group_Ctrl
-#> aC=group_A - group_Ctrl
-#> bC=group_A - group_Ctrl
-#> aC=group_A - group_Ctrl
-#> bC=group_A - group_Ctrl
-csi$subject_id
-#> [1] "protein_Id" "peptide_Id"
-xcx <- ContrastsTable$new(ctr, subject_id = csi$subject_id, model_name = "TableTest")
+"bC" = "group_B - group_Ctrl")
+fa <- ContrastsLMFacade$new(lfqdata, "~ group_", Contrasts)
+ctr <- fa$get_contrasts()
+#> determine linear functions:
+#> get_contrasts -> contrasts_linfct
+#> contrasts_linfct
+#> Joining with `by = join_by(protein_Id, contrast)`
+fa$contrast$subject_id
+#> [1] "protein_Id"
+xcx <- ContrastsTable$new(ctr, subject_id = fa$contrast$subject_id, model_name = "TableTest")
 xcx$get_contrasts()
-#> # A tibble: 56 × 24
-#>    modelName    estimate_type    protein_Id  peptide_Id meanAbundanceImp_group_1
-#>    <chr>        <chr>            <chr>       <chr>                         <dbl>
-#>  1 groupAverage missing_fallback 0EfVhX~0087 ITLb4x1q                       18.0
-#>  2 groupAverage missing_fallback 0EfVhX~0087 ahQLlQY7                       25.8
-#>  3 groupAverage missing_fallback 0EfVhX~0087 dJkdz7so                       15.5
-#>  4 groupAverage missing_fallback 7cbcrd~5725 D5dQ4nKk                       29.5
-#>  5 groupAverage missing_fallback 9VUkAq~4703 eIC06D7g                       18.0
-#>  6 groupAverage missing_fallback BEJI92~5282 HBkZvdhT                       16.8
-#>  7 groupAverage missing_fallback BEJI92~5282 qQ1GK8Un                       23.8
-#>  8 groupAverage missing_fallback CGzoYe~2147 mjHSHhoe                       24.3
-#>  9 groupAverage missing_fallback DoWup2~5896 KVUnZ6oZ                       23.8
-#> 10 groupAverage missing_fallback Fl4JiV~8625 GsUIOl6Q                       19.1
-#> # ℹ 46 more rows
-#> # ℹ 19 more variables: meanAbundanceImp_group_2 <dbl>, diff <dbl>,
-#> #   group_1_name <chr>, group_2_name <chr>, contrast <chr>, avgAbd <dbl>,
-#> #   indic <dbl>, nrMeasured_group_1 <int>, nrMeasured_group_2 <int>, df <int>,
-#> #   sigma <dbl>, std.error <dbl>, statistic <dbl>, p.value <dbl>,
-#> #   conf.low <dbl>, conf.high <dbl>, FDR <dbl>, std.error.unmoderated <dbl>,
-#> #   df.unmoderated <int>
+#> # A tibble: 59 × 16
+#>    modelName estimate_type protein_Id  contrast    diff avgAbd
+#>    <chr>     <chr>         <chr>       <chr>      <dbl>  <dbl>
+#>  1 lm        observed      0EfVhX~2956 aC        1.24     22.6
+#>  2 lm        observed      0m5WN4~6730 aC       -0.0361   20.8
+#>  3 lm        observed      7QuTub~6175 aC       -0.680    16.6
+#>  4 lm        observed      7cbcrd~2687 aC        0.704    22.0
+#>  5 lm        observed      9VUkAq~3402 aC        0.768    20.0
+#>  6 lm        observed      At886V~7759 aC       -1.86     29.1
+#>  7 lm        observed      BEJI92~2727 aC       -0.721    22.1
+#>  8 lm        observed      CGzoYe~0821 aC       -0.389    21.1
+#>  9 lm        observed      CtOJ9t~9170 aC       -0.0717   27.8
+#> 10 lm        observed      DoWup2~2837 aC       -1.82     26.1
+#> # ℹ 49 more rows
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 xcx$get_Plotter()$volcano()
 #> $p.value
 
@@ -332,5 +306,5 @@ xcx$get_Plotter()$volcano()
 #> 
 stopifnot(is.null(xcx$get_contrast_sides()))
 stopifnot(is.null(xcx$get_linfct()))
-stopifnot(ncol(xcx$to_wide()) == 10)
+stopifnot(ncol(xcx$to_wide()) == 9)
 ```

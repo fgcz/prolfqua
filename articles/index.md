@@ -20,6 +20,8 @@
   Data](https://wolski.github.io/prolfqua/articles/limpa_example.md):
 - [Modelling dataset with two
   Factors](https://wolski.github.io/prolfqua/articles/Modelling2Factors.md):
+- [Introduction to
+  prolfqua](https://wolski.github.io/prolfqua/articles/prolfqua.md):
 - [QC and Sample Size
   Estimation](https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.md):
 - [Simulate Peptide level

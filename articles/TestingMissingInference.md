@@ -2,7 +2,7 @@
 
 This vignette contains experimental code.
 
-## Example using prolfqua::MissingHelpers class
+## Limit of detection with the prolfqua::MissingHelpers class
 
 ``` r
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
@@ -23,59 +23,27 @@ dd$data$abundance |> is.na() |> sum()
     ## [1] 552
 
 ``` r
-contr_spec <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
-mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = TRUE)
-imputed <- mh1$get_contrasts(Contrasts = contr_spec)
+mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5)
+head(mh1$get_stats())
 ```
 
-    ## dilution.b-a=group_A - group_B
-
-    ## dilution.c-e=group_A - group_Ctrl
-
-    ## dilution.b-a=group_A - group_B
-
-    ## dilution.c-e=group_A - group_Ctrl
-
-    ## dilution.b-a=group_A - group_B
-
-    ## dilution.c-e=group_A - group_Ctrl
-
-``` r
-mh2 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5,weighted = FALSE)
-imputed2 <- mh2$get_contrasts(Contrasts = contr_spec)
-```
-
-    ## dilution.b-a=group_A - group_B
-    ## 
-    ## dilution.c-e=group_A - group_Ctrl
-
-    ## dilution.b-a=group_A - group_B
-
-    ## dilution.c-e=group_A - group_Ctrl
-
-    ## dilution.b-a=group_A - group_B
-
-    ## dilution.c-e=group_A - group_Ctrl
-
-``` r
-plot(imputed$estimate, imputed2$estimate)
-abline(0 , 1 , col=2 , lwd=2)
-```
-
-![](TestingMissingInference_files/figure-html/lookAtSummarizeStats-1.png)
+    ## # A tibble: 6 × 12
+    ##   protein_Id  isotopeLabel group_ nrReplicates nrMeasured nrNAs     sd    var
+    ##   <chr>       <chr>        <chr>         <int>      <int> <int>  <dbl>  <dbl>
+    ## 1 0EfVhX~3967 light        A                 4          4     0  1.43   2.05 
+    ## 2 0EfVhX~3967 light        B                 4          4     0  0.965  0.930
+    ## 3 0EfVhX~3967 light        Ctrl              4          1     3 NA     NA    
+    ## 4 0YSKpy~2865 light        A                 4          1     3 NA     NA    
+    ## 5 0YSKpy~2865 light        B                 4          0     4 NA     NA    
+    ## 6 0YSKpy~2865 light        Ctrl              4          2     2  1.55   2.41 
+    ## # ℹ 4 more variables: meanAbundance <dbl>, medianAbundance <dbl>, CV <dbl>,
+    ## #   interaction <fct>
 
 ``` r
 mh1$get_lod()
 ```
 
     ## [1] 18.13636
-
-``` r
-plot( imputed$estimate, -log10(imputed$p.value), pch = "*" )
-points(imputed2$estimate, -log10(imputed2$p.value), col = 2, pch = "x")
-```
-
-![](TestingMissingInference_files/figure-html/lookAtSummarizeStats-2.png)
 
 ### Modelling with linear models
 
@@ -417,7 +385,7 @@ sessionInfo()
     ##  [52] tidyselect_1.2.1       yaml_2.3.12            doParallel_1.0.17     
     ##  [55] codetools_0.2-20       lattice_0.22-7         tibble_3.3.1          
     ##  [58] plyr_1.8.9             withr_3.0.3            S7_0.2.2              
-    ##  [61] prolfqua_1.8.0         evaluate_1.0.5         desc_1.4.3            
+    ##  [61] prolfqua_1.9.0         evaluate_1.0.5         desc_1.4.3            
     ##  [64] survival_3.8-3         circlize_0.4.18        pillar_1.11.1         
     ##  [67] mice_3.19.0            foreach_1.5.2          stats4_4.5.2          
     ##  [70] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        

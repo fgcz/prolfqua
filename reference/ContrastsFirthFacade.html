@@ -9,7 +9,7 @@ Firth logistic missingness contrast analysis facade"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,7 +17,8 @@ Firth logistic missingness contrast analysis facade"></head><body>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/prolfqua.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
@@ -78,7 +79,6 @@ input use <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFa
 <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFacade</a></code>,
 <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>,
 <code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>,
-<code><a href="ContrastsLMMissingFacade.html">ContrastsLMMissingFacade</a></code>,
 <code><a href="ContrastsLimma.html">ContrastsLimma</a></code>,
 <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>,
 <code><a href="ContrastsLimmaImputeFacade.html">ContrastsLimmaImputeFacade</a></code>,
@@ -87,7 +87,6 @@ input use <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFa
 <code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>,
 <code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code>,
 <code><a href="ContrastsLmerNestedFacade.html">ContrastsLmerNestedFacade</a></code>,
-<code><a href="ContrastsMissing.html">ContrastsMissing</a></code>,
 <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>,
 <code><a href="ContrastsModeratedDEqMS.html">ContrastsModeratedDEqMS</a></code>,
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
@@ -153,7 +152,7 @@ input use <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFa
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
-<code><a href="summary_ROPECA_median_p.scaled.html">summary_ROPECA_median_p.scaled()</a></code>,
+<code><a href="summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
@@ -249,9 +248,9 @@ input use <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFa
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [1]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.978</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.978</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> firth     observed      At886V~3296 A_vs_Ctrl     1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.978</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.978</span>
@@ -262,26 +261,26 @@ input use <code><a href="ContrastsFirthNestedFacade.html">ContrastsFirthNestedFa
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~59…       1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1             1                5.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~59…       4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1             1                2.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0m5WN4~14…       8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>             0.538         0.978            6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 7cbcrd~83…       1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1             1                5.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 7cbcrd~83…       4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1             1                2.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 9VUkAq~45…      -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0             0.468         0.978           -<span style="color: #BB0000;">7.58</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> At886V~32…      -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>             0.538         0.978           -<span style="color: #BB0000;">6.40</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> BEJI92~91…      -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0             0.468         0.978           -<span style="color: #BB0000;">7.58</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CGzoYe~28…      -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1             1               -<span style="color: #BB0000;">1.96</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> CGzoYe~28…       2.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1.000         1                1.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> CtOJ9t~28…       1.35<span style="color: #949494;">e</span>+ 0             0.468         0.978            7.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> DoWup2~29…       2.20<span style="color: #949494;">e</span>+ 0             0.238         0.978            1.26<span style="color: #949494;">e</span>+ 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> DuwH7n~34…       8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>             0.538         0.978            6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Fl4JiV~75…      -<span style="color: #BB0000;">2.85</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span>             1             1               -<span style="color: #BB0000;">2.26</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Fl4JiV~75…       3.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1             1                2.54<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> HC8K98~49…       8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>             0.538         0.978            6.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> HvIpHG~40…       1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1             1                5.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> HvIpHG~40…       4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1             1                2.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> I1Jk2Z~08…      -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>             0.538         0.978           -<span style="color: #BB0000;">6.40</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> JV3Z7t~29…       1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1             1                5.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> JV3Z7t~29…       4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1             1                2.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> JcKVfU~08…      -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0             0.468         0.978           -<span style="color: #BB0000;">7.58</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> JfvT8X~27…      -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0             0.238         0.978           -<span style="color: #BB0000;">1.26</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> R2i6w7~02…       6.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span>             1             1                5.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> SGIVBl~95…       1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1             1                5.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> r2J0Eh~26…      -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1             1               -<span style="color: #BB0000;">1.96</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> R2i6w7~02…      -<span style="color: #BB0000;">1.11</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span>             1             1               -<span style="color: #BB0000;">8.81</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-18</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> SGIVBl~95…       4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1             1                2.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> r2J0Eh~26…       2.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1.000         1                1.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

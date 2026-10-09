@@ -31,11 +31,11 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 - method:
 
   a registered facade key. The built-in keys are `"lm"`, `"lm_impute"`,
-  `"lm_missing"`, `"limma"`, `"limma_impute"`, `"limma_voom"`,
-  `"limma_voom_impute"`, `"limpa"`, `"limpa_nested"`, `"rlm"`, `"rfit"`,
-  `"rfit_impute"`, `"deqms"`, `"deqms_voom"`, `"firth"`,
-  `"firth_nested"`, `"binomial_nested"`, `"lmer_nested"`,
-  `"ropeca_nested"`; downstream packages may add more via
+  `"limma"`, `"limma_impute"`, `"limma_voom"`, `"limma_voom_impute"`,
+  `"limpa"`, `"limpa_nested"`, `"rlm"`, `"rfit"`, `"rfit_impute"`,
+  `"deqms"`, `"deqms_voom"`, `"firth"`, `"firth_nested"`,
+  `"binomial_nested"`, `"lmer_nested"`, `"ropeca_nested"`; downstream
+  packages may add more via
   [`register_facade`](https://wolski.github.io/prolfqua/reference/register_facade.md).
   The authoritative list is
   `names(`[`list_facades`](https://wolski.github.io/prolfqua/reference/list_facades.md)`())`.
@@ -55,7 +55,6 @@ one of
 [`ContrastsRfitFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitFacade.md),
 [`ContrastsRfitImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
-[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsDEqMSFacade`](https://wolski.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsROPECANestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
@@ -79,7 +78,6 @@ Other modelling:
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
-[`ContrastsLMMissingFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMMissingFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
 [`ContrastsLimmaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
 [`ContrastsLimmaImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimmaImputeFacade.md),
@@ -88,7 +86,6 @@ Other modelling:
 [`ContrastsLimpaFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
 [`ContrastsLimpaNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md),
 [`ContrastsLmerNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
-[`ContrastsMissing`](https://wolski.github.io/prolfqua/reference/ContrastsMissing.md),
 [`ContrastsModerated`](https://wolski.github.io/prolfqua/reference/ContrastsModerated.md),
 [`ContrastsModeratedDEqMS`](https://wolski.github.io/prolfqua/reference/ContrastsModeratedDEqMS.md),
 [`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md),
@@ -153,7 +150,7 @@ Other modelling:
 [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://wolski.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p.scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p.scaled.md),
+[`summary_ROPECA_median_p_scaled()`](https://wolski.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://wolski.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
@@ -201,31 +198,6 @@ head(fa_limma$get_contrasts())
 #> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
 #> #   std.error <dbl>, statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
-
-fa_miss <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm_missing")
-#> Warning: ContrastsLMMissingFacade (method = 'lm_missing') is deprecated: its second leg uses ContrastsMissing (group-mean substitution, no model fit). Prefer 'lm_impute' which refits failed/singular proteins with LOD imputation and borrowed variance, flagging rescued rows as estimate_type 'lod_imputed'. See ?ContrastsLMMissingFacade for migration.
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
-#> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
-#> A_vs_Ctrl=group_A - group_Ctrl
-#> A_vs_Ctrl=group_A - group_Ctrl
-#> A_vs_Ctrl=group_A - group_Ctrl
-#> Joining with `by = join_by(protein_Id, contrast)`
-#> Joining with `by = join_by(protein_Id, contrast)`
-head(fa_miss$get_contrasts())
-#> # A tibble: 6 × 16
-#>   modelName  estimate_type protein_Id  contrast     diff avgAbd
-#>   <chr>      <chr>         <chr>       <chr>       <dbl>  <dbl>
-#> 1 lm_missing observed      0EfVhX~5954 A_vs_Ctrl  2.72     23.2
-#> 2 lm_missing observed      0m5WN4~1448 A_vs_Ctrl  0.600    17.4
-#> 3 lm_missing observed      7cbcrd~8305 A_vs_Ctrl  2.59     27.0
-#> 4 lm_missing observed      9VUkAq~4562 A_vs_Ctrl  0.0679   19.4
-#> 5 lm_missing observed      At886V~3296 A_vs_Ctrl -1.01     19.1
-#> 6 lm_missing observed      BEJI92~9143 A_vs_Ctrl -0.873    20.9
-#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
-#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
-#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
 head(fa_deqms$get_contrasts())
@@ -323,9 +295,9 @@ head(fa_firth$get_contrasts())
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1

@@ -39,7 +39,7 @@ linear models can be found
 
 We use simulated data generated using the function
 `sim_lfq_data_2factor_config`. Interesting here is the definition of the
-model. If interaction shall be included in the model a *asterix* should
+model. If interaction shall be included in the model a *asterisk* should
 be used while if no interaction should be taken into account a *plus*
 should be used in the model definition. Also we can directly specify
 what comparisons we are interested in by specifying the respective
@@ -189,40 +189,40 @@ Volcano and MA plot for result visualisation
 
 ### Analyse contrasts with missing data imputation
 
-Still using the approach above, we can only estimate group averages in
-case there is at least one measurement for each protein in each
-group/condition. In the case of missing data for one condition, we can
-use the `ContrastsMissing` function where the 10th percentile expression
-of all proteins is used for the estimate of the missing condition.
+Still using the approach above, we can only estimate contrasts for
+proteins with enough observations in each group/condition. For proteins
+where the linear model fails, the `lm_impute` facade refits the model
+after imputing the missing observations with the limit of detection
+(LOD) and borrows the variance from the proteins that could be fitted.
 
 ``` r
-contrSimple <- prolfqua::ContrastsMissing$new(pMerged, contr_spec)
-contrdfSimple <- contrSimple$get_contrasts()
-pl <- contrSimple$get_Plotter()
+contrImputed <- prolfqua::ContrastsLMImputeFacade$new(pMerged, "~ Treatment * Background", contr_spec)$contrast
+contrdfImputed <- contrImputed$get_contrasts()
+pl <- contrImputed$get_Plotter()
 pl$histogram_diff()
 ```
 
-![Volcano and MA plot for result visualisation for the group average
-model](Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-1.png)
+![Histogram of fold changes and volcano plot for the LOD-imputed
+model](Modelling2Factors_files/figure-html/prepareForImputation-1.png)
 
-Volcano and MA plot for result visualisation for the group average model
+Histogram of fold changes and volcano plot for the LOD-imputed model
 
 ``` r
 pl$volcano()$FDR
 ```
 
-![Volcano and MA plot for result visualisation for the group average
-model](Modelling2Factors_files/figure-html/prepareForGroupAverageImputation-2.png)
+![Histogram of fold changes and volcano plot for the LOD-imputed
+model](Modelling2Factors_files/figure-html/prepareForImputation-2.png)
 
-Volcano and MA plot for result visualisation for the group average model
+Histogram of fold changes and volcano plot for the LOD-imputed model
 
 ### Merge nonimputed and imputed data.
 
 For the moderated model, we can only get results if we have enough valid
-data points. With the group average model we can get group estimates for
-all proteins. Therefore, we are merging the statistics for both
-approaches while we are preferring the values of the moderated model.
-Also these results can again be visualized in a `volcano` plot.
+data points. With the imputed model we get estimates for all proteins.
+Therefore, we are merging the statistics for both approaches while we
+are preferring the values of the moderated model. Also these results can
+again be visualized in a `volcano` plot.
 
 ``` r
 dim(contr$get_contrasts())
@@ -231,22 +231,22 @@ dim(contr$get_contrasts())
     ## [1] 757  16
 
 ``` r
-dim(contrSimple$get_contrasts())
+dim(contrImputed$get_contrasts())
 ```
 
-    ## [1] 980  23
+    ## [1] 980  16
 
 ``` r
-mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrSimple)$merged
+mergedContrasts <- prolfqua::merge_contrasts_results(prefer = contr, add = contrImputed)$merged
 cM <- mergedContrasts$get_Plotter()
 plot <- cM$volcano()
 plot$FDR
 ```
 
-![Volcano plot of moderated (black) and impuation (light green)
-model](Modelling2Factors_files/figure-html/doGroupAverageImputation-1.png)
+![Volcano plot of moderated and imputed
+model](Modelling2Factors_files/figure-html/doImputationMerge-1.png)
 
-Volcano plot of moderated (black) and impuation (light green) model
+Volcano plot of moderated and imputed model
 
 #### Look at Proteins with significant interaction term.
 
@@ -405,7 +405,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] dplyr_1.2.1    prolfqua_1.8.0
+    ## [1] dplyr_1.2.1    prolfqua_1.9.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

@@ -47,7 +47,7 @@ bb <- sim_lfq_data_peptide_config(Nprot = 5)
 #> completing cases done
 #> setup done
 subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
-#> Sampling 2protein_Id
+#> Sampling 2 protein_Id
 #> Joining with `by = join_by(protein_Id)`
 length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 #> [1] 2

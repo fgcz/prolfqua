@@ -25,5 +25,6 @@ The computed result.
 ## Examples
 
 ``` r
-find_package_file("prolfqua","extdata/medata.csv")
+find_package_file("prolfqua", "CITATION")
+#> [1] "/home/runner/work/_temp/Library/prolfqua/CITATION"
 ```

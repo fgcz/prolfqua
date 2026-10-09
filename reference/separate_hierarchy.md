@@ -16,7 +16,7 @@ separate_hierarchy(data, config)
 
 - config:
 
-  AnlalysisConfiguration
+  AnalysisConfiguration
 
 ## See also
 

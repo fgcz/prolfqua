@@ -1,6 +1,6 @@
-# Histogram summarizing missigness
+# Histogram summarizing missingness
 
-Histogram summarizing missigness
+Histogram summarizing missingness
 
 ## Usage
 

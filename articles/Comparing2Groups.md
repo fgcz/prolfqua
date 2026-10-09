@@ -4,24 +4,27 @@
 
 This vignette demonstrates how two conditions, e.g., treatment
 vs. control, can be compared and the differences statistically tested.
-We will again use the Ionstar dataset as an example of an LFQ
-experiment. This dataset was preprocessed with the MaxQuant software.
-After first examining the data using QC plots and then normalizing the
-data, we compare groups of replicates with the different dilutions. The
-output of the comparison is the difference in the mean intensities for
-quantified proteins (log2 fold-change) in each group, along with
-statistical parameters such as degrees of freedom, standard errors,
-p-value and the FDR.
+We use simulated protein abundances of an LFQ experiment with two
+treatment groups (`A`, `B`) and a control group (`Ctrl`). After first
+examining the data using QC plots and then normalizing the data, we
+compare each treatment group with the control. The output of the
+comparison is the difference in the mean intensities for quantified
+proteins (log2 fold-change) in each group, along with statistical
+parameters such as degrees of freedom, standard errors, p-value and the
+FDR.
 
-## Loading protein abundances from MaxQuant proteinGroups.txt
+## Simulated protein abundances
 
 ``` r
 library(prolfqua)
 ```
 
-Specify the path to the MaxQuant `proteinGroups.txt` file. The function
-`tidyMQ_ProteinGroups` will read the `proteinGroups.txt` file and
-convert it into a tidy table
+[`sim_lfq_data_protein_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_protein_config.md)
+simulates protein abundances in long format, one row per protein and
+sample, and returns them together with a matching
+`AnalysisConfiguration`. To read your own data, see the vignette
+[Creating
+configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
 
 ``` r
 xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100)
@@ -80,8 +83,9 @@ xx
     ##     value_vars: function () 
     ##     work_intensity: abundance
 
-Create the `LFQData` class instance and remove zeros from data (MaxQuant
-encodes missing values with zero).
+Create the `LFQData` class instance and remove zero or very small
+intensities, which most quantification software reports for missing
+values.
 
 ``` r
 lfqdata <- prolfqua::LFQData$new(xx$data, xx$config)
@@ -135,12 +139,10 @@ density_nn <- lfqplotter$intensity_distribution_density()
 lfqplotter$na_heatmap()
 ```
 
-![Heatmap where missing proteins (zero in case of MaxQuant reported
-intensities), black - missing protein intensities, white -
+![Heatmap of missing protein intensities, black - missing, white -
 present](Comparing2Groups_files/figure-html/makeMissingHeatmap-1.png)
 
-Heatmap where missing proteins (zero in case of MaxQuant reported
-intensities), black - missing protein intensities, white - present
+Heatmap of missing protein intensities, black - missing, white - present
 
 ``` r
 lfqdata$get_Summariser()$plot_missingness_per_group()
@@ -302,17 +304,17 @@ mod$anova_histogram("FDR")
 
     ## $plot
 
-![Distribtuion of adjusted p-values
+![Distribution of adjusted p-values
 (FDR)](Comparing2Groups_files/figure-html/showANOVA-1.png)
 
-Distribtuion of adjusted p-values (FDR)
+Distribution of adjusted p-values (FDR)
 
     ## 
     ## $name
     ## [1] "Anova_p.values_Model.pdf"
 
-One also look what proteins do show different abundances in any of our
-five dilutions by looking at the FDR values of the analysis of variane.
+One can also look at which proteins show different abundances in any of
+the groups by looking at the FDR values of the analysis of variance.
 
 ``` r
 aovtable <- mod$get_anova()
@@ -362,15 +364,18 @@ contr <- prolfqua::Contrasts$new(mod, contr_spec)
 v1 <- contr$get_Plotter()$volcano()
 ```
 
-Alternatively, we can moderate the variance and using the Experimental
-Bayes method implemented in `ContrastsModerated`.
+Alternatively, we can moderate the variance using the empirical Bayes
+method implemented in `ContrastsModerated`.
 
 ``` r
 contr <- prolfqua::ContrastsModerated$new(contr)
 contrdf <- contr$get_contrasts()
 ```
 
-In the next figure it can be seen WEWinputNEEDED.
+Moderation shrinks the variance of each protein towards the variance of
+all proteins, which stabilises the p-values of proteins whose variance
+is estimated from few observations. The next figure compares the volcano
+plots without and with moderation.
 
 ``` r
 plotter <- contr$get_Plotter()
@@ -387,46 +392,46 @@ Volcano plot, Left panel - no moderation, Right panel - with moderation.
 plotter$ma_plotly()
 ```
 
-MA plot showing the dependency of mean abuncance with respect to the
+MA plot showing the dependency of mean abundance with respect to the
 difference
 
 ``` r
-#myProteinIDS <- c("sp|Q12246|LCB4_YEAST",  "sp|P38929|ATC2_YEAST",  "sp|Q99207|NOP14_YEAST")
-myProteinIDS <- c("sp|P0AC33|FUMA_ECOLI",  "sp|P28635|METQ_ECOLI",  "sp|Q14C86|GAPD1_HUMAN")
+myProteinIDS <- head(unique(contrdf$protein_Id), 3)
 dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 ```
 
-    ## # A tibble: 0 × 16
-    ## # ℹ 16 variables: modelName <chr>, estimate_type <chr>, protein_Id <chr>,
-    ## #   contrast <chr>, diff <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
-    ## #   df.unmoderated <int>, std.error <dbl>, statistic <dbl>, df <dbl>,
-    ## #   p.value <dbl>, conf.low <dbl>, conf.high <dbl>, sigma <dbl>, FDR <dbl>
+    ## # A tibble: 6 × 16
+    ##   modelName estimate_type protein_Id  contrast    diff avgAbd
+    ##   <chr>     <chr>         <chr>       <chr>      <dbl>  <dbl>
+    ## 1 WaldTest  observed      0EfVhX~3967 AvsC      0.0758   4.43
+    ## 2 WaldTest  observed      0m5WN4~6025 AvsC     -0.260    4.21
+    ## 3 WaldTest  observed      0YSKpy~2865 AvsC     -0.0176   4.16
+    ## 4 WaldTest  observed      0EfVhX~3967 BvsC     -0.115    4.33
+    ## 5 WaldTest  observed      0m5WN4~6025 BvsC      0.174    4.42
+    ## 6 WaldTest  observed      0YSKpy~2865 BvsC     -0.0625   4.13
+    ## # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+    ## #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+    ## #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 ## Contrasts with missing value imputation
 
-Use this method if there proteins with no observations in one of the
-groups. With the `ContrastsMissing` function, we can estimate difference
-in mean for proteins that are not observed in one group or condition.
-For this we are using the average expression at percentile 0.05 of the
-group where the protein is not quantified.
+Use this method if there are proteins with no observations in one of the
+groups. The `lm_impute` facade refits the linear model for these
+proteins after imputing the missing observations with the limit of
+detection (LOD), and borrows the variance from the proteins that could
+be fitted.
 
 ``` r
-mC <- prolfqua::ContrastsMissing$new(lfqdata = transformed, contrasts = contr_spec)
+mC <- prolfqua::ContrastsLMImputeFacade$new(transformed, "~ group_", contr_spec)$contrast
 colnames(mC$get_contrasts())
 ```
 
-    ##  [1] "modelName"                "estimate_type"           
-    ##  [3] "protein_Id"               "meanAbundanceImp_group_1"
-    ##  [5] "meanAbundanceImp_group_2" "diff"                    
-    ##  [7] "group_1_name"             "group_2_name"            
-    ##  [9] "contrast"                 "avgAbd"                  
-    ## [11] "indic"                    "nrMeasured_group_1"      
-    ## [13] "nrMeasured_group_2"       "df"                      
-    ## [15] "sigma"                    "std.error"               
-    ## [17] "statistic"                "p.value"                 
-    ## [19] "conf.low"                 "conf.high"               
-    ## [21] "FDR"                      "std.error.unmoderated"   
-    ## [23] "df.unmoderated"
+    ##  [1] "modelName"             "estimate_type"         "protein_Id"           
+    ##  [4] "contrast"              "diff"                  "avgAbd"               
+    ##  [7] "std.error.unmoderated" "df.unmoderated"        "std.error"            
+    ## [10] "statistic"             "df"                    "p.value"              
+    ## [13] "conf.low"              "conf.high"             "sigma"                
+    ## [16] "FDR"
 
 Finally we are merging the results and give priority to the results
 where we do not have missing values in one group.
@@ -439,11 +444,11 @@ tmp$FDR
 ```
 
 ![Volcano plots for the two contrasts with missing value imputation from
-the group_average
+the lm_impute
 model.](Comparing2Groups_files/figure-html/mergeResults-1.png)
 
 Volcano plots for the two contrasts with missing value imputation from
-the group_average model.
+the lm_impute model.
 
 Look at proteins which could not be fitted using the linear model, if
 any.
@@ -515,7 +520,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.8.0 dplyr_1.2.1   
+    ## [1] prolfqua_1.9.0   dplyr_1.2.1      BiocStyle_2.38.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           
@@ -531,33 +536,34 @@ sessionInfo()
     ##  [31] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
     ##  [34] later_1.4.8            pan_2.0                prettyunits_1.2.0     
     ##  [37] broom_1.0.13           parallel_4.5.2         cluster_2.1.8.1       
-    ##  [40] R6_2.6.1               bslib_0.12.0           stringi_1.8.9         
+    ##  [40] R6_2.6.1               stringi_1.8.9          bslib_0.12.0          
     ##  [43] RColorBrewer_1.1-3     limma_3.66.0           boot_1.3-32           
     ##  [46] rpart_4.1.24           jquerylib_0.1.4        Rcpp_1.1.2            
-    ##  [49] iterators_1.0.14       knitr_1.52             IRanges_2.44.0        
-    ##  [52] httpuv_1.6.17          Matrix_1.7-4           splines_4.5.2         
-    ##  [55] nnet_7.3-20            tidyselect_1.2.1       yaml_2.3.12           
-    ##  [58] doParallel_1.0.17      codetools_0.2-20       lattice_0.22-7        
-    ##  [61] tibble_3.3.1           plyr_1.8.9             shiny_1.14.0          
-    ##  [64] withr_3.0.3            S7_0.2.2               evaluate_1.0.5        
-    ##  [67] desc_1.4.3             survival_3.8-3         circlize_0.4.18       
-    ##  [70] pillar_1.11.1          mice_3.19.0            KernSmooth_2.23-26    
-    ##  [73] foreach_1.5.2          stats4_4.5.2           reformulas_0.4.4      
-    ##  [76] plotly_4.12.1          generics_0.1.4         hms_1.1.4             
-    ##  [79] S4Vectors_0.48.1       ggplot2_4.0.3          scales_1.4.0          
-    ##  [82] minqa_1.2.8            xtable_1.8-8           glue_1.8.1            
-    ##  [85] lazyeval_0.2.3         tools_4.5.2            data.table_1.18.6.1   
-    ##  [88] lme4_2.0-6             forcats_1.0.1          fs_2.1.0              
-    ##  [91] grid_4.5.2             tidyr_1.3.2            rbibutils_2.4.1       
-    ##  [94] crosstalk_1.2.2        colorspace_2.1-3       nlme_3.1-168          
-    ##  [97] formula.tools_1.7.1    cli_3.6.6              textshaping_1.0.5     
-    ## [100] viridisLite_0.4.3      ComplexHeatmap_2.26.1  gtable_0.3.6          
-    ## [103] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1
-    ## [106] BiocGenerics_0.56.0    ggrepel_0.9.8          rjson_0.2.23          
-    ## [109] htmlwidgets_1.6.4      farver_2.1.2           htmltools_0.5.9       
-    ## [112] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.9            
-    ## [115] mime_0.13              GlobalOptions_0.1.4    mitml_0.4-5           
-    ## [118] statmod_1.5.2          MASS_7.3-65
+    ##  [49] bookdown_0.48          iterators_1.0.14       knitr_1.52            
+    ##  [52] IRanges_2.44.0         httpuv_1.6.17          Matrix_1.7-4          
+    ##  [55] splines_4.5.2          nnet_7.3-20            tidyselect_1.2.1      
+    ##  [58] yaml_2.3.12            doParallel_1.0.17      codetools_0.2-20      
+    ##  [61] lattice_0.22-7         tibble_3.3.1           plyr_1.8.9            
+    ##  [64] shiny_1.14.0           withr_3.0.3            S7_0.2.2              
+    ##  [67] evaluate_1.0.5         desc_1.4.3             survival_3.8-3        
+    ##  [70] circlize_0.4.18        pillar_1.11.1          BiocManager_1.30.27   
+    ##  [73] mice_3.19.0            KernSmooth_2.23-26     foreach_1.5.2         
+    ##  [76] stats4_4.5.2           reformulas_0.4.4       plotly_4.12.1         
+    ##  [79] generics_0.1.4         hms_1.1.4              S4Vectors_0.48.1      
+    ##  [82] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
+    ##  [85] xtable_1.8-8           glue_1.8.1             lazyeval_0.2.3        
+    ##  [88] tools_4.5.2            data.table_1.18.6.1    lme4_2.0-6            
+    ##  [91] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
+    ##  [94] tidyr_1.3.2            crosstalk_1.2.2        rbibutils_2.4.1       
+    ##  [97] colorspace_2.1-3       nlme_3.1-168           formula.tools_1.7.1   
+    ## [100] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     
+    ## [103] ComplexHeatmap_2.26.1  gtable_0.3.6           sass_0.4.10           
+    ## [106] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   
+    ## [109] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     
+    ## [112] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.1         
+    ## [115] lifecycle_1.0.5        httr_1.4.9             mime_0.13             
+    ## [118] GlobalOptions_0.1.4    mitml_0.4-5            statmod_1.5.2         
+    ## [121] MASS_7.3-65
 
 ## References
 
