@@ -750,7 +750,7 @@ sessionInfo()
     ##  [79] tools_4.5.2            data.table_1.18.6.1    lme4_2.0-6            
     ##  [82] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
     ##  [85] limpa_1.2.5            tidyr_1.3.2            rbibutils_2.4.1       
-    ##  [88] colorspace_2.1-3       nlme_3.1-168           formula.tools_1.7.1   
+    ##  [88] colorspace_2.1-4       nlme_3.1-168           formula.tools_1.7.1   
     ##  [91] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     
     ##  [94] ComplexHeatmap_2.26.1  gtable_0.3.6           sass_0.4.10           
     ##  [97] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.56.0   

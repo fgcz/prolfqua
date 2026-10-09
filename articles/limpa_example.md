@@ -1260,7 +1260,7 @@ sessionInfo()
     ##  [73] scales_1.4.0           minqa_1.2.8            glue_1.8.1            
     ##  [76] tools_4.5.2            data.table_1.18.6.1    lme4_2.0-6            
     ##  [79] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
-    ##  [82] tidyr_1.3.2            rbibutils_2.4.1        colorspace_2.1-3      
+    ##  [82] tidyr_1.3.2            rbibutils_2.4.1        colorspace_2.1-4      
     ##  [85] nlme_3.1-168           formula.tools_1.7.1    cli_3.6.6             
     ##  [88] textshaping_1.0.5      viridisLite_0.4.3      ComplexHeatmap_2.26.1 
     ##  [91] dplyr_1.2.1            gtable_0.3.6           sass_0.4.10           

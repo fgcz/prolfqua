@@ -293,7 +293,7 @@ sessionInfo()
     ##  [22] htmlwidgets_1.6.4      plyr_1.8.9             RColorBrewer_1.1-3    
     ##  [25] withr_3.0.3            purrr_1.2.2            BiocGenerics_0.56.0   
     ##  [28] desc_1.4.3             nnet_7.3-20            grid_4.5.2            
-    ##  [31] stats4_4.5.2           jomo_2.7-6             colorspace_2.1-3      
+    ##  [31] stats4_4.5.2           jomo_2.7-6             colorspace_2.1-4      
     ##  [34] mice_3.19.0            ggplot2_4.0.3          scales_1.4.0          
     ##  [37] iterators_1.0.14       MASS_7.3-65            cli_3.6.6             
     ##  [40] UpSetR_1.4.1           rmarkdown_2.32         crayon_1.5.3          
