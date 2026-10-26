@@ -50,6 +50,8 @@ Other modelling:
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
 \code{\link{ContrastsFirthNestedFacade}},
+\code{\link{ContrastsHurdleFacade}},
+\code{\link{ContrastsHurdleNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
 \code{\link{ContrastsLimma}},

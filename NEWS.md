@@ -2,6 +2,12 @@
 
 Changes for the Bioconductor review ([BiocContributions #171](https://github.com/Bioconductor/BiocContributions/issues/171)).
 
+## New features
+
+- New method `binomial_firth_nested` (`ContrastsBinomialFirthNestedFacade`, `strategy_binomial_firth()`): the `binomial_nested` detection-count model with Firth's bias reduction in place of the fixed pseudo-count. Like `binomial_nested`, it sums peptide detections per protein and sample, so its dispersion and degrees of freedom come from the samples; unlike `firth_nested`, its p-values therefore do not grow more significant with the number of peptides. Log odds ratios stay finite for proteins detected in one group only.
+- New method `hurdle_nested` (`ContrastsHurdleNestedFacade`): a hurdle model from peptide-level input in one call, `build_contrast_analysis(method = "hurdle_nested")`. It aggregates to protein level with median polish, fits `lm_impute` to the protein intensities and `binomial_firth_nested` to the peptide detection, and combines them with `ContrastsHurdleFacade`. Being in the registry, it is also available to prolfquapp as a model.
+- `ContrastsHurdleFacade$new(intensity, detection)` combines a fitted intensity facade (`lm`, `lm_impute`, ...) with a fitted `firth_nested`, `binomial_nested` or `binomial_firth_nested` detection facade, as msqrob2's hurdle model does: `p.value` is Fisher's combination of the two component p-values, and `FDR` its BH adjustment within contrast. Proteins only one component estimates keep that component's p-value; fully detected proteins keep their intensity p-value. The component p-values, the detection log odds ratio and the combined statistic are extra columns. No model is fitted.
+
 ## Bug fixes
 
 - `citation("prolfqua")` works again: `inst/CITATION` contained a non-ASCII dash that `utils::readCitationFile()` could not read.

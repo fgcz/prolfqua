@@ -291,3 +291,98 @@ test_that("binomial_nested supports multifactor contrasts and rejects aggregated
     "requires LFQData with additional hierarchy"
   )
 })
+
+test_that("strategy_binomial_firth matches logistf on the expanded binary rows", {
+  expand <- function(dat) {
+    long <- rbind(
+      transform(dat, y = 1, w = detected),
+      transform(dat, y = 0, w = undetected)
+    )
+    long[long$w > 0, ]
+  }
+  designs <- list(
+    overlap = data.frame(
+      group_ = factor(rep(c("A", "B"), each = 4)),
+      detected = c(1, 2, 1, 3, 4, 5, 3, 5),
+      undetected = c(4, 3, 4, 2, 1, 0, 2, 0)
+    ),
+    separated = data.frame(
+      group_ = factor(rep(c("A", "B"), each = 4)),
+      detected = c(rep(0, 4), rep(5, 4)),
+      undetected = c(rep(5, 4), rep(0, 4))
+    ),
+    three_groups = data.frame(
+      group_ = factor(rep(c("A", "B", "C"), each = 4)),
+      detected = c(0, 1, 0, 0, 2, 2, 3, 1, 4, 4, 4, 4),
+      undetected = 4 - c(0, 1, 0, 0, 2, 2, 3, 1, 4, 4, 4, 4)
+    )
+  )
+  strategy <- strategy_binomial_firth("~ group_")
+  for (dat in designs) {
+    fit <- strategy$model_fun(dat)
+    reference <- logistf::logistf(y ~ group_, data = expand(dat), weights = w, pl = FALSE)
+    expect_s3_class(fit, "glm")
+    expect_true(all(is.finite(stats::coef(fit))))
+    expect_equal(unname(stats::coef(fit)), unname(stats::coef(reference)), tolerance = 1e-6)
+    expect_equal(stats::df.residual(fit), nrow(dat) - length(stats::coef(fit)))
+    expect_equal(strategy$sigma(fit), sqrt(summary(fit)$dispersion))
+  }
+  expect_equal(strategy$model_name, "binomial_firth_nested")
+  expect_r6_class(strategy, "StrategyBinomial")
+
+  too_small <- data.frame(
+    group_ = factor(c("A", "A", "B")),
+    detected = c(1, 2, 4),
+    undetected = c(4, 3, 1)
+  )
+  expect_warning(
+    fit_small <- strategy$model_fun(too_small),
+    "residual degrees of freedom"
+  )
+  expect_type(fit_small, "character")
+})
+
+test_that("binomial_firth_nested facade takes its residual df from the samples", {
+  istar <- sim_lfq_data_peptide_config(Nprot = 30, weight_missing = 0.7, seed = 9)
+  lfqdata <- LFQData$new(istar$data, istar$config)
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+
+  facade <- build_contrast_analysis(
+    lfqdata,
+    "~ group_",
+    contrasts,
+    method = "binomial_firth_nested"
+  )
+
+  expect_r6_class(facade, "ContrastsBinomialFirthNestedFacade")
+  expect_r6_class(facade$model$model_strategy, "StrategyBinomialFirth")
+  expect_r6_class(facade$contrast, "ContrastsModerated")
+  expect_false(facade$get_config()$supports_dea_qc)
+
+  result <- facade$get_contrasts()
+  expected_columns <- ContrastsInterface$new()$column_description()$column_name
+  expect_true(all(expected_columns %in% colnames(result)))
+  expect_setequal(unique(result$modelName), "binomial_firth_nested")
+  expect_false(anyNA(result$diff))
+  expect_true(all(result$sigma >= 1))
+
+  n_samples <- nrow(lfqdata$factors())
+  n_groups <- length(unique(lfqdata$factors()$group_))
+  inner <- facade$contrast$Contrast$get_contrasts()
+  expect_true(all(inner$df == n_samples - n_groups))
+
+  expect_s3_class(facade$model$get_coefficients(), "data.frame")
+  expect_s3_class(facade$model$get_anova(), "data.frame")
+  expect_s3_class(facade$get_missing(), "data.frame")
+
+  registry_entry <- lookup_facade("binomial_firth_nested")
+  expect_equal(registry_entry$class, "ContrastsBinomialFirthNestedFacade")
+  expect_equal(registry_entry$needs, "nested")
+
+  protein <- sim_lfq_data_protein_config(Nprot = 10, seed = 4)
+  protein_lfq <- LFQData$new(protein$data, protein$config)
+  expect_error(
+    ContrastsBinomialFirthNestedFacade$new(protein_lfq, "~ group_", contrasts),
+    "requires LFQData with additional hierarchy"
+  )
+})

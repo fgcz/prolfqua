@@ -730,6 +730,8 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     deqms = list(class = "ContrastsDEqMSFacade", needs = "same"),
     deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "same"),
     binomial_nested = list(class = "ContrastsBinomialNestedFacade", needs = "nested"),
+    binomial_firth_nested = list(class = "ContrastsBinomialFirthNestedFacade", needs = "nested"),
+    hurdle_nested = list(class = "ContrastsHurdleNestedFacade", needs = "nested"),
     firth = list(class = "ContrastsFirthFacade", needs = "same"),
     firth_nested = list(class = "ContrastsFirthNestedFacade", needs = "nested"),
     lmer_nested = list(class = "ContrastsLmerNestedFacade", needs = "nested"),

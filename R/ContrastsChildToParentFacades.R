@@ -272,31 +272,78 @@ ContrastsBinomialNestedFacade <- R6::R6Class(
       ...
     ) {
       private$.setup(lfqdata, contrasts, "binomial_nested", modelstr)
-
-      detection_lfqdata <- .prepare_detection_lfqdata(lfqdata)
-      counts <- .summarize_detection_counts(detection_lfqdata)
       strategy <- strategy_binomial(modelstr, prior_count = prior_count, ...)
-      self$model <- build_model(
-        counts,
-        strategy,
-        subject_id = lfqdata$subject_id(),
-        model_name = "binomial_nested"
-      )
-
-      base_contrast <- Contrasts$new(self$model, contrasts, model_name = "binomial_nested")
-      base_contrast$config <- ContrastConfiguration$new(
-        subject_id = lfqdata$subject_id(),
-        supports_dea_qc = FALSE
-      )
-      variance_floor <- if (isTRUE(binomial_bound)) 1 else NULL
-      self$contrast <- ContrastsModerated$new(
-        base_contrast,
-        model_name = "binomial_nested",
-        variance_floor = variance_floor
-      )
+      fitted <- .fit_detection_counts(lfqdata, strategy, contrasts, binomial_bound)
+      self$model <- fitted$model
+      self$contrast <- fitted$contrast
     }
   )
 )
+
+
+#' Firth-penalized detection-count facade for nested input
+#'
+#' Same pipeline as \code{\link{ContrastsBinomialNestedFacade}}: child-feature
+#' detection is collapsed into detected and undetected counts per parent and
+#' sample, so the dispersion and the residual degrees of freedom come from the
+#' samples, not from the number of child features. The fixed pseudo-count is
+#' replaced by Firth's bias reduction (\code{\link{StrategyBinomialFirth}}),
+#' which gives finite log odds ratios under complete separation, as
+#' \code{\link{ContrastsFirthNestedFacade}} does. Unlike
+#' \code{firth_nested}, child identity is not modelled.
+#'
+#' @return An R6 class generator.
+#' @export
+#' @examples
+#' istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' facade <- ContrastsBinomialFirthNestedFacade$new(lfqdata, "~ group_", contrasts)
+#' head(facade$get_contrasts())
+ContrastsBinomialFirthNestedFacade <- R6::R6Class(
+  "ContrastsBinomialFirthNestedFacade",
+  inherit = ContrastsFacadeBase,
+  public = list(
+    #' @description Fit the Firth-penalized nested detection-count model and its contrasts.
+    #' @param lfqdata nested \code{\link{LFQData}}
+    #' @param modelstr right-hand-side model formula
+    #' @param contrasts named contrast expressions
+    #' @param binomial_bound bound posterior dispersion below by one
+    #' @param ... passed to \code{\link{strategy_binomial_firth}}
+    initialize = function(lfqdata, modelstr, contrasts, binomial_bound = TRUE, ...) {
+      private$.setup(lfqdata, contrasts, "binomial_firth_nested", modelstr)
+      strategy <- strategy_binomial_firth(modelstr, ...)
+      fitted <- .fit_detection_counts(lfqdata, strategy, contrasts, binomial_bound)
+      self$model <- fitted$model
+      self$contrast <- fitted$contrast
+    }
+  )
+)
+
+
+# Shared pipeline of the detection-count facades: collapse child detection into
+# counts per parent and sample, fit `strategy`, and moderate the Wald contrasts.
+.fit_detection_counts <- function(lfqdata, strategy, contrasts, binomial_bound) {
+  counts <- .summarize_detection_counts(.prepare_detection_lfqdata(lfqdata))
+  model <- build_model(
+    counts,
+    strategy,
+    subject_id = lfqdata$subject_id(),
+    model_name = strategy$model_name
+  )
+  base_contrast <- Contrasts$new(model, contrasts, model_name = strategy$model_name)
+  base_contrast$config <- ContrastConfiguration$new(
+    subject_id = lfqdata$subject_id(),
+    supports_dea_qc = FALSE
+  )
+  variance_floor <- if (isTRUE(binomial_bound)) 1 else NULL
+  contrast <- ContrastsModerated$new(
+    base_contrast,
+    model_name = strategy$model_name,
+    variance_floor = variance_floor
+  )
+  list(model = model, contrast = contrast)
+}
 
 
 #' Limpa contrast analysis facade for nested input

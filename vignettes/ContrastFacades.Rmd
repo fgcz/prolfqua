@@ -412,6 +412,47 @@ ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant))
   theme_minimal(base_size = 12)
 ```
 
+# Hurdle: intensity and detection combined
+
+`ContrastsHurdleFacade` fits no model of its own. It joins a fitted intensity
+facade and a fitted detection facade (`firth_nested` or `binomial_nested`) by
+protein and contrast, and combines their p-values with Fisher's method, as
+msqrob2's hurdle model does. A protein estimated by one component only keeps
+that component's p-value; a protein detected in every sample keeps its
+intensity p-value. `diff` comes from the intensity component, so `lm_impute`
+is the better partner: it also estimates `diff` for proteins detected in one
+group only.
+
+```{r hurdle}
+fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_firth_peptide)
+results_hurdle <- fa_hurdle$get_contrasts()
+
+results_hurdle |>
+  dplyr::count(contrast, hurdle_components, name = "n_results")
+
+results_hurdle |>
+  dplyr::slice_min(order_by = p.value, n = 5, by = contrast) |>
+  dplyr::select(
+    contrast, protein_Id, diff, p.value.intensity, diff.detection,
+    p.value.detection, p.value, FDR
+  )
+```
+
+The `hurdle_nested` method does all of this from the peptide data in one call:
+median polish, `lm_impute`, `binomial_firth_nested` for detection, and the
+Fisher combination.
+
+```{r hurdle_nested}
+fa_hurdle_nested <- build_contrast_analysis(
+  lfq_peptide,
+  "~ group_",
+  contrasts,
+  method = "hurdle_nested"
+)
+fa_hurdle_nested$get_contrasts() |>
+  dplyr::count(contrast, hurdle_components, name = "n_results")
+```
+
 # Remarks
 
 The facades make it easy to benchmark alternative contrast backends without

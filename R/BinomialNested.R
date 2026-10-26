@@ -109,3 +109,74 @@ StrategyBinomial <- R6::R6Class(
 strategy_binomial <- function(modelstr, prior_count = 0.1, model_name = "binomial_nested") {
   StrategyBinomial$new(modelstr, prior_count, model_name)
 }
+
+
+#' Firth-penalized quasibinomial detection-count strategy
+#'
+#' Fits detected and undetected child-feature counts like
+#' \code{\link{StrategyBinomial}}, but replaces the fixed pseudo-count with
+#' Firth's bias reduction: each count row gets \eqn{h/2} added to both outcomes,
+#' where \eqn{h} is its hat value at the fitted probabilities, iterated to
+#' convergence. The coefficients are Firth's penalized maximum-likelihood
+#' estimates, finite under complete separation. \code{vcov()} and \code{sigma()}
+#' are those of the quasibinomial fit to the adjusted counts, so the dispersion
+#' is estimated from the scatter of the counts between samples.
+#'
+#' @return An R6 class generator.
+#' @export
+#' @examples
+#' dat <- data.frame(
+#'   group_ = factor(rep(c("A", "B"), each = 4)),
+#'   detected = c(0, 0, 0, 0, 4, 5, 3, 5),
+#'   undetected = c(5, 5, 5, 5, 1, 0, 2, 0)
+#' )
+#' strategy <- StrategyBinomialFirth$new("~ group_")
+#' fit <- strategy$model_fun(dat)
+#' coefficients(fit)
+StrategyBinomialFirth <- R6::R6Class(
+  "StrategyBinomialFirth",
+  inherit = StrategyBinomial,
+  public = list(
+    #' @description Create a Firth-penalized quasibinomial count strategy.
+    #' @param modelstr right-hand-side model formula, for example
+    #'   \code{"~ group_"}
+    #' @param model_name model identity
+    initialize = function(modelstr, model_name = "binomial_firth_nested") {
+      super$initialize(modelstr, prior_count = 0, model_name = model_name)
+    }
+  ),
+  private = list(
+    fit = function(x) {
+      trials <- x$detected + x$undetected
+      hat <- rep(1, nrow(x))
+      previous <- NULL
+      for (iteration in seq_len(100)) {
+        x$.detected <- x$detected + hat / 2
+        x$.undetected <- x$undetected + hat / 2
+        model <- super$fit(x)
+        if (!is.null(previous) && max(abs(stats::coef(model) - previous)) < 1e-8) {
+          return(model)
+        }
+        previous <- stats::coef(model)
+        design <- stats::model.matrix(model)
+        weight <- trials * stats::fitted(model) * (1 - stats::fitted(model))
+        hat <- weight * rowSums((design %*% solve(crossprod(design, weight * design))) * design)
+      }
+      stop("Firth iteration did not converge")
+    }
+  )
+)
+
+
+#' Create a Firth-penalized quasibinomial detection-count strategy
+#'
+#' @param modelstr right-hand-side model formula
+#' @param model_name model identity
+#' @return A \code{\link{StrategyBinomialFirth}} object.
+#' @export
+#' @examples
+#' strategy <- strategy_binomial_firth("~ group_")
+#' strategy$formula
+strategy_binomial_firth <- function(modelstr, model_name = "binomial_firth_nested") {
+  StrategyBinomialFirth$new(modelstr, model_name)
+}
