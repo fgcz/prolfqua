@@ -272,7 +272,7 @@ sessionInfo()
     ##  [70] plotly_4.12.1          generics_0.1.4         S4Vectors_0.48.1      
     ##  [73] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
     ##  [76] glue_1.8.1             tools_4.5.2            data.table_1.18.6.1   
-    ##  [79] lme4_2.0-6             forcats_1.0.1          fs_2.1.0              
+    ##  [79] lme4_2.1-0             forcats_1.0.1          fs_2.1.0              
     ##  [82] grid_4.5.2             tidyr_1.3.2            rbibutils_2.4.1       
     ##  [85] colorspace_2.1-4       nlme_3.1-168           formula.tools_1.7.1   
     ##  [88] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     

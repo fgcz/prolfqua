@@ -26,6 +26,9 @@
 - [`Contrasts`](https://wolski.github.io/prolfqua/reference/Contrasts.md)
   : Estimate contrasts using Wald Test
 
+- [`ContrastsBinomialFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsBinomialFirthNestedFacade.md)
+  : Firth-penalized detection-count facade for nested input
+
 - [`ContrastsBinomialNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsBinomialNestedFacade.md)
   : Quasibinomial detection-count facade for nested input
 
@@ -43,6 +46,13 @@
 
 - [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md)
   : Firth logistic missingness contrast analysis facade for nested input
+
+- [`ContrastsHurdleFacade`](https://wolski.github.io/prolfqua/reference/ContrastsHurdleFacade.md)
+  : Hurdle contrasts: intensity and detection combined with Fisher's
+  method
+
+- [`ContrastsHurdleNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.md)
+  : Hurdle contrast facade for nested input
 
 - [`ContrastsInterface`](https://wolski.github.io/prolfqua/reference/ContrastsInterface.md)
   : Base class for all Contrasts classes
@@ -157,6 +167,9 @@
 
 - [`StrategyBinomial`](https://wolski.github.io/prolfqua/reference/StrategyBinomial.md)
   : Quasibinomial detection-count strategy
+
+- [`StrategyBinomialFirth`](https://wolski.github.io/prolfqua/reference/StrategyBinomialFirth.md)
+  : Firth-penalized quasibinomial detection-count strategy
 
 - [`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md)
   : Linear model strategy (R6 class)
@@ -325,6 +338,9 @@
 
 - [`strategy_binomial()`](https://wolski.github.io/prolfqua/reference/strategy_binomial.md)
   : Create a quasibinomial detection-count strategy
+
+- [`strategy_binomial_firth()`](https://wolski.github.io/prolfqua/reference/strategy_binomial_firth.md)
+  : Create a Firth-penalized quasibinomial detection-count strategy
 
 - [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
   : Create limma modelling strategy

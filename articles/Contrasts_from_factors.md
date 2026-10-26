@@ -309,7 +309,7 @@ sessionInfo()
     ##  [70] jquerylib_0.1.4        tidyr_1.3.2            glue_1.8.1            
     ##  [73] pan_2.0                nloptr_2.2.1           pkgdown_2.2.1         
     ##  [76] codetools_0.2-20       shape_1.4.6.1          gtable_0.3.6          
-    ##  [79] lme4_2.0-6             ComplexHeatmap_2.26.1  tibble_3.3.1          
+    ##  [79] lme4_2.1-0             ComplexHeatmap_2.26.1  tibble_3.3.1          
     ##  [82] pillar_1.11.1          htmltools_0.5.9        circlize_0.4.18       
     ##  [85] R6_2.6.1               Rdpack_2.6.6           textshaping_1.0.5     
     ##  [88] formula.tools_1.7.1    doParallel_1.0.17      evaluate_1.0.5        

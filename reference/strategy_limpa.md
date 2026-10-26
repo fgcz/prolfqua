@@ -60,6 +60,8 @@ Other modelling:
 [`ContrastsFirth`](https://wolski.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthFacade.md),
 [`ContrastsFirthNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
+[`ContrastsHurdleFacade`](https://wolski.github.io/prolfqua/reference/ContrastsHurdleFacade.md),
+[`ContrastsHurdleNestedFacade`](https://wolski.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.md),
 [`ContrastsLMFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://wolski.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
 [`ContrastsLimma`](https://wolski.github.io/prolfqua/reference/ContrastsLimma.md),
@@ -143,7 +145,7 @@ Other modelling:
 strat <- strategy_limpa("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x55ac4c784cc8>
+#> <environment: 0x5588eb961938>
 strat$model_name
 #> [1] "limpa"
 ```

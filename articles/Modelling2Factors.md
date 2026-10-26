@@ -435,7 +435,7 @@ sessionInfo()
     ##  [73] generics_0.1.4         S4Vectors_0.48.1       hms_1.1.4             
     ##  [76] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
     ##  [79] glue_1.8.1             tools_4.5.2            data.table_1.18.6.1   
-    ##  [82] lme4_2.0-6             forcats_1.0.1          fs_2.1.0              
+    ##  [82] lme4_2.1-0             forcats_1.0.1          fs_2.1.0              
     ##  [85] grid_4.5.2             tidyr_1.3.2            rbibutils_2.4.1       
     ##  [88] colorspace_2.1-4       nlme_3.1-168           formula.tools_1.7.1   
     ##  [91] beeswarm_0.4.0         vipor_0.4.7            cli_3.6.6             

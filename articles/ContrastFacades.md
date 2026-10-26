@@ -548,6 +548,81 @@ backends.](ContrastFacades_files/figure-html/volcano_peptide-1.png)
 Volcano plots for the peptide-level facades. Rows are contrasts, columns
 are backends.
 
+## Hurdle: intensity and detection combined
+
+`ContrastsHurdleFacade` fits no model of its own. It joins a fitted
+intensity facade and a fitted detection facade (`firth_nested` or
+`binomial_nested`) by protein and contrast, and combines their p-values
+with Fisher’s method, as msqrob2’s hurdle model does. A protein
+estimated by one component only keeps that component’s p-value; a
+protein detected in every sample keeps its intensity p-value. `diff`
+comes from the intensity component, so `lm_impute` is the better
+partner: it also estimates `diff` for proteins detected in one group
+only.
+
+``` r
+fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_firth_peptide)
+results_hurdle <- fa_hurdle$get_contrasts()
+
+results_hurdle |>
+  dplyr::count(contrast, hurdle_components, name = "n_results")
+```
+
+    ## # A tibble: 4 × 3
+    ##   contrast  hurdle_components n_results
+    ##   <chr>     <chr>                 <int>
+    ## 1 A_vs_Ctrl both                     66
+    ## 2 A_vs_Ctrl intensity                14
+    ## 3 B_vs_Ctrl both                     66
+    ## 4 B_vs_Ctrl intensity                14
+
+``` r
+results_hurdle |>
+  dplyr::slice_min(order_by = p.value, n = 5, by = contrast) |>
+  dplyr::select(
+    contrast, protein_Id, diff, p.value.intensity, diff.detection,
+    p.value.detection, p.value, FDR
+  )
+```
+
+    ## # A tibble: 10 × 8
+    ##    contrast protein_Id   diff p.value.intensity diff.detection p.value.detection
+    ##    <chr>    <chr>       <dbl>             <dbl>          <dbl>             <dbl>
+    ##  1 A_vs_Ct… Zci7Jw~70… -0.722          3.15e-11       1.16e+ 0            0.430 
+    ##  2 A_vs_Ct… KVkccD~18… -0.524          1.99e- 9      -2.06e+ 0            0.214 
+    ##  3 A_vs_Ct… 4Y4DYT~09…  0.583          1.99e- 8       4.27e-16            1     
+    ##  4 A_vs_Ct… 0CubNR~08…  0.674          4.07e- 8       1.35e+ 0            0.468 
+    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -4.90e-16            1     
+    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10       1.69e-15            1.000 
+    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10      -2.35e-17            1     
+    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9       1.69e-15            1.000 
+    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7       6.00e-16            1     
+    ## 10 B_vs_Ct… 2FL9I1~16… -0.417          2.08e- 7      -1.31e+ 0            0.0752
+    ## # ℹ 2 more variables: p.value <dbl>, FDR <dbl>
+
+The `hurdle_nested` method does all of this from the peptide data in one
+call: median polish, `lm_impute`, `binomial_firth_nested` for detection,
+and the Fisher combination.
+
+``` r
+fa_hurdle_nested <- build_contrast_analysis(
+  lfq_peptide,
+  "~ group_",
+  contrasts,
+  method = "hurdle_nested"
+)
+fa_hurdle_nested$get_contrasts() |>
+  dplyr::count(contrast, hurdle_components, name = "n_results")
+```
+
+    ## # A tibble: 4 × 3
+    ##   contrast  hurdle_components n_results
+    ##   <chr>     <chr>                 <int>
+    ## 1 A_vs_Ctrl both                     66
+    ## 2 A_vs_Ctrl intensity                14
+    ## 3 B_vs_Ctrl both                     66
+    ## 4 B_vs_Ctrl intensity                14
+
 ## Remarks
 
 The facades make it easy to benchmark alternative contrast backends
@@ -623,7 +698,7 @@ sessionInfo()
     ##  [73] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        
     ##  [76] hms_1.1.4              S4Vectors_0.48.1       scales_1.4.0          
     ##  [79] minqa_1.2.8            glue_1.8.1             tools_4.5.2           
-    ##  [82] data.table_1.18.6.1    lme4_2.0-6             forcats_1.0.1         
+    ##  [82] data.table_1.18.6.1    lme4_2.1-0             forcats_1.0.1         
     ##  [85] fs_2.1.0               grid_4.5.2             limpa_1.2.5           
     ##  [88] tidyr_1.3.2            rbibutils_2.4.1        colorspace_2.1-4      
     ##  [91] nlme_3.1-168           formula.tools_1.7.1    cli_3.6.6             

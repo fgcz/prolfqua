@@ -552,7 +552,7 @@ sessionInfo()
     ##  [79] generics_0.1.4         hms_1.1.4              S4Vectors_0.48.1      
     ##  [82] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
     ##  [85] xtable_1.8-8           glue_1.8.1             lazyeval_0.2.3        
-    ##  [88] tools_4.5.2            data.table_1.18.6.1    lme4_2.0-6            
+    ##  [88] tools_4.5.2            data.table_1.18.6.1    lme4_2.1-0            
     ##  [91] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
     ##  [94] tidyr_1.3.2            crosstalk_1.2.2        rbibutils_2.4.1       
     ##  [97] colorspace_2.1-4       nlme_3.1-168           formula.tools_1.7.1   

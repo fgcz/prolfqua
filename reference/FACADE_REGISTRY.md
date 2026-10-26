@@ -20,7 +20,7 @@ FACADE_REGISTRY
 ## Format
 
 An object of class `facade_registry` (inherits from `list`) of length
-18.
+20.
 
 ## Value
 
@@ -35,12 +35,13 @@ Each entry has fields `class`, `needs`, `package`, and
 
 ``` r
 names(FACADE_REGISTRY)
-#>  [1] "binomial_nested"   "deqms"             "deqms_voom"       
-#>  [4] "firth"             "firth_nested"      "limma"            
-#>  [7] "limma_impute"      "limma_voom"        "limma_voom_impute"
-#> [10] "limpa"             "limpa_nested"      "lm"               
-#> [13] "lm_impute"         "lmer_nested"       "rfit"             
-#> [16] "rfit_impute"       "rlm"               "ropeca_nested"    
+#>  [1] "binomial_firth_nested" "binomial_nested"       "deqms"                
+#>  [4] "deqms_voom"            "firth"                 "firth_nested"         
+#>  [7] "hurdle_nested"         "limma"                 "limma_impute"         
+#> [10] "limma_voom"            "limma_voom_impute"     "limpa"                
+#> [13] "limpa_nested"          "lm"                    "lm_impute"            
+#> [16] "lmer_nested"           "rfit"                  "rfit_impute"          
+#> [19] "rlm"                   "ropeca_nested"        
 FACADE_REGISTRY$limma$class
 #> [1] "ContrastsLimmaFacade"
 ```

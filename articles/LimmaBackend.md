@@ -747,7 +747,7 @@ sessionInfo()
     ##  [70] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        
     ##  [73] hms_1.1.4              S4Vectors_0.48.1       ggplot2_4.0.3         
     ##  [76] scales_1.4.0           minqa_1.2.8            glue_1.8.1            
-    ##  [79] tools_4.5.2            data.table_1.18.6.1    lme4_2.0-6            
+    ##  [79] tools_4.5.2            data.table_1.18.6.1    lme4_2.1-0            
     ##  [82] forcats_1.0.1          fs_2.1.0               grid_4.5.2            
     ##  [85] limpa_1.2.5            tidyr_1.3.2            rbibutils_2.4.1       
     ##  [88] colorspace_2.1-4       nlme_3.1-168           formula.tools_1.7.1   
