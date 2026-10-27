@@ -19,6 +19,10 @@ bibliography:
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
 ```
 
+```{r HexSticker, echo=FALSE, out.width="50%", eval=TRUE}
+   knitr::include_graphics("prolfqua_logo.png")
+```
+
 # Introduction
 
 prolfqua covers the steps of a label-free quantification (LFQ) proteomics analysis: quality control, normalization, aggregation of peptides to proteins, modelling, hypothesis testing and sample size estimation [@Wolski2023prolfqua].
