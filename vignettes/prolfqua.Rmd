@@ -74,14 +74,14 @@ lfqprot <- lfqdata$get_Aggregator()$aggregate()
 lfqprot$get_Plotter()$intensity_distribution_density()
 ```
 
-We compare groups `A` and `B` with the control group, using limma's moderated linear model.
+We compare groups `A` and `B` with the control group using `lm_impute`: a linear model per protein with moderated variances. Proteins whose fit fails because a group has no observations are refitted with the missing values imputed at the limit of detection, borrowing the variance from the other proteins.
 
 ```{r contrasts}
 contrasts <- c(
   "A_vs_Ctrl" = "group_A - group_Ctrl",
   "B_vs_Ctrl" = "group_B - group_Ctrl"
 )
-fa <- build_contrast_analysis(lfqprot, "~ group_", contrasts, method = "limma")
+fa <- build_contrast_analysis(lfqprot, "~ group_", contrasts, method = "lm_impute")
 res <- fa$get_contrasts()
 head(res[, c("protein_Id", "contrast", "diff", "p.value", "FDR")])
 ```
