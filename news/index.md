@@ -48,6 +48,16 @@ Changes for the Bioconductor review
   [`vignette("prolfqua")`](https://wolski.github.io/prolfqua/articles/prolfqua.md):
   introduction, installation with BiocManager, a quick start, and links
   to all tutorials on the package website.
+- New vignette
+  [`vignette("ModellingMethods")`](https://wolski.github.io/prolfqua/articles/ModellingMethods.md):
+  runs every
+  [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+  method on one small simulated dataset, with one summary line per
+  method; it renders in a few seconds.
+- The package now ships three vignettes (`prolfqua`, `Comparing2Groups`,
+  `ModellingMethods`). The other eleven tutorials are website-only
+  articles at <https://fgcz.github.io/prolfqua/articles/>, under the
+  same URLs as before, which keeps the package build short.
 - `Comparing2Groups` describes the simulated data it actually uses (the
   text still referred to MaxQuant Ionstar data) and no longer looks up
   protein IDs that do not exist in it. Both vignettes use BiocStyle.

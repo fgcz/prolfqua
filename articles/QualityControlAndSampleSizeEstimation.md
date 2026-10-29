@@ -446,7 +446,7 @@ sessionInfo()
     ##  [19] labeling_0.4.3         utf8_1.2.6             promises_1.5.0        
     ##  [22] rmarkdown_2.32         nloptr_2.2.1           ragg_1.5.2            
     ##  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.62             
-    ##  [28] glmnet_5.1             jomo_2.7-6             logistf_1.26.1        
+    ##  [28] glmnet_5.2             jomo_2.7-6             logistf_1.26.1        
     ##  [31] cachem_1.1.0           jsonlite_2.0.0         later_1.4.8           
     ##  [34] pan_2.0                broom_1.0.13           parallel_4.5.2        
     ##  [37] cluster_2.1.8.1        R6_2.6.1               bslib_0.12.0          

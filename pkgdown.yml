@@ -3,19 +3,20 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   Comparing2Groups: Comparing2Groups.html
-  ContrastFacade2Factor: ContrastFacade2Factor.html
-  ContrastFacades: ContrastFacades.html
-  Contrasts_from_factors: Contrasts_from_factors.html
-  CreatingConfigurations: CreatingConfigurations.html
-  DEqMS_Moderation: DEqMS_Moderation.html
-  LimmaBackend: LimmaBackend.html
-  limpa_example: limpa_example.html
-  Modelling2Factors: Modelling2Factors.html
+  articles/ContrastFacade2Factor: ContrastFacade2Factor.html
+  articles/ContrastFacades: ContrastFacades.html
+  articles/Contrasts_from_factors: Contrasts_from_factors.html
+  articles/CreatingConfigurations: CreatingConfigurations.html
+  articles/DEqMS_Moderation: DEqMS_Moderation.html
+  articles/LimmaBackend: LimmaBackend.html
+  articles/limpa_example: limpa_example.html
+  articles/Modelling2Factors: Modelling2Factors.html
+  ModellingMethods: ModellingMethods.html
   prolfqua: prolfqua.html
-  QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
-  SimulateData: SimulateData.html
-  TestingMissingInference: TestingMissingInference.html
-last_built: 2026-10-26T12:23Z
+  articles/QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
+  articles/SimulateData: SimulateData.html
+  articles/TestingMissingInference: TestingMissingInference.html
+last_built: 2026-10-29T10:40Z
 urls:
   reference: https://wolski.github.io/prolfqua/reference
   article: https://wolski.github.io/prolfqua/articles

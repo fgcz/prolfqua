@@ -169,9 +169,11 @@ set of tutorials:
 - [Imputing data at the limit of
   detection](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html)
 
-The vignette [Comparing two groups with
+The vignettes [Comparing two groups with
 prolfqua](https://wolski.github.io/prolfqua/articles/Comparing2Groups.md)
-is also part of this package.
+and [All modelling methods at a
+glance](https://wolski.github.io/prolfqua/articles/ModellingMethods.md)
+are also part of this package.
 
 ## Session info
 
@@ -210,7 +212,7 @@ sessionInfo()
 #>  [19] labeling_0.4.3         utf8_1.2.6             promises_1.5.0        
 #>  [22] rmarkdown_2.32         nloptr_2.2.1           ragg_1.5.2            
 #>  [25] UpSetR_1.4.1           purrr_1.2.2            xfun_0.62             
-#>  [28] glmnet_5.1             jomo_2.7-6             logistf_1.26.1        
+#>  [28] glmnet_5.2             jomo_2.7-6             logistf_1.26.1        
 #>  [31] cachem_1.1.0           jsonlite_2.0.0         progress_1.2.3        
 #>  [34] later_1.4.8            pan_2.0                prettyunits_1.2.0     
 #>  [37] broom_1.0.13           parallel_4.5.2         cluster_2.1.8.1       

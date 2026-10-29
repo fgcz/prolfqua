@@ -28,6 +28,7 @@
     <li><a class="dropdown-item" href="../articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/limpa_example.html">Using limpa Directly on prolfqua Simulated Data</a></li>
     <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
+    <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
     <li><a class="dropdown-item" href="../articles/TestingMissingInference.html">Impute data using limit of detection (LOD)</a></li>
@@ -65,6 +66,8 @@
 <div class="section level3">
 <h3 id="documentation-1-9-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-9-0"></a></h3>
 <ul><li>New introductory vignette <code><a href="../articles/prolfqua.html">vignette("prolfqua")</a></code>: introduction, installation with BiocManager, a quick start, and links to all tutorials on the package website.</li>
+<li>New vignette <code><a href="../articles/ModellingMethods.html">vignette("ModellingMethods")</a></code>: runs every <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> method on one small simulated dataset, with one summary line per method; it renders in a few seconds.</li>
+<li>The package now ships three vignettes (<code>prolfqua</code>, <code>Comparing2Groups</code>, <code>ModellingMethods</code>). The other eleven tutorials are website-only articles at <a href="https://fgcz.github.io/prolfqua/articles/" class="external-link uri">https://fgcz.github.io/prolfqua/articles/</a>, under the same URLs as before, which keeps the package build short.</li>
 <li>
 <code>Comparing2Groups</code> describes the simulated data it actually uses (the text still referred to MaxQuant Ionstar data) and no longer looks up protein IDs that do not exist in it. Both vignettes use BiocStyle.</li>
 <li>
