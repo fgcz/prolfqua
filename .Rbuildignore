@@ -38,3 +38,4 @@ R/tidyMS_stanr\.R
 ^\.github$
 ^AGENTS\.md$
 ^CLAUDE\.md$
+^vignettes/articles$

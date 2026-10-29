@@ -109,7 +109,7 @@ The package website <https://fgcz.github.io/prolfqua/> holds the full set of tut
 - [Simulating peptide-level data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
 - [Imputing data at the limit of detection](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html)
 
-The vignette [Comparing two groups with prolfqua](Comparing2Groups.html) is also part of this package.
+The vignettes [Comparing two groups with prolfqua](Comparing2Groups.html) and [All modelling methods at a glance](ModellingMethods.html) are also part of this package.
 
 # Session info
 

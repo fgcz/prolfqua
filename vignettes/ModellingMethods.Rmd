@@ -1,0 +1,115 @@
+---
+title: "All modelling methods at a glance"
+author:
+  - name: Witold E. Wolski
+    affiliation: Functional Genomics Center Zurich (FGCZ), ETH Zurich and University of Zurich
+  - name: Christian Panse
+    affiliation: Functional Genomics Center Zurich (FGCZ), ETH Zurich and University of Zurich
+package: prolfqua
+output: BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{All modelling methods at a glance}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+```
+
+# Purpose
+
+`build_contrast_analysis()` selects the model with its `method` argument. This vignette runs every method listed by `list_facades()` on one small simulated dataset and shows one line of output per method. Plots and a discussion of the methods are in the article [Contrast facades with parallel designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html).
+
+# Data
+
+We simulate peptide intensities for 20 proteins in three groups and compare group `A` with the control.
+
+```{r simulate}
+library(prolfqua)
+sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+lfq_peptide <- LFQData$new(sim$data, sim$config)
+lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
+lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
+lfq_limpa <- AggregateLimpa$new(lfq_peptide, "protein")$aggregate()
+contrasts <- c(A_vs_Ctrl = "group_A - group_Ctrl")
+```
+
+Each method declares the input it needs:
+
+- `same`: protein-level input, here `lfq_protein` aggregated with median polish. `limpa` takes `lfq_limpa`, aggregated by `AggregateLimpa`, which adds the per-protein standard errors it needs.
+- `nested`: peptide-level input, `lfq_peptide`. The method models the peptides and reports protein-level contrasts.
+
+# Fit all methods
+
+```{r fit, results = "hide"}
+facades <- list_facades()
+input_for <- function(method) {
+  if (method == "limpa") {
+    return(lfq_limpa)
+  }
+  if (facades[[method]]$needs == "nested") lfq_peptide else lfq_protein
+}
+model_for <- function(method) {
+  if (method == "lmer_nested") "~ group_ + (1 | peptide_Id) + (1 | sampleName)" else "~ group_"
+}
+results <- lapply(names(facades), function(method) {
+  fa <- build_contrast_analysis(input_for(method), model_for(method), contrasts, method = method)
+  fa$get_contrasts()
+})
+names(results) <- names(facades)
+```
+
+# One line per method
+
+```{r summary}
+about <- c(
+  lm = "linear model per protein",
+  lm_impute = "lm; groups without observations imputed at the limit of detection (LOD)",
+  rlm = "robust linear model (MASS::rlm)",
+  rfit = "rank-based regression (Rfit)",
+  rfit_impute = "rfit with LOD imputation",
+  limma = "limma, empirical-Bayes moderated variances",
+  limma_impute = "limma with LOD imputation",
+  limma_voom = "limma with vooma precision weights",
+  limma_voom_impute = "limma_voom with LOD imputation",
+  deqms = "limma with DEqMS peptide-count variance moderation",
+  deqms_voom = "deqms with vooma precision weights",
+  limpa = "limma on limpa DPC-quantified proteins",
+  limpa_nested = "limpa, DPC quantification from peptides",
+  firth = "Firth logistic regression, protein detection",
+  firth_nested = "Firth logistic regression, peptide detection",
+  binomial_nested = "quasibinomial model, peptide detection counts",
+  binomial_firth_nested = "binomial_nested with Firth bias reduction",
+  hurdle_nested = "lm_impute intensity + binomial_firth_nested detection",
+  lmer_nested = "mixed model, peptide and sample random effects",
+  ropeca_nested = "peptide fold changes summarised per protein (ROPECA)"
+)
+overview <- data.frame(
+  method = names(results),
+  input = vapply(facades, function(x) x$needs, character(1)),
+  proteins = vapply(results, nrow, integer(1)),
+  FDR_lt_0.1 = vapply(results, function(x) sum(x$FDR < 0.1, na.rm = TRUE), integer(1)),
+  model = about[names(results)]
+)
+knitr::kable(overview, row.names = FALSE)
+```
+
+The detection models (`firth`, `firth_nested`, `binomial_nested`, `binomial_firth_nested`) test differences in how often a protein or its peptides are observed. The simulated data has few missing values, so they find little.
+
+# One protein, all methods
+
+All methods return the same columns. Here is the protein with the smallest `lm` p-value. For the detection models `diff` is a log odds ratio, not a log2 fold change. This protein is detected in every sample, so the detection models report `diff` 0 and a p-value of 1 or `NaN`.
+
+```{r one-protein}
+top <- results$lm$protein_Id[which.min(results$lm$p.value)]
+one <- lapply(results, function(x) x[x$protein_Id == top, c("diff", "p.value", "FDR")])
+one <- dplyr::bind_rows(one, .id = "method")
+knitr::kable(one, digits = 3)
+```
+
+# Session info
+
+```{r session-info}
+sessionInfo()
+```

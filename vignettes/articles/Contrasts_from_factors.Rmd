@@ -12,7 +12,7 @@ vignette: |
 editor_options:
   chunk_output_type: console
 bibliography:
-  - prolfqua.bib
+  - ../prolfqua.bib
 ---
 
 
