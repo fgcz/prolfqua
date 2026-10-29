@@ -21,7 +21,7 @@ This vignette demonstrates how to:
 All contrast generation functions assume that the group levels in the
 fitted model follow the naming convention `G_<primary>_<secondary>`,
 which is produced by
-[`group_label()`](https://wolski.github.io/prolfqua/reference/group_label.md):
+[`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md):
 
 ``` r
 library(prolfqua)

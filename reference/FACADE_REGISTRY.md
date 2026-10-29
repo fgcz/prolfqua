@@ -3,11 +3,11 @@
 Read-only snapshot of the built-in prolfqua facade registry, taken at
 package load time. It is derived from the single source of truth
 (`.seed_facade_registry()`); use
-[`register_facade`](https://wolski.github.io/prolfqua/reference/register_facade.md)
+[`register_facade`](https://fgcz.github.io/prolfqua/reference/register_facade.md)
 to add entries from downstream packages,
-[`lookup_facade`](https://wolski.github.io/prolfqua/reference/lookup_facade.md)
+[`lookup_facade`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md)
 to resolve a single entry, and
-[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md)
+[`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md)
 to enumerate the live registry (which reflects downstream
 registrations).
 

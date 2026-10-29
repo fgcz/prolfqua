@@ -25,7 +25,7 @@ strategy_binomial(modelstr, prior_count = 0.1, model_name = "binomial_nested")
 ## Value
 
 A
-[`StrategyBinomial`](https://wolski.github.io/prolfqua/reference/StrategyBinomial.md)
+[`StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md)
 object.
 
 ## Examples
@@ -34,5 +34,5 @@ object.
 strategy <- strategy_binomial("~ group_", prior_count = 0.1)
 strategy$formula
 #> cbind(.detected, .undetected) ~ group_
-#> <environment: 0x560206416ca0>
+#> <environment: 0x5632261291e8>
 ```

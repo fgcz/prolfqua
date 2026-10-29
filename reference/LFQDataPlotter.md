@@ -10,20 +10,20 @@ An R6 class generator.
 
 ## See also
 
-[`plot_heatmap_cor`](https://wolski.github.io/prolfqua/reference/plot_heatmap_cor.md)
+[`plot_heatmap_cor`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md)
 
-[`plot_pca`](https://wolski.github.io/prolfqua/reference/plot_pca.md)
+[`plot_pca`](https://fgcz.github.io/prolfqua/reference/plot_pca.md)
 
 Other LFQData:
-[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
-[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
-[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
-[`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
-[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
-[`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
-[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
-[`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+[`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md),
+[`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://fgcz.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregateTopN`](https://fgcz.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md),
+[`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
+[`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
+[`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
+[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
 ## Public fields
 
@@ -154,7 +154,7 @@ Only the `top_n` most variable features are shown. Row clustering uses
 [`stats::hclust`](https://rdrr.io/r/stats/hclust.html), which errors
 above 65536 features, so the rows are ranked by their variability
 statistic (CV for untransformed data, sd for transformed data; see
-[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md))
+[`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md))
 and the most variable are kept. This keeps the heatmap feasible and
 legible for peptide-list / entrapment searches with tens of thousands of
 features.
@@ -231,7 +231,7 @@ PCA plot
 A PCA is applied and the first and second principal component are shown.
 Features with missing values are removed. To keep all features, impute
 first, e.g. with
-[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md)
+[`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md)
 in `impute_only` mode.
 
 #### Usage
@@ -302,7 +302,7 @@ tibble with column boxplots containing ggplot objects
 
 ------------------------------------------------------------------------
 
-### Method [`missigness_histogram()`](https://wolski.github.io/prolfqua/reference/missigness_histogram.md)
+### Method [`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md)
 
 histogram of intensities given number of missing in conditions
 
@@ -372,7 +372,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method [`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md)
+### Method [`pairs_smooth()`](https://fgcz.github.io/prolfqua/reference/pairs_smooth.md)
 
 pairsplot of intensities
 

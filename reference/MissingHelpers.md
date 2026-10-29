@@ -12,7 +12,7 @@ An R6 class generator.
 
 Computes per-group statistics of the abundances and, from them, the
 limit of detection (LOD) used by
-[`build_model_impute`](https://wolski.github.io/prolfqua/reference/build_model_impute.md)
+[`build_model_impute`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md)
 to impute groups without observations.
 
 ## Public fields

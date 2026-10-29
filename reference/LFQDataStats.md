@@ -15,15 +15,15 @@ compute stdv, mean and CV per peptide or protein and condition.
 ## See also
 
 Other LFQData:
-[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
-[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
-[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
-[`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
-[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
-[`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
-[`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
-[`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+[`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md),
+[`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://fgcz.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregateTopN`](https://fgcz.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md),
+[`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
+[`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
+[`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
+[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
 ## Public fields
 

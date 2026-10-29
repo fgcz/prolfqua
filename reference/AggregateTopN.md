@@ -16,19 +16,19 @@ Works with raw (untransformed) intensities.
 ## See also
 
 Other LFQData:
-[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
-[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
-[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
-[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
-[`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
-[`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
-[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
-[`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+[`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md),
+[`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://fgcz.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md),
+[`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
+[`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
+[`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
+[`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
+[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
 ## Super class
 
-[`prolfqua::AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md)
+[`prolfqua::AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md)
 -\> `AggregateTopN`
 
 ## Public fields
@@ -53,8 +53,8 @@ Other LFQData:
 
 Inherited methods
 
-- [`prolfqua::AggregatorBase$plot()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot)
-- [`prolfqua::AggregatorBase$write_plots()`](https://wolski.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots)
+- [`prolfqua::AggregatorBase$plot()`](https://fgcz.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot)
+- [`prolfqua::AggregatorBase$write_plots()`](https://fgcz.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots)
 
 ------------------------------------------------------------------------
 

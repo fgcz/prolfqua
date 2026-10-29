@@ -2,12 +2,12 @@
 
 ## Purpose
 
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 chains three steps:
 
 1.  a **strategy** says which model to fit per protein,
-    e.g. [`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md)
-2.  [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md)
+    e.g. [`strategy_lm()`](https://fgcz.github.io/prolfqua/reference/strategy.md)
+2.  [`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md)
     fits it to every protein and returns a `Model`
 3.  `Contrasts` computes the contrasts from the models;
     `ContrastsModerated` shrinks their variances with the empirical
@@ -16,7 +16,7 @@ chains three steps:
 This article runs the steps by hand for the `lm` method. Use them to
 inspect the per-protein models, to change one step, or to add a new
 modelling backend. For analyses, use
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md).
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
 
 ``` r
 library(prolfqua)
@@ -152,7 +152,7 @@ data.frame(
 
 Replace the strategy to fit another model per protein, e.g. a robust
 linear model with
-[`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md);
+[`strategy_rlm()`](https://fgcz.github.io/prolfqua/reference/strategy.md);
 the other steps stay the same.
 
 ``` r
@@ -174,10 +174,10 @@ head(contr_rlm$get_contrasts()[, c("protein_Id", "contrast", "diff", "p.value", 
 ## Adding a backend
 
 A facade class wraps the steps of one method.
-[`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md)
+[`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md)
 adds it to the registry, after which
 `build_contrast_analysis(method = ...)` finds it.
-[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md)
+[`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md)
 shows the registry:
 
 ``` r

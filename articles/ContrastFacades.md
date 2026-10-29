@@ -2,7 +2,7 @@
 
 ## Purpose
 
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 provides a common front-end for several contrast backends:
 
 - `lm` — ordinary least-squares linear model fitted per protein, Wald
@@ -590,13 +590,13 @@ results_hurdle |>
     ##    <chr>    <chr>       <dbl>             <dbl>          <dbl>             <dbl>
     ##  1 A_vs_Ct… Zci7Jw~70… -0.722          3.15e-11       1.16e+ 0            0.430 
     ##  2 A_vs_Ct… KVkccD~18… -0.524          1.99e- 9      -2.06e+ 0            0.214 
-    ##  3 A_vs_Ct… 4Y4DYT~09…  0.583          1.99e- 8       1.07e-15            1     
+    ##  3 A_vs_Ct… 4Y4DYT~09…  0.583          1.99e- 8       4.27e-16            1     
     ##  4 A_vs_Ct… 0CubNR~08…  0.674          4.07e- 8       1.35e+ 0            0.468 
-    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -1.36e-16            1     
-    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10      -4.48e-16            1     
-    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       3.82e-16            1     
-    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9      -4.48e-16            1     
-    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7       4.49e-16            1     
+    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -4.90e-16            1     
+    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10       1.69e-15            1.000 
+    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10      -2.35e-17            1     
+    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9       1.69e-15            1.000 
+    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7       6.00e-16            1     
     ## 10 B_vs_Ct… 2FL9I1~16… -0.417          2.08e- 7      -1.31e+ 0            0.0752
     ## # ℹ 2 more variables: p.value <dbl>, FDR <dbl>
 

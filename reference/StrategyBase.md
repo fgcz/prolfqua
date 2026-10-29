@@ -11,13 +11,13 @@ An R6 class generator.
 ## Details
 
 Holds the fields, constructor and default methods shared by
-[`StrategyLM`](https://wolski.github.io/prolfqua/reference/StrategyLM.md),
-[`StrategyRLM`](https://wolski.github.io/prolfqua/reference/StrategyRLM.md),
-[`StrategyLmer`](https://wolski.github.io/prolfqua/reference/StrategyLmer.md),
-[`StrategyRfit`](https://wolski.github.io/prolfqua/reference/StrategyRfit.md),
-[`StrategyLogistf`](https://wolski.github.io/prolfqua/reference/StrategyLogistf.md)
+[`StrategyLM`](https://fgcz.github.io/prolfqua/reference/StrategyLM.md),
+[`StrategyRLM`](https://fgcz.github.io/prolfqua/reference/StrategyRLM.md),
+[`StrategyLmer`](https://fgcz.github.io/prolfqua/reference/StrategyLmer.md),
+[`StrategyRfit`](https://fgcz.github.io/prolfqua/reference/StrategyRfit.md),
+[`StrategyLogistf`](https://fgcz.github.io/prolfqua/reference/StrategyLogistf.md)
 and
-[`StrategyBinomial`](https://wolski.github.io/prolfqua/reference/StrategyBinomial.md).
+[`StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md).
 A subclass implements the private `fit(x)` method and overrides only the
 methods that differ.
 
@@ -34,7 +34,7 @@ methods that differ.
 - `anova_df`:
 
   ANOVA extractor, see
-  [`AnovaExtractor`](https://wolski.github.io/prolfqua/reference/AnovaExtractor.md)
+  [`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md)
 
 ## Methods
 
@@ -126,7 +126,7 @@ Compute contrasts from fitted model
 - `...`:
 
   passed to
-  [`compute_contrast`](https://wolski.github.io/prolfqua/reference/compute_contrast.md)
+  [`compute_contrast`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md)
 
 ------------------------------------------------------------------------
 

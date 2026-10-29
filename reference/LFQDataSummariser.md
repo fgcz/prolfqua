@@ -11,15 +11,15 @@ An R6 class generator.
 ## See also
 
 Other LFQData:
-[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
-[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
-[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
-[`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
-[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
-[`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
-[`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
-[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
-[`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+[`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md),
+[`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://fgcz.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregateTopN`](https://fgcz.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md),
+[`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
+[`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
+[`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
+[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
 ## Public fields
 
@@ -73,7 +73,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method [`hierarchy_counts()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts.md)
+### Method [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md)
 
 summarize hierarchy
 
@@ -136,7 +136,7 @@ missing per condition and protein
 
 ------------------------------------------------------------------------
 
-### Method [`upset_interaction_missing_stats()`](https://wolski.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
+### Method [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
 
 upset plot with missing information per protein and condition
 

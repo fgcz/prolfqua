@@ -19,8 +19,8 @@ A tibble with 36 rows and the columns \`Relative Path\`, \`Name\`,
 ## See also
 
 Other data:
-[`PACKAGE_DATA`](https://wolski.github.io/prolfqua/reference/PACKAGE_DATA.md),
-[`data_checksummarizationrobust87`](https://wolski.github.io/prolfqua/reference/data_checksummarizationrobust87.md),
-[`data_checksummarizerobust69`](https://wolski.github.io/prolfqua/reference/data_checksummarizerobust69.md),
-[`data_ionstar`](https://wolski.github.io/prolfqua/reference/data_ionstar.md),
-[`prolfqua_data()`](https://wolski.github.io/prolfqua/reference/prolfqua_data.md)
+[`PACKAGE_DATA`](https://fgcz.github.io/prolfqua/reference/PACKAGE_DATA.md),
+[`data_checksummarizationrobust87`](https://fgcz.github.io/prolfqua/reference/data_checksummarizationrobust87.md),
+[`data_checksummarizerobust69`](https://fgcz.github.io/prolfqua/reference/data_checksummarizerobust69.md),
+[`data_ionstar`](https://fgcz.github.io/prolfqua/reference/data_ionstar.md),
+[`prolfqua_data()`](https://fgcz.github.io/prolfqua/reference/prolfqua_data.md)

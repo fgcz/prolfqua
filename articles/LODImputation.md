@@ -72,7 +72,7 @@ variance, so the residual variance of the refit would be too small;
 `lm_impute` borrows it from the proteins that could be fitted. The
 column `estimate_type` tells which route each estimate took. Pass `lod`
 to
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 to use a LOD of your own.
 
 ``` r
@@ -123,7 +123,7 @@ ggplot(res, aes(diff, -log10(p.value), colour = estimate_type)) +
 ```
 
 ![Volcano plot of lm_impute; colour marks the estimates refitted at the
-LOD.](TestingMissingInference_files/figure-html/volcano-1.png)
+LOD.](LODImputation_files/figure-html/volcano-1.png)
 
 Volcano plot of lm_impute; colour marks the estimates refitted at the
 LOD.
@@ -159,7 +159,7 @@ compares them on peptide-level data, including the hurdle model.
 
 ## Completing the data matrix
 
-[`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md)
+[`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
 fills every missing cell with the prediction of its protein model:
 `fitted` for proteins fitted on their observed values, `lod_refit` for
 proteins refitted at the LOD, `complete` for proteins without missing
@@ -179,7 +179,7 @@ table(filled$summary$route)
 filled$lfqdata$get_Plotter()$heatmap()
 ```
 
-![](TestingMissingInference_files/figure-html/fill-1.png)
+![](LODImputation_files/figure-html/fill-1.png)
 
 ## Session Info
 

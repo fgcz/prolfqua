@@ -3,7 +3,7 @@
 ## Purpose
 
 This vignette demonstrates the same
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 facade workflow on a dataset with two factors (e.g. treatment and
 genotype), yielding four subgroups: `C_WT`, `T_WT`, `C_KO`, `T_KO`. We
 define contrasts:

@@ -12,7 +12,7 @@ An R6 class generator.
 
 - `config`:
 
-  [`ContrastConfiguration`](https://wolski.github.io/prolfqua/reference/ContrastConfiguration.md)
+  [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md)
   describing the backend's column-role mapping and behaviour flags.
   Subclasses should populate this in `initialize()` so generic consumers
   can resolve column names without hard-coding them.
@@ -52,7 +52,7 @@ An R6 class generator.
 ### Method `get_config()`
 
 Return the
-[`ContrastConfiguration`](https://wolski.github.io/prolfqua/reference/ContrastConfiguration.md),
+[`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
 constructing an LM-flavoured default on demand if a subclass has not set
 one.
 
@@ -85,7 +85,7 @@ get table with contrast results (similar to limma topTable function)
 ### Method `get_Plotter()`
 
 return
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
+[`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md)
 for the contrast results
 
 #### Usage
@@ -104,7 +104,7 @@ for the contrast results
 
 #### Returns
 
-[`ContrastsPlotter`](https://wolski.github.io/prolfqua/reference/ContrastsPlotter.md)
+[`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md)
 
 ------------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ data.frame with hierarchy columns and contrast, or 0 rows.
 get rank-list input table for enrichment tools.
 
 If the backend's
-[`ContrastConfiguration`](https://wolski.github.io/prolfqua/reference/ContrastConfiguration.md)
+[`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md)
 has a p-value column the default rank score is signed
 `sign(effect) * -log10(p.value)`. Otherwise the default is the effect
 column itself.
@@ -200,7 +200,7 @@ Filter contrast rows that pass the FDR and effect-size threshold.
 
 By default this is symmetric on the effect column
 (`|effect| > diff_threshold`). For backends whose
-[`ContrastConfiguration`](https://wolski.github.io/prolfqua/reference/ContrastConfiguration.md)
+[`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md)
 has `significance_directional = TRUE` (e.g. SAINTexpress, where only
 positive enrichment is biologically meaningful), the filter is one-sided
 (`effect > diff_threshold`).

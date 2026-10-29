@@ -14,7 +14,7 @@ NULL.
 
 - lfqdata:
 
-  an [`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md)
+  an [`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md)
   object
 
 - strategy:

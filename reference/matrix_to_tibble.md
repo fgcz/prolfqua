@@ -29,14 +29,14 @@ The computed result.
 ## See also
 
 Other utilities:
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
-[`is_contaminant()`](https://wolski.github.io/prolfqua/reference/is_contaminant.md),
-[`is_decoy()`](https://wolski.github.io/prolfqua/reference/is_decoy.md),
-[`multigroup_volcano()`](https://wolski.github.io/prolfqua/reference/multigroup_volcano.md),
-[`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
-[`panel_cor()`](https://wolski.github.io/prolfqua/reference/panel_cor.md),
-[`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`get_uniprot_id_from_fasta_header()`](https://fgcz.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
+[`is_contaminant()`](https://fgcz.github.io/prolfqua/reference/is_contaminant.md),
+[`is_decoy()`](https://fgcz.github.io/prolfqua/reference/is_decoy.md),
+[`multigroup_volcano()`](https://fgcz.github.io/prolfqua/reference/multigroup_volcano.md),
+[`pairs_smooth()`](https://fgcz.github.io/prolfqua/reference/pairs_smooth.md),
+[`panel_cor()`](https://fgcz.github.io/prolfqua/reference/panel_cor.md),
+[`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
 
 ## Examples
 

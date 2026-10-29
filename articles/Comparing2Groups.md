@@ -19,7 +19,7 @@ FDR.
 library(prolfqua)
 ```
 
-[`sim_lfq_data_protein_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_protein_config.md)
+[`sim_lfq_data_protein_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_protein_config.md)
 simulates protein abundances in long format, one row per protein and
 sample, and returns them together with a matching
 `AnalysisConfiguration`. To read your own data, see the vignette
@@ -254,16 +254,16 @@ Heatmap, Rows - proteins, Columns - samples
 ## Fit the model and compute contrasts
 
 We compare each treatment group with the control.
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 fits one model per protein and computes the contrasts in one call. We
 use the method `lm_impute`: a linear model per protein, with the protein
 variances moderated by the empirical Bayes method so that proteins with
 few observations borrow strength from all proteins. Proteins without
 observations in one group are refitted with the missing values set to
 the limit of detection (LOD); see the article [Absent, not
-unknown](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html).
+unknown](https://fgcz.github.io/prolfqua/articles/LODImputation.html).
 The vignette [All modelling methods at a
-glance](https://wolski.github.io/prolfqua/articles/ModellingMethods.md)
+glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.md)
 lists the other methods.
 
 ``` r
@@ -360,7 +360,7 @@ t-statistic and subjected to gene set enrichment analysis. The typical
 workflow is:
 
 1.  Extract UniProt IDs from the contrast results using
-    [`prolfqua::get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md)
+    [`prolfqua::get_uniprot_id_from_fasta_header()`](https://fgcz.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md)
 2.  Map UniProt IDs to Entrez Gene IDs using `AnnotationDbi::mapIds()`
     with a species-specific annotation package
 3.  Create a named ranked list (statistic values named by gene IDs)

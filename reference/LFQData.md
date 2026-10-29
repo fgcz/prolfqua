@@ -19,15 +19,15 @@ fold-change estimates and inflate false discovery rates.
 ## See also
 
 Other LFQData:
-[`AggregateLimpa`](https://wolski.github.io/prolfqua/reference/AggregateLimpa.md),
-[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
-[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
-[`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
-[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
-[`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
-[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
-[`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+[`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md),
+[`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://fgcz.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregateTopN`](https://fgcz.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md),
+[`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
+[`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
+[`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
+[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
 ## Public fields
 
@@ -138,7 +138,7 @@ initialize
 - `setup`:
 
   is data setup needed, default = FALSE, if TRUE, calls
-  [`setup_analysis`](https://wolski.github.io/prolfqua/reference/setup_analysis.md)
+  [`setup_analysis`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
   on data first.
 
 ------------------------------------------------------------------------
@@ -293,7 +293,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method [`filter_proteins_by_peptide_count()`](https://wolski.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)
+### Method [`filter_proteins_by_peptide_count()`](https://fgcz.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)
 
 remove proteins with less than X peptides
 
@@ -312,7 +312,7 @@ self
 remove decoy / reverse-database entries (rows whose top-level hierarchy
 id, e.g. protein_Id, is a decoy). Detection uses the configured
 \`pattern_decoys\` unioned with the built-in defaults (see
-[`is_decoy`](https://wolski.github.io/prolfqua/reference/is_decoy.md));
+[`is_decoy`](https://fgcz.github.io/prolfqua/reference/is_decoy.md));
 decoys are always detectable even when no pattern is configured. Returns
 a new decoy-free LFQData (self is not modified).
 
@@ -343,7 +343,7 @@ numeric in \[0, 1\]
 
 ------------------------------------------------------------------------
 
-### Method [`complete_cases()`](https://wolski.github.io/prolfqua/reference/complete_cases.md)
+### Method [`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md)
 
 some software is reporting NA's as 0, you must remove it from your data
 
@@ -537,7 +537,7 @@ new name of response variable
 
 ------------------------------------------------------------------------
 
-### Method [`hierarchy_counts()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts.md)
+### Method [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md)
 
 number of elements at each level
 
@@ -547,7 +547,7 @@ number of elements at each level
 
 ------------------------------------------------------------------------
 
-### Method [`summarize_hierarchy()`](https://wolski.github.io/prolfqua/reference/summarize_hierarchy.md)
+### Method [`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
 
 e.g. number of peptides per protein etc
 
@@ -592,9 +592,9 @@ LFQDataSummarizer
 ### Method `get_Stats()`
 
 Get
-[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md).
+[`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md).
 For more details see
-[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md).
+[`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md).
 
 #### Usage
 

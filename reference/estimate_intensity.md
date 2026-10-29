@@ -26,10 +26,10 @@ returns list with data (data.frame) and config (AnalysisConfiguration)
 ## See also
 
 Other aggregation:
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`aggregate_intensity_top_n()`](https://wolski.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
-[`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
-[`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md)
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`aggregate_intensity_top_n()`](https://fgcz.github.io/prolfqua/reference/aggregate_intensity_top_n.md),
+[`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),
+[`plot_hierarchies_line()`](https://fgcz.github.io/prolfqua/reference/plot_hierarchies_line.md)
 
 ## Examples
 

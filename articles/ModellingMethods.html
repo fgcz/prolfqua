@@ -39,11 +39,11 @@
     <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Contrast Facades with Parallel Designs</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
+    <li><a class="dropdown-item" href="../articles/LODImputation.html">Absent, not unknown: proteins missing in a whole group</a></li>
     <li><a class="dropdown-item" href="../articles/LowLevelAPI.html">Under the hood: strategy, model and contrasts</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
-    <li><a class="dropdown-item" href="../articles/TestingMissingInference.html">Absent, not unknown: proteins missing in a whole group</a></li>
   </ul>
 </li>
       </ul>
@@ -51,7 +51,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/fgcz/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -84,7 +84,7 @@ University of Zurich<br><small class="dont-index">Source: <a href="https://githu
 <code>method</code> argument. This vignette runs every method listed by
 <code><a href="../reference/list_facades.html">list_facades()</a></code> on one small simulated dataset and shows one
 line of output per method. Plots and a discussion of the methods are in
-the article <a href="https://fgcz.github.io/prolfqua/articles/ContrastFacades.html" class="external-link">Contrast
+the article <a href="https://fgcz.github.io/prolfqua/articles/ContrastFacades.html">Contrast
 facades with parallel designs</a>.</p>
 </div>
 <div class="section level2">
@@ -357,14 +357,14 @@ protein is detected in every sample, so the detection models report
 <tr class="odd">
 <td align="left">binomial_firth_nested</td>
 <td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">1.000</td>
+<td align="right">NaN</td>
+<td align="right">NaN</td>
 </tr>
 <tr class="even">
 <td align="left">binomial_nested</td>
 <td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">1.000</td>
+<td align="right">NaN</td>
+<td align="right">NaN</td>
 </tr>
 <tr class="odd">
 <td align="left">deqms</td>

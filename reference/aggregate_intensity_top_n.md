@@ -1,7 +1,7 @@
 # Aggregates top N intensities
 
 run
-[rank_peptide_by_intensity](https://wolski.github.io/prolfqua/reference/rank_peptide_by_intensity.md)
+[rank_peptide_by_intensity](https://fgcz.github.io/prolfqua/reference/rank_peptide_by_intensity.md)
 first
 
 ## Usage
@@ -35,10 +35,10 @@ list with data and new reduced configuration (config)
 ## See also
 
 Other aggregation:
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`estimate_intensity()`](https://wolski.github.io/prolfqua/reference/estimate_intensity.md),
-[`plot_estimate()`](https://wolski.github.io/prolfqua/reference/plot_estimate.md),
-[`plot_hierarchies_line()`](https://wolski.github.io/prolfqua/reference/plot_hierarchies_line.md)
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`estimate_intensity()`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md),
+[`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),
+[`plot_hierarchies_line()`](https://fgcz.github.io/prolfqua/reference/plot_hierarchies_line.md)
 
 ## Examples
 

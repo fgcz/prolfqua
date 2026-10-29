@@ -18,7 +18,7 @@ penalty.
 
 ## Super class
 
-[`prolfqua::StrategyBase`](https://wolski.github.io/prolfqua/reference/StrategyBase.md)
+[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyBinomial`
 
 ## Public fields
@@ -37,11 +37,11 @@ penalty.
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$contrast_fun()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`prolfqua::StrategyBase$df_residual()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`prolfqua::StrategyBase$isSingular()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`prolfqua::StrategyBase$model_fun()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`prolfqua::StrategyBase$sigma()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`prolfqua::StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
+- [`prolfqua::StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`prolfqua::StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
+- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`prolfqua::StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
 
 ------------------------------------------------------------------------
 

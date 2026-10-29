@@ -82,7 +82,7 @@ autoload is disabled.
 
 ### Facade Pattern (`ContrastsFacades.R`, `ContrastsChildToParentFacades.R`, `build_contrast_analysis.R`)
 
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 is the recommended entry point. Each method dispatches to a Facade class
 that wires strategy → model → contrasts → moderation internally.
 
@@ -131,7 +131,7 @@ sample-wise**. For peptide/precursor-level data it is typically 1.
 
 **Protein-level input must carry `nr_children`.** If the column is
 missing,
-[`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md)
+[`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
 adds it set to 1 with a warning — but this defeats the purpose for
 aggregated data where the actual peptide count matters.
 
@@ -152,14 +152,14 @@ lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 `StrategyLM`, `StrategyRLM`, `StrategyLmer`, `StrategyLogistf` — each
 with `model_fun`, `isSingular`, `contrast_fun`, `df_residual`, `sigma`
 methods. Wrapper functions
-[`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`strategy_rlm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`strategy_lmer()`](https://wolski.github.io/prolfqua/reference/strategy.md),
-[`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md)
+[`strategy_lm()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
+[`strategy_rlm()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
+[`strategy_lmer()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
+[`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 create instances.
-[`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
+[`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md)
 returns a plain list (formula, trend, robust, weights) consumed by
-[`build_model_limma()`](https://wolski.github.io/prolfqua/reference/build_model_limma.md).
+[`build_model_limma()`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md).
 
 **Config immutability**: AnalysisConfiguration is always deep-cloned
 when passed to new LFQData instances. Never modify config in-place on an
@@ -208,11 +208,11 @@ downstream packages.
 - `StrategyLM`, `StrategyRLM`, `StrategyLmer` R6 classes +
   `strategy_lm/rlm/lmer()` wrappers (tidyMS_R6_Modelling.R);
   `StrategyLogistf` +
-  [`strategy_logistf()`](https://wolski.github.io/prolfqua/reference/strategy.md)
+  [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md)
   (logistf.R)
-- [`strategy_limma()`](https://wolski.github.io/prolfqua/reference/strategy_limma.md)
+- [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md)
   — limma matrix model strategy (in ContrastsLimma.R)
-- [`sim_lfq_data_peptide_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md)
+- [`sim_lfq_data_peptide_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md)
   — simulate test data (in simulate_LFQ_data.R)
 
 ### File Naming Convention
@@ -247,7 +247,7 @@ downstream packages.
 container and decorators - `test-Model.R` — Model fitting and
 coefficient extraction - `test-Contrasts.R` — Contrast computation (Wald
 test path) - `test-ContrastsFacades.R` — All facade classes and
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md) -
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md) -
 `test-ContrastsLimma.R` — Limma backend (ModelLimma, ContrastsLimma,
 merge, 2-factor) - `test-ContrastsModeratedDEqMS.R` — DEqMS moderation
 and facade - `test-ContrastsPlotter.R` — Contrast visualization -

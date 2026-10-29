@@ -2,7 +2,7 @@
 
 Writes a histogram of p-values and an empirical CDF to a PDF file.
 Called by
-[`LR_test`](https://wolski.github.io/prolfqua/reference/LR_test.md) when
+[`LR_test`](https://fgcz.github.io/prolfqua/reference/LR_test.md) when
 `path` is non-NULL.
 
 ## Usage

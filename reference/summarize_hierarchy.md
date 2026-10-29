@@ -40,9 +40,9 @@ summarize_hierarchy(
 ## See also
 
 Other summary:
-[`HierarchyCountsSample`](https://wolski.github.io/prolfqua/reference/HierarchyCountsSample.md),
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`hierarchy_counts()`](https://wolski.github.io/prolfqua/reference/hierarchy_counts.md)
+[`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md)
 
 ## Examples
 

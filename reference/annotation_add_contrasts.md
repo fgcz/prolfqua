@@ -53,11 +53,11 @@ Contrast definitions or contrast results.
 ## See also
 
 Other contrasts:
-[`generate_contrasts()`](https://wolski.github.io/prolfqua/reference/generate_contrasts.md),
-[`generate_contrasts_for_factor()`](https://wolski.github.io/prolfqua/reference/generate_contrasts_for_factor.md),
-[`interaction_contrasts()`](https://wolski.github.io/prolfqua/reference/interaction_contrasts.md),
-[`level_specific_contrasts()`](https://wolski.github.io/prolfqua/reference/level_specific_contrasts.md),
-[`main_effect_contrasts()`](https://wolski.github.io/prolfqua/reference/main_effect_contrasts.md)
+[`generate_contrasts()`](https://fgcz.github.io/prolfqua/reference/generate_contrasts.md),
+[`generate_contrasts_for_factor()`](https://fgcz.github.io/prolfqua/reference/generate_contrasts_for_factor.md),
+[`interaction_contrasts()`](https://fgcz.github.io/prolfqua/reference/interaction_contrasts.md),
+[`level_specific_contrasts()`](https://fgcz.github.io/prolfqua/reference/level_specific_contrasts.md),
+[`main_effect_contrasts()`](https://fgcz.github.io/prolfqua/reference/main_effect_contrasts.md)
 
 ## Examples
 

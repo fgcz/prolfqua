@@ -26,15 +26,15 @@ Firth-penalized detection-count facade for nested input"></head><body>
     <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Contrast Facades with Parallel Designs</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
+    <li><a class="dropdown-item" href="../articles/LODImputation.html">Absent, not unknown: proteins missing in a whole group</a></li>
     <li><a class="dropdown-item" href="../articles/LowLevelAPI.html">Under the hood: strategy, model and contrasts</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
-    <li><a class="dropdown-item" href="../articles/TestingMissingInference.html">Absent, not unknown: proteins missing in a whole group</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/fgcz/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul></div>
 
 
@@ -168,14 +168,14 @@ which gives finite log odds ratios under complete separation, as
 <span class="r-msg co"><span class="r-pr">#&gt;</span> contrasts_linfct</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(protein_Id, contrast)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName             estimate_type protein_Id  contrast    diff avgAbd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> binomial_firth_nested observed      0GRprF~7339 A_vs_Ctrl -<span style="color: #BB0000;">0.847</span>  0.424</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> binomial_firth_nested observed      4JK499~3111 A_vs_Ctrl  0.504 -<span style="color: #BB0000;">0.704</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> binomial_firth_nested observed      7IZdVV~6818 A_vs_Ctrl -<span style="color: #BB0000;">0.573</span>  1.32 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> binomial_firth_nested observed      AZPG26~9461 A_vs_Ctrl  0      2.20 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> binomial_firth_nested observed      AoNKbb~3497 A_vs_Ctrl -<span style="color: #BB0000;">1.18</span>   2.63 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> binomial_firth_nested observed      CibL2O~2149 A_vs_Ctrl -<span style="color: #BB0000;">1.44</span>  -<span style="color: #BB0000;">0.718</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   modelName             estimate_type protein_Id  contrast       diff avgAbd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> binomial_firth_nested observed      0GRprF~7339 A_vs_Ctrl -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>  0.424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> binomial_firth_nested observed      4JK499~3111 A_vs_Ctrl  5.04<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> -<span style="color: #BB0000;">0.704</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> binomial_firth_nested observed      7IZdVV~6818 A_vs_Ctrl -<span style="color: #BB0000;">5.73</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>  1.32 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> binomial_firth_nested observed      AZPG26~9461 A_vs_Ctrl  1.21<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>  2.20 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> binomial_firth_nested observed      AoNKbb~3497 A_vs_Ctrl -<span style="color: #BB0000;">1.18</span><span style="color: #949494;">e</span>+ 0  2.63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> binomial_firth_nested observed      CibL2O~2149 A_vs_Ctrl -<span style="color: #BB0000;">1.44</span><span style="color: #949494;">e</span>+ 0 -<span style="color: #BB0000;">0.718</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 10 more variables: std.error.unmoderated &lt;dbl&gt;, df.unmoderated &lt;int&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, df &lt;dbl&gt;, p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.high &lt;dbl&gt;, sigma &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span>

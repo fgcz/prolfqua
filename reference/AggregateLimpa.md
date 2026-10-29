@@ -31,19 +31,19 @@ The output LFQData contains three value columns:
 ## See also
 
 Other LFQData:
-[`AggregateMedpolish`](https://wolski.github.io/prolfqua/reference/AggregateMedpolish.md),
-[`AggregateRlm`](https://wolski.github.io/prolfqua/reference/AggregateRlm.md),
-[`AggregateTopN`](https://wolski.github.io/prolfqua/reference/AggregateTopN.md),
-[`AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md),
-[`LFQData`](https://wolski.github.io/prolfqua/reference/LFQData.md),
-[`LFQDataPlotter`](https://wolski.github.io/prolfqua/reference/LFQDataPlotter.md),
-[`LFQDataStats`](https://wolski.github.io/prolfqua/reference/LFQDataStats.md),
-[`LFQDataSummariser`](https://wolski.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://wolski.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+[`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
+[`AggregateRlm`](https://fgcz.github.io/prolfqua/reference/AggregateRlm.md),
+[`AggregateTopN`](https://fgcz.github.io/prolfqua/reference/AggregateTopN.md),
+[`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md),
+[`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
+[`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
+[`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
+[`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
+[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
 
 ## Super class
 
-[`prolfqua::AggregatorBase`](https://wolski.github.io/prolfqua/reference/AggregatorBase.md)
+[`prolfqua::AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md)
 -\> `AggregateLimpa`
 
 ## Public fields

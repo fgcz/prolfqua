@@ -21,18 +21,18 @@ separate_hierarchy(data, config)
 ## See also
 
 Other configuration:
-[`AnalysisConfiguration`](https://wolski.github.io/prolfqua/reference/AnalysisConfiguration.md),
-[`ContrastConfiguration`](https://wolski.github.io/prolfqua/reference/ContrastConfiguration.md),
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`R6_extract_values()`](https://wolski.github.io/prolfqua/reference/R6_extract_values.md),
-[`complete_cases()`](https://wolski.github.io/prolfqua/reference/complete_cases.md),
-[`list_to_ContrastConfiguration()`](https://wolski.github.io/prolfqua/reference/list_to_ContrastConfiguration.md),
-[`make_interaction_column()`](https://wolski.github.io/prolfqua/reference/make_interaction_column.md),
-[`make_reduced_hierarchy_config()`](https://wolski.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
-[`sample_subset()`](https://wolski.github.io/prolfqua/reference/sample_subset.md),
-[`setup_analysis()`](https://wolski.github.io/prolfqua/reference/setup_analysis.md),
-[`table_factors()`](https://wolski.github.io/prolfqua/reference/table_factors.md),
-[`table_factors_size()`](https://wolski.github.io/prolfqua/reference/table_factors_size.md)
+[`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
+[`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/R6_extract_values.md),
+[`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md),
+[`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/list_to_ContrastConfiguration.md),
+[`make_interaction_column()`](https://fgcz.github.io/prolfqua/reference/make_interaction_column.md),
+[`make_reduced_hierarchy_config()`](https://fgcz.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
+[`sample_subset()`](https://fgcz.github.io/prolfqua/reference/sample_subset.md),
+[`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md),
+[`table_factors()`](https://fgcz.github.io/prolfqua/reference/table_factors.md),
+[`table_factors_size()`](https://fgcz.github.io/prolfqua/reference/table_factors_size.md)
 
 ## Examples
 

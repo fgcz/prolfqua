@@ -25,11 +25,11 @@ The computed result.
 ## See also
 
 Other data:
-[`PACKAGE_DATA`](https://wolski.github.io/prolfqua/reference/PACKAGE_DATA.md),
-[`data_checksummarizationrobust87`](https://wolski.github.io/prolfqua/reference/data_checksummarizationrobust87.md),
-[`data_checksummarizerobust69`](https://wolski.github.io/prolfqua/reference/data_checksummarizerobust69.md),
-[`data_ionstar`](https://wolski.github.io/prolfqua/reference/data_ionstar.md),
-[`x5463yzwer453bbb`](https://wolski.github.io/prolfqua/reference/x5463yzwer453bbb.md)
+[`PACKAGE_DATA`](https://fgcz.github.io/prolfqua/reference/PACKAGE_DATA.md),
+[`data_checksummarizationrobust87`](https://fgcz.github.io/prolfqua/reference/data_checksummarizationrobust87.md),
+[`data_checksummarizerobust69`](https://fgcz.github.io/prolfqua/reference/data_checksummarizerobust69.md),
+[`data_ionstar`](https://fgcz.github.io/prolfqua/reference/data_ionstar.md),
+[`x5463yzwer453bbb`](https://fgcz.github.io/prolfqua/reference/x5463yzwer453bbb.md)
 
 ## Examples
 

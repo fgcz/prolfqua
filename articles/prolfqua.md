@@ -21,7 +21,7 @@ analysis:
   (`get_Aggregator()`), summary statistics (`get_Stats()`),
   missing-value summaries (`get_Summariser()`) and plots
   (`get_Plotter()`).
-- [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+- [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
   fits a model per protein and computes the requested contrasts. The
   `method` argument selects the model: linear models (`lm`, `rlm`,
   `rfit`), limma and limma-voom, DEqMS variance moderation, Firth
@@ -55,7 +55,7 @@ BiocManager::install("fgcz/prolfqua")
 
 We simulate peptide-level intensities for 100 proteins measured in three
 groups (`A`, `B` and `Ctrl`).
-[`sim_lfq_data_peptide_config()`](https://wolski.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md)
+[`sim_lfq_data_peptide_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md)
 returns the data together with a matching `AnalysisConfiguration`.
 
 ``` r
@@ -126,7 +126,7 @@ contrasts.](prolfqua_files/figure-html/volcano-1.png)
 Volcano plot of the two contrasts.
 
 All available methods are listed by
-[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md):
+[`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md):
 
 ``` r
 names(list_facades())
@@ -155,26 +155,26 @@ set of tutorials:
 - [Contrast facades with parallel
   designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html):
   all
-  [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
   methods side by side
 - [Contrast facades with a two-factor
   design](https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html)
 - [Contrasts from
   factors](https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html)
 - [Absent, not unknown: proteins missing in a whole
-  group](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html):
+  group](https://fgcz.github.io/prolfqua/articles/LODImputation.html):
   limit-of-detection imputation with `lm_impute`
 - [Simulating peptide-level
   data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
 - [Under the hood: strategy, model and
   contrasts](https://fgcz.github.io/prolfqua/articles/LowLevelAPI.html):
   the classes behind
-  [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 
 The vignettes [Comparing two groups with
-prolfqua](https://wolski.github.io/prolfqua/articles/Comparing2Groups.md)
+prolfqua](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.md)
 and [All modelling methods at a
-glance](https://wolski.github.io/prolfqua/articles/ModellingMethods.md)
+glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.md)
 are also part of this package.
 
 ## Session info

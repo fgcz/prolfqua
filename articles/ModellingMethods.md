@@ -2,10 +2,10 @@
 
 ## Purpose
 
-[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 selects the model with its `method` argument. This vignette runs every
 method listed by
-[`list_facades()`](https://wolski.github.io/prolfqua/reference/list_facades.md)
+[`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md)
 on one small simulated dataset and shows one line of output per method.
 Plots and a discussion of the methods are in the article [Contrast
 facades with parallel
@@ -133,8 +133,8 @@ knitr::kable(one, digits = 3)
 
 | method                |   diff | p.value |   FDR |
 |:----------------------|-------:|--------:|------:|
-| binomial_firth_nested |  0.000 |   1.000 | 1.000 |
-| binomial_nested       |  0.000 |   1.000 | 1.000 |
+| binomial_firth_nested |  0.000 |     NaN |   NaN |
+| binomial_nested       |  0.000 |     NaN |   NaN |
 | deqms                 | -0.469 |   0.000 | 0.000 |
 | deqms_voom            | -0.469 |   0.000 | 0.000 |
 | firth                 |  0.000 |   1.000 | 1.000 |

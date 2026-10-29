@@ -41,11 +41,11 @@
     <li><a class="dropdown-item" href="articles/ContrastFacades.html">Contrast Facades with Parallel Designs</a></li>
     <li><a class="dropdown-item" href="articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
+    <li><a class="dropdown-item" href="articles/LODImputation.html">Absent, not unknown: proteins missing in a whole group</a></li>
     <li><a class="dropdown-item" href="articles/LowLevelAPI.html">Under the hood: strategy, model and contrasts</a></li>
     <li><a class="dropdown-item" href="articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="articles/SimulateData.html">Simulate Peptide level Data</a></li>
-    <li><a class="dropdown-item" href="articles/TestingMissingInference.html">Absent, not unknown: proteins missing in a whole group</a></li>
   </ul>
 </li>
       </ul>
@@ -53,7 +53,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/wolski/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/fgcz/prolfqua" aria-label="GitHub repository"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -66,7 +66,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="prolfqua---a-comprehensive-r-package-for-proteomics-differential-expression-analysis">prolfqua - a comprehensive R package for Proteomics Differential Expression Analysis<a class="anchor" aria-label="anchor" href="#prolfqua---a-comprehensive-r-package-for-proteomics-differential-expression-analysis"></a>
 </h1></div>
-<p>The R package contains functions for analyzing mass spectrometry based experiments. This package is developed at the <a href="https://fgcz.ch/" class="external-link">FGCZ</a>. The package documentation including vignettes can be accessed at <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link uri">https://fgcz.github.io/prolfqua/index.html</a></p>
+<p>The R package contains functions for analyzing mass spectrometry based experiments. This package is developed at the <a href="https://fgcz.ch/" class="external-link">FGCZ</a>. The package documentation including vignettes can be accessed at <a href="https://fgcz.github.io/prolfqua/index.html" class="uri">https://fgcz.github.io/prolfqua/index.html</a></p>
 <p><code>prolfqua</code> makes easy things easy while remaining fully hackable.</p>
 </div>
 <div class="section level1">
@@ -86,7 +86,7 @@
 <div class="section level1">
 <h1 id="how-to-get-started">How to get started<a class="anchor" aria-label="anchor" href="#how-to-get-started"></a>
 </h1>
-<p>How to build a <code>LFQData</code> object from a table with protein or peptide quantification results, and a table with sample annotation is described in more detail here the: <a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html" class="external-link">CreatingConfigurations vignette</a></p>
+<p>How to build a <code>LFQData</code> object from a table with protein or peptide quantification results, and a table with sample annotation is described in more detail here the: <a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html">CreatingConfigurations vignette</a></p>
 <p>A minimal example for a table with protein abundances is:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Table with abundances</span></span>
@@ -175,22 +175,22 @@
 </li>
 <li>See <a href="https://fgcz-proteomics.uzh.ch/~wolski/PosterBioconductor.html" class="external-link">Bioconductor 2021 Conference poster</a>.</li>
 <li>Watch the lightning (8 min) talk at <a href="https://www.youtube.com/watch?v=jOXU4X7nV9I&amp;t" class="external-link">EuroBioc2020</a> on YouTube or <a href="https://f1000research.com/slides/9-1476" class="external-link">slides</a>.</li>
-<li>Read the pkgdown generate website <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link uri">https://fgcz.github.io/prolfqua/index.html</a>
+<li>Read the pkgdown generate website <a href="https://fgcz.github.io/prolfqua/index.html" class="uri">https://fgcz.github.io/prolfqua/index.html</a>
 </li>
 </ul>
 </div>
 <div class="section level1">
 <h1 id="detailed-documentation-with-r-code">Detailed documentation with R code:<a class="anchor" aria-label="anchor" href="#detailed-documentation-with-r-code"></a>
 </h1>
-<p>Document’s explaining how to run an analysis with prolfqua are at github.io <a href="https://fgcz.github.io/prolfqua/index.html" class="external-link">https://fgcz.github.io/prolfqua/index.html</a>.</p>
+<p>Document’s explaining how to run an analysis with prolfqua are at github.io <a href="https://fgcz.github.io/prolfqua/index.html">https://fgcz.github.io/prolfqua/index.html</a>.</p>
 <ul>
-<li><a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html" class="external-link">Comparing two Conditions</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html" class="external-link">QC and protein wise sample size estimation</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html" class="external-link">Analysing factorial designs</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html">Comparing two Conditions</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC and protein wise sample size estimation</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html">Analysing factorial designs</a></li>
 </ul>
 <p>Example QC and sample size report</p>
 <ul>
-<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html" class="external-link">QC and sample size Report</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC and sample size Report</a></li>
 </ul>
 </div>
 <div class="section level1">

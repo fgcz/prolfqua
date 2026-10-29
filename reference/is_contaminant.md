@@ -1,7 +1,6 @@
 # Detect contaminant identifiers
 
-As
-[`is_decoy`](https://wolski.github.io/prolfqua/reference/is_decoy.md),
+As [`is_decoy`](https://fgcz.github.io/prolfqua/reference/is_decoy.md),
 but for contaminant entries (keratin, trypsin, BSA, ...). Built-in
 anchored default prefixes unioned with an optional configured `pattern`;
 empty / `NULL` uses the defaults only.
@@ -29,14 +28,14 @@ logical vector, `TRUE` where an id looks like a contaminant
 ## See also
 
 Other utilities:
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://wolski.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`get_uniprot_id_from_fasta_header()`](https://wolski.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
-[`is_decoy()`](https://wolski.github.io/prolfqua/reference/is_decoy.md),
-[`matrix_to_tibble()`](https://wolski.github.io/prolfqua/reference/matrix_to_tibble.md),
-[`multigroup_volcano()`](https://wolski.github.io/prolfqua/reference/multigroup_volcano.md),
-[`pairs_smooth()`](https://wolski.github.io/prolfqua/reference/pairs_smooth.md),
-[`panel_cor()`](https://wolski.github.io/prolfqua/reference/panel_cor.md),
-[`table_facade()`](https://wolski.github.io/prolfqua/reference/table_facade.md)
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`get_uniprot_id_from_fasta_header()`](https://fgcz.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
+[`is_decoy()`](https://fgcz.github.io/prolfqua/reference/is_decoy.md),
+[`matrix_to_tibble()`](https://fgcz.github.io/prolfqua/reference/matrix_to_tibble.md),
+[`multigroup_volcano()`](https://fgcz.github.io/prolfqua/reference/multigroup_volcano.md),
+[`pairs_smooth()`](https://fgcz.github.io/prolfqua/reference/pairs_smooth.md),
+[`panel_cor()`](https://fgcz.github.io/prolfqua/reference/panel_cor.md),
+[`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
 
 ## Examples
 

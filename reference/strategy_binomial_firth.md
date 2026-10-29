@@ -21,7 +21,7 @@ strategy_binomial_firth(modelstr, model_name = "binomial_firth_nested")
 ## Value
 
 A
-[`StrategyBinomialFirth`](https://wolski.github.io/prolfqua/reference/StrategyBinomialFirth.md)
+[`StrategyBinomialFirth`](https://fgcz.github.io/prolfqua/reference/StrategyBinomialFirth.md)
 object.
 
 ## Examples
@@ -30,5 +30,5 @@ object.
 strategy <- strategy_binomial_firth("~ group_")
 strategy$formula
 #> cbind(.detected, .undetected) ~ group_
-#> <environment: 0x56020bdcfb70>
+#> <environment: 0x56322006a678>
 ```

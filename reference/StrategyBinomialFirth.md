@@ -11,7 +11,7 @@ An R6 class generator.
 ## Details
 
 Fits detected and undetected child-feature counts like
-[`StrategyBinomial`](https://wolski.github.io/prolfqua/reference/StrategyBinomial.md),
+[`StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md),
 but replaces the fixed pseudo-count with Firth's bias reduction: each
 count row gets \\h/2\\ added to both outcomes, where \\h\\ is its hat
 value at the fitted probabilities, iterated to convergence. The
@@ -23,9 +23,9 @@ from the scatter of the counts between samples.
 
 ## Super classes
 
-[`prolfqua::StrategyBase`](https://wolski.github.io/prolfqua/reference/StrategyBase.md)
+[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\>
-[`prolfqua::StrategyBinomial`](https://wolski.github.io/prolfqua/reference/StrategyBinomial.md)
+[`prolfqua::StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md)
 -\> `StrategyBinomialFirth`
 
 ## Methods
@@ -38,11 +38,11 @@ from the scatter of the counts between samples.
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$contrast_fun()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`prolfqua::StrategyBase$df_residual()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`prolfqua::StrategyBase$isSingular()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`prolfqua::StrategyBase$model_fun()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`prolfqua::StrategyBase$sigma()`](https://wolski.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`prolfqua::StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
+- [`prolfqua::StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`prolfqua::StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
+- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`prolfqua::StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
 
 ------------------------------------------------------------------------
 
