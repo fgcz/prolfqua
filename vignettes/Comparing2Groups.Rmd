@@ -33,7 +33,7 @@ library(prolfqua)
 `sim_lfq_data_protein_config()` simulates protein abundances in long format, one row per protein and sample, and returns them together with a matching `AnalysisConfiguration`. To read your own data, see the vignette [Creating configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
 
 ```{r LoadDataAndConfigure}
-xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100)
+xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5)
 xx
 ```
 
@@ -126,127 +126,56 @@ p <- pl$heatmap_cor()
 p
 ```
 
-# Fitting a linear model 
+# Fit the model and compute contrasts
 
-For fitting linear models to the transformed intensities for all our proteins we have to first specify the model function and define the contrasts that we want to calculate.
-
-```{r lookatfactors}
-transformed$factors()
-
-```
-
-
-```{r defineModelAndContrasts}
-formula_Condition <-  strategy_lm("transformedIntensity ~ group_")
-
-# specify model definition
-modelName  <- "Model"
-contr_spec <- c("AvsC" = "group_A - group_Ctrl",
-"BvsC" = "group_B - group_Ctrl")
-
-```
-
-Here we have to build the model for each protein.
-
-```{r buildModel}
-mod <- prolfqua::build_model(
-  transformed$data_long(),
-  formula_Condition,
-  subject_id = transformed$hierarchy_keys() )
-
-```
-
-In this plot we can see what factors in our model are mostly responsible for the adjusted p-values calculated from an analysis of variance.
-
-```{r showANOVA, fig.cap="Distribution of adjusted p-values (FDR)"}
-mod$anova_histogram("FDR")
-```
-
-One can also look at which proteins show different abundances in any of the groups by looking at the FDR values of the analysis of variance.
-
-```{r filterDataForFDR}
-aovtable <- mod$get_anova()
-head(aovtable)
-dim(aovtable)
-xx <- aovtable |> dplyr::filter(FDR < 0.2)
-signif <- transformed$get_copy()
-signif$set_data(signif$data_long() |> dplyr::filter(protein_Id %in% xx$protein_Id))
-hmSig <- signif$get_Plotter()$heatmap()
-
-```
-
-```{r showSigHeatmap, fig.cap="Heatmap for proteins with FDR < 0.2 in the analysis of variance"}
-hmSig
-
-```
-
-# Compute contrasts
-
-Next we do calculate the statistics for our defined contrasts for all the proteins.
-For this we can use the `Contrasts` function.
+We compare each treatment group with the control. `build_contrast_analysis()` fits one model per protein and computes the contrasts in one call. We use the method `lm_impute`: a linear model per protein, with the protein variances moderated by the empirical Bayes method so that proteins with few observations borrow strength from all proteins. Proteins without observations in one group are refitted with the missing values set to the limit of detection (LOD); see the article [Absent, not unknown](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html). The vignette [All modelling methods at a glance](ModellingMethods.html) lists the other methods.
 
 ```{r computeContrasts}
-contr <- prolfqua::Contrasts$new(mod, contr_spec)
-v1 <- contr$get_Plotter()$volcano()
+contr_spec <- c(
+  "AvsC" = "group_A - group_Ctrl",
+  "BvsC" = "group_B - group_Ctrl"
+)
+fa <- build_contrast_analysis(transformed, "~ group_", contr_spec, method = "lm_impute")
+contrdf <- fa$get_contrasts()
 ```
 
-Alternatively, we can moderate the variance using the empirical Bayes method implemented in `ContrastsModerated`.
+The column `estimate_type` tells how each estimate was obtained: `observed` from the measured intensities, `lod_imputed` from the refit at the LOD.
 
-```{r computeContrastsModerated}
-contr <- prolfqua::ContrastsModerated$new(contr)
-contrdf <- contr$get_contrasts()
+```{r estimateType}
+dplyr::count(contrdf, contrast, estimate_type)
 ```
 
-Moderation shrinks the variance of each protein towards the variance of all proteins, which stabilises the p-values of proteins whose variance is estimated from few observations. The next figure compares the volcano plots without and with moderation.
-
-```{r plotVolcanos, fig.cap="Volcano plot, Left panel - no moderation, Right panel - with moderation."}
-plotter <- contr$get_Plotter()
-v2 <- plotter$volcano()
-gridExtra::grid.arrange(v1$FDR,v2$FDR, ncol = 1)
+```{r plotVolcanos, fig.cap="Volcano plots of the two contrasts."}
+plotter <- fa$get_Plotter()
+plotter$volcano()$FDR
 ```
 
 ```{r showMAplot, fig.cap="MA plot showing the dependency of mean abundance with respect to the difference"}
 plotter$ma_plotly()
 ```
 
+The proteins with FDR < 0.1 in at least one contrast:
+
+```{r createSigHeatmap}
+sig <- dplyr::filter(contrdf, FDR < 0.1)
+signif <- transformed$get_copy()
+signif$set_data(signif$data_long() |> dplyr::filter(protein_Id %in% sig$protein_Id))
+hmSig <- signif$get_Plotter()$heatmap()
+```
+
+```{r showSigHeatmap, fig.cap="Heatmap of the proteins with FDR < 0.1 in at least one contrast"}
+hmSig
+```
 
 ```{r checkProteinsInOutput}
 myProteinIDS <- head(unique(contrdf$protein_Id), 3)
 dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
 ```
 
+Protein and contrast pairs that `lm_impute` could not estimate, if any:
 
-# Contrasts with missing value imputation
-
-Use this method if there are proteins with no observations in one of the groups. The `lm_impute` facade refits the linear model for these proteins after imputing the missing observations with the limit of detection (LOD), and borrows the variance from the proteins that could be fitted.
-
-```{r computeMissing, eval=TRUE}
-mC <- prolfqua::ContrastsLMImputeFacade$new(transformed, "~ group_", contr_spec)$contrast
-colnames(mC$get_contrasts())
-
-```
-
-Finally we are merging the results and give priority to the results where we do not have missing values in one group.
-
-```{r mergeResults, fig.cap="Volcano plots for the two contrasts with missing value imputation from the lm_impute model."}
-
-merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)$merged
-plotter <- merged$get_Plotter()
-tmp <- plotter$volcano()
-tmp$FDR
-
-```
-
-Look at proteins which could not be fitted using the linear model, if any.
-
-```{r mergedMore}
-merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)
-
-moreProt <- transformed$get_copy()
-moreProt$set_data(moreProt$data_long() |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id))
-moreProt$get_Plotter()$raster()
-
-# here we do not get anything because there is nothing imputed!
+```{r missingContrasts}
+fa$get_missing()
 ```
 
 # Gene Set Enrichment Analysis (GSEA)

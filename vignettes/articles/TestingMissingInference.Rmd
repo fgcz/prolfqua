@@ -1,136 +1,108 @@
 ---
-title: "Impute data using limit of detection (LOD)"
+title: "Absent, not unknown: proteins missing in a whole group"
+author: "Witold E. Wolski"
+date: "`r Sys.Date()`"
 output: html_document
-date: "2024-04-22"
-editor_options: 
-  chunk_output_type: console
 vignette: >
-  %\VignetteIndexEntry{Impute data using limit of detection (LOD)} 
+  %\VignetteIndexEntry{Absent, not unknown: proteins missing in a whole group}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-
+editor_options:
+  chunk_output_type: console
 ---
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-This vignette contains experimental code.
+# The problem
 
-# Limit of detection with the prolfqua::MissingHelpers class
+In label-free data a protein is often not observed in any sample of one group. Most of the time it is there, but below the limit of detection (LOD): the absence is information, not an unknown value. A linear model per protein cannot estimate a group without observations, so `lm` drops exactly these contrasts, often the ones with the largest changes.
 
+```{r simulate}
+library(prolfqua)
+library(ggplot2)
+sim <- sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5, seed = 1234)
+lfq <- LFQData$new(sim$data, sim$config)
+contrasts <- c(AvsC = "group_A - group_Ctrl", BvsC = "group_B - group_Ctrl")
 
-```{r lookAtSummarizeStats}
-dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
-dd$data$abundance |> is.na() |> sum()
-
-mh1 <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.5)
-head(mh1$get_stats())
-mh1$get_lod()
+fa_lm <- build_contrast_analysis(lfq, "~ group_", contrasts, method = "lm")
+lost <- fa_lm$get_missing()
+lost
 ```
 
+The intensities of these proteins show the empty groups:
 
-## Modelling with linear models
-
-
-Model with missing data
-
-```{r lmModel}
-modelName <- "f_condtion_r_peptide"
-formula_Protein <-
-  prolfqua::strategy_lm("abundance  ~ group_",
-              model_name = modelName)
-
-
-dd_lfq <- prolfqua::LFQData$new(dd$data, dd$config)
-mod <- prolfqua::build_model(
-  dd_lfq,
-  formula_Protein,
-  model_name = modelName)
-
-mod$model_df
-mod$model_df$nr_coef_not_NA |> table()
-
-mod$model_df$isSingular |> table()
-mod$model_df |> nrow()
-mod$get_anova()
-prolfqua::model_summary(mod)
-
-maxcoef <- max(mod$model_df$nr_coef_not_NA, na.rm = TRUE)
-goodmods <- mod$model_df |> dplyr::filter(isSingular == FALSE, has_model_fit == TRUE, nr_coef_not_NA == maxcoef)
-
-dim(goodmods)
-xx <- lapply(goodmods$linear_model, vcov)
-nr <- sapply(xx, nrow)
-nr |> table()
-nr <- sapply(xx, ncol)
-nr |> table()
-
-sum_matrix <- Reduce(`+`, xx)
-sum_matrix/length(xx)
-
-
+```{r lostIntensities}
+lfq$data_long() |>
+  dplyr::filter(protein_Id %in% lost$protein_Id) |>
+  dplyr::select(protein_Id, sampleName, abundance) |>
+  tidyr::pivot_wider(names_from = sampleName, values_from = abundance) |>
+  knitr::kable(digits = 1)
 ```
 
+# The limit of detection
 
+`MissingHelpers` estimates the LOD from the data. Groups in which a protein is observed in only one sample, or in the fewest samples, are the closest the data comes to the detection limit; the LOD is the median (`prob = 0.5`) of their mean intensities.
 
-# Model with lod imputation
-
-```{r lmod2}
-loddata <- dd$data
-
-loddata <- loddata |> dplyr::mutate(abundance = ifelse(is.na(abundance), mh1$get_lod(), abundance))
-modI <- prolfqua::build_model(
-  loddata,
-  formula_Protein,
-  model_name = modelName,
-  subject_id = dd_lfq$relevant_hierarchy_keys())
-
-
-modI$model_df$nr_coef_not_NA |> table()
-modI$model_df$isSingular |> table()
-modI$model_df |> nrow()
-
-allModels <- modI$model_df$linear_model
-
-xx <- lapply(allModels, vcov)
-sum_matrix <- Reduce(`+`, xx)
-sum_matrix/length(xx)
-
-
+```{r lod}
+mh <- MissingHelpers$new(lfq$data_long(), lfq$get_config())
+mh$get_lod()
 ```
 
+# lm_impute
 
-```{r inspect_imputed_model}
-m <- (modI$model_df$linear_model[[1]])
-df.residual(m)
-sigma(m)
-vcov(m)
+`lm_impute` fits `lm` to every protein. Proteins whose fit fails, or leaves a coefficient undefined, are refitted with their missing values set to the LOD; observed values below the LOD are raised to it, because they cannot be told apart from it. A constant imputed value has no variance, so the residual variance of the refit would be too small; `lm_impute` borrows it from the proteins that could be fitted. The column `estimate_type` tells which route each estimate took. Pass `lod` to `build_contrast_analysis()` to use a LOD of your own.
 
+```{r lmImpute}
+fa_imp <- build_contrast_analysis(lfq, "~ group_", contrasts, method = "lm_impute")
+res <- fa_imp$get_contrasts()
+dplyr::count(res, contrast, estimate_type)
+nrow(fa_imp$get_missing())
 ```
 
-# Filling missing cells from the protein models
+The estimates for the proteins that `lm` lost. A protein observed only near or below the LOD ends up with `diff` close to 0: there is no evidence that it changes.
 
-`impute_from_model()` completes the data to every protein x sample and fills each missing cell with `predict()` of that protein's fitted model. A protein fitted on its observed values takes the route `fitted`; one that `build_model_impute()` refitted at the LOD, typically because a whole group is missing, takes `lod_refit`. Observed values stay as they are, and the filled values carry no noise.
+```{r rescued}
+res |>
+  dplyr::semi_join(lost, by = c("protein_Id", "contrast")) |>
+  dplyr::select(protein_Id, contrast, diff, p.value, FDR) |>
+  knitr::kable(digits = 3)
+```
 
-```{r imputeFromModel}
-modImpute <- prolfqua::build_model_impute(dd_lfq, formula_Protein)
-filled <- prolfqua::impute_from_model(modImpute, dd_lfq)
-filled$summary$route |> table()
+```{r volcano, fig.cap = "Volcano plot of lm_impute; colour marks the estimates refitted at the LOD."}
+ggplot(res, aes(diff, -log10(p.value), colour = estimate_type)) +
+  geom_point() +
+  facet_wrap(~contrast) +
+  theme_minimal()
+```
 
-before <- dd_lfq$data_long()
-after <- filled$lfqdata$data_long()
-missing_cells <- dplyr::inner_join(
-  before |> dplyr::filter(is.na(abundance)) |> dplyr::select(protein_Id, sampleName, group_),
-  after |> dplyr::select(protein_Id, sampleName, filled = abundance),
-  by = c("protein_Id", "sampleName")
-)
-head(missing_cells)
+# Other methods
+
+The same refit at the LOD is available with `limma_impute`, `limma_voom_impute` and `rfit_impute`. `hurdle_nested` takes a different route: it models the intensities and the peptide detection separately and combines their p-values. The number of estimated protein and contrast pairs per method:
+
+```{r otherMethods}
+methods <- c("lm", "lm_impute", "limma", "limma_impute", "rfit", "rfit_impute")
+estimated <- vapply(methods, function(m) {
+  nrow(build_contrast_analysis(lfq, "~ group_", contrasts, method = m)$get_contrasts())
+}, integer(1))
+knitr::kable(data.frame(method = methods, estimated = estimated), row.names = FALSE)
+```
+
+The article [Contrast facades with parallel designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html) compares them on peptide-level data, including the hurdle model.
+
+# Completing the data matrix
+
+`impute_from_model()` fills every missing cell with the prediction of its protein model: `fitted` for proteins fitted on their observed values, `lod_refit` for proteins refitted at the LOD, `complete` for proteins without missing values. The filled matrix is useful for heatmaps or clustering. The filled values carry no noise, so do not use them for further tests.
+
+```{r fill}
+filled <- impute_from_model(fa_imp$model, lfq)
+table(filled$summary$route)
+filled$lfqdata$get_Plotter()$heatmap()
 ```
 
 # Session Info
 
-```{r session_info}
+```{r sessionInfo}
 sessionInfo()
 ```
