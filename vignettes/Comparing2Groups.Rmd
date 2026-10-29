@@ -128,7 +128,7 @@ p
 
 # Fit the model and compute contrasts
 
-We compare each treatment group with the control. `build_contrast_analysis()` fits one model per protein and computes the contrasts in one call. We use the method `lm_impute`: a linear model per protein, with the protein variances moderated by the empirical Bayes method so that proteins with few observations borrow strength from all proteins. Proteins without observations in one group are refitted with the missing values set to the limit of detection (LOD); see the article [Absent, not unknown](https://fgcz.github.io/prolfqua/articles/LODImputation.html). The vignette [All modelling methods at a glance](ModellingMethods.html) lists the other methods.
+We compare each treatment group with the control. `build_contrast_analysis()` fits one model per protein and computes the contrasts in one call. We use the method `lm_impute`: a linear model per protein, with the protein variances moderated by the empirical Bayes method so that proteins with few observations borrow strength from all proteins. Proteins without observations in one group are refitted with the missing values set to the limit of detection (LOD); see the article [Absent, not unknown](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html). The vignette [All modelling methods at a glance](ModellingMethods.html) lists the other methods.
 
 ```{r computeContrasts}
 contr_spec <- c(

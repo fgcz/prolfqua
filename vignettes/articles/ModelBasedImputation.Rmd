@@ -98,8 +98,34 @@ The article [Contrast facades with parallel designs](https://fgcz.github.io/prol
 ```{r fill}
 filled <- impute_from_model(fa_imp$model, lfq)
 table(filled$summary$route)
+```
+
+## Heatmap before and after
+
+```{r heatmapBefore, fig.cap = "Before imputation: missing cells are grey."}
+lfq$get_Plotter()$heatmap()
+```
+
+```{r heatmapAfter, fig.cap = "After imputation: every cell holds a value."}
 filled$lfqdata$get_Plotter()$heatmap()
 ```
+
+## PCA before and after
+
+PCA needs complete data. Before imputation it can only use the proteins without missing values; after imputation it uses all proteins.
+
+```{r pca, fig.cap = "PCA before (top) and after (bottom) imputation.", fig.height = 8}
+n_complete <- sum(filled$summary$route == "complete")
+gridExtra::grid.arrange(
+  lfq$get_Plotter()$pca() +
+    ggtitle(paste0("Before imputation: ", n_complete, " complete proteins")),
+  filled$lfqdata$get_Plotter()$pca() +
+    ggtitle(paste0("After imputation: ", nrow(filled$summary), " proteins")),
+  ncol = 1
+)
+```
+
+After imputation the groups separate more cleanly, in the heatmap and in the PCA. Part of that is circular: each filled value is the model's estimate for its group, so imputation adds the group structure of the model to the data.
 
 # Session Info
 

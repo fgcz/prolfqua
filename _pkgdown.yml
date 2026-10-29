@@ -17,4 +17,5 @@ navbar:
       aria-label: GitHub repository
 
 redirects:
-  - ["articles/TestingMissingInference.html", "articles/LODImputation.html"]
+  - ["articles/TestingMissingInference.html", "articles/ModelBasedImputation.html"]
+  - ["articles/LODImputation.html", "articles/ModelBasedImputation.html"]
