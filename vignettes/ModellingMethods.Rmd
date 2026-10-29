@@ -3,8 +3,6 @@ title: "All modelling methods at a glance"
 author:
   - name: Witold E. Wolski
     affiliation: Functional Genomics Center Zurich (FGCZ), ETH Zurich and University of Zurich
-  - name: Christian Panse
-    affiliation: Functional Genomics Center Zurich (FGCZ), ETH Zurich and University of Zurich
 package: prolfqua
 output: BiocStyle::html_document
 vignette: >
