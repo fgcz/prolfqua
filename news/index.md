@@ -46,8 +46,9 @@ Changes for the Bioconductor review
 
 - New introductory vignette
   [`vignette("prolfqua")`](https://wolski.github.io/prolfqua/articles/prolfqua.md):
-  introduction, installation with BiocManager, a quick start, and links
-  to all tutorials on the package website.
+  the prolfqua hex logo, introduction, installation with BiocManager, a
+  quick start using `lm_impute`, and links to all tutorials on the
+  package website.
 - New vignette
   [`vignette("ModellingMethods")`](https://wolski.github.io/prolfqua/articles/ModellingMethods.md):
   runs every
@@ -55,15 +56,20 @@ Changes for the Bioconductor review
   method on one small simulated dataset, with one summary line per
   method; it renders in a few seconds.
 - The package now ships three vignettes (`prolfqua`, `Comparing2Groups`,
-  `ModellingMethods`). The other eleven tutorials are website-only
-  articles at <https://fgcz.github.io/prolfqua/articles/>, under the
-  same URLs as before, which keeps the package build short.
+  `ModellingMethods`). The other tutorials are website-only articles at
+  <https://fgcz.github.io/prolfqua/articles/>, under the same URLs as
+  before, which keeps the package build short. The “Limma Backend”
+  article is removed; the `limma`, `limma_voom` and `limpa` methods of
+  [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+  are shown in `ModellingMethods` and the “Contrast Facades” articles.
 - `Comparing2Groups` describes the simulated data it actually uses (the
   text still referred to MaxQuant Ionstar data) and no longer looks up
   protein IDs that do not exist in it. Both vignettes use BiocStyle.
 - The vignettes cite the published article (Wolski et al., J. Proteome
   Res. 2023, 22(4), 1092-1104, <doi:10.1021/acs.jproteome.2c00441>)
-  instead of the 2022 bioRxiv preprint.
+  instead of the 2022 bioRxiv preprint. `citation("prolfqua")` lists the
+  journal, volume, issue and pages in their own fields, and the README
+  BibTeX no longer swaps volume and issue.
 - [`?prolfqua`](https://wolski.github.io/prolfqua/reference/prolfqua-package.md)
   opens a package overview page.
 - Typos fixed across the help pages, vignettes and README.

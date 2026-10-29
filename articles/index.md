@@ -14,8 +14,6 @@
   Configurations](https://wolski.github.io/prolfqua/articles/CreatingConfigurations.md):
 - [DEqMS-style Count-Dependent Variance
   Moderation](https://wolski.github.io/prolfqua/articles/DEqMS_Moderation.md):
-- [Limma Backend for
-  prolfqua](https://wolski.github.io/prolfqua/articles/LimmaBackend.md):
 - [Using limpa Directly on prolfqua Simulated
   Data](https://wolski.github.io/prolfqua/articles/limpa_example.md):
 - [Modelling dataset with two

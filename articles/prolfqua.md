@@ -1,5 +1,7 @@
 # Introduction to prolfqua
 
+![](prolfqua_logo.png)
+
 ## Introduction
 
 prolfqua covers the steps of a label-free quantification (LFQ)
@@ -89,15 +91,18 @@ sample.](prolfqua_files/figure-html/density-1.png)
 
 Distribution of the normalized protein intensities per sample.
 
-We compare groups `A` and `B` with the control group, using limma’s
-moderated linear model.
+We compare groups `A` and `B` with the control group using `lm_impute`:
+a linear model per protein with moderated variances. Proteins whose fit
+fails because a group has no observations are refitted with the missing
+values imputed at the limit of detection, borrowing the variance from
+the other proteins.
 
 ``` r
 contrasts <- c(
   "A_vs_Ctrl" = "group_A - group_Ctrl",
   "B_vs_Ctrl" = "group_B - group_Ctrl"
 )
-fa <- build_contrast_analysis(lfqprot, "~ group_", contrasts, method = "limma")
+fa <- build_contrast_analysis(lfqprot, "~ group_", contrasts, method = "lm_impute")
 res <- fa$get_contrasts()
 head(res[, c("protein_Id", "contrast", "diff", "p.value", "FDR")])
 #> # A tibble: 6 × 5
@@ -158,8 +163,6 @@ set of tutorials:
   factors](https://fgcz.github.io/prolfqua/articles/Modelling2Factors.html)
 - [Contrasts from
   factors](https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html)
-- [Limma
-  backend](https://fgcz.github.io/prolfqua/articles/LimmaBackend.html)
 - [DEqMS count-dependent variance
   moderation](https://fgcz.github.io/prolfqua/articles/DEqMS_Moderation.html)
 - [Using

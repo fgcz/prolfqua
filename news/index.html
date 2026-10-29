@@ -25,7 +25,6 @@
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
-    <li><a class="dropdown-item" href="../articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/limpa_example.html">Using limpa Directly on prolfqua Simulated Data</a></li>
     <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
@@ -65,12 +64,12 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-9-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-9-0"></a></h3>
-<ul><li>New introductory vignette <code><a href="../articles/prolfqua.html">vignette("prolfqua")</a></code>: introduction, installation with BiocManager, a quick start, and links to all tutorials on the package website.</li>
+<ul><li>New introductory vignette <code><a href="../articles/prolfqua.html">vignette("prolfqua")</a></code>: the prolfqua hex logo, introduction, installation with BiocManager, a quick start using <code>lm_impute</code>, and links to all tutorials on the package website.</li>
 <li>New vignette <code><a href="../articles/ModellingMethods.html">vignette("ModellingMethods")</a></code>: runs every <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> method on one small simulated dataset, with one summary line per method; it renders in a few seconds.</li>
-<li>The package now ships three vignettes (<code>prolfqua</code>, <code>Comparing2Groups</code>, <code>ModellingMethods</code>). The other eleven tutorials are website-only articles at <a href="https://fgcz.github.io/prolfqua/articles/" class="external-link uri">https://fgcz.github.io/prolfqua/articles/</a>, under the same URLs as before, which keeps the package build short.</li>
+<li>The package now ships three vignettes (<code>prolfqua</code>, <code>Comparing2Groups</code>, <code>ModellingMethods</code>). The other tutorials are website-only articles at <a href="https://fgcz.github.io/prolfqua/articles/" class="external-link uri">https://fgcz.github.io/prolfqua/articles/</a>, under the same URLs as before, which keeps the package build short. The “Limma Backend” article is removed; the <code>limma</code>, <code>limma_voom</code> and <code>limpa</code> methods of <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> are shown in <code>ModellingMethods</code> and the “Contrast Facades” articles.</li>
 <li>
 <code>Comparing2Groups</code> describes the simulated data it actually uses (the text still referred to MaxQuant Ionstar data) and no longer looks up protein IDs that do not exist in it. Both vignettes use BiocStyle.</li>
-<li>The vignettes cite the published article (Wolski et al., J. Proteome Res. 2023, 22(4), 1092-1104, <a href="doi:10.1021/acs.jproteome.2c00441" class="uri">doi:10.1021/acs.jproteome.2c00441</a>) instead of the 2022 bioRxiv preprint.</li>
+<li>The vignettes cite the published article (Wolski et al., J. Proteome Res. 2023, 22(4), 1092-1104, <a href="doi:10.1021/acs.jproteome.2c00441" class="uri">doi:10.1021/acs.jproteome.2c00441</a>) instead of the 2022 bioRxiv preprint. <code>citation("prolfqua")</code> lists the journal, volume, issue and pages in their own fields, and the README BibTeX no longer swaps volume and issue.</li>
 <li>
 <code><a href="../reference/prolfqua-package.html">?prolfqua</a></code> opens a package overview page.</li>
 <li>Typos fixed across the help pages, vignettes and README.</li>

@@ -40,7 +40,6 @@
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
     <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
-    <li><a class="dropdown-item" href="../articles/LimmaBackend.html">Limma Backend for prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/limpa_example.html">Using limpa Directly on prolfqua Simulated Data</a></li>
     <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
@@ -73,19 +72,14 @@
 Wolski</h4>
             <address class="author_afil">
       Functional Genomics Center Zurich (FGCZ), ETH Zurich and
-University of
-Zurich<br><h4 data-toc-skip class="author">Christian
-Panse</h4>
-            <address class="author_afil">
-      Functional Genomics Center Zurich (FGCZ), ETH Zurich and
 University of Zurich<br><small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/prolfqua.Rmd" class="external-link"><code>vignettes/prolfqua.Rmd</code></a></small>
       <div class="d-none name"><code>prolfqua.Rmd</code></div>
     </address>
-</address>
 </div>
 
     
     
+<p><img src="prolfqua_logo.png" class="r-plt" alt="" width="50%"></p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -173,13 +167,16 @@ Distribution of the normalized protein intensities per sample.
 </p>
 </div>
 <p>We compare groups <code>A</code> and <code>B</code> with the control
-group, using limma’s moderated linear model.</p>
+group using <code>lm_impute</code>: a linear model per protein with
+moderated variances. Proteins whose fit fails because a group has no
+observations are refitted with the missing values imputed at the limit
+of detection, borrowing the variance from the other proteins.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"A_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span>,</span>
 <span>  <span class="st">"B_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_B - group_Ctrl"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span><span class="va">lfqprot</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"limma"</span><span class="op">)</span></span>
+<span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span><span class="va">lfqprot</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"lm_impute"</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">fa</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"protein_Id"</span>, <span class="st">"contrast"</span>, <span class="st">"diff"</span>, <span class="st">"p.value"</span>, <span class="st">"FDR"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
@@ -236,8 +233,6 @@ facades with a two-factor design</a></li>
 a dataset with two factors</a></li>
 <li><a href="https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html" class="external-link">Contrasts
 from factors</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/LimmaBackend.html" class="external-link">Limma
-backend</a></li>
 <li><a href="https://fgcz.github.io/prolfqua/articles/DEqMS_Moderation.html" class="external-link">DEqMS
 count-dependent variance moderation</a></li>
 <li><a href="https://fgcz.github.io/prolfqua/articles/limpa_example.html" class="external-link">Using
