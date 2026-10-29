@@ -1,4 +1,4 @@
-url: https://wolski.github.io/prolfqua/
+url: https://fgcz.github.io/prolfqua/
 
 template:
   bootstrap: 5
@@ -13,5 +13,8 @@ navbar:
   components:
     github:
       icon: fa-github
-      href: https://github.com/wolski/prolfqua
+      href: https://github.com/fgcz/prolfqua
       aria-label: GitHub repository
+
+redirects:
+  - ["articles/TestingMissingInference.html", "articles/LODImputation.html"]

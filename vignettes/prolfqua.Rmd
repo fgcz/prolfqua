@@ -104,7 +104,7 @@ The package website <https://fgcz.github.io/prolfqua/> holds the full set of tut
 - [Contrast facades with parallel designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html): all `build_contrast_analysis()` methods side by side
 - [Contrast facades with a two-factor design](https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html)
 - [Contrasts from factors](https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html)
-- [Absent, not unknown: proteins missing in a whole group](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html): limit-of-detection imputation with `lm_impute`
+- [Absent, not unknown: proteins missing in a whole group](https://fgcz.github.io/prolfqua/articles/LODImputation.html): limit-of-detection imputation with `lm_impute`
 - [Simulating peptide-level data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
 - [Under the hood: strategy, model and contrasts](https://fgcz.github.io/prolfqua/articles/LowLevelAPI.html): the classes behind `build_contrast_analysis()`
 
