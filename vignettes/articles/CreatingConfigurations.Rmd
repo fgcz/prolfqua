@@ -146,7 +146,7 @@ smrz <- lfqdata$get_Summariser()
 smrz$plot_hierarchy_counts_sample()
 ```
 
-The `prolfqua` package is described in [@Wolski2022.06.07.494524].
+The `prolfqua` package is described in [@Wolski2023prolfqua].
 
 # Session Info
 

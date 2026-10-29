@@ -233,7 +233,7 @@ x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
   ggplot2::xlim(0,100)
 ```
 
-The `prolfqua` package is described in [@Wolski2022.06.07.494524].
+The `prolfqua` package is described in [@Wolski2023prolfqua].
 
 # Session Info
 
