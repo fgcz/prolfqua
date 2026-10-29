@@ -102,12 +102,28 @@ table(filled$summary$route)
 
 ## Heatmap before and after
 
+We cluster the proteins once, on the imputed data, and draw both heatmaps with that row order, so each row shows the same protein before and after.
+
+```{r heatmapOrder}
+before <- lfq$data_wide(as.matrix = TRUE)
+after <- filled$lfqdata$data_wide(as.matrix = TRUE)
+row_order <- rownames(after$data)[hclust(dist(t(scale(t(after$data)))))$order]
+```
+
 ```{r heatmapBefore, fig.cap = "Before imputation: missing cells are grey."}
-lfq$get_Plotter()$heatmap()
+ht_before <- plot_heatmap(
+  before$data, before$annotation, lfq$factor_keys(), lfq$sample_name(),
+  na_fraction = 1, row_order = row_order
+)
+ht_before
 ```
 
 ```{r heatmapAfter, fig.cap = "After imputation: every cell holds a value."}
-filled$lfqdata$get_Plotter()$heatmap()
+ht_after <- plot_heatmap(
+  after$data, after$annotation, lfq$factor_keys(), lfq$sample_name(),
+  na_fraction = 1, row_order = row_order
+)
+ht_after
 ```
 
 ## PCA before and after
