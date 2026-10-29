@@ -19,3 +19,6 @@ navbar:
 redirects:
   - ["articles/TestingMissingInference.html", "articles/ModelBasedImputation.html"]
   - ["articles/LODImputation.html", "articles/ModelBasedImputation.html"]
+  - ["articles/ContrastFacades.html", "articles/ComparingMethods.html"]
+  - ["articles/ContrastFacade2Factor.html", "articles/TwoFactorDesigns.html"]
+  - ["articles/Contrasts_from_factors.html", "articles/ContrastsFromFactors.html"]

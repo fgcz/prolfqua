@@ -89,7 +89,7 @@ estimated <- vapply(methods, function(m) {
 knitr::kable(data.frame(method = methods, estimated = estimated), row.names = FALSE)
 ```
 
-The article [Contrast facades with parallel designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html) compares them on peptide-level data, including the hurdle model.
+The article [Comparing modelling methods on one dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html) compares them on peptide-level data, including the hurdle model.
 
 # Completing the data matrix
 

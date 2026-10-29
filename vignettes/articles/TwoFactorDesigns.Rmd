@@ -1,10 +1,10 @@
 ---
-title: "Contrast Facades with Two-Factor Subgroup Design"
+title: "Two-factor designs"
 author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Contrast Facades with Two-Factor Subgroup Design}
+  %\VignetteIndexEntry{Two-factor designs}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:

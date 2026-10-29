@@ -99,12 +99,12 @@ names(list_facades())
 The package website <https://fgcz.github.io/prolfqua/> holds the full set of tutorials:
 
 - [Comparing two groups](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html): QC, normalization and contrasts with `lm_impute`
-- [Creating configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html): reading your own data into an `AnalysisConfiguration`
+- [Importing your data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html): reading your own data into an `AnalysisConfiguration`
 - [QC and sample size estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
-- [Contrast facades with parallel designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html): all `build_contrast_analysis()` methods side by side
-- [Contrast facades with a two-factor design](https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html)
-- [Contrasts from factors](https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html)
-- [Absent, not unknown: proteins missing in a whole group](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html): limit-of-detection imputation with `lm_impute`
+- [Comparing modelling methods on one dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html): all `build_contrast_analysis()` methods side by side
+- [Two-factor designs](https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html)
+- [Contrasts from factors](https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.html)
+- [Absent, not unknown: proteins missing in a whole group](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html): model-based imputation with `lm_impute` and `impute_from_model()`
 - [Simulating peptide-level data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
 - [Under the hood: strategy, model and contrasts](https://fgcz.github.io/prolfqua/articles/LowLevelAPI.html): the classes behind `build_contrast_analysis()`
 

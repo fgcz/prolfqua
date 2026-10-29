@@ -158,7 +158,7 @@ Document's explaining how to run an analysis with prolfqua are at github.io [htt
 
 - [Comparing two Conditions](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html)
 - [QC and protein wise sample size estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
-- [Analysing factorial designs](https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html)
+- [Analysing factorial designs](https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html)
 
 Example QC and sample size report
 

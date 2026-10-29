@@ -30,7 +30,7 @@ This vignette demonstrates how two conditions, e.g., treatment vs. control, can 
 library(prolfqua)
 ```
 
-`sim_lfq_data_protein_config()` simulates protein abundances in long format, one row per protein and sample, and returns them together with a matching `AnalysisConfiguration`. To read your own data, see the vignette [Creating configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
+`sim_lfq_data_protein_config()` simulates protein abundances in long format, one row per protein and sample, and returns them together with a matching `AnalysisConfiguration`. To read your own data, see the article [Importing your data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
 
 ```{r LoadDataAndConfigure}
 xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5)
