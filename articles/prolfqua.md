@@ -5,7 +5,7 @@
 prolfqua covers the steps of a label-free quantification (LFQ)
 proteomics analysis: quality control, normalization, aggregation of
 peptides to proteins, modelling, hypothesis testing and sample size
-estimation (Wolski et al. 2022).
+estimation (Wolski et al. 2023).
 
 The package works with data in long format, one row per measured feature
 (protein, peptide, precursor) and sample. Three building blocks carry an
@@ -248,6 +248,7 @@ sessionInfo()
 ## References
 
 Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
-Schlapbach, and Christian Panse. 2022. “Prolfqua: A Comprehensive
-R-package for Proteomics Differential Expression Analysis.” *bioRxiv*.
-<https://doi.org/10.1101/2022.06.07.494524>.
+Schlapbach, and Christian Panse. 2023. “prolfqua: A Comprehensive
+R-Package for Proteomics Differential Expression Analysis.” *Journal of
+Proteome Research* 22 (4): 1092–1104.
+<https://doi.org/10.1021/acs.jproteome.2c00441>.

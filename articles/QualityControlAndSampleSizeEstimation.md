@@ -408,7 +408,7 @@ proteins.](QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk
 Distribution of the required sample sizes for two fold change thresholds
 for all the proteins.
 
-The `prolfqua` package is described in (Wolski et al. 2022).
+The `prolfqua` package is described in (Wolski et al. 2023).
 
 ## Session Info
 
@@ -480,6 +480,7 @@ sessionInfo()
 ## References
 
 Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
-Schlapbach, and Christian Panse. 2022. “Prolfqua: A Comprehensive
-R-package for Proteomics Differential Expression Analysis.” *bioRxiv*.
-<https://doi.org/10.1101/2022.06.07.494524>.
+Schlapbach, and Christian Panse. 2023. “prolfqua: A Comprehensive
+R-Package for Proteomics Differential Expression Analysis.” *Journal of
+Proteome Research* 22 (4): 1092–1104.
+<https://doi.org/10.1021/acs.jproteome.2c00441>.

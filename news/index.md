@@ -61,6 +61,9 @@ Changes for the Bioconductor review
 - `Comparing2Groups` describes the simulated data it actually uses (the
   text still referred to MaxQuant Ionstar data) and no longer looks up
   protein IDs that do not exist in it. Both vignettes use BiocStyle.
+- The vignettes cite the published article (Wolski et al., J. Proteome
+  Res. 2023, 22(4), 1092-1104, <doi:10.1021/acs.jproteome.2c00441>)
+  instead of the 2022 bioRxiv preprint.
 - [`?prolfqua`](https://wolski.github.io/prolfqua/reference/prolfqua-package.md)
   opens a package overview page.
 - Typos fixed across the help pages, vignettes and README.
