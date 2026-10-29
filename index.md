@@ -158,7 +158,7 @@ github.io <https://fgcz.github.io/prolfqua/index.html>.
 - [QC and protein wise sample size
   estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 - [Analysing factorial
-  designs](https://fgcz.github.io/prolfqua/articles/Modelling2Factors.html)
+  designs](https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html)
 
 Example QC and sample size report
 

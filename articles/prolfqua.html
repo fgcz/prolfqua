@@ -39,13 +39,11 @@
     <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Contrast Facades with Parallel Designs</a></li>
     <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
-    <li><a class="dropdown-item" href="../articles/DEqMS_Moderation.html">DEqMS-style Count-Dependent Variance Moderation</a></li>
-    <li><a class="dropdown-item" href="../articles/limpa_example.html">Using limpa Directly on prolfqua Simulated Data</a></li>
-    <li><a class="dropdown-item" href="../articles/Modelling2Factors.html">Modelling dataset with two Factors</a></li>
+    <li><a class="dropdown-item" href="../articles/LowLevelAPI.html">Under the hood: strategy, model and contrasts</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
     <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
-    <li><a class="dropdown-item" href="../articles/TestingMissingInference.html">Impute data using limit of detection (LOD)</a></li>
+    <li><a class="dropdown-item" href="../articles/TestingMissingInference.html">Absent, not unknown: proteins missing in a whole group</a></li>
   </ul>
 </li>
       </ul>
@@ -214,8 +212,9 @@ tutorials:</p>
 <ul>
 <li>
 <a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html" class="external-link">Comparing
-two groups</a>: QC, normalization, linear models and moderated
-contrasts</li>
+two groups</a>: QC, normalization and contrasts with
+<code>lm_impute</code>
+</li>
 <li>
 <a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html" class="external-link">Creating
 configurations</a>: reading your own data into an
@@ -229,18 +228,20 @@ facades with parallel designs</a>: all
 <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> methods side by side</li>
 <li><a href="https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html" class="external-link">Contrast
 facades with a two-factor design</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/Modelling2Factors.html" class="external-link">Modelling
-a dataset with two factors</a></li>
 <li><a href="https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html" class="external-link">Contrasts
 from factors</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/DEqMS_Moderation.html" class="external-link">DEqMS
-count-dependent variance moderation</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/limpa_example.html" class="external-link">Using
-limpa</a></li>
+<li>
+<a href="https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html" class="external-link">Absent,
+not unknown: proteins missing in a whole group</a>: limit-of-detection
+imputation with <code>lm_impute</code>
+</li>
 <li><a href="https://fgcz.github.io/prolfqua/articles/SimulateData.html" class="external-link">Simulating
 peptide-level data</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html" class="external-link">Imputing
-data at the limit of detection</a></li>
+<li>
+<a href="https://fgcz.github.io/prolfqua/articles/LowLevelAPI.html" class="external-link">Under
+the hood: strategy, model and contrasts</a>: the classes behind
+<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>
+</li>
 </ul>
 <p>The vignettes <a href="Comparing2Groups.html">Comparing two groups
 with prolfqua</a> and <a href="ModellingMethods.html">All modelling

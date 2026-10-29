@@ -146,7 +146,7 @@ set of tutorials:
 
 - [Comparing two
   groups](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html):
-  QC, normalization, linear models and moderated contrasts
+  QC, normalization and contrasts with `lm_impute`
 - [Creating
   configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html):
   reading your own data into an `AnalysisConfiguration`
@@ -159,18 +159,17 @@ set of tutorials:
   methods side by side
 - [Contrast facades with a two-factor
   design](https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html)
-- [Modelling a dataset with two
-  factors](https://fgcz.github.io/prolfqua/articles/Modelling2Factors.html)
 - [Contrasts from
   factors](https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html)
-- [DEqMS count-dependent variance
-  moderation](https://fgcz.github.io/prolfqua/articles/DEqMS_Moderation.html)
-- [Using
-  limpa](https://fgcz.github.io/prolfqua/articles/limpa_example.html)
+- [Absent, not unknown: proteins missing in a whole
+  group](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html):
+  limit-of-detection imputation with `lm_impute`
 - [Simulating peptide-level
   data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
-- [Imputing data at the limit of
-  detection](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html)
+- [Under the hood: strategy, model and
+  contrasts](https://fgcz.github.io/prolfqua/articles/LowLevelAPI.html):
+  the classes behind
+  [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
 
 The vignettes [Comparing two groups with
 prolfqua](https://wolski.github.io/prolfqua/articles/Comparing2Groups.md)

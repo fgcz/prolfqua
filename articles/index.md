@@ -12,12 +12,8 @@
   factors](https://wolski.github.io/prolfqua/articles/Contrasts_from_factors.md):
 - [Getting Started, Data Import, Creating prolfqua
   Configurations](https://wolski.github.io/prolfqua/articles/CreatingConfigurations.md):
-- [DEqMS-style Count-Dependent Variance
-  Moderation](https://wolski.github.io/prolfqua/articles/DEqMS_Moderation.md):
-- [Using limpa Directly on prolfqua Simulated
-  Data](https://wolski.github.io/prolfqua/articles/limpa_example.md):
-- [Modelling dataset with two
-  Factors](https://wolski.github.io/prolfqua/articles/Modelling2Factors.md):
+- [Under the hood: strategy, model and
+  contrasts](https://wolski.github.io/prolfqua/articles/LowLevelAPI.md):
 - [All modelling methods at a
   glance](https://wolski.github.io/prolfqua/articles/ModellingMethods.md):
 - [Introduction to
@@ -26,5 +22,5 @@
   Estimation](https://wolski.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.md):
 - [Simulate Peptide level
   Data](https://wolski.github.io/prolfqua/articles/SimulateData.md):
-- [Impute data using limit of detection
-  (LOD)](https://wolski.github.io/prolfqua/articles/TestingMissingInference.md):
+- [Absent, not unknown: proteins missing in a whole
+  group](https://wolski.github.io/prolfqua/articles/TestingMissingInference.md):

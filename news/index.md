@@ -58,10 +58,31 @@ Changes for the Bioconductor review
 - The package now ships three vignettes (`prolfqua`, `Comparing2Groups`,
   `ModellingMethods`). The other tutorials are website-only articles at
   <https://fgcz.github.io/prolfqua/articles/>, under the same URLs as
-  before, which keeps the package build short. The “Limma Backend”
-  article is removed; the `limma`, `limma_voom` and `limpa` methods of
+  before, which keeps the package build short.
+- The vignettes and articles use
   [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
-  are shown in `ModellingMethods` and the “Contrast Facades” articles.
+  throughout. `Comparing2Groups` and “Simulate Peptide level Data” fit
+  their contrasts with `lm_impute` (proteins) and `lm` (peptides) in one
+  call instead of building models and contrasts by hand.
+- The articles “Limma Backend”, “DEqMS-style Count-Dependent Variance
+  Moderation”, “Modelling dataset with two Factors” and “Using limpa
+  Directly” are removed: `ModellingMethods` and the two “Contrast
+  Facades” articles cover their methods through
+  [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md).
+- The imputation article is rewritten and renamed “Absent, not unknown:
+  proteins missing in a whole group”: what `lm` loses when a group has
+  no observations, how the LOD is estimated, how `lm_impute` refits and
+  borrows the variance, the other imputing methods, and
+  [`impute_from_model()`](https://wolski.github.io/prolfqua/reference/impute_from_model.md)
+  (same URL as before).
+- New article “Under the hood: strategy, model and contrasts”: the `lm`
+  method built step by step
+  ([`strategy_lm()`](https://wolski.github.io/prolfqua/reference/strategy.md),
+  [`build_model()`](https://wolski.github.io/prolfqua/reference/build_model.md),
+  `Contrasts`, `ContrastsModerated`), giving the same result as
+  [`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md),
+  with model inspection, unmoderated contrasts and
+  [`register_facade()`](https://wolski.github.io/prolfqua/reference/register_facade.md).
 - `Comparing2Groups` describes the simulated data it actually uses (the
   text still referred to MaxQuant Ionstar data) and no longer looks up
   protein IDs that do not exist in it. Both vignettes use BiocStyle.

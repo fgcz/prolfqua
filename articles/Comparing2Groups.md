@@ -27,7 +27,7 @@ sample, and returns them together with a matching
 configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
 
 ``` r
-xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100)
+xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5)
 xx
 ```
 
@@ -37,7 +37,7 @@ xx
     ##    <chr>  <chr>      <chr>  <chr>        <chr>           <dbl>  <dbl>      <dbl>
     ##  1 A_V1   A_V1       A      light        0EfVhX~3967      20.4      0          2
     ##  2 A_V1   A_V1       A      light        0m5WN4~6025      16.4      0          7
-    ##  3 A_V1   A_V1       A      light        0YSKpy~2865      18.2      0          2
+    ##  3 A_V1   A_V1       A      light        0YSKpy~2865      NA       NA         NA
     ##  4 A_V1   A_V1       A      light        3QLHfm~8938      23.0      0          1
     ##  5 A_V1   A_V1       A      light        3QYop0~7543      23.1      0          7
     ##  6 A_V1   A_V1       A      light        76k03k~7094      25.5      0          4
@@ -118,9 +118,9 @@ lfqdata$data_wide()$data[1:3,1:7]
     ## # A tibble: 3 × 7
     ##   protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1
     ##   <chr>       <chr>        <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1 0EfVhX~3967 light         20.4  23.8  22.3  21.5  19.1
-    ## 2 0m5WN4~6025 light         16.4  NA    16.1  18.2  24.3
-    ## 3 0YSKpy~2865 light         18.2  17.7  16.7  17.7  18.2
+    ## 1 0EfVhX~3967 light         20.4  23.8  22.3  21.5  NA  
+    ## 2 0m5WN4~6025 light         16.4  NA    NA    18.2  24.3
+    ## 3 0YSKpy~2865 light         NA    17.7  16.7  17.7  18.2
 
 ### Visualization of not normalized data
 
@@ -182,13 +182,13 @@ Violin plots of CVs in the different groups and among all groups
 prolfqua::table_facade( stats$stats_quantiles()$wide, paste0("quantile of ",stats$stat ))
 ```
 
-| probs |        A |        B |     Ctrl |      All |
-|------:|---------:|---------:|---------:|---------:|
-|  0.10 | 2.014611 | 1.993591 | 1.762209 | 3.451035 |
-|  0.25 | 2.711702 | 2.956419 | 2.882970 | 4.370724 |
-|  0.50 | 3.655067 | 3.700140 | 4.261204 | 5.296948 |
-|  0.75 | 5.338899 | 5.462486 | 5.904953 | 7.411380 |
-|  0.90 | 7.541564 | 7.118907 | 7.471854 | 9.912513 |
+| probs |        A |        B |     Ctrl |       All |
+|------:|---------:|---------:|---------:|----------:|
+|  0.10 | 2.121145 | 1.445998 | 1.499604 |  3.416437 |
+|  0.25 | 2.603169 | 2.734033 | 2.135081 |  4.316819 |
+|  0.50 | 3.860492 | 3.487257 | 3.744767 |  5.077622 |
+|  0.75 | 5.552086 | 5.449944 | 5.701197 |  7.229931 |
+|  0.90 | 7.745671 | 6.931290 | 8.396967 | 10.211265 |
 
 quantile of CV
 
@@ -251,142 +251,55 @@ samples](Comparing2Groups_files/figure-html/plotHeatmap-1.png)
 
 Heatmap, Rows - proteins, Columns - samples
 
-## Fitting a linear model
+## Fit the model and compute contrasts
 
-For fitting linear models to the transformed intensities for all our
-proteins we have to first specify the model function and define the
-contrasts that we want to calculate.
-
-``` r
-transformed$factors()
-```
-
-    ## # A tibble: 12 × 3
-    ##    sample  sampleName group_
-    ##    <chr>   <chr>      <chr> 
-    ##  1 A_V1    A_V1       A     
-    ##  2 A_V2    A_V2       A     
-    ##  3 A_V3    A_V3       A     
-    ##  4 A_V4    A_V4       A     
-    ##  5 B_V1    B_V1       B     
-    ##  6 B_V2    B_V2       B     
-    ##  7 B_V3    B_V3       B     
-    ##  8 B_V4    B_V4       B     
-    ##  9 Ctrl_V1 Ctrl_V1    Ctrl  
-    ## 10 Ctrl_V2 Ctrl_V2    Ctrl  
-    ## 11 Ctrl_V3 Ctrl_V3    Ctrl  
-    ## 12 Ctrl_V4 Ctrl_V4    Ctrl
+We compare each treatment group with the control.
+[`build_contrast_analysis()`](https://wolski.github.io/prolfqua/reference/build_contrast_analysis.md)
+fits one model per protein and computes the contrasts in one call. We
+use the method `lm_impute`: a linear model per protein, with the protein
+variances moderated by the empirical Bayes method so that proteins with
+few observations borrow strength from all proteins. Proteins without
+observations in one group are refitted with the missing values set to
+the limit of detection (LOD); see the article [Absent, not
+unknown](https://fgcz.github.io/prolfqua/articles/TestingMissingInference.html).
+The vignette [All modelling methods at a
+glance](https://wolski.github.io/prolfqua/articles/ModellingMethods.md)
+lists the other methods.
 
 ``` r
-formula_Condition <-  strategy_lm("transformedIntensity ~ group_")
-
-# specify model definition
-modelName  <- "Model"
-contr_spec <- c("AvsC" = "group_A - group_Ctrl",
-"BvsC" = "group_B - group_Ctrl")
+contr_spec <- c(
+  "AvsC" = "group_A - group_Ctrl",
+  "BvsC" = "group_B - group_Ctrl"
+)
+fa <- build_contrast_analysis(transformed, "~ group_", contr_spec, method = "lm_impute")
+contrdf <- fa$get_contrasts()
 ```
 
-Here we have to build the model for each protein.
+The column `estimate_type` tells how each estimate was obtained:
+`observed` from the measured intensities, `lod_imputed` from the refit
+at the LOD.
 
 ``` r
-mod <- prolfqua::build_model(
-  transformed$data_long(),
-  formula_Condition,
-  subject_id = transformed$hierarchy_keys() )
+dplyr::count(contrdf, contrast, estimate_type)
 ```
 
-In this plot we can see what factors in our model are mostly responsible
-for the adjusted p-values calculated from an analysis of variance.
+    ## # A tibble: 4 × 3
+    ##   contrast estimate_type     n
+    ##   <chr>    <chr>         <int>
+    ## 1 AvsC     lod_imputed       7
+    ## 2 AvsC     observed         93
+    ## 3 BvsC     lod_imputed       7
+    ## 4 BvsC     observed         93
 
 ``` r
-mod$anova_histogram("FDR")
+plotter <- fa$get_Plotter()
+plotter$volcano()$FDR
 ```
 
-    ## $plot
+![Volcano plots of the two
+contrasts.](Comparing2Groups_files/figure-html/plotVolcanos-1.png)
 
-![Distribution of adjusted p-values
-(FDR)](Comparing2Groups_files/figure-html/showANOVA-1.png)
-
-Distribution of adjusted p-values (FDR)
-
-    ## 
-    ## $name
-    ## [1] "Anova_p.values_Model.pdf"
-
-One can also look at which proteins show different abundances in any of
-the groups by looking at the FDR values of the analysis of variance.
-
-``` r
-aovtable <- mod$get_anova()
-head(aovtable)
-```
-
-    ## # A tibble: 6 × 10
-    ##   protein_Id  factor    Df  Sum.Sq  Mean.Sq F.value  p.value isSingular nr_coef
-    ##   <chr>       <chr>  <int>   <dbl>    <dbl>   <dbl>    <dbl> <lgl>        <int>
-    ## 1 0EfVhX~3967 group_     2 0.0626  0.0313     5.18  0.0416   FALSE            3
-    ## 2 0m5WN4~6025 group_     2 0.324   0.162     29.4   0.000205 FALSE            3
-    ## 3 0YSKpy~2865 group_     2 0.00753 0.00376    0.605 0.569    FALSE            3
-    ## 4 3QLHfm~8938 group_     2 0.0637  0.0319    13.2   0.00213  FALSE            3
-    ## 5 3QYop0~7543 group_     2 0.00121 0.000603   0.178 0.840    FALSE            3
-    ## 6 76k03k~7094 group_     2 0.0264  0.0132     3.06  0.0968   FALSE            3
-    ## # ℹ 1 more variable: FDR <dbl>
-
-``` r
-dim(aovtable)
-```
-
-    ## [1] 98 10
-
-``` r
-xx <- aovtable |> dplyr::filter(FDR < 0.2)
-signif <- transformed$get_copy()
-signif$set_data(signif$data_long() |> dplyr::filter(protein_Id %in% xx$protein_Id))
-hmSig <- signif$get_Plotter()$heatmap()
-```
-
-``` r
-hmSig
-```
-
-![Heatmap for proteins with FDR \< 0.2 in the analysis of
-variance](Comparing2Groups_files/figure-html/showSigHeatmap-1.png)
-
-Heatmap for proteins with FDR \< 0.2 in the analysis of variance
-
-## Compute contrasts
-
-Next we do calculate the statistics for our defined contrasts for all
-the proteins. For this we can use the `Contrasts` function.
-
-``` r
-contr <- prolfqua::Contrasts$new(mod, contr_spec)
-v1 <- contr$get_Plotter()$volcano()
-```
-
-Alternatively, we can moderate the variance using the empirical Bayes
-method implemented in `ContrastsModerated`.
-
-``` r
-contr <- prolfqua::ContrastsModerated$new(contr)
-contrdf <- contr$get_contrasts()
-```
-
-Moderation shrinks the variance of each protein towards the variance of
-all proteins, which stabilises the p-values of proteins whose variance
-is estimated from few observations. The next figure compares the volcano
-plots without and with moderation.
-
-``` r
-plotter <- contr$get_Plotter()
-v2 <- plotter$volcano()
-gridExtra::grid.arrange(v1$FDR,v2$FDR, ncol = 1)
-```
-
-![Volcano plot, Left panel - no moderation, Right panel - with
-moderation.](Comparing2Groups_files/figure-html/plotVolcanos-1.png)
-
-Volcano plot, Left panel - no moderation, Right panel - with moderation.
+Volcano plots of the two contrasts.
 
 ``` r
 plotter$ma_plotly()
@@ -394,6 +307,24 @@ plotter$ma_plotly()
 
 MA plot showing the dependency of mean abundance with respect to the
 difference
+
+The proteins with FDR \< 0.1 in at least one contrast:
+
+``` r
+sig <- dplyr::filter(contrdf, FDR < 0.1)
+signif <- transformed$get_copy()
+signif$set_data(signif$data_long() |> dplyr::filter(protein_Id %in% sig$protein_Id))
+hmSig <- signif$get_Plotter()$heatmap()
+```
+
+``` r
+hmSig
+```
+
+![Heatmap of the proteins with FDR \< 0.1 in at least one
+contrast](Comparing2Groups_files/figure-html/showSigHeatmap-1.png)
+
+Heatmap of the proteins with FDR \< 0.1 in at least one contrast
 
 ``` r
 myProteinIDS <- head(unique(contrdf$protein_Id), 3)
@@ -403,69 +334,24 @@ dplyr::filter(contrdf, protein_Id %in% myProteinIDS)
     ## # A tibble: 6 × 16
     ##   modelName estimate_type protein_Id  contrast    diff avgAbd
     ##   <chr>     <chr>         <chr>       <chr>      <dbl>  <dbl>
-    ## 1 WaldTest  observed      0EfVhX~3967 AvsC      0.0758   4.43
-    ## 2 WaldTest  observed      0m5WN4~6025 AvsC     -0.260    4.21
-    ## 3 WaldTest  observed      0YSKpy~2865 AvsC     -0.0176   4.16
-    ## 4 WaldTest  observed      0EfVhX~3967 BvsC     -0.115    4.33
-    ## 5 WaldTest  observed      0m5WN4~6025 BvsC      0.174    4.42
-    ## 6 WaldTest  observed      0YSKpy~2865 BvsC     -0.0625   4.13
-    ## # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+    ## 1 lm_impute observed      0EfVhX~3967 AvsC      0.0808   4.43
+    ## 2 lm_impute observed      0m5WN4~6025 AvsC     -0.225    4.23
+    ## 3 lm_impute observed      0YSKpy~2865 AvsC      0.0192   4.16
+    ## 4 lm_impute observed      0EfVhX~3967 BvsC     -0.119    4.33
+    ## 5 lm_impute observed      0m5WN4~6025 BvsC      0.162    4.42
+    ## 6 lm_impute observed      0YSKpy~2865 BvsC     -0.0640   4.11
+    ## # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
     ## #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
     ## #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
-## Contrasts with missing value imputation
-
-Use this method if there are proteins with no observations in one of the
-groups. The `lm_impute` facade refits the linear model for these
-proteins after imputing the missing observations with the limit of
-detection (LOD), and borrows the variance from the proteins that could
-be fitted.
+Protein and contrast pairs that `lm_impute` could not estimate, if any:
 
 ``` r
-mC <- prolfqua::ContrastsLMImputeFacade$new(transformed, "~ group_", contr_spec)$contrast
-colnames(mC$get_contrasts())
+fa$get_missing()
 ```
 
-    ##  [1] "modelName"             "estimate_type"         "protein_Id"           
-    ##  [4] "contrast"              "diff"                  "avgAbd"               
-    ##  [7] "std.error.unmoderated" "df.unmoderated"        "std.error"            
-    ## [10] "statistic"             "df"                    "p.value"              
-    ## [13] "conf.low"              "conf.high"             "sigma"                
-    ## [16] "FDR"
-
-Finally we are merging the results and give priority to the results
-where we do not have missing values in one group.
-
-``` r
-merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)$merged
-plotter <- merged$get_Plotter()
-tmp <- plotter$volcano()
-tmp$FDR
-```
-
-![Volcano plots for the two contrasts with missing value imputation from
-the lm_impute
-model.](Comparing2Groups_files/figure-html/mergeResults-1.png)
-
-Volcano plots for the two contrasts with missing value imputation from
-the lm_impute model.
-
-Look at proteins which could not be fitted using the linear model, if
-any.
-
-``` r
-merged <- prolfqua::merge_contrasts_results(prefer = contr,add = mC)
-
-moreProt <- transformed$get_copy()
-moreProt$set_data(moreProt$data_long() |> dplyr::filter(protein_Id %in% merged$more$contrast_result$protein_Id))
-moreProt$get_Plotter()$raster()
-```
-
-![](Comparing2Groups_files/figure-html/mergedMore-1.png)
-
-``` r
-# here we do not get anything because there is nothing imputed!
-```
+    ## # A tibble: 0 × 2
+    ## # ℹ 2 variables: protein_Id <chr>, contrast <chr>
 
 ## Gene Set Enrichment Analysis (GSEA)
 

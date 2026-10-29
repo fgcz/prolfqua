@@ -93,31 +93,25 @@ pl$intensity_distribution_density()
 
 ## Fit peptide model
 
+With `hierarchy_depth` 2, every peptide is modelled on its own.
+
 ``` r
-formula_Condition <-  strategy_lm("abundance ~ group_")
 lfqdata$set_config_value("hierarchy_depth", 2)
-
-# specify model definition
-modelName  <- "Model"
-contr_spec <- c("B_over_Ctrl" = "group_B - group_Ctrl",
-               "A_over_Ctrl" = "group_A - group_Ctrl")
-lfqdata$subject_id()
-```
-
-    ## [1] "protein_Id" "peptide_Id"
-
-``` r
-mod <- prolfqua::build_model(
-  lfqdata,
-  formula_Condition)
-aovtable <- mod$get_anova()
-mod$anova_histogram()$plot
+contr_spec <- c(
+  "B_over_Ctrl" = "group_B - group_Ctrl",
+  "A_over_Ctrl" = "group_A - group_Ctrl"
+)
+fa_pep <- build_contrast_analysis(lfqdata, "~ group_", contr_spec, method = "lm")
+res_pep <- fa_pep$get_contrasts()
+fa_pep$get_Plotter()$volcano()$FDR
 ```
 
 ![](SimulateData_files/figure-html/fit_peptide_model-1.png)
 
+Proteins with at least one peptide with FDR \< 0.05:
+
 ``` r
-xx <- aovtable |> dplyr::filter(FDR < 0.05)
+xx <- dplyr::filter(res_pep, FDR < 0.05)
 signif <- lfqdata$get_copy()
 signif$set_data(signif$data_long() |> dplyr::filter(protein_Id %in% xx$protein_Id))
 signif$get_Plotter()$heatmap()
@@ -133,27 +127,14 @@ protData <- lfqdata$get_Aggregator()$aggregate()
 ```
 
 ``` r
-protData$response()
-```
-
-    ## [1] "medpolish"
-
-``` r
-formula_Condition <-  strategy_lm("medpolish ~ group_")
-
-mod <- prolfqua::build_model(
-  protData,
-  formula_Condition)
-
-contr <- prolfqua::Contrasts$new(mod, contr_spec)
-v1 <- contr$get_Plotter()$volcano()
-v1$FDR
+fa_prot <- build_contrast_analysis(protData, "~ group_", contr_spec, method = "lm_impute")
+fa_prot$get_Plotter()$volcano()$FDR
 ```
 
 ![](SimulateData_files/figure-html/protein_model_contrasts-1.png)
 
 ``` r
-ctr <- contr$get_contrasts()
+ctr <- fa_prot$get_contrasts()
 ```
 
 ## Session Info
