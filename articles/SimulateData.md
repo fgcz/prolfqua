@@ -1,4 +1,4 @@
-# Simulate Peptide level Data
+# Simulating peptide-level data
 
 ### Simulate data
 

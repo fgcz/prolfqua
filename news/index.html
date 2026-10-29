@@ -20,15 +20,15 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
-    <li><a class="dropdown-item" href="../articles/ContrastFacade2Factor.html">Contrast Facades with Two-Factor Subgroup Design</a></li>
-    <li><a class="dropdown-item" href="../articles/ContrastFacades.html">Contrast Facades with Parallel Designs</a></li>
-    <li><a class="dropdown-item" href="../articles/Contrasts_from_factors.html">Contrasts from factors</a></li>
-    <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Getting Started, Data Import, Creating prolfqua Configurations</a></li>
-    <li><a class="dropdown-item" href="../articles/LODImputation.html">Absent, not unknown: proteins missing in a whole group</a></li>
+    <li><a class="dropdown-item" href="../articles/ComparingMethods.html">Comparing modelling methods on one dataset</a></li>
+    <li><a class="dropdown-item" href="../articles/ContrastsFromFactors.html">Contrasts from factors</a></li>
+    <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
     <li><a class="dropdown-item" href="../articles/LowLevelAPI.html">Under the hood: strategy, model and contrasts</a></li>
+    <li><a class="dropdown-item" href="../articles/ModelBasedImputation.html">Absent, not unknown: proteins missing in a whole group</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/QualityControlAndSampleSizeEstimation.html">QC and Sample Size Estimation</a></li>
-    <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulate Peptide level Data</a></li>
+    <li><a class="dropdown-item" href="../articles/SimulateData.html">Simulating peptide-level data</a></li>
+    <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -66,8 +66,9 @@
 <li>New vignette <code><a href="../articles/ModellingMethods.html">vignette("ModellingMethods")</a></code>: runs every <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> method on one small simulated dataset, with one summary line per method; it renders in a few seconds.</li>
 <li>The package now ships three vignettes (<code>prolfqua</code>, <code>Comparing2Groups</code>, <code>ModellingMethods</code>). The other tutorials are website-only articles at <a href="https://fgcz.github.io/prolfqua/articles/" class="uri">https://fgcz.github.io/prolfqua/articles/</a>, under the same URLs as before, which keeps the package build short.</li>
 <li>The vignettes and articles use <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> throughout. <code>Comparing2Groups</code> and “Simulate Peptide level Data” fit their contrasts with <code>lm_impute</code> (proteins) and <code>lm</code> (peptides) in one call instead of building models and contrasts by hand.</li>
-<li>The articles “Limma Backend”, “DEqMS-style Count-Dependent Variance Moderation”, “Modelling dataset with two Factors” and “Using limpa Directly” are removed: <code>ModellingMethods</code> and the two “Contrast Facades” articles cover their methods through <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>.</li>
-<li>The imputation article is rewritten and renamed “Absent, not unknown: proteins missing in a whole group”: what <code>lm</code> loses when a group has no observations, how the LOD is estimated, how <code>lm_impute</code> refits and borrows the variance, the other imputing methods, and <code><a href="../reference/impute_from_model.html">impute_from_model()</a></code>. It moved to <code>articles/LODImputation.html</code>; the old <code>TestingMissingInference.html</code> link redirects there.</li>
+<li>The articles “Limma Backend”, “DEqMS-style Count-Dependent Variance Moderation”, “Modelling dataset with two Factors” and “Using limpa Directly” are removed: <code>ModellingMethods</code> and the articles “Comparing modelling methods on one dataset” and “Two-factor designs” cover their methods through <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>.</li>
+<li>The imputation article is rewritten and renamed “Absent, not unknown: proteins missing in a whole group”: what <code>lm</code> loses when a group has no observations, how the LOD is estimated, how <code>lm_impute</code> refits and borrows the variance, the other imputing methods, and <code><a href="../reference/impute_from_model.html">impute_from_model()</a></code>. It moved to <code>articles/ModelBasedImputation.html</code> and shows heatmaps and PCA plots before and after imputation; the old <code>TestingMissingInference.html</code> link redirects there.</li>
+<li>Articles renamed so that file names say what they cover: <code>ContrastFacades</code> is now <code>ComparingMethods</code> (“Comparing modelling methods on one dataset”), <code>ContrastFacade2Factor</code> is <code>TwoFactorDesigns</code> (“Two-factor designs”), <code>Contrasts_from_factors</code> is <code>ContrastsFromFactors</code>. <code>CreatingConfigurations</code> is titled “Importing your data: AnalysisConfiguration”. The old URLs redirect to the new ones.</li>
 <li>New article “Under the hood: strategy, model and contrasts”: the <code>lm</code> method built step by step (<code><a href="../reference/strategy.html">strategy_lm()</a></code>, <code><a href="../reference/build_model.html">build_model()</a></code>, <code>Contrasts</code>, <code>ContrastsModerated</code>), giving the same result as <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>, with model inspection, unmoderated contrasts and <code><a href="../reference/register_facade.html">register_facade()</a></code>.</li>
 <li>
 <code>Comparing2Groups</code> describes the simulated data it actually uses (the text still referred to MaxQuant Ionstar data) and no longer looks up protein IDs that do not exist in it. Both vignettes use BiocStyle.</li>

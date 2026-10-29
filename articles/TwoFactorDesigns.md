@@ -1,4 +1,4 @@
-# Contrast Facades with Two-Factor Subgroup Design
+# Two-factor designs
 
 ## Purpose
 
@@ -210,7 +210,7 @@ ggplot(results_standard_2f, aes(x = diff, y = -log10(p.value), color = significa
 ```
 
 ![Volcano plots for the standard protein-level facades (lm, limma,
-deqms).](ContrastFacade2Factor_files/figure-html/volcano_standard_2f-1.png)
+deqms).](TwoFactorDesigns_files/figure-html/volcano_standard_2f-1.png)
 
 Volcano plots for the standard protein-level facades (lm, limma, deqms).
 
@@ -242,7 +242,7 @@ ggplot(results_impute_2f, aes(x = diff, y = -log10(p.value))) +
 
 ![Volcano plots for the imputation and missingness facades. Large red
 diamonds mark proteins rescued (missing in plain
-lm).](ContrastFacade2Factor_files/figure-html/volcano_impute_2f-1.png)
+lm).](TwoFactorDesigns_files/figure-html/volcano_impute_2f-1.png)
 
 Volcano plots for the imputation and missingness facades. Large red
 diamonds mark proteins rescued (missing in plain lm).
@@ -469,7 +469,7 @@ ggplot(results_peptide_2f, aes(x = diff, y = -log10(p.value), color = significan
 
 ![Volcano plots for the peptide-level facades. Rows are contrasts,
 columns are
-backends.](ContrastFacade2Factor_files/figure-html/volcano_peptide_2f-1.png)
+backends.](TwoFactorDesigns_files/figure-html/volcano_peptide_2f-1.png)
 
 Volcano plots for the peptide-level facades. Rows are contrasts, columns
 are backends.

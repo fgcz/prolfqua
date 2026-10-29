@@ -7,9 +7,9 @@ selects the model with its `method` argument. This vignette runs every
 method listed by
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md)
 on one small simulated dataset and shows one line of output per method.
-Plots and a discussion of the methods are in the article [Contrast
-facades with parallel
-designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html).
+Plots and a discussion of the methods are in the article [Comparing
+modelling methods on one
+dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html).
 
 ## Data
 

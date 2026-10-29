@@ -3,17 +3,17 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   Comparing2Groups: Comparing2Groups.html
-  articles/ContrastFacade2Factor: ContrastFacade2Factor.html
-  articles/ContrastFacades: ContrastFacades.html
-  articles/Contrasts_from_factors: Contrasts_from_factors.html
+  articles/ComparingMethods: ComparingMethods.html
+  articles/ContrastsFromFactors: ContrastsFromFactors.html
   articles/CreatingConfigurations: CreatingConfigurations.html
-  articles/LODImputation: LODImputation.html
   articles/LowLevelAPI: LowLevelAPI.html
+  articles/ModelBasedImputation: ModelBasedImputation.html
   ModellingMethods: ModellingMethods.html
   prolfqua: prolfqua.html
   articles/QualityControlAndSampleSizeEstimation: QualityControlAndSampleSizeEstimation.html
   articles/SimulateData: SimulateData.html
-last_built: 2026-10-29T12:44Z
+  articles/TwoFactorDesigns: TwoFactorDesigns.html
+last_built: 2026-10-29T12:50Z
 urls:
   reference: https://fgcz.github.io/prolfqua/reference
   article: https://fgcz.github.io/prolfqua/articles

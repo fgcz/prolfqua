@@ -147,23 +147,24 @@ set of tutorials:
 - [Comparing two
   groups](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html):
   QC, normalization and contrasts with `lm_impute`
-- [Creating
-  configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html):
+- [Importing your
+  data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html):
   reading your own data into an `AnalysisConfiguration`
 - [QC and sample size
   estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
-- [Contrast facades with parallel
-  designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html):
+- [Comparing modelling methods on one
+  dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html):
   all
   [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
   methods side by side
-- [Contrast facades with a two-factor
-  design](https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html)
+- [Two-factor
+  designs](https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html)
 - [Contrasts from
-  factors](https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html)
+  factors](https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.html)
 - [Absent, not unknown: proteins missing in a whole
-  group](https://fgcz.github.io/prolfqua/articles/LODImputation.html):
-  limit-of-detection imputation with `lm_impute`
+  group](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html):
+  model-based imputation with `lm_impute` and
+  [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
 - [Simulating peptide-level
   data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
 - [Under the hood: strategy, model and

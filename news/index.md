@@ -66,16 +66,25 @@ Changes for the Bioconductor review
   call instead of building models and contrasts by hand.
 - The articles “Limma Backend”, “DEqMS-style Count-Dependent Variance
   Moderation”, “Modelling dataset with two Factors” and “Using limpa
-  Directly” are removed: `ModellingMethods` and the two “Contrast
-  Facades” articles cover their methods through
+  Directly” are removed: `ModellingMethods` and the articles “Comparing
+  modelling methods on one dataset” and “Two-factor designs” cover their
+  methods through
   [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
 - The imputation article is rewritten and renamed “Absent, not unknown:
   proteins missing in a whole group”: what `lm` loses when a group has
   no observations, how the LOD is estimated, how `lm_impute` refits and
   borrows the variance, the other imputing methods, and
   [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md).
-  It moved to `articles/LODImputation.html`; the old
+  It moved to `articles/ModelBasedImputation.html` and shows heatmaps
+  and PCA plots before and after imputation; the old
   `TestingMissingInference.html` link redirects there.
+- Articles renamed so that file names say what they cover:
+  `ContrastFacades` is now `ComparingMethods` (“Comparing modelling
+  methods on one dataset”), `ContrastFacade2Factor` is
+  `TwoFactorDesigns` (“Two-factor designs”), `Contrasts_from_factors` is
+  `ContrastsFromFactors`. `CreatingConfigurations` is titled “Importing
+  your data: AnalysisConfiguration”. The old URLs redirect to the new
+  ones.
 - New article “Under the hood: strategy, model and contrasts”: the `lm`
   method built step by step
   ([`strategy_lm()`](https://fgcz.github.io/prolfqua/reference/strategy.md),

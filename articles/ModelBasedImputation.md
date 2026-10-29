@@ -123,7 +123,7 @@ ggplot(res, aes(diff, -log10(p.value), colour = estimate_type)) +
 ```
 
 ![Volcano plot of lm_impute; colour marks the estimates refitted at the
-LOD.](LODImputation_files/figure-html/volcano-1.png)
+LOD.](ModelBasedImputation_files/figure-html/volcano-1.png)
 
 Volcano plot of lm_impute; colour marks the estimates refitted at the
 LOD.
@@ -153,8 +153,8 @@ knitr::kable(data.frame(method = methods, estimated = estimated), row.names = FA
 | rfit         |       194 |
 | rfit_impute  |       200 |
 
-The article [Contrast facades with parallel
-designs](https://fgcz.github.io/prolfqua/articles/ContrastFacades.html)
+The article [Comparing modelling methods on one
+dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html)
 compares them on peptide-level data, including the hurdle model.
 
 ## Completing the data matrix
@@ -175,11 +175,51 @@ table(filled$summary$route)
     ##  complete    fitted lod_refit 
     ##        23        70         7
 
+### Heatmap before and after
+
+``` r
+lfq$get_Plotter()$heatmap()
+```
+
+![Before imputation: missing cells are
+grey.](ModelBasedImputation_files/figure-html/heatmapBefore-1.png)
+
+Before imputation: missing cells are grey.
+
 ``` r
 filled$lfqdata$get_Plotter()$heatmap()
 ```
 
-![](LODImputation_files/figure-html/fill-1.png)
+![After imputation: every cell holds a
+value.](ModelBasedImputation_files/figure-html/heatmapAfter-1.png)
+
+After imputation: every cell holds a value.
+
+### PCA before and after
+
+PCA needs complete data. Before imputation it can only use the proteins
+without missing values; after imputation it uses all proteins.
+
+``` r
+n_complete <- sum(filled$summary$route == "complete")
+gridExtra::grid.arrange(
+  lfq$get_Plotter()$pca() +
+    ggtitle(paste0("Before imputation: ", n_complete, " complete proteins")),
+  filled$lfqdata$get_Plotter()$pca() +
+    ggtitle(paste0("After imputation: ", nrow(filled$summary), " proteins")),
+  ncol = 1
+)
+```
+
+![PCA before (top) and after (bottom)
+imputation.](ModelBasedImputation_files/figure-html/pca-1.png)
+
+PCA before (top) and after (bottom) imputation.
+
+After imputation the groups separate more cleanly, in the heatmap and in
+the PCA. Part of that is circular: each filled value is the model’s
+estimate for its group, so imputation adds the group structure of the
+model to the data.
 
 ## Session Info
 

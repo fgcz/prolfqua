@@ -22,9 +22,9 @@ library(prolfqua)
 [`sim_lfq_data_protein_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_protein_config.md)
 simulates protein abundances in long format, one row per protein and
 sample, and returns them together with a matching
-`AnalysisConfiguration`. To read your own data, see the vignette
-[Creating
-configurations](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
+`AnalysisConfiguration`. To read your own data, see the article
+[Importing your
+data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
 
 ``` r
 xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5)
@@ -261,7 +261,7 @@ variances moderated by the empirical Bayes method so that proteins with
 few observations borrow strength from all proteins. Proteins without
 observations in one group are refitted with the missing values set to
 the limit of detection (LOD); see the article [Absent, not
-unknown](https://fgcz.github.io/prolfqua/articles/LODImputation.html).
+unknown](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html).
 The vignette [All modelling methods at a
 glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.md)
 lists the other methods.

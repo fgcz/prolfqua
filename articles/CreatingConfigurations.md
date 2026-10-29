@@ -1,4 +1,4 @@
-# Getting Started, Data Import, Creating prolfqua Configurations
+# Importing your data: AnalysisConfiguration
 
 ## Creating a configuration for a file in wide data format
 

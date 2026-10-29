@@ -1,4 +1,4 @@
-# Contrast Facades with Parallel Designs
+# Comparing modelling methods on one dataset
 
 ## Purpose
 
@@ -277,7 +277,7 @@ ggplot(results_standard, aes(x = diff, y = -log10(p.value), color = significant)
 ```
 
 ![Volcano plots for the standard protein-level facades (lm, rfit, limma,
-deqms).](ContrastFacades_files/figure-html/volcano_standard-1.png)
+deqms).](ComparingMethods_files/figure-html/volcano_standard-1.png)
 
 Volcano plots for the standard protein-level facades (lm, rfit, limma,
 deqms).
@@ -310,7 +310,7 @@ ggplot(results_impute, aes(x = diff, y = -log10(p.value))) +
 
 ![Volcano plots for the imputation and missingness facades. Large red
 diamonds mark proteins rescued (missing in plain
-lm).](ContrastFacades_files/figure-html/volcano_impute-1.png)
+lm).](ComparingMethods_files/figure-html/volcano_impute-1.png)
 
 Volcano plots for the imputation and missingness facades. Large red
 diamonds mark proteins rescued (missing in plain lm).
@@ -543,7 +543,7 @@ ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant))
 
 ![Volcano plots for the peptide-level facades. Rows are contrasts,
 columns are
-backends.](ContrastFacades_files/figure-html/volcano_peptide-1.png)
+backends.](ComparingMethods_files/figure-html/volcano_peptide-1.png)
 
 Volcano plots for the peptide-level facades. Rows are contrasts, columns
 are backends.
