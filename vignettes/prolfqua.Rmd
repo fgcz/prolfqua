@@ -105,7 +105,6 @@ The package website <https://fgcz.github.io/prolfqua/> holds the full set of tut
 - [Contrast facades with a two-factor design](https://fgcz.github.io/prolfqua/articles/ContrastFacade2Factor.html)
 - [Modelling a dataset with two factors](https://fgcz.github.io/prolfqua/articles/Modelling2Factors.html)
 - [Contrasts from factors](https://fgcz.github.io/prolfqua/articles/Contrasts_from_factors.html)
-- [Limma backend](https://fgcz.github.io/prolfqua/articles/LimmaBackend.html)
 - [DEqMS count-dependent variance moderation](https://fgcz.github.io/prolfqua/articles/DEqMS_Moderation.html)
 - [Using limpa](https://fgcz.github.io/prolfqua/articles/limpa_example.html)
 - [Simulating peptide-level data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
