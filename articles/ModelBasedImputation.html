@@ -402,15 +402,30 @@ values carry no noise, so do not use them for further tests.</p>
 <div class="section level3">
 <h3 id="heatmap-before-and-after">Heatmap before and after<a class="anchor" aria-label="anchor" href="#heatmap-before-and-after"></a>
 </h3>
+<p>We cluster the proteins once, on the imputed data, and draw both
+heatmaps with that row order, so each row shows the same protein before
+and after.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">before</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">after</span> <span class="op">&lt;-</span> <span class="va">filled</span><span class="op">$</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">row_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">after</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">after</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">order</span><span class="op">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ht_before</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_heatmap.html">plot_heatmap</a></span><span class="op">(</span></span>
+<span>  <span class="va">before</span><span class="op">$</span><span class="va">data</span>, <span class="va">before</span><span class="op">$</span><span class="va">annotation</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na_fraction <span class="op">=</span> <span class="fl">1</span>, row_order <span class="op">=</span> <span class="va">row_order</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ht_before</span></span></code></pre></div>
 <div class="figure">
 <img src="ModelBasedImputation_files/figure-html/heatmapBefore-1.png" class="r-plt" alt="Before imputation: missing cells are grey." width="700"><p class="caption">
 Before imputation: missing cells are grey.
 </p>
 </div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">filled</span><span class="op">$</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ht_after</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_heatmap.html">plot_heatmap</a></span><span class="op">(</span></span>
+<span>  <span class="va">after</span><span class="op">$</span><span class="va">data</span>, <span class="va">after</span><span class="op">$</span><span class="va">annotation</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  na_fraction <span class="op">=</span> <span class="fl">1</span>, row_order <span class="op">=</span> <span class="va">row_order</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ht_after</span></span></code></pre></div>
 <div class="figure">
 <img src="ModelBasedImputation_files/figure-html/heatmapAfter-1.png" class="r-plt" alt="After imputation: every cell holds a value." width="700"><p class="caption">
 After imputation: every cell holds a value.
@@ -423,7 +438,7 @@ After imputation: every cell holds a value.
 <p>PCA needs complete data. Before imputation it can only use the
 proteins without missing values; after imputation it uses all
 proteins.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_complete</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">filled</span><span class="op">$</span><span class="va">summary</span><span class="op">$</span><span class="va">route</span> <span class="op">==</span> <span class="st">"complete"</span><span class="op">)</span></span>
 <span><span class="fu">gridExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/gridExtra/man/arrangeGrob.html" class="external-link">grid.arrange</a></span><span class="op">(</span></span>
 <span>  <span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">pca</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -446,7 +461,7 @@ model to the data.</p>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.5.2 (2025-10-31)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>

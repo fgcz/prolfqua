@@ -79,6 +79,50 @@ University of Zurich<br><small class="dont-index">Source: <a href="https://githu
     
 <p><img src="prolfqua_logo.png" class="r-plt" alt="" width="50%"></p>
 <div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<p>The package website <a href="https://fgcz.github.io/prolfqua/" class="uri">https://fgcz.github.io/prolfqua/</a> holds the full set of
+tutorials:</p>
+<ul>
+<li>
+<a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html">Importing
+your data</a>: reading your own data into an
+<code>AnalysisConfiguration</code>
+</li>
+<li>
+<a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html">Comparing
+two groups</a>: QC, normalization and contrasts with
+<code>lm_impute</code>
+</li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC
+and sample size estimation</a></li>
+<li>
+<a href="https://fgcz.github.io/prolfqua/articles/ComparingMethods.html">Comparing
+modelling methods on one dataset</a>: all
+<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> methods side by side</li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html">Two-factor
+designs</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.html">Contrasts
+from factors</a></li>
+<li>
+<a href="https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html">Absent,
+not unknown: proteins missing in a whole group</a>: model-based
+imputation with <code>lm_impute</code> and
+<code><a href="../reference/impute_from_model.html">impute_from_model()</a></code>
+</li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/SimulateData.html">Simulating
+peptide-level data</a></li>
+<li>
+<a href="https://fgcz.github.io/prolfqua/articles/LowLevelAPI.html">Under
+the hood: strategy, model and contrasts</a>: the classes behind
+<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>
+</li>
+</ul>
+<p>The vignettes <a href="Comparing2Groups.html">Comparing two groups
+with prolfqua</a> and <a href="ModellingMethods.html">All modelling
+methods at a glance</a> are also part of this package.</p>
+</div>
+<div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>prolfqua covers the steps of a label-free quantification (LFQ)
@@ -106,9 +150,10 @@ Its methods return helpers for transformation
 computes the requested contrasts. The <code>method</code> argument
 selects the model: linear models (<code>lm</code>, <code>rlm</code>,
 <code>rfit</code>), limma and limma-voom, DEqMS variance moderation,
-Firth logistic regression for presence/absence, mixed models and ROPECA
-on peptide-level data, and variants that impute groups without
-observations at the limit of detection.</li>
+limpa’s detection probability model, Firth logistic and binomial models
+of detection, mixed models and ROPECA on peptide-level data, a hurdle
+model combining intensity and detection, and variants that impute groups
+without observations at the limit of detection.</li>
 </ul>
 <p>Every method returns an object with the same interface:
 <code>get_contrasts()</code>, <code>get_Plotter()</code>,
@@ -193,7 +238,9 @@ of detection, borrowing the variance from the other proteins.</p>
 Volcano plot of the two contrasts.
 </p>
 </div>
-<p>All available methods are listed by <code><a href="../reference/list_facades.html">list_facades()</a></code>:</p>
+<p>All available methods are listed by <code><a href="../reference/list_facades.html">list_facades()</a></code>; the
+vignette <a href="ModellingMethods.html">All modelling methods at a
+glance</a> runs each of them on one small dataset.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/list_facades.html">list_facades</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "binomial_firth_nested" "binomial_nested"       "deqms"                </span></span>
@@ -203,50 +250,6 @@ Volcano plot of the two contrasts.
 <span><span class="co">#&gt; [13] "limpa_nested"          "lm"                    "lm_impute"            </span></span>
 <span><span class="co">#&gt; [16] "lmer_nested"           "rfit"                  "rfit_impute"          </span></span>
 <span><span class="co">#&gt; [19] "rlm"                   "ropeca_nested"</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="further-documentation">Further documentation<a class="anchor" aria-label="anchor" href="#further-documentation"></a>
-</h2>
-<p>The package website <a href="https://fgcz.github.io/prolfqua/" class="uri">https://fgcz.github.io/prolfqua/</a> holds the full set of
-tutorials:</p>
-<ul>
-<li>
-<a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html">Comparing
-two groups</a>: QC, normalization and contrasts with
-<code>lm_impute</code>
-</li>
-<li>
-<a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html">Importing
-your data</a>: reading your own data into an
-<code>AnalysisConfiguration</code>
-</li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC
-and sample size estimation</a></li>
-<li>
-<a href="https://fgcz.github.io/prolfqua/articles/ComparingMethods.html">Comparing
-modelling methods on one dataset</a>: all
-<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> methods side by side</li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html">Two-factor
-designs</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.html">Contrasts
-from factors</a></li>
-<li>
-<a href="https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html">Absent,
-not unknown: proteins missing in a whole group</a>: model-based
-imputation with <code>lm_impute</code> and
-<code><a href="../reference/impute_from_model.html">impute_from_model()</a></code>
-</li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/SimulateData.html">Simulating
-peptide-level data</a></li>
-<li>
-<a href="https://fgcz.github.io/prolfqua/articles/LowLevelAPI.html">Under
-the hood: strategy, model and contrasts</a>: the classes behind
-<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>
-</li>
-</ul>
-<p>The vignettes <a href="Comparing2Groups.html">Comparing two groups
-with prolfqua</a> and <a href="ModellingMethods.html">All modelling
-methods at a glance</a> are also part of this package.</p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>

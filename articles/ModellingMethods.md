@@ -133,8 +133,8 @@ knitr::kable(one, digits = 3)
 
 | method                |   diff | p.value |   FDR |
 |:----------------------|-------:|--------:|------:|
-| binomial_firth_nested |  0.000 |     NaN |   NaN |
-| binomial_nested       |  0.000 |     NaN |   NaN |
+| binomial_firth_nested |  0.000 |   1.000 | 1.000 |
+| binomial_nested       |  0.000 |   1.000 | 1.000 |
 | deqms                 | -0.469 |   0.000 | 0.000 |
 | deqms_voom            | -0.469 |   0.000 | 0.000 |
 | firth                 |  0.000 |   1.000 | 1.000 |
