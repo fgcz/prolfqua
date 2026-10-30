@@ -1,10 +1,10 @@
 ---
-title: "Absent, not unknown: proteins missing in a whole group"
+title: "Filling the gaps: model-based imputation for heatmaps and PCA"
 author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{Absent, not unknown: proteins missing in a whole group}
+  %\VignetteIndexEntry{Filling the gaps: model-based imputation for heatmaps and PCA}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -17,90 +17,72 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 # The problem
 
-In label-free data a protein is often not observed in any sample of one group. While such proteins are frequently just below the limit of detection (LOD), complete absence can also reflect true biological on/off expression—making them prime candidates of high biological interest. A standard linear model drops these contrasts because it cannot estimate a group without observations, losing precisely the proteins that often exhibit the most pronounced differential expression.
+Heatmaps, PCA and clustering need a complete data matrix. Label-free data are not complete: a protein is often not observed in some samples, and often not in any sample of one group. While such proteins are frequently below the limit of detection (LOD), complete absence can also reflect true biological on/off expression, which makes them candidates of high biological interest. PCA drops every protein with a missing value, and with it exactly these proteins.
 
 ```{r simulate}
 library(prolfqua)
 library(ggplot2)
 sim <- sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5, seed = 1234)
 lfq <- LFQData$new(sim$data, sim$config)
-contrasts <- c(AvsC = "group_A - group_Ctrl", BvsC = "group_B - group_Ctrl")
 
-fa_lm <- build_contrast_analysis(lfq, "~ group_", contrasts, method = "lm")
-lost <- fa_lm$get_missing()
-lost
+wide <- lfq$data_wide(as.matrix = TRUE)$data
+empty_group <- lfq$data_long() |>
+  dplyr::group_by(protein_Id, group_) |>
+  dplyr::summarise(empty = all(is.na(abundance)), .groups = "drop") |>
+  dplyr::filter(empty)
+c(
+  proteins = nrow(wide),
+  complete = sum(stats::complete.cases(wide)),
+  with_empty_group = dplyr::n_distinct(empty_group$protein_Id)
+)
 ```
 
-The intensities of these proteins show the empty groups:
+The proteins with an empty group:
 
-```{r lostIntensities}
+```{r emptyGroups}
 lfq$data_long() |>
-  dplyr::filter(protein_Id %in% lost$protein_Id) |>
+  dplyr::filter(protein_Id %in% empty_group$protein_Id) |>
   dplyr::select(protein_Id, sampleName, abundance) |>
   tidyr::pivot_wider(names_from = sampleName, values_from = abundance) |>
   knitr::kable(digits = 1)
 ```
 
-# The limit of detection
+# Fold changes are a separate question
 
-`MissingHelpers` estimates the LOD from the data. Groups in which a protein is observed in only one sample, or in the fewest samples, are the closest the data comes to the detection limit; the LOD is the median (`prob = 0.5`) of their mean intensities.
+To test for differences you do not need to impute anything yourself: `build_contrast_analysis(method = "lm_impute")` also estimates fold changes for proteins with an empty group, refitting them at the LOD and borrowing their variance from the other proteins. See [Comparing two groups](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html) and [Comparing modelling methods on one dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html). Here we reuse the models of that fit to fill the data matrix.
 
-```{r lod}
-mh <- MissingHelpers$new(lfq$data_long(), lfq$get_config())
-mh$get_lod()
-```
+# Model-based imputation
 
-# lm_impute
+`impute_from_model()` fills every missing cell with the prediction of its protein model and keeps the observed values. The summary tells which route each protein took:
 
-`lm_impute` fits `lm` to every protein. Proteins whose fit fails, or leaves a coefficient undefined, are refitted with their missing values set to the LOD; observed values below the LOD are raised to it, because they cannot be told apart from it. A constant imputed value has no variance, so the residual variance of the refit would be too small; `lm_impute` borrows it from the proteins that could be fitted. The column `estimate_type` tells which route each estimate took. Pass `lod` to `build_contrast_analysis()` to use a LOD of your own.
-
-```{r lmImpute}
-fa_imp <- build_contrast_analysis(lfq, "~ group_", contrasts, method = "lm_impute")
-res <- fa_imp$get_contrasts()
-dplyr::count(res, contrast, estimate_type)
-nrow(fa_imp$get_missing())
-```
-
-The estimates for the proteins that `lm` lost. A protein observed only near or below the LOD ends up with `diff` close to 0: there is no evidence that it changes.
-
-```{r rescued}
-res |>
-  dplyr::semi_join(lost, by = c("protein_Id", "contrast")) |>
-  dplyr::select(protein_Id, contrast, diff, p.value, FDR) |>
-  knitr::kable(digits = 3)
-```
-
-```{r volcano, fig.cap = "Volcano plot of lm_impute; colour marks the estimates refitted at the LOD."}
-ggplot(res, aes(diff, -log10(p.value), colour = estimate_type)) +
-  geom_point() +
-  facet_wrap(~contrast) +
-  theme_minimal()
-```
-
-# Other methods
-
-The same refit at the LOD is available with `limma_impute`, `limma_voom_impute` and `rfit_impute`. `hurdle_nested` takes a different route: it models the intensities and the peptide detection separately and combines their p-values. The number of estimated protein and contrast pairs per method:
-
-```{r otherMethods}
-methods <- c("lm", "lm_impute", "limma", "limma_impute", "rfit", "rfit_impute")
-estimated <- vapply(methods, function(m) {
-  nrow(build_contrast_analysis(lfq, "~ group_", contrasts, method = m)$get_contrasts())
-}, integer(1))
-knitr::kable(data.frame(method = methods, estimated = estimated), row.names = FALSE)
-```
-
-The article [Comparing modelling methods on one dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html) compares them on peptide-level data, including the hurdle model.
-
-# Completing the data matrix
-
-`impute_from_model()` fills every missing cell with the prediction of its protein model: `fitted` for proteins fitted on their observed values, `lod_refit` for proteins refitted at the LOD, `complete` for proteins without missing values. The filled matrix is useful for heatmaps or clustering. The filled values carry no noise, so do not use them for further tests.
+- `complete`: no missing values, nothing to fill
+- `fitted`: the model fitted on the observed values predicts the missing cells from their group
+- `lod_refit`: a protein whose fit failed, typically because a group is empty, is refitted with its missing values set to the LOD and observed values below the LOD raised to it; the empty group gets a value at the LOD
 
 ```{r fill}
-filled <- impute_from_model(fa_imp$model, lfq)
+contrasts <- c(AvsC = "group_A - group_Ctrl", BvsC = "group_B - group_Ctrl")
+fa <- build_contrast_analysis(lfq, "~ group_", contrasts, method = "lm_impute")
+filled <- impute_from_model(fa$model, lfq)
 table(filled$summary$route)
 ```
 
-## Heatmap before and after
+`MissingHelpers` estimates the LOD from the data. Groups in which a protein is observed in only one sample, or in the fewest samples, are the closest the data comes to the detection limit; the LOD is the median of their mean intensities. Pass `lod` to `build_contrast_analysis()` to use a LOD of your own.
+
+```{r lod}
+MissingHelpers$new(lfq$data_long(), lfq$get_config())$get_lod()
+```
+
+The proteins with an empty group after imputation; compare with the table above:
+
+```{r filledCells}
+filled$lfqdata$data_long() |>
+  dplyr::filter(protein_Id %in% empty_group$protein_Id) |>
+  dplyr::select(protein_Id, sampleName, abundance) |>
+  tidyr::pivot_wider(names_from = sampleName, values_from = abundance) |>
+  knitr::kable(digits = 1)
+```
+
+# Heatmap before and after
 
 We cluster the proteins once, on the imputed data, and draw both heatmaps with that row order, so each row shows the same protein before and after.
 
@@ -126,9 +108,9 @@ ht_after <- plot_heatmap(
 ht_after
 ```
 
-## PCA before and after
+# PCA before and after
 
-PCA needs complete data. Before imputation it can only use the proteins without missing values; after imputation it uses all proteins.
+Before imputation PCA can only use the proteins without missing values; after imputation it uses all proteins.
 
 ```{r pca, fig.cap = "PCA before (top) and after (bottom) imputation.", fig.height = 8}
 n_complete <- sum(filled$summary$route == "complete")
@@ -141,7 +123,9 @@ gridExtra::grid.arrange(
 )
 ```
 
-After imputation the groups separate more cleanly, in the heatmap and in the PCA. Part of that is circular: each filled value is the model's estimate for its group, so imputation adds the group structure of the model to the data.
+# Caveats
+
+After imputation the groups separate more cleanly, in the heatmap and in the PCA. Part of that is circular: each filled value is the model's estimate for its group, so imputation adds the group structure of the model to the data. The filled values also carry no noise. Use the filled matrix to look at the data; for tests use the contrasts of `lm_impute`, which account for the imputation.
 
 # Session Info
 
