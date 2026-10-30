@@ -48,9 +48,25 @@ proteomics analysis: quality control, normalization, aggregation of
 peptides to proteins, modelling, hypothesis testing and sample size
 estimation (Wolski et al. 2023).
 
-The package works with data in long format, one row per measured feature
-(protein, peptide, precursor) and sample. Three building blocks carry an
-analysis:
+The centre of the package is
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
+One call fits a model per protein and computes the requested contrasts.
+The `method` argument selects the model: linear models (`lm`, `rlm`,
+`rfit`), limma and limma-voom, DEqMS variance moderation, limpa’s
+detection probability model, Firth logistic and binomial models of
+detection, mixed models and ROPECA on peptide-level data, a hurdle model
+combining intensity and detection, and variants that impute groups
+without observations at the limit of detection.
+
+Every method returns an object with the same interface:
+`get_contrasts()`, `get_Plotter()`, `get_missing()` and `to_wide()`.
+Results of different methods therefore have the same columns and can be
+compared or combined directly.
+
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+takes its data as an `LFQData` object. The package works with data in
+long format, one row per measured feature (protein, peptide, precursor)
+and sample:
 
 - `AnalysisConfiguration` maps the columns of the table to their roles:
   the feature hierarchy (protein, peptide, …), the explanatory factors,
@@ -60,19 +76,6 @@ analysis:
   (`get_Aggregator()`), summary statistics (`get_Stats()`),
   missing-value summaries (`get_Summariser()`) and plots
   (`get_Plotter()`).
-- [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
-  fits a model per protein and computes the requested contrasts. The
-  `method` argument selects the model: linear models (`lm`, `rlm`,
-  `rfit`), limma and limma-voom, DEqMS variance moderation, limpa’s
-  detection probability model, Firth logistic and binomial models of
-  detection, mixed models and ROPECA on peptide-level data, a hurdle
-  model combining intensity and detection, and variants that impute
-  groups without observations at the limit of detection.
-
-Every method returns an object with the same interface:
-`get_contrasts()`, `get_Plotter()`, `get_missing()` and `to_wide()`.
-Results of different methods therefore have the same columns and can be
-compared or combined directly.
 
 ## Installation
 
