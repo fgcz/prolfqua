@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 # The problem
 
-In label-free data a protein is often not observed in any sample of one group. Most of the time it is there, but below the limit of detection (LOD): the absence is information, not an unknown value. A linear model per protein cannot estimate a group without observations, so `lm` drops exactly these contrasts, often the ones with the largest changes.
+In label-free data a protein is often not observed in any sample of one group. While such proteins are frequently just below the limit of detection (LOD), complete absence can also reflect true biological on/off expression—making them prime candidates of high biological interest. A standard linear model drops these contrasts because it cannot estimate a group without observations, losing precisely the proteins that often exhibit the most pronounced differential expression.
 
 ```{r simulate}
 library(prolfqua)
