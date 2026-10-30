@@ -89,28 +89,28 @@ overview <- data.frame(
 knitr::kable(overview, row.names = FALSE)
 ```
 
-| method                | input  | proteins | FDR_lt_0.1 | model                                                                   |
-|:----------------------|:-------|---------:|-----------:|:------------------------------------------------------------------------|
-| binomial_firth_nested | nested |       20 |          0 | binomial_nested with Firth bias reduction                               |
-| binomial_nested       | nested |       20 |          0 | quasibinomial model, peptide detection counts                           |
-| deqms                 | same   |       20 |         14 | limma with DEqMS peptide-count variance moderation                      |
-| deqms_voom            | same   |       20 |         13 | deqms with vooma precision weights                                      |
-| firth                 | same   |       20 |          0 | Firth logistic regression, protein detection                            |
-| firth_nested          | nested |       20 |          0 | Firth logistic regression, peptide detection                            |
-| hurdle_nested         | nested |       20 |         14 | lm_impute intensity + binomial_firth_nested detection                   |
-| limma                 | same   |       20 |         14 | limma, empirical-Bayes moderated variances                              |
-| limma_impute          | same   |       20 |         14 | limma with LOD imputation                                               |
-| limma_voom            | same   |       20 |         14 | limma with vooma precision weights                                      |
-| limma_voom_impute     | same   |       20 |         14 | limma_voom with LOD imputation                                          |
-| limpa                 | same   |       20 |         13 | limma on limpa DPC-quantified proteins                                  |
-| limpa_nested          | nested |       20 |         13 | limpa, DPC quantification from peptides                                 |
-| lm                    | same   |       20 |         14 | linear model per protein                                                |
-| lm_impute             | same   |       20 |         14 | lm; groups without observations imputed at the limit of detection (LOD) |
-| lmer_nested           | nested |       12 |          5 | mixed model, peptide and sample random effects                          |
-| rfit                  | same   |       20 |         14 | rank-based regression (Rfit)                                            |
-| rfit_impute           | same   |       20 |         14 | rfit with LOD imputation                                                |
-| rlm                   | same   |       20 |         14 | robust linear model (MASS::rlm)                                         |
-| ropeca_nested         | nested |       20 |         14 | peptide fold changes summarised per protein (ROPECA)                    |
+| method | input | proteins | FDR_lt_0.1 | model |
+|:---|:---|---:|---:|:---|
+| binomial_firth_nested | nested | 20 | 0 | binomial_nested with Firth bias reduction |
+| binomial_nested | nested | 20 | 0 | quasibinomial model, peptide detection counts |
+| deqms | same | 20 | 14 | limma with DEqMS peptide-count variance moderation |
+| deqms_voom | same | 20 | 13 | deqms with vooma precision weights |
+| firth | same | 20 | 0 | Firth logistic regression, protein detection |
+| firth_nested | nested | 20 | 0 | Firth logistic regression, peptide detection |
+| hurdle_nested | nested | 20 | 14 | lm_impute intensity + binomial_firth_nested detection |
+| limma | same | 20 | 14 | limma, empirical-Bayes moderated variances |
+| limma_impute | same | 20 | 14 | limma with LOD imputation |
+| limma_voom | same | 20 | 14 | limma with vooma precision weights |
+| limma_voom_impute | same | 20 | 14 | limma_voom with LOD imputation |
+| limpa | same | 20 | 13 | limma on limpa DPC-quantified proteins |
+| limpa_nested | nested | 20 | 13 | limpa, DPC quantification from peptides |
+| lm | same | 20 | 14 | linear model per protein |
+| lm_impute | same | 20 | 14 | lm; groups without observations imputed at the limit of detection (LOD) |
+| lmer_nested | nested | 12 | 5 | mixed model, peptide and sample random effects |
+| rfit | same | 20 | 14 | rank-based regression (Rfit) |
+| rfit_impute | same | 20 | 14 | rfit with LOD imputation |
+| rlm | same | 20 | 14 | robust linear model (MASS::rlm) |
+| ropeca_nested | nested | 20 | 14 | peptide fold changes summarised per protein (ROPECA) |
 
 The detection models (`firth`, `firth_nested`, `binomial_nested`,
 `binomial_firth_nested`) test differences in how often a protein or its
@@ -160,11 +160,11 @@ knitr::kable(one, digits = 3)
 sessionInfo()
 #> R version 4.5.2 (2025-10-31)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.5 LTS
+#> Running under: Ubuntu 26.04.1 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
 #> 
 #> locale:
 #>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       

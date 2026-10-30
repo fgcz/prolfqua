@@ -203,7 +203,7 @@ Distribution of CV’s for top 50% and bottom 50% proteins by intensity.
 
 ### Normalize protein intensities and show diagnostic plots
 
-We normalize the data by $\log_{2}$ transforming and then $z - scaling$.
+We normalize the data by $`\log_2`$ transforming and then $`z-scaling`$.
 
 ``` r
 lt <- lfqdata$get_Transformer()
@@ -260,9 +260,10 @@ use the method `lm_impute`: a linear model per protein, with the protein
 variances moderated by the empirical Bayes method so that proteins with
 few observations borrow strength from all proteins. Proteins without
 observations in one group are refitted with the missing values set to
-the limit of detection (LOD); see the article [Absent, not
-unknown](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html).
-The vignette [All modelling methods at a
+the limit of detection (LOD). The article [Filling the
+gaps](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html)
+uses these models to complete the data for heatmaps and PCA. The
+vignette [All modelling methods at a
 glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.md)
 lists the other methods.
 
@@ -387,11 +388,11 @@ sessionInfo()
 
     ## R version 4.5.2 (2025-10-31)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.5 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       

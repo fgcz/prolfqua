@@ -727,8 +727,8 @@ What name should we use?
   AnalysisConfiguration](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.md):
 - [Under the hood: strategy, model and
   contrasts](https://fgcz.github.io/prolfqua/articles/LowLevelAPI.md):
-- [Absent, not unknown: proteins missing in a whole
-  group](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.md):
+- [Filling the gaps: model-based imputation for heatmaps and
+  PCA](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.md):
 - [All modelling methods at a
   glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.md):
 - [Introduction to

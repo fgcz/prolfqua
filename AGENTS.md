@@ -167,14 +167,14 @@ existing LFQData.
 
 ### R6 Classes (22 classes across R/)
 
-| Category            | Classes                                                                                                                          | Files                              |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
-| Core data           | `LFQData`, `AnalysisConfiguration`                                                                                               | LFQData.R, AnalysisConfiguration.R |
-| Decorators          | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp`                   | LFQData\*.R                        |
-| Model interfaces    | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma`                                                                            | Model\*.R, ContrastsLimma.R        |
-| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsROPECA`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R     |
-| Visualization       | `ContrastsPlotter`                                                                                                               | ContrastsPlotter.R                 |
-| Utilities           | `MissingHelpers`                                                                                                                 | tidyMS_missingness_imputation.R    |
+| Category | Classes | Files |
+|----|----|----|
+| Core data | `LFQData`, `AnalysisConfiguration` | LFQData.R, AnalysisConfiguration.R |
+| Decorators | `LFQDataTransformer`, `LFQDataAggregator`, `LFQDataStats`, `LFQDataPlotter`, `LFQDataSummariser`, `LFQDataImp` | LFQData\*.R |
+| Model interfaces | `ModelInterface`, `Model`, `ModelFirth`, `ModelLimma` | Model\*.R, ContrastsLimma.R |
+| Contrast interfaces | `ContrastsInterface`, `Contrasts`, `ContrastsModerated`, `ContrastsLimma`, `ContrastsROPECA`, `ContrastsFirth`, `ContrastsTable` | Contrasts\*.R, ContrastFirth.R |
+| Visualization | `ContrastsPlotter` | ContrastsPlotter.R |
+| Utilities | `MissingHelpers` | tidyMS_missingness_imputation.R |
 
 ### AnalysisConfiguration
 

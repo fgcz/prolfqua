@@ -24,9 +24,9 @@ set of tutorials:
   designs](https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html)
 - [Contrasts from
   factors](https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.html)
-- [Absent, not unknown: proteins missing in a whole
-  group](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html):
-  model-based imputation with `lm_impute` and
+- [Filling the gaps: model-based imputation for heatmaps and
+  PCA](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html):
+  completing the data matrix with
   [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
 - [Simulating peptide-level
   data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
@@ -114,7 +114,7 @@ lfqdata$factors() |> head()
 #> 6 B_V2   B_V2       B
 ```
 
-We $\log_{2}$ transform the intensities, scale them robustly, and
+We $`\log_2`$ transform the intensities, scale them robustly, and
 aggregate the peptides to proteins with Tukey’s median polish.
 
 ``` r
@@ -188,11 +188,11 @@ names(list_facades())
 sessionInfo()
 #> R version 4.5.2 (2025-10-31)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.5 LTS
+#> Running under: Ubuntu 26.04.1 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
 #> 
 #> locale:
 #>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       

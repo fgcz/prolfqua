@@ -8,7 +8,7 @@ read a “proteinGroups.txt” file from the MaxQuant software, and next, we
 specify a prolfqua configuration. Afterward, the data is transformed and
 normalized, and plots describing the data are generated. Finally, we
 estimate how many samples are necessary to properly quantify a two-fold
-change for $90$ of all the proteins with a power of $0.8$.
+change for $`90%`$ of all the proteins with a power of $`0.8`$.
 
 ## Loading data
 
@@ -151,8 +151,8 @@ Scatter plot of standard deviation vs mean
 
 ### Normalize protein intensities
 
-Next, we want to normalize the data by first $\log_{2}$ transforming it
-and then z-scaling. The $log_{2}$ stabilizes the variance, while the
+Next, we want to normalize the data by first $`\log_2`$ transforming it
+and then z-scaling. The $`log_2`$ stabilizes the variance, while the
 z-scaling removes systematic differences from the samples.
 
 ``` r
@@ -382,15 +382,15 @@ x <- x |> dplyr::filter(group_ == "A") |> dplyr::arrange(desc(N),protein_Id)
 prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 ```
 
-| protein_Id  | peptide_Id | isotopeLabel | group\_ | nrReplicates | nrMeasured | nrNAs |        sd |       var | meanAbundance | medianAbundance | interaction | delta |  N_exact |   N |
-|:------------|:-----------|:-------------|:--------|-------------:|-----------:|------:|----------:|----------:|--------------:|----------------:|:------------|------:|---------:|----:|
-| 0EfVhX~0087 | dJkdz7so   | light        | A       |            4 |          2 |     2 | 0.1816806 | 0.0330078 |      3.971469 |        3.971469 | group_A     |     1 | 2.023422 |   3 |
-| HvIpHG~9079 | opjydeWJ   | light        | A       |            4 |          3 |     1 | 0.2392614 | 0.0572460 |      4.094835 |        3.997946 | group_A     |     1 | 2.344670 |   3 |
-| JcKVfU~9653 | 9LMQBevj   | light        | A       |            4 |          4 |     0 | 0.1871014 | 0.0350069 |      5.482917 |        5.406550 | group_A     |     1 | 2.050429 |   3 |
-| 0EfVhX~0087 | ahQLlQY7   | light        | A       |            4 |          4 |     0 | 0.0620097 | 0.0038452 |      4.742744 |        4.735435 | group_A     |     1 | 1.533666 |   2 |
-| 0EfVhX~0087 | ITLb4x1q   | light        | A       |            4 |          3 |     1 | 0.1535287 | 0.0235710 |      4.190351 |        4.178250 | group_A     |     1 | 1.892113 |   2 |
-| 7cbcrd~5725 | D5dQ4nKk   | light        | A       |            4 |          4 |     0 | 0.0508679 | 0.0025875 |      4.956022 |        4.964554 | group_A     |     1 | 1.500024 |   2 |
-| 9VUkAq~4703 | eIC06D7g   | light        | A       |            4 |          4 |     0 | 0.0945821 | 0.0089458 |      4.159728 |        4.182873 | group_A     |     1 | 1.654299 |   2 |
+| protein_Id | peptide_Id | isotopeLabel | group\_ | nrReplicates | nrMeasured | nrNAs | sd | var | meanAbundance | medianAbundance | interaction | delta | N_exact | N |
+|:---|:---|:---|:---|---:|---:|---:|---:|---:|---:|---:|:---|---:|---:|---:|
+| 0EfVhX~0087 | dJkdz7so | light | A | 4 | 2 | 2 | 0.1816806 | 0.0330078 | 3.971469 | 3.971469 | group_A | 1 | 2.023422 | 3 |
+| HvIpHG~9079 | opjydeWJ | light | A | 4 | 3 | 1 | 0.2392614 | 0.0572460 | 4.094835 | 3.997946 | group_A | 1 | 2.344670 | 3 |
+| JcKVfU~9653 | 9LMQBevj | light | A | 4 | 4 | 0 | 0.1871014 | 0.0350069 | 5.482917 | 5.406550 | group_A | 1 | 2.050429 | 3 |
+| 0EfVhX~0087 | ahQLlQY7 | light | A | 4 | 4 | 0 | 0.0620097 | 0.0038452 | 4.742744 | 4.735435 | group_A | 1 | 1.533666 | 2 |
+| 0EfVhX~0087 | ITLb4x1q | light | A | 4 | 3 | 1 | 0.1535287 | 0.0235710 | 4.190351 | 4.178250 | group_A | 1 | 1.892113 | 2 |
+| 7cbcrd~5725 | D5dQ4nKk | light | A | 4 | 4 | 0 | 0.0508679 | 0.0025875 | 4.956022 | 4.964554 | group_A | 1 | 1.500024 | 2 |
+| 9VUkAq~4703 | eIC06D7g | light | A | 4 | 4 | 0 | 0.0945821 | 0.0089458 | 4.159728 | 4.182873 | group_A | 1 | 1.654299 | 2 |
 
 Sample size for each protein
 
@@ -418,11 +418,11 @@ sessionInfo()
 
     ## R version 4.5.2 (2025-10-31)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.5 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       

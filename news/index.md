@@ -70,13 +70,14 @@ Changes for the Bioconductor review
   modelling methods on one dataset” and “Two-factor designs” cover their
   methods through
   [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
-- The imputation article is rewritten and renamed “Absent, not unknown:
-  proteins missing in a whole group”: what `lm` loses when a group has
-  no observations, how the LOD is estimated, how `lm_impute` refits and
-  borrows the variance, the other imputing methods, and
-  [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md).
-  It moved to `articles/ModelBasedImputation.html` and shows heatmaps
-  and PCA plots before and after imputation; the old
+- The imputation article is rewritten and renamed “Filling the gaps:
+  model-based imputation for heatmaps and PCA”: why heatmaps and PCA
+  need a complete matrix, why proteins missing in a whole group matter
+  (below the LOD or switched off), how
+  [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
+  fills the matrix from the `lm_impute` models and the LOD, heatmaps and
+  PCA before and after imputation, and the caveats. It moved to
+  `articles/ModelBasedImputation.html`; the old
   `TestingMissingInference.html` link redirects there.
 - Articles renamed so that file names say what they cover:
   `ContrastFacades` is now `ComparingMethods` (“Comparing modelling

@@ -13,12 +13,12 @@ For peptides:
 - The transformed protein abundances have a log normal distribution with
   `meanlog = log(20)`, and `sd = log(1.2)`.
 - The number of peptides per protein follow a geometric distribution,
-  $N_{pep} \sim Geo(p)$ with $p = 0.3$
+  $`N_{pep} \sim Geo(p)`$ with $`p = 0.3`$
 - The peptide abundances of a protein have log normal distribution with
   `meanlog = log(proteinabundance)` and `sd = log(1.2)`
 - The log2 intensities of a peptide within a group follow a normal
-  distribution distribution \$I\_{pep} LogNormal(,) \$, where $\mu$ is
-  the peptide abundance and $\sigma$
+  distribution distribution \$I\_{pep} LogNormal(,) \$, where $`\mu`$ is
+  the peptide abundance and $`\sigma`$
 
 ``` r
 peptideAbundances <- prolfqua::sim_lfq_data(PEPTIDE = TRUE)
@@ -145,11 +145,11 @@ sessionInfo()
 
     ## R version 4.5.2 (2025-10-31)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.5 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       

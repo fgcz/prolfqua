@@ -125,14 +125,14 @@ head(facade$get_contrasts())
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
-#>   modelName             estimate_type protein_Id  contrast    diff avgAbd
-#>   <chr>                 <chr>         <chr>       <chr>      <dbl>  <dbl>
-#> 1 binomial_firth_nested observed      0GRprF~7339 A_vs_Ctrl -0.847  0.424
-#> 2 binomial_firth_nested observed      4JK499~3111 A_vs_Ctrl  0.504 -0.704
-#> 3 binomial_firth_nested observed      7IZdVV~6818 A_vs_Ctrl -0.573  1.32 
-#> 4 binomial_firth_nested observed      AZPG26~9461 A_vs_Ctrl  0      2.20 
-#> 5 binomial_firth_nested observed      AoNKbb~3497 A_vs_Ctrl -1.18   2.63 
-#> 6 binomial_firth_nested observed      CibL2O~2149 A_vs_Ctrl -1.44  -0.718
+#>   modelName             estimate_type protein_Id  contrast       diff avgAbd
+#>   <chr>                 <chr>         <chr>       <chr>         <dbl>  <dbl>
+#> 1 binomial_firth_nested observed      0GRprF~7339 A_vs_Ctrl -8.47e- 1  0.424
+#> 2 binomial_firth_nested observed      4JK499~3111 A_vs_Ctrl  5.04e- 1 -0.704
+#> 3 binomial_firth_nested observed      7IZdVV~6818 A_vs_Ctrl -5.73e- 1  1.32 
+#> 4 binomial_firth_nested observed      AZPG26~9461 A_vs_Ctrl  8.51e-16  2.20 
+#> 5 binomial_firth_nested observed      AoNKbb~3497 A_vs_Ctrl -1.18e+ 0  2.63 
+#> 6 binomial_firth_nested observed      CibL2O~2149 A_vs_Ctrl -1.44e+ 0 -0.718
 #> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
 #> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>

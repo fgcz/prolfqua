@@ -145,15 +145,15 @@ all_contrasts <- generate_contrasts(primary_levels, secondary_levels)
 knitr::kable(all_contrasts, row.names = FALSE)
 ```
 
-| ContrastName                             | Contrast                                                                              |
-|:-----------------------------------------|:--------------------------------------------------------------------------------------|
-| MINOCA_vs_MI                             | (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 |
-| MINOCA_vs_MI_at_T0                       | G_MINOCA_T0 - G_MI_T0                                                                 |
-| MINOCA_vs_MI_at_T150                     | G_MINOCA_T150 - G_MI_T150                                                             |
-| MINOCA_vs_MI_at_T300                     | G_MINOCA_T300 - G_MI_T300                                                             |
-| interaction_MINOCA_vs_MI_at_T150_vs_T0   | (G_MINOCA_T150 - G_MI_T150) - (G_MINOCA_T0 - G_MI_T0)                                 |
-| interaction_MINOCA_vs_MI_at_T300_vs_T0   | (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T0 - G_MI_T0)                                 |
-| interaction_MINOCA_vs_MI_at_T300_vs_T150 | (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T150 - G_MI_T150)                             |
+| ContrastName | Contrast |
+|:---|:---|
+| MINOCA_vs_MI | (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 |
+| MINOCA_vs_MI_at_T0 | G_MINOCA_T0 - G_MI_T0 |
+| MINOCA_vs_MI_at_T150 | G_MINOCA_T150 - G_MI_T150 |
+| MINOCA_vs_MI_at_T300 | G_MINOCA_T300 - G_MI_T300 |
+| interaction_MINOCA_vs_MI_at_T150_vs_T0 | (G_MINOCA_T150 - G_MI_T150) - (G_MINOCA_T0 - G_MI_T0) |
+| interaction_MINOCA_vs_MI_at_T300_vs_T0 | (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T0 - G_MI_T0) |
+| interaction_MINOCA_vs_MI_at_T300_vs_T150 | (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T150 - G_MI_T150) |
 
 To exclude interaction contrasts:
 
@@ -162,12 +162,12 @@ no_int <- generate_contrasts(primary_levels, secondary_levels, interactions = FA
 knitr::kable(no_int, row.names = FALSE)
 ```
 
-| ContrastName         | Contrast                                                                              |
-|:---------------------|:--------------------------------------------------------------------------------------|
-| MINOCA_vs_MI         | (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 |
-| MINOCA_vs_MI_at_T0   | G_MINOCA_T0 - G_MI_T0                                                                 |
-| MINOCA_vs_MI_at_T150 | G_MINOCA_T150 - G_MI_T150                                                             |
-| MINOCA_vs_MI_at_T300 | G_MINOCA_T300 - G_MI_T300                                                             |
+| ContrastName | Contrast |
+|:---|:---|
+| MINOCA_vs_MI | (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 |
+| MINOCA_vs_MI_at_T0 | G_MINOCA_T0 - G_MI_T0 |
+| MINOCA_vs_MI_at_T150 | G_MINOCA_T150 - G_MI_T150 |
+| MINOCA_vs_MI_at_T300 | G_MINOCA_T300 - G_MI_T300 |
 
 ## Working with annotation tables
 
@@ -206,18 +206,18 @@ knitr::kable(head(result$annot[, c("Name", "Group", "ContrastName", "Contrast")]
              row.names = FALSE)
 ```
 
-| Name         | Group       | ContrastName                             | Contrast                                                                              |
-|:-------------|:------------|:-----------------------------------------|:--------------------------------------------------------------------------------------|
-| MI_150_6     | MI_T150     | MINOCA_vs_MI                             | (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 |
-| MINOCA_0_3   | MINOCA_T0   | MINOCA_vs_MI_at_T0                       | G_MINOCA_T0 - G_MI_T0                                                                 |
-| MINOCA_300_5 | MINOCA_T300 | MINOCA_vs_MI_at_T150                     | G_MINOCA_T150 - G_MI_T150                                                             |
-| MI_150_5     | MI_T150     | MINOCA_vs_MI_at_T300                     | G_MINOCA_T300 - G_MI_T300                                                             |
-| MI_150_1     | MI_T150     | interaction_MINOCA_vs_MI_at_T150_vs_T0   | (G_MINOCA_T150 - G_MI_T150) - (G_MINOCA_T0 - G_MI_T0)                                 |
-| MI_0_3       | MI_T0       | interaction_MINOCA_vs_MI_at_T300_vs_T0   | (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T0 - G_MI_T0)                                 |
-| MINOCA_150_1 | MINOCA_T150 | interaction_MINOCA_vs_MI_at_T300_vs_T150 | (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T150 - G_MI_T150)                             |
-| MI_300_2     | MI_T300     | NA                                       | NA                                                                                    |
-| MINOCA_150_5 | MINOCA_T150 | NA                                       | NA                                                                                    |
-| MI_300_3     | MI_T300     | NA                                       | NA                                                                                    |
+| Name | Group | ContrastName | Contrast |
+|:---|:---|:---|:---|
+| MI_150_6 | MI_T150 | MINOCA_vs_MI | (G_MINOCA_T0 + G_MINOCA_T150 + G_MINOCA_T300)/3 - (G_MI_T0 + G_MI_T150 + G_MI_T300)/3 |
+| MINOCA_0_3 | MINOCA_T0 | MINOCA_vs_MI_at_T0 | G_MINOCA_T0 - G_MI_T0 |
+| MINOCA_300_5 | MINOCA_T300 | MINOCA_vs_MI_at_T150 | G_MINOCA_T150 - G_MI_T150 |
+| MI_150_5 | MI_T150 | MINOCA_vs_MI_at_T300 | G_MINOCA_T300 - G_MI_T300 |
+| MI_150_1 | MI_T150 | interaction_MINOCA_vs_MI_at_T150_vs_T0 | (G_MINOCA_T150 - G_MI_T150) - (G_MINOCA_T0 - G_MI_T0) |
+| MI_0_3 | MI_T0 | interaction_MINOCA_vs_MI_at_T300_vs_T0 | (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T0 - G_MI_T0) |
+| MINOCA_150_1 | MINOCA_T150 | interaction_MINOCA_vs_MI_at_T300_vs_T150 | (G_MINOCA_T300 - G_MI_T300) - (G_MINOCA_T150 - G_MI_T150) |
+| MI_300_2 | MI_T300 | NA | NA |
+| MINOCA_150_5 | MINOCA_T150 | NA | NA |
+| MI_300_3 | MI_T300 | NA | NA |
 
 ``` r
 # Suggested output file name
@@ -240,18 +240,18 @@ knitr::kable(head(result2$annot[, c("Name", "Group", "ContrastName", "Contrast")
              row.names = FALSE)
 ```
 
-| Name         | Group       | ContrastName                           | Contrast                                                      |
-|:-------------|:------------|:---------------------------------------|:--------------------------------------------------------------|
-| MI_150_6     | T150_MI     | T150_vs_T0                             | (G_T150_MI + G_T150_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2     |
-| MINOCA_0_3   | T0_MINOCA   | T300_vs_T0                             | (G_T300_MI + G_T300_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2     |
-| MINOCA_300_5 | T300_MINOCA | T300_vs_T150                           | (G_T300_MI + G_T300_MINOCA)/2 - (G_T150_MI + G_T150_MINOCA)/2 |
-| MI_150_5     | T150_MI     | T150_vs_T0_at_MI                       | G_T150_MI - G_T0_MI                                           |
-| MI_150_1     | T150_MI     | T150_vs_T0_at_MINOCA                   | G_T150_MINOCA - G_T0_MINOCA                                   |
-| MI_0_3       | T0_MI       | T300_vs_T0_at_MI                       | G_T300_MI - G_T0_MI                                           |
-| MINOCA_150_1 | T150_MINOCA | T300_vs_T0_at_MINOCA                   | G_T300_MINOCA - G_T0_MINOCA                                   |
-| MI_300_2     | T300_MI     | T300_vs_T150_at_MI                     | G_T300_MI - G_T150_MI                                         |
-| MINOCA_150_5 | T150_MINOCA | T300_vs_T150_at_MINOCA                 | G_T300_MINOCA - G_T150_MINOCA                                 |
-| MI_300_3     | T300_MI     | interaction_T150_vs_T0_at_MINOCA_vs_MI | (G_T150_MINOCA - G_T0_MINOCA) - (G_T150_MI - G_T0_MI)         |
+| Name | Group | ContrastName | Contrast |
+|:---|:---|:---|:---|
+| MI_150_6 | T150_MI | T150_vs_T0 | (G_T150_MI + G_T150_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2 |
+| MINOCA_0_3 | T0_MINOCA | T300_vs_T0 | (G_T300_MI + G_T300_MINOCA)/2 - (G_T0_MI + G_T0_MINOCA)/2 |
+| MINOCA_300_5 | T300_MINOCA | T300_vs_T150 | (G_T300_MI + G_T300_MINOCA)/2 - (G_T150_MI + G_T150_MINOCA)/2 |
+| MI_150_5 | T150_MI | T150_vs_T0_at_MI | G_T150_MI - G_T0_MI |
+| MI_150_1 | T150_MI | T150_vs_T0_at_MINOCA | G_T150_MINOCA - G_T0_MINOCA |
+| MI_0_3 | T0_MI | T300_vs_T0_at_MI | G_T300_MI - G_T0_MI |
+| MINOCA_150_1 | T150_MINOCA | T300_vs_T0_at_MINOCA | G_T300_MINOCA - G_T0_MINOCA |
+| MI_300_2 | T300_MI | T300_vs_T150_at_MI | G_T300_MI - G_T150_MI |
+| MINOCA_150_5 | T150_MINOCA | T300_vs_T150_at_MINOCA | G_T300_MINOCA - G_T150_MINOCA |
+| MI_300_3 | T300_MI | interaction_T150_vs_T0_at_MINOCA_vs_MI | (G_T150_MINOCA - G_T0_MINOCA) - (G_T150_MI - G_T0_MI) |
 
 ## Session Info
 
@@ -261,11 +261,11 @@ sessionInfo()
 
     ## R version 4.5.2 (2025-10-31)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.5 LTS
+    ## Running under: Ubuntu 26.04.1 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+    ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
     ## 
     ## locale:
     ##  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
