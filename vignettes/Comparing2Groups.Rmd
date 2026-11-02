@@ -4,7 +4,7 @@ author: "Witold E. Wolski"
 date: "`r Sys.Date()`"
 output: BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{Comparing Two Groups with prolfqua} 
+  %\VignetteIndexEntry{3. Comparing Two Groups with prolfqua}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -151,7 +151,7 @@ plotter$volcano()$FDR
 ```
 
 ```{r showMAplot, fig.cap="MA plot showing the dependency of mean abundance with respect to the difference"}
-plotter$ma_plotly()
+plotter$ma_plot()
 ```
 
 The proteins with FDR < 0.1 in at least one contrast:

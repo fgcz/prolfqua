@@ -6,7 +6,7 @@ author:
 package: prolfqua
 output: BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{All modelling methods at a glance}
+  %\VignetteIndexEntry{4. All modelling methods at a glance}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---

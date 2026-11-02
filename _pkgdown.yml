@@ -16,6 +16,25 @@ navbar:
       href: https://github.com/fgcz/prolfqua
       aria-label: GitHub repository
 
+articles:
+  - title: Vignettes
+    navbar: Vignettes
+    contents:
+      - prolfqua
+      - CreatingConfigurations
+      - Comparing2Groups
+      - ModellingMethods
+      - TwoFactorDesigns
+      - ContrastsFromFactors
+      - ModelBasedImputation
+      - QualityControlAndSampleSizeEstimation
+  - title: More articles
+    navbar: More articles
+    contents:
+      - articles/ComparingMethods
+      - articles/SimulateData
+      - articles/LowLevelAPI
+
 redirects:
   - ["articles/TestingMissingInference.html", "articles/ModelBasedImputation.html"]
   - ["articles/LODImputation.html", "articles/ModelBasedImputation.html"]
