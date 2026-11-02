@@ -303,8 +303,11 @@ contrasts.](Comparing2Groups_files/figure-html/plotVolcanos-1.png)
 Volcano plots of the two contrasts.
 
 ``` r
-plotter$ma_plotly()
+plotter$ma_plot()
 ```
+
+![MA plot showing the dependency of mean abundance with respect to the
+difference](Comparing2Groups_files/figure-html/showMAplot-1.png)
 
 MA plot showing the dependency of mean abundance with respect to the
 difference
@@ -438,19 +441,18 @@ sessionInfo()
     ##  [76] stats4_4.6.2           reformulas_0.4.4       plotly_4.12.1         
     ##  [79] generics_0.1.4         hms_1.1.4              S4Vectors_0.50.3      
     ##  [82] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
-    ##  [85] xtable_1.8-8           glue_1.8.1             lazyeval_0.2.3        
-    ##  [88] tools_4.6.2            data.table_1.18.6.1    lme4_2.1-0            
-    ##  [91] forcats_1.0.1          fs_2.1.0               grid_4.6.2            
-    ##  [94] tidyr_1.3.2            crosstalk_1.2.2        rbibutils_2.4.1       
-    ##  [97] colorspace_2.1-4       nlme_3.1-171           formula.tools_1.7.1   
-    ## [100] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     
-    ## [103] ComplexHeatmap_2.28.0  gtable_0.3.6           sass_0.4.10           
-    ## [106] digest_0.6.39          operator.tools_1.6.3.1 BiocGenerics_0.58.1   
-    ## [109] ggrepel_0.9.8          rjson_0.2.23           htmlwidgets_1.6.4     
-    ## [112] farver_2.1.2           htmltools_0.5.9        pkgdown_2.2.1         
-    ## [115] lifecycle_1.0.5        httr_1.4.9             mime_0.13             
-    ## [118] GlobalOptions_0.1.4    mitml_0.4-5            statmod_1.5.2         
-    ## [121] MASS_7.3-66
+    ##  [85] xtable_1.8-8           glue_1.8.1             tools_4.6.2           
+    ##  [88] data.table_1.18.6.1    lme4_2.1-0             forcats_1.0.1         
+    ##  [91] fs_2.1.0               grid_4.6.2             tidyr_1.3.2           
+    ##  [94] crosstalk_1.2.2        rbibutils_2.4.1        colorspace_2.1-4      
+    ##  [97] nlme_3.1-171           formula.tools_1.7.1    cli_3.6.6             
+    ## [100] textshaping_1.0.5      viridisLite_0.4.3      ComplexHeatmap_2.28.0 
+    ## [103] gtable_0.3.6           sass_0.4.10            digest_0.6.39         
+    ## [106] operator.tools_1.6.3.1 BiocGenerics_0.58.1    ggrepel_0.9.8         
+    ## [109] rjson_0.2.23           htmlwidgets_1.6.4      farver_2.1.2          
+    ## [112] htmltools_0.5.9        pkgdown_2.2.1          lifecycle_1.0.5       
+    ## [115] httr_1.4.9             mime_0.13              GlobalOptions_0.1.4   
+    ## [118] mitml_0.4-5            statmod_1.5.2          MASS_7.3-66
 
 ## References
 

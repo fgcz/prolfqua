@@ -436,6 +436,9 @@ sessionInfo()
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
+    ## other attached packages:
+    ## [1] BiocStyle_2.40.0
+    ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           
     ##   [4] magrittr_2.0.5         clue_0.3-68            GetoptLong_1.1.1      
@@ -449,33 +452,34 @@ sessionInfo()
     ##  [28] glmnet_5.2             jomo_2.7-6             logistf_1.26.1        
     ##  [31] cachem_1.1.0           jsonlite_2.0.0         later_1.4.8           
     ##  [34] pan_2.0                broom_1.0.13           parallel_4.6.2        
-    ##  [37] cluster_2.1.8.3        R6_2.6.1               bslib_0.12.0          
-    ##  [40] stringi_1.8.9          RColorBrewer_1.1-3     limma_3.68.5          
+    ##  [37] cluster_2.1.8.3        R6_2.6.1               stringi_1.8.9         
+    ##  [40] bslib_0.12.0           RColorBrewer_1.1-3     limma_3.68.5          
     ##  [43] boot_1.3-32            rpart_4.1.27           jquerylib_0.1.4       
-    ##  [46] Rcpp_1.1.2             iterators_1.0.14       knitr_1.52            
-    ##  [49] IRanges_2.46.0         httpuv_1.6.17          Matrix_1.7-6          
-    ##  [52] splines_4.6.2          nnet_7.3-21            tidyselect_1.2.1      
-    ##  [55] yaml_2.3.12            doParallel_1.0.17      codetools_0.2-20      
-    ##  [58] lattice_0.23-1         tibble_3.3.1           plyr_1.8.9            
-    ##  [61] shiny_1.14.0           withr_3.0.3            S7_0.2.2              
-    ##  [64] prolfqua_1.9.0         evaluate_1.0.5         desc_1.4.3            
-    ##  [67] survival_3.8-12        circlize_0.4.18        pillar_1.11.1         
-    ##  [70] mice_3.19.0            KernSmooth_2.23-27     foreach_1.5.2         
-    ##  [73] stats4_4.6.2           reformulas_0.4.4       plotly_4.12.1         
-    ##  [76] generics_0.1.4         S4Vectors_0.50.3       ggplot2_4.0.3         
-    ##  [79] scales_1.4.0           minqa_1.2.8            xtable_1.8-8          
-    ##  [82] glue_1.8.1             tools_4.6.2            data.table_1.18.6.1   
-    ##  [85] lme4_2.1-0             forcats_1.0.1          fs_2.1.0              
-    ##  [88] grid_4.6.2             tidyr_1.3.2            rbibutils_2.4.1       
-    ##  [91] crosstalk_1.2.2        colorspace_2.1-4       nlme_3.1-171          
-    ##  [94] formula.tools_1.7.1    cli_3.6.6              textshaping_1.0.5     
-    ##  [97] viridisLite_0.4.3      ComplexHeatmap_2.28.0  dplyr_1.2.1           
-    ## [100] gtable_0.3.6           sass_0.4.10            digest_0.6.39         
-    ## [103] operator.tools_1.6.3.1 BiocGenerics_0.58.1    ggrepel_0.9.8         
-    ## [106] rjson_0.2.23           htmlwidgets_1.6.4      farver_2.1.2          
-    ## [109] htmltools_0.5.9        pkgdown_2.2.1          lifecycle_1.0.5       
-    ## [112] httr_1.4.9             mime_0.13              GlobalOptions_0.1.4   
-    ## [115] mitml_0.4-5            statmod_1.5.2          MASS_7.3-66
+    ##  [46] Rcpp_1.1.2             bookdown_0.48          iterators_1.0.14      
+    ##  [49] knitr_1.52             IRanges_2.46.0         httpuv_1.6.17         
+    ##  [52] Matrix_1.7-6           splines_4.6.2          nnet_7.3-21           
+    ##  [55] tidyselect_1.2.1       yaml_2.3.12            doParallel_1.0.17     
+    ##  [58] codetools_0.2-20       lattice_0.23-1         tibble_3.3.1          
+    ##  [61] plyr_1.8.9             shiny_1.14.0           withr_3.0.3           
+    ##  [64] S7_0.2.2               prolfqua_1.9.0         evaluate_1.0.5        
+    ##  [67] desc_1.4.3             survival_3.8-12        circlize_0.4.18       
+    ##  [70] pillar_1.11.1          BiocManager_1.30.27    mice_3.19.0           
+    ##  [73] KernSmooth_2.23-27     foreach_1.5.2          stats4_4.6.2          
+    ##  [76] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        
+    ##  [79] S4Vectors_0.50.3       ggplot2_4.0.3          scales_1.4.0          
+    ##  [82] minqa_1.2.8            xtable_1.8-8           glue_1.8.1            
+    ##  [85] tools_4.6.2            data.table_1.18.6.1    lme4_2.1-0            
+    ##  [88] forcats_1.0.1          fs_2.1.0               grid_4.6.2            
+    ##  [91] tidyr_1.3.2            crosstalk_1.2.2        rbibutils_2.4.1       
+    ##  [94] colorspace_2.1-4       nlme_3.1-171           formula.tools_1.7.1   
+    ##  [97] cli_3.6.6              textshaping_1.0.5      viridisLite_0.4.3     
+    ## [100] ComplexHeatmap_2.28.0  dplyr_1.2.1            gtable_0.3.6          
+    ## [103] sass_0.4.10            digest_0.6.39          operator.tools_1.6.3.1
+    ## [106] BiocGenerics_0.58.1    ggrepel_0.9.8          rjson_0.2.23          
+    ## [109] htmlwidgets_1.6.4      farver_2.1.2           htmltools_0.5.9       
+    ## [112] pkgdown_2.2.1          lifecycle_1.0.5        httr_1.4.9            
+    ## [115] mime_0.13              GlobalOptions_0.1.4    mitml_0.4-5           
+    ## [118] statmod_1.5.2          MASS_7.3-66
 
 ## References
 

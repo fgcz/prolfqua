@@ -145,7 +145,7 @@ Other modelling:
 strat <- strategy_limpa("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x5ef8f78c0530>
+#> <environment: 0x5dbf864f7cf8>
 strat$model_name
 #> [1] "limpa"
 ```

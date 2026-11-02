@@ -4,42 +4,45 @@
 
 ## Documentation
 
-The package website <https://fgcz.github.io/prolfqua/> holds the full
-set of tutorials:
+The vignettes of this package, in reading order:
 
-- [Importing your
-  data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html):
-  reading your own data into an `AnalysisConfiguration`
-- [Comparing two
-  groups](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html):
-  QC, normalization and contrasts with `lm_impute`
-- [QC and sample size
-  estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
+1.  Introduction to prolfqua (this vignette)
+2.  [Importing your
+    data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.md):
+    reading your own data into an `AnalysisConfiguration`
+3.  [Comparing two
+    groups](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.md):
+    QC, normalization and contrasts with `lm_impute`
+4.  [All modelling methods at a
+    glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.md):
+    every
+    [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+    method on one small dataset
+5.  [Two-factor
+    designs](https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.md)
+6.  [Contrasts from
+    factors](https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.md)
+7.  [Filling the gaps: model-based imputation for heatmaps and
+    PCA](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.md):
+    completing the data matrix with
+    [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
+8.  [QC and sample size
+    estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.md)
+
+The package website <https://fgcz.github.io/prolfqua/> has three more
+articles:
+
 - [Comparing modelling methods on one
   dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html):
   all
   [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
-  methods side by side
-- [Two-factor
-  designs](https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html)
-- [Contrasts from
-  factors](https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.html)
-- [Filling the gaps: model-based imputation for heatmaps and
-  PCA](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html):
-  completing the data matrix with
-  [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
+  methods side by side, with plots
 - [Simulating peptide-level
   data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
 - [Under the hood: strategy, model and
   contrasts](https://fgcz.github.io/prolfqua/articles/LowLevelAPI.html):
   the classes behind
   [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
-
-The vignettes [Comparing two groups with
-prolfqua](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.md)
-and [All modelling methods at a
-glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.md)
-are also part of this package.
 
 ## Introduction
 
