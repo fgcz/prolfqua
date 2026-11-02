@@ -19,6 +19,10 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning 
 
 `build_contrast_analysis()` selects the model with its `method` argument. This vignette runs every method listed by `list_facades()` on one small simulated dataset and shows one line of output per method. Plots and a discussion of the methods are in the article [Comparing modelling methods on one dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html).
 
+```{r factory, echo = FALSE, out.width = "100%", fig.cap = "build_contrast_analysis() is a factory: the method key selects the model, and every model rolls out with the same interface."}
+knitr::include_graphics("../man/figures/prolfqua_factory.png")
+```
+
 # Data
 
 We simulate peptide intensities for 20 proteins in three groups and compare group `A` with the control.

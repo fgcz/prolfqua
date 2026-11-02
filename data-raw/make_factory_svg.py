@@ -1,9 +1,10 @@
-"""Draw build_contrast_analysis() as a factory for vignettes/prolfqua_factory.png.
+"""Draw build_contrast_analysis() as a factory for man/figures/prolfqua_factory.png.
 
 Usage:
   python3 data-raw/make_factory_svg.py /tmp/prolfqua_factory.svg
-  rsvg-convert -w 2480 /tmp/prolfqua_factory.svg -o vignettes/prolfqua_factory.png
-The vignette uses the PNG: pkgdown copies PNG but not SVG figures to the site.
+  rsvg-convert -w 2480 /tmp/prolfqua_factory.svg -o man/figures/prolfqua_factory.png
+The README and the vignettes prolfqua and ModellingMethods use the PNG; pkgdown
+copies man/figures to the site, but not SVG figures.
 Update `lanes` when facades are added to the registry.
 """
 import sys

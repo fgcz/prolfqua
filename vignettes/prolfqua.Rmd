@@ -47,7 +47,7 @@ prolfqua covers the steps of a label-free quantification (LFQ) proteomics analys
 The centre of the package is a factory, `build_contrast_analysis()`. It takes the data, a model formula, the contrasts and a `method`, and returns a ready analysis: one model per protein and the requested contrasts.
 
 ```{r factory, echo = FALSE, out.width = "100%", fig.cap = "build_contrast_analysis() is a factory: the method key selects the model, and every model rolls out with the same interface."}
-knitr::include_graphics("prolfqua_factory.png")
+knitr::include_graphics("../man/figures/prolfqua_factory.png")
 ```
 
 The `method` argument selects the model: linear models (`lm`, `rlm`, `rfit`), limma and limma-voom, DEqMS variance moderation, limpa's detection probability model, Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection.

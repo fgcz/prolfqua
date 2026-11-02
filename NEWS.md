@@ -15,6 +15,7 @@ Changes for the Bioconductor review ([BiocContributions #171](https://github.com
 ## Documentation
 
 - New introductory vignette `vignette("prolfqua")`: the prolfqua hex logo, links to all tutorials on the package website, an introduction centred on `build_contrast_analysis()` with a figure of it as a factory rolling out all modelling methods, installation with BiocManager, and a quick start using `lm_impute`.
+- The README and the vignette `ModellingMethods` show the factory figure too; the README links the eight vignettes in reading order, starting with the introduction.
 - `?build_contrast_analysis` describes the function as the factory of the modelling methods and lists all 20 built-in methods by family, including `binomial_firth_nested` and `hurdle_nested`, which were missing.
 - The package description names `build_contrast_analysis()` and the modelling methods it offers.
 - New vignette `vignette("ModellingMethods")`: runs every `build_contrast_analysis()` method on one small simulated dataset, with one summary line per method; it renders in a few seconds.

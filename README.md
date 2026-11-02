@@ -13,6 +13,10 @@ The package documentation including vignettes can be accessed at https://fgcz.gi
 
 `prolfqua` makes easy things easy while remaining fully hackable.
 
+At its centre is a factory, `build_contrast_analysis()`: one call fits a model per protein and computes the requested contrasts. The `method` argument selects one of 20 models, and every model returns its results through the same interface. Start with the [Introduction to prolfqua](https://fgcz.github.io/prolfqua/articles/prolfqua.html).
+
+<img src="man/figures/prolfqua_factory.png" alt="build_contrast_analysis() as a factory rolling out all modelling methods" width="100%">
+
 # How to install prolfqua?
 
 Requirements : A Windows|Linux|MacOSX platform with R (>= 4.1) installed.
@@ -156,9 +160,14 @@ pl$volcano()$FDR
 
 Document's explaining how to run an analysis with prolfqua are at github.io [https://fgcz.github.io/prolfqua/index.html](https://fgcz.github.io/prolfqua/index.html).
 
-- [Comparing two Conditions](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html)
-- [QC and protein wise sample size estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
-- [Analysing factorial designs](https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html)
+1. [Introduction to prolfqua](https://fgcz.github.io/prolfqua/articles/prolfqua.html)
+2. [Importing your data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html)
+3. [Comparing two groups](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html)
+4. [All modelling methods at a glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.html)
+5. [Two-factor designs](https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html)
+6. [Contrasts from factors](https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.html)
+7. [Filling the gaps: model-based imputation for heatmaps and PCA](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html)
+8. [QC and sample size estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html)
 
 Example QC and sample size report
 
