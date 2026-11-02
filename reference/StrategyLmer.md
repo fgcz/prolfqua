@@ -1,18 +1,12 @@
 # Linear mixed-effects model strategy (R6 class)
 
-Linear mixed-effects model strategy (R6 class)
-
-Linear mixed-effects model strategy (R6 class)
+Encapsulates everything needed to fit per-protein linear mixed-effects
+models via [`lmer`](https://rdrr.io/pkg/lmerTest/man/lmer.html) and
+extract contrasts.
 
 ## Value
 
 An R6 class generator.
-
-## Details
-
-Encapsulates everything needed to fit per-protein linear mixed-effects
-models via [`lmer`](https://rdrr.io/pkg/lmerTest/man/lmer.html) and
-extract contrasts.
 
 ## See also
 
@@ -106,7 +100,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
+[`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyLmer`
 
 ## Methods
@@ -121,14 +115,14 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`prolfqua::StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-initialize)
-- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`prolfqua::StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-initialize)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
 
 ------------------------------------------------------------------------
 
-### Method `isSingular()`
+### `StrategyLmer$isSingular()`
 
 Check if model is singular
 
@@ -144,7 +138,7 @@ Check if model is singular
 
 ------------------------------------------------------------------------
 
-### Method `contrast_fun()`
+### `StrategyLmer$contrast_fun()`
 
 Compute contrasts from fitted model
 
@@ -161,7 +155,7 @@ Compute contrasts from fitted model
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyLmer$clone()`
 
 The objects of this class are cloneable with this method.
 

@@ -87,8 +87,6 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/StrategyLogistf.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/StrategyRLM.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/StrategyRfit.html</loc></url>
-<url><loc>https://fgcz.github.io/prolfqua/reference/UpSet_interaction_missing_stats.html</loc></url>
-<url><loc>https://fgcz.github.io/prolfqua/reference/UpSet_missing_stats.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/adjust_p_values.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/aggregate_intensity_top_n.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/annotation_add_contrasts.html</loc></url>
@@ -172,7 +170,6 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/pairs_smooth.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/panel_cor.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.html</loc></url>
-<url><loc>https://fgcz.github.io/prolfqua/reference/plot_NA_heatmap.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_estimate.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_heatmap.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.html</loc></url>
@@ -181,6 +178,7 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_hierarchies_line.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_intensity_distribution_violin.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_lrt_diagnostics.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/plot_na_heatmap.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_pca.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_raster.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_sample_correlation.html</loc></url>
@@ -207,7 +205,7 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/sim_build_models_lmer.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/sim_lfq_data.html</loc></url>
-<url><loc>https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2Factor_config.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/sim_lfq_data_peptide_config.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/sim_lfq_data_protein_config.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/sim_make_model_lm.html</loc></url>
@@ -226,8 +224,10 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/table_factors_size.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/tidy_to_wide_config.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/transform_work_intensity.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/upset_missing_stats.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.html</loc></url>
-<url><loc>https://fgcz.github.io/prolfqua/reference/volcano_Plotly.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/volcano_plotly.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/which_missing.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/x5463yzwer453bbb.html</loc></url>
 </urlset>

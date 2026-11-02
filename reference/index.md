@@ -192,9 +192,6 @@
 - [`StrategyRfit`](https://fgcz.github.io/prolfqua/reference/StrategyRfit.md)
   : Rank-based regression strategy (R6 class)
 
-- [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
-  : UpSetR plot from interaction_missing_stats
-
 - [`adjust_p_values()`](https://fgcz.github.io/prolfqua/reference/adjust_p_values.md)
   : adjust columns
 
@@ -319,7 +316,7 @@
 - [`sim_lfq_data()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data.md)
   : simulate protein level data with two groups
 
-- [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2Factor_config.md)
+- [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
   : Simulate data, protein, with config with 2 factors Treatment and
   Background
 
@@ -354,10 +351,13 @@
 - [`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
   : table facade to easily switch implementations
 
+- [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md)
+  : UpSetR plot from interaction_missing_stats
+
 - [`vcov(`*`<rfit_prolfqua>`*`)`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
   : Named variance-covariance matrix for an augmented rfit fit
 
-- [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_Plotly.md)
+- [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_plotly.md)
   : volcano plotly
 
 - [`which_missing()`](https://fgcz.github.io/prolfqua/reference/which_missing.md)

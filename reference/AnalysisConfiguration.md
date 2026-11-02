@@ -146,7 +146,7 @@ Other configuration:
 
 ------------------------------------------------------------------------
 
-### Method `set_response()`
+### `AnalysisConfiguration$set_response()`
 
 Add name of intensity column
 
@@ -162,7 +162,7 @@ Add name of intensity column
 
 ------------------------------------------------------------------------
 
-### Method `get_response()`
+### `AnalysisConfiguration$get_response()`
 
 Get name of working intensity column
 
@@ -172,7 +172,7 @@ Get name of working intensity column
 
 ------------------------------------------------------------------------
 
-### Method `pop_response()`
+### `AnalysisConfiguration$pop_response()`
 
 Remove last name in array of working intensity column names
 
@@ -182,7 +182,7 @@ Remove last name in array of working intensity column names
 
 ------------------------------------------------------------------------
 
-### Method `factor_keys()`
+### `AnalysisConfiguration$factor_keys()`
 
 Get factor keys
 
@@ -196,7 +196,7 @@ array with keys
 
 ------------------------------------------------------------------------
 
-### Method `factor_keys_depth()`
+### `AnalysisConfiguration$factor_keys_depth()`
 
 Get factor keys till factorDepth
 
@@ -206,7 +206,7 @@ Get factor keys till factorDepth
 
 ------------------------------------------------------------------------
 
-### Method `hierarchy_keys()`
+### `AnalysisConfiguration$hierarchy_keys()`
 
 get hierarchy keys
 
@@ -220,7 +220,7 @@ array of column names
 
 ------------------------------------------------------------------------
 
-### Method `hierarchy_keys_depth()`
+### `AnalysisConfiguration$hierarchy_keys_depth()`
 
 get hierarchy keys up to depth
 
@@ -240,7 +240,7 @@ array of column names
 
 ------------------------------------------------------------------------
 
-### Method `id_vars()`
+### `AnalysisConfiguration$id_vars()`
 
 get names of columns annotating values (e.g. intensities)
 
@@ -254,7 +254,7 @@ character array
 
 ------------------------------------------------------------------------
 
-### Method `value_vars()`
+### `AnalysisConfiguration$value_vars()`
 
 get names of columns containing observations e.g. (intensity, qValue, mz
 or rt)
@@ -265,7 +265,7 @@ or rt)
 
 ------------------------------------------------------------------------
 
-### Method `annotation_vars()`
+### `AnalysisConfiguration$annotation_vars()`
 
 get names of columns with sample annotations
 
@@ -275,7 +275,7 @@ get names of columns with sample annotations
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `AnalysisConfiguration$clone()`
 
 The objects of this class are cloneable with this method.
 

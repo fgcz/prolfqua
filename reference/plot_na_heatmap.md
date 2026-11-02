@@ -58,8 +58,8 @@ Other plotting:
 [`plot_pca()`](https://fgcz.github.io/prolfqua/reference/plot_pca.md),
 [`plot_raster()`](https://fgcz.github.io/prolfqua/reference/plot_raster.md),
 [`plot_sample_correlation()`](https://fgcz.github.io/prolfqua/reference/plot_sample_correlation.md),
-[`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
-[`upset_missing_stats()`](https://fgcz.github.io/prolfqua/reference/UpSet_missing_stats.md)
+[`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md),
+[`upset_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_missing_stats.md)
 
 ## Examples
 

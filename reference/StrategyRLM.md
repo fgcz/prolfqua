@@ -1,18 +1,12 @@
 # Robust linear model strategy (R6 class)
 
-Robust linear model strategy (R6 class)
-
-Robust linear model strategy (R6 class)
+Encapsulates everything needed to fit per-protein robust linear models
+via [`rlm`](https://rdrr.io/pkg/MASS/man/rlm.html) and extract
+contrasts.
 
 ## Value
 
 An R6 class generator.
-
-## Details
-
-Encapsulates everything needed to fit per-protein robust linear models
-via [`rlm`](https://rdrr.io/pkg/MASS/man/rlm.html) and extract
-contrasts.
 
 ## See also
 
@@ -106,7 +100,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
+[`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyRLM`
 
 ## Methods
@@ -119,15 +113,15 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`prolfqua::StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`prolfqua::StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-initialize)
-- [`prolfqua::StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-initialize)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
 
 ------------------------------------------------------------------------
 
-### Method [`sigma()`](https://rdrr.io/r/stats/sigma.html)
+### `StrategyRLM$sigma()`
 
 Get the robust scale estimate used by
 [`vcov()`](https://rdrr.io/r/stats/vcov.html)
@@ -155,7 +149,7 @@ statistics.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyRLM$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -175,5 +169,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x5dbf7e8b26c8>
+#> <environment: 0x63d98ce92d50>
 ```

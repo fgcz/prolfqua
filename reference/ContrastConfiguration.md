@@ -98,7 +98,7 @@ Other configuration:
 
 ### Public methods
 
-- [`ContrastConfiguration$new()`](#method-ContrastConfiguration-new)
+- [`ContrastConfiguration$new()`](#method-ContrastConfiguration-initialize)
 
 - [`ContrastConfiguration$has_pvalue()`](#method-ContrastConfiguration-has_pvalue)
 
@@ -106,7 +106,7 @@ Other configuration:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ContrastConfiguration$new()`
 
 Construct a ContrastConfiguration. All arguments map directly to fields
 of the same name.
@@ -176,7 +176,7 @@ of the same name.
 
 ------------------------------------------------------------------------
 
-### Method `has_pvalue()`
+### `ContrastConfiguration$has_pvalue()`
 
 Does the backend produce a usable p-value column?
 
@@ -186,7 +186,7 @@ Does the backend produce a usable p-value column?
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastConfiguration$clone()`
 
 The objects of this class are cloneable with this method.
 

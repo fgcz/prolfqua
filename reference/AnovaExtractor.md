@@ -1,16 +1,10 @@
 # R6 class for extracting ANOVA results as a data frame
 
-R6 class for extracting ANOVA results as a data frame
-
-R6 class for extracting ANOVA results as a data frame
+Wraps the ANOVA extraction logic and associated column names.
 
 ## Value
 
 An R6 class generator.
-
-## Details
-
-Wraps the ANOVA extraction logic and associated column names.
 
 ## See also
 
@@ -116,7 +110,7 @@ Other modelling:
 
 ### Public methods
 
-- [`AnovaExtractor$new()`](#method-AnovaExtractor-new)
+- [`AnovaExtractor$new()`](#method-AnovaExtractor-initialize)
 
 - [`AnovaExtractor$fun()`](#method-AnovaExtractor-fun)
 
@@ -124,7 +118,7 @@ Other modelling:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `AnovaExtractor$new()`
 
 Create a new AnovaExtractor
 
@@ -140,7 +134,7 @@ Create a new AnovaExtractor
 
 ------------------------------------------------------------------------
 
-### Method `fun()`
+### `AnovaExtractor$fun()`
 
 Extract ANOVA table from a fitted model
 
@@ -160,7 +154,7 @@ data.frame with factor column and ANOVA statistics
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `AnovaExtractor$clone()`
 
 The objects of this class are cloneable with this method.
 

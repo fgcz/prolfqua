@@ -1,19 +1,13 @@
 # Group statistics and limit of detection
 
-Group statistics and limit of detection
-
-Group statistics and limit of detection
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Computes per-group statistics of the abundances and, from them, the
 limit of detection (LOD) used by
 [`build_model_impute`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md)
 to impute groups without observations.
+
+## Value
+
+An R6 class generator.
 
 ## Public fields
 
@@ -37,7 +31,7 @@ to impute groups without observations.
 
 ### Public methods
 
-- [`MissingHelpers$new()`](#method-MissingHelpers-new)
+- [`MissingHelpers$new()`](#method-MissingHelpers-initialize)
 
 - [`MissingHelpers$get_stats()`](#method-MissingHelpers-get_stats)
 
@@ -47,7 +41,7 @@ to impute groups without observations.
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `MissingHelpers$new()`
 
 initialize
 
@@ -71,7 +65,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_stats()`
+### `MissingHelpers$get_stats()`
 
 get data.frame with statistics
 
@@ -85,7 +79,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_lod()`
+### `MissingHelpers$get_lod()`
 
 determine limit of detection computes quantile of abundances in groups
 with a single observation; without such groups, of the partly observed
@@ -102,7 +96,7 @@ numeric LOD
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `MissingHelpers$clone()`
 
 The objects of this class are cloneable with this method.
 

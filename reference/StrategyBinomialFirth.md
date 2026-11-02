@@ -1,15 +1,5 @@
 # Firth-penalized quasibinomial detection-count strategy
 
-Firth-penalized quasibinomial detection-count strategy
-
-Firth-penalized quasibinomial detection-count strategy
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Fits detected and undetected child-feature counts like
 [`StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md),
 but replaces the fixed pseudo-count with Firth's bias reduction: each
@@ -21,32 +11,36 @@ and [`sigma()`](https://rdrr.io/r/stats/sigma.html) are those of the
 quasibinomial fit to the adjusted counts, so the dispersion is estimated
 from the scatter of the counts between samples.
 
+## Value
+
+An R6 class generator.
+
 ## Super classes
 
-[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
+[`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\>
-[`prolfqua::StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md)
+[`StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md)
 -\> `StrategyBinomialFirth`
 
 ## Methods
 
 ### Public methods
 
-- [`StrategyBinomialFirth$new()`](#method-StrategyBinomialFirth-new)
+- [`StrategyBinomialFirth$new()`](#method-StrategyBinomialFirth-initialize)
 
 - [`StrategyBinomialFirth$clone()`](#method-StrategyBinomialFirth-clone)
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`prolfqua::StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`prolfqua::StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`prolfqua::StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `StrategyBinomialFirth$new()`
 
 Create a Firth-penalized quasibinomial count strategy.
 
@@ -66,7 +60,7 @@ Create a Firth-penalized quasibinomial count strategy.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyBinomialFirth$clone()`
 
 The objects of this class are cloneable with this method.
 

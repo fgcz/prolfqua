@@ -1,18 +1,12 @@
 # ROPECA reproducibility-optimization method
 
-ROPECA reproducibility-optimization method
-
-ROPECA reproducibility-optimization method
+ROPECA optimizes the reproducibility of statistical testing on
+peptide-level and aggregates the peptide-level changes to determine
+differential protein-level expression.
 
 ## Value
 
 An R6 class generator.
-
-## Details
-
-ROPECA optimizes the reproducibility of statistical testing on
-peptide-level and aggregates the peptide-level changes to determine
-differential protein-level expression.
 
 ## See also
 
@@ -108,7 +102,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
+[`ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
 -\> `ContrastsROPECA`
 
 ## Public fields
@@ -137,7 +131,7 @@ Other modelling:
 
 ### Public methods
 
-- [`ContrastsROPECA$new()`](#method-ContrastsROPECA-new)
+- [`ContrastsROPECA$new()`](#method-ContrastsROPECA-initialize)
 
 - [`ContrastsROPECA$get_contrast_sides()`](#method-ContrastsROPECA-get_contrast_sides)
 
@@ -153,18 +147,18 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`prolfqua::ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`prolfqua::ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
-- [`prolfqua::ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
-- [`prolfqua::ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`prolfqua::ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
+- [`ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ContrastsROPECA$new()`
 
 initialize
 
@@ -192,7 +186,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrast_sides()`
+### `ContrastsROPECA$get_contrast_sides()`
 
 show names of contrasts
 
@@ -206,7 +200,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_linfct()`
+### `ContrastsROPECA$get_linfct()`
 
 get linear function used to determine contrasts
 
@@ -220,7 +214,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
+### `ContrastsROPECA$get_contrasts()`
 
 get contrasts
 
@@ -244,7 +238,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_Plotter()`
+### `ContrastsROPECA$get_Plotter()`
 
 get
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md)
@@ -269,7 +263,7 @@ get
 
 ------------------------------------------------------------------------
 
-### Method `to_wide()`
+### `ContrastsROPECA$to_wide()`
 
 convert to wide format
 
@@ -291,7 +285,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastsROPECA$clone()`
 
 The objects of this class are cloneable with this method.
 

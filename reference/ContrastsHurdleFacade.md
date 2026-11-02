@@ -1,15 +1,5 @@
 # Hurdle contrasts: intensity and detection combined with Fisher's method
 
-Hurdle contrasts: intensity and detection combined with Fisher's method
-
-Hurdle contrasts: intensity and detection combined with Fisher's method
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Joins the contrasts of a fitted intensity facade (e.g. `lm_impute`) and
 a fitted detection facade (`firth_nested`, `binomial_nested` or
 `binomial_firth_nested`) by subject and contrast, and replaces `p.value`
@@ -34,6 +24,10 @@ Added columns: `p.value.intensity`, `FDR.intensity`, `diff.detection`
 (log odds ratio), `p.value.detection`, `FDR.detection` (all as reported
 by the components), `chisq.hurdle`, `df.hurdle`, and `hurdle_components`
 (`both`, `intensity` or `detection`: the p-values combined).
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -127,7 +121,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
+[`ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
 -\> `ContrastsHurdleFacade`
 
 ## Public fields
@@ -153,7 +147,7 @@ Other modelling:
 
 ### Public methods
 
-- [`ContrastsHurdleFacade$new()`](#method-ContrastsHurdleFacade-new)
+- [`ContrastsHurdleFacade$new()`](#method-ContrastsHurdleFacade-initialize)
 
 - [`ContrastsHurdleFacade$get_contrasts()`](#method-ContrastsHurdleFacade-get_contrasts)
 
@@ -161,21 +155,21 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`prolfqua::ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`prolfqua::ContrastsInterface$get_Plotter()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter)
-- [`prolfqua::ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
-- [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
-- [`prolfqua::ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
-- [`prolfqua::ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`prolfqua::ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
-- [`prolfqua::ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`ContrastsInterface$get_Plotter()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter)
+- [`ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
+- [`ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
+- [`ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ContrastsHurdleFacade$new()`
 
 Combine a fitted intensity facade and a fitted detection facade.
 
@@ -201,7 +195,7 @@ Combine a fitted intensity facade and a fitted detection facade.
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
+### `ContrastsHurdleFacade$get_contrasts()`
 
 get contrast results with Fisher-combined `p.value` and `FDR`
 
@@ -211,7 +205,7 @@ get contrast results with Fisher-combined `p.value` and `FDR`
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastsHurdleFacade$clone()`
 
 The objects of this class are cloneable with this method.
 

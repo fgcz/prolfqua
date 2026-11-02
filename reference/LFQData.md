@@ -2,8 +2,6 @@
 
 LFQData R6 class
 
-LFQData R6 class
-
 ## Value
 
 An R6 class generator.
@@ -39,7 +37,7 @@ Other LFQData:
 
 ### Public methods
 
-- [`LFQData$new()`](#method-LFQData-new)
+- [`LFQData$new()`](#method-LFQData-initialize)
 
 - [`LFQData$set_data()`](#method-LFQData-set_data)
 
@@ -113,7 +111,7 @@ Other LFQData:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `LFQData$new()`
 
 initialize
 
@@ -143,7 +141,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `set_data()`
+### `LFQData$set_data()`
 
 set data (replaces the internal data frame)
 
@@ -163,7 +161,7 @@ self (invisible)
 
 ------------------------------------------------------------------------
 
-### Method `get_config()`
+### `LFQData$get_config()`
 
 return the AnalysisConfiguration object
 
@@ -177,7 +175,7 @@ AnalysisConfiguration
 
 ------------------------------------------------------------------------
 
-### Method `set_config_value()`
+### `LFQData$set_config_value()`
 
 set a config field value
 
@@ -197,7 +195,7 @@ set a config field value
 
 ------------------------------------------------------------------------
 
-### Method `get_copy()`
+### `LFQData$get_copy()`
 
 get deep copy
 
@@ -207,7 +205,7 @@ get deep copy
 
 ------------------------------------------------------------------------
 
-### Method `get_sample()`
+### `LFQData$get_sample()`
 
 samples subset of data
 
@@ -227,7 +225,7 @@ samples subset of data
 
 ------------------------------------------------------------------------
 
-### Method `get_subset()`
+### `LFQData$get_subset()`
 
 get subset of data
 
@@ -243,7 +241,7 @@ get subset of data
 
 ------------------------------------------------------------------------
 
-### Method `subject_id()`
+### `LFQData$subject_id()`
 
 get subject ID columns
 
@@ -253,7 +251,7 @@ get subject ID columns
 
 ------------------------------------------------------------------------
 
-### Method `is_transformed()`
+### `LFQData$is_transformed()`
 
 is data transformed
 
@@ -273,7 +271,7 @@ logical
 
 ------------------------------------------------------------------------
 
-### Method `remove_small_intensities()`
+### `LFQData$remove_small_intensities()`
 
 some software is reporting NA's as 0, you must remove it from your data
 
@@ -293,7 +291,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method [`filter_proteins_by_peptide_count()`](https://fgcz.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)
+### `LFQData$filter_proteins_by_peptide_count()`
 
 remove proteins with less than X peptides
 
@@ -307,7 +305,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method `remove_decoys()`
+### `LFQData$remove_decoys()`
 
 remove decoy / reverse-database entries (rows whose top-level hierarchy
 id, e.g. protein_Id, is a decoy). Detection uses the configured
@@ -326,7 +324,7 @@ LFQData without decoys
 
 ------------------------------------------------------------------------
 
-### Method `decoy_proportion()`
+### `LFQData$decoy_proportion()`
 
 proportion of modelling-level keys (subject_id, e.g. protein or peptide
 by \`hierarchy_depth\`) that are decoys — an empirical-FDR /
@@ -343,7 +341,7 @@ numeric in \[0, 1\]
 
 ------------------------------------------------------------------------
 
-### Method [`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md)
+### `LFQData$complete_cases()`
 
 some software is reporting NA's as 0, you must remove it from your data
 
@@ -351,19 +349,13 @@ some software is reporting NA's as 0, you must remove it from your data
 
     LFQData$complete_cases()
 
-#### Arguments
-
-- `threshold`:
-
-  default 4.
-
 #### Returns
 
 self
 
 ------------------------------------------------------------------------
 
-### Method `data_wide()`
+### `LFQData$data_wide()`
 
 converts the data to wide
 
@@ -387,7 +379,7 @@ list with data, annotation, and configuration
 
 ------------------------------------------------------------------------
 
-### Method `factors()`
+### `LFQData$factors()`
 
 Annotation table
 
@@ -401,7 +393,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `hierarchy()`
+### `LFQData$hierarchy()`
 
 Hierarchy table
 
@@ -411,7 +403,7 @@ Hierarchy table
 
 ------------------------------------------------------------------------
 
-### Method `response()`
+### `LFQData$response()`
 
 name of response variable
 
@@ -425,7 +417,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `hierarchy_keys()`
+### `LFQData$hierarchy_keys()`
 
 return all hierarchy column names
 
@@ -435,7 +427,7 @@ return all hierarchy column names
 
 ------------------------------------------------------------------------
 
-### Method `relevant_hierarchy_keys()`
+### `LFQData$relevant_hierarchy_keys()`
 
 return hierarchy column names at current depth (alias for subject_id)
 
@@ -445,7 +437,7 @@ return hierarchy column names at current depth (alias for subject_id)
 
 ------------------------------------------------------------------------
 
-### Method `factor_keys()`
+### `LFQData$factor_keys()`
 
 return all factor column names
 
@@ -455,7 +447,7 @@ return all factor column names
 
 ------------------------------------------------------------------------
 
-### Method `relevant_factor_keys()`
+### `LFQData$relevant_factor_keys()`
 
 return factor column names at current depth
 
@@ -465,7 +457,7 @@ return factor column names at current depth
 
 ------------------------------------------------------------------------
 
-### Method `sample_name()`
+### `LFQData$sample_name()`
 
 return sample name column
 
@@ -475,7 +467,7 @@ return sample name column
 
 ------------------------------------------------------------------------
 
-### Method `file_name()`
+### `LFQData$file_name()`
 
 return file name column
 
@@ -485,7 +477,7 @@ return file name column
 
 ------------------------------------------------------------------------
 
-### Method `nr_children_col()`
+### `LFQData$nr_children_col()`
 
 return name of nr_children column
 
@@ -495,7 +487,7 @@ return name of nr_children column
 
 ------------------------------------------------------------------------
 
-### Method `isotope_label()`
+### `LFQData$isotope_label()`
 
 return isotope label column name
 
@@ -505,7 +497,7 @@ return isotope label column name
 
 ------------------------------------------------------------------------
 
-### Method `data_long()`
+### `LFQData$data_long()`
 
 return the tidy (long-format) data frame
 
@@ -521,7 +513,7 @@ return the tidy (long-format) data frame
 
 ------------------------------------------------------------------------
 
-### Method `rename_response()`
+### `LFQData$rename_response()`
 
 new name of response variable
 
@@ -537,7 +529,7 @@ new name of response variable
 
 ------------------------------------------------------------------------
 
-### Method [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md)
+### `LFQData$hierarchy_counts()`
 
 number of elements at each level
 
@@ -547,7 +539,7 @@ number of elements at each level
 
 ------------------------------------------------------------------------
 
-### Method [`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
+### `LFQData$summarize_hierarchy()`
 
 e.g. number of peptides per protein etc
 
@@ -561,7 +553,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_Plotter()`
+### `LFQData$get_Plotter()`
 
 get Plotter
 
@@ -575,7 +567,7 @@ LFQDataPlotter
 
 ------------------------------------------------------------------------
 
-### Method `get_Summariser()`
+### `LFQData$get_Summariser()`
 
 get Summariser
 
@@ -589,7 +581,7 @@ LFQDataSummarizer
 
 ------------------------------------------------------------------------
 
-### Method `get_Stats()`
+### `LFQData$get_Stats()`
 
 Get
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md).
@@ -612,7 +604,7 @@ LFQDataStats
 
 ------------------------------------------------------------------------
 
-### Method `get_Transformer()`
+### `LFQData$get_Transformer()`
 
 get Stats
 
@@ -626,7 +618,7 @@ LFQDataTransformer
 
 ------------------------------------------------------------------------
 
-### Method `get_Aggregator()`
+### `LFQData$get_Aggregator()`
 
 get Aggregator
 
@@ -650,7 +642,7 @@ AggregateMedpolish, AggregateRlm, or AggregateTopN
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `LFQData$clone()`
 
 The objects of this class are cloneable with this method.
 

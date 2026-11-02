@@ -1,15 +1,5 @@
 # ROPECA contrast analysis facade for nested input
 
-ROPECA contrast analysis facade for nested input
-
-ROPECA contrast analysis facade for nested input
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Encapsulates the pipeline:
 [`strategy_lm`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 -\>
@@ -22,6 +12,10 @@ Encapsulates the pipeline:
 ROPECA fits per-peptide linear models and aggregates peptide-level
 p-values to the protein level. Input must be nested LFQData (peptide
 subject_id strictly below the protein hierarchy).
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -115,16 +109,16 @@ Other modelling:
 
 ## Super classes
 
-[`prolfqua::ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
+[`ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
 -\>
-[`prolfqua::ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md)
+[`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md)
 -\> `ContrastsROPECANestedFacade`
 
 ## Methods
 
 ### Public methods
 
-- [`ContrastsROPECANestedFacade$new()`](#method-ContrastsROPECANestedFacade-new)
+- [`ContrastsROPECANestedFacade$new()`](#method-ContrastsROPECANestedFacade-initialize)
 
 - [`ContrastsROPECANestedFacade$get_contrasts()`](#method-ContrastsROPECANestedFacade-get_contrasts)
 
@@ -136,19 +130,19 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`prolfqua::ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
-- [`prolfqua::ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`prolfqua::ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
-- [`prolfqua::ContrastsFacadeBase$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_config)
-- [`prolfqua::ContrastsFacadeBase$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`ContrastsFacadeBase$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_config)
+- [`ContrastsFacadeBase$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ContrastsROPECANestedFacade$new()`
 
 initialize
 
@@ -177,7 +171,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
+### `ContrastsROPECANestedFacade$get_contrasts()`
 
 Get contrast results with standardized column names.
 
@@ -200,7 +194,7 @@ Columns not directly produced by ROPECA are derived heuristically:
 
 ------------------------------------------------------------------------
 
-### Method `get_Plotter()`
+### `ContrastsROPECANestedFacade$get_Plotter()`
 
 get ContrastsPlotter (uses standardized column names)
 
@@ -220,7 +214,7 @@ get ContrastsPlotter (uses standardized column names)
 
 ------------------------------------------------------------------------
 
-### Method `to_wide()`
+### `ContrastsROPECANestedFacade$to_wide()`
 
 convert results to wide format
 
@@ -236,7 +230,7 @@ convert results to wide format
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastsROPECANestedFacade$clone()`
 
 The objects of this class are cloneable with this method.
 

@@ -2,8 +2,6 @@
 
 Base class for all Contrasts classes
 
-Base class for all Contrasts classes
-
 ## Value
 
 An R6 class generator.
@@ -49,7 +47,7 @@ An R6 class generator.
 
 ------------------------------------------------------------------------
 
-### Method `get_config()`
+### `ContrastsInterface$get_config()`
 
 Return the
 [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
@@ -62,7 +60,7 @@ one.
 
 ------------------------------------------------------------------------
 
-### Method `get_contrast_sides()`
+### `ContrastsInterface$get_contrast_sides()`
 
 get table with sides of the contrast
 
@@ -72,7 +70,7 @@ get table with sides of the contrast
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
+### `ContrastsInterface$get_contrasts()`
 
 get table with contrast results (similar to limma topTable function)
 
@@ -82,7 +80,7 @@ get table with contrast results (similar to limma topTable function)
 
 ------------------------------------------------------------------------
 
-### Method `get_Plotter()`
+### `ContrastsInterface$get_Plotter()`
 
 return
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md)
@@ -108,7 +106,7 @@ for the contrast results
 
 ------------------------------------------------------------------------
 
-### Method `to_wide()`
+### `ContrastsInterface$to_wide()`
 
 convert contrast results to wide format
 
@@ -128,7 +126,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_missing()`
+### `ContrastsInterface$get_missing()`
 
 get protein × contrast pairs that could not be estimated. Returns a
 data.frame with hierarchy columns and contrast, or 0 rows.
@@ -139,7 +137,7 @@ data.frame with hierarchy columns and contrast, or 0 rows.
 
 ------------------------------------------------------------------------
 
-### Method `get_rank()`
+### `ContrastsInterface$get_rank()`
 
 get rank-list input table for enrichment tools.
 
@@ -165,7 +163,7 @@ data.frame with subject id, contrast, and score columns.
 
 ------------------------------------------------------------------------
 
-### Method `get_ora()`
+### `ContrastsInterface$get_ora()`
 
 get ORA input table — features passing the FDR and absolute effect-size
 threshold in the requested direction.
@@ -194,7 +192,7 @@ filtered contrast data.frame for ORA input.
 
 ------------------------------------------------------------------------
 
-### Method `filter_significant()`
+### `ContrastsInterface$filter_significant()`
 
 Filter contrast rows that pass the FDR and effect-size threshold.
 
@@ -225,7 +223,7 @@ filtered contrast data.frame.
 
 ------------------------------------------------------------------------
 
-### Method `contrast_summary_table()`
+### `ContrastsInterface$contrast_summary_table()`
 
 Per-subject summary table for downstream report grobs. Returns a small
 data.frame with canonical column names `contrast`, `effect`, `score`,
@@ -244,7 +242,7 @@ data.frame with canonical column names `contrast`, `effect`, `score`,
 
 ------------------------------------------------------------------------
 
-### Method `extra_artifacts()`
+### `ContrastsInterface$extra_artifacts()`
 
 Backend-specific extra artifacts that a report should carry along with
 the contrast results (e.g. SAINT input tables). Default returns an empty
@@ -256,7 +254,7 @@ named list.
 
 ------------------------------------------------------------------------
 
-### Method `column_description()`
+### `ContrastsInterface$column_description()`
 
 column description
 
@@ -266,7 +264,7 @@ column description
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastsInterface$clone()`
 
 The objects of this class are cloneable with this method.
 

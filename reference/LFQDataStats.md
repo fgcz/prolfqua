@@ -1,16 +1,10 @@
 # Decorates LFQData with methods to compute statistics of interactions
 
-Decorates LFQData with methods to compute statistics of interactions
-
-Decorates LFQData with methods to compute statistics of interactions
+compute stdv, mean and CV per peptide or protein and condition.
 
 ## Value
 
 An R6 class generator.
-
-## Details
-
-compute stdv, mean and CV per peptide or protein and condition.
 
 ## See also
 
@@ -43,7 +37,7 @@ Other LFQData:
 
 ### Public methods
 
-- [`LFQDataStats$new()`](#method-LFQDataStats-new)
+- [`LFQDataStats$new()`](#method-LFQDataStats-initialize)
 
 - [`LFQDataStats$stats()`](#method-LFQDataStats-stats)
 
@@ -69,7 +63,7 @@ Other LFQData:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `LFQDataStats$new()`
 
 create analyse variances and CV
 
@@ -91,7 +85,7 @@ create analyse variances and CV
 
 ------------------------------------------------------------------------
 
-### Method `stats()`
+### `LFQDataStats$stats()`
 
 access data.frame with statistics
 
@@ -105,7 +99,7 @@ data.frame with computed statistics
 
 ------------------------------------------------------------------------
 
-### Method `stats_wide()`
+### `LFQDataStats$stats_wide()`
 
 access data.frame with statistics in wide format
 
@@ -119,7 +113,7 @@ data.frame with computed statistics in wide format
 
 ------------------------------------------------------------------------
 
-### Method `stats_quantiles()`
+### `LFQDataStats$stats_quantiles()`
 
 Determine CV or sd for the quantiles
 
@@ -135,7 +129,7 @@ Determine CV or sd for the quantiles
 
 ------------------------------------------------------------------------
 
-### Method [`density()`](https://rdrr.io/r/stats/density.html)
+### `LFQDataStats$density()`
 
 plots density or ecdf
 
@@ -155,7 +149,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `density_median()`
+### `LFQDataStats$density_median()`
 
 plot density or ecdf of CV or sd for the 50
 
@@ -175,7 +169,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `violin()`
+### `LFQDataStats$violin()`
 
 plot violinplot of CV or sd
 
@@ -183,19 +177,13 @@ plot violinplot of CV or sd
 
     LFQDataStats$violin()
 
-#### Arguments
-
-- `ggstat`:
-
-  either density of ecdf
-
 #### Returns
 
 ggplot
 
 ------------------------------------------------------------------------
 
-### Method `violin_median()`
+### `LFQDataStats$violin_median()`
 
 plot violinplot of CV or sd for the 50
 
@@ -209,7 +197,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `stdv_vs_mean()`
+### `LFQDataStats$stdv_vs_mean()`
 
 plot sd vs mean
 
@@ -229,7 +217,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `power_t_test_quantiles()`
+### `LFQDataStats$power_t_test_quantiles()`
 
 compute sample size for entire dataset
 
@@ -262,7 +250,7 @@ compute sample size for entire dataset
 
 ------------------------------------------------------------------------
 
-### Method `power_t_test()`
+### `LFQDataStats$power_t_test()`
 
 compute sample for each protein
 
@@ -286,7 +274,7 @@ compute sample for each protein
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `LFQDataStats$clone()`
 
 The objects of this class are cloneable with this method.
 

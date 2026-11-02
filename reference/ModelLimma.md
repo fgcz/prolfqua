@@ -1,19 +1,13 @@
 # R6 class representing a limma modelling result
 
-R6 class representing a limma modelling result
-
-R6 class representing a limma modelling result
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Same API as
 [`Model`](https://fgcz.github.io/prolfqua/reference/Model.md):
 `get_anova()`, `get_coefficients()`, `coef_histogram()`,
 `coef_volcano()`, `anova_histogram()`.
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -107,7 +101,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::ModelInterface`](https://fgcz.github.io/prolfqua/reference/ModelInterface.md)
+[`ModelInterface`](https://fgcz.github.io/prolfqua/reference/ModelInterface.md)
 -\> `ModelLimma`
 
 ## Public fields
@@ -156,7 +150,7 @@ Other modelling:
 
 ### Public methods
 
-- [`ModelLimma$new()`](#method-ModelLimma-new)
+- [`ModelLimma$new()`](#method-ModelLimma-initialize)
 
 - [`ModelLimma$get_coefficients()`](#method-ModelLimma-get_coefficients)
 
@@ -166,14 +160,14 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::ModelInterface$anova_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram)
-- [`prolfqua::ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram)
-- [`prolfqua::ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs)
-- [`prolfqua::ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano)
+- [`ModelInterface$anova_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram)
+- [`ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram)
+- [`ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs)
+- [`ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `ModelLimma$new()`
 
 initialize ModelLimma
 
@@ -231,7 +225,7 @@ initialize ModelLimma
 
 ------------------------------------------------------------------------
 
-### Method `get_coefficients()`
+### `ModelLimma$get_coefficients()`
 
 return model coefficient table in long format
 
@@ -245,7 +239,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_anova()`
+### `ModelLimma$get_anova()`
 
 return anova table (F-test per protein across all non-intercept
 coefficients)
@@ -260,7 +254,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ModelLimma$clone()`
 
 The objects of this class are cloneable with this method.
 

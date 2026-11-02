@@ -1,20 +1,14 @@
 # Limma-based contrasts (direct limma pipeline)
 
-Limma-based contrasts (direct limma pipeline)
-
-Limma-based contrasts (direct limma pipeline)
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Uses limma's `contrasts.fit` + `eBayes` pipeline directly, rather than
 fitting per-protein lm models and then moderating. Inherits from
 [`ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
 with the same API as
 [`Contrasts`](https://fgcz.github.io/prolfqua/reference/Contrasts.md).
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -108,7 +102,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
+[`ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
 -\> `ContrastsLimma`
 
 ## Public fields
@@ -148,7 +142,7 @@ Other modelling:
 
 ### Public methods
 
-- [`ContrastsLimma$new()`](#method-ContrastsLimma-new)
+- [`ContrastsLimma$new()`](#method-ContrastsLimma-initialize)
 
 - [`ContrastsLimma$get_contrast_sides()`](#method-ContrastsLimma-get_contrast_sides)
 
@@ -160,20 +154,20 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`prolfqua::ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`prolfqua::ContrastsInterface$get_Plotter()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter)
-- [`prolfqua::ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
-- [`prolfqua::ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
-- [`prolfqua::ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`prolfqua::ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
-- [`prolfqua::ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`ContrastsInterface$get_Plotter()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter)
+- [`ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
+- [`ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ContrastsLimma$new()`
 
 initialize ContrastsLimma
 
@@ -215,7 +209,7 @@ initialize ContrastsLimma
 
 ------------------------------------------------------------------------
 
-### Method `get_contrast_sides()`
+### `ContrastsLimma$get_contrast_sides()`
 
 get both sides of contrasts
 
@@ -225,7 +219,7 @@ get both sides of contrasts
 
 ------------------------------------------------------------------------
 
-### Method `get_linfct()`
+### `ContrastsLimma$get_linfct()`
 
 get linear functions from contrasts
 
@@ -245,7 +239,7 @@ get linear functions from contrasts
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
+### `ContrastsLimma$get_contrasts()`
 
 get table with contrast estimates via limma pipeline
 
@@ -265,7 +259,7 @@ data.frame with contrasts
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastsLimma$clone()`
 
 The objects of this class are cloneable with this method.
 

@@ -1,17 +1,11 @@
 # AggregateTopN
 
-AggregateTopN
-
-AggregateTopN
+Aggregates peptide intensities to protein level using top N peptides.
+Works with raw (untransformed) intensities.
 
 ## Value
 
 An R6 class generator.
-
-## Details
-
-Aggregates peptide intensities to protein level using top N peptides.
-Works with raw (untransformed) intensities.
 
 ## See also
 
@@ -28,7 +22,7 @@ Other LFQData:
 
 ## Super class
 
-[`prolfqua::AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md)
+[`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md)
 -\> `AggregateTopN`
 
 ## Public fields
@@ -45,7 +39,7 @@ Other LFQData:
 
 ### Public methods
 
-- [`AggregateTopN$new()`](#method-AggregateTopN-new)
+- [`AggregateTopN$new()`](#method-AggregateTopN-initialize)
 
 - [`AggregateTopN$aggregate()`](#method-AggregateTopN-aggregate)
 
@@ -53,12 +47,12 @@ Other LFQData:
 
 Inherited methods
 
-- [`prolfqua::AggregatorBase$plot()`](https://fgcz.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot)
-- [`prolfqua::AggregatorBase$write_plots()`](https://fgcz.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots)
+- [`AggregatorBase$plot()`](https://fgcz.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot)
+- [`AggregatorBase$write_plots()`](https://fgcz.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `AggregateTopN$new()`
 
 initialize
 
@@ -86,7 +80,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method [`aggregate()`](https://rdrr.io/r/stats/aggregate.html)
+### `AggregateTopN$aggregate()`
 
 run top N aggregation
 
@@ -100,7 +94,7 @@ LFQData
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `AggregateTopN$clone()`
 
 The objects of this class are cloneable with this method.
 

@@ -1,15 +1,5 @@
 # AggregateLimpa
 
-AggregateLimpa
-
-AggregateLimpa
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Aggregates peptide/precursor intensities to protein level using limpa's
 probabilistic DPC-based quantification
 ([`limpa::dpcQuant`](https://rdrr.io/pkg/limpa/man/dpcQuant.html)). With
@@ -28,6 +18,10 @@ The output LFQData contains three value columns:
 - observation count (in `config$nr_children`) — number of observed
   precursors
 
+## Value
+
+An R6 class generator.
+
 ## See also
 
 Other LFQData:
@@ -43,7 +37,7 @@ Other LFQData:
 
 ## Super class
 
-[`prolfqua::AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md)
+[`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md)
 -\> `AggregateLimpa`
 
 ## Public fields
@@ -64,7 +58,7 @@ Other LFQData:
 
 ### Public methods
 
-- [`AggregateLimpa$new()`](#method-AggregateLimpa-new)
+- [`AggregateLimpa$new()`](#method-AggregateLimpa-initialize)
 
 - [`AggregateLimpa$aggregate()`](#method-AggregateLimpa-aggregate)
 
@@ -76,7 +70,7 @@ Other LFQData:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `AggregateLimpa$new()`
 
 initialize
 
@@ -109,7 +103,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method [`aggregate()`](https://rdrr.io/r/stats/aggregate.html)
+### `AggregateLimpa$aggregate()`
 
 run limpa DPC-based aggregation (or imputation)
 
@@ -123,7 +117,7 @@ LFQData
 
 ------------------------------------------------------------------------
 
-### Method [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
+### `AggregateLimpa$plot()`
 
 creates aggregation plots (only for aggregation mode, not impute_only)
 
@@ -147,7 +141,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `write_plots()`
+### `AggregateLimpa$write_plots()`
 
 writes plots to folder
 
@@ -189,7 +183,7 @@ file path
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `AggregateLimpa$clone()`
 
 The objects of this class are cloneable with this method.
 

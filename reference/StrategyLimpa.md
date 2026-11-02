@@ -1,15 +1,5 @@
 # R6 class for limpa modelling strategy
 
-R6 class for limpa modelling strategy
-
-R6 class for limpa modelling strategy
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Consumed by
 [`build_model_limpa`](https://fgcz.github.io/prolfqua/reference/build_model_limpa.md).
 Configures the
@@ -17,6 +7,10 @@ Configures the
 call: formula for the design matrix, trend/robust flags for
 [`eBayes`](https://rdrr.io/pkg/limma/man/ebayes.html), and optional
 vooma plotting parameters.
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -140,13 +134,13 @@ Other modelling:
 
 ### Public methods
 
-- [`StrategyLimpa$new()`](#method-StrategyLimpa-new)
+- [`StrategyLimpa$new()`](#method-StrategyLimpa-initialize)
 
 - [`StrategyLimpa$clone()`](#method-StrategyLimpa-clone)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `StrategyLimpa$new()`
 
 Create a new StrategyLimpa
 
@@ -170,7 +164,7 @@ Create a new StrategyLimpa
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyLimpa$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -190,7 +184,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLimpa$new("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x5dbf8c6a3490>
+#> <environment: 0x63d98a5f3560>
 strat$model_name
 #> [1] "limpa"
 ```

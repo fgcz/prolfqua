@@ -2,8 +2,6 @@
 
 R6 interface class representing modelling result
 
-R6 interface class representing modelling result
-
 ## Value
 
 An R6 class generator.
@@ -28,7 +26,7 @@ An R6 class generator.
 
 ------------------------------------------------------------------------
 
-### Method `get_coefficients()`
+### `ModelInterface$get_coefficients()`
 
 return model coefficients
 
@@ -42,7 +40,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_anova()`
+### `ModelInterface$get_anova()`
 
 perform ANOVA analysis
 
@@ -56,7 +54,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `coef_histogram()`
+### `ModelInterface$coef_histogram()`
 
 histogram of coefficient p-values
 
@@ -70,7 +68,7 @@ list with `plot` (ggplot) and file `name`
 
 ------------------------------------------------------------------------
 
-### Method `coef_volcano()`
+### `ModelInterface$coef_volcano()`
 
 volcano plot of non-intercept coefficients
 
@@ -84,7 +82,7 @@ list with `plot` (ggplot) and file `name`
 
 ------------------------------------------------------------------------
 
-### Method `coef_pairs()`
+### `ModelInterface$coef_pairs()`
 
 coefficient estimates in wide format, one column per coefficient, for a
 pairs plot
@@ -99,7 +97,7 @@ list with `plot` (data.frame) and file `name`
 
 ------------------------------------------------------------------------
 
-### Method `anova_histogram()`
+### `ModelInterface$anova_histogram()`
 
 histogram of ANOVA p-values or FDR
 
@@ -119,7 +117,7 @@ list with `plot` (ggplot) and file `name`
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ModelInterface$clone()`
 
 The objects of this class are cloneable with this method.
 

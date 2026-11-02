@@ -540,7 +540,7 @@ prolfquasaint, prolfquabenchmark, ptm-pipeline).
   image.
 - Updated BiocCheck-related documentation and vignette metadata.
 - `ContrastsPlotter$volcano()` and
-  [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_Plotly.md)
+  [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_plotly.md)
   no longer cap positive FDR/p-value scores at `1e-4` by default.
 - Renamed `LFQData$to_wide()` to `data_wide()` and removed deprecated
   compatibility wrappers.

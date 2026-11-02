@@ -1,15 +1,5 @@
 # Base class for per-subject model strategies
 
-Base class for per-subject model strategies
-
-Base class for per-subject model strategies
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Holds the fields, constructor and default methods shared by
 [`StrategyLM`](https://fgcz.github.io/prolfqua/reference/StrategyLM.md),
 [`StrategyRLM`](https://fgcz.github.io/prolfqua/reference/StrategyRLM.md),
@@ -20,6 +10,10 @@ and
 [`StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md).
 A subclass implements the private `fit(x)` method and overrides only the
 methods that differ.
+
+## Value
+
+An R6 class generator.
 
 ## Public fields
 
@@ -40,7 +34,7 @@ methods that differ.
 
 ### Public methods
 
-- [`StrategyBase$new()`](#method-StrategyBase-new)
+- [`StrategyBase$new()`](#method-StrategyBase-initialize)
 
 - [`StrategyBase$model_fun()`](#method-StrategyBase-model_fun)
 
@@ -56,7 +50,7 @@ methods that differ.
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `StrategyBase$new()`
 
 Create a new strategy
 
@@ -76,7 +70,7 @@ Create a new strategy
 
 ------------------------------------------------------------------------
 
-### Method `model_fun()`
+### `StrategyBase$model_fun()`
 
 Fit the model to one subject's data. A failed fit returns the error
 message.
@@ -97,7 +91,7 @@ message.
 
 ------------------------------------------------------------------------
 
-### Method `isSingular()`
+### `StrategyBase$isSingular()`
 
 Check if model is singular (NA coefficients or df \< 2)
 
@@ -113,7 +107,7 @@ Check if model is singular (NA coefficients or df \< 2)
 
 ------------------------------------------------------------------------
 
-### Method `contrast_fun()`
+### `StrategyBase$contrast_fun()`
 
 Compute contrasts from fitted model
 
@@ -130,7 +124,7 @@ Compute contrasts from fitted model
 
 ------------------------------------------------------------------------
 
-### Method `df_residual()`
+### `StrategyBase$df_residual()`
 
 Get residual degrees of freedom
 
@@ -146,7 +140,7 @@ Get residual degrees of freedom
 
 ------------------------------------------------------------------------
 
-### Method [`sigma()`](https://rdrr.io/r/stats/sigma.html)
+### `StrategyBase$sigma()`
 
 Get residual standard error
 
@@ -162,7 +156,7 @@ Get residual standard error
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyBase$clone()`
 
 The objects of this class are cloneable with this method.
 

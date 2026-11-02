@@ -87,59 +87,59 @@ flat object.</p>
 <dd><p>separator to use when uniting columns is necessary</p></dd>
 
 
-<dt><code>file_name</code></dt>
+    <dt><code>file_name</code></dt>
 <dd><p>column name of column containing raw file names</p></dd>
 
 
-<dt><code>sample_name</code></dt>
+    <dt><code>sample_name</code></dt>
 <dd><p>(will be generated from factors or file_name)</p></dd>
 
 
-<dt><code>norm_value</code></dt>
+    <dt><code>norm_value</code></dt>
 <dd><p>optional column with normalization values (e.g., Creatinine)</p></dd>
 
 
-<dt><code>isotope_label</code></dt>
+    <dt><code>isotope_label</code></dt>
 <dd><p>which column contains the isotope label (e.g. heavy or light), or light only if LFQ.</p></dd>
 
 
-<dt><code>ident_q_value</code></dt>
+    <dt><code>ident_q_value</code></dt>
 <dd><p>column name with identification QValues (smaller better)</p></dd>
 
 
-<dt><code>ident_score</code></dt>
+    <dt><code>ident_score</code></dt>
 <dd><p>column with identification score (larger better)</p></dd>
 
 
-<dt><code>opt_rt</code></dt>
+    <dt><code>opt_rt</code></dt>
 <dd><p>optional column with rt information</p></dd>
 
 
-<dt><code>opt_mz</code></dt>
+    <dt><code>opt_mz</code></dt>
 <dd><p>optional column with mz information</p></dd>
 
 
-<dt><code>opt_se</code></dt>
+    <dt><code>opt_se</code></dt>
 <dd><p>optional column with standard errors (e.g. from limpa aggregation)</p></dd>
 
 
-<dt><code>nr_children</code></dt>
+    <dt><code>nr_children</code></dt>
 <dd><p>optional column containing for instance the number of peptides</p></dd>
 
 
-<dt><code>work_intensity</code></dt>
+    <dt><code>work_intensity</code></dt>
 <dd><p>column which contains the intensities</p></dd>
 
 
-<dt><code>is_response_transformed</code></dt>
+    <dt><code>is_response_transformed</code></dt>
 <dd><p>are the intensities transformed for constant variance</p></dd>
 
 
-<dt><code>bin_resp</code></dt>
+    <dt><code>bin_resp</code></dt>
 <dd><p>column with encoded missing information</p></dd>
 
 
-<dt><code>pattern_decoys</code></dt>
+    <dt><code>pattern_decoys</code></dt>
 <dd><p>optional regex identifying decoy / reverse-database
 ids, unioned with the built-in default prefixes (see
 <code><a href="is_decoy.html">is_decoy</a></code>). <code>NULL</code> (default) leaves decoy handling off;
@@ -147,29 +147,29 @@ set it (even to <code>""</code> for defaults only) to opt into flagging and the
 targets-only model fit.</p></dd>
 
 
-<dt><code>pattern_contaminants</code></dt>
+    <dt><code>pattern_contaminants</code></dt>
 <dd><p>optional regex identifying contaminant ids
 (keratin, trypsin, BSA, ...). <code>NULL</code> (default) means contaminants are
 not flagged; set it to enable contaminant flagging / removal.</p></dd>
 
 
-<dt><code>factors</code></dt>
+    <dt><code>factors</code></dt>
 <dd><p>Names of columns containing factors (annotations)</p></dd>
 
 
-<dt><code>factor_depth</code></dt>
+    <dt><code>factor_depth</code></dt>
 <dd><p>number of relevant factors (used by plotting functions etc)</p></dd>
 
 
-<dt><code>hierarchy</code></dt>
+    <dt><code>hierarchy</code></dt>
 <dd><p>list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)</p></dd>
 
 
-<dt><code>hierarchy_depth</code></dt>
+    <dt><code>hierarchy_depth</code></dt>
 <dd><p>At which depth do you want to model i.e. protein than 1</p></dd>
 
 
-<dt><code>min_peptides_protein</code></dt>
+    <dt><code>min_peptides_protein</code></dt>
 <dd><p>minimum number of peptides per protein</p></dd>
 
 
@@ -180,8 +180,7 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-AnalysisConfiguration-set_response"><code>AnalysisConfiguration$set_response()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-AnalysisConfiguration-set_response"><code>AnalysisConfiguration$set_response()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-get_response"><code>AnalysisConfiguration$get_response()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-pop_response"><code>AnalysisConfiguration$pop_response()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-factor_keys"><code>AnalysisConfiguration$factor_keys()</code></a></p></li>
@@ -193,13 +192,11 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 <li><p><a href="#method-AnalysisConfiguration-annotation_vars"><code>AnalysisConfiguration$annotation_vars()</code></a></p></li>
 <li><p><a href="#method-AnalysisConfiguration-clone"><code>AnalysisConfiguration$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-AnalysisConfiguration-set_response"></a><div class="section">
-<h3 id="method-set-response-">Method <code>set_response()</code><a class="anchor" aria-label="anchor" href="#method-set-response-"></a></h3>
+<h3 id="analysisconfiguration-set-response-"><code>AnalysisConfiguration$set_response()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-set-response-"></a></h3>
 <p>Add name of intensity column</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span><span class="va">col_name</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>col_name</code></dt>
 <dd><p>name of intensity column</p></dd>
@@ -208,110 +205,114 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-get_response"></a><div class="section">
-<h3 id="method-get-response-">Method <code>get_response()</code><a class="anchor" aria-label="anchor" href="#method-get-response-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AnalysisConfiguration-get_response"></a><div class="section">
+<h3 id="analysisconfiguration-get-response-"><code>AnalysisConfiguration$get_response()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-get-response-"></a></h3>
 <p>Get name of working intensity column</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-pop_response"></a><div class="section">
-<h3 id="method-pop-response-">Method <code>pop_response()</code><a class="anchor" aria-label="anchor" href="#method-pop-response-"></a></h3>
+<p></p><hr><a id="method-AnalysisConfiguration-pop_response"></a><div class="section">
+<h3 id="analysisconfiguration-pop-response-"><code>AnalysisConfiguration$pop_response()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-pop-response-"></a></h3>
 <p>Remove last name in array of working intensity column names</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">pop_response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-factor_keys"></a><div class="section">
-<h3 id="method-factor-keys-">Method <code>factor_keys()</code><a class="anchor" aria-label="anchor" href="#method-factor-keys-"></a></h3>
+<p></p><hr><a id="method-AnalysisConfiguration-factor_keys"></a><div class="section">
+<h3 id="analysisconfiguration-factor-keys-"><code>AnalysisConfiguration$factor_keys()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-factor-keys-"></a></h3>
 <p>Get factor keys</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>array with keys</p>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-factor_keys_depth"></a><div class="section">
-<h3 id="method-factor-keys-depth-">Method <code>factor_keys_depth()</code><a class="anchor" aria-label="anchor" href="#method-factor-keys-depth-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AnalysisConfiguration-factor_keys_depth"></a><div class="section">
+<h3 id="analysisconfiguration-factor-keys-depth-"><code>AnalysisConfiguration$factor_keys_depth()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-factor-keys-depth-"></a></h3>
 <p>Get factor keys till factorDepth</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">factor_keys_depth</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-hierarchy_keys"></a><div class="section">
-<h3 id="method-hierarchy-keys-">Method <code>hierarchy_keys()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-keys-"></a></h3>
+<p></p><hr><a id="method-AnalysisConfiguration-hierarchy_keys"></a><div class="section">
+<h3 id="analysisconfiguration-hierarchy-keys-"><code>AnalysisConfiguration$hierarchy_keys()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-hierarchy-keys-"></a></h3>
 <p>get hierarchy keys</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>array of column names</p>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-hierarchy_keys_depth"></a><div class="section">
-<h3 id="method-hierarchy-keys-depth-">Method <code>hierarchy_keys_depth()</code><a class="anchor" aria-label="anchor" href="#method-hierarchy-keys-depth-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AnalysisConfiguration-hierarchy_keys_depth"></a><div class="section">
+<h3 id="analysisconfiguration-hierarchy-keys-depth-"><code>AnalysisConfiguration$hierarchy_keys_depth()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-hierarchy-keys-depth-"></a></h3>
 <p>get hierarchy keys up to depth</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>names</code></dt>
 <dd><p>if TRUE names only if FALSE key value pairs</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>array of column names</p>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-id_vars"></a><div class="section">
-<h3 id="method-id-vars-">Method <code>id_vars()</code><a class="anchor" aria-label="anchor" href="#method-id-vars-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AnalysisConfiguration-id_vars"></a><div class="section">
+<h3 id="analysisconfiguration-id-vars-"><code>AnalysisConfiguration$id_vars()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-id-vars-"></a></h3>
 <p>get names of columns annotating values (e.g. intensities)</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">id_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>character array</p>
 </div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-value_vars"></a><div class="section">
-<h3 id="method-value-vars-">Method <code>value_vars()</code><a class="anchor" aria-label="anchor" href="#method-value-vars-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AnalysisConfiguration-value_vars"></a><div class="section">
+<h3 id="analysisconfiguration-value-vars-"><code>AnalysisConfiguration$value_vars()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-value-vars-"></a></h3>
 <p>get names of columns containing observations e.g. (intensity, qValue, mz or rt)</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">value_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-annotation_vars"></a><div class="section">
-<h3 id="method-annotation-vars-">Method <code>annotation_vars()</code><a class="anchor" aria-label="anchor" href="#method-annotation-vars-"></a></h3>
+<p></p><hr><a id="method-AnalysisConfiguration-annotation_vars"></a><div class="section">
+<h3 id="analysisconfiguration-annotation-vars-"><code>AnalysisConfiguration$annotation_vars()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-annotation-vars-"></a></h3>
 <p>get names of columns with sample annotations</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">annotation_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-AnalysisConfiguration-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p></p><hr><a id="method-AnalysisConfiguration-clone"></a><div class="section">
+<h3 id="analysisconfiguration-clone-"><code>AnalysisConfiguration$clone()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -321,6 +322,7 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 </div>
 
 </div>
+
 
     </div>
 

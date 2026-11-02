@@ -1,24 +1,18 @@
 # Quasibinomial detection-count strategy
 
-Quasibinomial detection-count strategy
-
-Quasibinomial detection-count strategy
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Fits detected and undetected child-feature counts for each parent
 feature using [`glm`](https://rdrr.io/r/stats/glm.html) with a
 quasibinomial family. The symmetric pseudo-count stabilizes fits under
 complete separation; it is not equivalent to Firth's bias-reducing
 penalty.
 
+## Value
+
+An R6 class generator.
+
 ## Super class
 
-[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
+[`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyBinomial`
 
 ## Public fields
@@ -31,21 +25,21 @@ penalty.
 
 ### Public methods
 
-- [`StrategyBinomial$new()`](#method-StrategyBinomial-new)
+- [`StrategyBinomial$new()`](#method-StrategyBinomial-initialize)
 
 - [`StrategyBinomial$clone()`](#method-StrategyBinomial-clone)
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`prolfqua::StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`prolfqua::StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`prolfqua::StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `StrategyBinomial$new()`
 
 Create a quasibinomial count strategy.
 [`sigma()`](https://rdrr.io/r/stats/sigma.html) is the Pearson residual
@@ -75,7 +69,7 @@ scale used by [`vcov()`](https://rdrr.io/r/stats/vcov.html).
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyBinomial$clone()`
 
 The objects of this class are cloneable with this method.
 

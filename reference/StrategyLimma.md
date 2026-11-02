@@ -1,19 +1,13 @@
 # R6 class for limma modelling strategy
 
-R6 class for limma modelling strategy
-
-R6 class for limma modelling strategy
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Analogous to
 [`strategy_lm`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 but for limma's matrix-based pipeline. Consumed by
 [`build_model_limma`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md).
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -133,13 +127,13 @@ Other modelling:
 
 ### Public methods
 
-- [`StrategyLimma$new()`](#method-StrategyLimma-new)
+- [`StrategyLimma$new()`](#method-StrategyLimma-initialize)
 
 - [`StrategyLimma$clone()`](#method-StrategyLimma-clone)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `StrategyLimma$new()`
 
 Create a new StrategyLimma
 
@@ -162,7 +156,7 @@ Create a new StrategyLimma
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyLimma$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -182,7 +176,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLimma$new("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x5dbf8d1d58d8>
+#> <environment: 0x63d985825f98>
 strat$model_name
 #> [1] "limma"
 ```

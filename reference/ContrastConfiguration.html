@@ -120,48 +120,48 @@ columns.</p>
 <dd><p>columns identifying the contrast subject (e.g. protein id)</p></dd>
 
 
-<dt><code>model_name_col</code></dt>
+    <dt><code>model_name_col</code></dt>
 <dd><p>column carrying the model name label</p></dd>
 
 
-<dt><code>contrast_col</code></dt>
+    <dt><code>contrast_col</code></dt>
 <dd><p>column carrying the contrast label</p></dd>
 
 
-<dt><code>effect_col</code></dt>
+    <dt><code>effect_col</code></dt>
 <dd><p>column with the (signed) effect size; for LM this
 is <code>diff</code>, for SAINT <code>log2_EFCs</code></p></dd>
 
 
-<dt><code>score_col</code></dt>
+    <dt><code>score_col</code></dt>
 <dd><p>column with the per-contrast test statistic</p></dd>
 
 
-<dt><code>pvalue_col</code></dt>
+    <dt><code>pvalue_col</code></dt>
 <dd><p>column with the raw p-value, or <code>""</code> for backends
 that do not produce one (e.g. SAINTexpress). <code>NA_character_</code> is
 accepted by the constructor and stored as <code>""</code>.</p></dd>
 
 
-<dt><code>fdr_col</code></dt>
+    <dt><code>fdr_col</code></dt>
 <dd><p>column with the FDR / BFDR / adjusted p-value</p></dd>
 
 
-<dt><code>avg_abundance_col</code></dt>
+    <dt><code>avg_abundance_col</code></dt>
 <dd><p>column with the per-feature mean abundance</p></dd>
 
 
-<dt><code>supports_dea_qc</code></dt>
+    <dt><code>supports_dea_qc</code></dt>
 <dd><p>whether the backend supports the legacy
 differential-expression QC HTML report</p></dd>
 
 
-<dt><code>needs_saint_annotation</code></dt>
+    <dt><code>needs_saint_annotation</code></dt>
 <dd><p>whether the backend needs annotation
 reading in SAINT mode (bait / control columns)</p></dd>
 
 
-<dt><code>significance_directional</code></dt>
+    <dt><code>significance_directional</code></dt>
 <dd><p>if <code>TRUE</code>, the backend only
 considers positive-effect features biologically meaningful
 (e.g. SAINTexpress, where negative <code>log2_EFCs</code> are not
@@ -178,12 +178,11 @@ symmetric (<code>|effect| &gt; threshold</code>).</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-ContrastConfiguration-new"><code>ContrastConfiguration$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-ContrastConfiguration-initialize"><code>ContrastConfiguration$new()</code></a></p></li>
 <li><p><a href="#method-ContrastConfiguration-has_pvalue"><code>ContrastConfiguration$has_pvalue()</code></a></p></li>
 <li><p><a href="#method-ContrastConfiguration-clone"><code>ContrastConfiguration$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-ContrastConfiguration-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-ContrastConfiguration-initialize"></a><div class="section">
+<h3 id="contrastconfiguration-new-"><code>ContrastConfiguration$new()</code><a class="anchor" aria-label="anchor" href="#contrastconfiguration-new-"></a></h3>
 <p>Construct a ContrastConfiguration. All arguments map directly to
 fields of the same name.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -200,74 +199,63 @@ fields of the same name.</p><div class="section">
 <span>  needs_saint_annotation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  significance_directional <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>subject_id</code></dt>
 <dd><p>columns identifying the contrast subject</p></dd>
 
-
-<dt><code>model_name_col</code></dt>
+      <dt><code>model_name_col</code></dt>
 <dd><p>model-name column</p></dd>
 
-
-<dt><code>contrast_col</code></dt>
+      <dt><code>contrast_col</code></dt>
 <dd><p>contrast-label column</p></dd>
 
-
-<dt><code>effect_col</code></dt>
+      <dt><code>effect_col</code></dt>
 <dd><p>signed effect column</p></dd>
 
-
-<dt><code>score_col</code></dt>
+      <dt><code>score_col</code></dt>
 <dd><p>test-statistic column</p></dd>
 
-
-<dt><code>pvalue_col</code></dt>
+      <dt><code>pvalue_col</code></dt>
 <dd><p>raw p-value column, or <code>""</code> / <code>NA_character_</code>
 when the backend produces none</p></dd>
 
-
-<dt><code>fdr_col</code></dt>
+      <dt><code>fdr_col</code></dt>
 <dd><p>FDR / adjusted-p column</p></dd>
 
-
-<dt><code>avg_abundance_col</code></dt>
+      <dt><code>avg_abundance_col</code></dt>
 <dd><p>mean-abundance column</p></dd>
 
-
-<dt><code>supports_dea_qc</code></dt>
+      <dt><code>supports_dea_qc</code></dt>
 <dd><p>supports DEA QC HTML</p></dd>
 
-
-<dt><code>needs_saint_annotation</code></dt>
+      <dt><code>needs_saint_annotation</code></dt>
 <dd><p>needs SAINT-mode annotation</p></dd>
 
-
-<dt><code>significance_directional</code></dt>
+      <dt><code>significance_directional</code></dt>
 <dd><p>one-sided filter on effect column</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ContrastConfiguration-has_pvalue"></a><div class="section">
-<h3 id="method-has-pvalue-">Method <code>has_pvalue()</code><a class="anchor" aria-label="anchor" href="#method-has-pvalue-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-ContrastConfiguration-has_pvalue"></a><div class="section">
+<h3 id="contrastconfiguration-has-pvalue-"><code>ContrastConfiguration$has_pvalue()</code><a class="anchor" aria-label="anchor" href="#contrastconfiguration-has-pvalue-"></a></h3>
 <p>Does the backend produce a usable p-value column?</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastConfiguration</span><span class="op">$</span><span class="fu">has_pvalue</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-ContrastConfiguration-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p></p><hr><a id="method-ContrastConfiguration-clone"></a><div class="section">
+<h3 id="contrastconfiguration-clone-"><code>ContrastConfiguration$clone()</code><a class="anchor" aria-label="anchor" href="#contrastconfiguration-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastConfiguration</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -277,6 +265,7 @@ when the backend produces none</p></dd>
 </div>
 
 </div>
+
 
     </div>
 

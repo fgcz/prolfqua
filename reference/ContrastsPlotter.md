@@ -2,8 +2,6 @@
 
 plot contrasts
 
-plot contrasts
-
 ## Value
 
 An R6 class generator.
@@ -109,12 +107,12 @@ Other plotting:
 [`plot_hierarchies_boxplot_df()`](https://fgcz.github.io/prolfqua/reference/plot_hierarchies_boxplot_df.md),
 [`plot_hierarchies_line()`](https://fgcz.github.io/prolfqua/reference/plot_hierarchies_line.md),
 [`plot_intensity_distribution_violin()`](https://fgcz.github.io/prolfqua/reference/plot_intensity_distribution_violin.md),
-[`plot_na_heatmap()`](https://fgcz.github.io/prolfqua/reference/plot_NA_heatmap.md),
+[`plot_na_heatmap()`](https://fgcz.github.io/prolfqua/reference/plot_na_heatmap.md),
 [`plot_pca()`](https://fgcz.github.io/prolfqua/reference/plot_pca.md),
 [`plot_raster()`](https://fgcz.github.io/prolfqua/reference/plot_raster.md),
 [`plot_sample_correlation()`](https://fgcz.github.io/prolfqua/reference/plot_sample_correlation.md),
-[`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md),
-[`upset_missing_stats()`](https://fgcz.github.io/prolfqua/reference/UpSet_missing_stats.md)
+[`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md),
+[`upset_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_missing_stats.md)
 
 ## Public fields
 
@@ -162,7 +160,7 @@ Other plotting:
 
 ### Public methods
 
-- [`ContrastsPlotter$new()`](#method-ContrastsPlotter-new)
+- [`ContrastsPlotter$new()`](#method-ContrastsPlotter-initialize)
 
 - [`ContrastsPlotter$histogram()`](#method-ContrastsPlotter-histogram)
 
@@ -184,7 +182,7 @@ Other plotting:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ContrastsPlotter$new()`
 
 create ContrastsPlotter
 
@@ -256,7 +254,7 @@ create ContrastsPlotter
 
 ------------------------------------------------------------------------
 
-### Method `histogram()`
+### `ContrastsPlotter$histogram()`
 
 plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
 
@@ -266,7 +264,7 @@ plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
 
 ------------------------------------------------------------------------
 
-### Method `histogram_diff()`
+### `ContrastsPlotter$histogram_diff()`
 
 plot histogram of differences (diff) fold change
 
@@ -282,7 +280,7 @@ plot histogram of differences (diff) fold change
 
 ------------------------------------------------------------------------
 
-### Method `volcano()`
+### `ContrastsPlotter$volcano()`
 
 volcano plots (fold change vs FDR)
 
@@ -319,7 +317,7 @@ volcano plots (fold change vs FDR)
 
 ------------------------------------------------------------------------
 
-### Method [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_Plotly.md)
+### `ContrastsPlotter$volcano_plotly()`
 
 plotly volcano plots
 
@@ -360,7 +358,7 @@ list of ggplots
 
 ------------------------------------------------------------------------
 
-### Method `ma_plot()`
+### `ContrastsPlotter$ma_plot()`
 
 ma plot
 
@@ -405,7 +403,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `ma_plotly()`
+### `ContrastsPlotter$ma_plotly()`
 
 ma plotly
 
@@ -442,7 +440,7 @@ list of ggplots
 
 ------------------------------------------------------------------------
 
-### Method `score_plot()`
+### `ContrastsPlotter$score_plot()`
 
 plot a score against the log2 fc e.g. t-statistic
 
@@ -470,7 +468,7 @@ list of ggplots
 
 ------------------------------------------------------------------------
 
-### Method `barplot_threshold()`
+### `ContrastsPlotter$barplot_threshold()`
 
 shows the number of significant proteins per contrasts
 
@@ -484,7 +482,7 @@ list which contains ggplots and summary tables
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastsPlotter$clone()`
 
 The objects of this class are cloneable with this method.
 

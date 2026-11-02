@@ -1,18 +1,12 @@
 # Linear model strategy (R6 class)
 
-Linear model strategy (R6 class)
-
-Linear model strategy (R6 class)
+Encapsulates everything needed to fit per-protein linear models and
+extract contrasts: the formula, model fitting function, singularity
+check, contrast computation, ANOVA, and residual statistics.
 
 ## Value
 
 An R6 class generator.
-
-## Details
-
-Encapsulates everything needed to fit per-protein linear models and
-extract contrasts: the formula, model fitting function, singularity
-check, contrast computation, ANOVA, and residual statistics.
 
 ## See also
 
@@ -106,7 +100,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
+[`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyLM`
 
 ## Public fields
@@ -121,21 +115,21 @@ Other modelling:
 
 ### Public methods
 
-- [`StrategyLM$new()`](#method-StrategyLM-new)
+- [`StrategyLM$new()`](#method-StrategyLM-initialize)
 
 - [`StrategyLM$clone()`](#method-StrategyLM-clone)
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`prolfqua::StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`prolfqua::StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`prolfqua::StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `StrategyLM$new()`
 
 Create a new StrategyLM
 
@@ -160,7 +154,7 @@ Create a new StrategyLM
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyLM$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -180,7 +174,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x5dbf8300d9e8>
+#> <environment: 0x63d96e776898>
 strat$weights
 #> NULL
 ```

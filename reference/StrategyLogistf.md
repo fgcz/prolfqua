@@ -1,19 +1,13 @@
 # Firth's logistic regression strategy (R6 class)
 
-Firth's logistic regression strategy (R6 class)
-
-Firth's logistic regression strategy (R6 class)
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Encapsulates everything needed to fit per-protein Firth's bias-reduced
 logistic regression via
 [`logistf`](https://rdrr.io/pkg/logistf/man/logistf.html) and extract
 contrasts.
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -107,14 +101,14 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
+[`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyLogistf`
 
 ## Methods
 
 ### Public methods
 
-- [`StrategyLogistf$new()`](#method-StrategyLogistf-new)
+- [`StrategyLogistf$new()`](#method-StrategyLogistf-initialize)
 
 - [`StrategyLogistf$df_residual()`](#method-StrategyLogistf-df_residual)
 
@@ -124,13 +118,13 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`prolfqua::StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `StrategyLogistf$new()`
 
 Create a new StrategyLogistf
 
@@ -150,7 +144,7 @@ Create a new StrategyLogistf
 
 ------------------------------------------------------------------------
 
-### Method `df_residual()`
+### `StrategyLogistf$df_residual()`
 
 Get residual degrees of freedom
 
@@ -166,7 +160,7 @@ Get residual degrees of freedom
 
 ------------------------------------------------------------------------
 
-### Method [`sigma()`](https://rdrr.io/r/stats/sigma.html)
+### `StrategyLogistf$sigma()`
 
 Get residual standard error (always 1 for logistic)
 
@@ -182,7 +176,7 @@ Get residual standard error (always 1 for logistic)
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyLogistf$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -202,5 +196,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$formula
 #> bin_resp ~ condition
-#> <environment: 0x5dbf751f4be0>
+#> <environment: 0x63d969c4bfd8>
 ```

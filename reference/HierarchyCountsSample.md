@@ -1,16 +1,10 @@
 # Count distinct elements for each level of hierarchy per sample
 
-Count distinct elements for each level of hierarchy per sample
-
-Count distinct elements for each level of hierarchy per sample
+Provides wide, long, and plot views of hierarchy counts.
 
 ## Value
 
 An R6 class generator.
-
-## Details
-
-Provides wide, long, and plot views of hierarchy counts.
 
 ## See also
 
@@ -33,7 +27,7 @@ Other summary:
 
 ### Public methods
 
-- [`HierarchyCountsSample$new()`](#method-HierarchyCountsSample-new)
+- [`HierarchyCountsSample$new()`](#method-HierarchyCountsSample-initialize)
 
 - [`HierarchyCountsSample$wide()`](#method-HierarchyCountsSample-wide)
 
@@ -45,7 +39,7 @@ Other summary:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `HierarchyCountsSample$new()`
 
 Create a new HierarchyCountsSample
 
@@ -69,7 +63,7 @@ Create a new HierarchyCountsSample
 
 ------------------------------------------------------------------------
 
-### Method `wide()`
+### `HierarchyCountsSample$wide()`
 
 Return wide-format summary
 
@@ -79,7 +73,7 @@ Return wide-format summary
 
 ------------------------------------------------------------------------
 
-### Method `long()`
+### `HierarchyCountsSample$long()`
 
 Return long-format summary
 
@@ -89,7 +83,7 @@ Return long-format summary
 
 ------------------------------------------------------------------------
 
-### Method [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
+### `HierarchyCountsSample$plot()`
 
 Return barplot of hierarchy counts
 
@@ -99,7 +93,7 @@ Return barplot of hierarchy counts
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `HierarchyCountsSample$clone()`
 
 The objects of this class are cloneable with this method.
 

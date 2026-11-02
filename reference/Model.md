@@ -2,8 +2,6 @@
 
 R6 class representing modelling result
 
-R6 class representing modelling result
-
 ## Value
 
 An R6 class generator.
@@ -100,7 +98,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::ModelInterface`](https://fgcz.github.io/prolfqua/reference/ModelInterface.md)
+[`ModelInterface`](https://fgcz.github.io/prolfqua/reference/ModelInterface.md)
 -\> `Model`
 
 ## Public fields
@@ -129,7 +127,7 @@ Other modelling:
 
 ### Public methods
 
-- [`Model$new()`](#method-Model-new)
+- [`Model$new()`](#method-Model-initialize)
 
 - [`Model$get_coefficients()`](#method-Model-get_coefficients)
 
@@ -139,14 +137,14 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::ModelInterface$anova_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram)
-- [`prolfqua::ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram)
-- [`prolfqua::ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs)
-- [`prolfqua::ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano)
+- [`ModelInterface$anova_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram)
+- [`ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram)
+- [`ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs)
+- [`ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `Model$new()`
 
 initialize
 
@@ -185,7 +183,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_coefficients()`
+### `Model$get_coefficients()`
 
 return model coefficient table
 
@@ -195,7 +193,7 @@ return model coefficient table
 
 ------------------------------------------------------------------------
 
-### Method `get_anova()`
+### `Model$get_anova()`
 
 return anova table
 
@@ -205,7 +203,7 @@ return anova table
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Model$clone()`
 
 The objects of this class are cloneable with this method.
 

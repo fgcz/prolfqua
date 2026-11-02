@@ -1,15 +1,5 @@
 # Base class for contrast analysis facades
 
-Base class for contrast analysis facades
-
-Base class for contrast analysis facades
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Holds the fields and delegating methods shared by every facade in
 `ContrastsFacades.R` and `ContrastsChildToParentFacades.R`. Subclasses
 implement the unique pipeline wiring in `initialize()`: they call the
@@ -24,6 +14,10 @@ estimated.
 the facade key into `modelName` via `.stamp_facade_identity()`;
 rescue/imputation state is carried in the `estimate_type` column set by
 the inner contrast classes.
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -117,7 +111,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
+[`ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
 -\> `ContrastsFacadeBase`
 
 ## Public fields
@@ -164,17 +158,17 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`prolfqua::ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`prolfqua::ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
-- [`prolfqua::ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`prolfqua::ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
 
 ------------------------------------------------------------------------
 
-### Method `get_config()`
+### `ContrastsFacadeBase$get_config()`
 
 get the
 [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md);
@@ -186,7 +180,7 @@ defaults to the inner contrast object's configuration
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
+### `ContrastsFacadeBase$get_contrasts()`
 
 get contrast results, stamped with the facade key
 
@@ -202,7 +196,7 @@ get contrast results, stamped with the facade key
 
 ------------------------------------------------------------------------
 
-### Method `get_missing()`
+### `ContrastsFacadeBase$get_missing()`
 
 get subject x contrast pairs that could not be estimated
 
@@ -212,7 +206,7 @@ get subject x contrast pairs that could not be estimated
 
 ------------------------------------------------------------------------
 
-### Method `get_Plotter()`
+### `ContrastsFacadeBase$get_Plotter()`
 
 get
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md)
@@ -229,7 +223,7 @@ get
 
 ------------------------------------------------------------------------
 
-### Method `to_wide()`
+### `ContrastsFacadeBase$to_wide()`
 
 convert results to wide format
 
@@ -245,7 +239,7 @@ convert results to wide format
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastsFacadeBase$clone()`
 
 The objects of this class are cloneable with this method.
 

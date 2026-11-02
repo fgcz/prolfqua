@@ -2,8 +2,6 @@
 
 LFQDataPlotter —- Create various visualization of the LFQdata
 
-LFQDataPlotter —- Create various visualization of the LFQdata
-
 ## Value
 
 An R6 class generator.
@@ -39,7 +37,7 @@ Other LFQData:
 
 ### Public methods
 
-- [`LFQDataPlotter$new()`](#method-LFQDataPlotter-new)
+- [`LFQDataPlotter$new()`](#method-LFQDataPlotter-initialize)
 
 - [`LFQDataPlotter$raster()`](#method-LFQDataPlotter-raster)
 
@@ -75,7 +73,7 @@ Other LFQData:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `LFQDataPlotter$new()`
 
 create LFQDataPlotter
 
@@ -95,7 +93,7 @@ create LFQDataPlotter
 
 ------------------------------------------------------------------------
 
-### Method `raster()`
+### `LFQDataPlotter$raster()`
 
 plot intensities in raster
 
@@ -138,7 +136,7 @@ ComplexHeatmap::Heatmap
 
 ------------------------------------------------------------------------
 
-### Method [`heatmap()`](https://rdrr.io/r/stats/heatmap.html)
+### `LFQDataPlotter$heatmap()`
 
 heatmap of intensities - columns are samples, rows are proteins or
 peptides.
@@ -200,7 +198,7 @@ ComplexHeatmap::Heatmap
 
 ------------------------------------------------------------------------
 
-### Method `heatmap_cor()`
+### `LFQDataPlotter$heatmap_cor()`
 
 heatmap of sample correlations.
 
@@ -224,7 +222,7 @@ ComplexHeatmap::Heatmap
 
 ------------------------------------------------------------------------
 
-### Method `pca()`
+### `LFQDataPlotter$pca()`
 
 PCA plot
 
@@ -258,7 +256,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `pca_plotly()`
+### `LFQDataPlotter$pca_plotly()`
 
 pca plot
 
@@ -282,7 +280,7 @@ plotly
 
 ------------------------------------------------------------------------
 
-### Method `boxplots()`
+### `LFQDataPlotter$boxplots()`
 
 boxplots for all proteins
 
@@ -302,7 +300,7 @@ tibble with column boxplots containing ggplot objects
 
 ------------------------------------------------------------------------
 
-### Method [`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md)
+### `LFQDataPlotter$missigness_histogram()`
 
 histogram of intensities given number of missing in conditions
 
@@ -316,7 +314,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `na_heatmap()`
+### `LFQDataPlotter$na_heatmap()`
 
 heatmap of features with missing values
 
@@ -330,7 +328,7 @@ ComplexHeatmap::Heatmap
 
 ------------------------------------------------------------------------
 
-### Method `intensity_distribution_density()`
+### `LFQDataPlotter$intensity_distribution_density()`
 
 density distribution of intensities
 
@@ -358,7 +356,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `intensity_distribution_violin()`
+### `LFQDataPlotter$intensity_distribution_violin()`
 
 Violinplot showing distribution of intensities in all samples
 
@@ -372,7 +370,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method [`pairs_smooth()`](https://fgcz.github.io/prolfqua/reference/pairs_smooth.md)
+### `LFQDataPlotter$pairs_smooth()`
 
 pairsplot of intensities
 
@@ -392,7 +390,7 @@ NULL
 
 ------------------------------------------------------------------------
 
-### Method `sample_correlation()`
+### `LFQDataPlotter$sample_correlation()`
 
 plot of sample correlations
 
@@ -406,7 +404,7 @@ NULL
 
 ------------------------------------------------------------------------
 
-### Method `upset_missing()`
+### `LFQDataPlotter$upset_missing()`
 
 upset plot based on presence absence information
 
@@ -420,7 +418,7 @@ plot
 
 ------------------------------------------------------------------------
 
-### Method `write_boxplots()`
+### `LFQDataPlotter$write_boxplots()`
 
 write boxplots to file
 
@@ -448,7 +446,7 @@ write boxplots to file
 
 ------------------------------------------------------------------------
 
-### Method `write_pdf()`
+### `LFQDataPlotter$write_pdf()`
 
 write figure to pdf
 
@@ -484,7 +482,7 @@ path the file was written to
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `LFQDataPlotter$clone()`
 
 The objects of this class are cloneable with this method.
 

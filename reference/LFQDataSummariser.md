@@ -2,8 +2,6 @@
 
 Summarize LFQData
 
-Summarize LFQData
-
 ## Value
 
 An R6 class generator.
@@ -31,7 +29,7 @@ Other LFQData:
 
 ### Public methods
 
-- [`LFQDataSummariser$new()`](#method-LFQDataSummariser-new)
+- [`LFQDataSummariser$new()`](#method-LFQDataSummariser-initialize)
 
 - [`LFQDataSummariser$hierarchy_counts()`](#method-LFQDataSummariser-hierarchy_counts)
 
@@ -57,7 +55,7 @@ Other LFQData:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `LFQDataSummariser$new()`
 
 initialize
 
@@ -73,7 +71,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md)
+### `LFQDataSummariser$hierarchy_counts()`
 
 summarize hierarchy
 
@@ -83,7 +81,7 @@ summarize hierarchy
 
 ------------------------------------------------------------------------
 
-### Method `hierarchy_counts_sample()`
+### `LFQDataSummariser$hierarchy_counts_sample()`
 
 number of elements at each level in every sample
 
@@ -106,7 +104,7 @@ number of elements at each level in every sample
 
 ------------------------------------------------------------------------
 
-### Method `plot_hierarchy_counts_sample()`
+### `LFQDataSummariser$plot_hierarchy_counts_sample()`
 
 barplot showing number of elements at each level in every sample
 
@@ -126,7 +124,7 @@ barplot showing number of elements at each level in every sample
 
 ------------------------------------------------------------------------
 
-### Method `interaction_missing_stats()`
+### `LFQDataSummariser$interaction_missing_stats()`
 
 missing per condition and protein
 
@@ -136,7 +134,7 @@ missing per condition and protein
 
 ------------------------------------------------------------------------
 
-### Method [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/UpSet_interaction_missing_stats.md)
+### `LFQDataSummariser$upset_interaction_missing_stats()`
 
 upset plot with missing information per protein and condition
 
@@ -152,7 +150,7 @@ upset plot with missing information per protein and condition
 
 ------------------------------------------------------------------------
 
-### Method `missingness_per_group()`
+### `LFQDataSummariser$missingness_per_group()`
 
 missing stats per condition
 
@@ -162,7 +160,7 @@ missing stats per condition
 
 ------------------------------------------------------------------------
 
-### Method `missingness_per_group_cumsum()`
+### `LFQDataSummariser$missingness_per_group_cumsum()`
 
 missing stats per condition as cumulative sum
 
@@ -172,7 +170,7 @@ missing stats per condition as cumulative sum
 
 ------------------------------------------------------------------------
 
-### Method `plot_missingness_per_group()`
+### `LFQDataSummariser$plot_missingness_per_group()`
 
 barplot with number of features with 1,2, etc missing in condition
 
@@ -186,7 +184,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `plot_missingness_per_group_cumsum()`
+### `LFQDataSummariser$plot_missingness_per_group_cumsum()`
 
 barplot with cumulative sum of features with 1,2, etc missing in
 condition
@@ -201,7 +199,7 @@ ggplot
 
 ------------------------------------------------------------------------
 
-### Method `percentage_abundance()`
+### `LFQDataSummariser$percentage_abundance()`
 
 Does roll up to highest hierarchy and Computes the percent abundance of
 proteins overall and within each group
@@ -216,7 +214,7 @@ data frame
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `LFQDataSummariser$clone()`
 
 The objects of this class are cloneable with this method.
 

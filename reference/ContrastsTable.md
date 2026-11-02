@@ -2,8 +2,6 @@
 
 holds results when contrasts are added.
 
-holds results when contrasts are added.
-
 ## Value
 
 An R6 class generator.
@@ -102,7 +100,7 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
+[`ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
 -\> `ContrastsTable`
 
 ## Public fields
@@ -123,7 +121,7 @@ Other modelling:
 
 ### Public methods
 
-- [`ContrastsTable$new()`](#method-ContrastsTable-new)
+- [`ContrastsTable$new()`](#method-ContrastsTable-initialize)
 
 - [`ContrastsTable$get_contrast_sides()`](#method-ContrastsTable-get_contrast_sides)
 
@@ -137,19 +135,19 @@ Other modelling:
 
 Inherited methods
 
-- [`prolfqua::ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`prolfqua::ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`prolfqua::ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`prolfqua::ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`prolfqua::ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
-- [`prolfqua::ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
-- [`prolfqua::ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`prolfqua::ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
-- [`prolfqua::ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
+- [`ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
+- [`ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
+- [`ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ContrastsTable$new()`
 
 initialize
 
@@ -177,7 +175,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method `get_contrast_sides()`
+### `ContrastsTable$get_contrast_sides()`
 
 return sides of contrast
 
@@ -191,7 +189,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `get_linfct()`
+### `ContrastsTable$get_linfct()`
 
 not implemented
 
@@ -201,7 +199,7 @@ not implemented
 
 ------------------------------------------------------------------------
 
-### Method `get_contrasts()`
+### `ContrastsTable$get_contrasts()`
 
 get contrasts
 
@@ -221,7 +219,7 @@ get contrasts
 
 ------------------------------------------------------------------------
 
-### Method `get_Plotter()`
+### `ContrastsTable$get_Plotter()`
 
 get
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md)
@@ -246,7 +244,7 @@ get
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ContrastsTable$clone()`
 
 The objects of this class are cloneable with this method.
 

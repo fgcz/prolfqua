@@ -1,15 +1,5 @@
 # Base class of the peptide to protein aggregators
 
-Base class of the peptide to protein aggregators
-
-Base class of the peptide to protein aggregators
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Holds the fields, construction, and plotting shared by
 [`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
 [`AggregateRlm`](https://fgcz.github.io/prolfqua/reference/AggregateRlm.md),
@@ -18,6 +8,10 @@ and
 [`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md).
 Subclasses implement
 [`aggregate()`](https://rdrr.io/r/stats/aggregate.html).
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -50,7 +44,7 @@ Other LFQData:
 
 ### Public methods
 
-- [`AggregatorBase$new()`](#method-AggregatorBase-new)
+- [`AggregatorBase$new()`](#method-AggregatorBase-initialize)
 
 - [`AggregatorBase$plot()`](#method-AggregatorBase-plot)
 
@@ -60,7 +54,7 @@ Other LFQData:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `AggregatorBase$new()`
 
 initialize
 
@@ -80,7 +74,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
+### `AggregatorBase$plot()`
 
 creates aggregation plots
 
@@ -104,7 +98,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method `write_plots()`
+### `AggregatorBase$write_plots()`
 
 writes plots to folder
 
@@ -146,7 +140,7 @@ file path
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `AggregatorBase$clone()`
 
 The objects of this class are cloneable with this method.
 

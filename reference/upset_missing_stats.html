@@ -47,7 +47,7 @@
 
       <h1>prepare dataframe for UpSetR plot for all samples</h1>
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_missingness_summary.R" class="external-link"><code>R/tidyMS_missingness_summary.R</code></a></small>
-      <div class="d-none name"><code>UpSet_missing_stats.Rd</code></div>
+      <div class="d-none name"><code>upset_missing_stats.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
@@ -81,17 +81,17 @@
 <code><a href="plot_hierarchies_boxplot_df.html">plot_hierarchies_boxplot_df()</a></code>,
 <code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
 <code><a href="plot_intensity_distribution_violin.html">plot_intensity_distribution_violin()</a></code>,
-<code><a href="plot_NA_heatmap.html">plot_na_heatmap()</a></code>,
+<code><a href="plot_na_heatmap.html">plot_na_heatmap()</a></code>,
 <code><a href="plot_pca.html">plot_pca()</a></code>,
 <code><a href="plot_raster.html">plot_raster()</a></code>,
 <code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code>,
-<code><a href="UpSet_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code></p>
+<code><a href="upset_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code></p>
 <p>Other imputation:
 <code><a href="get_contrast.html">get_contrast()</a></code>,
 <code><a href="missigness_histogram.html">missigness_histogram()</a></code>,
 <code><a href="missingness_per_condition.html">missingness_per_condition()</a></code>,
 <code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum()</a></code>,
-<code><a href="UpSet_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code></p></div>
+<code><a href="upset_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -104,7 +104,7 @@
 <span class="r-in"><span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pups</span> <span class="op">&lt;-</span> <span class="fu">upset_missing_stats</span><span class="op">(</span><span class="va">lfq</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">UpSetR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/UpSetR/man/upset.html" class="external-link">upset</a></span><span class="op">(</span><span class="va">pups</span><span class="op">$</span><span class="va">data</span>, order.by <span class="op">=</span> <span class="st">"freq"</span>, nsets <span class="op">=</span> <span class="va">pups</span><span class="op">$</span><span class="va">nsets</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="UpSet_missing_stats-1.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="upset_missing_stats-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -17,11 +17,6 @@ registrations).
 FACADE_REGISTRY
 ```
 
-## Format
-
-An object of class `facade_registry` (inherits from `list`) of length
-20.
-
 ## Value
 
 A named list of built-in facade registry entries.

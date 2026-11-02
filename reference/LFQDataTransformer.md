@@ -2,8 +2,6 @@
 
 Decorate LFQData with Methods for transforming Intensities
 
-Decorate LFQData with Methods for transforming Intensities
-
 ## Value
 
 An R6 class generator.
@@ -18,7 +16,7 @@ An R6 class generator.
 
 ### Public methods
 
-- [`LFQDataTransformer$new()`](#method-LFQDataTransformer-new)
+- [`LFQDataTransformer$new()`](#method-LFQDataTransformer-initialize)
 
 - [`LFQDataTransformer$log2()`](#method-LFQDataTransformer-log2)
 
@@ -38,7 +36,7 @@ An R6 class generator.
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `LFQDataTransformer$new()`
 
 initialize
 
@@ -54,7 +52,7 @@ initialize
 
 ------------------------------------------------------------------------
 
-### Method [`log2()`](https://rdrr.io/r/base/Log.html)
+### `LFQDataTransformer$log2()`
 
 log2 transform data
 
@@ -75,7 +73,7 @@ LFQDataTransformer
 
 ------------------------------------------------------------------------
 
-### Method `get_scales()`
+### `LFQDataTransformer$get_scales()`
 
 get mean and variance and standard deviation in each sample
 
@@ -89,7 +87,7 @@ list with means and mads
 
 ------------------------------------------------------------------------
 
-### Method `robscale()`
+### `LFQDataTransformer$robscale()`
 
 robust scale data
 
@@ -117,7 +115,7 @@ LFQDataTransformer (self)
 
 ------------------------------------------------------------------------
 
-### Method `robscale_subset()`
+### `LFQDataTransformer$robscale_subset()`
 
 log2 transform and robust scale data based on subset
 
@@ -151,7 +149,7 @@ LFQDataTransformer (self)
 
 ------------------------------------------------------------------------
 
-### Method `center_to_reference()`
+### `LFQDataTransformer$center_to_reference()`
 
 center data to a reference subset
 
@@ -171,7 +169,7 @@ LFQDataTransformer (self)
 
 ------------------------------------------------------------------------
 
-### Method `intensity_array()`
+### `LFQDataTransformer$intensity_array()`
 
 Transforms intensities
 
@@ -196,7 +194,7 @@ LFQDataTransformer (self)
 
 ------------------------------------------------------------------------
 
-### Method `intensity_matrix()`
+### `LFQDataTransformer$intensity_matrix()`
 
 pass a function which works with matrices, e.g., vsn::justvsn
 
@@ -221,7 +219,7 @@ LFQDataTransformer (self)
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `LFQDataTransformer$clone()`
 
 The objects of this class are cloneable with this method.
 

@@ -1,15 +1,5 @@
 # Rank-based regression strategy (R6 class)
 
-Rank-based regression strategy (R6 class)
-
-Rank-based regression strategy (R6 class)
-
-## Value
-
-An R6 class generator.
-
-## Details
-
 Encapsulates everything needed to fit per-protein rank-based linear
 models via [`rfit`](https://rdrr.io/pkg/Rfit/man/rfit.html) and extract
 Wald contrasts. The fit is augmented (model frame, terms,
@@ -22,6 +12,10 @@ Unlike
 [`StrategyLM`](https://fgcz.github.io/prolfqua/reference/StrategyLM.md),
 `rfit` takes no observation weights, so `nr_children` weighting is not
 supported by this backend.
+
+## Value
+
+An R6 class generator.
 
 ## See also
 
@@ -115,28 +109,28 @@ Other modelling:
 
 ## Super class
 
-[`prolfqua::StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
+[`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyRfit`
 
 ## Methods
 
 ### Public methods
 
-- [`StrategyRfit$new()`](#method-StrategyRfit-new)
+- [`StrategyRfit$new()`](#method-StrategyRfit-initialize)
 
 - [`StrategyRfit$clone()`](#method-StrategyRfit-clone)
 
 Inherited methods
 
-- [`prolfqua::StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`prolfqua::StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`prolfqua::StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`prolfqua::StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`prolfqua::StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `StrategyRfit$new()`
 
 Create a new StrategyRfit. Residual df and scale come from
 [`df.residual()`](https://rdrr.io/r/stats/df.residual.html) and
@@ -158,7 +152,7 @@ Create a new StrategyRfit. Residual df and scale come from
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `StrategyRfit$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -178,5 +172,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x5dbf8a2b5488>
+#> <environment: 0x63d998167b68>
 ```
