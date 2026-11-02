@@ -48,9 +48,19 @@ proteomics analysis: quality control, normalization, aggregation of
 peptides to proteins, modelling, hypothesis testing and sample size
 estimation (Wolski et al. 2023).
 
-The centre of the package is
+The centre of the package is a factory,
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
-One call fits a model per protein and computes the requested contrasts.
+It takes the data, a model formula, the contrasts and a `method`, and
+returns a ready analysis: one model per protein and the requested
+contrasts.
+
+![build_contrast_analysis() is a factory: the method key selects the
+model, and every model rolls out with the same
+interface.](prolfqua_factory.png)
+
+build_contrast_analysis() is a factory: the method key selects the
+model, and every model rolls out with the same interface.
+
 The `method` argument selects the model: linear models (`lm`, `rlm`,
 `rfit`), limma and limma-voom, DEqMS variance moderation, limpa’s
 detection probability model, Firth logistic and binomial models of

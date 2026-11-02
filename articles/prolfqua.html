@@ -127,9 +127,17 @@ methods at a glance</a> are also part of this package.</p>
 proteomics analysis: quality control, normalization, aggregation of
 peptides to proteins, modelling, hypothesis testing and sample size
 estimation <span class="citation">(Wolski et al. 2023)</span>.</p>
-<p>The centre of the package is <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>.
-One call fits a model per protein and computes the requested contrasts.
-The <code>method</code> argument selects the model: linear models
+<p>The centre of the package is a factory,
+<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>. It takes the data, a model
+formula, the contrasts and a <code>method</code>, and returns a ready
+analysis: one model per protein and the requested contrasts.</p>
+<div class="figure">
+<img src="prolfqua_factory.png" class="r-plt" alt="build_contrast_analysis() is a factory: the method key selects the model, and every model rolls out with the same interface." width="100%"><p class="caption">
+build_contrast_analysis() is a factory: the method key selects the
+model, and every model rolls out with the same interface.
+</p>
+</div>
+<p>The <code>method</code> argument selects the model: linear models
 (<code>lm</code>, <code>rlm</code>, <code>rfit</code>), limma and
 limma-voom, DEqMS variance moderation, limpa’s detection probability
 model, Firth logistic and binomial models of detection, mixed models and

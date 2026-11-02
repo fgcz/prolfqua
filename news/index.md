@@ -46,9 +46,18 @@ Changes for the Bioconductor review
 
 - New introductory vignette
   [`vignette("prolfqua")`](https://fgcz.github.io/prolfqua/articles/prolfqua.md):
-  the prolfqua hex logo, introduction, installation with BiocManager, a
-  quick start using `lm_impute`, and links to all tutorials on the
-  package website.
+  the prolfqua hex logo, links to all tutorials on the package website,
+  an introduction centred on
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  with a figure of it as a factory rolling out all modelling methods,
+  installation with BiocManager, and a quick start using `lm_impute`.
+- [`?build_contrast_analysis`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  describes the function as the factory of the modelling methods and
+  lists all 20 built-in methods by family, including
+  `binomial_firth_nested` and `hurdle_nested`, which were missing.
+- The package description names
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  and the modelling methods it offers.
 - New vignette
   [`vignette("ModellingMethods")`](https://fgcz.github.io/prolfqua/articles/ModellingMethods.md):
   runs every

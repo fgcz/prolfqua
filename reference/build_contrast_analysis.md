@@ -1,8 +1,12 @@
 # Build a contrast analysis using one of several statistical methods
 
-A builder function that dispatches to the appropriate facade class based
-on the chosen method. Each facade encapsulates the full pipeline from
-strategy construction through modelling to contrast computation.
+The factory of prolfqua's modelling: `method` selects a facade class
+from the facade registry, and the facade runs the full pipeline from
+strategy construction through modelling to contrast computation. Every
+facade returns its results through the same interface
+(`get_contrasts()`, `get_Plotter()`, `get_missing()`, `to_wide()`), so
+the results of different methods have the same columns and can be
+compared or combined.
 
 ## Usage
 
@@ -30,11 +34,14 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 
 - method:
 
-  a registered facade key. The built-in keys are `"lm"`, `"lm_impute"`,
-  `"limma"`, `"limma_impute"`, `"limma_voom"`, `"limma_voom_impute"`,
-  `"limpa"`, `"limpa_nested"`, `"rlm"`, `"rfit"`, `"rfit_impute"`,
-  `"deqms"`, `"deqms_voom"`, `"firth"`, `"firth_nested"`,
-  `"binomial_nested"`, `"lmer_nested"`, `"ropeca_nested"`; downstream
+  a registered facade key. The built-in keys are: linear models `"lm"`,
+  `"rlm"`, `"rfit"`; limma `"limma"`, `"limma_voom"`, `"deqms"`,
+  `"deqms_voom"`, `"limpa"`, `"limpa_nested"`; limit-of-detection
+  imputation `"lm_impute"`, `"limma_impute"`, `"limma_voom_impute"`,
+  `"rfit_impute"`; peptide-level models `"lmer_nested"`,
+  `"ropeca_nested"`; detection models `"firth"`, `"firth_nested"`,
+  `"binomial_nested"`, `"binomial_firth_nested"`; the hurdle model
+  `"hurdle_nested"`, combining intensity and detection. Downstream
   packages may add more via
   [`register_facade`](https://fgcz.github.io/prolfqua/reference/register_facade.md).
   The authoritative list is
@@ -48,22 +55,16 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 
 ## Value
 
-one of
-[`ContrastsLimmaFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
-[`ContrastsLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMFacade.md),
-[`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md),
-[`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md),
-[`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
-[`ContrastsLmerNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLmerNestedFacade.md),
-[`ContrastsLMImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
-[`ContrastsDEqMSFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
-[`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
-[`ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md),
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
-[`ContrastsLimpaFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLimpaFacade.md),
-[`ContrastsBinomialNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsBinomialNestedFacade.md),
-or
-[`ContrastsLimpaNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLimpaNestedFacade.md)
+a facade object of the class registered for `method`, see
+[`lookup_facade`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md).
+
+## Details
+
+Methods ending in `_nested` take peptide- or precursor-level input and
+report protein-level contrasts; the others take input at the level they
+report, usually aggregated proteins. `"limpa"` needs input aggregated
+with
+[`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md).
 
 ## See also
 
@@ -297,9 +298,9 @@ head(fa_firth$get_contrasts())
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1
