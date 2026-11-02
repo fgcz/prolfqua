@@ -440,22 +440,22 @@ if (length(lm_missing_proteins) > 0) {
 | modelName | estimate_type | protein_Id | contrast | avgAbd | diff | FDR | statistic | std.error | df | p.value | conf.low | conf.high | sigma | rescued | significant |
 |:---|:---|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|:---|:---|
 | limma_impute | lod_imputed | 8mS8sK~0150 | A_vs_Ctrl | 3.776 | 0.000 | 1.000 | 0.000 | 0.063 | 4.468 | 1.000 | -0.167 | 0.167 | 0.089 | TRUE | FALSE |
-| limpa | observed | 8mS8sK~0150 | A_vs_Ctrl | 2.798 | -0.615 | 0.226 | -1.435 | 0.429 | 30.965 | 0.161 | -1.489 | 0.259 | 0.965 | TRUE | FALSE |
+| limpa | observed | 8mS8sK~0150 | A_vs_Ctrl | 3.146 | -0.298 | 0.415 | -1.048 | 0.284 | 21.096 | 0.306 | -0.888 | 0.293 | 0.895 | TRUE | FALSE |
 | lm_impute | lod_imputed | 8mS8sK~0150 | A_vs_Ctrl | 3.776 | 0.000 | 1.000 | 0.000 | 0.063 | 4.468 | 1.000 | -0.167 | 0.167 | 0.089 | TRUE | FALSE |
 | limma_impute | lod_imputed | 8mS8sK~0150 | B_vs_Ctrl | 3.784 | 0.018 | 0.803 | 0.279 | 0.063 | 4.468 | 0.792 | -0.150 | 0.185 | 0.089 | FALSE | FALSE |
-| limpa | observed | 8mS8sK~0150 | B_vs_Ctrl | 3.245 | 0.279 | 0.578 | 0.662 | 0.422 | 30.965 | 0.513 | -0.581 | 1.140 | 0.965 | FALSE | FALSE |
+| limpa | observed | 8mS8sK~0150 | B_vs_Ctrl | 3.420 | 0.251 | 0.434 | 0.897 | 0.280 | 21.096 | 0.380 | -0.330 | 0.832 | 0.895 | FALSE | FALSE |
 | lm_impute | lod_imputed | 8mS8sK~0150 | B_vs_Ctrl | 3.784 | 0.018 | 0.803 | 0.279 | 0.063 | 4.468 | 0.792 | -0.150 | 0.185 | 0.089 | FALSE | FALSE |
 | limma_impute | lod_imputed | DTCi0N~0734 | A_vs_Ctrl | 3.902 | -0.253 | 0.017 | -3.996 | 0.063 | 6.468 | 0.006 | -0.405 | -0.101 | 0.090 | TRUE | FALSE |
-| limpa | observed | DTCi0N~0734 | A_vs_Ctrl | 3.550 | -0.982 | 0.020 | -2.714 | 0.362 | 30.965 | 0.011 | -1.719 | -0.244 | 0.991 | TRUE | TRUE |
+| limpa | observed | DTCi0N~0734 | A_vs_Ctrl | 3.622 | -0.826 | 0.016 | -2.932 | 0.282 | 21.096 | 0.008 | -1.411 | -0.240 | 1.042 | TRUE | TRUE |
 | lm_impute | lod_imputed | DTCi0N~0734 | A_vs_Ctrl | 3.902 | -0.253 | 0.017 | -3.997 | 0.063 | 6.468 | 0.006 | -0.405 | -0.101 | 0.090 | TRUE | FALSE |
 | limma_impute | lod_imputed | DTCi0N~0734 | B_vs_Ctrl | 4.112 | 0.166 | 0.051 | 2.626 | 0.063 | 6.468 | 0.037 | 0.014 | 0.319 | 0.090 | FALSE | FALSE |
-| limpa | observed | DTCi0N~0734 | B_vs_Ctrl | 4.145 | 0.208 | 0.619 | 0.581 | 0.358 | 30.965 | 0.565 | -0.522 | 0.939 | 0.991 | FALSE | FALSE |
+| limpa | observed | DTCi0N~0734 | B_vs_Ctrl | 4.136 | 0.201 | 0.539 | 0.722 | 0.279 | 21.096 | 0.478 | -0.378 | 0.780 | 1.042 | FALSE | FALSE |
 | lm_impute | lod_imputed | DTCi0N~0734 | B_vs_Ctrl | 4.112 | 0.166 | 0.051 | 2.626 | 0.063 | 6.468 | 0.037 | 0.014 | 0.319 | 0.090 | FALSE | FALSE |
 | limma_impute | lod_imputed | OrL0ux~1369 | A_vs_Ctrl | 3.879 | -0.207 | 0.050 | -3.293 | 0.063 | 4.468 | 0.026 | -0.374 | -0.039 | 0.089 | FALSE | FALSE |
-| limpa | observed | OrL0ux~1369 | A_vs_Ctrl | 3.497 | -0.881 | 0.025 | -2.630 | 0.335 | 30.965 | 0.013 | -1.563 | -0.198 | 0.960 | FALSE | TRUE |
+| limpa | observed | OrL0ux~1369 | A_vs_Ctrl | 3.649 | -0.618 | 0.028 | -2.629 | 0.235 | 21.096 | 0.016 | -1.107 | -0.129 | 0.925 | FALSE | TRUE |
 | lm_impute | lod_imputed | OrL0ux~1369 | A_vs_Ctrl | 3.879 | -0.207 | 0.050 | -3.293 | 0.063 | 4.468 | 0.026 | -0.374 | -0.039 | 0.089 | FALSE | FALSE |
 | limma_impute | lod_imputed | OrL0ux~1369 | B_vs_Ctrl | 3.879 | -0.207 | 0.038 | -3.293 | 0.063 | 4.468 | 0.026 | -0.374 | -0.039 | 0.089 | TRUE | FALSE |
-| limpa | observed | OrL0ux~1369 | B_vs_Ctrl | 3.297 | -1.281 | 0.006 | -3.200 | 0.400 | 30.965 | 0.003 | -2.097 | -0.464 | 0.960 | TRUE | TRUE |
+| limpa | observed | OrL0ux~1369 | B_vs_Ctrl | 3.515 | -0.885 | 0.008 | -3.214 | 0.275 | 21.096 | 0.004 | -1.458 | -0.313 | 0.925 | TRUE | TRUE |
 | lm_impute | lod_imputed | OrL0ux~1369 | B_vs_Ctrl | 3.879 | -0.207 | 0.038 | -3.293 | 0.063 | 4.468 | 0.026 | -0.374 | -0.039 | 0.089 | TRUE | FALSE |
 
 Contrast estimates from lm_impute and limma_impute for proteins that
@@ -647,7 +647,7 @@ together.
 sessionInfo()
 ```
 
-    ## R version 4.5.2 (2025-10-31)
+    ## R version 4.6.2 (2026-10-29)
     ## Platform: x86_64-pc-linux-gnu
     ## Running under: Ubuntu 26.04.1 LTS
     ## 
@@ -673,8 +673,8 @@ sessionInfo()
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           
     ##   [4] magrittr_2.0.5         clue_0.3-68            GetoptLong_1.1.1      
-    ##   [7] otel_0.2.0             matrixStats_1.5.0      compiler_4.5.2        
-    ##  [10] mgcv_1.9-3             png_0.1-9              systemfonts_1.3.2     
+    ##   [7] otel_0.2.0             matrixStats_1.5.0      compiler_4.6.2        
+    ##  [10] mgcv_1.9-4             png_0.1-9              systemfonts_1.3.2     
     ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
     ##  [19] labeling_0.4.3         utf8_1.2.6             rmarkdown_2.32        
@@ -683,29 +683,29 @@ sessionInfo()
     ##  [28] jomo_2.7-6             logistf_1.26.1         cachem_1.1.0          
     ##  [31] jsonlite_2.0.0         progress_1.2.3         pan_2.0               
     ##  [34] Rfit_0.27.0            prettyunits_1.2.0      broom_1.0.13          
-    ##  [37] parallel_4.5.2         cluster_2.1.8.1        R6_2.6.1              
+    ##  [37] parallel_4.6.2         cluster_2.1.8.3        R6_2.6.1              
     ##  [40] bslib_0.12.0           stringi_1.8.9          RColorBrewer_1.1-3    
-    ##  [43] limma_3.66.0           boot_1.3-32            rpart_4.1.24          
+    ##  [43] limma_3.68.5           boot_1.3-32            rpart_4.1.27          
     ##  [46] numDeriv_2016.8-1.1    jquerylib_0.1.4        Rcpp_1.1.2            
-    ##  [49] iterators_1.0.14       knitr_1.52             IRanges_2.44.0        
-    ##  [52] Matrix_1.7-4           splines_4.5.2          nnet_7.3-20           
+    ##  [49] iterators_1.0.14       knitr_1.52             IRanges_2.46.0        
+    ##  [52] Matrix_1.7-6           splines_4.6.2          nnet_7.3-21           
     ##  [55] tidyselect_1.2.1       yaml_2.3.12            doParallel_1.0.17     
-    ##  [58] codetools_0.2-20       lmerTest_3.2-1         lattice_0.22-7        
+    ##  [58] codetools_0.2-20       lmerTest_3.2-1         lattice_0.23-1        
     ##  [61] tibble_3.3.1           plyr_1.8.9             withr_3.0.3           
     ##  [64] S7_0.2.2               evaluate_1.0.5         desc_1.4.3            
-    ##  [67] survival_3.8-3         circlize_0.4.18        pillar_1.11.1         
-    ##  [70] mice_3.19.0            foreach_1.5.2          stats4_4.5.2          
+    ##  [67] survival_3.8-12        circlize_0.4.18        pillar_1.11.1         
+    ##  [70] mice_3.19.0            foreach_1.5.2          stats4_4.6.2          
     ##  [73] reformulas_0.4.4       plotly_4.12.1          generics_0.1.4        
-    ##  [76] hms_1.1.4              S4Vectors_0.48.1       scales_1.4.0          
-    ##  [79] minqa_1.2.8            glue_1.8.1             tools_4.5.2           
+    ##  [76] hms_1.1.4              S4Vectors_0.50.3       scales_1.4.0          
+    ##  [79] minqa_1.2.8            glue_1.8.1             tools_4.6.2           
     ##  [82] data.table_1.18.6.1    lme4_2.1-0             forcats_1.0.1         
-    ##  [85] fs_2.1.0               grid_4.5.2             limpa_1.2.5           
+    ##  [85] fs_2.1.0               grid_4.6.2             limpa_1.4.2           
     ##  [88] tidyr_1.3.2            rbibutils_2.4.1        colorspace_2.1-4      
-    ##  [91] nlme_3.1-168           formula.tools_1.7.1    cli_3.6.6             
-    ##  [94] textshaping_1.0.5      viridisLite_0.4.3      ComplexHeatmap_2.26.1 
+    ##  [91] nlme_3.1-171           formula.tools_1.7.1    cli_3.6.6             
+    ##  [94] textshaping_1.0.5      viridisLite_0.4.3      ComplexHeatmap_2.28.0 
     ##  [97] gtable_0.3.6           sass_0.4.10            digest_0.6.39         
-    ## [100] operator.tools_1.6.3.1 BiocGenerics_0.56.0    ggrepel_0.9.8         
+    ## [100] operator.tools_1.6.3.1 BiocGenerics_0.58.1    ggrepel_0.9.8         
     ## [103] rjson_0.2.23           htmlwidgets_1.6.4      farver_2.1.2          
     ## [106] htmltools_0.5.9        pkgdown_2.2.1          lifecycle_1.0.5       
     ## [109] httr_1.4.9             GlobalOptions_0.1.4    mitml_0.4-5           
-    ## [112] statmod_1.5.2          MASS_7.3-65
+    ## [112] statmod_1.5.2          MASS_7.3-66

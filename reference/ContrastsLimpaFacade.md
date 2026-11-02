@@ -236,14 +236,14 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)
 head(fa$get_contrasts())
 #> # A tibble: 6 × 16
-#>   modelName estimate_type protein_Id  contrast     diff       FDR
-#>   <chr>     <chr>         <chr>       <chr>       <dbl>     <dbl>
-#> 1 limpa     observed      0EfVhX~0087 A_vs_Ctrl -0.0244 0.407    
-#> 2 limpa     observed      7cbcrd~5725 A_vs_Ctrl  0.725  0.00458  
-#> 3 limpa     observed      9VUkAq~4703 A_vs_Ctrl -0.572  0.000276 
-#> 4 limpa     observed      BEJI92~5282 A_vs_Ctrl  0.236  0.0138   
-#> 5 limpa     observed      CGzoYe~2147 A_vs_Ctrl -0.296  0.146    
-#> 6 limpa     observed      DoWup2~5896 A_vs_Ctrl  0.282  0.0000889
+#>   modelName estimate_type protein_Id  contrast     diff      FDR
+#>   <chr>     <chr>         <chr>       <chr>       <dbl>    <dbl>
+#> 1 limpa     observed      0EfVhX~0087 A_vs_Ctrl -0.0280 0.230   
+#> 2 limpa     observed      7cbcrd~5725 A_vs_Ctrl  0.719  0.0164  
+#> 3 limpa     observed      9VUkAq~4703 A_vs_Ctrl -0.569  0.00145 
+#> 4 limpa     observed      BEJI92~5282 A_vs_Ctrl  0.224  0.0198  
+#> 5 limpa     observed      CGzoYe~2147 A_vs_Ctrl -0.295  0.230   
+#> 6 limpa     observed      DoWup2~5896 A_vs_Ctrl  0.281  0.000267
 #> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <dbl>,
 #> #   std.error <dbl>, statistic <dbl>, p.value <dbl>, sigma <dbl>, df <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>

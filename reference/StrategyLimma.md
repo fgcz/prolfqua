@@ -182,7 +182,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLimma$new("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x629b5f604cd0>
+#> <environment: 0x5ef90a4cad58>
 strat$model_name
 #> [1] "limma"
 ```
