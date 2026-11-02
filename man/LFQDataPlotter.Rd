@@ -10,9 +10,6 @@ An R6 class generator.
 \description{
 LFQDataPlotter ----
 Create various visualization of the LFQdata
-
-LFQDataPlotter ----
-Create various visualization of the LFQdata
 }
 \examples{
 
@@ -48,7 +45,7 @@ stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 
 \code{\link{plot_pca}}
 
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
@@ -57,99 +54,98 @@ Other LFQData:
 \code{\link{LFQData}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
 }
 \concept{LFQData}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{lfq}}{LFQData object}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{lfq}}{LFQData object}
 
-\item{\code{prefix}}{prefix to figure names when writing, e.g. protein_}
-}
-\if{html}{\out{</div>}}
+    \item{\code{prefix}}{prefix to figure names when writing, e.g. protein_}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LFQDataPlotter-new}{\code{LFQDataPlotter$new()}}
-\item \href{#method-LFQDataPlotter-raster}{\code{LFQDataPlotter$raster()}}
-\item \href{#method-LFQDataPlotter-heatmap}{\code{LFQDataPlotter$heatmap()}}
-\item \href{#method-LFQDataPlotter-heatmap_cor}{\code{LFQDataPlotter$heatmap_cor()}}
-\item \href{#method-LFQDataPlotter-pca}{\code{LFQDataPlotter$pca()}}
-\item \href{#method-LFQDataPlotter-pca_plotly}{\code{LFQDataPlotter$pca_plotly()}}
-\item \href{#method-LFQDataPlotter-boxplots}{\code{LFQDataPlotter$boxplots()}}
-\item \href{#method-LFQDataPlotter-missigness_histogram}{\code{LFQDataPlotter$missigness_histogram()}}
-\item \href{#method-LFQDataPlotter-na_heatmap}{\code{LFQDataPlotter$na_heatmap()}}
-\item \href{#method-LFQDataPlotter-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
-\item \href{#method-LFQDataPlotter-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
-\item \href{#method-LFQDataPlotter-pairs_smooth}{\code{LFQDataPlotter$pairs_smooth()}}
-\item \href{#method-LFQDataPlotter-sample_correlation}{\code{LFQDataPlotter$sample_correlation()}}
-\item \href{#method-LFQDataPlotter-upset_missing}{\code{LFQDataPlotter$upset_missing()}}
-\item \href{#method-LFQDataPlotter-write_boxplots}{\code{LFQDataPlotter$write_boxplots()}}
-\item \href{#method-LFQDataPlotter-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
-\item \href{#method-LFQDataPlotter-clone}{\code{LFQDataPlotter$clone()}}
-}
+  \itemize{
+    \item \href{#method-LFQDataPlotter-initialize}{\code{LFQDataPlotter$new()}}
+    \item \href{#method-LFQDataPlotter-raster}{\code{LFQDataPlotter$raster()}}
+    \item \href{#method-LFQDataPlotter-heatmap}{\code{LFQDataPlotter$heatmap()}}
+    \item \href{#method-LFQDataPlotter-heatmap_cor}{\code{LFQDataPlotter$heatmap_cor()}}
+    \item \href{#method-LFQDataPlotter-pca}{\code{LFQDataPlotter$pca()}}
+    \item \href{#method-LFQDataPlotter-pca_plotly}{\code{LFQDataPlotter$pca_plotly()}}
+    \item \href{#method-LFQDataPlotter-boxplots}{\code{LFQDataPlotter$boxplots()}}
+    \item \href{#method-LFQDataPlotter-missigness_histogram}{\code{LFQDataPlotter$missigness_histogram()}}
+    \item \href{#method-LFQDataPlotter-na_heatmap}{\code{LFQDataPlotter$na_heatmap()}}
+    \item \href{#method-LFQDataPlotter-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
+    \item \href{#method-LFQDataPlotter-intensity_distribution_violin}{\code{LFQDataPlotter$intensity_distribution_violin()}}
+    \item \href{#method-LFQDataPlotter-pairs_smooth}{\code{LFQDataPlotter$pairs_smooth()}}
+    \item \href{#method-LFQDataPlotter-sample_correlation}{\code{LFQDataPlotter$sample_correlation()}}
+    \item \href{#method-LFQDataPlotter-upset_missing}{\code{LFQDataPlotter$upset_missing()}}
+    \item \href{#method-LFQDataPlotter-write_boxplots}{\code{LFQDataPlotter$write_boxplots()}}
+    \item \href{#method-LFQDataPlotter-write_pdf}{\code{LFQDataPlotter$write_pdf()}}
+    \item \href{#method-LFQDataPlotter-clone}{\code{LFQDataPlotter$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataPlotter-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataPlotter-new}{}}}
-\subsection{Method \code{new()}}{
-create LFQDataPlotter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$new(lfqdata, prefix = "ms_")}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-LFQDataPlotter-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-initialize}{}}}
+\subsection{\code{LFQDataPlotter$new()}}{
+  create LFQDataPlotter
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$new(lfqdata, prefix = "ms_")}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfqdata}}{LFQData}
+      \item{\code{prefix}}{will be prepended to outputs written}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfqdata}}{LFQData}
-
-\item{\code{prefix}}{will be prepended to outputs written}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-raster"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-raster}{}}}
-\subsection{Method \code{raster()}}{
-plot intensities in raster
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$raster(
+\subsection{\code{LFQDataPlotter$raster()}}{
+  plot intensities in raster
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$raster(
   arrange = c("mean", "var"),
   not_na = FALSE,
   rownames = FALSE,
   max_rownames_chars = 60,
   max_sample_label_chars = 20
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{arrange}}{arrange by either mean or var}
-
-\item{\code{not_na}}{TRUE arrange by number of NA's, FALSE by arrange by intensity}
-
-\item{\code{rownames}}{show rownames (default FALSE - do not show.)}
-
-\item{\code{max_rownames_chars}}{maximum displayed row label length}
-
-\item{\code{max_sample_label_chars}}{maximum displayed sample label length.
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{arrange}}{arrange by either mean or var}
+      \item{\code{not_na}}{TRUE arrange by number of NA's, FALSE by arrange by intensity}
+      \item{\code{rownames}}{show rownames (default FALSE - do not show.)}
+      \item{\code{max_rownames_chars}}{maximum displayed row label length}
+      \item{\code{max_sample_label_chars}}{maximum displayed sample label length.
 Labels keep their suffix because sample prefixes are often shared.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ComplexHeatmap::Heatmap
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ComplexHeatmap::Heatmap
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-heatmap"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-heatmap}{}}}
-\subsection{Method \code{heatmap()}}{
-heatmap of intensities - columns are samples, rows are proteins or peptides.
+\subsection{\code{LFQDataPlotter$heatmap()}}{
+  heatmap of intensities - columns are samples, rows are proteins or peptides.
 
 The abundances of each protein (row) are z-scored.
 Afterward, the mean abundance for each protein is zero,
@@ -165,310 +161,325 @@ are ranked by their variability statistic (CV for untransformed data, sd
 for transformed data; see \code{\link{LFQDataStats}}) and the most
 variable are kept. This keeps the heatmap feasible and legible for
 peptide-list / entrapment searches with tens of thousands of features.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$heatmap(
   na_fraction = 1,
   rownames = FALSE,
   max_rownames_chars = 60,
   max_sample_label_chars = 20,
   top_n = 1000
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{na_fraction}}{maximum fraction of missing values per row. The default
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{na_fraction}}{maximum fraction of missing values per row. The default
 keeps every row that can be meaningfully z-scored.}
-
-\item{\code{rownames}}{show rownames (default FALSE - do not show.)}
-
-\item{\code{max_rownames_chars}}{maximum displayed row label length}
-
-\item{\code{max_sample_label_chars}}{maximum displayed sample label length.
+      \item{\code{rownames}}{show rownames (default FALSE - do not show.)}
+      \item{\code{max_rownames_chars}}{maximum displayed row label length}
+      \item{\code{max_sample_label_chars}}{maximum displayed sample label length.
 Labels keep their suffix because sample prefixes are often shared.}
-
-\item{\code{top_n}}{keep the \code{top_n} most variable features (default 1000);
+      \item{\code{top_n}}{keep the \code{top_n} most variable features (default 1000);
 \code{NULL} or \code{Inf} keeps all features.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ComplexHeatmap::Heatmap
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ComplexHeatmap::Heatmap
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-heatmap_cor"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-heatmap_cor}{}}}
-\subsection{Method \code{heatmap_cor()}}{
-heatmap of sample correlations.
+\subsection{\code{LFQDataPlotter$heatmap_cor()}}{
+  heatmap of sample correlations.
 
 The Spearman correlation among all samples
 is computed. Then the euclidean distance is used to compute the distances.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$heatmap_cor(max_sample_label_chars = 20)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$heatmap_cor(max_sample_label_chars = 20)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{max_sample_label_chars}}{maximum displayed sample label length.
+Labels keep their suffix because sample prefixes are often shared.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ComplexHeatmap::Heatmap
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{max_sample_label_chars}}{maximum displayed sample label length.
-Labels keep their suffix because sample prefixes are often shared.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ComplexHeatmap::Heatmap
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-pca"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-pca}{}}}
-\subsection{Method \code{pca()}}{
-PCA plot
+\subsection{\code{LFQDataPlotter$pca()}}{
+  PCA plot
 
 A PCA is applied and the first and second principal component are shown.
 Features with missing values are removed. To keep all features, impute
 first, e.g. with \code{\link{AggregateLimpa}} in \code{impute_only} mode.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, nudge = 0.1)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$pca(PC = c(1, 2), add_txt = TRUE, nudge = 0.1)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{PC}}{default c(1,2) - first and second principal component}
+      \item{\code{add_txt}}{show sample names}
+      \item{\code{nudge}}{default 0.1 nudge point labels}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{PC}}{default c(1,2) - first and second principal component}
-
-\item{\code{add_txt}}{show sample names}
-
-\item{\code{nudge}}{default 0.1 nudge point labels}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-pca_plotly"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-pca_plotly}{}}}
-\subsection{Method \code{pca_plotly()}}{
-pca plot
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pca_plotly(PC = c(1, 2), add_txt = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$pca_plotly()}}{
+  pca plot
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$pca_plotly(PC = c(1, 2), add_txt = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{PC}}{default c(1,2) - first and second principal component}
+      \item{\code{add_txt}}{show sample names}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    plotly
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{PC}}{default c(1,2) - first and second principal component}
-
-\item{\code{add_txt}}{show sample names}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-plotly
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-boxplots"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-boxplots}{}}}
-\subsection{Method \code{boxplots()}}{
-boxplots for all proteins
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$boxplots(facet = TRUE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$boxplots()}}{
+  boxplots for all proteins
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$boxplots(facet = TRUE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{facet}}{enable facet wrap if hierarchy_depth less then hierarchy length.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    tibble with column boxplots containing ggplot objects
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{facet}}{enable facet wrap if hierarchy_depth less then hierarchy length.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-tibble with column boxplots containing ggplot objects
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-missigness_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-missigness_histogram}{}}}
-\subsection{Method \code{missigness_histogram()}}{
-histogram of intensities given number of missing in conditions
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$missigness_histogram()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$missigness_histogram()}}{
+  histogram of intensities given number of missing in conditions
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$missigness_histogram()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-na_heatmap"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-na_heatmap}{}}}
-\subsection{Method \code{na_heatmap()}}{
-heatmap of features with missing values
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$na_heatmap()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$na_heatmap()}}{
+  heatmap of features with missing values
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$na_heatmap()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ComplexHeatmap::Heatmap
+  }
 }
 
-\subsection{Returns}{
-ComplexHeatmap::Heatmap
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-intensity_distribution_density"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-intensity_distribution_density}{}}}
-\subsection{Method \code{intensity_distribution_density()}}{
-density distribution of intensities
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_density(
+\subsection{\code{LFQDataPlotter$intensity_distribution_density()}}{
+  density distribution of intensities
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$intensity_distribution_density(
   legend = NA,
   max_legend_samples = 16
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{legend}}{show legend TRUE, FALSE do not show, NA selects
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{legend}}{show legend TRUE, FALSE do not show, NA selects
 automatically based on sample count.}
-
-\item{\code{max_legend_samples}}{maximum number of samples for automatic legend
+      \item{\code{max_legend_samples}}{maximum number of samples for automatic legend
 display.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ggplot
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-intensity_distribution_violin"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-intensity_distribution_violin}{}}}
-\subsection{Method \code{intensity_distribution_violin()}}{
-Violinplot showing distribution of intensities in all samples
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$intensity_distribution_violin()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$intensity_distribution_violin()}}{
+  Violinplot showing distribution of intensities in all samples
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$intensity_distribution_violin()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-pairs_smooth"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-pairs_smooth}{}}}
-\subsection{Method \code{pairs_smooth()}}{
-pairsplot of intensities
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$pairs_smooth(max = 10)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$pairs_smooth()}}{
+  pairsplot of intensities
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$pairs_smooth(max = 10)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{max}}{maximal number of samples to show}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    NULL
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{max}}{maximal number of samples to show}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-NULL
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-sample_correlation"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-sample_correlation}{}}}
-\subsection{Method \code{sample_correlation()}}{
-plot of sample correlations
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$sample_correlation()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$sample_correlation()}}{
+  plot of sample correlations
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$sample_correlation()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    NULL
+  }
 }
 
-\subsection{Returns}{
-NULL
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-upset_missing"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-upset_missing}{}}}
-\subsection{Method \code{upset_missing()}}{
-upset plot based on presence absence information
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$upset_missing()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$upset_missing()}}{
+  upset plot based on presence absence information
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$upset_missing()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    plot
+  }
 }
 
-\subsection{Returns}{
-plot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-write_boxplots"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-write_boxplots}{}}}
-\subsection{Method \code{write_boxplots()}}{
-write boxplots to file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_boxplots(path_qc, filename = NULL, width = 6, height = 6)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$write_boxplots()}}{
+  write boxplots to file
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$write_boxplots(path_qc, filename = NULL, width = 6, height = 6)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{path_qc}}{path to write to}
+      \item{\code{filename}}{file to write into}
+      \item{\code{width}}{fig width}
+      \item{\code{height}}{fig height}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path_qc}}{path to write to}
-
-\item{\code{filename}}{file to write into}
-
-\item{\code{width}}{fig width}
-
-\item{\code{height}}{fig height}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-write_pdf"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-write_pdf}{}}}
-\subsection{Method \code{write_pdf()}}{
-write figure to pdf
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$write_pdf(fig, path_qc, fig_name, width = 7, height = 7)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$write_pdf()}}{
+  write figure to pdf
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$write_pdf(fig, path_qc, fig_name, width = 7, height = 7)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fig}}{ggplot or ComplexHeatmap::Heatmap}
+      \item{\code{path_qc}}{path to write to}
+      \item{\code{fig_name}}{name of figure (no extension)}
+      \item{\code{width}}{figure width}
+      \item{\code{height}}{figure height}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    path the file was written to
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fig}}{ggplot or ComplexHeatmap::Heatmap}
-
-\item{\code{path_qc}}{path to write to}
-
-\item{\code{fig_name}}{name of figure (no extension)}
-
-\item{\code{width}}{figure width}
-
-\item{\code{height}}{figure height}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-path the file was written to
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataPlotter$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataPlotter$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

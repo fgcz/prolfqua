@@ -30,10 +30,10 @@ tmp <- hierarchy_counts(data0, lfq$hierarchy_keys(), lfq$isotope_label())
 stopifnot(nrow(tmp) == 0)
 }
 \seealso{
-Other summary: 
+Other summary:
 \code{\link{HierarchyCountsSample}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{summarize_hierarchy}()}
+\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
 }
 \concept{summary}
 \keyword{internal}

@@ -35,12 +35,12 @@ imputed <- get_contrast(imp, lfq$hierarchy_keys(), Contrasts)
 
 }
 \seealso{
-Other imputation: 
-\code{\link{missigness_histogram}()},
-\code{\link{missingness_per_condition}()},
-\code{\link{missingness_per_condition_cumsum}()},
-\code{\link{upset_interaction_missing_stats}()},
-\code{\link{upset_missing_stats}()}
+Other imputation:
+\code{\link[=missigness_histogram]{missigness_histogram()}},
+\code{\link[=missingness_per_condition]{missingness_per_condition()}},
+\code{\link[=missingness_per_condition_cumsum]{missingness_per_condition_cumsum()}},
+\code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}},
+\code{\link[=upset_missing_stats]{upset_missing_stats()}}
 }
 \concept{imputation}
 \keyword{internal}

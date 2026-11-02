@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-Decorates LFQData with methods to compute statistics of interactions
-
-Decorates LFQData with methods to compute statistics of interactions
-}
-\details{
 compute stdv, mean and CV per peptide or protein and condition.
 }
 \examples{
@@ -79,7 +74,7 @@ lfqstats$violin()
 runallfuncs(lfqstats)
 }
 \seealso{
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
@@ -88,258 +83,269 @@ Other LFQData:
 \code{\link{LFQData}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
 }
 \concept{LFQData}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{lfq}}{LFQData}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{lfq}}{LFQData}
 
-\item{\code{stat}}{either CV or sd (if is_transformed)}
+    \item{\code{stat}}{either CV or sd (if is_transformed)}
 
-\item{\code{statsdf}}{frame with statistics.}
-}
-\if{html}{\out{</div>}}
+    \item{\code{statsdf}}{frame with statistics.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LFQDataStats-new}{\code{LFQDataStats$new()}}
-\item \href{#method-LFQDataStats-stats}{\code{LFQDataStats$stats()}}
-\item \href{#method-LFQDataStats-stats_wide}{\code{LFQDataStats$stats_wide()}}
-\item \href{#method-LFQDataStats-stats_quantiles}{\code{LFQDataStats$stats_quantiles()}}
-\item \href{#method-LFQDataStats-density}{\code{LFQDataStats$density()}}
-\item \href{#method-LFQDataStats-density_median}{\code{LFQDataStats$density_median()}}
-\item \href{#method-LFQDataStats-violin}{\code{LFQDataStats$violin()}}
-\item \href{#method-LFQDataStats-violin_median}{\code{LFQDataStats$violin_median()}}
-\item \href{#method-LFQDataStats-stdv_vs_mean}{\code{LFQDataStats$stdv_vs_mean()}}
-\item \href{#method-LFQDataStats-power_t_test_quantiles}{\code{LFQDataStats$power_t_test_quantiles()}}
-\item \href{#method-LFQDataStats-power_t_test}{\code{LFQDataStats$power_t_test()}}
-\item \href{#method-LFQDataStats-clone}{\code{LFQDataStats$clone()}}
-}
+  \itemize{
+    \item \href{#method-LFQDataStats-initialize}{\code{LFQDataStats$new()}}
+    \item \href{#method-LFQDataStats-stats}{\code{LFQDataStats$stats()}}
+    \item \href{#method-LFQDataStats-stats_wide}{\code{LFQDataStats$stats_wide()}}
+    \item \href{#method-LFQDataStats-stats_quantiles}{\code{LFQDataStats$stats_quantiles()}}
+    \item \href{#method-LFQDataStats-density}{\code{LFQDataStats$density()}}
+    \item \href{#method-LFQDataStats-density_median}{\code{LFQDataStats$density_median()}}
+    \item \href{#method-LFQDataStats-violin}{\code{LFQDataStats$violin()}}
+    \item \href{#method-LFQDataStats-violin_median}{\code{LFQDataStats$violin_median()}}
+    \item \href{#method-LFQDataStats-stdv_vs_mean}{\code{LFQDataStats$stdv_vs_mean()}}
+    \item \href{#method-LFQDataStats-power_t_test_quantiles}{\code{LFQDataStats$power_t_test_quantiles()}}
+    \item \href{#method-LFQDataStats-power_t_test}{\code{LFQDataStats$power_t_test()}}
+    \item \href{#method-LFQDataStats-clone}{\code{LFQDataStats$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataStats-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataStats-new}{}}}
-\subsection{Method \code{new()}}{
-create analyse variances and CV
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$new(lfqdata, stats = c("everything", "interaction", "all"))}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfqdata}}{LFQData object}
-
-\item{\code{stats}}{if `interaction`, compute within-group stats; if `all`,
+\if{html}{\out{<a id="method-LFQDataStats-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataStats-initialize}{}}}
+\subsection{\code{LFQDataStats$new()}}{
+  create analyse variances and CV
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$new(lfqdata, stats = c("everything", "interaction", "all"))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfqdata}}{LFQData object}
+      \item{\code{stats}}{if `interaction`, compute within-group stats; if `all`,
 compute overall CV; if `pooled`, use pooled variance with grouping
 information}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-stats"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-stats}{}}}
-\subsection{Method \code{stats()}}{
-access data.frame with statistics
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$stats()}}{
+  access data.frame with statistics
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$stats()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame with computed statistics
+  }
 }
 
-\subsection{Returns}{
-data.frame with computed statistics
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-stats_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-stats_wide}{}}}
-\subsection{Method \code{stats_wide()}}{
-access data.frame with statistics in wide format
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats_wide()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$stats_wide()}}{
+  access data.frame with statistics in wide format
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$stats_wide()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame with computed statistics in wide format
+  }
 }
 
-\subsection{Returns}{
-data.frame with computed statistics in wide format
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-stats_quantiles"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-stats_quantiles}{}}}
-\subsection{Method \code{stats_quantiles()}}{
-Determine CV or sd for the quantiles
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stats_quantiles(probs = c(0.1, 0.25, 0.5, 0.75, 0.9))}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$stats_quantiles()}}{
+  Determine CV or sd for the quantiles
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$stats_quantiles(probs = c(0.1, 0.25, 0.5, 0.75, 0.9))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{probs}}{for which quantile to determine CV or sd}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{probs}}{for which quantile to determine CV or sd}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-density"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-density}{}}}
-\subsection{Method \code{density()}}{
-plots density or ecdf
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density(ggstat = c("density", "ecdf"))}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$density()}}{
+  plots density or ecdf
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$density(ggstat = c("density", "ecdf"))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{ggstat}}{either density or ecdf}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{ggstat}}{either density or ecdf}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-density_median"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-density_median}{}}}
-\subsection{Method \code{density_median()}}{
-plot density or ecdf of CV or sd for the 50% of low intensity data and 50% of high intensity data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$density_median(ggstat = c("density", "ecdf"))}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$density_median()}}{
+  plot density or ecdf of CV or sd for the 50% of low intensity data and 50% of high intensity data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$density_median(ggstat = c("density", "ecdf"))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{ggstat}}{either density of ecdf}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{ggstat}}{either density of ecdf}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-violin"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-violin}{}}}
-\subsection{Method \code{violin()}}{
-plot violinplot of CV or sd
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$violin()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$violin()}}{
+  plot violinplot of CV or sd
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$violin()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{ggstat}}{either density of ecdf}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-violin_median"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-violin_median}{}}}
-\subsection{Method \code{violin_median()}}{
-plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$violin_median()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$violin_median()}}{
+  plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$violin_median()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-stdv_vs_mean"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-stdv_vs_mean}{}}}
-\subsection{Method \code{stdv_vs_mean()}}{
-plot sd vs mean
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$stdv_vs_mean(size = 200)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$stdv_vs_mean()}}{
+  plot sd vs mean
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$stdv_vs_mean(size = 200)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{size}}{number of points to sample (default 200)}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{size}}{number of points to sample (default 200)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-power_t_test_quantiles"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-power_t_test_quantiles}{}}}
-\subsection{Method \code{power_t_test_quantiles()}}{
-compute sample size for entire dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$power_t_test_quantiles(
+\subsection{\code{LFQDataStats$power_t_test_quantiles()}}{
+  compute sample size for entire dataset
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$power_t_test_quantiles(
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9),
   delta = c(0.59, 1, 2),
   power = 0.8,
   sig.level = 0.05
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{probs}}{quantiles of sd for which sample size should be computed}
+      \item{\code{delta}}{effect size}
+      \item{\code{power}}{power of test}
+      \item{\code{sig.level}}{significance level.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{probs}}{quantiles of sd for which sample size should be computed}
-
-\item{\code{delta}}{effect size}
-
-\item{\code{power}}{power of test}
-
-\item{\code{sig.level}}{significance level.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-power_t_test"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-power_t_test}{}}}
-\subsection{Method \code{power_t_test()}}{
-compute sample for each protein
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$power_t_test(delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$power_t_test()}}{
+  compute sample for each protein
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$power_t_test(delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{delta}}{effect size}
+      \item{\code{power}}{power of test}
+      \item{\code{sig.level}}{significance level.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{delta}}{effect size}
-
-\item{\code{power}}{power of test}
-
-\item{\code{sig.level}}{significance level.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataStats-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataStats$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataStats$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

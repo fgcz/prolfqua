@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-ROPECA reproducibility-optimization method
-
-ROPECA reproducibility-optimization method
-}
-\details{
 ROPECA optimizes the reproducibility of statistical testing
  on peptide-level and aggregates the peptide-level changes
   to determine differential protein-level expression.
@@ -55,7 +50,7 @@ mod <- build_model(
 \seealso{
 \code{\link{summary_ROPECA_median_p_scaled}}
 
-Other modelling: 
+Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
@@ -85,7 +80,7 @@ Other modelling:
 \code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{LR_test}()},
+\code{\link[=LR_test]{LR_test()}},
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
@@ -96,230 +91,238 @@ Other modelling:
 \code{\link{StrategyLogistf}},
 \code{\link{StrategyRLM}},
 \code{\link{StrategyRfit}},
-\code{\link{build_contrast_analysis}()},
-\code{\link{build_model}()},
-\code{\link{build_model_glm_peptide}()},
-\code{\link{build_model_glm_protein}()},
-\code{\link{build_model_impute}()},
-\code{\link{build_model_limma}()},
-\code{\link{build_model_limma_impute}()},
-\code{\link{build_model_limma_voom}()},
-\code{\link{build_model_limma_voom_impute}()},
-\code{\link{build_model_limpa}()},
-\code{\link{build_model_logistf}()},
-\code{\link{compute_borrowed_variance}()},
-\code{\link{compute_borrowed_variance_limma}()},
-\code{\link{compute_contrast}()},
-\code{\link{compute_lmer_contrast}()},
-\code{\link{df.residual.rfit_prolfqua}()},
-\code{\link{get_anova_df}()},
-\code{\link{get_complete_model_fit}()},
-\code{\link{get_p_values_pbeta}()},
-\code{\link{group_label}()},
-\code{\link{impute_from_model}()},
-\code{\link{impute_refit_singular}()},
-\code{\link{linfct_from_model}()},
-\code{\link{linfct_matrix_contrasts}()},
-\code{\link{list_facades}()},
-\code{\link{lookup_facade}()},
-\code{\link{merge_contrasts_results}()},
-\code{\link{model_analyse}()},
-\code{\link{model_summary}()},
-\code{\link{moderated_p_deqms}()},
-\code{\link{moderated_p_deqms_long}()},
-\code{\link{moderated_p_limma}()},
-\code{\link{new_imputed_model}()},
-\code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{register_facade}()},
-\code{\link{sigma.rfit_prolfqua}()},
-\code{\link{sim_build_models_lm}()},
-\code{\link{sim_build_models_lmer}()},
-\code{\link{sim_build_models_logistf}()},
-\code{\link{sim_make_model_lm}()},
-\code{\link{sim_make_model_lmer}()},
-\code{\link{strategy_limma}()},
-\code{\link{strategy_limpa}()},
-\code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p_scaled}()},
-\code{\link{vcov.rfit_prolfqua}()}
+\code{\link[=build_contrast_analysis]{build_contrast_analysis()}},
+\code{\link[=build_model]{build_model()}},
+\code{\link[=build_model_glm_peptide]{build_model_glm_peptide()}},
+\code{\link[=build_model_glm_protein]{build_model_glm_protein()}},
+\code{\link[=build_model_impute]{build_model_impute()}},
+\code{\link[=build_model_limma]{build_model_limma()}},
+\code{\link[=build_model_limma_impute]{build_model_limma_impute()}},
+\code{\link[=build_model_limma_voom]{build_model_limma_voom()}},
+\code{\link[=build_model_limma_voom_impute]{build_model_limma_voom_impute()}},
+\code{\link[=build_model_limpa]{build_model_limpa()}},
+\code{\link[=build_model_logistf]{build_model_logistf()}},
+\code{\link[=compute_borrowed_variance]{compute_borrowed_variance()}},
+\code{\link[=compute_borrowed_variance_limma]{compute_borrowed_variance_limma()}},
+\code{\link[=compute_contrast]{compute_contrast()}},
+\code{\link[=compute_lmer_contrast]{compute_lmer_contrast()}},
+\code{\link[=df.residual.rfit_prolfqua]{df.residual.rfit_prolfqua()}},
+\code{\link[=get_anova_df]{get_anova_df()}},
+\code{\link[=get_complete_model_fit]{get_complete_model_fit()}},
+\code{\link[=get_p_values_pbeta]{get_p_values_pbeta()}},
+\code{\link[=group_label]{group_label()}},
+\code{\link[=impute_from_model]{impute_from_model()}},
+\code{\link[=impute_refit_singular]{impute_refit_singular()}},
+\code{\link[=linfct_from_model]{linfct_from_model()}},
+\code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
+\code{\link[=list_facades]{list_facades()}},
+\code{\link[=lookup_facade]{lookup_facade()}},
+\code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
+\code{\link[=model_analyse]{model_analyse()}},
+\code{\link[=model_summary]{model_summary()}},
+\code{\link[=moderated_p_deqms]{moderated_p_deqms()}},
+\code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
+\code{\link[=moderated_p_limma]{moderated_p_limma()}},
+\code{\link[=new_imputed_model]{new_imputed_model()}},
+\code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
+\code{\link[=register_facade]{register_facade()}},
+\code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
+\code{\link[=sim_build_models_lm]{sim_build_models_lm()}},
+\code{\link[=sim_build_models_lmer]{sim_build_models_lmer()}},
+\code{\link[=sim_build_models_logistf]{sim_build_models_logistf()}},
+\code{\link[=sim_make_model_lm]{sim_make_model_lm()}},
+\code{\link[=sim_make_model_lmer]{sim_make_model_lmer()}},
+\code{\link[=strategy_limma]{strategy_limma()}},
+\code{\link[=strategy_limpa]{strategy_limpa()}},
+\code{\link[=strategy_logistf]{strategy_logistf()}},
+\code{\link[=summary_ROPECA_median_p_scaled]{summary_ROPECA_median_p_scaled()}},
+\code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 }
 \concept{modelling}
 \section{Super class}{
-\code{\link[prolfqua:ContrastsInterface]{prolfqua::ContrastsInterface}} -> \code{ContrastsROPECA}
+\code{\link[prolfqua:ContrastsInterface]{ContrastsInterface}} -> \code{ContrastsROPECA}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{Contrast}}{Contrast}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{Contrast}}{Contrast}
 
-\item{\code{contrast_result}}{contrast result}
+    \item{\code{contrast_result}}{contrast result}
 
-\item{\code{model_name}}{model name}
+    \item{\code{model_name}}{model name}
 
-\item{\code{subject_id}}{columns with protein ID's}
+    \item{\code{subject_id}}{columns with protein ID's}
 
-\item{\code{p.adjust}}{method to use for p.value adjustment}
-}
-\if{html}{\out{</div>}}
+    \item{\code{p.adjust}}{method to use for p.value adjustment}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-ContrastsROPECA-new}{\code{ContrastsROPECA$new()}}
-\item \href{#method-ContrastsROPECA-get_contrast_sides}{\code{ContrastsROPECA$get_contrast_sides()}}
-\item \href{#method-ContrastsROPECA-get_linfct}{\code{ContrastsROPECA$get_linfct()}}
-\item \href{#method-ContrastsROPECA-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
-\item \href{#method-ContrastsROPECA-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
-\item \href{#method-ContrastsROPECA-to_wide}{\code{ContrastsROPECA$to_wide()}}
-\item \href{#method-ContrastsROPECA-clone}{\code{ContrastsROPECA$clone()}}
+  \itemize{
+    \item \href{#method-ContrastsROPECA-initialize}{\code{ContrastsROPECA$new()}}
+    \item \href{#method-ContrastsROPECA-get_contrast_sides}{\code{ContrastsROPECA$get_contrast_sides()}}
+    \item \href{#method-ContrastsROPECA-get_linfct}{\code{ContrastsROPECA$get_linfct()}}
+    \item \href{#method-ContrastsROPECA-get_contrasts}{\code{ContrastsROPECA$get_contrasts()}}
+    \item \href{#method-ContrastsROPECA-get_Plotter}{\code{ContrastsROPECA$get_Plotter()}}
+    \item \href{#method-ContrastsROPECA-to_wide}{\code{ContrastsROPECA$to_wide()}}
+    \item \href{#method-ContrastsROPECA-clone}{\code{ContrastsROPECA$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description'><code>prolfqua::ContrastsInterface$column_description()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table'><code>prolfqua::ContrastsInterface$contrast_summary_table()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="extra_artifacts"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts'><code>prolfqua::ContrastsInterface$extra_artifacts()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="filter_significant"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant'><code>prolfqua::ContrastsInterface$filter_significant()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_config"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config'><code>prolfqua::ContrastsInterface$get_config()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_missing"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing'><code>prolfqua::ContrastsInterface$get_missing()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>prolfqua::ContrastsInterface$get_ora()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>prolfqua::ContrastsInterface$get_rank()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description'><code>ContrastsInterface$column_description()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table'><code>ContrastsInterface$contrast_summary_table()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="extra_artifacts"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts'><code>ContrastsInterface$extra_artifacts()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="filter_significant"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant'><code>ContrastsInterface$filter_significant()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_config"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config'><code>ContrastsInterface$get_config()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_missing"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing'><code>ContrastsInterface$get_missing()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>ContrastsInterface$get_ora()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>ContrastsInterface$get_rank()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsROPECA-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsROPECA-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$new(
+\if{html}{\out{<a id="method-ContrastsROPECA-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsROPECA-initialize}{}}}
+\subsection{\code{ContrastsROPECA$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsROPECA$new(
   Contrast,
   model_name = "ROPECA",
   p.adjust = prolfqua::adjust_p_values
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{Contrast}}{e.g. instance of Contrasts class, or ContrastsModerated}
+      \item{\code{model_name}}{default ROPECA}
+      \item{\code{p.adjust}}{function to use for p.value adjustment}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{Contrast}}{e.g. instance of Contrasts class, or ContrastsModerated}
-
-\item{\code{model_name}}{default ROPECA}
-
-\item{\code{p.adjust}}{function to use for p.value adjustment}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsROPECA-get_contrast_sides"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_contrast_sides}{}}}
-\subsection{Method \code{get_contrast_sides()}}{
-show names of contrasts
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrast_sides()}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsROPECA$get_contrast_sides()}}{
+  show names of contrasts
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsROPECA$get_contrast_sides()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsROPECA-get_linfct"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_linfct}{}}}
-\subsection{Method \code{get_linfct()}}{
-get linear function used to determine contrasts
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_linfct()}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsROPECA$get_linfct()}}{
+  get linear function used to determine contrasts
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsROPECA$get_linfct()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsROPECA-get_contrasts"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_contrasts}{}}}
-\subsection{Method \code{get_contrasts()}}{
-get contrasts
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_contrasts(all = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsROPECA$get_contrasts()}}{
+  get contrasts
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsROPECA$get_contrasts(all = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{all}}{should all columns be returned (default FALSE)}
+      \item{\code{global}}{use a global linear function (determined by get_linfct)}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{all}}{should all columns be returned (default FALSE)}
-
-\item{\code{global}}{use a global linear function (determined by get_linfct)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsROPECA-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsROPECA-get_Plotter}{}}}
-\subsection{Method \code{get_Plotter()}}{
-get \code{\link{ContrastsPlotter}}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$get_Plotter(fdr_threshold = 0.1, fc_threshold = 2)}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsROPECA$get_Plotter()}}{
+  get \code{\link{ContrastsPlotter}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsROPECA$get_Plotter(fdr_threshold = 0.1, fc_threshold = 2)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fdr_threshold}}{FDR threshold}
+      \item{\code{fc_threshold}}{FC threshold}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{\link{ContrastsPlotter}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fdr_threshold}}{FDR threshold}
-
-\item{\code{fc_threshold}}{FC threshold}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link{ContrastsPlotter}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsROPECA-to_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsROPECA-to_wide}{}}}
-\subsection{Method \code{to_wide()}}{
-convert to wide format
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$to_wide(
+\subsection{\code{ContrastsROPECA$to_wide()}}{
+  convert to wide format
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsROPECA$to_wide(
   columns = c("beta.based.significance", "FDR.beta.based.significance")
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{columns}}{value column default beta.based.significance}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{columns}}{value column default beta.based.significance}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsROPECA-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsROPECA-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsROPECA$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsROPECA$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsROPECA$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

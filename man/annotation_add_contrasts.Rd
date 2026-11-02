@@ -42,11 +42,11 @@ annotation_add_contrasts(x5463yzwer453bbb, "factor_A", "factor_B", "primary")
 annotation_add_contrasts(x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
 }
 \seealso{
-Other contrasts: 
-\code{\link{generate_contrasts}()},
-\code{\link{generate_contrasts_for_factor}()},
-\code{\link{interaction_contrasts}()},
-\code{\link{level_specific_contrasts}()},
-\code{\link{main_effect_contrasts}()}
+Other contrasts:
+\code{\link[=generate_contrasts]{generate_contrasts()}},
+\code{\link[=generate_contrasts_for_factor]{generate_contrasts_for_factor()}},
+\code{\link[=interaction_contrasts]{interaction_contrasts()}},
+\code{\link[=level_specific_contrasts]{level_specific_contrasts()}},
+\code{\link[=main_effect_contrasts]{main_effect_contrasts()}}
 }
 \concept{contrasts}

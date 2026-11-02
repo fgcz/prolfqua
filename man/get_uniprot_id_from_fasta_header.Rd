@@ -30,14 +30,14 @@ stopifnot(sum(!is.na(result$UniprotID)) == 3)
 
 }
 \seealso{
-Other utilities: 
+Other utilities:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{is_contaminant}()},
-\code{\link{is_decoy}()},
-\code{\link{matrix_to_tibble}()},
-\code{\link{multigroup_volcano}()},
-\code{\link{pairs_smooth}()},
-\code{\link{panel_cor}()},
-\code{\link{table_facade}()}
+\code{\link[=is_contaminant]{is_contaminant()}},
+\code{\link[=is_decoy]{is_decoy()}},
+\code{\link[=matrix_to_tibble]{matrix_to_tibble()}},
+\code{\link[=multigroup_volcano]{multigroup_volcano()}},
+\code{\link[=pairs_smooth]{pairs_smooth()}},
+\code{\link[=panel_cor]{panel_cor()}},
+\code{\link[=table_facade]{table_facade()}}
 }
 \concept{utilities}

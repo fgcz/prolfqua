@@ -18,12 +18,12 @@ contrasts are derived from the factor levels. See `inst/script/README.md`
 for its origin.
 }
 \seealso{
-Other data: 
+Other data:
 \code{\link{PACKAGE_DATA}},
 \code{\link{data_checksummarizationrobust87}},
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_ionstar}},
-\code{\link{prolfqua_data}()}
+\code{\link[=prolfqua_data]{prolfqua_data()}}
 }
 \concept{data}
 \keyword{internal}

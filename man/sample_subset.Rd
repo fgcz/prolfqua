@@ -22,19 +22,19 @@ subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
 length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 }
 \seealso{
-Other configuration: 
+Other configuration:
 \code{\link{AnalysisConfiguration}},
 \code{\link{ContrastConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6_extract_values}()},
-\code{\link{complete_cases}()},
-\code{\link{list_to_ContrastConfiguration}()},
-\code{\link{make_interaction_column}()},
-\code{\link{make_reduced_hierarchy_config}()},
-\code{\link{separate_hierarchy}()},
-\code{\link{setup_analysis}()},
-\code{\link{table_factors}()},
-\code{\link{table_factors_size}()}
+\code{\link[=R6_extract_values]{R6_extract_values()}},
+\code{\link[=complete_cases]{complete_cases()}},
+\code{\link[=list_to_ContrastConfiguration]{list_to_ContrastConfiguration()}},
+\code{\link[=make_interaction_column]{make_interaction_column()}},
+\code{\link[=make_reduced_hierarchy_config]{make_reduced_hierarchy_config()}},
+\code{\link[=separate_hierarchy]{separate_hierarchy()}},
+\code{\link[=setup_analysis]{setup_analysis()}},
+\code{\link[=table_factors]{table_factors()}},
+\code{\link[=table_factors_size]{table_factors_size()}}
 }
 \concept{configuration}
 \keyword{internal}

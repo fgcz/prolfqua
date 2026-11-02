@@ -8,8 +8,6 @@ An R6 class generator.
 }
 \description{
 plot contrasts
-
-plot contrasts
 }
 \examples{
 
@@ -58,7 +56,7 @@ stopifnot("ggplot" \%in\%  class(cp$histogram_diff()))
 
 }
 \seealso{
-Other modelling: 
+Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
@@ -88,7 +86,7 @@ Other modelling:
 \code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{LR_test}()},
+\code{\link[=LR_test]{LR_test()}},
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
@@ -99,120 +97,121 @@ Other modelling:
 \code{\link{StrategyLogistf}},
 \code{\link{StrategyRLM}},
 \code{\link{StrategyRfit}},
-\code{\link{build_contrast_analysis}()},
-\code{\link{build_model}()},
-\code{\link{build_model_glm_peptide}()},
-\code{\link{build_model_glm_protein}()},
-\code{\link{build_model_impute}()},
-\code{\link{build_model_limma}()},
-\code{\link{build_model_limma_impute}()},
-\code{\link{build_model_limma_voom}()},
-\code{\link{build_model_limma_voom_impute}()},
-\code{\link{build_model_limpa}()},
-\code{\link{build_model_logistf}()},
-\code{\link{compute_borrowed_variance}()},
-\code{\link{compute_borrowed_variance_limma}()},
-\code{\link{compute_contrast}()},
-\code{\link{compute_lmer_contrast}()},
-\code{\link{df.residual.rfit_prolfqua}()},
-\code{\link{get_anova_df}()},
-\code{\link{get_complete_model_fit}()},
-\code{\link{get_p_values_pbeta}()},
-\code{\link{group_label}()},
-\code{\link{impute_from_model}()},
-\code{\link{impute_refit_singular}()},
-\code{\link{linfct_from_model}()},
-\code{\link{linfct_matrix_contrasts}()},
-\code{\link{list_facades}()},
-\code{\link{lookup_facade}()},
-\code{\link{merge_contrasts_results}()},
-\code{\link{model_analyse}()},
-\code{\link{model_summary}()},
-\code{\link{moderated_p_deqms}()},
-\code{\link{moderated_p_deqms_long}()},
-\code{\link{moderated_p_limma}()},
-\code{\link{new_imputed_model}()},
-\code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{register_facade}()},
-\code{\link{sigma.rfit_prolfqua}()},
-\code{\link{sim_build_models_lm}()},
-\code{\link{sim_build_models_lmer}()},
-\code{\link{sim_build_models_logistf}()},
-\code{\link{sim_make_model_lm}()},
-\code{\link{sim_make_model_lmer}()},
-\code{\link{strategy_limma}()},
-\code{\link{strategy_limpa}()},
-\code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p_scaled}()},
-\code{\link{vcov.rfit_prolfqua}()}
+\code{\link[=build_contrast_analysis]{build_contrast_analysis()}},
+\code{\link[=build_model]{build_model()}},
+\code{\link[=build_model_glm_peptide]{build_model_glm_peptide()}},
+\code{\link[=build_model_glm_protein]{build_model_glm_protein()}},
+\code{\link[=build_model_impute]{build_model_impute()}},
+\code{\link[=build_model_limma]{build_model_limma()}},
+\code{\link[=build_model_limma_impute]{build_model_limma_impute()}},
+\code{\link[=build_model_limma_voom]{build_model_limma_voom()}},
+\code{\link[=build_model_limma_voom_impute]{build_model_limma_voom_impute()}},
+\code{\link[=build_model_limpa]{build_model_limpa()}},
+\code{\link[=build_model_logistf]{build_model_logistf()}},
+\code{\link[=compute_borrowed_variance]{compute_borrowed_variance()}},
+\code{\link[=compute_borrowed_variance_limma]{compute_borrowed_variance_limma()}},
+\code{\link[=compute_contrast]{compute_contrast()}},
+\code{\link[=compute_lmer_contrast]{compute_lmer_contrast()}},
+\code{\link[=df.residual.rfit_prolfqua]{df.residual.rfit_prolfqua()}},
+\code{\link[=get_anova_df]{get_anova_df()}},
+\code{\link[=get_complete_model_fit]{get_complete_model_fit()}},
+\code{\link[=get_p_values_pbeta]{get_p_values_pbeta()}},
+\code{\link[=group_label]{group_label()}},
+\code{\link[=impute_from_model]{impute_from_model()}},
+\code{\link[=impute_refit_singular]{impute_refit_singular()}},
+\code{\link[=linfct_from_model]{linfct_from_model()}},
+\code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
+\code{\link[=list_facades]{list_facades()}},
+\code{\link[=lookup_facade]{lookup_facade()}},
+\code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
+\code{\link[=model_analyse]{model_analyse()}},
+\code{\link[=model_summary]{model_summary()}},
+\code{\link[=moderated_p_deqms]{moderated_p_deqms()}},
+\code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
+\code{\link[=moderated_p_limma]{moderated_p_limma()}},
+\code{\link[=new_imputed_model]{new_imputed_model()}},
+\code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
+\code{\link[=register_facade]{register_facade()}},
+\code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
+\code{\link[=sim_build_models_lm]{sim_build_models_lm()}},
+\code{\link[=sim_build_models_lmer]{sim_build_models_lmer()}},
+\code{\link[=sim_build_models_logistf]{sim_build_models_logistf()}},
+\code{\link[=sim_make_model_lm]{sim_make_model_lm()}},
+\code{\link[=sim_make_model_lmer]{sim_make_model_lmer()}},
+\code{\link[=strategy_limma]{strategy_limma()}},
+\code{\link[=strategy_limpa]{strategy_limpa()}},
+\code{\link[=strategy_logistf]{strategy_logistf()}},
+\code{\link[=summary_ROPECA_median_p_scaled]{summary_ROPECA_median_p_scaled()}},
+\code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 
-Other plotting: 
+Other plotting:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{missigness_histogram}()},
-\code{\link{missingness_per_condition}()},
-\code{\link{missingness_per_condition_cumsum}()},
-\code{\link{plot_estimate}()},
-\code{\link{plot_heatmap}()},
-\code{\link{plot_heatmap_cor}()},
-\code{\link{plot_hierarchies_boxplot_df}()},
-\code{\link{plot_hierarchies_line}()},
-\code{\link{plot_intensity_distribution_violin}()},
-\code{\link{plot_na_heatmap}()},
-\code{\link{plot_pca}()},
-\code{\link{plot_raster}()},
-\code{\link{plot_sample_correlation}()},
-\code{\link{upset_interaction_missing_stats}()},
-\code{\link{upset_missing_stats}()}
+\code{\link[=missigness_histogram]{missigness_histogram()}},
+\code{\link[=missingness_per_condition]{missingness_per_condition()}},
+\code{\link[=missingness_per_condition_cumsum]{missingness_per_condition_cumsum()}},
+\code{\link[=plot_estimate]{plot_estimate()}},
+\code{\link[=plot_heatmap]{plot_heatmap()}},
+\code{\link[=plot_heatmap_cor]{plot_heatmap_cor()}},
+\code{\link[=plot_hierarchies_boxplot_df]{plot_hierarchies_boxplot_df()}},
+\code{\link[=plot_hierarchies_line]{plot_hierarchies_line()}},
+\code{\link[=plot_intensity_distribution_violin]{plot_intensity_distribution_violin()}},
+\code{\link[=plot_na_heatmap]{plot_na_heatmap()}},
+\code{\link[=plot_pca]{plot_pca()}},
+\code{\link[=plot_raster]{plot_raster()}},
+\code{\link[=plot_sample_correlation]{plot_sample_correlation()}},
+\code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}},
+\code{\link[=upset_missing_stats]{upset_missing_stats()}}
 }
 \concept{modelling}
 \concept{plotting}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{model_name}}{of column with model name}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{model_name}}{of column with model name}
 
-\item{\code{subject_id}}{hierarchy key columns}
+    \item{\code{subject_id}}{hierarchy key columns}
 
-\item{\code{diff}}{column with fold change differences}
+    \item{\code{diff}}{column with fold change differences}
 
-\item{\code{contrast}}{column with contrasts names, default "contrast"}
+    \item{\code{contrast}}{column with contrasts names, default "contrast"}
 
-\item{\code{group}}{crosstalk group name for linked brushing, default "BB"}
+    \item{\code{group}}{crosstalk group name for linked brushing, default "BB"}
 
-\item{\code{volcano_spec}}{volcano plot specification}
+    \item{\code{volcano_spec}}{volcano plot specification}
 
-\item{\code{score_spec}}{score plot specification}
+    \item{\code{score_spec}}{score plot specification}
 
-\item{\code{histogram_spec}}{plot specification}
+    \item{\code{histogram_spec}}{plot specification}
 
-\item{\code{fcthresh}}{fold change threshold}
+    \item{\code{fcthresh}}{fold change threshold}
 
-\item{\code{avg.abundance}}{name of column containing avg abundance values.}
-}
-\if{html}{\out{</div>}}
+    \item{\code{avg.abundance}}{name of column containing avg abundance values.}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-ContrastsPlotter-new}{\code{ContrastsPlotter$new()}}
-\item \href{#method-ContrastsPlotter-histogram}{\code{ContrastsPlotter$histogram()}}
-\item \href{#method-ContrastsPlotter-histogram_diff}{\code{ContrastsPlotter$histogram_diff()}}
-\item \href{#method-ContrastsPlotter-volcano}{\code{ContrastsPlotter$volcano()}}
-\item \href{#method-ContrastsPlotter-volcano_plotly}{\code{ContrastsPlotter$volcano_plotly()}}
-\item \href{#method-ContrastsPlotter-ma_plot}{\code{ContrastsPlotter$ma_plot()}}
-\item \href{#method-ContrastsPlotter-ma_plotly}{\code{ContrastsPlotter$ma_plotly()}}
-\item \href{#method-ContrastsPlotter-score_plot}{\code{ContrastsPlotter$score_plot()}}
-\item \href{#method-ContrastsPlotter-barplot_threshold}{\code{ContrastsPlotter$barplot_threshold()}}
-\item \href{#method-ContrastsPlotter-clone}{\code{ContrastsPlotter$clone()}}
-}
+  \itemize{
+    \item \href{#method-ContrastsPlotter-initialize}{\code{ContrastsPlotter$new()}}
+    \item \href{#method-ContrastsPlotter-histogram}{\code{ContrastsPlotter$histogram()}}
+    \item \href{#method-ContrastsPlotter-histogram_diff}{\code{ContrastsPlotter$histogram_diff()}}
+    \item \href{#method-ContrastsPlotter-volcano}{\code{ContrastsPlotter$volcano()}}
+    \item \href{#method-ContrastsPlotter-volcano_plotly}{\code{ContrastsPlotter$volcano_plotly()}}
+    \item \href{#method-ContrastsPlotter-ma_plot}{\code{ContrastsPlotter$ma_plot()}}
+    \item \href{#method-ContrastsPlotter-ma_plotly}{\code{ContrastsPlotter$ma_plotly()}}
+    \item \href{#method-ContrastsPlotter-score_plot}{\code{ContrastsPlotter$score_plot()}}
+    \item \href{#method-ContrastsPlotter-barplot_threshold}{\code{ContrastsPlotter$barplot_threshold()}}
+    \item \href{#method-ContrastsPlotter-clone}{\code{ContrastsPlotter$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastsPlotter-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastsPlotter-new}{}}}
-\subsection{Method \code{new()}}{
-create ContrastsPlotter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$new(
+\if{html}{\out{<a id="method-ContrastsPlotter-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsPlotter-initialize}{}}}
+\subsection{\code{ContrastsPlotter$new()}}{
+  create ContrastsPlotter
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$new(
   contrast_df,
   subject_id,
   volcano = list(list(score = "FDR", thresh = 0.1)),
@@ -225,135 +224,128 @@ create ContrastsPlotter
   contrast = "contrast",
   avg.abundance = "avgAbd",
   group = "BB"
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{contrast_df}}{frame with contrast data}
-
-\item{\code{subject_id}}{columns containing subject Identifier}
-
-\item{\code{volcano}}{which score to plot and which ablines to add.}
-
-\item{\code{histogram}}{which scores to plot and which range (x) should be shown.}
-
-\item{\code{score}}{score parameters}
-
-\item{\code{fcthresh}}{default 1 (log2 FC threshold)}
-
-\item{\code{modelName}}{name of the colour column. Defaults to \code{"modelName"};
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{contrast_df}}{frame with contrast data}
+      \item{\code{subject_id}}{columns containing subject Identifier}
+      \item{\code{volcano}}{which score to plot and which ablines to add.}
+      \item{\code{histogram}}{which scores to plot and which range (x) should be shown.}
+      \item{\code{score}}{score parameters}
+      \item{\code{fcthresh}}{default 1 (log2 FC threshold)}
+      \item{\code{modelName}}{name of the colour column. Defaults to \code{"modelName"};
 when left at the default and the contrast carries an \code{estimate_type}
 column, that column is used for colouring instead (so observed vs
 imputed/fallback rows stay distinguishable).}
-
-\item{\code{diff}}{fold change (difference) diff column}
-
-\item{\code{contrast}}{contrast column}
-
-\item{\code{avg.abundance}}{name of column with average abundance}
-
-\item{\code{group}}{crosstalk group name for linked brushing, default "BB"}
+      \item{\code{diff}}{fold change (difference) diff column}
+      \item{\code{contrast}}{contrast column}
+      \item{\code{avg.abundance}}{name of column with average abundance}
+      \item{\code{group}}{crosstalk group name for linked brushing, default "BB"}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-histogram}{}}}
-\subsection{Method \code{histogram()}}{
-plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$histogram()}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsPlotter$histogram()}}{
+  plot histogram of selected scores (e.g. p-value, FDR, t-statistics)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$histogram()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-histogram_diff"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-histogram_diff}{}}}
-\subsection{Method \code{histogram_diff()}}{
-plot histogram of differences (diff) fold change
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$histogram_diff(binwidth = 0.05)}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsPlotter$histogram_diff()}}{
+  plot histogram of differences (diff) fold change
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$histogram_diff(binwidth = 0.05)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{binwidth}}{with of bin in histogram}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{binwidth}}{with of bin in histogram}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-volcano"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-volcano}{}}}
-\subsection{Method \code{volcano()}}{
-volcano plots (fold change vs FDR)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$volcano(
+\subsection{\code{ContrastsPlotter$volcano()}}{
+  volcano plots (fold change vs FDR)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$volcano(
   colour = self$model_name,
   legend = TRUE,
   scales = c("fixed", "free", "free_x", "free_y"),
   min_score = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{colour}}{column name with color information default modelName}
-
-\item{\code{legend}}{default TRUE}
-
-\item{\code{scales}}{default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument}
-
-\item{\code{min_score}}{optional lower bound for p-values or FDR values. If NULL,
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{colour}}{column name with color information default modelName}
+      \item{\code{legend}}{default TRUE}
+      \item{\code{scales}}{default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument}
+      \item{\code{min_score}}{optional lower bound for p-values or FDR values. If NULL,
 only exact zero and negative values are replaced with the smallest positive
 observed value in the same score column.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-volcano_plotly"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-volcano_plotly}{}}}
-\subsection{Method \code{volcano_plotly()}}{
-plotly volcano plots
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$volcano_plotly(
+\subsection{\code{ContrastsPlotter$volcano_plotly()}}{
+  plotly volcano plots
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$volcano_plotly(
   colour = self$model_name,
   legend = TRUE,
   scales = c("fixed", "free", "free_x", "free_y"),
   min_score = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{colour}}{column in contrast matrix with colour coding}
-
-\item{\code{legend}}{default TRUE}
-
-\item{\code{scales}}{default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument}
-
-\item{\code{min_score}}{optional lower bound for p-values or FDR values. If NULL,
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{colour}}{column in contrast matrix with colour coding}
+      \item{\code{legend}}{default TRUE}
+      \item{\code{scales}}{default fixed \code{\link[ggplot2]{facet_wrap}}, scales argument}
+      \item{\code{min_score}}{optional lower bound for p-values or FDR values. If NULL,
 only exact zero and negative values are replaced with the smallest positive
 observed value in the same score column.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list of ggplots
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list of ggplots
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-ma_plot"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-ma_plot}{}}}
-\subsection{Method \code{ma_plot()}}{
-ma plot
+\subsection{\code{ContrastsPlotter$ma_plot()}}{
+  ma plot
 
 MA plot displays the effect size estimate as a function
 of the mean protein intensity across groups.
@@ -363,115 +355,117 @@ Red horizontal lines represent the fold-change threshold.
 Sometimes measured effects sizes (differences between samples groups)
 are biased by the signal intensity (here protein abundance).
 Such systematic effects can be explored using MA-plots.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$ma_plot(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$ma_plot(
   fc = self$fcthresh,
   colour = self$model_name,
   legend = TRUE,
   rank = TRUE
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fc}}{fold change abline}
+      \item{\code{colour}}{column in contrast matrix with colour coding}
+      \item{\code{legend}}{enable legend default TRUE}
+      \item{\code{rank}}{default FALSE, if TRUE then rank of avgAbd is used.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fc}}{fold change abline}
-
-\item{\code{colour}}{column in contrast matrix with colour coding}
-
-\item{\code{legend}}{enable legend default TRUE}
-
-\item{\code{rank}}{default FALSE, if TRUE then rank of avgAbd is used.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-ma_plotly"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-ma_plotly}{}}}
-\subsection{Method \code{ma_plotly()}}{
-ma plotly
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$ma_plotly(
+\subsection{\code{ContrastsPlotter$ma_plotly()}}{
+  ma plotly
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$ma_plotly(
   fc = self$fcthresh,
   colour = self$model_name,
   legend = TRUE,
   rank = FALSE
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fc}}{horizontal lines}
+      \item{\code{colour}}{column in contrast matrix with colour coding.}
+      \item{\code{legend}}{enable legend default TRUE}
+      \item{\code{rank}}{default FALSE, if TRUE then rank of avgAbd is used.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list of ggplots
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fc}}{horizontal lines}
-
-\item{\code{colour}}{column in contrast matrix with colour coding.}
-
-\item{\code{legend}}{enable legend default TRUE}
-
-\item{\code{rank}}{default FALSE, if TRUE then rank of avgAbd is used.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list of ggplots
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-score_plot"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-score_plot}{}}}
-\subsection{Method \code{score_plot()}}{
-plot a score against the log2 fc e.g. t-statistic
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$score_plot(scorespec, colour = self$model_name, legend = TRUE)}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsPlotter$score_plot()}}{
+  plot a score against the log2 fc e.g. t-statistic
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$score_plot(scorespec, colour = self$model_name, legend = TRUE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{scorespec}}{list(score="statistics", fcthres = 2, thresh = 5)}
+      \item{\code{colour}}{column with colour coding}
+      \item{\code{legend}}{enable legend default TRUE}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list of ggplots
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{scorespec}}{list(score="statistics", fcthres = 2, thresh = 5)}
-
-\item{\code{colour}}{column with colour coding}
-
-\item{\code{legend}}{enable legend default TRUE}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list of ggplots
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-barplot_threshold"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-barplot_threshold}{}}}
-\subsection{Method \code{barplot_threshold()}}{
-shows the number of significant proteins per contrasts
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$barplot_threshold()}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsPlotter$barplot_threshold()}}{
+  shows the number of significant proteins per contrasts
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$barplot_threshold()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list which contains ggplots and summary tables
+  }
 }
 
-\subsection{Returns}{
-list which contains ggplots and summary tables
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastsPlotter-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsPlotter-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastsPlotter$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ContrastsPlotter$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsPlotter$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

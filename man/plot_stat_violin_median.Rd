@@ -28,16 +28,16 @@ res <- lfq$get_Stats()$stats()
 plot_stat_violin_median(res, lfq$factor_keys()[1], stat = "meanAbundance")
 }
 \seealso{
-Other stats: 
+Other stats:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{compute_pooled}()},
-\code{\link{lfq_power_t_test_proteins}()},
-\code{\link{lfq_power_t_test_quantiles_V2}()},
-\code{\link{plot_stat_density}()},
-\code{\link{plot_stat_density_median}()},
-\code{\link{plot_stat_violin}()},
-\code{\link{plot_stdv_vs_mean}()},
-\code{\link{summarize_stats}()}
+\code{\link[=compute_pooled]{compute_pooled()}},
+\code{\link[=lfq_power_t_test_proteins]{lfq_power_t_test_proteins()}},
+\code{\link[=lfq_power_t_test_quantiles_V2]{lfq_power_t_test_quantiles_V2()}},
+\code{\link[=plot_stat_density]{plot_stat_density()}},
+\code{\link[=plot_stat_density_median]{plot_stat_density_median()}},
+\code{\link[=plot_stat_violin]{plot_stat_violin()}},
+\code{\link[=plot_stdv_vs_mean]{plot_stdv_vs_mean()}},
+\code{\link[=summarize_stats]{summarize_stats()}}
 }
 \concept{stats}
 \keyword{internal}

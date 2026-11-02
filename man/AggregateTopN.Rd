@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-AggregateTopN
-
-AggregateTopN
-}
-\details{
 Aggregates peptide intensities to protein level using top N peptides.
 Works with raw (untransformed) intensities.
 }
@@ -33,7 +28,7 @@ agg_mean$write_plots(tempdir())
 
 }
 \seealso{
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
@@ -42,88 +37,89 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
 }
 \concept{LFQData}
 \section{Super class}{
-\code{\link[prolfqua:AggregatorBase]{prolfqua::AggregatorBase}} -> \code{AggregateTopN}
+\code{\link[prolfqua:AggregatorBase]{AggregatorBase}} -> \code{AggregateTopN}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{N}}{top N peptides by intensity}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{N}}{top N peptides by intensity}
 
-\item{\code{func}}{aggregation function name: "sum" or "mean"}
-}
-\if{html}{\out{</div>}}
+    \item{\code{func}}{aggregation function name: "sum" or "mean"}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AggregateTopN-new}{\code{AggregateTopN$new()}}
-\item \href{#method-AggregateTopN-aggregate}{\code{AggregateTopN$aggregate()}}
-\item \href{#method-AggregateTopN-clone}{\code{AggregateTopN$clone()}}
+  \itemize{
+    \item \href{#method-AggregateTopN-initialize}{\code{AggregateTopN$new()}}
+    \item \href{#method-AggregateTopN-aggregate}{\code{AggregateTopN$aggregate()}}
+    \item \href{#method-AggregateTopN-clone}{\code{AggregateTopN$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>prolfqua::AggregatorBase$plot()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>prolfqua::AggregatorBase$write_plots()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>AggregatorBase$plot()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>AggregatorBase$write_plots()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AggregateTopN-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AggregateTopN-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateTopN$new(lfq, prefix = "protein", N = 3, func = "sum")}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-AggregateTopN-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AggregateTopN-initialize}{}}}
+\subsection{\code{AggregateTopN$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateTopN$new(lfq, prefix = "protein", N = 3, func = "sum")}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfq}}{LFQData}
+      \item{\code{prefix}}{default protein}
+      \item{\code{N}}{top N peptides (default 3)}
+      \item{\code{func}}{"sum" or "mean" (default "sum")}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfq}}{LFQData}
-
-\item{\code{prefix}}{default protein}
-
-\item{\code{N}}{top N peptides (default 3)}
-
-\item{\code{func}}{"sum" or "mean" (default "sum")}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateTopN-aggregate"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateTopN-aggregate}{}}}
-\subsection{Method \code{aggregate()}}{
-run top N aggregation
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateTopN$aggregate()}\if{html}{\out{</div>}}
+\subsection{\code{AggregateTopN$aggregate()}}{
+  run top N aggregation
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateTopN$aggregate()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQData
+  }
 }
 
-\subsection{Returns}{
-LFQData
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateTopN-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateTopN-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateTopN$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AggregateTopN$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateTopN$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

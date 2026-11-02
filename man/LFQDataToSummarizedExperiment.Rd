@@ -27,7 +27,7 @@ if(require("SummarizedExperiment")){
 
 }
 \seealso{
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},

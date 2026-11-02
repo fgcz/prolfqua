@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-Robust linear model strategy (R6 class)
-
-Robust linear model strategy (R6 class)
-}
-\details{
 Encapsulates everything needed to fit per-protein robust linear models
 via \code{\link[MASS]{rlm}} and extract contrasts.
 }
@@ -20,7 +15,7 @@ strat <- StrategyRLM$new("Intensity ~ condition", model_name = "parallel design"
 strat$formula
 }
 \seealso{
-Other modelling: 
+Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
@@ -51,7 +46,7 @@ Other modelling:
 \code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{LR_test}()},
+\code{\link[=LR_test]{LR_test()}},
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
@@ -61,80 +56,78 @@ Other modelling:
 \code{\link{StrategyLmer}},
 \code{\link{StrategyLogistf}},
 \code{\link{StrategyRfit}},
-\code{\link{build_contrast_analysis}()},
-\code{\link{build_model}()},
-\code{\link{build_model_glm_peptide}()},
-\code{\link{build_model_glm_protein}()},
-\code{\link{build_model_impute}()},
-\code{\link{build_model_limma}()},
-\code{\link{build_model_limma_impute}()},
-\code{\link{build_model_limma_voom}()},
-\code{\link{build_model_limma_voom_impute}()},
-\code{\link{build_model_limpa}()},
-\code{\link{build_model_logistf}()},
-\code{\link{compute_borrowed_variance}()},
-\code{\link{compute_borrowed_variance_limma}()},
-\code{\link{compute_contrast}()},
-\code{\link{compute_lmer_contrast}()},
-\code{\link{df.residual.rfit_prolfqua}()},
-\code{\link{get_anova_df}()},
-\code{\link{get_complete_model_fit}()},
-\code{\link{get_p_values_pbeta}()},
-\code{\link{group_label}()},
-\code{\link{impute_from_model}()},
-\code{\link{impute_refit_singular}()},
-\code{\link{linfct_from_model}()},
-\code{\link{linfct_matrix_contrasts}()},
-\code{\link{list_facades}()},
-\code{\link{lookup_facade}()},
-\code{\link{merge_contrasts_results}()},
-\code{\link{model_analyse}()},
-\code{\link{model_summary}()},
-\code{\link{moderated_p_deqms}()},
-\code{\link{moderated_p_deqms_long}()},
-\code{\link{moderated_p_limma}()},
-\code{\link{new_imputed_model}()},
-\code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{register_facade}()},
-\code{\link{sigma.rfit_prolfqua}()},
-\code{\link{sim_build_models_lm}()},
-\code{\link{sim_build_models_lmer}()},
-\code{\link{sim_build_models_logistf}()},
-\code{\link{sim_make_model_lm}()},
-\code{\link{sim_make_model_lmer}()},
-\code{\link{strategy_limma}()},
-\code{\link{strategy_limpa}()},
-\code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p_scaled}()},
-\code{\link{vcov.rfit_prolfqua}()}
+\code{\link[=build_contrast_analysis]{build_contrast_analysis()}},
+\code{\link[=build_model]{build_model()}},
+\code{\link[=build_model_glm_peptide]{build_model_glm_peptide()}},
+\code{\link[=build_model_glm_protein]{build_model_glm_protein()}},
+\code{\link[=build_model_impute]{build_model_impute()}},
+\code{\link[=build_model_limma]{build_model_limma()}},
+\code{\link[=build_model_limma_impute]{build_model_limma_impute()}},
+\code{\link[=build_model_limma_voom]{build_model_limma_voom()}},
+\code{\link[=build_model_limma_voom_impute]{build_model_limma_voom_impute()}},
+\code{\link[=build_model_limpa]{build_model_limpa()}},
+\code{\link[=build_model_logistf]{build_model_logistf()}},
+\code{\link[=compute_borrowed_variance]{compute_borrowed_variance()}},
+\code{\link[=compute_borrowed_variance_limma]{compute_borrowed_variance_limma()}},
+\code{\link[=compute_contrast]{compute_contrast()}},
+\code{\link[=compute_lmer_contrast]{compute_lmer_contrast()}},
+\code{\link[=df.residual.rfit_prolfqua]{df.residual.rfit_prolfqua()}},
+\code{\link[=get_anova_df]{get_anova_df()}},
+\code{\link[=get_complete_model_fit]{get_complete_model_fit()}},
+\code{\link[=get_p_values_pbeta]{get_p_values_pbeta()}},
+\code{\link[=group_label]{group_label()}},
+\code{\link[=impute_from_model]{impute_from_model()}},
+\code{\link[=impute_refit_singular]{impute_refit_singular()}},
+\code{\link[=linfct_from_model]{linfct_from_model()}},
+\code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
+\code{\link[=list_facades]{list_facades()}},
+\code{\link[=lookup_facade]{lookup_facade()}},
+\code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
+\code{\link[=model_analyse]{model_analyse()}},
+\code{\link[=model_summary]{model_summary()}},
+\code{\link[=moderated_p_deqms]{moderated_p_deqms()}},
+\code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
+\code{\link[=moderated_p_limma]{moderated_p_limma()}},
+\code{\link[=new_imputed_model]{new_imputed_model()}},
+\code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
+\code{\link[=register_facade]{register_facade()}},
+\code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
+\code{\link[=sim_build_models_lm]{sim_build_models_lm()}},
+\code{\link[=sim_build_models_lmer]{sim_build_models_lmer()}},
+\code{\link[=sim_build_models_logistf]{sim_build_models_logistf()}},
+\code{\link[=sim_make_model_lm]{sim_make_model_lm()}},
+\code{\link[=sim_make_model_lmer]{sim_make_model_lmer()}},
+\code{\link[=strategy_limma]{strategy_limma()}},
+\code{\link[=strategy_limpa]{strategy_limpa()}},
+\code{\link[=strategy_logistf]{strategy_logistf()}},
+\code{\link[=summary_ROPECA_median_p_scaled]{summary_ROPECA_median_p_scaled()}},
+\code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 }
 \concept{modelling}
 \section{Super class}{
-\code{\link[prolfqua:StrategyBase]{prolfqua::StrategyBase}} -> \code{StrategyRLM}
+\code{\link[prolfqua:StrategyBase]{StrategyBase}} -> \code{StrategyRLM}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-StrategyRLM-sigma}{\code{StrategyRLM$sigma()}}
-\item \href{#method-StrategyRLM-clone}{\code{StrategyRLM$clone()}}
+  \itemize{
+    \item \href{#method-StrategyRLM-sigma}{\code{StrategyRLM$sigma()}}
+    \item \href{#method-StrategyRLM-clone}{\code{StrategyRLM$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>prolfqua::StrategyBase$contrast_fun()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>prolfqua::StrategyBase$df_residual()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-initialize'><code>prolfqua::StrategyBase$initialize()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>prolfqua::StrategyBase$isSingular()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>prolfqua::StrategyBase$model_fun()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>StrategyBase$contrast_fun()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>StrategyBase$df_residual()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-initialize'><code>StrategyBase$initialize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>StrategyBase$isSingular()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>StrategyBase$model_fun()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyRLM-sigma"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyRLM-sigma}{}}}
-\subsection{Method \code{sigma()}}{
-Get the robust scale estimate used by \code{vcov()}
+\subsection{\code{StrategyRLM$sigma()}}{
+  Get the robust scale estimate used by \code{vcov()}
 
 Returns \code{model$s}, the robust scale \code{MASS::rlm} builds its
 \code{vcov()} / \code{summary()} standard errors from. This must match the
@@ -142,33 +135,37 @@ scale embedded in \code{vcov()} so that \code{ContrastsModerated}'s
 \code{sigma / sqrt(var.post)} rescaling stays coherent; \code{stats::sigma()}
 returns the ordinary-residual scale instead and would distort moderated
 \code{rlm} statistics.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyRLM$sigma(model)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyRLM$sigma(model)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{model}}{fitted model}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{fitted model}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyRLM-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyRLM-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyRLM$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{StrategyRLM$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyRLM$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

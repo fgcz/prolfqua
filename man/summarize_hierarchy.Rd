@@ -38,10 +38,10 @@ summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label(),
 
 }
 \seealso{
-Other summary: 
+Other summary:
 \code{\link{HierarchyCountsSample}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{hierarchy_counts}()}
+\code{\link[=hierarchy_counts]{hierarchy_counts()}}
 }
 \concept{summary}
 \keyword{internal}

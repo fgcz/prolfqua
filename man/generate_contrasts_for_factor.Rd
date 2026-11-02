@@ -24,11 +24,11 @@ x3 <- level_specific_contrasts(secondary_levels, primary_levels)
 generate_contrasts_for_factor(names(x2))
 }
 \seealso{
-Other contrasts: 
-\code{\link{annotation_add_contrasts}()},
-\code{\link{generate_contrasts}()},
-\code{\link{interaction_contrasts}()},
-\code{\link{level_specific_contrasts}()},
-\code{\link{main_effect_contrasts}()}
+Other contrasts:
+\code{\link[=annotation_add_contrasts]{annotation_add_contrasts()}},
+\code{\link[=generate_contrasts]{generate_contrasts()}},
+\code{\link[=interaction_contrasts]{interaction_contrasts()}},
+\code{\link[=level_specific_contrasts]{level_specific_contrasts()}},
+\code{\link[=main_effect_contrasts]{main_effect_contrasts()}}
 }
 \concept{contrasts}

@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-Quasibinomial detection-count strategy
-
-Quasibinomial detection-count strategy
-}
-\details{
 Fits detected and undetected child-feature counts for each parent feature
 using \code{\link[stats]{glm}} with a quasibinomial family. The symmetric
 pseudo-count stabilizes fits under complete separation; it is not equivalent
@@ -28,75 +23,75 @@ fit <- strategy$model_fun(dat)
 coefficients(fit)
 }
 \section{Super class}{
-\code{\link[prolfqua:StrategyBase]{prolfqua::StrategyBase}} -> \code{StrategyBinomial}
+\code{\link[prolfqua:StrategyBase]{StrategyBase}} -> \code{StrategyBinomial}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{prior_count}}{symmetric pseudo-count added to both outcomes}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{prior_count}}{symmetric pseudo-count added to both outcomes}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-StrategyBinomial-new}{\code{StrategyBinomial$new()}}
-\item \href{#method-StrategyBinomial-clone}{\code{StrategyBinomial$clone()}}
+  \itemize{
+    \item \href{#method-StrategyBinomial-initialize}{\code{StrategyBinomial$new()}}
+    \item \href{#method-StrategyBinomial-clone}{\code{StrategyBinomial$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>prolfqua::StrategyBase$contrast_fun()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>prolfqua::StrategyBase$df_residual()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>prolfqua::StrategyBase$isSingular()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>prolfqua::StrategyBase$model_fun()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>prolfqua::StrategyBase$sigma()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>StrategyBase$contrast_fun()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>StrategyBase$df_residual()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>StrategyBase$isSingular()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>StrategyBase$model_fun()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>StrategyBase$sigma()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyBinomial-new"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyBinomial-new}{}}}
-\subsection{Method \code{new()}}{
-Create a quasibinomial count strategy. \code{sigma()} is the
+\if{html}{\out{<a id="method-StrategyBinomial-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-StrategyBinomial-initialize}{}}}
+\subsection{\code{StrategyBinomial$new()}}{
+  Create a quasibinomial count strategy. \code{sigma()} is the
   Pearson residual scale used by \code{vcov()}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyBinomial$new(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyBinomial$new(
   modelstr,
   prior_count = 0.1,
   model_name = "binomial_nested"
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{modelstr}}{right-hand-side model formula, for example
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{modelstr}}{right-hand-side model formula, for example
 \code{"~ group_"}}
+      \item{\code{prior_count}}{non-negative symmetric pseudo-count}
+      \item{\code{model_name}}{model identity}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
 
-\item{\code{prior_count}}{non-negative symmetric pseudo-count}
-
-\item{\code{model_name}}{model identity}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyBinomial-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyBinomial-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyBinomial$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{StrategyBinomial$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyBinomial$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-AggregateLimpa
-
-AggregateLimpa
-}
-\details{
 Aggregates peptide/precursor intensities to protein level using limpa's
 probabilistic DPC-based quantification (\code{limpa::dpcQuant}).
 With \code{impute_only = TRUE}, performs same-level imputation without
@@ -34,7 +29,7 @@ agg$aggregate()
 agg$lfq_agg$data_wide()
 }
 \seealso{
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
@@ -43,145 +38,147 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
 }
 \concept{LFQData}
 \section{Super class}{
-\code{\link[prolfqua:AggregatorBase]{prolfqua::AggregatorBase}} -> \code{AggregateLimpa}
+\code{\link[prolfqua:AggregatorBase]{AggregatorBase}} -> \code{AggregateLimpa}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{dpc_result}}{estimated DPC object from limpa::dpc}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{dpc_result}}{estimated DPC object from limpa::dpc}
 
-\item{\code{dpc_slope}}{DPC slope parameter (default 0.8)}
+    \item{\code{dpc_slope}}{DPC slope parameter (default 0.8)}
 
-\item{\code{impute_only}}{if TRUE use dpcQuantByRow (no aggregation)}
-}
-\if{html}{\out{</div>}}
+    \item{\code{impute_only}}{if TRUE use dpcQuantByRow (no aggregation)}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AggregateLimpa-new}{\code{AggregateLimpa$new()}}
-\item \href{#method-AggregateLimpa-aggregate}{\code{AggregateLimpa$aggregate()}}
-\item \href{#method-AggregateLimpa-plot}{\code{AggregateLimpa$plot()}}
-\item \href{#method-AggregateLimpa-write_plots}{\code{AggregateLimpa$write_plots()}}
-\item \href{#method-AggregateLimpa-clone}{\code{AggregateLimpa$clone()}}
-}
+  \itemize{
+    \item \href{#method-AggregateLimpa-initialize}{\code{AggregateLimpa$new()}}
+    \item \href{#method-AggregateLimpa-aggregate}{\code{AggregateLimpa$aggregate()}}
+    \item \href{#method-AggregateLimpa-plot}{\code{AggregateLimpa$plot()}}
+    \item \href{#method-AggregateLimpa-write_plots}{\code{AggregateLimpa$write_plots()}}
+    \item \href{#method-AggregateLimpa-clone}{\code{AggregateLimpa$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AggregateLimpa-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AggregateLimpa-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateLimpa$new(
+\if{html}{\out{<a id="method-AggregateLimpa-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AggregateLimpa-initialize}{}}}
+\subsection{\code{AggregateLimpa$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateLimpa$new(
   lfq,
   prefix = "protein",
   dpc_slope = 0.8,
   impute_only = FALSE
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfq}}{LFQData with log2-transformed intensities}
+      \item{\code{prefix}}{default "protein"}
+      \item{\code{dpc_slope}}{DPC slope parameter passed to limpa (default 0.8)}
+      \item{\code{impute_only}}{if TRUE, use dpcQuantByRow instead of dpcQuant}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfq}}{LFQData with log2-transformed intensities}
-
-\item{\code{prefix}}{default "protein"}
-
-\item{\code{dpc_slope}}{DPC slope parameter passed to limpa (default 0.8)}
-
-\item{\code{impute_only}}{if TRUE, use dpcQuantByRow instead of dpcQuant}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateLimpa-aggregate"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateLimpa-aggregate}{}}}
-\subsection{Method \code{aggregate()}}{
-run limpa DPC-based aggregation (or imputation)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateLimpa$aggregate()}\if{html}{\out{</div>}}
+\subsection{\code{AggregateLimpa$aggregate()}}{
+  run limpa DPC-based aggregation (or imputation)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateLimpa$aggregate()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQData
+  }
 }
 
-\subsection{Returns}{
-LFQData
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateLimpa-plot"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateLimpa-plot}{}}}
-\subsection{Method \code{plot()}}{
-creates aggregation plots (only for aggregation mode, not impute_only)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateLimpa$plot(subset = NULL, show.legend = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AggregateLimpa$plot()}}{
+  creates aggregation plots (only for aggregation mode, not impute_only)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateLimpa$plot(subset = NULL, show.legend = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{subset}}{create plots for a subset of the data only}
+      \item{\code{show.legend}}{default FALSE}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{subset}}{create plots for a subset of the data only}
-
-\item{\code{show.legend}}{default FALSE}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateLimpa-write_plots"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateLimpa-write_plots}{}}}
-\subsection{Method \code{write_plots()}}{
-writes plots to folder
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateLimpa$write_plots(
+\subsection{\code{AggregateLimpa$write_plots()}}{
+  writes plots to folder
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateLimpa$write_plots(
   qcpath,
   subset = NULL,
   show.legend = FALSE,
   width = 6,
   height = 6
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{qcpath}}{qcpath}
+      \item{\code{subset}}{write plots only for some}
+      \item{\code{show.legend}}{legend}
+      \item{\code{width}}{figure width}
+      \item{\code{height}}{figure height}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    file path
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{qcpath}}{qcpath}
-
-\item{\code{subset}}{write plots only for some}
-
-\item{\code{show.legend}}{legend}
-
-\item{\code{width}}{figure width}
-
-\item{\code{height}}{figure height}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-file path
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateLimpa-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateLimpa-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateLimpa$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AggregateLimpa$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateLimpa$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

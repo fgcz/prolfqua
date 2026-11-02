@@ -15,13 +15,13 @@ scaled <- robust_scale(mat)
 dim(scaled)
 }
 \seealso{
-Other preprocessing: 
+Other preprocessing:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{apply_to_response_matrix}()},
-\code{\link{filter_proteins_by_peptide_count}()},
-\code{\link{get_robscales}()},
-\code{\link{nr_B_in_A}()},
-\code{\link{scale_with_subset}()}
+\code{\link[=apply_to_response_matrix]{apply_to_response_matrix()}},
+\code{\link[=filter_proteins_by_peptide_count]{filter_proteins_by_peptide_count()}},
+\code{\link[=get_robscales]{get_robscales()}},
+\code{\link[=nr_B_in_A]{nr_B_in_A()}},
+\code{\link[=scale_with_subset]{scale_with_subset()}}
 }
 \concept{preprocessing}
 \keyword{internal}

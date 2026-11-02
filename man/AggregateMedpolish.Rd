@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-AggregateMedpolish
-
-AggregateMedpolish
-}
-\details{
 Aggregates peptide intensities to protein level using median polish.
 Works best with variance-stabilized (log-transformed) intensities.
 }
@@ -28,7 +23,7 @@ p$plots[[1]]
 
 }
 \seealso{
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateRlm}},
 \code{\link{AggregateTopN}},
@@ -37,56 +32,58 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
 }
 \concept{LFQData}
 \section{Super class}{
-\code{\link[prolfqua:AggregatorBase]{prolfqua::AggregatorBase}} -> \code{AggregateMedpolish}
+\code{\link[prolfqua:AggregatorBase]{AggregatorBase}} -> \code{AggregateMedpolish}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AggregateMedpolish-aggregate}{\code{AggregateMedpolish$aggregate()}}
-\item \href{#method-AggregateMedpolish-clone}{\code{AggregateMedpolish$clone()}}
+  \itemize{
+    \item \href{#method-AggregateMedpolish-aggregate}{\code{AggregateMedpolish$aggregate()}}
+    \item \href{#method-AggregateMedpolish-clone}{\code{AggregateMedpolish$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="initialize"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-initialize'><code>prolfqua::AggregatorBase$initialize()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>prolfqua::AggregatorBase$plot()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>prolfqua::AggregatorBase$write_plots()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="initialize"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-initialize'><code>AggregatorBase$initialize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>AggregatorBase$plot()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>AggregatorBase$write_plots()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateMedpolish-aggregate"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateMedpolish-aggregate}{}}}
-\subsection{Method \code{aggregate()}}{
-run median polish aggregation
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateMedpolish$aggregate()}\if{html}{\out{</div>}}
+\subsection{\code{AggregateMedpolish$aggregate()}}{
+  run median polish aggregation
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateMedpolish$aggregate()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQData
+  }
 }
 
-\subsection{Returns}{
-LFQData
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateMedpolish-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateMedpolish-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateMedpolish$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AggregateMedpolish$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateMedpolish$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

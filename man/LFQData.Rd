@@ -8,8 +8,6 @@ An R6 class generator.
 }
 \description{
 LFQData R6 class
-
-LFQData R6 class
 }
 \section{Missing Data Assumptions}{
 
@@ -50,7 +48,7 @@ stopifnot(nrow(tmp$hierarchy()) == 5)
 
 }
 \seealso{
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
@@ -59,584 +57,642 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
 }
 \concept{LFQData}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{prefix}}{e.g. "peptide_", "protein_", "compound_"}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{prefix}}{e.g. "peptide_", "protein_", "compound_"}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LFQData-new}{\code{LFQData$new()}}
-\item \href{#method-LFQData-set_data}{\code{LFQData$set_data()}}
-\item \href{#method-LFQData-get_config}{\code{LFQData$get_config()}}
-\item \href{#method-LFQData-set_config_value}{\code{LFQData$set_config_value()}}
-\item \href{#method-LFQData-get_copy}{\code{LFQData$get_copy()}}
-\item \href{#method-LFQData-get_sample}{\code{LFQData$get_sample()}}
-\item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
-\item \href{#method-LFQData-subject_id}{\code{LFQData$subject_id()}}
-\item \href{#method-LFQData-is_transformed}{\code{LFQData$is_transformed()}}
-\item \href{#method-LFQData-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
-\item \href{#method-LFQData-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
-\item \href{#method-LFQData-remove_decoys}{\code{LFQData$remove_decoys()}}
-\item \href{#method-LFQData-decoy_proportion}{\code{LFQData$decoy_proportion()}}
-\item \href{#method-LFQData-complete_cases}{\code{LFQData$complete_cases()}}
-\item \href{#method-LFQData-data_wide}{\code{LFQData$data_wide()}}
-\item \href{#method-LFQData-factors}{\code{LFQData$factors()}}
-\item \href{#method-LFQData-hierarchy}{\code{LFQData$hierarchy()}}
-\item \href{#method-LFQData-response}{\code{LFQData$response()}}
-\item \href{#method-LFQData-hierarchy_keys}{\code{LFQData$hierarchy_keys()}}
-\item \href{#method-LFQData-relevant_hierarchy_keys}{\code{LFQData$relevant_hierarchy_keys()}}
-\item \href{#method-LFQData-factor_keys}{\code{LFQData$factor_keys()}}
-\item \href{#method-LFQData-relevant_factor_keys}{\code{LFQData$relevant_factor_keys()}}
-\item \href{#method-LFQData-sample_name}{\code{LFQData$sample_name()}}
-\item \href{#method-LFQData-file_name}{\code{LFQData$file_name()}}
-\item \href{#method-LFQData-nr_children_col}{\code{LFQData$nr_children_col()}}
-\item \href{#method-LFQData-isotope_label}{\code{LFQData$isotope_label()}}
-\item \href{#method-LFQData-data_long}{\code{LFQData$data_long()}}
-\item \href{#method-LFQData-rename_response}{\code{LFQData$rename_response()}}
-\item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
-\item \href{#method-LFQData-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
-\item \href{#method-LFQData-get_Plotter}{\code{LFQData$get_Plotter()}}
-\item \href{#method-LFQData-get_Summariser}{\code{LFQData$get_Summariser()}}
-\item \href{#method-LFQData-get_Stats}{\code{LFQData$get_Stats()}}
-\item \href{#method-LFQData-get_Transformer}{\code{LFQData$get_Transformer()}}
-\item \href{#method-LFQData-get_Aggregator}{\code{LFQData$get_Aggregator()}}
-\item \href{#method-LFQData-clone}{\code{LFQData$clone()}}
-}
+  \itemize{
+    \item \href{#method-LFQData-initialize}{\code{LFQData$new()}}
+    \item \href{#method-LFQData-set_data}{\code{LFQData$set_data()}}
+    \item \href{#method-LFQData-get_config}{\code{LFQData$get_config()}}
+    \item \href{#method-LFQData-set_config_value}{\code{LFQData$set_config_value()}}
+    \item \href{#method-LFQData-get_copy}{\code{LFQData$get_copy()}}
+    \item \href{#method-LFQData-get_sample}{\code{LFQData$get_sample()}}
+    \item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
+    \item \href{#method-LFQData-subject_id}{\code{LFQData$subject_id()}}
+    \item \href{#method-LFQData-is_transformed}{\code{LFQData$is_transformed()}}
+    \item \href{#method-LFQData-remove_small_intensities}{\code{LFQData$remove_small_intensities()}}
+    \item \href{#method-LFQData-filter_proteins_by_peptide_count}{\code{LFQData$filter_proteins_by_peptide_count()}}
+    \item \href{#method-LFQData-remove_decoys}{\code{LFQData$remove_decoys()}}
+    \item \href{#method-LFQData-decoy_proportion}{\code{LFQData$decoy_proportion()}}
+    \item \href{#method-LFQData-complete_cases}{\code{LFQData$complete_cases()}}
+    \item \href{#method-LFQData-data_wide}{\code{LFQData$data_wide()}}
+    \item \href{#method-LFQData-factors}{\code{LFQData$factors()}}
+    \item \href{#method-LFQData-hierarchy}{\code{LFQData$hierarchy()}}
+    \item \href{#method-LFQData-response}{\code{LFQData$response()}}
+    \item \href{#method-LFQData-hierarchy_keys}{\code{LFQData$hierarchy_keys()}}
+    \item \href{#method-LFQData-relevant_hierarchy_keys}{\code{LFQData$relevant_hierarchy_keys()}}
+    \item \href{#method-LFQData-factor_keys}{\code{LFQData$factor_keys()}}
+    \item \href{#method-LFQData-relevant_factor_keys}{\code{LFQData$relevant_factor_keys()}}
+    \item \href{#method-LFQData-sample_name}{\code{LFQData$sample_name()}}
+    \item \href{#method-LFQData-file_name}{\code{LFQData$file_name()}}
+    \item \href{#method-LFQData-nr_children_col}{\code{LFQData$nr_children_col()}}
+    \item \href{#method-LFQData-isotope_label}{\code{LFQData$isotope_label()}}
+    \item \href{#method-LFQData-data_long}{\code{LFQData$data_long()}}
+    \item \href{#method-LFQData-rename_response}{\code{LFQData$rename_response()}}
+    \item \href{#method-LFQData-hierarchy_counts}{\code{LFQData$hierarchy_counts()}}
+    \item \href{#method-LFQData-summarize_hierarchy}{\code{LFQData$summarize_hierarchy()}}
+    \item \href{#method-LFQData-get_Plotter}{\code{LFQData$get_Plotter()}}
+    \item \href{#method-LFQData-get_Summariser}{\code{LFQData$get_Summariser()}}
+    \item \href{#method-LFQData-get_Stats}{\code{LFQData$get_Stats()}}
+    \item \href{#method-LFQData-get_Transformer}{\code{LFQData$get_Transformer()}}
+    \item \href{#method-LFQData-get_Aggregator}{\code{LFQData$get_Aggregator()}}
+    \item \href{#method-LFQData-clone}{\code{LFQData$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQData-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQData-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$new(data, config, prefix = "ms_", setup = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-LFQData-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-initialize}{}}}
+\subsection{\code{LFQData$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$new(data, config, prefix = "ms_", setup = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{data.frame}
+      \item{\code{config}}{configuration}
+      \item{\code{prefix}}{will be use as output prefix}
+      \item{\code{setup}}{is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{data.frame}
-
-\item{\code{config}}{configuration}
-
-\item{\code{prefix}}{will be use as output prefix}
-
-\item{\code{setup}}{is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-set_data"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-set_data}{}}}
-\subsection{Method \code{set_data()}}{
-set data (replaces the internal data frame)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$set_data(new_data)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$set_data()}}{
+  set data (replaces the internal data frame)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$set_data(new_data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{new_data}}{data.frame}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    self (invisible)
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{new_data}}{data.frame}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-self (invisible)
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_config"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_config}{}}}
-\subsection{Method \code{get_config()}}{
-return the AnalysisConfiguration object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_config()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_config()}}{
+  return the AnalysisConfiguration object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_config()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    AnalysisConfiguration
+  }
 }
 
-\subsection{Returns}{
-AnalysisConfiguration
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-set_config_value"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-set_config_value}{}}}
-\subsection{Method \code{set_config_value()}}{
-set a config field value
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$set_config_value(field, value)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$set_config_value()}}{
+  set a config field value
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$set_config_value(field, value)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{field}}{character — field name}
+      \item{\code{value}}{the value to set}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{field}}{character — field name}
-
-\item{\code{value}}{the value to set}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_copy"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_copy}{}}}
-\subsection{Method \code{get_copy()}}{
-get deep copy
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_copy()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_copy()}}{
+  get deep copy
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_copy()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_sample"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_sample}{}}}
-\subsection{Method \code{get_sample()}}{
-samples subset of data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_sample(size = 100, seed = NULL)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_sample()}}{
+  samples subset of data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_sample(size = 100, seed = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{size}}{size of subset default 100}
+      \item{\code{seed}}{set seed}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{size}}{size of subset default 100}
-
-\item{\code{seed}}{set seed}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_subset"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_subset}{}}}
-\subsection{Method \code{get_subset()}}{
-get subset of data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_subset(x)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_subset()}}{
+  get subset of data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_subset(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{data frame with columns containing subject_id}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{data frame with columns containing subject_id}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-subject_id"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-subject_id}{}}}
-\subsection{Method \code{subject_id()}}{
-get subject ID columns
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$subject_id()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$subject_id()}}{
+  get subject ID columns
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$subject_id()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-is_transformed"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-is_transformed}{}}}
-\subsection{Method \code{is_transformed()}}{
-is data transformed
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$is_transformed(is_transformed)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$is_transformed()}}{
+  is data transformed
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$is_transformed(is_transformed)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{is_transformed}}{logical}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    logical
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{is_transformed}}{logical}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-logical
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-remove_small_intensities"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-remove_small_intensities}{}}}
-\subsection{Method \code{remove_small_intensities()}}{
-some software is reporting NA's as 0, you must remove it from your data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$remove_small_intensities(threshold = 4)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$remove_small_intensities()}}{
+  some software is reporting NA's as 0, you must remove it from your data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$remove_small_intensities(threshold = 4)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{threshold}}{default 4.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    self
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{threshold}}{default 4.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-self
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-filter_proteins_by_peptide_count"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-filter_proteins_by_peptide_count}{}}}
-\subsection{Method \code{filter_proteins_by_peptide_count()}}{
-remove proteins with less than X peptides
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$filter_proteins_by_peptide_count()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$filter_proteins_by_peptide_count()}}{
+  remove proteins with less than X peptides
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$filter_proteins_by_peptide_count()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    self
+  }
 }
 
-\subsection{Returns}{
-self
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-remove_decoys"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-remove_decoys}{}}}
-\subsection{Method \code{remove_decoys()}}{
-remove decoy / reverse-database entries (rows whose top-level hierarchy id,
+\subsection{\code{LFQData$remove_decoys()}}{
+  remove decoy / reverse-database entries (rows whose top-level hierarchy id,
 e.g. protein_Id, is a decoy). Detection uses the configured
 `pattern_decoys` unioned with the built-in defaults (see
 \code{\link{is_decoy}}); decoys are always detectable even when no pattern
 is configured. Returns a new decoy-free LFQData (self is not modified).
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$remove_decoys()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$remove_decoys()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQData without decoys
+  }
 }
 
-\subsection{Returns}{
-LFQData without decoys
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-decoy_proportion"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-decoy_proportion}{}}}
-\subsection{Method \code{decoy_proportion()}}{
-proportion of modelling-level keys (subject_id, e.g. protein or peptide by
+\subsection{\code{LFQData$decoy_proportion()}}{
+  proportion of modelling-level keys (subject_id, e.g. protein or peptide by
 `hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
 signal. Decoy status derives from the top-level hierarchy id (protein_Id).
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$decoy_proportion()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$decoy_proportion()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    numeric in [0, 1]
+  }
 }
 
-\subsection{Returns}{
-numeric in [0, 1]
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-complete_cases"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-complete_cases}{}}}
-\subsection{Method \code{complete_cases()}}{
-some software is reporting NA's as 0, you must remove it from your data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$complete_cases()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$complete_cases()}}{
+  some software is reporting NA's as 0, you must remove it from your data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$complete_cases()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    self
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{threshold}}{default 4.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-self
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-data_wide"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-data_wide}{}}}
-\subsection{Method \code{data_wide()}}{
-converts the data to wide
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$data_wide(as.matrix = FALSE, value = NULL)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$data_wide()}}{
+  converts the data to wide
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$data_wide(as.matrix = FALSE, value = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{as.matrix}}{return as data.frame or matrix}
+      \item{\code{value}}{see possible lfqdata$get_config()$value_vars()}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list with data, annotation, and configuration
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{as.matrix}}{return as data.frame or matrix}
-
-\item{\code{value}}{see possible lfqdata$get_config()$value_vars()}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list with data, annotation, and configuration
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-factors"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-factors}{}}}
-\subsection{Method \code{factors()}}{
-Annotation table
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$factors()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$factors()}}{
+  Annotation table
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$factors()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-hierarchy"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-hierarchy}{}}}
-\subsection{Method \code{hierarchy()}}{
-Hierarchy table
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$hierarchy()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$hierarchy()}}{
+  Hierarchy table
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$hierarchy()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-response"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-response}{}}}
-\subsection{Method \code{response()}}{
-name of response variable
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$response()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$response()}}{
+  name of response variable
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$response()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-hierarchy_keys"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-hierarchy_keys}{}}}
-\subsection{Method \code{hierarchy_keys()}}{
-return all hierarchy column names
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$hierarchy_keys()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$hierarchy_keys()}}{
+  return all hierarchy column names
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$hierarchy_keys()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-relevant_hierarchy_keys"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-relevant_hierarchy_keys}{}}}
-\subsection{Method \code{relevant_hierarchy_keys()}}{
-return hierarchy column names at current depth (alias for subject_id)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$relevant_hierarchy_keys()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$relevant_hierarchy_keys()}}{
+  return hierarchy column names at current depth (alias for subject_id)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$relevant_hierarchy_keys()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-factor_keys"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-factor_keys}{}}}
-\subsection{Method \code{factor_keys()}}{
-return all factor column names
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$factor_keys()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$factor_keys()}}{
+  return all factor column names
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$factor_keys()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-relevant_factor_keys"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-relevant_factor_keys}{}}}
-\subsection{Method \code{relevant_factor_keys()}}{
-return factor column names at current depth
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$relevant_factor_keys()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$relevant_factor_keys()}}{
+  return factor column names at current depth
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$relevant_factor_keys()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-sample_name"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-sample_name}{}}}
-\subsection{Method \code{sample_name()}}{
-return sample name column
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$sample_name()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$sample_name()}}{
+  return sample name column
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$sample_name()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-file_name"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-file_name}{}}}
-\subsection{Method \code{file_name()}}{
-return file name column
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$file_name()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$file_name()}}{
+  return file name column
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$file_name()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-nr_children_col"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-nr_children_col}{}}}
-\subsection{Method \code{nr_children_col()}}{
-return name of nr_children column
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$nr_children_col()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$nr_children_col()}}{
+  return name of nr_children column
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$nr_children_col()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-isotope_label"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-isotope_label}{}}}
-\subsection{Method \code{isotope_label()}}{
-return isotope label column name
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$isotope_label()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$isotope_label()}}{
+  return isotope label column name
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$isotope_label()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-data_long"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-data_long}{}}}
-\subsection{Method \code{data_long()}}{
-return the tidy (long-format) data frame
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$data_long(na.omit = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$data_long()}}{
+  return the tidy (long-format) data frame
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$data_long(na.omit = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{na.omit}}{if TRUE, remove rows with NA in response column}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{na.omit}}{if TRUE, remove rows with NA in response column}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-rename_response"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-rename_response}{}}}
-\subsection{Method \code{rename_response()}}{
-new name of response variable
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$rename_response(newname = "Intensity")}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$rename_response()}}{
+  new name of response variable
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$rename_response(newname = "Intensity")}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{newname}}{default Intensity}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{newname}}{default Intensity}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-hierarchy_counts"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-hierarchy_counts}{}}}
-\subsection{Method \code{hierarchy_counts()}}{
-number of elements at each level
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$hierarchy_counts()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$hierarchy_counts()}}{
+  number of elements at each level
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$hierarchy_counts()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-summarize_hierarchy"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-summarize_hierarchy}{}}}
-\subsection{Method \code{summarize_hierarchy()}}{
-e.g. number of peptides per protein etc
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$summarize_hierarchy()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$summarize_hierarchy()}}{
+  e.g. number of peptides per protein etc
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$summarize_hierarchy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_Plotter"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_Plotter}{}}}
-\subsection{Method \code{get_Plotter()}}{
-get Plotter
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Plotter()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_Plotter()}}{
+  get Plotter
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_Plotter()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataPlotter
+  }
 }
 
-\subsection{Returns}{
-LFQDataPlotter
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_Summariser"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_Summariser}{}}}
-\subsection{Method \code{get_Summariser()}}{
-get Summariser
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Summariser()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_Summariser()}}{
+  get Summariser
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_Summariser()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataSummarizer
+  }
 }
 
-\subsection{Returns}{
-LFQDataSummarizer
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_Stats"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_Stats}{}}}
-\subsection{Method \code{get_Stats()}}{
-Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Stats(stats = c("everything", "interaction", "all"))}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_Stats()}}{
+  Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_Stats(stats = c("everything", "interaction", "all"))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{stats}}{default interaction, computes statistics within interaction.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataStats
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{stats}}{default interaction, computes statistics within interaction.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-LFQDataStats
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_Transformer"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_Transformer}{}}}
-\subsection{Method \code{get_Transformer()}}{
-get Stats
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Transformer()}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_Transformer()}}{
+  get Stats
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_Transformer()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer
+  }
 }
 
-\subsection{Returns}{
-LFQDataTransformer
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-get_Aggregator"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-get_Aggregator}{}}}
-\subsection{Method \code{get_Aggregator()}}{
-get Aggregator
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$get_Aggregator(method = "medpolish", ...)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$get_Aggregator()}}{
+  get Aggregator
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_Aggregator(method = "medpolish", ...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{method}}{aggregation method: "medpolish", "rlm", or "topN"}
+      \item{\code{...}}{passed to aggregator constructor (e.g. prefix, N, func)}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    AggregateMedpolish, AggregateRlm, or AggregateTopN
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{method}}{aggregation method: "medpolish", "rlm", or "topN"}
-
-\item{\code{...}}{passed to aggregator constructor (e.g. prefix, N, func)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-AggregateMedpolish, AggregateRlm, or AggregateTopN
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQData-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQData$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQData$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

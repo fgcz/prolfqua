@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-Count distinct elements for each level of hierarchy per sample
-
-Count distinct elements for each level of hierarchy per sample
-}
-\details{
 Provides wide, long, and plot views of hierarchy counts.
 }
 \examples{
@@ -20,97 +15,105 @@ counts <- HierarchyCountsSample$new(bb$data, bb$config)
 head(counts$wide())
 }
 \seealso{
-Other summary: 
+Other summary:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{hierarchy_counts}()},
-\code{\link{summarize_hierarchy}()}
+\code{\link[=hierarchy_counts]{hierarchy_counts()}},
+\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
 }
 \concept{summary}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{.summary}}{summarised data frame}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{.summary}}{summarised data frame}
 
-\item{\code{.configuration}}{AnalysisConfiguration object}
-}
-\if{html}{\out{</div>}}
+    \item{\code{.configuration}}{AnalysisConfiguration object}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-HierarchyCountsSample-new}{\code{HierarchyCountsSample$new()}}
-\item \href{#method-HierarchyCountsSample-wide}{\code{HierarchyCountsSample$wide()}}
-\item \href{#method-HierarchyCountsSample-long}{\code{HierarchyCountsSample$long()}}
-\item \href{#method-HierarchyCountsSample-plot}{\code{HierarchyCountsSample$plot()}}
-\item \href{#method-HierarchyCountsSample-clone}{\code{HierarchyCountsSample$clone()}}
-}
+  \itemize{
+    \item \href{#method-HierarchyCountsSample-initialize}{\code{HierarchyCountsSample$new()}}
+    \item \href{#method-HierarchyCountsSample-wide}{\code{HierarchyCountsSample$wide()}}
+    \item \href{#method-HierarchyCountsSample-long}{\code{HierarchyCountsSample$long()}}
+    \item \href{#method-HierarchyCountsSample-plot}{\code{HierarchyCountsSample$plot()}}
+    \item \href{#method-HierarchyCountsSample-clone}{\code{HierarchyCountsSample$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-HierarchyCountsSample-new"></a>}}
-\if{latex}{\out{\hypertarget{method-HierarchyCountsSample-new}{}}}
-\subsection{Method \code{new()}}{
-Create a new HierarchyCountsSample
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HierarchyCountsSample$new(pdata, configuration, nr_children = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-HierarchyCountsSample-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-HierarchyCountsSample-initialize}{}}}
+\subsection{\code{HierarchyCountsSample$new()}}{
+  Create a new HierarchyCountsSample
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{HierarchyCountsSample$new(pdata, configuration, nr_children = 1)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{pdata}}{data frame}
+      \item{\code{configuration}}{AnalysisConfiguration}
+      \item{\code{nr_children}}{minimum number of children to include}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{pdata}}{data frame}
-
-\item{\code{configuration}}{AnalysisConfiguration}
-
-\item{\code{nr_children}}{minimum number of children to include}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-HierarchyCountsSample-wide"></a>}}
 \if{latex}{\out{\hypertarget{method-HierarchyCountsSample-wide}{}}}
-\subsection{Method \code{wide()}}{
-Return wide-format summary
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HierarchyCountsSample$wide()}\if{html}{\out{</div>}}
+\subsection{\code{HierarchyCountsSample$wide()}}{
+  Return wide-format summary
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{HierarchyCountsSample$wide()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-HierarchyCountsSample-long"></a>}}
 \if{latex}{\out{\hypertarget{method-HierarchyCountsSample-long}{}}}
-\subsection{Method \code{long()}}{
-Return long-format summary
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HierarchyCountsSample$long()}\if{html}{\out{</div>}}
+\subsection{\code{HierarchyCountsSample$long()}}{
+  Return long-format summary
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{HierarchyCountsSample$long()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-HierarchyCountsSample-plot"></a>}}
 \if{latex}{\out{\hypertarget{method-HierarchyCountsSample-plot}{}}}
-\subsection{Method \code{plot()}}{
-Return barplot of hierarchy counts
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HierarchyCountsSample$plot()}\if{html}{\out{</div>}}
+\subsection{\code{HierarchyCountsSample$plot()}}{
+  Return barplot of hierarchy counts
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{HierarchyCountsSample$plot()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-HierarchyCountsSample-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-HierarchyCountsSample-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HierarchyCountsSample$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{HierarchyCountsSample$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{HierarchyCountsSample$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

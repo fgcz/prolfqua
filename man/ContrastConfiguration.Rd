@@ -45,75 +45,76 @@ saint <- ContrastConfiguration$new(
 saint$has_pvalue()
 }
 \seealso{
-Other configuration: 
+Other configuration:
 \code{\link{AnalysisConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6_extract_values}()},
-\code{\link{complete_cases}()},
-\code{\link{list_to_ContrastConfiguration}()},
-\code{\link{make_interaction_column}()},
-\code{\link{make_reduced_hierarchy_config}()},
-\code{\link{sample_subset}()},
-\code{\link{separate_hierarchy}()},
-\code{\link{setup_analysis}()},
-\code{\link{table_factors}()},
-\code{\link{table_factors_size}()}
+\code{\link[=R6_extract_values]{R6_extract_values()}},
+\code{\link[=complete_cases]{complete_cases()}},
+\code{\link[=list_to_ContrastConfiguration]{list_to_ContrastConfiguration()}},
+\code{\link[=make_interaction_column]{make_interaction_column()}},
+\code{\link[=make_reduced_hierarchy_config]{make_reduced_hierarchy_config()}},
+\code{\link[=sample_subset]{sample_subset()}},
+\code{\link[=separate_hierarchy]{separate_hierarchy()}},
+\code{\link[=setup_analysis]{setup_analysis()}},
+\code{\link[=table_factors]{table_factors()}},
+\code{\link[=table_factors_size]{table_factors_size()}}
 }
 \concept{configuration}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{subject_id}}{columns identifying the contrast subject (e.g. protein id)}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{subject_id}}{columns identifying the contrast subject (e.g. protein id)}
 
-\item{\code{model_name_col}}{column carrying the model name label}
+    \item{\code{model_name_col}}{column carrying the model name label}
 
-\item{\code{contrast_col}}{column carrying the contrast label}
+    \item{\code{contrast_col}}{column carrying the contrast label}
 
-\item{\code{effect_col}}{column with the (signed) effect size; for LM this
+    \item{\code{effect_col}}{column with the (signed) effect size; for LM this
 is \code{diff}, for SAINT \code{log2_EFCs}}
 
-\item{\code{score_col}}{column with the per-contrast test statistic}
+    \item{\code{score_col}}{column with the per-contrast test statistic}
 
-\item{\code{pvalue_col}}{column with the raw p-value, or \code{""} for backends
+    \item{\code{pvalue_col}}{column with the raw p-value, or \code{""} for backends
 that do not produce one (e.g. SAINTexpress). \code{NA_character_} is
 accepted by the constructor and stored as \code{""}.}
 
-\item{\code{fdr_col}}{column with the FDR / BFDR / adjusted p-value}
+    \item{\code{fdr_col}}{column with the FDR / BFDR / adjusted p-value}
 
-\item{\code{avg_abundance_col}}{column with the per-feature mean abundance}
+    \item{\code{avg_abundance_col}}{column with the per-feature mean abundance}
 
-\item{\code{supports_dea_qc}}{whether the backend supports the legacy
+    \item{\code{supports_dea_qc}}{whether the backend supports the legacy
 differential-expression QC HTML report}
 
-\item{\code{needs_saint_annotation}}{whether the backend needs annotation
+    \item{\code{needs_saint_annotation}}{whether the backend needs annotation
 reading in SAINT mode (bait / control columns)}
 
-\item{\code{significance_directional}}{if \code{TRUE}, the backend only
+    \item{\code{significance_directional}}{if \code{TRUE}, the backend only
 considers positive-effect features biologically meaningful
 (e.g. SAINTexpress, where negative \code{log2_EFCs} are not
 interpreted as "down" hits). Affects
 \code{filter_significant()}: when \code{TRUE} the filter is
 one-sided on the effect column; when \code{FALSE} it is
 symmetric (\code{|effect| > threshold}).}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-ContrastConfiguration-new}{\code{ContrastConfiguration$new()}}
-\item \href{#method-ContrastConfiguration-has_pvalue}{\code{ContrastConfiguration$has_pvalue()}}
-\item \href{#method-ContrastConfiguration-clone}{\code{ContrastConfiguration$clone()}}
-}
+  \itemize{
+    \item \href{#method-ContrastConfiguration-initialize}{\code{ContrastConfiguration$new()}}
+    \item \href{#method-ContrastConfiguration-has_pvalue}{\code{ContrastConfiguration$has_pvalue()}}
+    \item \href{#method-ContrastConfiguration-clone}{\code{ContrastConfiguration$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContrastConfiguration-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ContrastConfiguration-new}{}}}
-\subsection{Method \code{new()}}{
-Construct a ContrastConfiguration. All arguments map directly to
+\if{html}{\out{<a id="method-ContrastConfiguration-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastConfiguration-initialize}{}}}
+\subsection{\code{ContrastConfiguration$new()}}{
+  Construct a ContrastConfiguration. All arguments map directly to
 fields of the same name.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastConfiguration$new(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastConfiguration$new(
   subject_id = character(),
   model_name_col = "modelName",
   contrast_col = "contrast",
@@ -125,63 +126,58 @@ fields of the same name.
   supports_dea_qc = TRUE,
   needs_saint_annotation = FALSE,
   significance_directional = FALSE
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{subject_id}}{columns identifying the contrast subject}
-
-\item{\code{model_name_col}}{model-name column}
-
-\item{\code{contrast_col}}{contrast-label column}
-
-\item{\code{effect_col}}{signed effect column}
-
-\item{\code{score_col}}{test-statistic column}
-
-\item{\code{pvalue_col}}{raw p-value column, or \code{""} / \code{NA_character_}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{subject_id}}{columns identifying the contrast subject}
+      \item{\code{model_name_col}}{model-name column}
+      \item{\code{contrast_col}}{contrast-label column}
+      \item{\code{effect_col}}{signed effect column}
+      \item{\code{score_col}}{test-statistic column}
+      \item{\code{pvalue_col}}{raw p-value column, or \code{""} / \code{NA_character_}
 when the backend produces none}
-
-\item{\code{fdr_col}}{FDR / adjusted-p column}
-
-\item{\code{avg_abundance_col}}{mean-abundance column}
-
-\item{\code{supports_dea_qc}}{supports DEA QC HTML}
-
-\item{\code{needs_saint_annotation}}{needs SAINT-mode annotation}
-
-\item{\code{significance_directional}}{one-sided filter on effect column}
+      \item{\code{fdr_col}}{FDR / adjusted-p column}
+      \item{\code{avg_abundance_col}}{mean-abundance column}
+      \item{\code{supports_dea_qc}}{supports DEA QC HTML}
+      \item{\code{needs_saint_annotation}}{needs SAINT-mode annotation}
+      \item{\code{significance_directional}}{one-sided filter on effect column}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastConfiguration-has_pvalue"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastConfiguration-has_pvalue}{}}}
-\subsection{Method \code{has_pvalue()}}{
-Does the backend produce a usable p-value column?
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastConfiguration$has_pvalue()}\if{html}{\out{</div>}}
+\subsection{\code{ContrastConfiguration$has_pvalue()}}{
+  Does the backend produce a usable p-value column?
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastConfiguration$has_pvalue()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContrastConfiguration-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastConfiguration-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContrastConfiguration$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ContrastConfiguration$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastConfiguration$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

@@ -8,8 +8,6 @@ An R6 class generator.
 }
 \description{
 Summarize LFQData
-
-Summarize LFQData
 }
 \examples{
 istar <- prolfqua::sim_lfq_data_peptide_config()
@@ -33,7 +31,7 @@ sum$upset_interaction_missing_stats()
 sum$percentage_abundance()
 }
 \seealso{
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateRlm}},
@@ -42,203 +40,225 @@ Other LFQData:
 \code{\link{LFQData}},
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
 }
 \concept{LFQData}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{lfq}}{LFQData}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{lfq}}{LFQData}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LFQDataSummariser-new}{\code{LFQDataSummariser$new()}}
-\item \href{#method-LFQDataSummariser-hierarchy_counts}{\code{LFQDataSummariser$hierarchy_counts()}}
-\item \href{#method-LFQDataSummariser-hierarchy_counts_sample}{\code{LFQDataSummariser$hierarchy_counts_sample()}}
-\item \href{#method-LFQDataSummariser-plot_hierarchy_counts_sample}{\code{LFQDataSummariser$plot_hierarchy_counts_sample()}}
-\item \href{#method-LFQDataSummariser-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
-\item \href{#method-LFQDataSummariser-upset_interaction_missing_stats}{\code{LFQDataSummariser$upset_interaction_missing_stats()}}
-\item \href{#method-LFQDataSummariser-missingness_per_group}{\code{LFQDataSummariser$missingness_per_group()}}
-\item \href{#method-LFQDataSummariser-missingness_per_group_cumsum}{\code{LFQDataSummariser$missingness_per_group_cumsum()}}
-\item \href{#method-LFQDataSummariser-plot_missingness_per_group}{\code{LFQDataSummariser$plot_missingness_per_group()}}
-\item \href{#method-LFQDataSummariser-plot_missingness_per_group_cumsum}{\code{LFQDataSummariser$plot_missingness_per_group_cumsum()}}
-\item \href{#method-LFQDataSummariser-percentage_abundance}{\code{LFQDataSummariser$percentage_abundance()}}
-\item \href{#method-LFQDataSummariser-clone}{\code{LFQDataSummariser$clone()}}
-}
+  \itemize{
+    \item \href{#method-LFQDataSummariser-initialize}{\code{LFQDataSummariser$new()}}
+    \item \href{#method-LFQDataSummariser-hierarchy_counts}{\code{LFQDataSummariser$hierarchy_counts()}}
+    \item \href{#method-LFQDataSummariser-hierarchy_counts_sample}{\code{LFQDataSummariser$hierarchy_counts_sample()}}
+    \item \href{#method-LFQDataSummariser-plot_hierarchy_counts_sample}{\code{LFQDataSummariser$plot_hierarchy_counts_sample()}}
+    \item \href{#method-LFQDataSummariser-interaction_missing_stats}{\code{LFQDataSummariser$interaction_missing_stats()}}
+    \item \href{#method-LFQDataSummariser-upset_interaction_missing_stats}{\code{LFQDataSummariser$upset_interaction_missing_stats()}}
+    \item \href{#method-LFQDataSummariser-missingness_per_group}{\code{LFQDataSummariser$missingness_per_group()}}
+    \item \href{#method-LFQDataSummariser-missingness_per_group_cumsum}{\code{LFQDataSummariser$missingness_per_group_cumsum()}}
+    \item \href{#method-LFQDataSummariser-plot_missingness_per_group}{\code{LFQDataSummariser$plot_missingness_per_group()}}
+    \item \href{#method-LFQDataSummariser-plot_missingness_per_group_cumsum}{\code{LFQDataSummariser$plot_missingness_per_group_cumsum()}}
+    \item \href{#method-LFQDataSummariser-percentage_abundance}{\code{LFQDataSummariser$percentage_abundance()}}
+    \item \href{#method-LFQDataSummariser-clone}{\code{LFQDataSummariser$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataSummariser-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataSummariser-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$new(lfqdata)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-LFQDataSummariser-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataSummariser-initialize}{}}}
+\subsection{\code{LFQDataSummariser$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$new(lfqdata)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfqdata}}{LFQData}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfqdata}}{LFQData}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-hierarchy_counts"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-hierarchy_counts}{}}}
-\subsection{Method \code{hierarchy_counts()}}{
-summarize hierarchy
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$hierarchy_counts()}}{
+  summarize hierarchy
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$hierarchy_counts()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-hierarchy_counts_sample"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-hierarchy_counts_sample}{}}}
-\subsection{Method \code{hierarchy_counts_sample()}}{
-number of elements at each level in every sample
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$hierarchy_counts_sample(
+\subsection{\code{LFQDataSummariser$hierarchy_counts_sample()}}{
+  number of elements at each level in every sample
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$hierarchy_counts_sample(
   value = c("wide", "long"),
   nr_children = 1
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
+      \item{\code{nr_children}}{get summary for 1,2 or more number of children}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
-
-\item{\code{nr_children}}{get summary for 1,2 or more number of children}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-plot_hierarchy_counts_sample"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-plot_hierarchy_counts_sample}{}}}
-\subsection{Method \code{plot_hierarchy_counts_sample()}}{
-barplot showing number of elements at each level in every sample
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_hierarchy_counts_sample(nr_children = 1)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$plot_hierarchy_counts_sample()}}{
+  barplot showing number of elements at each level in every sample
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$plot_hierarchy_counts_sample(nr_children = 1)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{nr_children}}{get summary for 1,2 or more number of children}
+      \item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{nr_children}}{get summary for 1,2 or more number of children}
-
-\item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-interaction_missing_stats"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-interaction_missing_stats}{}}}
-\subsection{Method \code{interaction_missing_stats()}}{
-missing per condition and protein
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$interaction_missing_stats()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$interaction_missing_stats()}}{
+  missing per condition and protein
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$interaction_missing_stats()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-upset_interaction_missing_stats"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-upset_interaction_missing_stats}{}}}
-\subsection{Method \code{upset_interaction_missing_stats()}}{
-upset plot with missing information per protein and condition
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$upset_interaction_missing_stats(tr = 2)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$upset_interaction_missing_stats()}}{
+  upset plot with missing information per protein and condition
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$upset_interaction_missing_stats(tr = 2)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{tr}}{if less than tr observations in condition then missing}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{tr}}{if less than tr observations in condition then missing}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-missingness_per_group"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-missingness_per_group}{}}}
-\subsection{Method \code{missingness_per_group()}}{
-missing stats per condition
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$missingness_per_group()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$missingness_per_group()}}{
+  missing stats per condition
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$missingness_per_group()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-missingness_per_group_cumsum"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-missingness_per_group_cumsum}{}}}
-\subsection{Method \code{missingness_per_group_cumsum()}}{
-missing stats per condition as cumulative sum
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$missingness_per_group_cumsum()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$missingness_per_group_cumsum()}}{
+  missing stats per condition as cumulative sum
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$missingness_per_group_cumsum()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-plot_missingness_per_group"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-plot_missingness_per_group}{}}}
-\subsection{Method \code{plot_missingness_per_group()}}{
-barplot with number of features with 1,2, etc missing in condition
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_missingness_per_group()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$plot_missingness_per_group()}}{
+  barplot with number of features with 1,2, etc missing in condition
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$plot_missingness_per_group()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-plot_missingness_per_group_cumsum"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-plot_missingness_per_group_cumsum}{}}}
-\subsection{Method \code{plot_missingness_per_group_cumsum()}}{
-barplot with cumulative sum of features with 1,2, etc missing in condition
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$plot_missingness_per_group_cumsum()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$plot_missingness_per_group_cumsum()}}{
+  barplot with cumulative sum of features with 1,2, etc missing in condition
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$plot_missingness_per_group_cumsum()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
 }
 
-\subsection{Returns}{
-ggplot
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-percentage_abundance"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-percentage_abundance}{}}}
-\subsection{Method \code{percentage_abundance()}}{
-Does roll up to highest hierarchy and
+\subsection{\code{LFQDataSummariser$percentage_abundance()}}{
+  Does roll up to highest hierarchy and
 Computes the percent abundance of proteins overall and within each group
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$percentage_abundance()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$percentage_abundance()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data frame
+  }
 }
 
-\subsection{Returns}{
-data frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataSummariser-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataSummariser-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataSummariser$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataSummariser$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataSummariser$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

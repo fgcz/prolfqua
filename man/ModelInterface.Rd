@@ -8,8 +8,6 @@ An R6 class generator.
 }
 \description{
 R6 interface class representing modelling result
-
-R6 interface class representing modelling result
 }
 \examples{
 
@@ -26,116 +24,130 @@ testthat::expect_error(mi$anova_histogram())
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-ModelInterface-get_coefficients}{\code{ModelInterface$get_coefficients()}}
-\item \href{#method-ModelInterface-get_anova}{\code{ModelInterface$get_anova()}}
-\item \href{#method-ModelInterface-coef_histogram}{\code{ModelInterface$coef_histogram()}}
-\item \href{#method-ModelInterface-coef_volcano}{\code{ModelInterface$coef_volcano()}}
-\item \href{#method-ModelInterface-coef_pairs}{\code{ModelInterface$coef_pairs()}}
-\item \href{#method-ModelInterface-anova_histogram}{\code{ModelInterface$anova_histogram()}}
-\item \href{#method-ModelInterface-clone}{\code{ModelInterface$clone()}}
-}
+  \itemize{
+    \item \href{#method-ModelInterface-get_coefficients}{\code{ModelInterface$get_coefficients()}}
+    \item \href{#method-ModelInterface-get_anova}{\code{ModelInterface$get_anova()}}
+    \item \href{#method-ModelInterface-coef_histogram}{\code{ModelInterface$coef_histogram()}}
+    \item \href{#method-ModelInterface-coef_volcano}{\code{ModelInterface$coef_volcano()}}
+    \item \href{#method-ModelInterface-coef_pairs}{\code{ModelInterface$coef_pairs()}}
+    \item \href{#method-ModelInterface-anova_histogram}{\code{ModelInterface$anova_histogram()}}
+    \item \href{#method-ModelInterface-clone}{\code{ModelInterface$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-get_coefficients"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-get_coefficients}{}}}
-\subsection{Method \code{get_coefficients()}}{
-return model coefficients
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$get_coefficients()}\if{html}{\out{</div>}}
+\subsection{\code{ModelInterface$get_coefficients()}}{
+  return model coefficients
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$get_coefficients()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-get_anova"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-get_anova}{}}}
-\subsection{Method \code{get_anova()}}{
-perform ANOVA analysis
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$get_anova()}\if{html}{\out{</div>}}
+\subsection{\code{ModelInterface$get_anova()}}{
+  perform ANOVA analysis
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$get_anova()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-coef_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-coef_histogram}{}}}
-\subsection{Method \code{coef_histogram()}}{
-histogram of coefficient p-values
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_histogram()}\if{html}{\out{</div>}}
+\subsection{\code{ModelInterface$coef_histogram()}}{
+  histogram of coefficient p-values
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$coef_histogram()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list with \code{plot} (ggplot) and file \code{name}
+  }
 }
 
-\subsection{Returns}{
-list with \code{plot} (ggplot) and file \code{name}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-coef_volcano"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-coef_volcano}{}}}
-\subsection{Method \code{coef_volcano()}}{
-volcano plot of non-intercept coefficients
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_volcano()}\if{html}{\out{</div>}}
+\subsection{\code{ModelInterface$coef_volcano()}}{
+  volcano plot of non-intercept coefficients
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$coef_volcano()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list with \code{plot} (ggplot) and file \code{name}
+  }
 }
 
-\subsection{Returns}{
-list with \code{plot} (ggplot) and file \code{name}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-coef_pairs"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-coef_pairs}{}}}
-\subsection{Method \code{coef_pairs()}}{
-coefficient estimates in wide format, one column per coefficient, for a pairs plot
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$coef_pairs()}\if{html}{\out{</div>}}
+\subsection{\code{ModelInterface$coef_pairs()}}{
+  coefficient estimates in wide format, one column per coefficient, for a pairs plot
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$coef_pairs()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list with \code{plot} (data.frame) and file \code{name}
+  }
 }
 
-\subsection{Returns}{
-list with \code{plot} (data.frame) and file \code{name}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-anova_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-anova_histogram}{}}}
-\subsection{Method \code{anova_histogram()}}{
-histogram of ANOVA p-values or FDR
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$anova_histogram(what = c("p.value", "FDR"))}\if{html}{\out{</div>}}
+\subsection{\code{ModelInterface$anova_histogram()}}{
+  histogram of ANOVA p-values or FDR
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$anova_histogram(what = c("p.value", "FDR"))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{what}}{show either "p.value" or "FDR"}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list with \code{plot} (ggplot) and file \code{name}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{what}}{show either "p.value" or "FDR"}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list with \code{plot} (ggplot) and file \code{name}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelInterface$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ModelInterface$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

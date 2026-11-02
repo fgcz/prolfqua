@@ -24,11 +24,11 @@ main_effect_contrasts(primary_levels, secondary_levels)
 main_effect_contrasts(secondary_levels, primary_levels)
 }
 \seealso{
-Other contrasts: 
-\code{\link{annotation_add_contrasts}()},
-\code{\link{generate_contrasts}()},
-\code{\link{generate_contrasts_for_factor}()},
-\code{\link{interaction_contrasts}()},
-\code{\link{level_specific_contrasts}()}
+Other contrasts:
+\code{\link[=annotation_add_contrasts]{annotation_add_contrasts()}},
+\code{\link[=generate_contrasts]{generate_contrasts()}},
+\code{\link[=generate_contrasts_for_factor]{generate_contrasts_for_factor()}},
+\code{\link[=interaction_contrasts]{interaction_contrasts()}},
+\code{\link[=level_specific_contrasts]{level_specific_contrasts()}}
 }
 \concept{contrasts}

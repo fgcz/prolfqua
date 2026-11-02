@@ -33,13 +33,13 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 head(prolfqua:::nr_B_in_A(istar$data, "protein_Id", "peptide_Id"))
 }
 \seealso{
-Other preprocessing: 
+Other preprocessing:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{apply_to_response_matrix}()},
-\code{\link{filter_proteins_by_peptide_count}()},
-\code{\link{get_robscales}()},
-\code{\link{robust_scale}()},
-\code{\link{scale_with_subset}()}
+\code{\link[=apply_to_response_matrix]{apply_to_response_matrix()}},
+\code{\link[=filter_proteins_by_peptide_count]{filter_proteins_by_peptide_count()}},
+\code{\link[=get_robscales]{get_robscales()}},
+\code{\link[=robust_scale]{robust_scale()}},
+\code{\link[=scale_with_subset]{scale_with_subset()}}
 }
 \concept{preprocessing}
 \keyword{internal}

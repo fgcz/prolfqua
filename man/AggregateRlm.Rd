@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-AggregateRlm
-
-AggregateRlm
-}
-\details{
 Aggregates peptide intensities to protein level using robust regression (rlm).
 Works best with variance-stabilized (log-transformed) intensities.
 }
@@ -28,7 +23,7 @@ p$plots[[1]]
 
 }
 \seealso{
-Other LFQData: 
+Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
 \code{\link{AggregateTopN}},
@@ -37,56 +32,58 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link{LFQDataToSummarizedExperiment}()}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
 }
 \concept{LFQData}
 \section{Super class}{
-\code{\link[prolfqua:AggregatorBase]{prolfqua::AggregatorBase}} -> \code{AggregateRlm}
+\code{\link[prolfqua:AggregatorBase]{AggregatorBase}} -> \code{AggregateRlm}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AggregateRlm-aggregate}{\code{AggregateRlm$aggregate()}}
-\item \href{#method-AggregateRlm-clone}{\code{AggregateRlm$clone()}}
+  \itemize{
+    \item \href{#method-AggregateRlm-aggregate}{\code{AggregateRlm$aggregate()}}
+    \item \href{#method-AggregateRlm-clone}{\code{AggregateRlm$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="initialize"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-initialize'><code>prolfqua::AggregatorBase$initialize()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>prolfqua::AggregatorBase$plot()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>prolfqua::AggregatorBase$write_plots()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="initialize"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-initialize'><code>AggregatorBase$initialize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>AggregatorBase$plot()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>AggregatorBase$write_plots()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateRlm-aggregate"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateRlm-aggregate}{}}}
-\subsection{Method \code{aggregate()}}{
-run robust regression aggregation
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateRlm$aggregate()}\if{html}{\out{</div>}}
+\subsection{\code{AggregateRlm$aggregate()}}{
+  run robust regression aggregation
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateRlm$aggregate()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQData
+  }
 }
 
-\subsection{Returns}{
-LFQData
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateRlm-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateRlm-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AggregateRlm$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AggregateRlm$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateRlm$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

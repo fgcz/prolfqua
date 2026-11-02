@@ -21,231 +21,253 @@ stopifnot(length(config$get_response()) == 1)
 
 }
 \seealso{
-Other configuration: 
+Other configuration:
 \code{\link{ContrastConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{R6_extract_values}()},
-\code{\link{complete_cases}()},
-\code{\link{list_to_ContrastConfiguration}()},
-\code{\link{make_interaction_column}()},
-\code{\link{make_reduced_hierarchy_config}()},
-\code{\link{sample_subset}()},
-\code{\link{separate_hierarchy}()},
-\code{\link{setup_analysis}()},
-\code{\link{table_factors}()},
-\code{\link{table_factors_size}()}
+\code{\link[=R6_extract_values]{R6_extract_values()}},
+\code{\link[=complete_cases]{complete_cases()}},
+\code{\link[=list_to_ContrastConfiguration]{list_to_ContrastConfiguration()}},
+\code{\link[=make_interaction_column]{make_interaction_column()}},
+\code{\link[=make_reduced_hierarchy_config]{make_reduced_hierarchy_config()}},
+\code{\link[=sample_subset]{sample_subset()}},
+\code{\link[=separate_hierarchy]{separate_hierarchy()}},
+\code{\link[=setup_analysis]{setup_analysis()}},
+\code{\link[=table_factors]{table_factors()}},
+\code{\link[=table_factors_size]{table_factors_size()}}
 }
 \concept{configuration}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{sep}}{separator to use when uniting columns is necessary}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{sep}}{separator to use when uniting columns is necessary}
 
-\item{\code{file_name}}{column name of column containing raw file names}
+    \item{\code{file_name}}{column name of column containing raw file names}
 
-\item{\code{sample_name}}{(will be generated from factors or file_name)}
+    \item{\code{sample_name}}{(will be generated from factors or file_name)}
 
-\item{\code{norm_value}}{optional column with normalization values (e.g., Creatinine)}
+    \item{\code{norm_value}}{optional column with normalization values (e.g., Creatinine)}
 
-\item{\code{isotope_label}}{which column contains the isotope label (e.g. heavy or light), or light only if LFQ.}
+    \item{\code{isotope_label}}{which column contains the isotope label (e.g. heavy or light), or light only if LFQ.}
 
-\item{\code{ident_q_value}}{column name with identification QValues (smaller better)}
+    \item{\code{ident_q_value}}{column name with identification QValues (smaller better)}
 
-\item{\code{ident_score}}{column with identification score (larger better)}
+    \item{\code{ident_score}}{column with identification score (larger better)}
 
-\item{\code{opt_rt}}{optional column with rt information}
+    \item{\code{opt_rt}}{optional column with rt information}
 
-\item{\code{opt_mz}}{optional column with mz information}
+    \item{\code{opt_mz}}{optional column with mz information}
 
-\item{\code{opt_se}}{optional column with standard errors (e.g. from limpa aggregation)}
+    \item{\code{opt_se}}{optional column with standard errors (e.g. from limpa aggregation)}
 
-\item{\code{nr_children}}{optional column containing for instance the number of peptides}
+    \item{\code{nr_children}}{optional column containing for instance the number of peptides}
 
-\item{\code{work_intensity}}{column which contains the intensities}
+    \item{\code{work_intensity}}{column which contains the intensities}
 
-\item{\code{is_response_transformed}}{are the intensities transformed for constant variance}
+    \item{\code{is_response_transformed}}{are the intensities transformed for constant variance}
 
-\item{\code{bin_resp}}{column with encoded missing information}
+    \item{\code{bin_resp}}{column with encoded missing information}
 
-\item{\code{pattern_decoys}}{optional regex identifying decoy / reverse-database
+    \item{\code{pattern_decoys}}{optional regex identifying decoy / reverse-database
 ids, unioned with the built-in default prefixes (see
 \code{\link{is_decoy}}). \code{NULL} (default) leaves decoy handling off;
 set it (even to \code{""} for defaults only) to opt into flagging and the
 targets-only model fit.}
 
-\item{\code{pattern_contaminants}}{optional regex identifying contaminant ids
+    \item{\code{pattern_contaminants}}{optional regex identifying contaminant ids
 (keratin, trypsin, BSA, ...). \code{NULL} (default) means contaminants are
 not flagged; set it to enable contaminant flagging / removal.}
 
-\item{\code{factors}}{Names of columns containing factors (annotations)}
+    \item{\code{factors}}{Names of columns containing factors (annotations)}
 
-\item{\code{factor_depth}}{number of relevant factors (used by plotting functions etc)}
+    \item{\code{factor_depth}}{number of relevant factors (used by plotting functions etc)}
 
-\item{\code{hierarchy}}{list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)}
+    \item{\code{hierarchy}}{list with columns describing the measurement hierarchy (i.e. protein peptide precursor fragment)}
 
-\item{\code{hierarchy_depth}}{At which depth do you want to model i.e. protein than 1}
+    \item{\code{hierarchy_depth}}{At which depth do you want to model i.e. protein than 1}
 
-\item{\code{min_peptides_protein}}{minimum number of peptides per protein}
-}
-\if{html}{\out{</div>}}
+    \item{\code{min_peptides_protein}}{minimum number of peptides per protein}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AnalysisConfiguration-set_response}{\code{AnalysisConfiguration$set_response()}}
-\item \href{#method-AnalysisConfiguration-get_response}{\code{AnalysisConfiguration$get_response()}}
-\item \href{#method-AnalysisConfiguration-pop_response}{\code{AnalysisConfiguration$pop_response()}}
-\item \href{#method-AnalysisConfiguration-factor_keys}{\code{AnalysisConfiguration$factor_keys()}}
-\item \href{#method-AnalysisConfiguration-factor_keys_depth}{\code{AnalysisConfiguration$factor_keys_depth()}}
-\item \href{#method-AnalysisConfiguration-hierarchy_keys}{\code{AnalysisConfiguration$hierarchy_keys()}}
-\item \href{#method-AnalysisConfiguration-hierarchy_keys_depth}{\code{AnalysisConfiguration$hierarchy_keys_depth()}}
-\item \href{#method-AnalysisConfiguration-id_vars}{\code{AnalysisConfiguration$id_vars()}}
-\item \href{#method-AnalysisConfiguration-value_vars}{\code{AnalysisConfiguration$value_vars()}}
-\item \href{#method-AnalysisConfiguration-annotation_vars}{\code{AnalysisConfiguration$annotation_vars()}}
-\item \href{#method-AnalysisConfiguration-clone}{\code{AnalysisConfiguration$clone()}}
-}
+  \itemize{
+    \item \href{#method-AnalysisConfiguration-set_response}{\code{AnalysisConfiguration$set_response()}}
+    \item \href{#method-AnalysisConfiguration-get_response}{\code{AnalysisConfiguration$get_response()}}
+    \item \href{#method-AnalysisConfiguration-pop_response}{\code{AnalysisConfiguration$pop_response()}}
+    \item \href{#method-AnalysisConfiguration-factor_keys}{\code{AnalysisConfiguration$factor_keys()}}
+    \item \href{#method-AnalysisConfiguration-factor_keys_depth}{\code{AnalysisConfiguration$factor_keys_depth()}}
+    \item \href{#method-AnalysisConfiguration-hierarchy_keys}{\code{AnalysisConfiguration$hierarchy_keys()}}
+    \item \href{#method-AnalysisConfiguration-hierarchy_keys_depth}{\code{AnalysisConfiguration$hierarchy_keys_depth()}}
+    \item \href{#method-AnalysisConfiguration-id_vars}{\code{AnalysisConfiguration$id_vars()}}
+    \item \href{#method-AnalysisConfiguration-value_vars}{\code{AnalysisConfiguration$value_vars()}}
+    \item \href{#method-AnalysisConfiguration-annotation_vars}{\code{AnalysisConfiguration$annotation_vars()}}
+    \item \href{#method-AnalysisConfiguration-clone}{\code{AnalysisConfiguration$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-set_response"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-set_response}{}}}
-\subsection{Method \code{set_response()}}{
-Add name of intensity column
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$set_response(col_name)}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$set_response()}}{
+  Add name of intensity column
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$set_response(col_name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{col_name}}{name of intensity column}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{col_name}}{name of intensity column}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-get_response"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-get_response}{}}}
-\subsection{Method \code{get_response()}}{
-Get name of working intensity column
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$get_response()}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$get_response()}}{
+  Get name of working intensity column
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$get_response()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-pop_response"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-pop_response}{}}}
-\subsection{Method \code{pop_response()}}{
-Remove last name in array of working intensity column names
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$pop_response()}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$pop_response()}}{
+  Remove last name in array of working intensity column names
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$pop_response()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-factor_keys"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-factor_keys}{}}}
-\subsection{Method \code{factor_keys()}}{
-Get factor keys
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$factor_keys()}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$factor_keys()}}{
+  Get factor keys
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$factor_keys()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    array with keys
+  }
 }
 
-\subsection{Returns}{
-array with keys
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-factor_keys_depth"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-factor_keys_depth}{}}}
-\subsection{Method \code{factor_keys_depth()}}{
-Get factor keys till factorDepth
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$factor_keys_depth()}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$factor_keys_depth()}}{
+  Get factor keys till factorDepth
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$factor_keys_depth()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-hierarchy_keys"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-hierarchy_keys}{}}}
-\subsection{Method \code{hierarchy_keys()}}{
-get hierarchy keys
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$hierarchy_keys()}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$hierarchy_keys()}}{
+  get hierarchy keys
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$hierarchy_keys()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    array of column names
+  }
 }
 
-\subsection{Returns}{
-array of column names
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-hierarchy_keys_depth"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-hierarchy_keys_depth}{}}}
-\subsection{Method \code{hierarchy_keys_depth()}}{
-get hierarchy keys up to depth
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$hierarchy_keys_depth(names = TRUE)}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$hierarchy_keys_depth()}}{
+  get hierarchy keys up to depth
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$hierarchy_keys_depth(names = TRUE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{names}}{if TRUE names only if FALSE key value pairs}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    array of column names
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{names}}{if TRUE names only if FALSE key value pairs}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-array of column names
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-id_vars"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-id_vars}{}}}
-\subsection{Method \code{id_vars()}}{
-get names of columns annotating values (e.g. intensities)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$id_vars()}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$id_vars()}}{
+  get names of columns annotating values (e.g. intensities)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$id_vars()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    character array
+  }
 }
 
-\subsection{Returns}{
-character array
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-value_vars"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-value_vars}{}}}
-\subsection{Method \code{value_vars()}}{
-get names of columns containing observations e.g. (intensity, qValue, mz or rt)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$value_vars()}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$value_vars()}}{
+  get names of columns containing observations e.g. (intensity, qValue, mz or rt)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$value_vars()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-annotation_vars"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-annotation_vars}{}}}
-\subsection{Method \code{annotation_vars()}}{
-get names of columns with sample annotations
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$annotation_vars()}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$annotation_vars()}}{
+  get names of columns with sample annotations
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$annotation_vars()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AnalysisConfiguration-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AnalysisConfiguration$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AnalysisConfiguration$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AnalysisConfiguration$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

@@ -8,8 +8,6 @@ An R6 class generator.
 }
 \description{
 Decorate LFQData with Methods for transforming Intensities
-
-Decorate LFQData with Methods for transforming Intensities
 }
 \examples{
 
@@ -91,211 +89,224 @@ robscale$get_Plotter()$intensity_distribution_density()
 
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{lfq}}{LFQData object}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{lfq}}{LFQData object}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-LFQDataTransformer-new}{\code{LFQDataTransformer$new()}}
-\item \href{#method-LFQDataTransformer-log2}{\code{LFQDataTransformer$log2()}}
-\item \href{#method-LFQDataTransformer-get_scales}{\code{LFQDataTransformer$get_scales()}}
-\item \href{#method-LFQDataTransformer-robscale}{\code{LFQDataTransformer$robscale()}}
-\item \href{#method-LFQDataTransformer-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
-\item \href{#method-LFQDataTransformer-center_to_reference}{\code{LFQDataTransformer$center_to_reference()}}
-\item \href{#method-LFQDataTransformer-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
-\item \href{#method-LFQDataTransformer-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
-\item \href{#method-LFQDataTransformer-clone}{\code{LFQDataTransformer$clone()}}
-}
+  \itemize{
+    \item \href{#method-LFQDataTransformer-initialize}{\code{LFQDataTransformer$new()}}
+    \item \href{#method-LFQDataTransformer-log2}{\code{LFQDataTransformer$log2()}}
+    \item \href{#method-LFQDataTransformer-get_scales}{\code{LFQDataTransformer$get_scales()}}
+    \item \href{#method-LFQDataTransformer-robscale}{\code{LFQDataTransformer$robscale()}}
+    \item \href{#method-LFQDataTransformer-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
+    \item \href{#method-LFQDataTransformer-center_to_reference}{\code{LFQDataTransformer$center_to_reference()}}
+    \item \href{#method-LFQDataTransformer-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
+    \item \href{#method-LFQDataTransformer-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
+    \item \href{#method-LFQDataTransformer-clone}{\code{LFQDataTransformer$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LFQDataTransformer-new"></a>}}
-\if{latex}{\out{\hypertarget{method-LFQDataTransformer-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$new(lfqdata)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-LFQDataTransformer-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-initialize}{}}}
+\subsection{\code{LFQDataTransformer$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$new(lfqdata)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfqdata}}{LFQData object to transform}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfqdata}}{LFQData object to transform}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataTransformer-log2"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-log2}{}}}
-\subsection{Method \code{log2()}}{
-log2 transform data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$log2(force = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataTransformer$log2()}}{
+  log2 transform data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$log2(force = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{force}}{if `FALSE`, data already log2 transformed will not be
+transformed a second time. `TRUE` forces log transformation}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{force}}{if `FALSE`, data already log2 transformed will not be
-transformed a second time. `TRUE` forces log transformation}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-LFQDataTransformer
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataTransformer-get_scales"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-get_scales}{}}}
-\subsection{Method \code{get_scales()}}{
-get mean and variance and standard deviation in each sample
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$get_scales()}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataTransformer$get_scales()}}{
+  get mean and variance and standard deviation in each sample
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$get_scales()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    list with means and mads
+  }
 }
 
-\subsection{Returns}{
-list with means and mads
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataTransformer-robscale"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-robscale}{}}}
-\subsection{Method \code{robscale()}}{
-robust scale data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale(
+\subsection{\code{LFQDataTransformer$robscale()}}{
+  robust scale data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$robscale(
   preserve_mean = TRUE,
   colname = "transformedIntensity"
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
+      \item{\code{colname}}{new name of transformed column}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer (self)
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
-
-\item{\code{colname}}{new name of transformed column}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-LFQDataTransformer (self)
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataTransformer-robscale_subset"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-robscale_subset}{}}}
-\subsection{Method \code{robscale_subset()}}{
-log2 transform and robust scale data based on subset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$robscale_subset(
+\subsection{\code{LFQDataTransformer$robscale_subset()}}{
+  log2 transform and robust scale data based on subset
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$robscale_subset(
   lfqsubset,
   preserve_mean = TRUE,
   colname = "transformed_abundance"
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfqsubset}}{LFQData subset to use for normalization}
+      \item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
+      \item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer (self)
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfqsubset}}{LFQData subset to use for normalization}
-
-\item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
-
-\item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-LFQDataTransformer (self)
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataTransformer-center_to_reference"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-center_to_reference}{}}}
-\subsection{Method \code{center_to_reference()}}{
-center data to a reference subset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$center_to_reference(lfqsubset)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataTransformer$center_to_reference()}}{
+  center data to a reference subset
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$center_to_reference(lfqsubset)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfqsubset}}{LFQData subset to use as reference}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer (self)
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{lfqsubset}}{LFQData subset to use as reference}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-LFQDataTransformer (self)
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataTransformer-intensity_array"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-intensity_array}{}}}
-\subsection{Method \code{intensity_array()}}{
-Transforms intensities
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$intensity_array(.func = log2, force = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataTransformer$intensity_array()}}{
+  Transforms intensities
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$intensity_array(.func = log2, force = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{.func}}{transformation function working with arrays e.g. log2, log10, asinh etc.}
+      \item{\code{force}}{transformation on already transformed data.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer (self)
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{.func}}{transformation function working with arrays e.g. log2, log10, asinh etc.}
-
-\item{\code{force}}{transformation on already transformed data.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-LFQDataTransformer (self)
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataTransformer-intensity_matrix"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-intensity_matrix}{}}}
-\subsection{Method \code{intensity_matrix()}}{
-pass a function which works with matrices, e.g., vsn::justvsn
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$intensity_matrix(.func = robust_scale, force = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{.func}}{any function taking a matrix and returning a matrix
+\subsection{\code{LFQDataTransformer$intensity_matrix()}}{
+  pass a function which works with matrices, e.g., vsn::justvsn
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$intensity_matrix(.func = robust_scale, force = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{.func}}{any function taking a matrix and returning a matrix
 (columns sample, rows feature, e.g. `base::scale()`), default
 `robust_scale`}
+      \item{\code{force}}{transformation on data already transformed}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer (self)
+  }
+}
 
-\item{\code{force}}{transformation on data already transformed}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-LFQDataTransformer (self)
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataTransformer-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataTransformer-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LFQDataTransformer$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{LFQDataTransformer$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

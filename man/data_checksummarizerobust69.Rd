@@ -16,11 +16,11 @@ log2 peptide areas of one protein, used by the tests of the robust
 (medpolish/rlm) protein summarisation. See `inst/script/README.md`.
 }
 \seealso{
-Other data: 
+Other data:
 \code{\link{PACKAGE_DATA}},
 \code{\link{data_checksummarizationrobust87}},
 \code{\link{data_ionstar}},
-\code{\link{prolfqua_data}()},
+\code{\link[=prolfqua_data]{prolfqua_data()}},
 \code{\link{x5463yzwer453bbb}}
 }
 \concept{data}

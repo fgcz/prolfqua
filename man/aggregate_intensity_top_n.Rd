@@ -40,11 +40,11 @@ stopifnot("ggplot" \%in\% class(tmpRob$plots[[4]]))
 
 }
 \seealso{
-Other aggregation: 
+Other aggregation:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{estimate_intensity}()},
-\code{\link{plot_estimate}()},
-\code{\link{plot_hierarchies_line}()}
+\code{\link[=estimate_intensity]{estimate_intensity()}},
+\code{\link[=plot_estimate]{plot_estimate()}},
+\code{\link[=plot_hierarchies_line]{plot_hierarchies_line()}}
 }
 \concept{aggregation}
 \keyword{internal}

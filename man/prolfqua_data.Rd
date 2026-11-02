@@ -22,7 +22,7 @@ ionstar <- prolfqua_data("data_ionstar")
 names(ionstar)
 }
 \seealso{
-Other data: 
+Other data:
 \code{\link{PACKAGE_DATA}},
 \code{\link{data_checksummarizationrobust87}},
 \code{\link{data_checksummarizerobust69}},

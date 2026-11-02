@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-Group statistics and limit of detection
-
-Group statistics and limit of detection
-}
-\details{
 Computes per-group statistics of the abundances and, from them, the limit of
 detection (LOD) used by \code{\link{build_model_impute}} to impute groups
 without observations.
@@ -29,93 +24,99 @@ mh$get_lod()
 
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{data}}{data}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{data}}{data}
 
-\item{\code{config}}{config}
+    \item{\code{config}}{config}
 
-\item{\code{prob}}{quantile of groups with one observed value to estimate LOD}
+    \item{\code{prob}}{quantile of groups with one observed value to estimate LOD}
 
-\item{\code{stats}}{data.frame with group statistics}
-}
-\if{html}{\out{</div>}}
+    \item{\code{stats}}{data.frame with group statistics}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-MissingHelpers-new}{\code{MissingHelpers$new()}}
-\item \href{#method-MissingHelpers-get_stats}{\code{MissingHelpers$get_stats()}}
-\item \href{#method-MissingHelpers-get_lod}{\code{MissingHelpers$get_lod()}}
-\item \href{#method-MissingHelpers-clone}{\code{MissingHelpers$clone()}}
-}
+  \itemize{
+    \item \href{#method-MissingHelpers-initialize}{\code{MissingHelpers$new()}}
+    \item \href{#method-MissingHelpers-get_stats}{\code{MissingHelpers$get_stats()}}
+    \item \href{#method-MissingHelpers-get_lod}{\code{MissingHelpers$get_lod()}}
+    \item \href{#method-MissingHelpers-clone}{\code{MissingHelpers$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MissingHelpers-new"></a>}}
-\if{latex}{\out{\hypertarget{method-MissingHelpers-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$new(data, config, prob = 0.5)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-MissingHelpers-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-MissingHelpers-initialize}{}}}
+\subsection{\code{MissingHelpers$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{MissingHelpers$new(data, config, prob = 0.5)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{data}
+      \item{\code{config}}{config}
+      \item{\code{prob}}{default 0.5, median of groups with one observed value}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{data}
-
-\item{\code{config}}{config}
-
-\item{\code{prob}}{default 0.5, median of groups with one observed value}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MissingHelpers-get_stats"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-get_stats}{}}}
-\subsection{Method \code{get_stats()}}{
-get data.frame with statistics
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_stats()}\if{html}{\out{</div>}}
+\subsection{\code{MissingHelpers$get_stats()}}{
+  get data.frame with statistics
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{MissingHelpers$get_stats()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    data.frame
+  }
 }
 
-\subsection{Returns}{
-data.frame
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MissingHelpers-get_lod"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-get_lod}{}}}
-\subsection{Method \code{get_lod()}}{
-determine limit of detection
+\subsection{\code{MissingHelpers$get_lod()}}{
+  determine limit of detection
 computes quantile of abundances in groups with a single observation;
 without such groups, of the partly observed groups with the fewest
 observations, and when every group is complete or empty, the lowest
 group mean
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$get_lod()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{MissingHelpers$get_lod()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    numeric LOD
+  }
 }
 
-\subsection{Returns}{
-numeric LOD
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MissingHelpers-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-MissingHelpers-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MissingHelpers$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{MissingHelpers$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{MissingHelpers$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

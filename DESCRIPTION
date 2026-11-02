@@ -86,4 +86,3 @@ Depends:
     R (>= 4.5.0)
 biocViews: MassSpectrometry, Proteomics, Metabolomics, Normalization, Preprocessing, QualityControl
 Config/roxygen2/version: 8.1.1
-RoxygenNote: 7.3.3

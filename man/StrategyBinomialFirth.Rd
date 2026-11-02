@@ -7,11 +7,6 @@
 An R6 class generator.
 }
 \description{
-Firth-penalized quasibinomial detection-count strategy
-
-Firth-penalized quasibinomial detection-count strategy
-}
-\details{
 Fits detected and undetected child-feature counts like
 \code{\link{StrategyBinomial}}, but replaces the fixed pseudo-count with
 Firth's bias reduction: each count row gets \eqn{h/2} added to both outcomes,
@@ -32,61 +27,62 @@ fit <- strategy$model_fun(dat)
 coefficients(fit)
 }
 \section{Super classes}{
-\code{\link[prolfqua:StrategyBase]{prolfqua::StrategyBase}} -> \code{\link[prolfqua:StrategyBinomial]{prolfqua::StrategyBinomial}} -> \code{StrategyBinomialFirth}
+\code{\link[prolfqua:StrategyBase]{StrategyBase}} -> \code{\link[prolfqua:StrategyBinomial]{StrategyBinomial}} -> \code{StrategyBinomialFirth}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-StrategyBinomialFirth-new}{\code{StrategyBinomialFirth$new()}}
-\item \href{#method-StrategyBinomialFirth-clone}{\code{StrategyBinomialFirth$clone()}}
+  \itemize{
+    \item \href{#method-StrategyBinomialFirth-initialize}{\code{StrategyBinomialFirth$new()}}
+    \item \href{#method-StrategyBinomialFirth-clone}{\code{StrategyBinomialFirth$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>prolfqua::StrategyBase$contrast_fun()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>prolfqua::StrategyBase$df_residual()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>prolfqua::StrategyBase$isSingular()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>prolfqua::StrategyBase$model_fun()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>prolfqua::StrategyBase$sigma()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>StrategyBase$contrast_fun()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>StrategyBase$df_residual()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>StrategyBase$isSingular()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>StrategyBase$model_fun()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>StrategyBase$sigma()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StrategyBinomialFirth-new"></a>}}
-\if{latex}{\out{\hypertarget{method-StrategyBinomialFirth-new}{}}}
-\subsection{Method \code{new()}}{
-Create a Firth-penalized quasibinomial count strategy.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyBinomialFirth$new(modelstr, model_name = "binomial_firth_nested")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{modelstr}}{right-hand-side model formula, for example
+\if{html}{\out{<a id="method-StrategyBinomialFirth-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-StrategyBinomialFirth-initialize}{}}}
+\subsection{\code{StrategyBinomialFirth$new()}}{
+  Create a Firth-penalized quasibinomial count strategy.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyBinomialFirth$new(modelstr, model_name = "binomial_firth_nested")}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{modelstr}}{right-hand-side model formula, for example
 \code{"~ group_"}}
+      \item{\code{model_name}}{model identity}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
 
-\item{\code{model_name}}{model identity}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyBinomialFirth-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyBinomialFirth-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StrategyBinomialFirth$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{StrategyBinomialFirth$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyBinomialFirth$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

@@ -33,11 +33,11 @@ abline(0, 1, col = 2)
 
 }
 \seealso{
-Other aggregation: 
+Other aggregation:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{aggregate_intensity_top_n}()},
-\code{\link{plot_estimate}()},
-\code{\link{plot_hierarchies_line}()}
+\code{\link[=aggregate_intensity_top_n]{aggregate_intensity_top_n()}},
+\code{\link[=plot_estimate]{plot_estimate()}},
+\code{\link[=plot_hierarchies_line]{plot_hierarchies_line()}}
 }
 \concept{aggregation}
 \keyword{internal}

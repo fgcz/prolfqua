@@ -8,8 +8,6 @@ An R6 class generator.
 }
 \description{
 R6 class representing modelling result
-
-R6 class representing modelling result
 }
 \examples{
 
@@ -46,7 +44,7 @@ mod$coef_volcano()
 mod$anova_histogram()
 }
 \seealso{
-Other modelling: 
+Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
 \code{\link{ContrastsDEqMSFacade}},
@@ -77,7 +75,7 @@ Other modelling:
 \code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{LR_test}()},
+\code{\link[=LR_test]{LR_test()}},
 \code{\link{Model}},
 \code{\link{ModelLimma}},
 \code{\link{StrategyLM}},
@@ -87,169 +85,174 @@ Other modelling:
 \code{\link{StrategyLogistf}},
 \code{\link{StrategyRLM}},
 \code{\link{StrategyRfit}},
-\code{\link{build_contrast_analysis}()},
-\code{\link{build_model}()},
-\code{\link{build_model_glm_peptide}()},
-\code{\link{build_model_glm_protein}()},
-\code{\link{build_model_impute}()},
-\code{\link{build_model_limma}()},
-\code{\link{build_model_limma_impute}()},
-\code{\link{build_model_limma_voom}()},
-\code{\link{build_model_limma_voom_impute}()},
-\code{\link{build_model_limpa}()},
-\code{\link{build_model_logistf}()},
-\code{\link{compute_borrowed_variance}()},
-\code{\link{compute_borrowed_variance_limma}()},
-\code{\link{compute_contrast}()},
-\code{\link{compute_lmer_contrast}()},
-\code{\link{df.residual.rfit_prolfqua}()},
-\code{\link{get_anova_df}()},
-\code{\link{get_complete_model_fit}()},
-\code{\link{get_p_values_pbeta}()},
-\code{\link{group_label}()},
-\code{\link{impute_from_model}()},
-\code{\link{impute_refit_singular}()},
-\code{\link{linfct_from_model}()},
-\code{\link{linfct_matrix_contrasts}()},
-\code{\link{list_facades}()},
-\code{\link{lookup_facade}()},
-\code{\link{merge_contrasts_results}()},
-\code{\link{model_analyse}()},
-\code{\link{model_summary}()},
-\code{\link{moderated_p_deqms}()},
-\code{\link{moderated_p_deqms_long}()},
-\code{\link{moderated_p_limma}()},
-\code{\link{new_imputed_model}()},
-\code{\link{pivot_model_contrasts_to_wide}()},
-\code{\link{register_facade}()},
-\code{\link{sigma.rfit_prolfqua}()},
-\code{\link{sim_build_models_lm}()},
-\code{\link{sim_build_models_lmer}()},
-\code{\link{sim_build_models_logistf}()},
-\code{\link{sim_make_model_lm}()},
-\code{\link{sim_make_model_lmer}()},
-\code{\link{strategy_limma}()},
-\code{\link{strategy_limpa}()},
-\code{\link{strategy_logistf}()},
-\code{\link{summary_ROPECA_median_p_scaled}()},
-\code{\link{vcov.rfit_prolfqua}()}
+\code{\link[=build_contrast_analysis]{build_contrast_analysis()}},
+\code{\link[=build_model]{build_model()}},
+\code{\link[=build_model_glm_peptide]{build_model_glm_peptide()}},
+\code{\link[=build_model_glm_protein]{build_model_glm_protein()}},
+\code{\link[=build_model_impute]{build_model_impute()}},
+\code{\link[=build_model_limma]{build_model_limma()}},
+\code{\link[=build_model_limma_impute]{build_model_limma_impute()}},
+\code{\link[=build_model_limma_voom]{build_model_limma_voom()}},
+\code{\link[=build_model_limma_voom_impute]{build_model_limma_voom_impute()}},
+\code{\link[=build_model_limpa]{build_model_limpa()}},
+\code{\link[=build_model_logistf]{build_model_logistf()}},
+\code{\link[=compute_borrowed_variance]{compute_borrowed_variance()}},
+\code{\link[=compute_borrowed_variance_limma]{compute_borrowed_variance_limma()}},
+\code{\link[=compute_contrast]{compute_contrast()}},
+\code{\link[=compute_lmer_contrast]{compute_lmer_contrast()}},
+\code{\link[=df.residual.rfit_prolfqua]{df.residual.rfit_prolfqua()}},
+\code{\link[=get_anova_df]{get_anova_df()}},
+\code{\link[=get_complete_model_fit]{get_complete_model_fit()}},
+\code{\link[=get_p_values_pbeta]{get_p_values_pbeta()}},
+\code{\link[=group_label]{group_label()}},
+\code{\link[=impute_from_model]{impute_from_model()}},
+\code{\link[=impute_refit_singular]{impute_refit_singular()}},
+\code{\link[=linfct_from_model]{linfct_from_model()}},
+\code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
+\code{\link[=list_facades]{list_facades()}},
+\code{\link[=lookup_facade]{lookup_facade()}},
+\code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
+\code{\link[=model_analyse]{model_analyse()}},
+\code{\link[=model_summary]{model_summary()}},
+\code{\link[=moderated_p_deqms]{moderated_p_deqms()}},
+\code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
+\code{\link[=moderated_p_limma]{moderated_p_limma()}},
+\code{\link[=new_imputed_model]{new_imputed_model()}},
+\code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
+\code{\link[=register_facade]{register_facade()}},
+\code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
+\code{\link[=sim_build_models_lm]{sim_build_models_lm()}},
+\code{\link[=sim_build_models_lmer]{sim_build_models_lmer()}},
+\code{\link[=sim_build_models_logistf]{sim_build_models_logistf()}},
+\code{\link[=sim_make_model_lm]{sim_make_model_lm()}},
+\code{\link[=sim_make_model_lmer]{sim_make_model_lmer()}},
+\code{\link[=strategy_limma]{strategy_limma()}},
+\code{\link[=strategy_limpa]{strategy_limpa()}},
+\code{\link[=strategy_logistf]{strategy_logistf()}},
+\code{\link[=summary_ROPECA_median_p_scaled]{summary_ROPECA_median_p_scaled()}},
+\code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 }
 \concept{modelling}
 \section{Super class}{
-\code{\link[prolfqua:ModelInterface]{prolfqua::ModelInterface}} -> \code{ModelFirth}
+\code{\link[prolfqua:ModelInterface]{ModelInterface}} -> \code{ModelFirth}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{models}}{data.frame with modelling data and model.}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{models}}{data.frame with modelling data and model.}
 
-\item{\code{model_name}}{name of model}
+    \item{\code{model_name}}{name of model}
 
-\item{\code{subject_id}}{e.g. protein_Id}
+    \item{\code{subject_id}}{e.g. protein_Id}
 
-\item{\code{p.adjust}}{function to adjust p-values}
-}
-\if{html}{\out{</div>}}
+    \item{\code{p.adjust}}{function to adjust p-values}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-ModelFirth-new}{\code{ModelFirth$new()}}
-\item \href{#method-ModelFirth-get_coefficients}{\code{ModelFirth$get_coefficients()}}
-\item \href{#method-ModelFirth-get_anova}{\code{ModelFirth$get_anova()}}
-\item \href{#method-ModelFirth-anova_histogram}{\code{ModelFirth$anova_histogram()}}
-\item \href{#method-ModelFirth-clone}{\code{ModelFirth$clone()}}
+  \itemize{
+    \item \href{#method-ModelFirth-initialize}{\code{ModelFirth$new()}}
+    \item \href{#method-ModelFirth-get_coefficients}{\code{ModelFirth$get_coefficients()}}
+    \item \href{#method-ModelFirth-get_anova}{\code{ModelFirth$get_anova()}}
+    \item \href{#method-ModelFirth-anova_histogram}{\code{ModelFirth$anova_histogram()}}
+    \item \href{#method-ModelFirth-clone}{\code{ModelFirth$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram'><code>prolfqua::ModelInterface$coef_histogram()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs'><code>prolfqua::ModelInterface$coef_pairs()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano'><code>prolfqua::ModelInterface$coef_volcano()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram'><code>ModelInterface$coef_histogram()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs'><code>ModelInterface$coef_pairs()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano'><code>ModelInterface$coef_volcano()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ModelFirth-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ModelFirth-new}{}}}
-\subsection{Method \code{new()}}{
-initialize
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$new(
+\if{html}{\out{<a id="method-ModelFirth-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelFirth-initialize}{}}}
+\subsection{\code{ModelFirth$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelFirth$new(
   models,
   model_name = "modelFirth",
   subject_id = "protein_Id",
   p.adjust = prolfqua::adjust_p_values
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{models}}{dataframe with modelling results}
+      \item{\code{model_name}}{name of model}
+      \item{\code{subject_id}}{subject column name}
+      \item{\code{p.adjust}}{method to adjust p-values}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{models}}{dataframe with modelling results}
-
-\item{\code{model_name}}{name of model}
-
-\item{\code{subject_id}}{subject column name}
-
-\item{\code{p.adjust}}{method to adjust p-values}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelFirth-get_coefficients"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelFirth-get_coefficients}{}}}
-\subsection{Method \code{get_coefficients()}}{
-return model coefficient table
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$get_coefficients()}\if{html}{\out{</div>}}
+\subsection{\code{ModelFirth$get_coefficients()}}{
+  return model coefficient table
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelFirth$get_coefficients()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelFirth-get_anova"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelFirth-get_anova}{}}}
-\subsection{Method \code{get_anova()}}{
-return anova table
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$get_anova()}\if{html}{\out{</div>}}
+\subsection{\code{ModelFirth$get_anova()}}{
+  return anova table
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelFirth$get_anova()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelFirth-anova_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelFirth-anova_histogram}{}}}
-\subsection{Method \code{anova_histogram()}}{
-histogram of ANOVA results
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$anova_histogram(what = c("p.value", "FDR"))}\if{html}{\out{</div>}}
+\subsection{\code{ModelFirth$anova_histogram()}}{
+  histogram of ANOVA results
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelFirth$anova_histogram(what = c("p.value", "FDR"))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{what}}{show either "Pr..F." or "FDR.Pr..F."}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{what}}{show either "Pr..F." or "FDR.Pr..F."}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelFirth-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelFirth-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ModelFirth$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ModelFirth$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelFirth$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

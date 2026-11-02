@@ -25,15 +25,15 @@ pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
 \seealso{
 also \code{\link{pairs}}
 
-Other utilities: 
+Other utilities:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link{get_uniprot_id_from_fasta_header}()},
-\code{\link{is_contaminant}()},
-\code{\link{is_decoy}()},
-\code{\link{matrix_to_tibble}()},
-\code{\link{multigroup_volcano}()},
-\code{\link{panel_cor}()},
-\code{\link{table_facade}()}
+\code{\link[=get_uniprot_id_from_fasta_header]{get_uniprot_id_from_fasta_header()}},
+\code{\link[=is_contaminant]{is_contaminant()}},
+\code{\link[=is_decoy]{is_decoy()}},
+\code{\link[=matrix_to_tibble]{matrix_to_tibble()}},
+\code{\link[=multigroup_volcano]{multigroup_volcano()}},
+\code{\link[=panel_cor]{panel_cor()}},
+\code{\link[=table_facade]{table_facade()}}
 }
 \concept{utilities}
 \keyword{internal}
