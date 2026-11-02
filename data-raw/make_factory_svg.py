@@ -45,14 +45,13 @@ for row_y in (262, 318):
         add(f'<rect x="{x}" y="{row_y}" width="32" height="34" fill="#f2d16b" stroke="#4a2820" stroke-width="1.5"/>')
 add('<rect x="312" y="578" width="44" height="70" fill="#5a3329" stroke="#4a2820" stroke-width="2"/>')
 
-# input card and arrow
-add('<rect x="20" y="330" width="236" height="150" rx="8" fill="#eef3fb" stroke="#5b7db1" stroke-width="2"/>')
-add('<text x="36" y="358" font-size="15" font-weight="bold" fill="#2b4a7a">input</text>')
-for i, (name, value) in enumerate([("LFQData", ""), ("modelstr", '"~ group_"'), ("contrasts", ""), ("method", '"lm_impute"')]):
-    add(f'<text x="36" y="{386 + i * 24}" font-family="{MONO}" font-size="13" fill="#222">{name}</text>')
-    if value:
-        add(f'<text x="120" y="{386 + i * 24}" font-family="{MONO}" font-size="13" fill="#222">{value}</text>')
-add('<line x1="256" y1="405" x2="280" y2="405" stroke="#5b7db1" stroke-width="3"/>')
+# input card: the R call, and an arrow into the factory
+add('<rect x="20" y="318" width="250" height="174" rx="8" fill="#eef3fb" stroke="#5b7db1" stroke-width="2"/>')
+add('<text x="34" y="344" font-size="14" font-weight="bold" fill="#2b4a7a">R</text>')
+call = [(34, "build_contrast_analysis("), (50, "lfqdata,"), (50, '"~ group_",'), (50, "contrasts,"), (50, 'method = "lm_impute"'), (34, ")")]
+for i, (x, line) in enumerate(call):
+    add(f'<text x="{x}" y="{370 + i * 22}" font-family="{MONO}" font-size="13" fill="#222">{line}</text>')
+add('<line x1="270" y1="405" x2="280" y2="405" stroke="#5b7db1" stroke-width="3"/>')
 add('<polygon points="280,397 292,405 280,413" fill="#5b7db1"/>')
 
 # conveyor lanes with crates
