@@ -83,6 +83,6 @@ Suggests:
     vsn
 Roxygen: list(r6 = TRUE)
 Depends: 
-    R (>= 4.5.0)
+    R (>= 4.6)
 biocViews: MassSpectrometry, Proteomics, Metabolomics, Normalization, Preprocessing, QualityControl
 Config/roxygen2/version: 8.1.1

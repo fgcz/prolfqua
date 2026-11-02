@@ -31,6 +31,7 @@ Changes for the Bioconductor review ([BiocContributions #171](https://github.com
 
 ## Behaviour changes
 
+- prolfqua requires R 4.6 or later (was R 4.5.0), matching the Bioconductor release it targets.
 - `script_copy_helper_vec()` gains an `overwrite` argument (default `TRUE`, as before).
 - `summary_ROPECA_median_p.scaled()` is renamed to `summary_ROPECA_median_p_scaled()` (Bioconductor function names must not contain `.`). There is no alias.
 
