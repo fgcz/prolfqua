@@ -16,14 +16,17 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 \item{contrasts}{named character vector of contrasts
 (e.g. \code{c("A_vs_B" = "group_A - group_B")})}
 
-\item{method}{a registered facade key. The built-in keys are \code{"lm"},
-\code{"lm_impute"}, \code{"limma"},
-\code{"limma_impute"}, \code{"limma_voom"}, \code{"limma_voom_impute"},
-\code{"limpa"}, \code{"limpa_nested"}, \code{"rlm"}, \code{"rfit"},
-\code{"rfit_impute"}, \code{"deqms"}, \code{"deqms_voom"}, \code{"firth"},
-\code{"firth_nested"}, \code{"binomial_nested"}, \code{"lmer_nested"},
-\code{"ropeca_nested"};
-downstream packages may add more via \code{\link{register_facade}}. The
+\item{method}{a registered facade key. The built-in keys are:
+linear models \code{"lm"}, \code{"rlm"}, \code{"rfit"};
+limma \code{"limma"}, \code{"limma_voom"}, \code{"deqms"},
+\code{"deqms_voom"}, \code{"limpa"}, \code{"limpa_nested"};
+limit-of-detection imputation \code{"lm_impute"}, \code{"limma_impute"},
+\code{"limma_voom_impute"}, \code{"rfit_impute"};
+peptide-level models \code{"lmer_nested"}, \code{"ropeca_nested"};
+detection models \code{"firth"}, \code{"firth_nested"},
+\code{"binomial_nested"}, \code{"binomial_firth_nested"};
+the hurdle model \code{"hurdle_nested"}, combining intensity and detection.
+Downstream packages may add more via \code{\link{register_facade}}. The
 authoritative list is \code{names(\link{list_facades}())}. Defaults to
 \code{"lm"}.}
 
@@ -31,21 +34,23 @@ authoritative list is \code{names(\link{list_facades}())}. Defaults to
 (e.g. \code{trend}, \code{robust} for \code{strategy_limma})}
 }
 \value{
-one of \code{\link{ContrastsLimmaFacade}},
-  \code{\link{ContrastsLMFacade}}, \code{\link{ContrastsRLMFacade}},
-  \code{\link{ContrastsRfitFacade}}, \code{\link{ContrastsRfitImputeFacade}},
-  \code{\link{ContrastsLmerNestedFacade}},
-  \code{\link{ContrastsLMImputeFacade}},
-  \code{\link{ContrastsDEqMSFacade}},
-  \code{\link{ContrastsROPECANestedFacade}}, \code{\link{ContrastsFirthFacade}},
-  \code{\link{ContrastsFirthNestedFacade}}, \code{\link{ContrastsLimpaFacade}},
-  \code{\link{ContrastsBinomialNestedFacade}}, or
-  \code{\link{ContrastsLimpaNestedFacade}}
+a facade object of the class registered for \code{method}, see
+  \code{\link{lookup_facade}}.
 }
 \description{
-A builder function that dispatches to the appropriate facade class based on
-the chosen method. Each facade encapsulates the full pipeline from strategy
-construction through modelling to contrast computation.
+The factory of prolfqua's modelling: \code{method} selects a facade class
+from the facade registry, and the facade runs the full pipeline from
+strategy construction through modelling to contrast computation. Every
+facade returns its results through the same interface
+(\code{get_contrasts()}, \code{get_Plotter()}, \code{get_missing()},
+\code{to_wide()}), so the results of different methods have the same
+columns and can be compared or combined.
+}
+\details{
+Methods ending in \code{_nested} take peptide- or precursor-level input and
+report protein-level contrasts; the others take input at the level they
+report, usually aggregated proteins. \code{"limpa"} needs input aggregated
+with \code{\link{AggregateLimpa}}.
 }
 \examples{
 istar <- sim_lfq_data_protein_config(Nprot = 20)

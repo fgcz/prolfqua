@@ -41,7 +41,13 @@ The vignettes [Comparing two groups with prolfqua](Comparing2Groups.html) and [A
 
 prolfqua covers the steps of a label-free quantification (LFQ) proteomics analysis: quality control, normalization, aggregation of peptides to proteins, modelling, hypothesis testing and sample size estimation [@Wolski2023prolfqua].
 
-The centre of the package is `build_contrast_analysis()`. One call fits a model per protein and computes the requested contrasts. The `method` argument selects the model: linear models (`lm`, `rlm`, `rfit`), limma and limma-voom, DEqMS variance moderation, limpa's detection probability model, Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection.
+The centre of the package is a factory, `build_contrast_analysis()`. It takes the data, a model formula, the contrasts and a `method`, and returns a ready analysis: one model per protein and the requested contrasts.
+
+```{r factory, echo = FALSE, out.width = "100%", fig.cap = "build_contrast_analysis() is a factory: the method key selects the model, and every model rolls out with the same interface."}
+knitr::include_graphics("prolfqua_factory.png")
+```
+
+The `method` argument selects the model: linear models (`lm`, `rlm`, `rfit`), limma and limma-voom, DEqMS variance moderation, limpa's detection probability model, Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection.
 
 Every method returns an object with the same interface: `get_contrasts()`, `get_Plotter()`, `get_missing()` and `to_wide()`. Results of different methods therefore have the same columns and can be compared or combined directly.
 
