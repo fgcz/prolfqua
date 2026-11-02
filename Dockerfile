@@ -1,4 +1,4 @@
-FROM bioconductor/bioconductor_docker:RELEASE_3_22
+FROM bioconductor/bioconductor_docker:RELEASE_3_23
 
 LABEL description="Bioconductor check image for prolfqua"
 
