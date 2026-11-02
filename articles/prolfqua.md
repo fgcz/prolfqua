@@ -59,7 +59,7 @@ contrasts.
 
 ![build_contrast_analysis() is a factory: the method key selects the
 model, and every model rolls out with the same
-interface.](prolfqua_factory.png)
+interface.](../reference/figures/prolfqua_factory.png)
 
 build_contrast_analysis() is a factory: the method key selects the
 model, and every model rolls out with the same interface.

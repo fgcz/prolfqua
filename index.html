@@ -71,6 +71,8 @@
 </h1></div>
 <p>The R package contains functions for analyzing mass spectrometry based experiments. This package is developed at the <a href="https://fgcz.ch/" class="external-link">FGCZ</a>. The package documentation including vignettes can be accessed at <a href="https://fgcz.github.io/prolfqua/index.html" class="uri">https://fgcz.github.io/prolfqua/index.html</a></p>
 <p><code>prolfqua</code> makes easy things easy while remaining fully hackable.</p>
+<p>At its centre is a factory, <code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>: one call fits a model per protein and computes the requested contrasts. The <code>method</code> argument selects one of 20 models, and every model returns its results through the same interface. Start with the <a href="https://fgcz.github.io/prolfqua/articles/prolfqua.html">Introduction to prolfqua</a>.</p>
+<p><img src="reference/figures/prolfqua_factory.png" alt="build_contrast_analysis() as a factory rolling out all modelling methods" width="100%"></p>
 </div>
 <div class="section level1">
 <h1 id="how-to-install-prolfqua">How to install prolfqua?<a class="anchor" aria-label="anchor" href="#how-to-install-prolfqua"></a>
@@ -186,11 +188,16 @@
 <h1 id="detailed-documentation-with-r-code">Detailed documentation with R code:<a class="anchor" aria-label="anchor" href="#detailed-documentation-with-r-code"></a>
 </h1>
 <p>Document’s explaining how to run an analysis with prolfqua are at github.io <a href="https://fgcz.github.io/prolfqua/index.html">https://fgcz.github.io/prolfqua/index.html</a>.</p>
-<ul>
-<li><a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html">Comparing two Conditions</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC and protein wise sample size estimation</a></li>
-<li><a href="https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html">Analysing factorial designs</a></li>
-</ul>
+<ol style="list-style-type: decimal">
+<li><a href="https://fgcz.github.io/prolfqua/articles/prolfqua.html">Introduction to prolfqua</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html">Importing your data</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/Comparing2Groups.html">Comparing two groups</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/ModellingMethods.html">All modelling methods at a glance</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html">Two-factor designs</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/ContrastsFromFactors.html">Contrasts from factors</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.html">Filling the gaps: model-based imputation for heatmaps and PCA</a></li>
+<li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC and sample size estimation</a></li>
+</ol>
 <p>Example QC and sample size report</p>
 <ul>
 <li><a href="https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html">QC and sample size Report</a></li>

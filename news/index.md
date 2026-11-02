@@ -51,6 +51,9 @@ Changes for the Bioconductor review
   [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
   with a figure of it as a factory rolling out all modelling methods,
   installation with BiocManager, and a quick start using `lm_impute`.
+- The README and the vignette `ModellingMethods` show the factory figure
+  too; the README links the eight vignettes in reading order, starting
+  with the introduction.
 - [`?build_contrast_analysis`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
   describes the function as the factory of the modelling methods and
   lists all 20 built-in methods by family, including

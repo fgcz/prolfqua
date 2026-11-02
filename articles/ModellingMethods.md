@@ -11,6 +11,13 @@ Plots and a discussion of the methods are in the article [Comparing
 modelling methods on one
 dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html).
 
+![build_contrast_analysis() is a factory: the method key selects the
+model, and every model rolls out with the same
+interface.](../reference/figures/prolfqua_factory.png)
+
+build_contrast_analysis() is a factory: the method key selects the
+model, and every model rolls out with the same interface.
+
 ## Data
 
 We simulate peptide intensities for 20 proteins in three groups and
