@@ -299,12 +299,32 @@ can bias fold-change estimates and inflate false discovery rates.</p>
 
 <p></p><hr><a id="method-LFQData-filter_proteins_by_peptide_count"></a><div class="section">
 <h3 id="lfqdata-filter-proteins-by-peptide-count-"><code>LFQData$filter_proteins_by_peptide_count()</code><a class="anchor" aria-label="anchor" href="#lfqdata-filter-proteins-by-peptide-count-"></a></h3>
-<p>remove proteins with less than X peptides</p><div class="section">
+<p>remove parents (e.g. proteins) with fewer than `threshold` distinct
+children (e.g. peptides) and add the count as a column. By default the
+second hierarchy level is counted within the first, independent of
+`hierarchy_depth`; a hierarchy with one level is an error.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span></span>
+<span>  threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parent <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  child <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>threshold</code></dt>
+<dd><p>minimum number of children, default `config$min_peptides_protein`</p></dd>
+
+      <dt><code>parent</code></dt>
+<dd><p>parent key column, default the first hierarchy key</p></dd>
+
+      <dt><code>child</code></dt>
+<dd><p>child key column, default the second hierarchy key</p></dd>
+
+
+</dl><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
-<p>self</p>
+<p>self (invisible)</p>
 </div>
 
 </div>
@@ -357,7 +377,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">FALSE</span>, value <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>as.matrix</code></dt>
 <dd><p>return as data.frame or matrix</p></dd>
 
@@ -484,7 +504,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <h4 id="usage-26">Usage<a class="anchor" aria-label="anchor" href="#usage-26"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span>na.omit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>na.omit</code></dt>
 <dd><p>if TRUE, remove rows with NA in response column</p></dd>
 
@@ -500,7 +520,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <h4 id="usage-27">Usage<a class="anchor" aria-label="anchor" href="#usage-27"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span>newname <span class="op">=</span> <span class="st">"Intensity"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>newname</code></dt>
 <dd><p>default Intensity</p></dd>
 
@@ -561,7 +581,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <h4 id="usage-32">Usage<a class="anchor" aria-label="anchor" href="#usage-32"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span>stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"everything"</span>, <span class="st">"interaction"</span>, <span class="st">"all"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>stats</code></dt>
 <dd><p>default interaction, computes statistics within interaction.</p></dd>
 
@@ -592,7 +612,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <h4 id="usage-34">Usage<a class="anchor" aria-label="anchor" href="#usage-34"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"medpolish"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>method</code></dt>
 <dd><p>aggregation method: "medpolish", "rlm", or "topN"</p></dd>
 
@@ -614,7 +634,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <h4 id="usage-35">Usage<a class="anchor" aria-label="anchor" href="#usage-35"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -637,7 +657,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">LFQData</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> removing proteins with less than: 2 peptpides</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> removing protein_Id with fewer than 2 peptide_Id</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> , <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">rowdata</span><span class="op">)</span><span class="op">)</span></span></span>

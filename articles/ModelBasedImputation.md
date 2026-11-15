@@ -213,12 +213,12 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3    prolfqua_1.9.0   BiocStyle_2.40.0
+    ## [1] ggplot2_4.0.4    prolfqua_1.9.0   BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           
     ##   [4] magrittr_2.0.5         clue_0.3-68            GetoptLong_1.1.1      
-    ##   [7] otel_0.2.0             matrixStats_1.5.0      compiler_4.6.2        
+    ##   [7] otel_0.3.0             matrixStats_1.5.0      compiler_4.6.2        
     ##  [10] mgcv_1.9-4             png_0.1-9              systemfonts_1.3.2     
     ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       

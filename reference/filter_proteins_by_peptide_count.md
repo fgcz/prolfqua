@@ -1,14 +1,22 @@
-# Keep only the proteins with enough peptides
+# Keep only the parents with enough children
 
-Keeps the rows of the proteins with at least
-\`config\$min_peptides_protein\` children at the next hierarchy level,
-counted by \[nr_B_in_A()\], and adds that count. The package dataset
-\`data_ionstar\` calls it from its \`filtered()\` method.
+Keeps the rows of the \`parent\` entries (e.g. proteins) with at least
+\`threshold\` distinct \`child\` entries (e.g. peptides), counted by
+\[nr_B_in_A()\], and adds that count. By default it counts the second
+hierarchy level within the first, independent of \`hierarchy_depth\`.
+The package dataset \`data_ionstar\` calls it as \`(pdata, config)\`
+from its \`filtered()\` method.
 
 ## Usage
 
 ``` r
-filter_proteins_by_peptide_count(pdata, config)
+filter_proteins_by_peptide_count(
+  pdata,
+  config,
+  parent = config$hierarchy_keys()[1],
+  child = config$hierarchy_keys()[2],
+  threshold = config$min_peptides_protein
+)
 ```
 
 ## Arguments
@@ -21,10 +29,21 @@ filter_proteins_by_peptide_count(pdata, config)
 
   AnalysisConfiguration
 
+- parent:
+
+  parent key column, default the first hierarchy key
+
+- child:
+
+  child key column, default the second hierarchy key
+
+- threshold:
+
+  minimum number of children, default \`config\$min_peptides_protein\`
+
 ## Value
 
-list with the filtered \`data\` and the \`name\` of the count column,
-\`NULL\` when the hierarchy has no child level
+list with the filtered \`data\` and the \`name\` of the count column
 
 ## See also
 
@@ -44,6 +63,8 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 #> completing cases
 #> completing cases done
 #> setup done
-filtered <- prolfqua:::filter_proteins_by_peptide_count(istar$data, istar$config)
-stopifnot(all(filtered$data[[filtered$name]] >= istar$config$min_peptides_protein))
+filtered <- prolfqua:::filter_proteins_by_peptide_count(
+  istar$data, istar$config, parent = "protein_Id", child = "peptide_Id", threshold = 2
+)
+stopifnot(all(filtered$data[[filtered$name]] >= 2))
 ```

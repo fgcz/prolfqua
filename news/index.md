@@ -1,5 +1,19 @@
 # Changelog
 
+## prolfqua 1.9.1
+
+### Behaviour changes
+
+- `LFQData$filter_proteins_by_peptide_count()` takes optional
+  `threshold`, `parent` and `child` arguments; the defaults are
+  `config$min_peptides_protein` and the first two hierarchy keys. It now
+  counts the second hierarchy level within the first whatever the
+  `hierarchy_depth`: peptide-level configurations are filtered (before,
+  the call did nothing), and three-level hierarchies modelled at depth 2
+  count peptides per protein instead of precursors per peptide. A
+  hierarchy with a single level is an error
+  (`prolfqua_error_bad_argument`) instead of a warning.
+
 ## prolfqua 1.9.0
 
 Changes for the Bioconductor review

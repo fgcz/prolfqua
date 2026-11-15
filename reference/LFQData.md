@@ -293,15 +293,36 @@ self
 
 ### `LFQData$filter_proteins_by_peptide_count()`
 
-remove proteins with less than X peptides
+remove parents (e.g. proteins) with fewer than \`threshold\` distinct
+children (e.g. peptides) and add the count as a column. By default the
+second hierarchy level is counted within the first, independent of
+\`hierarchy_depth\`; a hierarchy with one level is an error.
 
 #### Usage
 
-    LFQData$filter_proteins_by_peptide_count()
+    LFQData$filter_proteins_by_peptide_count(
+      threshold = NULL,
+      parent = NULL,
+      child = NULL
+    )
+
+#### Arguments
+
+- `threshold`:
+
+  minimum number of children, default \`config\$min_peptides_protein\`
+
+- `parent`:
+
+  parent key column, default the first hierarchy key
+
+- `child`:
+
+  child key column, default the second hierarchy key
 
 #### Returns
 
-self
+self (invisible)
 
 ------------------------------------------------------------------------
 
@@ -666,7 +687,7 @@ istar <- sim_lfq_data_peptide_config()
 #> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$filter_proteins_by_peptide_count()
-#> removing proteins with less than: 2 peptpides
+#> removing protein_Id with fewer than 2 peptide_Id
 #> Column added : nr_peptide_Id_IN_protein_Id
 tmp <- lfqdata$data_wide()
 testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))

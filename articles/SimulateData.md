@@ -169,7 +169,7 @@ sessionInfo()
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           
     ##   [4] magrittr_2.0.5         clue_0.3-68            GetoptLong_1.1.1      
-    ##   [7] otel_0.2.0             matrixStats_1.5.0      compiler_4.6.2        
+    ##   [7] otel_0.3.0             matrixStats_1.5.0      compiler_4.6.2        
     ##  [10] mgcv_1.9-4             png_0.1-9              systemfonts_1.3.2     
     ##  [13] vctrs_0.7.3            pkgconfig_2.0.3        shape_1.4.6.1         
     ##  [16] crayon_1.5.3           fastmap_1.2.0          backports_1.5.1       
@@ -193,7 +193,7 @@ sessionInfo()
     ##  [70] pillar_1.11.1          mice_3.19.0            foreach_1.5.2         
     ##  [73] stats4_4.6.2           reformulas_0.4.4       plotly_4.12.1         
     ##  [76] generics_0.1.4         hms_1.1.4              S4Vectors_0.50.3      
-    ##  [79] ggplot2_4.0.3          scales_1.4.0           minqa_1.2.8           
+    ##  [79] ggplot2_4.0.4          scales_1.4.0           minqa_1.2.8           
     ##  [82] xtable_1.8-8           glue_1.8.1             tools_4.6.2           
     ##  [85] data.table_1.18.6.1    lme4_2.1-0             forcats_1.0.1         
     ##  [88] fs_2.1.0               grid_4.6.2             tidyr_1.3.2           
