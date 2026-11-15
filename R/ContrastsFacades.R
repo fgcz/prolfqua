@@ -59,17 +59,17 @@
 }
 
 # Compute protein × contrast pairs present in input but absent from output.
-# Returns a data.frame with hierarchy columns + contrast, or 0 rows if nothing missing.
-.compute_missing <- function(lfqdata, contrast_names, contrast_result) {
+# Returns a data.frame with hierarchy columns + `contrast_col`, or 0 rows if nothing missing.
+.compute_missing <- function(lfqdata, contrast_names, contrast_result, contrast_col = "contrast") {
   subject_id <- lfqdata$subject_id()
   all_subjects <- lfqdata$data_long() |>
     dplyr::select(dplyr::all_of(subject_id)) |>
     dplyr::distinct()
-  expected <- tidyr::crossing(all_subjects, contrast = contrast_names)
+  expected <- tidyr::crossing(all_subjects, !!contrast_col := contrast_names)
   estimated <- contrast_result |>
-    dplyr::select(dplyr::all_of(c(subject_id, "contrast"))) |>
+    dplyr::select(dplyr::all_of(c(subject_id, contrast_col))) |>
     dplyr::distinct()
-  dplyr::anti_join(expected, estimated, by = c(subject_id, "contrast"))
+  dplyr::anti_join(expected, estimated, by = c(subject_id, contrast_col))
 }
 
 # Stamp the selected facade key as the row's model identity. `modelName` is the

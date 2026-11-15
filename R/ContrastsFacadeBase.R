@@ -59,7 +59,12 @@ ContrastsFacadeBase <- R6::R6Class(
     },
     #' @description get subject x contrast pairs that could not be estimated
     get_missing = function() {
-      .compute_missing(self$.lfqdata, self$.contrast_names, self$get_contrasts())
+      .compute_missing(
+        self$.lfqdata,
+        self$.contrast_names,
+        self$get_contrasts(),
+        contrast_col = self$get_config()$contrast_col
+      )
     },
     #' @description get \code{\link{ContrastsPlotter}}
     #' @param ... passed to the inner contrast object's get_Plotter

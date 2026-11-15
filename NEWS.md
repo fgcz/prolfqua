@@ -1,5 +1,9 @@
 # prolfqua 1.9.2
 
+## New features
+
+- `ContrastsFacadeBase$get_missing()` uses the contrast column named in the facade's `ContrastConfiguration` (`contrast_col`) instead of assuming `contrast`, so facades of other packages with their own column name (e.g. SAINT's `Bait`) can inherit it.
+
 ## Behaviour changes
 
 - `setup_analysis()` reports a missing `isotopeLabel` or `qValue` column with a message instead of a warning; both are optional and get the defaults `"light"` and `0`. A missing `nr_children` column still warns, because the default of 1 changes the fitting weights of aggregated data.

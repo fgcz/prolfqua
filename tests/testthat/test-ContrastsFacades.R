@@ -401,3 +401,12 @@ test_that("the firth facade keeps a protein key not named protein_Id", {
   expect_true("prot" %in% colnames(res))
   expect_false("protein_Id" %in% colnames(res))
 })
+
+test_that(".compute_missing keys missing pairs by the configured contrast column", {
+  lfq <- make_protein_lfqdata()$lfqdata
+  proteins <- unique(lfq$data_long()$protein_Id)
+  result <- data.frame(protein_Id = proteins[-1], Bait = "AvsCtrl")
+  missing <- prolfqua:::.compute_missing(lfq, "AvsCtrl", result, contrast_col = "Bait")
+  expect_equal(colnames(missing), c("protein_Id", "Bait"))
+  expect_equal(missing$protein_Id, proteins[1])
+})
