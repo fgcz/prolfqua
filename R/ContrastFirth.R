@@ -56,6 +56,12 @@ ContrastsFirth <- R6::R6Class(
     #' @param p.adjust function to adjust the p-values
     #' @param model_name name of contrast method, default firth
     initialize = function(model, contrasts, p.adjust = prolfqua::adjust_p_values, model_name = "firth") {
+      if (!inherits(model, "ModelFirth")) {
+        abort_bad_argument("model", "be a ModelFirth", not = paste(class(model), collapse = "/"))
+      }
+      if (!is.character(contrasts) || is.null(names(contrasts)) || !all(nzchar(names(contrasts)))) {
+        abort_bad_argument("contrasts", "be a named character vector")
+      }
       self$models <- model
       self$contrasts <- contrasts
       self$model_name <- model_name

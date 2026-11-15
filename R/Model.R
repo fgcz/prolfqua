@@ -57,6 +57,16 @@ Model <- R6::R6Class(
       subject_id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
+      if (!is.data.frame(model_df)) {
+        abort_bad_argument("model_df", "be a data frame", not = paste(class(model_df), collapse = "/"))
+      }
+      missing <- setdiff(subject_id, colnames(model_df))
+      if (length(missing) > 0) {
+        abort_missing_columns(missing, data_nm = "model_df")
+      }
+      if (!inherits(model_strategy, "StrategyBase")) {
+        abort_bad_argument("model_strategy", "be a strategy, e.g. from strategy_lm()")
+      }
       self$model_df <- model_df
       self$model_strategy <- model_strategy
       self$model_name <- model_name

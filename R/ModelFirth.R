@@ -63,6 +63,9 @@ ModelFirth <- R6::R6Class(
       subject_id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
+      if (!is.list(models) || !all(c("models1", "models2", "hkey") %in% names(models))) {
+        abort_bad_argument("models", "be a list with the elements models1, models2 and hkey")
+      }
       self$models <- models
       self$model_name <- model_name
       self$subject_id <- subject_id
