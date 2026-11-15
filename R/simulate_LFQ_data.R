@@ -95,7 +95,7 @@ sim_lfq_data <- function(
     means <- peptide_df2$avg_peptide_abd
   }
   for (i in seq_len(nrpep)) {
-    sampled_data[i, ] <- rnorm(peptide_df2$N[i], means[i], peptide_df2$sd[1])
+    sampled_data[i, ] <- rnorm(peptide_df2$N[i], means[i], peptide_df2$sd[i])
   }
 
   x <- dplyr::bind_cols(peptide_df2, sampled_data)

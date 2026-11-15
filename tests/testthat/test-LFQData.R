@@ -286,3 +286,10 @@ test_that("get_Aggregator offers limpa", {
   expect_s3_class(lfq_log2$get_Aggregator("limpa"), "AggregateLimpa")
   expect_error(lfq_log2$get_Aggregator("nope"), class = "prolfqua_error_bad_argument")
 })
+
+test_that("LFQDataToSummarizedExperiment returns a SummarizedExperiment", {
+  skip_if_not_installed("SummarizedExperiment")
+  se <- LFQDataToSummarizedExperiment(lfqdata)
+  expect_s4_class(se, "SummarizedExperiment")
+  expect_equal(ncol(se), nrow(lfqdata$data_wide()$annotation))
+})

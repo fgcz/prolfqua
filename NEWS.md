@@ -6,6 +6,8 @@
 
 ## Bug fixes
 
+- `LFQDataToSummarizedExperiment()` stops with an install hint when SummarizedExperiment or S4Vectors is missing; before, it returned `NULL` silently.
+- `Contrasts$get_contrasts()` no longer prints the debug lines "determine linear functions:" and "get_contrasts -> contrasts_linfct".
 - `firth` and `firth_nested` work when the protein key is not called `protein_Id`: `build_model_logistf()` passed no subject id to `ModelFirth`, so the contrasts looked for a `protein_Id` column and failed.
 - Building a contrast analysis (`build_contrast_analysis()` and the facade classes) stops with `prolfqua_error_bad_argument` when a contrast names a group without samples, e.g. `group_A` after all its runs were filtered out. The message names the contrast, the empty group and the groups with samples; before, the analysis went ahead and failed later or returned no estimates for that contrast.
 - `LFQDataPlotter$write_pdf()` no longer closes the graphics devices the user has open (it called `graphics.off()` before and after writing). `write_pdf()`, `write_boxplots()`, `LFQDataAggregator$write_plots()` and `LR_test(path = )` close their PDF device when drawing fails, instead of leaving it open so that later plots go into it. `write_boxplots()` returns the file path invisibly.

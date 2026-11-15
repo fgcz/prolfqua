@@ -424,20 +424,18 @@ LFQData <- R6::R6Class(
 #' }
 #'
 LFQDataToSummarizedExperiment <- function(lfqdata) {
-  if (requireNamespace("SummarizedExperiment")) {
-    wide <- lfqdata$data_wide(as.matrix = TRUE)
-    ann <- data.frame(wide$annotation)
-    rownames(ann) <- wide$annotation[[lfqdata$sample_name()]]
-    assays <- S4Vectors::SimpleList(LFQ = wide$data)
-    if ("nr_children" %in% lfqdata$get_config()$value_vars()) {
-      nr_children <- lfqdata$data_wide(as.matrix = TRUE, value = "nr_children")
-      assays[["nr_children"]] <- nr_children$data
-    }
-    se <- SummarizedExperiment::SummarizedExperiment(
-      assays,
-      colData = ann,
-      rowData = wide$rowdata
-    )
-    return(se)
+  rlang::check_installed(c("SummarizedExperiment", "S4Vectors"), reason = "to build a SummarizedExperiment")
+  wide <- lfqdata$data_wide(as.matrix = TRUE)
+  ann <- data.frame(wide$annotation)
+  rownames(ann) <- wide$annotation[[lfqdata$sample_name()]]
+  assays <- S4Vectors::SimpleList(LFQ = wide$data)
+  if ("nr_children" %in% lfqdata$get_config()$value_vars()) {
+    nr_children <- lfqdata$data_wide(as.matrix = TRUE, value = "nr_children")
+    assays[["nr_children"]] <- nr_children$data
   }
+  SummarizedExperiment::SummarizedExperiment(
+    assays,
+    colData = ann,
+    rowData = wide$rowdata
+  )
 }
