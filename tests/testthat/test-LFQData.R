@@ -72,7 +72,7 @@ test_that("filter_proteins_by_peptide_count counts the second hierarchy level wi
     class = "prolfqua_error_missing_column"
   )
 
-  expect_gt(nrow(prolfqua::data_ionstar$filtered()$data), 0)
+  expect_gt(nrow(prolfqua_data("data_ionstar")$filtered()$data), 0)
 })
 
 test_that("rename_response and the is_transformed setter return the object", {
