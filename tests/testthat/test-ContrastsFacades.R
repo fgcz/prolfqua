@@ -371,3 +371,20 @@ test_that("ContrastsTable$new stores a passed ContrastConfiguration", {
     class = "prolfqua_error_bad_argument"
   )
 })
+
+test_that("a contrast naming a group without samples is a typed error", {
+  lfq <- make_protein_lfqdata()$lfqdata
+  lfq$set_data(dplyr::filter(lfq$data_long(), .data$group_ != "A"))
+  expect_error(
+    prolfqua::ContrastsLMFacade$new(lfq, MODELSTR, c(AvsCtrl = "group_A - group_Ctrl")),
+    regexp = "group_A",
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_error(
+    prolfqua::build_contrast_analysis(lfq, MODELSTR, c(AvsCtrl = "group_A - group_Ctrl"), method = "limma"),
+    class = "prolfqua_error_bad_argument"
+  )
+  # contrasts between groups with data still work
+  fa <- prolfqua::ContrastsLMFacade$new(lfq, MODELSTR, c(BvsCtrl = "group_B - group_Ctrl"))
+  expect_gt(nrow(fa$get_contrasts()), 0)
+})

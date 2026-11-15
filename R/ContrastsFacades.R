@@ -28,6 +28,36 @@
   }
 }
 
+# Every group a contrast names (a factor key followed by a level, e.g. group_A)
+# must have samples with a measured response.
+.assert_contrast_groups <- function(lfqdata, contrasts) {
+  factor_keys <- lfqdata$factor_keys()
+  data <- lfqdata$data_long()
+  data <- data[!is.na(data[[lfqdata$response()]]), , drop = FALSE]
+  with_data <- unlist(lapply(
+    intersect(factor_keys, colnames(data)),
+    function(key) paste0(key, unique(data[[key]]))
+  ))
+  for (i in seq_along(contrasts)) {
+    tokens <- unique(unlist(strsplit(all.vars(str2lang(contrasts[[i]])), ":", fixed = TRUE)))
+    groups <- tokens[vapply(tokens, function(token) any(startsWith(token, factor_keys)), logical(1))]
+    without_data <- setdiff(groups, with_data)
+    if (length(without_data) > 0) {
+      contrast_name <- names(contrasts)[i] %||% paste0("contrast_", i)
+      abort_bad_argument(
+        "contrasts",
+        sprintf(
+          "name only groups with samples; contrast `%s` (%s) names %s",
+          contrast_name,
+          contrasts[[i]],
+          paste(without_data, collapse = ", ")
+        ),
+        not = paste("groups with samples:", paste(with_data, collapse = ", "))
+      )
+    }
+  }
+}
+
 # Compute protein × contrast pairs present in input but absent from output.
 # Returns a data.frame with hierarchy columns + contrast, or 0 rows if nothing missing.
 .compute_missing <- function(lfqdata, contrast_names, contrast_result) {
