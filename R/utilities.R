@@ -38,9 +38,22 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
     dplyr::select(dplyr::all_of(idcolumn)) |>
     distinct() |>
     dplyr::filter(grepl(pattern = "^[a-z_]{2,7}\\|", !!sym(idcolumn))) |>
-    tidyr::separate(col = !!sym(idcolumn), sep = "_", into = c("begin", "end"), remove = FALSE) |>
-    tidyr::separate(col = !!sym("begin"), sep = "\\|", into = c("prefix", "UniprotID", "Symbol")) |>
-    dplyr::select(-!!sym("prefix"), -!!sym("Symbol"), -!!sym("end"))
+    tidyr::separate_wider_delim(
+      dplyr::all_of(idcolumn),
+      delim = "_",
+      names = c("begin", "end"),
+      too_few = "align_start",
+      too_many = "drop",
+      cols_remove = FALSE
+    ) |>
+    tidyr::separate_wider_delim(
+      "begin",
+      delim = "|",
+      names = c("prefix", "UniprotID", "Symbol"),
+      too_few = "align_start",
+      too_many = "drop"
+    ) |>
+    dplyr::select(dplyr::all_of(c(idcolumn, "UniprotID")))
   if (nrow(map) > 0) {
     res <- dplyr::right_join(map, df, by = idcolumn)
   } else {

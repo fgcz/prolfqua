@@ -244,7 +244,16 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
 separate_hierarchy <- function(data, config) {
   for (hkey in config$hierarchy_keys_depth()) {
     if (length(config$hierarchy[[hkey]]) == 1 && hkey == config$hierarchy[[hkey]]) {} else {
-      data <- data |> tidyr::separate(hkey, config$hierarchy[[hkey]], sep = config$sep, remove = FALSE)
+      data <- data |>
+        tidyr::separate_wider_delim(
+          dplyr::all_of(hkey),
+          delim = config$sep,
+          names = config$hierarchy[[hkey]],
+          too_few = "align_start",
+          too_many = "drop",
+          cols_remove = FALSE
+        ) |>
+        dplyr::relocate(dplyr::all_of(hkey), .before = dplyr::all_of(config$hierarchy[[hkey]][1]))
     }
   }
   return(data)

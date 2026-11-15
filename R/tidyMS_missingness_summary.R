@@ -1,3 +1,8 @@
+# Facet formula "isotope label ~ factor1 + factor2" used by the missingness plots.
+.isotope_by_factors_formula <- function(lfqdata, factors) {
+  paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
+}
+
 #' convert to binary response
 #' @param lfqdata LFQData object
 #' @param name column name for binary response
@@ -135,7 +140,7 @@ missigness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$r
   }
 
   factors <- lfqdata$relevant_factor_keys()
-  formula <- paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
+  formula <- .isotope_by_factors_formula(lfqdata, factors)
   message(formula)
   mean_abundance <- paste0("mean_", lfqdata$response())
   missing_percent <- dplyr::rename(missing_percent, !!sym(mean_abundance) := .data$meanAbundance)
@@ -182,7 +187,7 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
     dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
   res <- xxcs |> dplyr::select(-dplyr::all_of("nrTransitions"))
 
-  formula <- paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
+  formula <- .isotope_by_factors_formula(lfqdata, factors)
   message(formula)
 
   nudgeval <- mean(res$cumulative_sum) * 0.05
@@ -218,7 +223,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
     group_by(across(all_of(c(lfqdata$isotope_label(), factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(!!sym(hierarchy_key) := n())
 
-  formula <- paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
+  formula <- .isotope_by_factors_formula(lfqdata, factors)
 
   nudgeval <- max(xx[[hierarchy_key]]) * 0.05
 

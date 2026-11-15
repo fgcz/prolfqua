@@ -17,7 +17,13 @@ parse_contrast_sides <- function(contrasts) {
   tt <- tibble::tibble(contrast = names(tt), rhs = tt)
   tt |>
     dplyr::mutate(rhs = gsub("[` ]", "", rhs)) |>
-    tidyr::separate(rhs, c("group_1", "group_2"), sep = "-")
+    tidyr::separate_wider_delim(
+      "rhs",
+      delim = "-",
+      names = c("group_1", "group_2"),
+      too_few = "align_start",
+      too_many = "drop"
+    )
 }
 
 .model_coeff_matrix <- function(m) {

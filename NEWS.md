@@ -9,6 +9,7 @@
 
 ## Behaviour changes
 
+- Requires tidyr >= 1.3.0: identifier splitting uses `tidyr::separate_wider_delim()` instead of the superseded `separate()`. Results are unchanged; `separate_hierarchy()`, `get_uniprot_id_from_fasta_header()` and the contrast-side parser no longer warn about identifiers with too few or too many pieces.
 - `setup_analysis()` reports a missing `isotopeLabel` or `qValue` column with a message instead of a warning; both are optional and get the defaults `"light"` and `0`. A missing `nr_children` column still warns, because the default of 1 changes the fitting weights of aggregated data.
 
 ## Bug fixes

@@ -81,7 +81,7 @@ sim_lfq_data <- function(
   # transform into long format
   peptide_df2 <- peptide_df |>
     tidyr::pivot_longer(cols = tidyselect::starts_with(c("mean", "N_")), names_to = "group", values_to = "mean")
-  peptide_df2 <- peptide_df2 |> tidyr::separate(group, c("what", "group"))
+  peptide_df2 <- peptide_df2 |> tidyr::separate_wider_delim(group, delim = "_", names = c("what", "group"))
   peptide_df2 <- peptide_df2 |> tidyr::pivot_wider(names_from = "what", values_from = mean)
 
   nrpep <- nrow(peptide_df2)

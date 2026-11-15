@@ -291,11 +291,11 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
     names_to = config$sample_name,
     values_to = value
   )
-  pdata <- tidyr::separate(
+  pdata <- tidyr::separate_wider_delim(
     pdata,
     "row.names",
-    unique(c(config$hierarchy_keys(), config$isotope_label)),
-    sep = sep
+    delim = sep,
+    names = unique(c(config$hierarchy_keys(), config$isotope_label))
   )
   if (!is.null(data)) {
     pdata <- dplyr::inner_join(
