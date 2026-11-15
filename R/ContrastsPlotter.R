@@ -30,8 +30,8 @@
 #' cp <- ContrastsPlotter$new(contr,
 #'   contrast$subject_id,
 #'   volcano = list(list(score = "FDR", thresh = 0.1)),
-#'   histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-#'                  list(score = "FDR", xlim = c(0,1,0.05))),
+#'   histogram = list(list(score = "p.value", breaks = seq(0, 1, by = 0.05)),
+#'                  list(score = "FDR", breaks = seq(0, 1, by = 0.05))),
 #'   score =list(list(score = "statistic",  thresh = 5))
 #'   )
 #'
@@ -78,7 +78,8 @@ ContrastsPlotter <- R6::R6Class(
     #' @param contrast_df frame with contrast data
     #' @param subject_id columns containing subject Identifier
     #' @param volcano which score to plot and which ablines to add.
-    #' @param histogram which scores to plot and which range (x) should be shown.
+    #' @param histogram which scores to plot, each \code{list(score = , breaks = )}; \code{breaks} are the bin
+    #'   boundaries passed to \code{ggplot2::geom_histogram()}, e.g. \code{seq(0, 1, by = 0.05)}
     #' @param score score parameters
     #' @param fcthresh default 1 (log2 FC threshold)
     #' @param modelName name of the colour column. Defaults to \code{"modelName"};
@@ -93,7 +94,10 @@ ContrastsPlotter <- R6::R6Class(
       contrast_df,
       subject_id,
       volcano = list(list(score = "FDR", thresh = 0.1)),
-      histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR", xlim = c(0, 1, 0.05))),
+      histogram = list(
+        list(score = "p.value", breaks = seq(0, 1, by = 0.05)),
+        list(score = "FDR", breaks = seq(0, 1, by = 0.05))
+      ),
       score = list(list(score = "statistic", thresh = NULL)),
       fcthresh = 1,
       modelName = "modelName",
@@ -335,11 +339,18 @@ ContrastsPlotter <- R6::R6Class(
       return(fig)
     },
     .histogram = function(score) {
-      xlim <- score$xlim
+      breaks <- score$breaks
+      if (!is.numeric(breaks) || length(breaks) < 2) {
+        abort_bad_argument(
+          "histogram",
+          "give numeric `breaks` (bin boundaries) for every score",
+          not = paste0("no `breaks` for ", score$score)
+        )
+      }
       score <- score$score
       plot <- private$.contrast_df |>
         ggplot(aes(x = !!sym(score))) +
-        geom_histogram(breaks = seq(from = xlim[1], to = xlim[2], by = xlim[3])) +
+        geom_histogram(breaks = breaks) +
         facet_wrap(vars(!!sym(self$contrast)))
       return(plot)
     },

@@ -81,11 +81,11 @@ ContrastsTable <- R6::R6Class(
       score <- list()
       if ("p.value" %in% score_columns) {
         volcano <- c(volcano, list(list(score = "p.value")))
-        histogram <- c(histogram, list(list(score = "p.value", xlim = c(0, 1, 0.05))))
+        histogram <- c(histogram, list(list(score = "p.value", breaks = seq(0, 1, by = 0.05))))
       }
       if ("FDR" %in% score_columns) {
         volcano <- c(volcano, list(list(score = "FDR", thresh = fdr_threshold)))
-        histogram <- c(histogram, list(list(score = "FDR", xlim = c(0, 1, 0.05))))
+        histogram <- c(histogram, list(list(score = "FDR", breaks = seq(0, 1, by = 0.05))))
       }
       if ("statistic" %in% score_columns) {
         score <- list(list(score = "statistic", thresh = NULL))

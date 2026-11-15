@@ -34,8 +34,8 @@ contr <- contrast$get_contrasts()
 cp <- ContrastsPlotter$new(contr,
   contrast$subject_id,
   volcano = list(list(score = "FDR", thresh = 0.1)),
-  histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                 list(score = "FDR", xlim = c(0,1,0.05))),
+  histogram = list(list(score = "p.value", breaks = seq(0, 1, by = 0.05)),
+                 list(score = "FDR", breaks = seq(0, 1, by = 0.05))),
   score =list(list(score = "statistic",  thresh = 5))
   )
 
@@ -215,8 +215,8 @@ Other plotting:
   contrast_df,
   subject_id,
   volcano = list(list(score = "FDR", thresh = 0.1)),
-  histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
-    xlim = c(0, 1, 0.05))),
+  histogram = list(list(score = "p.value", breaks = seq(0, 1, by = 0.05)), list(score =
+    "FDR", breaks = seq(0, 1, by = 0.05))),
   score = list(list(score = "statistic", thresh = NULL)),
   fcthresh = 1,
   modelName = "modelName",
@@ -233,7 +233,8 @@ Other plotting:
       \item{\code{contrast_df}}{frame with contrast data}
       \item{\code{subject_id}}{columns containing subject Identifier}
       \item{\code{volcano}}{which score to plot and which ablines to add.}
-      \item{\code{histogram}}{which scores to plot and which range (x) should be shown.}
+      \item{\code{histogram}}{which scores to plot, each \code{list(score = , breaks = )}; \code{breaks} are the bin
+boundaries passed to \code{ggplot2::geom_histogram()}, e.g. \code{seq(0, 1, by = 0.05)}}
       \item{\code{score}}{score parameters}
       \item{\code{fcthresh}}{default 1 (log2 FC threshold)}
       \item{\code{modelName}}{name of the colour column. Defaults to \code{"modelName"};

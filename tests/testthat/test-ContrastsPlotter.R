@@ -21,8 +21,8 @@ test_that("ContrastsPlotter produces correct plot types", {
     contrast$subject_id,
     volcano = list(list(score = "FDR", thresh = 0.1)),
     histogram = list(
-      list(score = "p.value", xlim = c(0, 1, 0.05)),
-      list(score = "FDR", xlim = c(0, 1, 0.05))
+      list(score = "p.value", breaks = seq(0, 1, by = 0.05)),
+      list(score = "FDR", breaks = seq(0, 1, by = 0.1))
     ),
     score = list(list(score = "statistic", thresh = 5))
   )
@@ -51,6 +51,14 @@ test_that("ContrastsPlotter produces correct plot types", {
   expect_type(h, "list")
   expect_s3_class(h$FDR, "ggplot")
   expect_s3_class(h$p.value, "ggplot")
+  expect_equal(h$FDR$layers[[1]]$stat_params$breaks, seq(0, 1, by = 0.1))
+  # the old (from, to, by) triple under xlim is no longer read
+  old_spec <- ContrastsPlotter$new(
+    contr,
+    contrast$subject_id,
+    histogram = list(list(score = "FDR", xlim = c(0, 1, 0.05)))
+  )
+  expect_error(old_spec$histogram(), class = "prolfqua_error_bad_argument")
 
   # histogram_diff returns ggplot
   hd <- cp$histogram_diff()

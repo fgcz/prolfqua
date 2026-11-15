@@ -182,8 +182,8 @@ ContrastsROPECA <- R6::R6Class(
         fcthresh = fc_threshold,
         volcano = list(list(score = "FDR.beta.based.significance", thresh = fdr_threshold)),
         histogram = list(
-          list(score = "beta.based.significance", xlim = c(0, 1, 0.05)),
-          list(score = "FDR.beta.based.significance", xlim = c(0, 1, 0.05))
+          list(score = "beta.based.significance", breaks = seq(0, 1, by = 0.05)),
+          list(score = "FDR.beta.based.significance", breaks = seq(0, 1, by = 0.05))
         )
       )
       return(res)
