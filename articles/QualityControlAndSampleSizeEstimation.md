@@ -461,7 +461,7 @@ sessionInfo()
     ##  [55] tidyselect_1.2.1       yaml_2.3.12            doParallel_1.0.17     
     ##  [58] codetools_0.2-20       lattice_0.23-1         tibble_3.3.1          
     ##  [61] plyr_1.8.9             shiny_1.14.0           withr_3.0.3           
-    ##  [64] S7_0.2.2               prolfqua_1.9.0         evaluate_1.0.5        
+    ##  [64] S7_0.2.2               prolfqua_1.9.1         evaluate_1.0.5        
     ##  [67] desc_1.4.3             survival_3.8-12        circlize_0.4.18       
     ##  [70] pillar_1.11.1          BiocManager_1.30.27    mice_3.19.0           
     ##  [73] KernSmooth_2.23-27     foreach_1.5.2          stats4_4.6.2          

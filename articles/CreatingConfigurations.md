@@ -269,7 +269,7 @@ sessionInfo()
     ##  [52] tidyselect_1.2.1       yaml_2.3.12            doParallel_1.0.17     
     ##  [55] codetools_0.2-20       lattice_0.23-1         tibble_3.3.1          
     ##  [58] plyr_1.8.9             withr_3.0.3            S7_0.2.2              
-    ##  [61] prolfqua_1.9.0         evaluate_1.0.5         desc_1.4.3            
+    ##  [61] prolfqua_1.9.1         evaluate_1.0.5         desc_1.4.3            
     ##  [64] survival_3.8-12        circlize_0.4.18        pillar_1.11.1         
     ##  [67] BiocManager_1.30.27    mice_3.19.0            foreach_1.5.2         
     ##  [70] stats4_4.6.2           reformulas_0.4.4       plotly_4.12.1         
