@@ -1,5 +1,37 @@
 # ContrastsROPECA -----
 
+# Map ROPECA output to the standard contrast columns: beta-based significance
+# becomes p.value and FDR; std.error = diff / statistic, sigma = mad.estimate,
+# df = n_not_na, and a t-based 95% interval. `all = TRUE` appends the remaining
+# ROPECA columns after the standard ones.
+.ropeca_standard_columns <- function(res, subject_id, all = FALSE) {
+  res <- dplyr::rename(res, p.value = "beta.based.significance", FDR = "FDR.beta.based.significance")
+  res$std.error <- ifelse(res$statistic != 0, res$diff / res$statistic, NA_real_)
+  res$sigma <- res$mad.estimate
+  res$df <- res$n_not_na
+  prqt <- stats::qt(0.975, df = pmax(res$df, 1))
+  res$conf.low <- res$diff - prqt * abs(res$std.error)
+  res$conf.high <- res$diff + prqt * abs(res$std.error)
+  standard_cols <- c(
+    subject_id,
+    "modelName",
+    "estimate_type",
+    "contrast",
+    "avgAbd",
+    "diff",
+    "FDR",
+    "statistic",
+    "std.error",
+    "df",
+    "p.value",
+    "conf.low",
+    "conf.high",
+    "sigma"
+  )
+  keep <- if (all) c(standard_cols, setdiff(colnames(res), standard_cols)) else standard_cols
+  res[, keep, drop = FALSE]
+}
+
 #'
 #' ROPECA reproducibility-optimization method
 #'
