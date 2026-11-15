@@ -157,14 +157,17 @@ LFQDataTransformer <- R6::R6Class(
     #' Transforms intensities
     #' @param .func transformation function working with arrays e.g. log2, log10, asinh etc.
     #' @param force transformation on already transformed data.
+    #' @param transformed whether the result counts as transformed; set
+    #'   \code{FALSE} for a back-transformation such as \code{exp}
     #'
     #' @return LFQDataTransformer (self)
     #'
-    intensity_array = function(.func = log2, force = FALSE) {
+    intensity_array = function(.func = log2, force = FALSE, transformed = TRUE) {
       .funcname <- deparse(match.call()$.func)
       private$.set_transformed(
         force,
-        prolfqua::transform_work_intensity(self$lfq$data_long(), self$lfq$response(), .func, .funcname)
+        prolfqua::transform_work_intensity(self$lfq$data_long(), self$lfq$response(), .func, .funcname),
+        transformed = transformed
       )
     },
     #' @description
@@ -182,14 +185,14 @@ LFQDataTransformer <- R6::R6Class(
   ),
   private = list(
     # `res` (list with data and colname) is a promise: the transformation only runs if it is applied
-    .set_transformed = function(force, res) {
+    .set_transformed = function(force, res, transformed = TRUE) {
       if (self$lfq$is_transformed() && !force) {
         warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
         return(invisible(self))
       }
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
       cfg$set_response(res$colname)
-      cfg$is_response_transformed <- TRUE
+      cfg$is_response_transformed <- transformed
       self$lfq <- LFQData$new(res$data, cfg)
       invisible(self)
     }

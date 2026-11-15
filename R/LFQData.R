@@ -128,6 +128,14 @@ LFQData <- R6::R6Class(
       return(self$clone(deep = TRUE))
     },
     #' @description
+    #' can the data be aggregated, i.e. is there a hierarchy level below the
+    #' modelled one (`hierarchy_depth`)
+    #' @return logical
+    is_aggregatable = function() {
+      n_levels <- length(self$hierarchy_keys())
+      n_levels > 1 && length(self$relevant_hierarchy_keys()) < n_levels
+    },
+    #' @description
     #' samples subset of data
     #' @param size size of subset default 100
     #' @param seed set seed

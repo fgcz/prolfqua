@@ -249,7 +249,11 @@ transformed a second time. `TRUE` forces log transformation}
   Transforms intensities
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{LFQDataTransformer$intensity_array(.func = log2, force = FALSE)}
+    \preformatted{LFQDataTransformer$intensity_array(
+  .func = log2,
+  force = FALSE,
+  transformed = TRUE
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -257,6 +261,8 @@ transformed a second time. `TRUE` forces log transformation}
     \describe{
       \item{\code{.func}}{transformation function working with arrays e.g. log2, log10, asinh etc.}
       \item{\code{force}}{transformation on already transformed data.}
+      \item{\code{transformed}}{whether the result counts as transformed; set
+\code{FALSE} for a back-transformation such as \code{exp}}
     }
     \if{html}{\out{</div>}}
   }

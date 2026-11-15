@@ -327,3 +327,21 @@ test_that("lfqdata_from_wide inverts tidy_to_wide_config", {
     class = "prolfqua_error_missing_column"
   )
 })
+
+test_that("intensity_array can mark a back-transform as untransformed", {
+  logged <- lfqdata$get_Transformer()$intensity_array(log)$lfq
+  expect_true(logged$is_transformed())
+  back <- logged$get_Transformer()$intensity_array(exp, force = TRUE, transformed = FALSE)$lfq
+  expect_false(back$is_transformed())
+  still <- logged$get_Transformer()$intensity_array(exp, force = TRUE)$lfq
+  expect_true(still$is_transformed())
+})
+
+test_that("is_aggregatable tells whether there is a level below the modelled one", {
+  expect_true(lfqdata$is_aggregatable())
+  prot <- sim_lfq_data_protein_config()
+  expect_false(LFQData$new(prot$data, prot$config)$is_aggregatable())
+  depth2 <- lfqdata$get_copy()
+  depth2$set_config_value("hierarchy_depth", 2)
+  expect_false(depth2$is_aggregatable())
+})

@@ -76,6 +76,7 @@ Other LFQData:
     \item \href{#method-LFQData-get_config}{\code{LFQData$get_config()}}
     \item \href{#method-LFQData-set_config_value}{\code{LFQData$set_config_value()}}
     \item \href{#method-LFQData-get_copy}{\code{LFQData$get_copy()}}
+    \item \href{#method-LFQData-is_aggregatable}{\code{LFQData$is_aggregatable()}}
     \item \href{#method-LFQData-get_sample}{\code{LFQData$get_sample()}}
     \item \href{#method-LFQData-get_subset}{\code{LFQData$get_subset()}}
     \item \href{#method-LFQData-subject_id}{\code{LFQData$subject_id()}}
@@ -198,6 +199,22 @@ Other LFQData:
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQData$get_copy()}
     \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-is_aggregatable"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-is_aggregatable}{}}}
+\subsection{\code{LFQData$is_aggregatable()}}{
+  can the data be aggregated, i.e. is there a hierarchy level below the
+modelled one (`hierarchy_depth`)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$is_aggregatable()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    logical
   }
 }
 
