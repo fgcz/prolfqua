@@ -268,7 +268,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
 #' Encapsulates the pipeline: \code{\link{strategy_limpa}} ->
 #' \code{\link{build_model_limpa}} -> \code{\link{ContrastsLimma}}.
 #'
-#' Operates as a \code{"same"}-level facade: it consumes whatever aggregated
+#' Operates as an \code{"aggregated"}-level facade: it consumes whatever aggregated
 #' LFQData prolfqua's normal aggregation pipeline produced and fits limpa at
 #' that hierarchy level. If \code{config$opt_se} is set (e.g. when the input
 #' came from \code{\link{AggregateLimpa}}), the per-observation standard error
@@ -716,23 +716,23 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 
 .seed_facade_registry <- function() {
   entries <- list(
-    lm = list(class = "ContrastsLMFacade", needs = "same"),
-    lm_impute = list(class = "ContrastsLMImputeFacade", needs = "same"),
-    limma = list(class = "ContrastsLimmaFacade", needs = "same"),
-    limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "same"),
-    limma_voom = list(class = "ContrastsLimmaVoomFacade", needs = "same"),
-    limma_voom_impute = list(class = "ContrastsLimmaVoomImputeFacade", needs = "same"),
-    limpa = list(class = "ContrastsLimpaFacade", needs = "same"),
+    lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
+    lm_impute = list(class = "ContrastsLMImputeFacade", needs = "aggregated"),
+    limma = list(class = "ContrastsLimmaFacade", needs = "aggregated"),
+    limma_impute = list(class = "ContrastsLimmaImputeFacade", needs = "aggregated"),
+    limma_voom = list(class = "ContrastsLimmaVoomFacade", needs = "aggregated"),
+    limma_voom_impute = list(class = "ContrastsLimmaVoomImputeFacade", needs = "aggregated"),
+    limpa = list(class = "ContrastsLimpaFacade", needs = "aggregated"),
     limpa_nested = list(class = "ContrastsLimpaNestedFacade", needs = "nested"),
-    rlm = list(class = "ContrastsRLMFacade", needs = "same"),
-    rfit = list(class = "ContrastsRfitFacade", needs = "same"),
-    rfit_impute = list(class = "ContrastsRfitImputeFacade", needs = "same"),
-    deqms = list(class = "ContrastsDEqMSFacade", needs = "same"),
-    deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "same"),
+    rlm = list(class = "ContrastsRLMFacade", needs = "aggregated"),
+    rfit = list(class = "ContrastsRfitFacade", needs = "aggregated"),
+    rfit_impute = list(class = "ContrastsRfitImputeFacade", needs = "aggregated"),
+    deqms = list(class = "ContrastsDEqMSFacade", needs = "aggregated"),
+    deqms_voom = list(class = "ContrastsDEqMSVoomFacade", needs = "aggregated"),
     binomial_nested = list(class = "ContrastsBinomialNestedFacade", needs = "nested"),
     binomial_firth_nested = list(class = "ContrastsBinomialFirthNestedFacade", needs = "nested"),
     hurdle_nested = list(class = "ContrastsHurdleNestedFacade", needs = "nested"),
-    firth = list(class = "ContrastsFirthFacade", needs = "same"),
+    firth = list(class = "ContrastsFirthFacade", needs = "aggregated"),
     firth_nested = list(class = "ContrastsFirthNestedFacade", needs = "nested"),
     lmer_nested = list(class = "ContrastsLmerNestedFacade", needs = "nested"),
     ropeca_nested = list(class = "ContrastsROPECANestedFacade", needs = "nested")
@@ -757,11 +757,11 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #'
 #' @param name short method name, e.g. \code{"saint"}.
 #' @param class character; R6 facade class name to instantiate.
-#' @param needs one of \code{"same"} (facade emits contrasts at the same
-#'   hierarchy level as its input \emph{e.g.} protein -> protein FC,
-#'   peptide -> peptide FC) or \code{"nested"} (facade takes child-level
-#'   input and emits parent-level contrasts, \emph{e.g.}
-#'   peptide -> protein FC).
+#' @param needs the input the facade takes: \code{"aggregated"} (input at the
+#'   level of the contrasts, \code{subject_id} equal to the hierarchy keys,
+#'   \emph{e.g.} protein -> protein FC, peptide -> peptide FC) or
+#'   \code{"nested"} (child-level input, parent-level contrasts, \emph{e.g.}
+#'   peptide -> protein FC). Any other value is an error.
 #' @param package package the facade class lives in. Defaults to
 #'   \code{"prolfqua"}.
 #' @param needs_saint_annotation \code{TRUE} if the backend requires
@@ -776,7 +776,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #' lookup_facade("lm")$class
 #' # downstream packages call this from .onLoad():
 #' # prolfqua::register_facade("saint", class = "ContrastsSAINTFacade",
-#' #                           needs = "same", package = "prolfquasaint",
+#' #                           needs = "aggregated", package = "prolfquasaint",
 #' #                           needs_saint_annotation = TRUE)
 register_facade <- function(name, class, needs, package = "prolfqua", needs_saint_annotation = FALSE, ...) {
   stopifnot(
@@ -791,6 +791,9 @@ register_facade <- function(name, class, needs, package = "prolfqua", needs_sain
     is.character(package),
     length(package) == 1
   )
+  if (!needs %in% c("aggregated", "nested")) {
+    abort_bad_argument("needs", 'be "aggregated" or "nested"', not = needs)
+  }
   entry <- list(
     class = class,
     needs = needs,

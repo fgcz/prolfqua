@@ -208,7 +208,7 @@ test_that("build_contrast_analysis dispatches method = 'rfit_impute'", {
 test_that("rfit_impute facade is registered as needs = 'same'", {
   entry <- prolfqua::lookup_facade("rfit_impute")
   expect_equal(entry$class, "ContrastsRfitImputeFacade")
-  expect_equal(entry$needs, "same")
+  expect_equal(entry$needs, "aggregated")
   expect_true("rfit_impute" %in% names(prolfqua::list_facades()))
   expect_equal(
     prolfqua::FACADE_REGISTRY$rfit_impute$class,

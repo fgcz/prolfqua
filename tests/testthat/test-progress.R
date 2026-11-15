@@ -13,7 +13,7 @@ make_progress_peptide_data <- function(Nprot = 30) {
   lfqdata
 }
 
-# Aggregated protein-level data (the "same"-hierarchy facades, e.g. lm, need this).
+# Aggregated protein-level data (the "aggregated" facades, e.g. lm, need this).
 make_progress_protein_data <- function(Nprot = 30) {
   istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)

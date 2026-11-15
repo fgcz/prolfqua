@@ -235,7 +235,7 @@ test_that("build_contrast_analysis with method='limpa_nested' works", {
 
 test_that("ContrastsLimpaFacade accepts aggregated LFQData without opt_se", {
   skip_if_not_installed("limpa")
-  # As a "same"-level facade, limpa operates on whatever the normal
+  # As an "aggregated"-level facade, limpa operates on whatever the normal
   # aggregation pipeline produced. opt_se is optional: when absent (e.g.
   # medpolish-aggregated input), vooma is fit without an SE predictor.
   istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20)

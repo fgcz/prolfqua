@@ -73,7 +73,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 
 The authoritative facade list is the `.seed_facade_registry()` table in `R/ContrastsFacades.R`; query it at runtime with `lookup_facade(name)`. Facades split by input/output hierarchy shape — `lookup_facade(name)$needs` returns one of two values:
 
-**`needs = "same"`** — facade emits contrasts at the same hierarchy level as its input (protein → protein FC, or peptide/precursor → peptide/precursor FC; `subject_Id == hierarchy_keys`). Lives in `R/ContrastsFacades.R`:
+**`needs = "aggregated"`** — facade emits contrasts at the same hierarchy level as its input (protein → protein FC, or peptide/precursor → peptide/precursor FC; `subject_Id == hierarchy_keys`). Lives in `R/ContrastsFacades.R`:
 `lm`, `rlm`, `lm_impute`, `limma`, `limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`, `deqms_voom`, `firth`, `limpa`
 
 **`needs = "nested"`** — facade takes child-level input (peptide/precursor) and emits parent-level (protein) contrasts; `subject_Id` is a strict subset of `hierarchy_keys`. Lives in `R/ContrastsChildToParentFacades.R`:

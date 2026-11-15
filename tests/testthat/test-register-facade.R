@@ -1,7 +1,7 @@
 test_that("built-in facades are registered with package prolfqua", {
   entry <- lookup_facade("lm")
   expect_equal(entry$class, "ContrastsLMFacade")
-  expect_equal(entry$needs, "same")
+  expect_equal(entry$needs, "aggregated")
   expect_equal(entry$package, "prolfqua")
   expect_false(entry$needs_saint_annotation)
 })
@@ -17,7 +17,7 @@ test_that("register_facade and unregister_facade roundtrip", {
   invisible(register_facade(
     "test_fake",
     class = "FakeFacade",
-    needs = "same",
+    needs = "aggregated",
     package = "fakepkg",
     needs_saint_annotation = TRUE,
     extra = "hello"
@@ -35,7 +35,7 @@ test_that("register_facade and unregister_facade roundtrip", {
 
 test_that("list_facades reflects registered entries", {
   on.exit(unregister_facade("test_listed"), add = TRUE)
-  register_facade("test_listed", class = "Whatever", needs = "same")
+  register_facade("test_listed", class = "Whatever", needs = "aggregated")
   all_facades <- list_facades()
   expect_true("test_listed" %in% names(all_facades))
   expect_true("lm" %in% names(all_facades))
@@ -47,4 +47,15 @@ test_that("FACADE_REGISTRY snapshot lists built-in entries", {
   expect_true("limma" %in% names(FACADE_REGISTRY))
   expect_equal(FACADE_REGISTRY$lm$class, "ContrastsLMFacade")
   expect_equal(FACADE_REGISTRY$lm$package, "prolfqua")
+})
+
+test_that("register_facade accepts only aggregated or nested input", {
+  on.exit(unregister_facade("test_needs"), add = TRUE)
+  expect_error(
+    register_facade("test_needs", class = "Whatever", needs = "same"),
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_null(lookup_facade("test_needs"))
+  register_facade("test_needs", class = "Whatever", needs = "nested")
+  expect_equal(lookup_facade("test_needs")$needs, "nested")
 })

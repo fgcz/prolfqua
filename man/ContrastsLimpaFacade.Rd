@@ -10,7 +10,7 @@ An R6 class generator.
 Encapsulates the pipeline: \code{\link{strategy_limpa}} ->
 \code{\link{build_model_limpa}} -> \code{\link{ContrastsLimma}}.
 
-Operates as a \code{"same"}-level facade: it consumes whatever aggregated
+Operates as an \code{"aggregated"}-level facade: it consumes whatever aggregated
 LFQData prolfqua's normal aggregation pipeline produced and fits limpa at
 that hierarchy level. If \code{config$opt_se} is set (e.g. when the input
 came from \code{\link{AggregateLimpa}}), the per-observation standard error
