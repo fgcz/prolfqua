@@ -25,6 +25,14 @@
 
 ### Behaviour changes
 
+- Breaking for packages that register their own facades: the `needs`
+  value `"same"` is renamed to `"aggregated"`, so
+  [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md)
+  reports `"aggregated"` or `"nested"`, and
+  [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md)
+  rejects any other value with `prolfqua_error_bad_argument`. Before,
+  any string was accepted and every value other than `"nested"` was
+  treated as aggregated input.
 - `LFQData$filter_proteins_by_peptide_count()` takes optional
   `threshold`, `parent` and `child` arguments; the defaults are
   `config$min_peptides_protein` and the first two hierarchy keys. It now

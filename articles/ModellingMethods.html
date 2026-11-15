@@ -178,11 +178,11 @@ The method models the peptides and reports protein-level contrasts.</li>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">overview</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="18%">
-<col width="5%">
+<col width="17%">
+<col width="8%">
 <col width="7%">
-<col width="9%">
-<col width="59%">
+<col width="8%">
+<col width="57%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">method</th>
@@ -208,21 +208,21 @@ The method models the peptides and reports protein-level contrasts.</li>
 </tr>
 <tr class="odd">
 <td align="left">deqms</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma with DEqMS peptide-count variance moderation</td>
 </tr>
 <tr class="even">
 <td align="left">deqms_voom</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">13</td>
 <td align="left">deqms with vooma precision weights</td>
 </tr>
 <tr class="odd">
 <td align="left">firth</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">0</td>
 <td align="left">Firth logistic regression, protein detection</td>
@@ -244,35 +244,35 @@ detection</td>
 </tr>
 <tr class="even">
 <td align="left">limma</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma, empirical-Bayes moderated variances</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma with LOD imputation</td>
 </tr>
 <tr class="even">
 <td align="left">limma_voom</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma with vooma precision weights</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_voom_impute</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma_voom with LOD imputation</td>
 </tr>
 <tr class="even">
 <td align="left">limpa</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">16</td>
 <td align="left">limma on limpa DPC-quantified proteins</td>
@@ -286,14 +286,14 @@ detection</td>
 </tr>
 <tr class="even">
 <td align="left">lm</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">linear model per protein</td>
 </tr>
 <tr class="odd">
 <td align="left">lm_impute</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">lm; groups without observations imputed at the limit of
@@ -308,21 +308,21 @@ detection (LOD)</td>
 </tr>
 <tr class="odd">
 <td align="left">rfit</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">rank-based regression (Rfit)</td>
 </tr>
 <tr class="even">
 <td align="left">rfit_impute</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">rfit with LOD imputation</td>
 </tr>
 <tr class="odd">
 <td align="left">rlm</td>
-<td align="left">same</td>
+<td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">robust linear model (MASS::rlm)</td>

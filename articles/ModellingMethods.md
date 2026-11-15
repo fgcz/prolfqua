@@ -100,23 +100,23 @@ knitr::kable(overview, row.names = FALSE)
 |:---|:---|---:|---:|:---|
 | binomial_firth_nested | nested | 20 | 0 | binomial_nested with Firth bias reduction |
 | binomial_nested | nested | 20 | 0 | quasibinomial model, peptide detection counts |
-| deqms | same | 20 | 14 | limma with DEqMS peptide-count variance moderation |
-| deqms_voom | same | 20 | 13 | deqms with vooma precision weights |
-| firth | same | 20 | 0 | Firth logistic regression, protein detection |
+| deqms | aggregated | 20 | 14 | limma with DEqMS peptide-count variance moderation |
+| deqms_voom | aggregated | 20 | 13 | deqms with vooma precision weights |
+| firth | aggregated | 20 | 0 | Firth logistic regression, protein detection |
 | firth_nested | nested | 20 | 0 | Firth logistic regression, peptide detection |
 | hurdle_nested | nested | 20 | 14 | lm_impute intensity + binomial_firth_nested detection |
-| limma | same | 20 | 14 | limma, empirical-Bayes moderated variances |
-| limma_impute | same | 20 | 14 | limma with LOD imputation |
-| limma_voom | same | 20 | 14 | limma with vooma precision weights |
-| limma_voom_impute | same | 20 | 14 | limma_voom with LOD imputation |
-| limpa | same | 20 | 16 | limma on limpa DPC-quantified proteins |
+| limma | aggregated | 20 | 14 | limma, empirical-Bayes moderated variances |
+| limma_impute | aggregated | 20 | 14 | limma with LOD imputation |
+| limma_voom | aggregated | 20 | 14 | limma with vooma precision weights |
+| limma_voom_impute | aggregated | 20 | 14 | limma_voom with LOD imputation |
+| limpa | aggregated | 20 | 16 | limma on limpa DPC-quantified proteins |
 | limpa_nested | nested | 20 | 16 | limpa, DPC quantification from peptides |
-| lm | same | 20 | 14 | linear model per protein |
-| lm_impute | same | 20 | 14 | lm; groups without observations imputed at the limit of detection (LOD) |
+| lm | aggregated | 20 | 14 | linear model per protein |
+| lm_impute | aggregated | 20 | 14 | lm; groups without observations imputed at the limit of detection (LOD) |
 | lmer_nested | nested | 12 | 5 | mixed model, peptide and sample random effects |
-| rfit | same | 20 | 14 | rank-based regression (Rfit) |
-| rfit_impute | same | 20 | 14 | rfit with LOD imputation |
-| rlm | same | 20 | 14 | robust linear model (MASS::rlm) |
+| rfit | aggregated | 20 | 14 | rank-based regression (Rfit) |
+| rfit_impute | aggregated | 20 | 14 | rfit with LOD imputation |
+| rlm | aggregated | 20 | 14 | robust linear model (MASS::rlm) |
 | ropeca_nested | nested | 20 | 14 | peptide fold changes summarised per protein (ROPECA) |
 
 The detection models (`firth`, `firth_nested`, `binomial_nested`,

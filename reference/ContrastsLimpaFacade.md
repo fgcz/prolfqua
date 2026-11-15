@@ -7,10 +7,10 @@ Encapsulates the pipeline:
 -\>
 [`ContrastsLimma`](https://fgcz.github.io/prolfqua/reference/ContrastsLimma.md).
 
-Operates as a `"same"`-level facade: it consumes whatever aggregated
-LFQData prolfqua's normal aggregation pipeline produced and fits limpa
-at that hierarchy level. If `config$opt_se` is set (e.g. when the input
-came from
+Operates as an `"aggregated"`-level facade: it consumes whatever
+aggregated LFQData prolfqua's normal aggregation pipeline produced and
+fits limpa at that hierarchy level. If `config$opt_se` is set (e.g. when
+the input came from
 [`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md)),
 the per-observation standard error is used as a vooma precision-weight
 predictor; otherwise plain vooma is fit. The `config$nr_children` column

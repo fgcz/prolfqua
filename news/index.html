@@ -66,7 +66,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="behaviour-changes-1-9-1">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-1"></a></h3>
-<ul><li>
+<ul><li>Breaking for packages that register their own facades: the <code>needs</code> value <code>"same"</code> is renamed to <code>"aggregated"</code>, so <code><a href="../reference/lookup_facade.html">lookup_facade()</a></code> reports <code>"aggregated"</code> or <code>"nested"</code>, and <code><a href="../reference/register_facade.html">register_facade()</a></code> rejects any other value with <code>prolfqua_error_bad_argument</code>. Before, any string was accepted and every value other than <code>"nested"</code> was treated as aggregated input.</li>
+<li>
 <code>LFQData$filter_proteins_by_peptide_count()</code> takes optional <code>threshold</code>, <code>parent</code> and <code>child</code> arguments; the defaults are <code>config$min_peptides_protein</code> and the first two hierarchy keys. It now counts the second hierarchy level within the first whatever the <code>hierarchy_depth</code>: peptide-level configurations are filtered (before, the call did nothing), and three-level hierarchies modelled at depth 2 count peptides per protein instead of precursors per peptide. A hierarchy with a single level is an error (<code>prolfqua_error_bad_argument</code>) instead of a warning.</li>
 <li>
 <code><a href="../reference/nr_features_experiment.html">nr_features_experiment()</a></code> writes its count to <code>nr_features_exp</code> by default instead of <code>nr_child_exp</code>, the column of <code><a href="../reference/nr_children_experiment.html">nr_children_experiment()</a></code>, so the two counts can be joined.</li>
