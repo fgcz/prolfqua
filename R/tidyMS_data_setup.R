@@ -70,33 +70,38 @@
   data
 }
 
-.add_setup_default_column <- function(data, column, value, warning_message) {
+.add_setup_default_column <- function(data, column, value, text, notify) {
   if (column %in% colnames(data)) {
     return(data)
   }
-  warning(warning_message)
+  notify(text)
   data[[column]] <- value
   data
 }
 
+# isotopeLabel and qValue are optional and only reported. A missing nr_children
+# warns: the default of 1 changes the fitting weights of aggregated data.
 .add_setup_default_columns <- function(data, configuration) {
   data <- .add_setup_default_column(
     data,
     configuration$isotope_label,
     "light",
-    "no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'."
+    "no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'.",
+    message
   )
   data <- .add_setup_default_column(
     data,
     configuration$ident_q_value,
     0,
-    "no qValue column specified in the data. Creating column qValue and setting qValues to 0."
+    "no qValue column specified in the data. Creating column qValue and setting qValues to 0.",
+    message
   )
   .add_setup_default_column(
     data,
     configuration$nr_children,
     1,
-    "no nr_children column specified in the data, adding column nr_children and setting to 1."
+    "no nr_children column specified in the data, adding column nr_children and setting to 1.",
+    warning
   )
 }
 

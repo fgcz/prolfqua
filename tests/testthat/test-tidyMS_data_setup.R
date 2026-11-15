@@ -44,10 +44,14 @@ test_that("setup_analysis derives sample names and default metadata", {
   fx$data$qValue <- NULL
   fx$data$nr_children <- NULL
 
+  # isotopeLabel and qValue are optional and only reported; missing peptide
+  # counts change model weights, so nr_children still warns
   expect_warning(
-    result <- prolfqua::setup_analysis(fx$data, fx$config),
-    "no isotopeLabel"
+    messages <- capture_messages(result <- prolfqua::setup_analysis(fx$data, fx$config)),
+    "no nr_children"
   )
+  expect_true(any(grepl("no isotopeLabel", messages)))
+  expect_true(any(grepl("no qValue", messages)))
 
   expect_equal(
     dplyr::n_distinct(result[[fx$config$sample_name]]),

@@ -1,5 +1,9 @@
 # prolfqua 1.9.2
 
+## Behaviour changes
+
+- `setup_analysis()` reports a missing `isotopeLabel` or `qValue` column with a message instead of a warning; both are optional and get the defaults `"light"` and `0`. A missing `nr_children` column still warns, because the default of 1 changes the fitting weights of aggregated data.
+
 ## Bug fixes
 
 - Building a contrast analysis (`build_contrast_analysis()` and the facade classes) stops with `prolfqua_error_bad_argument` when a contrast names a group without samples, e.g. `group_A` after all its runs were filtered out. The message names the contrast, the empty group and the groups with samples; before, the analysis went ahead and failed later or returned no estimates for that contrast.
