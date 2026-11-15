@@ -158,13 +158,13 @@ LFQData <- R6::R6Class(
     #' @description
     #' is data transformed
     #' @param is_transformed logical
-    #' @return logical
+    #' @return logical when called without argument, otherwise self (invisible)
     is_transformed = function(is_transformed) {
       if (missing(is_transformed)) {
         return(private$.config$is_response_transformed)
-      } else {
-        private$.config$is_response_transformed <- is_transformed
       }
+      private$.config$is_response_transformed <- is_transformed
+      invisible(self)
     },
     #' @description
     #' some software is reporting NA's as 0, you must remove it from your data
@@ -316,18 +316,22 @@ LFQData <- R6::R6Class(
       private$.data
     },
     #' @description
-    #' new name of response variable
+    #' new name of response variable. Renaming to the current response name
+    #' changes nothing; renaming to another existing column is an error.
     #' @param newname default Intensity
+    #' @return self (invisible)
     rename_response = function(newname = "Intensity") {
-      if ((newname %in% colnames(self$data_long()))) {
-        msg <- paste(newname, " already in data :", paste(colnames(self$data_long()), collapse = " "), ".")
-        message(msg)
-      } else {
-        cfg <- self$get_config()
-        old <- cfg$pop_response()
-        cfg$set_response(newname)
-        private$.data <- self$data_long() |> dplyr::rename(!!newname := !!sym(old))
+      if (identical(newname, self$response())) {
+        return(invisible(self))
       }
+      if (newname %in% colnames(self$data_long())) {
+        abort_bad_argument("newname", "not name an existing column", not = newname)
+      }
+      cfg <- self$get_config()
+      old <- cfg$pop_response()
+      cfg$set_response(newname)
+      private$.data <- self$data_long() |> dplyr::rename(!!newname := !!sym(old))
+      invisible(self)
     },
     #' @description
     #' number of elements at each level

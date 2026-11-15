@@ -75,6 +75,24 @@ test_that("filter_proteins_by_peptide_count counts the second hierarchy level wi
   expect_gt(nrow(prolfqua::data_ionstar$filtered()$data), 0)
 })
 
+test_that("rename_response and the is_transformed setter return the object", {
+  lfq <- lfqdata$get_copy()
+  expect_identical(lfq$is_transformed(TRUE), lfq)
+  expect_true(lfq$is_transformed())
+
+  old <- lfq$response()
+  expect_identical(lfq$rename_response(old), lfq)
+  expect_equal(lfq$response(), old)
+
+  expect_error(lfq$rename_response(lfq$file_name()), class = "prolfqua_error_bad_argument")
+  expect_equal(lfq$response(), old)
+
+  expect_identical(lfq$rename_response("transformedIntensity"), lfq)
+  expect_equal(lfq$response(), "transformedIntensity")
+  expect_true("transformedIntensity" %in% colnames(lfq$data_long()))
+  expect_false(old %in% colnames(lfq$data_long()))
+})
+
 test_that("remove_small_intensities re-establishes explicit missing rows", {
   istar_missing <- sim_lfq_data_peptide_config(Nprot = 5, weight_missing = 1, seed = 1)
   lfq_missing <- LFQData$new(istar_missing$data, istar_missing$config)

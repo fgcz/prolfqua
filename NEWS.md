@@ -4,6 +4,7 @@
 
 - `LFQData$filter_proteins_by_peptide_count()` takes optional `threshold`, `parent` and `child` arguments; the defaults are `config$min_peptides_protein` and the first two hierarchy keys. It now counts the second hierarchy level within the first whatever the `hierarchy_depth`: peptide-level configurations are filtered (before, the call did nothing), and three-level hierarchies modelled at depth 2 count peptides per protein instead of precursors per peptide. A hierarchy with a single level is an error (`prolfqua_error_bad_argument`) instead of a warning.
 - `nr_features_experiment()` writes its count to `nr_features_exp` by default instead of `nr_child_exp`, the column of `nr_children_experiment()`, so the two counts can be joined.
+- `LFQData$rename_response()` stops with `prolfqua_error_bad_argument` when the new name is another existing column; before, it printed a message and left the data unchanged. Renaming to the current response name does nothing. `rename_response()` and the `is_transformed(value)` setter return the `LFQData` invisibly, so they can be chained.
 
 ## Documentation
 

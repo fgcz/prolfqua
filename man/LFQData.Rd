@@ -268,7 +268,7 @@ Other LFQData:
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    logical
+    logical when called without argument, otherwise self (invisible)
   }
 }
 
@@ -560,7 +560,8 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).
 \if{html}{\out{<a id="method-LFQData-rename_response"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-rename_response}{}}}
 \subsection{\code{LFQData$rename_response()}}{
-  new name of response variable
+  new name of response variable. Renaming to the current response name
+changes nothing; renaming to another existing column is an error.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQData$rename_response(newname = "Intensity")}
@@ -572,6 +573,9 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).
       \item{\code{newname}}{default Intensity}
     }
     \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    self (invisible)
   }
 }
 
