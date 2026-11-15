@@ -38,6 +38,43 @@ test_that("LFQData filtering and subsetting", {
   expect_s3_class(sub, "LFQData")
 })
 
+test_that("filter_proteins_by_peptide_count counts the second hierarchy level within the first", {
+  kept_proteins <- function(lfq) sort(unique(lfq$data_long()$protein_Id))
+
+  by_default <- lfqdata$get_copy()$filter_proteins_by_peptide_count()
+  explicit <- lfqdata$get_copy()$filter_proteins_by_peptide_count(
+    threshold = 2,
+    parent = "protein_Id",
+    child = "peptide_Id"
+  )
+  expect_equal(by_default$data_long(), explicit$data_long())
+  peptides_per_protein <- dplyr::summarize(
+    by_default$data_long(),
+    n = dplyr::n_distinct(peptide_Id),
+    .by = "protein_Id"
+  )
+  expect_true(all(peptides_per_protein$n >= 2))
+
+  # peptide-level modelling (hierarchy_depth 2) used to make this a no-op
+  depth2 <- lfqdata$get_copy()
+  depth2$set_config_value("hierarchy_depth", 2)
+  depth2$filter_proteins_by_peptide_count()
+  expect_equal(kept_proteins(depth2), kept_proteins(by_default))
+
+  stricter <- lfqdata$get_copy()$filter_proteins_by_peptide_count(threshold = 3)
+  expect_true(all(kept_proteins(stricter) %in% kept_proteins(by_default)))
+
+  prot <- sim_lfq_data_protein_config()
+  lfq_prot <- LFQData$new(prot$data, prot$config)
+  expect_error(lfq_prot$filter_proteins_by_peptide_count(), class = "prolfqua_error_bad_argument")
+  expect_error(
+    lfqdata$get_copy()$filter_proteins_by_peptide_count(child = "no_such_column"),
+    class = "prolfqua_error_missing_column"
+  )
+
+  expect_gt(nrow(prolfqua::data_ionstar$filtered()$data), 0)
+})
+
 test_that("remove_small_intensities re-establishes explicit missing rows", {
   istar_missing <- sim_lfq_data_peptide_config(Nprot = 5, weight_missing = 1, seed = 1)
   lfq_missing <- LFQData$new(istar_missing$data, istar_missing$config)

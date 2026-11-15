@@ -298,14 +298,30 @@ Other LFQData:
 \if{html}{\out{<a id="method-LFQData-filter_proteins_by_peptide_count"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-filter_proteins_by_peptide_count}{}}}
 \subsection{\code{LFQData$filter_proteins_by_peptide_count()}}{
-  remove proteins with less than X peptides
+  remove parents (e.g. proteins) with fewer than `threshold` distinct
+children (e.g. peptides) and add the count as a column. By default the
+second hierarchy level is counted within the first, independent of
+`hierarchy_depth`; a hierarchy with one level is an error.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{LFQData$filter_proteins_by_peptide_count()}
+    \preformatted{LFQData$filter_proteins_by_peptide_count(
+  threshold = NULL,
+  parent = NULL,
+  child = NULL
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{threshold}}{minimum number of children, default `config$min_peptides_protein`}
+      \item{\code{parent}}{parent key column, default the first hierarchy key}
+      \item{\code{child}}{child key column, default the second hierarchy key}
+    }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    self
+    self (invisible)
   }
 }
 

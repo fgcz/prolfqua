@@ -331,31 +331,44 @@ nr_B_in_A <- function(
     dplyr::summarize(!!name := dplyr::n(), .groups = "drop")
 }
 
-#' Keep only the proteins with enough peptides
+#' Keep only the parents with enough children
 #'
-#' Keeps the rows of the proteins with at least `config$min_peptides_protein`
-#' children at the next hierarchy level, counted by [nr_B_in_A()], and adds
-#' that count. The package
-#' dataset `data_ionstar` calls it from its `filtered()` method.
+#' Keeps the rows of the `parent` entries (e.g. proteins) with at least
+#' `threshold` distinct `child` entries (e.g. peptides), counted by
+#' [nr_B_in_A()], and adds that count. By default it counts the second
+#' hierarchy level within the first, independent of `hierarchy_depth`. The
+#' package dataset `data_ionstar` calls it as `(pdata, config)` from its
+#' `filtered()` method.
 #' @param pdata data.frame in the long format of `config`
 #' @param config AnalysisConfiguration
-#' @return list with the filtered `data` and the `name` of the count column,
-#'   `NULL` when the hierarchy has no child level
+#' @param parent parent key column, default the first hierarchy key
+#' @param child child key column, default the second hierarchy key
+#' @param threshold minimum number of children, default `config$min_peptides_protein`
+#' @return list with the filtered `data` and the `name` of the count column
 #' @keywords internal
 #' @family preprocessing
 #' @examples
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
-#' filtered <- prolfqua:::filter_proteins_by_peptide_count(istar$data, istar$config)
-#' stopifnot(all(filtered$data[[filtered$name]] >= istar$config$min_peptides_protein))
-filter_proteins_by_peptide_count <- function(pdata, config) {
-  level_a <- config$hierarchy_keys_depth()
-  level_b <- config$hierarchy_keys()[length(level_a) + 1]
-  if (is.na(level_b)) {
-    warning("here is no B in A")
-    return(list(data = pdata, name = NULL))
+#' filtered <- prolfqua:::filter_proteins_by_peptide_count(
+#'   istar$data, istar$config, parent = "protein_Id", child = "peptide_Id", threshold = 2
+#' )
+#' stopifnot(all(filtered$data[[filtered$name]] >= 2))
+filter_proteins_by_peptide_count <- function(
+  pdata,
+  config,
+  parent = config$hierarchy_keys()[1],
+  child = config$hierarchy_keys()[2],
+  threshold = config$min_peptides_protein
+) {
+  if (is.na(child)) {
+    abort_bad_argument("child", "name a hierarchy level below `parent`", not = "the hierarchy has one level")
   }
-  counts <- nr_B_in_A(pdata, level_a, level_b)
-  name <- setdiff(names(counts), level_a)
-  data <- dplyr::inner_join(pdata, counts, by = level_a)
-  list(data = dplyr::filter(data, .data[[name]] >= config$min_peptides_protein), name = name)
+  missing <- setdiff(c(parent, child), colnames(pdata))
+  if (length(missing) > 0) {
+    abort_missing_columns(missing, data_nm = "pdata")
+  }
+  counts <- nr_B_in_A(pdata, parent, child)
+  name <- setdiff(names(counts), parent)
+  data <- dplyr::inner_join(pdata, counts, by = parent)
+  list(data = dplyr::filter(data, .data[[name]] >= threshold), name = name)
 }

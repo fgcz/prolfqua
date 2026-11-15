@@ -176,15 +176,29 @@ LFQData <- R6::R6Class(
       invisible(self)
     },
     #' @description
-    #' remove proteins with less than X peptides
-    #' @return self
-    filter_proteins_by_peptide_count = function() {
+    #' remove parents (e.g. proteins) with fewer than `threshold` distinct
+    #' children (e.g. peptides) and add the count as a column. By default the
+    #' second hierarchy level is counted within the first, independent of
+    #' `hierarchy_depth`; a hierarchy with one level is an error.
+    #' @param threshold minimum number of children, default `config$min_peptides_protein`
+    #' @param parent parent key column, default the first hierarchy key
+    #' @param child child key column, default the second hierarchy key
+    #' @return self (invisible)
+    filter_proteins_by_peptide_count = function(threshold = NULL, parent = NULL, child = NULL) {
       cfg <- self$get_config()
-      message("removing proteins with less than: ", cfg$min_peptides_protein, " peptpides")
-      filtered <- filter_proteins_by_peptide_count(self$data_long(), cfg)
-      if (!is.null(filtered$name)) {
-        message("Column added : ", filtered$name)
-      }
+      keys <- cfg$hierarchy_keys()
+      parent <- parent %||% keys[1]
+      child <- child %||% keys[2]
+      threshold <- threshold %||% cfg$min_peptides_protein
+      message("removing ", parent, " with fewer than ", threshold, " ", child)
+      filtered <- filter_proteins_by_peptide_count(
+        self$data_long(),
+        cfg,
+        parent = parent,
+        child = child,
+        threshold = threshold
+      )
+      message("Column added : ", filtered$name)
       private$.data <- filtered$data
       invisible(self)
     },
