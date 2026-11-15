@@ -63,3 +63,12 @@ test_that("decoy removal propagates from protein to peptide rows", {
   expect_false(any(prolfqua::is_decoy(unique(clean$data_long()[[top]]))))
   expect_lt(nrow(clean$data_long()), nrow(lfq$data_long()))
 })
+
+test_that("remove_contaminants drops contaminant proteins and leaves self unchanged", {
+  s <- make_lfq_with_prefixes(cont = 1:3)
+  clean <- s$lfq$remove_contaminants()
+  ids <- unique(clean$data_long()[[s$top]])
+  expect_false(any(prolfqua::is_contaminant(ids)))
+  expect_equal(length(ids), s$n_prot - 3)
+  expect_true(any(prolfqua::is_contaminant(unique(s$lfq$data_long()[[s$top]]))))
+})

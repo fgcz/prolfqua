@@ -216,6 +216,19 @@ LFQData <- R6::R6Class(
       return(LFQData$new(pdata[keep, , drop = FALSE], self$get_config()))
     },
     #' @description
+    #' remove contaminant entries (rows whose top-level hierarchy id, e.g.
+    #' protein_Id, is a contaminant). Detection uses the configured
+    #' `pattern_contaminants` unioned with the built-in defaults (see
+    #' \code{\link{is_contaminant}}). Returns a new contaminant-free LFQData
+    #' (self is not modified).
+    #' @return LFQData without contaminants
+    remove_contaminants = function() {
+      top <- self$hierarchy_keys()[1]
+      pdata <- self$data_long()
+      keep <- !prolfqua::is_contaminant(pdata[[top]], self$get_config()$pattern_contaminants)
+      return(LFQData$new(pdata[keep, , drop = FALSE], self$get_config()))
+    },
+    #' @description
     #' proportion of modelling-level keys (subject_id, e.g. protein or peptide by
     #' `hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
     #' signal. Decoy status derives from the top-level hierarchy id (protein_Id).
@@ -377,16 +390,17 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' get Aggregator
-    #' @param method aggregation method: "medpolish", "rlm", or "topN"
-    #' @param ... passed to aggregator constructor (e.g. prefix, N, func)
-    #' @return AggregateMedpolish, AggregateRlm, or AggregateTopN
+    #' @param method aggregation method: "medpolish", "rlm", "topN", or "limpa"
+    #' @param ... passed to aggregator constructor (e.g. prefix, N, func, dpc_slope)
+    #' @return AggregateMedpolish, AggregateRlm, AggregateTopN, or AggregateLimpa
     get_Aggregator = function(method = "medpolish", ...) {
       switch(
         method,
         "medpolish" = AggregateMedpolish$new(self, ...),
         "rlm" = AggregateRlm$new(self, ...),
         "topN" = AggregateTopN$new(self, ...),
-        abort_bad_argument("method", 'be one of: "medpolish", "rlm", "topN"', not = method)
+        "limpa" = AggregateLimpa$new(self, ...),
+        abort_bad_argument("method", 'be one of: "medpolish", "rlm", "topN", "limpa"', not = method)
       )
     }
   )

@@ -9,7 +9,8 @@ tidy_to_wide_config(
   as.matrix = FALSE,
   file_name = FALSE,
   sep = "~lfq~",
-  value = lfqdata$response()
+  value = lfqdata$response(),
+  row_keys = c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
 )
 }
 \arguments{
@@ -22,6 +23,10 @@ tidy_to_wide_config(
 \item{sep}{separator for row IDs when as.matrix = TRUE}
 
 \item{value}{column name to pivot (default: lfqdata$response())}
+
+\item{row_keys}{columns identifying a row of the wide table (default: the
+hierarchy keys and the isotope label). They must identify one value per
+sample; e.g. drop the isotope label only for single-label data.}
 }
 \value{
 list with data, rowdata, and annotation (colData)
@@ -52,6 +57,10 @@ dd <- prolfqua::sim_lfq_data_protein_config()
 lfqprot <- prolfqua::LFQData$new(dd$data, dd$config)
 xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
 xt$data
+
+# row names without the isotope label
+xh <- tidy_to_wide_config(lfqprot, as.matrix = TRUE, row_keys = lfqprot$hierarchy_keys())
+stopifnot(!any(grepl("light", rownames(xh$data))))
 
 }
 \keyword{internal}

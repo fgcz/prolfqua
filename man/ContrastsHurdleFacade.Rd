@@ -207,7 +207,15 @@ Other modelling:
   get contrast results with Fisher-combined \code{p.value} and \code{FDR}
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsHurdleFacade$get_contrasts()}
+    \preformatted{ContrastsHurdleFacade$get_contrasts(all = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{all}}{accepted for the \code{\link{ContrastsInterface}} signature;
+the result always has every column, including the component ones}
+    }
     \if{html}{\out{</div>}}
   }
 }

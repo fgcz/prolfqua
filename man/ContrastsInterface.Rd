@@ -84,7 +84,14 @@ LM-flavoured default on demand if a subclass has not set one.
   get table with contrast results (similar to limma topTable function)
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsInterface$get_contrasts()}
+    \preformatted{ContrastsInterface$get_contrasts(all = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{all}}{return all columns (TRUE) or the standard ones (FALSE)}
+    }
     \if{html}{\out{</div>}}
   }
 }

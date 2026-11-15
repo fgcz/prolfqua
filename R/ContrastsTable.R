@@ -38,10 +38,16 @@ ContrastsTable <- R6::R6Class(
     #' @param contrastsdf data.frame
     #' @param subject_id default protein_Id
     #' @param model_name default ContrastTable
-    initialize = function(contrastsdf, subject_id = "protein_Id", model_name = "ContrastTable") {
+    #' @param config optional \code{\link{ContrastConfiguration}} describing the
+    #'   result columns; default \code{NULL} builds an LM-flavoured one on demand
+    initialize = function(contrastsdf, subject_id = "protein_Id", model_name = "ContrastTable", config = NULL) {
+      if (!is.null(config) && !inherits(config, "ContrastConfiguration")) {
+        abort_bad_argument("config", "be a ContrastConfiguration or NULL", not = paste(class(config), collapse = "/"))
+      }
       self$contrast_result <- contrastsdf
       self$subject_id <- subject_id
       self$model_name <- model_name
+      self$config <- config
     },
     #' @description
     #' return sides of contrast

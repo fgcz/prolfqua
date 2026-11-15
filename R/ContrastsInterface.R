@@ -41,7 +41,8 @@ ContrastsInterface <- R6::R6Class(
     },
     #' @description
     #' get table with contrast results (similar to limma topTable function)
-    get_contrasts = function() {
+    #' @param all return all columns (TRUE) or the standard ones (FALSE)
+    get_contrasts = function(all = FALSE) {
       stop("get_contrasts not implemented.")
     },
     #' @description

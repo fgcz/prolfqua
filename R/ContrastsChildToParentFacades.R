@@ -134,7 +134,9 @@ ContrastsROPECANestedFacade <- R6::R6Class(
     #'   \item \code{df = n_not_na} (number of contributing peptides)
     #'   \item \code{conf.low/conf.high} via \code{diff +/- qt(0.975, df) * |std.error|}
     #' }
-    get_contrasts = function() {
+    #' @param all \code{FALSE} (default) returns the standard columns;
+    #'   \code{TRUE} appends the remaining ROPECA columns
+    get_contrasts = function(all = FALSE) {
       res <- self$contrast$get_contrasts(all = TRUE)
       res <- dplyr::rename(res, p.value = "beta.based.significance", FDR = "FDR.beta.based.significance")
       res$std.error <- ifelse(res$statistic != 0, res$diff / res$statistic, NA_real_)
@@ -160,7 +162,8 @@ ContrastsROPECANestedFacade <- R6::R6Class(
         "conf.high",
         "sigma"
       )
-      res <- res[, standard_cols, drop = FALSE]
+      keep <- if (all) c(standard_cols, setdiff(colnames(res), standard_cols)) else standard_cols
+      res <- res[, keep, drop = FALSE]
       .stamp_facade_identity(res, "ropeca_nested")
     },
     #' @description get ContrastsPlotter (uses standardized column names)

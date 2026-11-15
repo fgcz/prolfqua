@@ -352,3 +352,22 @@ test_that("nested facades error on aggregated LFQData", {
     "requires LFQData with additional hierarchy below `subject_id\\(\\)`"
   )
 })
+
+test_that("ContrastsROPECANestedFacade get_contrasts(all = TRUE) appends the ROPECA columns", {
+  fa <- prolfqua::ContrastsROPECANestedFacade$new(make_peptide_lfqdata(), MODELSTR, CONTRASTS)
+  standard <- colnames(fa$get_contrasts())
+  everything <- colnames(fa$get_contrasts(all = TRUE))
+  expect_equal(everything[seq_along(standard)], standard)
+  expect_gt(length(everything), length(standard))
+})
+
+test_that("ContrastsTable$new stores a passed ContrastConfiguration", {
+  fa <- prolfqua::ContrastsLMFacade$new(make_protein_lfqdata()$lfqdata, MODELSTR, CONTRASTS)
+  cfg <- prolfqua::ContrastConfiguration$new(subject_id = "protein_Id", fdr_col = "FDR")
+  tab <- prolfqua::ContrastsTable$new(fa$get_contrasts(), subject_id = "protein_Id", config = cfg)
+  expect_identical(tab$get_config(), cfg)
+  expect_error(
+    prolfqua::ContrastsTable$new(fa$get_contrasts(), config = list()),
+    class = "prolfqua_error_bad_argument"
+  )
+})

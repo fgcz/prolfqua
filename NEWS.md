@@ -1,5 +1,13 @@
 # prolfqua 1.9.1
 
+## New features
+
+- `LFQData$remove_contaminants()` returns a copy without contaminant proteins, using `config$pattern_contaminants` and the built-in prefixes of `is_contaminant()`, as `remove_decoys()` does for decoys.
+- `LFQData$get_Aggregator(method = "limpa")` returns an `AggregateLimpa`, which was not reachable through `get_Aggregator()` before.
+- `tidy_to_wide_config()` takes `row_keys`, the columns that identify a row of the wide table; the default is still the hierarchy keys plus the isotope label. Keys that do not identify one value per sample are an error.
+- `ContrastsTable$new()` takes an optional `config`, the `ContrastConfiguration` of the stored results.
+- `get_contrasts()` takes `all` in every contrast class: `ContrastsROPECANestedFacade$get_contrasts(all = TRUE)` appends the remaining ROPECA columns to the standard ones; `ContrastsHurdleFacade` accepts it and always returns every column.
+
 ## Behaviour changes
 
 - `LFQData$filter_proteins_by_peptide_count()` takes optional `threshold`, `parent` and `child` arguments; the defaults are `config$min_peptides_protein` and the first two hierarchy keys. It now counts the second hierarchy level within the first whatever the `hierarchy_depth`: peptide-level configurations are filtered (before, the call did nothing), and three-level hierarchies modelled at depth 2 count peptides per protein instead of precursors per peptide. A hierarchy with a single level is an error (`prolfqua_error_bad_argument`) instead of a warning.

@@ -263,3 +263,26 @@ test_that("Transformer and Summariser deep-clone their input", {
   sm <- lfq_copy$get_Summariser()
   expect_false(identical(sm$lfq, lfq_copy))
 })
+
+test_that("tidy_to_wide_config takes the row keys", {
+  default <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
+  no_label <- tidy_to_wide_config(lfqdata, as.matrix = TRUE, row_keys = lfqdata$hierarchy_keys())
+  expect_equal(dim(no_label$data), dim(default$data))
+  expect_false(any(grepl(lfqdata$data_long()[[lfqdata$isotope_label()]][1], rownames(no_label$data), fixed = TRUE)))
+  expect_equal(colnames(no_label$rowdata), lfqdata$hierarchy_keys())
+
+  # two isotope labels: the hierarchy keys alone do not identify a row
+  heavy <- dplyr::mutate(lfqdata$data_long(), !!lfqdata$isotope_label() := "heavy")
+  two_labels <- LFQData$new(dplyr::bind_rows(lfqdata$data_long(), heavy), lfqdata$get_config())
+  expect_error(
+    tidy_to_wide_config(two_labels, row_keys = two_labels$hierarchy_keys()),
+    class = "prolfqua_error_bad_argument"
+  )
+})
+
+test_that("get_Aggregator offers limpa", {
+  skip_if_not_installed("limpa")
+  lfq_log2 <- lfqdata$get_Transformer()$log2()$lfq
+  expect_s3_class(lfq_log2$get_Aggregator("limpa"), "AggregateLimpa")
+  expect_error(lfq_log2$get_Aggregator("nope"), class = "prolfqua_error_bad_argument")
+})

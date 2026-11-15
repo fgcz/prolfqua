@@ -167,7 +167,8 @@ Other modelling:
     \preformatted{ContrastsTable$new(
   contrastsdf,
   subject_id = "protein_Id",
-  model_name = "ContrastTable"
+  model_name = "ContrastTable",
+  config = NULL
 )}
     \if{html}{\out{</div>}}
   }
@@ -177,6 +178,8 @@ Other modelling:
       \item{\code{contrastsdf}}{data.frame}
       \item{\code{subject_id}}{default protein_Id}
       \item{\code{model_name}}{default ContrastTable}
+      \item{\code{config}}{optional \code{\link{ContrastConfiguration}} describing the
+result columns; default \code{NULL} builds an LM-flavoured one on demand}
     }
     \if{html}{\out{</div>}}
   }

@@ -180,7 +180,15 @@ Columns not directly produced by ROPECA are derived heuristically:
 }
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsROPECANestedFacade$get_contrasts()}
+    \preformatted{ContrastsROPECANestedFacade$get_contrasts(all = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{all}}{\code{FALSE} (default) returns the standard columns;
+\code{TRUE} appends the remaining ROPECA columns}
+    }
     \if{html}{\out{</div>}}
   }
 }

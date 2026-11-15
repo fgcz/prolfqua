@@ -102,7 +102,9 @@ ContrastsHurdleFacade <- R6::R6Class(
     },
     #' @description
     #' get contrast results with Fisher-combined \code{p.value} and \code{FDR}
-    get_contrasts = function() {
+    #' @param all accepted for the \code{\link{ContrastsInterface}} signature;
+    #'   the result always has every column, including the component ones
+    get_contrasts = function(all = FALSE) {
       by <- c(self$subject_id, "contrast")
       intensity <- private$intensity_contrasts |>
         dplyr::select(-"modelName") |>
