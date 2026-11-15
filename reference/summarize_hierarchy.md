@@ -1,6 +1,9 @@
 # Summarize hierarchy counts
 
-E.g compute number of peptides for each protein
+E.g compute number of peptides for each protein: for each entry of
+\`hierarchy\` (and of \`factors\`), the number of distinct entries of
+the other hierarchy levels, in columns named \`\<level\>\_n\`. Counts
+experiment-wide, whether observed or not.
 
 ## Usage
 
@@ -43,6 +46,13 @@ Other summary:
 [`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md)
+
+Other hierarchy counting:
+[`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
+[`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
+[`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
+[`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md),
+[`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md)
 
 ## Examples
 

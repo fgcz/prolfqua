@@ -223,7 +223,15 @@ subject_id strictly below the protein hierarchy).</p>
 <li><p><code>conf.low/conf.high</code> via <code>diff +/- qt(0.975, df) * |std.error|</code></p></li>
 </ul><p></p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span>all <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>all</code></dt>
+<dd><p><code>FALSE</code> (default) returns the standard columns;
+<code>TRUE</code> appends the remaining ROPECA columns</p></dd>
+
+
+</dl><p></p></div>
 </div>
 
 </div>
@@ -234,7 +242,7 @@ subject_id strictly below the protein hierarchy).</p>
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span>fc_threshold <span class="op">=</span> <span class="fl">2</span>, fdr_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fc_threshold</code></dt>
 <dd><p>fold change threshold</p></dd>
 
@@ -253,7 +261,7 @@ subject_id strictly below the protein hierarchy).</p>
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">to_wide</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span>, <span class="st">"statistic"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>columns</code></dt>
 <dd><p>value columns to pivot, default <code>c("p.value", "FDR", "statistic")</code></p></dd>
 
@@ -269,7 +277,7 @@ subject_id strictly below the protein hierarchy).</p>
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

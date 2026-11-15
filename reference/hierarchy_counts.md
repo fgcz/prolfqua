@@ -1,6 +1,7 @@
 # Count distinct elements for each level of hierarchy and isotope
 
-E.g. number of proteins, peptides, precursors in the dataset
+E.g. number of proteins, peptides, precursors in the dataset. Counts per
+isotope label over the whole dataset, whether observed or not.
 
 ## Usage
 
@@ -27,6 +28,13 @@ hierarchy_counts(pdata, hierarchy_keys, isotope_label = "isotopeLabel")
 Other summary:
 [`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
+
+Other hierarchy counting:
+[`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
+[`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
+[`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md),
+[`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md),
 [`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
 
 ## Examples

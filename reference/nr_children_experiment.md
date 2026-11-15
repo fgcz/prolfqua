@@ -1,7 +1,7 @@
 # Max nr_children across samples per hierarchy unit
 
 Aggregates nr_children per sample (via nr_obs_sample), then takes the
-max per hierarchy unit.
+max per hierarchy unit. Counts experiment-wide, observed values only.
 
 ## Usage
 
@@ -45,6 +45,15 @@ nr_children_experiment(
 ## Value
 
 The computed result.
+
+## See also
+
+Other hierarchy counting:
+[`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
+[`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
+[`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md),
+[`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md),
+[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
 
 ## Examples
 

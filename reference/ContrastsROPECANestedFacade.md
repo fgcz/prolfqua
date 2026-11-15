@@ -190,7 +190,14 @@ Columns not directly produced by ROPECA are derived heuristically:
 
 #### Usage
 
-    ContrastsROPECANestedFacade$get_contrasts()
+    ContrastsROPECANestedFacade$get_contrasts(all = FALSE)
+
+#### Arguments
+
+- `all`:
+
+  `FALSE` (default) returns the standard columns; `TRUE` appends the
+  remaining ROPECA columns
 
 ------------------------------------------------------------------------
 

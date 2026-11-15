@@ -293,7 +293,7 @@
   : Count distinct child features per hierarchy unit
 
 - [`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md)
-  : Aggregates e.g. protein abundances from peptide abundances
+  : Sum of observed children per hierarchy unit and sample
 
 - [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md)
   : pivot model contrasts matrix to wide format produced by

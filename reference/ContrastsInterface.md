@@ -76,7 +76,13 @@ get table with contrast results (similar to limma topTable function)
 
 #### Usage
 
-    ContrastsInterface$get_contrasts()
+    ContrastsInterface$get_contrasts(all = FALSE)
+
+#### Arguments
+
+- `all`:
+
+  return all columns (TRUE) or the standard ones (FALSE)
 
 ------------------------------------------------------------------------
 

@@ -1,6 +1,8 @@
 # Count distinct elements for each level of hierarchy per sample
 
-Provides wide, long, and plot views of hierarchy counts.
+Provides wide, long, and plot views of hierarchy counts. Counts per
+sample and isotope label, observed values only (non-missing response and
+at least \`nr_children\` children).
 
 ## Value
 
@@ -11,6 +13,13 @@ An R6 class generator.
 Other summary:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
+[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
+
+Other hierarchy counting:
+[`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
+[`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
+[`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md),
+[`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md),
 [`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
 
 ## Public fields

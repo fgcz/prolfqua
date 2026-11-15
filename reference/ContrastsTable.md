@@ -156,7 +156,8 @@ initialize
     ContrastsTable$new(
       contrastsdf,
       subject_id = "protein_Id",
-      model_name = "ContrastTable"
+      model_name = "ContrastTable",
+      config = NULL
     )
 
 #### Arguments
@@ -172,6 +173,13 @@ initialize
 - `model_name`:
 
   default ContrastTable
+
+- `config`:
+
+  optional
+  [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md)
+  describing the result columns; default `NULL` builds an LM-flavoured
+  one on demand
 
 ------------------------------------------------------------------------
 

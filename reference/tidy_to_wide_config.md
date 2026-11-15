@@ -10,7 +10,8 @@ tidy_to_wide_config(
   as.matrix = FALSE,
   file_name = FALSE,
   sep = "~lfq~",
-  value = lfqdata$response()
+  value = lfqdata$response(),
+  row_keys = c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
 )
 ```
 
@@ -35,6 +36,12 @@ tidy_to_wide_config(
 - value:
 
   column name to pivot (default: lfqdata\$response())
+
+- row_keys:
+
+  columns identifying a row of the wide table (default: the hierarchy
+  keys and the isotope label). They must identify one value per sample;
+  e.g. drop the isotope label only for single-label data.
 
 ## Value
 
@@ -141,4 +148,8 @@ xt$data
 #> 10 SGIVBl~5782 light            6     6     6     6     6     6    NA     6
 #> # ℹ 4 more variables: Ctrl_V1 <dbl>, Ctrl_V2 <dbl>, Ctrl_V3 <dbl>,
 #> #   Ctrl_V4 <dbl>
+
+# row names without the isotope label
+xh <- tidy_to_wide_config(lfqprot, as.matrix = TRUE, row_keys = lfqprot$hierarchy_keys())
+stopifnot(!any(grepl("light", rownames(xh$data))))
 ```

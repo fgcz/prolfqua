@@ -197,7 +197,8 @@
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsTable.html">ContrastsTable</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">contrastsdf</span>,</span>
 <span>  subject_id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"ContrastTable"</span></span>
+<span>  model_name <span class="op">=</span> <span class="st">"ContrastTable"</span>,</span>
+<span>  config <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
@@ -209,6 +210,10 @@
 
       <dt><code>model_name</code></dt>
 <dd><p>default ContrastTable</p></dd>
+
+      <dt><code>config</code></dt>
+<dd><p>optional <code><a href="ContrastConfiguration.html">ContrastConfiguration</a></code> describing the
+result columns; default <code>NULL</code> builds an LM-flavoured one on demand</p></dd>
 
 
 </dl><p></p></div>

@@ -2,6 +2,27 @@
 
 ## prolfqua 1.9.1
 
+### New features
+
+- `LFQData$remove_contaminants()` returns a copy without contaminant
+  proteins, using `config$pattern_contaminants` and the built-in
+  prefixes of
+  [`is_contaminant()`](https://fgcz.github.io/prolfqua/reference/is_contaminant.md),
+  as `remove_decoys()` does for decoys.
+- `LFQData$get_Aggregator(method = "limpa")` returns an
+  `AggregateLimpa`, which was not reachable through `get_Aggregator()`
+  before.
+- [`tidy_to_wide_config()`](https://fgcz.github.io/prolfqua/reference/tidy_to_wide_config.md)
+  takes `row_keys`, the columns that identify a row of the wide table;
+  the default is still the hierarchy keys plus the isotope label. Keys
+  that do not identify one value per sample are an error.
+- `ContrastsTable$new()` takes an optional `config`, the
+  `ContrastConfiguration` of the stored results.
+- `get_contrasts()` takes `all` in every contrast class:
+  `ContrastsROPECANestedFacade$get_contrasts(all = TRUE)` appends the
+  remaining ROPECA columns to the standard ones; `ContrastsHurdleFacade`
+  accepts it and always returns every column.
+
 ### Behaviour changes
 
 - `LFQData$filter_proteins_by_peptide_count()` takes optional
@@ -13,6 +34,31 @@
   count peptides per protein instead of precursors per peptide. A
   hierarchy with a single level is an error
   (`prolfqua_error_bad_argument`) instead of a warning.
+- [`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md)
+  writes its count to `nr_features_exp` by default instead of
+  `nr_child_exp`, the column of
+  [`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
+  so the two counts can be joined.
+- `LFQData$rename_response()` stops with `prolfqua_error_bad_argument`
+  when the new name is another existing column; before, it printed a
+  message and left the data unchanged. Renaming to the current response
+  name does nothing. `rename_response()` and the `is_transformed(value)`
+  setter return the `LFQData` invisibly, so they can be chained.
+
+### Documentation
+
+- The functions that count hierarchy entries
+  ([`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
+  [`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md),
+  `HierarchyCountsSample`,
+  [`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md),
+  [`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
+  [`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md))
+  link to each other as the “hierarchy counting” family, and each states
+  whether it counts per sample or per experiment, and observed values
+  only or all entries.
+  [`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md)
+  has a title that says what it computes.
 
 ## prolfqua 1.9.0
 

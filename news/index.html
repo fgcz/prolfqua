@@ -52,9 +52,30 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.1" id="prolfqua-191">prolfqua 1.9.1<a class="anchor" aria-label="anchor" href="#prolfqua-191"></a></h2>
 <div class="section level3">
+<h3 id="new-features-1-9-1">New features<a class="anchor" aria-label="anchor" href="#new-features-1-9-1"></a></h3>
+<ul><li>
+<code>LFQData$remove_contaminants()</code> returns a copy without contaminant proteins, using <code>config$pattern_contaminants</code> and the built-in prefixes of <code><a href="../reference/is_contaminant.html">is_contaminant()</a></code>, as <code>remove_decoys()</code> does for decoys.</li>
+<li>
+<code>LFQData$get_Aggregator(method = "limpa")</code> returns an <code>AggregateLimpa</code>, which was not reachable through <code>get_Aggregator()</code> before.</li>
+<li>
+<code><a href="../reference/tidy_to_wide_config.html">tidy_to_wide_config()</a></code> takes <code>row_keys</code>, the columns that identify a row of the wide table; the default is still the hierarchy keys plus the isotope label. Keys that do not identify one value per sample are an error.</li>
+<li>
+<code>ContrastsTable$new()</code> takes an optional <code>config</code>, the <code>ContrastConfiguration</code> of the stored results.</li>
+<li>
+<code>get_contrasts()</code> takes <code>all</code> in every contrast class: <code>ContrastsROPECANestedFacade$get_contrasts(all = TRUE)</code> appends the remaining ROPECA columns to the standard ones; <code>ContrastsHurdleFacade</code> accepts it and always returns every column.</li>
+</ul></div>
+<div class="section level3">
 <h3 id="behaviour-changes-1-9-1">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-1"></a></h3>
 <ul><li>
 <code>LFQData$filter_proteins_by_peptide_count()</code> takes optional <code>threshold</code>, <code>parent</code> and <code>child</code> arguments; the defaults are <code>config$min_peptides_protein</code> and the first two hierarchy keys. It now counts the second hierarchy level within the first whatever the <code>hierarchy_depth</code>: peptide-level configurations are filtered (before, the call did nothing), and three-level hierarchies modelled at depth 2 count peptides per protein instead of precursors per peptide. A hierarchy with a single level is an error (<code>prolfqua_error_bad_argument</code>) instead of a warning.</li>
+<li>
+<code><a href="../reference/nr_features_experiment.html">nr_features_experiment()</a></code> writes its count to <code>nr_features_exp</code> by default instead of <code>nr_child_exp</code>, the column of <code><a href="../reference/nr_children_experiment.html">nr_children_experiment()</a></code>, so the two counts can be joined.</li>
+<li>
+<code>LFQData$rename_response()</code> stops with <code>prolfqua_error_bad_argument</code> when the new name is another existing column; before, it printed a message and left the data unchanged. Renaming to the current response name does nothing. <code>rename_response()</code> and the <code>is_transformed(value)</code> setter return the <code>LFQData</code> invisibly, so they can be chained.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-9-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-9-1"></a></h3>
+<ul><li>The functions that count hierarchy entries (<code><a href="../reference/hierarchy_counts.html">hierarchy_counts()</a></code>, <code><a href="../reference/summarize_hierarchy.html">summarize_hierarchy()</a></code>, <code>HierarchyCountsSample</code>, <code><a href="../reference/nr_obs_sample.html">nr_obs_sample()</a></code>, <code><a href="../reference/nr_children_experiment.html">nr_children_experiment()</a></code>, <code><a href="../reference/nr_features_experiment.html">nr_features_experiment()</a></code>) link to each other as the “hierarchy counting” family, and each states whether it counts per sample or per experiment, and observed values only or all entries. <code><a href="../reference/nr_obs_sample.html">nr_obs_sample()</a></code> has a title that says what it computes.</li>
 </ul></div>
 </div>
     <div class="section level2">

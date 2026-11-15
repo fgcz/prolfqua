@@ -1,6 +1,9 @@
-# Aggregates e.g. protein abundances from peptide abundances
+# Sum of observed children per hierarchy unit and sample
 
-Aggregates e.g. protein abundances from peptide abundances
+For each hierarchy unit and sample, sums the \`nr_children_col\` column
+over the rows with a non-missing response, e.g. the number of peptides
+behind each protein intensity of a sample. Counts per sample, observed
+values only.
 
 ## Usage
 
@@ -44,6 +47,15 @@ nr_obs_sample(
 ## Value
 
 The computed result.
+
+## See also
+
+Other hierarchy counting:
+[`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
+[`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
+[`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
+[`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md),
+[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
 
 ## Examples
 

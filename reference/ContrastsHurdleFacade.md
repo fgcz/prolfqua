@@ -201,7 +201,16 @@ get contrast results with Fisher-combined `p.value` and `FDR`
 
 #### Usage
 
-    ContrastsHurdleFacade$get_contrasts()
+    ContrastsHurdleFacade$get_contrasts(all = FALSE)
+
+#### Arguments
+
+- `all`:
+
+  accepted for the
+  [`ContrastsInterface`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
+  signature; the result always has every column, including the component
+  ones
 
 ------------------------------------------------------------------------
 
