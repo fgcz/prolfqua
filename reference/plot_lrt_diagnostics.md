@@ -28,3 +28,7 @@ plot_lrt_diagnostics(result, model_name, model_name_int, path)
 - path:
 
   directory to write the PDF into
+
+## Value
+
+path the file was written to (invisible)

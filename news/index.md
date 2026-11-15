@@ -1,5 +1,25 @@
 # Changelog
 
+## prolfqua 1.9.2
+
+### Bug fixes
+
+- Building a contrast analysis
+  ([`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  and the facade classes) stops with `prolfqua_error_bad_argument` when
+  a contrast names a group without samples, e.g. `group_A` after all its
+  runs were filtered out. The message names the contrast, the empty
+  group and the groups with samples; before, the analysis went ahead and
+  failed later or returned no estimates for that contrast.
+- `LFQDataPlotter$write_pdf()` no longer closes the graphics devices the
+  user has open (it called
+  [`graphics.off()`](https://rdrr.io/r/grDevices/dev.html) before and
+  after writing). `write_pdf()`, `write_boxplots()`,
+  `LFQDataAggregator$write_plots()` and `LR_test(path = )` close their
+  PDF device when drawing fails, instead of leaving it open so that
+  later plots go into it. `write_boxplots()` returns the file path
+  invisibly.
+
 ## prolfqua 1.9.1
 
 ### New features

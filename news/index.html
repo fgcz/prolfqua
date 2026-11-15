@@ -50,6 +50,15 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.2" id="prolfqua-192">prolfqua 1.9.2<a class="anchor" aria-label="anchor" href="#prolfqua-192"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-9-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-2"></a></h3>
+<ul><li>Building a contrast analysis (<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> and the facade classes) stops with <code>prolfqua_error_bad_argument</code> when a contrast names a group without samples, e.g. <code>group_A</code> after all its runs were filtered out. The message names the contrast, the empty group and the groups with samples; before, the analysis went ahead and failed later or returned no estimates for that contrast.</li>
+<li>
+<code>LFQDataPlotter$write_pdf()</code> no longer closes the graphics devices the user has open (it called <code><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">graphics.off()</a></code> before and after writing). <code>write_pdf()</code>, <code>write_boxplots()</code>, <code>LFQDataAggregator$write_plots()</code> and <code>LR_test(path = )</code> close their PDF device when drawing fails, instead of leaving it open so that later plots go into it. <code>write_boxplots()</code> returns the file path invisibly.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.1" id="prolfqua-191">prolfqua 1.9.1<a class="anchor" aria-label="anchor" href="#prolfqua-191"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-9-1">New features<a class="anchor" aria-label="anchor" href="#new-features-1-9-1"></a></h3>

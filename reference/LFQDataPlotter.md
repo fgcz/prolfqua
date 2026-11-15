@@ -444,6 +444,10 @@ write boxplots to file
 
   fig height
 
+#### Returns
+
+path the file was written to (invisible)
+
 ------------------------------------------------------------------------
 
 ### `LFQDataPlotter$write_pdf()`
