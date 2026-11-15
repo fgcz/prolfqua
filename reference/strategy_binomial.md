@@ -34,5 +34,5 @@ object.
 strategy <- strategy_binomial("~ group_", prior_count = 0.1)
 strategy$formula
 #> cbind(.detected, .undetected) ~ group_
-#> <environment: 0x63caa35ed8b0>
+#> <environment: 0x60bc3ee1ed68>
 ```

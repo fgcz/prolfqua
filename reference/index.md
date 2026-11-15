@@ -265,6 +265,9 @@
 - [`level_specific_contrasts()`](https://fgcz.github.io/prolfqua/reference/level_specific_contrasts.md)
   : Level-specific contrasts (per secondary level)
 
+- [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
+  : Build LFQData from wide matrices
+
 - [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md)
   : List currently registered contrast facades
 

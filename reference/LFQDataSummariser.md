@@ -17,7 +17,8 @@ Other LFQData:
 [`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
+[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
 
 ## Public fields
 

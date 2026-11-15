@@ -53,7 +53,11 @@
 <h2 class="pkg-version" data-toc-text="1.9.2" id="prolfqua-192">prolfqua 1.9.2<a class="anchor" aria-label="anchor" href="#prolfqua-192"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-9-2">New features<a class="anchor" aria-label="anchor" href="#new-features-1-9-2"></a></h3>
-<ul><li>
+<ul><li>New <code><a href="../reference/lfqdata_from_wide.html">lfqdata_from_wide()</a></code>, the inverse of <code><a href="../reference/tidy_to_wide_config.html">tidy_to_wide_config()</a></code>: one or more feature x sample matrices, their row annotation and their sample annotation back to an <code>LFQData</code>. It replaces the matrix-to-long conversions that downstream packages write by hand for AnnData and SummarizedExperiment input.</li>
+<li>
+<code>LFQDataTransformer$intensity_array()</code> takes <code>transformed</code>; <code>intensity_array(exp, force = TRUE, transformed = FALSE)</code> marks a back-transformation as untransformed, so callers no longer reset <code>is_transformed(FALSE)</code> afterwards.</li>
+<li>New <code>LFQData$is_aggregatable()</code>: whether there is a hierarchy level below the modelled one to aggregate from.</li>
+<li>
 <code>ContrastsFacadeBase$get_missing()</code> uses the contrast column named in the facade’s <code>ContrastConfiguration</code> (<code>contrast_col</code>) instead of assuming <code>contrast</code>, so facades of other packages with their own column name (e.g. SAINT’s <code>Bait</code>) can inherit it.</li>
 </ul></div>
 <div class="section level3">

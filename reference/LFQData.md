@@ -25,7 +25,8 @@ Other LFQData:
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
+[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
 
 ## Public fields
 
@@ -46,6 +47,8 @@ Other LFQData:
 - [`LFQData$set_config_value()`](#method-LFQData-set_config_value)
 
 - [`LFQData$get_copy()`](#method-LFQData-get_copy)
+
+- [`LFQData$is_aggregatable()`](#method-LFQData-is_aggregatable)
 
 - [`LFQData$get_sample()`](#method-LFQData-get_sample)
 
@@ -204,6 +207,21 @@ get deep copy
 #### Usage
 
     LFQData$get_copy()
+
+------------------------------------------------------------------------
+
+### `LFQData$is_aggregatable()`
+
+can the data be aggregated, i.e. is there a hierarchy level below the
+modelled one (\`hierarchy_depth\`)
+
+#### Usage
+
+    LFQData$is_aggregatable()
+
+#### Returns
+
+logical
 
 ------------------------------------------------------------------------
 
