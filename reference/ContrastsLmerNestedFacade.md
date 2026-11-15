@@ -219,8 +219,6 @@ fa <- ContrastsLmerNestedFacade$new(lfqdata, "~ group_", contrasts)
 #> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 head(fa$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16

@@ -273,8 +273,6 @@ contrast <- prolfqua::Contrasts$new(mod,
  Contr)
 contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 # LOD-imputed refit for proteins the plain lm cannot estimate
@@ -284,8 +282,6 @@ imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 contrast$get_contrasts() |> dim()
 #> [1] 49 16
 (xx <- imp$get_contrasts())   |> dim()
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> [1] 50 16

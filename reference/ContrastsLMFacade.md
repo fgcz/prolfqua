@@ -202,8 +202,6 @@ lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLMFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16

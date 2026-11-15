@@ -311,8 +311,6 @@ modelFunction <- strategy_lm("transformedIntensity ~ group_")
 mod <- build_model(lProt, modelFunction)
 contr_prolfqua <- Contrasts$new(mod, Contr)
 res_prolfqua <- contr_prolfqua$get_contrasts()
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 
@@ -346,8 +344,6 @@ Contr2 <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr2)$contrast
 #> Warning: essentially perfect fit: summary may be unreliable
 merged_res <- merge_contrasts_results(contr_limma, imp)
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> Joining with `by = join_by(protein_Id, contrast)`

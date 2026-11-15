@@ -2,8 +2,34 @@
 
 ## prolfqua 1.9.2
 
+### New features
+
+- `ContrastsFacadeBase$get_missing()` uses the contrast column named in
+  the facade’s `ContrastConfiguration` (`contrast_col`) instead of
+  assuming `contrast`, so facades of other packages with their own
+  column name (e.g. SAINT’s `Bait`) can inherit it.
+
+### Behaviour changes
+
+- [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
+  reports a missing `isotopeLabel` or `qValue` column with a message
+  instead of a warning; both are optional and get the defaults `"light"`
+  and `0`. A missing `nr_children` column still warns, because the
+  default of 1 changes the fitting weights of aggregated data.
+
 ### Bug fixes
 
+- [`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+  stops with an install hint when SummarizedExperiment or S4Vectors is
+  missing; before, it returned `NULL` silently.
+- `Contrasts$get_contrasts()` no longer prints the debug lines
+  “determine linear functions:” and “get_contrasts -\>
+  contrasts_linfct”.
+- `firth` and `firth_nested` work when the protein key is not called
+  `protein_Id`:
+  [`build_model_logistf()`](https://fgcz.github.io/prolfqua/reference/build_model_logistf.md)
+  passed no subject id to `ModelFirth`, so the contrasts looked for a
+  `protein_Id` column and failed.
 - Building a contrast analysis
   ([`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
   and the facade classes) stops with `prolfqua_error_bad_argument` when

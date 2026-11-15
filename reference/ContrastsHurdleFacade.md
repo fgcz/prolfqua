@@ -248,12 +248,8 @@ intensity <- build_contrast_analysis(lfq_protein, "~ group_", contrasts, method 
 detection <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "binomial_nested")
 #> completing cases
 hurdle <- ContrastsHurdleFacade$new(intensity, detection)
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 res <- hurdle$get_contrasts()

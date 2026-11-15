@@ -337,8 +337,6 @@ stopifnot(all(ref_lfc == y))
 t <- contrastX$get_linfct(global = FALSE)
 
 x <- contrastX$get_contrasts()
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 stopifnot(all(x$p.value < 1 & x$p.value > 0))

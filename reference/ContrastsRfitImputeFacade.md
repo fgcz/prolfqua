@@ -248,8 +248,6 @@ fa <- ContrastsRfitImputeFacade$new(lfqdata, "~ group_", contrasts)
 #> ! NaNs produced
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.
 head(fa$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16

@@ -197,12 +197,8 @@ facade <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "
 #> Warning: medpolish() did not converge in 10 iterations
 #> completing cases
 #> completing cases
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 head(facade$get_contrasts())

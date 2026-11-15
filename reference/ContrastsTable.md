@@ -280,8 +280,6 @@ Contrasts <- c("aC" = "group_A - group_Ctrl",
 "bC" = "group_B - group_Ctrl")
 fa <- ContrastsLMFacade$new(lfqdata, "~ group_", Contrasts)
 ctr <- fa$get_contrasts()
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 fa$contrast$subject_id

@@ -170,8 +170,6 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
 fa_lm    <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
 head(fa_lm$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
@@ -204,8 +202,6 @@ head(fa_limma$get_contrasts())
 
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
 head(fa_deqms$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
@@ -250,8 +246,6 @@ fa_lmer <- build_contrast_analysis(
 #> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 head(fa_lmer$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
@@ -269,8 +263,6 @@ head(fa_lmer$get_contrasts())
 
 fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca_nested")
 head(fa_ropeca$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`
 #> # A tibble: 6 × 14
@@ -298,9 +290,9 @@ head(fa_firth$get_contrasts())
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1

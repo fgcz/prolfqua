@@ -52,8 +52,24 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.2" id="prolfqua-192">prolfqua 1.9.2<a class="anchor" aria-label="anchor" href="#prolfqua-192"></a></h2>
 <div class="section level3">
+<h3 id="new-features-1-9-2">New features<a class="anchor" aria-label="anchor" href="#new-features-1-9-2"></a></h3>
+<ul><li>
+<code>ContrastsFacadeBase$get_missing()</code> uses the contrast column named in the facade’s <code>ContrastConfiguration</code> (<code>contrast_col</code>) instead of assuming <code>contrast</code>, so facades of other packages with their own column name (e.g. SAINT’s <code>Bait</code>) can inherit it.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="behaviour-changes-1-9-2">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-2"></a></h3>
+<ul><li>
+<code><a href="../reference/setup_analysis.html">setup_analysis()</a></code> reports a missing <code>isotopeLabel</code> or <code>qValue</code> column with a message instead of a warning; both are optional and get the defaults <code>"light"</code> and <code>0</code>. A missing <code>nr_children</code> column still warns, because the default of 1 changes the fitting weights of aggregated data.</li>
+</ul></div>
+<div class="section level3">
 <h3 id="bug-fixes-1-9-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-2"></a></h3>
-<ul><li>Building a contrast analysis (<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> and the facade classes) stops with <code>prolfqua_error_bad_argument</code> when a contrast names a group without samples, e.g. <code>group_A</code> after all its runs were filtered out. The message names the contrast, the empty group and the groups with samples; before, the analysis went ahead and failed later or returned no estimates for that contrast.</li>
+<ul><li>
+<code><a href="../reference/LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment()</a></code> stops with an install hint when SummarizedExperiment or S4Vectors is missing; before, it returned <code>NULL</code> silently.</li>
+<li>
+<code>Contrasts$get_contrasts()</code> no longer prints the debug lines “determine linear functions:” and “get_contrasts -&gt; contrasts_linfct”.</li>
+<li>
+<code>firth</code> and <code>firth_nested</code> work when the protein key is not called <code>protein_Id</code>: <code><a href="../reference/build_model_logistf.html">build_model_logistf()</a></code> passed no subject id to <code>ModelFirth</code>, so the contrasts looked for a <code>protein_Id</code> column and failed.</li>
+<li>Building a contrast analysis (<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> and the facade classes) stops with <code>prolfqua_error_bad_argument</code> when a contrast names a group without samples, e.g. <code>group_A</code> after all its runs were filtered out. The message names the contrast, the empty group and the groups with samples; before, the analysis went ahead and failed later or returned no estimates for that contrast.</li>
 <li>
 <code>LFQDataPlotter$write_pdf()</code> no longer closes the graphics devices the user has open (it called <code><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">graphics.off()</a></code> before and after writing). <code>write_pdf()</code>, <code>write_boxplots()</code>, <code>LFQDataAggregator$write_plots()</code> and <code>LR_test(path = )</code> close their PDF device when drawing fails, instead of leaving it open so that later plots go into it. <code>write_boxplots()</code> returns the file path invisibly.</li>
 </ul></div>
