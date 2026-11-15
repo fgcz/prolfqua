@@ -307,7 +307,7 @@ sample_subset <- function(size, pdata, hierarchy_keys_depth) {
   keys <- paste(hierarchy_keys_depth, collapse = ",")
   message("Sampling ", size, " ", keys)
   hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> sample_n(size = size)
-  sdata <- inner_join(hkdf, pdata)
+  sdata <- inner_join(hkdf, pdata, by = hierarchy_keys_depth)
   return(sdata)
 }
 

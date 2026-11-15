@@ -299,10 +299,10 @@ merge_contrasts_results <- function(prefer, add, model_name = "mergedModel") {
     distinct(select(c_b, c(prefer$subject_id, "contrast"))),
     distinct(select(c_a, c(add$subject_id, "contrast")))
   )
-  more <- inner_join(more_id, c_b)
+  more <- inner_join(more_id, c_b, by = c(prefer$subject_id, "contrast"))
 
   same_id <- select(c_a, c(add$subject_id, "contrast"))
-  same <- inner_join(same_id, c_b)
+  same <- inner_join(same_id, c_b, by = c(add$subject_id, "contrast"))
 
   if (prefer$model_name == add$model_name) {
     prefer_model_name <- paste0(prefer$model_name, "_prefer")

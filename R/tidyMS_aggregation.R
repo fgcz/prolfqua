@@ -553,7 +553,7 @@ rank_peptide_by_intensity <- function(pdata, response, hierarchy_keys) {
     dplyr::arrange(!!sym(hierarchy_keys[1])) |>
     dplyr::group_by(!!sym(hierarchy_keys[1])) |>
     dplyr::mutate(!!rank_column := min_rank(desc(!!sym(summary_column))))
-  pdata <- dplyr::inner_join(pdata, ranked)
+  pdata <- dplyr::inner_join(pdata, ranked, by = hierarchy_keys)
 
   message("Columns added : ", summary_column, " ", rank_column)
   return(pdata)

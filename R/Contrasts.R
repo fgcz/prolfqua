@@ -52,7 +52,7 @@
 
   avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
   avg_abd <- avg_abd |> dplyr::rename(avgAbd = "diff")
-  contrast_result <- left_join(differences, avg_abd)
+  contrast_result <- left_join(differences, avg_abd, by = c(subject_id, "contrast"))
 
   contrast_result <- p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
   contrast_result <- contrast_result |> relocate("FDR", .after = "diff")

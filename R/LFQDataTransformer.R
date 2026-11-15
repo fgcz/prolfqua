@@ -298,7 +298,11 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
     sep = sep
   )
   if (!is.null(data)) {
-    pdata <- dplyr::inner_join(data, pdata)
+    pdata <- dplyr::inner_join(
+      data,
+      pdata,
+      by = unique(c(config$hierarchy_keys(), config$isotope_label, config$sample_name))
+    )
   }
   return(pdata)
 }
