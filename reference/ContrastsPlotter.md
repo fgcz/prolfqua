@@ -192,8 +192,8 @@ create ContrastsPlotter
       contrast_df,
       subject_id,
       volcano = list(list(score = "FDR", thresh = 0.1)),
-      histogram = list(list(score = "p.value", xlim = c(0, 1, 0.05)), list(score = "FDR",
-        xlim = c(0, 1, 0.05))),
+      histogram = list(list(score = "p.value", breaks = seq(0, 1, by = 0.05)), list(score =
+        "FDR", breaks = seq(0, 1, by = 0.05))),
       score = list(list(score = "statistic", thresh = NULL)),
       fcthresh = 1,
       modelName = "modelName",
@@ -219,7 +219,10 @@ create ContrastsPlotter
 
 - `histogram`:
 
-  which scores to plot and which range (x) should be shown.
+  which scores to plot, each `list(score = , breaks = )`; `breaks` are
+  the bin boundaries passed to
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html),
+  e.g. `seq(0, 1, by = 0.05)`
 
 - `score`:
 
@@ -548,8 +551,8 @@ contr <- contrast$get_contrasts()
 cp <- ContrastsPlotter$new(contr,
   contrast$subject_id,
   volcano = list(list(score = "FDR", thresh = 0.1)),
-  histogram = list(list(score = "p.value", xlim = c(0,1,0.05)),
-                 list(score = "FDR", xlim = c(0,1,0.05))),
+  histogram = list(list(score = "p.value", breaks = seq(0, 1, by = 0.05)),
+                 list(score = "FDR", breaks = seq(0, 1, by = 0.05))),
   score =list(list(score = "statistic",  thresh = 5))
   )
 

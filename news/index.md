@@ -25,6 +25,13 @@
 
 ### Behaviour changes
 
+- Breaking: a `ContrastsPlotter` histogram spec takes the bin boundaries
+  as `breaks`,
+  e.g. `list(score = "FDR", breaks = seq(0, 1, by = 0.05))`, passed to
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html).
+  The old `xlim = c(0, 1, 0.05)` was not an axis range but a (from, to,
+  by) triple; a spec without numeric `breaks` now stops with
+  `prolfqua_error_bad_argument`.
 - Requires tidyr \>= 1.3.0: identifier splitting uses
   [`tidyr::separate_wider_delim()`](https://tidyr.tidyverse.org/reference/separate_wider_delim.html)
   instead of the superseded `separate()`. Results are unchanged;
