@@ -388,3 +388,16 @@ test_that("a contrast naming a group without samples is a typed error", {
   fa <- prolfqua::ContrastsLMFacade$new(lfq, MODELSTR, c(BvsCtrl = "group_B - group_Ctrl"))
   expect_gt(nrow(fa$get_contrasts()), 0)
 })
+
+test_that("the firth facade keeps a protein key not named protein_Id", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5, seed = 42)
+  data <- dplyr::rename(istar$data, prot = "protein_Id")
+  config <- istar$config$clone(deep = TRUE)
+  names(config$hierarchy) <- "prot"
+  lfq <- prolfqua::LFQData$new(data, config)
+  fa <- prolfqua::ContrastsFirthFacade$new(lfq, MODELSTR, CONTRASTS)
+  expect_equal(fa$contrast$subject_id, "prot")
+  res <- fa$get_contrasts()
+  expect_true("prot" %in% colnames(res))
+  expect_false("protein_Id" %in% colnames(res))
+})

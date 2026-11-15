@@ -107,7 +107,7 @@ build_model_logistf <- function(data, formula) {
   }
   models2 <- fit_subset(df[n_children > 1, ], paste0(formula, "+", hkey), "logistf_2", "firth multi-peptide")
   models1 <- fit_subset(df[n_children == 1, ], formula, "logistf_1", "firth single-peptide")
-  ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey))
+  ModelFirth$new(list(models2 = models2, models1 = models1, hkey = hkey), subject_id = data$subject_id())
 }
 
 
