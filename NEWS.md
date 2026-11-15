@@ -3,6 +3,11 @@
 ## Behaviour changes
 
 - `LFQData$filter_proteins_by_peptide_count()` takes optional `threshold`, `parent` and `child` arguments; the defaults are `config$min_peptides_protein` and the first two hierarchy keys. It now counts the second hierarchy level within the first whatever the `hierarchy_depth`: peptide-level configurations are filtered (before, the call did nothing), and three-level hierarchies modelled at depth 2 count peptides per protein instead of precursors per peptide. A hierarchy with a single level is an error (`prolfqua_error_bad_argument`) instead of a warning.
+- `nr_features_experiment()` writes its count to `nr_features_exp` by default instead of `nr_child_exp`, the column of `nr_children_experiment()`, so the two counts can be joined.
+
+## Documentation
+
+- The functions that count hierarchy entries (`hierarchy_counts()`, `summarize_hierarchy()`, `HierarchyCountsSample`, `nr_obs_sample()`, `nr_children_experiment()`, `nr_features_experiment()`) link to each other as the "hierarchy counting" family, and each states whether it counts per sample or per experiment, and observed values only or all entries. `nr_obs_sample()` has a title that says what it computes.
 
 # prolfqua 1.9.0
 

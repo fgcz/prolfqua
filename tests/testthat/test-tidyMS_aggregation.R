@@ -67,6 +67,24 @@ test_that("nr_children_experiment maxes the per-sample SUMMED count, not the un-
   expect_equal(chk$nr_child_exp, chk$ref)
 })
 
+test_that("the two experiment-level counters write distinct columns by default", {
+  lfq <- .nr_child_fixture()
+  keys <- lfq$relevant_hierarchy_keys()
+  observed <- prolfqua::nr_children_experiment(
+    lfq$data_long(),
+    lfq$response(),
+    keys,
+    lfq$file_name(),
+    lfq$nr_children_col()
+  )
+  features <- prolfqua::nr_features_experiment(lfq$data_long(), lfq$hierarchy_keys(), keys)
+  expect_true("nr_features_exp" %in% colnames(features))
+  both <- dplyr::inner_join(observed, features, by = keys)
+  expect_true(all(c("nr_child_exp", "nr_features_exp") %in% colnames(both)))
+  # observed children per sample can never exceed the distinct children in the experiment
+  expect_true(all(both$nr_child_exp <= both$nr_features_exp))
+})
+
 # Regression tests for .rlm_estimate (TODO_prolfqua_prolfquapp_code_review.md).
 # The review flagged "three different column schemas". The column SET is in fact identical in all
 # three branches and the per-sample key is never dropped (consumers bind by name), so there were no

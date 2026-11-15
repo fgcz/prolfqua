@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{nr_obs_sample}
 \alias{nr_obs_sample}
-\title{Aggregates e.g. protein abundances from peptide abundances}
+\title{Sum of observed children per hierarchy unit and sample}
 \usage{
 nr_obs_sample(
   data,
@@ -30,7 +30,9 @@ nr_obs_sample(
 The computed result.
 }
 \description{
-Aggregates e.g. protein abundances from peptide abundances
+For each hierarchy unit and sample, sums the `nr_children_col` column over
+the rows with a non-missing response, e.g. the number of peptides behind
+each protein intensity of a sample. Counts per sample, observed values only.
 }
 \examples{
 dd <- prolfqua::sim_lfq_data_peptide_config()
@@ -49,3 +51,12 @@ xp <- nr_obs_sample(dp$data, dp$config$get_response(),
 xp$nrPeptides |> table()
 
 }
+\seealso{
+Other hierarchy counting:
+\code{\link{HierarchyCountsSample}},
+\code{\link[=hierarchy_counts]{hierarchy_counts()}},
+\code{\link[=nr_children_experiment]{nr_children_experiment()}},
+\code{\link[=nr_features_experiment]{nr_features_experiment()}},
+\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
+}
+\concept{hierarchy counting}

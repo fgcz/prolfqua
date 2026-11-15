@@ -7,7 +7,9 @@
 An R6 class generator.
 }
 \description{
-Provides wide, long, and plot views of hierarchy counts.
+Provides wide, long, and plot views of hierarchy counts. Counts per sample
+and isotope label, observed values only (non-missing response and at least
+`nr_children` children).
 }
 \examples{
 bb <- sim_lfq_data_protein_config()
@@ -19,7 +21,15 @@ Other summary:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link[=hierarchy_counts]{hierarchy_counts()}},
 \code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
+
+Other hierarchy counting:
+\code{\link[=hierarchy_counts]{hierarchy_counts()}},
+\code{\link[=nr_children_experiment]{nr_children_experiment()}},
+\code{\link[=nr_features_experiment]{nr_features_experiment()}},
+\code{\link[=nr_obs_sample]{nr_obs_sample()}},
+\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
 }
+\concept{hierarchy counting}
 \concept{summary}
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}

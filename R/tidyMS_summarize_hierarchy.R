@@ -56,7 +56,8 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
 
 #' Count distinct elements for each level of hierarchy and isotope
 #'
-#' E.g. number of proteins, peptides, precursors in the dataset
+#' E.g. number of proteins, peptides, precursors in the dataset. Counts per
+#' isotope label over the whole dataset, whether observed or not.
 #'
 #' @param pdata data.frame
 #' @param hierarchy_keys character vector — all hierarchy column names
@@ -64,6 +65,7 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
 #' @export
 #' @keywords internal
 #' @family summary
+#' @family hierarchy counting
 #' @examples
 #'
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
@@ -85,11 +87,14 @@ hierarchy_counts <- function(pdata, hierarchy_keys, isotope_label = "isotopeLabe
 
 #' Count distinct elements for each level of hierarchy per sample
 #'
-#' Provides wide, long, and plot views of hierarchy counts.
+#' Provides wide, long, and plot views of hierarchy counts. Counts per sample
+#' and isotope label, observed values only (non-missing response and at least
+#' `nr_children` children).
 #'
 #' @return An R6 class generator.
 #' @export
 #' @family summary
+#' @family hierarchy counting
 #' @examples
 #' bb <- sim_lfq_data_protein_config()
 #' counts <- HierarchyCountsSample$new(bb$data, bb$config)
@@ -147,11 +152,15 @@ HierarchyCountsSample <- R6::R6Class(
 
 #' Summarize hierarchy counts
 #'
-#' E.g compute number of peptides for each protein
+#' E.g compute number of peptides for each protein: for each entry of
+#' `hierarchy` (and of `factors`), the number of distinct entries of the other
+#' hierarchy levels, in columns named `<level>_n`. Counts experiment-wide,
+#' whether observed or not.
 #'
 #' @export
 #' @keywords internal
 #' @family summary
+#' @family hierarchy counting
 #' @param pdata data.frame
 #' @param hierarchy_keys character vector — all hierarchy column names
 #' @param isotope_label character — isotope label column name

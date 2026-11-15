@@ -8,7 +8,7 @@ nr_features_experiment(
   data,
   hierarchy_keys,
   hierarchy_keys_depth,
-  name_nr_child = "nr_child_exp"
+  name_nr_child = "nr_features_exp"
 )
 }
 \arguments{
@@ -24,13 +24,24 @@ nr_features_experiment(
 The computed result.
 }
 \description{
-Counts the number of distinct child-level entries (e.g. peptides per protein).
+Counts the number of distinct entries of the hierarchy levels below
+`hierarchy_keys_depth` (e.g. peptides per protein). Counts experiment-wide,
+whether observed or not.
 }
 \examples{
 dd <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(dd$data, dd$config)
 xd <- nr_features_experiment(lfq$data_long(), lfq$hierarchy_keys(),
   lfq$relevant_hierarchy_keys())
-stopifnot(min(xd$nr_child_exp) == 1)
+stopifnot(min(xd$nr_features_exp) == 1)
 
 }
+\seealso{
+Other hierarchy counting:
+\code{\link{HierarchyCountsSample}},
+\code{\link[=hierarchy_counts]{hierarchy_counts()}},
+\code{\link[=nr_children_experiment]{nr_children_experiment()}},
+\code{\link[=nr_obs_sample]{nr_obs_sample()}},
+\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
+}
+\concept{hierarchy counting}

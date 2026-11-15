@@ -31,6 +31,7 @@ The computed result.
 }
 \description{
 Aggregates nr_children per sample (via nr_obs_sample), then takes the max per hierarchy unit.
+Counts experiment-wide, observed values only.
 }
 \examples{
 dd <- prolfqua::sim_lfq_data_peptide_config()
@@ -40,3 +41,12 @@ xd <- nr_children_experiment(lfq$data_long(), lfq$response(),
 stopifnot(min(xd$nr_child_exp) == 1)
 
 }
+\seealso{
+Other hierarchy counting:
+\code{\link{HierarchyCountsSample}},
+\code{\link[=hierarchy_counts]{hierarchy_counts()}},
+\code{\link[=nr_features_experiment]{nr_features_experiment()}},
+\code{\link[=nr_obs_sample]{nr_obs_sample()}},
+\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
+}
+\concept{hierarchy counting}

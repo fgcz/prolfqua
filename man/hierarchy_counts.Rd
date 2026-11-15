@@ -14,7 +14,8 @@ hierarchy_counts(pdata, hierarchy_keys, isotope_label = "isotopeLabel")
 \item{isotope_label}{character — isotope label column name}
 }
 \description{
-E.g. number of proteins, peptides, precursors in the dataset
+E.g. number of proteins, peptides, precursors in the dataset. Counts per
+isotope label over the whole dataset, whether observed or not.
 }
 \examples{
 
@@ -34,6 +35,14 @@ Other summary:
 \code{\link{HierarchyCountsSample}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
+
+Other hierarchy counting:
+\code{\link{HierarchyCountsSample}},
+\code{\link[=nr_children_experiment]{nr_children_experiment()}},
+\code{\link[=nr_features_experiment]{nr_features_experiment()}},
+\code{\link[=nr_obs_sample]{nr_obs_sample()}},
+\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
 }
+\concept{hierarchy counting}
 \concept{summary}
 \keyword{internal}

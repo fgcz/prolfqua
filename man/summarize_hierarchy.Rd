@@ -24,7 +24,10 @@ summarize_hierarchy(
 \item{factors}{character vector — factor columns to include}
 }
 \description{
-E.g compute number of peptides for each protein
+E.g compute number of peptides for each protein: for each entry of
+`hierarchy` (and of `factors`), the number of distinct entries of the other
+hierarchy levels, in columns named `<level>_n`. Counts experiment-wide,
+whether observed or not.
 }
 \examples{
 
@@ -42,6 +45,14 @@ Other summary:
 \code{\link{HierarchyCountsSample}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link[=hierarchy_counts]{hierarchy_counts()}}
+
+Other hierarchy counting:
+\code{\link{HierarchyCountsSample}},
+\code{\link[=hierarchy_counts]{hierarchy_counts()}},
+\code{\link[=nr_children_experiment]{nr_children_experiment()}},
+\code{\link[=nr_features_experiment]{nr_features_experiment()}},
+\code{\link[=nr_obs_sample]{nr_obs_sample()}}
 }
+\concept{hierarchy counting}
 \concept{summary}
 \keyword{internal}

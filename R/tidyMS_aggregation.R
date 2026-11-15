@@ -411,7 +411,11 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
 }
 
 
-#' Aggregates e.g. protein abundances from peptide abundances
+#' Sum of observed children per hierarchy unit and sample
+#'
+#' For each hierarchy unit and sample, sums the `nr_children_col` column over
+#' the rows with a non-missing response, e.g. the number of peptides behind
+#' each protein intensity of a sample. Counts per sample, observed values only.
 #'
 #' @param data data.frame
 #' @param response character — intensity column name
@@ -421,6 +425,7 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
 #' @param new_child character — output column name
 #' @return The computed result.
 #' @export
+#' @family hierarchy counting
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' dd$data <- na.omit(dd$data)
@@ -456,6 +461,7 @@ nr_obs_sample <- function(
 #' Max nr_children across samples per hierarchy unit
 #'
 #' Aggregates nr_children per sample (via nr_obs_sample), then takes the max per hierarchy unit.
+#' Counts experiment-wide, observed values only.
 #'
 #' @param data data.frame
 #' @param response character — intensity column name
@@ -465,6 +471,7 @@ nr_obs_sample <- function(
 #' @param name_nr_child character — output column name
 #' @return The computed result.
 #' @export
+#' @family hierarchy counting
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(dd$data, dd$config)
@@ -498,7 +505,9 @@ nr_children_experiment <- function(
 
 #' Count distinct child features per hierarchy unit
 #'
-#' Counts the number of distinct child-level entries (e.g. peptides per protein).
+#' Counts the number of distinct entries of the hierarchy levels below
+#' `hierarchy_keys_depth` (e.g. peptides per protein). Counts experiment-wide,
+#' whether observed or not.
 #'
 #' @param data data.frame
 #' @param hierarchy_keys character vector — all hierarchy column names
@@ -506,14 +515,15 @@ nr_children_experiment <- function(
 #' @param name_nr_child character — output column name
 #' @return The computed result.
 #' @export
+#' @family hierarchy counting
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(dd$data, dd$config)
 #' xd <- nr_features_experiment(lfq$data_long(), lfq$hierarchy_keys(),
 #'   lfq$relevant_hierarchy_keys())
-#' stopifnot(min(xd$nr_child_exp) == 1)
+#' stopifnot(min(xd$nr_features_exp) == 1)
 #'
-nr_features_experiment <- function(data, hierarchy_keys, hierarchy_keys_depth, name_nr_child = "nr_child_exp") {
+nr_features_experiment <- function(data, hierarchy_keys, hierarchy_keys_depth, name_nr_child = "nr_features_exp") {
   nr_B_in_A(data, hierarchy_keys_depth, setdiff(hierarchy_keys, hierarchy_keys_depth), name_nr_child)
 }
 
