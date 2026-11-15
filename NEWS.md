@@ -2,6 +2,7 @@
 
 ## New features
 
+- New `lfqdata_from_wide()`, the inverse of `tidy_to_wide_config()`: one or more feature x sample matrices, their row annotation and their sample annotation back to an `LFQData`. It replaces the matrix-to-long conversions that downstream packages write by hand for AnnData and SummarizedExperiment input.
 - `ContrastsFacadeBase$get_missing()` uses the contrast column named in the facade's `ContrastConfiguration` (`contrast_col`) instead of assuming `contrast`, so facades of other packages with their own column name (e.g. SAINT's `Bait`) can inherit it.
 
 ## Behaviour changes

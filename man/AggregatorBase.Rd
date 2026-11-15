@@ -21,7 +21,8 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}}
+\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}},
+\code{\link[=lfqdata_from_wide]{lfqdata_from_wide()}}
 }
 \concept{LFQData}
 \keyword{internal}

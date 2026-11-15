@@ -86,3 +86,105 @@ tidy_to_wide_config <- function(
   }
   return(list(data = res, annotation = ids, rowdata = rowdata))
 }
+
+# Input checks of lfqdata_from_wide(): `values` is a named list of matrices of one shape.
+.check_wide_values <- function(values) {
+  is_named_matrix_list <- is.list(values) &&
+    !is.null(names(values)) &&
+    all(nzchar(names(values))) &&
+    all(vapply(values, is.matrix, logical(1)))
+  if (!is_named_matrix_list) {
+    abort_bad_argument("values", "be a matrix or a named list of matrices")
+  }
+  first <- values[[1]]
+  same_shape <- vapply(
+    values,
+    function(m) identical(dim(m), dim(first)) && identical(colnames(m), colnames(first)),
+    logical(1)
+  )
+  if (!all(same_shape)) {
+    abort_bad_argument("values", "hold matrices with identical dimensions and column names")
+  }
+  invisible(TRUE)
+}
+
+# Input checks of lfqdata_from_wide(): rowdata and annotation match the matrices.
+.check_wide_input <- function(values, rowdata, annotation, config) {
+  .check_wide_values(values)
+  first <- values[[1]]
+  missing_rowdata <- setdiff(config$hierarchy_keys(), colnames(rowdata))
+  if (length(missing_rowdata) > 0) {
+    abort_missing_columns(missing_rowdata, data_nm = "rowdata")
+  }
+  if (!config$sample_name %in% colnames(annotation)) {
+    abort_missing_columns(config$sample_name, data_nm = "annotation")
+  }
+  if (nrow(rowdata) != nrow(first)) {
+    abort_bad_argument("rowdata", "have one row per matrix row", not = paste(nrow(rowdata), "rows"))
+  }
+  samples <- as.character(annotation[[config$sample_name]])
+  if (anyDuplicated(samples) > 0 || !setequal(colnames(first), samples)) {
+    abort_bad_argument("annotation", "have one row per matrix column, named by `config$sample_name`")
+  }
+  invisible(TRUE)
+}
+
+# One feature x sample matrix to long format, keyed by row position and sample.
+.wide_matrix_to_long <- function(mat, value, sample_name) {
+  long <- tibble::as_tibble(mat, .name_repair = "minimal")
+  long$.row <- seq_len(nrow(long))
+  tidyr::pivot_longer(long, -".row", names_to = sample_name, values_to = value)
+}
+
+#' Build LFQData from wide matrices
+#'
+#' The inverse of [tidy_to_wide_config()]: feature x sample matrices, their row
+#' annotation and their sample annotation back to long-format LFQData. Row `i`
+#' of every matrix belongs to row `i` of `rowdata`; matrix column names are the
+#' sample names.
+#'
+#' @param values a matrix (features in rows, samples in columns), stored under
+#'   `config$get_response()`, or a named list of such matrices with identical
+#'   dimensions and column names; list names are the value columns
+#' @param rowdata data.frame with one row per matrix row and the hierarchy key
+#'   columns; the isotope label column is optional and set to `"light"` if absent
+#' @param annotation data.frame with one row per sample: `config$sample_name`
+#'   plus the file name and factor columns
+#' @param config AnalysisConfiguration describing the result
+#' @param prefix prefix passed to [LFQData]
+#' @return LFQData
+#' @export
+#' @family LFQData
+#' @examples
+#' dd <- prolfqua::sim_lfq_data_peptide_config()
+#' lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
+#' wide <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
+#' back <- lfqdata_from_wide(wide$data, wide$rowdata, wide$annotation, lfqdata$get_config())
+#' stopifnot(nrow(back$data_long()) == nrow(lfqdata$data_long()))
+lfqdata_from_wide <- function(values, rowdata, annotation, config, prefix = "ms") {
+  if (is.matrix(values)) {
+    values <- stats::setNames(list(values), config$get_response())
+  }
+  .check_wide_input(values, rowdata, annotation, config)
+  sample_name <- config$sample_name
+  samples <- as.character(annotation[[sample_name]])
+
+  long <- Reduce(
+    function(acc, one) dplyr::inner_join(acc, one, by = c(".row", sample_name)),
+    Map(.wide_matrix_to_long, values, names(values), sample_name)
+  )
+  rowdata <- tibble::as_tibble(rowdata)
+  rowdata$.row <- seq_len(nrow(rowdata))
+  long <- dplyr::inner_join(rowdata, long, by = ".row")
+  long$.row <- NULL
+
+  annotation <- tibble::as_tibble(annotation)
+  annotation[[sample_name]] <- samples
+  # columns already taken from rowdata (e.g. the isotope label) are not joined twice
+  annotation <- annotation[, c(sample_name, setdiff(colnames(annotation), colnames(long))), drop = FALSE]
+  long <- dplyr::inner_join(long, annotation, by = sample_name)
+  if (!config$isotope_label %in% colnames(long)) {
+    long[[config$isotope_label]] <- "light"
+  }
+  LFQData$new(long, config, prefix = prefix)
+}
