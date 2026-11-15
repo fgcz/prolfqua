@@ -25,6 +25,22 @@
 
 ### Behaviour changes
 
+- Requires tidyr \>= 1.3.0: identifier splitting uses
+  [`tidyr::separate_wider_delim()`](https://tidyr.tidyverse.org/reference/separate_wider_delim.html)
+  instead of the superseded `separate()`. Results are unchanged;
+  [`separate_hierarchy()`](https://fgcz.github.io/prolfqua/reference/separate_hierarchy.md),
+  [`get_uniprot_id_from_fasta_header()`](https://fgcz.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md)
+  and the contrast-side parser no longer warn about identifiers with too
+  few or too many pieces.
+- The model strategies
+  ([`strategy_lm()`](https://fgcz.github.io/prolfqua/reference/strategy.md)
+  and the other `Strategy*` classes), `Model`, `ModelFirth` and
+  `ContrastsFirth` check their arguments when constructed and stop with
+  `prolfqua_error_bad_argument` or `prolfqua_error_missing_column`: a
+  strategy needs a formula, `Model` a model table with the subject
+  columns and a strategy, `ModelFirth` the elements `models1`, `models2`
+  and `hkey`, `ContrastsFirth` a `ModelFirth` and named contrasts.
+  Before, a malformed argument failed later with an unrelated error.
 - [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
   reports a missing `isotopeLabel` or `qValue` column with a message
   instead of a warning; both are optional and get the defaults `"light"`

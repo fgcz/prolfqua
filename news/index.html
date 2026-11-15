@@ -62,7 +62,9 @@
 </ul></div>
 <div class="section level3">
 <h3 id="behaviour-changes-1-9-2">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-2"></a></h3>
-<ul><li>
+<ul><li>Requires tidyr &gt;= 1.3.0: identifier splitting uses <code><a href="https://tidyr.tidyverse.org/reference/separate_wider_delim.html" class="external-link">tidyr::separate_wider_delim()</a></code> instead of the superseded <code>separate()</code>. Results are unchanged; <code><a href="../reference/separate_hierarchy.html">separate_hierarchy()</a></code>, <code><a href="../reference/get_uniprot_id_from_fasta_header.html">get_uniprot_id_from_fasta_header()</a></code> and the contrast-side parser no longer warn about identifiers with too few or too many pieces.</li>
+<li>The model strategies (<code><a href="../reference/strategy.html">strategy_lm()</a></code> and the other <code>Strategy*</code> classes), <code>Model</code>, <code>ModelFirth</code> and <code>ContrastsFirth</code> check their arguments when constructed and stop with <code>prolfqua_error_bad_argument</code> or <code>prolfqua_error_missing_column</code>: a strategy needs a formula, <code>Model</code> a model table with the subject columns and a strategy, <code>ModelFirth</code> the elements <code>models1</code>, <code>models2</code> and <code>hkey</code>, <code>ContrastsFirth</code> a <code>ModelFirth</code> and named contrasts. Before, a malformed argument failed later with an unrelated error.</li>
+<li>
 <code><a href="../reference/setup_analysis.html">setup_analysis()</a></code> reports a missing <code>isotopeLabel</code> or <code>qValue</code> column with a message instead of a warning; both are optional and get the defaults <code>"light"</code> and <code>0</code>. A missing <code>nr_children</code> column still warns, because the default of 1 changes the fitting weights of aggregated data.</li>
 </ul></div>
 <div class="section level3">
