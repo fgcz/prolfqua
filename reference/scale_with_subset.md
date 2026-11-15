@@ -54,7 +54,6 @@ lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 s1 <- get_robscales(lfqdata)
 res <- scale_with_subset(lfqdata, lfqdata)
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 cfg <- lfqdata$get_config()$clone(deep = TRUE)
 cfg$set_response(res$colname)
 lfqres <- LFQData$new(res$data, cfg)

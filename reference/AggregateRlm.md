@@ -84,7 +84,6 @@ lfqdata <- LFQData$new(data, istar$config)
 lfqTrans <- lfqdata$clone()$get_Transformer()$log2()$robscale()$lfq
 #> Column added : log2_abundance
 #> data is : TRUE
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 
 agg <- AggregateRlm$new(lfqTrans, "protein")
 agg$aggregate()

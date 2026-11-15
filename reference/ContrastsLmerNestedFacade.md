@@ -220,7 +220,6 @@ fa <- ContrastsLmerNestedFacade$new(lfqdata, "~ group_", contrasts)
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 head(fa$get_contrasts())
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
 #>   modelName   estimate_type protein_Id  contrast       diff avgAbd
 #>   <chr>       <chr>         <chr>       <chr>         <dbl>  <dbl>

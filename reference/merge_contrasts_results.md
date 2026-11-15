@@ -143,8 +143,6 @@ add_df <- data.frame(
 prefer <- ContrastsTable$new(prefer_df, subject_id = "protein_Id", model_name = "prefer")
 add <- ContrastsTable$new(add_df, subject_id = "protein_Id", model_name = "add")
 merged <- merge_contrasts_results(prefer, add)
-#> Joining with `by = join_by(protein_Id, contrast)`
-#> Joining with `by = join_by(protein_Id, contrast)`
 merged$merged$get_contrasts()
 #>   protein_Id contrast modelName diff p.value  FDR statistic
 #> 1         P1   A_vs_B    prefer  1.0    0.01 0.02       3.0

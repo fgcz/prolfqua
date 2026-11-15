@@ -171,7 +171,6 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa_lm    <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
 head(fa_lm$get_contrasts())
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
 #>   modelName estimate_type protein_Id  contrast     diff avgAbd
 #>   <chr>     <chr>         <chr>       <chr>       <dbl>  <dbl>
@@ -203,7 +202,6 @@ head(fa_limma$get_contrasts())
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
 head(fa_deqms$get_contrasts())
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
 #>   modelName estimate_type contrast  protein_Id     diff avgAbd
 #>   <chr>     <chr>         <chr>     <chr>         <dbl>  <dbl>
@@ -247,7 +245,6 @@ fa_lmer <- build_contrast_analysis(
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 head(fa_lmer$get_contrasts())
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
 #>   modelName   estimate_type protein_Id  contrast       diff avgAbd
 #>   <chr>       <chr>         <chr>       <chr>         <dbl>  <dbl>
@@ -264,7 +261,6 @@ head(fa_lmer$get_contrasts())
 fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca_nested")
 head(fa_ropeca$get_contrasts())
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, peptide_Id, contrast)`
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]
 #>   modelName   estimate_type protein_Id contrast avgAbd    diff     FDR statistic
@@ -280,12 +276,10 @@ head(fa_ropeca$get_contrasts())
 
 fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
 #> completing cases
-#> Joining with `by = join_by(protein_Id)`
 head(fa_firth$get_contrasts())
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 6 × 16
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR

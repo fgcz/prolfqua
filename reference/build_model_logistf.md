@@ -112,8 +112,6 @@ istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 xx2 <- build_model_logistf(tmp, formula)
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
 
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -126,7 +124,6 @@ istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)
 formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 xx <- build_model_logistf(tmp, formula)
-#> Joining with `by = join_by(protein_Id)`
 
 contrasts <- c(AvsB = "group_A - group_B")
 m <- xx$models$models1$model_df$linear_model[[1]]

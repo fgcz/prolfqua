@@ -168,7 +168,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 #> bin_resp ~ condition
-#> <environment: 0x60bc39540bd0>
+#> <environment: 0x57b0c7d5f238>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -182,7 +182,6 @@ istar <- LFQData$new(istar$data, istar$config)
 df <- istar$summarize_hierarchy()
 df2 <- df[df[[ncol(df)]] > 1, ]
 istar2 <- istar$get_subset(df2)
-#> Joining with `by = join_by(protein_Id)`
 istar2$data_long() |>
   dplyr::group_by(protein_Id) |>
   tidyr::nest() -> nestProtein
@@ -221,20 +220,20 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x60bc34374370>
+#> <environment: 0x57b0c0b2c790>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$formula
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x60bc3b585668>
+#> <environment: 0x57b0c09d7bd0>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x60bc3f15bbd0>
+#> <environment: 0x57b0c088a168>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x60bc35fc0910>
+#> <environment: 0x57b0c07ba548>
 ```

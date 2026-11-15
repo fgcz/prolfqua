@@ -33,7 +33,6 @@ lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 s1 <- get_robscales(lfqdata)
 
 res <- scale_with_subset(lfqdata, lfqdata)
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 lfqres <- prolfqua::LFQData$new(res$data, lfqdata$get_config()$clone(deep = TRUE))
 s2 <- get_robscales(lfqres)
 abs(mean(s1$mads) - mean(s2$mads)) < 0.1

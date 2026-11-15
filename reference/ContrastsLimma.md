@@ -312,7 +312,6 @@ mod <- build_model(lProt, modelFunction)
 contr_prolfqua <- Contrasts$new(mod, Contr)
 res_prolfqua <- contr_prolfqua$get_contrasts()
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 
 # fold changes should be very similar
 merged <- dplyr::inner_join(
@@ -345,7 +344,4 @@ imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr2)$contrast
 #> Warning: essentially perfect fit: summary may be unreliable
 merged_res <- merge_contrasts_results(contr_limma, imp)
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
-#> Joining with `by = join_by(protein_Id, contrast)`
-#> Joining with `by = join_by(protein_Id, contrast)`
 ```

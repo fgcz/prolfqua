@@ -263,7 +263,6 @@ modi <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
 contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
 
 ctr <- ContrastsFirth$new(modi,contrasts)
@@ -318,7 +317,6 @@ ctr$get_contrasts()
 #> determine linear functions:
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 20 × 16
 #> # Groups:   contrast [2]
 #>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
@@ -352,8 +350,6 @@ mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptid
 #> completing cases
 #> completing cases done
 #> setup done
-#> Joining with `by = join_by(protein_Id)`
-#> Joining with `by = join_by(protein_Id)`
 
 ctrpep <- ContrastsFirth$new(mod3,contrasts)
 ctrpep$get_contrast_sides()
@@ -439,7 +435,6 @@ ctrpep$get_contrasts()
 #> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> # A tibble: 20 × 16
 #> # Groups:   contrast [2]
 #>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR

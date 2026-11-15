@@ -203,7 +203,6 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsDEqMSFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
 #> # A tibble: 6 × 16
 #>   modelName estimate_type contrast  protein_Id    diff avgAbd

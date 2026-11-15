@@ -249,9 +249,7 @@ detection <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method 
 #> completing cases
 hurdle <- ContrastsHurdleFacade$new(intensity, detection)
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 res <- hurdle$get_contrasts()
 #> completing cases
 table(res$hurdle_components)

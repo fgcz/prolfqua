@@ -766,6 +766,5 @@ stopifnot("AggregateMedpolish" %in% class(lfqdata$get_Aggregator("medpolish")))
 
 tmp <-lfqdata$get_sample(5, seed = 4)
 #> Sampling 5 protein_Id
-#> Joining with `by = join_by(protein_Id)`
 stopifnot(nrow(tmp$hierarchy()) == 5)
 ```

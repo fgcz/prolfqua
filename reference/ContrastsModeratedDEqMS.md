@@ -299,7 +299,6 @@ deqms <- ContrastsModeratedDEqMS$new(contrast,
 
 bb <- deqms$get_contrasts()
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
 stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
 
@@ -309,9 +308,6 @@ imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 merged <- merge_contrasts_results(deqms, imp)
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
-#> Joining with `by = join_by(protein_Id, contrast)`
-#> Joining with `by = join_by(protein_Id, contrast)`
 
 cs <- deqms$get_contrast_sides()
 cslf <- deqms$get_linfct()

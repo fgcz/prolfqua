@@ -198,9 +198,7 @@ facade <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "
 #> completing cases
 #> completing cases
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 head(facade$get_contrasts())
 #> completing cases
 #> # A tibble: 6 × 24

@@ -281,7 +281,6 @@ Contrasts <- c("aC" = "group_A - group_Ctrl",
 fa <- ContrastsLMFacade$new(lfqdata, "~ group_", Contrasts)
 ctr <- fa$get_contrasts()
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 fa$contrast$subject_id
 #> [1] "protein_Id"
 xcx <- ContrastsTable$new(ctr, subject_id = fa$contrast$subject_id, model_name = "TableTest")

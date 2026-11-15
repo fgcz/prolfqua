@@ -122,7 +122,6 @@ lfqdata <- LFQData$new(data, istar$config)
 
 agg <- AggregateTopN$new(lfqdata, "protein", N = 3, func = "sum")
 agg$aggregate()
-#> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
 #> completing cases
 p <- agg$plot()
@@ -135,7 +134,6 @@ p$plots[[1]]
 
 agg_mean <- AggregateTopN$new(lfqdata, "protein", N = 3, func = "mean")
 agg_mean$aggregate()
-#> Joining with `by = join_by(protein_Id, peptide_Id)`
 #> Columns added : srm_meanInt srm_meanIntRank
 #> completing cases
 protPlotter <- agg_mean$lfq_agg$get_Plotter()

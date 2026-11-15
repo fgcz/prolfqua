@@ -49,5 +49,4 @@ xx <- response_matrix_as_tibble(
   res_scaled, "srm_intensityScaled",
   lfqdata$get_config(), lfqdata$data_long()
 )
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 ```

@@ -276,7 +276,6 @@ x <- lfqTrans$intensity_array(asinh)
 #> Column added : asinh_abundance
 mads1 <- mean(x$get_scales()$mads)
 x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 mads2 <- mean(x$get_scales()$mads)
 stopifnot(abs(mads1 - mads2) < 1e-8)
 
@@ -289,7 +288,6 @@ lfqTrans$log2()
 before <- lfqTrans$get_scales()
 lfqTrans$robscale()
 #> data is : TRUE
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 after <- lfqTrans$get_scales()
 stopifnot(abs(mean(before$medians) - mean(after$medians)) < 1e-8)
 stopifnot(abs(mean(before$mads) - mean(after$mads)) < 1e-8)
@@ -325,7 +323,6 @@ if(require("vsn")){
  res$get_scales()
 }
 #> Loading required package: vsn
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 #> $medians
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
 #> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 
@@ -376,7 +373,6 @@ head(lfqdata2$hierarchy())
 #> 5 CGzoYe~2147
 #> 6 DoWup2~5896
 internal <- lfqdata2$get_subset(head(lfqdata2$hierarchy()))
-#> Joining with `by = join_by(protein_Id)`
 internal$hierarchy()
 #> # A tibble: 6 × 1
 #>   protein_Id 
@@ -401,7 +397,6 @@ lfqdata2$get_Plotter()$intensity_distribution_density()
 
 robscale <- lfqdata2$get_Transformer()$robscale_subset(internal)$lfq
 #> data is : TRUE
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 robscale$get_Plotter()$intensity_distribution_density()
 #> Warning: Removed 36 rows containing non-finite outside the scale range
 #> (`stat_density()`).

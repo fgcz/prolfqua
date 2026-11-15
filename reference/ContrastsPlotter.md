@@ -545,7 +545,6 @@ contrast <- prolfqua::Contrasts$new(mod,
   Contr)
 contr <- contrast$get_contrasts()
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 cp <- ContrastsPlotter$new(contr,
   contrast$subject_id,
   volcano = list(list(score = "FDR", thresh = 0.1)),

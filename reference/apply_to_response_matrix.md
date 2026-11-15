@@ -46,14 +46,11 @@ bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> setup done
 lfqdata <- LFQData$new(bb$data, bb$config)
 res <- apply_to_response_matrix(lfqdata, .func = base::scale)
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 stopifnot("abundance_base..scale" %in% colnames(res$data))
 
 res <- apply_to_response_matrix(lfqdata, .func = robust_scale)
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 
 if (require("vsn")) {
   res <- apply_to_response_matrix(lfqdata, .func = vsn::justvsn)
 }
-#> Joining with `by = join_by(sampleName, isotopeLabel, protein_Id, peptide_Id)`
 ```

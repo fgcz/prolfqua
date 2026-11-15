@@ -338,7 +338,6 @@ t <- contrastX$get_linfct(global = FALSE)
 
 x <- contrastX$get_contrasts()
 #> contrasts_linfct
-#> Joining with `by = join_by(protein_Id, contrast)`
 stopifnot(all(x$p.value < 1 & x$p.value > 0))
 stopifnot(all(x$avgAbd > 0))
 stopifnot(all(x$FDR > 0 & x$FDR < 1))
