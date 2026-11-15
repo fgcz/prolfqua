@@ -457,3 +457,62 @@ test_that("heatmap keeps only the top_n most variable features", {
   p <- lfq$get_Plotter()$heatmap(top_n = k)
   expect_s4_class(p, "Heatmap")
 })
+
+# Graphics devices: PDF writers must leave the caller's open device open and current.
+.open_caller_device <- function(env = parent.frame()) {
+  grDevices::pdf(tempfile(fileext = ".pdf"))
+  own <- grDevices::dev.cur()
+  withr::defer(if (own %in% grDevices::dev.list()) grDevices::dev.off(own), envir = env)
+  list(cur = own, list = grDevices::dev.list())
+}
+
+test_that("write_pdf keeps the caller's graphics devices", {
+  istar <- sim_lfq_data_peptide_config(Nprot = 5)
+  pl <- LFQData$new(istar$data, istar$config)$get_Plotter()
+  out_dir <- withr::local_tempdir()
+  before <- .open_caller_device()
+  fpath <- pl$write_pdf(ggplot2::ggplot(), out_dir, "device_test")
+  expect_true(file.exists(fpath))
+  expect_equal(grDevices::dev.cur(), before$cur)
+  expect_equal(grDevices::dev.list(), before$list)
+})
+
+test_that("write_boxplots and write_plots close their device when rendering fails", {
+  local_mocked_bindings(.render_plot_to_device = function(x) stop("boom"))
+  istar <- sim_lfq_data_peptide_config(Nprot = 5)
+  lfq <- LFQData$new(istar$data, istar$config)
+  out_dir <- withr::local_tempdir()
+  agg <- lfq$get_Transformer()$log2()$lfq$get_Aggregator("medpolish")
+  agg$aggregate()
+  before <- .open_caller_device()
+
+  expect_error(lfq$get_Plotter()$write_boxplots(out_dir), "boom")
+  expect_equal(grDevices::dev.list(), before$list)
+  expect_equal(grDevices::dev.cur(), before$cur)
+
+  expect_error(agg$write_plots(out_dir), "boom")
+  expect_equal(grDevices::dev.list(), before$list)
+  expect_equal(grDevices::dev.cur(), before$cur)
+})
+
+test_that("LR_test with a path keeps the caller's graphics devices", {
+  d <- sim_lfq_data_2factor_config(Nprot = 10, with_missing = FALSE)
+  lfq <- LFQData$new(d$data, d$config)
+  mod_full <- build_model(lfq, strategy_lm("abundance ~ Treatment + Background"))
+  mod_reduced <- build_model(lfq, strategy_lm("abundance ~ Treatment"))
+  out_dir <- withr::local_tempdir()
+  before <- .open_caller_device()
+  LR_test(mod_full$model_df, "full", mod_reduced$model_df, "reduced", path = out_dir)
+  expect_true(length(list.files(out_dir, pattern = "^hist_LRT_")) == 1)
+  expect_equal(grDevices::dev.cur(), before$cur)
+  expect_equal(grDevices::dev.list(), before$list)
+})
+
+test_that("plot_lrt_diagnostics closes its device when plotting fails", {
+  out_dir <- withr::local_tempdir()
+  before <- .open_caller_device()
+  bad <- data.frame(likelihood_ratio_test.pValue = "not a number")
+  expect_error(plot_lrt_diagnostics(bad, "full", "reduced", out_dir))
+  expect_equal(grDevices::dev.cur(), before$cur)
+  expect_equal(grDevices::dev.list(), before$list)
+})

@@ -435,6 +435,9 @@ display.}
     }
     \if{html}{\out{</div>}}
   }
+  \subsection{Returns}{
+    path the file was written to (invisible)
+  }
 }
 
 \if{html}{\out{<hr>}}

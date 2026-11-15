@@ -79,17 +79,18 @@ LR_test <- function(
 #' @param model_name name of the full model
 #' @param model_name_int name of the reduced/interaction model
 #' @param path directory to write the PDF into
+#' @return path the file was written to (invisible)
 #' @keywords internal
 plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
   file_name <- paste("hist_LRT_", model_name, "_", model_name_int, ".pdf", sep = "")
   file_name <- file.path(path, file_name)
   message("writing figure : ", file_name, "\n")
-  pdf(file_name)
+  withr::local_pdf(file_name)
   par(mfrow = c(2, 1))
   hist(result$likelihood_ratio_test.pValue, breaks = 20)
   plot(ecdf(result$likelihood_ratio_test.pValue))
   abline(v = c(0.01, 0.05), col = c(3, 2))
-  dev.off()
+  invisible(file_name)
 }
 
 

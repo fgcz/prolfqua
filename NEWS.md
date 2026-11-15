@@ -1,3 +1,9 @@
+# prolfqua 1.9.2
+
+## Bug fixes
+
+- `LFQDataPlotter$write_pdf()` no longer closes the graphics devices the user has open (it called `graphics.off()` before and after writing). `write_pdf()`, `write_boxplots()`, `LFQDataAggregator$write_plots()` and `LR_test(path = )` close their PDF device when drawing fails, instead of leaving it open so that later plots go into it. `write_boxplots()` returns the file path invisibly.
+
 # prolfqua 1.9.1
 
 ## New features

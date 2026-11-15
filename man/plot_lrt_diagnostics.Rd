@@ -15,6 +15,9 @@ plot_lrt_diagnostics(result, model_name, model_name_int, path)
 
 \item{path}{directory to write the PDF into}
 }
+\value{
+path the file was written to (invisible)
+}
 \description{
 Writes a histogram of p-values and an empirical CDF to a PDF file.
 Called by \code{\link{LR_test}} when \code{path} is non-NULL.

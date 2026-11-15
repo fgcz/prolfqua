@@ -75,12 +75,11 @@ AggregatorBase <- R6::R6Class(
       pl <- self$plot(subset)
       pb <- progress::progress_bar$new(total = nrow(pl))
       filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
-      pdf(filepath, width = width, height = height)
+      withr::local_pdf(filepath, width = width, height = height)
       for (i in seq_len(nrow(pl))) {
         .render_plot_to_device(pl$plots[[i]])
         pb$tick()
       }
-      dev.off()
       invisible(filepath)
     }
   ),
