@@ -196,7 +196,7 @@ annotation_add_contrasts <- function(
   }
   # Annotate and export
   annot <- dplyr::bind_cols(
-    df %>% dplyr::select(-dplyr::all_of(c(primary_col, secondary_col))),
+    df |> dplyr::select(-dplyr::all_of(c(primary_col, secondary_col))),
     df_contrast
   )
   name <- paste0("DEA_", prefix, "_", dataset_id, ".csv")
