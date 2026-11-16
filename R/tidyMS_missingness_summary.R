@@ -66,7 +66,6 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
   names(res) <- names(contrasts)
   for (i in seq_along(contrasts)) {
     cname <- names(contrasts)[i]
-    message(cname, "=", contrasts[i], "\n")
 
     # A contrast must be a difference "LHS - RHS" (e.g. "group_A - group_B" or
     # "(group_A + group_B)/2 - group_Ctrl"). group_1 / group_2 are the evaluated
@@ -141,7 +140,6 @@ missigness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$r
 
   factors <- lfqdata$relevant_factor_keys()
   formula <- .isotope_by_factors_formula(lfqdata, factors)
-  message(formula)
   mean_abundance <- paste0("mean_", lfqdata$response())
   missing_percent <- dplyr::rename(missing_percent, !!sym(mean_abundance) := .data$meanAbundance)
 
@@ -188,7 +186,6 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
   res <- xxcs |> dplyr::select(-dplyr::all_of("nrTransitions"))
 
   formula <- .isotope_by_factors_formula(lfqdata, factors)
-  message(formula)
 
   nudgeval <- mean(res$cumulative_sum) * 0.05
   p <- ggplot(res, aes(x = .data$nrNAs, y = .data$cumulative_sum)) +

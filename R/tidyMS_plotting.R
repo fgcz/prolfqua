@@ -639,10 +639,7 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 
   matrix[!is.na(matrix)] <- 0
   matrix[is.na(matrix)] <- 1
-  allrows <- nrow(matrix)
   matrix <- matrix[rowSums(matrix) > 0, , drop = FALSE]
-
-  message("rows with NA's: ", nrow(matrix), "; all rows :", allrows, "\n")
 
   if (nrow(matrix) > 1) {
     matrix <- if (nrow(matrix) > limitrows) {

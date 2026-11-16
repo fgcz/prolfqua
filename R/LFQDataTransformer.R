@@ -126,7 +126,6 @@ LFQDataTransformer <- R6::R6Class(
     #' @return LFQDataTransformer (self)
     #'
     robscale_subset = function(lfqsubset, preserve_mean = TRUE, colname = "transformed_abundance") {
-      message("data is : ", self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         warning("the subset must have the same config as self")
       }
@@ -142,7 +141,6 @@ LFQDataTransformer <- R6::R6Class(
     #' @return LFQDataTransformer (self)
     #'
     center_to_reference = function(lfqsubset) {
-      message("data is transformed: ", self$lfq$is_transformed())
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
         abort_bad_argument("lfqsubset", "have the same transformation state (is_transformed) as self")
       }

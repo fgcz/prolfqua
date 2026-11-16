@@ -4,6 +4,10 @@
 
 - New method `ropecaV2_nested` (`ContrastsROPECAV2NestedFacade`, `ContrastsROPECAV2`): ROPECA with calibrated protein p-values. `ropeca_nested` tests the median signed peptide p-value against a beta distribution, which is conservative for independent peptides and makes proteins with many correlated peptides too significant; its 10-peptide cap only damps that. `ropecaV2_nested` converts the moderated peptide t-statistics to normal scores and tests their median per protein against its exact null distribution, allowing for the correlation of the peptides of a protein, which it estimates once from the peptide model residuals. Share of p < 0.05 for proteins that do not change, by number of peptides (prolfquabenchmark vignette `Benchmark_ropeca`): on simulated proteins whose peptide correlation varies between proteins, 0.050 to 0.067 for 2 to 20 peptides, where `ropeca_nested` gives 0.037 to 0.082; on the human proteins of IonStar, whose peptides are nearly uncorrelated, 0.041 to 0.053 for 2 to more than 20 peptides, where `ropeca_nested` gives 0.018 down to 0.000. `diff` is the median peptide fold change, as in `ropeca_nested`; `statistic`, `std.error` and the 95% interval follow from the p-value. `ropeca_nested` is unchanged.
 
+## Behaviour changes
+
+- prolfqua no longer prints internal progress messages such as "setup done", "completing cases", "contrasts_linfct", "starting aggregation", the model formula or the number of rows with missing values.
+
 ## Bug fixes
 
 - `ropeca_nested` / `ContrastsROPECA`: the protein p-value counted peptides without a p-value (failed or non-estimable peptide fits) in the number of peptides, which made those proteins too significant, e.g. p = 0.00067 instead of 0.0031 for two tested peptides and one untested. `summary_ROPECA_median_p_scaled()` now counts only peptides with a p-value in `n_not_na`, as the original ROPECA (PECA) does; `df` of `ropeca_nested` changes with it.

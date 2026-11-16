@@ -263,7 +263,6 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm")) {
     nest()
 
   pb <- progress::progress_bar$new(total = nrow(xnested))
-  message("starting aggregation")
   res <- purrr::map(xnested$data, function(d) {
     pb$tick()
     .reestablish_condition(d, estimate(d), sname, fkeys, fname, iso)

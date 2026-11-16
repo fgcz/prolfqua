@@ -323,7 +323,6 @@ LFQDataPlotter <- R6::R6Class(
         filename <- self$prefix
       }
       fpath <- file.path(path_qc, paste0(filename, "boxplot.pdf"))
-      message("generating boxplots")
       bb <- self$boxplots()
 
       message("writing ", fpath)

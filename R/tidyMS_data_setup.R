@@ -66,7 +66,6 @@
     return(data)
   }
 
-  message("column sampleName already exists, using :", sample_name)
   data
 }
 
@@ -220,8 +219,6 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
     configuration$isotope_label,
     configuration$hierarchy_keys()
   )
-  message("completing cases done")
-  message("setup done")
   return(data)
 }
 
@@ -261,7 +258,6 @@ separate_hierarchy <- function(data, config) {
 
 # Internal implementation for complete_cases (used by setup_analysis before LFQData exists)
 .complete_cases_impl <- function(pdata, file_name, sample_name, factor_keys, isotope_label, hierarchy_keys) {
-  message("completing cases")
   fkeys <- unique(c(file_name, sample_name, factor_keys))
   hkeys <- c(isotope_label, hierarchy_keys)
   res <- tidyr::complete(
@@ -313,8 +309,6 @@ complete_cases <- function(lfqdata) {
 #' subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
 #' length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 sample_subset <- function(size, pdata, hierarchy_keys_depth) {
-  keys <- paste(hierarchy_keys_depth, collapse = ",")
-  message("Sampling ", size, " ", keys)
   hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> sample_n(size = size)
   sdata <- inner_join(hkdf, pdata, by = hierarchy_keys_depth)
   return(sdata)

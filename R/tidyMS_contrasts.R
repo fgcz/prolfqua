@@ -418,7 +418,6 @@ pivot_model_contrasts_to_wide <- function(
 #'         subject_id = "protein_Id",
 #'         contrastfun = prolfqua::compute_contrast)
 contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrastfun = prolfqua::compute_lmer_contrast) {
-  message("contrasts_linfct")
   modelcol <- "linear_model"
 
   # Normalize: if linfct is a matrix, replicate it for each model
