@@ -218,5 +218,4 @@ model_summary(mod)
 #> TRUE 
 #>   14 
 #> 
-
 ```

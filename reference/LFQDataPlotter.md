@@ -550,5 +550,4 @@ stopifnot("upset" == class(lfqplotter$upset_missing()))
 #>   Please report the issue at <https://github.com/hms-dbmi/UpSetR/issues>.
 wide <- lfqdata$data_wide(as.matrix = TRUE)
 stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
-
 ```

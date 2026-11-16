@@ -32,6 +32,16 @@
 
 ### Behaviour changes
 
+- Fewer hard dependencies: ‘UpSetR’, ‘ComplexHeatmap’, ‘circlize’,
+  ‘plotly’, ‘ggbeeswarm’, ‘progress’, ‘logistf’, ‘lme4’ and ‘lmerTest’
+  moved from Imports to Suggests, and ‘forcats’, ‘tidyselect’ and
+  ‘withr’ are no longer needed (Imports: 23 to 11). Heatmaps, UpSet
+  plots, interactive plots, the `firth` and `lmer_nested` methods ask to
+  install the packages they need. Without ‘plotly’ the intensity density
+  plot is static, without ‘ggbeeswarm’ box plots show jittered points,
+  and without ‘progress’ no progress bar is shown. Progress of
+  aggregation and of writing box and aggregation plots now also follows
+  `options(prolfqua.progress)`.
 - prolfqua no longer prints internal progress messages such as “setup
   done”, “completing cases”, “contrasts_linfct”, “starting aggregation”,
   the model formula or the number of rows with missing values.
@@ -50,6 +60,11 @@
   a warning of class `prolfqua_fit_failed`.
 - [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
   no longer warns “Unknown or uninitialised column: `nrPeptides`”.
+- README: the getting-started example called the removed aggregator
+  method `$medpolish()` and the undeclared package `ggpubr`; it now runs
+  as shown and ends with
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
+  Installation is from Bioconductor first.
 
 ### Bug fixes
 

@@ -5,6 +5,7 @@
 - **Witold Wolski**. Author. [](https://orcid.org/0000-0002-6468-120X)
 
 - **Functional Genomics Center Zurich**. Funder.
+  [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/04tgr1802)
 
 - **Christian Panse**. Maintainer.
   [](https://orcid.org/0000-0003-1975-3064)
