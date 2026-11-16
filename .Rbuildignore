@@ -19,7 +19,6 @@ R/tidyMS_stanr\.R
 ^\.lintr$
 ^\.claude$
 ^\.vscode$
-^BinaryFiles$
 ^CODE_OF_CONDUCT\.md$
 ^Makefile$
 ^conda$
