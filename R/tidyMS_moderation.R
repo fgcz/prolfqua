@@ -271,7 +271,7 @@ summary_ROPECA_median_p_scaled <- function(
     group_by(across(all_of(c(subject_id, contrast)))) |>
     dplyr::summarize(
       n = dplyr::n(),
-      n_not_na = n(),
+      n_not_na = sum(!is.na(.data$scaled.p)),
       mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
       estimate = median(!!sym(estimate), na.rm = TRUE),
       statistic = median(!!sym(statistic), na.rm = TRUE),

@@ -117,6 +117,21 @@ test_that("ContrastsROPECA", {
   expect_s3_class(ropeca$get_contrast_sides(), "data.frame")
 })
 
+test_that("summary_ROPECA_median_p_scaled counts only peptides with a p-value", {
+  peptides <- data.frame(
+    contrast = "c1",
+    protein_Id = "P1",
+    diff = c(1, 1.2, 0.8),
+    statistic = c(3, 4, NA),
+    p.value = c(0.01, 0.02, NA),
+    avgAbd = 20
+  )
+  res <- summary_ROPECA_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
+  expect_equal(res$n, 3)
+  expect_equal(res$n_not_na, 2)
+  expect_equal(res$beta.based.significance, get_p_values_pbeta(res$median.p.value, 2))
+})
+
 test_that("ContrastsTable (passive container)", {
   # Build a contrast result to feed into ContrastsTable
   istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.4)
