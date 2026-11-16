@@ -140,7 +140,7 @@ missigness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$r
   factors <- lfqdata$relevant_factor_keys()
   formula <- .isotope_by_factors_formula(lfqdata, factors)
   mean_abundance <- paste0("mean_", lfqdata$response())
-  missing_percent <- dplyr::rename(missing_percent, !!sym(mean_abundance) := .data$meanAbundance)
+  missing_percent <- dplyr::rename(missing_percent, !!sym(mean_abundance) := "meanAbundance")
 
   p <- ggplot2::ggplot(
     missing_percent,
@@ -227,7 +227,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
     geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = !!sym(hierarchy_key)), nudge_y = nudgeval, angle = 45) +
     facet_grid(as.formula(formula))
-  xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = hierarchy_key)
+  xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = dplyr::all_of(hierarchy_key))
 
   return(list(data = xx, figure = p))
 }

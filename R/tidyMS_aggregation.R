@@ -87,7 +87,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 
 .reestablish_condition <- function(data, medpolishRes, sample_name, factor_keys, file_name, isotope_label) {
   xx <- data |>
-    dplyr::select(c(sample_name, factor_keys, file_name, isotope_label)) |>
+    dplyr::select(dplyr::all_of(c(sample_name, factor_keys, file_name, isotope_label))) |>
     dplyr::distinct()
   res <- dplyr::inner_join(xx, medpolishRes, by = sample_name)
   res

@@ -20,7 +20,7 @@
 #'
 table_factors <- function(pdata, file_name, sample_name, factor_keys) {
   factors_table <- pdata |>
-    dplyr::select(c(file_name, sample_name, factor_keys)) |>
+    dplyr::select(dplyr::all_of(c(file_name, sample_name, factor_keys))) |>
     dplyr::distinct() |>
     arrange(!!sym(sample_name))
   return(factors_table)
@@ -47,7 +47,7 @@ table_factors <- function(pdata, file_name, sample_name, factor_keys) {
 table_factors_size <- function(pdata, file_name, sample_name, factor_keys, factor_keys_depth) {
   xx <- table_factors(pdata, file_name, sample_name, factor_keys)
   xx <- xx |>
-    dplyr::group_by(dplyr::across(factor_keys_depth)) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(factor_keys_depth))) |>
     dplyr::summarize(n = dplyr::n())
   return(xx)
 }

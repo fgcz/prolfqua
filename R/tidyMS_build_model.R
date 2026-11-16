@@ -61,7 +61,7 @@ LR_test <- function(
     dplyr::select(!!sym(subject_id), dplyr::all_of("modelComparisonLikelihoodRatioTest")) |>
     tidyr::unnest(cols = c("modelComparisonLikelihoodRatioTest"))
   likelihood_ratio_test_result <- likelihood_ratio_test_result |>
-    dplyr::rename(likelihood_ratio_test.pValue = .data$modelComparisonLikelihoodRatioTest)
+    dplyr::rename(likelihood_ratio_test.pValue = "modelComparisonLikelihoodRatioTest")
 
   if (!is.null(path)) {
     plot_lrt_diagnostics(likelihood_ratio_test_result, model_name, model_name_int, path)

@@ -286,7 +286,7 @@ LFQDataPlotter <- R6::R6Class(
     pairs_smooth = function(max = 10) {
       lfq <- self$lfq
       sample_col <- lfq$sample_name()
-      samples <- dplyr::select(lfq$data_long(), sample_col) |>
+      samples <- dplyr::select(lfq$data_long(), dplyr::all_of(sample_col)) |>
         distinct() |>
         pull()
       if (length(samples) > max) {

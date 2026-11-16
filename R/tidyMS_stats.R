@@ -333,7 +333,7 @@ plot_stat_density_median <- function(
 #'
 plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbundance", "sd")) {
   stat <- match.arg(stat)
-  pdata <- pdata |> tidyr::unite("groups", factor_keys_depth)
+  pdata <- pdata |> tidyr::unite("groups", dplyr::all_of(factor_keys_depth))
   p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]])) +
     geom_violin() +
     ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black")
