@@ -102,6 +102,12 @@
 - [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md)
   : ROPECA contrast analysis facade for nested input
 
+- [`ContrastsROPECAV2`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2.md)
+  : ROPECA V2: median peptide z-score with a correlation-aware null
+
+- [`ContrastsROPECAV2NestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2NestedFacade.md)
+  : ROPECA V2 contrast analysis facade for nested input
+
 - [`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md)
   : Rfit rank-based regression contrast analysis facade
 

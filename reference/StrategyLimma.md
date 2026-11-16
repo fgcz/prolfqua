@@ -37,6 +37,8 @@ Other modelling:
 [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
+[`ContrastsROPECAV2`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2.md),
+[`ContrastsROPECAV2NestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2NestedFacade.md),
 [`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md),
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md),
@@ -174,7 +176,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLimma$new("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x59af842bcfa8>
+#> <environment: 0x5735e7353b50>
 strat$model_name
 #> [1] "limma"
 ```

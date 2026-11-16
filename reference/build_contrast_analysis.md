@@ -39,10 +39,10 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
   `"deqms_voom"`, `"limpa"`, `"limpa_nested"`; limit-of-detection
   imputation `"lm_impute"`, `"limma_impute"`, `"limma_voom_impute"`,
   `"rfit_impute"`; peptide-level models `"lmer_nested"`,
-  `"ropeca_nested"`; detection models `"firth"`, `"binomial_nested"`,
-  `"binomial_firth_nested"`; the hurdle model `"hurdle_nested"`,
-  combining intensity and detection. Downstream packages may add more
-  via
+  `"ropeca_nested"`, `"ropecaV2_nested"`; detection models `"firth"`,
+  `"binomial_nested"`, `"binomial_firth_nested"`; the hurdle model
+  `"hurdle_nested"`, combining intensity and detection. Downstream
+  packages may add more via
   [`register_facade`](https://fgcz.github.io/prolfqua/reference/register_facade.md).
   The authoritative list is
   `names(`[`list_facades`](https://fgcz.github.io/prolfqua/reference/list_facades.md)`())`.
@@ -94,6 +94,8 @@ Other modelling:
 [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
+[`ContrastsROPECAV2`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2.md),
+[`ContrastsROPECAV2NestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2NestedFacade.md),
 [`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md),
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md),
@@ -280,9 +282,9 @@ head(fa_firth$get_contrasts())
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1

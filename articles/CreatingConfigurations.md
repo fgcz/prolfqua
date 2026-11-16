@@ -269,7 +269,7 @@ sessionInfo()
     ##  [52] nnet_7.3-21            tidyselect_1.2.1       yaml_2.3.12           
     ##  [55] doParallel_1.0.17      codetools_0.2-20       lattice_0.23-1        
     ##  [58] tibble_3.3.1           plyr_1.8.9             withr_3.0.3           
-    ##  [61] S7_0.2.2               prolfqua_1.9.3         evaluate_1.0.5        
+    ##  [61] S7_0.2.2               prolfqua_1.9.4         evaluate_1.0.5        
     ##  [64] desc_1.4.3             survival_3.8-12        circlize_0.4.18       
     ##  [67] pillar_1.11.1          BiocManager_1.30.27    mice_3.19.0           
     ##  [70] foreach_1.5.2          stats4_4.6.2           reformulas_0.4.4      

@@ -2,6 +2,24 @@
 
 ## prolfqua 1.9.4
 
+### New features
+
+- New method `ropecaV2_nested` (`ContrastsROPECAV2NestedFacade`,
+  `ContrastsROPECAV2`): ROPECA with calibrated protein p-values.
+  `ropeca_nested` tests the median signed peptide p-value against a beta
+  distribution, which is conservative for independent peptides and makes
+  proteins with many correlated peptides too significant; its 10-peptide
+  cap only damps that. `ropecaV2_nested` converts the moderated peptide
+  t-statistics to normal scores and tests their median per protein
+  against its exact null distribution, allowing for the correlation of
+  the peptides of a protein, which it estimates once from the peptide
+  model residuals. In simulations with correlated peptides the share of
+  p \< 0.05 under the null stays between 0.040 and 0.060 for 2 to 40
+  peptides, where `ropeca_nested` gives 0.029 to 0.075. `diff` is the
+  median peptide fold change, as in `ropeca_nested`; `statistic`,
+  `std.error` and the 95% interval follow from the p-value.
+  `ropeca_nested` is unchanged.
+
 ### Bug fixes
 
 - `ropeca_nested` / `ContrastsROPECA`: the protein p-value counted

@@ -83,7 +83,8 @@ about <- c(
   binomial_firth_nested = "binomial_nested with Firth bias reduction",
   hurdle_nested = "lm_impute intensity + binomial_firth_nested detection",
   lmer_nested = "mixed model, peptide and sample random effects",
-  ropeca_nested = "peptide fold changes summarised per protein (ROPECA)"
+  ropeca_nested = "peptide fold changes summarised per protein (ROPECA)",
+  ropecaV2_nested = "ROPECA with an exact, correlation-aware null for the median peptide z-score"
 )
 overview <- data.frame(
   method = names(results),
@@ -116,6 +117,7 @@ knitr::kable(overview, row.names = FALSE)
 | rfit_impute | aggregated | 20 | 14 | rfit with LOD imputation |
 | rlm | aggregated | 20 | 14 | robust linear model (MASS::rlm) |
 | ropeca_nested | nested | 20 | 14 | peptide fold changes summarised per protein (ROPECA) |
+| ropecaV2_nested | nested | 20 | 16 | ROPECA with an exact, correlation-aware null for the median peptide z-score |
 
 The detection models (`firth`, `binomial_nested`,
 `binomial_firth_nested`) test differences in how often a protein or its
@@ -157,6 +159,7 @@ knitr::kable(one, digits = 3)
 | rfit_impute           | -0.463 |   0.000 | 0.000 |
 | rlm                   | -0.469 |   0.000 | 0.000 |
 | ropeca_nested         | -0.495 |   0.000 | 0.000 |
+| ropecaV2_nested       | -0.495 |   0.000 | 0.000 |
 
 ## Session info
 
@@ -183,7 +186,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] prolfqua_1.9.3   BiocStyle_2.40.0
+#> [1] prolfqua_1.9.4   BiocStyle_2.40.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

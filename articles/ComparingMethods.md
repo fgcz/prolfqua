@@ -21,6 +21,9 @@ provides a common front-end for several contrast backends:
   reporting protein-level contrasts.
 - `ropeca` — peptide-level fold changes aggregated to protein via ROPECA
   median + beta-distribution p-values.
+- `ropecaV2` — ROPECA’s median peptide fold change, with a p-value from
+  the exact null distribution of the median peptide z-score that allows
+  for the correlation of the peptides of a protein.
 - `lm_impute` — `lm` that refits failed/singular proteins with LOD
   imputation and borrowed variance.
 - `deqms` — `limma` plus DEqMS count-dependent variance moderation using
@@ -41,8 +44,9 @@ level:
 - `limpa` requires protein-level data from `AggregateLimpa` (which
   provides standard errors and observation counts for vooma precision
   weighting)
-- `lmer` and `ropeca` require lower-level measurements such as peptides
-  nested within proteins, but still report protein-level contrasts
+- `lmer`, `ropeca` and `ropecaV2` require lower-level measurements such
+  as peptides nested within proteins, but still report protein-level
+  contrasts
 - `firth` can be used with either aggregated protein-level data or
   nested peptide-level data and still reports protein-level contrasts
 
@@ -467,10 +471,10 @@ plain lm could not estimate
 The peptide-input facades take peptide/precursor-level `LFQData` and
 return protein-level contrasts. They are defined in
 `R/ContrastsChildToParentFacades.R` and use the `*_nested` method keys:
-`lmer_nested`, `ropeca_nested`, `binomial_firth_nested`, and
-`limpa_nested`. `binomial_firth_nested` models peptide detection, like
-the protein-input `firth` shown above, from the number of detected
-peptides per protein and sample.
+`lmer_nested`, `ropeca_nested`, `ropecaV2_nested`,
+`binomial_firth_nested`, and `limpa_nested`. `binomial_firth_nested`
+models peptide detection, like the protein-input `firth` shown above,
+from the number of detected peptides per protein and sample.
 
 ``` r
 fa_lmer <- build_contrast_analysis(
@@ -487,6 +491,13 @@ fa_ropeca <- build_contrast_analysis(
   method = "ropeca_nested"
 )
 
+fa_ropecaV2 <- build_contrast_analysis(
+  lfq_peptide,
+  "~ group_",
+  contrasts,
+  method = "ropecaV2_nested"
+)
+
 fa_binomial_firth <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
@@ -495,7 +506,10 @@ fa_binomial_firth <- build_contrast_analysis(
 )
 ```
 
-`ropeca_nested` aggregates peptide evidence back to proteins, whereas
+`ropeca_nested` and `ropecaV2_nested` aggregate peptide evidence back to
+proteins; `ropecaV2_nested` estimates the correlation of the peptides of
+a protein from the residuals, here 0.03, so that proteins with many
+peptides are not reported as more significant. In contrast,
 `lmer_nested` models the nested peptide structure directly before
 reporting protein-level contrasts. `binomial_firth_nested` also reports
 protein-level contrasts; its degrees of freedom come from the samples,
@@ -505,6 +519,7 @@ not from the number of peptides.
 results_peptide <- bind_rows(
   fa_lmer$get_contrasts(),
   fa_ropeca$get_contrasts(),
+  fa_ropecaV2$get_contrasts(),
   fa_binomial_firth$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
@@ -520,12 +535,13 @@ results_peptide |>
   dplyr::count(modelName, name = "n_results")
 ```
 
-    ## # A tibble: 3 × 2
+    ## # A tibble: 4 × 2
     ##   modelName             n_results
     ##   <chr>                     <int>
     ## 1 binomial_firth_nested       160
     ## 2 lmer_nested                 102
-    ## 3 ropeca_nested               157
+    ## 3 ropecaV2_nested             157
+    ## 4 ropeca_nested               157
 
 ``` r
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
@@ -593,12 +609,12 @@ results_hurdle |>
     ##  2 A_vs_Ct… KVkccD~18… -0.524          1.99e- 9      -1.88e+ 0             0.251
     ##  3 A_vs_Ct… 4Y4DYT~09…  0.583          1.99e- 8       8.51e-16             1    
     ##  4 A_vs_Ct… 0CubNR~08…  0.674          4.07e- 8       1.35e+ 0             0.449
-    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -2.11e-15             1.000
-    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10      -9.86e-32             1    
-    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       0                  NaN    
-    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9      -9.86e-32             1    
-    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7       1.97e-31             1    
-    ## 10 B_vs_Ct… TR3Ksv~14… -0.413          4.18e- 7      -9.86e-32             1    
+    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -2.15e-15             1.000
+    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10       0                    1    
+    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       1.97e-31           NaN    
+    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9       0                    1    
+    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7      -3.94e-31             1    
+    ## 10 B_vs_Ct… TR3Ksv~14… -0.413          4.18e- 7       0                    1    
     ## # ℹ 2 more variables: p.value <dbl>, FDR <dbl>
 
 The `hurdle_nested` method does all of this from the peptide data in one
@@ -669,7 +685,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4  dplyr_1.2.1    prolfqua_1.9.3
+    ## [1] ggplot2_4.0.4  dplyr_1.2.1    prolfqua_1.9.4
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

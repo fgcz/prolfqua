@@ -36,7 +36,7 @@ names(FACADE_REGISTRY)
 #> [10] "limma_voom_impute"     "limpa"                 "limpa_nested"         
 #> [13] "lm"                    "lm_impute"             "lmer_nested"          
 #> [16] "rfit"                  "rfit_impute"           "rlm"                  
-#> [19] "ropeca_nested"        
+#> [19] "ropecaV2_nested"       "ropeca_nested"        
 FACADE_REGISTRY$limma$class
 #> [1] "ContrastsLimmaFacade"
 ```

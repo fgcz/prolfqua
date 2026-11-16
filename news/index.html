@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.4" id="prolfqua-194">prolfqua 1.9.4<a class="anchor" aria-label="anchor" href="#prolfqua-194"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-9-4">New features<a class="anchor" aria-label="anchor" href="#new-features-1-9-4"></a></h3>
+<ul><li>New method <code>ropecaV2_nested</code> (<code>ContrastsROPECAV2NestedFacade</code>, <code>ContrastsROPECAV2</code>): ROPECA with calibrated protein p-values. <code>ropeca_nested</code> tests the median signed peptide p-value against a beta distribution, which is conservative for independent peptides and makes proteins with many correlated peptides too significant; its 10-peptide cap only damps that. <code>ropecaV2_nested</code> converts the moderated peptide t-statistics to normal scores and tests their median per protein against its exact null distribution, allowing for the correlation of the peptides of a protein, which it estimates once from the peptide model residuals. In simulations with correlated peptides the share of p &lt; 0.05 under the null stays between 0.040 and 0.060 for 2 to 40 peptides, where <code>ropeca_nested</code> gives 0.029 to 0.075. <code>diff</code> is the median peptide fold change, as in <code>ropeca_nested</code>; <code>statistic</code>, <code>std.error</code> and the 95% interval follow from the p-value. <code>ropeca_nested</code> is unchanged.</li>
+</ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-9-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-4"></a></h3>
 <ul><li>

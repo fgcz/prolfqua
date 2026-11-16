@@ -40,6 +40,8 @@ Other modelling:
 [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECA.md),
 [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
+[`ContrastsROPECAV2`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2.md),
+[`ContrastsROPECAV2NestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2NestedFacade.md),
 [`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md),
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md),
@@ -297,22 +299,22 @@ deqms <- ContrastsModeratedDEqMS$new(contrast,
 
 bb <- deqms$get_contrasts()
 #> contrasts_linfct
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
 
 # Merge with LOD-imputed refits for proteins the plain lm cannot estimate
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 #> Warning: essentially perfect fit: summary may be unreliable
 merged <- merge_contrasts_results(deqms, imp)
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 #> contrasts_linfct
 
 cs <- deqms$get_contrast_sides()
 cslf <- deqms$get_linfct()
 ctrwide <- deqms$to_wide()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 cp <- deqms$get_Plotter()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 cp$volcano()
 #> $FDR
 

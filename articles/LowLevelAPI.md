@@ -190,7 +190,7 @@ names(list_facades())
     ## [10] "limma_voom_impute"     "limpa"                 "limpa_nested"         
     ## [13] "lm"                    "lm_impute"             "lmer_nested"          
     ## [16] "rfit"                  "rfit_impute"           "rlm"                  
-    ## [19] "ropeca_nested"
+    ## [19] "ropeca_nested"         "ropecaV2_nested"
 
 ## Session Info
 
@@ -219,7 +219,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.9.3
+    ## [1] prolfqua_1.9.4
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           
