@@ -76,28 +76,14 @@ ContrastsFirth <- R6::R6Class(
     #' @description
     #' get linear functions from contrasts
     #' @param avg logical TRUE - get also linfct for averages
-    #' @return a list with the linfct-annotated model containers
-    #'   (\code{models1} / \code{models2}); the shared input model is left
+    #' @return the linfct-annotated copy of the model container
+    #'   (\code{model_df}, \code{strategy}); the shared input model is left
     #'   untouched.
     get_linfct = function(avg = TRUE) {
-      linfct_models <- list()
-      labels <- c(models1 = "firth linfct single-peptide", models2 = "firth linfct multi-peptide")
-      for (name in names(labels)) {
-        models <- self$models$models[[name]]
-        if (!is.null(models)) {
-          models$model_df <- .filter_fitted_firth_models(models$model_df)
-          # multi-peptide models carry protein-specific peptide coefficients: no shared linfct
-          models$model_df$linfct <- .linfct_per_model(
-            models$model_df,
-            self$contrasts,
-            avg,
-            labels[[name]],
-            reuse_complete = name == "models1"
-          )
-          linfct_models[[name]] <- models
-        }
-      }
-      return(linfct_models)
+      models <- self$models$models
+      models$model_df <- .filter_fitted_firth_models(models$model_df)
+      models$model_df$linfct <- .linfct_per_model(models$model_df, self$contrasts, avg, "firth linfct")
+      return(models)
     },
     #' @description
     #' get table with contrast estimates
@@ -106,21 +92,15 @@ ContrastsFirth <- R6::R6Class(
     #'
     get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
-        message("determine linear functions:")
-        linfct_models <- self$get_linfct()
-        message("get_contrasts -> contrasts_linfct")
-        # multi-peptide rows first; skip model sets without any fitted model
-        fitted <- Filter(function(m) !is.null(m) && nrow(m$model_df) > 0, linfct_models[c("models2", "models1")])
-        contrast_result <- bind_rows(lapply(fitted, function(models) {
-          contrasts_linfct(
-            models$model_df,
-            models$model_df$linfct,
-            subject_id = self$subject_id,
-            contrastfun = function(m, linfct) {
-              tryCatch(.compute_contrast(m, linfct, strategy = models$strategy), error = function(e) FALSE)
-            }
-          )
-        }))
+        models <- self$get_linfct()
+        contrast_result <- contrasts_linfct(
+          models$model_df,
+          models$model_df$linfct,
+          subject_id = self$subject_id,
+          contrastfun = function(m, linfct) {
+            tryCatch(.compute_contrast(m, linfct, strategy = models$strategy), error = function(e) FALSE)
+          }
+        )
         contrast_result <- .finalize_wald_contrasts(contrast_result, self$contrasts, self$subject_id, self$p.adjust)
         self$contrast_result <- .stamp_model_identity(contrast_result, self$model_name, "observed")
       }

@@ -4,24 +4,6 @@
 #' @export
 #' @family modelling
 #' @examples
-#'
-#'
-#'
-#'
-#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
-#'   weight_missing = 0.5, seed = 3)
-#' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
-#' istar$config$bin_resp <- "bin_resp"
-#' tmp <- LFQData$new(istar$data, istar$config)
-#' formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
-#' mod <- build_model_logistf(tmp, formula)
-#' tmp <- mod$get_coefficients()
-#' mod$coef_histogram()
-#' mod$coef_pairs()
-#' mod$get_anova()
-#' mod$coef_volcano()
-#' mod$anova_histogram()
-#'
 #' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
@@ -42,7 +24,8 @@ ModelFirth <- R6::R6Class(
   "ModelFirth",
   inherit = ModelInterface,
   public = list(
-    #' @field models data.frame with modelling data and model.
+    #' @field models \code{\link{model_analyse}} result: \code{model_df}, one
+    #'   fitted model per subject, and the \code{strategy}
     models = NULL,
     #' @field model_name name of model
     model_name = character(),
@@ -52,7 +35,8 @@ ModelFirth <- R6::R6Class(
     p.adjust = NULL,
     #' @description
     #' initialize
-    #' @param models dataframe with modelling results
+    #' @param models \code{\link{model_analyse}} result with a \code{model_df}
+    #'   data.frame and the \code{strategy}
     #' @param model_name name of model
     #' @param subject_id subject column name
     #' @param p.adjust method to adjust p-values
@@ -63,8 +47,8 @@ ModelFirth <- R6::R6Class(
       subject_id = "protein_Id",
       p.adjust = prolfqua::adjust_p_values
     ) {
-      if (!is.list(models) || !all(c("models1", "models2", "hkey") %in% names(models))) {
-        abort_bad_argument("models", "be a list with the elements models1, models2 and hkey")
+      if (!is.list(models) || !is.data.frame(models$model_df)) {
+        abort_bad_argument("models", "be a model_analyse() result with a model_df data.frame")
       }
       self$models <- models
       self$model_name <- model_name
@@ -96,15 +80,11 @@ ModelFirth <- R6::R6Class(
         return(out)
       }
 
-      models <- dplyr::bind_rows(self$models[[1]]$model_df, self$models[[2]]$model_df)
-      model_coeff <- models |>
+      model_coeff <- self$models$model_df |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
       model_coeff <- model_coeff |>
         dplyr::select(!!!syms(self$subject_id), !!sym("Coeffs_model"), isSingular, nr_coef)
       model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
-      if (!is.null(self$models$hkey)) {
-        model_coeff <- model_coeff |> dplyr::filter(!grepl(self$models$hkey, factor))
-      }
       return(model_coeff)
     },
     #' @description

@@ -219,8 +219,8 @@ create Contrast
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    a list with the linfct-annotated model containers
-  (\code{models1} / \code{models2}); the shared input model is left
+    the linfct-annotated copy of the model container
+  (\code{model_df}, \code{strategy}); the shared input model is left
   untouched.
   }
 }

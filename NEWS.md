@@ -1,5 +1,10 @@
 # prolfqua 1.9.3
 
+## Behaviour changes
+
+- The Firth backend fits one model per protein: `build_model_logistf()` requires aggregated data, one row per protein and sample, and stops on peptide-level input. `ModelFirth$models` is the `model_analyse()` result (`model_df`, `strategy`) instead of a list of `models1`, `models2` and `hkey`, and `ContrastsFirth$get_linfct()` returns that one container. `sim_build_models_logistf()` loses its `peptide` argument. `firth` results do not change.
+- `ContrastsFirth$get_contrasts()` no longer prints the debug messages "determine linear functions:" and "get_contrasts -> contrasts_linfct".
+
 ## Removed
 
 - The `firth_nested` method (`ContrastsFirthNestedFacade`, `build_model_glm_peptide()`). It fitted one 0/1 row per peptide and sample, so its detection p-values became more significant the more peptides a protein had: on the IonStar benchmark, the share of unchanged human proteins with p < 0.05 rose from 1.3% (2-3 peptides) to 7.7% (more than 20). Use `binomial_firth_nested`, which applies the same Firth bias reduction to the detected-peptide counts per protein and sample and takes its degrees of freedom from the samples. `ContrastsHurdleFacade` accepts `binomial_nested` or `binomial_firth_nested` as the detection component.

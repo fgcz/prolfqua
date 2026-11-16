@@ -23,13 +23,13 @@ test_that("Model needs a model table with the subject columns and a strategy", {
   )
 })
 
-test_that("ModelFirth needs models1, models2 and hkey", {
+test_that("ModelFirth needs a model_analyse() result", {
   expect_error(ModelFirth$new(list(models1 = NULL)), class = "prolfqua_error_bad_argument")
-  expect_s3_class(ModelFirth$new(list(models1 = NULL, models2 = NULL, hkey = NULL)), "ModelFirth")
+  expect_s3_class(ModelFirth$new(list(model_df = data.frame())), "ModelFirth")
 })
 
 test_that("ContrastsFirth needs a ModelFirth and named contrasts", {
-  mod <- ModelFirth$new(list(models1 = NULL, models2 = NULL, hkey = NULL))
+  mod <- ModelFirth$new(list(model_df = data.frame()))
   expect_error(ContrastsFirth$new(list(), c(a = "group_A - group_B")), class = "prolfqua_error_bad_argument")
   expect_error(ContrastsFirth$new(mod, "group_A - group_B"), class = "prolfqua_error_bad_argument")
 })

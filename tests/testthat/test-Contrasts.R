@@ -244,18 +244,18 @@ test_that("ContrastsFirth$get_linfct does not mutate the shared model", {
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
   mod <- build_model_glm_protein(lfqdata, "~ group_")
 
-  before_rows <- nrow(mod$models$models1$model_df)
-  expect_false("linfct" %in% colnames(mod$models$models1$model_df))
+  before_rows <- nrow(mod$models$model_df)
+  expect_false("linfct" %in% colnames(mod$models$model_df))
 
   # computing contrasts must not filter rows or add columns on the shared model
   invisible(ContrastsFirth$new(mod, Contr)$get_contrasts())
-  expect_equal(nrow(mod$models$models1$model_df), before_rows)
-  expect_false("linfct" %in% colnames(mod$models$models1$model_df))
+  expect_equal(nrow(mod$models$model_df), before_rows)
+  expect_false("linfct" %in% colnames(mod$models$model_df))
 
   # get_linfct returns the annotated copies, leaving the input untouched
   linfct_models <- ContrastsFirth$new(mod, Contr)$get_linfct()
-  expect_true("linfct" %in% colnames(linfct_models$models1$model_df))
-  expect_false("linfct" %in% colnames(mod$models$models1$model_df))
+  expect_true("linfct" %in% colnames(linfct_models$model_df))
+  expect_false("linfct" %in% colnames(mod$models$model_df))
 })
 
 test_that("ContrastsFirth drops failed logistf fits before contrasts", {
@@ -264,11 +264,11 @@ test_that("ContrastsFirth drops failed logistf fits before contrasts", {
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
   mod <- build_model_glm_protein(lfqdata, "~ group_")
-  model_df <- mod$models$models1$model_df
+  model_df <- mod$models$model_df
   failed_idx <- which(model_df$has_model_fit)[1]
-  mod$models$models1$model_df$linear_model[[failed_idx]] <- "failed fit"
-  mod$models$models1$model_df$has_model_fit[[failed_idx]] <- FALSE
-  mod$models$models1$model_df$nr_coef_not_NA[[failed_idx]] <- NA_integer_
+  mod$models$model_df$linear_model[[failed_idx]] <- "failed fit"
+  mod$models$model_df$has_model_fit[[failed_idx]] <- FALSE
+  mod$models$model_df$nr_coef_not_NA[[failed_idx]] <- NA_integer_
 
   ctr <- ContrastsFirth$new(mod, Contr)
   res <- ctr$get_contrasts()

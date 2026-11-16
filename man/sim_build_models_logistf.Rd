@@ -8,8 +8,7 @@ sim_build_models_logistf(
   model = c("parallel2", "parallel3", "factors", "interaction"),
   Nprot = 10,
   with_missing = TRUE,
-  weight_missing = 1,
-  peptide = FALSE
+  weight_missing = 1
 )
 }
 \description{
@@ -22,9 +21,6 @@ mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
 mod2$model_df$linear_model[[1]]
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
-
-mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
-modf <- sim_build_models_logistf(model = "factors", weight_missing = 1, peptide=TRUE)
 }
 \seealso{
 Other modelling:

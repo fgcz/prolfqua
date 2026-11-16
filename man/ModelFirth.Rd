@@ -10,24 +10,6 @@ An R6 class generator.
 R6 class representing modelling result
 }
 \examples{
-
-
-
-
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
-  weight_missing = 0.5, seed = 3)
-istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
-istar$config$bin_resp <- "bin_resp"
-tmp <- LFQData$new(istar$data, istar$config)
-formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
-mod <- build_model_logistf(tmp, formula)
-tmp <- mod$get_coefficients()
-mod$coef_histogram()
-mod$coef_pairs()
-mod$get_anova()
-mod$coef_volcano()
-mod$anova_histogram()
-
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
@@ -137,7 +119,8 @@ Other modelling:
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
-    \item{\code{models}}{data.frame with modelling data and model.}
+    \item{\code{models}}{\code{\link{model_analyse}} result: \code{model_df}, one
+fitted model per subject, and the \code{strategy}}
 
     \item{\code{model_name}}{name of model}
 
@@ -182,7 +165,8 @@ Other modelling:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{models}}{dataframe with modelling results}
+      \item{\code{models}}{\code{\link{model_analyse}} result with a \code{model_df}
+data.frame and the \code{strategy}}
       \item{\code{model_name}}{name of model}
       \item{\code{subject_id}}{subject column name}
       \item{\code{p.adjust}}{method to adjust p-values}
