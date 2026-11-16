@@ -1,3 +1,9 @@
+#' Statistical condition checks
+#'
+#' @srrstats {G5.2a} Warnings identify their operation and errors are classed; limit: some informative messages share
+#'   wording.
+#' @noRd
+
 test_that("log transforms warn before zeros become infinite", {
   expect_warning(transform_work_intensity(data.frame(x = c(0, 1)), "x", log2), "zeros.*-Inf")
 })

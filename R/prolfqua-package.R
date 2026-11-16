@@ -82,5 +82,13 @@
 #'     different assumptions; diagnostics and the experimental design must
 #'     guide the method choice.}
 #' }
+#' @importFrom R6 R6Class
 #' @keywords internal
+#' @srrstats {G1.0} Package citation and vignette bibliography include primary statistical references.
+#' @srrstats {G1.2} Package Lifecycle declares stable status and the Bioconductor deprecation cycle.
+#' @srrstats {G1.3} Package Glossary and column_description define workflow terms, test interpretation and
+#'   assumptions.
+#' @srrstats {G1.4} The exported API is documented with roxygen2, including R6 methods.
+#' @srrstats {G1.5} Paper workflow examples are included; limit: full performance reproduction is in
+#'   prolfquabenchmark.
 "_PACKAGE"

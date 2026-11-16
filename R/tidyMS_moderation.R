@@ -16,6 +16,9 @@
 #' res <- moderated_p_limma(contrast_df)
 #' "moderated.p.value" %in% colnames(res)
 #' @param variance_floor optional positive lower bound for posterior variances
+#' @srrstats {G5.4} Tests compare moderation to squeezeVar, detection to glm/logistf and Hurdle to Fisher combination.
+#' @srrstats {G5.4b} Reference tests cover limma moderation and detection; limit: DEqMS/PECA and all contrasts are not
+#'   covered.
 moderated_p_limma <- function(
   contrast_df,
   df = "df",

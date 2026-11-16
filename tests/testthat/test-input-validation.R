@@ -1,3 +1,8 @@
+#' Statistical condition checks
+#'
+#' @srrstats {G5.8b} Validation tests reject character, complex, logical and factor responses with classed errors.
+#' @noRd
+
 validation_fixture <- function() {
   x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
   list(

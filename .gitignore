@@ -22,3 +22,6 @@ Rplots.pdf
 renv/
 renv.lock
 .Rprofile
+
+# Generated local standards and assessment reports
+/srr/*.html

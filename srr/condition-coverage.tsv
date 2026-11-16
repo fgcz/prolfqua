@@ -1,0 +1,143 @@
+file	line	executions	condition_site
+R/BinomialNested.R	8	1	"abort_bad_argument(""lfqdata"", ""be an LFQData object"")"
+R/BinomialNested.R	28	1	"abort_prolfqua(""internal error: negative detection counts"")"
+R/BinomialNested.R	45	6	"abort_bad_argument(""prior_count"", ""be one non-negative number"")"
+R/BinomialNested.R	102	1	"abort_prolfqua(""binomial design is rank-deficient"")"
+R/BinomialNested.R	105	2	"abort_prolfqua(""binomial model requires at least two residual degrees of freedom"")"
+R/BinomialNested.R	179	1	"abort_prolfqua(""Firth iteration did not converge"")"
+R/ContrastConfiguration.R	165	2	abort_prolfqua(
+R/ContrastFirth.R	55	1	"abort_bad_argument(""model"", ""be a ModelFirth"", not = paste(class(model), collapse = ""/""))"
+R/Contrasts.R	201	1	"abort_bad_argument(""model"", ""be a Model object"")"
+R/ContrastsChildToParentFacades.R	25	1	abort_prolfqua(
+R/ContrastsFacadeBase.R	84	1	"abort_bad_argument(""lfqdata"", ""be an LFQData object"")"
+R/ContrastsFacadeBase.R	89	2	"abort_bad_argument(""modelstr"", ""be one right-hand-side formula string, e.g. `~ group_`"")"
+R/ContrastsFacades.R	11	5	abort_prolfqua(
+R/ContrastsFacades.R	28	5	abort_prolfqua(
+R/ContrastsFacades.R	59	2	abort_bad_argument(
+R/ContrastsFacades.R	838	1	"abort_bad_argument(""name"", ""be one non-empty string"")"
+R/ContrastsFacades.R	841	1	"abort_bad_argument(""class"", ""be one non-empty string"")"
+R/ContrastsFacades.R	844	1	"abort_bad_argument(""needs"", ""be one character string"")"
+R/ContrastsFacades.R	847	1	"abort_bad_argument(""package"", ""be one string"")"
+R/ContrastsFacades.R	850	2	"abort_bad_argument(""needs"", 'be ""aggregated"" or ""nested""', not = needs)"
+R/ContrastsHurdle.R	69	1	"abort_bad_argument(""intensity"", ""be a ContrastsInterface object"")"
+R/ContrastsHurdle.R	72	1	"abort_bad_argument(""detection"", ""be a ContrastsInterface object"")"
+R/ContrastsHurdle.R	76	1	abort_prolfqua(
+R/ContrastsHurdle.R	86	1	abort_prolfqua(
+R/ContrastsHurdle.R	95	1	abort_prolfqua(
+R/ContrastsInterface.R	42	1	"abort_prolfqua(""get_contrast_sides not implemented."")"
+R/ContrastsInterface.R	48	1	"abort_prolfqua(""get_contrasts not implemented."")"
+R/ContrastsInterface.R	80	1	"abort_prolfqua(""get_missing not implemented."")"
+R/ContrastsInterface.R	248	1	abort_prolfqua(
+R/ContrastsLimma.R	85	1	"abort_prolfqua(""No successful limma fits available to borrow variance from."")"
+R/ContrastsLimma.R	120	3	"abort_bad_argument(""modelstr"", ""use the configured LFQData response on the left of `~`"")"
+R/ContrastsLimma.R	182	4	"abort_missing_columns(wcol, data_nm = ""lfqdata"")"
+R/ContrastsLimma.R	200	1	"abort_bad_argument(""weights"", ""be NULL, one column name, or a numeric matrix"")"
+R/ContrastsLimma.R	704	1	"warning(""No non-intercept coefficients for ANOVA."")"
+R/ContrastsLimpa.R	109	1	"abort_invalid_config(""LFQData must have config$nr_children set"")"
+R/ContrastsModerated.R	79	1	"abort_bad_argument(""Contrast"", ""be a ContrastsInterface object"")"
+R/ContrastsModeratedDEqMS.R	219	5	warning(msg, call. = FALSE)
+R/ContrastsModeratedDEqMS.R	311	1	"abort_bad_argument(""count_df"", ""be a data frame"")"
+R/ContrastsModeratedDEqMS.R	315	1	"abort_missing_columns(missing, data_nm = ""count_df"")"
+R/ContrastsModeratedDEqMS.R	318	1	"abort_bad_argument(""count_column"", ""name a numeric column in count_df"")"
+R/ContrastsModeratedDEqMS.R	321	7	"abort_bad_argument(""loess_span"", ""be one finite number in (0, 1]"")"
+R/ContrastsPlotter.R	290	1	"warning(""no group_1 group_2 columns can't generate MA"")"
+R/ContrastsPlotter.R	348	1	abort_bad_argument(
+R/ContrastsROPECA.R	107	1	"abort_bad_argument(""Contrast"", ""hold peptide-level contrasts, with more than one `subject_id` column"")"
+R/ContrastsROPECA.R	391	2	"abort_bad_argument(""rho"", ""be a single number in [0, 1)"")"
+R/ContrastsROPECA.R	487	1	"abort_bad_argument(""Contrast"", ""have peptide-level subject_id (parent and child keys)"")"
+R/ContrastsTable.R	45	1	"abort_bad_argument(""config"", ""be a ContrastConfiguration or NULL"", not = paste(class(config), collapse = ""/""))"
+R/LFQData.R	80	1	"abort_missing_columns(missing, data_nm = ""LFQData$data"")"
+R/LFQData.R	110	1	"abort_bad_argument(""new_data"", ""be a data frame"", not = paste(class(new_data), collapse = ""/""))"
+R/LFQData.R	272	1	"abort_bad_argument(""value"", paste0(""be one of "", toString(cfg$value_vars())), not = value)"
+R/LFQData.R	357	1	"abort_bad_argument(""newname"", ""not name an existing column"", not = newname)"
+R/LFQDataAggregator.R	8	1	abort_bad_argument(
+R/LFQDataAggregator.R	15	1	abort_bad_argument(
+R/LFQDataAggregator.R	63	1	"abort_bad_argument(""lfq_agg"", ""be an aggregated LFQData (call the aggregator first)"", not = ""NULL"")"
+R/LFQDataAggregator.R	136	2	warning(
+R/LFQDataAggregator.R	183	1	warning(
+R/LFQDataAggregator.R	262	1	"warning(""You did transform the intensities. top N works with raw data. "", lfq$get_config()$work_intensity)"
+R/LFQDataStats.R	216	1	"warning(""power_t_test_quantiles requires transformed data; aborting."")"
+R/LFQDataStats.R	234	1	"warning(""power_t_test requires transformed data; aborting."")"
+R/LFQDataTransformer.R	136	1	"abort_bad_argument(""lfqsubset"", ""have the same transformation state (is_transformed) as self"")"
+R/LFQDataTransformer.R	151	1	"abort_bad_argument(""lfqsubset"", ""have the same transformation state (is_transformed) as self"")"
+R/LFQDataTransformer.R	154	1	"warning(""data should be log2 transformed"")"
+R/LFQDataTransformer.R	194	1	"warning(""data already transformed. If you still want to log2 tranform, set force = TRUE"")"
+R/LFQDataTransformer.R	236	1	warning(
+R/LFQDataTransformer.R	245	1	warning(
+R/LFQDataTransformer.R	381	1	warning(zero_mad_warning)
+R/Model.R	68	1	"abort_bad_argument(""model_df"", ""be a data frame"", not = paste(class(model_df), collapse = ""/""))"
+R/Model.R	72	1	"abort_missing_columns(missing, data_nm = ""model_df"")"
+R/Model.R	75	1	"abort_bad_argument(""model_strategy"", ""be a strategy, e.g. from strategy_lm()"")"
+R/ModelFirth.R	51	1	"abort_bad_argument(""models"", ""be a model_analyse() result with a model_df data.frame"")"
+R/ModelFirth.R	93	1	"warning(""ModelFirth$get_anova is not implemented."")"
+R/ModelFirth.R	101	1	"warning(""ModelFirth$anova_histogram is not implemented."")"
+R/ModelInterface.R	26	1	"abort_prolfqua(""get_coefficients not implemented"")"
+R/ModelInterface.R	32	1	"abort_prolfqua(""get_anova not implemented"")"
+R/build_contrast_analysis.R	123	1	"abort_bad_argument(""lfqdata"", ""be an LFQData object"")"
+R/conditions.R	19	159	rlang::abort(
+R/conditions.R	32	17	rlang::abort(
+R/conditions.R	46	5	rlang::abort(
+R/conditions.R	78	43	"rlang::abort(paste0(...), class = c(class, ""prolfqua_error""), call = call)"
+R/conditions.R	92	190	"error = function(e) abort_bad_argument(arg_nm, paste0(""be one of: "", toString(values)), parent = e)"
+R/conditions.R	105	11	"abort_bad_argument(""modelstr"", ""be a formula or a single string containing `~`"")"
+R/conditions.R	109	293	"error = function(e) abort_bad_argument(""modelstr"", ""be a valid model formula"", parent = e)"
+R/conditions.R	126	7	"abort_bad_argument(""contrasts"", ""be a nonempty named character vector without missing values"")"
+R/conditions.R	144	2	"abort_bad_argument(""data"", ""be a data frame"")"
+R/conditions.R	147	2	"abort_invalid_config(""`config` must be an AnalysisConfiguration."")"
+R/conditions.R	151	2	"abort_missing_columns(response %||% ""response"")"
+R/conditions.R	154	5	"abort_bad_argument(""response"", paste0(""be numeric (column `"", response, ""`)""))"
+R/conditions.R	166	21	"abort_bad_argument(""Nprot"", ""be one positive whole number"")"
+R/conditions.R	169	18	"abort_bad_argument(""weight_missing"", ""be one finite number in [0, 1]"")"
+R/logistf.R	6	1	"abort_bad_argument(""lfqdata"", ""be an LFQData object"")"
+R/logistf.R	62	1	"abort_bad_argument(""data"", ""be an LFQData object"")"
+R/progress.R	151	2	"abort_prolfqua(""unknown prolfqua.progress reporter: use NULL, a function(i, total, label), or 'message'"")"
+R/tidyMS_R6_Modelling.R	99	1	"fit = function(x) abort_prolfqua(""fit is not implemented"")"
+R/tidyMS_build_model.R	152	1	abort_missing_columns(missing)
+R/tidyMS_build_model.R	208	1	"abort_bad_argument(""lfqdata"", ""be an LFQData object"")"
+R/tidyMS_build_model.R	211	6	"abort_bad_argument(""lod"", ""be NULL or one finite number"")"
+R/tidyMS_build_model.R	306	1	abort_prolfqua(
+R/tidyMS_build_model.R	318	2	abort_prolfqua(
+R/tidyMS_build_model.R	329	1	"abort_prolfqua(""Model response '"", model_response, ""' differs from lfqdata response '"", response, ""'."")"
+R/tidyMS_build_model.R	351	1	abort_prolfqua(
+R/tidyMS_build_model.R	584	1	"abort_prolfqua(""No successful model fits available to borrow variance from."")"
+R/tidyMS_build_model.R	610	0	rlang::abort(
+R/tidyMS_build_model.R	628	1	"warning(""vcov coefficient names differ across successful fits; falling back to sigma method."")"
+R/tidyMS_contrasts.R	228	172	warning(msg, call. = FALSE)
+R/tidyMS_contrasts.R	330	0	"abort_prolfqua(""internal error: linfct columns do not match the model coefficients"")"
+R/tidyMS_contrasts.R	381	2	"warning(""No estimable contrast for this model!"")"
+R/tidyMS_contrasts.R	385	1	"warning(""Model is rank deficient!"")"
+R/tidyMS_contrasts.R	465	1	"abort_prolfqua(""linfct must be either a matrix or a list of length == nrow(models)"")"
+R/tidyMS_contrasts.R	481	1	warning(
+R/tidyMS_data_setup.R	7	1	"abort_invalid_config(""`file_name` column is not specified in the AnalysisConfiguration."")"
+R/tidyMS_data_setup.R	10	1	abort_missing_columns(configuration$file_name)
+R/tidyMS_data_setup.R	46	1	abort_invalid_config(
+R/tidyMS_data_setup.R	189	1	warning(message)
+R/tidyMS_data_setup.R	192	2	rlang::abort(
+R/tidyMS_data_setup.R	264	2	abort_missing_columns(missing)
+R/tidyMS_data_setup.R	449	1	"abort_bad_argument(""child"", ""name a hierarchy level below `parent`"", not = ""the hierarchy has one level"")"
+R/tidyMS_data_setup.R	453	1	"abort_missing_columns(missing, data_nm = ""pdata"")"
+R/tidyMS_missingness_summary.R	81	1	abort_prolfqua(
+R/tidyMS_moderation.R	32	7	"abort_bad_argument(""variance_floor"", ""be NULL or one positive number"")"
+R/tidyMS_plotting.R	26	1	"abort_bad_argument(""max_chars"", paste0(""be at least "", min_chars))"
+R/tidyMS_plotting.R	585	1	"warning(""plot_heatmap: the dataset has no rows."")"
+R/tidyMS_plotting.R	595	1	"warning(""No features have enough observed variation for a row z-scored heatmap."")"
+R/tidyMS_plotting.R	655	1	"warning(""plot_raster: the dataset needs at least two rows; got "", nrow(matrix), ""."")"
+R/tidyMS_plotting.R	704	1	"abort_bad_argument(""annotation"", ""name only samples that are columns of `matrix`"")"
+R/tidyMS_plotting.R	766	1	"abort_bad_argument(""PC"", ""be two principal component numbers"", not = toString(PC))"
+R/tidyMS_plotting.R	774	1	"abort_prolfqua(sprintf(""PCA: duplicated sample names are not allowed: %s."", toString(dup_samples)))"
+R/tidyMS_plotting.R	791	1	"abort_prolfqua(""PCA: no features without missing values remain after NA filtering. Impute "", impute_hint)"
+R/tidyMS_plotting.R	798	1	abort_prolfqua(sprintf(
+R/tidyMS_plotting.R	812	1	abort_prolfqua(sprintf(
+R/tidyMS_reshaping.R	71	1	"abort_bad_argument(""row_keys"", ""identify one value per sample"", not = toString(row_keys))"
+R/tidyMS_reshaping.R	99	1	"abort_bad_argument(""values"", ""be a matrix or a named list of matrices"")"
+R/tidyMS_reshaping.R	108	1	"abort_bad_argument(""values"", ""hold matrices with identical dimensions and column names"")"
+R/tidyMS_reshaping.R	124	2	"abort_missing_columns(missing_rowdata, data_nm = ""rowdata"")"
+R/tidyMS_reshaping.R	127	1	"abort_missing_columns(config$sample_name, data_nm = ""annotation"")"
+R/tidyMS_reshaping.R	130	2	"abort_bad_argument(""rowdata"", ""have one row per matrix row"", not = paste(nrow(rowdata), ""rows""))"
+R/tidyMS_reshaping.R	134	2	"abort_bad_argument(""annotation"", ""have one row per matrix column, named by `config$sample_name`"")"
+R/utilities.R	7	107	"rlang::warn(conditionMessage(e), class = ""prolfqua_fit_failed"")"
+R/utilities.R	108	1	"warning(""No SwissProt (sp) or Trembl (tr) id's were extracted."")"
+R/utilities.R	306	1	"abort_bad_argument(""x"", ""be a matrix or data.frame"")"
+R/utilities.R	316	1	"warning(""No row names to preserve. Object otherwise converted to tibble successfully."", call. = FALSE)"
+R/vignetteHelpers.R	36	1	"warning(sprintf(""could not copy script file. %s"", dest_script), call. = FALSE)"
+R/vignetteHelpers.R	40	1	"warning(sprintf(""could not copy script file. %s to %s"", src_script, dest_script), call. = FALSE)"

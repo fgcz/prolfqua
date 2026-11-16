@@ -216,7 +216,7 @@ ContrastsROPECA <- R6::R6Class(
 #' Gauss-Hermite rule for E[f(W)], W ~ N(0, 1), by the Golub-Welsch eigen
 #'
 #' decomposition of the Jacobi matrix of the probabilists' Hermite polynomials.
-#' @param n number of observations or quadrature nodes
+#' @param n number of normal observations or quadrature nodes, according to the function
 #' @noRd
 .gauss_hermite_normal <- function(n = 40) {
   jacobi <- matrix(0, n, n)
@@ -236,7 +236,7 @@ ContrastsROPECA <- R6::R6Class(
 #' with C = n! / ((k - 1)! (n - k)!). The integral is tabulated on a u grid and
 #' interpolated on the log scale.
 #' @param u normal-score threshold
-#' @param n number of observations or quadrature nodes
+#' @param n number of normal observations or quadrature nodes, according to the function
 #' @noRd
 .median_normal_sf <- function(u, n) {
   if (n %% 2 == 1) {
@@ -273,7 +273,7 @@ ContrastsROPECA <- R6::R6Class(
 #' z with the same one-sided tail probability, computed on the log scale so that
 #' extreme t stay finite.
 #' @param t peptide t-statistics
-#' @param df degrees of freedom or input data frame as required by the operation
+#' @param df peptide residual degrees of freedom
 #' @noRd
 .peptide_z <- function(t, df) {
   sign(t) * -stats::qnorm(stats::pt(-abs(t), df, log.p = TRUE), log.p = TRUE)
@@ -283,9 +283,13 @@ ContrastsROPECA <- R6::R6Class(
 #'
 #' is rho: M = sqrt(rho) W + sqrt(1 - rho) Med_n, W ~ N(0, 1), p = 2 P(M >= |m|).
 #' @param median_z median peptide normal score
-#' @param n number of observations or quadrature nodes
+#' @param n number of normal observations or quadrature nodes, according to the function
 #' @param rho within-protein peptide correlation
 #' @noRd
+#' @srrstats {G5.4a} Tests include exact fold changes and one-peptide/independent-null ROPECA reductions.
+#' @srrstats {G5.6a} Numerical recovery and null-calibration tests use explicit tolerances.
+#' @srrstats {G5.7} ROPECA null calibration is tested across peptide counts; limit: broader sample-size/power tests
+#'   remain.
 .ropeca_v2_pvalue <- function(median_z, n, rho) {
   rule <- .gauss_hermite_normal()
   p <- rep(NA_real_, length(median_z))
@@ -301,7 +305,7 @@ ContrastsROPECA <- R6::R6Class(
 #' Residuals of a fitted peptide model, the samples they belong to, and the
 #'
 #' residual projection I - Q Q' of the peptide's design over its observed samples.
-#' @param model model or model specification used by the operation
+#' @param model fitted peptide regression model
 #' @param data data frame or matrix consumed by this operation
 #' @param sample_col sample identifier column
 #' @noRd

@@ -28,6 +28,13 @@
 #' mod$coef_pairs()
 #' mod$anova_histogram()
 #'
+#' @srrstats {RE4.0} Model, ModelLimma and ModelFirth retain inspectable fitted-model results.
+#' @srrstats {RE4.2} Model and other backends expose coefficient tables through get_coefficients.
+#' @srrstats {RE4.4} Model stores model_strategy$formula; limit: formula access is not uniform across returned model
+#'   classes.
+#' @srrstats {RE4.11} Model exposes ANOVA, and contrast results include estimates, errors, df and statistics.
+#' @srrstats {RE7.3} Coefficient/ANOVA and inner vcov access are tested; limit: not all planned accessors exist or are
+#'   tested.
 Model <- R6::R6Class(
   "Model",
   inherit = ModelInterface,

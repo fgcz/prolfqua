@@ -201,6 +201,7 @@ export(which_missing)
 import(dplyr)
 import(ggplot2)
 importFrom(MASS,rlm)
+importFrom(R6,R6Class)
 importFrom(dplyr,
   across,
   all_of,

@@ -172,6 +172,9 @@ tidy_to_wide_config <- function(
 #' wide <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 #' back <- lfqdata_from_wide(wide$data, wide$rowdata, wide$annotation, lfqdata$get_config())
 #' stopifnot(nrow(back$data_long()) == nrow(lfqdata$data_long()))
+#' @srrstats {G2.7} Long data frames and wide matrices are supported; limit: no SummarizedExperiment input adapter.
+#' @srrstats {G2.10} Most extraction uses names and [[; limit: cross-class data.frame/tibble/data.table tests are
+#'   incomplete.
 lfqdata_from_wide <- function(values, rowdata, annotation, config, prefix = "ms") {
   if (is.matrix(values)) {
     values <- stats::setNames(list(values), config$get_response())

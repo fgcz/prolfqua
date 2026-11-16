@@ -40,6 +40,11 @@
 #' tmp <-lfqdata$get_sample(5, seed = 4)
 #' stopifnot(nrow(tmp$hierarchy()) == 5)
 #'
+#' @srrstats {G2.8} LFQData wraps validated numeric measurements and their AnalysisConfiguration for all facades.
+#' @srrstats {RE1.4} Package/LFQData help states model and missingness assumptions; limit: violations are not fully
+#'   tested.
+#' @srrstats {RE4.13} LFQData exposes categorical predictor values, factor keys and configuration.
+#' @srrstats {RE7.2} Tests preserve subject IDs and sample alignment, including wide-to-long roundtrips.
 LFQData <- R6::R6Class(
   "LFQData",
   private = list(

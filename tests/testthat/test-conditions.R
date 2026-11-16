@@ -1,3 +1,11 @@
+#' Statistical condition checks
+#'
+#' @srrstats {G5.2} Condition tests exercise validation and warning paths; limit: two invariants and some messages
+#'   lack tests.
+#' @srrstats {G5.2b} Coverage-guided condition tests trigger new checks; limit: two invariant guards and some messages
+#'   remain.
+#' @noRd
+
 # Typed error conditions raised at prolfqua's public boundaries.
 
 test_that("setup_analysis aborts (typed) when the file_name column is missing", {

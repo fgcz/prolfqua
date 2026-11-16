@@ -7,6 +7,8 @@
 
 ## Behaviour changes
 
+- Source annotations and a standards report now trace all General and Regression rOpenSci standards to evidence, explicit partial limits, non-applicability reasons or deferred work. The feasibility assessment is kept separate from current compliance.
+
 - The package help now defines the API lifecycle, analysis terminology and statistical terms. The Under the hood article explains categorical formula coding and contrast weights, and the analysis help documents measured runtime scaling.
 
 - Invalid analysis, simulation, response, contrast and count inputs now fail at the entry point with a classed error. Method keys must match exactly (case sensitive). A misspelled limma weights column is an error rather than an unweighted fit. Subset scaling rejects mismatched transformation states.
@@ -19,6 +21,8 @@
 - README: the getting-started example called the removed aggregator method `$medpolish()` and the undeclared package `ggpubr`; it now runs as shown and ends with `build_contrast_analysis()`. Installation is from Bioconductor first.
 
 ## Bug fixes
+
+- The core R6 dependency is now declared explicitly, so subclass-based tests pass dependency checks in fresh environments.
 
 - `deqms` / `deqms_voom` (`moderated_p_deqms()`): proteins left out of the variance-on-count curve, e.g. with zero residual variance, got the prior variance of the first fitted protein instead of the curve's value at their own peptide count, with the warning "'newdata' had 1 row but variables found have N rows". They now get the curve's value. Proteins without residual degrees of freedom get NA moderated statistics without "NaNs produced" warnings; the same holds for the unmoderated statistics of `limma`-based methods.
 - `ropeca_nested` / `ContrastsROPECA`: the protein p-value counted peptides without a p-value (failed or non-estimable peptide fits) in the number of peptides, which made those proteins too significant, e.g. p = 0.00067 instead of 0.0031 for two tested peptides and one untested. `summary_ROPECA_median_p_scaled()` now counts only peptides with a p-value in `n_not_na`, as the original ROPECA (PECA) does; `df` of `ropeca_nested` changes with it.

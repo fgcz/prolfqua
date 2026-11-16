@@ -66,6 +66,11 @@
 #' strategy <- StrategyBinomial$new("~ group_")
 #' fit <- strategy$model_fun(dat)
 #' coefficients(fit)
+#' @srrstats {G5.8d} Tests reject inappropriate hierarchy, rank deficiency, insufficient residual df and too few PCA
+#'   samples.
+#' @srrstats {RE7.0} Tests exercise collinearity in binomial/rfit designs; limit: lm/limma coverage is incomplete.
+#' @srrstats {RE7.0a} Binomial/rfit tests check deficient-design behavior; limit: a shared lm/limma rejection test is
+#'   absent.
 StrategyBinomial <- R6::R6Class(
   "StrategyBinomial",
   inherit = StrategyBase,

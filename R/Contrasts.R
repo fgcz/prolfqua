@@ -1,6 +1,6 @@
 #' Construct factor and interaction contrasts for one complete model
 #' @param model model or model specification used by the operation
-#' @param contrast contrast expression or contrast column name
+#' @param contrast named character vector of contrast expressions
 #' @param avg include average-abundance linear functions
 #' @noRd
 .linfct <- function(model, contrast, avg = TRUE) {
@@ -18,7 +18,7 @@
 
 #' Construct the contrasts estimable from one partial model
 #' @param model model or model specification used by the operation
-#' @param contrast contrast expression or contrast column name
+#' @param contrast named character vector of contrast expressions
 #' @param avg include average-abundance linear functions
 #' @noRd
 .linfct_partial_model <- function(model, contrast, avg = TRUE) {
@@ -160,6 +160,8 @@
 #' y <- contrastX$get_linfct(avg = FALSE)
 #' stopifnot(all(ref_lfc == y))
 #'
+#' @srrstats {RE4.3} Contrast intervals and Firth coefficient intervals exist; limit: no uniform coefficient-CI
+#'   accessor.
 Contrasts <- R6::R6Class(
   "Contrast",
   inherit = ContrastsInterface,

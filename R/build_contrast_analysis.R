@@ -99,6 +99,16 @@
 #'
 #' fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
 #' head(fa_firth$get_contrasts())
+#' @srrstats {G1.1} The builder lists inherited methods; limit: per-algorithm novelty classifications are incomplete.
+#' @srrstats {G1.6} The article compares facades; limit: comparisons with alternative R packages remain external.
+#' @srrstats {G2.1a} The builder documents LFQData, formula strings and named contrasts; limit: types are not
+#'   exhaustive API-wide.
+#' @srrstats {G2.3b} Builder help explicitly requires case-sensitive method keys and column names.
+#' @srrstats {RE1.0} The builder takes a validated RHS formula and strategies retain the full response formula.
+#' @srrstats {RE2.1} Plain versus imputed methods are selectable; limit: there is no common NA/NaN/Inf processing
+#'   parameter.
+#' @srrstats {RE5.0} Builder details report measured scaling for three methods; source benchmark states design and
+#'   timing limits.
 build_contrast_analysis <- function(
   lfqdata,
   modelstr,

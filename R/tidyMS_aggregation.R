@@ -5,7 +5,7 @@
 #' @param protein_name protein identifier column
 #' @param sample sample identifier column
 #' @param intensity intensity column
-#' @param peptide whether the input contains peptide-level measurements
+#' @param peptide peptide identifier column
 #' @param fragment fragment identifier column
 #' @param factor explanatory-variable column
 #' @param isotope_label column identifying isotope labels

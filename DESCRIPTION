@@ -42,6 +42,7 @@ Imports:
     MASS,
     methods,
     purrr,
+    R6,
     rlang,
     stringi,
     tidyr (>= 1.3.0),
@@ -80,7 +81,7 @@ Suggests:
     UpSetR,
     vsn,
     withr
-Roxygen: list(r6 = TRUE)
+Roxygen: list(r6 = TRUE, roclets = c("collate", "namespace", "rd", "srr::srr_stats_roclet"))
 Depends: 
     R (>= 4.6)
 biocViews: MassSpectrometry, Proteomics, Metabolomics, Normalization, Preprocessing, QualityControl

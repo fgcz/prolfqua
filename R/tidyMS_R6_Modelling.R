@@ -37,6 +37,13 @@ sigma.rlm <- function(object, ...) {
 #'
 #' @return An R6 class generator.
 #' @keywords internal
+#' @srrstats {RE2.4} StrategyBase flags singular fits after fitting; limit: there is no common preprocessing
+#'   dependency check.
+#' @srrstats {RE2.4a} Some strategies detect deficient rank; limit: there is no shared upfront predictor-collinearity
+#'   diagnostic.
+#' @srrstats {RE3.0} Failed fits and Firth exhaustion are reported; limit: nonconvergence metadata is not uniform per
+#'   subject.
+#' @srrstats {RE4.1} Strategies expose a formula and fitting specification without fitting a model.
 StrategyBase <- R6::R6Class(
   "StrategyBase",
   public = list(

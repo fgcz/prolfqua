@@ -83,6 +83,12 @@
 #' robscale <- lfqdata2$get_Transformer()$robscale_subset(internal)$lfq
 #' robscale$get_Plotter()$intensity_distribution_density()
 #'
+#' @srrstats {G2.16} Log transforms diagnose zeros/negatives; limit: no shared Inf/NaN policy before every model
+#'   backend.
+#' @srrstats {RE2.3} Transformer centering is explicit; limit: its inferential effect on contrasts lacks
+#'   documentation/tests.
+#' @srrstats {RE4.12} Transformers support inverse functions and scales; limit: transformation history/inverses are
+#'   not recorded.
 LFQDataTransformer <- R6::R6Class(
   "LFQDataTransformer",
   public = list(
@@ -348,6 +354,8 @@ get_robscales <- function(lfqdata) {
 #' mat <- matrix(c(1, 2, 3, 4, 10, 12), nrow = 3)
 #' scaled <- robust_scale(mat)
 #' dim(scaled)
+#' @srrstats {G5.8c} Tests cover zero MAD, constant heatmaps and missing groups; limit: constant/all-NA model inputs
+#'   remain.
 robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
   .apply_robscales(
     data,
@@ -362,7 +370,7 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
 #'
 #' and skips the scaling when a mad is zero
 #' @param data data frame or matrix consumed by this operation
-#' @param scales scaling specification used by the operation
+#' @param scales per-margin medians and median absolute deviations
 #' @param preserve_mean restore the overall mean after scaling
 #' @param dim matrix margin to scale
 #' @param zero_mad_warning warning emitted when scaling cannot divide by the MAD
@@ -456,7 +464,7 @@ scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, colname
 
 
 #' Function to normalize protein abundances by subtracting sample means of reference proteins
-#' @param df degrees of freedom or input data frame as required by the operation
+#' @param df long-format protein measurements to center
 #' @param df_reference reference protein measurements
 #' @param sample_name column identifying samples
 #' @param abundance_column column containing intensities

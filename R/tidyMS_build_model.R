@@ -133,6 +133,8 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 #' model_summary(mod)
 #'
 #'
+#' @srrstats {G2.14b} Fits omit missing responses and get_missing reports unestimable contrasts; limit: per-fit
+#'   omission is silent.
 build_model <- function(
   data,
   model_strategy,
@@ -190,6 +192,9 @@ build_model <- function(
 #' strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
 #' mod <- build_model_impute(lfqdata, strat)
 #'
+#' @srrstats {G2.14} Users select plain or imputed methods; limit: there is no unified explicit NA policy.
+#' @srrstats {G2.14c} The imputation builder refits missing groups at the LOD and borrows variance from successful
+#'   fits.
 build_model_impute <- function(
   lfqdata,
   model_strategy,
@@ -235,6 +240,8 @@ build_model_impute <- function(
 #' @param lod limit of detection on the response scale
 #' @param lfqdata LFQData containing the measurements and configuration
 #' @noRd
+#' @srrstats {G5.8a} Empty LOD/contrast/plot cases are tested; limit: zero-row primary entry points are not fully
+#'   tested.
 .resolve_lod <- function(lod, lfqdata) {
   if (!is.null(lod)) {
     return(lod)
@@ -432,6 +439,7 @@ impute_from_model <- function(model, lfqdata) {
 #' res <- model_summary(mod)
 #' stopifnot(is.list(res))
 #' stopifnot(all(c("exists", "isSingular") %in% names(res)))
+#' @srrstats {RE4.18} model_summary and contrast summaries exist; limit: no uniform returned-object summary method.
 model_summary <- function(mod) {
   res <- list()
   res$exists <- table(mod$model_df$has_model_fit)
@@ -509,6 +517,8 @@ new_imputed_model <- function(model, borrowed_vcov, borrowed_sigma, borrowed_df,
 }
 
 #' @export
+#' @srrstats {RE4.6} Inner imputed/rfit fits implement vcov; limit: no common model/facade accessor or
+#'   covariance-policy hook.
 vcov.imputed_model <- function(object, ...) {
   attr(object, "borrowed_vcov")
 }
@@ -559,6 +569,7 @@ df.residual.imputed_model <- function(object, ...) {
 #'   mod_no_missing$model_df, method = "vcov")
 #' stopifnot(borrowed_v$method == "vcov")
 #' stopifnot(is.matrix(borrowed_v$vcov))
+#' @srrstats {G3.1} Imputation can borrow sigma or vcov; limit: there is no arbitrary covariance-function argument.
 compute_borrowed_variance <- function(
   model_df,
   method = c("sigma", "vcov"),
@@ -879,6 +890,10 @@ get_complete_model_fit <- function(complete_models) {
 #'  subject_id = x$config$hierarchy_keys_depth())
 #' stopifnot(nrow(get_complete_model_fit(mr$model_df)) == 6)
 #'
+#' @srrstats {RE3.1} model_analyse retains fit status and errors; limit: convergence metadata and suppression are not
+#'   uniform.
+#' @srrstats {RE4.7} Fit tables retain status and singularity; limit: optimizer/iteration metadata is not exposed
+#'   uniformly.
 model_analyse <- function(
   pepIntensity,
   model_strategy,

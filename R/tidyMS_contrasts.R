@@ -118,6 +118,8 @@ parse_contrast_sides <- function(contrasts) {
 #' m <- lm(Y ~ Condition, data = xx)
 #' linfct_from_model(m)
 #'
+#' @srrstats {RE1.1} The article and linfct details show treatment-coded designs, cell means and tested interaction
+#'   weights.
 linfct_from_model <- function(m, as_list = TRUE) {
   coeff_result <- .model_coeff_matrix(m)
   sorted_coeff_matrix <- coeff_result$coeff_matrix[order(rownames(coeff_result$coeff_matrix)), ]
@@ -304,6 +306,8 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
 #' compute_contrast(m, linfct, confint = 0.95)
 #' compute_contrast(m, linfct, confint = 0.99)
 #'
+#' @srrstats {G3.0} Covariance compatibility uses all.equal; limit: exact floating comparisons remain elsewhere.
+#' @srrstats {RE7.1} Tests recover exact group differences and exact paired-design means.
 compute_contrast <- function(m, linfct, confint = 0.95) {
   Sigma.hat <- vcov(m)
 

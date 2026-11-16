@@ -38,6 +38,9 @@
 #' @param data data frame or matrix consumed by this operation
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
+#' @srrstats {G2.4c} Configured factor columns are explicitly converted with as.character.
+#' @srrstats {G2.4e} Factor labels are explicitly converted with as.character instead of using integer codes.
+#' @srrstats {G2.5} Setup documents and enforces character labels for both ordered and unordered predictor factors.
 .setup_factor_columns <- function(data, configuration) {
   if (length(configuration$factors) == 0) {
     abort_invalid_config(
@@ -241,6 +244,17 @@
 #'
 #' adata <- setup_analysis(data, config)
 #'
+#' @srrstats {G2.4} Setup explicitly converts categorical predictors; limit: specialized input conversion is not fully
+#'   audited.
+#' @srrstats {G2.4d} Design matrices factor categorical labels as documented; limit: setup discards supplied level
+#'   order.
+#' @srrstats {G2.9} Setup reports inserted defaults; limit: coercion and removal of unconfigured columns have no
+#'   diagnostics.
+#' @srrstats {RE1.2} Setup help documents categorical predictors, numeric coercion and loss of ordered-factor
+#'   semantics.
+#' @srrstats {RE1.3a} Setup help states retained columns, discarded attributes, categorical conversion and inserted
+#'   defaults.
+#' @srrstats {RE2.0} Setup documents automatic conversions/defaults; limit: those operations lack individual controls.
 setup_analysis <- function(data, configuration, debug = FALSE) {
   .assert_response_data(data, configuration)
   .validate_setup_file_name(data, configuration)
