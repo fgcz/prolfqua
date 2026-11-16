@@ -8,7 +8,7 @@ Build protein models from data
 build_model(
   data,
   model_strategy,
-  subject_id = if ("LFQData" %in% class(data)) {
+  subject_id = if (inherits(data, "LFQData")) {
      data$subject_id()
  } else {
     
