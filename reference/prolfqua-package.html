@@ -56,6 +56,25 @@
 
 
     <div class="section level2">
+    <h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a></h2>
+
+
+<dl><dt>`prolfqua.verbose`</dt>
+<dd><p>`TRUE` (default) or `FALSE`. With `FALSE`,
+    prolfqua prints no informative messages, such as columns added, rows
+    removed or files written. Warnings and errors are not affected. The
+    messages carry class `prolfqua_message`, so an application can route them
+    to its own log with `withCallingHandlers(prolfqua_message = ...)`.</p></dd>
+
+  <dt>`prolfqua.progress`</dt>
+<dd><p>Progress reporting while models and contrasts
+    are computed per protein: `NULL` (default) shows a terminal progress
+    bar, `"message"` a throttled message with elapsed time, and a
+    `function(i, total, label)` is called with the progress.</p></dd>
+
+
+</dl></div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Useful links:</p><ul><li><p><a href="https://github.com/fgcz/prolfqua" class="external-link">https://github.com/fgcz/prolfqua</a></p></li>
 <li><p><a href="https://fgcz.github.io/prolfqua/">https://fgcz.github.io/prolfqua/</a></p></li>

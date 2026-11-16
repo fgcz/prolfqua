@@ -23,12 +23,25 @@
   the median peptide fold change, as in `ropeca_nested`; `statistic`,
   `std.error` and the 95% interval follow from the p-value.
   `ropeca_nested` is unchanged.
+- New option `prolfqua.verbose`: set `options(prolfqua.verbose = FALSE)`
+  to silence prolfqua’s informative messages (columns added, rows
+  removed, files written). The messages carry class `prolfqua_message`,
+  so applications can route them to their own log. Both options are
+  described in
+  [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md).
 
 ### Behaviour changes
 
 - prolfqua no longer prints internal progress messages such as “setup
   done”, “completing cases”, “contrasts_linfct”, “starting aggregation”,
   the model formula or the number of rows with missing values.
+- All errors are raised with
+  [`rlang::abort()`](https://rlang.r-lib.org/reference/abort.html) and
+  carry class `prolfqua_error`; invalid arguments also carry
+  `prolfqua_error_bad_argument`, so callers can catch prolfqua errors by
+  class. Missing optional packages (`limpa`, `Rfit`) are reported with
+  [`rlang::check_installed()`](https://rlang.r-lib.org/reference/is_installed.html),
+  which offers to install them in interactive sessions.
 
 ### Bug fixes
 
