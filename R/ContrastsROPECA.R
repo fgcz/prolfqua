@@ -152,7 +152,9 @@ ContrastsROPECA <- R6::R6Class(
         self$contrast_result <- .stamp_model_identity(contrast_result, self$model_name, "observed")
       }
 
-      if (!all) {
+      if (all) {
+        res <- self$contrast_result
+      } else {
         res <- select(
           self$contrast_result,
           -all_of(c(
@@ -165,8 +167,6 @@ ContrastsROPECA <- R6::R6Class(
             "FDR.median.p.value"
           ))
         )
-      } else {
-        res <- self$contrast_result
       }
 
       return(res)

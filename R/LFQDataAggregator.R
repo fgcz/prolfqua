@@ -6,7 +6,7 @@
     abort_bad_argument(
       "lfq",
       "have more than one hierarchy level to aggregate from",
-      not = paste(lfq$hierarchy_keys(), collapse = ", ")
+      not = toString(lfq$hierarchy_keys())
     )
   }
   if (length(lfq$hierarchy_keys()) == length(lfq$relevant_hierarchy_keys())) {
@@ -15,7 +15,7 @@
       "have a hierarchy_depth below its number of hierarchy levels to aggregate",
       not = paste0(
         "hierarchy_keys = ",
-        paste(lfq$hierarchy_keys(), collapse = ", "),
+        toString(lfq$hierarchy_keys()),
         "; hierarchy_depth = ",
         length(lfq$relevant_hierarchy_keys())
       )

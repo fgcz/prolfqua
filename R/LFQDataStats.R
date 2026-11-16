@@ -89,10 +89,10 @@ LFQDataStats <- R6::R6Class(
     initialize = function(lfqdata, stats = c("everything", "interaction", "all")) {
       stats <- match.arg(stats)
       self$lfq <- lfqdata$clone(deep = TRUE)
-      self$stat <- if (!self$lfq$is_transformed()) {
-        "CV"
-      } else {
+      self$stat <- if (self$lfq$is_transformed()) {
         "sd"
+      } else {
+        "CV"
       }
 
       tb <- table_factors_size(

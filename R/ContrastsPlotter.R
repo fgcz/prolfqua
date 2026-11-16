@@ -264,7 +264,8 @@ ContrastsPlotter <- R6::R6Class(
         score_threshold <- self$volcano_spec[[i]]$thresh
         filt <- dplyr::filter(
           private$.contrast_df,
-          !is.na(!!sym(score_name)) & !!sym(score_name) < score_threshold
+          !is.na(!!sym(score_name)),
+          !!sym(score_name) < score_threshold
         )
         if (is.numeric(self$fcthresh)) {
           filt <- dplyr::filter(filt, abs(!!sym(self$diff)) > self$fcthresh)
@@ -313,7 +314,7 @@ ContrastsPlotter <- R6::R6Class(
         if (plotly) {
           contrasts2 <- contrasts2 |> plotly::highlight_key(~subject_id, group = self$group)
         }
-        p <- prolfqua:::.multigroup_volcano(
+        p <- .multigroup_volcano(
           contrasts2,
           effect = self$diff,
           significance = column,
@@ -385,8 +386,8 @@ ContrastsPlotter <- R6::R6Class(
           scale_colour_manual(values = .contrast_colour_values(colour)) +
           geom_point(alpha = 0.5) +
           facet_wrap(vars(!!sym(self$contrast))) +
-          geom_hline(yintercept = c(0), colour = 1) +
-          geom_vline(xintercept = c(0), colour = 1) +
+          geom_hline(yintercept = 0, colour = 1) +
+          geom_vline(xintercept = 0, colour = 1) +
           geom_hline(yintercept = ylims, colour = 2, linetype = "dashed")
 
         if (is.numeric(xlim)) {

@@ -13,7 +13,7 @@
 # (1 | <deepest child hierarchy key>) + (1 | <sample name>) derived from the
 # LFQData. Caller-supplied random effects are left untouched.
 .augment_lmer_nested_modelstr <- function(modelstr, lfqdata) {
-  if (grepl("\\|", modelstr)) {
+  if (grepl("|", modelstr, fixed = TRUE)) {
     return(modelstr)
   }
   child_keys <- setdiff(lfqdata$hierarchy_keys(), lfqdata$subject_id())

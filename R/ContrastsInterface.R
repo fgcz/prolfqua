@@ -242,7 +242,7 @@ ContrastsInterface <- R6::R6Class(
       "Cannot ",
       action,
       ". Missing columns: ",
-      paste(missing_columns, collapse = ", "),
+      toString(missing_columns),
       class = c("prolfqua_error_missing_column", "prolfqua_error_bad_argument")
     )
   }

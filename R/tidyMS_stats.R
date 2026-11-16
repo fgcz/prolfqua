@@ -193,7 +193,7 @@ summarize_stats_quantiles <- function(
   min_sd <- purrr::map_dbl(delta, function(d) {
     power.t.test(delta = d, n = min.n, sd = NULL, power = power, sig.level = sig.level)$sd
   })
-  sdtrimmed <- dplyr::if_else(sd < min_sd, min_sd, sd)
+  sdtrimmed <- pmax(sd, min_sd)
   N_exact <- purrr::map2_dbl(sdtrimmed, delta, function(s, d) {
     power.t.test(delta = d, sd = s, power = power, sig.level = sig.level)$n
   })

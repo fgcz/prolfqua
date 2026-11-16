@@ -59,7 +59,7 @@ LR_test <- function(
     )
   likelihood_ratio_test_result <- reg |>
     dplyr::select(!!sym(subject_id), dplyr::all_of("modelComparisonLikelihoodRatioTest")) |>
-    tidyr::unnest(cols = c("modelComparisonLikelihoodRatioTest"))
+    tidyr::unnest(cols = "modelComparisonLikelihoodRatioTest")
   likelihood_ratio_test_result <- likelihood_ratio_test_result |>
     dplyr::rename(likelihood_ratio_test.pValue = "modelComparisonLikelihoodRatioTest")
 
@@ -82,7 +82,7 @@ LR_test <- function(
 #' @return path the file was written to (invisible)
 #' @keywords internal
 plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
-  file_name <- paste("hist_LRT_", model_name, "_", model_name_int, ".pdf", sep = "")
+  file_name <- paste0("hist_LRT_", model_name, "_", model_name_int, ".pdf")
   file_name <- file.path(path, file_name)
   inform_prolfqua("writing figure: ", file_name)
   withr::local_pdf(file_name)
@@ -134,14 +134,14 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 build_model <- function(
   data,
   model_strategy,
-  subject_id = if ("LFQData" %in% class(data)) {
+  subject_id = if (inherits(data, "LFQData")) {
     data$subject_id()
   } else {
     "protein_Id"
   },
   model_name = model_strategy$model_name
 ) {
-  nested_data <- if ("LFQData" %in% class(data)) data$data_long() else data
+  nested_data <- if (inherits(data, "LFQData")) data$data_long() else data
   modelling_result <- model_analyse(nested_data, model_strategy, model_name = model_name, subject_id = subject_id)
   return(Model$new(
     model_df = modelling_result$model_df,
@@ -278,9 +278,9 @@ impute_from_model <- function(model, lfqdata) {
   if (!identical(subject_id, lfqdata$subject_id())) {
     abort_prolfqua(
       "Model subject_id (",
-      paste(subject_id, collapse = ", "),
+      toString(subject_id),
       ") differs from lfqdata subject_id (",
-      paste(lfqdata$subject_id(), collapse = ", "),
+      toString(lfqdata$subject_id()),
       ")."
     )
   }
@@ -532,7 +532,7 @@ compute_borrowed_variance <- function(
   method <- match.arg(method)
   on_misalign <- match.arg(on_misalign)
   good <- get_complete_model_fit(model_df)
-  good <- good |> dplyr::filter(.data$isSingular == FALSE)
+  good <- good |> dplyr::filter(!.data$isSingular)
 
   if (nrow(good) == 0) {
     abort_prolfqua("No successful model fits available to borrow variance from.")
@@ -555,7 +555,7 @@ compute_borrowed_variance <- function(
     # and a few partial-design donors (e.g. a protein missing a whole group)
     # must not poison the element-wise median.
     keys <- vapply(vcov_list, function(v) paste(rownames(v), collapse = "\r"), character(1))
-    lens <- vapply(vcov_list, function(v) nrow(v), integer(1))
+    lens <- vapply(vcov_list, nrow, integer(1))
     maximal_keys <- keys[lens == max(lens)]
     tab <- table(maximal_keys)
     target <- names(tab)[order(-as.integer(tab), names(tab))][1]
@@ -808,7 +808,7 @@ impute_refit_singular <- function(
 #' cfits <- get_complete_model_fit(x$model_df)
 #' stopifnot(nrow(cfits) == 6)
 get_complete_model_fit <- function(complete_models) {
-  complete_models <- complete_models |> dplyr::filter(.data$has_model_fit == TRUE)
+  complete_models <- complete_models |> dplyr::filter(.data$has_model_fit)
   complete_models <- complete_models |>
     dplyr::filter(.data$nr_coef_not_NA == max(.data$nr_coef_not_NA)) |>
     dplyr::arrange(dplyr::desc(.data$nr_coef_not_NA))

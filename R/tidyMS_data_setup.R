@@ -121,7 +121,7 @@
     "setup_analysis: there is more than ONE observation for ",
     nrow(offending),
     " ",
-    paste(configuration$hierarchy_keys(), collapse = ", "),
+    toString(configuration$hierarchy_keys()),
     " / sample (column '",
     configuration$sample_name,
     "', file '",

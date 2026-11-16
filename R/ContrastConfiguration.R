@@ -164,7 +164,7 @@ list_to_ContrastConfiguration <- function(dd) {
   if (length(unknown) > 0) {
     abort_prolfqua(
       "Not ContrastConfiguration fields: ",
-      paste(unknown, collapse = ", ")
+      toString(unknown)
     )
   }
   for (i in names(dd)) {

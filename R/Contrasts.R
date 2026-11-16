@@ -3,7 +3,7 @@
   linfct <- unique(linfct) # needed for single factor models
   if (avg) {
     namtmp <- paste0("avg_", names(contrast))
-    cntr_avg <- paste0("(", gsub(" - ", " + ", contrast), ")/2")
+    cntr_avg <- paste0("(", gsub(" - ", " + ", contrast, fixed = TRUE), ")/2")
     names(cntr_avg) <- namtmp
     contrast <- c(contrast, cntr_avg)
   }
@@ -167,7 +167,7 @@ Contrasts <- R6::R6Class(
       global = FALSE,
       model_name = "WaldTest"
     ) {
-      self$models <- model$model_df |> dplyr::filter(has_model_fit == TRUE)
+      self$models <- model$model_df |> dplyr::filter(.data$has_model_fit)
       self$contrasts <- contrasts
       self$contrastfun <- model$model_strategy$contrast_fun
       self$model_name <- model_name

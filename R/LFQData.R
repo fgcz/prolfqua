@@ -263,7 +263,7 @@ LFQData <- R6::R6Class(
       cfg <- self$get_config()
       if (!is.null(value)) {
         if (!all(value %in% cfg$value_vars())) {
-          abort_bad_argument("value", paste0("be one of ", paste(cfg$value_vars(), collapse = ", ")), not = value)
+          abort_bad_argument("value", paste0("be one of ", toString(cfg$value_vars())), not = value)
         }
       }
       wide <- prolfqua::tidy_to_wide_config(self, as.matrix = as.matrix, value = value %||% self$response())

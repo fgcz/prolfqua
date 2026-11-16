@@ -258,7 +258,7 @@ R6_extract_values <- function(r6class) {
   res <- list()
   for (i in names(slots)) {
     val <- r6class[[i]]
-    if ("R6" %in% class(val)) {
+    if (inherits(val, "R6")) {
       if (identical(val, r6class)) {
         next
       }

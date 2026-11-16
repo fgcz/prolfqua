@@ -121,7 +121,7 @@ multigroup_volcano <- function(
     text = "label",
     scales = scales
   )
-  colname <- paste("-log10(", significance, ")", sep = "")
+  colname <- paste0("-log10(", significance, ")")
 
   if (!is.null(label)) {
     effect_values <- labeled_data[, effect]
@@ -178,7 +178,7 @@ multigroup_volcano <- function(
 
   scales = "fixed"
 ) {
-  colname <- paste("-log10(", significance, ")", sep = "")
+  colname <- paste0("-log10(", significance, ")")
   p <- ggplot(
     data,
     aes(x = .data[[effect]], y = !!rlang::parse_expr(colname))
@@ -269,12 +269,12 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
 #' panel_cor(1:3, 1:3)
 panel_cor <- function(x, y, digits = 2, ...) {
   usr <- par("usr")
-  on.exit(par(usr = usr))
+  on.exit(par(usr = usr), add = TRUE)
   par(usr = c(0, 1, 0, 1))
   # correlation coefficient
   r <- cor(x, y, use = "pairwise.complete.obs")
   txt <- format(c(r, 0.123456789), digits = digits)[1]
-  txt <- paste("r= ", txt, sep = "")
+  txt <- paste0("r= ", txt)
   text(0.5, 0.7, txt)
 
   txt <- format(c(r^2, 0.123456789), digits = digits)[1]
@@ -288,9 +288,9 @@ panel_cor <- function(x, y, digits = 2, ...) {
   # p-value calculation
   p <- cor.test(x, y)$p.value
   txt2 <- format(c(p, 0.123456789), digits = digits)[1]
-  txt2 <- paste("p= ", txt2, sep = "")
+  txt2 <- paste0("p= ", txt2)
   if (p < 0.01) {
-    txt2 <- paste("p= ", "<0.01", sep = "")
+    txt2 <- "p= <0.01"
   }
   text(0.5, 0.3, txt2)
 }
@@ -327,7 +327,7 @@ pairs_smooth <- function(data, legend = FALSE, ...) {
       )
       if (legend) {
         r_squared <- stats::cor(x, y, use = "pairwise.complete.obs")^2
-        graphics::legend("topleft", legend = paste("R^2=", round(r_squared, digits = 2), sep = ""), text.col = 3)
+        graphics::legend("topleft", legend = paste0("R^2=", round(r_squared, digits = 2)), text.col = 3)
       }
     },
     lower.panel = panel_cor,

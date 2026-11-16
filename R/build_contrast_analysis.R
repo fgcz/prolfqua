@@ -88,8 +88,8 @@ build_contrast_analysis <- function(
     error = function(e) {
       abort_bad_argument(
         "method",
-        must = paste0("be one of: ", paste(choices, collapse = ", ")),
-        not = paste(method, collapse = ", "),
+        must = paste0("be one of: ", toString(choices)),
+        not = toString(method),
         parent = e
       )
     }

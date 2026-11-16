@@ -2,7 +2,7 @@
   random_string <- vector(mode = "character", length = N)
   digits <- 0:9
   for (i in seq_len(N)) {
-    random_string[i] <- paste0(sample(digits, str_length, replace = TRUE), collapse = "")
+    random_string[i] <- paste(sample(digits, str_length, replace = TRUE), collapse = "")
   }
   return(random_string)
 }

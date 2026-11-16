@@ -70,7 +70,7 @@ ModelFirth <- R6::R6Class(
           object$ci.upper,
           chi2,
           object$prob,
-          ifelse(object$method.ci == "Wald", 1, ifelse(object$method.ci == "-", 3, 2))
+          dplyr::case_when(object$method.ci == "Wald" ~ 1, object$method.ci == "-" ~ 3, .default = 2)
         )
         dimnames(out) <- list(
           names(object$coefficients),

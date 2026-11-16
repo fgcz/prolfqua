@@ -75,9 +75,9 @@ ContrastsHurdleFacade <- R6::R6Class(
       if (!identical(subject_id, detection$get_config()$subject_id)) {
         abort_prolfqua(
           "intensity and detection must have the same subject_id: ",
-          paste(subject_id, collapse = ", "),
+          toString(subject_id),
           " vs ",
-          paste(detection$get_config()$subject_id, collapse = ", ")
+          toString(detection$get_config()$subject_id)
         )
       }
       intensity_contrasts <- dplyr::ungroup(intensity$get_contrasts())
@@ -85,16 +85,16 @@ ContrastsHurdleFacade <- R6::R6Class(
       if (!setequal(intensity_contrasts$contrast, detection_contrasts$contrast)) {
         abort_prolfqua(
           "intensity and detection must have the same contrasts: ",
-          paste(unique(intensity_contrasts$contrast), collapse = ", "),
+          toString(unique(intensity_contrasts$contrast)),
           " vs ",
-          paste(unique(detection_contrasts$contrast), collapse = ", ")
+          toString(unique(detection_contrasts$contrast))
         )
       }
       detection_model <- unique(as.character(detection_contrasts$modelName))
       if (!all(detection_model %in% c("binomial_nested", "binomial_firth_nested"))) {
         abort_prolfqua(
           "detection must be a binomial_nested or binomial_firth_nested facade, not: ",
-          paste(detection_model, collapse = ", ")
+          toString(detection_model)
         )
       }
       self$intensity <- intensity

@@ -13,7 +13,7 @@
 #' @keywords internal
 #' @noRd
 parse_contrast_sides <- function(contrasts) {
-  tt <- contrasts[grep("-", contrasts)]
+  tt <- contrasts[grep("-", contrasts, fixed = TRUE)]
   tt <- tibble::tibble(contrast = names(tt), rhs = tt)
   tt |>
     dplyr::mutate(rhs = gsub("[` ]", "", rhs)) |>
@@ -27,7 +27,7 @@ parse_contrast_sides <- function(contrasts) {
 }
 
 .model_coeff_matrix <- function(m) {
-  if ("lmerModLmerTest" %in% class(m)) {
+  if (inherits(m, "lmerModLmerTest")) {
     data <- m@frame
     coeffs <- coefficients(summary(m))[, "Estimate"]
   } else {
@@ -58,7 +58,7 @@ parse_contrast_sides <- function(contrasts) {
   row_name_parts <- stringi::stri_split_fixed(rownames(coeff_matrix), ":")
   get_coeffs <- function(factor_level) {
     idx <- which(vapply(row_name_parts, function(x) factor_level %in% x, logical(1)))
-    x <- as.list(apply(coeff_matrix[idx, , drop = FALSE], 2, mean))
+    x <- as.list(colMeans(coeff_matrix[idx, , drop = FALSE]))
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level, .before = 1)
   }
@@ -186,7 +186,7 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
     res <- data |> dplyr::select(-all_of(cnams))
     if (length(failures) > 0) {
       failure_df <- dplyr::bind_rows(failures)
-      failure_names <- paste(failure_df$contrast, collapse = ", ")
+      failure_names <- toString(failure_df$contrast)
       failure_messages <- unique(failure_df$message)
       failure_summary <- paste(utils::head(failure_messages, 3), collapse = "; ")
       msg <- sprintf(
@@ -451,14 +451,14 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
       " of ",
       nrow(interaction_model_matrix),
       " proteins with failed contrasts: ",
-      paste(failed_ids, collapse = ", "),
+      toString(failed_ids),
       call. = FALSE
     )
   }
 
   contrasts <- interaction_model_matrix[!failed, ] |>
     dplyr::select(all_of(c(subject_id, "contrast"))) |>
-    tidyr::unnest(cols = c("contrast"))
+    tidyr::unnest(cols = "contrast")
 
   # take sigma and df from somewhere else.
   model_infos <- models |>

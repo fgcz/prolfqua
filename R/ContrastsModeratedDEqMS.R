@@ -178,13 +178,12 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
     )
 
     if (length(warnings_i) > 0) {
-      group_label <- paste(
+      group_label <- toString(
         sprintf(
           "%s=%s",
           names(group_data),
           unlist(group_data[1, ], use.names = FALSE)
-        ),
-        collapse = ", "
+        )
       )
       if (!nzchar(group_label)) {
         group_label <- paste0("group_", i)

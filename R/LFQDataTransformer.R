@@ -362,10 +362,10 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
 # and skips the scaling when a mad is zero
 .apply_robscales <- function(data, scales, preserve_mean, dim, zero_mad_warning) {
   data <- sweep(data, dim, scales$medians, "-")
-  if (!any(scales$mads == 0)) {
-    data <- sweep(data, dim, scales$mads / mean(scales$mads), "/")
-  } else {
+  if (any(scales$mads == 0)) {
     warning(zero_mad_warning)
+  } else {
+    data <- sweep(data, dim, scales$mads / mean(scales$mads), "/")
   }
   data + if (preserve_mean) mean(scales$medians) else 0
 }

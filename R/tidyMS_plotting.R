@@ -121,7 +121,7 @@
   tryCatch(
     {
       distance <- stats::dist(matrix)
-      if (any(!is.finite(distance))) {
+      if (!all(is.finite(distance))) {
         return(NULL)
       }
       distance
@@ -272,8 +272,8 @@ plot_sample_correlation <- function(matrix) {
     upper = "ellipse",
     lower = if (numbers) "number" else "pie",
     lower.col = if (numbers) "black",
-    tl.cex = .6,
-    number.cex = if (numbers) .7 else 1,
+    tl.cex = 0.6,
+    number.cex = if (numbers) 0.7 else 1,
     diag = "u",
     tl.pos = "lt",
     tl.col = "black",
@@ -342,8 +342,8 @@ plot_hierarchies_boxplot <- function(
   }
   p <- p + geom_boxplot()
   if (beeswarm) {
-    if (length(levels(pdata[[nr_children_col]])) > 1) {
-      shape_values <- c(4, rep(16, length(levels(pdata[[nr_children_col]])) - 1))
+    if (nlevels(pdata[[nr_children_col]]) > 1) {
+      shape_values <- c(4, rep(16, nlevels(pdata[[nr_children_col]]) - 1))
     } else {
       shape_values <- 16
     }
@@ -698,7 +698,7 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 #'
 plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2), add_txt = FALSE, nudge = 0.1) {
   if (length(PC) != 2) {
-    abort_bad_argument("PC", "be two principal component numbers", not = paste(PC, collapse = ", "))
+    abort_bad_argument("PC", "be two principal component numbers", not = toString(PC))
   }
   impute_hint <- "missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()."
 
@@ -706,10 +706,10 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
   # cause a cartesian expansion in the join below — error early instead.
   dup_samples <- unique(colnames(matrix)[duplicated(colnames(matrix))])
   if (length(dup_samples) > 0) {
-    abort_prolfqua(sprintf("PCA: duplicated sample names are not allowed: %s.", paste(dup_samples, collapse = ", ")))
+    abort_prolfqua(sprintf("PCA: duplicated sample names are not allowed: %s.", toString(dup_samples)))
   }
 
-  if (any(is.na(matrix))) {
+  if (anyNA(matrix)) {
     n_before <- nrow(matrix)
     matrix <- na.omit(matrix)
     inform_prolfqua(sprintf(

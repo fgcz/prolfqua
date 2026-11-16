@@ -158,7 +158,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     fit <- .lm.fit(X, y)
     id <- fit$coefficients != 0
     X <- X[, id, drop = FALSE]
-    if (!any(!id)) break
+    if (all(id)) break
   }
   ## Last step is always rlm if X > has some columns left
   if (ncol(X) > 0) {

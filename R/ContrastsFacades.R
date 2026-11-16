@@ -48,9 +48,9 @@
           "name only groups with samples; contrast `%s` (%s) names %s",
           contrast_name,
           contrasts[[i]],
-          paste(without_data, collapse = ", ")
+          toString(without_data)
         ),
-        not = paste("groups with samples:", paste(with_data, collapse = ", "))
+        not = paste("groups with samples:", toString(with_data))
       )
     }
   }
@@ -882,7 +882,7 @@ lookup_facade <- function(name) {
 #' head(names(list_facades()))
 list_facades <- function() {
   names_ <- ls(envir = .facade_registry_env, sorted = TRUE)
-  out <- lapply(names_, function(nm) get(nm, envir = .facade_registry_env, inherits = FALSE))
+  out <- lapply(names_, get, envir = .facade_registry_env, inherits = FALSE)
   names(out) <- names_
   out
 }

@@ -68,7 +68,7 @@ tidy_to_wide_config <- function(
     !setequal(row_keys, c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())) &&
       anyDuplicated(long[c(row_keys, newcolname)]) > 0
   ) {
-    abort_bad_argument("row_keys", "identify one value per sample", not = paste(row_keys, collapse = ", "))
+    abort_bad_argument("row_keys", "identify one value per sample", not = toString(row_keys))
   }
   res <- long |>
     tidyr::pivot_wider(names_from = all_of(newcolname), values_from = all_of(value))

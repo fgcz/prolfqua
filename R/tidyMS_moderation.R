@@ -75,7 +75,14 @@ moderated_p_limma <- function(
 #' @keywords internal
 #' @noRd
 .finalize_moderated_columns <- function(result, p.adjust, all = FALSE) {
-  if (!all) {
+  if (all) {
+    result <- p.adjust(
+      result,
+      column = "moderated.p.value",
+      group_by_col = "contrast",
+      newname = "FDR.moderated"
+    )
+  } else {
     result <- result |>
       dplyr::select(
         -c(
@@ -107,13 +114,6 @@ moderated_p_limma <- function(
       column = "p.value",
       group_by_col = "contrast",
       newname = "FDR"
-    )
-  } else {
-    result <- p.adjust(
-      result,
-      column = "moderated.p.value",
-      group_by_col = "contrast",
-      newname = "FDR.moderated"
     )
   }
   result

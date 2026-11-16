@@ -32,7 +32,7 @@ abort_missing_columns <- function(cols, data_nm = "data") {
   rlang::abort(
     c(
       "Required columns are missing.",
-      x = sprintf("Missing from `%s`: %s.", data_nm, paste(cols, collapse = ", "))
+      x = sprintf("Missing from `%s`: %s.", data_nm, toString(cols))
     ),
     class = c("prolfqua_error_missing_column", "prolfqua_error_bad_argument", "prolfqua_error")
   )
