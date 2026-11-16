@@ -1,6 +1,7 @@
-# Internal error handler for tryCatch in model fitting and plotting
+# Internal error handler for tryCatch in model fitting and plotting: the error
+# becomes a warning of class prolfqua_fit_failed, and the failed fit its message.
 .error_handler <- function(e) {
-  warning(conditionMessage(e), call. = FALSE)
+  rlang::warn(conditionMessage(e), class = "prolfqua_fit_failed")
   as.character(e)
 }
 

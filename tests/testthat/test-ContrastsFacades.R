@@ -99,14 +99,16 @@ test_that("ContrastsLMFacade initialises and returns correct structure", {
 # ---- ContrastsRLMFacade ----
 
 test_that("ContrastsRLMFacade initialises and returns correct structure", {
-  lfqdata <- make_protein_lfqdata()$lfqdata
-  fa <- prolfqua::ContrastsRLMFacade$new(lfqdata, MODELSTR, CONTRASTS)
+  muffle_warnings_matching(rlm_convergence_warning, expr = {
+    lfqdata <- make_protein_lfqdata()$lfqdata
+    fa <- prolfqua::ContrastsRLMFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
-  expect_true(inherits(fa, "ContrastsRLMFacade"))
-  expect_true(!is.null(fa$model))
-  expect_true(!is.null(fa$contrast))
-  check_facade_interface(fa)
-  expect_true(all(fa$get_contrasts()$modelName == "rlm"))
+    expect_true(inherits(fa, "ContrastsRLMFacade"))
+    expect_true(!is.null(fa$model))
+    expect_true(!is.null(fa$contrast))
+    check_facade_interface(fa)
+    expect_true(all(fa$get_contrasts()$modelName == "rlm"))
+  })
 })
 
 # ---- ContrastsLmerNestedFacade ----
@@ -215,27 +217,29 @@ test_that("ropecaV2_nested is registered and returns the standard schema", {
 })
 
 test_that("ropecaV2_nested handles missing values and two-factor contrasts", {
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.8, seed = 11)
-  istar$data <- istar$data |>
-    dplyr::mutate(
-      Treatment = dplyr::if_else(.data$group_ == "B", "B", "A"),
-      Background = dplyr::if_else(grepl("_V[34]$", .data$sampleName), "Z", "X")
+  muffle_warnings_matching(one_group_warning, expr = {
+    istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.8, seed = 11)
+    istar$data <- istar$data |>
+      dplyr::mutate(
+        Treatment = dplyr::if_else(.data$group_ == "B", "B", "A"),
+        Background = dplyr::if_else(grepl("_V[34]$", .data$sampleName), "Z", "X")
+      )
+    istar$config$factors <- list(Treatment = "Treatment", Background = "Background")
+    istar$config$factor_depth <- 2
+    lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+    lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+    contrasts <- c(
+      "treatment" = "TreatmentB - TreatmentA",
+      "background_in_A" = "`TreatmentA:BackgroundZ` - `TreatmentA:BackgroundX`",
+      "background_in_B" = "`TreatmentB:BackgroundZ` - `TreatmentB:BackgroundX`",
+      "interaction_effect" = "background_in_B - background_in_A"
     )
-  istar$config$factors <- list(Treatment = "Treatment", Background = "Background")
-  istar$config$factor_depth <- 2
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-  contrasts <- c(
-    "treatment" = "TreatmentB - TreatmentA",
-    "background_in_A" = "`TreatmentA:BackgroundZ` - `TreatmentA:BackgroundX`",
-    "background_in_B" = "`TreatmentB:BackgroundZ` - `TreatmentB:BackgroundX`",
-    "interaction_effect" = "background_in_B - background_in_A"
-  )
-  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ Treatment * Background", contrasts, method = "ropecaV2_nested")
-  res <- fa$get_contrasts()
-  expect_setequal(unique(res$contrast), names(contrasts))
-  expect_false(anyNA(res$diff))
-  expect_true(all(res$p.value >= 0 & res$p.value <= 1))
+    fa <- prolfqua::build_contrast_analysis(lfqdata, "~ Treatment * Background", contrasts, method = "ropecaV2_nested")
+    res <- fa$get_contrasts()
+    expect_setequal(unique(res$contrast), names(contrasts))
+    expect_false(anyNA(res$diff))
+    expect_true(all(res$p.value >= 0 & res$p.value <= 1))
+  })
 })
 
 # ---- build_contrast_analysis ----
@@ -248,10 +252,12 @@ test_that("build_contrast_analysis dispatches to ContrastsLMFacade for method='l
 })
 
 test_that("build_contrast_analysis dispatches to ContrastsRLMFacade for method='rlm'", {
-  lfqdata <- make_protein_lfqdata()$lfqdata
-  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "rlm")
-  expect_true(inherits(fa, "ContrastsRLMFacade"))
-  check_facade_interface(fa)
+  muffle_warnings_matching(rlm_convergence_warning, expr = {
+    lfqdata <- make_protein_lfqdata()$lfqdata
+    fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "rlm")
+    expect_true(inherits(fa, "ContrastsRLMFacade"))
+    check_facade_interface(fa)
+  })
 })
 
 test_that("build_contrast_analysis dispatches to ContrastsLmerNestedFacade for method='lmer_nested'", {
@@ -341,42 +347,44 @@ test_that("aggregated facades error on peptide-level LFQData", {
 # ---- get_missing with data that has missingness ----
 
 test_that("get_missing returns non-empty for data with missing groups", {
-  # Simulate with missingness so some proteins can't be estimated
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
+  muffle_warnings_matching(partial_na_warning, expr = {
+    # Simulate with missingness so some proteins can't be estimated
+    istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
 
-  lfq_peptide <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
-  aggregator <- prolfqua::AggregateMedpolish$new(lfq_peptide, "protein")
-  lfq_protein <- aggregator$aggregate()
+    lfq_peptide <- prolfqua::LFQData$new(istar$data, istar$config)
+    lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
+    aggregator <- prolfqua::AggregateMedpolish$new(lfq_peptide, "protein")
+    lfq_protein <- aggregator$aggregate()
 
-  contrasts2 <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
+    contrasts2 <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
 
-  fa_lm <- prolfqua::ContrastsLMFacade$new(lfq_protein, MODELSTR, contrasts2)
-  fa_limma <- prolfqua::ContrastsLimmaFacade$new(lfq_protein, MODELSTR, contrasts2)
+    fa_lm <- prolfqua::ContrastsLMFacade$new(lfq_protein, MODELSTR, contrasts2)
+    fa_limma <- prolfqua::ContrastsLimmaFacade$new(lfq_protein, MODELSTR, contrasts2)
 
-  # lm should have missing proteins (it drops unfittable ones)
-  missing_lm <- fa_lm$get_missing()
-  expect_true(is.data.frame(missing_lm))
-  expect_true("protein_Id" %in% colnames(missing_lm))
-  expect_true("contrast" %in% colnames(missing_lm))
+    # lm should have missing proteins (it drops unfittable ones)
+    missing_lm <- fa_lm$get_missing()
+    expect_true(is.data.frame(missing_lm))
+    expect_true("protein_Id" %in% colnames(missing_lm))
+    expect_true("contrast" %in% colnames(missing_lm))
 
-  # limma should also have missing proteins (NA diff rows are filtered)
-  limma_missing <- fa_limma$get_missing()
-  expect_true(is.data.frame(limma_missing))
-  expect_true("protein_Id" %in% colnames(limma_missing))
+    # limma should also have missing proteins (NA diff rows are filtered)
+    limma_missing <- fa_limma$get_missing()
+    expect_true(is.data.frame(limma_missing))
+    expect_true("protein_Id" %in% colnames(limma_missing))
 
-  # limma get_contrasts must have no NA diff
-  limma_res <- fa_limma$get_contrasts()
-  expect_true(!any(is.na(limma_res$diff)))
+    # limma get_contrasts must have no NA diff
+    limma_res <- fa_limma$get_contrasts()
+    expect_true(!any(is.na(limma_res$diff)))
 
-  # get_missing + get_contrasts should cover all input proteins × contrasts
-  n_input_proteins <- dplyr::n_distinct(lfq_protein$data_long()$protein_Id)
-  n_contrasts <- length(contrasts2)
-  for (fa in list(fa_lm, fa_limma)) {
-    n_estimated <- nrow(fa$get_contrasts())
-    n_missing <- nrow(fa$get_missing())
-    expect_equal(n_estimated + n_missing, n_input_proteins * n_contrasts)
-  }
+    # get_missing + get_contrasts should cover all input proteins × contrasts
+    n_input_proteins <- dplyr::n_distinct(lfq_protein$data_long()$protein_Id)
+    n_contrasts <- length(contrasts2)
+    for (fa in list(fa_lm, fa_limma)) {
+      n_estimated <- nrow(fa$get_contrasts())
+      n_missing <- nrow(fa$get_missing())
+      expect_equal(n_estimated + n_missing, n_input_proteins * n_contrasts)
+    }
+  })
 })
 
 test_that("get_missing returns empty data.frame when all proteins are estimable", {

@@ -273,7 +273,7 @@ sim_lfq_data_2factor_config <- function(
     res <- res |> mutate(Treatment = case_when(group %in% c("Ctrl", "A") ~ "A", TRUE ~ "B"))
     data <- res |> mutate(Background = case_when(group %in% c("Ctrl", "C") ~ "Z", TRUE ~ "X"))
 
-    if (is.null(data$nrPeptides)) {
+    if (!"nrPeptides" %in% colnames(data)) {
       data$nrPeptides <- 1
     }
     data$nrPeptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0

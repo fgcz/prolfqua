@@ -253,7 +253,15 @@ compute_borrowed_variance_limma <- function(fit) {
 ) {
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
   weights <- .resolve_weights(lfqdata, strategy, setup$annotation)
-  fit <- fit_fun(setup$expr_matrix, setup$design, weights = weights)
+  fit <- withCallingHandlers(
+    fit_fun(setup$expr_matrix, setup$design, weights = weights),
+    warning = function(w) {
+      # with impute = TRUE, the proteins with NA coefficients are refit below
+      if (impute && grepl("^Partial NA coefficients", conditionMessage(w))) {
+        invokeRestart("muffleWarning")
+      }
+    }
+  )
   failed <- if (impute) which(rowSums(is.na(fit$coefficients)) > 0) else integer(0)
   if (length(failed) == 0) {
     return(.new_model_limma(fit, setup, strategy, model_name))

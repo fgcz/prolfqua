@@ -52,115 +52,125 @@ test_that("new_imputed_model wraps an rfit fit, overriding vcov/sigma/df.residua
 
 
 test_that("build_model_impute rescues failed/singular rfit fits (vcov, fail-hard)", {
-  skip_if_not_installed("Rfit")
-  lfqdata <- make_protein_lfqdata_rfit_impute()
-  strat <- prolfqua::strategy_rfit(paste(lfqdata$response(), RFITIMP_MODELSTR))
+  muffle_warnings_matching(one_group_warning, expr = {
+    skip_if_not_installed("Rfit")
+    lfqdata <- make_protein_lfqdata_rfit_impute()
+    strat <- prolfqua::strategy_rfit(paste(lfqdata$response(), RFITIMP_MODELSTR))
 
-  mod_plain <- prolfqua::build_model(lfqdata, strat)
-  mod_impute <- prolfqua::build_model_impute(
-    lfqdata,
-    strat,
-    borrow_method = "vcov",
-    on_misalign = "fail"
-  )
+    mod_plain <- prolfqua::build_model(lfqdata, strat)
+    mod_impute <- prolfqua::build_model_impute(
+      lfqdata,
+      strat,
+      borrow_method = "vcov",
+      on_misalign = "fail"
+    )
 
-  # The rescue adds an `imputed` flag and recovers at least some proteins.
-  expect_true("imputed" %in% colnames(mod_impute$model_df))
-  n_imputed <- sum(mod_impute$model_df$imputed, na.rm = TRUE)
-  expect_gt(n_imputed, 0)
-  expect_false("imputed" %in% colnames(mod_plain$model_df))
+    # The rescue adds an `imputed` flag and recovers at least some proteins.
+    expect_true("imputed" %in% colnames(mod_impute$model_df))
+    n_imputed <- sum(mod_impute$model_df$imputed, na.rm = TRUE)
+    expect_gt(n_imputed, 0)
+    expect_false("imputed" %in% colnames(mod_plain$model_df))
 
-  n_good_plain <- sum(
-    mod_plain$model_df$has_model_fit &
-      !is.na(mod_plain$model_df$isSingular) &
-      !mod_plain$model_df$isSingular
-  )
-  n_good_impute <- sum(
-    mod_impute$model_df$has_model_fit &
-      !is.na(mod_impute$model_df$isSingular) &
-      !mod_impute$model_df$isSingular
-  )
-  expect_gte(n_good_impute, n_good_plain)
+    n_good_plain <- sum(
+      mod_plain$model_df$has_model_fit &
+        !is.na(mod_plain$model_df$isSingular) &
+        !mod_plain$model_df$isSingular
+    )
+    n_good_impute <- sum(
+      mod_impute$model_df$has_model_fit &
+        !is.na(mod_impute$model_df$isSingular) &
+        !mod_impute$model_df$isSingular
+    )
+    expect_gte(n_good_impute, n_good_plain)
+  })
 })
 
 
 test_that("ContrastsRfitImputeFacade returns the standard schema with facade tag", {
-  skip_if_not_installed("Rfit")
-  lfqdata <- make_protein_lfqdata_rfit_impute()
-  fa <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
+  muffle_warnings_matching(one_group_warning, expr = {
+    skip_if_not_installed("Rfit")
+    lfqdata <- make_protein_lfqdata_rfit_impute()
+    fa <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
 
-  expect_true(inherits(fa, "ContrastsRfitImputeFacade"))
-  res <- fa$get_contrasts()
-  expect_true(is.data.frame(res))
-  expect_true(nrow(res) > 0)
-  for (col in c(
-    "modelName",
-    "estimate_type",
-    "contrast",
-    "diff",
-    "FDR",
-    "p.value",
-    "statistic",
-    "std.error",
-    "df",
-    "conf.low",
-    "conf.high",
-    "sigma"
-  )) {
-    expect_true(col %in% colnames(res), info = paste("missing column:", col))
-  }
-  expect_false("facade" %in% colnames(res))
-  expect_true(!any(is.na(res$diff)))
-  expect_true(all(res$modelName == "rfit_impute"))
+    expect_true(inherits(fa, "ContrastsRfitImputeFacade"))
+    res <- fa$get_contrasts()
+    expect_true(is.data.frame(res))
+    expect_true(nrow(res) > 0)
+    for (col in c(
+      "modelName",
+      "estimate_type",
+      "contrast",
+      "diff",
+      "FDR",
+      "p.value",
+      "statistic",
+      "std.error",
+      "df",
+      "conf.low",
+      "conf.high",
+      "sigma"
+    )) {
+      expect_true(col %in% colnames(res), info = paste("missing column:", col))
+    }
+    expect_false("facade" %in% colnames(res))
+    expect_true(!any(is.na(res$diff)))
+    expect_true(all(res$modelName == "rfit_impute"))
 
-  # Interface methods all work.
-  expect_true(is.data.frame(fa$get_missing()))
-  expect_true(nrow(fa$to_wide()) > 0)
-  expect_s3_class(fa$get_Plotter(), "ContrastsPlotter")
+    # Interface methods all work.
+    expect_true(is.data.frame(fa$get_missing()))
+    expect_true(nrow(fa$to_wide()) > 0)
+    expect_s3_class(fa$get_Plotter(), "ContrastsPlotter")
+  })
 })
 
 
 test_that("rfit_impute flags rescued rows via estimate_type", {
-  skip_if_not_installed("Rfit")
-  lfqdata <- make_protein_lfqdata_rfit_impute()
-  fa <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
-  res <- fa$get_contrasts()
-  # modelName is the facade key; rescued rows are tagged in estimate_type.
-  expect_setequal(unique(res$modelName), "rfit_impute")
-  expect_true("observed" %in% res$estimate_type)
-  expect_true("lod_imputed" %in% res$estimate_type)
+  muffle_warnings_matching(one_group_warning, expr = {
+    skip_if_not_installed("Rfit")
+    lfqdata <- make_protein_lfqdata_rfit_impute()
+    fa <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
+    res <- fa$get_contrasts()
+    # modelName is the facade key; rescued rows are tagged in estimate_type.
+    expect_setequal(unique(res$modelName), "rfit_impute")
+    expect_true("observed" %in% res$estimate_type)
+    expect_true("lod_imputed" %in% res$estimate_type)
+  })
 })
 
 
 test_that("rfit_impute has fewer or equal missing than plain rfit", {
-  skip_if_not_installed("Rfit")
-  lfqdata <- make_protein_lfqdata_rfit_impute()
-  fa_impute <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
-  fa_rfit <- prolfqua::ContrastsRfitFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
+  muffle_warnings_matching(one_group_warning, expr = {
+    skip_if_not_installed("Rfit")
+    lfqdata <- make_protein_lfqdata_rfit_impute()
+    fa_impute <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
+    fa_rfit <- prolfqua::ContrastsRfitFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
 
-  expect_gte(nrow(fa_impute$get_contrasts()), nrow(fa_rfit$get_contrasts()))
-  expect_lte(nrow(fa_impute$get_missing()), nrow(fa_rfit$get_missing()))
+    expect_gte(nrow(fa_impute$get_contrasts()), nrow(fa_rfit$get_contrasts()))
+    expect_lte(nrow(fa_impute$get_missing()), nrow(fa_rfit$get_missing()))
+  })
 })
 
 
 test_that("rfit_impute is stable under LOD-created ties", {
-  skip_if_not_installed("Rfit")
-  # High missingness creates whole missing groups; LOD imputation then yields
-  # many identical (tied) values whose rank order Rfit resolves with
-  # ties.method = "first". Deterministic sample-row ordering must make the
-  # facade reproducible across runs.
-  lfqdata <- make_protein_lfqdata_rfit_impute(Nprot = 40, weight_missing = 1, seed = 7)
-  res1 <- prolfqua::ContrastsRfitImputeFacade$new(
-    lfqdata,
-    RFITIMP_MODELSTR,
-    RFITIMP_CONTRASTS
-  )$get_contrasts()
-  res2 <- prolfqua::ContrastsRfitImputeFacade$new(
-    lfqdata,
-    RFITIMP_MODELSTR,
-    RFITIMP_CONTRASTS
-  )$get_contrasts()
-  expect_equal(res1, res2)
+  muffle_warnings_matching(one_group_warning, expr = {
+    skip_if_not_installed("Rfit")
+    # High missingness creates whole missing groups; LOD imputation then yields
+    # many identical (tied) values whose rank order Rfit resolves with
+    # ties.method = "first". Deterministic sample-row ordering must make the
+    # facade reproducible across runs.
+    lfqdata <- make_protein_lfqdata_rfit_impute(Nprot = 40, weight_missing = 1, seed = 7)
+    res1 <- prolfqua::ContrastsRfitImputeFacade$new(
+      lfqdata,
+      RFITIMP_MODELSTR,
+      RFITIMP_CONTRASTS
+    )$get_contrasts()
+    res2 <- prolfqua::ContrastsRfitImputeFacade$new(
+      lfqdata,
+      RFITIMP_MODELSTR,
+      RFITIMP_CONTRASTS
+    )$get_contrasts()
+    expect_equal(res1, res2)
+  })
 })
 
 
@@ -192,16 +202,18 @@ test_that("rfit null-model fallback names survive the imputed wrapper", {
 
 
 test_that("build_contrast_analysis dispatches method = 'rfit_impute'", {
-  skip_if_not_installed("Rfit")
-  lfqdata <- make_protein_lfqdata_rfit_impute()
-  fa <- prolfqua::build_contrast_analysis(
-    lfqdata,
-    RFITIMP_MODELSTR,
-    RFITIMP_CONTRASTS,
-    method = "rfit_impute"
-  )
-  expect_true(inherits(fa, "ContrastsRfitImputeFacade"))
-  expect_true(all(fa$get_contrasts()$modelName == "rfit_impute"))
+  muffle_warnings_matching(one_group_warning, expr = {
+    skip_if_not_installed("Rfit")
+    lfqdata <- make_protein_lfqdata_rfit_impute()
+    fa <- prolfqua::build_contrast_analysis(
+      lfqdata,
+      RFITIMP_MODELSTR,
+      RFITIMP_CONTRASTS,
+      method = "rfit_impute"
+    )
+    expect_true(inherits(fa, "ContrastsRfitImputeFacade"))
+    expect_true(all(fa$get_contrasts()$modelName == "rfit_impute"))
+  })
 })
 
 

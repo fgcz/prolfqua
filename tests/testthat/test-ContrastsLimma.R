@@ -54,7 +54,7 @@ test_that("ModelLimma$get_anova works", {
 })
 
 test_that("ContrastsLimma produces valid results", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50)
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -99,7 +99,7 @@ test_that("ContrastsLimma produces valid results", {
 })
 
 test_that("ContrastsLimma exposes identical standard and raw pairs without eBayes", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
   mod <- prolfqua::build_model_limma(
@@ -119,7 +119,7 @@ test_that("ContrastsLimma exposes identical standard and raw pairs without eBaye
 })
 
 test_that("ContrastsLimma fold changes match prolfqua lm", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50)
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -185,7 +185,7 @@ test_that("limma_impute contrasts use annotation matched to matrix columns", {
 })
 
 test_that("ContrastsLimma get_Plotter works", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -199,7 +199,7 @@ test_that("ContrastsLimma get_Plotter works", {
 })
 
 test_that("ContrastsLimma to_wide works", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -234,7 +234,10 @@ test_that("merge_contrasts_results works with ContrastsLimma", {
   lProt$rename_response("transformedIntensity")
 
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
-  mod <- prolfqua::build_model_limma(lProt, strat)
+  mod <- muffle_warnings_matching(
+    prolfqua::build_model_limma(lProt, strat),
+    partial_na_warning
+  )
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
   contr_limma <- prolfqua::ContrastsLimma$new(mod, Contr)
 
@@ -246,7 +249,7 @@ test_that("merge_contrasts_results works with ContrastsLimma", {
 })
 
 test_that("ContrastsLimma works with multiple contrasts", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -264,7 +267,7 @@ test_that("ContrastsLimma works with multiple contrasts", {
 })
 
 test_that("build_model_limma passes weights from column name", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -333,7 +336,10 @@ test_that("build_model_limma_impute recovers failed proteins", {
   lfqdata$rename_response("transformedIntensity")
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
 
-  mod_na <- prolfqua::build_model_limma(lfqdata, strat)
+  mod_na <- muffle_warnings_matching(
+    prolfqua::build_model_limma(lfqdata, strat),
+    partial_na_warning
+  )
   mod_imp <- prolfqua::build_model_limma_impute(lfqdata, strat)
 
   na_count_plain <- sum(rowSums(is.na(mod_na$fit$coefficients)) > 0)
@@ -371,7 +377,10 @@ test_that("limma_impute fold changes match plain limma for non-imputed proteins"
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  fa_plain <- prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
+  fa_plain <- muffle_warnings_matching(
+    prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts),
+    partial_na_warning
+  )
   fa_imp <- prolfqua::ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
 
   res_plain <- fa_plain$get_contrasts()
@@ -425,7 +434,10 @@ test_that("df correction: imputed proteins do not use inflated df", {
   lfqdata$rename_response("transformedIntensity")
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
 
-  mod_na <- prolfqua::build_model_limma(lfqdata, strat)
+  mod_na <- muffle_warnings_matching(
+    prolfqua::build_model_limma(lfqdata, strat),
+    partial_na_warning
+  )
   mod_imp <- prolfqua::build_model_limma_impute(lfqdata, strat)
 
   # Identify which proteins were imputed (had NA coefficients in plain fit)
@@ -464,7 +476,7 @@ test_that("build_model_limma_voom returns ModelLimma", {
 })
 
 test_that("build_model_limma_voom produces different weights than plain limma", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -521,7 +533,10 @@ test_that("limma_voom_impute recovers more proteins than limma_voom", {
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  fa_voom <- prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts)
+  fa_voom <- muffle_warnings_matching(
+    prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts),
+    partial_na_warning
+  )
   fa_voom_imp <- prolfqua::ContrastsLimmaVoomImputeFacade$new(lfqdata, "~ group_", contrasts)
 
   res_voom <- fa_voom$get_contrasts()
@@ -580,7 +595,10 @@ test_that("limma_impute flags LOD-rescued proteins via estimate_type", {
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
   # Plain limma: no imputed_proteins, modelName is the facade key, all observed.
-  fa_plain <- prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
+  fa_plain <- muffle_warnings_matching(
+    prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts),
+    partial_na_warning
+  )
   res_plain <- fa_plain$get_contrasts()
   expect_setequal(unique(res_plain$modelName), "limma")
   expect_setequal(unique(res_plain$estimate_type), "observed")

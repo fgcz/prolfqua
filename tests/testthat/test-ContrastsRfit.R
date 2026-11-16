@@ -138,7 +138,12 @@ test_that("rfit handles per-protein rank deficiency without crashing", {
     "TB_vs_A" = "TreatmentB - TreatmentA",
     "BgZ_vs_X" = "BackgroundZ - BackgroundX"
   )
-  fa <- prolfqua::ContrastsRfitFacade$new(lfqdata, "~ Treatment * Background", contrasts)
+  # the deficient proteins are the point of this test: Rfit warns about the collinear design,
+  # the adapter about the rank deficiency
+  fa <- muffle_warnings_matching(
+    prolfqua::ContrastsRfitFacade$new(lfqdata, "~ Treatment * Background", contrasts),
+    "'X' matrix was collinear|rank-deficient"
+  )
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
   # Non-deficient proteins must have estimable contrasts.

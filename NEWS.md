@@ -9,6 +9,8 @@
 
 - prolfqua no longer prints internal progress messages such as "setup done", "completing cases", "contrasts_linfct", "starting aggregation", the model formula or the number of rows with missing values.
 - All errors are raised with `rlang::abort()` and carry class `prolfqua_error`; invalid arguments also carry `prolfqua_error_bad_argument`, so callers can catch prolfqua errors by class. Missing optional packages (`limpa`, `Rfit`) are reported with `rlang::check_installed()`, which offers to install them in interactive sessions.
+- `lm_impute`, `rfit_impute`, `limma_impute`, `limma_voom_impute`: the limit-of-detection refit no longer warns "essentially perfect fit" or "non-finite value supplied by optim", and the `limma` variants no longer warn "Partial NA coefficients" for the proteins they then refit. Results are unchanged. A failed per-protein fit is reported as a warning of class `prolfqua_fit_failed`.
+- `sim_lfq_data_2factor_config()` no longer warns "Unknown or uninitialised column: `nrPeptides`".
 
 ## Bug fixes
 

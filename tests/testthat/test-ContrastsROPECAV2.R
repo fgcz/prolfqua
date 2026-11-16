@@ -73,16 +73,18 @@ test_that(".ropeca_v2_pvalue reduces to the peptide test and to the independent 
 })
 
 test_that(".ropeca_v2_rho estimates the within-protein peptide correlation", {
-  strategy <- strategy_lm("abundance ~ group_")
-  subject_id <- c("protein_Id", "peptide_Id")
+  muffle_warnings_matching(one_group_warning, expr = {
+    strategy <- strategy_lm("abundance ~ group_")
+    subject_id <- c("protein_Id", "peptide_Id")
 
-  correlated <- simulate_correlated_peptides(300, 5, rho = 0.3, missing = 0.3)
-  model <- build_model(correlated, strategy, subject_id = subject_id)
-  expect_true(abs(.ropeca_v2_rho(model$model_df, subject_id, "sampleName") - 0.3) < 0.05)
+    correlated <- simulate_correlated_peptides(300, 5, rho = 0.3, missing = 0.3)
+    model <- build_model(correlated, strategy, subject_id = subject_id)
+    expect_true(abs(.ropeca_v2_rho(model$model_df, subject_id, "sampleName") - 0.3) < 0.05)
 
-  independent <- simulate_correlated_peptides(300, 5, rho = 0, seed = 2)
-  model <- build_model(independent, strategy, subject_id = subject_id)
-  expect_true(.ropeca_v2_rho(model$model_df, subject_id, "sampleName") < 0.03)
+    independent <- simulate_correlated_peptides(300, 5, rho = 0, seed = 2)
+    model <- build_model(independent, strategy, subject_id = subject_id)
+    expect_true(.ropeca_v2_rho(model$model_df, subject_id, "sampleName") < 0.03)
+  })
 })
 
 test_that("ContrastsROPECAV2 checks its arguments", {

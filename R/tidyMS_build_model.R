@@ -739,7 +739,12 @@ impute_refit_singular <- function(
   dat[[response]] <- ifelse(is.na(dat[[response]]), lod, dat[[response]])
   dat[[response]] <- pmax(dat[[response]], lod)
 
-  new_model <- model_strategy$model_fun(dat)
+  # A refit that fails (e.g. Rfit on a response that is constant at the LOD) leaves the
+  # protein unrescued, so it is reported by get_missing(); its fit warning adds nothing.
+  new_model <- withCallingHandlers(
+    model_strategy$model_fun(dat),
+    prolfqua_fit_failed = function(w) invokeRestart("muffleWarning")
+  )
   if (is.character(new_model)) {
     return(NULL)
   }
@@ -755,7 +760,7 @@ impute_refit_singular <- function(
 
   # Borrowed covariance
   if (borrowed$method == "sigma") {
-    cov_unscaled <- summary(new_model)$cov.unscaled
+    cov_unscaled <- .cov_unscaled(new_model)
     imp_vcov <- borrowed$sigma^2 * cov_unscaled
   } else {
     imp_vcov <- borrowed$vcov
@@ -777,6 +782,18 @@ impute_refit_singular <- function(
     nr_coef = p,
     nr_coef_not_NA = p
   )
+}
+
+
+# (X'X)^-1 of an lm fit, as summary.lm() computes it, without summary.lm()'s
+# residual checks: a refit at the LOD can be a perfect fit, and its residual
+# variance is replaced by the borrowed one anyway.
+.cov_unscaled <- function(fit) {
+  p <- seq_len(fit$rank)
+  cov_unscaled <- chol2inv(fit$qr$qr[p, p, drop = FALSE])
+  coef_names <- names(stats::coef(fit))[fit$qr$pivot[p]]
+  dimnames(cov_unscaled) <- list(coef_names, coef_names)
+  cov_unscaled
 }
 
 

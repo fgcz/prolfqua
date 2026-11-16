@@ -140,20 +140,22 @@ test_that(".rlm_estimate re-establishes every input sample in all branches", {
 })
 
 test_that("rlm and medpolish aggregation produce the same (protein, sample) rows (boundary invariant)", {
-  dd <- prolfqua::sim_lfq_data_peptide_config()
-  lfq <- prolfqua::LFQData$new(dd$data, dd$config)
-  lfq <- lfq$get_Transformer()$log2()$lfq
+  muffle_warnings_matching(rlm_convergence_warning, expr = {
+    dd <- prolfqua::sim_lfq_data_peptide_config()
+    lfq <- prolfqua::LFQData$new(dd$data, dd$config)
+    lfq <- lfq$get_Transformer()$log2()$lfq
 
-  bbMed <- suppressMessages(prolfqua::estimate_intensity(lfq, method = "medpolish"))
-  bbRob <- suppressMessages(prolfqua::estimate_intensity(lfq, method = "rlm"))
+    bbMed <- suppressMessages(prolfqua::estimate_intensity(lfq, method = "medpolish"))
+    bbRob <- suppressMessages(prolfqua::estimate_intensity(lfq, method = "rlm"))
 
-  keycols <- c(bbMed$config$hierarchy_keys(), bbMed$config$sample_name)
-  keyM <- dplyr::distinct(bbMed$data, dplyr::across(dplyr::all_of(keycols)))
-  keyR <- dplyr::distinct(bbRob$data, dplyr::across(dplyr::all_of(keycols)))
-  expect_equal(nrow(dplyr::anti_join(keyM, keyR, by = keycols)), 0L)
-  expect_equal(nrow(dplyr::anti_join(keyR, keyM, by = keycols)), 0L)
+    keycols <- c(bbMed$config$hierarchy_keys(), bbMed$config$sample_name)
+    keyM <- dplyr::distinct(bbMed$data, dplyr::across(dplyr::all_of(keycols)))
+    keyR <- dplyr::distinct(bbRob$data, dplyr::across(dplyr::all_of(keycols)))
+    expect_equal(nrow(dplyr::anti_join(keyM, keyR, by = keycols)), 0L)
+    expect_equal(nrow(dplyr::anti_join(keyR, keyM, by = keycols)), 0L)
 
-  # rlm carries its estimate, fitting weights, and the nr_children count
-  expect_true(all(c("lmrob", "weights") %in% colnames(bbRob$data)))
-  expect_true(bbRob$config$nr_children %in% colnames(bbRob$data))
+    # rlm carries its estimate, fitting weights, and the nr_children count
+    expect_true(all(c("lmrob", "weights") %in% colnames(bbRob$data)))
+    expect_true(bbRob$config$nr_children %in% colnames(bbRob$data))
+  })
 })

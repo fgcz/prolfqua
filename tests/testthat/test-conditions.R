@@ -51,8 +51,9 @@ test_that("setup_analysis aborts (typed) on duplicate hierarchy-key / sample com
   cfg$hierarchy[["peptide_Id"]] <- "peptideID"
   cfg$set_response("abundance")
 
+  # raw has no nr_children column, which setup_analysis() warns about before it checks the keys
   expect_error(
-    prolfqua::setup_analysis(raw, cfg),
+    muffle_warnings_matching(prolfqua::setup_analysis(raw, cfg), "no nr_children column"),
     class = "prolfqua_error_duplicate_keys"
   )
 })

@@ -1,54 +1,56 @@
 # Test Contrasts R6 classes
 
 test_that("Contrasts (Wald test)", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 20)
-  config <- istar$config
+  muffle_warnings_matching(single_peptide_warning, expr = {
+    istar <- sim_lfq_data_peptide_config(Nprot = 20)
+    config <- istar$config
 
-  modelFunction <-
-    strategy_lmer("abundance ~ group_ + (1 | peptide_Id) + (1 | sample)")
+    modelFunction <-
+      strategy_lmer("abundance ~ group_ + (1 | peptide_Id) + (1 | sample)")
 
-  mod <- build_model(
-    istar$data,
-    modelFunction,
-    subject_id = config$hierarchy_keys_depth()
-  )
+    mod <- build_model(
+      istar$data,
+      modelFunction,
+      subject_id = config$hierarchy_keys_depth()
+    )
 
-  Contr <- c(
-    "groupA_vs_Ctrl" = "group_A - group_Ctrl",
-    "groupB_vs_Ctrl" = "group_B - group_Ctrl"
-  )
+    Contr <- c(
+      "groupA_vs_Ctrl" = "group_A - group_Ctrl",
+      "groupB_vs_Ctrl" = "group_B - group_Ctrl"
+    )
 
-  contrastX <- Contrasts$new(mod, Contr)
+    contrastX <- Contrasts$new(mod, Contr)
 
-  # get_linfct
-  lf <- contrastX$get_linfct(avg = FALSE)
-  expect_true(is.matrix(lf) || is.data.frame(lf))
+    # get_linfct
+    lf <- contrastX$get_linfct(avg = FALSE)
+    expect_true(is.matrix(lf) || is.data.frame(lf))
 
-  # get_contrasts returns data.frame with expected columns
-  x <- contrastX$get_contrasts()
-  expect_s3_class(x, "data.frame")
-  expect_true(all(c("contrast", "diff", "statistic", "p.value", "FDR") %in% colnames(x)))
-  expect_equal(x$std.error.unmoderated, x$std.error)
-  expect_equal(x$df.unmoderated, x$df)
-  expect_true(all(x$p.value > 0 & x$p.value < 1))
-  expect_true(all(x$FDR > 0 & x$FDR <= 1))
+    # get_contrasts returns data.frame with expected columns
+    x <- contrastX$get_contrasts()
+    expect_s3_class(x, "data.frame")
+    expect_true(all(c("contrast", "diff", "statistic", "p.value", "FDR") %in% colnames(x)))
+    expect_equal(x$std.error.unmoderated, x$std.error)
+    expect_equal(x$df.unmoderated, x$df)
+    expect_true(all(x$p.value > 0 & x$p.value < 1))
+    expect_true(all(x$FDR > 0 & x$FDR <= 1))
 
-  # get_contrast_sides
-  cs <- contrastX$get_contrast_sides()
-  expect_s3_class(cs, "data.frame")
-  expect_true(all(c("group_1", "group_2") %in% colnames(cs)))
+    # get_contrast_sides
+    cs <- contrastX$get_contrast_sides()
+    expect_s3_class(cs, "data.frame")
+    expect_true(all(c("group_1", "group_2") %in% colnames(cs)))
 
-  # column_description
-  cd <- contrastX$column_description()
-  expect_s3_class(cd, "data.frame")
+    # column_description
+    cd <- contrastX$column_description()
+    expect_s3_class(cd, "data.frame")
 
-  # to_wide
-  tw <- contrastX$to_wide()
-  expect_s3_class(tw, "data.frame")
+    # to_wide
+    tw <- contrastX$to_wide()
+    expect_s3_class(tw, "data.frame")
 
-  # get_Plotter
-  pl <- contrastX$get_Plotter()
-  expect_s3_class(pl, "ContrastsPlotter")
+    # get_Plotter
+    pl <- contrastX$get_Plotter()
+    expect_s3_class(pl, "ContrastsPlotter")
+  })
 })
 
 test_that("ContrastsModerated", {
@@ -297,7 +299,7 @@ test_that("compute_lmer_contrast reports an empty contrast matrix instead of fai
   # A protein whose model carries none of the requested contrast coefficients
   # leaves `linfct_matrix_contrasts()` with a 0-row matrix. lmerTest::contest()
   # indexes 1:nrow(L) and used to abort the whole run on it.
-  mb <- sim_make_model_lmer("interaction")
+  mb <- muffle_warnings_matching(sim_make_model_lmer("interaction"), single_peptide_warning)
   linfct <- linfct_from_model(mb)$linfct_factors
   empty <- linfct[0, , drop = FALSE]
 
