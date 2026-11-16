@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-11-15</h4>
+            <h4 data-toc-skip class="date">2026-11-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/TwoFactorDesigns.Rmd" class="external-link"><code>vignettes/TwoFactorDesigns.Rmd</code></a></small>
       <div class="d-none name"><code>TwoFactorDesigns.Rmd</code></div>
@@ -1061,9 +1061,10 @@ that plain lm could not estimate</caption>
 </h2>
 <p>The mixed-effects <code>lmer_nested</code> facade and
 <code>ropeca_nested</code> require lower-level measurements below the
-analysis subject. The <code>firth_nested</code> facade is the
-peptide-input variant of <code>firth</code> shown above. All three still
-return protein-level contrasts.</p>
+analysis subject. The <code>binomial_firth_nested</code> facade models
+peptide detection, like <code>firth</code> above, but from peptide-level
+input: it counts the detected peptides per protein and sample. All three
+still return protein-level contrasts.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fa_lmer_2f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span></span>
 <span>  <span class="va">lfq_peptide_2f</span>,</span>
@@ -1079,17 +1080,17 @@ return protein-level contrasts.</p>
 <span>  method <span class="op">=</span> <span class="st">"ropeca_nested"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fa_firth_peptide_2f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span></span>
+<span><span class="va">fa_binomial_firth_2f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span></span>
 <span>  <span class="va">lfq_peptide_2f</span>,</span>
 <span>  <span class="st">"~ Subgroup"</span>,</span>
 <span>  <span class="va">contrasts_2f</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"firth_nested"</span></span>
+<span>  method <span class="op">=</span> <span class="st">"binomial_firth_nested"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_peptide_2f</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span></span>
 <span>  <span class="va">fa_lmer_2f</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">fa_ropeca_2f</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="va">fa_firth_peptide_2f</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="va">fa_binomial_firth_2f</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">any_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"modelName"</span>, <span class="st">"estimate_type"</span>, <span class="st">"protein_Id"</span>, <span class="st">"contrast"</span>, <span class="st">"avgAbd"</span>, <span class="st">"diff"</span>, <span class="st">"FDR"</span>,</span>
@@ -1103,11 +1104,11 @@ return protein-level contrasts.</p>
 <span><span class="va">results_peptide_2f</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">modelName</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
-<span><span class="co">##   modelName     n_results</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> firth_nested        240</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> lmer_nested         179</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> ropeca_nested       231</span></span></code></pre>
+<span><span class="co">##   modelName             n_results</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> binomial_firth_nested       240</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> lmer_nested                 179</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> ropeca_nested               231</span></span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results_peptide_2f</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">diff</span>, y <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span>, color <span class="op">=</span> <span class="va">significant</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.6</span>, size <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
@@ -1171,7 +1172,7 @@ together.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.2   BiocStyle_2.40.0</span></span>
+<span><span class="co">## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.3   BiocStyle_2.40.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           </span></span>

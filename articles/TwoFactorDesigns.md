@@ -399,9 +399,10 @@ plain lm could not estimate
 ## Peptide-input facades
 
 The mixed-effects `lmer_nested` facade and `ropeca_nested` require
-lower-level measurements below the analysis subject. The `firth_nested`
-facade is the peptide-input variant of `firth` shown above. All three
-still return protein-level contrasts.
+lower-level measurements below the analysis subject. The
+`binomial_firth_nested` facade models peptide detection, like `firth`
+above, but from peptide-level input: it counts the detected peptides per
+protein and sample. All three still return protein-level contrasts.
 
 ``` r
 fa_lmer_2f <- build_contrast_analysis(
@@ -418,11 +419,11 @@ fa_ropeca_2f <- build_contrast_analysis(
   method = "ropeca_nested"
 )
 
-fa_firth_peptide_2f <- build_contrast_analysis(
+fa_binomial_firth_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup",
   contrasts_2f,
-  method = "firth_nested"
+  method = "binomial_firth_nested"
 )
 ```
 
@@ -430,7 +431,7 @@ fa_firth_peptide_2f <- build_contrast_analysis(
 results_peptide_2f <- bind_rows(
   fa_lmer_2f$get_contrasts(),
   fa_ropeca_2f$get_contrasts(),
-  fa_firth_peptide_2f$get_contrasts()
+  fa_binomial_firth_2f$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
     "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
@@ -446,11 +447,11 @@ results_peptide_2f |>
 ```
 
     ## # A tibble: 3 × 2
-    ##   modelName     n_results
-    ##   <chr>             <int>
-    ## 1 firth_nested        240
-    ## 2 lmer_nested         179
-    ## 3 ropeca_nested       231
+    ##   modelName             n_results
+    ##   <chr>                     <int>
+    ## 1 binomial_firth_nested       240
+    ## 2 lmer_nested                 179
+    ## 3 ropeca_nested               231
 
 ``` r
 ggplot(results_peptide_2f, aes(x = diff, y = -log10(p.value), color = significant)) +
@@ -516,7 +517,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.2   BiocStyle_2.40.0
+    ## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.3   BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

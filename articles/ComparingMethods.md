@@ -27,8 +27,9 @@ provides a common front-end for several contrast backends:
   peptide counts per protein.
 - `firth` — Firth bias-reduced logistic regression on presence/absence
   (missingness) of aggregated proteins.
-- `firth_nested` — Firth logistic regression on peptide-level
-  missingness, reporting protein-level contrasts.
+- `binomial_firth_nested` — Firth bias-reduced binomial model of the
+  detected peptides per protein and sample, reporting protein-level
+  contrasts.
 
 All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. All examples below return
@@ -466,9 +467,10 @@ plain lm could not estimate
 The peptide-input facades take peptide/precursor-level `LFQData` and
 return protein-level contrasts. They are defined in
 `R/ContrastsChildToParentFacades.R` and use the `*_nested` method keys:
-`lmer_nested`, `ropeca_nested`, `firth_nested`, and `limpa_nested`.
-`firth_nested` is the peptide-input counterpart of the protein-input
-`firth` shown above.
+`lmer_nested`, `ropeca_nested`, `binomial_firth_nested`, and
+`limpa_nested`. `binomial_firth_nested` models peptide detection, like
+the protein-input `firth` shown above, from the number of detected
+peptides per protein and sample.
 
 ``` r
 fa_lmer <- build_contrast_analysis(
@@ -485,26 +487,25 @@ fa_ropeca <- build_contrast_analysis(
   method = "ropeca_nested"
 )
 
-fa_firth_peptide <- build_contrast_analysis(
+fa_binomial_firth <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
   contrasts,
-  method = "firth_nested"
+  method = "binomial_firth_nested"
 )
 ```
 
 `ropeca_nested` aggregates peptide evidence back to proteins, whereas
 `lmer_nested` models the nested peptide structure directly before
-reporting protein-level contrasts. `firth_nested` also reports
-protein-level contrasts: proteins with exactly one peptide are fitted
-without an added peptide term, while proteins with multiple peptides are
-fitted with the lowest hierarchy key added internally.
+reporting protein-level contrasts. `binomial_firth_nested` also reports
+protein-level contrasts; its degrees of freedom come from the samples,
+not from the number of peptides.
 
 ``` r
 results_peptide <- bind_rows(
   fa_lmer$get_contrasts(),
   fa_ropeca$get_contrasts(),
-  fa_firth_peptide$get_contrasts()
+  fa_binomial_firth$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
     "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
@@ -520,11 +521,11 @@ results_peptide |>
 ```
 
     ## # A tibble: 3 × 2
-    ##   modelName     n_results
-    ##   <chr>             <int>
-    ## 1 firth_nested        160
-    ## 2 lmer_nested         102
-    ## 3 ropeca_nested       157
+    ##   modelName             n_results
+    ##   <chr>                     <int>
+    ## 1 binomial_firth_nested       160
+    ## 2 lmer_nested                 102
+    ## 3 ropeca_nested               157
 
 ``` r
 ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
@@ -551,9 +552,9 @@ are backends.
 ## Hurdle: intensity and detection combined
 
 `ContrastsHurdleFacade` fits no model of its own. It joins a fitted
-intensity facade and a fitted detection facade (`firth_nested` or
-`binomial_nested`) by protein and contrast, and combines their p-values
-with Fisher’s method, as msqrob2’s hurdle model does. A protein
+intensity facade and a fitted detection facade (`binomial_nested` or
+`binomial_firth_nested`) by protein and contrast, and combines their
+p-values with Fisher’s method, as msqrob2’s hurdle model does. A protein
 estimated by one component only keeps that component’s p-value; a
 protein detected in every sample keeps its intensity p-value. `diff`
 comes from the intensity component, so `lm_impute` is the better
@@ -561,7 +562,7 @@ partner: it also estimates `diff` for proteins detected in one group
 only.
 
 ``` r
-fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_firth_peptide)
+fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_binomial_firth)
 results_hurdle <- fa_hurdle$get_contrasts()
 
 results_hurdle |>
@@ -588,16 +589,16 @@ results_hurdle |>
     ## # A tibble: 10 × 8
     ##    contrast protein_Id   diff p.value.intensity diff.detection p.value.detection
     ##    <chr>    <chr>       <dbl>             <dbl>          <dbl>             <dbl>
-    ##  1 A_vs_Ct… Zci7Jw~70… -0.722          3.15e-11       1.16e+ 0            0.430 
-    ##  2 A_vs_Ct… KVkccD~18… -0.524          1.99e- 9      -2.06e+ 0            0.214 
-    ##  3 A_vs_Ct… 4Y4DYT~09…  0.583          1.99e- 8       4.27e-16            1     
-    ##  4 A_vs_Ct… 0CubNR~08…  0.674          4.07e- 8       1.35e+ 0            0.468 
-    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -4.90e-16            1     
-    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10       1.69e-15            1.000 
-    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       3.19e-16            1     
-    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9       1.69e-15            1.000 
-    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7       5.65e-16            1     
-    ## 10 B_vs_Ct… 2FL9I1~16… -0.417          2.08e- 7      -1.31e+ 0            0.0752
+    ##  1 A_vs_Ct… Zci7Jw~70… -0.722          3.15e-11       1.18e+ 0             0.483
+    ##  2 A_vs_Ct… KVkccD~18… -0.524          1.99e- 9      -1.88e+ 0             0.251
+    ##  3 A_vs_Ct… 4Y4DYT~09…  0.583          1.99e- 8       8.51e-16             1    
+    ##  4 A_vs_Ct… 0CubNR~08…  0.674          4.07e- 8       1.35e+ 0             0.449
+    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -2.11e-15             1.000
+    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10      -9.86e-32             1    
+    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       0                  NaN    
+    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9      -9.86e-32             1    
+    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7       1.97e-31             1    
+    ## 10 B_vs_Ct… TR3Ksv~14… -0.413          4.18e- 7      -9.86e-32             1    
     ## # ℹ 2 more variables: p.value <dbl>, FDR <dbl>
 
 The `hurdle_nested` method does all of this from the peptide data in one
@@ -668,7 +669,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4  dplyr_1.2.1    prolfqua_1.9.2
+    ## [1] ggplot2_4.0.4  dplyr_1.2.1    prolfqua_1.9.3
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

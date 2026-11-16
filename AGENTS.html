@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,7 @@ LFQData → build_contrast_analysis(lfqdata, modelstr, contrasts, method)
 <p><code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> is the recommended entry point. Each method dispatches to a Facade class that wires strategy → model → contrasts → moderation internally.</p>
 <p>The authoritative facade list is the <code>.seed_facade_registry()</code> table in <code>R/ContrastsFacades.R</code>; query it at runtime with <code>lookup_facade(name)</code>. Facades split by input/output hierarchy shape — <code>lookup_facade(name)$needs</code> returns one of two values:</p>
 <p><strong><code>needs = "aggregated"</code></strong> — facade emits contrasts at the same hierarchy level as its input (protein → protein FC, or peptide/precursor → peptide/precursor FC; <code>subject_Id == hierarchy_keys</code>). Lives in <code>R/ContrastsFacades.R</code>: <code>lm</code>, <code>rlm</code>, <code>lm_impute</code>, <code>limma</code>, <code>limma_impute</code>, <code>limma_voom</code>, <code>limma_voom_impute</code>, <code>deqms</code>, <code>deqms_voom</code>, <code>firth</code>, <code>limpa</code></p>
-<p><strong><code>needs = "nested"</code></strong> — facade takes child-level input (peptide/precursor) and emits parent-level (protein) contrasts; <code>subject_Id</code> is a strict subset of <code>hierarchy_keys</code>. Lives in <code>R/ContrastsChildToParentFacades.R</code>: <code>lmer_nested</code>, <code>ropeca_nested</code>, <code>firth_nested</code>, <code>limpa_nested</code></p>
+<p><strong><code>needs = "nested"</code></strong> — facade takes child-level input (peptide/precursor) and emits parent-level (protein) contrasts; <code>subject_Id</code> is a strict subset of <code>hierarchy_keys</code>. Lives in <code>R/ContrastsChildToParentFacades.R</code>: <code>lmer_nested</code>, <code>ropeca_nested</code>, <code>binomial_nested</code>, <code>binomial_firth_nested</code>, <code>limpa_nested</code></p>
 <p>There are no same-level <code>lmer</code>/<code>ropeca</code> facades — mixed-model and ROPECA analyses are nested-only.</p>
 </div>
 <div class="section level3">

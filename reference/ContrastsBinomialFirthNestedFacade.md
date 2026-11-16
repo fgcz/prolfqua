@@ -7,9 +7,8 @@ per parent and sample, so the dispersion and the residual degrees of
 freedom come from the samples, not from the number of child features.
 The fixed pseudo-count is replaced by Firth's bias reduction
 ([`StrategyBinomialFirth`](https://fgcz.github.io/prolfqua/reference/StrategyBinomialFirth.md)),
-which gives finite log odds ratios under complete separation, as
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md)
-does. Unlike `firth_nested`, child identity is not modelled.
+which gives finite log odds ratios under complete separation. Child
+identity is not modelled.
 
 ## Value
 

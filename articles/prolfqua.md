@@ -190,12 +190,12 @@ runs each of them on one small dataset.
 ``` r
 names(list_facades())
 #>  [1] "binomial_firth_nested" "binomial_nested"       "deqms"                
-#>  [4] "deqms_voom"            "firth"                 "firth_nested"         
-#>  [7] "hurdle_nested"         "limma"                 "limma_impute"         
-#> [10] "limma_voom"            "limma_voom_impute"     "limpa"                
-#> [13] "limpa_nested"          "lm"                    "lm_impute"            
-#> [16] "lmer_nested"           "rfit"                  "rfit_impute"          
-#> [19] "rlm"                   "ropeca_nested"
+#>  [4] "deqms_voom"            "firth"                 "hurdle_nested"        
+#>  [7] "limma"                 "limma_impute"          "limma_voom"           
+#> [10] "limma_voom_impute"     "limpa"                 "limpa_nested"         
+#> [13] "lm"                    "lm_impute"             "lmer_nested"          
+#> [16] "rfit"                  "rfit_impute"           "rlm"                  
+#> [19] "ropeca_nested"
 ```
 
 ## Session info
@@ -223,7 +223,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] prolfqua_1.9.2   BiocStyle_2.40.0
+#> [1] prolfqua_1.9.3   BiocStyle_2.40.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

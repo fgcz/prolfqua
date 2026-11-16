@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,19 @@
       <small>Source: <a href="https://github.com/fgcz/prolfqua/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.3" id="prolfqua-193">prolfqua 1.9.3<a class="anchor" aria-label="anchor" href="#prolfqua-193"></a></h2>
+<div class="section level3">
+<h3 id="behaviour-changes-1-9-3">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-3"></a></h3>
+<ul><li>The Firth backend fits one model per protein: <code><a href="../reference/build_model_logistf.html">build_model_logistf()</a></code> requires aggregated data, one row per protein and sample, and stops on peptide-level input. <code>ModelFirth$models</code> is the <code><a href="../reference/model_analyse.html">model_analyse()</a></code> result (<code>model_df</code>, <code>strategy</code>) instead of a list of <code>models1</code>, <code>models2</code> and <code>hkey</code>, and <code>ContrastsFirth$get_linfct()</code> returns that one container. <code><a href="../reference/sim_build_models_logistf.html">sim_build_models_logistf()</a></code> loses its <code>peptide</code> argument. <code>firth</code> results do not change.</li>
+<li>
+<code>ContrastsFirth$get_contrasts()</code> no longer prints the debug messages “determine linear functions:” and “get_contrasts -&gt; contrasts_linfct”.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="removed-1-9-3">Removed<a class="anchor" aria-label="anchor" href="#removed-1-9-3"></a></h3>
+<ul><li>The <code>firth_nested</code> method (<code>ContrastsFirthNestedFacade</code>, <code>build_model_glm_peptide()</code>). It fitted one 0/1 row per peptide and sample, so its detection p-values became more significant the more peptides a protein had: on the IonStar benchmark, the share of unchanged human proteins with p &lt; 0.05 rose from 1.3% (2-3 peptides) to 7.7% (more than 20). Use <code>binomial_firth_nested</code>, which applies the same Firth bias reduction to the detected-peptide counts per protein and sample and takes its degrees of freedom from the samples. <code>ContrastsHurdleFacade</code> accepts <code>binomial_nested</code> or <code>binomial_firth_nested</code> as the detection component.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.2" id="prolfqua-192">prolfqua 1.9.2<a class="anchor" aria-label="anchor" href="#prolfqua-192"></a></h2>
 <div class="section level3">

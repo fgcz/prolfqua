@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -161,7 +161,6 @@ The method models the peptides and reports protein-level contrasts.</li>
 <span>  limpa <span class="op">=</span> <span class="st">"limma on limpa DPC-quantified proteins"</span>,</span>
 <span>  limpa_nested <span class="op">=</span> <span class="st">"limpa, DPC quantification from peptides"</span>,</span>
 <span>  firth <span class="op">=</span> <span class="st">"Firth logistic regression, protein detection"</span>,</span>
-<span>  firth_nested <span class="op">=</span> <span class="st">"Firth logistic regression, peptide detection"</span>,</span>
 <span>  binomial_nested <span class="op">=</span> <span class="st">"quasibinomial model, peptide detection counts"</span>,</span>
 <span>  binomial_firth_nested <span class="op">=</span> <span class="st">"binomial_nested with Firth bias reduction"</span>,</span>
 <span>  hurdle_nested <span class="op">=</span> <span class="st">"lm_impute intensity + binomial_firth_nested detection"</span>,</span>
@@ -228,13 +227,6 @@ The method models the peptides and reports protein-level contrasts.</li>
 <td align="left">Firth logistic regression, protein detection</td>
 </tr>
 <tr class="even">
-<td align="left">firth_nested</td>
-<td align="left">nested</td>
-<td align="right">20</td>
-<td align="right">0</td>
-<td align="left">Firth logistic regression, peptide detection</td>
-</tr>
-<tr class="odd">
 <td align="left">hurdle_nested</td>
 <td align="left">nested</td>
 <td align="right">20</td>
@@ -242,56 +234,56 @@ The method models the peptides and reports protein-level contrasts.</li>
 <td align="left">lm_impute intensity + binomial_firth_nested
 detection</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limma</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma, empirical-Bayes moderated variances</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">limma_impute</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma with LOD imputation</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limma_voom</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma with vooma precision weights</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">limma_voom_impute</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">limma_voom with LOD imputation</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limpa</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">16</td>
 <td align="left">limma on limpa DPC-quantified proteins</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">limpa_nested</td>
 <td align="left">nested</td>
 <td align="right">20</td>
 <td align="right">16</td>
 <td align="left">limpa, DPC quantification from peptides</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">lm</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">linear model per protein</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">lm_impute</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
@@ -299,35 +291,35 @@ detection</td>
 <td align="left">lm; groups without observations imputed at the limit of
 detection (LOD)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">lmer_nested</td>
 <td align="left">nested</td>
 <td align="right">12</td>
 <td align="right">5</td>
 <td align="left">mixed model, peptide and sample random effects</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">rfit</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">rank-based regression (Rfit)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">rfit_impute</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">rfit with LOD imputation</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">rlm</td>
 <td align="left">aggregated</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">robust linear model (MASS::rlm)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">ropeca_nested</td>
 <td align="left">nested</td>
 <td align="right">20</td>
@@ -337,7 +329,7 @@ detection (LOD)</td>
 </tr>
 </tbody>
 </table>
-<p>The detection models (<code>firth</code>, <code>firth_nested</code>,
+<p>The detection models (<code>firth</code>,
 <code>binomial_nested</code>, <code>binomial_firth_nested</code>) test
 differences in how often a protein or its peptides are observed. The
 simulated data has few missing values, so they find little.</p>
@@ -394,90 +386,84 @@ protein is detected in every sample, so the detection models report
 <td align="right">1.000</td>
 </tr>
 <tr class="even">
-<td align="left">firth_nested</td>
-<td align="right">0.000</td>
-<td align="right">1.000</td>
-<td align="right">1.000</td>
-</tr>
-<tr class="odd">
 <td align="left">hurdle_nested</td>
 <td align="right">-0.469</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limma</td>
 <td align="right">-0.469</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">limma_impute</td>
 <td align="right">-0.469</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limma_voom</td>
 <td align="right">-0.469</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">limma_voom_impute</td>
 <td align="right">-0.469</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">limpa</td>
 <td align="right">-0.272</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">limpa_nested</td>
 <td align="right">-0.272</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">lm</td>
 <td align="right">-0.469</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">lm_impute</td>
 <td align="right">-0.469</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">lmer_nested</td>
 <td align="right">-0.276</td>
 <td align="right">0.001</td>
 <td align="right">0.003</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">rfit</td>
 <td align="right">-0.463</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">rfit_impute</td>
 <td align="right">-0.463</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">rlm</td>
 <td align="right">-0.469</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">ropeca_nested</td>
 <td align="right">-0.495</td>
 <td align="right">0.000</td>
@@ -512,7 +498,7 @@ protein is detected in every sample, so the detection models report
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] prolfqua_1.9.2   BiocStyle_2.40.0</span></span>
+<span><span class="co">#&gt; [1] prolfqua_1.9.3   BiocStyle_2.40.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           </span></span>

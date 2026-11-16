@@ -1,10 +1,10 @@
 # Hurdle contrasts: intensity and detection combined with Fisher's method
 
 Joins the contrasts of a fitted intensity facade (e.g. `lm_impute`) and
-a fitted detection facade (`firth_nested`, `binomial_nested` or
-`binomial_firth_nested`) by subject and contrast, and replaces `p.value`
-and `FDR` with Fisher's combined test, as in msqrob2's
-`hypothesisTestHurdle`. No model is fitted.
+a fitted detection facade (`binomial_nested` or `binomial_firth_nested`)
+by subject and contrast, and replaces `p.value` and `FDR` with Fisher's
+combined test, as in msqrob2's `hypothesisTestHurdle`. No model is
+fitted.
 
 For each subject and contrast, \\X^2 = -2 \sum \log p\\ over the
 available component p-values, with two degrees of freedom per component,
@@ -39,7 +39,6 @@ Other modelling:
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://fgcz.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md),
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsHurdleNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.md),
 [`ContrastsLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMFacade.md),
 [`ContrastsLMImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMImputeFacade.md),
@@ -74,7 +73,6 @@ Other modelling:
 [`StrategyRfit`](https://fgcz.github.io/prolfqua/reference/StrategyRfit.md),
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md),
-[`build_model_glm_peptide()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md),
@@ -132,8 +130,7 @@ Other modelling:
 
 - `detection`:
 
-  fitted detection facade (`firth_nested`, `binomial_nested` or
-  `binomial_firth_nested`)
+  fitted detection facade (`binomial_nested` or `binomial_firth_nested`)
 
 - `model_name`:
 
@@ -186,8 +183,8 @@ Combine a fitted intensity facade and a fitted detection facade.
 
 - `detection`:
 
-  fitted `firth_nested`, `binomial_nested` or `binomial_firth_nested`
-  facade with the same subject id and contrasts
+  fitted `binomial_nested` or `binomial_firth_nested` facade with the
+  same subject id and contrasts
 
 - `model_name`:
 

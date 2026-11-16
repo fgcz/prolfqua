@@ -44,9 +44,6 @@
 - [`ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md)
   : Firth logistic missingness contrast analysis facade
 
-- [`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md)
-  : Firth logistic missingness contrast analysis facade for nested input
-
 - [`ContrastsHurdleFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleFacade.md)
   : Hurdle contrasts: intensity and detection combined with Fisher's
   method
@@ -203,9 +200,6 @@
 
 - [`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md)
   : Build protein models from data
-
-- [`build_model_glm_peptide()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_peptide.md)
-  : Build Firth logistic model for nested LFQData
 
 - [`build_model_glm_protein()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_protein.md)
   : Build Firth logistic model for aggregated LFQData

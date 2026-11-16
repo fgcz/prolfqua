@@ -7,7 +7,7 @@ Encapsulates the pipeline: encode missingness -\>
 
 Requires aggregated (protein-level) LFQData. For nested peptide-level
 input use
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md).
+[`ContrastsBinomialFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsBinomialFirthNestedFacade.md).
 
 ## Value
 
@@ -22,7 +22,6 @@ Other modelling:
 [`ContrastsDEqMSVoomFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://fgcz.github.io/prolfqua/reference/ContrastsFirth.md),
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsHurdleFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleFacade.md),
 [`ContrastsHurdleNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.md),
 [`ContrastsLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMFacade.md),
@@ -58,7 +57,6 @@ Other modelling:
 [`StrategyRfit`](https://fgcz.github.io/prolfqua/reference/StrategyRfit.md),
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md),
-[`build_model_glm_peptide()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md),
@@ -190,8 +188,6 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsFirthFacade$new(lfqdata, "~ group_", contrasts)
 #> completing cases
 head(fa$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> # A tibble: 6 × 16
 #> # Groups:   contrast [1]

@@ -9,8 +9,7 @@ sim_build_models_logistf(
   model = c("parallel2", "parallel3", "factors", "interaction"),
   Nprot = 10,
   with_missing = TRUE,
-  weight_missing = 1,
-  peptide = FALSE
+  weight_missing = 1
 )
 ```
 
@@ -24,7 +23,6 @@ Other modelling:
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://fgcz.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md),
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsHurdleFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleFacade.md),
 [`ContrastsHurdleNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.md),
 [`ContrastsLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMFacade.md),
@@ -60,7 +58,6 @@ Other modelling:
 [`StrategyRfit`](https://fgcz.github.io/prolfqua/reference/StrategyRfit.md),
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md),
-[`build_model_glm_peptide()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md),
@@ -126,18 +123,6 @@ mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #> completing cases done
 #> setup done
 modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
-#> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
-
-mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1, peptide=TRUE)
-#> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
-modf <- sim_build_models_logistf(model = "factors", weight_missing = 1, peptide=TRUE)
-#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> completing cases
 #> completing cases done

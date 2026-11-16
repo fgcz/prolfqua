@@ -1,6 +1,7 @@
 # build_model_logistf
 
-build_model_logistf
+Fits Firth's logistic regression per subject to the binary detection
+response of aggregated data, one row per subject and sample.
 
 ## Usage
 
@@ -18,7 +19,6 @@ Other modelling:
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://fgcz.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md),
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsHurdleFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleFacade.md),
 [`ContrastsHurdleNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.md),
 [`ContrastsLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMFacade.md),
@@ -54,7 +54,6 @@ Other modelling:
 [`StrategyRfit`](https://fgcz.github.io/prolfqua/reference/StrategyRfit.md),
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md),
-[`build_model_glm_peptide()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md),
@@ -101,18 +100,6 @@ Other modelling:
 ## Examples
 
 ``` r
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
-  weight_missing = 0.5, seed = 3)
-#> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
-istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
-istar$config$bin_resp <- "bin_resp"
-tmp <- LFQData$new(istar$data, istar$config)
-formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
-xx2 <- build_model_logistf(tmp, formula)
-
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 #> creating sampleName from file_name column
@@ -126,16 +113,8 @@ formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
 xx <- build_model_logistf(tmp, formula)
 
 contrasts <- c(AvsB = "group_A - group_B")
-m <- xx$models$models1$model_df$linear_model[[1]]
+m <- xx$models$model_df$linear_model[[1]]
 linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
 #>      (Intercept) group_B group_Ctrl
 #> AvsB           0      -1          0
-m <- xx2$models$models2$model_df$linear_model[[1]]
-linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
-#>      (Intercept) group_B group_Ctrl peptide_IdFLq7LKTq peptide_IdJYhOpuPH
-#> AvsB           0      -1          0                  0                  0
-#>      peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg
-#> AvsB                  0                  0                  0
-#>      peptide_Idq2jTaC1y
-#> AvsB                  0
 ```

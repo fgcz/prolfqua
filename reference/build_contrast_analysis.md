@@ -39,10 +39,10 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
   `"deqms_voom"`, `"limpa"`, `"limpa_nested"`; limit-of-detection
   imputation `"lm_impute"`, `"limma_impute"`, `"limma_voom_impute"`,
   `"rfit_impute"`; peptide-level models `"lmer_nested"`,
-  `"ropeca_nested"`; detection models `"firth"`, `"firth_nested"`,
-  `"binomial_nested"`, `"binomial_firth_nested"`; the hurdle model
-  `"hurdle_nested"`, combining intensity and detection. Downstream
-  packages may add more via
+  `"ropeca_nested"`; detection models `"firth"`, `"binomial_nested"`,
+  `"binomial_firth_nested"`; the hurdle model `"hurdle_nested"`,
+  combining intensity and detection. Downstream packages may add more
+  via
   [`register_facade`](https://fgcz.github.io/prolfqua/reference/register_facade.md).
   The authoritative list is
   `names(`[`list_facades`](https://fgcz.github.io/prolfqua/reference/list_facades.md)`())`.
@@ -76,7 +76,6 @@ Other modelling:
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://fgcz.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md),
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsHurdleFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleFacade.md),
 [`ContrastsHurdleNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.md),
 [`ContrastsLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMFacade.md),
@@ -111,7 +110,6 @@ Other modelling:
 [`StrategyRLM`](https://fgcz.github.io/prolfqua/reference/StrategyRLM.md),
 [`StrategyRfit`](https://fgcz.github.io/prolfqua/reference/StrategyRfit.md),
 [`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md),
-[`build_model_glm_peptide()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md),
@@ -277,8 +275,6 @@ head(fa_ropeca$get_contrasts())
 fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
 #> completing cases
 head(fa_firth$get_contrasts())
-#> determine linear functions:
-#> get_contrasts -> contrasts_linfct
 #> contrasts_linfct
 #> # A tibble: 6 × 16
 #> # Groups:   contrast [1]

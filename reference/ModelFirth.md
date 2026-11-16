@@ -16,7 +16,6 @@ Other modelling:
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
 [`ContrastsFirth`](https://fgcz.github.io/prolfqua/reference/ContrastsFirth.md),
 [`ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md),
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
 [`ContrastsHurdleFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleFacade.md),
 [`ContrastsHurdleNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.md),
 [`ContrastsLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMFacade.md),
@@ -51,7 +50,6 @@ Other modelling:
 [`StrategyRfit`](https://fgcz.github.io/prolfqua/reference/StrategyRfit.md),
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md),
 [`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md),
-[`build_model_glm_peptide()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_peptide.md),
 [`build_model_glm_protein()`](https://fgcz.github.io/prolfqua/reference/build_model_glm_protein.md),
 [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md),
 [`build_model_limma()`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md),
@@ -105,7 +103,8 @@ Other modelling:
 
 - `models`:
 
-  data.frame with modelling data and model.
+  [`model_analyse`](https://fgcz.github.io/prolfqua/reference/model_analyse.md)
+  result: `model_df`, one fitted model per subject, and the `strategy`
 
 - `model_name`:
 
@@ -158,7 +157,8 @@ initialize
 
 - `models`:
 
-  dataframe with modelling results
+  [`model_analyse`](https://fgcz.github.io/prolfqua/reference/model_analyse.md)
+  result with a `model_df` data.frame and the `strategy`
 
 - `model_name`:
 
@@ -227,61 +227,6 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-
-
-
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
-  weight_missing = 0.5, seed = 3)
-#> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
-istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
-istar$config$bin_resp <- "bin_resp"
-tmp <- LFQData$new(istar$data, istar$config)
-formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
-mod <- build_model_logistf(tmp, formula)
-tmp <- mod$get_coefficients()
-mod$coef_histogram()
-#> $plot
-
-#> 
-#> $name
-#> [1] "Coef_Histogram_modelFirth.pdf"
-#> 
-mod$coef_pairs()
-#> $plot
-#> # A tibble: 10 × 4
-#>    subject_id  `(Intercept)`   group_B group_Ctrl
-#>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841       2.10     6.77e- 1  -6.66e- 1
-#>  2 AZPG26~2091       0.905    5.38e-16   1.82e+ 0
-#>  3 AoNKbb~6908       1.01    -7.77e- 1  -4.25e- 1
-#>  4 JnEDsz~4938       0.00838  8.36e-11   9.37e- 1
-#>  5 tCZCHm~6695       2.16     1.23e+ 0   1.23e+ 0
-#>  6 EnbuYk~0350       0.847    1.35e+ 0  -3.04e+ 0
-#>  7 NNASGK~1417       2.20    -1.35e+ 0  -2.16e-15
-#>  8 XYrp6h~5793       2.20     1.26e-15  -4.27e-16
-#>  9 quTD7H~4566       0.847    1.35e+ 0  -8.47e- 1
-#> 10 tHE075~8231       0.847    1.35e+ 0   1.35e+ 0
-#> 
-#> $name
-#> [1] "Coef_Pairsplot_modelFirth.pdf"
-#> 
-mod$get_anova()
-#> Warning: method not implemented!
-#> NULL
-mod$coef_volcano()
-#> $plot
-
-#> 
-#> $name
-#> [1] "Coef_volcano_plot_modelFirth.pdf"
-#> 
-mod$anova_histogram()
-#> Warning: not implemented
-#> NULL
-
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 #> creating sampleName from file_name column

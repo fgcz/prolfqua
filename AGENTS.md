@@ -102,7 +102,7 @@ hierarchy level as its input (protein → protein FC, or peptide/precursor
 (peptide/precursor) and emits parent-level (protein) contrasts;
 `subject_Id` is a strict subset of `hierarchy_keys`. Lives in
 `R/ContrastsChildToParentFacades.R`: `lmer_nested`, `ropeca_nested`,
-`firth_nested`, `limpa_nested`
+`binomial_nested`, `binomial_firth_nested`, `limpa_nested`
 
 There are no same-level `lmer`/`ropeca` facades — mixed-model and ROPECA
 analyses are nested-only.

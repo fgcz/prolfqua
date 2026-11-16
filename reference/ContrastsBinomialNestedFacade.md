@@ -1,12 +1,10 @@
 # Quasibinomial detection-count facade for nested input
 
-Completes and encodes child-feature detection using the same preparation
-as
-[`ContrastsFirthNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.md),
-then collapses the binary rows into detected and undetected counts per
-parent and sample. The resulting quasibinomial model reports
-parent-level log odds ratios in `diff`; `avgAbd` is the average linear
-predictor on the log-odds scale.
+Completes the child-feature rows, encodes detection as 0/1, then
+collapses the binary rows into detected and undetected counts per parent
+and sample. The resulting quasibinomial model reports parent-level log
+odds ratios in `diff`; `avgAbd` is the average linear predictor on the
+log-odds scale.
 
 Child features are treated as exchangeable binomial trials. The
 symmetric pseudo-count stabilizes complete separation but is not

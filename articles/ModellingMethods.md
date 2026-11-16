@@ -79,7 +79,6 @@ about <- c(
   limpa = "limma on limpa DPC-quantified proteins",
   limpa_nested = "limpa, DPC quantification from peptides",
   firth = "Firth logistic regression, protein detection",
-  firth_nested = "Firth logistic regression, peptide detection",
   binomial_nested = "quasibinomial model, peptide detection counts",
   binomial_firth_nested = "binomial_nested with Firth bias reduction",
   hurdle_nested = "lm_impute intensity + binomial_firth_nested detection",
@@ -103,7 +102,6 @@ knitr::kable(overview, row.names = FALSE)
 | deqms | aggregated | 20 | 14 | limma with DEqMS peptide-count variance moderation |
 | deqms_voom | aggregated | 20 | 13 | deqms with vooma precision weights |
 | firth | aggregated | 20 | 0 | Firth logistic regression, protein detection |
-| firth_nested | nested | 20 | 0 | Firth logistic regression, peptide detection |
 | hurdle_nested | nested | 20 | 14 | lm_impute intensity + binomial_firth_nested detection |
 | limma | aggregated | 20 | 14 | limma, empirical-Bayes moderated variances |
 | limma_impute | aggregated | 20 | 14 | limma with LOD imputation |
@@ -119,7 +117,7 @@ knitr::kable(overview, row.names = FALSE)
 | rlm | aggregated | 20 | 14 | robust linear model (MASS::rlm) |
 | ropeca_nested | nested | 20 | 14 | peptide fold changes summarised per protein (ROPECA) |
 
-The detection models (`firth`, `firth_nested`, `binomial_nested`,
+The detection models (`firth`, `binomial_nested`,
 `binomial_firth_nested`) test differences in how often a protein or its
 peptides are observed. The simulated data has few missing values, so
 they find little.
@@ -145,7 +143,6 @@ knitr::kable(one, digits = 3)
 | deqms                 | -0.469 |   0.000 | 0.000 |
 | deqms_voom            | -0.469 |   0.000 | 0.000 |
 | firth                 |  0.000 |   1.000 | 1.000 |
-| firth_nested          |  0.000 |   1.000 | 1.000 |
 | hurdle_nested         | -0.469 |   0.000 | 0.000 |
 | limma                 | -0.469 |   0.000 | 0.000 |
 | limma_impute          | -0.469 |   0.000 | 0.000 |
@@ -186,7 +183,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] prolfqua_1.9.2   BiocStyle_2.40.0
+#> [1] prolfqua_1.9.3   BiocStyle_2.40.0
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] Rdpack_2.6.6           gridExtra_2.3.1        rlang_1.3.0           

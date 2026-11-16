@@ -37,7 +37,6 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/ContrastsFirth.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.html</loc></url>
-<url><loc>https://fgcz.github.io/prolfqua/reference/ContrastsFirthNestedFacade.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/ContrastsHurdleFacade.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/ContrastsHurdleNestedFacade.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html</loc></url>
@@ -93,7 +92,6 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/apply_to_response_matrix.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/build_model.html</loc></url>
-<url><loc>https://fgcz.github.io/prolfqua/reference/build_model_glm_peptide.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/build_model_glm_protein.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/build_model_impute.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/build_model_limma.html</loc></url>
