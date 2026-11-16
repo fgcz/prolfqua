@@ -33,12 +33,8 @@ Other imputation:
 
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 lfq$complete_cases()
-#> completing cases
 
 Contrasts <- c("dilution.b-a" = "group_A - group_B", "dilution.c-e" = "group_A - group_Ctrl")
 
@@ -50,7 +46,5 @@ imp <- var |> tidyr::pivot_wider(id_cols = lfq$hierarchy_keys(),
                         values_from = !!rlang::sym("meanAbundance"))
 
 imputed <- get_contrast(imp, lfq$hierarchy_keys(), Contrasts)
-#> dilution.b-a=group_A - group_B
-#> dilution.c-e=group_A - group_Ctrl
 
 ```

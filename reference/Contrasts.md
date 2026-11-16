@@ -279,9 +279,6 @@ The objects of this class are cloneable with this method.
 # Fitting mixed effects model to peptide data
 istar <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 
 modelFunction <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1 | sample)")
@@ -337,7 +334,6 @@ stopifnot(all(ref_lfc == y))
 t <- contrastX$get_linfct(global = FALSE)
 
 x <- contrastX$get_contrasts()
-#> contrasts_linfct
 stopifnot(all(x$p.value < 1 & x$p.value > 0))
 stopifnot(all(x$avgAbd > 0))
 stopifnot(all(x$FDR > 0 & x$FDR < 1))

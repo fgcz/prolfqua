@@ -54,9 +54,6 @@ Other stats:
 ``` r
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 ldata <- LFQData$new(bb1$data, bb1$config)
 stats_res <- summarize_stats(ldata)
 bb <- lfq_power_t_test_proteins(stats_res)

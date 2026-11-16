@@ -41,9 +41,6 @@ Other preprocessing:
 ``` r
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(bb$data, bb$config)
 res <- apply_to_response_matrix(lfqdata, .func = base::scale)
 stopifnot("abundance_base..scale" %in% colnames(res$data))

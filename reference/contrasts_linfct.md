@@ -18,9 +18,6 @@ contrasts_linfct(
 ``` r
 modelSummary_A <- sim_build_models_lm()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 m <- get_complete_model_fit(modelSummary_A$model_df)
 
 linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
@@ -35,5 +32,4 @@ factor_levelContrasts <- contrasts_linfct( m,
         factor_contrasts,
         subject_id = "protein_Id",
         contrastfun = prolfqua::compute_contrast)
-#> contrasts_linfct
 ```

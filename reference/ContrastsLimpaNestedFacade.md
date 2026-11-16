@@ -229,11 +229,7 @@ if (requireNamespace("limpa", quietly = TRUE)) {
   head(fa$get_contrasts())
 }
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 #> Column added : log2_abundance
-#> completing cases
 #> # A tibble: 6 × 16
 #>   modelName    estimate_type protein_Id  contrast     diff      FDR
 #>   <chr>        <chr>         <chr>       <chr>       <dbl>    <dbl>

@@ -217,15 +217,11 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 agg <- AggregateLimpa$new(lfqdata, "protein")
 lfq_agg <- agg$aggregate()
-#> completing cases
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)
 head(fa$get_contrasts())

@@ -74,7 +74,4 @@ config$norm_value = "creatinine"
 
 adata <- setup_analysis(data, config)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 ```

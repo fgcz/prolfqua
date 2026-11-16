@@ -294,9 +294,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 config <- istar$config
 stopifnot("AnalysisConfiguration" %in% class(config))
 stopifnot(length(config$hierarchy_keys()) > 0)

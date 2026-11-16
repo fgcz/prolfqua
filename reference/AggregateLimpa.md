@@ -203,16 +203,12 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 
 agg <- AggregateLimpa$new(lfqdata, "protein")
 agg$aggregate()
-#> completing cases
 agg$lfq_agg$data_wide()
 #> $data
 #> # A tibble: 10 × 14

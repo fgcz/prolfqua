@@ -62,9 +62,6 @@ Other hierarchy counting:
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 dd$data <- na.omit(dd$data)
 
 xd <- nr_obs_sample(na.omit(dd$data), dd$config$get_response(),
@@ -77,9 +74,6 @@ xd$nr_children |> table()
 
 dp <- prolfqua::sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 xp <- nr_obs_sample(dp$data, dp$config$get_response(),
   dp$config$hierarchy_keys_depth(), dp$config$file_name, dp$config$nr_children)
 # xp

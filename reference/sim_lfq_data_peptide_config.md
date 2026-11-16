@@ -46,9 +46,6 @@ A list containing simulated data and an analysis configuration.
 ``` r
 x <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 stopifnot("data.frame" %in% class(x$data))
 stopifnot("AnalysisConfiguration" %in% class(x$config))
 ```

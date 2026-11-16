@@ -117,9 +117,6 @@ Other modelling:
 ``` r
 m <- sim_make_model_lm( "factors")
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 linfct <- linfct_from_model(m)$linfct_factors
 compute_contrast(m, linfct, confint = 0.95)
 #>                     lhs    sigma df estimate std.error statistic      p.value

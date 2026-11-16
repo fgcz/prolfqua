@@ -77,9 +77,6 @@ Other plotting:
 ``` r
 istar <- sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,

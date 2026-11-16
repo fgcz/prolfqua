@@ -43,11 +43,7 @@ Other configuration:
 ``` r
 bb <- sim_lfq_data_peptide_config(Nprot = 5)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
-#> Sampling 2 protein_Id
 length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 #> [1] 2
 ```

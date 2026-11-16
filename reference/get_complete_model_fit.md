@@ -104,9 +104,6 @@ Other modelling:
 x <- sim_build_models_lmer(model = "factors", Nprot = 10)
 #> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')

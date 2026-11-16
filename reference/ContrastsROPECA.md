@@ -304,9 +304,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot=20)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 istar_data <- istar$data
 modelFunction <-
   strategy_lm("abundance  ~ group_")
@@ -326,7 +323,6 @@ mod <- build_model(
 
  contr <- prolfqua::Contrasts$new(mod, Contr)
  dim(contr$get_contrasts())
-#> contrasts_linfct
 #> [1] 78 17
  contrM <- prolfqua::ContrastsModerated$new(contr)
  dim(contrM$get_contrasts())

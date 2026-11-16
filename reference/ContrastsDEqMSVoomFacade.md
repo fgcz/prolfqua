@@ -204,9 +204,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -214,7 +211,7 @@ fa <- ContrastsDEqMSVoomFacade$new(lfqdata, "~ group_", contrasts)
 #> Warning: Partial NA coefficients for 1 probe(s)
 head(fa$get_contrasts())
 #> Warning: NaNs produced
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17; 'newdata' had 1 row but variables found have 49 rows; number of items to replace is not a multiple of replacement length; NaNs produced)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17; 'newdata' had 1 row but variables found have 49 rows; number of items to replace is not a multiple of replacement length; NaNs produced)
 #> # A tibble: 6 × 16
 #>   modelName  estimate_type contrast  protein_Id    diff std.error.unmoderated
 #>   <chr>      <chr>         <chr>     <chr>        <dbl>                 <dbl>

@@ -174,9 +174,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 istar <- prolfqua::LFQData$new(istar$data, istar$config)
 istar$set_data(istar$data_long() |> dplyr::group_by(protein_Id) |>
   dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup())

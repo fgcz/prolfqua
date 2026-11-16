@@ -30,9 +30,6 @@ The computed result.
 
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 x <- LFQData$new(bb$data, bb$config)
 xc <- x$get_copy()
 xc$set_data(xc$data_long() |> dplyr::filter(protein_Id == "0EfVhX~3967"))

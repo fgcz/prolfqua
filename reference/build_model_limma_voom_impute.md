@@ -154,9 +154,6 @@ Other modelling:
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 

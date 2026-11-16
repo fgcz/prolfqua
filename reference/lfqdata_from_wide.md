@@ -61,9 +61,6 @@ Other LFQData:
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
 wide <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 back <- lfqdata_from_wide(wide$data, wide$rowdata, wide$annotation, lfqdata$get_config())

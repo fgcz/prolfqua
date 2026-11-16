@@ -23,9 +23,6 @@ The computed result.
 ``` r
 res2 <- prolfqua::sim_lfq_data_2factor_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 res2$config$factor_depth <- 2
 lfq2 <- LFQData$new(res2$data, res2$config)
 xx <- summarize_stats_factors(lfq2)

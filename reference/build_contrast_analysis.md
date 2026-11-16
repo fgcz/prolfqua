@@ -161,16 +161,12 @@ Other modelling:
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 20)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
 fa_lm    <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
 head(fa_lm$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 16
 #>   modelName estimate_type protein_Id  contrast     diff avgAbd
 #>   <chr>     <chr>         <chr>       <chr>       <dbl>  <dbl>
@@ -201,7 +197,6 @@ head(fa_limma$get_contrasts())
 
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
 head(fa_deqms$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 16
 #>   modelName estimate_type contrast  protein_Id     diff avgAbd
 #>   <chr>     <chr>         <chr>     <chr>         <dbl>  <dbl>
@@ -217,9 +212,6 @@ head(fa_deqms$get_contrasts())
 
 istar_pep <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata_pep <- LFQData$new(istar_pep$data, istar_pep$config)
 lfqdata_pep <- lfqdata_pep$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
@@ -244,7 +236,6 @@ fa_lmer <- build_contrast_analysis(
 #> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 head(fa_lmer$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 16
 #>   modelName   estimate_type protein_Id  contrast       diff avgAbd
 #>   <chr>       <chr>         <chr>       <chr>         <dbl>  <dbl>
@@ -260,7 +251,6 @@ head(fa_lmer$get_contrasts())
 
 fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca_nested")
 head(fa_ropeca$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]
 #>   modelName   estimate_type protein_Id contrast avgAbd    diff     FDR statistic
@@ -275,16 +265,14 @@ head(fa_ropeca$get_contrasts())
 #> #   conf.high <dbl>, sigma <dbl>
 
 fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
-#> completing cases
 head(fa_firth$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 16
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1

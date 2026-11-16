@@ -87,9 +87,6 @@ Other plotting:
 ``` r
 istar <- sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())

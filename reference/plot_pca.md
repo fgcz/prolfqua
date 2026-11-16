@@ -72,9 +72,6 @@ Other plotting:
 ``` r
 istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),

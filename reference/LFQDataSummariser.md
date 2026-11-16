@@ -234,9 +234,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 
 data <- istar$data
 lfqdata <- LFQData$new(data, istar$config)
@@ -310,7 +307,6 @@ sum$missingness_per_group()
 #> 2 light        B                 4    21     7    NA    NA
 #> 3 light        Ctrl              4    17     8     3    NA
 sum$missingness_per_group_cumsum()
-#> isotopeLabel ~ group_
 #> # A tibble: 3 × 7
 #> # Groups:   isotopeLabel, group_ [3]
 #>   isotopeLabel group_ nrReplicates   `0`   `1`   `2`   `3`
@@ -321,7 +317,6 @@ sum$missingness_per_group_cumsum()
 sum$plot_missingness_per_group()
 
 sum$plot_missingness_per_group_cumsum()
-#> isotopeLabel ~ group_
 
 sum$upset_interaction_missing_stats()
 

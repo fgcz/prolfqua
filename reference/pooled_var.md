@@ -53,9 +53,6 @@ yb <- y |> dplyr::filter(nrMeasured > 1)
 
 bb <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(bb$data, bb$config)
 res1 <- summarize_stats(lfq)
 pv <- poolvar(res1, bb$config)

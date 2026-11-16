@@ -108,25 +108,13 @@ Other modelling:
 ``` r
 modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 stopifnot(dim(modi$model_df) == c(10,9))
 mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 mod2$model_df$linear_model[[1]]
 #> NULL
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 ```

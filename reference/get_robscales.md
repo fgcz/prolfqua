@@ -24,9 +24,6 @@ Other preprocessing:
 
 bb <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- prolfqua::LFQData$new(bb$data, bb$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance

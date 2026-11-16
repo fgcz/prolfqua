@@ -152,10 +152,6 @@ if (requireNamespace("limpa", quietly = TRUE)) {
   mod$model_name
 }
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 #> Column added : log2_abundance
-#> completing cases
 #> [1] "limpa"
 ```

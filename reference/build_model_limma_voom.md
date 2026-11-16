@@ -151,9 +151,6 @@ Other modelling:
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lProt <- LFQData$new(istar$data, istar$config)
 lProt$rename_response("transformedIntensity")
 

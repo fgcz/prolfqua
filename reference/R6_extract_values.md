@@ -39,9 +39,6 @@ Other configuration:
 ``` r
 bb <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 values <- R6_extract_values(bb$config)
 names(values)
 #>  [1] "min_peptides_protein"    "hierarchy_depth"        

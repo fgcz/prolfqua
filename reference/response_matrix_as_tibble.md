@@ -35,9 +35,6 @@ response_matrix_as_tibble(pdata, value, config, data = NULL, sep = "~lfq~")
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
 res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 

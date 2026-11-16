@@ -105,9 +105,6 @@ Other modelling:
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
 istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)

@@ -31,9 +31,6 @@ data.frame
 ``` r
 bb <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(bb$data, bb$config)
 res <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
 #> Columns added : srm_meanInt srm_meanIntRank

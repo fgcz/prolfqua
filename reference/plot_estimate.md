@@ -53,14 +53,10 @@ Other aggregation:
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 bbMed <- estimate_intensity(lfq, method = "medpolish")
-#> starting aggregation
 lfq_med <- LFQData$new(bbMed$data, bbMed$config)
 tmpMed <- plot_estimate(lfq, lfq_med)
 stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))

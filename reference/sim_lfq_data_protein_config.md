@@ -46,23 +46,14 @@ A list containing simulated data and an analysis configuration.
 ``` r
 x <- sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 stopifnot("data.frame" %in% class(x$data))
 stopifnot("AnalysisConfiguration" %in% class(x$config))
 x <- sim_lfq_data_protein_config(with_missing = FALSE)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 
 stopifnot(sum(is.na(x$data$abundance)) == 0)
 xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 stopifnot(length(xp$config$factors) == 2)
 stopifnot(nrow(xp$data) == nrow(x$data))
 ```

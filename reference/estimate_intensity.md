@@ -36,16 +36,11 @@ Other aggregation:
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(dd$data, dd$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 bbMed <- estimate_intensity(lfq, method = "medpolish")
-#> starting aggregation
 bbRob <- estimate_intensity(lfq, method = "rlm")
-#> starting aggregation
 #> Warning: 'rlm' failed to converge in 20 steps
 #> Warning: 'rlm' failed to converge in 20 steps
 nrow(bbMed$data)

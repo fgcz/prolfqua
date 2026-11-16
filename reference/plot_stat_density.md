@@ -49,9 +49,6 @@ Other stats:
 ``` r
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(bb1$data, bb1$config)
 res <- lfq$get_Stats()$stats()
 plot_stat_density(res, lfq$factor_keys()[1], stat = "meanAbundance")

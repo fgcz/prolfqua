@@ -52,9 +52,6 @@ Other preprocessing:
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 head(prolfqua:::nr_B_in_A(istar$data, "protein_Id", "peptide_Id"))
 #> # A tibble: 6 × 2
 #>   protein_Id  nr_peptide_Id_IN_protein_Id

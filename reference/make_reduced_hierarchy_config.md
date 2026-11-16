@@ -47,9 +47,6 @@ Other configuration:
 ``` r
 bb <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 
 red <- make_reduced_hierarchy_config(bb$config,
  "testintensity",

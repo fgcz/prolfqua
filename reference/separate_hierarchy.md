@@ -40,9 +40,6 @@ Other configuration:
 
 bb <- sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 dt <- separate_hierarchy(bb$data, bb$config)
 base::setdiff(colnames(dt) ,colnames(bb$data))
 #> [1] "proteinID" "idtype2"  

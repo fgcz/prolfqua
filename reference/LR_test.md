@@ -144,9 +144,6 @@ data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
  with_missing = TRUE,
  weight_missing = 2)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 
 pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
 

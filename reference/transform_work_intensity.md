@@ -35,9 +35,6 @@ list with \`data\` (data.frame) and \`colname\` (new column name)
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 config <- istar$config
 res <- transform_work_intensity(
   istar$data, config$get_response(), .func = log2

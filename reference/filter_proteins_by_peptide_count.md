@@ -60,9 +60,6 @@ Other preprocessing:
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 filtered <- prolfqua:::filter_proteins_by_peptide_count(
   istar$data, istar$config, parent = "protein_Id", child = "peptide_Id", threshold = 2
 )

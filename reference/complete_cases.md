@@ -36,11 +36,7 @@ Other configuration:
 ``` r
 bb <- sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(bb$data, bb$config)
 xx <- complete_cases(lfq)
-#> completing cases
 stopifnot(nrow(bb$data) <= nrow(xx))
 ```

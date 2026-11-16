@@ -113,15 +113,10 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 facade <- ContrastsBinomialNestedFacade$new(lfqdata, "~ group_", contrasts)
-#> completing cases
 head(facade$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 16
 #>   modelName       estimate_type protein_Id  contrast       diff avgAbd
 #>   <chr>           <chr>         <chr>       <chr>         <dbl>  <dbl>

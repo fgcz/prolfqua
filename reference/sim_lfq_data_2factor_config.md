@@ -52,9 +52,6 @@ A list containing simulated data and an analysis configuration.
 ``` r
 x <- sim_lfq_data_2factor_config(PEPTIDE= FALSE)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 dim(x$data)
 #> [1] 160   9
 stopifnot("data.frame" %in% class(x$data))
@@ -62,9 +59,6 @@ stopifnot("AnalysisConfiguration" %in% class(x$config))
 x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE)
 #> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 
 head(x$data)
 #> # A tibble: 6 × 10
@@ -80,9 +74,6 @@ head(x$data)
 x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE, TWO = TRUE)
 #> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 names(x)
 #> [1] "data"   "config"
 nrow(x$data) > 10

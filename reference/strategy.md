@@ -168,14 +168,11 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 #> bin_resp ~ condition
-#> <environment: 0x5735de9c5f78>
+#> <environment: 0x5c6c8a83c628>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
 istar$config$bin_resp <- "bin_resp"
 istar <- LFQData$new(istar$data, istar$config)
@@ -195,9 +192,9 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq 
-#>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.226933e-15 
+#>       2.101899e+00       6.773389e-01      -6.663876e-01       9.509484e-16 
 #> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg 
-#>      -1.068335e+00      -7.226922e-16      -1.068335e+00       1.197563e+00 
+#>      -1.068335e+00       7.971977e-16      -1.068335e+00       1.197563e+00 
 #> peptide_Idq2jTaC1y 
 #>      -1.445323e+00 
 #> 
@@ -211,7 +208,7 @@ modelFunction$model_fun(nestProtein$data[[4]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd 
-#>       8.375544e-03       8.360389e-11       9.365126e-01      -3.147690e-01 
+#>       8.375544e-03       8.360364e-11       9.365126e-01      -3.147690e-01 
 #> peptide_IdgdnXrza3 peptide_IdxvlVt88v 
 #>      -2.035803e-09      -6.303721e-01 
 #> 
@@ -220,20 +217,20 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5735dd355e28>
+#> <environment: 0x5c6c7a16c340>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$formula
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x5735dd9b1bc0>
+#> <environment: 0x5c6c79047bd8>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5735de0e0e00>
+#> <environment: 0x5c6c8efede38>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5735de954830>
+#> <environment: 0x5c6c8c0dbb78>
 ```

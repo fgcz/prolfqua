@@ -32,9 +32,6 @@ x <- make_interaction_column(xx, c("B","A"))
 x <- make_interaction_column(xx, c("A"))
 bb <- prolfqua::sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 config <- bb$config
 analysis <- bb$data
 

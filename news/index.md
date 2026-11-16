@@ -13,12 +13,22 @@
   t-statistics to normal scores and tests their median per protein
   against its exact null distribution, allowing for the correlation of
   the peptides of a protein, which it estimates once from the peptide
-  model residuals. In simulations with correlated peptides the share of
-  p \< 0.05 under the null stays between 0.040 and 0.060 for 2 to 40
-  peptides, where `ropeca_nested` gives 0.029 to 0.075. `diff` is the
-  median peptide fold change, as in `ropeca_nested`; `statistic`,
+  model residuals. Share of p \< 0.05 for proteins that do not change,
+  by number of peptides (prolfquabenchmark vignette `Benchmark_ropeca`):
+  on simulated proteins whose peptide correlation varies between
+  proteins, 0.050 to 0.067 for 2 to 20 peptides, where `ropeca_nested`
+  gives 0.037 to 0.082; on the human proteins of IonStar, whose peptides
+  are nearly uncorrelated, 0.041 to 0.053 for 2 to more than 20
+  peptides, where `ropeca_nested` gives 0.018 down to 0.000. `diff` is
+  the median peptide fold change, as in `ropeca_nested`; `statistic`,
   `std.error` and the 95% interval follow from the p-value.
   `ropeca_nested` is unchanged.
+
+### Behaviour changes
+
+- prolfqua no longer prints internal progress messages such as “setup
+  done”, “completing cases”, “contrasts_linfct”, “starting aggregation”,
+  the model formula or the number of rows with missing values.
 
 ### Bug fixes
 

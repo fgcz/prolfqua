@@ -195,9 +195,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
@@ -219,7 +216,6 @@ fa <- ContrastsLmerNestedFacade$new(lfqdata, "~ group_", contrasts)
 #> ! grouping factors must have > 1 sampled level
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 head(fa$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 16
 #>   modelName   estimate_type protein_Id  contrast       diff avgAbd
 #>   <chr>       <chr>         <chr>       <chr>         <dbl>  <dbl>

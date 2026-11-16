@@ -256,16 +256,12 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsROPECANestedFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]
 #>   modelName   estimate_type protein_Id contrast avgAbd    diff     FDR statistic

@@ -155,9 +155,6 @@ Other modelling:
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
 mod <- build_model_impute(lfqdata, strat)

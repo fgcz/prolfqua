@@ -39,9 +39,6 @@ Other plotting:
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance

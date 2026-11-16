@@ -132,9 +132,6 @@ Other modelling:
 ``` r
 mod <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 
 # Sigma method (default): returns median sigma and df from donors
 borrowed_s <- prolfqua:::compute_borrowed_variance(
@@ -148,9 +145,6 @@ stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
 mod_no_missing <- sim_build_models_lm(model = "parallel3",
   Nprot = 10, with_missing = FALSE)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 borrowed_v <- prolfqua:::compute_borrowed_variance(
   mod_no_missing$model_df, method = "vcov")
 stopifnot(borrowed_v$method == "vcov")

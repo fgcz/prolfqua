@@ -121,9 +121,6 @@ The objects of this class are cloneable with this method.
 ``` r
 bb <- sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 counts <- HierarchyCountsSample$new(bb$data, bb$config)
 head(counts$wide())
 #> # A tibble: 6 × 3

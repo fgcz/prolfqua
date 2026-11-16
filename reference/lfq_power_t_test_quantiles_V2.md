@@ -57,9 +57,6 @@ Other stats:
 
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(bb1$data, bb1$config)
 stats_res <- summarize_stats(lfq)
 xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = c(0.5, 0.8))

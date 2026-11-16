@@ -247,9 +247,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 50)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 
 lfqcopy <- lfqdata$get_copy()
@@ -287,7 +284,6 @@ lfqTrans$log2()
 #> Column added : log2_abundance
 before <- lfqTrans$get_scales()
 lfqTrans$robscale()
-#> data is : TRUE
 after <- lfqTrans$get_scales()
 stopifnot(abs(mean(before$medians) - mean(after$medians)) < 1e-8)
 stopifnot(abs(mean(before$mads) - mean(after$mads)) < 1e-8)
@@ -325,15 +321,15 @@ if(require("vsn")){
 #> Loading required package: vsn
 #> $medians
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
-#> 5.067592 5.060373 5.052612 5.063121 5.106810 5.128959 5.089511 5.100129 
+#> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 
 #>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 
-#> 5.098851 5.067436 5.089542 5.072697 
+#> 5.043057 5.010404 5.033362 5.015886 
 #> 
 #> $mads
 #>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 
-#> 0.2356539 0.2539392 0.2391802 0.2462082 0.2603902 0.2549782 0.2228186 0.2342742 
+#> 0.2443545 0.2638516 0.2494166 0.2556915 0.2710033 0.2638501 0.2316761 0.2437389 
 #>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 
-#> 0.2618927 0.2316253 0.2412538 0.2422008 
+#> 0.2738565 0.2415127 0.2514121 0.2512947 
 #> 
 if(require("preprocessCore")){
 quant <- function(y){
@@ -356,9 +352,6 @@ quant <- function(y){
 
 istar2 <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata2 <- LFQData$new(istar2$data, istar2$config)
 lfqdata2 <- lfqdata2$get_Transformer()$intensity_array(log2)$lfq
 #> Column added : log2_abundance
@@ -385,7 +378,6 @@ internal$hierarchy()
 #> 6 DoWup2~5896
 tr <- lfqdata2$get_Transformer()
 tr$center_to_reference(internal)
-#> data is transformed: TRUE
 pl <- tr$lfq$get_Plotter()
 pl$intensity_distribution_density()
 #> Warning: Removed 36 rows containing non-finite outside the scale range
@@ -396,7 +388,6 @@ lfqdata2$get_Plotter()$intensity_distribution_density()
 #> (`stat_density()`).
 
 robscale <- lfqdata2$get_Transformer()$robscale_subset(internal)$lfq
-#> data is : TRUE
 robscale$get_Plotter()$intensity_distribution_density()
 #> Warning: Removed 36 rows containing non-finite outside the scale range
 #> (`stat_density()`).

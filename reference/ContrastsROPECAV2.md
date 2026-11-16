@@ -320,9 +320,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 20)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 config <- istar$config$clone(deep = TRUE)
 config$hierarchy_depth <- 2
 mod <- build_model(
@@ -334,7 +331,6 @@ contrasts <- c("AvsCtrl" = "group_A - group_Ctrl")
 peptide_contrasts <- ContrastsModerated$new(Contrasts$new(mod, contrasts))
 ropeca2 <- ContrastsROPECAV2$new(peptide_contrasts, rho = 0.2)
 head(ropeca2$get_contrasts())
-#> contrasts_linfct
 #> # A tibble: 6 × 14
 #>   protein_Id  modelName estimate_type contrast avgAbd   diff      FDR statistic
 #>   <chr>       <chr>     <chr>         <chr>     <dbl>  <dbl>    <dbl>     <dbl>

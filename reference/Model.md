@@ -224,9 +224,6 @@ The objects of this class are cloneable with this method.
 
 istar <- sim_lfq_data_peptide_config(Nprot = 20)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance

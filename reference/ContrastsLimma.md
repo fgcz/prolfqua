@@ -278,9 +278,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lProt <- LFQData$new(istar$data, istar$config)
 lProt$rename_response("transformedIntensity")
 
@@ -311,7 +308,6 @@ modelFunction <- strategy_lm("transformedIntensity ~ group_")
 mod <- build_model(lProt, modelFunction)
 contr_prolfqua <- Contrasts$new(mod, Contr)
 res_prolfqua <- contr_prolfqua$get_contrasts()
-#> contrasts_linfct
 
 # fold changes should be very similar
 merged <- dplyr::inner_join(
@@ -343,5 +339,4 @@ Contr2 <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr2)$contrast
 #> Warning: essentially perfect fit: summary may be unreliable
 merged_res <- merge_contrasts_results(contr_limma, imp)
-#> contrasts_linfct
 ```

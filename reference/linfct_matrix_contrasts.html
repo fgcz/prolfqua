@@ -171,9 +171,6 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_make_model_lm.html">sim_make_model_lm</a></span><span class="op">(</span> <span class="st">"factors"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">Contr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TreatmentA_vs_B"</span> <span class="op">=</span> <span class="st">"TreatmentA - TreatmentB"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"BackgroundX_vs_Z"</span> <span class="op">=</span> <span class="st">"BackgroundX - BackgroundZ"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"IntoflintoA"</span> <span class="op">=</span> <span class="st">"`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`"</span>,</span></span>
@@ -190,9 +187,6 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_make_model_lm.html">sim_make_model_lm</a></span><span class="op">(</span> <span class="st">"interaction"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span>, as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">linfct_matrix_contrasts</span><span class="op">(</span><span class="va">linfct</span>, <span class="va">Contr</span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"interactXZ"</span>,<span class="op">]</span><span class="op">)</span> <span class="op">==</span><span class="fl">1</span> <span class="op">)</span></span></span>

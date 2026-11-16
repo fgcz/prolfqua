@@ -232,25 +232,16 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
-#> starting aggregation
 #> Warning: medpolish() did not converge in 10 iterations
-#> completing cases
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 intensity <- build_contrast_analysis(lfq_protein, "~ group_", contrasts, method = "lm_impute")
 detection <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "binomial_nested")
-#> completing cases
 hurdle <- ContrastsHurdleFacade$new(intensity, detection)
-#> contrasts_linfct
-#> contrasts_linfct
 res <- hurdle$get_contrasts()
-#> completing cases
 table(res$hurdle_components)
 #> 
 #>      both intensity 
@@ -272,7 +263,6 @@ head(res)
 #> #   p.value.detection <dbl>, FDR.detection <dbl>, chisq.hurdle <dbl>,
 #> #   df.hurdle <dbl>, hurdle_components <chr>
 hurdle$to_wide()
-#> completing cases
 #> # A tibble: 20 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>    <chr>               <dbl>             <dbl>         <dbl>               <dbl>

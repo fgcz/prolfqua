@@ -118,9 +118,6 @@ each protein intensity of a sample. Counts per sample, observed values only.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">dd</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">xd</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_sample</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span>,</span></span>
@@ -133,9 +130,6 @@ each protein intensity of a sample. Counts per sample, observed values only.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> completing cases done</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup done</span>
 <span class="r-in"><span><span class="va">xp</span> <span class="op">&lt;-</span> <span class="fu">nr_obs_sample</span><span class="op">(</span><span class="va">dp</span><span class="op">$</span><span class="va">data</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">get_response</span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="fu">hierarchy_keys_depth</span><span class="op">(</span><span class="op">)</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">file_name</span>, <span class="va">dp</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">nr_children</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># xp</span></span></span>

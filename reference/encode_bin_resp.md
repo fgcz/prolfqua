@@ -23,9 +23,6 @@ encode_bin_resp(lfqdata, name = "bin_resp")
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 lfq$set_data(encode_bin_resp(lfq))
 lfq$set_config_value("bin_resp", "bin_resp")

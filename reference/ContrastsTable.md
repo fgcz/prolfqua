@@ -271,16 +271,12 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 Contrasts <- c("aC" = "group_A - group_Ctrl",
 "bC" = "group_B - group_Ctrl")
 fa <- ContrastsLMFacade$new(lfqdata, "~ group_", Contrasts)
 ctr <- fa$get_contrasts()
-#> contrasts_linfct
 fa$contrast$subject_id
 #> [1] "protein_Id"
 xcx <- ContrastsTable$new(ctr, subject_id = fa$contrast$subject_id, model_name = "TableTest")

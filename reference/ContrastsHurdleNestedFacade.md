@@ -185,22 +185,13 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 facade <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "hurdle_nested")
-#> starting aggregation
 #> Warning: medpolish() did not converge in 10 iterations
-#> completing cases
-#> completing cases
-#> contrasts_linfct
-#> contrasts_linfct
 head(facade$get_contrasts())
-#> completing cases
 #> # A tibble: 6 × 24
 #>   modelName     estimate_type protein_Id  contrast     diff avgAbd
 #>   <chr>         <chr>         <chr>       <chr>       <dbl>  <dbl>

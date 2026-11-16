@@ -253,9 +253,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 protIntensity <- istar$data
 config <- istar$config
 
@@ -273,7 +270,6 @@ contrast <- prolfqua::Contrasts$new(mod,
  Contr)
 contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
-#> contrasts_linfct
 # LOD-imputed refit for proteins the plain lm cannot estimate
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 #> Warning: essentially perfect fit: summary may be unreliable
@@ -281,7 +277,6 @@ imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 contrast$get_contrasts() |> dim()
 #> [1] 49 16
 (xx <- imp$get_contrasts())   |> dim()
-#> contrasts_linfct
 #> [1] 50 16
 merged <- merge_contrasts_results(contrast, imp)
 

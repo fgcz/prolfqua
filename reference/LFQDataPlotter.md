@@ -506,9 +506,6 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 
 lfqdata <- LFQData$new(
  istar$data,
@@ -524,10 +521,8 @@ stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
 tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
 stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
-#> isotopeLabel ~ group_
 
 stopifnot(methods::is(lfqplotter$na_heatmap(), "Heatmap"))
-#> rows with NA's: 16; all rows :28
 class(lfqplotter$intensity_distribution_density())
 #> [1] "ggplot2::ggplot" "ggplot"          "ggplot2::gg"     "S7_object"      
 #> [5] "gg"             

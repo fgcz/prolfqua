@@ -47,9 +47,6 @@ Other configuration:
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 xx <- table_factors(lfq$data_long(), lfq$file_name(), lfq$sample_name(), lfq$factor_keys())
 xt <- xx |> dplyr::group_by(!!!rlang::syms(lfq$factor_keys())) |>

@@ -117,9 +117,6 @@ Other modelling:
 ``` r
 m <- sim_make_model_lm( "factors")
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
@@ -136,9 +133,6 @@ stopifnot(sum(x["interactAB",]) == 0 )
 
 m <- sim_make_model_lm( "interaction")
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 linfct <- linfct_from_model(m, as_list = FALSE)
 x <- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==1 )

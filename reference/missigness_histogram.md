@@ -63,14 +63,9 @@ Other imputation:
 ``` r
 istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(istar$data, istar$config)
 pl <- missigness_histogram(lfq, showempty = FALSE)
-#> isotopeLabel ~ group_
 stopifnot("ggplot" %in% class(pl))
 pl <- missigness_histogram(lfq, showempty = TRUE)
-#> isotopeLabel ~ group_
 stopifnot("ggplot" %in% class(pl))
 ```

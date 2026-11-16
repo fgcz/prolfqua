@@ -63,17 +63,11 @@ Other stats:
 ``` r
 bb <- prolfqua::sim_lfq_data_protein_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(bb$data, bb$config)
 res1 <- summarize_stats(lfq)
 
 res2 <- prolfqua::sim_lfq_data_2factor_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 res2$config$factor_depth <- 2
 lfq2 <- LFQData$new(res2$data, res2$config)
 stats <- summarize_stats(lfq2)
@@ -88,9 +82,6 @@ stopifnot(nrow(stats) == 10)
 library(ggplot2)
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfq <- LFQData$new(bb1$data, bb1$config)
 stats_res <- summarize_stats(lfq)
 sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys())

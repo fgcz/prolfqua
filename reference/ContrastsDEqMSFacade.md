@@ -194,16 +194,12 @@ The objects of this class are cloneable with this method.
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50)
 #> creating sampleName from file_name column
-#> completing cases
-#> completing cases done
-#> setup done
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsDEqMSFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
-#> contrasts_linfct
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
 #> # A tibble: 6 × 16
 #>   modelName estimate_type contrast  protein_Id    diff avgAbd
 #>   <chr>     <chr>         <chr>     <chr>        <dbl>  <dbl>
@@ -217,7 +213,7 @@ head(fa$get_contrasts())
 #> #   std.error <dbl>, statistic <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 fa$to_wide()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
 #> # A tibble: 49 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>    <chr>               <dbl>             <dbl>         <dbl>               <dbl>
