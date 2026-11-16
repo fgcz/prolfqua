@@ -643,7 +643,7 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 
   if (nrow(matrix) > 1) {
     matrix <- if (nrow(matrix) > limitrows) {
-      message("limiting nr of rows to:", limitrows, "\n")
+      inform_prolfqua("limiting nr of rows to: ", limitrows)
       matrix[sample(seq_len(nrow(matrix)), limitrows), ]
     } else {
       matrix
@@ -708,7 +708,7 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
   if (any(is.na(matrix))) {
     n_before <- nrow(matrix)
     matrix <- na.omit(matrix)
-    message(sprintf(
+    inform_prolfqua(sprintf(
       "PCA: removed %s of %s features with missing values. To keep all features, impute %s",
       n_before - nrow(matrix),
       n_before,

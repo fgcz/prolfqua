@@ -120,3 +120,22 @@ test_that("center_to_reference aborts (typed) on mismatched transformation state
     class = "prolfqua_error_bad_argument"
   )
 })
+
+test_that("informative messages carry class prolfqua_message", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  lfq <- prolfqua::LFQData$new(istar$data, istar$config)
+
+  expect_message(
+    lfq$get_Transformer()$log2(),
+    "Column added",
+    class = "prolfqua_message"
+  )
+})
+
+test_that("options(prolfqua.verbose = FALSE) silences informative messages", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  lfq <- prolfqua::LFQData$new(istar$data, istar$config)
+  withr::local_options(prolfqua.verbose = FALSE)
+
+  expect_no_message(lfq$get_Transformer()$log2())
+})

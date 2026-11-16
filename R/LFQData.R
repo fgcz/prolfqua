@@ -198,7 +198,7 @@ LFQData <- R6::R6Class(
       parent <- parent %||% keys[1]
       child <- child %||% keys[2]
       threshold <- threshold %||% cfg$min_peptides_protein
-      message("removing ", parent, " with fewer than ", threshold, " ", child)
+      inform_prolfqua("removing ", parent, " with fewer than ", threshold, " ", child)
       filtered <- filter_proteins_by_peptide_count(
         self$data_long(),
         cfg,
@@ -206,7 +206,7 @@ LFQData <- R6::R6Class(
         child = child,
         threshold = threshold
       )
-      message("Column added : ", filtered$name)
+      inform_prolfqua("Column added : ", filtered$name)
       private$.data <- filtered$data
       invisible(self)
     },

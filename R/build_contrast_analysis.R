@@ -107,7 +107,7 @@ build_contrast_analysis <- function(
     lfqdata <- lfqdata$remove_decoys()
     n_dropped <- n_before - length(unique(lfqdata$data_long()[[top]]))
     if (n_dropped > 0) {
-      message(
+      inform_prolfqua(
         "build_contrast_analysis: dropped ",
         n_dropped,
         " decoy ",

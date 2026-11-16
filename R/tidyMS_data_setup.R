@@ -61,7 +61,7 @@
 .setup_sample_name <- function(data, configuration) {
   sample_name <- configuration$sample_name
   if (!sample_name %in% names(data)) {
-    message("creating sampleName from file_name column")
+    inform_prolfqua("creating sampleName from file_name column")
     data[[sample_name]] <- tools::file_path_sans_ext(basename(data[[configuration$file_name]]))
     return(data)
   }
@@ -86,14 +86,14 @@
     configuration$isotope_label,
     "light",
     "no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'.",
-    message
+    inform_prolfqua
   )
   data <- .add_setup_default_column(
     data,
     configuration$ident_q_value,
     0,
     "no qValue column specified in the data. Creating column qValue and setting qValues to 0.",
-    message
+    inform_prolfqua
   )
   .add_setup_default_column(
     data,

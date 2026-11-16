@@ -395,7 +395,7 @@ AggregateLimpa <- R6::R6Class(
     #' @return data.frame
     plot = function(subset = NULL, show.legend = FALSE) {
       if (self$impute_only) {
-        message("Aggregation plots not available in impute_only mode")
+        inform_prolfqua("Aggregation plots not available in impute_only mode")
         return(invisible(NULL))
       }
       super$plot(subset = subset, show.legend = show.legend)
@@ -411,7 +411,7 @@ AggregateLimpa <- R6::R6Class(
     #' @return file path
     write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
       if (self$impute_only) {
-        message("Aggregation plots not available in impute_only mode")
+        inform_prolfqua("Aggregation plots not available in impute_only mode")
         return(invisible(NULL))
       }
       super$write_plots(qcpath, subset, show.legend, width, height)

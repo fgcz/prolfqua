@@ -325,7 +325,7 @@ LFQDataPlotter <- R6::R6Class(
       fpath <- file.path(path_qc, paste0(filename, "boxplot.pdf"))
       bb <- self$boxplots()
 
-      message("writing ", fpath)
+      inform_prolfqua("writing ", fpath)
       pb <- progress::progress_bar$new(total = length(bb$boxplot))
 
       withr::local_pdf(fpath, width = width, height = height)
@@ -345,7 +345,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return path the file was written to
     write_pdf = function(fig, path_qc, fig_name, width = 7, height = 7) {
       fpath <- file.path(path_qc, paste0(self$prefix, fig_name, ".pdf"))
-      message("writing ", fpath)
+      inform_prolfqua("writing ", fpath)
       withr::local_pdf(fpath, width = width, height = height)
       .render_plot_to_device(fig)
       invisible(fpath)

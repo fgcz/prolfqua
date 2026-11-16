@@ -84,7 +84,7 @@ LR_test <- function(
 plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
   file_name <- paste("hist_LRT_", model_name, "_", model_name_int, ".pdf", sep = "")
   file_name <- file.path(path, file_name)
-  message("writing figure : ", file_name, "\n")
+  inform_prolfqua("writing figure: ", file_name)
   withr::local_pdf(file_name)
   par(mfrow = c(2, 1))
   hist(result$likelihood_ratio_test.pValue, breaks = 20)

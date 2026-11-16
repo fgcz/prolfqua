@@ -48,3 +48,19 @@ abort_invalid_config <- function(msg) {
     class = c("prolfqua_error_invalid_configuration", "prolfqua_error")
   )
 }
+
+# Informative messages ----
+
+#' Inform the user, unless silenced with `options(prolfqua.verbose = FALSE)`
+#'
+#' Signals an `rlang` message of class `prolfqua_message`, so applications can
+#' route prolfqua's messages to their own log by class.
+#' @param ... pasted together into the message, as in `message()`
+#' @keywords internal
+#' @noRd
+inform_prolfqua <- function(...) {
+  if (isTRUE(getOption("prolfqua.verbose", TRUE))) {
+    rlang::inform(paste0(...), class = "prolfqua_message")
+  }
+  invisible(NULL)
+}

@@ -250,7 +250,7 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
     dplyr::mutate(
       !!sym(newcol) := .func(!!sym(response))
     )
-  message("Column added : ", newcol)
+  inform_prolfqua("Column added : ", newcol)
   return(list(data = pdata, colname = newcol))
 }
 
