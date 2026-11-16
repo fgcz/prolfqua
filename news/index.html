@@ -50,6 +50,14 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.4" id="prolfqua-194">prolfqua 1.9.4<a class="anchor" aria-label="anchor" href="#prolfqua-194"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-9-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-4"></a></h3>
+<ul><li>
+<code>ropeca_nested</code> / <code>ContrastsROPECA</code>: the protein p-value counted peptides without a p-value (failed or non-estimable peptide fits) in the number of peptides, which made those proteins too significant, e.g. p = 0.00067 instead of 0.0031 for two tested peptides and one untested. <code><a href="../reference/summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code> now counts only peptides with a p-value in <code>n_not_na</code>, as the original ROPECA (PECA) does; <code>df</code> of <code>ropeca_nested</code> changes with it.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.3" id="prolfqua-193">prolfqua 1.9.3<a class="anchor" aria-label="anchor" href="#prolfqua-193"></a></h2>
 <div class="section level3">
 <h3 id="behaviour-changes-1-9-3">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-3"></a></h3>
