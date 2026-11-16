@@ -11,7 +11,7 @@ Encapsulates the pipeline: encode missingness ->
 \code{\link{build_model_glm_protein}} -> \code{\link{ContrastsFirth}}.
 
 Requires aggregated (protein-level) LFQData. For nested peptide-level
-input use \code{\link{ContrastsFirthNestedFacade}}.
+input use \code{\link{ContrastsBinomialFirthNestedFacade}}.
 }
 \examples{
 istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5)
@@ -29,7 +29,6 @@ Other modelling:
 \code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},
-\code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsHurdleFacade}},
 \code{\link{ContrastsHurdleNestedFacade}},
 \code{\link{ContrastsLMFacade}},
@@ -65,7 +64,6 @@ Other modelling:
 \code{\link{StrategyRfit}},
 \code{\link[=build_contrast_analysis]{build_contrast_analysis()}},
 \code{\link[=build_model]{build_model()}},
-\code{\link[=build_model_glm_peptide]{build_model_glm_peptide()}},
 \code{\link[=build_model_glm_protein]{build_model_glm_protein()}},
 \code{\link[=build_model_impute]{build_model_impute()}},
 \code{\link[=build_model_limma]{build_model_limma()}},

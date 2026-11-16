@@ -1,3 +1,9 @@
+# prolfqua 1.9.3
+
+## Removed
+
+- The `firth_nested` method (`ContrastsFirthNestedFacade`, `build_model_glm_peptide()`). It fitted one 0/1 row per peptide and sample, so its detection p-values became more significant the more peptides a protein had: on the IonStar benchmark, the share of unchanged human proteins with p < 0.05 rose from 1.3% (2-3 peptides) to 7.7% (more than 20). Use `binomial_firth_nested`, which applies the same Firth bias reduction to the detected-peptide counts per protein and sample and takes its degrees of freedom from the samples. `ContrastsHurdleFacade` accepts `binomial_nested` or `binomial_firth_nested` as the detection component.
+
 # prolfqua 1.9.2
 
 ## New features

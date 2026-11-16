@@ -7,8 +7,8 @@
 An R6 class generator.
 }
 \description{
-Completes and encodes child-feature detection using the same preparation as
-\code{\link{ContrastsFirthNestedFacade}}, then collapses the binary rows into
+Completes the child-feature rows, encodes detection as 0/1, then collapses
+the binary rows into
 detected and undetected counts per parent and sample. The resulting
 quasibinomial model reports parent-level log odds ratios in \code{diff};
 \code{avgAbd} is the average linear predictor on the log-odds scale.

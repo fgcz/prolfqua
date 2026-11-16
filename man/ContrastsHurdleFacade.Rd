@@ -8,7 +8,7 @@ An R6 class generator.
 }
 \description{
 Joins the contrasts of a fitted intensity facade (e.g. \code{lm_impute}) and a
-fitted detection facade (\code{firth_nested}, \code{binomial_nested} or
+fitted detection facade (\code{binomial_nested} or
 \code{binomial_firth_nested}) by
 subject and contrast, and replaces \code{p.value} and \code{FDR} with Fisher's
 combined test, as in msqrob2's \code{hypothesisTestHurdle}. No model is fitted.
@@ -56,7 +56,6 @@ Other modelling:
 \code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},
 \code{\link{ContrastsFirthFacade}},
-\code{\link{ContrastsFirthNestedFacade}},
 \code{\link{ContrastsHurdleNestedFacade}},
 \code{\link{ContrastsLMFacade}},
 \code{\link{ContrastsLMImputeFacade}},
@@ -91,7 +90,6 @@ Other modelling:
 \code{\link{StrategyRfit}},
 \code{\link[=build_contrast_analysis]{build_contrast_analysis()}},
 \code{\link[=build_model]{build_model()}},
-\code{\link[=build_model_glm_peptide]{build_model_glm_peptide()}},
 \code{\link[=build_model_glm_protein]{build_model_glm_protein()}},
 \code{\link[=build_model_impute]{build_model_impute()}},
 \code{\link[=build_model_limma]{build_model_limma()}},
@@ -145,7 +143,7 @@ Other modelling:
   \describe{
     \item{\code{intensity}}{fitted intensity facade}
 
-    \item{\code{detection}}{fitted detection facade (\code{firth_nested}, \code{binomial_nested} or
+    \item{\code{detection}}{fitted detection facade (\code{binomial_nested} or
 \code{binomial_firth_nested})}
 
     \item{\code{model_name}}{name stamped into the \code{modelName} column}
@@ -192,7 +190,7 @@ Other modelling:
     \describe{
       \item{\code{intensity}}{fitted intensity facade, e.g. from
 \code{build_contrast_analysis(method = "lm_impute")}}
-      \item{\code{detection}}{fitted \code{firth_nested}, \code{binomial_nested} or
+      \item{\code{detection}}{fitted \code{binomial_nested} or
 \code{binomial_firth_nested} facade with the same subject id and contrasts}
       \item{\code{model_name}}{name stamped into the \code{modelName} column}
     }

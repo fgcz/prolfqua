@@ -28,8 +28,8 @@
 #'   limit-of-detection imputation \code{"lm_impute"}, \code{"limma_impute"},
 #'   \code{"limma_voom_impute"}, \code{"rfit_impute"};
 #'   peptide-level models \code{"lmer_nested"}, \code{"ropeca_nested"};
-#'   detection models \code{"firth"}, \code{"firth_nested"},
-#'   \code{"binomial_nested"}, \code{"binomial_firth_nested"};
+#'   detection models \code{"firth"}, \code{"binomial_nested"},
+#'   \code{"binomial_firth_nested"};
 #'   the hurdle model \code{"hurdle_nested"}, combining intensity and detection.
 #'   Downstream packages may add more via \code{\link{register_facade}}. The
 #'   authoritative list is \code{names(\link{list_facades}())}. Defaults to

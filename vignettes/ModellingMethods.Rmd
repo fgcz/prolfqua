@@ -80,7 +80,6 @@ about <- c(
   limpa = "limma on limpa DPC-quantified proteins",
   limpa_nested = "limpa, DPC quantification from peptides",
   firth = "Firth logistic regression, protein detection",
-  firth_nested = "Firth logistic regression, peptide detection",
   binomial_nested = "quasibinomial model, peptide detection counts",
   binomial_firth_nested = "binomial_nested with Firth bias reduction",
   hurdle_nested = "lm_impute intensity + binomial_firth_nested detection",
@@ -97,7 +96,7 @@ overview <- data.frame(
 knitr::kable(overview, row.names = FALSE)
 ```
 
-The detection models (`firth`, `firth_nested`, `binomial_nested`, `binomial_firth_nested`) test differences in how often a protein or its peptides are observed. The simulated data has few missing values, so they find little.
+The detection models (`firth`, `binomial_nested`, `binomial_firth_nested`) test differences in how often a protein or its peptides are observed. The simulated data has few missing values, so they find little.
 
 # One protein, all methods
 

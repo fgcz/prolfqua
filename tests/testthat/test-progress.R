@@ -1,18 +1,5 @@
 ## Tests for the injectable progress reporter (.make_progress + wiring)
 
-# Peptide-level data with > 1 peptide/protein (firth_nested needs nested input).
-make_progress_peptide_data <- function(Nprot = 30) {
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = Nprot, with_missing = FALSE, seed = 42)
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-  keep <- lfqdata$data_long() |>
-    dplyr::group_by(protein_Id) |>
-    dplyr::summarise(n_peptides = dplyr::n_distinct(peptide_Id), .groups = "drop") |>
-    dplyr::filter(n_peptides > 1)
-  lfqdata$set_data(dplyr::semi_join(lfqdata$data_long(), keep, by = "protein_Id"))
-  lfqdata
-}
-
 # Aggregated protein-level data (the "aggregated" facades, e.g. lm, need this).
 make_progress_protein_data <- function(Nprot = 30) {
   istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot, seed = 42)
@@ -98,12 +85,13 @@ test_that("prolfqua.progress callback fires through build_contrast_analysis (lm)
   }
 })
 
-test_that("firth pass labels appear in progress output (firth_nested)", {
-  lfqdata <- make_progress_peptide_data()
+test_that("firth pass labels appear in progress output (firth)", {
+  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, with_missing = TRUE, weight_missing = 0.5, seed = 42)
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   rec <- make_recorder()
   withr::local_options(prolfqua.progress = rec$callback)
 
-  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR_P, CONTRASTS_P, method = "firth_nested")
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR_P, CONTRASTS_P, method = "firth")
   res <- fa$get_contrasts()
 
   expect_true(is.data.frame(res))

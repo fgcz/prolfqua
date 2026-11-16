@@ -33,32 +33,6 @@ build_model_glm_protein <- function(lfqdata, modelstr) {
 }
 
 
-#' Build Firth logistic model for nested LFQData
-#'
-#' Encodes missingness as a binary response and fits the peptide-aware Firth
-#' logistic backend. Proteins with multiple child features are fitted with the
-#' lowest hierarchy key appended to the formula.
-#'
-#' @param lfqdata nested \code{\link{LFQData}} object
-#' @param modelstr model formula string without the response variable
-#'   (e.g. \code{"~ group_"})
-#' @return a \code{\link{ModelFirth}} object
-#' @export
-#' @family modelling
-#' @examples
-#' istar <- sim_lfq_data_peptide_config(
-#'   Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
-#' lfqdata <- LFQData$new(istar$data, istar$config)
-#' mod <- build_model_glm_peptide(lfqdata, "~ group_")
-#' head(mod$get_coefficients())
-build_model_glm_peptide <- function(lfqdata, modelstr) {
-  .assert_nested_facade_input(lfqdata, "build_model_glm_peptide")
-  lfq_missing <- .prepare_detection_lfqdata(lfqdata)
-  formula <- paste(lfq_missing$get_config()$bin_resp, modelstr)
-  build_model_logistf(lfq_missing, formula)
-}
-
-
 #' build_model_logistf
 #' @export
 #' @family modelling

@@ -241,16 +241,16 @@ test_that("build_contrast_analysis dispatches to ContrastsROPECANestedFacade for
   expect_false("beta.based.significance" %in% colnames(res))
 })
 
-test_that("build_contrast_analysis dispatches to ContrastsFirthNestedFacade for method='firth_nested'", {
+test_that("firth_nested is not a method", {
   lfqdata <- make_peptide_lfqdata()
-  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "firth_nested")
-  expect_true(inherits(fa, "ContrastsFirthNestedFacade"))
-  res <- fa$get_contrasts()
-  expect_true(is.data.frame(res))
-  expect_true(all(res$modelName == "firth_nested"))
+  expect_null(prolfqua::lookup_facade("firth_nested"))
+  expect_error(
+    prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "firth_nested"),
+    class = "prolfqua_error_bad_argument"
+  )
 })
 
-test_that("Firth nested preparation completes sparse LFQData before encoding missingness", {
+test_that("detection preparation completes sparse LFQData before encoding missingness", {
   istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 1, seed = 2)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   response <- lfqdata$response()

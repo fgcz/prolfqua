@@ -173,48 +173,10 @@ ContrastsROPECANestedFacade <- R6::R6Class(
 )
 
 
-#' Firth logistic missingness contrast analysis facade for nested input
-#'
-#' Encapsulates the pipeline: encode missingness ->
-#' \code{\link{build_model_glm_peptide}} -> \code{\link{ContrastsFirth}}.
-#'
-#' Takes nested (peptide-level) LFQData and returns protein-level
-#' fold-change estimates. For protein-level (aggregated) input use
-#' \code{\link{ContrastsFirthFacade}} instead.
-#'
-#' @return An R6 class generator.
-#' @export
-#' @family modelling
-#' @examples
-#' istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5)
-#' lfqdata <- LFQData$new(istar$data, istar$config)
-#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
-#' fa <- ContrastsFirthNestedFacade$new(lfqdata, "~ group_", contrasts)
-#' head(fa$get_contrasts())
-#' fa$to_wide()
-ContrastsFirthNestedFacade <- R6::R6Class(
-  "ContrastsFirthNestedFacade",
-  inherit = ContrastsFacadeBase,
-  public = list(
-    #' @description
-    #' initialize
-    #' @param lfqdata nested LFQData (peptide-level)
-    #' @param modelstr model formula string (e.g. "~ group_")
-    #' @param contrasts named character vector of contrasts
-    #' @param ... ignored; accepted for dispatch compatibility with other facades
-    initialize = function(lfqdata, modelstr, contrasts, ...) {
-      private$.setup(lfqdata, contrasts, "firth_nested", modelstr)
-      self$model <- build_model_glm_peptide(lfqdata, modelstr)
-      self$contrast <- ContrastsFirth$new(self$model, contrasts, model_name = "firth_nested")
-    }
-  )
-)
-
-
 #' Quasibinomial detection-count facade for nested input
 #'
-#' Completes and encodes child-feature detection using the same preparation as
-#' \code{\link{ContrastsFirthNestedFacade}}, then collapses the binary rows into
+#' Completes the child-feature rows, encodes detection as 0/1, then collapses
+#' the binary rows into
 #' detected and undetected counts per parent and sample. The resulting
 #' quasibinomial model reports parent-level log odds ratios in \code{diff};
 #' \code{avgAbd} is the average linear predictor on the log-odds scale.
@@ -269,9 +231,8 @@ ContrastsBinomialNestedFacade <- R6::R6Class(
 #' sample, so the dispersion and the residual degrees of freedom come from the
 #' samples, not from the number of child features. The fixed pseudo-count is
 #' replaced by Firth's bias reduction (\code{\link{StrategyBinomialFirth}}),
-#' which gives finite log odds ratios under complete separation, as
-#' \code{\link{ContrastsFirthNestedFacade}} does. Unlike
-#' \code{firth_nested}, child identity is not modelled.
+#' which gives finite log odds ratios under complete separation. Child
+#' identity is not modelled.
 #'
 #' @return An R6 class generator.
 #' @export

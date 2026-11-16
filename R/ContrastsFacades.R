@@ -619,7 +619,7 @@ ContrastsRfitImputeFacade <- R6::R6Class(
 #' \code{\link{build_model_glm_protein}} -> \code{\link{ContrastsFirth}}.
 #'
 #' Requires aggregated (protein-level) LFQData. For nested peptide-level
-#' input use \code{\link{ContrastsFirthNestedFacade}}.
+#' input use \code{\link{ContrastsBinomialFirthNestedFacade}}.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -763,7 +763,6 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     binomial_firth_nested = list(class = "ContrastsBinomialFirthNestedFacade", needs = "nested"),
     hurdle_nested = list(class = "ContrastsHurdleNestedFacade", needs = "nested"),
     firth = list(class = "ContrastsFirthFacade", needs = "aggregated"),
-    firth_nested = list(class = "ContrastsFirthNestedFacade", needs = "nested"),
     lmer_nested = list(class = "ContrastsLmerNestedFacade", needs = "nested"),
     ropeca_nested = list(class = "ContrastsROPECANestedFacade", needs = "nested")
   )

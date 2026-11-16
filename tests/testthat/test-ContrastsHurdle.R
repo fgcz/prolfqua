@@ -11,7 +11,6 @@ hurdle_components_fixture <- function() {
     contrasts = contrasts,
     lm = fit(lfq_protein, "lm"),
     lm_impute = fit(lfq_protein, "lm_impute"),
-    firth_nested = fit(lfq_peptide, "firth_nested"),
     binomial_nested = fit(lfq_peptide, "binomial_nested"),
     binomial_firth_nested = fit(lfq_peptide, "binomial_firth_nested")
   )
@@ -25,7 +24,7 @@ new_hurdle <- function(intensity, detection) {
 }
 
 test_that("hurdle p-values are Fisher's combination of the component p-values", {
-  res <- new_hurdle(fx$lm_impute, fx$firth_nested)$get_contrasts()
+  res <- new_hurdle(fx$lm_impute, fx$binomial_firth_nested)$get_contrasts()
   both <- res[res$hurdle_components == "both", ]
   expect_true(nrow(both) > 0)
   chisq <- -2 * (log(both$p.value.intensity) + log(both$p.value.detection))
@@ -40,11 +39,11 @@ test_that("hurdle p-values are Fisher's combination of the component p-values", 
 })
 
 test_that("proteins absent from lm become detection-only rows", {
-  res <- new_hurdle(fx$lm, fx$firth_nested)$get_contrasts()
+  res <- new_hurdle(fx$lm, fx$binomial_firth_nested)$get_contrasts()
   lm_rows <- fx$lm$get_contrasts()
   absent <- dplyr::anti_join(res, lm_rows, by = c("protein_Id", "contrast"))
   expect_true(nrow(absent) > 0)
-  expect_equal(nrow(res), nrow(fx$firth_nested$get_contrasts()))
+  expect_equal(nrow(res), nrow(fx$binomial_firth_nested$get_contrasts()))
   expect_true(all(absent$hurdle_components == "detection"))
   expect_equal(absent$df.hurdle, rep(2, nrow(absent)))
   expect_equal(absent$p.value, absent$p.value.detection)
@@ -60,7 +59,7 @@ test_that("fully detected proteins keep their intensity p-value", {
     dplyr::filter(.data$full)
   expect_true(nrow(fully_detected) > 0)
 
-  for (detection in list(fx$firth_nested, fx$binomial_nested, fx$binomial_firth_nested)) {
+  for (detection in list(fx$binomial_nested, fx$binomial_firth_nested)) {
     res <- new_hurdle(fx$lm_impute, detection)$get_contrasts()
     full_rows <- res[res$protein_Id %in% fully_detected$protein_Id, ]
     expect_true(all(full_rows$hurdle_components == "intensity"))
@@ -80,7 +79,7 @@ test_that("FDR is Benjamini-Hochberg within contrast", {
 
 test_that("all intensity x detection pairings return the contrast schema", {
   for (intensity in c("lm", "lm_impute")) {
-    for (detection in c("firth_nested", "binomial_nested", "binomial_firth_nested")) {
+    for (detection in c("binomial_nested", "binomial_firth_nested")) {
       hurdle <- new_hurdle(fx[[intensity]], fx[[detection]])
       res <- hurdle$get_contrasts()
       expect_true(all(hurdle$column_description()$column_name %in% colnames(res)))
@@ -102,7 +101,7 @@ test_that("all intensity x detection pairings return the contrast schema", {
       expect_equal(anyDuplicated(res[, c("protein_Id", "contrast")]), 0)
     }
   }
-  hurdle <- new_hurdle(fx$lm_impute, fx$firth_nested)
+  hurdle <- new_hurdle(fx$lm_impute, fx$binomial_firth_nested)
   expect_equal(hurdle$get_config()$subject_id, "protein_Id")
   wide <- hurdle$to_wide()
   expect_equal(nrow(wide), length(unique(hurdle$get_contrasts()$protein_Id)))
@@ -141,12 +140,12 @@ test_that("mismatched components raise errors", {
     fx$lfq_peptide,
     "~ group_",
     fx$contrasts[1],
-    method = "firth_nested"
+    method = "binomial_firth_nested"
   ))
   expect_error(new_hurdle(fx$lm, one_contrast), "same contrasts")
 
-  renamed <- dplyr::rename(fx$firth_nested$get_contrasts(), protein = "protein_Id")
-  other_subject <- ContrastsTable$new(renamed, subject_id = "protein", model_name = "firth_nested")
+  renamed <- dplyr::rename(fx$binomial_firth_nested$get_contrasts(), protein = "protein_Id")
+  other_subject <- ContrastsTable$new(renamed, subject_id = "protein", model_name = "binomial_firth_nested")
   expect_error(new_hurdle(fx$lm, other_subject), "same subject_id")
 
   expect_error(new_hurdle(fx$lm, fx$lm_impute), "binomial_firth_nested facade")

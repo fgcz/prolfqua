@@ -17,7 +17,7 @@ lanes = [
     ("limpa", ["limpa", "limpa_nested"], "#e9e0f3", "#7b5aa6"),
     ("LOD imputation", ["lm_impute", "limma_impute", "limma_voom_impute", "rfit_impute"], "#fdebd3", "#c07a1e"),
     ("peptide level", ["lmer_nested", "ropeca_nested"], "#d8f0ef", "#2f8c86"),
-    ("detection", ["firth", "firth_nested", "binomial_nested", "binomial_firth_nested"], "#f6dbe0", "#b04a5f"),
+    ("detection", ["firth", "binomial_nested", "binomial_firth_nested"], "#f6dbe0", "#b04a5f"),
     ("hurdle", ["hurdle_nested"], "#f3eecf", "#8a7a1c"),
 ]
 

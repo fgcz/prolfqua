@@ -3,7 +3,7 @@
 #' Hurdle contrasts: intensity and detection combined with Fisher's method
 #'
 #' Joins the contrasts of a fitted intensity facade (e.g. \code{lm_impute}) and a
-#' fitted detection facade (\code{firth_nested}, \code{binomial_nested} or
+#' fitted detection facade (\code{binomial_nested} or
 #' \code{binomial_firth_nested}) by
 #' subject and contrast, and replaces \code{p.value} and \code{FDR} with Fisher's
 #' combined test, as in msqrob2's \code{hypothesisTestHurdle}. No model is fitted.
@@ -50,7 +50,7 @@ ContrastsHurdleFacade <- R6::R6Class(
   public = list(
     #' @field intensity fitted intensity facade
     intensity = NULL,
-    #' @field detection fitted detection facade (\code{firth_nested}, \code{binomial_nested} or
+    #' @field detection fitted detection facade (\code{binomial_nested} or
     #'   \code{binomial_firth_nested})
     detection = NULL,
     #' @field model_name name stamped into the \code{modelName} column
@@ -61,7 +61,7 @@ ContrastsHurdleFacade <- R6::R6Class(
     #' Combine a fitted intensity facade and a fitted detection facade.
     #' @param intensity fitted intensity facade, e.g. from
     #'   \code{build_contrast_analysis(method = "lm_impute")}
-    #' @param detection fitted \code{firth_nested}, \code{binomial_nested} or
+    #' @param detection fitted \code{binomial_nested} or
     #'   \code{binomial_firth_nested} facade with the same subject id and contrasts
     #' @param model_name name stamped into the \code{modelName} column
     initialize = function(intensity, detection, model_name = "hurdle") {
@@ -86,9 +86,9 @@ ContrastsHurdleFacade <- R6::R6Class(
         )
       }
       detection_model <- unique(as.character(detection_contrasts$modelName))
-      if (!all(detection_model %in% c("firth_nested", "binomial_nested", "binomial_firth_nested"))) {
+      if (!all(detection_model %in% c("binomial_nested", "binomial_firth_nested"))) {
         stop(
-          "detection must be a firth_nested, binomial_nested or binomial_firth_nested facade, not: ",
+          "detection must be a binomial_nested or binomial_firth_nested facade, not: ",
           paste(detection_model, collapse = ", ")
         )
       }

@@ -33,7 +33,7 @@ backends:
 - `lm_impute` — `lm` that refits failed/singular proteins with LOD imputation and borrowed variance.
 - `deqms` — `limma` plus DEqMS count-dependent variance moderation using peptide counts per protein.
 - `firth` — Firth bias-reduced logistic regression on presence/absence (missingness) of aggregated proteins.
-- `firth_nested` — Firth logistic regression on peptide-level missingness, reporting protein-level contrasts.
+- `binomial_firth_nested` — Firth bias-reduced binomial model of the detected peptides per protein and sample, reporting protein-level contrasts.
 
 All of them expose the same basic interface: `get_contrasts()`,
 `get_Plotter()`, and `to_wide()`. All examples below return protein-level
@@ -345,8 +345,9 @@ if (length(lm_missing_proteins) > 0) {
 The peptide-input facades take peptide/precursor-level `LFQData` and return
 protein-level contrasts. They are defined in `R/ContrastsChildToParentFacades.R`
 and use the `*_nested` method keys: `lmer_nested`, `ropeca_nested`,
-`firth_nested`, and `limpa_nested`. `firth_nested` is the peptide-input
-counterpart of the protein-input `firth` shown above.
+`binomial_firth_nested`, and `limpa_nested`. `binomial_firth_nested` models
+peptide detection, like the protein-input `firth` shown above, from the number
+of detected peptides per protein and sample.
 
 ```{r facades_peptide}
 fa_lmer <- build_contrast_analysis(
@@ -363,26 +364,25 @@ fa_ropeca <- build_contrast_analysis(
   method = "ropeca_nested"
 )
 
-fa_firth_peptide <- build_contrast_analysis(
+fa_binomial_firth <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
   contrasts,
-  method = "firth_nested"
+  method = "binomial_firth_nested"
 )
 ```
 
 `ropeca_nested` aggregates peptide evidence back to proteins, whereas
 `lmer_nested` models the nested peptide structure directly before reporting
-protein-level contrasts. `firth_nested` also reports protein-level contrasts:
-proteins with exactly one peptide are fitted without an added peptide term,
-while proteins with multiple peptides are fitted with the lowest hierarchy
-key added internally.
+protein-level contrasts. `binomial_firth_nested` also reports protein-level
+contrasts; its degrees of freedom come from the samples, not from the number of
+peptides.
 
 ```{r collect_peptide}
 results_peptide <- bind_rows(
   fa_lmer$get_contrasts(),
   fa_ropeca$get_contrasts(),
-  fa_firth_peptide$get_contrasts()
+  fa_binomial_firth$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
     "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
@@ -415,7 +415,7 @@ ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant))
 # Hurdle: intensity and detection combined
 
 `ContrastsHurdleFacade` fits no model of its own. It joins a fitted intensity
-facade and a fitted detection facade (`firth_nested` or `binomial_nested`) by
+facade and a fitted detection facade (`binomial_nested` or `binomial_firth_nested`) by
 protein and contrast, and combines their p-values with Fisher's method, as
 msqrob2's hurdle model does. A protein estimated by one component only keeps
 that component's p-value; a protein detected in every sample keeps its
@@ -424,7 +424,7 @@ is the better partner: it also estimates `diff` for proteins detected in one
 group only.
 
 ```{r hurdle}
-fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_firth_peptide)
+fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_binomial_firth)
 results_hurdle <- fa_hurdle$get_contrasts()
 
 results_hurdle |>

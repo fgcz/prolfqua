@@ -295,8 +295,9 @@ if (length(lm_missing_proteins_2f) > 0) {
 # Peptide-input facades
 
 The mixed-effects `lmer_nested` facade and `ropeca_nested` require lower-level
-measurements below the analysis subject. The `firth_nested` facade is the
-peptide-input variant of `firth` shown above. All three still return
+measurements below the analysis subject. The `binomial_firth_nested` facade
+models peptide detection, like `firth` above, but from peptide-level input: it
+counts the detected peptides per protein and sample. All three still return
 protein-level contrasts.
 
 ```{r facades_peptide_two_factor}
@@ -314,11 +315,11 @@ fa_ropeca_2f <- build_contrast_analysis(
   method = "ropeca_nested"
 )
 
-fa_firth_peptide_2f <- build_contrast_analysis(
+fa_binomial_firth_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup",
   contrasts_2f,
-  method = "firth_nested"
+  method = "binomial_firth_nested"
 )
 ```
 
@@ -326,7 +327,7 @@ fa_firth_peptide_2f <- build_contrast_analysis(
 results_peptide_2f <- bind_rows(
   fa_lmer_2f$get_contrasts(),
   fa_ropeca_2f$get_contrasts(),
-  fa_firth_peptide_2f$get_contrasts()
+  fa_binomial_firth_2f$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(
     "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",

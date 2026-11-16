@@ -12,9 +12,8 @@ detection is collapsed into detected and undetected counts per parent and
 sample, so the dispersion and the residual degrees of freedom come from the
 samples, not from the number of child features. The fixed pseudo-count is
 replaced by Firth's bias reduction (\code{\link{StrategyBinomialFirth}}),
-which gives finite log odds ratios under complete separation, as
-\code{\link{ContrastsFirthNestedFacade}} does. Unlike
-\code{firth_nested}, child identity is not modelled.
+which gives finite log odds ratios under complete separation. Child
+identity is not modelled.
 }
 \examples{
 istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
