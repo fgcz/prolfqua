@@ -825,9 +825,11 @@ ContrastsLimma <- R6::R6Class(
           diff_i <- fit2$coefficients[, i]
           se_i <- sigma_raw * fit2$stdev.unscaled[, i]
           t_raw <- diff_i / se_i
-          p_raw <- 2 * pt(abs(t_raw), df = df_raw, lower.tail = FALSE)
+          # proteins without residual degrees of freedom get NA p-values and intervals
+          df_test <- ifelse(df_raw > 0, df_raw, NA_real_)
+          p_raw <- 2 * pt(abs(t_raw), df = df_test, lower.tail = FALSE)
           alpha <- 0.05
-          prqt <- -qt(alpha / 2, df = df_raw)
+          prqt <- -qt(alpha / 2, df = df_test)
 
           df_i$diff <- diff_i
           df_i$std.error <- se_i

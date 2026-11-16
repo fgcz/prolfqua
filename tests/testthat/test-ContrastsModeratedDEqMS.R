@@ -38,7 +38,10 @@ test_that("moderated_p_deqms works on simulated data", {
   contrast_result$nrPeptides <- pmax(contrast_result$nrPeptides, 1)
 
   # Test single-group moderation
-  result <- moderated_p_deqms(contrast_result, count_col = "nrPeptides")
+  result <- muffle_warnings_matching(
+    moderated_p_deqms(contrast_result, count_col = "nrPeptides"),
+    loess_ties_warning
+  )
 
   expect_true("moderated.statistic" %in% colnames(result))
   expect_true("moderated.p.value" %in% colnames(result))
@@ -84,45 +87,47 @@ test_that("ContrastsModeratedDEqMS works end-to-end", {
     count_column = "nrPeptides"
   )
 
-  # get_contrasts returns expected columns
-  x <- deqms$get_contrasts()
-  expect_s3_class(x, "data.frame")
-  expect_true(all(c("diff", "p.value", "FDR", "sigma", "statistic", "df", "conf.low", "conf.high") %in% colnames(x)))
-  expect_true(all(x$p.value > 0 & x$p.value <= 1))
-  expect_true(all(x$FDR >= 0 & x$FDR <= 1))
-  raw <- contrast$get_contrasts()
-  expect_equal(x$std.error.unmoderated, raw$std.error)
-  expect_equal(x$df.unmoderated, raw$df)
-  expect_equal(x$statistic, x$diff / x$std.error, tolerance = 1e-12)
+  muffle_warnings_matching(loess_ties_warning, expr = {
+    # get_contrasts returns expected columns
+    x <- deqms$get_contrasts()
+    expect_s3_class(x, "data.frame")
+    expect_true(all(c("diff", "p.value", "FDR", "sigma", "statistic", "df", "conf.low", "conf.high") %in% colnames(x)))
+    expect_true(all(x$p.value > 0 & x$p.value <= 1))
+    expect_true(all(x$FDR >= 0 & x$FDR <= 1))
+    raw <- contrast$get_contrasts()
+    expect_equal(x$std.error.unmoderated, raw$std.error)
+    expect_equal(x$df.unmoderated, raw$df)
+    expect_equal(x$statistic, x$diff / x$std.error, tolerance = 1e-12)
 
-  # modelName passes through the wrapped model identity unchanged (no _DEqMS
-  # suffix); DEqMS moderation is documented in the methods text. estimate_type
-  # is carried through from the wrapped contrast.
-  expect_false(any(grepl("_DEqMS", x$modelName)))
-  expect_true("estimate_type" %in% colnames(x))
+    # modelName passes through the wrapped model identity unchanged (no _DEqMS
+    # suffix); DEqMS moderation is documented in the methods text. estimate_type
+    # is carried through from the wrapped contrast.
+    expect_false(any(grepl("_DEqMS", x$modelName)))
+    expect_true("estimate_type" %in% colnames(x))
 
-  # get_contrasts(all = TRUE) returns both original and moderated columns
-  x_all <- deqms$get_contrasts(all = TRUE)
-  expect_true("moderated.statistic" %in% colnames(x_all))
-  expect_true("moderated.p.value" %in% colnames(x_all))
-  expect_true("FDR.moderated" %in% colnames(x_all))
+    # get_contrasts(all = TRUE) returns both original and moderated columns
+    x_all <- deqms$get_contrasts(all = TRUE)
+    expect_true("moderated.statistic" %in% colnames(x_all))
+    expect_true("moderated.p.value" %in% colnames(x_all))
+    expect_true("FDR.moderated" %in% colnames(x_all))
 
-  # get_contrast_sides delegates correctly
-  cs <- deqms$get_contrast_sides()
-  expect_s3_class(cs, "data.frame")
-  expect_true(all(c("group_1", "group_2") %in% colnames(cs)))
+    # get_contrast_sides delegates correctly
+    cs <- deqms$get_contrast_sides()
+    expect_s3_class(cs, "data.frame")
+    expect_true(all(c("group_1", "group_2") %in% colnames(cs)))
 
-  # get_linfct delegates
-  lf <- deqms$get_linfct()
-  expect_true(!is.null(lf))
+    # get_linfct delegates
+    lf <- deqms$get_linfct()
+    expect_true(!is.null(lf))
 
-  # to_wide returns wide format
-  tw <- deqms$to_wide()
-  expect_s3_class(tw, "data.frame")
+    # to_wide returns wide format
+    tw <- deqms$to_wide()
+    expect_s3_class(tw, "data.frame")
 
-  # get_Plotter returns ContrastsPlotter
-  pl <- deqms$get_Plotter()
-  expect_s3_class(pl, "ContrastsPlotter")
+    # get_Plotter returns ContrastsPlotter
+    pl <- deqms$get_Plotter()
+    expect_s3_class(pl, "ContrastsPlotter")
+  })
 })
 
 test_that("ContrastsModeratedDEqMS works with multiple contrasts", {
@@ -174,7 +179,7 @@ test_that("merge_contrasts_results works with ContrastsModeratedDEqMS", {
 
   imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 
-  merged <- merge_contrasts_results(deqms, imp)
+  merged <- muffle_warnings_matching(merge_contrasts_results(deqms, imp), loess_ties_warning)
   expect_true("merged" %in% names(merged))
   expect_true("more" %in% names(merged))
   expect_true("same" %in% names(merged))
@@ -206,4 +211,21 @@ test_that("ContrastsModeratedDEqMS volcano renders", {
   pl <- deqms$get_Plotter()
   vp <- pl$volcano()
   expect_true(!is.null(vp))
+})
+
+test_that("moderated_p_deqms predicts the prior for proteins left out of the loess fit", {
+  mm <- data.frame(
+    sigma = c(0.30, 0.42, 0.25, 0.38, 0.22, 0.31, 0.27, 0.20, 0, NA),
+    df = c(rep(6, 9), 0),
+    statistic = c(2.1, -1.8, 0.5, 3.0, -2.2, 1.1, -0.4, 2.6, 2, 1),
+    std.error = rep(0.3, 10),
+    diff = c(0.6, -0.5, 0.2, 0.9, -0.7, 0.3, -0.1, 0.8, 0.6, 0.3),
+    count = c(1, 2, 3, 4, 5, 6, 7, 8, 3, 4)
+  )
+  expect_no_warning(res <- moderated_p_deqms(mm, count_col = "count"))
+  # row 9 (sigma 0) is not fitted; its prior comes from the curve at count 3, as for row 3
+  expect_equal(res$moderated.var.prior[9], res$moderated.var.prior[3])
+  # row 10 has no residual degrees of freedom: no moderated statistics
+  expect_true(is.na(res$moderated.p.value[10]))
+  expect_true(all(is.finite(res$moderated.p.value[1:8])))
 })

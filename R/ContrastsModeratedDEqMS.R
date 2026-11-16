@@ -58,28 +58,28 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess
   }
 
   # Fit variance ~ count curve using LOESS
-  loess_fit <- stats::loess(logvar[ok] ~ log2count[ok], span = loess_span)
+  loess_fit <- stats::loess(
+    logvar ~ log2count,
+    data = data.frame(logvar = logvar[ok], log2count = log2count[ok]),
+    span = loess_span
+  )
 
   # Predict for all proteins (including those not used in fit)
   fitted_logvar <- rep(NA_real_, length(logvar))
   fitted_logvar[ok] <- stats::fitted(loess_fit)
-  # For non-ok, predict from the fit if possible
+  # For non-ok, predict from the fit if possible; outside the fitted count range this is NA
   not_ok <- !ok & is.finite(log2count)
   if (any(not_ok)) {
-    fitted_logvar[not_ok] <- predict(
-      loess_fit,
-      newdata = data.frame(
-        `log2count[ok]` = log2count[not_ok]
-      )
-    )
+    fitted_logvar[not_ok] <- stats::predict(loess_fit, newdata = data.frame(log2count = log2count[not_ok]))
   }
   # For any remaining NAs, use the mean fitted value
   fitted_logvar[is.na(fitted_logvar)] <- mean(fitted_logvar, na.rm = TRUE)
 
-  # Estimate d0 via trigamma approach
-  eg <- logvar - digamma(df_res / 2) + log(df_res / 2)
-  egpred <- fitted_logvar - digamma(df_res / 2) + log(df_res / 2)
-  myfct <- (eg - egpred)^2 - trigamma(df_res / 2)
+  # Estimate d0 via trigamma approach; rows without residual degrees of freedom get NA
+  half_df <- ifelse(is.finite(df_res) & df_res > 0, df_res / 2, NA_real_)
+  eg <- logvar - digamma(half_df) + log(half_df)
+  egpred <- fitted_logvar - digamma(half_df) + log(half_df)
+  myfct <- (eg - egpred)^2 - trigamma(half_df)
   mean_myfct <- mean(myfct[ok], na.rm = TRUE)
 
   d0 <- find_d0_deqms(mean_myfct)
@@ -94,6 +94,7 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess
     var_post <- s02
     df_total <- df_res
   }
+  df_total[which(df_total <= 0)] <- NA_real_
 
   # Moderated statistics
   moderated_se <- mm$std.error * sqrt(var_post) / mm$sigma

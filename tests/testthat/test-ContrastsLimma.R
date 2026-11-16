@@ -536,11 +536,19 @@ test_that("build_contrast_analysis dispatches deqms_voom", {
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms_voom")
+  # one simulated protein misses a whole group, which limma reports as partial NA coefficients
+  fa <- muffle_warnings_matching(
+    prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms_voom"),
+    "Partial NA coefficients"
+  )
   expect_true(inherits(fa, "ContrastsDEqMSVoomFacade"))
-  res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  expect_no_warning(res <- fa$get_contrasts())
+  expect_equal(nrow(res), 30)
   expect_equal(unique(res$modelName), "deqms_voom")
+  # proteins without residual degrees of freedom get NA p-values, all others finite ones
+  no_df <- res$df.unmoderated == 0
+  expect_true(all(is.na(res$p.value[no_df])))
+  expect_true(all(is.finite(res$p.value[!no_df])))
 })
 
 test_that("limma_voom with external weights (nr_children)", {
