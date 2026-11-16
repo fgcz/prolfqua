@@ -324,7 +324,7 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
 #' @family modelling
 #' @export
 #' @keywords internal
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #'
 #' mb <- sim_make_model_lmer("interaction")
 #' summary(mb)
@@ -338,6 +338,7 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
 #' summary(mb)
 #'
 compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")) {
+  rlang::check_installed(c("lme4", "lmerTest"), reason = "for mixed model contrasts.")
   ddf <- match.arg(ddf)
   if (nrow(linfct) == 0L) {
     # `linfct_matrix_contrasts()` drops a contrast whose coefficients this

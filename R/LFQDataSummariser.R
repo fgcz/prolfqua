@@ -4,7 +4,7 @@
 #' @return An R6 class generator.
 #' @export
 #' @family LFQData
-#' @examples
+#' @examplesIf requireNamespace("UpSetR", quietly = TRUE)
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #'
 #' data <- istar$data
@@ -67,6 +67,7 @@ LFQDataSummariser <- R6::R6Class(
     #' upset plot with missing information per protein and condition
     #' @param tr if less than tr observations in condition then missing
     upset_interaction_missing_stats = function(tr = 2) {
+      rlang::check_installed("UpSetR", reason = "for UpSet plots.")
       pups <- upset_interaction_missing_stats(self$lfq, tr = tr)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
       return(res)

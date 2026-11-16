@@ -41,13 +41,14 @@ keep their suffix because sample prefixes are often shared.}
 plot heatmap with annotations
 }
 \examples{
+\dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 istar <- sim_lfq_data_protein_config()
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 p <- plot_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(methods::is(p, "Heatmap"))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other plotting:

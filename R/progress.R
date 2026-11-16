@@ -91,6 +91,15 @@
   )
 }
 
+# The terminal progress bar of the progress package, or no reporter when it is not installed.
+.default_progress_bar <- function(total) {
+  if (.has_package("progress")) {
+    progress::progress_bar$new(total = total)
+  } else {
+    .null_reporter()
+  }
+}
+
 #' Build a progress reporter for the per-protein / per-contrast loops
 #'
 #' Internal factory used by `model_analyse()` and the contrast loops. The
@@ -118,7 +127,7 @@
     return(.null_reporter())
   }
   if (is.null(reporter)) {
-    return(progress::progress_bar$new(total = total))
+    return(.default_progress_bar(total))
   }
   if (is.function(reporter)) {
     return(.throttled_reporter(total, label, callback = reporter))

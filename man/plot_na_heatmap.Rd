@@ -30,13 +30,14 @@ plot_na_heatmap(
 plot heatmap of NA values
 }
 \examples{
+\dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 tmp <- plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
 stopifnot(methods::is(tmp, "Heatmap"))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other plotting:

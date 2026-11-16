@@ -12,12 +12,14 @@ sim_make_model_lm(
 make interaction model for examples
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 m <- sim_make_model_lm()
 mi <- sim_make_model_lm("interaction")
 stopifnot(length(coefficients(summary(mi))[,"Estimate"]) == 4)
 mf <- sim_make_model_lmer("factors")
 m2 <- sim_make_model_lmer("parallel2")
 m3 <- sim_make_model_lmer("parallel3")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

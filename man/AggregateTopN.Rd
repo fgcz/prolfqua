@@ -11,6 +11,7 @@ Aggregates peptide intensities to protein level using top N peptides.
 Works with raw (untransformed) intensities.
 }
 \examples{
+\dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- prolfqua::sim_lfq_data_peptide_config()
 data <- istar$data |> dplyr::filter(protein_Id \%in\% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
@@ -25,7 +26,7 @@ agg_mean$aggregate()
 protPlotter <- agg_mean$lfq_agg$get_Plotter()
 protPlotter$heatmap()
 agg_mean$write_plots(tempdir())
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other LFQData:

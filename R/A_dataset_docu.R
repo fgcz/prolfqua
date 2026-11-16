@@ -1,4 +1,3 @@
-#' @importFrom forcats fct_relevel
 #' @importFrom dplyr across all_of anti_join arrange bind_cols bind_rows case_when count desc distinct filter group_by
 #' @importFrom dplyr inner_join left_join mutate nest_by
 #' @importFrom dplyr rename select starts_with summarize ungroup
@@ -11,9 +10,6 @@
 #' @importFrom graphics par rect hist
 #' @importFrom graphics abline pairs plot text
 #' @importFrom grDevices colorRampPalette dev.off pdf png rainbow
-#' @importFrom ComplexHeatmap Heatmap HeatmapAnnotation draw
-#' @importFrom circlize colorRamp2
-#' @importFrom plotly ggplotly
 #' @importFrom purrr map map2 map2_dbl map_lgl map_chr map_dbl reduce map_if map_dfc map_int map_df
 #' @importFrom rlang := sym syms .data
 #' @importFrom stats as.formula cor

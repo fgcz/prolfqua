@@ -10,9 +10,11 @@ get_complete_model_fit(complete_models)
 retrieve complete models.
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 x <- sim_build_models_lmer(model = "factors", Nprot = 10)
 cfits <- get_complete_model_fit(x$model_df)
 stopifnot(nrow(cfits) == 6)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

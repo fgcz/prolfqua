@@ -37,6 +37,7 @@ keep their suffix because sample prefixes are often shared.}
 plot correlation heatmap with annotations
 }
 \examples{
+\dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 istar <- sim_lfq_data_protein_config()
 lfq <- LFQData$new(istar$data, istar$config)
@@ -47,7 +48,7 @@ stopifnot(methods::is(pheat_map, "Heatmap"))
 pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
   lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
 stopifnot(methods::is(pheat_map, "Heatmap"))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other plotting:

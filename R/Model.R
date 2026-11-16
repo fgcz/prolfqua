@@ -4,7 +4,7 @@
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #'
 #'
 #'

@@ -10,6 +10,7 @@ An R6 class generator.
 plot contrasts
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 istar <- sim_lfq_data_peptide_config(Nprot = 20)
 model_name <- "Model"
@@ -53,7 +54,7 @@ stopifnot("plotly" \%in\%   class(cp$ma_plotly(rank=TRUE)))
 res  <- cp$barplot_threshold()
 stopifnot("ggplot" \%in\% class(res$FDR$plot))
 stopifnot("ggplot" \%in\%  class(cp$histogram_diff()))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

@@ -11,6 +11,7 @@ The per-protein contrast computation uses \code{\link{compute_contrast}} and
 \code{\link{linfct_matrix_contrasts}} internally.
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 # Fitting mixed effects model to peptide data
 istar <- prolfqua::sim_lfq_data_peptide_config()
@@ -61,7 +62,7 @@ mod <- build_model(
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 y <- contrastX$get_linfct(avg = FALSE)
 stopifnot(all(ref_lfc == y))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

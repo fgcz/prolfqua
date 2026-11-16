@@ -622,7 +622,7 @@ ContrastsRfitImputeFacade <- R6::R6Class(
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

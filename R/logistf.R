@@ -21,7 +21,7 @@
 #' @return a \code{\link{ModelFirth}} object
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' istar <- sim_lfq_data_protein_config(
 #'   Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
@@ -42,7 +42,7 @@ build_model_glm_protein <- function(lfqdata, modelstr) {
 #' @export
 #' @family modelling
 #' @keywords internal
-#' @examples
+#' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
@@ -73,7 +73,7 @@ build_model_logistf <- function(data, formula) {
 #' @family modelling
 #' @export
 #' @keywords internal
-#' @examples
+#' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
 #' stopifnot(dim(modi$model_df) == c(10,9))
 #' mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
@@ -133,7 +133,6 @@ sim_build_models_logistf <- function(
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @importFrom logistf logistf
 #' @examples
 #' strat <- StrategyLogistf$new("bin_resp ~ condition")
 #' strat$formula
@@ -159,6 +158,7 @@ StrategyLogistf <- R6::R6Class(
   private = list(
     # Collapse identical predictor rows into frequency weights.
     prepare = function(x) {
+      rlang::check_installed("logistf", reason = "for Firth logistic regression.")
       predictor_vars <- all.vars(update(self$formula, . ~ .))
       x |>
         dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
@@ -176,7 +176,7 @@ StrategyLogistf <- R6::R6Class(
 #' @rdname strategy
 #' @family modelling
 #' @return a \code{\link{StrategyLogistf}} object
-#' @examples
+#' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 #' tmp$formula
 #'

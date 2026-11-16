@@ -293,6 +293,7 @@ test_that("binomial_nested supports multifactor contrasts and rejects aggregated
 })
 
 test_that("strategy_binomial_firth matches logistf on the expanded binary rows", {
+  skip_if_not_installed("logistf")
   expand <- function(dat) {
     long <- rbind(
       transform(dat, y = 1, w = detected),

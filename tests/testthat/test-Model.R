@@ -116,6 +116,7 @@ test_that("build_model_logistf requires aggregated input", {
 })
 
 test_that("ModelFirth", {
+  skip_if_not_installed("logistf")
   istar <- sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
   lfq <- LFQData$new(istar$data, istar$config)
   lfq$set_data(encode_bin_resp(lfq))
@@ -141,6 +142,7 @@ test_that("ModelFirth", {
 })
 
 test_that("StrategyLogistf avoids coefficient-wise profile likelihood fits", {
+  skip_if_not_installed("logistf")
   data <- data.frame(
     bin_resp = c(1L, 0L, 1L, 0L, 1L, 0L, 0L, 1L),
     condition = rep(c("A", "B"), each = 4)
@@ -152,6 +154,7 @@ test_that("StrategyLogistf avoids coefficient-wise profile likelihood fits", {
 })
 
 test_that("build_model_glm_protein returns ModelFirth", {
+  skip_if_not_installed("logistf")
   prot <- sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 7)
   prot_lfq <- LFQData$new(prot$data, prot$config)
   prot_mod <- build_model_glm_protein(prot_lfq, "~ group_")

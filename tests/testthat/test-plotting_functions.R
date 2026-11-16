@@ -162,6 +162,8 @@ test_that("plot_pca joins explicitly and handles a single factor key", {
 })
 
 test_that("heatmap row labels are truncated without changing matrix row names", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   matrix <- matrix(stats::rnorm(12), nrow = 3)
   original_labels <- c(
     "Feature001_very_long_metabolomics_identifier_mz101.1234_rt12.34",
@@ -213,6 +215,8 @@ test_long_sample_heatmap_data <- function() {
 }
 
 test_that("correlation heatmap sample labels keep informative suffixes", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   data <- test_long_sample_heatmap_data()
 
   p <- plot_heatmap_cor(
@@ -233,6 +237,8 @@ test_that("correlation heatmap sample labels keep informative suffixes", {
 })
 
 test_that("abundance heatmap sample labels keep informative suffixes", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   data <- test_long_sample_heatmap_data()
 
   p <- plot_heatmap(
@@ -253,6 +259,8 @@ test_that("abundance heatmap sample labels keep informative suffixes", {
 })
 
 test_that("raster sample labels keep informative suffixes", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   data <- test_long_sample_heatmap_data()
 
   p <- plot_raster(
@@ -273,6 +281,8 @@ test_that("raster sample labels keep informative suffixes", {
 })
 
 test_that("abundance heatmap shows missing values in light gray", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   data <- test_long_sample_heatmap_data()
   data$matrix[1, 1] <- NA
 
@@ -291,6 +301,8 @@ test_that("abundance heatmap shows missing values in light gray", {
 })
 
 test_that("abundance heatmap draws sparse one-row matrices with all-NA columns", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   matrix <- matrix(
     c(NA, 12, 13, NA, 12.5, 13.5),
     nrow = 1,
@@ -314,6 +326,8 @@ test_that("abundance heatmap draws sparse one-row matrices with all-NA columns",
 })
 
 test_that("abundance heatmap keeps partially observed rows and drops rows that cannot be z-scored", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   matrix <- rbind(
     complete = c(11, 12, 13, 14, 8, 9, 10, 11),
     bait_only = c(14, 15, 16, 17, NA, NA, NA, NA),
@@ -346,6 +360,8 @@ test_that("LFQDataPlotter heatmaps retain all z-scoreable rows by default", {
 })
 
 test_that("abundance color mapping spans green, black, and red", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   col_fun <- prolfqua:::.abundance_col_fun(matrix(c(-2, 0, 2), nrow = 1))
   cols <- grDevices::col2rgb(col_fun(c(-2, 0, 2)))
 
@@ -356,6 +372,8 @@ test_that("abundance color mapping spans green, black, and red", {
 })
 
 test_that("group colours are deterministic and shared across heatmap, na-heatmap, and PCA", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   # Regression: ComplexHeatmap assigned random colours to discrete annotations
   # (no `col` set), so the heatmap, na-heatmap, and PCA legends each used a
   # different colour for the same group. They must now share one palette.
@@ -391,6 +409,8 @@ test_that("group colours are deterministic and shared across heatmap, na-heatmap
 })
 
 test_that("write_pdf renders a ComplexHeatmap to a non-empty PDF", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   istar <- sim_lfq_data_peptide_config()
   lfq <- LFQData$new(istar$data, istar$config)
   pl <- lfq$get_Plotter()
@@ -403,6 +423,8 @@ test_that("write_pdf renders a ComplexHeatmap to a non-empty PDF", {
 })
 
 test_that("volcano_plotly does not cap small non-zero FDR values by default", {
+  skip_if_not_installed("plotly")
+  skip_if_not_installed("crosstalk")
   data <- data.frame(
     fc = c(-2, 0, 2),
     BFDR = c(1e-8, 1e-3, 0),
@@ -424,6 +446,8 @@ test_that("volcano_plotly does not cap small non-zero FDR values by default", {
 })
 
 test_that("heatmap keeps only the top_n most variable features", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   istar <- sim_lfq_data_protein_config()
   lfq <- LFQData$new(istar$data, istar$config)
   wide <- lfq$data_wide(as.matrix = TRUE)
@@ -515,4 +539,17 @@ test_that("plot_lrt_diagnostics closes its device when plotting fails", {
   expect_error(plot_lrt_diagnostics(bad, "full", "reduced", out_dir))
   expect_equal(grDevices::dev.cur(), before$cur)
   expect_equal(grDevices::dev.list(), before$list)
+})
+
+test_that("default density and box plots work without plotly and ggbeeswarm", {
+  local_mocked_bindings(.has_package = function(pkg) FALSE)
+  istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE, seed = 1)
+  lfq <- LFQData$new(istar$data, istar$config)
+  pl <- lfq$get_Plotter()
+  density <- pl$intensity_distribution_density()
+  expect_s3_class(density, "ggplot")
+  expect_no_error(ggplot2::ggplot_build(density))
+  boxplot <- pl$boxplots()$boxplot[[1]]
+  expect_no_error(ggplot2::ggplot_build(boxplot))
+  expect_true(any(vapply(boxplot$layers, function(l) inherits(l$position, "PositionJitterdodge"), logical(1))))
 })

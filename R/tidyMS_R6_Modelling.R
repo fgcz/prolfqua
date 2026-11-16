@@ -105,7 +105,7 @@ StrategyBase <- R6::R6Class(
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
 #' istar <- prolfqua::LFQData$new(istar$data, istar$config)
 #' istar$set_data(istar$data_long() |> dplyr::group_by(protein_Id) |>
@@ -127,6 +127,10 @@ StrategyLmer <- R6::R6Class(
     contrast_fun = function(...) compute_lmer_contrast(...)
   ),
   private = list(
+    prepare = function(x) {
+      rlang::check_installed(c("lme4", "lmerTest"), reason = "for mixed models.")
+      x
+    },
     fit = function(x) lmerTest::lmer(self$formula, data = x)
   )
 )

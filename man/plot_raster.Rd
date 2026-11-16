@@ -43,6 +43,7 @@ keep their suffix because sample prefixes are often shared.}
 plot heatmap without any clustering (use to show NA's)
 }
 \examples{
+\dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 istar <- sim_lfq_data_protein_config()
 lfq <- LFQData$new(istar$data, istar$config)
@@ -51,7 +52,7 @@ rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name
 stopifnot(methods::is(rs, "Heatmap"))
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")
 stopifnot(methods::is(rs, "Heatmap"))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other plotting:

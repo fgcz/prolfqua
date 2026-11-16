@@ -241,7 +241,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
 #' @family imputation
 #' @param lfqdata LFQData object
 #' @param tr if less than tr observations in condition then missing
-#' @examples
+#' @examplesIf requireNamespace("UpSetR", quietly = TRUE)
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' pups <- upset_interaction_missing_stats(lfq)
@@ -269,7 +269,7 @@ upset_interaction_missing_stats <- function(lfqdata, tr = 2) {
 #' @keywords internal
 #' @family plotting
 #' @family imputation
-#' @examples
+#' @examplesIf requireNamespace("UpSetR", quietly = TRUE)
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' pups <- upset_missing_stats(lfq)

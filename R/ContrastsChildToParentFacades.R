@@ -44,7 +44,7 @@
 #'
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' istar <- sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq

@@ -114,6 +114,8 @@ test_that("ContrastsRLMFacade initialises and returns correct structure", {
 # ---- ContrastsLmerNestedFacade ----
 
 test_that("ContrastsLmerNestedFacade initialises and returns correct structure", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   lfqdata <- make_peptide_lfqdata()
   fa <- prolfqua::ContrastsLmerNestedFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS)
 
@@ -125,6 +127,8 @@ test_that("ContrastsLmerNestedFacade initialises and returns correct structure",
 })
 
 test_that("ContrastsLmerNestedFacade augments fixed-effects-only modelstr with random effects", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   # Caller passes only the fixed effects "~ group_"; facade derives
   # (1 | <deepest child key>) + (1 | <sample name>) from the LFQData.
   lfqdata <- make_peptide_lfqdata()
@@ -261,6 +265,8 @@ test_that("build_contrast_analysis dispatches to ContrastsRLMFacade for method='
 })
 
 test_that("build_contrast_analysis dispatches to ContrastsLmerNestedFacade for method='lmer_nested'", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   lfqdata <- make_peptide_lfqdata()
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR_LMER, CONTRASTS, method = "lmer_nested")
   expect_true(inherits(fa, "ContrastsLmerNestedFacade"))
@@ -446,6 +452,7 @@ test_that("a contrast naming a group without samples is a typed error", {
 })
 
 test_that("the firth facade keeps a protein key not named protein_Id", {
+  skip_if_not_installed("logistf")
   istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5, seed = 42)
   data <- dplyr::rename(istar$data, prot = "protein_Id")
   config <- istar$config$clone(deep = TRUE)

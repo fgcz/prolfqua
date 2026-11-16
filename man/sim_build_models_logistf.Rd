@@ -15,12 +15,14 @@ sim_build_models_logistf(
 build dataframe with models for testing
 }
 \examples{
+\dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
 stopifnot(dim(modi$model_df) == c(10,9))
 mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
 mod2$model_df$linear_model[[1]]
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

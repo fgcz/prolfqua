@@ -12,9 +12,10 @@ sim_make_model_lmer(
 make interaction model for examples
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 mf <- sim_make_model_lmer("factors")
 mi <- sim_make_model_lmer("interaction")
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

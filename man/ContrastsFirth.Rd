@@ -10,6 +10,7 @@ An R6 class generator.
 Estimate contrasts using Wald Test
 }
 \examples{
+\dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 modi <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
@@ -19,7 +20,7 @@ ctr$get_contrast_sides()
 ctr$get_linfct()
 ctr$get_contrasts()
 pl <- ctr$get_Plotter()
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

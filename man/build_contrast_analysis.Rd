@@ -54,6 +54,7 @@ report, usually aggregated proteins. \code{"limpa"} needs input aggregated
 with \code{\link{AggregateLimpa}}.
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- sim_lfq_data_protein_config(Nprot = 20)
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
@@ -85,6 +86,7 @@ head(fa_ropeca$get_contrasts())
 
 fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
 head(fa_firth$get_contrasts())
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

@@ -10,6 +10,7 @@ An R6 class generator.
 R6 class representing modelling result
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 
 
@@ -32,7 +33,7 @@ mod$coef_histogram()
 mod$coef_volcano()
 mod$coef_pairs()
 mod$anova_histogram()
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

@@ -17,6 +17,7 @@ compute_lmer_contrast(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 applies contrast computation using lmerTest::contest function
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 mb <- sim_make_model_lmer("interaction")
 summary(mb)
@@ -28,7 +29,7 @@ compute_lmer_contrast(mb, linfct$linfct_interactions)
 length(lme4::fixef(mb))
 lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
 summary(mb)
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

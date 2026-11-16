@@ -262,7 +262,7 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm")) {
     group_by(across(all_of(hkeysd))) |>
     nest()
 
-  pb <- progress::progress_bar$new(total = nrow(xnested))
+  pb <- .make_progress(nrow(xnested))
   res <- purrr::map(xnested$data, function(d) {
     pb$tick()
     .reestablish_condition(d, estimate(d), sname, fkeys, fname, iso)
@@ -323,7 +323,7 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
   aes_y <- lfqdata_agg$response()
   quant_aes <- aes(x = .data[[sample_name]], y = .data[[aes_y]], group = 1)
 
-  pb <- progress::progress_bar$new(total = nrow(xnested_all))
+  pb <- .make_progress(nrow(xnested_all))
   for (i in seq_len(nrow(xnested_all))) {
     p1 <- plot_hierarchies_line(
       xnested_all$data[[i]],

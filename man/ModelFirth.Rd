@@ -10,6 +10,7 @@ An R6 class generator.
 R6 class representing modelling result
 }
 \examples{
+\dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
@@ -24,6 +25,7 @@ mod$coef_pairs()
 mod$get_anova()
 mod$coef_volcano()
 mod$anova_histogram()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

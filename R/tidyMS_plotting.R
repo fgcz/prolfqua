@@ -228,11 +228,16 @@ plot_intensity_distribution_density <- function(
   legend = NA,
   max_legend_samples = 16
 ) {
-  density_data <- plotly::highlight_key(
-    pdata,
-    key = as.character(pdata[[sample_name]]),
-    group = paste("prolfqua_density", sample_name, sep = "_")
-  )
+  # with plotly, ggplotly() of this plot links the sample curves; without it the plot is static
+  density_data <- if (.has_package("plotly")) {
+    plotly::highlight_key(
+      pdata,
+      key = as.character(pdata[[sample_name]]),
+      group = paste("prolfqua_density", sample_name, sep = "_")
+    )
+  } else {
+    pdata
+  }
   p <- ggplot(
     density_data,
     aes(
@@ -347,14 +352,14 @@ plot_hierarchies_boxplot <- function(
     } else {
       shape_values <- 16
     }
+    point_aes <- aes(size = .data[["size"]], shape = .data[[nr_children_col]])
+    points <- if (.has_package("ggbeeswarm")) {
+      ggbeeswarm::geom_quasirandom(point_aes, dodge.width = 0.7)
+    } else {
+      geom_point(point_aes, position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.7))
+    }
     p <- p +
-      ggbeeswarm::geom_quasirandom(
-        aes(
-          size = .data[["size"]],
-          shape = .data[[nr_children_col]]
-        ),
-        dodge.width = 0.7
-      ) +
+      points +
       scale_shape_manual(values = shape_values) +
       scale_size_continuous(range = range(pdata$size, na.rm = TRUE))
   }
@@ -407,7 +412,7 @@ plot_hierarchies_boxplot_df <- function(
   newcol <- paste(hierarchy, collapse = "+")
   xnested <- xnested |> tidyr::unite(!!sym(newcol), all_of(hierarchy))
 
-  pb <- progress::progress_bar$new(total = nrow(xnested))
+  pb <- .make_progress(nrow(xnested))
 
   figs <- xnested |>
     dplyr::mutate(
@@ -438,7 +443,7 @@ plot_hierarchies_boxplot_df <- function(
 #' @export
 #' @keywords internal
 #' @family plotting
-#' @examples
+#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
 #'
 #' istar <- sim_lfq_data_protein_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
@@ -460,6 +465,7 @@ plot_heatmap_cor <- function(
   max_sample_label_chars = 20,
   ...
 ) {
+  rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
   cres <- cor(matrix, use = "pa")
   if (R2) {
     cres <- cres^2
@@ -499,7 +505,7 @@ plot_heatmap_cor <- function(
 #' @export
 #' @keywords internal
 #' @family plotting
-#' @examples
+#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
 #'
 #' istar <- sim_lfq_data_protein_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
@@ -518,6 +524,7 @@ plot_heatmap <- function(
   max_sample_label_chars = 20,
   ...
 ) {
+  rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
   if (nrow(matrix) == 0) {
     warning("The dataset has :", nrow(matrix), "")
     return(NULL)
@@ -565,7 +572,7 @@ plot_heatmap <- function(
 #'
 #' @family plotting
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
 #'
 #' istar <- sim_lfq_data_protein_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
@@ -587,6 +594,7 @@ plot_raster <- function(
   max_sample_label_chars = 20,
   ...
 ) {
+  rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
   if (nrow(matrix) <= 1) {
     warning("The dataset has :", nrow(matrix), "")
     return(NULL)
@@ -626,7 +634,7 @@ plot_raster <- function(
 #' @export
 #' @keywords internal
 #' @family plotting
-#' @examples
+#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
@@ -635,6 +643,7 @@ plot_raster <- function(
 #' stopifnot(methods::is(tmp, "Heatmap"))
 #'
 plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitrows = 10000, distance = "binary") {
+  rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
   if (!all(annotation[[sample_name]] %in% colnames(matrix))) {
     abort_bad_argument("annotation", "name only samples that are columns of `matrix`")
   }

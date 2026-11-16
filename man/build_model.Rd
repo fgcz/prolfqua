@@ -32,6 +32,7 @@ a object of class \code{\link{Model}}
 Build protein models from data
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
 D$data$abundance |> is.na() |> sum()
 D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
@@ -55,7 +56,7 @@ mod <- prolfqua::build_model(
  model_name = model_name)
 model_summary(mod)
 
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link{model_analyse}}, \code{\link{strategy_lmer}} \code{\link{strategy_lm}}

@@ -41,7 +41,7 @@
 #'   \code{\link{lookup_facade}}.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' istar <- sim_lfq_data_protein_config(Nprot = 20)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")

@@ -135,7 +135,7 @@ LFQDataStats <- R6::R6Class(
         self$statsdf,
         id_cols = self$lfq$hierarchy_keys(),
         names_from = self$lfq$relevant_factor_keys(),
-        values_from = tidyselect::any_of(
+        values_from = dplyr::any_of(
           c("nrReplicates", "nrMeasured", "sd", "var", "meanAbundance", "medianAbundance", "CV")
         )
       )

@@ -1,6 +1,8 @@
 # Test ContrastsPlotter R6 class
 
 test_that("ContrastsPlotter produces correct plot types", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   muffle_warnings_matching(single_peptide_warning, expr = {
     istar <- sim_lfq_data_peptide_config(Nprot = 20)
     config <- istar$config
@@ -78,6 +80,7 @@ test_that("ContrastsPlotter produces correct plot types", {
 })
 
 test_that("volcano score names can differ from score columns", {
+  skip_if_not_installed("plotly")
   contrast_df <- data.frame(
     protein_Id = c("P1", "P2", "P3"),
     contrast = "A_vs_B",
@@ -133,6 +136,8 @@ test_that("estimate types use stable colours across contrast plots", {
 })
 
 test_that("volcano_plotly shares the crosstalk group with linked tables", {
+  skip_if_not_installed("plotly")
+  skip_if_not_installed("crosstalk")
   # Regression: the DT results table uses crosstalk::SharedData group "BB" so
   # brushing the volcano highlights table rows (and vice versa). The plotly
   # volcano must publish into the same group, keyed on the united subject_id.

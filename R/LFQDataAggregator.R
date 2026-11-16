@@ -73,9 +73,11 @@ AggregatorBase <- R6::R6Class(
     #' @return file path
     write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
       pl <- self$plot(subset)
-      pb <- progress::progress_bar$new(total = nrow(pl))
+      pb <- .make_progress(nrow(pl))
       filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
-      withr::local_pdf(filepath, width = width, height = height)
+      grDevices::pdf(filepath, width = width, height = height)
+      pdf_dev <- grDevices::dev.cur()
+      on.exit(.dev_close(pdf_dev), add = TRUE)
       for (i in seq_len(nrow(pl))) {
         .render_plot_to_device(pl$plots[[i]])
         pb$tick()
@@ -197,7 +199,7 @@ AggregateRlm <- R6::R6Class(
 #' @export
 #' @family LFQData
 #'
-#' @examples
+#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #' data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 #' lfqdata <- LFQData$new(data, istar$config)

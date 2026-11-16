@@ -85,7 +85,9 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
   file_name <- paste0("hist_LRT_", model_name, "_", model_name_int, ".pdf")
   file_name <- file.path(path, file_name)
   inform_prolfqua("writing figure: ", file_name)
-  withr::local_pdf(file_name)
+  grDevices::pdf(file_name)
+  pdf_dev <- grDevices::dev.cur()
+  on.exit(.dev_close(pdf_dev), add = TRUE)
   par(mfrow = c(2, 1))
   hist(result$likelihood_ratio_test.pValue, breaks = 20)
   plot(ecdf(result$likelihood_ratio_test.pValue))
@@ -106,7 +108,7 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 #' @seealso \code{\link{model_analyse}}, \code{\link{strategy_lmer}} \code{\link{strategy_lm}}
 #'
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
 #' D$data$abundance |> is.na() |> sum()
 #' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
@@ -393,7 +395,7 @@ impute_from_model <- function(model, lfqdata) {
 #' @keywords internal
 #' @family modelling
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
 #' formula_rp <- strategy_lmer("abundance ~ group_ + (1 | peptide_Id) + (1 | sampleName)")
 #' mod <- prolfqua::build_model(
@@ -803,7 +805,7 @@ impute_refit_singular <- function(
 #' @keywords internal
 #' @family modelling
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' x <- sim_build_models_lmer(model = "factors", Nprot = 10)
 #' cfits <- get_complete_model_fit(x$model_df)
 #' stopifnot(nrow(cfits) == 6)
@@ -829,7 +831,7 @@ get_complete_model_fit <- function(complete_models) {
 #' @export
 #' @family modelling
 #' @keywords internal
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #'
 #' x <- sim_lfq_data_peptide_config()
 #' formula_randomPeptide <-

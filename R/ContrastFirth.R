@@ -13,7 +13,7 @@
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #'
 #' modi <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #' contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")

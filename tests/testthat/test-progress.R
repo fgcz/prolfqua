@@ -34,6 +34,7 @@ test_that(".make_progress yields a safe no-op reporter for empty loops", {
 })
 
 test_that(".make_progress (NULL reporter) returns the legacy progress_bar", {
+  skip_if_not_installed("progress")
   pb <- prolfqua:::.make_progress(3, reporter = NULL)
   expect_s3_class(pb, "progress_bar")
 })
@@ -86,6 +87,7 @@ test_that("prolfqua.progress callback fires through build_contrast_analysis (lm)
 })
 
 test_that("firth pass labels appear in progress output (firth)", {
+  skip_if_not_installed("logistf")
   istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, with_missing = TRUE, weight_missing = 0.5, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   rec <- make_recorder()
@@ -117,4 +119,10 @@ test_that("setting prolfqua.progress does not change get_contrasts() results", {
   )$get_contrasts()
 
   expect_equal(res_default, res_opt)
+})
+
+test_that(".make_progress falls back to a no-op reporter without the progress package", {
+  local_mocked_bindings(.has_package = function(pkg) FALSE)
+  pb <- .make_progress(3)
+  expect_silent(pb$tick())
 })

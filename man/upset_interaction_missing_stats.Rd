@@ -18,11 +18,13 @@ The computed result.
 UpSetR plot from interaction_missing_stats
 }
 \examples{
+\dontshow{if (requireNamespace("UpSetR", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
 pups <- upset_interaction_missing_stats(lfq)
 stopifnot(ncol(pups$data) == 5)
 UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other plotting:

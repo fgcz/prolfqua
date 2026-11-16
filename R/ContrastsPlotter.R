@@ -5,7 +5,7 @@
 #' @export
 #' @family modelling
 #' @family plotting
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #'
 #' istar <- sim_lfq_data_peptide_config(Nprot = 20)
 #' model_name <- "Model"
@@ -197,6 +197,7 @@ ContrastsPlotter <- R6::R6Class(
       scales = c("fixed", "free", "free_x", "free_y"),
       min_score = NULL
     ) {
+      rlang::check_installed("plotly", reason = "for interactive plots.")
       private$.volcano(colour, legend, match.arg(scales), plotly = TRUE, min_score = min_score)
     },
     #' @description
@@ -227,6 +228,7 @@ ContrastsPlotter <- R6::R6Class(
     #' @param rank default FALSE, if TRUE then rank of avgAbd is used.
     #' @return list of ggplots
     ma_plotly = function(fc = self$fcthresh, colour = self$model_name, legend = TRUE, rank = FALSE) {
+      rlang::check_installed("plotly", reason = "for interactive plots.")
       fig <- private$.ma_fig(private$.contrast_df, fc, colour, legend, rank, plotly_mode = TRUE)
       if (!is.null(fig)) {
         fig <- fig |> plotly::ggplotly(tooltip = "subject_id")

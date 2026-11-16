@@ -6,7 +6,7 @@
 \alias{prolfqua-package}
 \title{prolfqua: Proteomics Label Free Quantification}
 \description{
-prolfqua covers the steps of a mass spectrometry based label-free quantification (LFQ) analysis: quality control, normalization, aggregation of peptides to proteins, modelling, hypothesis testing and sample size estimation. A single function, build_contrast_analysis(), fits a model per protein and computes contrasts with one of many methods: linear, robust and rank-based regression, limma and limma-voom, DEqMS variance moderation, limpa's detection probability model, Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection. All methods return their results through the same interface and columns, so they can be compared and combined. prolfqua models simple designs with one explanatory variable as well as experiments with several factors, and was developed while analysing dozens of proteomics datasets at the Functional Genomics Center Zurich.
+Covers the steps of a mass spectrometry based label-free quantification (LFQ) analysis: quality control, normalization, aggregation of peptides to proteins, modelling, hypothesis testing and sample size estimation. A single function, build_contrast_analysis(), fits a model per protein and computes contrasts with one of many methods: linear, robust and rank-based regression, 'limma' and 'limma'-voom, 'DEqMS' variance moderation, the detection probability model of 'limpa', Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection. All methods return their results through the same interface and columns, so they can be compared and combined. Models simple designs with one explanatory variable as well as experiments with several factors. Developed while analysing dozens of proteomics datasets at the Functional Genomics Center Zurich.
 }
 \section{Options}{
 
@@ -42,7 +42,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Functional Genomics Center Zurich [funder]
+  \item Functional Genomics Center Zurich (\href{https://ror.org/04tgr1802}{ROR}) [funder]
 }
 
 }

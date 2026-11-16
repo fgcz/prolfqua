@@ -200,14 +200,7 @@ export(volcano_plotly)
 export(which_missing)
 import(dplyr)
 import(ggplot2)
-importFrom(ComplexHeatmap,
-  Heatmap,
-  HeatmapAnnotation,
-  draw
-)
 importFrom(MASS,rlm)
-importFrom(UpSetR,upset)
-importFrom(circlize,colorRamp2)
 importFrom(dplyr,
   across,
   all_of,
@@ -231,7 +224,6 @@ importFrom(dplyr,
   summarize,
   ungroup
 )
-importFrom(forcats,fct_relevel)
 importFrom(ggplot2,
   aes,
   element_text,
@@ -270,9 +262,7 @@ importFrom(limma,
   lmFit,
   topTable
 )
-importFrom(logistf,logistf)
 importFrom(methods,new)
-importFrom(plotly,ggplotly)
 importFrom(purrr,
   map,
   map2,

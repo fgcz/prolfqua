@@ -13,10 +13,12 @@ upset_missing_stats(lfqdata)
 prepare dataframe for UpSetR plot for all samples
 }
 \examples{
+\dontshow{if (requireNamespace("UpSetR", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
 pups <- upset_missing_stats(lfq)
 UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other plotting:

@@ -50,6 +50,7 @@ Convenience wrapper that creates a \code{\link{StrategyLM}} object.
 Convenience wrapper that creates a \code{\link{StrategyRLM}} object.
 }
 \examples{
+\dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 
@@ -68,6 +69,7 @@ modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",
   model_name = "random_example")
 modelFunction$model_fun(nestProtein$data[[1]])
 modelFunction$model_fun(nestProtein$data[[4]])
+\dontshow{\}) # examplesIf}
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",

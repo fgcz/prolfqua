@@ -12,6 +12,7 @@ LFQDataPlotter ----
 Create various visualization of the LFQdata
 }
 \examples{
+\dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 istar <- sim_lfq_data_peptide_config()
 
@@ -38,7 +39,7 @@ stopifnot("upset" == class(lfqplotter$upset_missing()))
 wide <- lfqdata$data_wide(as.matrix = TRUE)
 stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link{plot_heatmap_cor}}

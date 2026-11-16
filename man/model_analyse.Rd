@@ -26,6 +26,7 @@ Defaults to `getOption("prolfqua.progress", NULL)`.}
 used in project p2901
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 x <- sim_lfq_data_peptide_config()
 formula_randomPeptide <-
@@ -34,7 +35,7 @@ mr <- model_analyse( x$data,
  formula_randomPeptide,
  subject_id = x$config$hierarchy_keys_depth())
 stopifnot(nrow(get_complete_model_fit(mr$model_df)) == 6)
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

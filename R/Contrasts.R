@@ -80,7 +80,7 @@
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #'
 #' # Fitting mixed effects model to peptide data
 #' istar <- prolfqua::sim_lfq_data_peptide_config()

@@ -181,6 +181,8 @@ test_that("build_model fits that cannot predict the missing cells get route none
 })
 
 test_that("a model without lm fits is an error", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   lfq <- make_complete_lfqdata(paired = TRUE)
   mod <- build_model(lfq, strategy_lmer("abundance ~ group_ + (1 | subject_)"))
 

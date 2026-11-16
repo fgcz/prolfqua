@@ -5,6 +5,39 @@
   as.character(e)
 }
 
+# Whether an optional (Suggests) package is installed; a function so tests can mock it.
+.has_package <- function(pkg) {
+  requireNamespace(pkg, quietly = TRUE)
+}
+
+# Evaluate code with a fixed seed and restore the caller's random number state
+# afterwards, as withr::with_seed() does with the default RNG kinds.
+.with_seed <- function(seed, code) {
+  force(seed)
+  old_seed <- get0(".Random.seed", envir = globalenv(), mode = "integer", inherits = FALSE)
+  on.exit(
+    if (is.null(old_seed)) {
+      rm(".Random.seed", envir = globalenv())
+    } else {
+      assign(".Random.seed", old_seed, envir = globalenv())
+    },
+    add = TRUE
+  )
+  set.seed(seed)
+  code
+}
+
+# Close graphics device `which` and make the previously active device current
+# again, as withr::local_pdf() does when its frame exits.
+.dev_close <- function(which) {
+  prev <- grDevices::dev.prev(which)
+  grDevices::dev.off(which)
+  if (prev != which) {
+    grDevices::dev.set(prev)
+  }
+  invisible(prev)
+}
+
 # Internal helper for rendering ggplot/ComplexHeatmap objects to an open graphics device.
 .render_plot_to_device <- function(x) {
   if (methods::is(x, "Heatmap") || methods::is(x, "HeatmapList")) {
@@ -434,7 +467,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 #' @param group crosstalk group name for linked brushing
 #' @return The requested plot, table, or transformed object.
 #' @export
-#' @examples
+#' @examplesIf requireNamespace("plotly", quietly = TRUE) && requireNamespace("crosstalk", quietly = TRUE)
 #'
 #' data <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
 #' condition = rep("A",5), Prey = LETTERS[1:5], modelName = c("A","A","B","A","A"))
@@ -459,6 +492,7 @@ volcano_plotly <- function(
   title_size = 25,
   group = "BB"
 ) {
+  rlang::check_installed(c("plotly", "crosstalk"), reason = "for volcano_plotly().")
   .data[[significance]] <- .floor_significance_values(.data[[significance]], minsignificance)
 
   xx <- .data |>
@@ -532,7 +566,7 @@ make_interaction_column <- function(data, columns, sep = ".") {
     paste0(x, levels(y))
   })
   intr <- purrr::map2_dfc(columns, intr, paste0)
-  intr <- purrr::map2_dfc(intr, newlev, forcats::fct_relevel)
+  intr <- purrr::map2_dfc(intr, newlev, function(x, lev) factor(x, levels = lev))
 
   colnames(intr) <- paste0("interaction_", columns)
   colname <- "interaction"

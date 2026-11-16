@@ -53,6 +53,7 @@ The requested plot, table, or transformed object.
 volcano plotly
 }
 \examples{
+\dontshow{if (requireNamespace("plotly", quietly = TRUE) && requireNamespace("crosstalk", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 data <- data.frame(fc = c(-1,0,1,2,8), BFDR = c(0.01,1, 0.01, 0.005,0),
 condition = rep("A",5), Prey = LETTERS[1:5], modelName = c("A","A","B","A","A"))
@@ -62,5 +63,5 @@ condition = rep("B",5), Prey = LETTERS[1:5],modelName = c("A","A","B","B","B"))
 data <- dplyr::bind_rows(data, dataB)
 bc <- volcano_plotly(data, xintercept = 1, yintercept= 0.01, palette = c(A = "black" , B = "red"))
 bc |> plotly::subplot()
-
+\dontshow{\}) # examplesIf}
 }

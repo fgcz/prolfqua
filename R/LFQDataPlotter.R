@@ -33,8 +33,7 @@
 #'
 #' @family LFQData
 #' @import dplyr
-#' @importFrom UpSetR upset
-#' @examples
+#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #'
@@ -213,6 +212,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param PC default c(1,2) - first and second principal component
     #' @return plotly
     pca_plotly = function(PC = c(1, 2), add_txt = FALSE) {
+      rlang::check_installed("plotly", reason = "for interactive plots.")
       fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$sample_name())
       return(fig)
     },
@@ -307,6 +307,7 @@ LFQDataPlotter <- R6::R6Class(
     #' upset plot based on presence absence information
     #' @return plot
     upset_missing = function() {
+      rlang::check_installed("UpSetR", reason = "for UpSet plots.")
       pups <- prolfqua::upset_missing_stats(self$lfq)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
       return(res)
@@ -326,9 +327,11 @@ LFQDataPlotter <- R6::R6Class(
       bb <- self$boxplots()
 
       inform_prolfqua("writing ", fpath)
-      pb <- progress::progress_bar$new(total = length(bb$boxplot))
+      pb <- .make_progress(length(bb$boxplot))
 
-      withr::local_pdf(fpath, width = width, height = height)
+      grDevices::pdf(fpath, width = width, height = height)
+      pdf_dev <- grDevices::dev.cur()
+      on.exit(.dev_close(pdf_dev), add = TRUE)
       for (x in bb$boxplot) {
         pb$tick()
         .render_plot_to_device(x)
@@ -346,7 +349,9 @@ LFQDataPlotter <- R6::R6Class(
     write_pdf = function(fig, path_qc, fig_name, width = 7, height = 7) {
       fpath <- file.path(path_qc, paste0(self$prefix, fig_name, ".pdf"))
       inform_prolfqua("writing ", fpath)
-      withr::local_pdf(fpath, width = width, height = height)
+      grDevices::pdf(fpath, width = width, height = height)
+      pdf_dev <- grDevices::dev.cur()
+      on.exit(.dev_close(pdf_dev), add = TRUE)
       .render_plot_to_device(fig)
       invisible(fpath)
     }

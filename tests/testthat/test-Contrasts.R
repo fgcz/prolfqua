@@ -1,6 +1,8 @@
 # Test Contrasts R6 classes
 
 test_that("Contrasts (Wald test)", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   muffle_warnings_matching(single_peptide_warning, expr = {
     istar <- sim_lfq_data_peptide_config(Nprot = 20)
     config <- istar$config
@@ -230,6 +232,7 @@ test_that("merge_contrasts_results labels rows when both inputs share a model na
 })
 
 test_that("ContrastsFirth and ContrastsFirthFacade", {
+  skip_if_not_installed("logistf")
   istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -256,6 +259,7 @@ test_that("ContrastsFirth and ContrastsFirthFacade", {
 })
 
 test_that("ContrastsFirth$get_linfct does not mutate the shared model", {
+  skip_if_not_installed("logistf")
   istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -276,6 +280,7 @@ test_that("ContrastsFirth$get_linfct does not mutate the shared model", {
 })
 
 test_that("ContrastsFirth drops failed logistf fits before contrasts", {
+  skip_if_not_installed("logistf")
   istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -296,6 +301,8 @@ test_that("ContrastsFirth drops failed logistf fits before contrasts", {
 })
 
 test_that("compute_lmer_contrast reports an empty contrast matrix instead of failing", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   # A protein whose model carries none of the requested contrast coefficients
   # leaves `linfct_matrix_contrasts()` with a 0-row matrix. lmerTest::contest()
   # indexes 1:nrow(L) and used to abort the whole run on it.

@@ -14,12 +14,14 @@ Requires aggregated (protein-level) LFQData. For nested peptide-level
 input use \code{\link{ContrastsBinomialFirthNestedFacade}}.
 }
 \examples{
+\dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5)
 lfqdata <- LFQData$new(istar$data, istar$config)
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsFirthFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
 fa$to_wide()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

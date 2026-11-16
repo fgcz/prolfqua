@@ -80,7 +80,7 @@ sim_lfq_data <- function(
 
   # transform into long format
   peptide_df2 <- peptide_df |>
-    tidyr::pivot_longer(cols = tidyselect::starts_with(c("mean", "N_")), names_to = "group", values_to = "mean")
+    tidyr::pivot_longer(cols = dplyr::starts_with(c("mean", "N_")), names_to = "group", values_to = "mean")
   peptide_df2 <- peptide_df2 |> tidyr::separate_wider_delim(group, delim = "_", names = c("what", "group"))
   peptide_df2 <- peptide_df2 |> tidyr::pivot_wider(names_from = "what", values_from = mean)
 
@@ -102,7 +102,7 @@ sim_lfq_data <- function(
 
   peptide_abundances <- x |>
     tidyr::pivot_longer(
-      tidyselect::starts_with("V"),
+      dplyr::starts_with("V"),
       names_to = "Replicate",
       values_to = "abundance"
     )
@@ -135,7 +135,7 @@ which_missing <- function(x, weight_missing = 0.2) {
 
 # Evaluates code with a fixed seed, or with the current RNG state when seed is NULL.
 .with_sim_seed <- function(seed, code) {
-  if (is.null(seed)) code else withr::with_seed(seed, code)
+  if (is.null(seed)) code else .with_seed(seed, code)
 }
 
 # Shared tail of the sim_lfq_data_*_config() simulators: configuration of the simulated columns and setup_analysis().
@@ -350,7 +350,7 @@ sim_build_models_lm <- function(
 #' @family modelling
 #' @export
 #' @keywords internal
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
 #' stopifnot(sum(modi$model_df$has_model_fit) == 6)
 #' mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
@@ -374,7 +374,7 @@ sim_build_models_lmer <- function(
 #' @family modelling
 #' @export
 #' @keywords internal
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' m <- sim_make_model_lm()
 #' mi <- sim_make_model_lm("interaction")
 #' stopifnot(length(coefficients(summary(mi))[,"Estimate"]) == 4)
@@ -390,7 +390,7 @@ sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "in
 #' @family modelling
 #' @export
 #' @keywords internal
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' mf <- sim_make_model_lmer("factors")
 #' mi <- sim_make_model_lmer("interaction")
 #'

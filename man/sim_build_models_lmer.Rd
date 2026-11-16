@@ -15,6 +15,7 @@ sim_build_models_lmer(
 build lmer model from simulated data
 }
 \examples{
+\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
 stopifnot(sum(modi$model_df$has_model_fit) == 6)
 mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
@@ -23,7 +24,7 @@ mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
 stopifnot(sum(mod4$model_df$has_model_fit) == 6)
 modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
 stopifnot(sum(modf$model_df$has_model_fit) == 6)
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

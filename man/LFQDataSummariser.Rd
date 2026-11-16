@@ -10,6 +10,7 @@ An R6 class generator.
 Summarize LFQData
 }
 \examples{
+\dontshow{if (requireNamespace("UpSetR", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- prolfqua::sim_lfq_data_peptide_config()
 
 data <- istar$data
@@ -29,6 +30,7 @@ sum$plot_missingness_per_group()
 sum$plot_missingness_per_group_cumsum()
 sum$upset_interaction_missing_stats()
 sum$percentage_abundance()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other LFQData:
