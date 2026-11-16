@@ -1,5 +1,24 @@
 hurdle_components_fixture <- function() {
   istar <- sim_lfq_data_peptide_config(Nprot = 60, weight_missing = 0.6, seed = 7)
+  # Keep complete proteins for the intensity-only test, and make three partially
+  # detected proteins absent from A regardless of the simulator's random draw.
+  candidates <- istar$data |>
+    dplyr::group_by(.data$protein_Id, .data$group_, .data$sampleName) |>
+    dplyr::summarise(detected = any(!is.na(.data$abundance)), .groups = "drop") |>
+    dplyr::group_by(.data$protein_Id) |>
+    dplyr::summarise(
+      observed_controls = all(.data$detected[.data$group_ %in% c("Ctrl", "B")]),
+      .groups = "drop"
+    )
+  partially_detected <- istar$data |>
+    dplyr::group_by(.data$protein_Id) |>
+    dplyr::summarise(missing = anyNA(.data$abundance), .groups = "drop")
+  absent_A <- dplyr::inner_join(candidates, partially_detected, by = "protein_Id") |>
+    dplyr::filter(.data$observed_controls, .data$missing) |>
+    dplyr::slice_head(n = 3) |>
+    dplyr::pull("protein_Id")
+  stopifnot(length(absent_A) == 3L)
+  istar$data <- istar$data[!(istar$data$protein_Id %in% absent_A & istar$data$group_ == "A"), ]
   lfq_peptide <- LFQData$new(istar$data, istar$config)$get_Transformer()$log2()$lfq
   lfq_protein <- suppressWarnings(lfq_peptide$get_Aggregator()$aggregate())
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
@@ -8,6 +27,7 @@ hurdle_components_fixture <- function() {
   }
   list(
     lfq_peptide = lfq_peptide,
+    absent_A = absent_A,
     contrasts = contrasts,
     lm = fit(lfq_protein, "lm"),
     lm_impute = fit(lfq_protein, "lm_impute"),
@@ -42,7 +62,7 @@ test_that("proteins absent from lm become detection-only rows", {
   res <- new_hurdle(fx$lm, fx$binomial_firth_nested)$get_contrasts()
   lm_rows <- fx$lm$get_contrasts()
   absent <- dplyr::anti_join(res, lm_rows, by = c("protein_Id", "contrast"))
-  expect_true(nrow(absent) > 0)
+  expect_true(all(fx$absent_A %in% absent$protein_Id[absent$contrast == "A_vs_Ctrl"]))
   expect_equal(nrow(res), nrow(fx$binomial_firth_nested$get_contrasts()))
   expect_true(all(absent$hurdle_components == "detection"))
   expect_equal(absent$df.hurdle, rep(2, nrow(absent)))
