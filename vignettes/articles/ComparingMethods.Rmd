@@ -30,6 +30,7 @@ backends:
 - `limpa` — vooma precision-weighted model on DPC-aggregated proteins (requires `AggregateLimpa` for DPC-based aggregation with standard errors).
 - `lmer` — linear mixed-effects model on nested peptide/precursor data, reporting protein-level contrasts.
 - `ropeca` — peptide-level fold changes aggregated to protein via ROPECA median + beta-distribution p-values.
+- `ropecaV2` — ROPECA's median peptide fold change, with a p-value from the exact null distribution of the median peptide z-score that allows for the correlation of the peptides of a protein.
 - `lm_impute` — `lm` that refits failed/singular proteins with LOD imputation and borrowed variance.
 - `deqms` — `limma` plus DEqMS count-dependent variance moderation using peptide counts per protein.
 - `firth` — Firth bias-reduced logistic regression on presence/absence (missingness) of aggregated proteins.
@@ -41,7 +42,7 @@ contrasts. The important difference is the required input level:
 
 - `lm`, `rfit`, `limma`, `limma_impute`, `lm_impute`, and `deqms` require aggregated protein-level data
 - `limpa` requires protein-level data from `AggregateLimpa` (which provides standard errors and observation counts for vooma precision weighting)
-- `lmer` and `ropeca` require lower-level measurements such as peptides nested
+- `lmer`, `ropeca` and `ropecaV2` require lower-level measurements such as peptides nested
   within proteins, but still report protein-level contrasts
 - `firth` can be used with either aggregated protein-level data or nested
   peptide-level data and still reports protein-level contrasts
@@ -345,7 +346,7 @@ if (length(lm_missing_proteins) > 0) {
 The peptide-input facades take peptide/precursor-level `LFQData` and return
 protein-level contrasts. They are defined in `R/ContrastsChildToParentFacades.R`
 and use the `*_nested` method keys: `lmer_nested`, `ropeca_nested`,
-`binomial_firth_nested`, and `limpa_nested`. `binomial_firth_nested` models
+`ropecaV2_nested`, `binomial_firth_nested`, and `limpa_nested`. `binomial_firth_nested` models
 peptide detection, like the protein-input `firth` shown above, from the number
 of detected peptides per protein and sample.
 
@@ -364,6 +365,13 @@ fa_ropeca <- build_contrast_analysis(
   method = "ropeca_nested"
 )
 
+fa_ropecaV2 <- build_contrast_analysis(
+  lfq_peptide,
+  "~ group_",
+  contrasts,
+  method = "ropecaV2_nested"
+)
+
 fa_binomial_firth <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
@@ -372,8 +380,11 @@ fa_binomial_firth <- build_contrast_analysis(
 )
 ```
 
-`ropeca_nested` aggregates peptide evidence back to proteins, whereas
-`lmer_nested` models the nested peptide structure directly before reporting
+`ropeca_nested` and `ropecaV2_nested` aggregate peptide evidence back to
+proteins; `ropecaV2_nested` estimates the correlation of the peptides of a
+protein from the residuals, here `r round(fa_ropecaV2$contrast$rho, 2)`, so
+that proteins with many peptides are not reported as more significant. In
+contrast, `lmer_nested` models the nested peptide structure directly before reporting
 protein-level contrasts. `binomial_firth_nested` also reports protein-level
 contrasts; its degrees of freedom come from the samples, not from the number of
 peptides.
@@ -382,6 +393,7 @@ peptides.
 results_peptide <- bind_rows(
   fa_lmer$get_contrasts(),
   fa_ropeca$get_contrasts(),
+  fa_ropecaV2$get_contrasts(),
   fa_binomial_firth$get_contrasts()
 ) |>
   dplyr::select(dplyr::any_of(c(

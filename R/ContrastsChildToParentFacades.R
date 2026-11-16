@@ -173,6 +173,84 @@ ContrastsROPECANestedFacade <- R6::R6Class(
 )
 
 
+#' ROPECA V2 contrast analysis facade for nested input
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
+#' \code{\link{build_model}} -> \code{\link{Contrasts}} ->
+#' \code{\link{ContrastsModerated}} -> \code{\link{ContrastsROPECAV2}}.
+#'
+#' Like \code{\link{ContrastsROPECANestedFacade}}, it fits one linear model per
+#' peptide and reports the median peptide fold change per protein. The protein
+#' p-value tests the median of the moderated peptide z-scores against its exact
+#' null distribution, allowing for the correlation of the peptides of a protein,
+#' which is estimated once from the peptide model residuals. Input must be nested
+#' LFQData (peptide subject_id strictly below the protein hierarchy).
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_peptide_config()
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsROPECAV2NestedFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$contrast$rho
+#' fa$to_wide()
+#' @return An R6 class generator.
+ContrastsROPECAV2NestedFacade <- R6::R6Class(
+  "ContrastsROPECAV2NestedFacade",
+  inherit = ContrastsFacadeBase,
+  public = list(
+    #' @description
+    #' initialize
+    #' @param lfqdata nested LFQData (peptide-level)
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param ... passed to \code{\link{strategy_lm}}
+    initialize = function(lfqdata, modelstr, contrasts, ...) {
+      full_formula <- private$.setup(lfqdata, contrasts, "ropecaV2_nested", modelstr)
+      strat <- strategy_lm(full_formula, ...)
+      subject_id <- lfqdata$hierarchy_keys()
+      self$model <- build_model(lfqdata, strat, subject_id = subject_id)
+      rho <- .ropeca_v2_rho(self$model$model_df, subject_id, lfqdata$sample_name())
+      peptide_contrasts <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$contrast <- ContrastsROPECAV2$new(peptide_contrasts, rho = rho)
+      self$config <- self$contrast$get_config()
+      self$config$subject_id <- self$contrast$subject_id[1]
+    },
+    #' @description
+    #' Get protein-level contrasts with the standard columns.
+    #' @param all \code{FALSE} (default) returns the standard columns;
+    #'   \code{TRUE} appends \code{n_peptides}, \code{median_z} and \code{rho}
+    get_contrasts = function(all = FALSE) {
+      .stamp_facade_identity(self$contrast$get_contrasts(all = all), "ropecaV2_nested")
+    },
+    #' @description get ContrastsPlotter (uses standardized column names)
+    #' @param fc_threshold fold change threshold
+    #' @param fdr_threshold FDR threshold
+    get_Plotter = function(fc_threshold = 2, fdr_threshold = 0.1) {
+      ContrastsPlotter$new(
+        self$get_contrasts(),
+        subject_id = self$contrast$subject_id[1],
+        fcthresh = fc_threshold,
+        volcano = list(list(score = "FDR", thresh = fdr_threshold))
+      )
+    },
+    #' @description convert results to wide format
+    #' @param columns value columns to pivot, default \code{c("p.value", "FDR", "statistic")}
+    to_wide = function(columns = c("p.value", "FDR", "statistic")) {
+      pivot_model_contrasts_to_wide(
+        self$get_contrasts(),
+        subject_id = self$contrast$subject_id[1],
+        columns = c("diff", columns),
+        contrast = "contrast"
+      )
+    }
+  )
+)
+
+
 #' Quasibinomial detection-count facade for nested input
 #'
 #' Completes the child-feature rows, encodes detection as 0/1, then collapses

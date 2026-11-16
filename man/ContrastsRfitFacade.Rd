@@ -53,6 +53,8 @@ Other modelling:
 \code{\link{ContrastsRLMFacade}},
 \code{\link{ContrastsROPECA}},
 \code{\link{ContrastsROPECANestedFacade}},
+\code{\link{ContrastsROPECAV2}},
+\code{\link{ContrastsROPECAV2NestedFacade}},
 \code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},

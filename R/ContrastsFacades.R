@@ -764,7 +764,8 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     hurdle_nested = list(class = "ContrastsHurdleNestedFacade", needs = "nested"),
     firth = list(class = "ContrastsFirthFacade", needs = "aggregated"),
     lmer_nested = list(class = "ContrastsLmerNestedFacade", needs = "nested"),
-    ropeca_nested = list(class = "ContrastsROPECANestedFacade", needs = "nested")
+    ropeca_nested = list(class = "ContrastsROPECANestedFacade", needs = "nested"),
+    ropecaV2_nested = list(class = "ContrastsROPECAV2NestedFacade", needs = "nested")
   )
   for (nm in names(entries)) {
     entry <- entries[[nm]]

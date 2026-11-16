@@ -27,7 +27,8 @@
 #'   \code{"deqms_voom"}, \code{"limpa"}, \code{"limpa_nested"};
 #'   limit-of-detection imputation \code{"lm_impute"}, \code{"limma_impute"},
 #'   \code{"limma_voom_impute"}, \code{"rfit_impute"};
-#'   peptide-level models \code{"lmer_nested"}, \code{"ropeca_nested"};
+#'   peptide-level models \code{"lmer_nested"}, \code{"ropeca_nested"},
+#'   \code{"ropecaV2_nested"};
 #'   detection models \code{"firth"}, \code{"binomial_nested"},
 #'   \code{"binomial_firth_nested"};
 #'   the hurdle model \code{"hurdle_nested"}, combining intensity and detection.

@@ -190,6 +190,54 @@ test_that("ContrastsROPECANestedFacade initialises and returns correct structure
   expect_false("n_not_na" %in% colnames(res))
 })
 
+# ---- ContrastsROPECAV2NestedFacade ----
+
+test_that("ropecaV2_nested is registered and returns the standard schema", {
+  entry <- prolfqua::lookup_facade("ropecaV2_nested")
+  expect_equal(entry$class, "ContrastsROPECAV2NestedFacade")
+  expect_equal(entry$needs, "nested")
+
+  lfqdata <- make_peptide_lfqdata()
+  contrasts <- c(CONTRASTS, "B_vs_Ctrl" = "group_B - group_Ctrl")
+  fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, contrasts, method = "ropecaV2_nested")
+  expect_true(inherits(fa, "ContrastsROPECAV2NestedFacade"))
+  check_facade_interface(fa)
+
+  res <- fa$get_contrasts()
+  expect_true(all(res$modelName == "ropecaV2_nested"))
+  expect_setequal(unique(res$contrast), names(contrasts))
+  standard <- c("avgAbd", "statistic", "std.error", "df", "conf.low", "conf.high", "sigma")
+  expect_true(all(standard %in% colnames(res)))
+  expect_true(all(res$p.value >= 0 & res$p.value <= 1))
+  expect_true(fa$contrast$rho >= 0 && fa$contrast$rho <= 0.95)
+  expect_false(any(c("n_peptides", "median_z", "rho") %in% colnames(res)))
+  expect_true(all(c("n_peptides", "median_z", "rho") %in% colnames(fa$get_contrasts(all = TRUE))))
+})
+
+test_that("ropecaV2_nested handles missing values and two-factor contrasts", {
+  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.8, seed = 11)
+  istar$data <- istar$data |>
+    dplyr::mutate(
+      Treatment = dplyr::if_else(.data$group_ == "B", "B", "A"),
+      Background = dplyr::if_else(grepl("_V[34]$", .data$sampleName), "Z", "X")
+    )
+  istar$config$factors <- list(Treatment = "Treatment", Background = "Background")
+  istar$config$factor_depth <- 2
+  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+  contrasts <- c(
+    "treatment" = "TreatmentB - TreatmentA",
+    "background_in_A" = "`TreatmentA:BackgroundZ` - `TreatmentA:BackgroundX`",
+    "background_in_B" = "`TreatmentB:BackgroundZ` - `TreatmentB:BackgroundX`",
+    "interaction_effect" = "background_in_B - background_in_A"
+  )
+  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ Treatment * Background", contrasts, method = "ropecaV2_nested")
+  res <- fa$get_contrasts()
+  expect_setequal(unique(res$contrast), names(contrasts))
+  expect_false(anyNA(res$diff))
+  expect_true(all(res$p.value >= 0 & res$p.value <= 1))
+})
+
 # ---- build_contrast_analysis ----
 
 test_that("build_contrast_analysis dispatches to ContrastsLMFacade for method='lm'", {

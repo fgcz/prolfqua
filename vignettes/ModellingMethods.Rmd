@@ -84,7 +84,8 @@ about <- c(
   binomial_firth_nested = "binomial_nested with Firth bias reduction",
   hurdle_nested = "lm_impute intensity + binomial_firth_nested detection",
   lmer_nested = "mixed model, peptide and sample random effects",
-  ropeca_nested = "peptide fold changes summarised per protein (ROPECA)"
+  ropeca_nested = "peptide fold changes summarised per protein (ROPECA)",
+  ropecaV2_nested = "ROPECA with an exact, correlation-aware null for the median peptide z-score"
 )
 overview <- data.frame(
   method = names(results),
