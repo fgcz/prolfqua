@@ -272,7 +272,6 @@ contrast <- ContrastsModerated$new(contrast)
 bb <- contrast$get_contrasts()
 # LOD-imputed refit for proteins the plain lm cannot estimate
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
-#> Warning: essentially perfect fit: summary may be unreliable
 
 contrast$get_contrasts() |> dim()
 #> [1] 49 16

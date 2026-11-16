@@ -214,7 +214,6 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
-#> Warning: Partial NA coefficients for 4 probe(s)
 head(fa$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName    estimate_type protein_Id  contrast     diff   FDR

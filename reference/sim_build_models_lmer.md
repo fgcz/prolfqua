@@ -107,7 +107,6 @@ Other modelling:
 
 ``` r
 modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
-#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -124,7 +123,6 @@ modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 stopifnot(sum(modi$model_df$has_model_fit) == 6)
 mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
-#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -156,7 +154,6 @@ mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
 #> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
 stopifnot(sum(mod4$model_df$has_model_fit) == 6)
 modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
-#> Warning: Unknown or uninitialised column: `nrPeptides`.
 #> creating sampleName from file_name column
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')

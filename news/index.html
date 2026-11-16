@@ -60,6 +60,10 @@
 <h3 id="behaviour-changes-1-9-4">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-4"></a></h3>
 <ul><li>prolfqua no longer prints internal progress messages such as “setup done”, “completing cases”, “contrasts_linfct”, “starting aggregation”, the model formula or the number of rows with missing values.</li>
 <li>All errors are raised with <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code> and carry class <code>prolfqua_error</code>; invalid arguments also carry <code>prolfqua_error_bad_argument</code>, so callers can catch prolfqua errors by class. Missing optional packages (<code>limpa</code>, <code>Rfit</code>) are reported with <code><a href="https://rlang.r-lib.org/reference/is_installed.html" class="external-link">rlang::check_installed()</a></code>, which offers to install them in interactive sessions.</li>
+<li>
+<code>lm_impute</code>, <code>rfit_impute</code>, <code>limma_impute</code>, <code>limma_voom_impute</code>: the limit-of-detection refit no longer warns “essentially perfect fit” or “non-finite value supplied by optim”, and the <code>limma</code> variants no longer warn “Partial NA coefficients” for the proteins they then refit. Results are unchanged. A failed per-protein fit is reported as a warning of class <code>prolfqua_fit_failed</code>.</li>
+<li>
+<code><a href="../reference/sim_lfq_data_2factor_config.html">sim_lfq_data_2factor_config()</a></code> no longer warns “Unknown or uninitialised column: <code>nrPeptides</code>”.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-9-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-4"></a></h3>

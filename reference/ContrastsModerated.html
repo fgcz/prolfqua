@@ -315,7 +315,6 @@
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># LOD-imputed refit for proteins the plain lm cannot estimate</span></span></span>
 <span class="r-in"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lProt</span>, <span class="st">"~ group_"</span>, <span class="va">Contr</span><span class="op">)</span><span class="op">$</span><span class="va">contrast</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>essentially perfect fit: summary may be unreliable</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">contrast</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 49 16</span>

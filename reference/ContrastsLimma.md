@@ -337,6 +337,5 @@ head(wide)
 # merge_contrasts_results works
 Contr2 <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr2)$contrast
-#> Warning: essentially perfect fit: summary may be unreliable
 merged_res <- merge_contrasts_results(contr_limma, imp)
 ```

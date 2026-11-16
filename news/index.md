@@ -42,6 +42,14 @@
   class. Missing optional packages (`limpa`, `Rfit`) are reported with
   [`rlang::check_installed()`](https://rlang.r-lib.org/reference/is_installed.html),
   which offers to install them in interactive sessions.
+- `lm_impute`, `rfit_impute`, `limma_impute`, `limma_voom_impute`: the
+  limit-of-detection refit no longer warns “essentially perfect fit” or
+  “non-finite value supplied by optim”, and the `limma` variants no
+  longer warn “Partial NA coefficients” for the proteins they then
+  refit. Results are unchanged. A failed per-protein fit is reported as
+  a warning of class `prolfqua_fit_failed`.
+- [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
+  no longer warns “Unknown or uninitialised column: `nrPeptides`”.
 
 ### Bug fixes
 
