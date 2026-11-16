@@ -237,7 +237,7 @@ multigroup_volcano <- function(
 #'
 matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
   if (!(is.matrix(x) || is.data.frame(x))) {
-    stop("`x` is not a matrix or data.frame object.", call. = FALSE)
+    abort_bad_argument("x", "be a matrix or data.frame")
   }
   if (!is.null(preserve_row_names)) {
     row.names <- rownames(x)

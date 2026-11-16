@@ -95,9 +95,7 @@ StrategyRfit <- R6::R6Class(
   ),
   private = list(
     prepare = function(x) {
-      if (!requireNamespace("Rfit", quietly = TRUE)) {
-        stop("Package 'Rfit' is required for the rfit backend. Install it with install.packages('Rfit').")
-      }
+      rlang::check_installed("Rfit", reason = "for the rfit backend.")
       x
     },
     # Fit rfit, augmenting the fit so the classic contrast path can introspect it.

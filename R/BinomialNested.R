@@ -1,7 +1,9 @@
 # Binomial detection model ----
 
 .summarize_detection_counts <- function(lfqdata) {
-  stopifnot("LFQData" %in% class(lfqdata))
+  if (!inherits(lfqdata, "LFQData")) {
+    abort_bad_argument("lfqdata", "be an LFQData object")
+  }
   bin_resp <- lfqdata$get_config()$bin_resp
   grouping <- unique(c(
     lfqdata$subject_id(),
@@ -19,8 +21,9 @@
     ) |>
     dplyr::mutate(undetected = .data$available - .data$detected)
 
-  stopifnot(all(counts$detected >= 0L))
-  stopifnot(all(counts$undetected >= 0L))
+  if (!isTRUE(all(counts$detected >= 0L) && all(counts$undetected >= 0L))) {
+    abort_prolfqua("internal error: negative detection counts")
+  }
   counts
 }
 
@@ -33,7 +36,7 @@
     candidate >= 0
   ))
   if (!is_valid) {
-    stop("`prior_count` must be one non-negative number.", call. = FALSE)
+    abort_bad_argument("prior_count", "be one non-negative number")
   }
   prior_count
 }
@@ -85,10 +88,10 @@ StrategyBinomial <- R6::R6Class(
     fit = function(x) {
       model <- stats::glm(self$formula, data = x, family = stats::quasibinomial())
       if (anyNA(stats::coef(model)) || model$rank < length(stats::coef(model))) {
-        stop("binomial design is rank-deficient")
+        abort_prolfqua("binomial design is rank-deficient")
       }
       if (stats::df.residual(model) < 2L) {
-        stop("binomial model requires at least two residual degrees of freedom")
+        abort_prolfqua("binomial model requires at least two residual degrees of freedom")
       }
       model
     }
@@ -162,7 +165,7 @@ StrategyBinomialFirth <- R6::R6Class(
         weight <- trials * stats::fitted(model) * (1 - stats::fitted(model))
         hat <- weight * rowSums((design %*% solve(crossprod(design, weight * design))) * design)
       }
-      stop("Firth iteration did not converge")
+      abort_prolfqua("Firth iteration did not converge")
     }
   )
 )

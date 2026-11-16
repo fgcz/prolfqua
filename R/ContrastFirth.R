@@ -97,7 +97,7 @@ ContrastsFirth <- R6::R6Class(
         self$contrast_result <- .stamp_model_identity(contrast_result, self$model_name, "observed")
       }
       res <- .select_wald_columns(self$contrast_result, all)
-      stopifnot(all(super$column_description()$column_name %in% colnames(res)))
+      .stop_if_missing_columns(res, super$column_description()$column_name, "return contrasts")
       return(res)
     }
   )

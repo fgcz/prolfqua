@@ -8,6 +8,7 @@
 ## Behaviour changes
 
 - prolfqua no longer prints internal progress messages such as "setup done", "completing cases", "contrasts_linfct", "starting aggregation", the model formula or the number of rows with missing values.
+- All errors are raised with `rlang::abort()` and carry class `prolfqua_error`; invalid arguments also carry `prolfqua_error_bad_argument`, so callers can catch prolfqua errors by class. Missing optional packages (`limpa`, `Rfit`) are reported with `rlang::check_installed()`, which offers to install them in interactive sessions.
 
 ## Bug fixes
 

@@ -98,7 +98,9 @@ ContrastsROPECA <- R6::R6Class(
     #' @param p.adjust function to use for p.value adjustment
     initialize = function(Contrast, model_name = "ROPECA", p.adjust = prolfqua::adjust_p_values) {
       self$Contrast <- Contrast
-      stopifnot(length(Contrast$subject_id) > 1)
+      if (length(Contrast$subject_id) <= 1) {
+        abort_bad_argument("Contrast", "hold peptide-level contrasts, with more than one `subject_id` column")
+      }
       self$model_name <- model_name
       self$subject_id <- Contrast$subject_id
       self$p.adjust <- p.adjust

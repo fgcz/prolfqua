@@ -276,32 +276,30 @@ build_model_impute <- function(
 impute_from_model <- function(model, lfqdata) {
   subject_id <- model$subject_id
   if (!identical(subject_id, lfqdata$subject_id())) {
-    stop(
+    abort_prolfqua(
       "Model subject_id (",
       paste(subject_id, collapse = ", "),
       ") differs from lfqdata subject_id (",
       paste(lfqdata$subject_id(), collapse = ", "),
-      ").",
-      call. = FALSE
+      ")."
     )
   }
   model_df <- dplyr::ungroup(model$model_df)
   fits <- model_df$linear_model[model_df$has_model_fit]
   is_lm <- vapply(fits, inherits, logical(1), what = "lm")
   if (!all(is_lm)) {
-    stop(
+    abort_prolfqua(
       "impute_from_model() needs lm fits, but model '",
       model$model_name,
       "' has fits of class '",
       class(fits[[which(!is_lm)[1]]])[1],
-      "'.",
-      call. = FALSE
+      "'."
     )
   }
   response <- lfqdata$response()
   model_response <- deparse(model$model_strategy$formula[[2]])
   if (!identical(model_response, response)) {
-    stop("Model response '", model_response, "' differs from lfqdata response '", response, "'.", call. = FALSE)
+    abort_prolfqua("Model response '", model_response, "' differs from lfqdata response '", response, "'.")
   }
 
   fit_table <- model_df |>
@@ -323,13 +321,12 @@ impute_from_model <- function(model, lfqdata) {
     dplyr::ungroup() |>
     dplyr::left_join(fit_table, by = subject_id)
   if (anyNA(per_subject$has_model_fit)) {
-    stop(
+    abort_prolfqua(
       "Model '",
       model$model_name,
       "' has no row for ",
       sum(is.na(per_subject$has_model_fit)),
-      " subject(s) of lfqdata.",
-      call. = FALSE
+      " subject(s) of lfqdata."
     )
   }
 
@@ -538,7 +535,7 @@ compute_borrowed_variance <- function(
   good <- good |> dplyr::filter(.data$isSingular == FALSE)
 
   if (nrow(good) == 0) {
-    stop("No successful model fits available to borrow variance from.", call. = FALSE)
+    abort_prolfqua("No successful model fits available to borrow variance from.")
   }
 
   borrowed_sigma <- stats::median(good$sigma, na.rm = TRUE)

@@ -338,12 +338,7 @@ AggregateLimpa <- R6::R6Class(
     #' @param dpc_slope DPC slope parameter passed to limpa (default 0.8)
     #' @param impute_only if TRUE, use dpcQuantByRow instead of dpcQuant
     initialize = function(lfq, prefix = "protein", dpc_slope = 0.8, impute_only = FALSE) {
-      if (!requireNamespace("limpa", quietly = TRUE)) {
-        stop(
-          "Package 'limpa' is required for AggregateLimpa. ",
-          "Install it from Bioconductor: BiocManager::install('limpa')"
-        )
-      }
+      rlang::check_installed("limpa", reason = "for AggregateLimpa.")
       if (!impute_only) {
         .check_aggregatable(lfq)
       }

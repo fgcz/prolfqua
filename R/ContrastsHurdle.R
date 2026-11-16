@@ -65,10 +65,15 @@ ContrastsHurdleFacade <- R6::R6Class(
     #'   \code{binomial_firth_nested} facade with the same subject id and contrasts
     #' @param model_name name stamped into the \code{modelName} column
     initialize = function(intensity, detection, model_name = "hurdle") {
-      stopifnot(inherits(intensity, "ContrastsInterface"), inherits(detection, "ContrastsInterface"))
+      if (!inherits(intensity, "ContrastsInterface")) {
+        abort_bad_argument("intensity", "be a ContrastsInterface object")
+      }
+      if (!inherits(detection, "ContrastsInterface")) {
+        abort_bad_argument("detection", "be a ContrastsInterface object")
+      }
       subject_id <- intensity$get_config()$subject_id
       if (!identical(subject_id, detection$get_config()$subject_id)) {
-        stop(
+        abort_prolfqua(
           "intensity and detection must have the same subject_id: ",
           paste(subject_id, collapse = ", "),
           " vs ",
@@ -78,7 +83,7 @@ ContrastsHurdleFacade <- R6::R6Class(
       intensity_contrasts <- dplyr::ungroup(intensity$get_contrasts())
       detection_contrasts <- dplyr::ungroup(detection$get_contrasts())
       if (!setequal(intensity_contrasts$contrast, detection_contrasts$contrast)) {
-        stop(
+        abort_prolfqua(
           "intensity and detection must have the same contrasts: ",
           paste(unique(intensity_contrasts$contrast), collapse = ", "),
           " vs ",
@@ -87,7 +92,7 @@ ContrastsHurdleFacade <- R6::R6Class(
       }
       detection_model <- unique(as.character(detection_contrasts$modelName))
       if (!all(detection_model %in% c("binomial_nested", "binomial_firth_nested"))) {
-        stop(
+        abort_prolfqua(
           "detection must be a binomial_nested or binomial_firth_nested facade, not: ",
           paste(detection_model, collapse = ", ")
         )
@@ -148,7 +153,7 @@ ContrastsHurdleFacade <- R6::R6Class(
           )),
           .after = dplyr::last_col()
         )
-      stopifnot(all(super$column_description()$column_name %in% colnames(res)))
+      .stop_if_missing_columns(res, super$column_description()$column_name, "return contrasts")
       res
     }
   ),

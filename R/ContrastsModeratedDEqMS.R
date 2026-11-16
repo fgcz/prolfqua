@@ -369,9 +369,7 @@ ContrastsModeratedDEqMS <- R6::R6Class(
 
       # modelName and estimate_type pass through from the wrapped contrast
       # unchanged; the DEqMS moderation is described in the methods text.
-      stopifnot(all(
-        super$column_description()$column_name %in% colnames(contrast_result)
-      ))
+      .stop_if_missing_columns(contrast_result, super$column_description()$column_name, "return contrasts")
 
       return(contrast_result)
     }

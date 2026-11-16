@@ -1,5 +1,7 @@
 .prepare_detection_lfqdata <- function(lfqdata) {
-  stopifnot("LFQData" %in% class(lfqdata))
+  if (!inherits(lfqdata, "LFQData")) {
+    abort_bad_argument("lfqdata", "be an LFQData object")
+  }
   lfq_missing <- lfqdata$get_copy()
   lfq_missing$complete_cases()
   lfq_missing$set_data(prolfqua::encode_bin_resp(lfq_missing))

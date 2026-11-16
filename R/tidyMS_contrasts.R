@@ -291,8 +291,12 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
       linfct_v_red <- linfct_v[, nam, drop = FALSE]
       Sigma.hat_red <- Sigma.hat[nam, nam, drop = FALSE]
       coef_red <- coef[nam]
-      stopifnot(all.equal(colnames(linfct_v_red), colnames(Sigma.hat_red)))
-      stopifnot(all.equal(colnames(linfct_v_red), names(coef_red)))
+      if (
+        !isTRUE(all.equal(colnames(linfct_v_red), colnames(Sigma.hat_red))) ||
+          !isTRUE(all.equal(colnames(linfct_v_red), names(coef_red)))
+      ) {
+        abort_prolfqua("internal error: linfct columns do not match the model coefficients")
+      }
       res[[i]] <- .compute_contrast(m, linfct_v_red, coef = coef_red, Sigma.hat = Sigma.hat_red, confint = confint)
     } else {
       res[[i]] <- data.frame(
@@ -425,7 +429,7 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
     linfct <- rep(list(linfct), nrow(models))
   }
   if (!is.list(linfct) || length(linfct) != nrow(models)) {
-    stop("linfct must be either a matrix or a list of length == nrow(models)")
+    abort_prolfqua("linfct must be either a matrix or a list of length == nrow(models)")
   }
 
   interaction_models <- vector(mode = "list", length = nrow(models))

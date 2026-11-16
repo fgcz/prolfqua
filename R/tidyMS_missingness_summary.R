@@ -72,15 +72,14 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
     # left / right sides; estimate is their difference.
     sx <- .contrast_sides_expr(contrasts[i])
     if (is.null(sx)) {
-      stop(
+      abort_prolfqua(
         "get_contrast: contrast '",
         cname,
         "' (",
         contrasts[i],
         ") is not of the required form 'LHS - RHS'. A contrast must be a ",
         "difference of two group expressions, e.g. 'group_A - group_B' or ",
-        "'(group_A + group_B)/2 - group_Ctrl'.",
-        call. = FALSE
+        "'(group_A + group_B)/2 - group_Ctrl'."
       )
     }
 

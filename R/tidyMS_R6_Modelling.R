@@ -93,7 +93,7 @@ StrategyBase <- R6::R6Class(
   private = list(
     # Input preparation that runs outside the error handler of model_fun().
     prepare = function(x) x,
-    fit = function(x) stop("fit is not implemented")
+    fit = function(x) abort_prolfqua("fit is not implemented")
   )
 )
 

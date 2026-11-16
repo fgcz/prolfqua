@@ -139,3 +139,23 @@ test_that("options(prolfqua.verbose = FALSE) silences informative messages", {
 
   expect_no_message(lfq$get_Transformer()$log2())
 })
+
+test_that("errors carry class prolfqua_error", {
+  expect_error(
+    prolfqua::register_facade(name = 1, class = "X", needs = "aggregated"),
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_error(
+    prolfqua::contrasts_linfct(data.frame(protein_Id = c("p1", "p2")), linfct = list(1)),
+    class = "prolfqua_error"
+  )
+})
+
+test_that("plot_pca rejects a PC argument of the wrong length", {
+  x <- matrix(rnorm(20), nrow = 5, dimnames = list(NULL, paste0("s", 1:4)))
+  annot <- data.frame(sample = paste0("s", 1:4), group = c("a", "a", "b", "b"))
+  expect_error(
+    prolfqua::plot_pca(x, annot, sample_name = "sample", factor_keys = "group", PC = 1),
+    class = "prolfqua_error_bad_argument"
+  )
+})

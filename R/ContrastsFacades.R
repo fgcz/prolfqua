@@ -4,12 +4,11 @@
   subject_id <- lfqdata$subject_id()
   hierarchy_keys <- lfqdata$hierarchy_keys()
   if (!identical(subject_id, hierarchy_keys)) {
-    stop(
+    abort_prolfqua(
       facade_name,
       " requires aggregated LFQData. ",
       "`lfqdata$subject_id()` must equal `lfqdata$hierarchy_keys()`. ",
-      "Aggregate first.",
-      call. = FALSE
+      "Aggregate first."
     )
   }
 }
@@ -18,12 +17,11 @@
   subject_id <- lfqdata$subject_id()
   hierarchy_keys <- lfqdata$hierarchy_keys()
   if (!(all(subject_id %in% hierarchy_keys) && length(subject_id) < length(hierarchy_keys))) {
-    stop(
+    abort_prolfqua(
       facade_name,
       " requires LFQData with additional hierarchy below `subject_id()`. ",
       "`lfqdata$subject_id()` must be a strict subset of ",
-      "`lfqdata$hierarchy_keys()`. Do not aggregate first.",
-      call. = FALSE
+      "`lfqdata$hierarchy_keys()`. Do not aggregate first."
     )
   }
 }
@@ -809,18 +807,19 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #' #                           needs = "aggregated", package = "prolfquasaint",
 #' #                           needs_saint_annotation = TRUE)
 register_facade <- function(name, class, needs, package = "prolfqua", needs_saint_annotation = FALSE, ...) {
-  stopifnot(
-    is.character(name),
-    length(name) == 1,
-    nzchar(name),
-    is.character(class),
-    length(class) == 1,
-    nzchar(class),
-    is.character(needs),
-    length(needs) == 1,
-    is.character(package),
-    length(package) == 1
-  )
+  is_string <- function(x) is.character(x) && length(x) == 1 && !is.na(x)
+  if (!(is_string(name) && nzchar(name))) {
+    abort_bad_argument("name", "be one non-empty string")
+  }
+  if (!(is_string(class) && nzchar(class))) {
+    abort_bad_argument("class", "be one non-empty string")
+  }
+  if (!is_string(needs)) {
+    abort_bad_argument("needs", 'be "aggregated" or "nested"')
+  }
+  if (!is_string(package)) {
+    abort_bad_argument("package", "be one string")
+  }
   if (!needs %in% c("aggregated", "nested")) {
     abort_bad_argument("needs", 'be "aggregated" or "nested"', not = needs)
   }

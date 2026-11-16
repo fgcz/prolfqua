@@ -26,7 +26,7 @@ moderated_p_limma <- function(
 ) {
   valid_floor <- is.numeric(variance_floor) && length(variance_floor) == 1L && is.finite(variance_floor)
   if (!is.null(variance_floor) && !(valid_floor && variance_floor > 0)) {
-    stop("`variance_floor` must be NULL or one positive number.", call. = FALSE)
+    abort_bad_argument("variance_floor", "be NULL or one positive number")
   }
 
   # Empirical-Bayes variance moderation via limma. Since limma 3.x, squeezeVar()

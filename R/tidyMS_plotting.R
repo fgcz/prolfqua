@@ -13,7 +13,7 @@
   }
   max_chars <- as.integer(max_chars)
   if (max_chars < min_chars) {
-    stop("max_chars must be at least ", min_chars, ".", call. = FALSE)
+    abort_bad_argument("max_chars", paste0("be at least ", min_chars))
   }
   width <- nchar(labels, type = "chars", allowNA = FALSE)
   list(max_chars = max_chars, width = width, too_long = width > max_chars)
@@ -635,7 +635,9 @@ plot_raster <- function(
 #' stopifnot(methods::is(tmp, "Heatmap"))
 #'
 plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitrows = 10000, distance = "binary") {
-  stopifnot(annotation[[sample_name]] %in% colnames(matrix))
+  if (!all(annotation[[sample_name]] %in% colnames(matrix))) {
+    abort_bad_argument("annotation", "name only samples that are columns of `matrix`")
+  }
 
   matrix[!is.na(matrix)] <- 0
   matrix[is.na(matrix)] <- 1
@@ -695,14 +697,16 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 #' stopifnot("ggplot" %in% class(tmp))
 #'
 plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2), add_txt = FALSE, nudge = 0.1) {
-  stopifnot(length(PC) == 2)
+  if (length(PC) != 2) {
+    abort_bad_argument("PC", "be two principal component numbers", not = paste(PC, collapse = ", "))
+  }
   impute_hint <- "missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()."
 
   # Duplicated sample names become duplicated row names after transpose and
   # cause a cartesian expansion in the join below — error early instead.
   dup_samples <- unique(colnames(matrix)[duplicated(colnames(matrix))])
   if (length(dup_samples) > 0) {
-    stop(sprintf("PCA: duplicated sample names are not allowed: %s.", paste(dup_samples, collapse = ", ")))
+    abort_prolfqua(sprintf("PCA: duplicated sample names are not allowed: %s.", paste(dup_samples, collapse = ", ")))
   }
 
   if (any(is.na(matrix))) {
@@ -719,14 +723,14 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
   # prcomp() errors on a 0-row matrix, which happens when every feature had at
   # least one missing value. Fail with an actionable message instead.
   if (nrow(matrix) == 0) {
-    stop("PCA: no features without missing values remain after NA filtering. Impute ", impute_hint)
+    abort_prolfqua("PCA: no features without missing values remain after NA filtering. Impute ", impute_hint)
   }
 
   # Centered data has rank at most (n_samples - 1), so component max(PC) only
   # exists when there are at least max(PC) + 1 samples. Guard before prcomp() so
   # the caller (e.g. pca_plotly()) gets a clear error rather than a NULL plot.
   if (ncol(matrix) <= max(PC)) {
-    stop(sprintf(
+    abort_prolfqua(sprintf(
       "PCA: need at least %s samples to plot principal components %s and %s; got %s.",
       max(PC) + 1,
       PC[1],
@@ -740,7 +744,7 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
   variance_explained <- pca_result$sdev^2 / sum(pca_result$sdev^2) * 100
 
   if (max(PC) > (ncol(xx) - 1)) {
-    stop(sprintf(
+    abort_prolfqua(sprintf(
       "PCA: requested principal component %s but only %s principal component(s) could be computed %s",
       max(PC),
       ncol(xx) - 1,

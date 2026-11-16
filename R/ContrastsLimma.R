@@ -82,7 +82,7 @@ compute_borrowed_variance_limma <- function(fit) {
       fit$df.residual > 1
   )
   if (length(good) == 0) {
-    stop("No successful limma fits available to borrow variance from.", call. = FALSE)
+    abort_prolfqua("No successful limma fits available to borrow variance from.")
   }
   list(
     sigma = stats::median(fit$sigma[good], na.rm = TRUE),
@@ -861,7 +861,7 @@ ContrastsLimma <- R6::R6Class(
       contrast_result <- dplyr::ungroup(contrast_result)
       self$contrast_result <- contrast_result
 
-      stopifnot(all(super$column_description()$column_name %in% colnames(contrast_result)))
+      .stop_if_missing_columns(contrast_result, super$column_description()$column_name, "return contrasts")
       return(contrast_result)
     }
   )

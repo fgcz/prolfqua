@@ -64,3 +64,16 @@ inform_prolfqua <- function(...) {
   }
   invisible(NULL)
 }
+
+#' Abort with a prolfqua error
+#'
+#' Like `stop()`: the arguments are pasted into the message. The condition has
+#' class `prolfqua_error`, plus any classes given in `class`.
+#' @param ... pasted together into the message
+#' @param class additional condition classes, most specific first
+#' @param call the call shown in the error message; defaults to the caller
+#' @keywords internal
+#' @noRd
+abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
+  rlang::abort(paste0(...), class = c(class, "prolfqua_error"), call = call)
+}

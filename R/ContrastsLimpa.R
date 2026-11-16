@@ -101,18 +101,13 @@ strategy_limpa <- function(modelstr, model_name = "limpa", trend = FALSE, robust
 #'   mod$model_name
 #' }
 build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_name) {
-  if (!requireNamespace("limpa", quietly = TRUE)) {
-    stop(
-      "Package 'limpa' is required for build_model_limpa. ",
-      "Install it from Bioconductor: BiocManager::install('limpa')"
-    )
-  }
+  rlang::check_installed("limpa", reason = "for build_model_limpa().")
 
   se_col <- lfqdata$get_config()$opt_se
   nr_col <- lfqdata$nr_children_col()
-  stopifnot(
-    "LFQData must have config$nr_children set" = length(nr_col) > 0 && nchar(nr_col) > 0
-  )
+  if (!(length(nr_col) > 0 && nchar(nr_col) > 0)) {
+    abort_invalid_config("LFQData must have config$nr_children set")
+  }
 
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
 
