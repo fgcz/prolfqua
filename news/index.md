@@ -45,6 +45,16 @@
 
 ### Bug fixes
 
+- `deqms` / `deqms_voom`
+  ([`moderated_p_deqms()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms.md)):
+  proteins left out of the variance-on-count curve, e.g. with zero
+  residual variance, got the prior variance of the first fitted protein
+  instead of the curve’s value at their own peptide count, with the
+  warning “‘newdata’ had 1 row but variables found have N rows”. They
+  now get the curve’s value. Proteins without residual degrees of
+  freedom get NA moderated statistics without “NaNs produced” warnings;
+  the same holds for the unmoderated statistics of `limma`-based
+  methods.
 - `ropeca_nested` / `ContrastsROPECA`: the protein p-value counted
   peptides without a p-value (failed or non-estimable peptide fits) in
   the number of peptides, which made those proteins too significant,

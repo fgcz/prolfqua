@@ -210,7 +210,7 @@ head(fa$get_contrasts())
 #> 5 deqms     observed      A_vs_Ctrl 7cbcrd~0495  1.38    16.5
 #> 6 deqms     observed      A_vs_Ctrl 7soopj~3451  0.822   25.9
 #> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
-#> #   std.error <dbl>, statistic <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 fa$to_wide()
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)

@@ -64,6 +64,8 @@
 <div class="section level3">
 <h3 id="bug-fixes-1-9-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-4"></a></h3>
 <ul><li>
+<code>deqms</code> / <code>deqms_voom</code> (<code><a href="../reference/moderated_p_deqms.html">moderated_p_deqms()</a></code>): proteins left out of the variance-on-count curve, e.g. with zero residual variance, got the prior variance of the first fitted protein instead of the curve’s value at their own peptide count, with the warning “‘newdata’ had 1 row but variables found have N rows”. They now get the curve’s value. Proteins without residual degrees of freedom get NA moderated statistics without “NaNs produced” warnings; the same holds for the unmoderated statistics of <code>limma</code>-based methods.</li>
+<li>
 <code>ropeca_nested</code> / <code>ContrastsROPECA</code>: the protein p-value counted peptides without a p-value (failed or non-estimable peptide fits) in the number of peptides, which made those proteins too significant, e.g. p = 0.00067 instead of 0.0031 for two tested peptides and one untested. <code><a href="../reference/summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code> now counts only peptides with a p-value in <code>n_not_na</code>, as the original ROPECA (PECA) does; <code>df</code> of <code>ropeca_nested</code> changes with it.</li>
 </ul></div>
 </div>

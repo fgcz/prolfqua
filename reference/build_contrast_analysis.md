@@ -207,7 +207,7 @@ head(fa_deqms$get_contrasts())
 #> 5 deqms     observed      A_vs_Ctrl At886V~3296 -1.01     19.1
 #> 6 deqms     observed      A_vs_Ctrl BEJI92~9143 -0.873    20.9
 #> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
-#> #   std.error <dbl>, statistic <dbl>, df <int>, p.value <dbl>, conf.low <dbl>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 istar_pep <- sim_lfq_data_peptide_config()
