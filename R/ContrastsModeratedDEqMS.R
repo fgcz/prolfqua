@@ -307,6 +307,19 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       model_name = paste0(Contrast$model_name, "_DEqMS"),
       p.adjust = prolfqua::adjust_p_values
     ) {
+      if (!is.data.frame(count_df)) {
+        abort_bad_argument("count_df", "be a data frame")
+      }
+      missing <- setdiff(c(Contrast$subject_id, count_column), names(count_df))
+      if (length(missing) > 0) {
+        abort_missing_columns(missing, data_nm = "count_df")
+      }
+      if (!is.numeric(count_df[[count_column]])) {
+        abort_bad_argument("count_column", "name a numeric column in count_df")
+      }
+      if (!.is_finite_number(loess_span) || !all(loess_span > 0, loess_span <= 1)) {
+        abort_bad_argument("loess_span", "be one finite number in (0, 1]")
+      }
       self$Contrast <- Contrast
       self$subject_id <- Contrast$subject_id
       # Aggregate count_df to one row per subject_id (max count)

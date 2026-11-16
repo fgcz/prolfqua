@@ -12,7 +12,7 @@ detection (LOD) used by \code{\link{build_model_impute}} to impute groups
 without observations.
 }
 \examples{
-dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
+dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 1)
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 xx <- mh$get_stats()
 xx <- mh$get_lod()

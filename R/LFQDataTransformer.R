@@ -127,7 +127,7 @@ LFQDataTransformer <- R6::R6Class(
     #'
     robscale_subset = function(lfqsubset, preserve_mean = TRUE, colname = "transformed_abundance") {
       if (self$lfq$is_transformed() != lfqsubset$is_transformed()) {
-        warning("the subset must have the same config as self")
+        abort_bad_argument("lfqsubset", "have the same transformation state (is_transformed) as self")
       }
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
       scaled <- prolfqua::scale_with_subset(self$lfq, lfqsubset, preserve_mean = preserve_mean, colname = colname)

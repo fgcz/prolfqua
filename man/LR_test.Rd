@@ -36,7 +36,7 @@ Likelihood ratio test
 data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
  Nprot = 200,
  with_missing = TRUE,
- weight_missing = 2)
+ weight_missing = 1)
 
 pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
 

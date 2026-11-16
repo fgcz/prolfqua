@@ -526,7 +526,7 @@ plot_heatmap <- function(
 ) {
   rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
   if (nrow(matrix) == 0) {
-    warning("The dataset has :", nrow(matrix), "")
+    warning("plot_heatmap: the dataset has no rows.")
     return(NULL)
   }
 
@@ -596,7 +596,7 @@ plot_raster <- function(
 ) {
   rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
   if (nrow(matrix) <= 1) {
-    warning("The dataset has :", nrow(matrix), "")
+    warning("plot_raster: the dataset needs at least two rows; got ", nrow(matrix), ".")
     return(NULL)
   }
   arrange <- match.arg(arrange)

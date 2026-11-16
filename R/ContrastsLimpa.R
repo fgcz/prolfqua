@@ -32,7 +32,7 @@ StrategyLimpa <- R6::R6Class(
     #' @description Create a new StrategyLimpa
     #' @param modelstr,model_name,trend,robust,plot,span see \code{\link{strategy_limpa}}
     initialize = function(modelstr, model_name = "limpa", trend = FALSE, robust = FALSE, plot = FALSE, span = NULL) {
-      self$formula <- as.formula(modelstr)
+      self$formula <- .as_model_formula(modelstr)
       self$model_name <- model_name
       self$trend <- trend
       self$robust <- robust

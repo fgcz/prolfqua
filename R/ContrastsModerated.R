@@ -75,6 +75,9 @@ ContrastsModerated <- R6::R6Class(
       p.adjust = prolfqua::adjust_p_values,
       variance_floor = NULL
     ) {
+      if (!inherits(Contrast, "ContrastsInterface")) {
+        abort_bad_argument("Contrast", "be a ContrastsInterface object")
+      }
       self$Contrast <- Contrast
       self$subject_id <- Contrast$subject_id
       self$model_name <- model_name

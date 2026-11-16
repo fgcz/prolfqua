@@ -90,14 +90,15 @@ ModelFirth <- R6::R6Class(
     #' @description
     #' return anova table
     get_anova = function() {
-      warning("method not implemented!")
+      warning("ModelFirth$get_anova is not implemented.")
       return(NULL)
     },
     #' @description
     #' histogram of ANOVA results
     #' @param what show either "Pr..F." or "FDR.Pr..F."
     anova_histogram = function(what = c("p.value", "FDR")) {
-      warning("not implemented")
+      what <- .arg_match_prolfqua(what, c("p.value", "FDR"), "what")
+      warning("ModelFirth$anova_histogram is not implemented.")
       return(NULL)
     }
   ),

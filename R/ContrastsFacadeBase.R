@@ -78,6 +78,14 @@ ContrastsFacadeBase <- R6::R6Class(
     # registry entry of `key` (`needs`), store the input and the contrast names,
     # record the facade key, and return the full model formula string.
     .setup = function(lfqdata, contrasts, key, modelstr) {
+      if (!inherits(lfqdata, "LFQData")) {
+        abort_bad_argument("lfqdata", "be an LFQData object")
+      }
+      .assert_named_contrasts(contrasts)
+      formula <- .as_model_formula(modelstr)
+      if (!is.character(modelstr) || length(formula) != 2) {
+        abort_bad_argument("modelstr", "be one right-hand-side formula string, e.g. `~ group_`")
+      }
       entry <- lookup_facade(key)
       if (identical(entry$needs, "nested")) {
         .assert_nested_facade_input(lfqdata, entry$class)

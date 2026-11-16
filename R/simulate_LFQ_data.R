@@ -157,9 +157,9 @@ which_missing <- function(x, weight_missing = 0.2) {
 
 
 #' Simulate data, protein and peptide, with config
-#' @param Nprot number of proteins to simulate
+#' @param Nprot one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
-#' @param weight_missing controls proportion of missing values; greater weight means more missingness
+#' @param weight_missing one number in [0, 1]; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param N number of replicates per group
 #' @return A list containing simulated data and an analysis configuration.
@@ -176,6 +176,7 @@ sim_lfq_data_peptide_config <- function(
   seed = 1234,
   N = 4
 ) {
+  .assert_simulation_args(Nprot, weight_missing)
   .with_sim_seed(seed, {
     data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE, N = N)
 
@@ -188,9 +189,9 @@ sim_lfq_data_peptide_config <- function(
   })
 }
 #' Simulate data, protein, with config
-#' @param Nprot number of proteins to simulate
+#' @param Nprot one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
-#' @param weight_missing controls proportion of missing values; greater weight means more missingness
+#' @param weight_missing one number in [0, 1]; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param paired if TRUE, add a paired subject factor to the design
 #' @return A list containing simulated data and an analysis configuration.
@@ -213,6 +214,7 @@ sim_lfq_data_protein_config <- function(
   seed = 1234,
   paired = FALSE
 ) {
+  .assert_simulation_args(Nprot, weight_missing)
   .with_sim_seed(seed, {
     data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
     if (paired) {
@@ -235,9 +237,9 @@ sim_lfq_data_protein_config <- function(
 
 
 #' Simulate data, protein, with config with 2 factors Treatment and Background
-#' @param Nprot number of proteins to simulate
+#' @param Nprot one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
-#' @param weight_missing controls proportion of missing values; greater weight means more missingness
+#' @param weight_missing one number in [0, 1]; greater weight means more missingness
 #' @param PEPTIDE if TRUE, simulate peptide-level data; if FALSE, protein-level
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param TWO use two factors for modelling
@@ -263,6 +265,7 @@ sim_lfq_data_2factor_config <- function(
   seed = 1234,
   TWO = TRUE
 ) {
+  .assert_simulation_args(Nprot, weight_missing)
   .with_sim_seed(seed, {
     res <- sim_lfq_data(
       Nprot = Nprot,

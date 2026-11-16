@@ -192,8 +192,14 @@
 #' adata <- setup_analysis(data, config)
 #'
 setup_analysis <- function(data, configuration, debug = FALSE) {
-  configuration <- configuration$clone(deep = TRUE)
+  .assert_response_data(data, configuration)
   .validate_setup_file_name(data, configuration)
+  required <- unique(c(unlist(configuration$hierarchy), unlist(configuration$factors)))
+  missing <- setdiff(required, names(data))
+  if (length(missing) > 0) {
+    abort_missing_columns(missing)
+  }
+  configuration <- configuration$clone(deep = TRUE)
   data <- .setup_hierarchy_columns(data, configuration)
   data <- .setup_factor_columns(data, configuration)
   data <- .setup_sample_name(data, configuration)

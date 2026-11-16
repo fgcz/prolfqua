@@ -83,17 +83,10 @@ build_contrast_analysis <- function(
   # The facade registry (seeded by .seed_facade_registry(), extensible via
   # register_facade()) is the single source of truth for method -> class.
   choices <- names(list_facades())
-  method <- tryCatch(
-    match.arg(method, choices),
-    error = function(e) {
-      abort_bad_argument(
-        "method",
-        must = paste0("be one of: ", toString(choices)),
-        not = toString(method),
-        parent = e
-      )
-    }
-  )
+  if (!inherits(lfqdata, "LFQData")) {
+    abort_bad_argument("lfqdata", "be an LFQData object")
+  }
+  method <- .arg_match_prolfqua(method, choices, "method")
   entry <- lookup_facade(method)
   # Decoys must not enter the fit or the shared variance pool (limma prior /
   # DEqMS variance-count trend), where they would perturb *target* q-values.

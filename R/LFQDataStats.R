@@ -213,7 +213,7 @@ LFQDataStats <- R6::R6Class(
       sig.level = 0.05
     ) {
       if (!self$lfq$is_transformed()) {
-        warning("data is not transformed - aborting")
+        warning("power_t_test_quantiles requires transformed data; aborting.")
         return()
       }
       res <- self$stats_quantiles(probs)
@@ -231,7 +231,7 @@ LFQDataStats <- R6::R6Class(
       sig.level = 0.05
     ) {
       if (!self$lfq$is_transformed()) {
-        warning("data is not transformed - aborting")
+        warning("power_t_test requires transformed data; aborting.")
         return()
       }
 

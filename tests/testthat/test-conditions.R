@@ -160,3 +160,264 @@ test_that("plot_pca rejects a PC argument of the wrong length", {
     class = "prolfqua_error_bad_argument"
   )
 })
+
+test_that("LFQData$data_wide rejects an unknown response value", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  expect_error(LFQData$new(x$data, x$config)$data_wide(value = "absent"), class = "prolfqua_error_bad_argument")
+})
+
+test_that("aggregators reject input at the deepest hierarchy level", {
+  x <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  x$config$hierarchy_depth <- 2
+  expect_error(LFQData$new(x$data, x$config)$get_Aggregator(), class = "prolfqua_error_bad_argument")
+})
+
+test_that("aggregator plotting requires an aggregation result", {
+  x <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  lfq <- LFQData$new(x$data, x$config)$get_Transformer()$log2()$lfq
+  expect_error(lfq$get_Aggregator()$plot(), class = "prolfqua_error_bad_argument")
+})
+
+test_that("setup requires a file-name configuration", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x$config$file_name <- NULL
+  expect_error(setup_analysis(x$data, x$config), class = "prolfqua_error_invalid_configuration")
+})
+
+test_that("wide values must be a named list of matrices", {
+  expect_error(.check_wide_values(list(1)), class = "prolfqua_error_bad_argument")
+})
+
+test_that("wide matrices must have matching shapes and samples", {
+  expect_error(
+    .check_wide_values(list(a = matrix(1, 2, 2), b = matrix(1, 2, 3))),
+    class = "prolfqua_error_bad_argument"
+  )
+})
+
+test_that("wide rowdata must carry configured hierarchy columns", {
+  cfg <- AnalysisConfiguration$new()
+  cfg$hierarchy <- list(protein = "protein")
+  expect_error(
+    .check_wide_input(list(a = matrix(1)), data.frame(x = 1), data.frame(), cfg),
+    class = "prolfqua_error_missing_column"
+  )
+})
+
+test_that("wide annotation must carry the sample-name column", {
+  cfg <- AnalysisConfiguration$new()
+  cfg$hierarchy <- list(protein = "protein")
+  expect_error(
+    .check_wide_input(list(a = matrix(1)), data.frame(protein = "p1"), data.frame(), cfg),
+    class = "prolfqua_error_missing_column"
+  )
+})
+
+test_that("wide rowdata must match the matrix row count", {
+  cfg <- AnalysisConfiguration$new()
+  cfg$hierarchy <- list(protein = "protein")
+  expect_error(
+    .check_wide_input(list(a = matrix(1, 2, 1)), data.frame(protein = "p1"), data.frame(sampleName = "s1"), cfg),
+    class = "prolfqua_error_bad_argument"
+  )
+})
+
+test_that("wide annotation must match matrix column names uniquely", {
+  cfg <- AnalysisConfiguration$new()
+  cfg$hierarchy <- list(protein = "protein")
+  expect_error(
+    .check_wide_input(
+      list(a = matrix(1, dimnames = list(NULL, "s1"))),
+      data.frame(protein = "p1"),
+      data.frame(sampleName = "s2"),
+      cfg
+    ),
+    class = "prolfqua_error_bad_argument"
+  )
+})
+
+test_that("contrast configuration rejects unknown fields", {
+  expect_error(list_to_ContrastConfiguration(list(unknown_field = 1)), class = "prolfqua_error")
+})
+
+test_that("abstract model methods fail with classed errors", {
+  MinimalModel <- R6::R6Class("MinimalModel", inherit = ModelInterface)
+  model <- MinimalModel$new()
+  expect_error(model$get_coefficients(), class = "prolfqua_error")
+  expect_error(model$get_anova(), class = "prolfqua_error")
+})
+
+test_that("abstract contrast methods fail with classed errors", {
+  MinimalContrast <- R6::R6Class("MinimalContrast", inherit = ContrastsInterface)
+  contrast <- MinimalContrast$new()
+  expect_error(contrast$get_contrast_sides(), class = "prolfqua_error")
+  expect_error(contrast$get_contrasts(), class = "prolfqua_error")
+  expect_error(contrast$get_missing(), class = "prolfqua_error")
+})
+
+test_that("abstract strategy fitting fails with a classed error", {
+  MinimalStrategy <- R6::R6Class(
+    "MinimalStrategy",
+    inherit = StrategyBase,
+    public = list(trigger_fit = function(x) private$fit(x))
+  )
+  expect_error(MinimalStrategy$new("y ~ x")$trigger_fit(data.frame()), class = "prolfqua_error")
+})
+
+test_that("Firth model builder checks class before hierarchy access", {
+  expect_error(build_model_logistf(list(), "y ~ x"), class = "prolfqua_error_bad_argument")
+})
+
+test_that("detection preprocessing requires LFQData", {
+  expect_error(.prepare_detection_lfqdata(list()), class = "prolfqua_error_bad_argument")
+})
+
+test_that("facade registration rejects invalid class strings", {
+  expect_error(register_facade("x", class = "", needs = "aggregated"), class = "prolfqua_error_bad_argument")
+})
+
+test_that("facade registration rejects non-string input shapes", {
+  expect_error(register_facade("x", class = "X", needs = NA_character_), class = "prolfqua_error_bad_argument")
+})
+
+test_that("facade registration rejects unknown input shapes", {
+  expect_error(register_facade("x", class = "X", needs = "same"), class = "prolfqua_error_bad_argument")
+})
+
+test_that("facade registration rejects non-string package names", {
+  expect_error(
+    register_facade("x", class = "X", needs = "aggregated", package = 1),
+    class = "prolfqua_error_bad_argument"
+  )
+})
+
+test_that("limma borrowing fails when no variance donor is usable", {
+  fit <- list(coefficients = matrix(NA_real_, 2, 2), sigma = c(0, 0), df.residual = c(0, 0))
+  expect_error(compute_borrowed_variance_limma(fit), class = "prolfqua_error")
+})
+
+test_that("model borrowing fails when no fitted donor is usable", {
+  expect_error(
+    compute_borrowed_variance(data.frame(has_model_fit = TRUE, isSingular = TRUE, nr_coef_not_NA = 1, df.residual = 3)),
+    class = "prolfqua_error"
+  )
+})
+
+test_that("imputation rejects different subject identifiers", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  lfq <- LFQData$new(x$data, x$config)
+  model <- build_model(lfq, strategy_lm("abundance ~ group_"))
+  model$subject_id <- "other"
+  expect_error(impute_from_model(model, lfq), class = "prolfqua_error")
+})
+
+test_that("imputation rejects non-lm fits", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  lfq <- LFQData$new(x$data, x$config)
+  model <- build_model(lfq, strategy_lm("abundance ~ group_"))
+  model$model_df$linear_model[[1]] <- list(unsupported = TRUE)
+  expect_error(impute_from_model(model, lfq), class = "prolfqua_error")
+})
+
+test_that("imputation rejects mismatched responses", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  lfq <- LFQData$new(x$data, x$config)
+  model <- build_model(lfq, strategy_lm("abundance ~ group_"))
+  lfq$rename_response("other")
+  expect_error(impute_from_model(model, lfq), class = "prolfqua_error")
+})
+
+test_that("imputation requires one fitted-model row for every input subject", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  lfq <- LFQData$new(x$data, x$config)
+  model <- build_model(lfq, strategy_lm("abundance ~ group_"))
+  model$model_df <- model$model_df[-1, ]
+  expect_error(impute_from_model(model, lfq), class = "prolfqua_error")
+})
+
+test_that("unknown progress reporters carry the package error class", {
+  expect_error(.make_progress(3, reporter = "unknown"), class = "prolfqua_error")
+})
+
+test_that("limma rejects unsupported weights specifications", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  expect_error(
+    build_model_limma(LFQData$new(x$data, x$config), strategy_limma("abundance ~ group_", weights = list(1))),
+    class = "prolfqua_error_bad_argument"
+  )
+})
+
+test_that("Hurdle requires a contrast interface for intensity", {
+  expect_error(ContrastsHurdleFacade$new(list(), ContrastsInterface$new()), class = "prolfqua_error_bad_argument")
+})
+
+test_that("Hurdle requires a contrast interface for detection", {
+  expect_error(ContrastsHurdleFacade$new(ContrastsInterface$new(), list()), class = "prolfqua_error_bad_argument")
+})
+
+test_that("facades check LFQData even when called without the factory", {
+  expect_error(ContrastsLMFacade$new(list(), "~ group_", c(a = "A - B")), class = "prolfqua_error_bad_argument")
+})
+
+test_that("detection count summaries reject non-LFQData input", {
+  expect_error(.summarize_detection_counts(list()), class = "prolfqua_error_bad_argument")
+})
+
+test_that("detection count summaries reject negative detection counts", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x$data$bin_resp <- -1
+  x$config$bin_resp <- "bin_resp"
+  expect_error(.summarize_detection_counts(LFQData$new(x$data, x$config)), class = "prolfqua_error")
+})
+
+test_that("plot label widths reject truncation below the required minimum", {
+  expect_error(.plot_label_widths("label", max_chars = 1, min_chars = 3), class = "prolfqua_error_bad_argument")
+})
+
+test_that("NA heatmap annotation cannot name unknown samples", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
+  expect_error(
+    plot_na_heatmap(matrix(1, dimnames = list(NULL, "s1")), data.frame(sample = "s2"), "group", "sample"),
+    class = "prolfqua_error_bad_argument"
+  )
+})
+
+test_that("PCA rejects a requested component beyond the available rank", {
+  x <- matrix(seq_len(8), nrow = 2, dimnames = list(NULL, paste0("s", 1:4)))
+  annot <- data.frame(sample = paste0("s", 1:4), group = "A")
+  expect_error(plot_pca(x, annot, "sample", "group", PC = c(1, 3)), class = "prolfqua_error")
+})
+
+test_that("matrix conversion rejects other object types", {
+  expect_error(matrix_to_tibble(list()), class = "prolfqua_error_bad_argument")
+})
+
+test_that("missing contrast columns raise a classed error", {
+  expect_error(
+    .stop_if_missing_columns(data.frame(), "p.value", "filter contrasts"),
+    class = "prolfqua_error_missing_column"
+  )
+})
+
+test_that("original ROPECA rejects aggregated contrasts", {
+  expect_error(
+    ContrastsROPECA$new(ContrastsTable$new(data.frame(protein_Id = "p1"))),
+    class = "prolfqua_error_bad_argument"
+  )
+})
+
+test_that("nested mixed models require a child hierarchy for automatic random effects", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  expect_error(.augment_lmer_nested_modelstr("~ group_", LFQData$new(x$data, x$config)), class = "prolfqua_error")
+})
+
+test_that("limpa requires a configured child count column", {
+  skip_if_not_installed("limpa")
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x$config$nr_children <- NULL
+  expect_error(
+    build_model_limpa(LFQData$new(x$data, x$config), strategy_limpa("abundance ~ group_")),
+    class = "prolfqua_error_invalid_configuration"
+  )
+})

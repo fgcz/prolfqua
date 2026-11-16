@@ -51,9 +51,7 @@ ContrastsFirth <- R6::R6Class(
       if (!inherits(model, "ModelFirth")) {
         abort_bad_argument("model", "be a ModelFirth", not = paste(class(model), collapse = "/"))
       }
-      if (!is.character(contrasts) || is.null(names(contrasts)) || !all(nzchar(names(contrasts)))) {
-        abort_bad_argument("contrasts", "be a named character vector")
-      }
+      .assert_named_contrasts(contrasts)
       self$models <- model
       self$contrasts <- contrasts
       self$model_name <- model_name

@@ -7,6 +7,8 @@
 
 ## Behaviour changes
 
+- Invalid analysis, simulation, response, contrast and count inputs now fail at the entry point with a classed error. Method keys must match exactly (case sensitive). A misspelled limma weights column is an error rather than an unweighted fit. Subset scaling rejects mismatched transformation states.
+
 - Fewer hard dependencies: 'UpSetR', 'ComplexHeatmap', 'circlize', 'plotly', 'ggbeeswarm', 'progress', 'logistf', 'lme4' and 'lmerTest' moved from Imports to Suggests, and 'forcats', 'tidyselect' and 'withr' are no longer needed (Imports: 23 to 11). Heatmaps, UpSet plots, interactive plots, the `firth` and `lmer_nested` methods ask to install the packages they need. Without 'plotly' the intensity density plot is static, without 'ggbeeswarm' box plots show jittered points, and without 'progress' no progress bar is shown. Progress of aggregation and of writing box and aggregation plots now also follows `options(prolfqua.progress)`.
 - prolfqua no longer prints internal progress messages such as "setup done", "completing cases", "contrasts_linfct", "starting aggregation", the model formula or the number of rows with missing values.
 - All errors are raised with `rlang::abort()` and carry class `prolfqua_error`; invalid arguments also carry `prolfqua_error_bad_argument`, so callers can catch prolfqua errors by class. Missing optional packages (`limpa`, `Rfit`) are reported with `rlang::check_installed()`, which offers to install them in interactive sessions.

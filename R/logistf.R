@@ -55,6 +55,9 @@ build_model_glm_protein <- function(lfqdata, modelstr) {
 #' m <- xx$models$model_df$linear_model[[1]]
 #' linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
 build_model_logistf <- function(data, formula) {
+  if (!inherits(data, "LFQData")) {
+    abort_bad_argument("data", "be an LFQData object")
+  }
   .assert_aggregated_facade_input(data, "build_model_logistf")
   strategy <- strategy_logistf(formula)
   models <- model_analyse(

@@ -22,7 +22,8 @@ test_that("get_contrast preserves contrast-side order for a simple contrast", {
 test_that("get_contrast errors loudly when a contrast level is absent", {
   data <- .contrast_wide_fixture()
   expect_error(
-    suppressMessages(prolfqua::get_contrast(data, "protein_Id", c(bad = "group_A - group_Xyz")))
+    suppressMessages(prolfqua::get_contrast(data, "protein_Id", c(bad = "group_A - group_Xyz"))),
+    "group_Xyz"
   )
 })
 

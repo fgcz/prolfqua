@@ -51,11 +51,7 @@ StrategyBase <- R6::R6Class(
     #' @param modelstr model formula string
     #' @param model_name name of model
     initialize = function(modelstr, model_name = "Model") {
-      is_formula_string <- is.character(modelstr) && length(modelstr) == 1 && grepl("~", modelstr, fixed = TRUE)
-      if (!(inherits(modelstr, "formula") || is_formula_string)) {
-        abort_bad_argument("modelstr", "be a formula or a single string containing `~`")
-      }
-      self$formula <- as.formula(modelstr)
+      self$formula <- .as_model_formula(modelstr)
       self$model_name <- model_name
       self$anova_df <- get_anova_df(test = "F")
     },
@@ -306,5 +302,5 @@ AnovaExtractor <- R6::R6Class(
 #' x <- get_anova_df(test = "F")
 #' x <- get_anova_df(test = "Chisq")
 get_anova_df <- function(test = "F") {
-  AnovaExtractor$new(test = test)
+  AnovaExtractor$new(test = .arg_match_prolfqua(test, c("F", "Chisq"), "test"))
 }

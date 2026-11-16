@@ -12,7 +12,7 @@
 #' data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
 #'  Nprot = 200,
 #'  with_missing = TRUE,
-#'  weight_missing = 2)
+#'  weight_missing = 1)
 #'
 #' pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
 #'
@@ -144,6 +144,12 @@ build_model <- function(
   model_name = model_strategy$model_name
 ) {
   nested_data <- if (inherits(data, "LFQData")) data$data_long() else data
+  if (!is.null(model_strategy$weights)) {
+    missing <- setdiff(model_strategy$weights, names(nested_data))
+    if (length(missing) > 0) {
+      abort_missing_columns(missing)
+    }
+  }
   modelling_result <- model_analyse(nested_data, model_strategy, model_name = model_name, subject_id = subject_id)
   return(Model$new(
     model_df = modelling_result$model_df,
@@ -193,6 +199,12 @@ build_model_impute <- function(
   df_method = c("observed", "borrowed"),
   on_misalign = c("fallback", "fail")
 ) {
+  if (!inherits(lfqdata, "LFQData")) {
+    abort_bad_argument("lfqdata", "be an LFQData object")
+  }
+  if (!is.null(lod) && (!is.numeric(lod) || length(lod) != 1 || !is.finite(lod))) {
+    abort_bad_argument("lod", "be NULL or one finite number")
+  }
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
   on_misalign <- match.arg(on_misalign)
@@ -565,7 +577,7 @@ compute_borrowed_variance <- function(
     if (!any(keep)) {
       rlang::abort(
         "No donor fits with a borrowable full covariance matrix.",
-        class = "prolfqua_borrow_failed",
+        class = c("prolfqua_borrow_failed", "prolfqua_error"),
         call = NULL
       )
     }

@@ -28,7 +28,7 @@ StrategyLimma <- R6::R6Class(
     #' @description Create a new StrategyLimma
     #' @param modelstr,model_name,trend,robust,weights see \code{\link{strategy_limma}}
     initialize = function(modelstr, model_name = "limma", trend = FALSE, robust = FALSE, weights = NULL) {
-      self$formula <- as.formula(modelstr)
+      self$formula <- .as_model_formula(modelstr)
       self$model_name <- model_name
       self$trend <- trend
       self$robust <- robust
@@ -116,6 +116,9 @@ compute_borrowed_variance_limma <- function(fit) {
 #' @importFrom methods new
 #' @keywords internal
 .lfqdata_to_elist <- function(lfqdata, formula) {
+  if (length(formula) != 3 || !identical(formula[[2]], as.name(lfqdata$response()))) {
+    abort_bad_argument("modelstr", "use the configured LFQData response on the left of `~`")
+  }
   wide <- lfqdata$data_wide(as.matrix = TRUE)
   expr_matrix <- wide$data
   annotation <- wide$annotation
@@ -175,6 +178,9 @@ compute_borrowed_variance_limma <- function(fit) {
 
   if (is.character(strategy$weights) && length(strategy$weights) == 1) {
     wcol <- strategy$weights
+    if (!wcol %in% names(lfqdata$data_long())) {
+      abort_missing_columns(wcol, data_nm = "lfqdata")
+    }
     if (wcol %in% colnames(annotation)) {
       return(annotation[[wcol]])
     }
@@ -191,7 +197,7 @@ compute_borrowed_variance_limma <- function(fit) {
     }
   }
 
-  NULL
+  abort_bad_argument("weights", "be NULL, one column name, or a numeric matrix")
 }
 
 .new_model_limma <- function(

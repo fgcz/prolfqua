@@ -536,7 +536,7 @@ test_that("plot_lrt_diagnostics closes its device when plotting fails", {
   out_dir <- withr::local_tempdir()
   before <- .open_caller_device()
   bad <- data.frame(likelihood_ratio_test.pValue = "not a number")
-  expect_error(plot_lrt_diagnostics(bad, "full", "reduced", out_dir))
+  expect_error(plot_lrt_diagnostics(bad, "full", "reduced", out_dir), "numeric")
   expect_equal(grDevices::dev.cur(), before$cur)
   expect_equal(grDevices::dev.list(), before$list)
 })

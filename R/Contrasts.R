@@ -167,6 +167,10 @@ Contrasts <- R6::R6Class(
       global = FALSE,
       model_name = "WaldTest"
     ) {
+      if (!inherits(model, "Model")) {
+        abort_bad_argument("model", "be a Model object")
+      }
+      .assert_named_contrasts(contrasts)
       self$models <- model$model_df |> dplyr::filter(.data$has_model_fit)
       self$contrasts <- contrasts
       self$contrastfun <- model$model_strategy$contrast_fun

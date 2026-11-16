@@ -14,11 +14,11 @@ sim_lfq_data_2factor_config(
 )
 }
 \arguments{
-\item{Nprot}{number of proteins to simulate}
+\item{Nprot}{one positive whole number of proteins to simulate}
 
 \item{with_missing}{add missing values, default TRUE}
 
-\item{weight_missing}{controls proportion of missing values; greater weight means more missingness}
+\item{weight_missing}{one number in [0, 1]; greater weight means more missingness}
 
 \item{PEPTIDE}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
 

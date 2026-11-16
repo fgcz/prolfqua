@@ -77,3 +77,86 @@ inform_prolfqua <- function(...) {
 abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
   rlang::abort(paste0(...), class = c(class, "prolfqua_error"), call = call)
 }
+
+#' Match a case-sensitive choice exactly and retain prolfqua's error classes
+#' @param arg character choice
+#' @param values allowed choices
+#' @param arg_nm argument name for the error
+#' @noRd
+.arg_match_prolfqua <- function(arg, values, arg_nm) {
+  tryCatch(
+    rlang::arg_match(arg, values = values, error_arg = arg_nm),
+    error = function(e) abort_bad_argument(arg_nm, paste0("be one of: ", toString(values)), parent = e)
+  )
+}
+
+#' Parse a model formula with a classed argument error
+#' @param modelstr one formula string or a formula
+#' @noRd
+.as_model_formula <- function(modelstr) {
+  is_string <- is.character(modelstr) && length(modelstr) == 1 && !is.na(modelstr) && grepl("~", modelstr, fixed = TRUE)
+  if (!(inherits(modelstr, "formula") || is_string)) {
+    abort_bad_argument("modelstr", "be a formula or a single string containing `~`")
+  }
+  tryCatch(
+    as.formula(modelstr),
+    error = function(e) abort_bad_argument("modelstr", "be a valid model formula", parent = e)
+  )
+}
+
+#' Require named contrast expressions
+#' @param contrasts named character vector
+#' @noRd
+.assert_named_contrasts <- function(contrasts) {
+  valid <- all(
+    is.character(contrasts),
+    length(contrasts) > 0,
+    !anyNA(contrasts),
+    !is.null(names(contrasts)),
+    !anyNA(names(contrasts)),
+    all(nzchar(names(contrasts)))
+  )
+  if (!valid) {
+    abort_bad_argument("contrasts", "be a nonempty named character vector without missing values")
+  }
+}
+
+#' Validate the data and configured response at input boundaries
+#' @param data input data frame
+#' @param config AnalysisConfiguration
+#' @noRd
+.assert_response_data <- function(data, config) {
+  if (!is.data.frame(data)) {
+    abort_bad_argument("data", "be a data frame")
+  }
+  if (!inherits(config, "AnalysisConfiguration")) {
+    abort_invalid_config("`config` must be an AnalysisConfiguration.")
+  }
+  response <- config$get_response()
+  if (length(response) != 1 || !response %in% names(data)) {
+    abort_missing_columns(response %||% "response")
+  }
+  if (!is.numeric(data[[response]])) {
+    abort_bad_argument("response", paste0("be numeric (column `", response, "`)"))
+  }
+}
+
+#' Validate simulator size and missingness weight
+#' @param Nprot positive whole number of proteins
+#' @param weight_missing one number in [0, 1]
+#' @noRd
+.assert_simulation_args <- function(Nprot, weight_missing) {
+  if (!.is_finite_number(Nprot) || !all(Nprot > 0, Nprot == floor(Nprot))) {
+    abort_bad_argument("Nprot", "be one positive whole number")
+  }
+  if (!.is_finite_number(weight_missing) || !all(weight_missing >= 0, weight_missing <= 1)) {
+    abort_bad_argument("weight_missing", "be one finite number in [0, 1]")
+  }
+}
+
+#' Test whether a value is one finite real number
+#' @param x value to test
+#' @noRd
+.is_finite_number <- function(x) {
+  is.numeric(x) && length(x) == 1 && is.finite(x)
+}

@@ -87,6 +87,7 @@ LFQData <- R6::R6Class(
     #' @param prefix will be use as output prefix
     #' @param setup is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.
     initialize = function(data, config, prefix = "ms_", setup = FALSE) {
+      .assert_response_data(data, config)
       private$.data <- if (setup) {
         setup_analysis(data, config)
       } else {
@@ -404,13 +405,13 @@ LFQData <- R6::R6Class(
     #' @param ... passed to aggregator constructor (e.g. prefix, N, func, dpc_slope)
     #' @return AggregateMedpolish, AggregateRlm, AggregateTopN, or AggregateLimpa
     get_Aggregator = function(method = "medpolish", ...) {
+      method <- .arg_match_prolfqua(method, c("medpolish", "rlm", "topN", "limpa"), "method")
       switch(
         method,
         "medpolish" = AggregateMedpolish$new(self, ...),
         "rlm" = AggregateRlm$new(self, ...),
         "topN" = AggregateTopN$new(self, ...),
-        "limpa" = AggregateLimpa$new(self, ...),
-        abort_bad_argument("method", 'be one of: "medpolish", "rlm", "topN", "limpa"', not = method)
+        "limpa" = AggregateLimpa$new(self, ...)
       )
     }
   )

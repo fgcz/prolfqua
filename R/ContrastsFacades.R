@@ -815,7 +815,7 @@ register_facade <- function(name, class, needs, package = "prolfqua", needs_sain
     abort_bad_argument("class", "be one non-empty string")
   }
   if (!is_string(needs)) {
-    abort_bad_argument("needs", 'be "aggregated" or "nested"')
+    abort_bad_argument("needs", "be one character string")
   }
   if (!is_string(package)) {
     abort_bad_argument("package", "be one string")

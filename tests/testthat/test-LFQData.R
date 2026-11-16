@@ -250,7 +250,7 @@ test_that("AggregateTopN", {
   expect_s3_class(result_mean, "LFQData")
 
   # invalid func must error via match.arg, not be silently accepted
-  expect_error(AggregateTopN$new(lfqdata$get_copy(), "protein", func = "median"))
+  expect_error(AggregateTopN$new(lfqdata$get_copy(), "protein", func = "median"), "should be one of")
 })
 
 test_that("Transformer and Summariser deep-clone their input", {
