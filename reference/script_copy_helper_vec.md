@@ -39,7 +39,7 @@ paths of the copied files
 
 ``` r
 copied <- script_copy_helper_vec("CITATION", workdir = tempdir())
-#> copy /home/runner/work/_temp/Library/prolfqua/CITATION to /tmp/RtmpySTN3t/CITATION
+#> copy /home/runner/work/_temp/Library/prolfqua/CITATION to /tmp/RtmpS0Qz9U/CITATION
 #> your working directory now should contain: 1 new files:
 basename(copied)
 #> [1] "CITATION"
