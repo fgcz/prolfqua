@@ -1,4 +1,7 @@
-# Facet formula "isotope label ~ factor1 + factor2" used by the missingness plots.
+#' Facet formula "isotope label ~ factor1 + factor2" used by the missingness plots.
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @param factors named list of explanatory-variable columns
+#' @noRd
 .isotope_by_factors_formula <- function(lfqdata, factors) {
   paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
 }
@@ -23,9 +26,12 @@ encode_bin_resp <- function(lfqdata, name = "bin_resp") {
 
 # Functions - Missingness ----
 
-# Split a contrast "LHS - RHS" into its left/right side expressions, used by
-# get_contrast() to derive group_1 / group_2. Returns NULL for anything that is
-# not a top-level binary minus (get_contrast() rejects those).
+#' Split a contrast "LHS - RHS" into its left/right side expressions, used by
+#'
+#' get_contrast() to derive group_1 / group_2. Returns NULL for anything that is
+#' not a top-level binary minus (get_contrast() rejects those).
+#' @param contrast contrast expression or contrast column name
+#' @noRd
 .contrast_sides_expr <- function(contrast) {
   expr <- rlang::parse_expr(contrast)
   if (rlang::is_call(expr, "-") && length(expr) == 3L) {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_contrasts.R
 \name{linfct_from_model}
 \alias{linfct_from_model}
-\title{get linfct from model}
+\title{Get group-level linear functions from a fitted model}
 \usage{
 linfct_from_model(m, as_list = TRUE)
 }
@@ -10,7 +10,20 @@ linfct_from_model(m, as_list = TRUE)
 \item{m}{linear model}
 }
 \description{
-get linfct from model
+Get group-level linear functions from a fitted model
+}
+\details{
+The fitted model supplies its coefficient names and observed
+  categorical factor combinations. Each combination is expressed as weights
+  on the fitted coefficients; weights for an individual factor level are
+  averaged equally over the observed combinations containing that level.
+  Thus \code{linfct_factors} describes marginal factor-level means and
+  \code{linfct_interactions} describes cell means. With treatment coding,
+  a reference-level mean includes the intercept; a non-reference mean also
+  includes its treatment coefficient. The \emph{Under the hood} article
+  shows a complete \code{~ A * B} example. These helpers assume categorical
+  predictors and the usual intercept-based coding; they are not a general
+  marginal-means implementation for continuous predictors or arbitrary coding.
 }
 \examples{
 

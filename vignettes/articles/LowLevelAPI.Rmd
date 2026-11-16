@@ -83,6 +83,69 @@ The model coefficients:
 head(mod$get_coefficients())
 ```
 
+# From a formula to coefficient weights
+
+`setup_analysis()` treats configured predictors as categorical labels. It converts numeric predictors and ordered factors to character too, so ordered levels and numeric slopes are not retained by that route. It builds the configured identifiers and retains the analysis columns; other columns and their attributes are discarded. The names in `config$factors` are the predictor names used in the formula. Method keys, predictor names and contrast names are case sensitive.
+
+R normally uses treatment coding (`options("contrasts")`): an intercept for the reference group and one coefficient per other level. When predictors are character labels, the first sorted level is normally the reference. In this small example we explicitly set `Ctrl` as the reference to make the coefficients easy to read:
+
+```{r design-one-factor}
+one_factor <- data.frame(
+  group_ = factor(rep(c("Ctrl", "A", "B"), each = 3), levels = c("Ctrl", "A", "B")),
+  abundance = c(19.8, 20, 20.2, 21.8, 22, 22.2, 18.8, 19, 19.2)
+)
+one_model <- lm(abundance ~ group_, data = one_factor)
+unique(model.matrix(one_model))
+coef(one_model)
+```
+
+The coefficient vector is `(Intercept)`, `group_A`, `group_B`: control abundance, A minus control, and B minus control. `linfct_from_model()` represents each group mean as a row of weights on those coefficients. Internally `.model_coeff_matrix()` creates the weights for observed factor combinations and `.coeff_weights_factor_levels()` averages them equally within each factor level. `linfct_matrix_contrasts()` then evaluates the named expression using those group rows:
+
+```{r one-factor-weights}
+one_means <- linfct_from_model(one_model)$linfct_factors
+one_means
+one_contrast <- linfct_matrix_contrasts(one_means, c(A_vs_Ctrl = "group_A - group_Ctrl"))
+one_contrast
+drop(one_contrast %*% coef(one_model))
+```
+
+Here `A_vs_Ctrl` has weights `(0, 1, 0)` and estimates a difference of 2. If A were the reference, the individual coefficient names and weights would change, but the same contrast of group means would still estimate A minus control. The contrast strings refer to group means, which should not be confused with individual treatment-coded coefficients.
+
+## Two factors and their interaction
+
+`~ A * B` expands to `~ A + B + A:B`. With two levels per factor, its four columns are an intercept, the A effect at the B reference level, the B effect at the A reference level, and their interaction. The interaction is the change in the A effect between the two B levels:
+
+```{r design-interaction}
+two_factor <- expand.grid(A = c("a0", "a1"), B = c("b0", "b1"), replicate = 1:3)
+two_factor$abundance <- 20 + 3 * (two_factor$A == "a1") - 2 * (two_factor$B == "b1") +
+  4 * (two_factor$A == "a1" & two_factor$B == "b1") + rep(c(-0.2, 0, 0.2), each = 4)
+two_model <- lm(abundance ~ A * B, data = two_factor)
+unique(model.matrix(two_model))
+coef(two_model)
+```
+
+Cell means include the corresponding intercept, main effects and interaction. Quote the cell names with backticks because they contain colons. A main-effect row in `linfct_factors` averages equally over the observed cells containing that factor level; a row in `linfct_interactions` describes one cell. In this balanced example, the marginal A difference is 5, the A difference at `b0` is 3, and the difference at `b1` is 7:
+
+```{r interaction-weights}
+two_means <- linfct_from_model(two_model)
+two_means$linfct_factors
+two_means$linfct_interactions
+two_weights <- linfct_matrix_contrasts(
+  linfct_from_model(two_model, as_list = FALSE),
+  c(
+    A_marginal = "Aa1 - Aa0",
+    A_at_b0 = "`Aa1:Bb0` - `Aa0:Bb0`",
+    A_at_b1 = "`Aa1:Bb1` - `Aa0:Bb1`",
+    A_by_B = "A_at_b1 - A_at_b0"
+  )
+)
+two_weights
+drop(two_weights %*% coef(two_model))
+stopifnot(all.equal(unname(drop(two_weights %*% coef(two_model))), c(5, 3, 7, 4)))
+```
+
+These helpers assume categorical predictors and the usual intercept-based coding. They do not implement general marginal means for continuous covariates or arbitrary contrast coding. Missing factor combinations can make some rows unestimable; unavailable groups in the contrast expressions are reported by a warning at the low-level interface, and the facade rejects a group absent from the entire dataset.
+
 # Without moderation
 
 `Contrasts` alone gives the unmoderated contrasts, which the facades do not expose. Moderation stabilises the variances estimated from few observations:

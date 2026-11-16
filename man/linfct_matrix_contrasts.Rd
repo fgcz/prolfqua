@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_contrasts.R
 \name{linfct_matrix_contrasts}
 \alias{linfct_matrix_contrasts}
-\title{linfct_matrix_contrasts}
+\title{Convert named group-mean contrasts to coefficient weights}
 \usage{
 linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
 }
@@ -14,7 +14,16 @@ linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
 \item{p.message}{print messages default FALSE}
 }
 \description{
-linfct_matrix_contrasts
+Convert named group-mean contrasts to coefficient weights
+}
+\details{
+Rows of \code{linfct} represent group or interaction means and
+  columns represent fitted coefficients. Contrast expressions combine these
+  rows, so \code{"group_A - group_Ctrl"} becomes their row difference.
+  Quote interaction names containing colons with backticks. Expressions may
+  reference earlier named contrasts. A row naming a group unavailable in a
+  particular model is dropped with a warning. The returned matrix has one
+  row per estimable contrast and coefficient columns in model order.
 }
 \examples{
 

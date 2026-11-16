@@ -1,17 +1,26 @@
-# Internal error handler for tryCatch in model fitting and plotting: the error
-# becomes a warning of class prolfqua_fit_failed, and the failed fit its message.
+#' Internal error handler for tryCatch in model fitting and plotting: the error
+#'
+#' becomes a warning of class prolfqua_fit_failed, and the failed fit its message.
+#' @param e condition raised by a failed fit
+#' @noRd
 .error_handler <- function(e) {
   rlang::warn(conditionMessage(e), class = "prolfqua_fit_failed")
   as.character(e)
 }
 
-# Whether an optional (Suggests) package is installed; a function so tests can mock it.
+#' Whether an optional (Suggests) package is installed; a function so tests can mock it.
+#' @param pkg optional package name
+#' @noRd
 .has_package <- function(pkg) {
   requireNamespace(pkg, quietly = TRUE)
 }
 
-# Evaluate code with a fixed seed and restore the caller's random number state
-# afterwards, as withr::with_seed() does with the default RNG kinds.
+#' Evaluate code with a fixed seed and restore the caller's random number state
+#'
+#' afterwards, as withr::with_seed() does with the default RNG kinds.
+#' @param seed random seed or NULL
+#' @param code expression evaluated with the selected random-number state
+#' @noRd
 .with_seed <- function(seed, code) {
   force(seed)
   old_seed <- get0(".Random.seed", envir = globalenv(), mode = "integer", inherits = FALSE)
@@ -27,8 +36,11 @@
   code
 }
 
-# Close graphics device `which` and make the previously active device current
-# again, as withr::local_pdf() does when its frame exits.
+#' Close graphics device `which` and make the previously active device current
+#'
+#' again, as withr::local_pdf() does when its frame exits.
+#' @param which graphics device number
+#' @noRd
 .dev_close <- function(which) {
   prev <- grDevices::dev.prev(which)
   grDevices::dev.off(which)
@@ -38,7 +50,9 @@
   invisible(prev)
 }
 
-# Internal helper for rendering ggplot/ComplexHeatmap objects to an open graphics device.
+#' Internal helper for rendering ggplot/ComplexHeatmap objects to an open graphics device.
+#' @param x object consumed by this operation
+#' @noRd
 .render_plot_to_device <- function(x) {
   if (methods::is(x, "Heatmap") || methods::is(x, "HeatmapList")) {
     ComplexHeatmap::draw(x)
@@ -178,6 +192,10 @@ multigroup_volcano <- function(
   return(p)
 }
 
+#' Bound significance scores away from zero before log transformation
+#' @param values numeric scores or named expression matrices
+#' @param min_score smallest displayed significance score
+#' @noRd
 .floor_significance_values <- function(values, min_score = NULL) {
   if (!is.null(min_score)) {
     return(pmax(values, min_score))
@@ -192,6 +210,9 @@ multigroup_volcano <- function(
   ifelse(values <= 0, zero_floor, values)
 }
 
+#' Choose colours for the contrast estimate types
+#' @param colour estimate-type colour specification
+#' @noRd
 .contrast_colour_values <- function(colour) {
   if (identical(colour, "estimate_type")) {
     return(c(observed = "black", lod_imputed = "green", missing_fallback = "blue"))
@@ -199,6 +220,17 @@ multigroup_volcano <- function(
   c("black", "green", "blue", "red")
 }
 
+#' Draw one volcano panel per contrast with shared score definitions
+#' @param data data frame or matrix consumed by this operation
+#' @param effect effect-size column name
+#' @param significance significance-score column name
+#' @param contrast contrast expression or contrast column name
+#' @param colour estimate-type colour specification
+#' @param xintercept effect-size reference lines
+#' @param yintercept significance reference lines
+#' @param text message text or plot annotation column
+#' @param scales scaling specification used by the operation
+#' @noRd
 .multigroup_volcano <- function(
   data,
   effect = "fc",
@@ -386,6 +418,20 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 }
 
 
+#' Draw a volcano panel with effect and significance thresholds
+#' @param data data frame or matrix consumed by this operation
+#' @param contrast contrast expression or contrast column name
+#' @param effect effect-size column name
+#' @param significance significance-score column name
+#' @param x_annot horizontal annotation column
+#' @param y_annot vertical annotation column
+#' @param proteinID feature identifier column
+#' @param color colour column
+#' @param palette named mapping from groups to colours
+#' @param xintercept effect-size reference lines
+#' @param yintercept significance reference lines
+#' @param title_size plot title text size
+#' @noRd
 .volcano <- function(
   data,
   contrast = NULL,
@@ -584,9 +630,13 @@ make_interaction_column <- function(data, columns, sep = ".") {
 .default_decoy_prefixes <- "^REV_|^rev_|^DECOY|^decoy_|^XXX_|^reverse_|^##"
 .default_contaminant_prefixes <- "^zz|^CON__|^CON_|^Cont_|^contam_"
 
-# defaults, unioned with an optional configured pattern. An empty / NULL /
-# no-op ("a^") pattern yields the defaults only -- never grepl("", x), which
-# would match every id (the exact failure mode behind WU347806).
+#' defaults, unioned with an optional configured pattern. An empty / NULL /
+#'
+#' no-op ("a^") pattern yields the defaults only -- never grepl("", x), which
+#' would match every id (the exact failure mode behind WU347806).
+#' @param pattern optional user-specified identifier pattern
+#' @param defaults built-in identifier patterns
+#' @noRd
 .effective_prefix_pattern <- function(pattern, defaults) {
   has_pat <- !is.null(pattern) &&
     length(pattern) == 1 &&

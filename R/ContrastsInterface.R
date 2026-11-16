@@ -235,6 +235,11 @@ ContrastsInterface <- R6::R6Class(
   )
 )
 
+#' Require columns needed by a contrast operation
+#' @param contrasts named character vector of contrast expressions
+#' @param required column names required by the operation
+#' @param action operation described in a missing-column error
+#' @noRd
 .stop_if_missing_columns <- function(contrasts, required, action) {
   missing_columns <- setdiff(required, colnames(contrasts))
   if (length(missing_columns) > 0) {
@@ -248,7 +253,11 @@ ContrastsInterface <- R6::R6Class(
   }
 }
 
-# Lead the contrast table with the model identity: modelName, then estimate_type.
+#' Lead the contrast table with the model identity: modelName, then estimate_type.
+#' @param contrast_result computed contrast table
+#' @param model_name model identity stored in output
+#' @param estimate_type label distinguishing observed and imputed estimates
+#' @noRd
 .stamp_model_identity <- function(contrast_result, model_name, estimate_type) {
   contrast_result$estimate_type <- estimate_type
   contrast_result <- dplyr::mutate(contrast_result, modelName = model_name, .before = 1)

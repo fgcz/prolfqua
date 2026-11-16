@@ -7,7 +7,8 @@
 setup_analysis(data, configuration, debug = FALSE)
 }
 \arguments{
-\item{data}{data.frame}
+\item{data}{a data.frame with the configured source hierarchy, factor,
+file-name and numeric response columns}
 
 \item{configuration}{AnalysisConfiguration}
 
@@ -24,6 +25,17 @@ A tibble with the columns relevant for \code{configuration}
 \description{
 Extracts columns relevant for a configuration from a data frame
 and create new columns e.g. sampleName column etc.
+}
+\details{
+Configured factor source columns are converted to character
+  categorical labels, including numeric and ordered factors. Ordered levels
+  and their ordering are not retained. Names of \code{configuration$factors}
+  become the output predictor column names. Configured hierarchy columns are
+  combined into identifiers. Unconfigured columns and their attributes are
+  discarded; the returned table retains only configured analysis columns.
+  A missing sample name is derived from the file name. Missing isotope labels,
+  identification q-values and child counts receive the documented setup
+  defaults; adding child counts of one emits a warning.
 }
 \examples{
 

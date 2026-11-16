@@ -358,8 +358,15 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
   )
 }
 
-# center by the medians and scale by the relative mads (see .get_robscales); warns with `zero_mad_warning`
-# and skips the scaling when a mad is zero
+#' center by the medians and scale by the relative mads (see .get_robscales); warns with `zero_mad_warning`
+#'
+#' and skips the scaling when a mad is zero
+#' @param data data frame or matrix consumed by this operation
+#' @param scales scaling specification used by the operation
+#' @param preserve_mean restore the overall mean after scaling
+#' @param dim matrix margin to scale
+#' @param zero_mad_warning warning emitted when scaling cannot divide by the MAD
+#' @noRd
 .apply_robscales <- function(data, scales, preserve_mean, dim, zero_mad_warning) {
   data <- sweep(data, dim, scales$medians, "-")
   if (any(scales$mads == 0)) {
@@ -448,7 +455,12 @@ scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, colname
 }
 
 
-# Function to normalize protein abundances by subtracting sample means of reference proteins
+#' Function to normalize protein abundances by subtracting sample means of reference proteins
+#' @param df degrees of freedom or input data frame as required by the operation
+#' @param df_reference reference protein measurements
+#' @param sample_name column identifying samples
+#' @param abundance_column column containing intensities
+#' @noRd
 center_to_reference <- function(
   df,
   df_reference,

@@ -1,5 +1,17 @@
-# Functions - Plotting ----
-# Plot peptide and fragments
+#' Functions - Plotting ----
+#'
+#' Plot peptide and fragments
+#' @param data data frame or matrix consumed by this operation
+#' @param protein_name protein identifier column
+#' @param sample sample identifier column
+#' @param intensity intensity column
+#' @param peptide whether the input contains peptide-level measurements
+#' @param fragment fragment identifier column
+#' @param factor explanatory-variable column
+#' @param isotope_label column identifying isotope labels
+#' @param log_y use a logarithmic intensity axis
+#' @param show.legend show the plot legend
+#' @noRd
 plot_hierarchies_line_default <- function(
   data,
   protein_name,
@@ -85,6 +97,14 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 }
 
 
+#' Attach sample annotations to the median-polish protein estimates
+#' @param data data frame or matrix consumed by this operation
+#' @param medpolishRes median-polish estimates and residuals
+#' @param sample_name column identifying samples
+#' @param factor_keys configured explanatory-variable columns
+#' @param file_name column identifying the input measurement files
+#' @param isotope_label column identifying isotope labels
+#' @noRd
 .reestablish_condition <- function(data, medpolishRes, sample_name, factor_keys, file_name, isotope_label) {
   xx <- data |>
     dplyr::select(dplyr::all_of(c(sample_name, factor_keys, file_name, isotope_label))) |>
@@ -94,7 +114,12 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 }
 
 
-# Tukey's median polish estimate of e.g. a protein from its feature (peptide) intensities, one row per sample.
+#' Tukey's median polish estimate of e.g. a protein from its feature (peptide) intensities, one row per sample.
+#' @param pdata long-format measurement table
+#' @param response response column name or vector
+#' @param feature child-feature identifier column
+#' @param sample_name column identifying samples
+#' @noRd
 .medpolish_estimate <- function(pdata, response, feature, sample_name) {
   wide <- pdata |>
     dplyr::select(all_of(c(sample_name, feature, response))) |>
@@ -104,6 +129,13 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   tibble(!!sample_name := names(X$col), medpolish = X$col + X$overall)
 }
 
+#' Estimate protein intensities by robust peptide regression
+#' @param pdata long-format measurement table
+#' @param response response column name or vector
+#' @param feature child-feature identifier column
+#' @param samples sample identifier values
+#' @param maxIt maximum robust-regression iterations
+#' @noRd
 .rlm_estimate <- function(pdata, response, feature, samples = "samples", maxIt = 20) {
   data <- pdata |>
     select(all_of(c(samples, feature, response))) |>
@@ -190,6 +222,15 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   return(finalize(res))
 }
 
+#' Count measured children per parent and sample after aggregation
+#' @param data data frame or matrix consumed by this operation
+#' @param aggregated_data protein-level estimates returned by aggregation
+#' @param hierarchy_keys_depth identifier columns at the output depth
+#' @param file_name column identifying the input measurement files
+#' @param response response column name or vector
+#' @param nr_children_col column tracking measured child-feature counts
+#' @param newconfig configuration of the aggregated output
+#' @noRd
 .add_nr_children <- function(
   data,
   aggregated_data,

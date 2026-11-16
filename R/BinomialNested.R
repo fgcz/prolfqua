@@ -1,5 +1,8 @@
 # Binomial detection model ----
 
+#' Count detected and undetected child features per parent and sample
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @noRd
 .summarize_detection_counts <- function(lfqdata) {
   if (!inherits(lfqdata, "LFQData")) {
     abort_bad_argument("lfqdata", "be an LFQData object")
@@ -27,6 +30,9 @@
   counts
 }
 
+#' Validate the symmetric binomial pseudo-count
+#' @param prior_count non-negative symmetric detection pseudo-count
+#' @noRd
 .validate_binomial_prior_count <- function(prior_count) {
   candidate <- if (is.numeric(prior_count)) prior_count else NA_real_
   is_valid <- all(c(

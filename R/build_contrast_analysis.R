@@ -16,10 +16,10 @@
 #' with \code{\link{AggregateLimpa}}.
 #'
 #' @param lfqdata an \code{\link{LFQData}} object
-#' @param modelstr model formula string without the response variable
+#' @param modelstr one right-hand-side formula string without the response variable
 #'   (e.g. \code{"~ group_"}). The response is taken automatically from
 #'   \code{lfqdata$get_config()$get_response()}.
-#' @param contrasts named character vector of contrasts
+#' @param contrasts nonempty named character vector of contrast expressions
 #'   (e.g. \code{c("A_vs_B" = "group_A - group_B")})
 #' @param method a registered facade key. The built-in keys are:
 #'   linear models \code{"lm"}, \code{"rlm"}, \code{"rfit"};
@@ -33,10 +33,36 @@
 #'   \code{"binomial_firth_nested"};
 #'   the hurdle model \code{"hurdle_nested"}, combining intensity and detection.
 #'   Downstream packages may add more via \code{\link{register_facade}}. The
+#'   Keys and column names are case sensitive and must match exactly. The
 #'   authoritative list is \code{names(\link{list_facades}())}. Defaults to
 #'   \code{"lm"}.
 #' @param ... additional arguments forwarded to the underlying strategy function
 #'   (e.g. \code{trend}, \code{robust} for \code{strategy_limma})
+#' @details The formula is translated into a design matrix with R's current
+#'   contrast options (normally treatment coding). Configured predictors are
+#'   categorical labels; their reference level is normally the first sorted
+#'   level. Each contrast expression combines group-level coefficient weights,
+#'   rather than referring directly to design-matrix coefficient names. For
+#'   example, \code{"group_A - group_Ctrl"} subtracts the control group mean
+#'   from the A group mean, including the reference coefficient as needed.
+#'   Interaction cell means are named with a colon and quoted with backticks
+#'   inside expressions. See the \emph{Under the hood} article for worked
+#'   one-factor and \code{~ A * B} design matrices and linear functions.
+#'
+#'   With a fixed design and fixed observations per protein, the per-protein
+#'   \code{lm} and \code{lmer_nested} fitting loops grow approximately linearly
+#'   with the number of proteins and run sequentially. \code{limma} fits the
+#'   expression matrix in one call and has lower per-protein overhead.
+#'   Single-run elapsed seconds for 500, 1000 and 2000 proteins were respectively
+#'   0.173, 0.288 and 0.592 for \code{lm}; 0.077, 0.043 and 0.050 for
+#'   \code{limma}; and 7.902, 15.314 and 29.667 for \code{lmer_nested}
+#'   (R 4.6.2, arm64 macOS, 12 samples, three peptides per protein for the
+#'   nested model, no missing responses). These timings cover facade
+#'   construction, including fitting, but exclude lazy contrast extraction.
+#'   They are illustrative timings, not guarantees: sample count, design width,
+#'   missingness and mixed-model convergence affect cost. Some mixed fits in
+#'   this run emitted convergence warnings. Reproduction code and environment
+#'   details are in \code{srr/benchmark-runtime.R} in the source repository.
 #' @return a facade object of the class registered for \code{method}, see
 #'   \code{\link{lookup_facade}}.
 #' @export

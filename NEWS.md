@@ -7,6 +7,8 @@
 
 ## Behaviour changes
 
+- The package help now defines the API lifecycle, analysis terminology and statistical terms. The Under the hood article explains categorical formula coding and contrast weights, and the analysis help documents measured runtime scaling.
+
 - Invalid analysis, simulation, response, contrast and count inputs now fail at the entry point with a classed error. Method keys must match exactly (case sensitive). A misspelled limma weights column is an error rather than an unweighted fit. Subset scaling rejects mismatched transformation states.
 
 - Fewer hard dependencies: 'UpSetR', 'ComplexHeatmap', 'circlize', 'plotly', 'ggbeeswarm', 'progress', 'logistf', 'lme4' and 'lmerTest' moved from Imports to Suggests, and 'forcats', 'tidyselect' and 'withr' are no longer needed (Imports: 23 to 11). Heatmaps, UpSet plots, interactive plots, the `firth` and `lmer_nested` methods ask to install the packages they need. Without 'plotly' the intensity density plot is static, without 'ggbeeswarm' box plots show jittered points, and without 'progress' no progress bar is shown. Progress of aggregation and of writing box and aggregation plots now also follows `options(prolfqua.progress)`.

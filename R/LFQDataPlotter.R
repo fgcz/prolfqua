@@ -1,12 +1,16 @@
-# Keep the `top_n` most variable features for the intensity heatmap.
-#
-# Ranks features by their prolfqua variability statistic (CV for untransformed
-# data, sd for transformed data; see LFQDataStats) and keeps the most variable.
-# The heatmap clusters rows with stats::hclust, which errors above 65536
-# features, so this keeps clustering feasible (and the plot legible) for
-# peptide-list / entrapment searches with tens of thousands of degenerate
-# protein groups. `top_n = NULL` / non-finite keeps all features.
-# Returns a subset of wide$data in the original row order.
+#' Keep the `top_n` most variable features for the intensity heatmap.
+#'
+#' Ranks features by their prolfqua variability statistic (CV for untransformed
+#' data, sd for transformed data; see LFQDataStats) and keeps the most variable.
+#' The heatmap clusters rows with stats::hclust, which errors above 65536
+#' features, so this keeps clustering feasible (and the plot legible) for
+#' peptide-list / entrapment searches with tens of thousands of degenerate
+#' protein groups. `top_n = NULL` / non-finite keeps all features.
+#' Returns a subset of wide$data in the original row order.
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @param wide wide-format data, row identifiers and sample annotations
+#' @param top_n maximum number of variable features to retain
+#' @noRd
 .select_most_variable_features <- function(lfqdata, wide, top_n) {
   mat <- wide$data
   if (is.null(top_n) || !is.finite(top_n) || nrow(mat) <= top_n) {

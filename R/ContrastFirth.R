@@ -1,3 +1,6 @@
+#' Keep successful Firth fits with usable coefficients
+#' @param model_df table with one fitted model and diagnostics per subject
+#' @noRd
 .filter_fitted_firth_models <- function(model_df) {
   model_df |>
     dplyr::filter(

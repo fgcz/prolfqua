@@ -37,3 +37,4 @@ R/tidyMS_stanr\.R
 ^AGENTS\.md$
 ^CLAUDE\.md$
 ^vignettes/articles$
+^srr$

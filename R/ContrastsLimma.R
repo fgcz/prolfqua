@@ -200,6 +200,14 @@ compute_borrowed_variance_limma <- function(fit) {
   abort_bad_argument("weights", "be NULL, one column name, or a numeric matrix")
 }
 
+#' Wrap a matrix fit and its metadata in ModelLimma
+#' @param fit fitted model
+#' @param setup matrix data and metadata returned by .lfqdata_to_elist
+#' @param strategy modelling strategy
+#' @param model_name model identity stored in output
+#' @param dummy_model representative fit used to construct linear functions
+#' @param imputed_proteins identifiers of proteins refitted at the LOD
+#' @noRd
 .new_model_limma <- function(
   fit,
   setup,
@@ -221,7 +229,11 @@ compute_borrowed_variance_limma <- function(fit) {
   )
 }
 
-# lm of one expression row on the design, used to derive the linear functions of the contrasts.
+#' lm of one expression row on the design, used to derive the linear functions of the contrasts.
+#' @param annotation one row of annotations per sample
+#' @param rhs_formula response-free model formula
+#' @param response response column name or vector
+#' @noRd
 .limma_dummy_model <- function(annotation, rhs_formula, response) {
   dummy_data <- annotation
   dummy_data$.response <- as.numeric(response)
@@ -229,6 +241,11 @@ compute_borrowed_variance_limma <- function(fit) {
   lm(dummy_formula, data = dummy_data)
 }
 
+#' Replace missing expression cells with the LOD and set their weights to one
+#' @param expr_matrix numeric feature-by-sample expression matrix
+#' @param weights optional observation weights
+#' @param lod limit of detection on the response scale
+#' @noRd
 .impute_limma_data <- function(expr_matrix, weights, lod) {
   na_mask <- is.na(expr_matrix)
   expr_imputed <- expr_matrix
@@ -245,9 +262,18 @@ compute_borrowed_variance_limma <- function(fit) {
   )
 }
 
-# Shared body of the build_model_limma* builders. `fit_fun(expression, design, weights = )` fits the
-# expression matrix. With `impute = TRUE`, proteins with NA coefficients are refit on LOD-imputed data
-# and get the variance borrowed from the successful fits.
+#' Shared body of the build_model_limma* builders. `fit_fun(expression, design, weights = )` fits the
+#'
+#' expression matrix. With `impute = TRUE`, proteins with NA coefficients are refit on LOD-imputed data
+#' and get the variance borrowed from the successful fits.
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @param strategy modelling strategy
+#' @param model_name model identity stored in output
+#' @param fit_fun function fitting an expression matrix on a design matrix
+#' @param impute refit proteins with non-estimable coefficients at the LOD
+#' @param lod limit of detection on the response scale
+#' @param df_method use observed or borrowed residual degrees of freedom
+#' @noRd
 .build_model_limma_core <- function(
   lfqdata,
   strategy,
@@ -296,6 +322,10 @@ compute_borrowed_variance_limma <- function(fit) {
   )
 }
 
+#' Multiply vooma precision weights by external observation or sample weights
+#' @param vooma_weights matrix of abundance-dependent precision weights
+#' @param external_weights optional external observation or sample weights
+#' @noRd
 .combine_vooma_weights <- function(vooma_weights, external_weights) {
   if (is.null(external_weights)) {
     return(vooma_weights)
@@ -310,6 +340,11 @@ compute_borrowed_variance_limma <- function(fit) {
     )
 }
 
+#' Plot the abundance-dependent residual standard deviation trend
+#' @param mean_expression mean log expression per protein
+#' @param sigma residual standard deviations
+#' @param lowess_trend smoothed abundance-variance trend
+#' @noRd
 .plot_vooma_trend <- function(mean_expression, sigma, lowess_trend) {
   graphics::plot(
     mean_expression,
@@ -323,6 +358,13 @@ compute_borrowed_variance_limma <- function(fit) {
   graphics::lines(lowess_trend, col = "red", lwd = 2)
 }
 
+#' Fit limma with precision weights from an abundance-variance trend
+#' @param expression numeric feature-by-sample expression matrix
+#' @param design sample-by-coefficient design matrix
+#' @param weights optional observation weights
+#' @param span smoothing span for the variance trend
+#' @param plot draw the fitted variance trend
+#' @noRd
 .fit_vooma <- function(
   expression,
   design,

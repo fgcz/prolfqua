@@ -1,9 +1,14 @@
 # ContrastsROPECA -----
 
-# Map ROPECA output to the standard contrast columns: beta-based significance
-# becomes p.value and FDR; std.error = diff / statistic, sigma = mad.estimate,
-# df = n_not_na, and a t-based 95% interval. `all = TRUE` appends the remaining
-# ROPECA columns after the standard ones.
+#' Map ROPECA output to the standard contrast columns: beta-based significance
+#'
+#' becomes p.value and FDR; std.error = diff / statistic, sigma = mad.estimate,
+#' df = n_not_na, and a t-based 95% interval. `all = TRUE` appends the remaining
+#' ROPECA columns after the standard ones.
+#' @param res contrast result table
+#' @param subject_id column names identifying the modelled subjects
+#' @param all retain all diagnostic columns
+#' @noRd
 .ropeca_standard_columns <- function(res, subject_id, all = FALSE) {
   res <- dplyr::rename(res, p.value = "beta.based.significance", FDR = "FDR.beta.based.significance")
   res$std.error <- ifelse(res$statistic != 0, res$diff / res$statistic, NA_real_)
@@ -208,8 +213,11 @@ ContrastsROPECA <- R6::R6Class(
 
 # ROPECA V2 -----
 
-# Gauss-Hermite rule for E[f(W)], W ~ N(0, 1), by the Golub-Welsch eigen
-# decomposition of the Jacobi matrix of the probabilists' Hermite polynomials.
+#' Gauss-Hermite rule for E[f(W)], W ~ N(0, 1), by the Golub-Welsch eigen
+#'
+#' decomposition of the Jacobi matrix of the probabilists' Hermite polynomials.
+#' @param n number of observations or quadrature nodes
+#' @noRd
 .gauss_hermite_normal <- function(n = 40) {
   jacobi <- matrix(0, n, n)
   off_diagonal <- sqrt(seq_len(n - 1))
@@ -219,13 +227,17 @@ ContrastsROPECA <- R6::R6Class(
   list(nodes = decomposition$values, weights = decomposition$vectors[1, ]^2)
 }
 
-# P(Med_n > u) for the median Med_n of n independent N(0, 1) values.
-# Odd n: Med_n is the order statistic X_(k), k = (n + 1) / 2, so Phi(Med_n) ~ Beta(k, k).
-# Even n: Med_n = (X_(k) + X_(k+1)) / 2, k = n / 2. Given X_(k) = a, X_(k+1) is the
-# smallest of n - k values above a, hence
-#   P(Med_n > u) = P(X_(k) > u) + C * int_{-Inf}^{u} Phi(a)^(k-1) (1 - Phi(2u - a))^(n-k) phi(a) da
-# with C = n! / ((k - 1)! (n - k)!). The integral is tabulated on a u grid and
-# interpolated on the log scale.
+#' P(Med_n > u) for the median Med_n of n independent N(0, 1) values.
+#'
+#' Odd n: Med_n is the order statistic X_(k), k = (n + 1) / 2, so Phi(Med_n) ~ Beta(k, k).
+#' Even n: Med_n = (X_(k) + X_(k+1)) / 2, k = n / 2. Given X_(k) = a, X_(k+1) is the
+#' smallest of n - k values above a, hence
+#'   P(Med_n > u) = P(X_(k) > u) + C * int_{-Inf}^{u} Phi(a)^(k-1) (1 - Phi(2u - a))^(n-k) phi(a) da
+#' with C = n! / ((k - 1)! (n - k)!). The integral is tabulated on a u grid and
+#' interpolated on the log scale.
+#' @param u normal-score threshold
+#' @param n number of observations or quadrature nodes
+#' @noRd
 .median_normal_sf <- function(u, n) {
   if (n %% 2 == 1) {
     k <- (n + 1) / 2
@@ -256,15 +268,24 @@ ContrastsROPECA <- R6::R6Class(
   exp(stats::approx(grid_u, log_sf, xout = u, rule = 2)$y)
 }
 
-# Standard normal score of a t-statistic with df degrees of freedom: the
-# z with the same one-sided tail probability, computed on the log scale so that
-# extreme t stay finite.
+#' Standard normal score of a t-statistic with df degrees of freedom: the
+#'
+#' z with the same one-sided tail probability, computed on the log scale so that
+#' extreme t stay finite.
+#' @param t peptide t-statistics
+#' @param df degrees of freedom or input data frame as required by the operation
+#' @noRd
 .peptide_z <- function(t, df) {
   sign(t) * -stats::qnorm(stats::pt(-abs(t), df, log.p = TRUE), log.p = TRUE)
 }
 
-# Two-sided p-value of the median of n peptide z-scores whose pairwise correlation
-# is rho: M = sqrt(rho) W + sqrt(1 - rho) Med_n, W ~ N(0, 1), p = 2 P(M >= |m|).
+#' Two-sided p-value of the median of n peptide z-scores whose pairwise correlation
+#'
+#' is rho: M = sqrt(rho) W + sqrt(1 - rho) Med_n, W ~ N(0, 1), p = 2 P(M >= |m|).
+#' @param median_z median peptide normal score
+#' @param n number of observations or quadrature nodes
+#' @param rho within-protein peptide correlation
+#' @noRd
 .ropeca_v2_pvalue <- function(median_z, n, rho) {
   rule <- .gauss_hermite_normal()
   p <- rep(NA_real_, length(median_z))
@@ -277,8 +298,13 @@ ContrastsROPECA <- R6::R6Class(
   p
 }
 
-# Residuals of a fitted peptide model, the samples they belong to, and the
-# residual projection I - Q Q' of the peptide's design over its observed samples.
+#' Residuals of a fitted peptide model, the samples they belong to, and the
+#'
+#' residual projection I - Q Q' of the peptide's design over its observed samples.
+#' @param model model or model specification used by the operation
+#' @param data data frame or matrix consumed by this operation
+#' @param sample_col sample identifier column
+#' @noRd
 .peptide_residual_projection <- function(model, data, sample_col) {
   residual <- stats::residuals(model)
   q <- qr.Q(model$qr)[, seq_len(model$rank), drop = FALSE]
@@ -289,12 +315,15 @@ ContrastsROPECA <- R6::R6Class(
   )
 }
 
-# Moment estimates of the variance components of one protein's peptides. With
-# y_j = b + e_j (b shared by the peptides), the residuals r_j = P_j y_j satisfy
-# E<r_j, r_l> = Var(b) * tr(P_j P_l) over the samples both peptides were observed
-# in, and E|r_j|^2 = (Var(b) + Var(e)) * tr(P_j). Using the projections keeps the
-# estimates unbiased when peptides miss different samples. Returns the shared
-# variance Var(b) and the total variance, NA without two overlapping peptides.
+#' Moment estimates of the variance components of one protein's peptides. With
+#'
+#' y_j = b + e_j (b shared by the peptides), the residuals r_j = P_j y_j satisfy
+#' E<r_j, r_l> = Var(b) * tr(P_j P_l) over the samples both peptides were observed
+#' in, and E|r_j|^2 = (Var(b) + Var(e)) * tr(P_j). Using the projections keeps the
+#' estimates unbiased when peptides miss different samples. Returns the shared
+#' variance Var(b) and the total variance, NA without two overlapping peptides.
+#' @param peptides peptide residuals and projection matrices for one protein
+#' @noRd
 .protein_variance_components <- function(peptides) {
   if (length(peptides) < 2) {
     return(c(shared = NA_real_, total = NA_real_))
@@ -323,9 +352,14 @@ ContrastsROPECA <- R6::R6Class(
   )
 }
 
-# Correlation of peptides within a protein, estimated once per dataset from the
-# residuals of the peptide models, pooled over proteins with at least two
-# peptides, clamped to [0, 0.95].
+#' Correlation of peptides within a protein, estimated once per dataset from the
+#'
+#' residuals of the peptide models, pooled over proteins with at least two
+#' peptides, clamped to [0, 0.95].
+#' @param model_df table with one fitted model and diagnostics per subject
+#' @param subject_id column names identifying the modelled subjects
+#' @param sample_col sample identifier column
+#' @noRd
 .ropeca_v2_rho <- function(model_df, subject_id, sample_col) {
   protein_cols <- subject_id[-length(subject_id)]
   fitted <- model_df[model_df$has_model_fit, , drop = FALSE]
@@ -344,6 +378,9 @@ ContrastsROPECA <- R6::R6Class(
   min(0.95, max(0, rho))
 }
 
+#' Require one peptide correlation in the interval [0, 1)
+#' @param rho within-protein peptide correlation
+#' @noRd
 .assert_peptide_correlation <- function(rho) {
   in_range <- is.numeric(rho) && length(rho) == 1 && isTRUE(rho >= 0 && rho < 1)
   if (!in_range) {
@@ -351,8 +388,13 @@ ContrastsROPECA <- R6::R6Class(
   }
 }
 
-# Protein-level ROPECA V2 contrasts from peptide-level contrasts with columns diff,
-# statistic, df and avgAbd.
+#' Protein-level ROPECA V2 contrasts from peptide-level contrasts with columns diff,
+#'
+#' statistic, df and avgAbd.
+#' @param peptide_contrasts peptide-level contrast table
+#' @param protein_cols column names identifying parent proteins
+#' @param rho within-protein peptide correlation
+#' @noRd
 .ropeca_v2_protein_contrasts <- function(peptide_contrasts, protein_cols, rho) {
   peptides <- peptide_contrasts |>
     dplyr::filter(!is.na(.data$diff), !is.na(.data$statistic), !is.na(.data$df)) |>

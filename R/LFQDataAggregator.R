@@ -1,6 +1,8 @@
 # LFQDataAggregator ----
 
-# Shared helper: validate hierarchy is aggregatable
+#' Shared helper: validate hierarchy is aggregatable
+#' @param lfq LFQData to inspect
+#' @noRd
 .check_aggregatable <- function(lfq) {
   if (length(lfq$hierarchy_keys()) == 1) {
     abort_bad_argument(
@@ -264,7 +266,13 @@ AggregateTopN <- R6::R6Class(
 )
 
 
-# Helper: convert limpa EList back to long-format LFQData
+#' Helper: convert limpa EList back to long-format LFQData
+#' @param elist limpa EList with expression and uncertainty
+#' @param wide wide-format data, row identifiers and sample annotations
+#' @param config AnalysisConfiguration defining the column roles
+#' @param prefix prefix identifying the output level
+#' @param impute_only return imputed input without protein rollup
+#' @noRd
 .elist_to_lfqdata <- function(elist, wide, config, prefix, impute_only) {
   if (impute_only) {
     newconfig <- config$clone(deep = TRUE)
@@ -287,6 +295,11 @@ AggregateTopN <- R6::R6Class(
   LFQData$new(long_data, newconfig, prefix = prefix)
 }
 
+#' Call the limpa detection probability curve with its slope bound
+#' @param expr_matrix numeric feature-by-sample expression matrix
+#' @param b1.upper upper bound for the detection probability slope
+#' @param dpc_fun limpa detection-curve function
+#' @noRd
 .call_limpa_dpc <- function(expr_matrix, b1.upper = 1, dpc_fun = limpa::dpc) {
   dpc_args <- list(y = expr_matrix)
   if ("b1.upper" %in% names(formals(dpc_fun))) {

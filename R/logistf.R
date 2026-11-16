@@ -1,3 +1,6 @@
+#' Complete LFQData and encode observed intensities as a binary response
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @noRd
 .prepare_detection_lfqdata <- function(lfqdata) {
   if (!inherits(lfqdata, "LFQData")) {
     abort_bad_argument("lfqdata", "be an LFQData object")

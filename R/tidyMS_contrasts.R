@@ -26,6 +26,9 @@ parse_contrast_sides <- function(contrasts) {
     )
 }
 
+#' Represent observed factor-level combinations as coefficient weights
+#' @param m fitted regression model
+#' @noRd
 .model_coeff_matrix <- function(m) {
   if (inherits(m, "lmerModLmerTest")) {
     data <- m@frame
@@ -54,6 +57,9 @@ parse_contrast_sides <- function(contrasts) {
 }
 
 
+#' Average combination weights for each individual factor level
+#' @param coeff_matrix factor-combination coefficient weights
+#' @noRd
 .coeff_weights_factor_levels <- function(coeff_matrix) {
   row_name_parts <- stringi::stri_split_fixed(rownames(coeff_matrix), ":")
   get_coeffs <- function(factor_level) {
@@ -65,7 +71,19 @@ parse_contrast_sides <- function(contrasts) {
   purrr::map_df(unique(unlist(row_name_parts)), get_coeffs)
 }
 
-#' get linfct from model
+#' Get group-level linear functions from a fitted model
+#'
+#' @details The fitted model supplies its coefficient names and observed
+#'   categorical factor combinations. Each combination is expressed as weights
+#'   on the fitted coefficients; weights for an individual factor level are
+#'   averaged equally over the observed combinations containing that level.
+#'   Thus \code{linfct_factors} describes marginal factor-level means and
+#'   \code{linfct_interactions} describes cell means. With treatment coding,
+#'   a reference-level mean includes the intercept; a non-reference mean also
+#'   includes its treatment coefficient. The \emph{Under the hood} article
+#'   shows a complete \code{~ A * B} example. These helpers assume categorical
+#'   predictors and the usual intercept-based coding; they are not a general
+#'   marginal-means implementation for continuous predictors or arbitrary coding.
 #' @param m linear model
 #' @family modelling
 #' @export
@@ -121,7 +139,15 @@ linfct_from_model <- function(m, as_list = TRUE) {
 }
 
 
-#' linfct_matrix_contrasts
+#' Convert named group-mean contrasts to coefficient weights
+#'
+#' @details Rows of \code{linfct} represent group or interaction means and
+#'   columns represent fitted coefficients. Contrast expressions combine these
+#'   rows, so \code{"group_A - group_Ctrl"} becomes their row difference.
+#'   Quote interaction names containing colons with backticks. Expressions may
+#'   reference earlier named contrasts. A row naming a group unavailable in a
+#'   particular model is dropped with a warning. The returned matrix has one
+#'   row per estimable contrast and coefficient columns in model order.
 #'
 #' @export
 #' @param linfct linear functions as created by linfct_from_model
@@ -210,13 +236,15 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
 
 # Computing contrasts helpers -----
 
-# compute contrasts for full models
-# @param m linear model generated using lm
-# @param linfct linear function
-# @param strategy optional strategy for df and sigma computation
-# @param coef coefficients vector, default from model
-# @param Sigma.hat variance-covariance matrix, default from model
-# @param confint which confidence interval to determine
+#' compute contrasts for full models
+#'
+#' @param m linear model generated using lm
+#' @param linfct linear function
+#' @param strategy optional strategy for df and sigma computation
+#' @param coef coefficients vector, default from model
+#' @param Sigma.hat variance-covariance matrix, default from model
+#' @param confint which confidence interval to determine
+#' @noRd
 .compute_contrast <- function(m, linfct, strategy = NULL, coef = coefficients(m), Sigma.hat = vcov(m), confint = 0.95) {
   if (is.null(strategy)) {
     df <- df.residual(m)

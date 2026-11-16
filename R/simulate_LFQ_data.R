@@ -1,3 +1,7 @@
+#' Generate random identifier strings of a fixed length
+#' @param N number of identifiers to generate
+#' @param str_length length of each generated identifier
+#' @noRd
 .generate_random_string <- function(N, str_length) {
   random_string <- vector(mode = "character", length = N)
   digits <- 0:9
@@ -133,12 +137,21 @@ which_missing <- function(x, weight_missing = 0.2) {
   return(missing_values)
 }
 
-# Evaluates code with a fixed seed, or with the current RNG state when seed is NULL.
+#' Evaluates code with a fixed seed, or with the current RNG state when seed is NULL.
+#' @param seed random seed or NULL
+#' @param code expression evaluated with the selected random-number state
+#' @noRd
 .with_sim_seed <- function(seed, code) {
   if (is.null(seed)) code else .with_seed(seed, code)
 }
 
-# Shared tail of the sim_lfq_data_*_config() simulators: configuration of the simulated columns and setup_analysis().
+#' Shared tail of the sim_lfq_data_*_config() simulators: configuration of the simulated columns and setup_analysis().
+#' @param data data frame or matrix consumed by this operation
+#' @param factors named list of explanatory-variable columns
+#' @param peptide whether the input contains peptide-level measurements
+#' @param nr_children column tracking measured child-feature counts
+#' @param factor_depth number of factor levels used for modelling
+#' @noRd
 .sim_setup <- function(data, factors, peptide, nr_children = "nr_children", factor_depth = 1) {
   data$isotopeLabel <- "light"
   data$qValue <- 0
@@ -294,9 +307,16 @@ sim_lfq_data_2factor_config <- function(
 }
 
 
-# Shared body of sim_build_models_lm() and sim_build_models_lmer(). mixed = TRUE simulates peptides, adds the random
-# effects (1|peptide_Id) + (1|sampleName) and fits with strategy_lmer(); its "parallel3" data ignores Nprot,
-# with_missing and weight_missing.
+#' Shared body of sim_build_models_lm() and sim_build_models_lmer(). mixed = TRUE simulates peptides, adds the random
+#'
+#' effects (1|peptide_Id) + (1|sampleName) and fits with strategy_lmer(); its "parallel3" data ignores Nprot,
+#' with_missing and weight_missing.
+#' @param model model or model specification used by the operation
+#' @param Nprot number of simulated proteins
+#' @param with_missing include simulated missing measurements
+#' @param weight_missing weight controlling simulated missingness
+#' @param mixed fit a nested mixed model rather than an aggregated linear model
+#' @noRd
 .sim_build_models <- function(model, Nprot, with_missing, weight_missing, mixed) {
   if (model != "parallel3") {
     istar <- prolfqua::sim_lfq_data_2factor_config(

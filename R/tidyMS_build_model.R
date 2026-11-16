@@ -231,7 +231,10 @@ build_model_impute <- function(
   model
 }
 
-# The limit of detection: `lod` if given, else estimated from the data.
+#' The limit of detection: `lod` if given, else estimated from the data.
+#' @param lod limit of detection on the response scale
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @noRd
 .resolve_lod <- function(lod, lfqdata) {
   if (!is.null(lod)) {
     return(lod)
@@ -239,8 +242,11 @@ build_model_impute <- function(
   MissingHelpers$new(lfqdata$data_long(), lfqdata$get_config())$get_lod()
 }
 
-# One row per sample holding the annotation columns (file, sample, factors), which do not vary per
-# subject. Subject-specific value columns such as nr_children are not included.
+#' One row per sample holding the annotation columns (file, sample, factors), which do not vary per
+#'
+#' subject. Subject-specific value columns such as nr_children are not included.
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @noRd
 .sample_template <- function(lfqdata) {
   data <- lfqdata$data_long()
   data |>
@@ -369,6 +375,13 @@ impute_from_model <- function(model, lfqdata) {
   )
 }
 
+#' Fill missing responses from an available fitted model
+#' @param rows all sample rows for one subject
+#' @param fit fitted model
+#' @param has_model_fit whether the subject has a usable fitted model
+#' @param imputed whether the fit was refitted after LOD imputation
+#' @param response response column name or vector
+#' @noRd
 .fill_missing_response <- function(rows, fit, has_model_fit, imputed, response) {
   missing <- is.na(rows[[response]])
   route <- if (!any(missing)) {
@@ -391,8 +404,12 @@ impute_from_model <- function(model, lfqdata) {
   )
 }
 
-# predict.lm() fails on a factor level the fit never saw, e.g. a pair whose
-# samples are all missing; such a subject has no usable fit.
+#' predict.lm() fails on a factor level the fit never saw, e.g. a pair whose
+#'
+#' samples are all missing; such a subject has no usable fit.
+#' @param fit fitted model
+#' @param newdata sample rows to predict
+#' @noRd
 .fit_knows_levels <- function(fit, newdata) {
   all(vapply(
     names(fit$xlevels),
@@ -425,6 +442,10 @@ model_summary <- function(mod) {
 
 # Model fitting internals ----
 
+#' Compare nested model fits by a likelihood ratio test
+#' @param modelNO reduced model
+#' @param model model or model specification used by the operation
+#' @noRd
 .likelihood_ratio_test <- function(modelNO, model) {
   res <- tryCatch(anova(modelNO, model), error = function(x) NULL)
   if (!is.null(res)) {
@@ -715,20 +736,22 @@ impute_refit_singular <- function(
   return(model_df)
 }
 
-# Impute and refit a single protein's model
-#
-# Takes one protein's nested data, imputes missing values with LOD,
-# refits the model, and wraps it with borrowed covariance.
-#
-# @param dat data.frame for one protein (nested row)
-# @param model_strategy strategy object with model_fun
-# @param lod limit of detection value
-# @param response response column name
-# @param sample_template data.frame with all sample/group combinations
-# @param borrowed list from compute_borrowed_variance()
-# @param df_method "observed" or "borrowed"
-# @return named list of updated fields, or NULL if refit fails
-# @keywords internal
+#' Impute and refit a single protein's model
+#'
+#' Takes one protein's nested data, imputes missing values with LOD,
+#' refits the model, and wraps it with borrowed covariance.
+#'
+#' @param dat data.frame for one protein (nested row)
+#' @param model_strategy strategy object with model_fun
+#' @param lod limit of detection value
+#' @param response response column name
+#' @param sample_template data.frame with all sample/group combinations
+#' @param borrowed list from compute_borrowed_variance()
+#' @param df_method "observed" or "borrowed"
+#' @return named list of updated fields, or NULL if refit fails
+#' @keywords internal
+#' @param nr_children_col column tracking measured child-feature counts
+#' @noRd
 .impute_one_protein <- function(
   dat,
   model_strategy,
@@ -799,9 +822,12 @@ impute_refit_singular <- function(
 }
 
 
-# (X'X)^-1 of an lm fit, as summary.lm() computes it, without summary.lm()'s
-# residual checks: a refit at the LOD can be a perfect fit, and its residual
-# variance is replaced by the borrowed one anyway.
+#' (X'X)^-1 of an lm fit, as summary.lm() computes it, without summary.lm()'s
+#'
+#' residual checks: a refit at the LOD can be a perfect fit, and its residual
+#' variance is replaced by the borrowed one anyway.
+#' @param fit fitted model
+#' @noRd
 .cov_unscaled <- function(fit) {
   p <- seq_len(fit$rank)
   cov_unscaled <- chol2inv(fit$qr$qr[p, p, drop = FALSE])

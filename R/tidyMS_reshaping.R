@@ -87,7 +87,9 @@ tidy_to_wide_config <- function(
   return(list(data = res, annotation = ids, rowdata = rowdata))
 }
 
-# Input checks of lfqdata_from_wide(): `values` is a named list of matrices of one shape.
+#' Input checks of lfqdata_from_wide(): `values` is a named list of matrices of one shape.
+#' @param values numeric scores or named expression matrices
+#' @noRd
 .check_wide_values <- function(values) {
   is_named_matrix_list <- is.list(values) &&
     !is.null(names(values)) &&
@@ -108,7 +110,12 @@ tidy_to_wide_config <- function(
   invisible(TRUE)
 }
 
-# Input checks of lfqdata_from_wide(): rowdata and annotation match the matrices.
+#' Input checks of lfqdata_from_wide(): rowdata and annotation match the matrices.
+#' @param values numeric scores or named expression matrices
+#' @param rowdata one row of identifiers per feature
+#' @param annotation one row of annotations per sample
+#' @param config AnalysisConfiguration defining the column roles
+#' @noRd
 .check_wide_input <- function(values, rowdata, annotation, config) {
   .check_wide_values(values)
   first <- values[[1]]
@@ -129,7 +136,11 @@ tidy_to_wide_config <- function(
   invisible(TRUE)
 }
 
-# One feature x sample matrix to long format, keyed by row position and sample.
+#' One feature x sample matrix to long format, keyed by row position and sample.
+#' @param mat feature-by-sample matrix
+#' @param value value or column name to use
+#' @param sample_name column identifying samples
+#' @noRd
 .wide_matrix_to_long <- function(mat, value, sample_name) {
   long <- tibble::as_tibble(mat, .name_repair = "minimal")
   long$.row <- seq_len(nrow(long))

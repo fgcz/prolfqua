@@ -1,5 +1,9 @@
 # ContrastsFacades -----
 
+#' Require matching input and output hierarchy levels
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @param facade_name facade identity for messages and results
+#' @noRd
 .assert_aggregated_facade_input <- function(lfqdata, facade_name) {
   subject_id <- lfqdata$subject_id()
   hierarchy_keys <- lfqdata$hierarchy_keys()
@@ -13,6 +17,10 @@
   }
 }
 
+#' Require child-level input below the modelling subject
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @param facade_name facade identity for messages and results
+#' @noRd
 .assert_nested_facade_input <- function(lfqdata, facade_name) {
   subject_id <- lfqdata$subject_id()
   hierarchy_keys <- lfqdata$hierarchy_keys()
@@ -26,8 +34,12 @@
   }
 }
 
-# Every group a contrast names (a factor key followed by a level, e.g. group_A)
-# must have samples with a measured response.
+#' Every group a contrast names (a factor key followed by a level, e.g. group_A)
+#'
+#' must have samples with a measured response.
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @param contrasts named character vector of contrast expressions
+#' @noRd
 .assert_contrast_groups <- function(lfqdata, contrasts) {
   factor_keys <- lfqdata$factor_keys()
   data <- lfqdata$data_long()
@@ -56,8 +68,14 @@
   }
 }
 
-# Compute protein × contrast pairs present in input but absent from output.
-# Returns a data.frame with hierarchy columns + `contrast_col`, or 0 rows if nothing missing.
+#' Compute protein × contrast pairs present in input but absent from output.
+#'
+#' Returns a data.frame with hierarchy columns + `contrast_col`, or 0 rows if nothing missing.
+#' @param lfqdata LFQData containing the measurements and configuration
+#' @param contrast_names names of the requested contrasts
+#' @param contrast_result computed contrast table
+#' @param contrast_col column identifying contrasts
+#' @noRd
 .compute_missing <- function(lfqdata, contrast_names, contrast_result, contrast_col = "contrast") {
   subject_id <- lfqdata$subject_id()
   all_subjects <- lfqdata$data_long() |>
@@ -70,11 +88,15 @@
   dplyr::anti_join(expected, estimated, by = c(subject_id, contrast_col))
 }
 
-# Stamp the selected facade key as the row's model identity. `modelName` is the
-# single identity column: the inner contrast classes set it to their own model
-# name (e.g. "WaldTest", "limma") and this overwrites it with the facade key
-# (e.g. "rfit", "lm_impute") that the user actually selected. Rescue/imputation
-# state is carried separately in `estimate_type`, set by the inner classes.
+#' Stamp the selected facade key as the row's model identity. `modelName` is the
+#'
+#' single identity column: the inner contrast classes set it to their own model
+#' name (e.g. "WaldTest", "limma") and this overwrites it with the facade key
+#' (e.g. "rfit", "lm_impute") that the user actually selected. Rescue/imputation
+#' state is carried separately in `estimate_type`, set by the inner classes.
+#' @param res contrast result table
+#' @param facade_name facade identity for messages and results
+#' @noRd
 .stamp_facade_identity <- function(res, facade_name) {
   res$modelName <- facade_name
   dplyr::relocate(res, dplyr::any_of(c("modelName", "estimate_type")))
@@ -742,6 +764,8 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 
 .facade_registry_env <- new.env(parent = emptyenv())
 
+#' Create the built-in method-to-facade registry
+#' @noRd
 .seed_facade_registry <- function() {
   entries <- list(
     lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
