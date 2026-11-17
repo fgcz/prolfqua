@@ -1,10 +1,10 @@
 # Verification of analysis result methods
 
-**Completed on 2026-11-17 for prolfqua 1.9.4.** All steps and acceptance checks in the [result-method plan](../../TODO/prolfqua/TODO_srr_block_A_result_methods.md) are complete. Verification used R 4.6.2 on arm64 macOS with normal user/system libraries. The source implementation is in commits `a2c965a9` through `96acd912`; the initial standards-evidence commit is `4292ec5e`. The independent-review follow-up below is also complete. The [groundwork verification](verification.html) remains a separate historical record.
+**Completed on 2026-11-17 for prolfqua 1.9.4.** All steps and acceptance checks in the [result-method plan](../../TODO/prolfqua/Archive/PLAN_srr_block_A_result_methods_2026-11-17.md) are complete. Verification used R 4.6.2 on arm64 macOS with normal user/system libraries. The source implementation is in commits `a2c965a9` through `96acd912`; the initial standards-evidence commit is `4292ec5e`. The independent-review follow-up below is also complete. The [groundwork verification](verification.html) remains a separate historical record.
 
 ## Independent-review follow-up — 2026-11-17
 
-All four required findings in the [independent review](../../TODO/prolfqua/TODO_srr_block_A_result_methods.md) are addressed:
+All four required findings in the [independent review](../../TODO/prolfqua/Archive/PLAN_srr_block_A_result_methods_2026-11-17.md) are addressed:
 
 - `print()` now requests six coefficient rows and extracts coefficients from at most six successful subject fits. Matrix previews bound table construction but retain moderation across the complete protein pool, preserving their standard errors. Public `coef()` still returns the complete table.
 - Limma summaries report `singular = NA_integer_`. The regression test also exposed and fixed a related failed-fit count: a tibble column named `fitted` had shadowed the logical fit mask before `failed` was computed.
