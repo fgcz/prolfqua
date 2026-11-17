@@ -21,6 +21,13 @@
 #'   Counts exclude LOD-filled responses. Combined hurdle results have no single
 #'   coefficient table, formula or observation count; inspect their intensity
 #'   and detection facades through `analysis$contrast` instead.
+#'   `fitted()` and `residuals()` return subject, sample, factor and available
+#'   child identifiers, `response`, `fitted` or `residual`, and a subject-level
+#'   `imputed` flag. Only observed responses from successful fits are included.
+#'   Values use the fitting scale: transformed intensity or detection probability.
+#'   Binomial responses are the fitted model's adjusted detection proportions;
+#'   response residuals equal response minus fitted value. Hurdle results require
+#'   selecting an intensity or detection component for these methods too.
 #' @name prolfqua_analysis_methods
 #' @family modelling
 #' @examples
@@ -184,3 +191,17 @@ formula.ContrastsFacadeBase <- function(x, ...) .model_formula(x$model)
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method stats::nobs
 nobs.ContrastsFacadeBase <- function(object, ...) .model_nobs(object$model)
+
+#' @rdname prolfqua_analysis_methods
+#' @exportS3Method stats::fitted
+fitted.ContrastsFacadeBase <- function(object, ...) {
+  values <- .model_values(object$model, object$.lfqdata)
+  values[, setdiff(names(values), "residual"), drop = FALSE]
+}
+
+#' @rdname prolfqua_analysis_methods
+#' @exportS3Method stats::residuals
+residuals.ContrastsFacadeBase <- function(object, ...) {
+  values <- .model_values(object$model, object$.lfqdata)
+  values[, setdiff(names(values), "fitted"), drop = FALSE]
+}

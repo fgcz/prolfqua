@@ -160,3 +160,57 @@ test_that("a hurdle result has no single coefficient table or formula", {
     expect_error(method(facade), "x\\$contrast\\$detection", class = "prolfqua_error_not_available")
   }
 })
+
+test_that("fitted values and response residuals agree with each lm fit", {
+  facade <- facade_methods_fit()
+  values <- stats::fitted(facade)
+  residuals <- stats::residuals(facade)
+  expect_equal(values$fitted + residuals$residual, values$response)
+  expect_named(values, c("protein_Id", "sampleName", "group_", "response", "fitted", "imputed"))
+  for (i in seq_len(nrow(facade$model$model_df))) {
+    row <- facade$model$model_df[i, ]
+    expect_equal(values$fitted[values$protein_Id == row$protein_Id], unname(stats::fitted(row$linear_model[[1]])))
+  }
+})
+
+test_that("limma fitted values and residuals use the retained response matrix", {
+  facade <- facade_methods_fit("limma")
+  expect_equal(stats::fitted(facade)$fitted, as.numeric(stats::fitted(facade$model$fit)))
+  expect_equal(stats::residuals(facade)$residual, as.numeric(facade$model$E - stats::fitted(facade$model$fit)))
+})
+
+test_that("Firth fitted values are probabilities and residuals are on the response scale", {
+  skip_if_not_installed("logistf")
+  facade <- facade_methods_fit("firth")
+  values <- stats::fitted(facade)
+  residuals <- stats::residuals(facade)
+  expect_true(all(values$fitted >= 0 & values$fitted <= 1))
+  expect_equal(values$response, values$fitted + residuals$residual)
+  expect_true(all(values$response %in% c(0, 1)))
+})
+
+test_that("public imputed residuals exclude the filled observations", {
+  lfq <- facade_methods_input()
+  data <- lfq$data_long()
+  protein <- unique(data$protein_Id)[1]
+  lfq$set_data(data[!(data$protein_Id == protein & data$group_ == "A"), ])
+  facade <- facade_methods_fit("lm_impute", lfq)
+  values <- stats::fitted(facade)
+  expect_false(any(values$protein_Id == protein & values$group_ == "A"))
+  expect_true(all(values$imputed[values$protein_Id == protein]))
+})
+
+test_that("matrix residuals remain aligned when observed cells are missing", {
+  lfq <- facade_methods_input()
+  data <- lfq$data_long()
+  data[[lfq$response()]][c(1, 14, 27)] <- NA_real_
+  lfq$set_data(data)
+  facade <- facade_methods_fit("limma", lfq)
+  values <- stats::fitted(facade)
+  residuals <- stats::residuals(facade)
+  cells <- which(facade$model$observed, arr.ind = TRUE)
+  expected <- (facade$model$E - stats::fitted(facade$model$fit))[cells]
+  expect_equal(residuals$residual, expected)
+  expect_equal(values$fitted + residuals$residual, values$response)
+  expect_equal(nrow(values), sum(facade$model$observed))
+})

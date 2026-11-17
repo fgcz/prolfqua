@@ -9,6 +9,8 @@
 \alias{confint.ContrastsFacadeBase}
 \alias{formula.ContrastsFacadeBase}
 \alias{nobs.ContrastsFacadeBase}
+\alias{fitted.ContrastsFacadeBase}
+\alias{residuals.ContrastsFacadeBase}
 \title{Inspect a fitted prolfqua analysis}
 \usage{
 \method{print}{ContrastsFacadeBase}(x, ...)
@@ -24,6 +26,10 @@
 \method{formula}{ContrastsFacadeBase}(x, ...)
 
 \method{nobs}{ContrastsFacadeBase}(object, ...)
+
+\method{fitted}{ContrastsFacadeBase}(object, ...)
+
+\method{residuals}{ContrastsFacadeBase}(object, ...)
 }
 \arguments{
 \item{x, object}{a fitted analysis returned by [build_contrast_analysis()].}
@@ -51,6 +57,13 @@
   Counts exclude LOD-filled responses. Combined hurdle results have no single
   coefficient table, formula or observation count; inspect their intensity
   and detection facades through `analysis$contrast` instead.
+  `fitted()` and `residuals()` return subject, sample, factor and available
+  child identifiers, `response`, `fitted` or `residual`, and a subject-level
+  `imputed` flag. Only observed responses from successful fits are included.
+  Values use the fitting scale: transformed intensity or detection probability.
+  Binomial responses are the fitted model's adjusted detection proportions;
+  response residuals equal response minus fitted value. Hurdle results require
+  selecting an intensity or detection component for these methods too.
 }
 \description{
 Standard R methods for results returned by [build_contrast_analysis()].

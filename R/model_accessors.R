@@ -370,7 +370,8 @@
 #' @noRd
 #' @export
 .model_values.ModelLimma <- function(model, lfqdata) {
-  fitted <- stats::fitted(model$fit)
+  fitted_matrix <- stats::fitted(model$fit)
+  residual_matrix <- model$E - fitted_matrix
   observed <- model$observed & (rowSums(is.na(model$fit$coefficients)) == 0)
   cells <- which(observed, arr.ind = TRUE)
   keys <- intersect(setdiff(.value_keys(model, lfqdata), model$subject_id), names(model$annotation))
@@ -379,8 +380,8 @@
     model$annotation[cells[, 2], keys, drop = FALSE],
     tibble::tibble(
       response = model$E[cells],
-      fitted = fitted[cells],
-      residual = (model$E - fitted)[cells],
+      fitted = fitted_matrix[cells],
+      residual = residual_matrix[cells],
       imputed = .matrix_imputed_subjects(model)[cells[, 1]]
     )
   )
