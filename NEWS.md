@@ -2,7 +2,7 @@
 
 ## New features
 
-- Fitted analysis results support `print()` for a concise model overview without computing contrasts, and `summary()` for fit status and per-contrast significance counts. `coef()`, `confint()`, `formula()` and `nobs()` expose model coefficients, Wald intervals, the fitted specification and observed sample counts in subject-keyed tables. `fitted()` and `residuals()` return observed responses with sample identifiers and imputation flags, on the fitted response scale.
+- Fitted analysis results support `print()` for a concise model overview without computing contrasts, and `summary()` for fit status and per-contrast significance counts. `coef()`, `confint()`, `formula()` and `nobs()` expose model coefficients, Wald intervals, the fitted specification and observed sample counts in subject-keyed tables. `fitted()` and `residuals()` return observed responses with sample identifiers and imputation flags, on the fitted response scale. `plot()` returns an FDR volcano plot or an MA plot.
 
 - Fitted analyses retain an independent input snapshot. Matrix models retain their response matrix, weights and observed-response mask, and LOD-refitted models identify imputed rows for result inspection.
 

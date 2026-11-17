@@ -11,6 +11,7 @@
 \alias{nobs.ContrastsFacadeBase}
 \alias{fitted.ContrastsFacadeBase}
 \alias{residuals.ContrastsFacadeBase}
+\alias{plot.ContrastsFacadeBase}
 \title{Inspect a fitted prolfqua analysis}
 \usage{
 \method{print}{ContrastsFacadeBase}(x, ...)
@@ -30,11 +31,14 @@
 \method{fitted}{ContrastsFacadeBase}(object, ...)
 
 \method{residuals}{ContrastsFacadeBase}(object, ...)
+
+\method{plot}{ContrastsFacadeBase}(x, type = c("volcano", "ma"), ...)
 }
 \arguments{
 \item{x, object}{a fitted analysis returned by [build_contrast_analysis()].}
 
-\item{...}{additional arguments; unused by print and summary.}
+\item{...}{arguments passed to the selected plotter method by `plot()`;
+unused by the other methods.}
 
 \item{FDR_threshold}{false discovery rate threshold for significant contrasts.}
 
@@ -43,6 +47,8 @@
 \item{parm}{coefficient names or positive coefficient indices; omitted for all terms.}
 
 \item{level}{confidence level, strictly between zero and one.}
+
+\item{type}{plot type: an FDR volcano plot (default) or an MA plot.}
 }
 \value{
 `print()` returns its input invisibly. `summary()` returns a list of
@@ -64,6 +70,7 @@
   Binomial responses are the fitted model's adjusted detection proportions;
   response residuals equal response minus fitted value. Hurdle results require
   selecting an intensity or detection component for these methods too.
+  `plot()` returns a ggplot visibly: an FDR volcano plot or an MA plot.
 }
 \description{
 Standard R methods for results returned by [build_contrast_analysis()].

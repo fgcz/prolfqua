@@ -214,3 +214,23 @@ test_that("matrix residuals remain aligned when observed cells are missing", {
   expect_equal(values$fitted + residuals$residual, values$response)
   expect_equal(nrow(values), sum(facade$model$observed))
 })
+
+test_that("analysis plots return visible ggplots across model families", {
+  sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
+  peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  for (method in c("lm", "limma", "ropeca_nested", "hurdle_nested")) {
+    input <- if (lookup_facade(method)$needs == "nested") peptide else facade_methods_input()
+    # The hurdle fixture includes perfectly detected proteins, whose detection
+    # sample variances are zero. No other warnings are expected here.
+    facade <- muffle_warnings_matching(
+      facade_methods_fit(method, input),
+      pattern = "Zero sample variances detected"
+    )
+    for (type in c("volcano", "ma")) {
+      output <- withVisible(graphics::plot(facade, type = type))
+      expect_s3_class(output$value, "ggplot")
+      expect_true(output$visible)
+    }
+  }
+  expect_error(graphics::plot(facade, type = "histogram"), class = "prolfqua_error_bad_argument")
+})

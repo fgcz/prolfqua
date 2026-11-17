@@ -6,7 +6,8 @@
 #' FDR and absolute effect thresholds.
 #'
 #' @param x,object a fitted analysis returned by [build_contrast_analysis()].
-#' @param ... additional arguments; unused by print and summary.
+#' @param ... arguments passed to the selected plotter method by `plot()`;
+#'   unused by the other methods.
 #' @param FDR_threshold false discovery rate threshold for significant contrasts.
 #' @param diff_threshold minimum absolute contrast effect for significance.
 #' @return `print()` returns its input invisibly. `summary()` returns a list of
@@ -28,6 +29,7 @@
 #'   Binomial responses are the fitted model's adjusted detection proportions;
 #'   response residuals equal response minus fitted value. Hurdle results require
 #'   selecting an intensity or detection component for these methods too.
+#'   `plot()` returns a ggplot visibly: an FDR volcano plot or an MA plot.
 #' @name prolfqua_analysis_methods
 #' @family modelling
 #' @examples
@@ -204,4 +206,20 @@ fitted.ContrastsFacadeBase <- function(object, ...) {
 residuals.ContrastsFacadeBase <- function(object, ...) {
   values <- .model_values(object$model, object$.lfqdata)
   values[, setdiff(names(values), "fitted"), drop = FALSE]
+}
+
+#' @rdname prolfqua_analysis_methods
+#' @param type plot type: an FDR volcano plot (default) or an MA plot.
+#' @exportS3Method graphics::plot
+plot.ContrastsFacadeBase <- function(x, type = c("volcano", "ma"), ...) {
+  if (missing(type)) {
+    type <- "volcano"
+  }
+  type <- .arg_match_prolfqua(type, c("volcano", "ma"), "type")
+  plotter <- x$get_Plotter()
+  if (type == "volcano") {
+    plotter$volcano(...)$FDR
+  } else {
+    plotter$ma_plot(...)
+  }
 }
