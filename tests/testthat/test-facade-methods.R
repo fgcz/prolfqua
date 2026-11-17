@@ -117,3 +117,46 @@ test_that("hurdle printing and summaries describe both component models", {
   expect_equal(result$fit_status$component, c("intensity", "detection"))
   expect_equal(result$per_contrast$estimated, nrow(facade$get_contrasts()))
 })
+
+test_that("coefficient and confidence-interval methods agree with each lm fit", {
+  facade <- facade_methods_fit()
+  coefficients <- stats::coef(facade)
+  intervals <- stats::confint(facade)
+  counts <- stats::nobs(facade)
+  for (i in seq_len(nrow(facade$model$model_df))) {
+    row <- facade$model$model_df[i, ]
+    fit <- row$linear_model[[1]]
+    selected <- coefficients[coefficients$protein_Id == row$protein_Id, ]
+    ci <- intervals[intervals$protein_Id == row$protein_Id, ]
+    expect_equal(selected$estimate, unname(stats::coef(fit)))
+    expect_equal(unname(as.matrix(ci[, c("conf.low", "conf.high")])), unname(stats::confint(fit)))
+    expect_equal(counts$nobs[counts$protein_Id == row$protein_Id], stats::nobs(fit))
+  }
+  expect_equal(stats::formula(facade), facade$model$model_strategy$formula)
+  expect_equal(stats::confint(facade, parm = "group_B"), stats::confint(facade, parm = 2))
+  for (level in list(0, 1, NA_real_, Inf, "0.95", c(0.9, 0.95))) {
+    expect_error(stats::confint(facade, level = level), class = "prolfqua_error_bad_argument")
+  }
+  expect_error(stats::confint(facade, parm = "unknown"), class = "prolfqua_error_bad_argument")
+  expect_error(stats::confint(facade, parm = -1), class = "prolfqua_error_bad_argument")
+})
+
+test_that("public coefficient accessors preserve limma estimates and rfit counts", {
+  facade <- facade_methods_fit("limma")
+  expect_equal(stats::coef(facade)$estimate, as.numeric(facade$model$fit$coefficients))
+  skip_if_not_installed("Rfit")
+  facade <- facade_methods_fit("rfit")
+  expect_equal(stats::nobs(facade)$nobs, rep(12, 12))
+})
+
+test_that("a hurdle result has no single coefficient table or formula", {
+  sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
+  lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  expect_warning(
+    facade <- facade_methods_fit("hurdle_nested", lfq),
+    "Zero sample variances detected"
+  )
+  for (method in list(stats::coef, stats::confint, stats::formula, stats::nobs)) {
+    expect_error(method(facade), "x\\$contrast\\$detection", class = "prolfqua_error_not_available")
+  }
+})

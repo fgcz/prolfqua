@@ -13,6 +13,14 @@
 #'   class `summary.ContrastsFacadeBase`, with method, formula, fit status and a
 #'   `per_contrast` table of estimated, missing, significant, up and down counts
 #'   and median sigma and degrees of freedom when available.
+#'   `coef()` returns subject identifiers, term, estimate, standard error and df.
+#'   `confint()` adds Wald t confidence limits (`conf.low`, `conf.high`).
+#'   Limma uses moderated standard errors and degrees of freedom; Firth logistic
+#'   fits use normal Wald intervals (infinite df). `formula()` returns the fitted
+#'   model specification and `nobs()` returns a subject-keyed observation-count table.
+#'   Counts exclude LOD-filled responses. Combined hurdle results have no single
+#'   coefficient table, formula or observation count; inspect their intensity
+#'   and detection facades through `analysis$contrast` instead.
 #' @name prolfqua_analysis_methods
 #' @family modelling
 #' @examples
@@ -127,3 +135,52 @@ print.summary.ContrastsFacadeBase <- function(x, ...) {
   print(x$per_contrast)
   invisible(x)
 }
+
+#' @rdname prolfqua_analysis_methods
+#' @exportS3Method stats::coef
+coef.ContrastsFacadeBase <- function(object, ...) .model_coef(object$model)
+
+#' Resolve requested coefficient names or indices
+#' @param parm requested coefficient names or positive indices
+#' @param terms available coefficient names
+#' @noRd
+.coefficient_terms <- function(parm, terms) {
+  if (is.numeric(parm)) {
+    if (anyNA(parm) || any(!is.finite(parm) | parm < 1 | parm > length(terms) | parm != floor(parm))) {
+      abort_bad_argument("parm", "contain valid positive coefficient indices")
+    }
+    parm <- terms[parm]
+  }
+  if (!is.character(parm) || anyNA(parm) || !all(parm %in% terms)) {
+    abort_bad_argument("parm", "contain coefficient names from coef(object)")
+  }
+  parm
+}
+
+#' @rdname prolfqua_analysis_methods
+#' @param parm coefficient names or positive coefficient indices; omitted for all terms.
+#' @param level confidence level, strictly between zero and one.
+#' @exportS3Method stats::confint
+confint.ContrastsFacadeBase <- function(object, parm, level = 0.95, ...) {
+  if (!.is_finite_number(level) || level <= 0 || level >= 1) {
+    abort_bad_argument("level", "be one finite number strictly between zero and one")
+  }
+  coefficients <- .model_coef(object$model)
+  if (!missing(parm)) {
+    terms <- unique(coefficients$term)
+    parm <- .coefficient_terms(parm, terms)
+    coefficients <- coefficients[coefficients$term %in% parm, , drop = FALSE]
+  }
+  margin <- stats::qt(1 - (1 - level) / 2, df = coefficients$df) * coefficients$std.error
+  coefficients$conf.low <- coefficients$estimate - margin
+  coefficients$conf.high <- coefficients$estimate + margin
+  coefficients
+}
+
+#' @rdname prolfqua_analysis_methods
+#' @exportS3Method stats::formula
+formula.ContrastsFacadeBase <- function(x, ...) .model_formula(x$model)
+
+#' @rdname prolfqua_analysis_methods
+#' @exportS3Method stats::nobs
+nobs.ContrastsFacadeBase <- function(object, ...) .model_nobs(object$model)

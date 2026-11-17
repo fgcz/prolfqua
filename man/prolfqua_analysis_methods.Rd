@@ -5,6 +5,10 @@
 \alias{print.ContrastsFacadeBase}
 \alias{summary.ContrastsFacadeBase}
 \alias{print.summary.ContrastsFacadeBase}
+\alias{coef.ContrastsFacadeBase}
+\alias{confint.ContrastsFacadeBase}
+\alias{formula.ContrastsFacadeBase}
+\alias{nobs.ContrastsFacadeBase}
 \title{Inspect a fitted prolfqua analysis}
 \usage{
 \method{print}{ContrastsFacadeBase}(x, ...)
@@ -12,6 +16,14 @@
 \method{summary}{ContrastsFacadeBase}(object, FDR_threshold = 0.05, diff_threshold = 1, ...)
 
 \method{print}{summary.ContrastsFacadeBase}(x, ...)
+
+\method{coef}{ContrastsFacadeBase}(object, ...)
+
+\method{confint}{ContrastsFacadeBase}(object, parm, level = 0.95, ...)
+
+\method{formula}{ContrastsFacadeBase}(x, ...)
+
+\method{nobs}{ContrastsFacadeBase}(object, ...)
 }
 \arguments{
 \item{x, object}{a fitted analysis returned by [build_contrast_analysis()].}
@@ -21,12 +33,24 @@
 \item{FDR_threshold}{false discovery rate threshold for significant contrasts.}
 
 \item{diff_threshold}{minimum absolute contrast effect for significance.}
+
+\item{parm}{coefficient names or positive coefficient indices; omitted for all terms.}
+
+\item{level}{confidence level, strictly between zero and one.}
 }
 \value{
 `print()` returns its input invisibly. `summary()` returns a list of
   class `summary.ContrastsFacadeBase`, with method, formula, fit status and a
   `per_contrast` table of estimated, missing, significant, up and down counts
   and median sigma and degrees of freedom when available.
+  `coef()` returns subject identifiers, term, estimate, standard error and df.
+  `confint()` adds Wald t confidence limits (`conf.low`, `conf.high`).
+  Limma uses moderated standard errors and degrees of freedom; Firth logistic
+  fits use normal Wald intervals (infinite df). `formula()` returns the fitted
+  model specification and `nobs()` returns a subject-keyed observation-count table.
+  Counts exclude LOD-filled responses. Combined hurdle results have no single
+  coefficient table, formula or observation count; inspect their intensity
+  and detection facades through `analysis$contrast` instead.
 }
 \description{
 Standard R methods for results returned by [build_contrast_analysis()].
