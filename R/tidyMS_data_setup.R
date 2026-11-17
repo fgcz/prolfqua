@@ -1,5 +1,5 @@
 #' Require a configured and present sample-file column
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
 .validate_setup_file_name <- function(data, configuration) {
@@ -12,7 +12,7 @@
 }
 
 #' Combine configured source columns into hierarchy identifiers
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
 .setup_hierarchy_columns <- function(data, configuration) {
@@ -35,7 +35,7 @@
 }
 
 #' Construct categorical factor columns from their configured sources
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
 #' @srrstats {G2.4c} Configured factor columns are explicitly converted with as.character.
@@ -74,7 +74,7 @@
 }
 
 #' Create sample names from file names when absent
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
 .setup_sample_name <- function(data, configuration) {
@@ -89,10 +89,10 @@
 }
 
 #' Insert a missing configured column and report the default
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param column name of the column to insert
-#' @param value value or column name to use
-#' @param text message text or plot annotation column
+#' @param value default value assigned to the new column
+#' @param text diagnostic message passed to notify
 #' @param notify function reporting an inserted column
 #' @noRd
 .add_setup_default_column <- function(data, column, value, text, notify) {
@@ -107,7 +107,7 @@
 #' isotopeLabel and qValue are optional and only reported. A missing nr_children
 #'
 #' warns: the default of 1 changes the fitting weights of aggregated data.
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
 .add_setup_default_columns <- function(data, configuration) {
@@ -135,7 +135,7 @@
 }
 
 #' Count rows per hierarchy identifier and sample
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
 .setup_duplicate_counts <- function(data, configuration) {
@@ -244,17 +244,17 @@
 #'
 #' adata <- setup_analysis(data, config)
 #'
-#' @srrstats {G2.4} Setup explicitly converts categorical predictors; limit: specialized input conversion is not fully
+#' @srrstatsTODO {G2.4} Setup explicitly converts categorical predictors; specialized input conversion is not fully
 #'   audited.
-#' @srrstats {G2.4d} Design matrices factor categorical labels as documented; limit: setup discards supplied level
+#' @srrstatsTODO {G2.4d} Design matrices factor categorical labels as documented; limit: setup discards supplied level
 #'   order.
-#' @srrstats {G2.9} Setup reports inserted defaults; limit: coercion and removal of unconfigured columns have no
+#' @srrstatsTODO {G2.9} Setup reports inserted defaults; limit: coercion and removal of unconfigured columns have no
 #'   diagnostics.
 #' @srrstats {RE1.2} Setup help documents categorical predictors, numeric coercion and loss of ordered-factor
 #'   semantics.
 #' @srrstats {RE1.3a} Setup help states retained columns, discarded attributes, categorical conversion and inserted
 #'   defaults.
-#' @srrstats {RE2.0} Setup documents automatic conversions/defaults; limit: those operations lack individual controls.
+#' @srrstatsTODO {RE2.0} Setup documents automatic conversions/defaults; those operations lack individual controls.
 setup_analysis <- function(data, configuration, debug = FALSE) {
   .assert_response_data(data, configuration)
   .validate_setup_file_name(data, configuration)

@@ -6,6 +6,13 @@
 \usage{
 get_anova_df(test = "F")
 }
+\arguments{
+\item{test}{one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
+The fitted model's ANOVA method must support the chosen test.}
+}
+\value{
+An \code{\link{AnovaExtractor}} object.
+}
 \description{
 anova returning dataframe
 }

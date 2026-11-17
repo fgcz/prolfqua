@@ -78,7 +78,7 @@ MissingHelpers <- R6::R6Class(
 #' @param stats group means and observation counts
 #' @param prob quantile used to estimate the detection limit
 #' @noRd
-#' @srrstats {G2.15} LOD estimation excludes unavailable group means; limit: missing handling is not audited across
+#' @srrstatsTODO {G2.15} LOD estimation excludes unavailable group means; limit: missing handling is not audited across
 #'   every helper.
 .lod_from_group_stats <- function(stats, prob) {
   measured <- dplyr::filter(stats, .data$nrMeasured > 0)

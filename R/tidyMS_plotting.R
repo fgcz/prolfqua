@@ -72,7 +72,7 @@
 #' heatmap annotations and PCA can share one colour per factor level without
 #' pulling in scales as a direct dependency. hcl(h, l = 65, c = 100) over evenly
 #' spaced hues is exactly what scales::hue_pal() returns.
-#' @param n number of observations or quadrature nodes
+#' @param n number of colours in the returned palette
 #' @noRd
 .hue_palette <- function(n) {
   if (n < 1) {

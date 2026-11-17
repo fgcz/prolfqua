@@ -88,7 +88,7 @@ tidy_to_wide_config <- function(
 }
 
 #' Input checks of lfqdata_from_wide(): `values` is a named list of matrices of one shape.
-#' @param values numeric scores or named expression matrices
+#' @param values named list of feature-by-sample matrices with matching dimensions and column names
 #' @noRd
 .check_wide_values <- function(values) {
   is_named_matrix_list <- is.list(values) &&
@@ -111,7 +111,7 @@ tidy_to_wide_config <- function(
 }
 
 #' Input checks of lfqdata_from_wide(): rowdata and annotation match the matrices.
-#' @param values numeric scores or named expression matrices
+#' @param values named list of feature-by-sample matrices with matching dimensions and column names
 #' @param rowdata one row of identifiers per feature
 #' @param annotation one row of annotations per sample
 #' @param config AnalysisConfiguration defining the column roles
@@ -138,7 +138,7 @@ tidy_to_wide_config <- function(
 
 #' One feature x sample matrix to long format, keyed by row position and sample.
 #' @param mat feature-by-sample matrix
-#' @param value value or column name to use
+#' @param value name of the output measurement column
 #' @param sample_name column identifying samples
 #' @noRd
 .wide_matrix_to_long <- function(mat, value, sample_name) {
@@ -172,8 +172,8 @@ tidy_to_wide_config <- function(
 #' wide <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 #' back <- lfqdata_from_wide(wide$data, wide$rowdata, wide$annotation, lfqdata$get_config())
 #' stopifnot(nrow(back$data_long()) == nrow(lfqdata$data_long()))
-#' @srrstats {G2.7} Long data frames and wide matrices are supported; limit: no SummarizedExperiment input adapter.
-#' @srrstats {G2.10} Most extraction uses names and [[; limit: cross-class data.frame/tibble/data.table tests are
+#' @srrstatsTODO {G2.7} Long data frames and wide matrices are supported; limit: no SummarizedExperiment input adapter.
+#' @srrstatsTODO {G2.10} Most extraction uses names and [[; limit: cross-class data.frame/tibble/data.table tests are
 #'   incomplete.
 lfqdata_from_wide <- function(values, rowdata, annotation, config, prefix = "ms") {
   if (is.matrix(values)) {

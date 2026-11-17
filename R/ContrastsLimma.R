@@ -232,7 +232,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' lm of one expression row on the design, used to derive the linear functions of the contrasts.
 #' @param annotation one row of annotations per sample
 #' @param rhs_formula response-free model formula
-#' @param response response column name or vector
+#' @param response numeric response vector, with one value per annotation row
 #' @noRd
 .limma_dummy_model <- function(annotation, rhs_formula, response) {
   dummy_data <- annotation

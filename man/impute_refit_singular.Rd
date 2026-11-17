@@ -39,9 +39,8 @@ NA values in this column are filled with 1 for imputed rows so that
 weighted lm fits do not fail}
 
 \item{on_misalign}{passed to \code{\link{compute_borrowed_variance}}. With
-"fail", an unborrowable full covariance matrix skips the rescue (the
-model_df is returned unchanged) instead of crashing, so the affected
-proteins surface in \code{get_missing()}.}
+"fail", full covariance is borrowed from donors sharing the maximal
+coefficient set, without falling back to sigma borrowing.}
 }
 \value{
 modified model_df with imputed models replacing failed/singular ones

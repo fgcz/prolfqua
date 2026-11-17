@@ -37,11 +37,11 @@ sigma.rlm <- function(object, ...) {
 #'
 #' @return An R6 class generator.
 #' @keywords internal
-#' @srrstats {RE2.4} StrategyBase flags singular fits after fitting; limit: there is no common preprocessing
+#' @srrstatsTODO {RE2.4} StrategyBase flags singular fits after fitting; limit: there is no common preprocessing
 #'   dependency check.
-#' @srrstats {RE2.4a} Some strategies detect deficient rank; limit: there is no shared upfront predictor-collinearity
+#' @srrstatsTODO {RE2.4a} Some strategies detect deficient rank; there is no shared upfront predictor-collinearity
 #'   diagnostic.
-#' @srrstats {RE3.0} Failed fits and Firth exhaustion are reported; limit: nonconvergence metadata is not uniform per
+#' @srrstatsTODO {RE3.0} Failed fits and Firth exhaustion are reported; nonconvergence metadata is not uniform per
 #'   subject.
 #' @srrstats {RE4.1} Strategies expose a formula and fitting specification without fitting a model.
 StrategyBase <- R6::R6Class(
@@ -279,15 +279,16 @@ strategy_rlm <- function(modelstr, model_name = "Model") {
 AnovaExtractor <- R6::R6Class(
   "AnovaExtractor",
   public = list(
-    #' @field test statistical test type ("F", "Chisq", etc.)
+    #' @field test one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
     test = "F",
-    #' @field col_pval p-value column name in ANOVA output
+    #' @field col_pval p-value column name in ANOVA output; empty for "Cp", which has no p-value.
     col_pval = character(),
     #' @description Create a new AnovaExtractor
-    #' @param test statistical test type
+    #' @param test one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
+    #'   The fitted model's ANOVA method must support the chosen test.
     initialize = function(test = "F") {
-      self$test <- test
-      self$col_pval <- paste0("Pr..", substr(test, 1, 3), ".")
+      self$test <- .arg_match_prolfqua(test, c("F", "Chisq", "LRT", "Rao", "Cp"), "test")
+      self$col_pval <- switch(self$test, F = "Pr..F.", Cp = character(), "Pr..Chi.")
     },
     #' @description Extract ANOVA table from a fitted model
     #' @param x a fitted model
@@ -302,6 +303,9 @@ AnovaExtractor <- R6::R6Class(
 )
 
 #' anova returning dataframe
+#' @param test one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
+#'   The fitted model's ANOVA method must support the chosen test.
+#' @return An \code{\link{AnovaExtractor}} object.
 #' @keywords internal
 #' @family modelling
 #' @export
@@ -309,5 +313,5 @@ AnovaExtractor <- R6::R6Class(
 #' x <- get_anova_df(test = "F")
 #' x <- get_anova_df(test = "Chisq")
 get_anova_df <- function(test = "F") {
-  AnovaExtractor$new(test = .arg_match_prolfqua(test, c("F", "Chisq"), "test"))
+  AnovaExtractor$new(test = test)
 }

@@ -146,11 +146,11 @@ which_missing <- function(x, weight_missing = 0.2) {
 }
 
 #' Shared tail of the sim_lfq_data_*_config() simulators: configuration of the simulated columns and setup_analysis().
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param factors named list of explanatory-variable columns
 #' @param peptide whether the input contains peptide-level measurements
 #' @param nr_children column tracking measured child-feature counts
-#' @param factor_depth number of factor levels used for modelling
+#' @param factor_depth number of configured factors included in summaries and plots
 #' @noRd
 .sim_setup <- function(data, factors, peptide, nr_children = "nr_children", factor_depth = 1) {
   data$isotopeLabel <- "light"
@@ -220,15 +220,15 @@ sim_lfq_data_peptide_config <- function(
 #' xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
 #' stopifnot(length(xp$config$factors) == 2)
 #' stopifnot(nrow(xp$data) == nrow(x$data))
-#' @srrstats {G2.0a} Simulator scalar sizes and missingness ranges are documented; limit: not all API multiplicities
+#' @srrstatsTODO {G2.0a} Simulator scalar sizes and missingness ranges are documented; limit: not all API multiplicities
 #'   are.
-#' @srrstats {G2.4a} Nprot is validated as a whole number; limit: other public count/size arguments are not all
+#' @srrstatsTODO {G2.4a} Nprot is validated as a whole number; limit: other public count/size arguments are not all
 #'   validated.
-#' @srrstats {G5.0} Tests use designed simulations and sleepstudy; limit: core inference lacks a full reference-data
+#' @srrstatsTODO {G5.0} Tests use designed simulations and sleepstudy; limit: core inference lacks a full reference-data
 #'   suite.
 #' @srrstats {G5.1} Documented simulators and bundled datasets are publicly available for tests and examples.
 #' @srrstats {G5.5} Simulators use explicit reproducible seeds and restore the calling RNG state.
-#' @srrstats {G5.6} Tests recover exact means and noisy ROPECA correlation; limit: noisy fold-change recovery is
+#' @srrstatsTODO {G5.6} Tests recover exact means and noisy ROPECA correlation; limit: noisy fold-change recovery is
 #'   incomplete.
 sim_lfq_data_protein_config <- function(
   Nprot = 10,

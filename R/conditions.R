@@ -87,6 +87,9 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @srrstats {G2.3} Fixed choices are checked and builder help explicitly documents case sensitivity.
 #' @srrstats {G2.3a} Exact arg_match is used here; legacy fixed-choice selectors use match.arg.
 .arg_match_prolfqua <- function(arg, values, arg_nm) {
+  if (!is.character(arg) || length(arg) != 1L || is.na(arg)) {
+    abort_bad_argument(arg_nm, "be one character string")
+  }
   tryCatch(
     rlang::arg_match(arg, values = values, error_arg = arg_nm),
     error = function(e) abort_bad_argument(arg_nm, paste0("be one of: ", toString(values)), parent = e)
@@ -96,8 +99,8 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' Parse a model formula with a classed argument error
 #' @param modelstr one formula string or a formula
 #' @noRd
-#' @srrstats {G2.0} Formula and scalar lengths are checked here; limit: not all exported controls have been audited.
-#' @srrstats {G2.6} Strategies accept formula objects and strings; limit: specialized vector classes are not fully
+#' @srrstatsTODO {G2.0} Formula and scalar lengths are checked here; limit: not all exported controls have been audited.
+#' @srrstatsTODO {G2.6} Strategies accept formula objects and strings; limit: specialized vector classes are not fully
 #'   tested.
 .as_model_formula <- function(modelstr) {
   is_string <- is.character(modelstr) && length(modelstr) == 1 && !is.na(modelstr) && grepl("~", modelstr, fixed = TRUE)
@@ -131,13 +134,13 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param data input data frame
 #' @param config AnalysisConfiguration
 #' @noRd
-#' @srrstats {G2.1} LFQData/setup_analysis check data, configuration and response types; limit: the API audit is
+#' @srrstatsTODO {G2.1} LFQData/setup_analysis check data, configuration and response types; limit: the API audit is
 #'   incomplete.
-#' @srrstats {G2.4b} Numeric responses/counts are required and limma explicitly converts; limit: no general conversion
+#' @srrstatsTODO {G2.4b} Numeric responses/counts are required and limma explicitly converts; no general conversion
 #'   policy.
-#' @srrstats {G2.12} Nonnumeric responses including lists are rejected; limit: other list columns lack a complete
+#' @srrstatsTODO {G2.12} Nonnumeric responses including lists are rejected; limit: other list columns lack a complete
 #'   contract.
-#' @srrstats {G5.8} Tests cover invalid types, designs and sparse inputs; limit: core empty/all-NA/constant cases are
+#' @srrstatsTODO {G5.8} Tests cover invalid types, designs and sparse inputs; core empty/all-NA/constant cases are
 #'   incomplete.
 .assert_response_data <- function(data, config) {
   if (!is.data.frame(data)) {
@@ -159,7 +162,7 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param Nprot positive whole number of proteins
 #' @param weight_missing one number in [0, 1]
 #' @noRd
-#' @srrstats {G2.2} Scalar simulation arguments are enforced; limit: some thresholds and weights still need length
+#' @srrstatsTODO {G2.2} Scalar simulation arguments are enforced; limit: some thresholds and weights still need length
 #'   checks.
 .assert_simulation_args <- function(Nprot, weight_missing) {
   if (!.is_finite_number(Nprot) || !all(Nprot > 0, Nprot == floor(Nprot))) {

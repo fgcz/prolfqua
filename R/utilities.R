@@ -51,7 +51,7 @@
 }
 
 #' Internal helper for rendering ggplot/ComplexHeatmap objects to an open graphics device.
-#' @param x object consumed by this operation
+#' @param x ggplot or ComplexHeatmap object to draw
 #' @noRd
 .render_plot_to_device <- function(x) {
   if (methods::is(x, "Heatmap") || methods::is(x, "HeatmapList")) {
@@ -193,7 +193,7 @@ multigroup_volcano <- function(
 }
 
 #' Bound significance scores away from zero before log transformation
-#' @param values numeric scores or named expression matrices
+#' @param values numeric significance scores to bound away from zero
 #' @param min_score smallest displayed significance score
 #' @noRd
 .floor_significance_values <- function(values, min_score = NULL) {
@@ -221,15 +221,15 @@ multigroup_volcano <- function(
 }
 
 #' Draw one volcano panel per contrast with shared score definitions
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param effect effect-size column name
 #' @param significance significance-score column name
-#' @param contrast contrast expression or contrast column name
+#' @param contrast name of the column identifying contrast panels
 #' @param colour estimate-type colour specification
 #' @param xintercept effect-size reference lines
 #' @param yintercept significance reference lines
-#' @param text message text or plot annotation column
-#' @param scales scaling specification used by the operation
+#' @param text name of the optional tooltip column
+#' @param scales facet-axis scaling passed to ggplot2::facet_wrap
 #' @noRd
 .multigroup_volcano <- function(
   data,
@@ -419,12 +419,12 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 
 
 #' Draw a volcano panel with effect and significance thresholds
-#' @param data data frame or matrix consumed by this operation
-#' @param contrast contrast expression or contrast column name
+#' @param data long-format measurement data frame
+#' @param contrast label displayed as a plot annotation
 #' @param effect effect-size column name
 #' @param significance significance-score column name
-#' @param x_annot horizontal annotation column
-#' @param y_annot vertical annotation column
+#' @param x_annot horizontal position of the contrast annotation
+#' @param y_annot significance value locating the annotation before the -log10 transform
 #' @param proteinID feature identifier column
 #' @param color colour column
 #' @param palette named mapping from groups to colours

@@ -1,6 +1,6 @@
 #' Statistical condition checks
 #'
-#' @srrstats {G5.2a} Warnings identify their operation and errors are classed; limit: some informative messages share
+#' @srrstatsTODO {G5.2a} Warnings identify their operation and errors are classed; limit: some informative messages share
 #'   wording.
 #' @noRd
 

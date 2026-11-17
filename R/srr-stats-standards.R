@@ -1,8 +1,8 @@
 #' Remaining statistical software standards
 #'
 #' Standards 0.3.0, General and Regression. Current evidence and feasibility
-#' are assessed separately in srr/standards-compliance.md. Partial claims next
-#' to code explicitly state their limits; they are not fully met in the TSV.
+#' are assessed separately in srr/standards-compliance.md. Both partial and unmet
+#' requirements retain TODO tags; only fully met standards use srrstats.
 #'
 #' @srrstatsVerbose TRUE
 #' @srrstatsTODO {G2.11} Validate/preprocess such columns intentionally and test the promised behavior; deferred
@@ -37,6 +37,8 @@
 #'   section 5.
 #' @srrstatsTODO {RE4.10} no residuals accessor or documentation; deferred follow-up:
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
+#' @srrstatsTODO {RE4.16} New-group prediction is required for categorical-group models independently of
+#'   forecasting. No prediction method for new categorical groups is implemented; its semantics need a later design.
 #' @srrstatsTODO {RE4.17} print method summarising model inputs and coefficients; deferred follow-up:
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE6.1} plot() dispatch directing users to get_Plotter(); deferred follow-up:
@@ -61,10 +63,6 @@ NULL
 #'   existing fitted design. -
 #' @srrstatsNA {RE4.15} No extrapolation/forecasting horizon is part of the public workflow; there is no forecast
 #'   interval whose growth could be characterized. -
-#' @srrstatsNA {RE4.16} The package has no public predict() interface and targets inference on fixed experimental
-#'   groups. Internal impute_from_model() only fills an existing design and rejects unknown fit levels via
-#'   .fit_knows_levels(). Prediction for unseen categorical groups is outside that declared workflow. Not applicable
-#'   only while no public prediction API is offered; reassess if prediction on new data becomes supported.
 #' @srrstatsNA {RE6.3} No public forecasting/extrapolation workflow exists; model-versus-forecast display is outside
 #'   package scope. -
 #' @srrstatsNA {RE7.4} Forecast horizons and forecast error growth are outside the package public workflow, as for

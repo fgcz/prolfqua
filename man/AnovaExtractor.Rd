@@ -108,9 +108,9 @@ Other modelling:
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
-    \item{\code{test}}{statistical test type ("F", "Chisq", etc.)}
+    \item{\code{test}}{one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".}
 
-    \item{\code{col_pval}}{p-value column name in ANOVA output}
+    \item{\code{col_pval}}{p-value column name in ANOVA output; empty for "Cp", which has no p-value.}
   }
   \if{html}{\out{</div>}}
 }
@@ -135,7 +135,8 @@ Other modelling:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{test}}{statistical test type}
+      \item{\code{test}}{one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
+The fitted model's ANOVA method must support the chosen test.}
     }
     \if{html}{\out{</div>}}
   }

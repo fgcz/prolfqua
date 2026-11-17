@@ -30,7 +30,7 @@ encode_bin_resp <- function(lfqdata, name = "bin_resp") {
 #'
 #' get_contrast() to derive group_1 / group_2. Returns NULL for anything that is
 #' not a top-level binary minus (get_contrast() rejects those).
-#' @param contrast contrast expression or contrast column name
+#' @param contrast one contrast expression string
 #' @noRd
 .contrast_sides_expr <- function(contrast) {
   expr <- rlang::parse_expr(contrast)

@@ -89,6 +89,6 @@
 #' @srrstats {G1.3} Package Glossary and column_description define workflow terms, test interpretation and
 #'   assumptions.
 #' @srrstats {G1.4} The exported API is documented with roxygen2, including R6 methods.
-#' @srrstats {G1.5} Paper workflow examples are included; limit: full performance reproduction is in
+#' @srrstatsTODO {G1.5} Paper workflow examples are included; limit: full performance reproduction is in
 #'   prolfquabenchmark.
 "_PACKAGE"

@@ -22,6 +22,10 @@
 
 ## Bug fixes
 
+- ANOVA extractors again accept the supported `LRT`, `Rao` and `Cp` tests, with correct p-value column metadata. Direct construction validates the same choices as `get_anova_df()`. Analysis, aggregation and ANOVA selectors reject multi-value arguments instead of silently choosing the first value.
+- Statistical standards reports now count only fully met standards as compliant. Partial requirements remain TODOs; fitted-response retention is partial and prediction for new categorical groups is unmet. Internal helper documentation now distinguishes response values, column names, palette sizes and quadrature sizes correctly.
+- Condition tests cover all-zero contrasts; covariance-borrowing documentation now describes selection of the largest matching donor subset, and its unreachable error and rescue-skipping branch have been removed.
+
 - The core R6 dependency is now declared explicitly, so subclass-based tests pass dependency checks in fresh environments.
 
 - `deqms` / `deqms_voom` (`moderated_p_deqms()`): proteins left out of the variance-on-count curve, e.g. with zero residual variance, got the prior variance of the first fitted protein instead of the curve's value at their own peptide count, with the warning "'newdata' had 1 row but variables found have N rows". They now get the curve's value. Proteins without residual degrees of freedom get NA moderated statistics without "NaNs produced" warnings; the same holds for the unmoderated statistics of `limma`-based methods.

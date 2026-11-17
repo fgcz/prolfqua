@@ -210,13 +210,13 @@ data.frame and the \code{strategy}}
   histogram of ANOVA results
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ModelFirth$anova_histogram(what = c("p.value", "FDR"))}
+    \preformatted{ModelFirth$anova_histogram(what = "p.value")}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{what}}{show either "Pr..F." or "FDR.Pr..F."}
+      \item{\code{what}}{one case-sensitive choice: "p.value" (default) or "FDR".}
     }
     \if{html}{\out{</div>}}
   }

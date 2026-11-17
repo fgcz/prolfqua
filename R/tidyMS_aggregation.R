@@ -1,8 +1,8 @@
 #' Functions - Plotting ----
 #'
 #' Plot peptide and fragments
-#' @param data data frame or matrix consumed by this operation
-#' @param protein_name protein identifier column
+#' @param data long-format measurement data frame
+#' @param protein_name protein identifier displayed as the plot title
 #' @param sample sample identifier column
 #' @param intensity intensity column
 #' @param peptide peptide identifier column
@@ -98,7 +98,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 
 
 #' Attach sample annotations to the median-polish protein estimates
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param medpolishRes median-polish estimates and residuals
 #' @param sample_name column identifying samples
 #' @param factor_keys configured explanatory-variable columns
@@ -116,7 +116,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 
 #' Tukey's median polish estimate of e.g. a protein from its feature (peptide) intensities, one row per sample.
 #' @param pdata long-format measurement table
-#' @param response response column name or vector
+#' @param response name of the numeric response column
 #' @param feature child-feature identifier column
 #' @param sample_name column identifying samples
 #' @noRd
@@ -131,9 +131,9 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 
 #' Estimate protein intensities by robust peptide regression
 #' @param pdata long-format measurement table
-#' @param response response column name or vector
+#' @param response name of the numeric response column
 #' @param feature child-feature identifier column
-#' @param samples sample identifier values
+#' @param samples name of the sample identifier column
 #' @param maxIt maximum robust-regression iterations
 #' @noRd
 .rlm_estimate <- function(pdata, response, feature, samples = "samples", maxIt = 20) {
@@ -223,11 +223,11 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 }
 
 #' Count measured children per parent and sample after aggregation
-#' @param data data frame or matrix consumed by this operation
+#' @param data long-format measurement data frame
 #' @param aggregated_data protein-level estimates returned by aggregation
 #' @param hierarchy_keys_depth identifier columns at the output depth
 #' @param file_name column identifying the input measurement files
-#' @param response response column name or vector
+#' @param response name of the numeric response column
 #' @param nr_children_col column tracking measured child-feature counts
 #' @param newconfig configuration of the aggregated output
 #' @noRd

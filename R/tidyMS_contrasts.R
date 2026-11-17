@@ -306,7 +306,7 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
 #' compute_contrast(m, linfct, confint = 0.95)
 #' compute_contrast(m, linfct, confint = 0.99)
 #'
-#' @srrstats {G3.0} Covariance compatibility uses all.equal; limit: exact floating comparisons remain elsewhere.
+#' @srrstatsTODO {G3.0} Covariance compatibility uses all.equal; limit: exact floating comparisons remain elsewhere.
 #' @srrstats {RE7.1} Tests recover exact group differences and exact paired-design means.
 compute_contrast <- function(m, linfct, confint = 0.95) {
   Sigma.hat <- vcov(m)

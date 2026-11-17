@@ -1,8 +1,8 @@
 #' Statistical condition checks
 #'
-#' @srrstats {G5.2} Condition tests exercise validation and warning paths; limit: two invariants and some messages
+#' @srrstatsTODO {G5.2} Condition tests exercise validation and warning paths; limit: informative-message paths
 #'   lack tests.
-#' @srrstats {G5.2b} Coverage-guided condition tests trigger new checks; limit: two invariant guards and some messages
+#' @srrstatsTODO {G5.2b} Coverage-guided condition tests trigger new checks; limit: informative-message paths
 #'   remain.
 #' @noRd
 
@@ -307,6 +307,16 @@ test_that("limma borrowing fails when no variance donor is usable", {
 test_that("model borrowing fails when no fitted donor is usable", {
   expect_error(
     compute_borrowed_variance(data.frame(has_model_fit = TRUE, isSingular = TRUE, nr_coef_not_NA = 1, df.residual = 3)),
+    class = "prolfqua_error"
+  )
+})
+
+test_that("contrast calculation rejects an all-zero coefficient vector", {
+  model <- stats::lm(Sepal.Length ~ Species, data = iris)
+  zero <- matrix(0, nrow = 1, ncol = length(stats::coef(model)), dimnames = list("zero", names(stats::coef(model))))
+  expect_error(
+    compute_contrast(model, zero),
+    regexp = "linfct columns do not match the model coefficients",
     class = "prolfqua_error"
   )
 })

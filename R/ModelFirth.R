@@ -95,8 +95,8 @@ ModelFirth <- R6::R6Class(
     },
     #' @description
     #' histogram of ANOVA results
-    #' @param what show either "Pr..F." or "FDR.Pr..F."
-    anova_histogram = function(what = c("p.value", "FDR")) {
+    #' @param what one case-sensitive choice: "p.value" (default) or "FDR".
+    anova_histogram = function(what = "p.value") {
       what <- .arg_match_prolfqua(what, c("p.value", "FDR"), "what")
       warning("ModelFirth$anova_histogram is not implemented.")
       return(NULL)
