@@ -27,7 +27,7 @@
 ## Bug fixes
 
 - ANOVA extractors again accept the supported `LRT`, `Rao` and `Cp` tests, with correct p-value column metadata. Direct construction validates the same choices as `get_anova_df()`. Analysis, aggregation and ANOVA selectors reject multi-value arguments instead of silently choosing the first value.
-- Statistical standards reports now count only fully met standards as compliant. Partial requirements remain TODOs; fitted-response retention is partial and prediction for new categorical groups is unmet. Internal helper documentation now distinguishes response values, column names, palette sizes and quadrature sizes correctly.
+- Statistical standards reports now count only fully met standards as compliant. Partial requirements remain TODOs; the result-method implementation closes 11 Regression standards, while prediction for new categorical groups remains unmet. Internal helper documentation now distinguishes response values, column names, palette sizes and quadrature sizes correctly.
 - Condition tests cover all-zero contrasts; covariance-borrowing documentation now describes selection of the largest matching donor subset, and its unreachable error and rescue-skipping branch have been removed.
 
 - The core R6 dependency is now declared explicitly, so subclass-based tests pass dependency checks in fresh environments.

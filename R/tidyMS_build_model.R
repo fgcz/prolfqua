@@ -439,7 +439,6 @@ impute_from_model <- function(model, lfqdata) {
 #' res <- model_summary(mod)
 #' stopifnot(is.list(res))
 #' stopifnot(all(c("exists", "isSingular") %in% names(res)))
-#' @srrstatsTODO {RE4.18} model_summary and contrast summaries exist; limit: no uniform returned-object summary method.
 model_summary <- function(mod) {
   res <- list()
   res$exists <- table(mod$model_df$has_model_fit)

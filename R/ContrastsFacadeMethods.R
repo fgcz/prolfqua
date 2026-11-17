@@ -91,6 +91,7 @@ NULL
 
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method base::print
+#' @srrstats {RE4.17} Printing shows the model specification, fit counts and coefficients without evaluating contrasts.
 print.ContrastsFacadeBase <- function(x, ...) {
   cat("prolfqua analysis:", x$facade_name, "(", class(x)[1], ")\n")
   .print_analysis_formulas(.facade_formulas(x))
@@ -123,6 +124,7 @@ print.ContrastsFacadeBase <- function(x, ...) {
 
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method base::summary
+#' @srrstats {RE4.18} Summaries compute contrast statistics separately from printing the fitted object.
 summary.ContrastsFacadeBase <- function(object, FDR_threshold = 0.05, diff_threshold = 1, ...) {
   contrasts <- object$get_contrasts()
   missing <- object$get_missing()
@@ -188,6 +190,8 @@ coef.ContrastsFacadeBase <- function(object, ...) .model_coef(object$model)
 #' @param parm coefficient names or positive coefficient indices; omitted for all terms.
 #' @param level confidence level, strictly between zero and one.
 #' @exportS3Method stats::confint
+#' @srrstats {RE4.3} Coefficient confidence intervals use Wald t limits, moderated limma uncertainty and normal Firth
+#'   limits.
 confint.ContrastsFacadeBase <- function(object, parm, level = 0.95, ...) {
   if (!.is_finite_number(level) || level <= 0 || level >= 1) {
     abort_bad_argument("level", "be one finite number strictly between zero and one")
@@ -206,14 +210,18 @@ confint.ContrastsFacadeBase <- function(object, parm, level = 0.95, ...) {
 
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method stats::formula
+#' @srrstats {RE4.4} The accessor returns the fitted specification, including nested and detection-model terms.
 formula.ContrastsFacadeBase <- function(x, ...) .model_formula(x$model)
 
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method stats::nobs
+#' @srrstats {RE4.5} Subject-keyed observation counts exclude imputed responses and unavailable matrix cells.
 nobs.ContrastsFacadeBase <- function(object, ...) .model_nobs(object$model)
 
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method stats::fitted
+#' @srrstats {RE4.9} Fitted responses retain subject, sample, factor and child identifiers on the documented fitting
+#'   scale.
 fitted.ContrastsFacadeBase <- function(object, ...) {
   values <- .model_values(object$model, object$.lfqdata)
   values[, setdiff(names(values), "residual"), drop = FALSE]
@@ -221,6 +229,7 @@ fitted.ContrastsFacadeBase <- function(object, ...) {
 
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method stats::residuals
+#' @srrstats {RE4.10} Observed response residuals and their fitting scale are documented and tested.
 residuals.ContrastsFacadeBase <- function(object, ...) {
   values <- .model_values(object$model, object$.lfqdata)
   values[, setdiff(names(values), "fitted"), drop = FALSE]
@@ -229,6 +238,8 @@ residuals.ContrastsFacadeBase <- function(object, ...) {
 #' @rdname prolfqua_analysis_methods
 #' @param type plot type: an FDR volcano plot (default) or an MA plot.
 #' @exportS3Method graphics::plot
+#' @srrstats {RE6.0} The default plot method returns the analysis FDR volcano plot.
+#' @srrstats {RE6.1} S3 plot dispatch connects analysis results to the existing contrast plotter.
 plot.ContrastsFacadeBase <- function(x, type = c("volcano", "ma"), ...) {
   if (missing(type)) {
     type <- "volcano"

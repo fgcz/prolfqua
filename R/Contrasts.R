@@ -160,8 +160,6 @@
 #' y <- contrastX$get_linfct(avg = FALSE)
 #' stopifnot(all(ref_lfc == y))
 #'
-#' @srrstatsTODO {RE4.3} Contrast intervals and Firth coefficient intervals exist; limit: no uniform coefficient-CI
-#'   accessor.
 Contrasts <- R6::R6Class(
   "Contrast",
   inherit = ContrastsInterface,

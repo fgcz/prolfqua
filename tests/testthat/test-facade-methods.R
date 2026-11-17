@@ -272,6 +272,11 @@ facade_method_dependencies <- list(
   limpa_nested = "limpa"
 )
 
+#' @srrstats {RE7.3} The registry loop tests supported accessors, documented hurdle errors and unavailable
+#'   analysis-level vcov.
+#' @noRd
+NULL
+
 for (method in names(list_facades())) {
   test_that(paste("standard analysis methods work for", method), {
     for (package in facade_method_dependencies[[method]]) {

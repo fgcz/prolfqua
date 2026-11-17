@@ -15,7 +15,6 @@
 #' testthat::expect_error(mi$anova_histogram())
 #'
 #'
-#' @srrstatsTODO {RE6.0} Models expose named diagnostic plots; limit: no default plot method dispatch exists.
 ModelInterface <- R6::R6Class(
   "ModelInterface",
   public = list(

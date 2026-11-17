@@ -25,7 +25,7 @@
 #' facade <- ContrastsFacadeBase$new()
 #' inherits(facade, "ContrastsFacadeBase")
 #' @srrstats {RE1.3} Facade results retain subject identifiers, and get_missing reports absent subject/contrast pairs.
-#' @srrstatsTODO {RE4.8} Facade .lfqdata aliases mutable input; matrix models lack a complete fitted-response snapshot.
+#' @srrstats {RE4.8} Facades copy LFQData; matrix fits retain E, weights, observed masks and sample annotation.
 ContrastsFacadeBase <- R6::R6Class(
   "ContrastsFacadeBase",
   inherit = ContrastsInterface,
