@@ -99,7 +99,8 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' Parse a model formula with a classed argument error
 #' @param modelstr one formula string or a formula
 #' @noRd
-#' @srrstatsTODO {G2.0} Formula and scalar lengths are checked here; limit: not all exported controls have been audited.
+#' @srrstatsTODO {G2.0} Formula and scalar lengths are checked here, and tidyMS_power_fdr.R checks all planning
+#'   input lengths; limit: not all exported controls have been audited.
 #' @srrstatsTODO {G2.6} Strategies accept formula objects and strings; limit: specialized vector classes are not fully
 #'   tested.
 .as_model_formula <- function(modelstr) {
@@ -134,8 +135,8 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param data input data frame
 #' @param config AnalysisConfiguration
 #' @noRd
-#' @srrstatsTODO {G2.1} LFQData/setup_analysis check data, configuration and response types; limit: the API audit is
-#'   incomplete.
+#' @srrstatsTODO {G2.1} LFQData/setup_analysis check data, configuration and response types; tidyMS_power_fdr.R
+#'   rejects non-real numeric inputs and matrices; limit: the API audit is incomplete.
 #' @srrstatsTODO {G2.4b} Numeric responses/counts are required and limma explicitly converts; no general conversion
 #'   policy.
 #' @srrstatsTODO {G2.12} Nonnumeric responses including lists are rejected; limit: other list columns lack a complete

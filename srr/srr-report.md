@@ -57,7 +57,7 @@ Standards on line#89 of file [R/conditions.R](https://github.com/fgcz/prolfqua/b
 - G1.4a All internal (non-exported) functions should also be documented in standard [`roxygen2`](https://roxygen2.r-lib.org/) format, along with a final `@noRd` tag to suppress automatic generation of `.Rd` files or [`@keywords internal`](https://roxygen2.r-lib.org/reference/tags-index-crossref.html?q=keywords%20internal#null) if documentation is still desired.*
 - G2.3 For univariate character input:
 - G2.3a Use `match.arg()` or equivalent where applicable to only permit expected values.
-Standards on line#94 of file [R/prolfqua-package.R](https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-package.R#L94):
+Standards on line#95 of file [R/prolfqua-package.R](https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-package.R#L95):
 - G1.0 Statistical Software should list at least one primary reference from published academic literature.*
 - G1.2 Statistical Software should include a* Life Cycle Statement *describing current and anticipated future states of development.*
 - G1.3 All statistical terminology should be clarified and unambiguously defined.*
@@ -80,7 +80,7 @@ Standards on line#44 of file [R/tidyMS_data_setup.R](https://github.com/fgcz/pro
 Standards on line#258 of file [R/tidyMS_data_setup.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_data_setup.R#L258):
 - RE1.2 Regression Software should document expected format (types or classes) for inputting predictor variables, including descriptions of types or classes which are not accepted.*
 - RE1.3a Where otherwise relevant information is not transferred, this should be explicitly documented.*
-Standards on line#22 of file [R/tidyMS_moderation.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_moderation.R#L22):
+Standards on line#23 of file [R/tidyMS_moderation.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_moderation.R#L23):
 - G5.4 *Correctness tests** *to test that statistical algorithms produce expected results to some fixed test data sets (potentially through comparisons using binding frameworks such as [RStata](https://github.com/lbraglia/RStata)).
 
 ### tests directory
@@ -147,17 +147,17 @@ Standards on line#112 of file [R/build_contrast_analysis.R](https://github.com/f
 - G1.6 Software should include code necessary to compare performance claims with alternative implementations in other R packages.*
 - G2.1a Provide explicit secondary documentation of expectations on data types of all vector inputs.
 - RE2.1 Regression Software should implement explicit parameters controlling the processing of missing values, ideally distinguishing `NA` or `NaN` values from `Inf` values (for example, through use of `na.omit()` and related functions from the `stats` package).*
-Standards on line#105 of file [R/conditions.R](https://github.com/fgcz/prolfqua/blob/main/R/conditions.R#L105):
+Standards on line#106 of file [R/conditions.R](https://github.com/fgcz/prolfqua/blob/main/R/conditions.R#L106):
 - G2.0 Implement assertions on lengths of inputs, particularly through asserting that inputs expected to be single- or multi-valued are indeed so.
 - G2.6 Software which accepts one-dimensional input should ensure values are appropriately pre-processed regardless of class structures.*
-Standards on line#145 of file [R/conditions.R](https://github.com/fgcz/prolfqua/blob/main/R/conditions.R#L145):
+Standards on line#146 of file [R/conditions.R](https://github.com/fgcz/prolfqua/blob/main/R/conditions.R#L146):
 - G2.1 Implement assertions on types of inputs (see the initial point on nomenclature above).
 - G2.12 Software should ensure that `data.frame`-like tabular objects which have list columns should ensure that those columns are appropriately pre-processed either through being removed, converted to equivalent vector columns where appropriate, or some other appropriate treatment such as an informative error. This behaviour should be tested.*
 - G2.4b explicit conversion to continuous via `as.numeric()`
 - G5.8 *Edge condition tests** *to test that these conditions produce expected behaviour such as clear warnings or errors when confronted with data with extreme properties including but not limited to:
-Standards on line#167 of file [R/conditions.R](https://github.com/fgcz/prolfqua/blob/main/R/conditions.R#L167):
+Standards on line#168 of file [R/conditions.R](https://github.com/fgcz/prolfqua/blob/main/R/conditions.R#L168):
 - G2.2 Appropriately prohibit or restrict submission of multivariate input to parameters expected to be univariate.
-Standards on line#94 of file [R/prolfqua-package.R](https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-package.R#L94):
+Standards on line#95 of file [R/prolfqua-package.R](https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-package.R#L95):
 - G1.5 Software should include all code necessary to reproduce results which form the basis of performance claims made in associated publications.*
 Standards on line#233 of file [R/simulate_LFQ_data.R](https://github.com/fgcz/prolfqua/blob/main/R/simulate_LFQ_data.R#L233):
 - G2.0a Provide explicit secondary documentation of any expectations on lengths of inputs
@@ -207,7 +207,7 @@ Standards on line#258 of file [R/tidyMS_data_setup.R](https://github.com/fgcz/pr
 - RE2.0 Regression Software should document any transformations applied to input data, for example conversion of label-values to `factor`, and should provide ways to explicitly avoid any default transformations (with error or warning conditions where appropriate).
 Standards on line#83 of file [R/tidyMS_missingness_imputation.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_missingness_imputation.R#L83):
 - G2.15 Functions should never assume non-missingness, and should never pass data with potential missing values to any base routines with default `na.rm = FALSE`-type parameters (such as [`mean()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/mean.html), [`sd()`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/sd.html) or [`cor()`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.html)).
-Standards on line#22 of file [R/tidyMS_moderation.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_moderation.R#L22):
+Standards on line#23 of file [R/tidyMS_moderation.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_moderation.R#L23):
 - G5.4b For new implementations of existing methods, correctness tests should include tests against previous implementations. Such testing may explicitly call those implementations in testing, preferably from fixed-versions of other software, or use stored outputs from those where that is not possible.
 Standards on line#178 of file [R/tidyMS_reshaping.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_reshaping.R#L178):
 - G2.10 Software should ensure that extraction or filtering of single columns from tabular inputs should not presume any particular default behaviour, and should ensure all column-extraction operations behave consistently regardless of the class of tabular data used as input.*
@@ -222,4 +222,3 @@ Standards on line#7 of file [tests/testthat/test-warnings.R](https://github.com/
 - G5.2a Every message produced within R code by `stop()`, `warning()`, `message()`, or equivalent should be unique
 
 ---
-

@@ -1,7 +1,7 @@
 #' Statistical condition checks
 #'
-#' @srrstatsTODO {G5.2} Condition tests exercise validation and warning paths; limit: informative-message paths
-#'   lack tests.
+#' @srrstatsTODO {G5.2} Condition tests exercise validation and warning paths; test-power_fdr.R covers all
+#'   planning-input errors and test-warnings.R covers raw pilot input; limit: informative-message paths lack tests.
 #' @srrstatsTODO {G5.2b} Coverage-guided condition tests trigger new checks; limit: informative-message paths
 #'   remain.
 #' @noRd

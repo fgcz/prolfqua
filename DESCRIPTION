@@ -76,6 +76,7 @@ Suggests:
     rmarkdown,
     roxygen2,
     S4Vectors,
+    ssize.fdr,
     SummarizedExperiment,
     testthat,
     UpSetR,

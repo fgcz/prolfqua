@@ -84,7 +84,8 @@
 #' }
 #' @importFrom R6 R6Class
 #' @keywords internal
-#' @srrstats {G1.0} Package citation and vignette bibliography include primary statistical references.
+#' @srrstats {G1.0} Package citation and vignette bibliography include primary statistical references;
+#'   tidyMS_power_fdr.R cites Jung (2005) and Liu/Hwang (2007) for FDR sample-size planning.
 #' @srrstats {G1.2} Package Lifecycle declares stable status and the Bioconductor deprecation cycle.
 #' @srrstats {G1.3} Package Glossary and column_description define workflow terms, test interpretation and
 #'   assumptions.

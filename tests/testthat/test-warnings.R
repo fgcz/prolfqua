@@ -63,6 +63,15 @@ test_that("protein power requires transformed data", {
   expect_warning(LFQData$new(x$data, x$config)$get_Stats()$power_t_test(), "power_t_test requires transformed data")
 })
 
+test_that("pilot FDR power requires transformed data", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  expect_warning(
+    result <- LFQData$new(x$data, x$config)$get_Stats()$power_fdr_pilot(delta_mean = 0.1),
+    "power_fdr_pilot requires transformed data"
+  )
+  expect_null(result)
+})
+
 test_that("empty heatmaps warn with the plotting function name", {
   skip_if_not_installed("ComplexHeatmap")
   skip_if_not_installed("circlize")

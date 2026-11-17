@@ -38,12 +38,14 @@ bb <- lfq_power_t_test_proteins(stats_res)
 Other stats:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link[=compute_pooled]{compute_pooled()}},
+\code{\link[=fdr_sig_level]{fdr_sig_level()}},
 \code{\link[=lfq_power_t_test_quantiles_V2]{lfq_power_t_test_quantiles_V2()}},
 \code{\link[=plot_stat_density]{plot_stat_density()}},
 \code{\link[=plot_stat_density_median]{plot_stat_density_median()}},
 \code{\link[=plot_stat_violin]{plot_stat_violin()}},
 \code{\link[=plot_stat_violin_median]{plot_stat_violin_median()}},
 \code{\link[=plot_stdv_vs_mean]{plot_stdv_vs_mean()}},
+\code{\link[=power_fdr_prior_n]{power_fdr_prior_n()}},
 \code{\link[=summarize_stats]{summarize_stats()}}
 }
 \concept{stats}

@@ -233,6 +233,40 @@ x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
   ggplot2::xlim(0,100)
 ```
 
+## Sample-size planning with an FDR target
+
+For many simultaneous tests, the Jung/Liu--Hwang relationship converts the target FDR, assumed null-feature proportion (`pi0`) and target average power into a per-test significance level [@Jung2005; @LiuHwang2007]. Pass this threshold to the existing protein or SD-quantile methods. Here we plan differences of 0.05 and 0.1 on the transformed response scale, within the range of this pilot's within-group variation.
+
+```{r fdr-quantile-sample-sizes}
+alpha <- prolfqua::fdr_sig_level(fdr = 0.05, pi0 = 0.95, power = 0.8)
+fdr_quantiles <- stats$power_t_test_quantiles(
+  delta = c(0.05, 0.1), power = 0.8, sig.level = alpha
+) |>
+  dplyr::filter(group_ != "All")
+prolfqua::table_facade(fdr_quantiles, "FDR planning: samples per group by SD quantile")
+```
+
+Alternatively, estimate a variance distribution from all pilot groups, pooling the raw within-group variances using the observed replicate counts. `power_fdr_pilot()` fits an inverse-gamma variance prior with limma and averages ordinary two-sided t-test power over this prior and the planned distribution of true non-null effects. `delta_se` is the standard deviation of those effects, not the standard error of an estimated mean. Supply effects on the same scale as the transformed response. Neither effects nor `pi0` are estimated from the pilot.
+
+```{r fdr-pilot-sample-size}
+pilot_plan <- transformed$get_Stats()$power_fdr_pilot(
+  delta_mean = 0.1, delta_se = 0.02, fdr = 0.05, power = 0.8,
+  pi0 = 0.95, max_n = 100
+)
+pilot_plan[c("N", "power_achieved", "var_prior", "df_prior", "n_features_used")]
+```
+
+`N` is the first integer sample count **per group** reaching the target average power, or `NA` if the target is not reached by `max_n`. In the latter case, `power_achieved` reports power at `max_n`. For matrix-derived pilot estimates, call `prolfqua::power_fdr_prior_n(var, df, ...)` directly with unweighted, unmoderated per-feature variance estimates and their residual degrees of freedom.
+
+```{r fdr-pilot-power-curve, fig.cap="Average power under the planned effect distribution and fitted variance prior."}
+ggplot2::ggplot(pilot_plan$power_curve, ggplot2::aes(n, power)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_hline(yintercept = 0.8, linetype = "dashed") +
+  ggplot2::labs(x = "Samples per group", y = "Average power")
+```
+
+These calculations assume a balanced two-group design, equal within-group variances, independent effect and variance priors, and independent tests (or an adequate approximation under weak dependence). They use ordinary t-test degrees of freedom, so sample sizes are conservative relative to a moderated test under the same model. The fixed significance threshold gives the FDR planning bound once the target power is reached; lower-power points on the curve need not meet it. The specified FDR is a planning expectation under these assumptions, not a guarantee for each realized experiment.
+
 The `prolfqua` package is described in [@Wolski2023prolfqua].
 
 # Session Info

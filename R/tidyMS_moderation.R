@@ -17,6 +17,7 @@
 #' "moderated.p.value" %in% colnames(res)
 #' @param variance_floor optional positive lower bound for posterior variances
 #' @srrstats {G5.4} Tests compare moderation to squeezeVar, detection to glm/logistf and Hurdle to Fisher combination.
+#'   test-power_fdr.R compares FDR planning with power.t.test, analytic normal mixing and ssize.fdr.
 #' @srrstatsTODO {G5.4b} Reference tests cover limma moderation and detection; DEqMS/PECA and all contrasts are not
 #'   covered.
 moderated_p_limma <- function(

@@ -2,6 +2,8 @@
 
 ## New features
 
+- `fdr_sig_level()` converts a target FDR, null-feature proportion and power into a per-test threshold for the existing protein and SD-quantile sample-size methods. `power_fdr_prior_n()` and `LFQDataStats$power_fdr_pilot()` plan balanced two-group sample sizes by averaging power over a pilot variance prior and a specified effect distribution. The QC and Sample Size Estimation vignette demonstrates both approaches.
+
 - Fitted analysis results support `print()` for a concise model overview without computing contrasts, and `summary()` for fit status and per-contrast significance counts. `coef()`, `confint()`, `formula()` and `nobs()` expose model coefficients, Wald intervals, the fitted specification and observed sample counts in subject-keyed tables. `fitted()` and `residuals()` return observed responses with sample identifiers and imputation flags, on the fitted response scale. `plot()` returns an FDR volcano plot or an MA plot. The Modelling methods vignette demonstrates these methods, and all registered backends are tested against the common result contract.
 
 - Fitted analyses retain an independent input snapshot. Matrix models retain their response matrix, weights and observed-response mask, and LOD-refitted models identify imputed rows for result inspection.

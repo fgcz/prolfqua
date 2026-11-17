@@ -28,6 +28,9 @@ runallfuncs <- function(x){
   if(!x$lfq$is_transformed()){
     stopifnot(is.null(x$power_t_test()))
     stopifnot(is.null(x$power_t_test_quantiles()))
+    stopifnot(is.null(x$power_fdr_pilot(delta_mean = 0.1)))
+  } else {
+    stopifnot(is.list(x$power_fdr_pilot(delta_mean = 0.1, max_n = 20)))
   }
 }
 bb <- prolfqua::sim_lfq_data_peptide_config()
@@ -112,6 +115,7 @@ Other LFQData:
     \item \href{#method-LFQDataStats-stdv_vs_mean}{\code{LFQDataStats$stdv_vs_mean()}}
     \item \href{#method-LFQDataStats-power_t_test_quantiles}{\code{LFQDataStats$power_t_test_quantiles()}}
     \item \href{#method-LFQDataStats-power_t_test}{\code{LFQDataStats$power_t_test()}}
+    \item \href{#method-LFQDataStats-power_fdr_pilot}{\code{LFQDataStats$power_fdr_pilot()}}
     \item \href{#method-LFQDataStats-clone}{\code{LFQDataStats$clone()}}
   }
 }
@@ -129,8 +133,8 @@ Other LFQData:
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{lfqdata}}{LFQData object}
-      \item{\code{stats}}{if `interaction`, compute within-group stats; if `all`,
-compute overall CV; if `pooled`, use pooled variance with grouping
+      \item{\code{stats}}{if \code{interaction}, compute within-group stats; if \code{all},
+compute overall CV; if \code{pooled}, use pooled variance with grouping
 information}
     }
     \if{html}{\out{</div>}}
@@ -212,7 +216,7 @@ information}
 \if{html}{\out{<a id="method-LFQDataStats-density_median"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-density_median}{}}}
 \subsection{\code{LFQDataStats$density_median()}}{
-  plot density or ecdf of CV or sd for the 50% of low intensity data and 50% of high intensity data
+  plot density or ecdf of CV or sd for the 50\% of low intensity data and 50\% of high intensity data
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQDataStats$density_median(ggstat = c("density", "ecdf"))}
@@ -249,7 +253,7 @@ information}
 \if{html}{\out{<a id="method-LFQDataStats-violin_median"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataStats-violin_median}{}}}
 \subsection{\code{LFQDataStats$violin_median()}}{
-  plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
+  plot violinplot of CV or sd for the 50\% of low intensity data and 50\% of high intensity data
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQDataStats$violin_median()}
@@ -327,6 +331,44 @@ information}
       \item{\code{sig.level}}{significance level.}
     }
     \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataStats-power_fdr_pilot"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataStats-power_fdr_pilot}{}}}
+\subsection{\code{LFQDataStats$power_fdr_pilot()}}{
+  Plan balanced two-group sample size from pooled within-group pilot
+variances; see \code{\link[=power_fdr_prior_n]{power_fdr_prior_n()}} for assumptions and returned values.
+Grouping and feature identities follow the current LFQData configuration,
+regardless of the \code{stats} mode used to construct this decorator.
+Untransformed data emit a warning and return \code{NULL}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataStats$power_fdr_pilot(
+  delta_mean,
+  delta_se = 0,
+  fdr = 0.05,
+  power = 0.8,
+  pi0 = 0.95,
+  max_n = 100
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{delta_mean}}{planned mean difference among non-null features, on the transformed response scale}
+      \item{\code{delta_se}}{standard deviation of true non-null differences, not an estimated mean's standard error}
+      \item{\code{fdr}}{target false discovery rate}
+      \item{\code{power}}{target average power among non-null features}
+      \item{\code{pi0}}{assumed proportion of truly null features}
+      \item{\code{max_n}}{largest sample count per group to consider}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    The list returned by \code{\link[=power_fdr_prior_n]{power_fdr_prior_n()}}.
   }
 }
 
