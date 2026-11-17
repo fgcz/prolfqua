@@ -91,6 +91,38 @@ test_that("printing a facade is informative and does not evaluate contrasts", {
   expect_false(returned$visible)
 })
 
+test_that("printing extracts coefficients from only the first few fits", {
+  facade <- facade_methods_fit()
+  extract <- .fit_coef
+  extracted <- 0L
+  local_mocked_bindings(.fit_coef = function(fit) {
+    extracted <<- extracted + 1L
+    extract(fit)
+  })
+  expect_output(print(facade), "Coefficient preview:")
+  expect_lte(extracted, 6L)
+})
+
+test_that("matrix fit status does not infer singularity from failed fits", {
+  facade <- facade_methods_fit("limma")
+  expect_identical(.model_fit_status(facade$model)$singular, NA_integer_)
+  facade$model$fit$coefficients[1, 1] <- NA_real_
+  status <- .model_fit_status(facade$model)
+  expect_equal(status$fitted, 11L)
+  expect_equal(status$failed, 1L)
+  expect_identical(status$singular, NA_integer_)
+})
+
+test_that("coefficient previews preserve full-table values and ordering", {
+  for (method in c("lm", "limma")) {
+    facade <- facade_methods_fit(method)
+    coefficients <- stats::coef(facade)
+    for (n in c(1L, 6L, 15L, 100L)) {
+      expect_equal(.model_coef(facade$model, n), utils::head(coefficients, n))
+    }
+  }
+})
+
 test_that("summary counts agree with the existing contrast interface", {
   facade <- facade_methods_fit()
   result <- summary(facade, FDR_threshold = 0.2, diff_threshold = 0.3)

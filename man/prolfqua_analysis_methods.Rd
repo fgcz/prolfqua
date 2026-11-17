@@ -55,6 +55,7 @@ unused by the other methods.}
   class `summary.ContrastsFacadeBase`, with method, formula, fit status and a
   `per_contrast` table of estimated, missing, significant, up and down counts
   and median sigma and degrees of freedom when available.
+  Matrix models report `NA` for singularity because it is not recorded by limma.
   `coef()` returns subject identifiers, term, estimate, standard error and df.
   `confint()` adds Wald t confidence limits (`conf.low`, `conf.high`).
   Limma uses moderated standard errors and degrees of freedom; Firth logistic

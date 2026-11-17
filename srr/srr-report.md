@@ -21,21 +21,21 @@ Standards on line#74 of file [R/BinomialNested.R](https://github.com/fgcz/prolfq
 Standards on line#29 of file [R/ContrastsFacadeBase.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeBase.R#L29):
 - RE1.3 Regression Software which passes or otherwise transforms aspects of input data onto output structures should ensure that those output structures retain all relevant aspects of input data, notably including row and column names, and potentially information from other `attributes()`.
 - RE4.8 Response variables, and associated "metadata" where applicable.
-Standards on line#95 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L95):
+Standards on line#96 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L96):
 - RE4.17 Model objects returned by Regression Software should implement or appropriately extend a default `print` method which provides an on-screen summary of model (input) parameters and (output) coefficients.
-Standards on line#128 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L128):
+Standards on line#129 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L129):
 - RE4.18 Regression Software may also implement `summary` methods for model objects, and in particular should implement distinct `summary` methods for any cases in which calculation of summary statistics is computationally non-trivial (for example, for bootstrapped estimates of confidence intervals).*
-Standards on line#195 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L195):
+Standards on line#196 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L196):
 - RE4.3 Confidence intervals on those coefficients (via `confint()`)
-Standards on line#214 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L214):
+Standards on line#215 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L215):
 - RE4.4 The specification of the model, generally as a formula (via `formula()`)
-Standards on line#219 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L219):
+Standards on line#220 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L220):
 - RE4.5 Numbers of observations submitted to model (via `nobs()`)
-Standards on line#225 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L225):
+Standards on line#226 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L226):
 - RE4.9 Modelled values of response variables.
-Standards on line#233 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L233):
+Standards on line#234 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L234):
 - RE4.10 Model Residuals, including sufficient documentation to enable interpretation of residuals, and to enable users to submit residuals to their own tests.
-Standards on line#243 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L243):
+Standards on line#244 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L244):
 - RE6.0 Model objects returned by Regression Software (see* **RE4***) should have default `plot` methods, either through explicit implementation, extension of methods for existing model objects, or through ensuring default methods work appropriately.
 - RE6.1 Where the default `plot` method is **NOT** a generic `plot` method dispatched on the class of return objects (that is, through an S3-type `plot.<myclass>` function or equivalent), that method dispatch (or equivalent) should nevertheless exist in order to explicitly direct users to the appropriate function.
 Standards on line#293 of file [R/ContrastsROPECA.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsROPECA.R#L293):
@@ -85,7 +85,7 @@ Standards on line#22 of file [R/tidyMS_moderation.R](https://github.com/fgcz/pro
 
 ### tests directory
 
-Standards on line#278 of file [tests/testthat/test-facade-methods.R](https://github.com/fgcz/prolfqua/blob/main/tests/testthat/test-facade-methods.R#L278):
+Standards on line#310 of file [tests/testthat/test-facade-methods.R](https://github.com/fgcz/prolfqua/blob/main/tests/testthat/test-facade-methods.R#L310):
 - RE7.3 Demonstrate and test expected behaviour when objects returned from regression software are submitted to the accessor methods of **RE4.2**--**RE4.7**.
 Standards on line#6 of file [tests/testthat/test-input-validation.R](https://github.com/fgcz/prolfqua/blob/main/tests/testthat/test-input-validation.R#L6):
 - G5.8b Data of unsupported types (e.g., character or complex numbers in for functions designed only for numeric data)

@@ -1,6 +1,21 @@
 # Verification of analysis result methods
 
-**Completed on 2026-11-17 for prolfqua 1.9.4.** All steps and acceptance checks in the [result-method plan](../../TODO/prolfqua/TODO_srr_block_A_result_methods.md) are complete. Verification used R 4.6.2 on arm64 macOS with normal user/system libraries. The source implementation is in commits `a2c965a9` through `96acd912`; this report accompanies the standards-evidence commit. The [groundwork verification](verification.html) remains a separate historical record.
+**Completed on 2026-11-17 for prolfqua 1.9.4.** All steps and acceptance checks in the [result-method plan](../../TODO/prolfqua/TODO_srr_block_A_result_methods.md) are complete. Verification used R 4.6.2 on arm64 macOS with normal user/system libraries. The source implementation is in commits `a2c965a9` through `96acd912`; the initial standards-evidence commit is `4292ec5e`. The independent-review follow-up below is also complete. The [groundwork verification](verification.html) remains a separate historical record.
+
+## Independent-review follow-up — 2026-11-17
+
+All four required findings in the [independent review](../../TODO/prolfqua/TODO_srr_block_A_result_methods.md) are addressed:
+
+- `print()` now requests six coefficient rows and extracts coefficients from at most six successful subject fits. Matrix previews bound table construction but retain moderation across the complete protein pool, preserving their standard errors. Public `coef()` still returns the complete table.
+- Limma summaries report `singular = NA_integer_`. The regression test also exposed and fixed a related failed-fit count: a tibble column named `fitted` had shadowed the logical fit mask before `failed` was computed.
+- The standards-report and internal-helper-documentation NEWS entries were removed; the new NEWS entry describes the faster preview and corrected fit status.
+- The package agent guide now lists `rfit`, `rfit_impute` and `hurdle_nested`. A runtime comparison confirms its lists match all 13 aggregated and 7 nested registry entries. The pre-existing guide finding is marked resolved in the parent TODO.
+
+Before the fix, the new regression tests recorded 12 coefficient extractions for a six-row preview, a false zero failed-fit count, and numeric singularity counts. The focused file now passes 548 assertions. Preview tests compare values and ordering with the full table for limits of 1, 6, 15 and 100 rows. The full, reduced-dependency and integration results below were rerun for this follow-up.
+
+An illustrative timing comparison used 200 simulated input proteins, seed 42, no missing responses, and `lmer_nested` with group, peptide and sample effects. The median of three print calls fell from **0.268 s to 0.027 s** (about tenfold); complete coefficient extraction remained 0.269/0.285 s before/after. Fitting was excluded from timing. The fixture emitted grouping-level warnings during fitting, outside the timed print calls; this is a performance example, not an inference-quality test or universal runtime guarantee.
+
+The optional registration cleanup was reviewed and left unchanged: internal S3 methods remain explicitly registered, without exporting the internal functions. The guide skill's content check passed; its command checker reported one recognized command and six skipped R class names. The runtime registry comparison provides the direct evidence for the guide change. Unrelated guide content was preserved.
 
 ## Implementation and commits
 
@@ -22,8 +37,8 @@ Each implementation step passed the full unit suite and lint before its commit. 
 
 | Check | Result |
 |---|---|
-| `make test` | 2,153 assertions; zero failures, warnings or skips |
-| Reduced-library tests ([reproduction script](test-without-optional-packages.R)) | 1,882 assertions; zero failures/warnings and 41 expected skips |
+| `make test` | 2,167 assertions; zero failures, warnings or skips |
+| Reduced-library tests ([reproduction script](test-without-optional-packages.R)) | 1,896 assertions; zero failures/warnings and 41 expected skips |
 | `make document` | Passed without warnings; 116 standards accounted for |
 | `make lint` | No lints |
 | Full `make check` | Zero errors, warnings or notes, including S3 consistency, examples, tests and vignette rebuilds |
@@ -42,7 +57,7 @@ The `package-standards` and `stats-standards` review checked the new S3 registra
 
 Observed-value tables exclude LOD-filled rows, retain sample/child identifiers and mark imputed subjects. Hurdle accessors return the documented classed exception directing callers to its two components. The all-method loop covers the complete 20-method registry. Regression tests added during implementation also catch matrix-residual misalignment for missing cells and limpa imputation flags changing with a user-supplied model label. Known simulation/convergence warning patterns are handled narrowly by the test fixture helper; other warnings remain test failures.
 
-The plan deliberately excludes analysis-level covariance, transformation provenance, fitted-response interval plots and per-subject convergence diagnostics. Their standards remain TODO. Testing the unsupported `vcov()` call does not claim RE4.6 is implemented. The four pre-existing issues listed in the plan are recorded, without changing their code, in the [parent TODO](../../TODO/prolfqua/TODO_ropensci_compliance.md#5-srr-standards-remaining-blocks).
+The plan deliberately excludes analysis-level covariance, transformation provenance, fitted-response interval plots and per-subject convergence diagnostics. Their standards remain TODO. Testing the unsupported `vcov()` call does not claim RE4.6 is implemented. The original plan recorded four pre-existing issues; this follow-up resolves the facade-guide issue, while the three code/documentation issues remain in the [parent TODO](../../TODO/prolfqua/TODO_ropensci_compliance.md#5-srr-standards-remaining-blocks).
 
 ## Standards and limits
 

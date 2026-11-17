@@ -14,6 +14,7 @@
 #'   class `summary.ContrastsFacadeBase`, with method, formula, fit status and a
 #'   `per_contrast` table of estimated, missing, significant, up and down counts
 #'   and median sigma and degrees of freedom when available.
+#'   Matrix models report `NA` for singularity because it is not recorded by limma.
 #'   `coef()` returns subject identifiers, term, estimate, standard error and df.
 #'   `confint()` adds Wald t confidence limits (`conf.low`, `conf.high`).
 #'   Limma uses moderated standard errors and degrees of freedom; Firth logistic
@@ -101,12 +102,12 @@ print.ContrastsFacadeBase <- function(x, ...) {
   print(.facade_fit_status(x))
   if (is.null(x$model)) {
     cat("Intensity coefficient preview:\n")
-    print(utils::head(stats::coef(x$contrast$intensity)))
+    print(.model_coef(x$contrast$intensity$model, n = 6L))
     cat("Detection coefficient preview:\n")
-    print(utils::head(stats::coef(x$contrast$detection)))
+    print(.model_coef(x$contrast$detection$model, n = 6L))
   } else {
     cat("Coefficient preview:\n")
-    print(utils::head(stats::coef(x)))
+    print(.model_coef(x$model, n = 6L))
   }
   invisible(x)
 }

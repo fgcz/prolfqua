@@ -155,8 +155,9 @@
 
 #' Coefficient table across model subjects
 #' @param model a model adapter
+#' @param n maximum number of coefficient rows; finite previews inspect at most n subject fits
 #' @noRd
-.model_coef <- function(model) UseMethod(".model_coef")
+.model_coef <- function(model, n = Inf) UseMethod(".model_coef")
 
 #' Repeat subject identifiers alongside variable-length result tables
 #' @param fits ungrouped table with one row per subject
@@ -172,44 +173,49 @@
 #' @rdname dot-model_coef
 #' @noRd
 #' @export
-.model_coef.Model <- function(model) {
+.model_coef.Model <- function(model, n = Inf) {
   fits <- .model_fits(model)
-  .bind_fit_results(
+  fits <- fits[seq_len(min(n, nrow(fits))), , drop = FALSE]
+  result <- .bind_fit_results(
     fits,
     model$subject_id,
     lapply(fits$linear_model, .fit_coef),
     tibble::tibble(term = character(), estimate = double(), std.error = double(), df = double())
   )
+  result[seq_len(min(n, nrow(result))), , drop = FALSE]
 }
 
 #' @rdname dot-model_coef
 #' @noRd
 #' @export
-.model_coef.ModelFirth <- function(model) .model_coef.Model(model)
+.model_coef.ModelFirth <- function(model, n = Inf) .model_coef.Model(model, n)
 
 #' @rdname dot-model_coef
 #' @noRd
 #' @export
-.model_coef.ModelLimma <- function(model) {
+.model_coef.ModelLimma <- function(model, n = Inf) {
+  # Moderation must use all subjects even when only a coefficient preview is requested.
   fit <- limma::eBayes(model$fit, trend = model$trend, robust = model$robust)
-  result <- lapply(seq_len(ncol(fit$coefficients)), function(j) {
+  rows <- seq_len(min(n, nrow(fit$coefficients)))
+  result <- lapply(seq_len(min(n, ncol(fit$coefficients))), function(j) {
     dplyr::bind_cols(
-      model$rowdata,
+      model$rowdata[rows, , drop = FALSE],
       tibble::tibble(
         term = colnames(fit$coefficients)[j],
-        estimate = unname(fit$coefficients[, j]),
-        std.error = unname(fit$stdev.unscaled[, j] * sqrt(fit$s2.post)),
-        df = unname(fit$df.total)
+        estimate = unname(fit$coefficients[rows, j]),
+        std.error = unname(fit$stdev.unscaled[rows, j] * sqrt(fit$s2.post[rows])),
+        df = unname(fit$df.total[rows])
       )
     )
   })
-  dplyr::bind_rows(result)
+  result <- dplyr::bind_rows(result)
+  result[seq_len(min(n, nrow(result))), , drop = FALSE]
 }
 
 #' @rdname dot-model_coef
 #' @noRd
 #' @export
-.model_coef.NULL <- function(model) .model_not_available()
+.model_coef.NULL <- function(model, n = Inf) .model_not_available()
 
 #' Observation counts across model subjects
 #' @param model a model adapter
@@ -307,12 +313,12 @@
 #' @noRd
 #' @export
 .model_fit_status.ModelLimma <- function(model) {
-  fitted <- rowSums(is.na(model$fit$coefficients)) == 0
+  has_fit <- rowSums(is.na(model$fit$coefficients)) == 0
   tibble::tibble(
     subjects = nrow(model$rowdata),
-    fitted = sum(fitted),
-    failed = sum(!fitted),
-    singular = sum(!fitted),
+    fitted = sum(has_fit),
+    failed = sum(!has_fit),
+    singular = NA_integer_,
     imputed = sum(.matrix_imputed_subjects(model))
   )
 }

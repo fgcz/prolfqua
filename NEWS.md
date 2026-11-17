@@ -11,8 +11,6 @@
 
 ## Behaviour changes
 
-- Source annotations and a standards report now trace all General and Regression rOpenSci standards to evidence, explicit partial limits, non-applicability reasons or deferred work. The feasibility assessment is kept separate from current compliance.
-
 - The package help now defines the API lifecycle, analysis terminology and statistical terms. The Under the hood article explains categorical formula coding and contrast weights, and the analysis help documents measured runtime scaling.
 
 - Invalid analysis, simulation, response, contrast and count inputs now fail at the entry point with a classed error. Method keys must match exactly (case sensitive). A misspelled limma weights column is an error rather than an unweighted fit. Subset scaling rejects mismatched transformation states.
@@ -26,8 +24,9 @@
 
 ## Bug fixes
 
+- Printing fitted analyses extracts coefficients from only the first few subject fits for its preview. Limma summaries correctly count failed fits and report singularity as unknown (`NA`) instead of inferring it from failed fits.
+
 - ANOVA extractors again accept the supported `LRT`, `Rao` and `Cp` tests, with correct p-value column metadata. Direct construction validates the same choices as `get_anova_df()`. Analysis, aggregation and ANOVA selectors reject multi-value arguments instead of silently choosing the first value.
-- Statistical standards reports now count only fully met standards as compliant. Partial requirements remain TODOs; the result-method implementation closes 11 Regression standards, while prediction for new categorical groups remains unmet. Internal helper documentation now distinguishes response values, column names, palette sizes and quadrature sizes correctly.
 - Condition tests cover all-zero contrasts; covariance-borrowing documentation now describes selection of the largest matching donor subset, and its unreachable error and rescue-skipping branch have been removed.
 
 - The core R6 dependency is now declared explicitly, so subclass-based tests pass dependency checks in fresh environments.
