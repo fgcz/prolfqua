@@ -101,6 +101,7 @@ Other modelling:
 \code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
 \code{\link[=moderated_p_limma]{moderated_p_limma()}},
 \code{\link[=new_imputed_model]{new_imputed_model()}},
+\code{\link[=nobs.rfit_prolfqua]{nobs.rfit_prolfqua()}},
 \code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
 \code{\link[=register_facade]{register_facade()}},
 \code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
@@ -127,7 +128,7 @@ Other modelling:
 
     \item{\code{contrast}}{inner contrast object the facade delegates to}
 
-    \item{\code{.lfqdata}}{stored reference to the input LFQData (used by get_missing)}
+    \item{\code{.lfqdata}}{snapshot of the input LFQData (used by get_missing)}
 
     \item{\code{.contrast_names}}{names of the requested contrasts}
 

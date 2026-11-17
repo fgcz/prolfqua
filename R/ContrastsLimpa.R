@@ -140,5 +140,5 @@ build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_nam
     fit_args$span <- strategy$span
   }
   fit <- do.call(limpa::voomaLmFitWithImputation, fit_args)
-  .new_model_limma(fit, setup, strategy, model_name)
+  .new_model_limma(fit, setup, strategy, model_name, fit$EList$E, fit$EList$weights, !imputed)
 }

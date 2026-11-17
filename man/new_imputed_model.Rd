@@ -9,7 +9,8 @@ new_imputed_model(
   borrowed_vcov,
   borrowed_sigma,
   borrowed_df,
-  n_observed
+  n_observed,
+  imputed_rows = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ new_imputed_model(
 \item{borrowed_df}{numeric, borrowed residual degrees of freedom}
 
 \item{n_observed}{integer, number of non-imputed observations}
+
+\item{imputed_rows}{logical vector identifying rows filled at the LOD}
 }
 \value{
 imputed_model object
@@ -130,6 +133,7 @@ Other modelling:
 \code{\link[=moderated_p_deqms]{moderated_p_deqms()}},
 \code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
 \code{\link[=moderated_p_limma]{moderated_p_limma()}},
+\code{\link[=nobs.rfit_prolfqua]{nobs.rfit_prolfqua()}},
 \code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
 \code{\link[=register_facade]{register_facade()}},
 \code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},

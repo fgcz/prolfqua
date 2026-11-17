@@ -681,3 +681,50 @@ test_that("limma_voom_impute supports borrowed residual degrees of freedom", {
     1
   )
 })
+
+test_that("matrix models retain the inputs and weights used for their coefficients", {
+  sim <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0, seed = 42)
+  lfq <- LFQData$new(sim$data, sim$config)
+  for (method in c("limma", "limma_voom")) {
+    facade <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"), method)
+    model <- facade$model
+    refit <- limma::lmFit(model$E, model$fit$design, weights = model$weights)
+    expect_equal(refit$coefficients, model$fit$coefficients)
+    expect_equal(unname(rowSums(model$observed)), rep(ncol(model$E), nrow(model$E)))
+    expect_equal(model$annotation[[lfq$sample_name()]], colnames(model$E))
+    expect_equal(model$formula, stats::as.formula(paste(lfq$response(), "~ group_")))
+  }
+})
+
+test_that("limma imputation retains rescued responses and the original observation mask", {
+  sim <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0, seed = 42)
+  lfq <- LFQData$new(sim$data, sim$config)
+  dat <- lfq$data_long()
+  protein <- unique(dat$protein_Id)[1]
+  lfq$set_data(dat[!(dat$protein_Id == protein & dat$group_ == "A"), ])
+  original <- lfq$data_wide(as.matrix = TRUE)$data
+  for (method in c("limma_impute", "limma_voom_impute")) {
+    facade <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"), method)
+    model <- facade$model
+    row <- which(model$rowdata$protein_Id == protein)
+    expect_equal(model$observed, is.finite(original))
+    expect_equal(model$E[-row, ], original[-row, ])
+    expect_true(all(is.finite(model$E[row, ])))
+    refit <- limma::lmFit(model$E, model$fit$design, weights = model$weights)
+    expect_equal(refit$coefficients, model$fit$coefficients)
+  }
+})
+
+test_that("facades retain a snapshot independent of the caller", {
+  sim <- sim_lfq_data_protein_config(Nprot = 10, weight_missing = 0, seed = 42)
+  lfq <- LFQData$new(sim$data, sim$config)
+  facade <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))
+  before <- facade$.lfqdata$data_long()
+  dat <- lfq$data_long()
+  dat[[lfq$response()]] <- dat[[lfq$response()]] + 100
+  lfq$set_data(dat)
+  config <- lfq$get_config()
+  config$sample_name <- "changed"
+  expect_equal(facade$.lfqdata$data_long(), before)
+  expect_false(identical(facade$.lfqdata$sample_name(), "changed"))
+})

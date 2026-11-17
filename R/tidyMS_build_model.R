@@ -485,6 +485,7 @@ model_summary <- function(mod) {
 #' @param borrowed_sigma numeric, borrowed residual standard error / scale
 #' @param borrowed_df numeric, borrowed residual degrees of freedom
 #' @param n_observed integer, number of non-imputed observations
+#' @param imputed_rows logical vector identifying rows filled at the LOD
 #' @return imputed_model object
 #' @keywords internal
 #' @family modelling
@@ -507,11 +508,12 @@ model_summary <- function(mod) {
 #' stopifnot(df.residual(wrapped) == 6)
 #' # coefficients() still dispatches to underlying lm
 #' stopifnot(identical(coefficients(wrapped), coefficients(fit)))
-new_imputed_model <- function(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed) {
+new_imputed_model <- function(model, borrowed_vcov, borrowed_sigma, borrowed_df, n_observed, imputed_rows = NULL) {
   attr(model, "borrowed_vcov") <- borrowed_vcov
   attr(model, "borrowed_sigma") <- borrowed_sigma
   attr(model, "borrowed_df") <- borrowed_df
   attr(model, "n_observed") <- n_observed
+  attr(model, "imputed_rows") <- imputed_rows
   class(model) <- c("imputed_model", class(model))
   model
 }
@@ -765,6 +767,8 @@ impute_refit_singular <- function(
     dat[[nr_children_col]] <- ifelse(is.na(dat[[nr_children_col]]), 1, dat[[nr_children_col]])
   }
 
+  imputed_rows <- is.na(dat[[response]])
+
   # Impute NAs with LOD, clamp all values to max(value, LOD)
   dat[[response]] <- ifelse(is.na(dat[[response]]), lod, dat[[response]])
   dat[[response]] <- pmax(dat[[response]], lod)
@@ -801,7 +805,8 @@ impute_refit_singular <- function(
     borrowed_vcov = imp_vcov,
     borrowed_sigma = borrowed$sigma,
     borrowed_df = imp_df,
-    n_observed = n_observed
+    n_observed = n_observed,
+    imputed_rows = imputed_rows
   )
 
   list(

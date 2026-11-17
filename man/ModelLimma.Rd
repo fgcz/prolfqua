@@ -102,6 +102,7 @@ Other modelling:
 \code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
 \code{\link[=moderated_p_limma]{moderated_p_limma()}},
 \code{\link[=new_imputed_model]{new_imputed_model()}},
+\code{\link[=nobs.rfit_prolfqua]{nobs.rfit_prolfqua()}},
 \code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
 \code{\link[=register_facade]{register_facade()}},
 \code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
@@ -124,6 +125,16 @@ Other modelling:
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
     \item{\code{fit}}{limma MArrayLM object from lmFit}
+
+    \item{\code{E}}{response matrix used for the stored coefficients}
+
+    \item{\code{weights}}{observation-weight matrix or NULL}
+
+    \item{\code{observed}}{logical matrix identifying responses observed before imputation}
+
+    \item{\code{annotation}}{sample table in response-matrix column order}
+
+    \item{\code{formula}}{fitted model formula, including the response}
 
     \item{\code{subject_id}}{protein ID column name(s)}
 
@@ -181,7 +192,12 @@ impute.}
   robust = FALSE,
   dummy_model = NULL,
   p.adjust = prolfqua::adjust_p_values,
-  imputed_proteins = character(0)
+  imputed_proteins = character(0),
+  E = NULL,
+  weights = NULL,
+  observed = NULL,
+  annotation = NULL,
+  formula = NULL
 )}
     \if{html}{\out{</div>}}
   }
@@ -197,6 +213,7 @@ impute.}
       \item{\code{dummy_model}}{one fitted lm for linfct extraction}
       \item{\code{p.adjust}}{function to adjust p-values}
       \item{\code{imputed_proteins}}{character vector of LOD-rescued protein ids}
+      \item{\code{E, weights, observed, annotation, formula}}{retained fitted inputs; see the corresponding fields}
     }
     \if{html}{\out{</div>}}
   }

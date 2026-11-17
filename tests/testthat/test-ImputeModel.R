@@ -188,3 +188,25 @@ test_that("df_method borrowed works", {
   expect_s3_class(res, "data.frame")
   expect_true(nrow(res) > 0)
 })
+
+test_that("imputed fits identify observed and completed rows", {
+  sim <- sim_lfq_data_protein_config(Nprot = 12, weight_missing = 0, seed = 42)
+  lfq <- LFQData$new(sim$data, sim$config)
+  dat <- lfq$data_long()
+  protein <- unique(dat$protein_Id)[1]
+  lfq$set_data(dat[!(dat$protein_Id == protein & dat$group_ == "A"), ])
+  model <- build_model_impute(lfq, strategy_lm(paste(lfq$response(), "~ group_")))
+  row <- which(model$model_df$protein_Id == protein)
+  fit <- model$model_df$linear_model[[row]]
+  data <- model$model_df$data[[row]]
+  expect_equal(attr(fit, "imputed_rows"), data$group_ == "A")
+  expect_equal(sum(!attr(fit, "imputed_rows")), attr(fit, "n_observed"))
+})
+
+test_that("rfit reports its fitted observation count", {
+  skip_if_not_installed("Rfit")
+  dat <- iris
+  dat$Sepal.Length[1] <- NA_real_
+  fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(dat)
+  expect_equal(stats::nobs(fit), 149L)
+})

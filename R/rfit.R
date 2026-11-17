@@ -143,3 +143,16 @@ StrategyRfit <- R6::R6Class(
 strategy_rfit <- function(modelstr, model_name = "rfit") {
   StrategyRfit$new(modelstr, model_name)
 }
+
+#' Number of observations in an augmented rfit fit
+#' @param object an `rfit_prolfqua` fit
+#' @param ... ignored
+#' @return Number of fitted observations, excluding omitted rows.
+#' @exportS3Method stats::nobs
+#' @family modelling
+#' @examples
+#' fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
+#' stats::nobs(fit)
+nobs.rfit_prolfqua <- function(object, ...) {
+  NROW(object$residuals)
+}
