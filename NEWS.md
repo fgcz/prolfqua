@@ -2,6 +2,8 @@
 
 ## New features
 
+- Fitted analysis results support `print()` for a concise model overview without computing contrasts, and `summary()` for fit status and per-contrast significance counts.
+
 - Fitted analyses retain an independent input snapshot. Matrix models retain their response matrix, weights and observed-response mask, and LOD-refitted models identify imputed rows for result inspection.
 
 - New method `ropecaV2_nested` (`ContrastsROPECAV2NestedFacade`, `ContrastsROPECAV2`): ROPECA with calibrated protein p-values. `ropeca_nested` tests the median signed peptide p-value against a beta distribution, which is conservative for independent peptides and makes proteins with many correlated peptides too significant; its 10-peptide cap only damps that. `ropecaV2_nested` converts the moderated peptide t-statistics to normal scores and tests their median per protein against its exact null distribution, allowing for the correlation of the peptides of a protein, which it estimates once from the peptide model residuals. Share of p < 0.05 for proteins that do not change, by number of peptides (prolfquabenchmark vignette `Benchmark_ropeca`): on simulated proteins whose peptide correlation varies between proteins, 0.050 to 0.067 for 2 to 20 peptides, where `ropeca_nested` gives 0.037 to 0.082; on the human proteins of IonStar, whose peptides are nearly uncorrelated, 0.041 to 0.053 for 2 to more than 20 peptides, where `ropeca_nested` gives 0.018 down to 0.000. `diff` is the median peptide fold change, as in `ropeca_nested`; `statistic`, `std.error` and the 95% interval follow from the p-value. `ropeca_nested` is unchanged.

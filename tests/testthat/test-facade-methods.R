@@ -78,3 +78,42 @@ test_that("failed fits are skipped without losing table schemas", {
   expect_equal(.model_fit_status(model)$failed, 12L)
   expect_error(.model_coef(NULL), "x\\$contrast\\$intensity", class = "prolfqua_error_not_available")
 })
+
+test_that("printing a facade is informative and does not evaluate contrasts", {
+  facade <- facade_methods_fit()
+  facade$contrast <- list(get_contrasts = function(...) stop("contrasts must remain lazy"))
+  expect_output(returned <- withVisible(print(facade)), "prolfqua analysis: lm")
+  expect_output(print(facade), "Formula:.*group_")
+  expect_output(print(facade), "Input subjects: 12")
+  expect_identical(returned$value, facade)
+  expect_false(returned$visible)
+})
+
+test_that("summary counts agree with the existing contrast interface", {
+  facade <- facade_methods_fit()
+  result <- summary(facade, FDR_threshold = 0.2, diff_threshold = 0.3)
+  expect_s3_class(result, "summary.ContrastsFacadeBase")
+  counts <- result$per_contrast
+  selected <- facade$filter_significant(FDR_threshold = 0.2, diff_threshold = 0.3)
+  expect_equal(counts$estimated, nrow(facade$get_contrasts()))
+  expect_equal(counts$missing, nrow(facade$get_missing()))
+  expect_equal(counts$significant, nrow(selected))
+  expect_equal(counts$up, sum(selected$diff > 0))
+  expect_equal(counts$down, sum(selected$diff < 0))
+  expect_output(print(result), "prolfqua analysis summary: lm")
+})
+
+test_that("hurdle printing and summaries describe both component models", {
+  sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
+  lfq <- LFQData$new(sim$data, sim$config)
+  lfq <- lfq$get_Transformer()$log2()$lfq
+  expect_warning(
+    facade <- facade_methods_fit("hurdle_nested", lfq),
+    "Zero sample variances detected"
+  )
+  expect_output(print(facade), "intensity formula:")
+  expect_output(print(facade), "detection formula:")
+  result <- summary(facade)
+  expect_equal(result$fit_status$component, c("intensity", "detection"))
+  expect_equal(result$per_contrast$estimated, nrow(facade$get_contrasts()))
+})

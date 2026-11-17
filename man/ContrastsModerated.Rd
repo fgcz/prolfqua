@@ -134,6 +134,7 @@ Other modelling:
 \code{\link[=new_imputed_model]{new_imputed_model()}},
 \code{\link[=nobs.rfit_prolfqua]{nobs.rfit_prolfqua()}},
 \code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
+\code{\link{prolfqua_analysis_methods}},
 \code{\link[=register_facade]{register_facade()}},
 \code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
 \code{\link[=sim_build_models_lm]{sim_build_models_lm()}},
