@@ -23,13 +23,13 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 
 - modelstr:
 
-  model formula string without the response variable (e.g.
+  one right-hand-side formula string without the response variable (e.g.
   `"~ group_"`). The response is taken automatically from
   `lfqdata$get_config()$get_response()`.
 
 - contrasts:
 
-  named character vector of contrasts (e.g.
+  nonempty named character vector of contrast expressions (e.g.
   `c("A_vs_B" = "group_A - group_B")`)
 
 - method:
@@ -44,6 +44,7 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
   `"hurdle_nested"`, combining intensity and detection. Downstream
   packages may add more via
   [`register_facade`](https://fgcz.github.io/prolfqua/reference/register_facade.md).
+  The Keys and column names are case sensitive and must match exactly.
   The authoritative list is
   `names(`[`list_facades`](https://fgcz.github.io/prolfqua/reference/list_facades.md)`())`.
   Defaults to `"lm"`.
@@ -65,6 +66,32 @@ report protein-level contrasts; the others take input at the level they
 report, usually aggregated proteins. `"limpa"` needs input aggregated
 with
 [`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md).
+
+The formula is translated into a design matrix with R's current contrast
+options (normally treatment coding). Configured predictors are
+categorical labels; their reference level is normally the first sorted
+level. Each contrast expression combines group-level coefficient
+weights, rather than referring directly to design-matrix coefficient
+names. For example, `"group_A - group_Ctrl"` subtracts the control group
+mean from the A group mean, including the reference coefficient as
+needed. Interaction cell means are named with a colon and quoted with
+backticks inside expressions. See the *Under the hood* article for
+worked one-factor and `~ A * B` design matrices and linear functions.
+
+With a fixed design and fixed observations per protein, the per-protein
+`lm` and `lmer_nested` fitting loops grow approximately linearly with
+the number of proteins and run sequentially. `limma` fits the expression
+matrix in one call and has lower per-protein overhead. Single-run
+elapsed seconds for 500, 1000 and 2000 proteins were respectively 0.173,
+0.288 and 0.592 for `lm`; 0.077, 0.043 and 0.050 for `limma`; and 7.902,
+15.314 and 29.667 for `lmer_nested` (R 4.6.2, arm64 macOS, 12 samples,
+three peptides per protein for the nested model, no missing responses).
+These timings cover facade construction, including fitting, but exclude
+lazy contrast extraction. They are illustrative timings, not guarantees:
+sample count, design width, missingness and mixed-model convergence
+affect cost. Some mixed fits in this run emitted convergence warnings.
+Reproduction code and environment details are in
+`srr/benchmark-runtime.R` in the source repository.
 
 ## See also
 
@@ -270,9 +297,9 @@ head(fa_firth$get_contrasts())
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1

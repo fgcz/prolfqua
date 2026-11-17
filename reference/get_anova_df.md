@@ -8,6 +8,19 @@ anova returning dataframe
 get_anova_df(test = "F")
 ```
 
+## Arguments
+
+- test:
+
+  one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
+  The fitted model's ANOVA method must support the chosen test.
+
+## Value
+
+An
+[`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md)
+object.
+
 ## See also
 
 Other modelling:

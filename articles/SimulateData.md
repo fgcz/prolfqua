@@ -186,7 +186,7 @@ sessionInfo()
     ## [49] parallel_4.6.2        matrixStats_1.5.0     vctrs_0.7.3          
     ## [52] jsonlite_2.0.0        hms_1.1.4             IRanges_2.46.0       
     ## [55] GetoptLong_1.1.1      S4Vectors_0.50.3      ggrepel_0.9.8        
-    ## [58] clue_0.3-68           systemfonts_1.3.2     crosstalk_1.2.2      
+    ## [58] clue_0.3-68           systemfonts_1.3.3     crosstalk_1.2.2      
     ## [61] foreach_1.5.2         limma_3.68.5          plotly_4.12.1        
     ## [64] tidyr_1.3.2           jquerylib_0.1.4       glue_1.8.1           
     ## [67] pkgdown_2.2.1         codetools_0.2-20      stringi_1.8.9        

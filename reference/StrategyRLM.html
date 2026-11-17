@@ -163,11 +163,11 @@ via <code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 <p></p><ul><li><p><a href="#method-StrategyRLM-sigma"><code>StrategyRLM$sigma()</code></a></p></li>
 <li><p><a href="#method-StrategyRLM-clone"><code>StrategyRLM$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun"><code>StrategyBase$contrast_fun()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual"><code>StrategyBase$df_residual()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-initialize"><code>StrategyBase$initialize()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular"><code>StrategyBase$isSingular()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href="../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun"><code>StrategyBase$model_fun()</code></a></span></li>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href="StrategyBase.html#method-contrast_fun"><code>StrategyBase$contrast_fun()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href="StrategyBase.html#method-df_residual"><code>StrategyBase$df_residual()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href="StrategyBase.html#method-initialize"><code>StrategyBase$initialize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href="StrategyBase.html#method-isSingular"><code>StrategyBase$isSingular()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href="StrategyBase.html#method-model_fun"><code>StrategyBase$model_fun()</code></a></span></li>
 </ul></details></p><hr><a id="method-StrategyRLM-sigma"></a><div class="section">
 <h3 id="strategyrlm-sigma-"><code>StrategyRLM$sigma()</code><a class="anchor" aria-label="anchor" href="#strategyrlm-sigma-"></a></h3>
 <p>Get the robust scale estimate used by <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code></p>
@@ -214,7 +214,7 @@ returns the ordinary-residual scale instead and would distort moderated
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="va">StrategyRLM</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5838345971e0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x61b0ad8d63f0&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

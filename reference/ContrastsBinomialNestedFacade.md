@@ -34,18 +34,18 @@ An R6 class generator.
 
 Inherited methods
 
-- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides)
-- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
-- [`ContrastsFacadeBase$get_Plotter()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_Plotter)
-- [`ContrastsFacadeBase$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_config)
-- [`ContrastsFacadeBase$get_contrasts()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_contrasts)
-- [`ContrastsFacadeBase$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing)
-- [`ContrastsFacadeBase$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-to_wide)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-filter_significant)
+- [`ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_contrast_sides)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_rank)
+- [`ContrastsFacadeBase$get_Plotter()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_Plotter)
+- [`ContrastsFacadeBase$get_config()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_config)
+- [`ContrastsFacadeBase$get_contrasts()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_contrasts)
+- [`ContrastsFacadeBase$get_missing()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_missing)
+- [`ContrastsFacadeBase$to_wide()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-to_wide)
 
 ------------------------------------------------------------------------
 

@@ -31,11 +31,11 @@ An R6 class generator.
 
 Inherited methods
 
-- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-contrast_fun)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-df_residual)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
+- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-sigma)
 
 ------------------------------------------------------------------------
 

@@ -128,6 +128,180 @@ head(mod$get_coefficients())
     ## 5 0m5WN4~6025 group_B        6.58      0.792    8.31 3.32e- 5 FALSE            3
     ## 6 0m5WN4~6025 group_Ctrl     3.04      0.792    3.84 4.96e- 3 FALSE            3
 
+## From a formula to coefficient weights
+
+[`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
+treats configured predictors as categorical labels. It converts numeric
+predictors and ordered factors to character too, so ordered levels and
+numeric slopes are not retained by that route. It builds the configured
+identifiers and retains the analysis columns; other columns and their
+attributes are discarded. The names in `config$factors` are the
+predictor names used in the formula. Method keys, predictor names and
+contrast names are case sensitive.
+
+R normally uses treatment coding (`options("contrasts")`): an intercept
+for the reference group and one coefficient per other level. When
+predictors are character labels, the first sorted level is normally the
+reference. In this small example we explicitly set `Ctrl` as the
+reference to make the coefficients easy to read:
+
+``` r
+one_factor <- data.frame(
+  group_ = factor(rep(c("Ctrl", "A", "B"), each = 3), levels = c("Ctrl", "A", "B")),
+  abundance = c(19.8, 20, 20.2, 21.8, 22, 22.2, 18.8, 19, 19.2)
+)
+one_model <- lm(abundance ~ group_, data = one_factor)
+unique(model.matrix(one_model))
+```
+
+    ##   (Intercept) group_A group_B
+    ## 1           1       0       0
+    ## 4           1       1       0
+    ## 7           1       0       1
+
+``` r
+coef(one_model)
+```
+
+    ## (Intercept)     group_A     group_B 
+    ##          20           2          -1
+
+The coefficient vector is `(Intercept)`, `group_A`, `group_B`: control
+abundance, A minus control, and B minus control.
+[`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md)
+represents each group mean as a row of weights on those coefficients.
+Internally `.model_coeff_matrix()` creates the weights for observed
+factor combinations and `.coeff_weights_factor_levels()` averages them
+equally within each factor level.
+[`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md)
+then evaluates the named expression using those group rows:
+
+``` r
+one_means <- linfct_from_model(one_model)$linfct_factors
+one_means
+```
+
+    ##            (Intercept) group_A group_B
+    ## group_A              1       1       0
+    ## group_B              1       0       1
+    ## group_Ctrl           1       0       0
+
+``` r
+one_contrast <- linfct_matrix_contrasts(one_means, c(A_vs_Ctrl = "group_A - group_Ctrl"))
+one_contrast
+```
+
+    ##           (Intercept) group_A group_B
+    ## A_vs_Ctrl           0       1       0
+
+``` r
+drop(one_contrast %*% coef(one_model))
+```
+
+    ## A_vs_Ctrl 
+    ##         2
+
+Here `A_vs_Ctrl` has weights `(0, 1, 0)` and estimates a difference of
+2. If A were the reference, the individual coefficient names and weights
+would change, but the same contrast of group means would still estimate
+A minus control. The contrast strings refer to group means, which should
+not be confused with individual treatment-coded coefficients.
+
+### Two factors and their interaction
+
+`~ A * B` expands to `~ A + B + A:B`. With two levels per factor, its
+four columns are an intercept, the A effect at the B reference level,
+the B effect at the A reference level, and their interaction. The
+interaction is the change in the A effect between the two B levels:
+
+``` r
+two_factor <- expand.grid(A = c("a0", "a1"), B = c("b0", "b1"), replicate = 1:3)
+two_factor$abundance <- 20 + 3 * (two_factor$A == "a1") - 2 * (two_factor$B == "b1") +
+  4 * (two_factor$A == "a1" & two_factor$B == "b1") + rep(c(-0.2, 0, 0.2), each = 4)
+two_model <- lm(abundance ~ A * B, data = two_factor)
+unique(model.matrix(two_model))
+```
+
+    ##   (Intercept) Aa1 Bb1 Aa1:Bb1
+    ## 1           1   0   0       0
+    ## 2           1   1   0       0
+    ## 3           1   0   1       0
+    ## 4           1   1   1       1
+
+``` r
+coef(two_model)
+```
+
+    ## (Intercept)         Aa1         Bb1     Aa1:Bb1 
+    ##          20           3          -2           4
+
+Cell means include the corresponding intercept, main effects and
+interaction. Quote the cell names with backticks because they contain
+colons. A main-effect row in `linfct_factors` averages equally over the
+observed cells containing that factor level; a row in
+`linfct_interactions` describes one cell. In this balanced example, the
+marginal A difference is 5, the A difference at `b0` is 3, and the
+difference at `b1` is 7:
+
+``` r
+two_means <- linfct_from_model(two_model)
+two_means$linfct_factors
+```
+
+    ##     (Intercept) Aa1 Bb1 Aa1:Bb1
+    ## Aa0           1 0.0 0.5     0.0
+    ## Aa1           1 1.0 0.5     0.5
+    ## Bb0           1 0.5 0.0     0.0
+    ## Bb1           1 0.5 1.0     0.5
+
+``` r
+two_means$linfct_interactions
+```
+
+    ##         (Intercept) Aa1 Bb1 Aa1:Bb1
+    ## Aa0:Bb0           1   0   0       0
+    ## Aa0:Bb1           1   0   1       0
+    ## Aa1:Bb0           1   1   0       0
+    ## Aa1:Bb1           1   1   1       1
+
+``` r
+two_weights <- linfct_matrix_contrasts(
+  linfct_from_model(two_model, as_list = FALSE),
+  c(
+    A_marginal = "Aa1 - Aa0",
+    A_at_b0 = "`Aa1:Bb0` - `Aa0:Bb0`",
+    A_at_b1 = "`Aa1:Bb1` - `Aa0:Bb1`",
+    A_by_B = "A_at_b1 - A_at_b0"
+  )
+)
+two_weights
+```
+
+    ##            (Intercept) Aa1 Bb1 Aa1:Bb1
+    ## A_marginal           0   1   0     0.5
+    ## A_at_b0              0   1   0     0.0
+    ## A_at_b1              0   1   0     1.0
+    ## A_by_B               0   0   0     1.0
+
+``` r
+drop(two_weights %*% coef(two_model))
+```
+
+    ## A_marginal    A_at_b0    A_at_b1     A_by_B 
+    ##          5          3          7          4
+
+``` r
+stopifnot(all.equal(unname(drop(two_weights %*% coef(two_model))), c(5, 3, 7, 4)))
+```
+
+These helpers assume categorical predictors and the usual
+intercept-based coding. They do not implement general marginal means for
+continuous covariates or arbitrary contrast coding. Missing factor
+combinations can make some rows unestimable; unavailable groups in the
+contrast expressions are reported by a warning at the low-level
+interface, and the facade rejects a group absent from the entire
+dataset.
+
 ## Without moderation
 
 `Contrasts` alone gives the unmoderated contrasts, which the facades do
@@ -233,7 +407,7 @@ sessionInfo()
     ## [33] lifecycle_1.0.5    stringr_1.6.0      fs_2.1.0           htmlwidgets_1.6.4 
     ## [37] MASS_7.3-66        ragg_1.5.2         pkgconfig_2.0.3    desc_1.4.3        
     ## [41] pkgdown_2.2.1      pillar_1.11.1      bslib_0.12.0       gtable_0.3.6      
-    ## [45] glue_1.8.1         Rcpp_1.1.2         statmod_1.5.2      systemfonts_1.3.2 
+    ## [45] glue_1.8.1         Rcpp_1.1.2         statmod_1.5.2      systemfonts_1.3.3 
     ## [49] xfun_0.62          tibble_3.3.1       tidyselect_1.2.1   knitr_1.52        
     ## [53] farver_2.1.2       htmltools_0.5.9    labeling_0.4.3     rmarkdown_2.32    
     ## [57] compiler_4.6.2     prettyunits_1.2.0  S7_0.2.2

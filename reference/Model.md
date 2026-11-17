@@ -137,10 +137,10 @@ Other modelling:
 
 Inherited methods
 
-- [`ModelInterface$anova_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram)
-- [`ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram)
-- [`ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs)
-- [`ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano)
+- [`ModelInterface$anova_histogram()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-anova_histogram)
+- [`ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_histogram)
+- [`ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_pairs)
+- [`ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_volcano)
 
 ------------------------------------------------------------------------
 

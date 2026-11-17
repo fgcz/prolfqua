@@ -48,8 +48,8 @@ Other LFQData:
 
 Inherited methods
 
-- [`AggregatorBase$plot()`](https://fgcz.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot)
-- [`AggregatorBase$write_plots()`](https://fgcz.github.io/prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots)
+- [`AggregatorBase$plot()`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.html#method-plot)
+- [`AggregatorBase$write_plots()`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.html#method-write_plots)
 
 ------------------------------------------------------------------------
 

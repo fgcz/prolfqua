@@ -118,9 +118,9 @@ Other modelling:
 
 Inherited methods
 
-- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-contrast_fun)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
 
 ------------------------------------------------------------------------
 
@@ -196,5 +196,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$formula
 #> bin_resp ~ condition
-#> <environment: 0x58382df80200>
+#> <environment: 0x61b0aa05ec28>
 ```

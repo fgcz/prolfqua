@@ -264,7 +264,7 @@ sessionInfo()
     ## [37] MASS_7.3-66         ragg_1.5.2          pkgconfig_2.0.3    
     ## [40] desc_1.4.3          pkgdown_2.2.1       pillar_1.11.1      
     ## [43] bslib_0.12.0        gtable_0.3.6        glue_1.8.1         
-    ## [46] Rcpp_1.1.2          statmod_1.5.2       systemfonts_1.3.2  
+    ## [46] Rcpp_1.1.2          statmod_1.5.2       systemfonts_1.3.3  
     ## [49] xfun_0.62           tibble_3.3.1        tidyselect_1.2.1   
     ## [52] knitr_1.52          farver_2.1.2        htmltools_0.5.9    
     ## [55] rmarkdown_2.32      labeling_0.4.3      compiler_4.6.2     

@@ -32,6 +32,22 @@
 
 ### Behaviour changes
 
+- Source annotations and a standards report now trace all General and
+  Regression rOpenSci standards to evidence, explicit partial limits,
+  non-applicability reasons or deferred work. The feasibility assessment
+  is kept separate from current compliance.
+
+- The package help now defines the API lifecycle, analysis terminology
+  and statistical terms. The Under the hood article explains categorical
+  formula coding and contrast weights, and the analysis help documents
+  measured runtime scaling.
+
+- Invalid analysis, simulation, response, contrast and count inputs now
+  fail at the entry point with a classed error. Method keys must match
+  exactly (case sensitive). A misspelled limma weights column is an
+  error rather than an unweighted fit. Subset scaling rejects mismatched
+  transformation states.
+
 - Fewer hard dependencies: ‘UpSetR’, ‘ComplexHeatmap’, ‘circlize’,
   ‘plotly’, ‘ggbeeswarm’, ‘progress’, ‘logistf’, ‘lme4’ and ‘lmerTest’
   moved from Imports to Suggests, and ‘forcats’, ‘tidyselect’ and
@@ -42,9 +58,11 @@
   and without ‘progress’ no progress bar is shown. Progress of
   aggregation and of writing box and aggregation plots now also follows
   `options(prolfqua.progress)`.
+
 - prolfqua no longer prints internal progress messages such as “setup
   done”, “completing cases”, “contrasts_linfct”, “starting aggregation”,
   the model formula or the number of rows with missing values.
+
 - All errors are raised with
   [`rlang::abort()`](https://rlang.r-lib.org/reference/abort.html) and
   carry class `prolfqua_error`; invalid arguments also carry
@@ -52,14 +70,17 @@
   class. Missing optional packages (`limpa`, `Rfit`) are reported with
   [`rlang::check_installed()`](https://rlang.r-lib.org/reference/is_installed.html),
   which offers to install them in interactive sessions.
+
 - `lm_impute`, `rfit_impute`, `limma_impute`, `limma_voom_impute`: the
   limit-of-detection refit no longer warns “essentially perfect fit” or
   “non-finite value supplied by optim”, and the `limma` variants no
   longer warn “Partial NA coefficients” for the proteins they then
   refit. Results are unchanged. A failed per-protein fit is reported as
   a warning of class `prolfqua_fit_failed`.
+
 - [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
   no longer warns “Unknown or uninitialised column: `nrPeptides`”.
+
 - README: the getting-started example called the removed aggregator
   method `$medpolish()` and the undeclared package `ggpubr`; it now runs
   as shown and ends with
@@ -67,6 +88,27 @@
   Installation is from Bioconductor first.
 
 ### Bug fixes
+
+- ANOVA extractors again accept the supported `LRT`, `Rao` and `Cp`
+  tests, with correct p-value column metadata. Direct construction
+  validates the same choices as
+  [`get_anova_df()`](https://fgcz.github.io/prolfqua/reference/get_anova_df.md).
+  Analysis, aggregation and ANOVA selectors reject multi-value arguments
+  instead of silently choosing the first value.
+
+- Statistical standards reports now count only fully met standards as
+  compliant. Partial requirements remain TODOs; fitted-response
+  retention is partial and prediction for new categorical groups is
+  unmet. Internal helper documentation now distinguishes response
+  values, column names, palette sizes and quadrature sizes correctly.
+
+- Condition tests cover all-zero contrasts; covariance-borrowing
+  documentation now describes selection of the largest matching donor
+  subset, and its unreachable error and rescue-skipping branch have been
+  removed.
+
+- The core R6 dependency is now declared explicitly, so subclass-based
+  tests pass dependency checks in fresh environments.
 
 - `deqms` / `deqms_voom`
   ([`moderated_p_deqms()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms.md)):
@@ -78,6 +120,7 @@
   freedom get NA moderated statistics without “NaNs produced” warnings;
   the same holds for the unmoderated statistics of `limma`-based
   methods.
+
 - `ropeca_nested` / `ContrastsROPECA`: the protein p-value counted
   peptides without a p-value (failed or non-estimable peptide fits) in
   the number of peptides, which made those proteins too significant,

@@ -63,9 +63,8 @@ impute_refit_singular(
 
   passed to
   [`compute_borrowed_variance`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance.md).
-  With "fail", an unborrowable full covariance matrix skips the rescue
-  (the model_df is returned unchanged) instead of crashing, so the
-  affected proteins surface in `get_missing()`.
+  With "fail", full covariance is borrowed from donors sharing the
+  maximal coefficient set, without falling back to sigma borrowing.
 
 ## Value
 

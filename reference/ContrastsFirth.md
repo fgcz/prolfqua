@@ -143,16 +143,16 @@ Other modelling:
 
 Inherited methods
 
-- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`ContrastsInterface$get_Plotter()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter)
-- [`ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
-- [`ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
-- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
-- [`ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-filter_significant)
+- [`ContrastsInterface$get_Plotter()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_Plotter)
+- [`ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_config)
+- [`ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_missing)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_rank)
+- [`ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -315,24 +315,24 @@ ctr$get_contrasts()
 #>    <chr>     <chr>         <chr>       <chr>    <dbl> <int>     <dbl> <dbl>
 #>  1 firth     observed      0EfVhX~0087 Avs          1     9 -8.47e- 1 0.769
 #>  2 firth     observed      0EfVhX~0087 AvsCtrl      1     9 -8.47e- 1 0.769
-#>  3 firth     observed      7cbcrd~5725 Avs          1     9 -3.99e-16 1    
+#>  3 firth     observed      7cbcrd~5725 Avs          1     9  6.90e-16 1    
 #>  4 firth     observed      7cbcrd~5725 AvsCtrl      1     9  8.47e- 1 0.769
 #>  5 firth     observed      9VUkAq~4703 Avs          1     9 -8.47e- 1 0.769
 #>  6 firth     observed      9VUkAq~4703 AvsCtrl      1     9  8.47e- 1 0.769
 #>  7 firth     observed      BEJI92~5282 Avs          1     9  8.47e- 1 0.769
 #>  8 firth     observed      BEJI92~5282 AvsCtrl      1     9  2.20e+ 0 0.769
-#>  9 firth     observed      CGzoYe~2147 Avs          1     9 -1.26e-15 1    
-#> 10 firth     observed      CGzoYe~2147 AvsCtrl      1     9  4.27e-16 1    
+#>  9 firth     observed      CGzoYe~2147 Avs          1     9  1.52e-15 1    
+#> 10 firth     observed      CGzoYe~2147 AvsCtrl      1     9  1.07e-15 1    
 #> 11 firth     observed      DoWup2~5896 Avs          1     9 -1.35e+ 0 0.769
 #> 12 firth     observed      DoWup2~5896 AvsCtrl      1     9 -3.04e+ 0 0.769
 #> 13 firth     observed      Fl4JiV~8625 Avs          1     9  8.47e- 1 0.769
 #> 14 firth     observed      Fl4JiV~8625 AvsCtrl      1     9  8.47e- 1 0.769
 #> 15 firth     observed      HvIpHG~9079 Avs          1     9 -1.69e+ 0 0.769
 #> 16 firth     observed      HvIpHG~9079 AvsCtrl      1     9 -1.69e+ 0 0.769
-#> 17 firth     observed      JcKVfU~9653 Avs          1     9 -1.26e-15 1    
-#> 18 firth     observed      JcKVfU~9653 AvsCtrl      1     9  4.27e-16 1    
+#> 17 firth     observed      JcKVfU~9653 Avs          1     9  1.52e-15 1    
+#> 18 firth     observed      JcKVfU~9653 AvsCtrl      1     9  1.07e-15 1    
 #> 19 firth     observed      SGIVBl~5782 Avs          1     9  1.35e+ 0 0.769
-#> 20 firth     observed      SGIVBl~5782 AvsCtrl      1     9  2.16e-15 1    
+#> 20 firth     observed      SGIVBl~5782 AvsCtrl      1     9 -4.13e-16 1    
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
 #> #   df.unmoderated <int>

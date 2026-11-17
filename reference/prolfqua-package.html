@@ -75,6 +75,124 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="lifecycle">Lifecycle<a class="anchor" aria-label="anchor" href="#lifecycle"></a></h2>
+
+
+<p>prolfqua is stable. Its exported API follows the Bioconductor deprecation
+cycle: a renamed or removed interface calls <code><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">.Deprecated()</a></code> for one
+release before calling <code><a href="https://rdrr.io/r/base/Defunct.html" class="external-link">.Defunct()</a></code> in a subsequent release. Changes
+affecting analyses are recorded in NEWS.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="glossary">Glossary<a class="anchor" aria-label="anchor" href="#glossary"></a></h2>
+
+
+<dl><dt>LFQData</dt>
+<dd><p>A long-format measurement table together with its
+    <code>AnalysisConfiguration</code>; each row describes a feature in a sample.</p></dd>
+
+  <dt>AnalysisConfiguration</dt>
+<dd><p>The mapping from table columns to hierarchy
+    identifiers, sample identifiers, categorical factors and the response.</p></dd>
+
+  <dt>Hierarchy and hierarchy depth</dt>
+<dd><p>Ordered measurement levels, such as
+    protein, peptide and precursor. Depth selects the levels identifying a
+    modelled subject; deeper levels identify its child features.</p></dd>
+
+  <dt>subject_id</dt>
+<dd><p>The identifier columns of a modelled subject, usually
+    one protein or a protein-peptide pair.</p></dd>
+
+  <dt>Factor</dt>
+<dd><p>An explanatory variable defining experimental groups.
+    <code><a href="setup_analysis.html">setup_analysis()</a></code> converts configured predictors to character
+    labels, including numeric and ordered-factor inputs; numeric covariates
+    and ordered-factor contrasts are not preserved through this setup.</p></dd>
+
+  <dt>Response</dt>
+<dd><p>The numeric intensity column selected by the configuration,
+    usually log2 abundance for modelling. On this scale a difference of one
+    corresponds to a twofold abundance ratio.</p></dd>
+
+  <dt>Contrast</dt>
+<dd><p>A named linear combination of group means or coefficients,
+    for example treatment minus control.</p></dd>
+
+  <dt>linfct</dt>
+<dd><p>A matrix with one row per requested linear function and one
+    column per model coefficient. Multiplying it by the coefficient vector
+    gives the estimates being tested.</p></dd>
+
+  <dt>Strategy</dt>
+<dd><p>The formula, fitting algorithm and methods for extracting
+    coefficients, residual variance, degrees of freedom and contrasts.</p></dd>
+
+  <dt>Model</dt>
+<dd><p>Fitted regressions and their diagnostics, either per subject
+    or in a matrix representation used by limma.</p></dd>
+
+  <dt>Facade</dt>
+<dd><p>An analysis object composing a strategy, model and contrast
+    calculation behind the same result and plotting interface.</p></dd>
+
+  <dt>Aggregated and nested input</dt>
+<dd><p>Aggregated input has the same hierarchy
+    keys as the output subject. Nested input also has child-feature keys;
+    the analysis reports parent-level contrasts.</p></dd>
+
+  <dt>nr_children</dt>
+<dd><p>The sample-wise number of measured child features,
+    such as peptides used to estimate a protein intensity. It may be used
+    as a fitting weight; DEqMS separately pools counts per protein.</p></dd>
+
+  <dt>LOD and imputation</dt>
+<dd><p>The limit of detection on the working response
+    scale, supplied explicitly or estimated from low-observation group
+    means. Imputation replaces missing responses. The LOD methods refit
+    otherwise unestimable subjects and borrow variance from successful fits.</p></dd>
+
+  <dt>estimate_type</dt>
+<dd><p>A result label identifying how an estimate was
+    obtained, for example from observed data or an imputed refit.</p></dd>
+
+  <dt>Moderation</dt>
+<dd><p>Empirical Bayes shrinkage of residual variances towards
+    a shared prior, optionally dependent on abundance or peptide count.
+    Moderated degrees of freedom combine residual and prior information.</p></dd>
+
+  <dt>Null hypothesis and p-value</dt>
+<dd><p>For a usual two-sided contrast test,
+    the null states that the population contrast equals zero. Its p-value
+    is the probability, assuming the null and model assumptions hold, of
+    a statistic at least as extreme as the observed one. It is not the
+    probability that the null hypothesis is true.</p></dd>
+
+  <dt>FDR</dt>
+<dd><p>The false discovery rate: the expected proportion of false
+    discoveries among rejected hypotheses. The default Benjamini-Hochberg
+    adjustment is applied within contrast, assuming independent or suitably
+    positively dependent tests. An adjusted p-value is not the probability
+    that an individual protein is a false discovery.</p></dd>
+
+  <dt>Confidence interval</dt>
+<dd><p>A range from a procedure with the stated
+    repeated-sampling coverage under the model assumptions. Wald intervals
+    use the estimated standard error and a t quantile; they do not assign
+    a probability to a fixed parameter after observing the data.</p></dd>
+
+  <dt>Linear-model assumptions</dt>
+<dd><p>On the working scale, classical linear
+    models assume a linear mean, independent errors and constant residual
+    variance; exact t inference also assumes normal errors. Weights allow
+    specified relative variances and mixed models allow specified dependence
+    within subjects. Robust, detection and imputation methods have
+    different assumptions; diagnostics and the experimental design must
+    guide the method choice.</p></dd>
+
+
+</dl></div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Useful links:</p><ul><li><p><a href="https://github.com/fgcz/prolfqua" class="external-link">https://github.com/fgcz/prolfqua</a></p></li>
 <li><p><a href="https://fgcz.github.io/prolfqua/">https://fgcz.github.io/prolfqua/</a></p></li>

@@ -115,10 +115,10 @@ Other modelling:
 
 Inherited methods
 
-- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-initialize)
-- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
-- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-sigma)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-df_residual)
+- [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-initialize)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
+- [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-sigma)
 
 ------------------------------------------------------------------------
 

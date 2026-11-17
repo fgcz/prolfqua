@@ -326,8 +326,8 @@ lfqstats$violin()
 #> (`stat_summary()`).
 
 runallfuncs(lfqstats)
-#> Warning: data is not transformed - aborting
-#> Warning: data is not transformed - aborting
+#> Warning: power_t_test requires transformed data; aborting.
+#> Warning: power_t_test_quantiles requires transformed data; aborting.
 x <- lfqstats
 
 #study variance of normalized data
@@ -373,6 +373,6 @@ lfqstats$violin()
 #> (`stat_summary()`).
 
 runallfuncs(lfqstats)
-#> Warning: data is not transformed - aborting
-#> Warning: data is not transformed - aborting
+#> Warning: power_t_test requires transformed data; aborting.
+#> Warning: power_t_test_quantiles requires transformed data; aborting.
 ```

@@ -113,7 +113,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 2)
+dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 1)
 #> creating sampleName from file_name column
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 xx <- mh$get_stats()

@@ -152,11 +152,11 @@
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
     <p></p><div class="r6-fields"><dl><dt><code>test</code></dt>
-<dd><p>statistical test type ("F", "Chisq", etc.)</p></dd>
+<dd><p>one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".</p></dd>
 
 
     <dt><code>col_pval</code></dt>
-<dd><p>p-value column name in ANOVA output</p></dd>
+<dd><p>p-value column name in ANOVA output; empty for "Cp", which has no p-value.</p></dd>
 
 
 </dl><p></p></div>
@@ -177,7 +177,8 @@
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>test</code></dt>
-<dd><p>statistical test type</p></dd>
+<dd><p>one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
+The fitted model's ANOVA method must support the chosen test.</p></dd>
 
 
 </dl><p></p></div>

@@ -18,7 +18,7 @@ sim_lfq_data_peptide_config(
 
 - Nprot:
 
-  number of proteins to simulate
+  one positive whole number of proteins to simulate
 
 - with_missing:
 
@@ -26,8 +26,7 @@ sim_lfq_data_peptide_config(
 
 - weight_missing:
 
-  controls proportion of missing values; greater weight means more
-  missingness
+  one number in \[0, 1\]; greater weight means more missingness
 
 - seed:
 

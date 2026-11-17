@@ -100,11 +100,12 @@ Other modelling:
 
 - `test`:
 
-  statistical test type ("F", "Chisq", etc.)
+  one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
 
 - `col_pval`:
 
-  p-value column name in ANOVA output
+  p-value column name in ANOVA output; empty for "Cp", which has no
+  p-value.
 
 ## Methods
 
@@ -130,7 +131,8 @@ Create a new AnovaExtractor
 
 - `test`:
 
-  statistical test type
+  one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
+  The fitted model's ANOVA method must support the chosen test.
 
 ------------------------------------------------------------------------
 

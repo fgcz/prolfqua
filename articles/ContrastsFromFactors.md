@@ -286,7 +286,7 @@ sessionInfo()
     ##  [1] limma_3.68.5        gtable_0.3.6        jsonlite_2.0.0     
     ##  [4] dplyr_1.2.1         compiler_4.6.2      BiocManager_1.30.27
     ##  [7] Rcpp_1.1.2          tidyselect_1.2.1    tidyr_1.3.2        
-    ## [10] jquerylib_0.1.4     systemfonts_1.3.2   scales_1.4.0       
+    ## [10] jquerylib_0.1.4     systemfonts_1.3.3   scales_1.4.0       
     ## [13] textshaping_1.0.5   statmod_1.5.2       yaml_2.3.12        
     ## [16] fastmap_1.2.0       ggplot2_4.0.4       R6_2.6.1           
     ## [19] generics_0.1.4      knitr_1.52          MASS_7.3-66        

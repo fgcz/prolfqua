@@ -1,6 +1,6 @@
-# linfct_matrix_contrasts
+# Convert named group-mean contrasts to coefficient weights
 
-linfct_matrix_contrasts
+Convert named group-mean contrasts to coefficient weights
 
 ## Usage
 
@@ -21,6 +21,16 @@ linfct_matrix_contrasts(linfct, contrasts, p.message = FALSE)
 - p.message:
 
   print messages default FALSE
+
+## Details
+
+Rows of `linfct` represent group or interaction means and columns
+represent fitted coefficients. Contrast expressions combine these rows,
+so `"group_A - group_Ctrl"` becomes their row difference. Quote
+interaction names containing colons with backticks. Expressions may
+reference earlier named contrasts. A row naming a group unavailable in a
+particular model is dropped with a warning. The returned matrix has one
+row per estimable contrast and coefficient columns in model order.
 
 ## See also
 

@@ -184,9 +184,9 @@ fitted model per subject, and the <code>strategy</code></p></dd>
 <li><p><a href="#method-ModelFirth-get_anova"><code>ModelFirth$get_anova()</code></a></p></li>
 <li><p><a href="#method-ModelFirth-anova_histogram"><code>ModelFirth$anova_histogram()</code></a></p></li>
 <li><p><a href="#method-ModelFirth-clone"><code>ModelFirth$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href="../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram"><code>ModelInterface$coef_histogram()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href="../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs"><code>ModelInterface$coef_pairs()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href="../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano"><code>ModelInterface$coef_volcano()</code></a></span></li>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href="ModelInterface.html#method-coef_histogram"><code>ModelInterface$coef_histogram()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href="ModelInterface.html#method-coef_pairs"><code>ModelInterface$coef_pairs()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href="ModelInterface.html#method-coef_volcano"><code>ModelInterface$coef_volcano()</code></a></span></li>
 </ul></details></p><hr><a id="method-ModelFirth-initialize"></a><div class="section">
 <h3 id="modelfirth-new-"><code>ModelFirth$new()</code><a class="anchor" aria-label="anchor" href="#modelfirth-new-"></a></h3>
 <p>initialize</p><div class="section">
@@ -240,11 +240,11 @@ data.frame and the <code>strategy</code></p></dd>
 <h3 id="modelfirth-anova-histogram-"><code>ModelFirth$anova_histogram()</code><a class="anchor" aria-label="anchor" href="#modelfirth-anova-histogram-"></a></h3>
 <p>histogram of ANOVA results</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelFirth</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span>what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelFirth</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span>what <span class="op">=</span> <span class="st">"p.value"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>what</code></dt>
-<dd><p>show either "Pr..F." or "FDR.Pr..F."</p></dd>
+<dd><p>one case-sensitive choice: "p.value" (default) or "FDR".</p></dd>
 
 
 </dl><p></p></div>
@@ -295,22 +295,22 @@ data.frame and the <code>strategy</code></p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    subject_id  `(Intercept)`   group_B group_Ctrl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7IZdVV~0841         2.20   9.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>  -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> AZPG26~2091         2.20   1.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">4.27</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> AoNKbb~6908         2.20  -<span style="color: #BB0000;">1.69</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> EnbuYk~0350         0.847 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   4.14<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> JnEDsz~4938        -<span style="color: #BB0000;">0.847</span> -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">4.18</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> NNASGK~1417         2.20   1.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">4.27</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> XYrp6h~5793         2.20   1.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">4.27</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7IZdVV~0841         2.20   5.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>  -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> AZPG26~2091         2.20  -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> AoNKbb~6908         2.20   3.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> EnbuYk~0350         0.847 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span>   1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> JnEDsz~4938        -<span style="color: #BB0000;">0.847</span> -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0   1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> NNASGK~1417         2.20  -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> XYrp6h~5793         2.20  -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>  -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> quTD7H~4566         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> tCZCHm~6695         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0  -<span style="color: #BB0000;">2.16</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231         0.847  1.35<span style="color: #949494;">e</span>+ 0   1.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> tCZCHm~6695         2.20  -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0   4.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231         0.847  1.35<span style="color: #949494;">e</span>+ 0   1.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Coef_Pairsplot_modelFirth.pdf"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>method not implemented!</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>ModelFirth$get_anova is not implemented.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">coef_volcano</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot</span>
@@ -320,7 +320,7 @@ data.frame and the <code>strategy</code></p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Coef_volcano_plot_modelFirth.pdf"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">mod</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>not implemented</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>ModelFirth$anova_histogram is not implemented.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>
     </div>

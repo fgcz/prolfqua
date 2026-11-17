@@ -13,7 +13,8 @@ setup_analysis(data, configuration, debug = FALSE)
 
 - data:
 
-  data.frame
+  a data.frame with the configured source hierarchy, factor, file-name
+  and numeric response columns
 
 - configuration:
 
@@ -32,6 +33,18 @@ A tibble with the columns relevant for `configuration` (sample,
 hierarchy, factor and response columns). Stops if any
 hierarchy-key/sample combination is observed more than once (unless
 `debug = TRUE`).
+
+## Details
+
+Configured factor source columns are converted to character categorical
+labels, including numeric and ordered factors. Ordered levels and their
+ordering are not retained. Names of `configuration$factors` become the
+output predictor column names. Configured hierarchy columns are combined
+into identifiers. Unconfigured columns and their attributes are
+discarded; the returned table retains only configured analysis columns.
+A missing sample name is derived from the file name. Missing isotope
+labels, identification q-values and child counts receive the documented
+setup defaults; adding child counts of one emits a warning.
 
 ## See also
 

@@ -154,16 +154,16 @@ Other modelling:
 
 Inherited methods
 
-- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-column_description)
-- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-contrast_summary_table)
-- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-extra_artifacts)
-- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-filter_significant)
-- [`ContrastsInterface$get_Plotter()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_Plotter)
-- [`ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_config)
-- [`ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_missing)
-- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora)
-- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank)
-- [`ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-to_wide)
+- [`ContrastsInterface$column_description()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-column_description)
+- [`ContrastsInterface$contrast_summary_table()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-contrast_summary_table)
+- [`ContrastsInterface$extra_artifacts()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-extra_artifacts)
+- [`ContrastsInterface$filter_significant()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-filter_significant)
+- [`ContrastsInterface$get_Plotter()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_Plotter)
+- [`ContrastsInterface$get_config()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_config)
+- [`ContrastsInterface$get_missing()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_missing)
+- [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_ora)
+- [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_rank)
+- [`ContrastsInterface$to_wide()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-to_wide)
 
 ------------------------------------------------------------------------
 
@@ -295,20 +295,20 @@ deqms <- ContrastsModeratedDEqMS$new(contrast,
   count_column = "nrPeptides")
 
 bb <- deqms$get_contrasts()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
 
 # Merge with LOD-imputed refits for proteins the plain lm cannot estimate
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 merged <- merge_contrasts_results(deqms, imp)
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 
 cs <- deqms$get_contrast_sides()
 cslf <- deqms$get_linfct()
 ctrwide <- deqms$to_wide()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 cp <- deqms$get_Plotter()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 cp$volcano()
 #> $FDR
 

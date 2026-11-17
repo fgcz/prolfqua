@@ -35,9 +35,9 @@ contrasts <- c(A_vs_Ctrl = "group_A - group_Ctrl")
 
 Each method declares the input it needs:
 
-- `same`: protein-level input, here `lfq_protein` aggregated with median
-  polish. `limpa` takes `lfq_limpa`, aggregated by `AggregateLimpa`,
-  which adds the per-protein standard errors it needs.
+- `aggregated`: protein-level input, here `lfq_protein` aggregated with
+  median polish. `limpa` takes `lfq_limpa`, aggregated by
+  `AggregateLimpa`, which adds the per-protein standard errors it needs.
 - `nested`: peptide-level input, `lfq_peptide`. The method models the
   peptides and reports protein-level contrasts.
 
@@ -208,7 +208,7 @@ sessionInfo()
 #> [49] BiocManager_1.30.27    vctrs_0.7.3            boot_1.3-32           
 #> [52] glmnet_5.2             Matrix_1.7-6           jsonlite_2.0.0        
 #> [55] bookdown_0.48          hms_1.1.4              mitml_0.4-5           
-#> [58] ggrepel_0.9.8          systemfonts_1.3.2      foreach_1.5.2         
+#> [58] ggrepel_0.9.8          systemfonts_1.3.3      foreach_1.5.2         
 #> [61] limma_3.68.5           tidyr_1.3.2            jquerylib_0.1.4       
 #> [64] glue_1.8.1             pkgdown_2.2.1          nloptr_2.2.1          
 #> [67] pan_2.0                codetools_0.2-20       stringi_1.8.9         

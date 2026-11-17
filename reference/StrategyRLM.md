@@ -113,11 +113,11 @@ Other modelling:
 
 Inherited methods
 
-- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun)
-- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual)
-- [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-initialize)
-- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular)
-- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun)
+- [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-contrast_fun)
+- [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-df_residual)
+- [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-initialize)
+- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-isSingular)
+- [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
 
 ------------------------------------------------------------------------
 
@@ -169,5 +169,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x5838345971e0>
+#> <environment: 0x61b0ad8d63f0>
 ```

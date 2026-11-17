@@ -1,6 +1,6 @@
-# get linfct from model
+# Get group-level linear functions from a fitted model
 
-get linfct from model
+Get group-level linear functions from a fitted model
 
 ## Usage
 
@@ -13,6 +13,21 @@ linfct_from_model(m, as_list = TRUE)
 - m:
 
   linear model
+
+## Details
+
+The fitted model supplies its coefficient names and observed categorical
+factor combinations. Each combination is expressed as weights on the
+fitted coefficients; weights for an individual factor level are averaged
+equally over the observed combinations containing that level. Thus
+`linfct_factors` describes marginal factor-level means and
+`linfct_interactions` describes cell means. With treatment coding, a
+reference-level mean includes the intercept; a non-reference mean also
+includes its treatment coefficient. The *Under the hood* article shows a
+complete `~ A * B` example. These helpers assume categorical predictors
+and the usual intercept-based coding; they are not a general
+marginal-means implementation for continuous predictors or arbitrary
+coding.
 
 ## See also
 

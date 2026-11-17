@@ -115,9 +115,8 @@ weighted lm fits do not fail</p></dd>
 
 <dt id="arg-on-misalign">on_misalign<a class="anchor" aria-label="anchor" href="#arg-on-misalign"></a></dt>
 <dd><p>passed to <code><a href="compute_borrowed_variance.html">compute_borrowed_variance</a></code>. With
-"fail", an unborrowable full covariance matrix skips the rescue (the
-model_df is returned unchanged) instead of crashing, so the affected
-proteins surface in <code>get_missing()</code>.</p></dd>
+"fail", full covariance is borrowed from donors sharing the maximal
+coefficient set, without falling back to sigma borrowing.</p></dd>
 
 </dl></div>
     <div class="section level2">
