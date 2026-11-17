@@ -110,6 +110,29 @@ one <- dplyr::bind_rows(one, .id = "method")
 knitr::kable(one, digits = 3)
 ```
 
+# Inspecting a fitted analysis
+
+The fitted analysis supports standard R methods. `print()` gives the model specification, fit counts and a coefficient preview without calculating contrasts. `summary()` evaluates the contrasts and counts estimated, missing and significant results; the significance defaults are FDR < 0.05 and absolute effect > 1.
+
+```{r inspect-analysis}
+analysis <- build_contrast_analysis(lfq_protein, "~ group_", contrasts, method = "lm")
+print(analysis)
+summary(analysis)
+head(coef(analysis))
+head(confint(analysis))
+formula(analysis)
+head(nobs(analysis))
+head(fitted(analysis))
+head(residuals(analysis))
+plot(analysis)
+```
+
+Coefficient tables describe the fitted model; requested comparisons remain available through `analysis$get_contrasts()`. Confidence intervals are Wald t intervals, with moderated standard errors and degrees of freedom for limma and normal Wald intervals for the Firth logistic backend. ROPECA coefficient tables are keyed by protein and peptide because those methods fit peptide-level models.
+
+Fitted values and residuals retain sample, factor and available child-feature identifiers. They include observed responses from successful fits and a subject-level `imputed` flag; rows filled during LOD imputation are excluded. The values use the fitting scale: log2 intensity here, and probabilities for detection models. Binomial detection responses are the adjusted proportions used in fitting; response residuals equal response minus fitted probability. `nobs()` excludes imputed observations.
+
+Hurdle results combine two fitted models. Their print, summary and plot methods describe the combined analysis; use `analysis$contrast$intensity` or `analysis$contrast$detection` for coefficients, formula, observation counts, fitted values and residuals.
+
 # Session info
 
 ```{r session-info}

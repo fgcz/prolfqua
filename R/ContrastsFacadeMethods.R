@@ -1,8 +1,8 @@
 #' Inspect a fitted prolfqua analysis
 #'
 #' Standard R methods for results returned by [build_contrast_analysis()].
-#' Printing reports the model specification and fit status without computing
-#' contrasts. Summaries evaluate the contrasts and report counts at the requested
+#' Printing reports the model specification, fit status and a coefficient preview
+#' without computing contrasts. Summaries evaluate the contrasts and report counts at the requested
 #' FDR and absolute effect thresholds.
 #'
 #' @param x,object a fitted analysis returned by [build_contrast_analysis()].
@@ -30,6 +30,8 @@
 #'   response residuals equal response minus fitted value. Hurdle results require
 #'   selecting an intensity or detection component for these methods too.
 #'   `plot()` returns a ggplot visibly: an FDR volcano plot or an MA plot.
+#'   There is no analysis-level `vcov()` method; covariance access remains on
+#'   backend fits. Summary fit counts are not per-subject convergence diagnostics.
 #' @name prolfqua_analysis_methods
 #' @family modelling
 #' @examples
@@ -38,6 +40,13 @@
 #' analysis <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))
 #' print(analysis)
 #' summary(analysis)
+#' head(stats::coef(analysis))
+#' head(stats::confint(analysis))
+#' stats::formula(analysis)
+#' head(stats::nobs(analysis))
+#' head(stats::fitted(analysis))
+#' head(stats::residuals(analysis))
+#' plot(analysis)
 NULL
 
 #' Formula information for a single model or both hurdle components
@@ -89,6 +98,15 @@ print.ContrastsFacadeBase <- function(x, ...) {
   input <- x$.lfqdata
   cat("Input subjects:", nrow(unique(input$data_long()[, input$subject_id(), drop = FALSE])), "\n")
   print(.facade_fit_status(x))
+  if (is.null(x$model)) {
+    cat("Intensity coefficient preview:\n")
+    print(utils::head(stats::coef(x$contrast$intensity)))
+    cat("Detection coefficient preview:\n")
+    print(utils::head(stats::coef(x$contrast$detection)))
+  } else {
+    cat("Coefficient preview:\n")
+    print(utils::head(stats::coef(x)))
+  }
   invisible(x)
 }
 

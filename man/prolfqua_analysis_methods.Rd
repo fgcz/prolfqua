@@ -71,11 +71,13 @@ unused by the other methods.}
   response residuals equal response minus fitted value. Hurdle results require
   selecting an intensity or detection component for these methods too.
   `plot()` returns a ggplot visibly: an FDR volcano plot or an MA plot.
+  There is no analysis-level `vcov()` method; covariance access remains on
+  backend fits. Summary fit counts are not per-subject convergence diagnostics.
 }
 \description{
 Standard R methods for results returned by [build_contrast_analysis()].
-Printing reports the model specification and fit status without computing
-contrasts. Summaries evaluate the contrasts and report counts at the requested
+Printing reports the model specification, fit status and a coefficient preview
+without computing contrasts. Summaries evaluate the contrasts and report counts at the requested
 FDR and absolute effect thresholds.
 }
 \examples{
@@ -84,6 +86,13 @@ lfq <- LFQData$new(sim$data, sim$config)
 analysis <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))
 print(analysis)
 summary(analysis)
+head(stats::coef(analysis))
+head(stats::confint(analysis))
+stats::formula(analysis)
+head(stats::nobs(analysis))
+head(stats::fitted(analysis))
+head(stats::residuals(analysis))
+plot(analysis)
 }
 \seealso{
 Other modelling:

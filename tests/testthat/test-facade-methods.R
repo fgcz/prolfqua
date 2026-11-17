@@ -85,6 +85,8 @@ test_that("printing a facade is informative and does not evaluate contrasts", {
   expect_output(returned <- withVisible(print(facade)), "prolfqua analysis: lm")
   expect_output(print(facade), "Formula:.*group_")
   expect_output(print(facade), "Input subjects: 12")
+  expect_output(print(facade), "Coefficient preview:")
+  expect_output(print(facade), "estimate")
   expect_identical(returned$value, facade)
   expect_false(returned$visible)
 })
@@ -233,4 +235,116 @@ test_that("analysis plots return visible ggplots across model families", {
     }
   }
   expect_error(graphics::plot(facade, type = "histogram"), class = "prolfqua_error_bad_argument")
+})
+
+# These generated data deliberately include single-peptide proteins, sparse
+# groups, tied peptide counts and fully detected proteins. Those backend warnings
+# are exercised elsewhere; unexpected accessor warnings must still fail here.
+facade_fixture_warnings <- paste(
+  single_peptide_warning,
+  one_group_warning,
+  rlm_convergence_warning,
+  loess_ties_warning,
+  "Zero sample variances detected",
+  sep = "|"
+)
+
+facade_method_case <- function(method) {
+  sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+  peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  if (method == "limpa") {
+    input <- AggregateLimpa$new(peptide, "protein")$aggregate()
+  } else if (lookup_facade(method)$needs == "nested") {
+    input <- peptide
+  } else {
+    input <- peptide$get_Aggregator()$aggregate()
+  }
+  model <- if (method == "lmer_nested") "~ group_ + (1 | peptide_Id) + (1 | sampleName)" else "~ group_"
+  build_contrast_analysis(input, model, c(A_vs_Ctrl = "group_A - group_Ctrl"), method)
+}
+
+facade_method_dependencies <- list(
+  rfit = "Rfit",
+  rfit_impute = "Rfit",
+  lmer_nested = c("lme4", "lmerTest"),
+  firth = "logistf",
+  limpa = "limpa",
+  limpa_nested = "limpa"
+)
+
+for (method in names(list_facades())) {
+  test_that(paste("standard analysis methods work for", method), {
+    for (package in facade_method_dependencies[[method]]) {
+      skip_if_not_installed(package)
+    }
+    muffle_warnings_matching(pattern = facade_fixture_warnings, expr = {
+      facade <- facade_method_case(method)
+      expect_output(print(facade), paste("prolfqua analysis:", method))
+      summary <- summary(facade)
+      expect_true(all(c("subjects", "fitted", "failed", "singular", "imputed") %in% names(summary$fit_status)))
+      expect_equal(summary$fit_status$fitted + summary$fit_status$failed, summary$fit_status$subjects)
+      expect_error(stats::vcov(facade), "no applicable method")
+      expect_equal(summary$per_contrast$estimated, nrow(facade$get_contrasts()))
+      expect_equal(summary$per_contrast$missing, nrow(facade$get_missing()))
+      expect_s3_class(graphics::plot(facade), "ggplot")
+      if (method == "hurdle_nested") {
+        for (accessor in list(
+          stats::coef,
+          stats::confint,
+          stats::formula,
+          stats::nobs,
+          stats::fitted,
+          stats::residuals
+        )) {
+          expect_error(accessor(facade), class = "prolfqua_error_not_available")
+        }
+      } else {
+        coefficients <- stats::coef(facade)
+        expect_named(coefficients, c(facade$model$subject_id, "term", "estimate", "std.error", "df"))
+        expect_gt(nrow(coefficients), 0L)
+        intervals <- stats::confint(facade)
+        expect_equal(intervals[, names(coefficients)], coefficients)
+        expect_true(all(c("conf.low", "conf.high") %in% names(intervals)))
+        expect_s3_class(stats::formula(facade), "formula")
+        observations <- stats::nobs(facade)
+        expect_named(observations, c(facade$model$subject_id, "nobs"))
+        expect_true(all(observations$nobs >= 0))
+        values <- stats::fitted(facade)
+        residuals <- stats::residuals(facade)
+        expect_true(all(
+          c(facade$model$subject_id, facade$.lfqdata$sample_name(), "response", "fitted", "imputed") %in% names(values)
+        ))
+        expect_equal(values$response, values$fitted + residuals$residual)
+        expect_false(anyNA(values[[facade$.lfqdata$sample_name()]]))
+        if (method %in% c("firth", "binomial_nested", "binomial_firth_nested")) {
+          expect_true(all(values$fitted >= 0 & values$fitted <= 1))
+        }
+        if (method == "lmer_nested") {
+          expect_true("peptide_Id" %in% names(values))
+          expect_match(paste(deparse(stats::formula(facade)), collapse = ""), "peptide_Id")
+          fits <- .model_fits(facade$model)
+          for (i in seq_len(nrow(fits))) {
+            expected <- lme4::fixef(fits$linear_model[[i]])
+            selected <- coefficients[coefficients$protein_Id == fits$protein_Id[i], ]
+            expect_equal(selected$term, names(expected))
+            expect_equal(selected$estimate, unname(expected))
+            table <- stats::coef(summary(fits$linear_model[[i]]))
+            expect_equal(selected$std.error, unname(table[, "Std. Error"]))
+            expect_equal(selected$df, unname(table[, "df"]))
+          }
+        }
+      }
+    })
+  })
+}
+
+test_that("limpa imputation flags describe observations rather than the model label", {
+  skip_if_not_installed("limpa")
+  facade <- facade_method_case("limpa")
+  values <- stats::fitted(facade)
+  expected <- rowSums(!facade$model$observed) > 0
+  expect_true(any(expected))
+  expect_equal(values$imputed, unname(expected[match(values$protein_Id, facade$model$rowdata$protein_Id)]))
+  facade$model$model_name <- "custom model label"
+  expect_identical(stats::fitted(facade)$imputed, values$imputed)
 })

@@ -26,8 +26,8 @@
   tibble::tibble(
     term = names(estimates),
     estimate = unname(estimates),
-    std.error = coefficients[names(estimates), "Std. Error"],
-    df = coefficients[names(estimates), "df"]
+    std.error = unname(coefficients[names(estimates), "Std. Error"]),
+    df = unname(coefficients[names(estimates), "df"])
   )
 }
 
@@ -296,8 +296,9 @@
 #' @param model a ModelLimma adapter
 #' @noRd
 .matrix_imputed_subjects <- function(model) {
-  if (model$model_name %in% c("limpa", "limpa_nested")) {
-    return(rowSums(!model$observed) > 0)
+  # limpa retains its imputed EList; model_name is only a user-facing label.
+  if (!is.null(model$fit$EList)) {
+    return(unname(rowSums(!model$observed) > 0))
   }
   model$rowdata[[model$subject_id[1]]] %in% model$imputed_proteins
 }
