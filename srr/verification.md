@@ -1,6 +1,6 @@
 # Verification of srr groundwork
 
-**Completed on 2026-11-17.** All four steps and the acceptance checks in [the original plan](/Users/wolski/.claude/plans/snug-floating-graham.md) are complete for prolfqua 1.9.4. Verification used R 4.6.2 on arm64 macOS. Completion of this groundwork does not mean the package is ready for rOpenSci submission; the plan explicitly leaves the design-heavy standards gaps for later work.
+**Completed on 2026-11-17.** All four steps and the acceptance checks in [the original plan](../../TODO/prolfqua/Archive/PLAN_srr_groundwork_2026-11-16.md) are complete for prolfqua 1.9.4. Verification used R 4.6.2 on arm64 macOS. Completion of this groundwork does not mean the package is ready for rOpenSci submission; the plan explicitly leaves the design-heavy standards gaps for later work.
 
 ## Plan completion
 
