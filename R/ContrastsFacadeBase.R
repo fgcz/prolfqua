@@ -83,6 +83,7 @@ ContrastsFacadeBase <- R6::R6Class(
       if (!inherits(lfqdata, "LFQData")) {
         abort_bad_argument("lfqdata", "be an LFQData object")
       }
+      .assert_model_input(lfqdata)
       .assert_named_contrasts(contrasts)
       formula <- .as_model_formula(modelstr)
       if (!is.character(modelstr) || length(formula) != 2) {

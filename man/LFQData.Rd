@@ -17,7 +17,9 @@ Random (MAR). Abundance-dependent missingness (MNAR), which is common
 in DDA proteomics, is not modelled. When low intensities are missing,
 fold changes of down-regulated proteins shrink toward zero; LOD imputation
 (the \code{_impute} methods) caps estimates at the LOD and does not remove
-this bias. MNAR can also inflate false discovery rates.
+this bias. MNAR can also inflate false discovery rates. How \code{NA},
+zero and non-finite intensities are treated is described in
+\code{\link{prolfqua-package}}, section "Missing and non-finite values".
 }
 
 \examples{

@@ -145,6 +145,9 @@ build_model <- function(
   },
   model_name = model_strategy$model_name
 ) {
+  if (inherits(data, "LFQData")) {
+    .assert_model_input(data)
+  }
   nested_data <- if (inherits(data, "LFQData")) data$data_long() else data
   if (!is.null(model_strategy$weights)) {
     missing <- setdiff(model_strategy$weights, names(nested_data))
@@ -240,8 +243,8 @@ build_model_impute <- function(
 #' @param lod limit of detection on the response scale
 #' @param lfqdata LFQData containing the measurements and configuration
 #' @noRd
-#' @srrstatsTODO {G5.8a} Empty LOD/contrast/plot cases are tested; limit: zero-row primary entry points are not fully
-#'   tested.
+#' @srrstats {G5.8a} Empty LOD/contrast/plot cases are tested; zero-row inputs to fitting and aggregation raise a
+#'   classed error (test-missing-nonfinite.R).
 .resolve_lod <- function(lod, lfqdata) {
   if (!is.null(lod)) {
     return(lod)

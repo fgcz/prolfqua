@@ -4,8 +4,11 @@
 #'   wording.
 #' @noRd
 
-test_that("log transforms warn before zeros become infinite", {
-  expect_warning(transform_work_intensity(data.frame(x = c(0, 1)), "x", log2), "zeros.*-Inf")
+test_that("log transforms set zeros to NA and say so", {
+  for (fun in list(log, log2, log10)) {
+    expect_message(res <- transform_work_intensity(data.frame(x = c(0, 1)), "x", fun, "f"), "1 zeros.*set to NA")
+    expect_identical(res$data$f_x, c(NA, 0))
+  }
 })
 
 test_that("log transforms warn before negative values become NaN", {

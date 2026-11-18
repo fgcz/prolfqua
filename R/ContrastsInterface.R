@@ -16,8 +16,6 @@
 #' testthat::expect_error(int$filter_significant())
 #' identical(int$extra_artifacts(), list())
 #' int$column_description()
-#' @srrstatsTODO {G5.3} Tests check finite imputed/limma outputs; limit: not every column/backend has an undefined-value
-#'   assertion.
 ContrastsInterface <- R6::R6Class(
   "ContrastsInterface",
   public = list(

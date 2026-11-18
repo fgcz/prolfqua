@@ -21,6 +21,10 @@ list with `data` (data.frame) and `colname` (new column name)
 \description{
 Transform intensity column by applying a function
 }
+\details{
+For `log`, `log2` and `log10`, zero intensities mean "not detected" and become `NA` (reported as a
+  message); negative intensities give `NaN` with a warning, which fitting and aggregation then reject.
+}
 \examples{
 
 istar <- sim_lfq_data_peptide_config()

@@ -40,8 +40,8 @@
 #' @param lfqdata LFQData containing the measurements and configuration
 #' @param contrasts named character vector of contrast expressions
 #' @noRd
-#' @srrstatsTODO {G2.13} Facades reject groups without measured responses; limit: missing identifier/predictor keys are
-#'   not checked.
+#' @srrstats {G2.13} Facades reject groups without measured responses; `.assert_model_input()` rejects NA in hierarchy,
+#'   factor and sample keys before fitting and aggregation.
 .assert_contrast_groups <- function(lfqdata, contrasts) {
   factor_keys <- lfqdata$factor_keys()
   data <- lfqdata$data_long()

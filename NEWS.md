@@ -35,12 +35,15 @@
 - prolfqua no longer prints internal progress messages such as "setup done", "completing cases", "contrasts_linfct", "starting aggregation", the model formula or the number of rows with missing values.
 - All errors are raised with `rlang::abort()` and carry class `prolfqua_error`; invalid arguments also carry `prolfqua_error_bad_argument`, so callers can catch prolfqua errors by class. Missing optional packages (`limpa`, `Rfit`) are reported with `rlang::check_installed()`, which offers to install them in interactive sessions.
 - `lm_impute`, `rfit_impute`, `limma_impute`, `limma_voom_impute`: the limit-of-detection refit no longer warns "essentially perfect fit" or "non-finite value supplied by optim", and the `limma` variants no longer warn "Partial NA coefficients" for the proteins they then refit. Results are unchanged. A failed per-protein fit is reported as a warning of class `prolfqua_fit_failed`.
+- Missing and non-finite values: `log()`, `log2()` and `log10()` transforms turn zero intensities (not detected) into `NA` with a message, instead of `-Inf` with a warning. Fitting and aggregation stop with a classed error on `Inf`, `-Inf` or `NaN` intensities (`prolfqua_error_nonfinite_response`), on `NA` in hierarchy, factor or sample columns (`prolfqua_error_missing_key`), and on inputs without rows; before, such a protein failed to fit and vanished from the contrasts behind a warning. `which_missing()` rejects input containing `NA`. The policy is described in `?prolfqua` and the Modelling methods vignette.
 - `sim_lfq_data_2factor_config()` no longer warns "Unknown or uninitialised column: `nrPeptides`".
 - README: the getting-started example called the removed aggregator method `$medpolish()` and the undeclared package `ggpubr`; it now runs as shown and ends with `build_contrast_analysis()`. Installation is from Bioconductor first.
 
 ## Bug fixes
 
 - `get_complete_model_fit()`, and with it `Model$get_anova()`, `Model$get_coefficients()` and the coefficient and ANOVA plots, now leaves out fits with fewer coefficients than the full design, for example a protein with one group entirely missing. Before, every fit counted as complete, so these tables also listed such proteins, whose coefficients referred to another reference level. Limit-of-detection imputation is unchanged.
+
+- `moderated_p_limma()`: when all variances are equal, one missing residual df no longer makes the prior df, and with it every moderated p-value, `NA`.
 
 - The introductory and Modelling methods vignettes no longer fail when `R CMD check --no-build-vignettes` runs their code: the factory figure is left out of the extracted R code. The Transforming and calibrating LFQ data vignette ends with session information.
 

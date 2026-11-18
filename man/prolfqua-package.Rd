@@ -23,6 +23,21 @@ Covers the steps of a mass spectrometry based label-free quantification (LFQ) an
 }
 }
 
+\section{Missing and non-finite values}{
+
+An `NA` intensity is a missing observation. The `method` argument of
+\code{\link{build_contrast_analysis}} decides how missing observations are
+handled: dropped per fit (e.g. `lm`, `limma`), imputed at the limit of
+detection (the `_impute` methods), or modelled as detection (`firth`,
+`binomial_nested`, `hurdle_nested`); \code{\link{impute_from_model}} fills
+them from fitted models. The `log`, `log2` and `log10` transforms turn zero
+intensities (not detected) into `NA`. Fitting and aggregation stop with a
+classed error on `Inf`, `-Inf` or `NaN` intensities
+(`prolfqua_error_nonfinite_response`), on `NA` in hierarchy, factor or sample
+columns (`prolfqua_error_missing_key`), and on inputs without rows
+(`prolfqua_error_bad_argument`).
+}
+
 \section{Lifecycle}{
 
 prolfqua is stable. Its exported API follows the Bioconductor deprecation

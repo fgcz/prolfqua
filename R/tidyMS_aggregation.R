@@ -429,7 +429,8 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
   sum_top_intensities <- top_intensities |>
     dplyr::summarize(
       !!newcol := .func(!!sym(lfqdata$response())),
-      ident_qValue = min(!!sym(config$ident_q_value)),
+      # an unknown q-value of a top feature leaves the aggregate's q-value unknown
+      ident_qValue = min(!!sym(config$ident_q_value), na.rm = FALSE),
       .groups = "drop"
     )
 
@@ -537,7 +538,7 @@ nr_children_experiment <- function(
     nr_children_col = nr_children_col,
     new_child = per_sample_col
   )
-  # experiment-wide count = the largest per-sample count across all samples
+  # experiment-wide count = the largest per-sample count across all samples; counts are never NA
   per_sample |>
     dplyr::group_by(!!!syms(hierarchy_keys_depth)) |>
     dplyr::summarize(!!name_nr_child := max(!!sym(per_sample_col)), .groups = "drop")

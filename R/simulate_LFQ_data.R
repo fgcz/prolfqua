@@ -125,6 +125,9 @@ sim_lfq_data <- function(
 #' which_missing(2**rnorm(10,2,0.4))
 #'
 which_missing <- function(x, weight_missing = 0.2) {
+  if (!is.numeric(x) || anyNA(x)) {
+    abort_bad_argument("x", "be a numeric vector without NA")
+  }
   missing_prop <- pnorm(x, mean = mean(x), sd = sd(x))
   # sample TRUE or FALSE with propability in missing_prop
   samplemiss <- function(missing_prop) {

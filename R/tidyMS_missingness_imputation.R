@@ -78,8 +78,8 @@ MissingHelpers <- R6::R6Class(
 #' @param stats group means and observation counts
 #' @param prob quantile used to estimate the detection limit
 #' @noRd
-#' @srrstatsTODO {G2.15} LOD estimation excludes unavailable group means; limit: missing handling is not audited across
-#'   every helper.
+#' @srrstats {G2.15} LOD estimation excludes unavailable group means; summaries over possibly missing values set `na.rm`
+#'   explicitly or filter NA first (moderation prior df, topN q-value, ROPECA), and `which_missing()` rejects NA.
 .lod_from_group_stats <- function(stats, prob) {
   measured <- dplyr::filter(stats, .data$nrMeasured > 0)
   partial <- dplyr::filter(measured, .data$nrMeasured == 1 | .data$nrMeasured < .data$nrReplicates)

@@ -49,6 +49,7 @@ AggregatorBase <- R6::R6Class(
     #' @param prefix default protein
     initialize = function(lfq, prefix = "protein") {
       .check_aggregatable(lfq)
+      .assert_model_input(lfq)
       private$.check_transformed(lfq)
       self$lfq <- lfq$clone(deep = TRUE)
       self$prefix <- prefix
@@ -357,6 +358,7 @@ AggregateLimpa <- R6::R6Class(
       if (!impute_only) {
         .check_aggregatable(lfq)
       }
+      .assert_model_input(lfq)
       self$lfq <- lfq$clone(deep = TRUE)
       self$prefix <- prefix
       self$dpc_slope <- dpc_slope

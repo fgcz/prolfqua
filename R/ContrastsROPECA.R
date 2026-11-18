@@ -398,6 +398,7 @@ ContrastsROPECA <- R6::R6Class(
 #' @param rho within-protein peptide correlation
 #' @noRd
 .ropeca_v2_protein_contrasts <- function(peptide_contrasts, protein_cols, rho) {
+  # rows with NA (or NaN) diff, statistic or df are dropped here, so mad() and median() below see no NA
   peptides <- peptide_contrasts |>
     dplyr::filter(!is.na(.data$diff), !is.na(.data$statistic), !is.na(.data$df)) |>
     dplyr::mutate(z = .peptide_z(.data$statistic, .data$df))

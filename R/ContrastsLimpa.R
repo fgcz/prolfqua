@@ -102,6 +102,7 @@ strategy_limpa <- function(modelstr, model_name = "limpa", trend = FALSE, robust
 #' }
 build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_name) {
   rlang::check_installed("limpa", reason = "for build_model_limpa().")
+  .assert_model_input(lfqdata)
 
   se_col <- lfqdata$get_config()$opt_se
   nr_col <- lfqdata$nr_children_col()

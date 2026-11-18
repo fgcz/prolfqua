@@ -99,6 +99,17 @@ knitr::kable(overview, row.names = FALSE)
 
 The detection models (`firth`, `binomial_nested`, `binomial_firth_nested`) test differences in how often a protein or its peptides are observed. The simulated data has few missing values, so they find little.
 
+# Missing values
+
+An `NA` intensity is a missing observation, and the method decides what happens to it:
+
+- dropped in each per-protein fit: `lm`, `rlm`, `rfit`, `limma`, `limma_voom`, `deqms`, `lmer_nested`, `ropeca_nested`
+- imputed at the limit of detection where a whole group is missing: the `_impute` methods
+- modelled as detection: `firth`, `binomial_nested`, `binomial_firth_nested`, and `hurdle_nested` together with the intensities
+- filled from the fitted models after the analysis: `impute_from_model()`
+
+The `log2()` transform turns zero intensities, which mean "not detected", into `NA`. `Inf`, `-Inf` and `NaN` intensities, and `NA` in protein, peptide, group or sample columns, stop the analysis with a classed error.
+
 # One protein, all methods
 
 All methods return the same columns. Here is the protein with the smallest `lm` p-value. For the detection models `diff` is a log odds ratio, not a log2 fold change. This protein is detected in every sample, so the detection models report `diff` 0 and a p-value of 1 or `NaN`.

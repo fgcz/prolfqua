@@ -141,8 +141,8 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #'   policy.
 #' @srrstatsTODO {G2.12} Nonnumeric responses including lists are rejected; limit: other list columns lack a complete
 #'   contract.
-#' @srrstatsTODO {G5.8} Tests cover invalid types, designs and sparse inputs; core empty/all-NA/constant cases are
-#'   incomplete.
+#' @srrstats {G5.8} Tests cover invalid types, designs, sparse inputs, empty inputs, non-finite responses, NA keys and
+#'   all-NA or constant responses (test-input-validation.R, test-missing-nonfinite.R).
 .assert_response_data <- function(data, config) {
   if (!is.data.frame(data)) {
     abort_bad_argument("data", "be a data frame")
@@ -157,6 +157,49 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
   if (!is.numeric(data[[response]])) {
     abort_bad_argument("response", paste0("be numeric (column `", response, "`)"))
   }
+}
+
+#' Validate an LFQData before fitting or aggregation
+#'
+#' NA intensities are missing observations and pass. Zero rows, `Inf`, `-Inf` or `NaN` responses, and NA in the
+#' hierarchy, factor or sample key columns raise classed errors.
+#' @param lfqdata LFQData to check
+#' @noRd
+.assert_model_input <- function(lfqdata) {
+  data <- lfqdata$data_long()
+  if (nrow(data) == 0) {
+    abort_bad_argument("lfqdata", "have at least one row", not = "zero rows")
+  }
+  response <- lfqdata$response()
+  values <- data[[response]]
+  nonfinite <- !is.na(values) & !is.finite(values) | is.nan(values)
+  if (any(nonfinite)) {
+    subjects <- unique(do.call(paste, c(data[nonfinite, lfqdata$subject_id(), drop = FALSE], sep = "~")))
+    abort_prolfqua(
+      "Response `",
+      response,
+      "` has ",
+      sum(nonfinite),
+      " non-finite values (Inf, -Inf or NaN) in ",
+      length(subjects),
+      " subjects, e.g. ",
+      toString(utils::head(subjects, 5)),
+      ". Remove or replace them before modelling; NA marks a missing observation.",
+      class = "prolfqua_error_nonfinite_response"
+    )
+  }
+  keys <- unique(c(lfqdata$file_name(), lfqdata$sample_name(), lfqdata$factor_keys(), lfqdata$hierarchy_keys()))
+  n_na <- vapply(keys, function(key) sum(is.na(data[[key]])), integer(1))
+  if (any(n_na > 0)) {
+    bad <- n_na[n_na > 0]
+    abort_prolfqua(
+      "Key columns contain NA: ",
+      toString(paste0("`", names(bad), "` (", bad, ")")),
+      ". Every row needs hierarchy, factor and sample values.",
+      class = "prolfqua_error_missing_key"
+    )
+  }
+  invisible(lfqdata)
 }
 
 #' Validate simulator size and missingness weight

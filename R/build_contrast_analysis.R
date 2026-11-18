@@ -121,8 +121,8 @@
 #'   exhaustive API-wide.
 #' @srrstats {G2.3b} Builder help explicitly requires case-sensitive method keys and column names.
 #' @srrstats {RE1.0} The builder takes a validated RHS formula and strategies retain the full response formula.
-#' @srrstatsTODO {RE2.1} Plain versus imputed methods are selectable; limit: there is no common NA/NaN/Inf processing
-#'   parameter.
+#' @srrstats {RE2.1} `method` is the missing-value control (drop per fit, LOD imputation, detection models); NA is a
+#'   missing observation, Inf and -Inf raise. Limit: NaN raises with Inf instead of being treated as NA.
 #' @srrstats {RE5.0} Builder details report measured scaling for three methods; source benchmark states design and
 #'   timing limits.
 build_contrast_analysis <- function(

@@ -306,6 +306,7 @@ compute_borrowed_variance_limma <- function(fit) {
   lod = NULL,
   df_method = "observed"
 ) {
+  .assert_model_input(lfqdata)
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
   weights <- .resolve_weights(lfqdata, strategy, setup$annotation)
   fitted <- withCallingHandlers(

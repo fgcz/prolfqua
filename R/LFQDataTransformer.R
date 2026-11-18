@@ -90,8 +90,8 @@
 #' offsets[1] <- 1
 #' tr$subtract_sample_offsets(offsets)
 #'
-#' @srrstatsTODO {G2.16} Log transforms diagnose zeros/negatives; limit: no shared Inf/NaN policy before every model
-#'   backend.
+#' @srrstats {G2.16} Log transforms turn zeros into NA and warn on negatives; Inf, -Inf and NaN responses raise a
+#'   classed error before every fit and aggregation. Limit: no option to ignore or remove non-finite values, by design.
 #' @srrstatsTODO {RE2.3} Transformer centering is explicit; limit: its inferential effect on contrasts lacks
 #'   documentation/tests.
 LFQDataTransformer <- R6::R6Class(
@@ -262,6 +262,8 @@ LFQDataTransformer <- R6::R6Class(
 #' @param .func function to transform intensities e.g. log2
 #' @param .funcname name of function (used for creating new column name)
 #' @return list with `data` (data.frame) and `colname` (new column name)
+#' @details For `log`, `log2` and `log10`, zero intensities mean "not detected" and become `NA` (reported as a
+#'   message); negative intensities give `NaN` with a warning, which fitting and aggregation then reject.
 #' @export
 #' @keywords internal
 #' @examples
@@ -293,13 +295,9 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
       )
     }
     if (n_zero > 0) {
-      warning(
-        "log transform: ",
-        n_zero,
-        " zeros in '",
-        response,
-        "' will produce -Inf. Consider replacing zeros with NA first."
-      )
+      # 0 means not detected: a missing observation, not -Inf.
+      pdata[[response]][!is.na(vals) & vals == 0] <- NA
+      inform_prolfqua("log transform: ", n_zero, " zeros in '", response, "' set to NA (not detected).")
     }
   }
 
@@ -405,8 +403,8 @@ get_robscales <- function(lfqdata) {
 #' mat <- matrix(c(1, 2, 3, 4, 10, 12), nrow = 3)
 #' scaled <- robust_scale(mat)
 #' dim(scaled)
-#' @srrstatsTODO {G5.8c} Tests cover zero MAD, constant heatmaps and missing groups; limit: constant/all-NA model inputs
-#'   remain.
+#' @srrstats {G5.8c} Tests cover zero MAD, constant heatmaps, missing groups, and proteins with all-NA or constant
+#'   responses in model fits (test-missing-nonfinite.R).
 robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
   .apply_robscales(
     data,

@@ -7,12 +7,10 @@
 #' @srrstatsVerbose TRUE
 #' @srrstatsTODO {G2.11} Validate/preprocess such columns intentionally and test the promised behavior; deferred
 #'   follow-up: TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {G2.14a} Deferred NA-policy design remains necessary; deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {G3.1a} Add and document a covariance-policy API if accepted in a later design; deferred follow-up:
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {RE2.2} missing predictors not handled separately from missing responses; deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
+#' @srrstats {RE2.2} Missing predictors (hierarchy, factor and sample keys) raise; missing responses are dropped per fit
+#'   or imputed, and `impute_from_model()` generates values for missing responses from models fitted without them.
 #' @srrstatsTODO {RE2.4b} no check for perfect predictor-response fit (sigma = 0); deferred follow-up:
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE3.2} defaults undocumented; deferred follow-up: TODO/prolfqua/TODO_ropensci_compliance.md section
@@ -26,6 +24,8 @@ NULL
 
 #' NA_standards
 #'
+#' @srrstatsNA {G2.14a} NA intensities are missing observations in LFQ data; an option to error on them is not
+#'   meaningful. Non-finite values and NA keys raise errors (`.assert_model_input()`).
 #' @srrstatsNA {G5.4c} Relevant prior implementations are available as software and can be called directly.
 #'   Published-paper stored numerical values are not needed as a substitute for unavailable code.
 #' @srrstatsNA {G5.11} The current suite uses packaged datasets and generated simulations; no extended downloaded
