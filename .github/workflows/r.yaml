@@ -10,6 +10,9 @@ on:
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
+    env:
+      # srr G5.10: extended tests run for commits whose message contains "run-extended"
+      PROLFQUA_EXTENDED_TESTS: ${{ contains(github.event.head_commit.message, 'run-extended') }}
     strategy:
       matrix:
         r-version: ['4.6']

@@ -19,10 +19,6 @@
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {G5.9b} No committed fixed-problem test establishes result stability under different RNG seeds or
 #'   initial conditions; deferred follow-up: TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {G5.10} Add shared-flag extended statistical recovery/performance tests later; deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {G5.12} Document conditions when the deferred extended suite is implemented; deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE2.2} missing predictors not handled separately from missing responses; deferred follow-up:
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE2.4b} no check for perfect predictor-response fit (sigma = 0); deferred follow-up:
